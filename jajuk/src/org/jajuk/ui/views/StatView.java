@@ -25,7 +25,9 @@ import info.clearthought.layout.TableLayout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.jajuk.base.Device;
@@ -40,6 +42,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jfree.chart.ChartFactory;
@@ -98,9 +101,15 @@ public class StatView extends ViewAdapter implements Observer{
                 {0.5f,10,0.5f}
         };
         setLayout(new TableLayout(size));
-        ObservationManager.register(EVENT_DEVICE_DELETE,this);
-        ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-        update(new Event(EVENT_DEVICE_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_DEVICE_REFRESH)));	
+        ObservationManager.register(this);
+        update(new Event(EventSubject.EVENT_DEVICE_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_DEVICE_REFRESH)));	
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_DELETE);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+        return eventSubjectSet;
     }
     
     /** Style repartition pie
@@ -117,7 +126,7 @@ public class StatView extends ViewAdapter implements Observer{
                 Iterator<Style> it = StyleManager.getInstance().getStyles().iterator();
                 int iTotal = 0;
                 double dOthers = 0;
-                TreeMap tm = new TreeMap();
+                TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
                 while (it.hasNext()){
                     Style style = (Style)it.next();
                     int iCount = style.getCount();
@@ -174,8 +183,8 @@ public class StatView extends ViewAdapter implements Observer{
                 //prepare devices
                 long lTotalSize = 0;
                 double dOthers = 0;
-                ArrayList alDevices = null;
-                alDevices = new ArrayList(DeviceManager.getInstance().getDevices());
+                ArrayList<Device> alDevices = null;
+                alDevices = new ArrayList<Device>(DeviceManager.getInstance().getDevices());
                 long[] lSizes = new long[DeviceManager.getInstance().getElementCount()];
                 while (itFiles.hasNext()){
                     File file = (File)itFiles.next();
@@ -258,7 +267,7 @@ public class StatView extends ViewAdapter implements Observer{
             
             CategoryPlot plot = jfchart.getCategoryPlot();
             CategoryAxis axis = plot.getDomainAxis();
-            CategoryLabelPosition position = new CategoryLabelPosition(
+            new CategoryLabelPosition(
                 RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0
             );
             axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
@@ -319,7 +328,7 @@ public class StatView extends ViewAdapter implements Observer{
                 );
                 CategoryPlot plot = jfchart.getCategoryPlot();
                 CategoryAxis axis = plot.getDomainAxis();
-                CategoryLabelPosition position = new CategoryLabelPosition(
+                new CategoryLabelPosition(
                         RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0
                     );
                     axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
@@ -358,8 +367,8 @@ public class StatView extends ViewAdapter implements Observer{
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public synchronized  void update(Event event) {
-        String subject = event.getSubject();
-        if (EVENT_DEVICE_REFRESH.equals(subject) || EVENT_DEVICE_DELETE.equals(subject)){
+        EventSubject subject = event.getSubject();
+        if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject) || EventSubject.EVENT_DEVICE_DELETE.equals(subject)){
             Util.waiting();
             if (getComponentCount() > 0){
                 removeAll();

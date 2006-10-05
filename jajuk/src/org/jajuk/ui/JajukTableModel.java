@@ -38,7 +38,7 @@ import org.jajuk.util.Util;
 public abstract class JajukTableModel extends DefaultTableModel  implements ITechnicalStrings{
 
     /**Column identifiers*/
-    volatile public Vector vId = new Vector(10);
+    volatile public Vector<String> vId = new Vector<String>(10);
     
     /**Rows number*/
     public int iRowNum;
@@ -62,7 +62,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     public boolean[][] bCellEditable;
     
     /**Column names*/
-    public Vector vColNames  = new Vector(10);
+    public Vector<String> vColNames  = new Vector<String>(10);
     
     /**Last value used for undo*/
     public Object oLast = null;
@@ -156,7 +156,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
         return bEditable && bCellEditable[rowIndex][columnIndex];
     }
     
-    public Class getColumnClass(int columnIndex) {
+    public Class<? extends Object> getColumnClass(int columnIndex) {
         Object o = getValueAt(0,columnIndex);
         if ( o != null){
             return o.getClass();

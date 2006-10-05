@@ -43,6 +43,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -68,8 +69,14 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
      * no instanciation
      */
     private DigitalDJManager() {
-        djs = new HashMap();
-        ObservationManager.register(EVENT_AMBIENCE_REMOVED,this);
+        djs = new HashMap<String,DigitalDJ>();
+        ObservationManager.register(this);
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_AMBIENCE_REMOVED);
+        return eventSubjectSet;
     }
     
     /**
@@ -96,7 +103,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
      * @return DJs names iteration
      */
     public Set<String> getDJNames(){
-        HashSet<String> hsNames = new HashSet(10);
+        HashSet<String> hsNames = new HashSet<String>(10);
         for (DigitalDJ dj:djs.values()){
            hsNames.add(dj.getName()); 
         }
@@ -153,7 +160,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
             ConfigurationManager.setProperty(CONF_DEFAULT_DJ,""); //$NON-NLS-1$
         }
         //alert command panel
-        ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
+        ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
     }
     
     /**
@@ -163,14 +170,14 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
     public void register(DigitalDJ dj){
         djs.put(dj.getID(),dj);
         //alert command panel
-        ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
+        ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
     }
     
      /* (non-Javadoc)
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
     public void update(Event event) {
-        if (EVENT_AMBIENCE_REMOVED.equals(event.getSubject())){
+        if (EventSubject.EVENT_AMBIENCE_REMOVED.equals(event.getSubject())){
             Properties properties = event.getDetails();
             String sID = (String)properties.get(DETAIL_CONTENT);
             for (DigitalDJ dj:djs.values()){
@@ -343,7 +350,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory{
 	/**Intermediate proportion variable used during parsing*/
 	private float proportion;
 	
-	private ArrayList<Proportion> proportions = new ArrayList(5);	
+	private ArrayList<Proportion> proportions = new ArrayList<Proportion>(5);	
 	
 	@Override
 	DigitalDJ getDJ(File file) throws Exception{
@@ -433,7 +440,7 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory{
 class DigitalDJFactoryTransitionImpl extends DigitalDJFactory{
 
 	/**Intermediate transition list*/
-	private ArrayList<Transition> transitions = new ArrayList(10);	
+	private ArrayList<Transition> transitions = new ArrayList<Transition>(10);	
 	
 	@Override
 	DigitalDJ getDJ(File file) throws Exception{

@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -133,7 +134,7 @@ public class FIFO implements ITechnicalStrings {
                     Log.error(e);
                 }
                 finally{
-                    ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor                    Util.waiting();
+                    ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor                    Util.waiting();
                     Util.stopWaiting();
                 }
             }
@@ -158,7 +159,7 @@ public class FIFO implements ITechnicalStrings {
                     Log.error(e);
                 }
                 finally{
-                    ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor                    Util.waiting();
+                    ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor                    Util.waiting();
                     Util.stopWaiting();
                 }
             }
@@ -319,12 +320,12 @@ public class FIFO implements ITechnicalStrings {
                     } else { // probably end of collection option "restart" off
                         JajukTimer.getInstance().reset();
                         bStop = true;
-                        ObservationManager.notify(new Event(EVENT_ZERO));
+                        ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
                     }
                 } else { // no ? just reset UI and leave
                     JajukTimer.getInstance().reset();
                     bStop = true;
-                    ObservationManager.notify(new Event(EVENT_ZERO));
+                    ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
                     return;
                 }
             } else { // something more in FIFO
@@ -335,7 +336,7 @@ public class FIFO implements ITechnicalStrings {
         } catch (Exception e) {
             Log.error(e);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
@@ -350,7 +351,7 @@ public class FIFO implements ITechnicalStrings {
             Util.waiting();
             // intro workaround : intro mode is only read at track launch and can't be set during the play
             ConfigurationManager.getBoolean(CONF_STATE_INTRO); // re-read intro mode
-            ObservationManager.notify(new Event(EVENT_PLAYER_PLAY)); // notify to devices like commandJPanel to update ui when the play button has been pressed
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PLAY)); // notify to devices like commandJPanel to update ui when the play button has been pressed
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE); // set was playing state
             File fCurrent = getCurrentFile();
             boolean bPlayOK = false;
@@ -376,17 +377,17 @@ public class FIFO implements ITechnicalStrings {
                 Properties pDetails = new Properties();
                 pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
                 pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
-                ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED, pDetails));
+                ObservationManager.notify(new Event(EventSubject.EVENT_FILE_LAUNCHED, pDetails));
                 //all cases for a cover full refresh
                 if ( itemLast == null // first track, display cover
                         || (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) { // if we are always in the same directory, just leave to save cpu
                     Util.clearCache(); //clear image cache
-                    ObservationManager.notify(new Event(EVENT_COVER_REFRESH)); // request update cover
+                    ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH)); // request update cover
                 }
                 //case just for a cover change without reload
                 else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) 
                         && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK))){ // change cover at each track in shuffle cover mode ?) 
-                    ObservationManager.notify(new Event(EVENT_COVER_CHANGE)); // request update cover
+                    ObservationManager.notify(new Event(EventSubject.EVENT_COVER_CHANGE)); // request update cover
                 }
             }
             itemLast = (StackItem) getCurrentItem().clone(); // save the last played track
@@ -542,7 +543,7 @@ public class FIFO implements ITechnicalStrings {
         } catch (Exception e) {
             Log.error(e);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
@@ -587,7 +588,7 @@ public class FIFO implements ITechnicalStrings {
         } catch (Exception e) {
             Log.error(e);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
@@ -612,7 +613,7 @@ public class FIFO implements ITechnicalStrings {
         } catch (Exception e) {
             Log.error(e);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
@@ -671,7 +672,7 @@ public class FIFO implements ITechnicalStrings {
         } catch (Exception e) {
             Log.error(e);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
@@ -766,8 +767,8 @@ public class FIFO implements ITechnicalStrings {
         }
         reset(); // reinit all variables
         Player.stop(true); // stop player
-        ObservationManager.notify(new Event(EVENT_PLAYER_STOP)); // notify to devices like commandJPanel to update ui
-        ObservationManager.notify(new Event(EVENT_ZERO)); // ask reset
+        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_STOP)); // notify to devices like commandJPanel to update ui
+        ObservationManager.notify(new Event(EventSubject.EVENT_ZERO)); // ask reset
     }
     
     /**
@@ -780,8 +781,8 @@ public class FIFO implements ITechnicalStrings {
     /**
      * @return Returns a shallow copy of the fifo
      */
-    public synchronized ArrayList getFIFO() {
-        return (ArrayList)alFIFO.clone();
+    public synchronized ArrayList<StackItem> getFIFO() {
+        return (ArrayList<StackItem>)alFIFO.clone();
     }
     
     /**
@@ -874,7 +875,7 @@ public class FIFO implements ITechnicalStrings {
                     setRepeatModeToAll(false);
                     Properties properties = new Properties();
                     properties.put(DETAIL_SELECTION, FALSE);
-                    ObservationManager.notify(new Event(EVENT_REPEAT_MODE_STATUS_CHANGED,
+                    ObservationManager.notify(new Event(EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED,
                         properties));
                     remove(0, index - 1);
                     index = 0;
@@ -888,7 +889,7 @@ public class FIFO implements ITechnicalStrings {
         } catch (Exception e) {
             Log.error(e);
         } finally {
-           ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+           ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
@@ -948,8 +949,8 @@ public class FIFO implements ITechnicalStrings {
     /**
      * @return Returns a shallow copy of planned files
      */
-    public synchronized ArrayList getPlanned() {
-        return (ArrayList)alPlanned.clone();
+    public synchronized ArrayList<StackItem> getPlanned() {
+        return (ArrayList<StackItem>)alPlanned.clone();
     }
     
     /**

@@ -31,6 +31,7 @@ import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -54,7 +55,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Observer;
 import org.jajuk.base.StyleManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -63,6 +64,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.JajukToggleButton;
 import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.CannotRenameException;
@@ -84,7 +86,7 @@ import ext.SwingWorker;
  */
 public abstract class AbstractTableView extends ViewAdapter
     implements ActionListener,MouseListener,ItemListener,
-        TableColumnModelListener,TableModelListener,ITechnicalStrings{
+        TableColumnModelListener,TableModelListener,ITechnicalStrings, Observer{
     
     /** The logical table */
     JajukTable jtable;
@@ -244,17 +246,10 @@ public abstract class AbstractTableView extends ViewAdapter
                 applyFilter(null,null);
                 jtable.packTable(5);
                 //Register on the list for subject we are interrested in
-                ObservationManager.register(EVENT_DEVICE_MOUNT,AbstractTableView.this);
-                ObservationManager.register(EVENT_DEVICE_UNMOUNT,AbstractTableView.this);
-                ObservationManager.register(EVENT_DEVICE_REFRESH,AbstractTableView.this);
-                ObservationManager.register(EVENT_SYNC_TREE_TABLE,AbstractTableView.this);
-                ObservationManager.register(EVENT_CUSTOM_PROPERTIES_ADD,AbstractTableView.this);
-                ObservationManager.register(EVENT_CUSTOM_PROPERTIES_REMOVE,AbstractTableView.this);
-                ObservationManager.register(EVENT_RATE_CHANGED,AbstractTableView.this);
-                ObservationManager.register(EVENT_TABLE_CLEAR_SELECTION,AbstractTableView.this);
+                ObservationManager.register(AbstractTableView.this);
                 //refresh columns conf in case of some attributes been removed or added before view instanciation
-                Properties properties = ObservationManager.getDetailsLastOccurence(EVENT_CUSTOM_PROPERTIES_ADD); 
-                Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
+                Properties properties = ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD); 
+                Event event = new Event(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD,properties);
                 update(event);
                 initTable(); //perform type-specific init
              }
@@ -262,6 +257,18 @@ public abstract class AbstractTableView extends ViewAdapter
         sw.start();
     }	
     
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+        eventSubjectSet.add(EventSubject.EVENT_SYNC_TREE_TABLE);
+        eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
+        eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
+        eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_TABLE_CLEAR_SELECTION);
+        return eventSubjectSet;
+    }    
     
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -307,21 +314,21 @@ public abstract class AbstractTableView extends ViewAdapter
             public void run() {
                 try{
                     bReloading = true; //flag reloading to avoid wrong column events
-                    String subject = event.getSubject();
-                    if ( EVENT_TABLE_CLEAR_SELECTION.equals(subject)){ 
+                    EventSubject subject = event.getSubject();
+                    if ( EventSubject.EVENT_TABLE_CLEAR_SELECTION.equals(subject)){ 
                         jtable.clearSelection();
                     }
-                    if ( EVENT_DEVICE_MOUNT.equals(subject) 
-                            || EVENT_DEVICE_UNMOUNT.equals(subject) 
-                            || EVENT_SYNC_TREE_TABLE.equals(subject)) {
+                    if ( EventSubject.EVENT_DEVICE_MOUNT.equals(subject) 
+                            || EventSubject.EVENT_DEVICE_UNMOUNT.equals(subject) 
+                            || EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
                         jtable.clearSelection();
                         applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                     }	
-                    else if ( EVENT_DEVICE_REFRESH.equals(subject)
-                            || EVENT_RATE_CHANGED.equals(subject)) {
+                    else if ( EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
+                            || EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
                         applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                     }   
-                    else if (EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
+                    else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
                         Properties properties = event.getDetails();
                         if (properties == null){ //can be null at view populate
                         	return;
@@ -335,7 +342,7 @@ public abstract class AbstractTableView extends ViewAdapter
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.addItem(properties.get(DETAIL_CONTENT));
                     }
-                    else if (EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
+                    else if (EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
                         Properties properties = event.getDetails();
                         if (properties == null){ //can be null at view populate
                         	return;
@@ -445,19 +452,19 @@ public abstract class AbstractTableView extends ViewAdapter
         Item item = model.getItemAt(e.getFirstRow());
         try{
             //file filter used by physical table view to change only the file, not all files associated with the track
-            HashSet filter = null;
+            HashSet<Item> filter = null;
             if (item instanceof File){
-              filter = new HashSet();
+              filter = new HashSet<Item>();
               filter.add(item);
             }
             Item itemNew = ItemManager.changeItem(item,sKey,oValue,filter);
             model.setItemAt(e.getFirstRow(),itemNew); //update model
             //user message
-            PropertyMetaInformation meta = itemNew.getMeta(sKey);
+            itemNew.getMeta(sKey);
             InformationJPanel.getInstance().setMessage(
                     Messages.getString("PropertiesWizard.8")+": "+ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
                     InformationJPanel.INFORMATIVE);
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+                ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
         }
         catch(NoneAccessibleFileException none){
             Messages.showErrorMessage(none.getCode());

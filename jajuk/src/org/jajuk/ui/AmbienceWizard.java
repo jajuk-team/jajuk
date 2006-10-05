@@ -32,6 +32,7 @@ import org.jajuk.dj.AmbienceDigitalDJ;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.qdwizard.Screen;
@@ -168,7 +169,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 group.add(jrbAmbience);
                 jrbAmbience.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        String sAmbienceName = ((JTextField)widgets[getWidgetIndex(widgets,jrbAmbience)][1]).getText();
+                        ((JTextField)widgets[getWidgetIndex(widgets,jrbAmbience)][1]).getText();
                         ambienceIndex = getWidgetIndex(widgets,jrbAmbience);
                     }
                 });
@@ -320,7 +321,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 refreshScreen();
             }
             //in all cases, notify command panel
-            ObservationManager.notify(new Event(EVENT_AMBIENCES_CHANGE));
+            ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_CHANGE));
         }
     }
     
@@ -376,7 +377,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
         AmbienceManager.getInstance().commit();
         ConfigurationManager.commit();
         //Refresh UI
-        ObservationManager.notify(new Event(EVENT_AMBIENCES_CHANGE));
+        ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_CHANGE));
         
     }
 

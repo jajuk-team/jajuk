@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -144,7 +145,7 @@ public class AuthorManager extends ItemManager{
             //if current track author name is changed, notify it
             if (FIFO.getInstance().getCurrentFile() != null 
                     && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(old)){
-                ObservationManager.notify(new Event(EVENT_AUTHOR_CHANGED));
+                ObservationManager.notify(new Event(EventSubject.EVENT_AUTHOR_CHANGED));
             }
             return newItem;
         }

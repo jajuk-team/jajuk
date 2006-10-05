@@ -34,6 +34,7 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -88,11 +89,11 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
         jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$
         jmiNewProperty.addActionListener(JajukListener.getInstance());
-        jmiNewProperty.setActionCommand(EVENT_CREATE_PROPERTY);
+        jmiNewProperty.setActionCommand(EventSubject.EVENT_CREATE_PROPERTY.toString());
         jmiNewProperty.setLayout(new FlowLayout(FlowLayout.LEFT));
         jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.7"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
         jmiDeleteProperty.addActionListener(JajukListener.getInstance());
-        jmiDeleteProperty.setActionCommand(EVENT_DELETE_PROPERTY);
+        jmiDeleteProperty.setActionCommand(EventSubject.EVENT_DELETE_PROPERTY.toString());
         properties.add(jmiNewProperty);
         properties.add(jmiDeleteProperty);
 
@@ -100,7 +101,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
         jmiRestoreDefaultViews = new JMenuItem(Messages.getString("JajukJMenuBar.17"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
         jmiRestoreDefaultViews.addActionListener(JajukListener.getInstance());
-        jmiRestoreDefaultViews.setActionCommand(EVENT_VIEW_RESTORE_DEFAULTS);
+        jmiRestoreDefaultViews.setActionCommand(EventSubject.EVENT_VIEW_RESTORE_DEFAULTS.toString());
         views.add(jmiRestoreDefaultViews);
 
         //Mode menu

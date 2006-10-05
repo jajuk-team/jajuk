@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -82,6 +83,7 @@ import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.ui.action.RefactorAction;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -102,10 +104,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     private static PhysicalTreeView ptv;
     
     /** Files selection*/
-    ArrayList alFiles;
+    ArrayList<File> alFiles;
     
     /** Directories selection*/
-    ArrayList alDirs;
+    ArrayList<Directory> alDirs;
     
     /** Collection export */
     JPopupMenu jmenuCollection;
@@ -190,6 +192,16 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     /** Constructor */
     public PhysicalTreeView(){
         ptv = this;
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+        eventSubjectSet.add(EventSubject.EVENT_CDDB_WIZARD);
+        return eventSubjectSet;
     }
     
     /* (non-Javadoc)
@@ -380,11 +392,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         top = new DefaultMutableTreeNode(Messages.getString("PhysicalTreeView.47")); //$NON-NLS-1$
         //Register on the list for subject we are interrested in
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_DEVICE_MOUNT,this);
-        ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
-        ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-        ObservationManager.register(EVENT_CDDB_WIZARD,this);
+        ObservationManager.register(this);
         
         //fill the tree
         populateTree();
@@ -523,18 +531,18 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 if ( paths == null){ //nothing selected, can be called during dnd
                     return;
                 }
-                HashSet hsSelectedFiles = new HashSet(100);
+                HashSet<Item> hsSelectedFiles = new HashSet<Item>(100);
                 int items = 0;
                 long lSize = 0;
                 //get all components recursively
-                alSelected = new ArrayList(paths.length);
+                alSelected = new ArrayList<Item>(paths.length);
                 for (int i=0;i<paths.length;i++){
                     Object o = paths[i].getLastPathComponent();
                     if (o instanceof TransferableTreeNode){
                         alSelected.add((Item)((TransferableTreeNode)o).getData());
                     }
                     else{
-                        alSelected = new ArrayList(FileManager.getInstance().getFiles());
+                        alSelected = new ArrayList<Item>(FileManager.getInstance().getFiles());
                         items = alSelected.size();
                         hsSelectedFiles.addAll(alSelected);
                         for (Item item:alSelected){
@@ -568,7 +576,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)){ //if table is synchronized with tree, notify the selection change
                     Properties properties = new Properties();
                     properties.put(DETAIL_SELECTION,hsSelectedFiles);
-                    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
+                    ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,properties));
                 }
                 //No CDDB on directories without files
                 if (alSelected.size()>0 && alSelected.get(0) instanceof Directory){
@@ -603,7 +611,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     }
                     else if (o instanceof PlaylistFileNode){  //double clic on a playlist file
                         PlaylistFile plf = ((PlaylistFileNode)o).getPlaylistFile();
-                        ArrayList alFiles = new ArrayList(10); 
+                        ArrayList<File> alFiles = new ArrayList<File>(10); 
                         try{	
                             alFiles = plf.getFiles();
                         }
@@ -631,8 +639,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         jtree.getSelectionModel().setSelectionPath(path);
                     }
                     paths = jtree.getSelectionModel().getSelectionPaths();
-                    getInstance().alFiles = new ArrayList(100);
-                    getInstance().alDirs = new ArrayList(10);
+                    getInstance().alFiles = new ArrayList<File>(100);
+                    getInstance().alDirs = new ArrayList<Directory>(10);
                     //test mix between types ( not allowed )
                     Class c = paths[0].getLastPathComponent().getClass();
                     for (int i=0;i<paths.length;i++){
@@ -805,9 +813,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add directories
-        ArrayList directories = null;
+        ArrayList<Directory> directories = null;
         synchronized (DirectoryManager.getInstance().getLock()) {
-            directories = new ArrayList(DirectoryManager.getInstance().getDirectories());
+            directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
         }
         Iterator it2 = directories.iterator();
         while (it2.hasNext()){
@@ -843,9 +851,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add files
-        ArrayList files = null;
+        ArrayList<File> files = null;
         synchronized (FileManager.getInstance().getLock()) {
-            files = new ArrayList(FileManager.getInstance().getFiles());
+            files = new ArrayList<File>(FileManager.getInstance().getFiles());
         }
         Iterator it3 = files.iterator();
         while (it3.hasNext()){
@@ -860,9 +868,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         
         //add playlist files
-        ArrayList playlists = null;
+        ArrayList<PlaylistFile> playlists = null;
         synchronized (PlaylistFileManager.getInstance().getLock()) {
-            playlists = new ArrayList(PlaylistFileManager.getInstance().getPlaylistFiles());
+            playlists = new ArrayList<PlaylistFile>(PlaylistFileManager.getInstance().getPlaylistFiles());
         }
         Iterator it4 = playlists.iterator();
         while (it4.hasNext()){
@@ -1118,7 +1126,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush 
                 || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
             PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-            ArrayList alFiles = new ArrayList(10); 
+            ArrayList<File> alFiles = new ArrayList<File>(10); 
             try{	
                 alFiles = plf.getFiles();
             }
@@ -1162,7 +1170,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
                 if ( i == JOptionPane.OK_OPTION){
                     PlaylistFileManager.getInstance().removePlaylistFile(plf);
-                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
+                    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));  //requires device refresh
                 }
             }
         }
@@ -1174,7 +1182,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             dw.setVisible(true);
         }
         else if (e.getSource() == jmiFileProperties){
-            ArrayList alTracks = new ArrayList<Item>(alSelected.size()); //tracks items
+            ArrayList<Item> alTracks = new ArrayList<Item>(alSelected.size()); //tracks items
             for (Item pa:alSelected){
                 File file = (File)pa;
                 alTracks.add(file.getTrack());
@@ -1182,7 +1190,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             new PropertiesWizard(alSelected,alTracks);
         }
         else if (e.getSource() == jmiDirProperties){
-            ArrayList<Item> alTracks = new ArrayList(alSelected.size());
+            ArrayList<Item> alTracks = new ArrayList<Item>(alSelected.size());
             for (Item item:alSelected){
                 Directory dir = (Directory)item;
                 for (File file:dir.getFilesRecursively()){
@@ -1196,12 +1204,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if (e.getSource() == jmiDevProperties){
             Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
-            ArrayList alItems = new ArrayList(1);
+            ArrayList<Device> alItems = new ArrayList<Device>(1);
             alItems.add(device);
         }
         else if (e.getSource() == jmiPlaylistFileProperties){
             PlaylistFile plf =  ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-            ArrayList alItems = new ArrayList(1);
+            ArrayList<Item> alItems = new ArrayList<Item>(1);
             alItems.add(plf);
             new PropertiesWizard(alItems);
         }
@@ -1211,13 +1219,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {
-        final String subject = event.getSubject();
-        if ( subject.equals(EVENT_FILE_LAUNCHED)){ //used for current track display refresh
+        final EventSubject subject = event.getSubject();
+        if ( subject.equals(EventSubject.EVENT_FILE_LAUNCHED)){ //used for current track display refresh
             repaint();
         }
-        else if ( subject.equals(EVENT_DEVICE_MOUNT) || 
-                subject.equals(EVENT_DEVICE_UNMOUNT) || 
-                subject.equals(EVENT_DEVICE_REFRESH) ) {
+        else if ( subject.equals(EventSubject.EVENT_DEVICE_MOUNT) || 
+                subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT) || 
+                subject.equals(EventSubject.EVENT_DEVICE_REFRESH) ) {
             SwingWorker sw = new SwingWorker() {
                 public Object  construct(){
                     populateTree();
@@ -1227,7 +1235,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     SwingUtilities.updateComponentTreeUI(jtree);
                     bAutoCollapse = true;
                     //Do not collapse unmounted devices for this event (common), we want to keep unmounted devices expanded
-                    if (subject.equals(EVENT_DEVICE_REFRESH)){
+                    if (subject.equals(EventSubject.EVENT_DEVICE_REFRESH)){
                         expand(false);
                     }
                     else{
@@ -1381,7 +1389,7 @@ class DirectoryNode  extends TransferableTreeNode{
      */
     private static final long serialVersionUID = 1L;
     /**directory -> directoryNode hashmap */
-    public static HashMap hmDirectoryDirectoryNode = new HashMap(100);
+    public static HashMap<Directory, DirectoryNode> hmDirectoryDirectoryNode = new HashMap<Directory, DirectoryNode>(100);
     
     /**
      * Constructor

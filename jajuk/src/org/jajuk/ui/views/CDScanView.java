@@ -37,6 +37,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
@@ -147,7 +148,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 							DeviceManager.getInstance().removeDevice(device);
 							Messages.showErrorMessage("016"); //$NON-NLS-1$
 							//refresh views
-							ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+							ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 						}
 					}
 					return null;

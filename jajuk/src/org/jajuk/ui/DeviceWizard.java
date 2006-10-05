@@ -57,6 +57,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
@@ -103,7 +104,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	Device device;
 	
 	/** All devices expect itself */
-	ArrayList alDevices = new ArrayList(10);
+	ArrayList<Device> alDevices = new ArrayList<Device>(10);
 	
 	/**
 	 * Device wizard by default, is used for void configuration
@@ -410,7 +411,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
 				}
 			}
-			ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			dispose();
 			if (bNew){
 				InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),InformationJPanel.INFORMATIVE);  //$NON-NLS-1$

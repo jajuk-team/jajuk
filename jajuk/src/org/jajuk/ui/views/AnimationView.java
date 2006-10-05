@@ -26,6 +26,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -36,6 +38,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -91,13 +94,19 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		setForeground(Color.BLACK);
 		add(btl1);
 		
-		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-		ObservationManager.register(EVENT_ZERO,this);
+		ObservationManager.register(this);
 		//check if a track has already been lauched
-		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED))); //force immediate table refresh
+		update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED))); //force immediate table refresh
                             
 	}
 	
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        return eventSubjectSet;
+    }
+    
 	/**Set the text to be displayed**/
 	public void setText(final String sText){
 		SwingUtilities.invokeLater(new Runnable() { //this is mandatory to get actual getWitdth
@@ -148,8 +157,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(Event event) {
-		String subject = event.getSubject();
-		if (subject.equals(EVENT_FILE_LAUNCHED)){
+        EventSubject subject = event.getSubject();
+		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)){
 		    File file = FIFO.getInstance().getCurrentFile();
 		    if (file != null){
 		        String s = file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$
@@ -160,7 +169,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		        }
 		    }
 		}
-		else if (subject.equals(EVENT_ZERO)){
+		else if (subject.equals(EventSubject.EVENT_ZERO)){
 		    setText(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
 		}
 	}
@@ -173,7 +182,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); //current  width
-				update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));//force redisplay
+				update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));//force redisplay
 			}
 		});
 		Log.debug("View resized, new width="+iSize); //$NON-NLS-1$

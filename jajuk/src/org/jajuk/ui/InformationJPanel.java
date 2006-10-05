@@ -24,6 +24,8 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -43,6 +45,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -68,7 +71,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            update(new Event(EVENT_HEART_BEAT));
+            update(new Event(EventSubject.EVENT_HEART_BEAT));
         }
     });
     
@@ -158,17 +161,23 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         add(jpCurrent,"4,0"); //$NON-NLS-1$
         
         //check if some track has been lauched before the view has been displayed
-        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+        update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
         //check if some errors occured before the view has been displayed
-        if (ObservationManager.containsEvent(EVENT_PLAY_ERROR)){ 
-            update(new Event(EVENT_PLAY_ERROR,ObservationManager.getDetailsLastOccurence(EVENT_PLAY_ERROR)));
+        if (ObservationManager.containsEvent(EventSubject.EVENT_PLAY_ERROR)){ 
+            update(new Event(EventSubject.EVENT_PLAY_ERROR,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
         }
         //register for given events
-        ObservationManager.register(EVENT_ZERO,this);
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_PLAY_ERROR,this);
+        ObservationManager.register(this);
         //start timer
         timer.start();
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
+        return eventSubjectSet;
     }
     
     /**
@@ -290,9 +299,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public synchronized void update(final Event event) {  //we synchronize this method to make error message is visible all 2 secs
-        final String subject = event.getSubject();
+        final EventSubject subject = event.getSubject();
         //do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
-        if (EVENT_PLAY_ERROR.equals(subject)){ 
+        if (EventSubject.EVENT_PLAY_ERROR.equals(subject)){ 
             try{
                 //reset data
                 setCurrentStatusMessage(Util.formatTimeBySec(0,false)+" / "+Util.formatTimeBySec(0,false)); //$NON-NLS-1$
@@ -320,7 +329,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         else{
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
+                    if (EventSubject.EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
                         long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
                         long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
                         int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition()); 
@@ -329,14 +338,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                         setTotalStatusMessage(sCurrentTotalMessage);
                         setCurrentStatusMessage(Util.formatTimeBySec(lTime,false)+" / "+Util.formatTimeBySec(length,false)); //$NON-NLS-1$);
                     }
-                    else if (EVENT_ZERO.equals(subject)){
+                    else if (EventSubject.EVENT_ZERO.equals(subject)){
                         setCurrentStatusMessage(Util.formatTimeBySec(0,false)+" / "+Util.formatTimeBySec(0,false)); //$NON-NLS-1$
                         setCurrentStatus(0);
                         setTotalStatusMessage("00:00:00");//$NON-NLS-1$
                         setMessage(Messages.getString("JajukWindow.18"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                         setQuality(""); //$NON-NLS-1$
                     }
-                    else if (EVENT_FILE_LAUNCHED.equals(subject)){
+                    else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)){
                         File file = FIFO.getInstance().getCurrentFile();
                         if (file != null){
                             String sMessage = Messages.getString("FIFO.10")+" " +file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$

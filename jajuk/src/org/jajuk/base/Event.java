@@ -22,6 +22,8 @@ package org.jajuk.base;
 
 import java.util.Properties;
 
+import org.jajuk.util.EventSubject;
+
 /**
  *  Jajuk event (Observer pattern)
  *
@@ -33,7 +35,7 @@ public class Event {
 	/**
 	 * Event subject
 	 */
-	private String subject;
+	private EventSubject subject;
 	
 	/**
 	 * Event properties
@@ -46,7 +48,7 @@ public class Event {
 	 * @param sSubject
 	 * @param pDetails
 	 */
-	public Event(String subject,Properties pDetails){
+	public Event(EventSubject subject,Properties pDetails){
 		this.subject = subject;
 		this.pDetails = pDetails;
 	}
@@ -55,7 +57,7 @@ public class Event {
 	 * Event constructor
 	 * @param sSubject
 	 */
-	public Event(String subject){
+	public Event(EventSubject subject){
 		this(subject,null);
 	}
 	
@@ -69,7 +71,7 @@ public class Event {
 	/**
 	 * @return Returns the sSubject.
 	 */
-	public String getSubject() {
+	public EventSubject getSubject() {
 		return subject;
 	}
 	

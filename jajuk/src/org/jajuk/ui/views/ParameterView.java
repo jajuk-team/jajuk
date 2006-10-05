@@ -69,6 +69,7 @@ import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -857,7 +858,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                             return;
                         }
                     }
-                    ObservationManager.notify(new Event(EVENT_CLEAR_HISTORY));
+                    ObservationManager.notify(new Event(EventSubject.EVENT_CLEAR_HISTORY));
                 }
                 else if (e.getSource() == jbResetRatings){
                     //show confirmation message if required
@@ -875,7 +876,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                                 track.setRate(0);
                             }
                         }
-                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
                     }
                     else{
                         Messages.showErrorMessage("120"); //$NON-NLS-1$
@@ -971,7 +972,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         boolean bHiddenState = jcbDisplayUnmounted.isSelected(); 
         if ( bHiddenState != bHidden){ //check if this option changed to launch a refresh if needed
             bHidden = bHiddenState;
-            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
         }
         ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
         ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK,Boolean.toString(jcbDefaultActionClick.isSelected()));
@@ -1066,9 +1067,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());//commit configuration
         ConfigurationManager.commit();
         //notify playlist editor (usefull for novelties)
-        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
+        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
         //Notify tables
-        ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE));
+        ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE));
         
     }
     

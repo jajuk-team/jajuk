@@ -20,192 +20,177 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.JComponent;
-
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
-
 /**
- *  This is a mediator managing relationships between subjets and observers 
- * <p>All notification methods are synchronized to assure event order 
- *  @author     Bertrand Florat
- * @created    12 dec. 2003
+ * This is a mediator managing relationships between subjets and observers
+ * <p>
+ * All notification methods are synchronized to assure event order
+ * 
+ * @author Bertrand Florat
+ * @created 12 dec. 2003
  */
-public class ObservationManager implements ITechnicalStrings{
-	
-	/** one event -> list of components*/
-	static Hashtable<String, ArrayList> hEventComponents = new Hashtable<String, ArrayList>(10);
-	
-	/**Last event for a given subject (used for new objects that just registrated to this subject)*/
-	static HashMap<String, Properties> hLastEventBySubject = new HashMap<String, Properties>(10);
-	
+public class ObservationManager implements ITechnicalStrings {
+
+    /** one event -> list of components */
+    static ObserverRegistry observerRegistry = new ObserverRegistry();
+
+    /** Last event for a given subject (used for new objects that just registrated to this subject) */
+    static HashMap<EventSubject, Properties> hLastEventBySubject = new HashMap<EventSubject, Properties>(
+            10);
+
     static volatile Vector<Event> vFIFO = new Vector<Event>(10);
-    
-    static private Thread t = new Thread(){
-            public void run(){
-                while (true){
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        Log.error(e);
-                    }
-                    if (vFIFO.size()>0){
-                        final Event event  = (Event)vFIFO.get(0);
-                        vFIFO.remove(0);
-                        new Thread(){ //launch action asynchronously
-                            public void run(){
-                                notifySync(event);        
-                            }
-                        }.start();
-                    }
+
+    static private Thread t = new Thread() {
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    Log.error(e);
+                }
+                if (vFIFO.size() > 0) {
+                    final Event event = (Event) vFIFO.get(0);
+                    vFIFO.remove(0);
+                    new Thread() { // launch action asynchronously
+                        public void run() {
+                            notifySync(event);
+                        }
+                    }.start();
                 }
             }
-        };
-    
-    
-    /**
-	 * Register a component for a given subject
-	 * @param subject Subject ( event ) to observe
-	 * @param jc component to register
-	 */
-	public static synchronized  void register(String subject,Object obj){
-		Log.debug("Register: \""+subject+"\" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
-		ArrayList<Object> alComponents = hEventComponents.get(subject);
-		if (alComponents == null){
-			alComponents = new ArrayList<Object>(1);
-			hEventComponents.put(subject,alComponents);
-		}
-		if (!alComponents.contains(obj)){
-            alComponents.add(obj);
         }
-	}
-	
-	/**
-	 * Unregister a component for a given subject
-	 * @param subject Subject ( event ) to observe
-	 * @param jc component to deregister
-	 */
-	public static void unregister(String subject,JComponent jc){
-		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
-		if (alComponents == null){
-			alComponents.remove(jc);
-		}
-	}
-	
-	/**
-	 * Notify all components having registered for the given subject
-	 * @param subject
-	 */
-	public static void notify(Event event){
-		notify(event,false); //asynchronous notification by default to avoid exception throw in the register current thread
-	}
-	
-	/**
-	 * Notify synchronously all components having registered for the given subject
-	 * @param subject
-	 */
-	public static void notifySync(Event event){
-	    String subject = event.getSubject();
-		Log.debug("Notify: "+subject); //$NON-NLS-1$
-	    //save last event
-        hLastEventBySubject.put(subject,event.getDetails());
-		ArrayList<Object> alComponents =(ArrayList)hEventComponents.get(subject);
-	    if (alComponents == null){
-	        return;
-	    }
-	    alComponents = (ArrayList)alComponents.clone(); //try to avoid duplicate key exceptions
-	    Iterator it = alComponents.iterator();  
-	    while (it.hasNext()){
-	        Observer obs = null;
-	        try{
-	            obs = (Observer)it.next();
-	            if (obs != null){
-	                try{
-	                    obs.update(event);
-	                }
-	                catch(Throwable t){
-	                    Log.error(t);
-	                }
-	            }
-	        }
-	        //Concurrent exceptions can occur for unknown reasons 
-	        catch(ConcurrentModificationException ce){
-	            ce.printStackTrace(); 
-	            Log.debug("Concurrent exception for subject: "+subject+ " on observer: "+obs);//$NON-NLS-1$ //$NON-NLS-2$ 
-	        }
-	    }
-	}
-	
+    };
+
+    /**
+     * Register a component for a given subject
+     * 
+     * @param subject
+     *            Subject ( event ) to observe
+     * @param jc
+     *            component to register
+     */
+    public static synchronized void register(Observer observer) {
+        Set<EventSubject> eventSubjectSet = observer.getRegistrationKeys();
+        for (EventSubject subject : eventSubjectSet) {
+            Log.debug("Register: \"" + subject + "\" by: " + observer); //$NON-NLS-1$ //$NON-NLS-2$
+            observerRegistry.register(subject, observer);
+        }
+    }
+
+    /**
+     * Unregister a component for a given subject
+     * 
+     * @param subject
+     *            Subject ( event ) to observe
+     * @param jc
+     *            component to deregister
+     */
+    public static boolean unregister(EventSubject subject, Observer observer) {
+        return observerRegistry.unregister(subject, observer);
+    }
+
+    /**
+     * Notify all components having registered for the given subject
+     * 
+     * @param subject
+     */
+    public static void notify(Event event) {
+        notify(event, false); // asynchronous notification by default to avoid exception throw in
+        // the register current thread
+    }
+
+    /**
+     * Notify synchronously all components having registered for the given subject
+     * 
+     * @param subject
+     */
+    public static void notifySync(Event event) {
+        EventSubject subject = event.getSubject();
+        Log.debug("Notify: " + subject); //$NON-NLS-1$
+        // save last event
+        hLastEventBySubject.put(subject, event.getDetails());
+        observerRegistry.notifySync(event);
+    }
+
     /**
      * Return whether the event already occured at least once
+     * 
      * @param subject
      * @return
      */
-    public static boolean containsEvent(String subject){
+    public static boolean containsEvent(EventSubject subject) {
         return hLastEventBySubject.containsKey(subject);
     }
-	
-	/**
-	 * Notify all components having registered for the given subject asynchronously
-	 * @param subject
-	 * @param whether the notification is synchronous or not
-	 */
-	public static void notify(final Event event, boolean bSync){
-		if (bSync){
-			ObservationManager.notifySync(event);
-		}
-		else{ //do not launch it in a regular thread because AWT event displatcher wait thhread end to display
-		    if (!t.isAlive()){
+
+    /**
+     * Notify all components having registered for the given subject asynchronously
+     * 
+     * @param subject
+     * @param whether
+     *            the notification is synchronous or not
+     */
+    public static void notify(final Event event, boolean bSync) {
+        if (bSync) {
+            ObservationManager.notifySync(event);
+        } else { // do not launch it in a regular thread because AWT event displatcher wait
+            // thhread end to display
+            if (!t.isAlive()) {
                 t.start();
             }
-            vFIFO.add(event); //add event in FIFO fo futur use
+            vFIFO.add(event); // add event in FIFO fo futur use
         }
-	}
-	
-	/**
-	 * Return the details for last event of the given subject, or null if there is no details
-	 * @param sEvent event name
-	 * @param sDetail Detail name
-	 * @return the detail as an object or null if the event or the detail doesn't exist
-	 */
-	public static Object getDetailLastOccurence(String subject,String sDetailName){
-		Properties pDetails = (Properties)hLastEventBySubject.get(subject);
-		if (pDetails != null){
-			return pDetails.get(sDetailName);
-		}
-		return null;
-	}
-	
-	
-	/**
-	 * Return the details for an event, or null if there is no details
-	 * @param sEvent event name
-	 * @param sDetail Detail name
-	 * @return the detail as an object or null if the event or the detail doesn't exist
-	 */
-	public static Object getDetail(Event event,String sDetailName){
-		Properties pDetails = event.getDetails();
-		if (pDetails != null){
-			return pDetails.get(sDetailName);
-		}
-		return null;
-	}
-	/**
-	 * Return the details for an event, or null if there is no details
-	 * @param sEvent event name
-	 * @return the detaisl or null there are not details
-	 */
-	public static Properties getDetailsLastOccurence(String subject){
-		return (Properties)hLastEventBySubject.get(subject);
-	}
-						
+    }
+
+    /**
+     * Return the details for last event of the given subject, or null if there is no details
+     * 
+     * @param sEvent
+     *            event name
+     * @param sDetail
+     *            Detail name
+     * @return the detail as an object or null if the event or the detail doesn't exist
+     */
+    public static Object getDetailLastOccurence(EventSubject subject, String sDetailName) {
+        Properties pDetails = (Properties) hLastEventBySubject.get(subject);
+        if (pDetails != null) {
+            return pDetails.get(sDetailName);
+        }
+        return null;
+    }
+
+    /**
+     * Return the details for an event, or null if there is no details
+     * 
+     * @param sEvent
+     *            event name
+     * @param sDetail
+     *            Detail name
+     * @return the detail as an object or null if the event or the detail doesn't exist
+     */
+    public static Object getDetail(Event event, String sDetailName) {
+        Properties pDetails = event.getDetails();
+        if (pDetails != null) {
+            return pDetails.get(sDetailName);
+        }
+        return null;
+    }
+
+    /**
+     * Return the details for an event, or null if there is no details
+     * 
+     * @param sEvent
+     *            event name
+     * @return the detaisl or null there are not details
+     */
+    public static Properties getDetailsLastOccurence(EventSubject subject) {
+        return (Properties) hLastEventBySubject.get(subject);
+    }
 }

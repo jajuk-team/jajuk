@@ -12,6 +12,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -51,7 +52,7 @@ public class NextTrackAction extends ActionBase {
                 if (Player.isPaused()) {
                     Player.setPaused(false);
                     ObservationManager.notify(new Event(
-                        EVENT_PLAYER_RESUME));  //notify of this event
+                            EventSubject.EVENT_PLAYER_RESUME));  //notify of this event
                 }
             }
         }

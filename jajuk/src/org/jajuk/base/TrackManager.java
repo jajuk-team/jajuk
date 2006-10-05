@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
@@ -104,11 +105,15 @@ public class TrackManager extends ItemManager implements Observer {
         registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER, false, true, true, true,
                 false, Long.class, null));
         // ---subscriptions---
-        ObservationManager.register(EVENT_FILE_NAME_CHANGED, this);
+        ObservationManager.register(this);
         // select comparator
         comparator = new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
     }
 
+    public Set<EventSubject> getRegistrationKeys(){
+        return Collections.singleton(EventSubject.EVENT_FILE_NAME_CHANGED);
+    }
+    
     /**
      * @return singleton
      */
@@ -240,7 +245,7 @@ public class TrackManager extends ItemManager implements Observer {
             if (FIFO.getInstance().getCurrentFile() != null
                     && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(
                             track.getAuthor())) {
-                ObservationManager.notify(new Event(EVENT_AUTHOR_CHANGED));
+                ObservationManager.notify(new Event(EventSubject.EVENT_AUTHOR_CHANGED));
             }
             // register the new item
             Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
@@ -558,8 +563,8 @@ public class TrackManager extends ItemManager implements Observer {
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
     public void update(Event event) {
-        String subject = event.getSubject();
-        if (EVENT_FILE_NAME_CHANGED.equals(subject)) {
+        EventSubject subject = event.getSubject();
+        if (EventSubject.EVENT_FILE_NAME_CHANGED.equals(subject)) {
             Properties properties = event.getDetails();
             File fNew = (File) properties.get(DETAIL_NEW);
             File fileOld = (File) properties.get(DETAIL_OLD);

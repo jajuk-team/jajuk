@@ -26,6 +26,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.JFrame;
@@ -39,6 +41,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -87,8 +90,7 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//register for given events
-		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-		ObservationManager.register(EVENT_ZERO,this);
+		ObservationManager.register(this);
         addWindowListener(new WindowAdapter() {
         
             public void windowDeiconified(WindowEvent arg0) {
@@ -104,9 +106,15 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
         	}
         });
         //display correct title if a track is lauched at startup
-		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+		update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
    }
 	
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        return eventSubjectSet;
+    }    
     
     public void addComponentListener(){
         addComponentListener(new ComponentListener() {
@@ -165,14 +173,14 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(Event event) {
-		String subject = event.getSubject();
-		if (subject.equals(EVENT_FILE_LAUNCHED)){
+        EventSubject subject = event.getSubject();
+		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)){
 			File file = FIFO.getInstance().getCurrentFile();
 			if (file != null){
 				setTitle(file.getTrack().getName());
 			}
 		}
-		else  if (subject.equals(EVENT_ZERO)){
+		else  if (subject.equals(EventSubject.EVENT_ZERO)){
 			setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
 		}
 	}

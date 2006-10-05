@@ -36,6 +36,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -132,10 +133,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
     public void populateModel(String sPropertyName,String sPattern){
         //Filter mounted files if needed and apply sync table with tree option if needed
         boolean bShowWithTree = true;
-        HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+        HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EventSubject.EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
         Set<File> files = FileManager.getInstance().getFiles();
-        ArrayList alToShow = new ArrayList(files.size());
+        ArrayList<File> alToShow = new ArrayList<File>(files.size());
         oItems = new Item[iRowNum];
         Iterator it = files.iterator();
         while ( it.hasNext()){

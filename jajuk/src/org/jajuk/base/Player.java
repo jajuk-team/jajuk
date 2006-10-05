@@ -29,6 +29,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -128,7 +129,7 @@ public class Player implements ITechnicalStrings{
         } catch (final Throwable t) {
             Properties pDetails = new Properties();
             pDetails.put(DETAIL_CURRENT_FILE,file);
-            ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,pDetails)); //notify the error 
             Log.error("007",Messages.getString("Player.0")+fCurrent.getAbsolutePath()+"}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             //process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
@@ -195,7 +196,7 @@ public class Player implements ITechnicalStrings{
             }
             Player.bMute = !Player.bMute;
             //notify UI
-            ObservationManager.notify(new Event(EVENT_MUTE_STATE));
+            ObservationManager.notify(new Event(EventSubject.EVENT_MUTE_STATE));
         } catch (Exception e) {
             Log.error(e); 
         }
@@ -255,7 +256,7 @@ public class Player implements ITechnicalStrings{
                     fVolume = 1.0f;
                 }
                 playerImpl.setVolume(fVolume);
-                ObservationManager.notify(new Event(EVENT_VOLUME_CHANGED));
+                ObservationManager.notify(new Event(EventSubject.EVENT_VOLUME_CHANGED));
             }
         } catch (Exception e) {
             Log.error(e); 

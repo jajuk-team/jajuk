@@ -23,6 +23,8 @@ package org.jajuk.ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
@@ -46,6 +48,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.tray.SystemTray;
@@ -90,7 +93,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            update(new Event(EVENT_HEART_BEAT));
+            update(new Event(EventSubject.EVENT_HEART_BEAT));
         }
     });
     
@@ -219,27 +222,32 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
         //start timer
         timer.start();
         //Register needed events
-        ObservationManager.register(EVENT_ZERO,this);
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_PLAYER_PAUSE,this);
-        ObservationManager.register(EVENT_PLAYER_PLAY,this);
-        ObservationManager.register(EVENT_PLAYER_RESUME,this);
-        ObservationManager.register(EVENT_PLAYER_STOP,this);
-        ObservationManager.register(EVENT_MUTE_STATE,this);
-        ObservationManager.register(EVENT_HEART_BEAT,this);
-        ObservationManager.register(EVENT_VOLUME_CHANGED,this);
-        ObservationManager.register(EVENT_AMBIENCES_CHANGE,this);
-        ObservationManager.register(EVENT_AMBIENCES_SELECTION_CHANGE,this);
+        ObservationManager.register(this);
         
         //check if a file has been already started
         if (FIFO.getInstance().getCurrentFile() == null){
-            update(new Event(EVENT_PLAYER_STOP,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_STOP)));
+            update(new Event(EventSubject.EVENT_PLAYER_STOP,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_STOP)));
         }
         else{
-            update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));    
+            update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));    
         }
     }
     
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_PLAY);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+        eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
+        eventSubjectSet.add(EventSubject.EVENT_HEART_BEAT);
+        eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
+        eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
+        return eventSubjectSet;
+    }    
     
     public JPopupMenu getPopup(){
         return jmenu;
@@ -259,7 +267,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
             Log.error(e2);
         }
         finally{
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
         }
     }
     
@@ -274,8 +282,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
         }
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                String subject = event.getSubject();
-                if (EVENT_FILE_LAUNCHED.equals(subject)){
+                EventSubject subject = event.getSubject();
+                if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)){
                     //remove and re-add listener to make sure not to add it twice
                     jsPosition.removeMouseWheelListener(JajukSystray.this);
                     jsPosition.addMouseWheelListener(JajukSystray.this);
@@ -307,7 +315,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
                     }
                     trayIcon.setToolTip(sOut);
                 }
-                else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
+                else if( EventSubject.EVENT_PLAYER_STOP.equals(subject) || EventSubject.EVENT_ZERO.equals(subject)){
                     trayIcon.setToolTip(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
                     jmiPause.setEnabled(false);
                     jmiStop.setEnabled(false);
@@ -319,7 +327,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
                     jsPosition.setValue(0);
                     jmiNorm.setEnabled(false);
                 }
-                else if ( EVENT_PLAYER_PLAY.equals(subject)){
+                else if ( EventSubject.EVENT_PLAYER_PLAY.equals(subject)){
                     jsPosition.removeMouseWheelListener(JajukSystray.this);
                     jsPosition.addMouseWheelListener(JajukSystray.this);
                     jsPosition.removeChangeListener(JajukSystray.this);
@@ -331,22 +339,22 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
                     jmiPrevious.setEnabled(true);
                     jmiNorm.setEnabled(true);
                 }
-                else if ( EVENT_PLAYER_PAUSE.equals(subject)){
+                else if ( EventSubject.EVENT_PLAYER_PAUSE.equals(subject)){
                     jsPosition.removeMouseWheelListener(JajukSystray.this);
                     jsPosition.removeChangeListener(JajukSystray.this);
                     jsPosition.setEnabled(false);
                 }
-                else if ( EVENT_PLAYER_RESUME.equals(subject)){
+                else if ( EventSubject.EVENT_PLAYER_RESUME.equals(subject)){
                     JajukSystray.super.update(event);
                 }
-                else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
+                else if(EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())){
                     JajukSystray.super.update(event);
                 }
-                else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
+                else if (EventSubject.EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
                     JajukSystray.super.update(event);
                 }
-                else if (EVENT_AMBIENCES_CHANGE.equals(subject) ||
-                        EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)){
+                else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(subject) ||
+                        EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)){
                     Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
                     if (ambience != null){
                         jmAmbience.setText(Messages.getString("JajukWindow.36")+ " "+
@@ -394,7 +402,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
                     ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
                 }
                 jmi.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-                ObservationManager.notify(new Event(EVENT_AMBIENCES_SELECTION_CHANGE));
+                ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
             }
         };
         //Remove all item

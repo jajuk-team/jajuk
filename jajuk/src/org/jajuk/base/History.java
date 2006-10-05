@@ -27,8 +27,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
@@ -36,6 +38,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -73,18 +76,24 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     
     /** Hidden constructor */
     private History() {
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-        ObservationManager.register(EVENT_CLEAR_HISTORY,this);
-        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
-        ObservationManager.register(EVENT_LANGUAGE_CHANGED,this);
+        ObservationManager.register(this);
         //check if something has already started
-        if (ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
-                ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
-            update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+        if (ObservationManager.getDetailLastOccurence(EventSubject.EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
+                ObservationManager.getDetailLastOccurence(EventSubject.EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
+            update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
         }
         //Fill date formater
         formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+        eventSubjectSet.add(EventSubject.EVENT_CLEAR_HISTORY);
+        eventSubjectSet.add(EventSubject.EVENT_FILE_NAME_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_LANGUAGE_CHANGED);
+        return eventSubjectSet;
     }
     
     /**
@@ -331,24 +340,24 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {
-        String subject = event.getSubject();
+        EventSubject subject = event.getSubject();
         try {
-            if (EVENT_FILE_LAUNCHED.equals(subject)){
+            if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)){
                 String sFileID = (String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID);
                 long lDate =( (Long)ObservationManager.getDetail(event,DETAIL_CURRENT_DATE)).longValue();
                 addItem(sFileID,lDate);
             }
-            else if (EVENT_DEVICE_REFRESH.equals(subject)){
+            else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)){
                 cleanup();
             }
-            else if(EVENT_CLEAR_HISTORY.equals(subject)){
+            else if(EventSubject.EVENT_CLEAR_HISTORY.equals(subject)){
                 clear();   
             }
-            else if(EVENT_LANGUAGE_CHANGED.equals(subject)){
+            else if(EventSubject.EVENT_LANGUAGE_CHANGED.equals(subject)){
                 //reset formatter
                 formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));   
             }
-            else if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+            else if (EventSubject.EVENT_FILE_NAME_CHANGED.equals(subject)){
                 Properties properties = event.getDetails();
                 org.jajuk.base.File fileOld = (org.jajuk.base.File)properties.get(DETAIL_OLD);
                 org.jajuk.base.File fNew = (org.jajuk.base.File)properties.get(DETAIL_NEW);

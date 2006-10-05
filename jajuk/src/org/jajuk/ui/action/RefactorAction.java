@@ -37,6 +37,7 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
@@ -71,7 +72,7 @@ public class RefactorAction implements ITechnicalStrings {
 			public void run() {
 				Util.waiting();
 				refactor();
-				ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			}
 		}.start();
 		Util.stopWaiting();

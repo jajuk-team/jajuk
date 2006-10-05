@@ -66,6 +66,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.CannotRenameException;
@@ -234,8 +235,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     }
                     finally{
                         //UI refresh
-                        ObservationManager.notify(new Event(EVENT_TABLE_CLEAR_SELECTION)); //clear tables selection
-                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
+                        ObservationManager.notify(new Event(EventSubject.EVENT_TABLE_CLEAR_SELECTION)); //clear tables selection
+                        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); 
                     }
                 }
             }.start();

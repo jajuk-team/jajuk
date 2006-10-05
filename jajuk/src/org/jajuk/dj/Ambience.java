@@ -31,7 +31,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    18 march 2006
  */
-public class Ambience implements Comparable{
+public class Ambience implements Comparable<Ambience>{
 
     /**List of styles*/
     private HashSet<Style> styles;
@@ -81,7 +81,7 @@ public class Ambience implements Comparable{
      * @param sName Ambience name
      */
     public Ambience(String sID,String sName) {
-        this(sID,sName,new HashSet(10));
+        this(sID,sName,new HashSet<Style>(10));
     }
     
      /**
@@ -160,8 +160,8 @@ public class Ambience implements Comparable{
     /**
      * Compare to method : alphabetical
      */
-    public int compareTo(Object o){
-        return this.getName().compareToIgnoreCase(((Ambience)o).getName());
+    public int compareTo(Ambience ambience){
+        return this.getName().compareToIgnoreCase(ambience.getName());
     }
     
     /**

@@ -27,6 +27,7 @@ import javax.swing.KeyStroke;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -263,7 +264,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
         } catch (Throwable e2) {
             Log.error(e2);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
         }
     }
 

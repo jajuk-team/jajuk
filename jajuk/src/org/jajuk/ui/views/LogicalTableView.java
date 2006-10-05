@@ -33,7 +33,6 @@ import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -53,7 +52,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat 
  * @created 13 dec. 2003
  */
-public class LogicalTableView extends AbstractTableView implements Observer{
+public class LogicalTableView extends AbstractTableView{
     
     private static final long serialVersionUID = 1L;
 
@@ -211,13 +210,13 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         new Thread(){
             public void run(){
                 //computes selected tracks
-                ArrayList alFilesToPlay = new ArrayList(10);
+                ArrayList<File> alFilesToPlay = new ArrayList<File>(10);
                 int[] indexes = jtable.getSelectedRows();
                 ArrayList<Item> alSelectedTracks = new ArrayList<Item>(indexes.length);
                 for (int i=0;i<indexes.length;i++){ //each track in selection
                     Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
                     alSelectedTracks.add(track);
-                    ArrayList alTracks = new ArrayList(indexes.length);
+                    ArrayList<Track> alTracks = new ArrayList<Track>(indexes.length);
                     if (e.getSource() == jmiTrackPlayAlbum){
                         Album album = track.getAlbum();
                         alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album)); //add all tracks from the same album
@@ -276,12 +275,12 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     if (jtable.getSelectedRowCount() == 1){ //mono selection
                         Track track = (Track)model.getItemAt(
                                 jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-                      ArrayList alItems = new ArrayList(1);
+                      ArrayList<Item> alItems = new ArrayList<Item>(1);
                       alItems.add(track);
                       new PropertiesWizard(alItems);
                     }
                     else{//multi selection
-                        ArrayList alTracks = new ArrayList(10);
+                        ArrayList<Item> alTracks = new ArrayList<Item>(10);
                         for (int i=0;i<=jtable.getRowCount();i++){
                             if (jtable.getSelectionModel().isSelectedIndex(i)){
                                 Track track = (Track)model.getItemAt(

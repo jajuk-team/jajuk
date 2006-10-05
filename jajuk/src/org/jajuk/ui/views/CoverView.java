@@ -31,7 +31,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -61,6 +63,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -82,7 +85,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private Directory dirCurrent;
     
     /**List of available covers for the current file*/
-    private ArrayList alCovers = new ArrayList(20);
+    private ArrayList<Cover> alCovers = new ArrayList<Cover>(20);
     
     //control panel
     JPanel jpControl;
@@ -197,10 +200,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.add(Util.getCentredPanel(jlFound,BoxLayout.X_AXIS),"14,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jcbAccuracy,BoxLayout.X_AXIS),"16,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlSearching,BoxLayout.X_AXIS),"18,0");//$NON-NLS-1$
-        ObservationManager.register(EVENT_COVER_REFRESH,this);
-        ObservationManager.register(EVENT_PLAYER_STOP,this);
-        ObservationManager.register(EVENT_ZERO,this);
-        ObservationManager.register(EVENT_COVER_CHANGE,this);
+        ObservationManager.register(this);
         try {
             //instanciate default cover
             if (coverDefault == null){
@@ -223,14 +223,20 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     Log.error(e);
                 }
                 //Request for cover refresh
-                update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));
+                update(new Event(EventSubject.EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
                 
             }
         }.start();
-        
-        
     }
     
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_COVER_REFRESH);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        eventSubjectSet.add(EventSubject.EVENT_COVER_CHANGE);
+        return eventSubjectSet;
+    }    
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
@@ -238,13 +244,13 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     public void update(Event event){
         removeComponentListener(CoverView.this);
         addComponentListener(CoverView.this); //listen for resize
-        String subject = event.getSubject();
+        EventSubject subject = event.getSubject();
         this.iEventID = (int)(Integer.MAX_VALUE*Math.random());
         int iLocalEventID = this.iEventID;
         synchronized(bLock){//block any concurrent cover update
             try{
                 searching(true);
-                if (EVENT_COVER_REFRESH.equals(subject)){
+                if (EventSubject.EVENT_COVER_REFRESH.equals(subject)){
                     org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
                     if (fCurrent == null){
                         this.dirCurrent = null;       
@@ -303,11 +309,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             final String sQuery = createQuery(fCurrent);
                             Log.debug("Query={{"+sQuery+"}}"); //$NON-NLS-1$ //$NON-NLS-2$
                             if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
-                                ArrayList alUrls;
+                                ArrayList<URL> alUrls;
                                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
                                 bOnceConnected = true; //user managed once to connect to the web
                                 if (alUrls.size() > MAX_REMOTE_COVERS){ //limit number of remote covers
-                                    alUrls = new ArrayList(alUrls.subList(0,MAX_REMOTE_COVERS));
+                                    alUrls = new ArrayList<URL>(alUrls.subList(0,MAX_REMOTE_COVERS));
                                 }
                                 Collections.reverse(alUrls); //set best results to be displayed  first
                                 Iterator it2 = alUrls.iterator(); //add found covers 
@@ -365,7 +371,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     setFoundText(); //update found text 
                     displayCurrentCover();
                 }
-                else if ( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
+                else if ( EventSubject.EVENT_PLAYER_STOP.equals(subject) || EventSubject.EVENT_ZERO.equals(subject)){
                     setFoundText("");  //$NON-NLS-1$ 
                     setSizeText("");//$NON-NLS-1$
                     alCovers.clear();
@@ -374,7 +380,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     displayCurrentCover();
                     dirCurrent = null;
                 }
-                else if ( EVENT_COVER_CHANGE.equals(subject)
+                else if ( EventSubject.EVENT_COVER_CHANGE.equals(subject)
                         && isInCurrentPerspective()){
                     index = (int)(Math.random()*alCovers.size()-1); //choose a random cover
                     displayCurrentCover();
@@ -704,7 +710,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
             new Thread(){
                 public void run(){
-                    update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH))); //force refreshing
+                    update(new Event(EventSubject.EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH))); //force refreshing
                 }
             }.start();
         }
@@ -764,7 +770,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 if (index < 0){
                     index = alCovers.size()-1;
                 }
-                ObservationManager.notify(new Event(EVENT_COVER_REFRESH));
+                ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
             }
         }
         else if ( e.getSource() == jbDefault){ //choose a default
@@ -784,7 +790,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         setFoundText();
                     }
                     refreshThumbs(cover);
-                    ObservationManager.notify(new Event(EVENT_COVER_REFRESH));//add new cover in others cover views
+                    ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));//add new cover in others cover views
                     InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                 }
                 catch(Exception ex){
@@ -822,7 +828,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             alCovers.add(cover2);
                             setFoundText();
                         }
-                        ObservationManager.notify(new Event(EVENT_COVER_REFRESH));//add new cover in others cover views
+                        ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));//add new cover in others cover views
                     }
                     catch(Exception ex){
                         Log.error("024",ex); //$NON-NLS-1$
@@ -864,7 +870,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         try {
                             Util.copy(cover.getFile(),fNew);
                             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-                            ObservationManager.notify(new Event(EVENT_COVER_REFRESH));
+                            ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
                         }
                         catch(Exception ex){
                             Log.error("024",ex); //$NON-NLS-1$
@@ -890,7 +896,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB); //$NON-NLS-1$
                 Util.createThumbnail(cover.getFile(),fThumb,(50+50*i));
             }
-            ObservationManager.notify(new Event(EVENT_COVER_DEFAULT_CHANGED));
+            ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));
         }
         catch(Exception ex){
             Log.error("024",ex); //$NON-NLS-1$

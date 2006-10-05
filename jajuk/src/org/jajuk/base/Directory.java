@@ -197,7 +197,7 @@ public class Directory extends Item implements Comparable{
      * return child files from a given file in album included
      * @return child files
      */
-    public ArrayList getFilesFromFile(org.jajuk.base.File fileStart) {
+    public ArrayList<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
         Iterator it = files.iterator();
         ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
         boolean bOK = false;

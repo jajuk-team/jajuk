@@ -35,6 +35,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
@@ -368,7 +369,7 @@ public class PlaylistFile extends Item implements Comparable {
 	        Log.error(e);
 	    }
 	    finally{
-	        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor    
+	        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //refresh playlist editor    
 	    }
 	}
 	
@@ -548,7 +549,7 @@ public class PlaylistFile extends Item implements Comparable {
                         if (PlaylistManager.getInstance().getPlayList(this) != null){
                             PlaylistManager.getInstance().refreshPlaylist(this);
                         }
-                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //refresh repository list (mandatory for logical playlist collapse/merge)
+                        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));  //refresh repository list (mandatory for logical playlist collapse/merge)
 					} catch (IOException e1) {
 						throw new JajukException("028",getName(),e1); //$NON-NLS-1$
 					}

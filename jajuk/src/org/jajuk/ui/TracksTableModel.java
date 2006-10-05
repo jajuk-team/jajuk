@@ -37,6 +37,7 @@ import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 
 /**
@@ -108,10 +109,10 @@ public class TracksTableModel extends JajukTableModel{
     public void populateModel(String sPropertyName,String sPattern){
         //Filter mounted files if needed and apply sync table with tree option if needed
         boolean bShowWithTree = true;
-        HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+        HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EventSubject.EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
         Set<Track> alTracks = TrackManager.getInstance().getTracks();
-        ArrayList alToShow = new ArrayList(alTracks.size());
+        ArrayList<Track> alToShow = new ArrayList<Track>(alTracks.size());
         for (Track track:alTracks){
             bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 
                     && hs.contains(track))); //show it if no sync option or if item is in the selection

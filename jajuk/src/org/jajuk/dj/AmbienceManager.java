@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.jajuk.base.Event;
@@ -37,6 +38,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 
 /**
@@ -48,7 +50,7 @@ import org.jajuk.util.ITechnicalStrings;
 public class AmbienceManager implements ITechnicalStrings,Observer{
 
     /**Ambience id-> ambience*/
-    private HashMap<String,Ambience> ambiences = new HashMap(10);
+    private HashMap<String,Ambience> ambiences = new HashMap<String,Ambience>(10);
     
     /**Self instance*/
     private static AmbienceManager self;
@@ -57,7 +59,13 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
      * No direct constructor
      */
     private AmbienceManager() {
-        ObservationManager.register(EVENT_STYLE_NAME_CHANGED,this);
+        ObservationManager.register(this);
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_STYLE_NAME_CHANGED);
+        return eventSubjectSet;
     }
     
     /**
@@ -85,7 +93,7 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
         while (e.hasMoreElements()){
             String sKey = (String)e.nextElement();
             if (sKey.matches(AMBIENCE_PREFIX+".*")){ //$NON-NLS-1$
-                HashSet<Style> styles = new HashSet(10);
+                HashSet<Style> styles = new HashSet<Style>(10);
                 StringTokenizer st = new StringTokenizer((String)properties.get(sKey),","); //$NON-NLS-1$
                 while (st.hasMoreTokens()){
                     Style style = (Style)StyleManager.getInstance().getItem(st.nextToken());
@@ -162,8 +170,8 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {
-        String subject = event.getSubject();
-        if (EVENT_STYLE_NAME_CHANGED.equals(subject)){
+        EventSubject subject = event.getSubject();
+        if (EventSubject.EVENT_STYLE_NAME_CHANGED.equals(subject)){
             Properties properties = event.getDetails();
             Style old = (Style)properties.get(DETAIL_OLD);
             Style newStyle = (Style)properties.get(DETAIL_NEW);
@@ -214,7 +222,7 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
         //Propagate the event
         Properties properties = new Properties();
         properties.put(DETAIL_CONTENT,sAmbienceID);
-        ObservationManager.notify(new Event(EVENT_AMBIENCE_REMOVED,properties));
+        ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCE_REMOVED,properties));
     }
     
     /**

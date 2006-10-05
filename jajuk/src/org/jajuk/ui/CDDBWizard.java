@@ -52,6 +52,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -110,7 +111,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 
 	FreedbReadResult fdbReader;
 
-	Vector vAlbums;
+	Vector<String> vAlbums;
 
 	int[] aIdxToTag;
 
@@ -324,14 +325,14 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 		setVisible(true);
 	}
 
-	public int performQuery(ArrayList alItems) {
+	public int performQuery(ArrayList<CDDBTrack> alItems) {
 		fdb = new Freedb();
 		CDDBTrack[] alTracks = new CDDBTrack[alItems.size()];
 		alItems.toArray(alTracks);
 		fdbAlbum = new FreedbAlbum(alTracks);
 		try {
 			aResult = fdb.query(fdbAlbum);
-			vAlbums = new Vector(aResult.length);
+			vAlbums = new Vector<String>(aResult.length);
 			Log.debug("CDDB Query return " + aResult.length + " match(es)."); //$NON-NLS-1$ //$NON-NLS-2$
 			int idx = 0;
 			for (int i = 0; i < aResult.length; i++) {
@@ -410,7 +411,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 					.getInstance()
 					.setMessage(
 							Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-			ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			} else {
 				InformationJPanel			
 				.getInstance()

@@ -34,6 +34,7 @@ import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
@@ -206,7 +207,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         refreshCommand((i == 1));
         InformationJPanel.getInstance().setMessage(sFinalMessage,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         //notify views to refresh
-        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
         //cleanup logical items
         TrackManager.getInstance().cleanup();
         StyleManager.getInstance().cleanup();
@@ -667,7 +668,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         //notify views to refresh if needed
         if ( bUIRefresh ){
-            ObservationManager.notify(new Event(EVENT_DEVICE_MOUNT));
+            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
         }
     }
     
@@ -717,7 +718,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         bMounted = false;
         if (bUIRefresh) {
-            ObservationManager.notify(new Event(EVENT_DEVICE_UNMOUNT));
+            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_UNMOUNT));
         }
     }
     

@@ -36,6 +36,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -67,7 +68,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 	public void actionPerformed(final ActionEvent e) {
 		try{
  			//no thread, nothing requires long execution time and a SwingWorker is not adapted
-            if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
+            if (e.getActionCommand().equals(EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED.toString())) {
 			    boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			    ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			    JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
@@ -90,7 +91,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//computes planned tracks
 				FIFO.getInstance().computesPlanned(false);
 			}
-			else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
+			else if (e.getActionCommand().equals(EventSubject.EVENT_SHUFFLE_MODE_STATUS_CHANGED.toString())) {
 				boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
 				ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 				JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
@@ -108,7 +109,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//computes planned tracks
 				FIFO.getInstance().computesPlanned(true);
 			}
-			else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
+			else if (e.getActionCommand().equals(EventSubject.EVENT_CONTINUE_MODE_STATUS_CHANGED.toString())) {
 				boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
@@ -128,7 +129,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//computes planned tracks
 				FIFO.getInstance().computesPlanned(false);
 			}
-			else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
+			else if (e.getActionCommand().equals(EventSubject.EVENT_INTRO_MODE_STATUS_CHANGED.toString())) {
 				boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO)).booleanValue();
 				ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
 				JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
@@ -139,14 +140,14 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 					CommandJPanel.getInstance().jbIntro.setBorder(BorderFactory.createRaisedBevelBorder());
 				}
 			}
-			else if (e.getActionCommand().equals(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST)) {
+			else if (e.getActionCommand().equals(EventSubject.EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST.toString())) {
 				if (((JCheckBoxMenuItem)e.getSource()).isSelected()){  //show view request
-					ViewManager.notify(EVENT_VIEW_SHOW_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
+					ViewManager.notify(EventSubject.EVENT_VIEW_SHOW_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
 				}
 				else{
-					ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
+					ViewManager.notify(EventSubject.EVENT_VIEW_CLOSE_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
 				}
-			}else if (e.getActionCommand().equals(EVENT_VIEW_RESTORE_DEFAULTS)) {
+			}else if (e.getActionCommand().equals(EventSubject.EVENT_VIEW_RESTORE_DEFAULTS.toString())) {
 				//start in a thread to leave dispatcher thread in time
 				new Thread(){
 					public void run() {
@@ -158,34 +159,34 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				}.start();
 				
 			}
-			else if (EVENT_HELP_REQUIRED.equals(e.getActionCommand())){
+			else if (EventSubject.EVENT_HELP_REQUIRED.equals(e.getActionCommand())){
 				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
 			}
-            else if(EVENT_WIZARD.equals(e.getActionCommand())){
+            else if(EventSubject.EVENT_WIZARD.equals(e.getActionCommand())){
                 //First time wizard
                 FirstTimeWizard fsw = new FirstTimeWizard();
                 fsw.pack();
                 fsw.setLocationRelativeTo(Main.getWindow());
                 fsw.setVisible(true);
             }
-            else if(EVENT_CREATE_PROPERTY.equals(e.getActionCommand())){
+            else if(EventSubject.EVENT_CREATE_PROPERTY.equals(e.getActionCommand())){
                 NewPropertyWizard npw = new NewPropertyWizard();
                 npw.pack();
                 npw.setLocationRelativeTo(Main.getWindow());
                 npw.setVisible(true);
             }
-            else if(EVENT_DELETE_PROPERTY.equals(e.getActionCommand())){
+            else if(EventSubject.EVENT_DELETE_PROPERTY.equals(e.getActionCommand())){
                 RemovePropertyWizard rpw = new RemovePropertyWizard();
                 rpw.pack();
                 rpw.setVisible(true);
             }
-            else if(EVENT_QUALITY.equals(e.getActionCommand())){
+            else if(EventSubject.EVENT_QUALITY.equals(e.getActionCommand())){
                 QualityFeedbackWizard qfw =  new QualityFeedbackWizard();
                 qfw.pack();
                 qfw.setLocationRelativeTo(Main.getWindow());
                 qfw.setVisible(true);
             }
-            else if(EVENT_TIP_OF_THE_DAY.equals(e.getActionCommand())) {
+            else if(EventSubject.EVENT_TIP_OF_THE_DAY.equals(e.getActionCommand())) {
                 TipOfTheDay tipsView = new TipOfTheDay();
                 tipsView.setLocationRelativeTo(null);
                 tipsView.setVisible(true);
@@ -195,7 +196,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			Log.error(e2);
 		}
 		finally{
-			ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
+			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
 		}
 	}
 	

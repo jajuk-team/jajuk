@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    22 août 2004
  */
-public class Cover implements Comparable,ITechnicalStrings {
+public class Cover implements Comparable<Cover>,ITechnicalStrings {
 
     public static final int LOCAL_COVER = 0;
     public static final int REMOTE_COVER = 1;
@@ -93,8 +93,7 @@ public class Cover implements Comparable,ITechnicalStrings {
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
-        Cover cOther = (Cover)o;
+    public int compareTo(Cover cOther) {
         //check if the 2 covers are identical
        if (cOther.equals(this)){
             return 0;

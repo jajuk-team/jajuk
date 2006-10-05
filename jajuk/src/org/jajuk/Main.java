@@ -74,6 +74,7 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -649,7 +650,7 @@ public class Main implements ITechnicalStrings {
         Main.iExitCode = iExitCode;
         //force sound to stop quickly
         FIFO.getInstance().stopRequest();  
-        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //alert playlists editors ( queue playlist ) something changed for him
+        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //alert playlists editors ( queue playlist ) something changed for him
         //hide window
         if (jw!=null) jw.setShown(false);
         //hide systray
@@ -782,7 +783,7 @@ public class Main implements ITechnicalStrings {
                             Properties pDetail = new Properties();
                             pDetail.put(DETAIL_CURRENT_FILE,fileToPlay);
                             pDetail.put(DETAIL_REASON,"010");//$NON-NLS-1$
-                            ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetail));
+                            ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,pDetail));
                             FIFO.setFirstFile(false); //no more first file
                         }
                     }

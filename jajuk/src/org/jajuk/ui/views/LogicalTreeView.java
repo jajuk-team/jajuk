@@ -30,11 +30,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -87,6 +89,7 @@ import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -108,7 +111,7 @@ ActionListener, Observer {
     private static LogicalTreeView ltv;
     
     /** Track selection */
-    ArrayList alTracks;
+    ArrayList<Track> alTracks;
     
     JPopupMenu jmenuCollection;
     ButtonGroup btCollection;
@@ -182,6 +185,15 @@ ActionListener, Observer {
         ltv = this;
     }
     
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+        return eventSubjectSet;
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -204,7 +216,7 @@ ActionListener, Observer {
         jcbSort.addItem(Messages.getString("Property_author")); //$NON-NLS-1$
         jcbSort.addItem(Messages.getString("Property_album")); //$NON-NLS-1     //$NON-NLS-1$ //$NON-NLS-1$
         jcbSort.setSelectedIndex(iSortOrder);
-        jcbSort.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        jcbSort.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
         jcbSort.addActionListener(this); 
         jpsort.add(jlSort,"1,0"); //$NON-NLS-1$
         jpsort.add(jcbSort,"3,0"); //$NON-NLS-1$
@@ -216,7 +228,7 @@ ActionListener, Observer {
         jmiCollectionStyle = new JRadioButtonMenuItem(Messages
             .getString("Property_style")); //$NON-NLS-1$
         jmiCollectionStyle.addActionListener(this);
-        jmiCollectionStyle.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        jmiCollectionStyle.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
         if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 0){
             jmiCollectionStyle.setSelected(true);
         }
@@ -224,7 +236,7 @@ ActionListener, Observer {
         jmiCollectionAuthor = new JRadioButtonMenuItem(Messages
             .getString("Property_author")); //$NON-NLS-1$
         jmiCollectionAuthor.addActionListener(this);
-        jmiCollectionAuthor.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        jmiCollectionAuthor.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
         if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 1){
             jmiCollectionAuthor.setSelected(true);
         }
@@ -232,7 +244,7 @@ ActionListener, Observer {
         jmiCollectionAlbum = new JRadioButtonMenuItem(Messages
             .getString("Property_album")); //$NON-NLS-1$
         jmiCollectionAlbum.addActionListener(this);
-        jmiCollectionAlbum.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        jmiCollectionAlbum.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
         if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 2){
             jmiCollectionAlbum.setSelected(true);
         }
@@ -376,10 +388,7 @@ ActionListener, Observer {
             .getString("LogicalTreeView.27")); //$NON-NLS-1$
         
         // Register on the list for subject we are interrested in
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_DEVICE_MOUNT, this);
-        ObservationManager.register(EVENT_DEVICE_UNMOUNT, this);
-        ObservationManager.register(EVENT_DEVICE_REFRESH, this);
+        ObservationManager.register(this);
         // populate the tree
         switch(iSortOrder){
         case 0:
@@ -457,10 +466,10 @@ ActionListener, Observer {
                 if (tpSelected == null) {
                     return;
                 }
-                HashSet hsSelectedTracks = new HashSet(100);
+                HashSet<Track> hsSelectedTracks = new HashSet<Track>(100);
                 int items = 0;
                 // get all components recursively
-                alSelected = new ArrayList(tpSelected.length);
+                alSelected = new ArrayList<Item>(tpSelected.length);
                 for (int i = 0; i < tpSelected.length; i++) {
                     Object o = tpSelected[i].getLastPathComponent();
                     if (o instanceof TransferableTreeNode) {
@@ -468,11 +477,11 @@ ActionListener, Observer {
                             .getData());
                     } else { // collection node
                         synchronized (TrackManager.getInstance().getLock()) {
-                            alSelected = new ArrayList(TrackManager
+                            alSelected = new ArrayList<Item>(TrackManager
                                 .getInstance().getTracks());
                         }
                         items = alSelected.size();
-                        hsSelectedTracks.addAll(alSelected);
+                        hsSelectedTracks.addAll((Collection< ? extends Track>) alSelected);
                         break;
                     }
                     Enumeration e2 = ((DefaultMutableTreeNode) o)
@@ -499,7 +508,7 @@ ActionListener, Observer {
                     // if table is synchronized with tree, notify the selection change
                     Properties properties = new Properties();
                     properties.put(DETAIL_SELECTION, hsSelectedTracks);
-                    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE, properties));
+                    ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE, properties));
                 }
             }
         });
@@ -536,7 +545,7 @@ ActionListener, Observer {
                         jtree.getSelectionModel().setSelectionPath(path);
                     }
                     paths = jtree.getSelectionModel().getSelectionPaths();
-                    getInstance().alTracks = new ArrayList(100);
+                    getInstance().alTracks = new ArrayList<Track>(100);
                     // test mix between types ( not allowed )
                     String sClass = paths[0].getLastPathComponent().getClass()
                     .toString();
@@ -643,7 +652,7 @@ ActionListener, Observer {
         top.removeAllChildren();
         ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList(TrackManager.getInstance().getTracks());
+            tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
         }
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
@@ -716,7 +725,7 @@ ActionListener, Observer {
         top.removeAllChildren();
         ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList(TrackManager.getInstance().getTracks());
+            tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
         }
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
@@ -771,7 +780,7 @@ ActionListener, Observer {
         top.removeAllChildren();
         ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList(TrackManager.getInstance().getTracks());
+            tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
         }
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
@@ -850,14 +859,14 @@ ActionListener, Observer {
         new Thread() {
             public void run() {
                 if (e.getSource() == jmiStyleProperties) {
-                    ArrayList<Item> alTracks = new ArrayList(1000);
+                    ArrayList<Item> alTracks = new ArrayList<Item>(1000);
                     for (Item item : alSelected) {
                         Style style = (Style) item;
                         alTracks.addAll(style.getTracksRecursively());
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAuthorProperties) {
-                    ArrayList<Item> alTracks = new ArrayList(100);
+                    ArrayList<Item> alTracks = new ArrayList<Item>(100);
                     for (Item item : alSelected) {
                         Author author = (Author) item;
                         alTracks.addAll(TrackManager.getInstance()
@@ -865,7 +874,7 @@ ActionListener, Observer {
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAlbumProperties) {
-                    ArrayList<Item> alTracks = new ArrayList(10);
+                    ArrayList<Item> alTracks = new ArrayList<Item>(10);
                     for (Item item : alSelected) {
                         Album album = (Album) item;
                         alTracks.addAll(TrackManager.getInstance()
@@ -873,7 +882,7 @@ ActionListener, Observer {
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiTrackProperties) {
-                    PropertiesWizard p = new PropertiesWizard(alSelected);
+                    new PropertiesWizard(alSelected);
                     //Sorting  
                 } else if (e.getSource() == jmiAlbumCDDBWizard) {
                     ArrayList<Item> alTracks = new ArrayList<Item>(100);
@@ -883,7 +892,7 @@ ActionListener, Observer {
                     }
                     Util.waiting();
                     new CDDBWizard(alTracks);        
-                } else if (e.getActionCommand().equals(EVENT_LOGICAL_TREE_SORT)){
+                } else if (e.getActionCommand().equals(EventSubject.EVENT_LOGICAL_TREE_SORT.toString())){
                     Util.waiting();
                     iSortOrder = 0;
                     if (e.getSource() == jcbSort){
@@ -1061,7 +1070,7 @@ ActionListener, Observer {
                 }                
                 else {
                     // compute selection
-                    ArrayList alFilesToPlay = new ArrayList(alTracks.size());
+                    ArrayList<File> alFilesToPlay = new ArrayList<File>(alTracks.size());
                     Iterator it = alTracks.iterator();
                     while (it.hasNext()) {
                         File file = ((Track) it.next()).getPlayeableFile(false);
@@ -1137,12 +1146,12 @@ ActionListener, Observer {
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {
-        String subject = event.getSubject();
-        if ( subject.equals(EVENT_FILE_LAUNCHED)){ //used for current track display refresh 
+        EventSubject subject = event.getSubject();
+        if ( subject.equals(EventSubject.EVENT_FILE_LAUNCHED)){ //used for current track display refresh 
             repaint();
         }
-        else if (subject.equals(EVENT_DEVICE_MOUNT)
-                || subject.equals(EVENT_DEVICE_UNMOUNT)) {
+        else if (subject.equals(EventSubject.EVENT_DEVICE_MOUNT)
+                || subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT)) {
             SwingWorker sw = new SwingWorker() {
                 public Object construct() {
                     populateTree();
@@ -1157,7 +1166,7 @@ ActionListener, Observer {
                 }
             };
             sw.start();
-        } else if (subject.equals(EVENT_DEVICE_REFRESH)) {
+        } else if (subject.equals(EventSubject.EVENT_DEVICE_REFRESH)) {
             SwingWorker sw = new SwingWorker() {
                 public Object construct() {
                     populateTree();

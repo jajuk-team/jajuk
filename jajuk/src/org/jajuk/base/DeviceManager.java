@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -355,7 +356,7 @@ public class DeviceManager extends ItemManager{
                 //If something changed, refresh device ASAP because scanning next device can take a while
                 if (bNeedUIRefresh){
                     //notify views to refresh
-                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
                 }
             }
             
@@ -367,7 +368,7 @@ public class DeviceManager extends ItemManager{
                 AuthorManager.getInstance().cleanup();
                 PlaylistManager.getInstance().cleanup();
                 //notify views to refresh
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
             }
             //Display end of refresh message with stats
             l = System.currentTimeMillis() -l;

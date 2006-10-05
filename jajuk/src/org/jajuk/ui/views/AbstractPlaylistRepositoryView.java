@@ -26,7 +26,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -38,6 +40,7 @@ import javax.swing.JScrollPane;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
@@ -46,6 +49,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -81,7 +85,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
     PlaylistFileItem plfiNovelties;
     
 	/**List of playlistfile item*/
-	ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList(10);
+	ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList<PlaylistFileItem>(10);
 	
 	/**Concorency flag*/
     boolean bReleased = true;
@@ -171,13 +175,18 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
         jsp.getVerticalScrollBar().setUnitIncrement(60);
         add(jsp);
 		//Register on the list for subject we are interrested in
-		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
-		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
-		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+		ObservationManager.register(this);
 		//set queue playlist as default in playlist editor
 		selectPlaylistFileItem(plfiQueue);	
 	}
-	
+
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
+        eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+        return eventSubjectSet;
+    }    
 	
 	private void selectQueue(){
 	    selectPlaylistFileItem(plfiQueue);
@@ -229,7 +238,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
         Properties properties = new Properties();
         properties.put(DETAIL_ORIGIN,AbstractPlaylistRepositoryView.this);
         properties.put(DETAIL_SELECTION,plfi);
-        ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
+        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_CHANGED,properties));
   }
 	
 	
@@ -252,10 +261,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(final Event event) {
-		String subject = event.getSubject();
-		if ( subject.equals(EVENT_DEVICE_MOUNT) 
-                || subject.equals(EVENT_DEVICE_UNMOUNT) 
-                || subject.equals(EVENT_DEVICE_REFRESH) ) {
+        EventSubject subject = event.getSubject();
+		if ( subject.equals(EventSubject.EVENT_DEVICE_MOUNT) 
+                || subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT) 
+                || subject.equals(EventSubject.EVENT_DEVICE_REFRESH) ) {
             
             SwingWorker sw = new SwingWorker() {
                 public Object  construct(){
@@ -384,7 +393,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		    public void run(){
 		        //Property action is available even for unmounted items
                 if(ae.getSource() == jmiProperties){
-		            ArrayList alItems = new ArrayList(1);
+		            ArrayList<Item> alItems = new ArrayList<Item>(1);
 		            if ( AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView){
 		                alItems.add(plfiSelected.getPlaylistFile());  
 		            }
@@ -397,7 +406,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
                 else{
                     if ( ae.getSource() == jmiDelete){
 		                removeItem(plfiSelected);
-                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		            }
 		            else if(ae.getSource() == jmiPlay){
 		                try{
@@ -411,7 +420,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		                }
 		            }
 		            else if(ae.getSource() == jmiProperties){
-		                ArrayList alItems = new ArrayList(1);
+		                ArrayList<Item> alItems = new ArrayList<Item>(1);
 		                if ( AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView){
 		                    alItems.add(plfiSelected.getPlaylistFile());  
 		                }
@@ -423,7 +432,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		            else if(ae.getSource() == jmiSaveAs){ //save as
 		                try{
 		                    plfiSelected.getPlaylistFile().saveAs();
-                            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
+                            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
                         }
                         
                         catch(JajukException je){
@@ -433,7 +442,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
                         catch(Exception e){
                             Log.error(e);
                         }
-                        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
+                        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		            }
 		        }
 		    }

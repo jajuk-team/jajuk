@@ -206,7 +206,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
         //Start
         String sCommand = "mplayer";
         if (Util.isUnderWindows()){
-            sCommand = FILE_MPLAYER_EXE;
+            sCommand = Util.getMPlayerPath();
         }
         String[] cmd = {sCommand,"-quiet","-slave",file.getAbsolutePath()};
         proc = Runtime.getRuntime().exec(cmd);

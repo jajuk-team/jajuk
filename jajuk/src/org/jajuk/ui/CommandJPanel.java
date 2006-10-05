@@ -46,7 +46,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -88,6 +90,7 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -157,7 +160,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	/** Swing Timer to refresh the component*/
 	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			update(new Event(EVENT_HEART_BEAT));
+			update(new Event(EventSubject.EVENT_HEART_BEAT));
 		}
 	});
     /**Ambience combo listener*/
@@ -172,7 +175,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	            Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)ambiencesCombo.getSelectedItem());    
 	            ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
 	        }
-	        ObservationManager.notify(new Event(EVENT_AMBIENCES_SELECTION_CHANGE));
+	        ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
         }
      };
      /**An instance of the ambience combo listener*/
@@ -341,33 +344,39 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(jbMute,"17,0"); //$NON-NLS-1$
 
 		//register to player events
-		ObservationManager.register(EVENT_PLAYER_PLAY,CommandJPanel.this);
-		ObservationManager.register(EVENT_PLAYER_STOP,CommandJPanel.this);
-		ObservationManager.register(EVENT_PLAYER_PAUSE,CommandJPanel.this);
-		ObservationManager.register(EVENT_PLAYER_RESUME,CommandJPanel.this);
-		ObservationManager.register(EVENT_PLAY_ERROR,CommandJPanel.this);
-		ObservationManager.register(EVENT_SPECIAL_MODE,CommandJPanel.this);
-		ObservationManager.register(EVENT_ZERO,CommandJPanel.this);
-		ObservationManager.register(EVENT_MUTE_STATE,CommandJPanel.this);
-		ObservationManager.register(EVENT_REPEAT_MODE_STATUS_CHANGED,CommandJPanel.this);
-		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_CLEAR_HISTORY,this);
-        ObservationManager.register(EVENT_VOLUME_CHANGED,this);
-        ObservationManager.register(EVENT_DJS_CHANGE,this);
-        ObservationManager.register(EVENT_AMBIENCES_CHANGE,this);
-        ObservationManager.register(EVENT_AMBIENCES_SELECTION_CHANGE,this);
+		ObservationManager.register(CommandJPanel.this);
         
         //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
 			//update initial state
-			update(new Event(EVENT_PLAYER_PLAY,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_PLAY)));
+			update(new Event(EventSubject.EVENT_PLAYER_PLAY,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
 			//check if some track has been lauched before the view has been displayed
-			update(new Event(EVENT_HEART_BEAT));
+			update(new Event(EventSubject.EVENT_HEART_BEAT));
 		}
 		//start timer
 		timer.start();
 	}
 
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_PLAY);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
+        eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
+        eventSubjectSet.add(EventSubject.EVENT_SPECIAL_MODE);
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
+        eventSubjectSet.add(EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_CLEAR_HISTORY);
+        eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_DJS_CHANGE);
+        eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
+        eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
+        return eventSubjectSet;
+    }
+    
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -397,7 +406,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			Log.error(e);
 		}
 		finally{
-			ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
+			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
 		}
 	}
 
@@ -491,8 +500,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	public void update(final Event event) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				String subject = event.getSubject();
-				if(EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
+                EventSubject subject = event.getSubject();
+				if(EventSubject.EVENT_PLAYER_STOP.equals(subject) || EventSubject.EVENT_ZERO.equals(subject)){
                     ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
                     ActionManager.getAction(NEXT_TRACK).setEnabled(false);
                     ActionManager.getAction(REWIND_TRACK).setEnabled(false);
@@ -509,7 +518,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jsPosition.setValue(0);//use set value, not setPosition that would cause a seek that could fail with some formats
 			        ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
-				else if (EVENT_PLAYER_PLAY.equals(subject)){
+				else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)){
                     //remove and re-add listener to make sure not to add it twice
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
                     jsPosition.addMouseWheelListener(CommandJPanel.this);
@@ -527,7 +536,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
                     jsPosition.setEnabled(true);
 				}
-				else if (EVENT_PLAYER_PAUSE.equals(subject)){
+				else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)){
                     ActionManager.getAction(REWIND_TRACK).setEnabled(false);
                     ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
                     ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PLAY));
@@ -535,7 +544,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jsPosition.removeMouseWheelListener(CommandJPanel.this);
                     jsPosition.removeChangeListener(CommandJPanel.this);
             	}
-				else if (EVENT_PLAYER_RESUME.equals(subject)){
+				else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)){
                     //remove and re-add listener to make sure not to add it twice
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
                     jsPosition.addMouseWheelListener(CommandJPanel.this);
@@ -546,7 +555,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
 					jsPosition.setEnabled(true);
              	}
-				else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
+				else if (EventSubject.EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
 					 //if position is adjusting, no dont disturb user
                     if (jsPosition.getValueIsAdjusting() || Player.isSeeking()){
                         return;
@@ -561,7 +570,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jsPosition.setValue(iPos);
                     jsPosition.addChangeListener(CommandJPanel.this);
 				}
-				else if(EVENT_SPECIAL_MODE.equals(subject)){
+				else if(EventSubject.EVENT_SPECIAL_MODE.equals(subject)){
 				    if (ObservationManager.getDetail(event,DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)){
 						// deselect shuffle mode
 						ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, FALSE);
@@ -571,7 +580,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						FIFO.getInstance().computesPlanned(true);
 					}
 				}
-				else if(EVENT_REPEAT_MODE_STATUS_CHANGED.equals(subject)){
+				else if(EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED.equals(subject)){
 					if (ObservationManager.getDetail(event,DETAIL_SELECTION).equals(FALSE)){
 						//    deselect repeat mode
 						ConfigurationManager.setProperty(CONF_STATE_REPEAT, FALSE);
@@ -579,7 +588,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						CommandJPanel.getInstance().jbRepeat.setSelected(false);
 					}
 				}
-                else if (EVENT_FILE_LAUNCHED.equals(subject)){
+                else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)){
                     //Remove history listener, otherwise u get a recursive event generation
                     jcbHistory.removeActionListener(CommandJPanel.this);
                     if (jcbHistory.getItemCount() > 0){
@@ -587,16 +596,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     }
                     jcbHistory.addActionListener(CommandJPanel.this);
                 }
-                else if(EVENT_CLEAR_HISTORY.equals(event.getSubject())){
+                else if(EventSubject.EVENT_CLEAR_HISTORY.equals(event.getSubject())){
                   jcbHistory.setSelectedItem(null); //clear selection bar (data itself is clear from the model by History class)
                 }
-                else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
+                else if(EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())){
                     jsVolume.removeChangeListener(CommandJPanel.this);
                     jsVolume.setValue((int)(100*Player.getCurrentVolume()));
                     jsVolume.addChangeListener(CommandJPanel.this);
                     jbMute.setSelected(false);
                 }
-                else if(EVENT_DJS_CHANGE.equals(event.getSubject())){
+                else if(EventSubject.EVENT_DJS_CHANGE.equals(event.getSubject())){
                     populateDJs();
                     //If no more DJ, chnage the tooltip
                     if (DigitalDJManager.getInstance().getDJs().size() == 0){
@@ -604,8 +613,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         action.setShortDescription(Messages.getString("CommandJPanel.18")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
                 }
-                else if(EVENT_AMBIENCES_CHANGE.equals(event.getSubject())
-                        || EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())){
+                else if(EventSubject.EVENT_AMBIENCES_CHANGE.equals(event.getSubject())
+                        || EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())){
                     populateAmbiences();
                     updateTooltips();
                 }

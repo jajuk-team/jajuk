@@ -25,7 +25,9 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Graphics;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -41,6 +43,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.browser.WebBrowser;
@@ -151,23 +154,28 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         add(browser,"0,2"); //$NON-NLS-1$
         
         //subscriptions to events
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_ZERO,this);
-        ObservationManager.register(EVENT_AUTHOR_CHANGED,this);
+        ObservationManager.register(this);
     
         //force event
-        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));        
+        update(new Event(EventSubject.EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));        
     }
 	
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_ZERO);
+        eventSubjectSet.add(EventSubject.EVENT_AUTHOR_CHANGED);
+        return eventSubjectSet;
+    }    
 		
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(Event event) {
-		String subject = event.getSubject();
+        EventSubject subject = event.getSubject();
 		//Make a search after a stop period
-        if (subject.equals(EVENT_FILE_LAUNCHED) && FIFO.getInstance().getCurrentFile() != null){
-            Properties details = ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED);
+        if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED) && FIFO.getInstance().getCurrentFile() != null){
+            Properties details = ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED);
             String search = FIFO.getInstance().
                     getCurrentFile().getTrack().getAuthor().getName2();
             if (details != null && !search.equals(this.search)){ //a file has been laucnh before view creation
@@ -176,13 +184,13 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
             }
         }
         //Reset the page when stopping
-		else if (subject.equals(EVENT_ZERO)){
+		else if (subject.equals(EventSubject.EVENT_ZERO)){
             this.search = ""; //reset //$NON-NLS-1$
             launchSearch(search);
 		}
         //User changed author name, so we have to reload new author wikipedia page
-        else if (subject.equals(EVENT_AUTHOR_CHANGED)){
-            update( new Event(EVENT_FILE_LAUNCHED));
+        else if (subject.equals(EventSubject.EVENT_AUTHOR_CHANGED)){
+            update( new Event(EventSubject.EVENT_FILE_LAUNCHED));
         }
 	}
    

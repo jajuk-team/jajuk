@@ -26,6 +26,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -221,8 +222,8 @@ public class PlaylistFileManager extends ItemManager implements Observer{
      */
     public void update(Event event) {
         synchronized(getLock()){
-            String subject = event.getSubject();
-            if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+            EventSubject subject = event.getSubject();
+            if (EventSubject.EVENT_FILE_NAME_CHANGED.equals(subject)){
                 Properties properties = event.getDetails();
                 File fNew = (File)properties.get(DETAIL_NEW);
                 File fileOld = (File)properties.get(DETAIL_OLD);
@@ -242,9 +243,15 @@ public class PlaylistFileManager extends ItemManager implements Observer{
                     }
                 }
                 //refresh UI
-                ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
+                ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
             }
         }
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_FILE_NAME_CHANGED);
+        return eventSubjectSet;
     }
     
     public Set<PlaylistFile> getPlaylistFiles(){

@@ -117,8 +117,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
      * @return list of visible columns names as string
      * @param Name of the configuration key giving configuration
      */
-    public ArrayList getColumnsConf(){
-        ArrayList alOut = new ArrayList(10);
+    public ArrayList<String> getColumnsConf(){
+        ArrayList<String> alOut = new ArrayList<String>(10);
         String value = ConfigurationManager.getProperty(sConf);
         StringTokenizer st = new StringTokenizer(value,","); //$NON-NLS-1$
         while (st.hasMoreTokens()){

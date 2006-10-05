@@ -30,9 +30,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
@@ -77,6 +79,7 @@ import org.jajuk.ui.PlaylistEditorTransferHandler;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -119,10 +122,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     int iType;
     
     /**Values*/
-    ArrayList<StackItem> alItems = new ArrayList(10);
+    ArrayList<StackItem> alItems = new ArrayList<StackItem>(10);
     
     /**Values planned*/
-    ArrayList<StackItem> alPlanned = new ArrayList(10);
+    ArrayList<StackItem> alPlanned = new ArrayList<StackItem>(10);
     
     /**Selection set flag*/
     boolean bSettingSelection = false;
@@ -453,17 +456,23 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jmenuFile.add(jmiFileAddFavorites);
         jmenuFile.add(jmiFileProperties);
         //register events
-        ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
-        ObservationManager.register(EVENT_PLAYER_STOP,this);
-        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        ObservationManager.register(EVENT_PLAYLIST_CHANGED,this);
+        ObservationManager.register(this);
         //DND
         //force a refresh
-        update(new Event(EVENT_PLAYLIST_CHANGED,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_CHANGED)));
-        update(new Event(EVENT_PLAYLIST_REFRESH)); //force first refresh
+        update(new Event(EventSubject.EVENT_PLAYLIST_CHANGED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_CHANGED)));
+        update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //force first refresh
         //refresh columns if new property
-        ObservationManager.register(EVENT_CUSTOM_PROPERTIES_ADD,this);
-        ObservationManager.register(EVENT_CUSTOM_PROPERTIES_REMOVE,this);
+    }
+    
+    public Set<EventSubject> getRegistrationKeys(){
+        HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+        eventSubjectSet.add(EventSubject.EVENT_PLAYLIST_REFRESH);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+        eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYLIST_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
+        eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
+        return eventSubjectSet;
     }
     
     /* (non-Javadoc)
@@ -519,18 +528,18 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         SwingUtilities.invokeLater(new Runnable() {
             public synchronized void run() { //NEED TO SYNC to avoid out out bound exceptions
                 try{
-                    String subject = event.getSubject();
+                    EventSubject subject = event.getSubject();
                     bReloading = true; //flag reloading to avoid wrong column events
                     Object origin = ObservationManager.getDetail(event,DETAIL_ORIGIN);
                     //changed of playlist
-                    if (EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
+                    if (EventSubject.EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
                         //test mapping between editor and repository, to be refactored
                         if ((AbstractPlaylistEditorView.this instanceof PhysicalPlaylistEditorView && !(origin instanceof PhysicalPlaylistRepositoryView))
                                 || (AbstractPlaylistEditorView.this instanceof LogicalPlaylistEditorView && !(origin instanceof LogicalPlaylistRepositoryView))){
                             return;
                         }
                         //clear planned
-                        alPlanned = new ArrayList(0);  //make sure planned is voided if not in Queue
+                        alPlanned = new ArrayList<StackItem>(0);  //make sure planned is voided if not in Queue
                         jtable.getSelectionModel().clearSelection(); //remove selection 
                         PlaylistFileItem plfi = (PlaylistFileItem)ObservationManager.getDetail(event,DETAIL_SELECTION);
                         AbstractPlaylistEditorView.this.iType = plfi.getType();
@@ -539,11 +548,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         jlTitle.setText(plfi.getName());
                         jlTitle.setToolTipText(plfi.getName());
                         setDefaultButtonState();
-                        update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force refresh
+                        update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); //force refresh
                         Util.stopWaiting(); //stop waiting
                     }
                     //current playlist has changed
-                    else if ( EVENT_PLAYLIST_REFRESH.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
+                    else if ( EventSubject.EVENT_PLAYLIST_REFRESH.equals(subject) || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)){
                         if ( plfi == null ){  //nothing ? leave
                             return;
                         }
@@ -573,13 +582,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         bSettingSelection = false;
                         jtable.packTable(5);
                     }
-                    else if ( EVENT_PLAYER_STOP.equals(subject) 
+                    else if ( EventSubject.EVENT_PLAYER_STOP.equals(subject) 
                             && plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){
                         alItems.clear();
                         alPlanned.clear();
-                        update(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
+                        update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
                     }
-                    else if (EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
+                    else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
                         Properties properties = event.getDetails();
                         if (properties == null){ //can be null at view populate
                             return;
@@ -590,7 +599,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         jtable.addColumnIntoConf((String)properties.get(DETAIL_CONTENT));
                         jtable.showColumns(jtable.getColumnsConf());
                     }
-                    else if (EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
+                    else if (EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
                         Properties properties = event.getDetails();
                         if (properties == null){ //can be null at view populate
                             return;
@@ -737,9 +746,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      * @param index
      * @return an arraylist of stackitems or null if index is out of bounds
      */
-    private ArrayList getItemsFrom(int index){
+    private ArrayList<StackItem> getItemsFrom(int index){
         if (index < alItems.size()){
-            return new ArrayList(alItems.subList(index,alItems.size()));
+            return new ArrayList<StackItem>(alItems.subList(index,alItems.size()));
         }
         else{
             return null;
@@ -804,7 +813,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 else{  //special playlist, same behavior than a save as
                     plfi.getPlaylistFile().saveAs();
                 }
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
+                ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
             }
             else if (ae.getSource() == jbClear){
                 plfi.getPlaylistFile().clear();
@@ -818,14 +827,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     if ( ae.getSource() == jbDown){
                         plfi.getPlaylistFile().down(iRow);
                         if (iRow < jtable.getModel().getRowCount() -1){
-                            update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force immediate table refresh
+                            update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); //force immediate table refresh
                             jtable.getSelectionModel().setSelectionInterval(iRow+1,iRow+1);
                         }
                     }
                     else if ( ae.getSource() == jbUp){
                         plfi.getPlaylistFile().up(iRow);
                         if (iRow > 0){
-                            update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force immediate table refresh
+                            update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); //force immediate table refresh
                             jtable.getSelectionModel().setSelectionInterval(iRow-1,iRow-1);
                         }
                     }
@@ -867,7 +876,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             else if ( ae.getSource() == jmiFilePlay ||  ( ae.getSource() == jmiFilePush)){
                 //computes selected items
-                ArrayList alItemsToPlay = new ArrayList(jtable.getSelectedRowCount());
+                ArrayList<StackItem> alItemsToPlay = new ArrayList<StackItem>(jtable.getSelectedRowCount());
                 int[] indexes = jtable.getSelectedRows();
                 for (int i=0;i<indexes.length;i++){
                     alItemsToPlay.add(getItem(indexes[i]));
@@ -876,12 +885,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             else if ( ae.getSource() == jmiFileAddFavorites ){
                 //computes selected items
-                ArrayList alItemsToPlay = new ArrayList(jtable.getSelectedRowCount());
+                ArrayList<StackItem> alItemsToPlay = new ArrayList<StackItem>(jtable.getSelectedRowCount());
                 int[] indexes = jtable.getSelectedRows();
                 for (int i=0;i<indexes.length;i++){
                     alItemsToPlay.add(getItem(indexes[i]));
                 }                
-                ArrayList alFiles = new ArrayList(alItemsToPlay.size());
+                ArrayList<File> alFiles = new ArrayList<File>(alItemsToPlay.size());
                 Iterator it = alItemsToPlay.iterator();
                 while (it.hasNext()){
                     alFiles.add(((StackItem)it.next()).getFile());
@@ -889,8 +898,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 Bookmarks.getInstance().addFiles(alFiles);
             }
             else if ( ae.getSource() == jmiFileProperties ){
-                ArrayList alItems1 = new ArrayList<Item>(1); //file items
-                ArrayList alItems2 = new ArrayList<Item>(1); //tracks items
+                ArrayList<Item> alItems1 = new ArrayList<Item>(1); //file items
+                ArrayList<Item> alItems2 = new ArrayList<Item>(1); //tracks items
                 if (jtable.getSelectedRowCount() == 1){ //mono selection
                     File file = (File)model.getItemAt(
                         jtable.convertRowIndexToModel(jtable.getSelectedRow()));
@@ -915,7 +924,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             Log.error(e2);
         }
         finally{
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
         }
     }
     

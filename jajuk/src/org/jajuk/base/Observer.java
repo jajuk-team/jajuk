@@ -20,6 +20,10 @@
 
 package org.jajuk.base;
 
+import java.util.Set;
+
+import org.jajuk.util.EventSubject;
+
 /**
  *  GoF Observer pattern Observer 
  * @author     Bertrand Florat
@@ -33,4 +37,5 @@ public interface Observer {
 	 */
 	public void update(Event event);
 	
+    public Set<EventSubject> getRegistrationKeys();
 }

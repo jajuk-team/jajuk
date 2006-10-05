@@ -14,6 +14,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
@@ -41,6 +42,6 @@ public class FinishAlbumAction extends ActionBase {
         FIFO.getInstance().computesPlanned(true); //update planned list
         Properties properties = new Properties();
         properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
-        ObservationManager.notify(new Event(EVENT_SPECIAL_MODE, properties));
+        ObservationManager.notify(new Event(EventSubject.EVENT_SPECIAL_MODE, properties));
     }
 }

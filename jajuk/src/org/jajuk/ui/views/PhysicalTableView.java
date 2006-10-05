@@ -33,7 +33,6 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FilesTableModel;
@@ -51,7 +50,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat 
  * @created 13 dec. 2003
  */
-public class PhysicalTableView extends AbstractTableView implements Observer, MouseListener{
+public class PhysicalTableView extends AbstractTableView implements MouseListener{
     
     private static final long serialVersionUID = 1L;
 
@@ -201,13 +200,13 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         new Thread(){
             public void run(){
                 //computes selected files
-                ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
+                ArrayList<File> alFilesToPlay = new ArrayList<File>(jtable.getSelectedRowCount());
                 ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable.getSelectedRowCount());
                 int[] indexes = jtable.getSelectedRows();
                 for (int i=0;i<indexes.length;i++){ //each selected track
                     File file = (File)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
                     alSelectedFiles.add(file);
-                    ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
+                    ArrayList<File> alFilesToPlay2 = new ArrayList<File>(indexes.length);
                     if (e.getSource() == jmiFilePlayDirectory){
                         alFilesToPlay2.addAll(FileManager.getInstance().getAllDirectory(file));   
                     }
@@ -254,8 +253,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 }
                 //properties
                 else if ( e.getSource() == jmiProperties){
-                    ArrayList alItems1 = new ArrayList<Item>(1); //file items
-                    ArrayList alItems2 = new ArrayList<Item>(1); //tracks items
+                    ArrayList<Item> alItems1 = new ArrayList<Item>(1); //file items
+                    ArrayList<Item> alItems2 = new ArrayList<Item>(1); //tracks items
                     if (jtable.getSelectedRowCount() == 1){ //mono selection
                         File file = (File)model.getItemAt(
                                 jtable.convertRowIndexToModel(jtable.getSelectedRow()));

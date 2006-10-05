@@ -11,6 +11,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.log.Log;
 
 /**
@@ -41,7 +42,7 @@ public class PreviousAlbumAction extends ActionBase {
             }.start();
             if (Player.isPaused()) {  //player was paused, reset pause button when changing of track
                 Player.setPaused(false);
-                ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
+                ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));  //notify of this event
             }
         }
     }

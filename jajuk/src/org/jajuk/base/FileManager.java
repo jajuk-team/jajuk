@@ -32,6 +32,7 @@ import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.CannotRenameException;
@@ -211,7 +212,7 @@ public class FileManager extends ItemManager implements Observer {
             // change directory reference
             dir.changeFile(fileOld, fNew);
             // Notify interested items (like history manager)
-            ObservationManager.notifySync(new Event(EVENT_FILE_NAME_CHANGED, properties));
+            ObservationManager.notifySync(new Event(EventSubject.EVENT_FILE_NAME_CHANGED, properties));
             return fNew;
         }
     }
@@ -598,7 +599,7 @@ public class FileManager extends ItemManager implements Observer {
      * @param file
      * @return All files in the same directory than the given one
      */
-    public ArrayList getAllDirectory(File file) {
+    public ArrayList<File> getAllDirectory(File file) {
         synchronized (getLock()) {
             if (file == null) {
                 return null;
@@ -691,7 +692,7 @@ public class FileManager extends ItemManager implements Observer {
     public void setRateHasChanged(boolean rateHasChanged) {
         bRateHasChanged = rateHasChanged;
         if (bRateHasChanged) {
-            ObservationManager.notify(new Event(EVENT_RATE_CHANGED));// refresh to update rates
+            ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));// refresh to update rates
         }
     }
 
@@ -712,6 +713,10 @@ public class FileManager extends ItemManager implements Observer {
     public void update(Event event) {
     }
 
+    public Set<EventSubject> getRegistrationKeys(){
+        return new HashSet<EventSubject>();
+    }
+    
     public Set<File> getFiles() {
         Set<File> fileSet = new HashSet<File>();
         for (Item item : getItems()) {

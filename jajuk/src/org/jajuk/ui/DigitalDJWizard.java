@@ -46,6 +46,7 @@ import org.jajuk.dj.Transition;
 import org.jajuk.dj.TransitionDigitalDJ;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -1389,6 +1390,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             DigitalDJManager.commit(dj);
         }
         //Refresh command panel (usefull for ie if DJ names changed)
-        ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
+        ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
     }
 }
