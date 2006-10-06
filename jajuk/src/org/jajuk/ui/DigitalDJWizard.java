@@ -1325,7 +1325,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         }
         else if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
             String sType = (String)data.get(KEY_DJ_TYPE);
-            dj = null;
             String sName = (String)data.get(KEY_DJ_NAME);
             //create a unique ID for this DJ, simply use current time in ms
             String sID = Long.toString(System.currentTimeMillis());

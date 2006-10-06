@@ -145,7 +145,7 @@ public class DownloadManager implements ITechnicalStrings {
         GetMethod get = null;
         HttpClient client = null;
         int iConTO = 2000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
-        int iTraTO =  20000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
+        int iTraTO =  2000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
         if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
             client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),iConTO,iTraTO);
         }

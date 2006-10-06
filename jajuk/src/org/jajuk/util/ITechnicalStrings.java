@@ -98,7 +98,8 @@ public interface ITechnicalStrings {
     /** Number of milliseconds in a day */
     public static final int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND
         * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR * HOURS_IN_A_DAY;
-
+    /**Mplayer windows exe size in bytes*/
+    public static final long MPLAYER_EXE_SIZE =  3284992l;
     
     // Jajuk version
     public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
@@ -240,6 +241,8 @@ public interface ITechnicalStrings {
     public static final URL ICON_TYPE_FLAC = Util.getResource("org/jajuk/icons/16x16/type_flac.png");
     public static final URL ICON_TYPE_MPC = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
     public static final URL ICON_TYPE_WMA = Util.getResource("org/jajuk/icons/16x16/type_wma.png");
+    public static final URL ICON_TYPE_APE = Util.getResource("org/jajuk/icons/16x16/type_ape.png");
+    public static final URL ICON_TYPE_AAC = Util.getResource("org/jajuk/icons/16x16/type_aac.png");
     public static final URL ICON_TYPE_WAV = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
     public static final URL ICON_NO_EDIT = Util.getResource("org/jajuk/icons/16x16/stop.png");
     public static final URL ICON_EDIT = Util.getResource("org/jajuk/icons/16x16/edit.png");
@@ -349,6 +352,8 @@ public interface ITechnicalStrings {
     public static final String TYPE_PROPERTY_TECH_DESC_FLAC = "flac"; 
     public static final String TYPE_PROPERTY_TECH_DESC_MPC = "mpc";
     public static final String TYPE_PROPERTY_TECH_DESC_WMA = "wma";
+    public static final String TYPE_PROPERTY_TECH_DESC_APE = "ape";
+    public static final String TYPE_PROPERTY_TECH_DESC_AAC = "aac";
         
     //Devices sync mode
     public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
@@ -395,6 +400,8 @@ public interface ITechnicalStrings {
     public static final String EXT_THUMB = "jpg";
     public static final String EXT_MPC = "mpc";
     public static final String EXT_WMA = "wma";
+    public static final String EXT_APE = "ape";
+    public static final String EXT_AAC = "aac";
             
     //details keys
     public static final String DETAIL_CURRENT_FILE_ID="current file id";
