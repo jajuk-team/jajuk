@@ -481,7 +481,9 @@ ActionListener, Observer {
                                 .getInstance().getTracks());
                         }
                         items = alSelected.size();
-                        hsSelectedTracks.addAll((Collection< ? extends Track>) alSelected);
+                        for (Item item:alSelected){
+                            hsSelectedTracks.add((Track)item);
+                        }
                         break;
                     }
                     Enumeration e2 = ((DefaultMutableTreeNode) o)
@@ -713,9 +715,9 @@ ActionListener, Observer {
                     authorNode.add(albumNode);
                 }
                 // create track
+                assert albumNode != null;
                 albumNode.add(new TrackNode(track));
             }
-            
         }
     }
     
