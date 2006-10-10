@@ -23,6 +23,7 @@ package org.jajuk.dj;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -117,7 +118,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
            }
         }
         //shuffle selection
-        Collections.shuffle(out);
+        Collections.shuffle(out,new Random(System.currentTimeMillis()));
         return out;
     }
     

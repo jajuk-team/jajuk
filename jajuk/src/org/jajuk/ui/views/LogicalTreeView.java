@@ -35,6 +35,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -1104,7 +1105,7 @@ ActionListener, Observer {
                     } else if ((e.getSource() == jmiAlbumPlayShuffle
                             || e.getSource() == jmiAuthorPlayShuffle || e
                             .getSource() == jmiStylePlayShuffle)) {
-                        Collections.shuffle(alFilesToPlay);
+                        Collections.shuffle(alFilesToPlay,new Random(System.currentTimeMillis()));
                         FIFO.getInstance().push(
                             Util.createStackItems(alFilesToPlay,
                                 ConfigurationManager

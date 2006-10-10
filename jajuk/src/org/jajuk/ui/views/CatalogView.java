@@ -44,6 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -855,7 +856,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 }
             }
             if (bShuffle) {
-                Collections.shuffle(alFilesToPlay);
+                Collections.shuffle(alFilesToPlay,new Random(System.currentTimeMillis()));
             }
             FIFO.getInstance().push(Util.createStackItems(alFilesToPlay, bRepeat, true), bPush);
         }

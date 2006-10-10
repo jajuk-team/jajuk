@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -863,7 +864,7 @@ public class Main implements ITechnicalStrings {
             else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
                 alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
                 if (alToPlay != null && alToPlay.size() > 0){
-                    Collections.shuffle(alToPlay);//shuffle the selection
+                    Collections.shuffle(alToPlay,new Random(System.currentTimeMillis()));//shuffle the selection
                 }
             }
             //launch selected file

@@ -127,8 +127,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     JMenuItem jmiShuffleModeAlbum;
     JPopupMenu popupGlobalRandom;
     JButton jbBestof;
-	JButton jbNovelties;
-	JButton jbNorm;
+	DropDownButton jbNovelties;
+	JPopupMenu popupNovelties;
+    JMenuItem jmiNoveltiesModeSong;
+    JMenuItem jmiNoveltiesModeAlbum;
+    JButton jbNorm;
     DropDownButton ddbDDJ;
     JPopupMenu popupDDJ;
 	SteppedComboBox ambiencesCombo;
@@ -304,7 +307,31 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         
         jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
         
-        jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
+        jbNovelties = new DropDownButton(Util.getIcon(ICON_NOVELTIES)) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            protected JPopupMenu getPopupMenu() {
+                return popupNovelties;
+            }
+        };
+        jbNovelties.setAction(ActionManager.getAction(NOVELTIES));
+        popupNovelties = new JPopupMenu();
+        jmiNoveltiesModeSong = new JMenuItem(Messages.getString("CommandJPanel.20"));
+        jmiNoveltiesModeSong.addActionListener(this);
+        jmiNoveltiesModeAlbum = new JMenuItem(Messages.getString("CommandJPanel.21"));
+        jmiNoveltiesModeAlbum.addActionListener(this);
+        if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)){
+            jmiNoveltiesModeSong.setSelected(true);
+            //display in bold (note that selection stick is not displayed on some Laf like liquid)
+            jmiNoveltiesModeSong.setFont(new Font("Dialog",Font.BOLD,11));
+        }
+        else{
+            jmiNoveltiesModeAlbum.setSelected(true);
+            jmiNoveltiesModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
+        }
+        popupNovelties.add(jmiNoveltiesModeSong);
+        popupNovelties.add(jmiNoveltiesModeAlbum);
+        jbNovelties.setText("");//no text visible //$NON-NLS-1$
         
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         popupDDJ = new JPopupMenu();
@@ -319,9 +346,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         populateDJs();
         ddbDDJ.setText("");//no text visible //$NON-NLS-1$
         jbGlobalRandom.addToToolBar(jtbSpecial);
+        jbNovelties.addToToolBar(jtbSpecial);
         ddbDDJ.addToToolBar(jtbSpecial);
         jtbSpecial.add(jbBestof);
-        jtbSpecial.add(jbNovelties);
         jtbSpecial.add(jbNorm);
         
 		//Play toolbar
@@ -431,6 +458,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			        }
 			    }
 			}
+            else if (ae.getSource().equals(jmiNoveltiesModeSong)){
+                ConfigurationManager.setProperty(CONF_NOVELTIES_MODE, MODE_TRACK);
+                jmiNoveltiesModeSong.setFont(new Font("Dialog",Font.BOLD,11));
+                jmiNoveltiesModeAlbum.setFont(new Font("Dialog",Font.PLAIN,11));
+            }
+            else if (ae.getSource().equals(jmiNoveltiesModeAlbum)){
+                ConfigurationManager.setProperty(CONF_NOVELTIES_MODE, MODE_ALBUM);
+                jmiNoveltiesModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
+                jmiNoveltiesModeSong.setFont(new Font("Dialog",Font.PLAIN,11));
+            }
             else if (ae.getSource().equals(jmiShuffleModeSong)){
                 ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
                 jmiShuffleModeSong.setFont(new Font("Dialog",Font.BOLD,11));

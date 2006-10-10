@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -789,7 +790,7 @@ public class FIFO implements ITechnicalStrings {
      * Shuffle the FIFO, used when user select the Random mode
      */
     public synchronized void shuffle() {
-        Collections.shuffle(alFIFO);
+        Collections.shuffle(alFIFO,new Random(System.currentTimeMillis()));
         alPlanned.clear(); // force recomputes planned tracks
     }
     

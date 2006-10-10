@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -253,7 +254,7 @@ public class LogicalTableView extends AbstractTableView{
                 }
                 //shuffle play
                 else if ( e.getSource() == jmiTrackPlayShuffle){
-                    Collections.shuffle(alFilesToPlay);
+                    Collections.shuffle(alFilesToPlay,new Random(System.currentTimeMillis()));
                     FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
                         ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }

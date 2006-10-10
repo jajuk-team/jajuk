@@ -222,7 +222,8 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_DEFAULT_AMBIENCE,"");//default ambience         //$NON-NLS-1$
         properties.put(CONF_NOT_SHOW_AGAIN_PLAYER,FALSE);//wrong player show again boolean
         properties.put(CONF_MPLAYER_URL,"http://82.239.70.252:8001/mplayer/1.0pre8/mplayer.exe");
-        properties.put(CONF_GLOBAL_RANDOM_MODE, "song");
+        properties.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
+        properties.put(CONF_NOVELTIES_MODE, MODE_TRACK);
     }
 	
     /**

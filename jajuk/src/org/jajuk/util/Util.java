@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.swing.Box;
@@ -909,7 +910,7 @@ public class Util implements ITechnicalStrings {
         if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)) {
             ArrayList<org.jajuk.base.File> alFilesToPlay = (ArrayList<org.jajuk.base.File>) alFiles
                     .clone();
-            Collections.shuffle(alFilesToPlay);
+            Collections.shuffle(alFilesToPlay,new Random(System.currentTimeMillis()));
             return alFilesToPlay;
         }
         return alFiles;

@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -1067,7 +1068,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
-            Collections.shuffle(alFiles);
+            Collections.shuffle(alFiles,new Random(System.currentTimeMillis()));
             FIFO.getInstance().push(Util.createStackItems(alFiles,
                 ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
@@ -1161,7 +1162,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
                 }
                 else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
-                    Collections.shuffle(alFiles);
+                    Collections.shuffle(alFiles,new Random(System.currentTimeMillis()));
                     FIFO.getInstance().push(Util.createStackItems(alFiles,
                         ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }

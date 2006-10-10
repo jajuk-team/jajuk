@@ -7,9 +7,9 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
@@ -33,11 +33,8 @@ public class NoveltiesAction extends ActionBase {
 
     public void perform(ActionEvent evt) throws JajukException {
         Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
-        ArrayList alToPlay = Util.filterByAmbience(FileManager.
-            getInstance().getGlobalNoveltiesPlaylist(),ambience);
-        if (alToPlay != null && alToPlay.size() != 0) {
-            Collections.shuffle(alToPlay);//shuffle the selection
-        }
+        ArrayList<File> alToPlay = Util.filterByAmbience(FileManager.
+            getInstance().getShuffleNoveltiesPlaylist(),ambience);
         if (alToPlay != null && alToPlay.size() > 0) {
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
                                                           ConfigurationManager.getBoolean(

@@ -546,6 +546,7 @@ public interface ITechnicalStrings {
     public static final String CONF_NOT_SHOW_AGAIN_PLAYER="jajuk.not_show_again.player"; // wrong player not dhow again flag
     public static final String CONF_MPLAYER_URL = "jajuk.mplayer_url"; //mplayer exe URL
     public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode"; //Global random mode: song or album level ?
+    public static final String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode"; //Novelties random mode: song or album level ?
     
     //Shuffle/novelties mode
     public static final String MODE_ALBUM = "album";

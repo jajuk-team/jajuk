@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -355,36 +356,15 @@ public class FileManager extends ItemManager implements Observer {
     public ArrayList<File> getGlobalShufflePlaylist() {
         synchronized (FileManager.getInstance().getLock()) {
             ArrayList<File> alEligibleFiles = getReadyFiles();
+            Collections.shuffle(alEligibleFiles,new Random(System.currentTimeMillis()));
             //song level, just shuffle full collection
             if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE)
                     .equals(MODE_TRACK)){
-                Collections.shuffle(alEligibleFiles);
                 return alEligibleFiles;
             }
             //else return shuffle albums
             else {
-                // start with filling a set of albums containing 
-                // at least one ready file 
-                // (note that resulting albums are already shuffled)
-                HashMap<Album,HashSet<File>> albumsFiles = 
-                    new HashMap<Album,HashSet<File>>(alEligibleFiles.size()/10);
-                for (File file:alEligibleFiles){
-                    //maintain a map between each albums and
-                    //eligible files
-                    Album album = file.getTrack().getAlbum();
-                    HashSet<File> files = albumsFiles.get(album);
-                    if (files == null){
-                        files = new HashSet<File>(10);
-                    }
-                    files.add(file);
-                    albumsFiles.put(album,files);
-                }
-                //build output
-                ArrayList<File> out = new ArrayList<File>(alEligibleFiles.size());
-                for (Album album:albumsFiles.keySet()){
-                    out.addAll(albumsFiles.get(album));
-                }
-                return out;
+                return getShuffledFilesByAlbum(alEligibleFiles);
             }
         }
     }
@@ -427,8 +407,9 @@ public class FileManager extends ItemManager implements Observer {
                     TrackManager.getInstance().getItems());
             for (Item item : alTracks) {
                 Track track = (Track) item;
-                File file = track.getPlayeableFile(bHideUnmounted); // try to get a mounted file
-                                                                    // (can return null)
+                File file = track.getPlayeableFile(bHideUnmounted); 
+                // try to get a mounted file
+                // (can return null)
                 if (file == null) {// none mounted file, take first file we find
                     continue;
                 }
@@ -448,6 +429,61 @@ public class FileManager extends ItemManager implements Observer {
         }
     }
 
+    /**
+     * Return a shuffled playlist with the entire accessible novelties collection
+     * 
+     * @return The entire accessible novelties collection
+     */
+    public ArrayList<File> getShuffleNoveltiesPlaylist() {
+        synchronized (FileManager.getInstance().getLock()) {
+            ArrayList<File> alEligibleFiles = getGlobalNoveltiesPlaylist(true);
+            //song level, just shuffle full collection
+            if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE)
+                    .equals(MODE_TRACK)){
+                return alEligibleFiles;
+            }
+            //else return shuffle albums
+            else {
+                return getShuffledFilesByAlbum(alEligibleFiles);
+            }
+        }
+    }
+    
+    /**
+     * Convenient method used to return shuffled files by album  
+     * @param alEligibleFiles
+     * @return Shuffled tracks by album
+     */
+    private ArrayList<File> getShuffledFilesByAlbum(ArrayList<File> alEligibleFiles){
+        // start with filling a set of albums containing 
+        // at least one ready file 
+        HashMap<Album,ArrayList<File>> albumsFiles = 
+            new HashMap<Album,ArrayList<File>>(alEligibleFiles.size()/10);
+        for (File file:alEligibleFiles){
+            //maintain a map between each albums and
+            //eligible files
+            Album album = file.getTrack().getAlbum();
+            ArrayList<File> files = albumsFiles.get(album);
+            if (files == null){
+                files = new ArrayList<File>(10);
+            }
+            files.add(file);
+            albumsFiles.put(album,files);
+        }
+        //build output
+        ArrayList<File> out = new ArrayList<File>(alEligibleFiles.size());
+        ArrayList<Album> albums = new ArrayList<Album>(albumsFiles.keySet());
+        //we need to force a new shuffle as internal hashmap arrange items
+        Collections.shuffle(albums,new Random(System.currentTimeMillis()));
+        for (Album album:albums){
+            ArrayList<File> files = albumsFiles.get(album);
+            Collections.shuffle(files,new Random(System.currentTimeMillis()));
+            out.addAll(files);
+        }
+        return out;
+    }
+
+    
     /**
      * @return a sorted set of the collection by rate, highest first
      */
@@ -474,7 +510,7 @@ public class FileManager extends ItemManager implements Observer {
                 int sup = (int) ((BESTOF_PROPORTION) * al.size()); // find superior interval value
                 if (sup > 0) {
                     alBest = new ArrayList<File>(al.subList(0, sup - 1));
-                    Collections.shuffle(alBest); // shufflelize
+                    Collections.shuffle(alBest,new Random(System.currentTimeMillis())); // shufflelize
                 }
             }
             return alBest;
