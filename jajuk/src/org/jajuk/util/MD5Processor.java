@@ -89,10 +89,10 @@ public class MD5Processor {
 			x = new int[16];
 			for (int j = 0; j < 16; j++) {
 				x[j] =
-					(int) (((int) (b1[64 * i + 4 * j] & 0xFF))
-						| ((int) (b1[64 * i + 4 * j + 1] & 0xFF) << 8)
-						| ((int) (b1[64 * i + 4 * j + 2] & 0xFF) << 16)
-						| ((int) (b1[64 * i + 4 * j + 3] & 0xFF) << 24));
+				        (((b1[64 * i + 4 * j] & 0xFF))
+						| ( (b1[64 * i + 4 * j + 1] & 0xFF) << 8)
+						| ( (b1[64 * i + 4 * j + 2] & 0xFF) << 16)
+						| ( (b1[64 * i + 4 * j + 3] & 0xFF) << 24));
 
 			}
 			aa = a;
@@ -237,8 +237,8 @@ public class MD5Processor {
 	 */
 	private static int unsignedAdd(int i1, int i2) {
 		long l1, l2;
-		l1 = ((long) i1) & 0xffffffffL;
-		l2 = ((long) i2) & 0xffffffffL;
+		l1 = i1 & 0xffffffffL;
+		l2 = i2 & 0xffffffffL;
 		return (int) ((l1 + l2) & 0xffffffffL);
 	}
 

@@ -446,6 +446,7 @@ public class Main implements ITechnicalStrings {
                     //probably in JNLP mode or wrong size,
                     //try to download static mplayer distro if needed
                     try {
+                        Log.debug("Download Mplayer from: "+ ConfigurationManager.getProperty(CONF_MPLAYER_URL));
                         DownloadManager.download(
                             new URL(ConfigurationManager.getProperty(CONF_MPLAYER_URL)),
                             new File(FILE_JAJUK_DIR+"/"+FILE_MPLAYER_EXE));
@@ -590,15 +591,6 @@ public class Main implements ITechnicalStrings {
                 type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
                 type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_FLAC);
                 type.setProperty(XML_TYPE_ICON,ICON_TYPE_FLAC);
-                //MPC
-                type = TypeManager.getInstance().registerType(
-                    Messages.getString("Type.mpc"), 
-                    EXT_MPC, Class.forName(PLAYER_IMPL_MPLAYER), 
-                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MPC);
-                type.setProperty(XML_TYPE_ICON,ICON_TYPE_MPC);
                 //WMA
                 type = TypeManager.getInstance().registerType(
                     Messages.getString("Type.wma"), 
@@ -612,20 +604,20 @@ public class Main implements ITechnicalStrings {
                 type = TypeManager.getInstance().registerType(
                     Messages.getString("Type.aac"), 
                     EXT_AAC, Class.forName(PLAYER_IMPL_MPLAYER), 
-                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                    null); //$NON-NLS-1$ //$NON-NLS-2$
                 type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
                 type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
                 type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AAC);
                 type.setProperty(XML_TYPE_ICON,ICON_TYPE_AAC);
-                //APE
+                //Real audio
                 type = TypeManager.getInstance().registerType(
-                    Messages.getString("Type.ape"), 
-                    EXT_APE, Class.forName(PLAYER_IMPL_MPLAYER), 
-                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString("Type.real"), 
+                    EXT_REAL, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    null); //$NON-NLS-1$ //$NON-NLS-2$
                 type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
                 type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_APE);
-                type.setProperty(XML_TYPE_ICON,ICON_TYPE_APE);
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_RAM);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_RAM);
             }
         } catch (Exception e1) {
             Log.error("026",e1); //$NON-NLS-1$

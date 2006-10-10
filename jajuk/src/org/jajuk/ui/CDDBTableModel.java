@@ -49,7 +49,7 @@ public class CDDBTableModel extends JajukTableModel {
      * @param sColName
      *            columns names
      */
-    public CDDBTableModel(ArrayList alItems) {
+    public CDDBTableModel(ArrayList<CDDBTrack> alItems) {
         super(5);
         this.alItems = alItems;
 

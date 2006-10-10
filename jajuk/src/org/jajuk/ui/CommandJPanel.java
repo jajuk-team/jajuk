@@ -41,6 +41,7 @@ import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -121,8 +122,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	public JajukToggleButton jbContinue;
 	public JajukToggleButton jbIntro;
 	JToolBar jtbSpecial;
-    JButton jbGlobalRandom;
-	JButton jbBestof;
+    DropDownButton jbGlobalRandom;
+    JMenuItem jmiShuffleModeSong;
+    JMenuItem jmiShuffleModeAlbum;
+    JPopupMenu popupGlobalRandom;
+    JButton jbBestof;
 	JButton jbNovelties;
 	JButton jbNorm;
     DropDownButton ddbDDJ;
@@ -177,7 +181,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	        }
 	        ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
         }
-     };
+     }
      /**An instance of the ambience combo listener*/
      ambienceListener ambienceListener;
         
@@ -272,14 +276,40 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         //Special functions toolbar
 		jtbSpecial = new JToolBar();
         jtbSpecial.setFloatable(false);
-        jbGlobalRandom = new JajukButton(ActionManager.getAction(SHUFFLE_GLOBAL));
-		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
-		jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
+        jbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            protected JPopupMenu getPopupMenu() {
+                return popupGlobalRandom;
+            }
+        };
+        jbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
+        popupGlobalRandom = new JPopupMenu();
+        jmiShuffleModeSong = new JMenuItem(Messages.getString("CommandJPanel.20"));
+        jmiShuffleModeSong.addActionListener(this);
+        jmiShuffleModeAlbum = new JMenuItem(Messages.getString("CommandJPanel.21"));
+        jmiShuffleModeAlbum.addActionListener(this);
+        if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)){
+            jmiShuffleModeSong.setSelected(true);
+            //display in bold (note that selection stick is not displayed on some Laf like liquid)
+            jmiShuffleModeSong.setFont(new Font("Dialog",Font.BOLD,11));
+        }
+        else{
+            jmiShuffleModeAlbum.setSelected(true);
+            jmiShuffleModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
+        }
+        popupGlobalRandom.add(jmiShuffleModeSong);
+        popupGlobalRandom.add(jmiShuffleModeAlbum);
+        jbGlobalRandom.setText("");//no text visible //$NON-NLS-1$
+        
+        jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
+        
+        jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
+        
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         popupDDJ = new JPopupMenu();
         ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
         	private static final long serialVersionUID = 1L;
-
             @Override
         	protected JPopupMenu getPopupMenu() {
         		return popupDDJ;
@@ -288,12 +318,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
         populateDJs();
         ddbDDJ.setText("");//no text visible //$NON-NLS-1$
-        jtbSpecial.add(jbGlobalRandom);
-		jtbSpecial.add(jbBestof);
-		jtbSpecial.add(jbNovelties);
-		jtbSpecial.add(jbNorm);
+        jbGlobalRandom.addToToolBar(jtbSpecial);
         ddbDDJ.addToToolBar(jtbSpecial);
-
+        jtbSpecial.add(jbBestof);
+        jtbSpecial.add(jbNovelties);
+        jtbSpecial.add(jbNorm);
+        
 		//Play toolbar
         jpPlay = new JPanel();
         ActionUtil.installKeystrokes(jpPlay, ActionManager.getAction(NEXT_ALBUM),
@@ -396,11 +426,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         }
 			        }
 			        else{
-			            Messages.showErrorMessage("120",file == null ? "null" : file.getDirectory().getDevice().getName()); //$NON-NLS-1$ //$NON-NLS-2$
+			            Messages.showErrorMessage("120"); //$NON-NLS-1$ //$NON-NLS-2$
 			            jcbHistory.setSelectedItem(null);
 			        }
 			    }
 			}
+            else if (ae.getSource().equals(jmiShuffleModeSong)){
+                ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
+                jmiShuffleModeSong.setFont(new Font("Dialog",Font.BOLD,11));
+                jmiShuffleModeAlbum.setFont(new Font("Dialog",Font.PLAIN,11));
+            }
+            else if (ae.getSource().equals(jmiShuffleModeAlbum)){
+                ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
+                jmiShuffleModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
+                jmiShuffleModeSong.setFont(new Font("Dialog",Font.PLAIN,11));
+            }
 		}
 		catch(Exception e){
 			Log.error(e);

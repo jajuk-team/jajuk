@@ -129,6 +129,17 @@ public class File extends Item implements Comparable,ITechnicalStrings{
     public Device getDevice() {
         return directory.getDevice();
     }
+    
+    /**
+     * @return associated type
+     */
+    public Type getType() {
+        String extension = Util.getExtension(this.getIO());
+        if (extension != null){
+            return TypeManager.getInstance().getTypeByExtension(extension);
+        }
+        return null;
+    }
 	
 	/**
 	 * @return
@@ -305,7 +316,7 @@ public class File extends Item implements Comparable,ITechnicalStrings{
     public String getAny(){
         //rebuild any
         StringBuffer sb  = new StringBuffer(100);
-        File file = (File)this;
+        File file = this;
         Track track = file.getTrack();
         sb.append(super.getAny()); //add all files-based properties
         //now add others properties

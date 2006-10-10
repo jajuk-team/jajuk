@@ -69,7 +69,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
         }
         
         /**No instanciation*/
-        private DirectoryFilter(){};
+        private DirectoryFilter(){}
         
         /**
          * 
@@ -102,7 +102,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
         }
         
         /**No instanciation*/
-        private AnyFileFilter(){};
+        private AnyFileFilter(){}
         
         /**
          * 
@@ -138,7 +138,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
         }
         
         /**No instanciation*/
-        private KnownTypeFilter(){};
+        private KnownTypeFilter(){}
         
         /**
          * 
@@ -179,7 +179,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
         }
         
         /**No instanciation*/
-        private AudioFilter(){};
+        private AudioFilter(){}
         
         /**
          * 
@@ -222,7 +222,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
         }
         
         /**No instanciation*/
-        private ImageFilter(){};
+        private ImageFilter(){}
         
         /**
          * 
@@ -264,7 +264,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
         }
         
         /**No instanciation*/
-        private NotAudioFilter(){};
+        private NotAudioFilter(){}
         
         /**
          * 
@@ -300,13 +300,14 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
             if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))){
                 //check it is a playlist
                 Type playlist = TypeManager.getInstance().getTypeByExtension(EXT_PLAYLIST);
-                return (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(f)).equals(playlist);
+                return TypeManager.getInstance().
+                    getTypeByExtension(Util.getExtension(f)).equals(playlist);
             }
             return false;
         }
         
         /**No instanciation*/
-        private PlaylistFilter(){};
+        private PlaylistFilter(){}
         
         /**
          * 

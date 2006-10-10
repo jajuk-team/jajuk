@@ -35,7 +35,7 @@ public abstract class DropDownButton extends JButton
         mainButton.setIcon(icon);
         arrowButton.getModel().addChangeListener(this); 
         arrowButton.addActionListener(this); 
-        arrowButton.setMargin(new Insets(3, 0, 3, 0)); 
+        arrowButton.setMargin(new Insets(1, 0, 1, 0)); 
         mainButton.addPropertyChangeListener("enabled", this); //NOI18N  //$NON-NLS-1$
     } 
  

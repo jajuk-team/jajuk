@@ -3,7 +3,7 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!--VARIABLES-->
-  <property name='version' value='1.3beta'/>
+  <property name='version' value='1.3M1'/>
   <property name='test' value='-test'/>
   <property name='jwsdeploy' value='test'/>
  	  

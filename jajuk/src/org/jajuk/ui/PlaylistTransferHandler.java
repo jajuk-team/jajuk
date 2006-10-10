@@ -21,7 +21,6 @@
 package org.jajuk.ui;
 
 import java.awt.Component;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceEvent;
@@ -127,7 +126,7 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			}
 			Object oData = null;
 			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR) || transferable.isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
-				String sFlavor  = ((DataFlavor)Arrays.asList(transferable.getTransferDataFlavors()).get(0)).getHumanPresentableName(); 
+				String sFlavor  = (Arrays.asList(transferable.getTransferDataFlavors()).get(0)).getHumanPresentableName(); 
 				if ( sFlavor.equals("Node")){ //$NON-NLS-1$
 					dtde.acceptDrop(action);				
 					dtde.dropComplete(true);
@@ -146,16 +145,16 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 				}
 			}
 			//computes selection
-			ArrayList alSelectedFiles = new ArrayList(100);
+			ArrayList<File> alSelectedFiles = new ArrayList<File>(100);
 			//computes logical selection if any
-			ArrayList alLogicalTracks = null;
+			ArrayList<Track> alLogicalTracks = null;
 			if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
 				if( oData instanceof Style || oData instanceof Author || oData instanceof Album ){
 					alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((Item)oData);
 				}
 				else if( oData instanceof Track){
-					alLogicalTracks = new ArrayList(100);
-					alLogicalTracks.add(oData);
+					alLogicalTracks = new ArrayList<Track>(100);
+					alLogicalTracks.add((Track)oData);
 				}
 				//prepare files
 				if ( alLogicalTracks != null && alLogicalTracks.size() > 0){
@@ -173,7 +172,7 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			//computes physical selection if any
 			else if(oData instanceof File || oData instanceof Directory || oData instanceof Device){
 				if( oData instanceof File ){
-					alSelectedFiles.add(oData);
+					alSelectedFiles.add((File)oData);
 				}
 				else if( oData instanceof Directory ){
 					alSelectedFiles = ((Directory)oData).getFilesRecursively();

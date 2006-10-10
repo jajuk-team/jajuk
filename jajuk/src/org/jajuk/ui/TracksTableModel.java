@@ -29,12 +29,14 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
+import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.Type;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -125,7 +127,7 @@ public class TracksTableModel extends JajukTableModel{
             Iterator it = alToShow.iterator();
             //Prepare filter pattern
             String sNewPattern = sPattern;
-            if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sNewPattern != null){ //do we use regular expression or not? if not, we allow user to use '*'
+            if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
                 sNewPattern = sNewPattern.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
                 sNewPattern = ".*"+sNewPattern+".*"; //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -182,18 +184,25 @@ public class TracksTableModel extends JajukTableModel{
             //AbstractTableView.setRenderer()
             oValues[iRow][0] = il;
             bCellEditable[iRow][0] = false;
+            //check track has an associated tag editor (not null)
+            boolean bHasATagEditor = false;
+            File file = track.getFiles().get(0); //all files have the same type
+            Type type = file.getType();
+            if (type != null){
+                bHasATagEditor = (type.getTaggerClass() != null);
+            }
             //Track name
             oValues[iRow][1] = track.getName();
-            bCellEditable[iRow][1] = true;
+            bCellEditable[iRow][1] = bHasATagEditor;
             //Album
             oValues[iRow][2] = track.getAlbum().getName2();
-            bCellEditable[iRow][2] = true;
+            bCellEditable[iRow][2] = bHasATagEditor;
             //Author
             oValues[iRow][3] = track.getAuthor().getName2();
-            bCellEditable[iRow][3] = true;
+            bCellEditable[iRow][3] = bHasATagEditor;
             //Style
             oValues[iRow][4] = track.getStyle().getName2();
-            bCellEditable[iRow][4] = true;
+            bCellEditable[iRow][4] = bHasATagEditor;
             //Rate
             IconLabel ilRate = track.getStars();
             oValues[iRow][5] = ilRate;
@@ -204,16 +213,16 @@ public class TracksTableModel extends JajukTableModel{
             bCellEditable[iRow][6] = false;
             //Comment
             oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
-            bCellEditable[iRow][7] = true;
+            bCellEditable[iRow][7] = bHasATagEditor;
             //Date discovery
             oValues[iRow][8] = track.getAdditionDate(); //show date using default local format and not technical representation
             bCellEditable[iRow][8] = false;
             //Order
             oValues[iRow][9] = track.getOrder();
-            bCellEditable[iRow][9] = true;
+            bCellEditable[iRow][9] = bHasATagEditor;
             //Year
             oValues[iRow][10] = track.getYear();
-            bCellEditable[iRow][10] = true;
+            bCellEditable[iRow][10] = bHasATagEditor;
             //Hits
             oValues[iRow][11] = track.getHits();
             bCellEditable[iRow][11] = false;

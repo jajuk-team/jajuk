@@ -221,7 +221,7 @@ public class DeviceManager extends ItemManager{
      * @return device name for a given index
      */
     public String getDeviceType(long index){
-        return (String)alDevicesTypes.get((int)index);
+        return alDevicesTypes.get((int)index);
     }
     
     /**

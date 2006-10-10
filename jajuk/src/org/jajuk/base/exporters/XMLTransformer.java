@@ -23,6 +23,8 @@ package org.jajuk.base.exporters;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -46,14 +48,14 @@ public class XMLTransformer {
 	 * @param xsltPath The path to the XSLT Transform to use.
 	 * @return Returns a string containing HTML markup.
 	 */
-	public static String xmlToHTML(String xml, String xsltPath) {
+	public static String xmlToHTML(String xml, URL xsltPath) {
 		String content = null;
 		
 		try {			
 			StringWriter writer = new StringWriter();
 			StringReader reader = new StringReader(xml);
 						
-			File xslt = new File(xsltPath);
+			File xslt = new File(xsltPath.getFile());
 			
 			// Create streams for the XML String and XSLT File
 			StreamSource xmlStream = new StreamSource(reader);
@@ -88,6 +90,11 @@ public class XMLTransformer {
 			+ "<author>Ronak Patel</author>"
 			+ "</source>";
 		
-		System.out.println(XMLTransformer.xmlToHTML(xml, "C:/Documents and Settings/rpx/Desktop/boo.xsl"));
+		try {
+            System.out.println(XMLTransformer.xmlToHTML(xml, new URL("file://C:/Documents and Settings/rpx/Desktop/boo.xsl")));
+        }
+        catch (MalformedURLException e) {
+            Log.error(e);
+        }
 	}
 }

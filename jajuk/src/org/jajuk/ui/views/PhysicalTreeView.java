@@ -421,6 +421,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     else if (Util.getExtension(file.getIO()).equals(TYPE_PROPERTY_TECH_DESC_WMA)){
                         setIcon(Util.getIcon(ICON_TYPE_WMA));    
                     }
+                    else if (Util.getExtension(file.getIO()).equals(TYPE_PROPERTY_TECH_DESC_RAM)){
+                        setIcon(Util.getIcon(ICON_TYPE_RAM));    
+                    }
+                    else if (Util.getExtension(file.getIO()).equals(TYPE_PROPERTY_TECH_DESC_AAC)){
+                        setIcon(Util.getIcon(ICON_TYPE_AAC));    
+                    }
                     else {
                         setIcon(Util.getIcon(ICON_TYPE_WAV));    
                     }

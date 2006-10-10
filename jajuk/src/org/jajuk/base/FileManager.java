@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
@@ -226,7 +227,7 @@ public class FileManager extends ItemManager implements Observer {
      *            new dir
      * @return new file or null if an error occurs
      */
-    public File changeFileDirectory(File old, Directory newDir) throws JajukException {
+    public File changeFileDirectory(File old, Directory newDir) {
         synchronized (FileManager.getInstance().getLock()) {
             // recalculate file ID
             String sNewId = MD5Processor.hash(new StringBuffer(newDir.getDevice().getName())
@@ -354,8 +355,37 @@ public class FileManager extends ItemManager implements Observer {
     public ArrayList<File> getGlobalShufflePlaylist() {
         synchronized (FileManager.getInstance().getLock()) {
             ArrayList<File> alEligibleFiles = getReadyFiles();
-            Collections.shuffle(alEligibleFiles);
-            return alEligibleFiles;
+            //song level, just shuffle full collection
+            if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE)
+                    .equals(MODE_TRACK)){
+                Collections.shuffle(alEligibleFiles);
+                return alEligibleFiles;
+            }
+            //else return shuffle albums
+            else {
+                // start with filling a set of albums containing 
+                // at least one ready file 
+                // (note that resulting albums are already shuffled)
+                HashMap<Album,HashSet<File>> albumsFiles = 
+                    new HashMap<Album,HashSet<File>>(alEligibleFiles.size()/10);
+                for (File file:alEligibleFiles){
+                    //maintain a map between each albums and
+                    //eligible files
+                    Album album = file.getTrack().getAlbum();
+                    HashSet<File> files = albumsFiles.get(album);
+                    if (files == null){
+                        files = new HashSet<File>(10);
+                    }
+                    files.add(file);
+                    albumsFiles.put(album,files);
+                }
+                //build output
+                ArrayList<File> out = new ArrayList<File>(alEligibleFiles.size());
+                for (Album album:albumsFiles.keySet()){
+                    out.addAll(albumsFiles.get(album));
+                }
+                return out;
+            }
         }
     }
 
@@ -656,21 +686,18 @@ public class FileManager extends ItemManager implements Observer {
     public TreeSet<SearchResult> search(String sCriteria) {
         synchronized (FileManager.getInstance().getLock()) {
             TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
-
-            sCriteria = sCriteria.toLowerCase();
+            String criteria = sCriteria.toLowerCase();
             Iterator it = hmItems.values().iterator();
             while (it.hasNext()) {
                 File file = (File) it.next();
                 if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) && // if search in
-                                                                                    // only in
-                                                                                    // mounted
-                                                                                    // devices
-                        (!file.getDirectory().getDevice().isMounted() || file.getDirectory()
-                                .getDevice().isRefreshing())) {
+                        (!file.getDirectory().getDevice().isMounted() 
+                                || file.getDirectory()
+                                  .getDevice().isRefreshing())) {
                     continue;
                 }
                 String sResu = file.getAny();
-                if (new StringBuffer(sResu.toLowerCase()).lastIndexOf(sCriteria) != -1) {
+                if (new StringBuffer(sResu.toLowerCase()).lastIndexOf(criteria) != -1) {
                     tsResu.add(new SearchResult(file, file.toStringSearch()));
                 }
             }

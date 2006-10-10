@@ -37,7 +37,7 @@ public class Type extends Item implements Comparable{
 	/**Player impl*/
     private Class cTagImpl;
     /**Player class*/
-    Class cPlayerImpl;
+    private Class cPlayerImpl;
 	
 	/**
 	 * Constructor
@@ -68,10 +68,17 @@ public class Type extends Item implements Comparable{
     }
     
 	/**
-	 * @return
+	 * @return Player class for this type
 	 */
-	public Class getPlayerImpl() throws Exception{
-	   return  cPlayerImpl;
+	public Class getPlayerClass() throws Exception{
+	   return cPlayerImpl;
+   }
+    
+    /**
+     * @return Tagger class for this type
+     */
+    public Class getTaggerClass() {
+       return cTagImpl;
    }
 
 	/**
@@ -112,14 +119,17 @@ public class Type extends Item implements Comparable{
 	 * @return Returns the tagImpl.
 	 */
 	public ITagImpl getTagImpl() {
-		ITagImpl tagImpl = null;
+	    ITagImpl tagInstance = null;
         try{
-            tagImpl = (ITagImpl)cTagImpl.newInstance();
+	        if (cTagImpl == null){
+                return tagInstance;
+            }
+            tagInstance = (ITagImpl)cTagImpl.newInstance();
         }
-        catch(Exception e){
-            Log.error(e);
-        }
-        return tagImpl;
+	    catch(Exception e){
+	        Log.error(e);
+	    }
+	    return tagInstance;
 	}
   
     /**

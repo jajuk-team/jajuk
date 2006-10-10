@@ -34,6 +34,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.Type;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -206,18 +207,24 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             }
             oValues[iRow][0] = il;
             bCellEditable[iRow][0] = false;
+            //check track has an associated tag editor (not null)
+            boolean bHasATagEditor = false;
+            Type type = file.getType();
+            if (type != null){
+                bHasATagEditor = (type.getTaggerClass() != null);
+            }
             //Track name
             oValues[iRow][1] = file.getTrack().getName();
-            bCellEditable[iRow][1] = true;
+            bCellEditable[iRow][1] = bHasATagEditor;
             //Album
             oValues[iRow][2] = file.getTrack().getAlbum().getName2();
-            bCellEditable[iRow][2] = true;
+            bCellEditable[iRow][2] = bHasATagEditor;
             //Author
             oValues[iRow][3] = file.getTrack().getAuthor().getName2();
-            bCellEditable[iRow][3] = true;
+            bCellEditable[iRow][3] = bHasATagEditor;
             //Style
             oValues[iRow][4] = file.getTrack().getStyle().getName2();
-            bCellEditable[iRow][4] = true;
+            bCellEditable[iRow][4] = bHasATagEditor;
             //Rate
             IconLabel ilRate = file.getTrack().getStars();
             oValues[iRow][5] = ilRate;
@@ -233,7 +240,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             bCellEditable[iRow][8] = true;
             //Comment
             oValues[iRow][9] = file.getTrack().getValue(XML_TRACK_COMMENT);
-            bCellEditable[iRow][9] = true;
+            bCellEditable[iRow][9] = bHasATagEditor;
             //Quality
             long lQuality = file.getQuality();
             oValues[iRow][10] = lQuality;
@@ -243,10 +250,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             bCellEditable[iRow][11] = false;
             //Order
             oValues[iRow][12] = file.getTrack().getOrder();
-            bCellEditable[iRow][12] = true;
+            bCellEditable[iRow][12] = bHasATagEditor;
             //year
             oValues[iRow][13] = file.getTrack().getYear();
-            bCellEditable[iRow][13] = true;
+            bCellEditable[iRow][13] = bHasATagEditor;
             //directory full path
             oValues[iRow][14] = file.getDirectory().getAbsolutePath();
             bCellEditable[iRow][14] = false;

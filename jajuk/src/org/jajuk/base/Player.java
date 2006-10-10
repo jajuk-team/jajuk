@@ -71,7 +71,7 @@ public class Player implements ITechnicalStrings{
             //make sure to stop non-fading players
             stop(false);
             //Choose the player
-            Class cPlayer = file.getTrack().getType().getPlayerImpl();
+            Class cPlayer = file.getTrack().getType().getPlayerClass();
             //player 1 null ?
             if (playerImpl1 == null){
                 playerImpl1 = (IPlayerImpl)cPlayer.newInstance();    

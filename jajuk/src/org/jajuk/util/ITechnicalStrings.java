@@ -244,6 +244,7 @@ public interface ITechnicalStrings {
     public static final URL ICON_TYPE_APE = Util.getResource("org/jajuk/icons/16x16/type_ape.png");
     public static final URL ICON_TYPE_AAC = Util.getResource("org/jajuk/icons/16x16/type_aac.png");
     public static final URL ICON_TYPE_WAV = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
+    public static final URL ICON_TYPE_RAM = Util.getResource("org/jajuk/icons/16x16/type_ram.png");
     public static final URL ICON_NO_EDIT = Util.getResource("org/jajuk/icons/16x16/stop.png");
     public static final URL ICON_EDIT = Util.getResource("org/jajuk/icons/16x16/edit.png");
     public static final URL ICON_UNKNOWN = Util.getResource("org/jajuk/icons/16x16/presence_unknown.png");
@@ -268,7 +269,18 @@ public interface ITechnicalStrings {
     public static final URL IMAGE_SEARCH = Util.getResource("org/jajuk/images/included/search.png");
     public static final URL IMAGE_DJ = Util.getResource("org/jajuk/images/included/dj.jpg");
     public static final URL IMAGE_TRAY_TITLE = Util.getResource("org/jajuk/images/included/tray_title.png");
-        
+    
+    // XSLT Files
+    public static final URL ARTIST_XSLT = Util.getResource("org/jajuk/xslt/artist.xsl");
+    public static final URL ALBUM_XSLT = Util.getResource("org/jajuk/xslt/album.xsl");
+    public static final URL STYLE_XSLT = Util.getResource("org/jajuk/xslt/style.xsl");
+    public static final URL DIRECTORY_XSLT = Util.getResource("org/jajuk/xslt/directory.xsl");
+    public static final URL DEVICE_XSLT = Util.getResource("org/jajuk/xslt/device.xsl");
+    public static final URL COLLECTION_XSLT = Util.getResource("org/jajuk/xslt/collection.xsl");
+    public static final URL STYLE_COLLECTION_XSLT = Util.getResource("org/jajuk/xslt/style_collection.xsl");
+    public static final URL ARTIST_COLLECTION_XSLT = Util.getResource("org/jajuk/xslt/artist_collection.xsl");
+    public static final URL ALBUM_COLLECTION_XSLT = Util.getResource("org/jajuk/xslt/album_collection.xsl");
+    
     //files
     public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
     public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
@@ -303,19 +315,6 @@ public interface ITechnicalStrings {
     public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
     public static final String FILE_FIFO = FILE_JAJUK_DIR+"/fifo.lst";
     public static final String FILE_MPLAYER_EXE = "mplayer.exe";
-        
-    // XSLT Files
-    // These paths need to be updated once xslts are put into the jar file.
-    public static final String XSLT_BASEDIR = "dist-files/xslt/";
-    public static final String ARTIST_XSLT = XSLT_BASEDIR + "artist.xsl";
-    public static final String ALBUM_XSLT = XSLT_BASEDIR + "album.xsl";
-    public static final String STYLE_XSLT = XSLT_BASEDIR + "style.xsl";
-    public static final String DIRECTORY_XSLT = XSLT_BASEDIR + "directory.xsl";
-    public static final String DEVICE_XSLT = XSLT_BASEDIR + "device.xsl";
-    public static final String COLLECTION_XSLT = XSLT_BASEDIR + "collection.xsl";
-    public static final String STYLE_COLLECTION_XSLT = XSLT_BASEDIR + "style_collection.xsl";
-    public static final String ARTIST_COLLECTION_XSLT = XSLT_BASEDIR + "artist_collection.xsl";
-    public static final String ALBUM_COLLECTION_XSLT = XSLT_BASEDIR + "album_collection.xsl";
     
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
@@ -354,6 +353,7 @@ public interface ITechnicalStrings {
     public static final String TYPE_PROPERTY_TECH_DESC_WMA = "wma";
     public static final String TYPE_PROPERTY_TECH_DESC_APE = "ape";
     public static final String TYPE_PROPERTY_TECH_DESC_AAC = "aac";
+    public static final String TYPE_PROPERTY_TECH_DESC_RAM = "ram";
         
     //Devices sync mode
     public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
@@ -402,6 +402,7 @@ public interface ITechnicalStrings {
     public static final String EXT_WMA = "wma";
     public static final String EXT_APE = "ape";
     public static final String EXT_AAC = "aac";
+    public static final String EXT_REAL = "ram";
             
     //details keys
     public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -544,6 +545,11 @@ public interface ITechnicalStrings {
     public static final String CONF_DEFAULT_AMBIENCE="jajuk.default_ambience"; //default ambience
     public static final String CONF_NOT_SHOW_AGAIN_PLAYER="jajuk.not_show_again.player"; // wrong player not dhow again flag
     public static final String CONF_MPLAYER_URL = "jajuk.mplayer_url"; //mplayer exe URL
+    public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode"; //Global random mode: song or album level ?
+    
+    //Shuffle/novelties mode
+    public static final String MODE_ALBUM = "album";
+    public static final String MODE_TRACK = "track";
     
     //Accuracy levels
     public static final String ACCURACY_LOW = "low";

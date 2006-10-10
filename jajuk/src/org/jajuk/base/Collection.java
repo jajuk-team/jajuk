@@ -548,7 +548,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 if (hmWrongRightTrackID.size() > 0){
                     //replace wrong by right ID
                     if (hmWrongRightTrackID.containsKey(sTrackId)){
-                        sTrackId = (String)hmWrongRightTrackID.get(sTrackId);
+                        sTrackId = hmWrongRightTrackID.get(sTrackId);
                     }
                 }
                 Track track = (Track)TrackManager.getInstance().getItem(sTrackId);
@@ -557,7 +557,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 if (hmWrongRightDirectoryID.size() > 0){
                     //replace wrong by right ID
                     if (hmWrongRightDirectoryID.containsKey(sParentID)){
-                        sParentID = (String)hmWrongRightDirectoryID.get(sParentID);
+                        sParentID = hmWrongRightDirectoryID.get(sParentID);
                     }
                 }
                 Directory dParent = (Directory)DirectoryManager.getInstance().getItem(sParentID);
@@ -593,7 +593,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 if (hmWrongRightDirectoryID.size() > 0){
                     //replace wrong by right ID
                     if (hmWrongRightDirectoryID.containsKey(sParentID)){
-                        sParentID = (String)hmWrongRightDirectoryID.get(sParentID);
+                        sParentID = hmWrongRightDirectoryID.get(sParentID);
                     }
                 }
                 Directory dParent = (Directory)DirectoryManager.getInstance().getItem(sParentID);
@@ -626,7 +626,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                         if (hmWrongRightPlaylistFileID.size() > 0){
                             //replace wrong by right ID
                             if (hmWrongRightPlaylistFileID.containsKey(sPlaylistFileID)){
-                                sPlaylistFileID = (String)hmWrongRightPlaylistFileID.get(sPlaylistFileID).intern();
+                                sPlaylistFileID = hmWrongRightPlaylistFileID.get(sPlaylistFileID).intern();
                             }
                         }
                         PlaylistFile plFile = (PlaylistFile)PlaylistFileManager.getInstance().getItem(sPlaylistFileID);
@@ -652,18 +652,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     String sExtension = attributes.getValue(attributes.getIndex(XML_TYPE_EXTENSION)).intern();
                     Class cPlayer = null;
                     String sPlayer = attributes.getValue(attributes.getIndex(XML_TYPE_PLAYER_IMPL)).intern();
-                    if (sPlayer ==null || sPlayer.trim().equals("")){ //$NON-NLS-1$
-                        cPlayer = null;
-                    }
-                    else{
+                    if (sPlayer != null && !sPlayer.trim().equals("")){ //$NON-NLS-1$
                         cPlayer = Class.forName(sPlayer);
                     }
                     Class cTag = null;
                     String sTag = attributes.getValue(attributes.getIndex(XML_TYPE_TAG_IMPL));
-                    if (sTag == null || sTag.trim().equals("")){ //$NON-NLS-1$
-                        cTag = null;
-                    }
-                    else{
+                    if (sTag != null && !sTag.trim().equals("")){ //$NON-NLS-1$
                         cTag = Class.forName(sTag);
                     }
                     Type type = TypeManager.getInstance().registerType(sId, sTypeName, sExtension, cPlayer,cTag);

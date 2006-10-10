@@ -19,7 +19,19 @@
  */
 package org.jajuk.ui;
 
-import static org.jajuk.ui.action.JajukAction.*;
+import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
+import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
+import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
+import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.OPTIONS;
+import static org.jajuk.ui.action.JajukAction.QUALITY;
+import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
+import static org.jajuk.ui.action.JajukAction.SHOW_TRACES;
+import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
+import static org.jajuk.ui.action.JajukAction.WIZARD;
 
 import java.awt.FlowLayout;
 import java.util.HashMap;

@@ -959,7 +959,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                 //compatibility code for <1.1 : auto-refresh is now a double, no more a boolean
                 if (meta.getName().equals(XML_DEVICE_AUTO_REFRESH)
                         && (sValue.equalsIgnoreCase(TRUE)||sValue.equalsIgnoreCase(FALSE))) {
-                    switch ((int)((Device)this).getDeviceType()){
+                    switch ((int)this.getDeviceType()){
                     case 0: //directory
                         sValue = "0.5d"; //$NON-NLS-1$
                         break;

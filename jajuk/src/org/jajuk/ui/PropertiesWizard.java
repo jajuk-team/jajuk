@@ -342,11 +342,24 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 widgets[index][0] = jlName;
                 //Property value
                 //computes editable state
-                boolean bEditable = meta.isEditable(); //property editable ?
-                if (!meta.isCustom()){ //custom properties are always editable, even for offline items
+                boolean bEditable = meta.isEditable() ; //property editable ?
+                //Check meta-data is supported for the file type
+                if (pa instanceof Track){
+                    Track track = (Track)pa;
+                    //take any file mapping this track (note
+                    //all files are of the same type)
+                    File file = track.getFiles().get(0);
+                    if (file.getType().getTaggerClass() == null){
+                        bEditable = false;
+                    }
+                }
+                if (!meta.isCustom()){ 
+                    //(custom properties are always editable, even for offline items)
                     bEditable = bEditable
                         && !(pa instanceof Directory && !((Directory)pa).getDevice().isMounted()) //item is not an unmounted dir
-                        && !(pa instanceof File && !((File)pa).isReady())//item is not an unmounted file
+                        && !(pa instanceof File 
+                                //check item is not an unmounted file
+                                && !((File)pa).isReady()) 
                         && !(pa instanceof PlaylistFile && !((PlaylistFile)pa).isReady());//item is not an unmounted playlist file
                 }
                 if (bEditable){
