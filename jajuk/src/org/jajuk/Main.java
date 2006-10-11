@@ -843,7 +843,7 @@ public class Main implements ITechnicalStrings {
                             String s = null;
                             for (;(s = br.readLine()) != null;){
                                 org.jajuk.base.File file = (org.jajuk.base.File)FileManager.getInstance().getItem(s);
-                                if (file.isReady()){
+                                if (file!= null && file.isReady()){
                                     alToPlay.add(file);
                                 }
                             }
