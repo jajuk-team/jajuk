@@ -173,7 +173,7 @@ public class Playlist extends Item implements Comparable{
 	public String getName(){
 		String sOut = ""; //$NON-NLS-1$
 		if ( alPlaylistFiles.size() > 0){
-			sOut =((PlaylistFile)alPlaylistFiles.get(0)).getName(); 
+			sOut =alPlaylistFiles.get(0).getName(); 
 		}
 		return sOut; 
 	}

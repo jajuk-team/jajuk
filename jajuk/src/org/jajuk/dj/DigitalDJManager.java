@@ -285,7 +285,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
         
         /**Non geenral tags operations*/
         abstract protected void othersTags(String sQname,Attributes attributes);
-    };
+    }
 	
 	/**
 	 * 

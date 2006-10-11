@@ -102,7 +102,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 				jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
 			}
 			catch(Exception e){  //ignore tooltip missing
-			}; 
+			}
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//no thread, it causes ugly screen repaint	

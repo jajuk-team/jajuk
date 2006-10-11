@@ -117,7 +117,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         HistoryItem hi = new HistoryItem(sFileId,lDate);
         //check if previous history item is not the same, otherwise, keep last one
         if (vHistory.size() > 0){
-            HistoryItem hiPrevious = (HistoryItem)vHistory.get(0);
+            HistoryItem hiPrevious = vHistory.get(0);
             if (hiPrevious.getFileId().equals(hi.getFileId())){
                 vHistory.remove(0); 
             }
@@ -158,7 +158,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      */
     public synchronized void changeID(String sIDOld,String sIDNew){
         for (int i=0; i<vHistory.size();i++){
-            HistoryItem hi = (HistoryItem)vHistory.get(i);
+            HistoryItem hi = vHistory.get(i);
             if (hi.getFileId().equals(sIDOld)){
                 vHistory.remove(i);
                 vHistory.add(i,new HistoryItem(sIDNew,hi.getDate()));
@@ -244,7 +244,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         if (vHistory.size() == 0){
             return null;
         }
-        hiLast = (HistoryItem)vHistory.get(0);
+        hiLast = vHistory.get(0);
         if (hiLast == null){
             return null;
         }

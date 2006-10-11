@@ -57,7 +57,7 @@ public class ObservationManager implements ITechnicalStrings {
                     Log.error(e);
                 }
                 if (vFIFO.size() > 0) {
-                    final Event event = (Event) vFIFO.get(0);
+                    final Event event = vFIFO.get(0);
                     vFIFO.remove(0);
                     new Thread() { // launch action asynchronously
                         public void run() {
@@ -159,7 +159,7 @@ public class ObservationManager implements ITechnicalStrings {
      * @return the detail as an object or null if the event or the detail doesn't exist
      */
     public static Object getDetailLastOccurence(EventSubject subject, String sDetailName) {
-        Properties pDetails = (Properties) hLastEventBySubject.get(subject);
+        Properties pDetails = hLastEventBySubject.get(subject);
         if (pDetails != null) {
             return pDetails.get(sDetailName);
         }
@@ -191,6 +191,6 @@ public class ObservationManager implements ITechnicalStrings {
      * @return the detaisl or null there are not details
      */
     public static Properties getDetailsLastOccurence(EventSubject subject) {
-        return (Properties) hLastEventBySubject.get(subject);
+        return hLastEventBySubject.get(subject);
     }
 }

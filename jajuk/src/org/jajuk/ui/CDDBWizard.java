@@ -131,7 +131,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 		}
 
 		public float getPreciseLength() {
-			return (float) track.getLength();
+			return track.getLength();
 		}
 
 	}
@@ -359,7 +359,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 		} else {
 			for (int i = 0; i < aIdxToTag.length; i++) {
 				int iRow = aIdxToTag[i];
-				Track track = ((CDDBTrack) alTracks.get(iRow)).track;
+				Track track = alTracks.get(iRow).track;
 				try {
 					String sValue = fdbReader.getAlbum();
 					

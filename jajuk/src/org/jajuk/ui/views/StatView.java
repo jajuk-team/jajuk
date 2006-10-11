@@ -128,15 +128,15 @@ public class StatView extends ViewAdapter implements Observer{
                 double dOthers = 0;
                 TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
                 while (it.hasNext()){
-                    Style style = (Style)it.next();
+                    Style style = it.next();
                     int iCount = style.getCount();
                     iTotal += iCount;
                     tm.put(style.getName2(),new Integer(iCount));
                 }
                 Iterator<String> keys = tm.keySet().iterator();
                 while (keys.hasNext()){
-                    String sName = (String)keys.next();
-                    Integer i = (Integer)tm.get(sName);
+                    String sName = keys.next();
+                    Integer i = tm.get(sName);
                     double d = i.doubleValue();
                     if ( iTotal>0 && d/iTotal < 0.05){ //less than 5% -> go to others
                         dOthers += d;
@@ -311,7 +311,7 @@ public class StatView extends ViewAdapter implements Observer{
                 }
                 double[][] data = new double[1][iMounthsNumber+1];
                 for (int i = 0;i<iMounthsNumber+1;i++){
-                    data[0][i] = (double)iTracksByMounth[i];
+                    data[0][i] = iTracksByMounth[i];
                 }
                 cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data); //$NON-NLS-1$
                 

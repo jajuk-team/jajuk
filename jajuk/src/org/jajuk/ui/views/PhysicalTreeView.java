@@ -443,7 +443,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 }
                 else if (value instanceof DeviceNode){
                     setBorder(BorderFactory.createEmptyBorder(2,0,3,0));
-                    Device device = (Device)((DeviceNode)value).getDevice();
+                    Device device = ((DeviceNode)value).getDevice();
                     switch ( (int)device.getDeviceType()){
                     case 0 : 
                         if ( device.isMounted()){
@@ -1371,7 +1371,7 @@ class DeviceNode extends TransferableTreeNode{
     
     /**Return associated device node */
     public static DeviceNode getDeviceNode(Device device){
-        return (DeviceNode)hmDeviceDeviceNode.get(device);
+        return hmDeviceDeviceNode.get(device);
     }
     
     /**
@@ -1415,7 +1415,7 @@ class DirectoryNode  extends TransferableTreeNode{
     
     /**Return associated directory node */
     public static DirectoryNode getDirectoryNode(Directory directory){
-        return (DirectoryNode)hmDirectoryDirectoryNode.get(directory);
+        return hmDirectoryDirectoryNode.get(directory);
     }
     
     /**

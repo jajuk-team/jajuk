@@ -293,7 +293,7 @@ public class FIFO implements ITechnicalStrings {
             if (getCurrentItem().isRepeat()) { // if the track was in repeat mode, don't remove it from the fifo, just inc index
                 // find the next item is repeat mode if any
                 if (index + 1 < alFIFO.size()) {
-                    StackItem itemNext = (StackItem) alFIFO.get(index + 1);
+                    StackItem itemNext = alFIFO.get(index + 1);
                     if (itemNext.isRepeat()) { // if next track is repeat, inc index
                         index++;
                     } else { // no next track in repeat mode, come back to first element in fifo
@@ -303,7 +303,7 @@ public class FIFO implements ITechnicalStrings {
                     index = 0; // come back to first element
                 }
             } else if (index < alFIFO.size()) { // current track was not in repeat mode, remove it from fifo
-                StackItem item = (StackItem) alFIFO.get(index);
+                StackItem item = alFIFO.get(index);
                 JajukTimer.getInstance().removeTrackTime(item.getFile());
                 alFIFO.remove(index); // remove this file from fifo
             }
@@ -518,8 +518,8 @@ public class FIFO implements ITechnicalStrings {
                 if (itemFirst.isRepeat()) { // restart last repeated item in the loop
                     index = getLastRepeatedItem();
                 } else { // first is not repeated, just insert previous file from collection
-                    StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(((StackItem) alFIFO
-                            .get(0)).getFile()),
+                    StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(( 
+                            alFIFO.get(0)).getFile()),
                             ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true);
                     alFIFO.add(0, item);
                     index = 0;
@@ -554,7 +554,7 @@ public class FIFO implements ITechnicalStrings {
     public synchronized void playPreviousAlbum() {
         try {
             // we don't support album navigation inside repeated tracks
-            if (((StackItem) getItem(0)).isRepeat()) {
+            if (( getItem(0)).isRepeat()) {
                 playPrevious();
                 return;
             }
@@ -571,7 +571,7 @@ public class FIFO implements ITechnicalStrings {
                 if (alFIFO.get(index) == null) {
                     return;
                 } else {
-                    File file = ((StackItem) alFIFO.get(index)).getFile();
+                    File file = alFIFO.get(index).getFile();
                     dirTested = file.getDirectory();
                     if (dir.equals(dirTested)) { // yet in the same album
                         continue;

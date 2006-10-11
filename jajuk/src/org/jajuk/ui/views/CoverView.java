@@ -506,7 +506,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         return null;    
                     }
                     if (alCovers.size() == 1 &&
-                            ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
+                            (alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
                         try {
                             prepareDisplay(0);
                         } catch (JajukException e) {
@@ -568,7 +568,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             displayCover(0);
             return;
         }
-        Cover cover = (Cover)alCovers.get(index);  //take image at the given index
+        Cover cover = alCovers.get(index);  //take image at the given index
         URL url = cover.getURL();
         //enable delete button only for local covers
         if (cover.getType() == Cover.LOCAL_COVER 
@@ -598,7 +598,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (indexPrevious > alCovers.size()-1){
                 indexPrevious = 0;
             }
-            URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+            URL urlPrevious = (alCovers.get(indexPrevious)).getURL();
             if (urlPrevious != null){
                 jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
@@ -606,7 +606,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (indexNext < 0){
                 indexNext = alCovers.size()-1;
             }
-            final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
+            final URL urlNext = (alCovers.get(indexNext)).getURL();
             if (urlNext != null){
                 jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             }
@@ -640,7 +640,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         Cover cover = null; 
         try{
             if (CoverView.this.iEventID == iLocalEventID){
-                cover = (Cover)alCovers.get(index);  //take image at the given index
+                cover = alCovers.get(index);  //take image at the given index
                 icon = cover.getImage();
             }
             else{
@@ -732,7 +732,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             displayCurrentCover();
         }
         else if(e.getSource() == jbDelete){ //delete a local cover
-            Cover cover = (Cover)alCovers.get(index);
+            Cover cover = alCovers.get(index);
             //show confirmation message if required
             if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
                 int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().getFile(),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -775,7 +775,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         else if ( e.getSource() == jbDefault){ //choose a default
             //first commit this cover on the disk if it is a remote cover
-            Cover cover = (Cover)alCovers.get(index);
+            Cover cover = alCovers.get(index);
             String sFilename = Util.getOnlyFile(cover.getURL().toString());
             if (cover.getType() == Cover.REMOTE_COVER){
                 String sFilePath = dirCurrent.getFio().getPath()+"/"+sFilename; //$NON-NLS-1$
@@ -809,7 +809,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         else if(e.getSource() == jbSave ){ //save a file with its original name
             new Thread(){
                 public void run() {
-                    Cover cover = (Cover)alCovers.get(index);
+                    Cover cover = alCovers.get(index);
                     //should not happen, only remote covers here
                     if (cover.getType() != Cover.REMOTE_COVER){ 
                         Log.debug("Try to save a local cover");//$NON-NLS-1$
@@ -840,7 +840,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         else if(e.getSource() == jbSaveAs ){ //save a file as... (can be local now) 
             new Thread(){
                 public void run() {
-                    Cover cover = (Cover)alCovers.get(index);
+                    Cover cover = alCovers.get(index);
                     JFileChooser jfchooser = new JFileChooser(dirCurrent.getFio());
                     FileFilter filter = new FileFilter() {
                         public boolean accept(File file) {

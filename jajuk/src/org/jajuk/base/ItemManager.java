@@ -76,7 +76,7 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return meta data for given property
      */
     public PropertyMetaInformation getMetaInformation(String sPropertyName){
-        return (PropertyMetaInformation)hmPropertiesMetaInformation.get(sPropertyName);
+        return hmPropertiesMetaInformation.get(sPropertyName);
     }
     
     /**
@@ -134,7 +134,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         Iterator it = hmPropertiesMetaInformation.keySet().iterator();
         while (it.hasNext()) {
             String sProperty = (String) it.next();
-            PropertyMetaInformation meta = (PropertyMetaInformation)hmPropertiesMetaInformation.get(sProperty);
+            PropertyMetaInformation meta = hmPropertiesMetaInformation.get(sProperty);
             sb.append('\n'+meta.toXML());
         }
         return sb.append('\n').toString();
@@ -225,7 +225,7 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return associated item manager or null if none was found
      */
     public static ItemManager getItemManager(Class c){
-        return (ItemManager)hmItemManagers.get(c);
+        return hmItemManagers.get(c);
     }
     
     /**
@@ -271,7 +271,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     public void cleanup(Item item) {
         synchronized(getLock()){
             if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
-                hmItems.remove(((Item)item).getId());
+                hmItems.remove(item.getId());
             }
         }
     }

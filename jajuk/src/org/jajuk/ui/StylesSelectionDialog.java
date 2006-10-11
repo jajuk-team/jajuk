@@ -184,7 +184,7 @@ public class StylesSelectionDialog extends JDialog implements ActionListener{
             //select all styles for this ambience
             setSelection(ambience.getStyles());
         }
-    };
+    }
     
     
     

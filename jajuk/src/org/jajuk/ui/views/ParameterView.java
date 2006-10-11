@@ -943,7 +943,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                 }
                 else if (e.getSource() == scbLAF){
                     ConfigurationManager.setProperty(CONF_OPTIONS_LNF,(String)scbLAF.getSelectedItem());
-                    if (!LNFManager.getCurrent().equals((String)scbLAF.getSelectedItem())){  //Lnf has changed
+                    if (!LNFManager.getCurrent().equals(scbLAF.getSelectedItem())){  //Lnf has changed
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
@@ -954,7 +954,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                     }
                 }
                 else if (e.getSource() == scbLanguage){
-                    String sLocal = (String)Messages.getInstance().getLocals().get(scbLanguage.getSelectedIndex());
+                    String sLocal = Messages.getInstance().getLocals().get(scbLanguage.getSelectedIndex());
                     String sPreviousLocal = Messages.getInstance().getLocal(); 
                     if (!sPreviousLocal.equals(sLocal)){  //local has changed
                         ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);

@@ -53,7 +53,7 @@ public final class ActionUtil {
     public static int getMnemonic(String text) {
         for (int i = 0; i < text.length() - 1; i++) {
             if (text.charAt(i) == INDICATOR) {
-                return (int) text.charAt(i + 1);
+                return text.charAt(i + 1);
             }
         }
         return -1;

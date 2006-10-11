@@ -139,7 +139,7 @@ public class ViewManager implements ITechnicalStrings {
         int index = alViews.indexOf(view);
         if (index < 0)
             return null;
-        return (JPanel) alContainers.get(index);
+        return alContainers.get(index);
     }
 
     /**
@@ -152,7 +152,7 @@ public class ViewManager implements ITechnicalStrings {
         int index = alViews.indexOf(view);
         if (index < 0)
             return null;
-        return (net.infonode.docking.View) alDockingViews.get(index);
+        return alDockingViews.get(index);
     }
 
     /**
@@ -166,7 +166,7 @@ public class ViewManager implements ITechnicalStrings {
         if (index < 0) {
             return null;
         }
-        IView view = (IView) alViews.get(index);
+        IView view = alViews.get(index);
         return view;
     }
 
@@ -181,7 +181,7 @@ public class ViewManager implements ITechnicalStrings {
         if (index < 0) {
             return null;
         }
-        IView view = (IView) alViews.get(index);
+        IView view = alViews.get(index);
         return view;
     }
 

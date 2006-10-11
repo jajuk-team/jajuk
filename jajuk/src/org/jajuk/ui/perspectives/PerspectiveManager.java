@@ -109,7 +109,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
         if (index < 0){
             index = 0;
         }    
-        IPerspective perspective = (IPerspective)alPerspectives.get(index);
+        IPerspective perspective = alPerspectives.get(index);
         setCurrentPerspective(perspective);
     }
         
@@ -160,7 +160,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
     public static void setCurrentPerspective(String sPerspectiveID) {
         int index = alNames.indexOf(sPerspectiveID);
         if (index != -1){
-            setCurrentPerspective((IPerspective)alPerspectives.get(index));
+            setCurrentPerspective(alPerspectives.get(index));
         }
     }
     
@@ -170,7 +170,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
      */
     public static void notify(String sPerspectiveName){
         int index = alNames.indexOf(sPerspectiveName);
-        IPerspective perspective = (IPerspective)alPerspectives.get(index);
+        IPerspective perspective = alPerspectives.get(index);
         if (perspective != null){
             setCurrentPerspective(perspective);
             ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,perspective.getID());

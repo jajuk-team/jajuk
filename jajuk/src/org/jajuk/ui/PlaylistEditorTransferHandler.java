@@ -93,7 +93,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
                 JComponent comp = (JComponent)c.getParent().getParent().getParent();
                 PlaylistFileItem plfi = ((AbstractPlaylistEditorView)comp).getCurrentPlaylistFileItem();
                 Object oData = null;
-                DataFlavor flavor = (DataFlavor)t.getTransferDataFlavors()[0];
+                DataFlavor flavor = t.getTransferDataFlavors()[0];
                 if ( flavor.getHumanPresentableName().equals(TransferableTableRow.ROW_FLAVOR.getHumanPresentableName())){ 
                     TransferableTableRow ttr = (TransferableTableRow)t.getTransferData(TransferableTableRow.ROW_FLAVOR);
                     oData = ttr.getData();  

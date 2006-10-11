@@ -65,7 +65,7 @@ import ext.SliderMenuItem;
 public class JajukSystray extends CommandJPanel implements ChangeListener{
     private static final long serialVersionUID = 1L;
     //Systray variables
-    SystemTray stray = SystemTray.getDefaultSystemTray();;
+    SystemTray stray = SystemTray.getDefaultSystemTray();
     TrayIcon trayIcon;
     JPopupMenu jmenu;
     JMenuItem jmiExit;

@@ -189,7 +189,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             plfNew.setProperty(XML_ID,sNewId); //reset new id and name
             plfNew.setProperty(XML_NAME,sNewName); //reset new id and name
             //check file name and extension
-            if (plfNew.getName().lastIndexOf((int)'.') != plfNew.getName().indexOf((int)'.')//just one '.'
+            if (plfNew.getName().lastIndexOf('.') != plfNew.getName().indexOf('.')//just one '.'
                     || !(Util.getExtension(ioNew).equals(EXT_PLAYLIST))){ //check extension
                 Messages.showErrorMessage("134"); //$NON-NLS-1$
                 throw new JajukException("134"); //$NON-NLS-1$

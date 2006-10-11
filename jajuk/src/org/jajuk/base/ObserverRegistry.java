@@ -34,7 +34,7 @@ class ObserverRegistry {
 
     synchronized void notifySync(Event event) {
         EventSubject subject = event.getSubject();
-        ArrayList<Observer> alComponents = (ArrayList<Observer>) hEventComponents.get(subject);
+        ArrayList<Observer> alComponents = hEventComponents.get(subject);
         if (alComponents == null) {
             return;
         }
@@ -74,8 +74,8 @@ class ObserverRegistry {
     }
 
     synchronized boolean unregister(EventSubject subject, Observer observer) {
-        ArrayList alComponents = (ArrayList) hEventComponents.get(subject);
-        if (alComponents == null) {
+        ArrayList alComponents = hEventComponents.get(subject);
+        if (alComponents != null) {
             return alComponents.remove(observer);
         }
         return false;

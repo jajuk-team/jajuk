@@ -398,7 +398,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		                alItems.add(plfiSelected.getPlaylistFile());  
 		            }
 		            else{
-		                alItems.add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));;
+		                alItems.add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));
 		            }
 		            new PropertiesWizard(alItems);
 		        }
@@ -425,7 +425,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		                    alItems.add(plfiSelected.getPlaylistFile());  
 		                }
 		                else{
-		                    alItems.add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));;
+		                    alItems.add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));
 		                }
 		                new PropertiesWizard(alItems);
 		            }

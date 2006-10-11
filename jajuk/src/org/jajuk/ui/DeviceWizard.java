@@ -131,7 +131,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbType = new JComboBox();
 		Iterator itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
 		while (itDevicesTypes.hasNext()){
-			jcbType.addItem((String)itDevicesTypes.next());
+			jcbType.addItem(itDevicesTypes.next());
 		}
 		jlName = new JLabel(Messages.getString("DeviceWizard.2")); //$NON-NLS-1$
 		jtfName = new JTextField();
@@ -325,7 +325,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
-			jcbSynchronized.setSelectedIndex(alDevices.indexOf((Device)DeviceManager.getInstance().getItem(sSynchroSource)));
+			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance().getItem(sSynchroSource)));
 			if (DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(XML_DEVICE_SYNCHRO_MODE))){
 				jrbBidirSynchro.setSelected(true);
 			}
@@ -390,7 +390,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			device.setProperty(XML_TYPE, new Long(jcbType.getSelectedIndex()));
             device.setUrl(jtfUrl.getText());
             if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
-				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
+				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE,alDevices.get(jcbSynchronized.getSelectedIndex()).getId());
 				if (jrbBidirSynchro.isSelected()){
 					device.setProperty(XML_DEVICE_SYNCHRO_MODE,DEVICE_SYNCHRO_MODE_BI);
 				}

@@ -386,7 +386,7 @@ public class PlaylistFile extends Item implements Comparable {
 		    FIFO.getInstance().down(index);
 		}
 		else if ( alFiles != null &&  index < alFiles.size()-1){ //the last track cannot go depper
-			File file = (File)alFiles.get(index+1); //save n+1 file
+			File file = alFiles.get(index+1); //save n+1 file
 			alFiles.set(index+1,alFiles.get(index));
 			alFiles.set(index,file); //n+1 file becomes nth file
 			setModified(true);
@@ -405,7 +405,7 @@ public class PlaylistFile extends Item implements Comparable {
 		    FIFO.getInstance().up(index);
 		}
 		else if ( alFiles != null &&  index > 0){ //the first track cannot go further
-			File bfile = (File)alFiles.get(index-1); //save n-1 file
+			File bfile = alFiles.get(index-1); //save n-1 file
 			alFiles.set(index-1,alFiles.get(index));
 			alFiles.set(index,bfile); //n-1 file becomes nth file
 			setModified(true);

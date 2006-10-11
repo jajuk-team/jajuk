@@ -188,7 +188,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * 
      * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
      */
-    public void seek(float posValue) {
+    public void seek(float pPosValue) {
+        float posValue = pPosValue;
         //if fading, ignore
         if (bFading){
             return;
@@ -208,7 +209,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             if (type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
                     && mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
-                long skipBytes = (long) Math.round(iAudioLength * posValue); //$NON-NLS-1$
+                long skipBytes = Math.round(iAudioLength * posValue); //$NON-NLS-1$
                 try {
                     player.seek(skipBytes);
                     setVolume(fVolume); //need this because a seek reset volume 

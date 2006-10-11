@@ -188,10 +188,10 @@ public class Player implements ITechnicalStrings{
             }
             else{
                 if (playerImpl1 != null){
-                    playerImpl1.setVolume(0.0f);;
+                    playerImpl1.setVolume(0.0f);
                 }
                 if (playerImpl2 != null){
-                    playerImpl2.setVolume(0.0f);;
+                    playerImpl2.setVolume(0.0f);
                 }
             }
             Player.bMute = !Player.bMute;
@@ -215,10 +215,10 @@ public class Player implements ITechnicalStrings{
             }
             if (bMute){
                 if (playerImpl1 != null){
-                    playerImpl1.setVolume(0.0f);;
+                    playerImpl1.setVolume(0.0f);
                 }
                 if (playerImpl2 != null){
-                    playerImpl2.setVolume(0.0f);;
+                    playerImpl2.setVolume(0.0f);
                 }
             }
             else{

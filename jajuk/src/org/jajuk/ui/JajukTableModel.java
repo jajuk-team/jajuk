@@ -91,7 +91,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
      * @return Column identifier for a given column title
      */
     public String getIdentifier(String sColName){
-        return (String)vId.get(vColNames.indexOf(sColName));
+        return vId.get(vColNames.indexOf(sColName));
     }
     
     /** 
@@ -141,11 +141,11 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     
     
     public String getColumnName(int column){
-        return (String)vColNames.get(column);
+        return vColNames.get(column);
     }
     
     public String getIdentifier(int column){
-        return (String)vId.get(column);
+        return vId.get(column);
     }
     
     public int getRowCount() {

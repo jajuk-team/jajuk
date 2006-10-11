@@ -390,7 +390,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             if (tracks.size() == 0) {
                 return false;
             }
-            Track trackCurrent = (Track) tracks.iterator().next(); // take first track found to get
+            Track trackCurrent = tracks.iterator().next(); // take first track found to get
             // associated directories as we
             // assume all tracks for an
             // album are in the same

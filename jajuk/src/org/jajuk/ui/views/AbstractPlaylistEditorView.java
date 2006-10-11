@@ -268,7 +268,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     bPlanned = true;
                     font = fontPlanned;
                 }
-                File bf = (File)item.getFile();
+                File bf = item.getFile();
                 
                 //Play
                 if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
@@ -509,13 +509,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     
     private void setRenderers(){
         //set right cell renderer for play and rate icons
-        TableColumn col = (TableColumn)jtable.getColumnModel().getColumn(0);
+        TableColumn col = jtable.getColumnModel().getColumn(0);
         col.setCellRenderer(new JajukCellRender());
-        col = (TableColumn)jtable.getColumnModel().getColumn(5); //rate
+        col = jtable.getColumnModel().getColumn(5); //rate
         col.setCellRenderer(new JajukCellRender());
         col.setMinWidth(RATE_COLUMN_SIZE);
         col.setMaxWidth(RATE_COLUMN_SIZE);
-        col = (TableColumn)jtable.getColumnModel().getColumn(0); //icon
+        col = jtable.getColumnModel().getColumn(0); //icon
         col.setMinWidth(PLAY_COLUMN_SIZE);
         col.setMaxWidth(PLAY_COLUMN_SIZE);
     }
@@ -731,10 +731,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             return null;
         }
         if (index < alItems.size()){
-            return (StackItem)alItems.get(index);
+            return alItems.get(index);
         }
         else if (index < (alItems.size() + alPlanned.size() )){
-            return (StackItem)alPlanned.get(index-alItems.size());
+            return alPlanned.get(index-alItems.size());
         }
         else{
             return null;
