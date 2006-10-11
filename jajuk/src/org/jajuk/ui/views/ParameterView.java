@@ -64,6 +64,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.PatternInputVerifier;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.SteppedComboBox;
@@ -138,16 +139,21 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbDefaultActionClick;
     JCheckBox jcbDefaultActionDrop;
     JCheckBox jcbShowPopup;
+    
     JPanel jpP2P;
     JCheckBox jcbShare;
     JLabel jlPasswd;
     JPasswordField jpfPasswd;
     JCheckBox jcbAddRemoteProperties;
     JCheckBox jcbHideProperties;
+    
     JPanel jpTags;
     JCheckBox jcbUseParentDir;    
     JLabel jlRefactorPattern;
     JTextField jtfRefactorPattern;
+    JLabel jlAnimationPattern;
+    JTextField jtfAnimationPattern;
+    
     JPanel jpAdvanced;
     JCheckBox jcbBackup;
     JLabel jlBackupSize;
@@ -155,7 +161,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlCollectionEncoding;
     JComboBox jcbCollectionEncoding;
     JCheckBox jcbRegexp;
-    
     
     JPanel jpNetwork;
     JCheckBox jcbProxy;
@@ -547,54 +552,24 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //--Tags
         jpTags = new JPanel();
         double sizeTags[][] = {{0.5,0.45},
-                {iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
         jpTags.setLayout(new TableLayout(sizeTags));
         jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
         jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
         jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192")); //$NON-NLS-1$
         jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
         jtfRefactorPattern = new JTextField();
-        jtfRefactorPattern.setInputVerifier(new InputVerifier(){
-        	public boolean verify(JComponent input) {
-                JTextField tf = (JTextField) input;
-                String sText = tf.getText().toLowerCase();
-                try{
-                	String[] stPattern = sText.split("[% /-]"); //$NON-NLS-1$
-                	for (String sPattern : stPattern){
-                		if (!sPattern.equals("")){ //$NON-NLS-1$
-                			if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))||
-                				sPattern.equalsIgnoreCase(PATTERN_ARTIST.substring(1)) ||
-                				sPattern.equalsIgnoreCase(PATTERN_YEAR.substring(1)) ||
-                				sPattern.equalsIgnoreCase(PATTERN_TRACKNAME.substring(1)) ||
-                				sPattern.equalsIgnoreCase(PATTERN_TRACKORDER.substring(1)) ||
-                				sPattern.equalsIgnoreCase(PATTERN_GENRE.substring(1))){
-                				Log.debug("[Refactor Verifier] "+sPattern+" : OK !"); //$NON-NLS-1$ //$NON-NLS-2$
-                			} else {
-                				Log.debug("[Refactor Verifier] "+sPattern+" : Wrong !"); //$NON-NLS-1$ //$NON-NLS-2$
-                				JOptionPane.showMessageDialog(jtpMain,
-                					    Messages.getString("Error.146"), //$NON-NLS-1$
-                					    Messages.getString("Error"), //$NON-NLS-1$
-                					    JOptionPane.ERROR_MESSAGE);
-                				jbOK.setEnabled(false);
-                				return false;
-                			}                		
-                		}
-                	}                	                   
-                }
-                catch(Exception e){
-                    return false;
-                }
-                jbOK.setEnabled(true);
-                return true;
-            }
-            
-            public boolean shouldYieldFocus(JComponent input) {
-                return verify(input);
-            }
-        });
+        jtfRefactorPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
+        jtfRefactorPattern.setInputVerifier(new PatternInputVerifier());
+        jlAnimationPattern = new JLabel(Messages.getString("ParameterView.195")); //$NON-NLS-1$
+        jlAnimationPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
+        jtfAnimationPattern = new JTextField();
+        jtfAnimationPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
         jpTags.add(jcbUseParentDir,"0,1"); //$NON-NLS-1$
         jpTags.add(jlRefactorPattern,"0,3"); //$NON-NLS-1$
         jpTags.add(jtfRefactorPattern,"1,3"); //$NON-NLS-1$
+        jpTags.add(jlAnimationPattern,"0,5"); //$NON-NLS-1$
+        jpTags.add(jtfAnimationPattern,"1,5"); //$NON-NLS-1$
         
         //--Advanced
         jpAdvanced = new JPanel();
@@ -1045,12 +1020,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         }
         //tags
         ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
-        ConfigurationManager.setProperty(CONF_REGEXP,Boolean.toString(jcbRegexp.isSelected()));
+        ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN,jtfRefactorPattern.getText());
+        ConfigurationManager.setProperty(CONF_ANIMATION_PATTERN,jtfAnimationPattern.getText());
         //Advanced
         ConfigurationManager.setProperty(CONF_BACKUP_SIZE,Integer.toString(backupSize.getValue()));
         ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
-        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-        ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN,jtfRefactorPattern.getText());
+        ConfigurationManager.setProperty(CONF_REGEXP,Boolean.toString(jcbRegexp.isSelected()));
         //Network
         ConfigurationManager.setProperty(CONF_NETWORK_USE_PROXY,Boolean.toString(jcbProxy.isSelected()));
         ConfigurationManager.setProperty(CONF_NETWORK_PROXY_HOSTNAME,jtfProxyHostname.getText());
@@ -1072,10 +1047,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE));
         
     }
-    
-    
-    
-       
+  
     /**
      * Set widgets to specified value in options
      */
@@ -1151,6 +1123,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         backupSize.setValue(iBackupSize);
         jcbCollectionEncoding.setSelectedItem(ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET));
         jtfRefactorPattern.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
+        jtfAnimationPattern.setText(ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN));
         //network
         boolean bUseProxy = ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY);
         jcbProxy.setSelected(bUseProxy);

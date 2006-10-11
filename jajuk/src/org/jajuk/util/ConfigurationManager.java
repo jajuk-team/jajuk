@@ -180,7 +180,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
-        properties.put(CONF_REFACTOR_PATTERN,DEFAULT_REORG_PATTERN);//$NON-NLS-1$        
+        properties.put(CONF_REFACTOR_PATTERN,PATTERN_DEFAULT_REORG);//$NON-NLS-1$        
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$
@@ -224,6 +224,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_MPLAYER_URL,"http://82.239.70.252:8001/mplayer/1.0pre8/mplayer.exe");
         properties.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
         properties.put(CONF_NOVELTIES_MODE, MODE_TRACK);
+        properties.put(CONF_ANIMATION_PATTERN, PATTERN_DEFAULT_ANIMATION);
     }
 	
     /**

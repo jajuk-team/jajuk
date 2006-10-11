@@ -125,6 +125,7 @@ public interface ITechnicalStrings {
     public static final String UNKNOWN_AUTHOR = "unknown_author";
     public static final String UNKNOWN_ALBUM = "unknown_album";
     public static final String UNKNOWN_STYLE = "unknown_style";
+    public static final String UNKNOWN = "unknown";
         
     // icons
     public static final URL ICON_LOGO = Util.getResource("org/jajuk/icons/64x64/jajuk-icon_64x64.png");
@@ -547,6 +548,7 @@ public interface ITechnicalStrings {
     public static final String CONF_MPLAYER_URL = "jajuk.mplayer_url"; //mplayer exe URL
     public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode"; //Global random mode: song or album level ?
     public static final String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode"; //Novelties random mode: song or album level ?
+    public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern"; //animation pattern
     
     //Shuffle/novelties mode
     public static final String MODE_ALBUM = "album";
@@ -708,7 +710,8 @@ public interface ITechnicalStrings {
     public static final String PATTERN_YEAR = "%year";
     public static final String PATTERN_TRACKNAME = "%title";
     public static final String PATTERN_TRACKORDER = "%n";
-    public static final String DEFAULT_REORG_PATTERN = PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME;
+    public static final String PATTERN_DEFAULT_REORG = PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME;
+    public static final String PATTERN_DEFAULT_ANIMATION = PATTERN_ARTIST + " / " + PATTERN_ALBUM + " / " + PATTERN_TRACKNAME;
         
     //Actions
     public static final String ACTION_NEXT = "next";

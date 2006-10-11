@@ -38,8 +38,11 @@ import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 import com.jgoodies.animation.Animation;
@@ -161,13 +164,17 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)){
 		    File file = FIFO.getInstance().getCurrentFile();
 		    if (file != null){
-		        String s = file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$
-		        +" / "+file.getTrack().getAlbum().getName2()+" / " //$NON-NLS-1$ //$NON-NLS-2$
-		        +file.getTrack().getName();//$NON-NLS-1$ //$N
-		        if (s != null  && !s.trim().equals("")){ //$NON-NLS-1$
-		            setText(s);   
-		        }
-		    }
+		        String s = "";
+                try {
+                    s = Util.applyPattern(file, 
+                        ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN), 
+                        false);
+                }
+                catch (JajukException e) {
+                    Log.error(e);
+                }
+		        setText(s);   
+            }
 		}
 		else if (subject.equals(EventSubject.EVENT_ZERO)){
 		    setText(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
