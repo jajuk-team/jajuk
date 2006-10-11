@@ -41,6 +41,7 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 public class RefactorAction implements ITechnicalStrings {
@@ -84,111 +85,16 @@ public class RefactorAction implements ITechnicalStrings {
 		while (it.hasNext()) {
 			File fCurrent = (File) it.next();
 			Track tCurrent = fCurrent.getTrack();
-			filename = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN)
-					.toLowerCase();
-			
-			String sValue;
-			// Check Author name
-			if (filename.contains(PATTERN_ARTIST)) {
-				sValue = tCurrent.getAuthor().getName2().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
-					filename = filename.replace(PATTERN_ARTIST, AuthorManager
-							.format(sValue));
-				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.150") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
-					continue;
-				}
-			}
-
-			// Check Style name
-			if (filename.contains(PATTERN_GENRE)) {
-				sValue = tCurrent.getStyle().getName2().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
-					filename = filename.replace(PATTERN_GENRE, StyleManager
-							.format(sValue));
-				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.153") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
-					continue;
-				}
-			}
-
-			// Check Album Name
-			if (filename.contains(PATTERN_ALBUM)) {
-				sValue = tCurrent.getAlbum().getName2().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
-					filename = filename.replace(PATTERN_ALBUM, AlbumManager
-							.format(sValue));
-				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.149") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
-					continue;
-				}
-			}
-
-			// Check Track Order
-			if (filename.contains(PATTERN_TRACKORDER)) {
-				long lOrder = tCurrent.getOrder();
-
-				if (lOrder == 0) {
-					String sFilename = fCurrent.getName();
-					if (!Character.isDigit(sFilename.charAt(0))) {
-						sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-								+ Messages.getString("Error.152") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
-						continue;
-					} else {
-						String sTo = fCurrent.getName().substring(0, 3).trim()
-								.replaceAll("[^0-9]", ""); //$NON-NLS-1$ //$NON-NLS-2$
-						for (char c : sTo.toCharArray()) {
-							if (!Character.isDigit(c)) {
-								sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-										+ Messages.getString("Error.152") //$NON-NLS-1$
-										+ ")\n"; //$NON-NLS-1$
-								continue;
-							}
-						}
-						lOrder = Long.parseLong(sTo);
-					}
-				}
-				if (lOrder < 10) {
-					filename = filename.replace(PATTERN_TRACKORDER, "0" //$NON-NLS-1$
-							+ lOrder);
-				} else {
-					filename = filename
-							.replace(PATTERN_TRACKORDER, lOrder + ""); //$NON-NLS-1$
-				}
-			}
-
-			// Check Track name
-			if (filename.contains(PATTERN_TRACKNAME)) {
-
-				sValue = tCurrent.getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
-
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
-					filename = filename.replace(PATTERN_TRACKNAME,
-							AuthorManager.format(sValue));
-				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.151") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
-					continue;
-				}
-			}
-			// Check Year Value
-			if (filename.contains(PATTERN_YEAR)) {
-				if (tCurrent.getYear() != 0) {
-					filename = filename.replace(PATTERN_YEAR, tCurrent
-							.getYear()
-							+ ""); //$NON-NLS-1$
-				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.148") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
-					continue;
-				}
-
-			}
-
-			filename += "." + tCurrent.getType().getExtension(); //$NON-NLS-1$
+			try{
+			    filename = Util.applyPattern(fCurrent,
+                    ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN),true);
+            }
+            catch(JajukException je){
+                sErrors += je.getMessage() + '\n';
+                continue;
+            }
+                
+            filename += "." + tCurrent.getType().getExtension(); //$NON-NLS-1$
 			filename = filename.replace("/",sFS); //$NON-NLS-1$
 			
 			// Compute the new filename

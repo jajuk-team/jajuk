@@ -75,13 +75,16 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.dj.Ambience;
@@ -1541,5 +1544,122 @@ public class Util implements ITechnicalStrings {
             return sMplayerPath;
         }
         return sMplayerPath;
+    }
+    
+    
+    /**
+     * Apply a pattern
+     * @param file file on whish to apply pattern
+     * @param sPattern
+     * @param bMandatory are all needed tags mandatory ?
+     * @return computed string
+     * @throws JajukException if some tags are missing
+     */
+    public static String applyPattern(org.jajuk.base.File file,String sPattern,boolean bMandatory) throws JajukException{
+        String out = sPattern;
+        Track track = file.getTrack();
+        String sValue = null; 
+        // Check Author name
+        if (sPattern.contains(PATTERN_ARTIST)) {
+            sValue = track.getAuthor().getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+            sValue = sValue.trim();
+            if (!sValue.equals(UNKNOWN_AUTHOR)) { //$NON-NLS-1$
+                out = out.replace(PATTERN_ARTIST, AuthorManager.format(sValue));
+            } else{
+                if (bMandatory){
+                    throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
+                        + Messages.getString("Error.150") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                else{
+                    out = out.replace(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
+                }
+            }
+        }
+        // Check Style name
+        if (sPattern.contains(PATTERN_GENRE)) {
+            sValue = track.getStyle().getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+            sValue = sValue.trim();
+            if (!sValue.equals(UNKNOWN_STYLE)) { //$NON-NLS-1$
+                out = out.replace(PATTERN_GENRE, StyleManager.format(sValue));
+            } else{
+                if (bMandatory){
+                    throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
+                        + Messages.getString("Error.153") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                else{
+                    out = out.replace(PATTERN_GENRE, Messages.getString(UNKNOWN_STYLE));
+                }
+            }
+        }
+        // Check Album Name
+        if (sPattern.contains(PATTERN_ALBUM)) {
+            sValue = track.getAlbum().getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+            sValue = sValue.trim();
+            if (!sValue.equals(UNKNOWN_ALBUM)) { //$NON-NLS-1$
+                out = out.replace(PATTERN_ALBUM, AlbumManager.format(sValue));
+            } else{
+                if (bMandatory){
+                    throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
+                        + Messages.getString("Error.149") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                else{
+                    out = out.replace(PATTERN_ALBUM, Messages.getString(UNKNOWN_ALBUM));
+                }
+            }
+        }
+        // Check Track Order
+        if (sPattern.contains(PATTERN_TRACKORDER)) {
+            long lOrder = track.getOrder();
+            if (lOrder == 0) {
+                String sFilename = file.getName();
+                if (Character.isDigit(sFilename.charAt(0))) {
+                    String sTo = file.getName().substring(0, 3).trim()
+                        .replaceAll("[^0-9]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+                    for (char c : sTo.toCharArray()) {
+                        if (!Character.isDigit(c)) {
+                            throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
+                                + Messages.getString("Error.152") //$NON-NLS-1$
+                                + ")\n"); //$NON-NLS-1$
+                        }
+                    }
+                    lOrder = Long.parseLong(sTo);
+                } else { 
+                    if (bMandatory){
+                        throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
+                            + Messages.getString("Error.152") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    else{
+                        lOrder = 0;  
+                    }
+                }
+            }
+            if (lOrder < 10) {
+                out = out.replace(PATTERN_TRACKORDER, "0" //$NON-NLS-1$
+                    + lOrder);
+            } else {
+                out = out.replace(PATTERN_TRACKORDER, lOrder + ""); //$NON-NLS-1$
+            }
+        }
+        // Check Track name
+        if (sPattern.contains(PATTERN_TRACKNAME)) {
+            sValue = track.getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+            sValue = sValue.trim();
+            out = out.replace(PATTERN_TRACKNAME,sValue);
+        }
+        // Check Year Value
+        if (sPattern.contains(PATTERN_YEAR)) {
+            if (track.getYear() != 0) {
+                out = out.replace(PATTERN_YEAR, track.getYear()+ ""); //$NON-NLS-1$
+            } else {
+                if (bMandatory){
+                    throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
+                        + Messages.getString("Error.148") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                else{
+                    out = out.replace(PATTERN_YEAR,"?");
+                }
+            }
+        }
+        return out;
     }
 }
