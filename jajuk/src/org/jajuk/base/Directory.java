@@ -46,7 +46,7 @@ public class Directory extends Item implements Comparable{
     /** Directory device */
     private Device device;
     /** Child directories */
-    private ArrayList<Directory> alDirectories = new ArrayList<Directory>(20);
+    private TreeSet<Directory> directories = new TreeSet<Directory>();
     /** Child files */
     private TreeSet<org.jajuk.base.File> files = new TreeSet<org.jajuk.base.File>();
     /** Playlist files */
@@ -126,8 +126,8 @@ public class Directory extends Item implements Comparable{
     /**
      * @return
      */
-    public ArrayList<Directory> getDirectories() {
-        return alDirectories;
+    public Set<Directory> getDirectories() {
+        return directories;
     }
     
     /**
@@ -135,9 +135,7 @@ public class Directory extends Item implements Comparable{
      * @param directory
      */
     public void addDirectory(Directory directory) {
-        if (!alDirectories.contains(directory)){
-            alDirectories.add(directory);    
-        }
+        directories.add(directory);    
     }
     
      /**
@@ -173,7 +171,7 @@ public class Directory extends Item implements Comparable{
      * @param directory
      */
     public void removeDirectory(Directory directory) {
-        alDirectories.remove(directory);
+        directories.remove(directory);
     }
     
     

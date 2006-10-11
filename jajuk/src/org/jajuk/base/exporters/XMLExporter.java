@@ -165,7 +165,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
             sb.append(addTabs(1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);         
             
             // Tag directory children data.
-            ListIterator itr1 = directory.getDirectories().listIterator();
+            ListIterator itr1 = new ArrayList(directory.getDirectories()).listIterator();
             while (itr1.hasNext()) {
                 Directory d = (Directory)itr1.next();
                     
@@ -212,7 +212,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
             ListIterator itr;
             // Tag children directories of device.
             synchronized (DirectoryManager.getInstance().getLock()) {
-                itr = DirectoryManager.getInstance().getDirectoryForIO(device.getFio()).getDirectories().listIterator();
+                itr = new ArrayList(
+                    DirectoryManager.getInstance()
+                    .getDirectoryForIO(device.getFio()).getDirectories())
+                .listIterator();
             }               
             while (itr.hasNext()) { 
                 Directory directory = (Directory)itr.next();
@@ -274,7 +277,9 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
                 ListIterator itr1;
                 // Tag children directories of device.              
                 synchronized (DirectoryManager.getInstance().getLock()) {                   
-                    itr1 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio()).getDirectories().listIterator();
+                    itr1 =  new ArrayList(DirectoryManager.getInstance()
+                        .getDirectoryForIO(device.getFio())
+                        .getDirectories()).listIterator();
                 }
                 while (itr1.hasNext()) {    
                     Directory directory = (Directory)itr1.next();
@@ -365,7 +370,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
         StringBuffer sb = new StringBuffer();
         
         // Get the children
-        ArrayList children = directory.getDirectories();
+        ArrayList children = new ArrayList<Directory>(directory.getDirectories());
         ListIterator itr1 = children.listIterator();
         
         sb.append(addTabs(level) + Tag.openTag(XML_DIRECTORY) + NEWLINE);

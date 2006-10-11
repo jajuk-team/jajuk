@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
@@ -255,7 +256,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
     }
     
     public Set<PlaylistFile> getPlaylistFiles(){
-        Set<PlaylistFile> playListFileSet = new HashSet<PlaylistFile>();
+        Set<PlaylistFile> playListFileSet = new TreeSet<PlaylistFile>();
         for(Item item: getItems()){
             playListFileSet.add((PlaylistFile)item);
         }

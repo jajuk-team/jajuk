@@ -23,6 +23,8 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
@@ -151,6 +153,14 @@ public class AlbumManager extends ItemManager{
      */
     public String getIdentifier() {
         return XML_ALBUMS;
+    }
+    
+    public Set<Album> getAlbums() {
+        Set<Album> albumSet = new TreeSet<Album>();
+        for (Item item : getItems()) {
+            albumSet.add((Album) item);
+        }
+        return albumSet;
     }
    
 }

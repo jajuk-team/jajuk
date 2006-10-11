@@ -781,7 +781,7 @@ public class FileManager extends ItemManager implements Observer {
     }
     
     public Set<File> getFiles() {
-        Set<File> fileSet = new HashSet<File>();
+        Set<File> fileSet = new TreeSet<File>();
         for (Item item : getItems()) {
             fileSet.add((File) item);
         }

@@ -23,6 +23,8 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
@@ -192,6 +194,14 @@ public class AuthorManager extends ItemManager{
         synchronized(getInstance().getLock()){
             return authorsList;
         }
+    }
+    
+    public Set<Author> getAlbums() {
+        Set<Author> authorSet = new TreeSet<Author>();
+        for (Item item : getItems()) {
+            authorSet.add((Author) item);
+        }
+        return authorSet;
     }
    
 }

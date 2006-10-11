@@ -22,6 +22,8 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.util.log.Log;
 
@@ -194,6 +196,14 @@ public class TypeManager extends ItemManager{
      */
     public String getIdentifier() {
         return XML_TYPES;
+    }
+    
+    public Set<Type> getTypes() {
+        Set<Type> typeSet = new TreeSet<Type>();
+        for (Item item : getItems()) {
+            typeSet.add((Type) item);
+        }
+        return typeSet;
     }
     
 }

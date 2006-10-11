@@ -21,9 +21,12 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.util.MD5Processor;
 
@@ -218,7 +221,7 @@ public class DirectoryManager extends ItemManager {
     }
 
     public Set<Directory> getDirectories() {
-        Set<Directory> directorySet = new HashSet<Directory>();
+        Set<Directory> directorySet = new TreeSet<Directory>();
         for (Item item : getItems()) {
             directorySet.add((Directory) item);
         }

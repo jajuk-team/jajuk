@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
@@ -216,7 +217,7 @@ public class StyleManager extends ItemManager {
     }
 
     public Set<Style> getStyles() {
-        Set<Style> styleSet = new HashSet<Style>();
+        Set<Style> styleSet = new TreeSet<Style>();
         for (Item item : getItems()) {
             styleSet.add((Style) item);
         }

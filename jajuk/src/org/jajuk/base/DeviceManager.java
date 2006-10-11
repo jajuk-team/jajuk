@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 
@@ -383,7 +384,7 @@ public class DeviceManager extends ItemManager{
     }
     
     public Set<Device> getDevices(){
-        Set<Device> deviceSet = new HashSet<Device>();
+        Set<Device> deviceSet = new TreeSet<Device>();
         for(Item item: getItems()){
             deviceSet.add((Device)item);
         }
