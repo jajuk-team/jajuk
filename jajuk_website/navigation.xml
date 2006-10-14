@@ -33,7 +33,7 @@
     </menu>
     <menu name='Project'>
       <item name='Roadmap' href='./roadmap.html' />
-      <item name='Jobs' href='./jobs.html' />
+      <item name='Help wanted' href='./jobs.html' />
       <item name='Tasks list' href='http://sourceforge.net/pm/?group_id=91412' />
       <item name='Translator guide' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />

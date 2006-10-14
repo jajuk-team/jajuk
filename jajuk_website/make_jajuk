@@ -99,4 +99,7 @@ java -cp $XITI_SCRIPT_PATH Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_download
 cp /tmp/index.html .
 cp /tmp/jws.html .
 cp /tmp/downloads.html .
+
+#Apply CSS styles
+cp $WEBSITE_SOURCE/styles/* $DOC_DEST/style/
 fi
