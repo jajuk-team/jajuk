@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
@@ -402,9 +403,9 @@ public class FileManager extends ItemManager implements Observer {
         synchronized (TrackManager.getInstance().getLock()) {
             ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
             // take tracks matching required age
-            java.util.Collection<Item> alTracks = TrackManager.getAgeFilter(
+            Set<Track> alTracks = TrackManager.getAgeFilter(
                     ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)).apply(
-                    TrackManager.getInstance().getItems());
+                    TrackManager.getInstance().getTracks());
             for (Item item : alTracks) {
                 Track track = (Track) item;
                 File file = track.getPlayeableFile(bHideUnmounted); 
@@ -546,7 +547,7 @@ public class FileManager extends ItemManager implements Observer {
                         .getProperty(CONF_BESTOF_SIZE));
                 // create a tempory table to remove unmounted files
                 ArrayList<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
-                Iterator it = TrackManager.getInstance().getItems().iterator();
+                Iterator it = TrackManager.getInstance().getTracks().iterator();
                 while (it.hasNext()) {
                     Track track = (Track) it.next();
                     File file = track.getPlayeableFile(bHideUnmounted);
@@ -582,7 +583,7 @@ public class FileManager extends ItemManager implements Observer {
             }
             // look for a correct file from index to collection end
             boolean bStarted = false;
-            Iterator it = getItems().iterator();
+            Iterator it = getFiles().iterator();
             while (it.hasNext()) {
                 fileNext = (File) it.next();
                 if (bStarted) {
@@ -596,7 +597,7 @@ public class FileManager extends ItemManager implements Observer {
                 }
             }
             // ok restart from collection from begining
-            it = getItems().iterator();
+            it = getFiles().iterator();
             while (it.hasNext()) {
                 fileNext = (File) it.next();
                 if (fileNext.isReady()) { // file must be on a mounted device not refreshing
@@ -621,7 +622,7 @@ public class FileManager extends ItemManager implements Observer {
                 return null;
             }
             File filePrevious = null;
-            ArrayList<Item> alSortedFiles = new ArrayList<Item>(getItems());
+            ArrayList<Item> alSortedFiles = new ArrayList<Item>(getFiles());
             int i = alSortedFiles.indexOf(file);
             // test if this file is the very first one
             if (i == 0) {
@@ -652,10 +653,10 @@ public class FileManager extends ItemManager implements Observer {
      */
     public boolean isVeryfirstFile(File file) {
         synchronized (FileManager.getInstance().getLock()) {
-            if (file == null || getItems().size() == 0) {
+            if (file == null || hmItems.size() == 0) {
                 return false;
             }
-            Iterator it = getItems().iterator();
+            Iterator it = getFiles().iterator();
             File first = (File) it.next();
             return (file.equals(first));
         }
@@ -672,7 +673,7 @@ public class FileManager extends ItemManager implements Observer {
             }
             ArrayList<File> alResu = new ArrayList<File>(10);
             Directory dir = file.getDirectory();
-            Iterator it = getItems().iterator();
+            Iterator it = getFiles().iterator();
             while (it.hasNext()) {
                 File f = (File) it.next();
                 Directory d = f.getDirectory();
@@ -680,6 +681,7 @@ public class FileManager extends ItemManager implements Observer {
                     alResu.add(f);
                 }
             }
+            Collections.sort(alResu);
             return alResu;
         }
     }
@@ -695,7 +697,7 @@ public class FileManager extends ItemManager implements Observer {
             }
             ArrayList<File> alResu = new ArrayList<File>(10);
             Directory dir = file.getDirectory();
-            Iterator it = getItems().iterator();
+            Iterator it = getFiles().iterator();
             boolean bSeenTheOne = false;
             while (it.hasNext()) {
                 File f = (File) it.next();
@@ -780,11 +782,31 @@ public class FileManager extends ItemManager implements Observer {
         return new HashSet<EventSubject>();
     }
     
+     /**
+     * @param sID Item ID
+     * @return item
+     */
+    public File getFileByID(String sID) {
+        synchronized(getLock()){
+            return (File)hmItems.get(sID);
+        }
+    }
+    
+    
+    /**
+     * 
+     * @return files set
+     */
     public Set<File> getFiles() {
-        Set<File> fileSet = new TreeSet<File>();
-        for (Item item : getItems()) {
-            fileSet.add((File) item);
+        Set<File> fileSet = new LinkedHashSet<File>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                fileSet.add((File)item);
+            }
         }
         return fileSet;
     }
+    
+    
+   
 }

@@ -793,11 +793,11 @@ public class Main implements ITechnicalStrings {
                     ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
                 
                 if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-                    fileToPlay = (org.jajuk.base.File)FileManager.getInstance().getItem(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+                    fileToPlay = FileManager.getInstance().getFileByID(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
                 }
                 else {  //last file from begining or last file keep position
                     if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING) && History.getInstance().getHistory().size()>0){  //make sure user didn't exit jajuk in the stopped state and that history is not void
-                        fileToPlay = (org.jajuk.base.File)FileManager.getInstance().getItem(History.getInstance().getLastFile());
+                        fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());
                     }
                     else{ //do not try to lauch anything, stay in stop state
                         return;
@@ -842,7 +842,7 @@ public class Main implements ITechnicalStrings {
                             BufferedReader br = new BufferedReader(new FileReader(FILE_FIFO));
                             String s = null;
                             for (;(s = br.readLine()) != null;){
-                                org.jajuk.base.File file = (org.jajuk.base.File)FileManager.getInstance().getItem(s);
+                                org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
                                 if (file!= null && file.isReady()){
                                     alToPlay.add(file);
                                 }

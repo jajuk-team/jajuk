@@ -22,8 +22,8 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.jajuk.util.log.Log;
 
@@ -198,10 +198,26 @@ public class TypeManager extends ItemManager{
         return XML_TYPES;
     }
     
+    /**
+     * @param sID Item ID
+     * @return item
+     */
+    public Type getTypeByID(String sID) {
+        synchronized(getLock()){
+            return (Type)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return types list
+     */
     public Set<Type> getTypes() {
-        Set<Type> typeSet = new TreeSet<Type>();
-        for (Item item : getItems()) {
-            typeSet.add((Type) item);
+        Set<Type> typeSet = new LinkedHashSet<Type>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                typeSet.add((Type) item);
+            }
         }
         return typeSet;
     }

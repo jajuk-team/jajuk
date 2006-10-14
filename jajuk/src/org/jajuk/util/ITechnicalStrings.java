@@ -84,7 +84,7 @@ public interface ITechnicalStrings {
     /**Play icon columns size in pixels*/
     public static final int PLAY_COLUMN_SIZE = 20;
     /**Max Number of thumbs displayed at the same time in catalog view*/
-    public static final int CATALOG_PAGE_SIZE = 50;
+    public static final int CATALOG_PAGE_SIZE = 100;
     /**Proporion of best tracks*/
     public static final float BESTOF_PROPORTION = 0.05f;
     /** Number of milliseconds in a second */
@@ -456,6 +456,7 @@ public interface ITechnicalStrings {
     public static final String LNF_TINY_CLASS = "de.muntjak.tinylookandfeel.TinyLookAndFeel";
     public static final String LNF_LOOKS = "Looks";
     public static final String LNF_LOOKS_CLASS = "com.jgoodies.looks.windows.WindowsLookAndFeel";
+    public static final String LNF_DEFAULT = LNF_LIQUID;//default look and feel name
 
     //statup mode
     public static final String STARTUP_MODE_NOTHING = "nothing";

@@ -96,7 +96,7 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
                 HashSet<Style> styles = new HashSet<Style>(10);
                 StringTokenizer st = new StringTokenizer((String)properties.get(sKey),","); //$NON-NLS-1$
                 while (st.hasMoreTokens()){
-                    Style style = (Style)StyleManager.getInstance().getItem(st.nextToken());
+                    Style style = StyleManager.getInstance().getStyleByID(st.nextToken());
                     if (style != null){
                         styles.add(style);
                     }

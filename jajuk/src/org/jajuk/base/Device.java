@@ -23,10 +23,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -204,7 +204,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         //clean old files up
         cleanRemovedFiles();
         //Actual refresh
-        refreshCommand((i == 1));
+        refreshCommand((i == 1),true);
         InformationJPanel.getInstance().setMessage(sFinalMessage,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         //notify views to refresh
         ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
@@ -230,7 +230,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
      * @return true if some changes occured in device
      * 
      */
-    protected synchronized boolean refreshCommand(boolean bDeepScan){
+    protected synchronized boolean refreshCommand(boolean bDeepScan,boolean bManual){
         try{
             bAlreadyRefreshing = true;
             long lTime = System.currentTimeMillis();
@@ -288,13 +288,15 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                     indexTab[iDeep] = -1;//re-init for next time we will reach this deep
                     iDeep--; //come up
                     fCurrent = fCurrent.getParentFile();
-                    dParent = dParent.getParentDirectory();
+                    if (dParent != null){
+                        dParent = dParent.getParentDirectory();
+                    }
                 } else {
                     if (indexTab[iDeep] < files.length-1 ){  //enter sub-directory
                         indexTab[iDeep]++; //inc index for next time we will reach this deep
                         fCurrent = files[indexTab[iDeep]];
                         dParent = DirectoryManager.getInstance().registerDirectory(fCurrent.getName(),dParent,this);
-                        if (bDeepScan){
+                        if (bManual){
                             InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.21")).append(this.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         }
                         dParent.scan(bDeepScan);
@@ -391,12 +393,12 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
                 return;
             }
-            Device dSrc = (Device)DeviceManager.getInstance().getItem(sIdSrc);
+            Device dSrc = DeviceManager.getInstance().getDeviceByID(sIdSrc);
              //perform a fast refresh
-            this.refreshCommand(false);
+            this.refreshCommand(false,true);
             //if bidi sync, refresh the other device as well (new file can have been copied to it)
             if (bidi){
-                dSrc.refreshCommand(false);
+                dSrc.refreshCommand(false,true);
             }
             //start message
             InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
@@ -412,10 +414,10 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             .append(" - ").append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
             append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
             //perform a fast refresh
-            this.refreshCommand(false);
+            this.refreshCommand(false,true);
             //if bidi sync, refresh the other device as well (new file can have been copied to it)
             if (bidi){
-                dSrc.refreshCommand(false);
+                dSrc.refreshCommand(false,true);
             }
             InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
             Log.debug(sOut);
@@ -444,7 +446,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         HashSet<Directory> hsDestDirs = new HashSet<Directory>(100);
         int iNbCreatedFiles = 0;
         synchronized(DirectoryManager.getInstance().getLock()){
-           it = DirectoryManager.getInstance().getItems().iterator();
+           it = DirectoryManager.getInstance().getDirectories().iterator();
             while ( it.hasNext()){
                 Directory dir = (Directory)it.next();
                 if ( dir.getDevice().equals(dSrc)){
@@ -456,7 +458,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                     }
                 }
             }
-            it = DirectoryManager.getInstance().getItems().iterator();
+            it = DirectoryManager.getInstance().getDirectories().iterator();
             while ( it.hasNext()){
                 Directory dir = (Directory)it.next();
                 if ( dir.getDevice().equals(dest)){
@@ -580,17 +582,17 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             this.sUrl = url;
             setProperty(XML_URL,url);
             this.fio = new File(url);
-            /**Rest files*/
+            /**Reset files*/
             synchronized(FileManager.getInstance().getLock()){
-                Iterator it = FileManager.getInstance().getItems().iterator();
+                Iterator it = FileManager.getInstance().getFiles().iterator();
                 while (it.hasNext()) {
                     org.jajuk.base.File file = (org.jajuk.base.File) it.next();
                     file.reset();
                 }
             }
-            /**Rest playlist files*/
+            /**Reset playlist files*/
             synchronized(PlaylistFileManager.getInstance().getLock()){
-                Iterator it = PlaylistFileManager.getInstance().getItems().iterator();
+                Iterator it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
                 while (it.hasNext()) {
                     org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it.next();
                     plf.reset();
@@ -753,10 +755,10 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                 //check if this device was void
                 boolean bVoid = true;
                 synchronized(FileManager.getInstance().getLock()){
-                    Iterator it = FileManager.getInstance().getItems().iterator();
+                    Iterator it = FileManager.getInstance().getFiles().iterator();
                     while (it.hasNext()){
                         org.jajuk.base.File f = (org.jajuk.base.File)it.next();
-                        if (f.getDirectory().getDevice().equals(this)){ //at least one fiel in this device
+                        if (f.getDirectory().getDevice().equals(this)){ //at least one field in this device
                             bVoid = false;
                             break;
                         }
@@ -812,7 +814,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         synchronized(DirectoryManager.getInstance().getLock()){
             //looks for the root directory for this device
             Directory dirRoot = null;
-            Collection dirs = DirectoryManager.getInstance().getItems();
+            Collection dirs = DirectoryManager.getInstance().getDirectories();
             Iterator it = dirs.iterator();
             while (it.hasNext()){
                 Directory dir = (Directory)it.next();
@@ -877,12 +879,12 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         boolean bChanges = false;
         long l = System.currentTimeMillis();
         //need to use a shallow copy to avoid concurent exceptions
-        ArrayList<Directory> alDirs = null;
+        Set<Directory> dirs = null;
         synchronized(DirectoryManager.getInstance().getLock()){
-        	Collection<Item> items = DirectoryManager.getInstance().getItems();
-            alDirs = new ArrayList<Directory>(Arrays.asList(items.toArray(new Directory[items.size()])));
+        	dirs = DirectoryManager.getInstance().getDirectories();
         }
-        for (Item item:alDirs){
+        //directories scleanup
+        for (Item item:dirs){
             Directory dir = (Directory)item;
             if (!Main.isExiting()
                     &&dir.getDevice().equals(this) 
@@ -897,13 +899,12 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                 }
             }
         }
-        
-        ArrayList<org.jajuk.base.File> alFiles = null;
+        //files cleanup
+        Set<org.jajuk.base.File> files = null;
         synchronized(FileManager.getInstance().getLock()){
-        	Collection<Item> items = FileManager.getInstance().getItems();
-            alFiles = new ArrayList<org.jajuk.base.File>(Arrays.asList(items.toArray(new org.jajuk.base.File[items.size()])));
+        	files = FileManager.getInstance().getFiles();
         }
-        for (org.jajuk.base.File file:alFiles){
+        for (org.jajuk.base.File file:files){
             if (!Main.isExiting() 
                     && file.getDirectory().getDevice().equals(this)
                     && file.isReady()){
@@ -916,12 +917,12 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                 }
             }
         }
-        ArrayList<PlaylistFile> alplf = null;
+        //Playlist scleanup
+        Set<PlaylistFile> plfiles = null;
         synchronized(PlaylistFileManager.getInstance().getLock()){
-        	Collection<Item> items = PlaylistFileManager.getInstance().getItems(); 
-            alplf = new ArrayList<PlaylistFile>(Arrays.asList(items.toArray(new PlaylistFile[items.size()])));
+            plfiles = PlaylistFileManager.getInstance().getPlaylistFiles();
         }
-        for (PlaylistFile plf:alplf){
+        for (PlaylistFile plf:plfiles){
             if (!Main.isExiting()
                     && plf.getDirectory().getDevice().equals(this)
                     && plf.isReady()){
@@ -933,8 +934,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                     bChanges = true;
                 }
             }
-            
-        }    
+        }
         //clear history to remove olf files referenced in it
         History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
         

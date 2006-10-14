@@ -71,7 +71,6 @@ import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
@@ -444,7 +443,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			    HistoryItem hi;
 			    hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			    if (hi != null){
-			        org.jajuk.base.File file = (File)FileManager.getInstance().getItem(hi.getFileId());
+			        org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
 			        if (file != null){ 
 			            try{
 			                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);

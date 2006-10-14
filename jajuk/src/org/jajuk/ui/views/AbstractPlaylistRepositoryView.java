@@ -282,7 +282,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
                 public void finished() {
 					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are packed to the top
 				    if ( plfiSelected.getPlaylistFile().getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL ||
-                            PlaylistFileManager.getInstance().getItem(plfiSelected.getPlaylistFile().getId()) != null){
+                            PlaylistFileManager.getInstance().getPlaylistFileByID(plfiSelected.getPlaylistFile().getId()) != null){
 				        selectPlaylistFileItem(plfiSelected);    
                     }
                     else{ //means previously selected playlist has changed, select queue

@@ -281,7 +281,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //set choosen track in file selection
         String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
         if ( !"".equals(sFileId)){ //$NON-NLS-1$
-            File file = (File)FileManager.getInstance().getItem(sFileId);
+            File file = FileManager.getInstance().getFileByID(sFileId);
             if (file != null){
                 sbSearch.setText(file.getTrack().getName());
             }

@@ -44,7 +44,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     
     /**Items collection**/
     protected TreeBidiMap hmItems = new TreeBidiMap();
-    /**Maps item classes -> instance*/
+    /**Maps item classes -> instance, must be a linked map for ordering (mandatory in commited collection)*/
     static private LinkedHashMap<Class, ItemManager> hmItemManagers  = new LinkedHashMap<Class, ItemManager>(10);
     /**Maps properties meta information name and object*/
     private LinkedHashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(10);
@@ -104,7 +104,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Remove a custom property to all items for the given manager*/
     public void applyRemoveProperty(PropertyMetaInformation meta) {
         synchronized(getLock()){
-            Collection<Item> items = getItems();
+            Collection<Item> items = hmItems.values();
             if (items != null){
                 for (Item item:items){
                     item.removeProperty(meta.getName());
@@ -116,7 +116,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Add a custom property to all items for the given manager*/
     public void applyNewProperty(PropertyMetaInformation meta) {
         synchronized(getLock()){
-            Collection<Item> items = getItems();
+            Collection<Item> items = hmItems.values();
             if (items != null){
                 for (Item item:items){
                     item.setProperty(meta.getName(),meta.getDefaultValue());
@@ -241,8 +241,8 @@ public abstract class ItemManager implements ITechnicalStrings{
     public void cleanup() {
         synchronized(getLock()){
             //build used items set
-            HashSet<Item> hsItems = new HashSet<Item>(TrackManager.getInstance().getItems().size());
-            for (Item item:TrackManager.getInstance().getItems()){
+            Set<Item> hsItems = new HashSet<Item>(1000);
+            for (Item item:TrackManager.getInstance().getTracks()){
                 Track track = (Track)item;
                 if (this instanceof AlbumManager){
                     hsItems.add(track.getAlbum());   
@@ -276,13 +276,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         }
     }
     
-    /**Return all registred items*/
-    protected Set<Item> getItems() {
-        synchronized(getLock()){
-			return hmItems.inverseBidiMap().keySet();
-        }
-    }
-    
+      
     /**Return all registred items with filter applied*/
     public Collection<Item> getItems(Filter filter) {
         synchronized(getLock()){
@@ -312,13 +306,6 @@ public abstract class ItemManager implements ITechnicalStrings{
                 }
             }
             return out;
-        }
-    }
-    
-    /**Return a given item*/
-    public synchronized Item getItem(String sID) {
-        synchronized(getLock()){
-            return (Item)hmItems.get(sID);
         }
     }
     
@@ -384,7 +371,7 @@ public abstract class ItemManager implements ITechnicalStrings{
                 itemToChange.setProperty(sKey,oValue);
             }
             //Get associated track file
-            if (newItem instanceof Track && newItem != null){
+            if (newItem instanceof Track ){
                 file.setTrack((Track)newItem);
                 newItem = file;
             }
@@ -465,6 +452,23 @@ public abstract class ItemManager implements ITechnicalStrings{
     public int getElementCount(){
         synchronized(getLock()){
             return hmItems.size();
+        }
+    }
+    
+    /**
+     * @param sID Item ID
+     * @return Item
+     */
+    public Item getItemByID(String sID) {
+        synchronized(getLock()){
+            return (Item)hmItems.get(sID);
+        }
+    }
+    
+    /**Return all registred items*/
+    protected Set<Item> getItems() {
+        synchronized(getLock()){
+            return hmItems.inverseBidiMap().keySet();
         }
     }
     

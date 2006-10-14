@@ -533,15 +533,7 @@ public class Util implements ITechnicalStrings {
             File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
             if (files != null) {
                 for (int i = 0; i < files.length; i++) {
-                    if (files[i].getName().indexOf(removeExtension(file.getName())) != -1) { // if
-                        // the
-                        // file
-                        // contains
-                        // the
-                        // file
-                        // name
-                        // without
-                        // extension
+                    if (files[i].getName().indexOf(removeExtension(file.getName())) != -1) { 
                         lUsedMB += files[i].length();
                         alFiles.add(files[i]);
                     }
@@ -549,10 +541,7 @@ public class Util implements ITechnicalStrings {
                 // sort found files
                 alFiles.remove(file);
                 Collections.sort(alFiles);
-                if ((lUsedMB - file.length()) / 1048576 > iMB) { // too much
-                    // backup
-                    // files
-                    // delete older backup
+                if ((lUsedMB - file.length()) / 1048576 > iMB) { // too much backup files, delete older
                     if (alFiles.size() > 0) {
                         File fileToDelete = alFiles.get(0);
                         if (fileToDelete != null) {

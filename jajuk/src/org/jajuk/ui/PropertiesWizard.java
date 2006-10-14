@@ -644,7 +644,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     ArrayList<Item> alItems = new ArrayList<Item>(3);
                     while (st.hasMoreTokens()) {
                         String sPlf = st.nextToken();
-                        Item pa = PlaylistFileManager.getInstance().getItem(sPlf);
+                        Item pa = PlaylistFileManager.getInstance().getPlaylistFileByID(sPlf);
                         if (pa != null) {
                             alItems.add(pa);
                         }
@@ -652,7 +652,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     new PropertiesWizard(alItems); //show properties window for this item
                 } else {
                     String sValue = alItems.get(0).getStringValue(sProperty); //can be only an ID
-                    Item pa = ItemManager.getItemManager(sProperty).getItem(sValue);
+                    Item pa = ItemManager.getItemManager(sProperty).getItemByID(sValue);
                     if (pa != null) {
                         ArrayList<Item> alItems = new ArrayList<Item>(1);
                         alItems.add(pa);

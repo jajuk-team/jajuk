@@ -29,6 +29,7 @@ import javax.swing.plaf.ComboBoxUI;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -62,6 +63,8 @@ public class LNFManager implements ITechnicalStrings {
             ActionManager.uninstallStrokes();
         } catch (Exception e) {
             Log.error("123", sCurrent, e); //$NON-NLS-1$
+            //reset look and feel to default value
+            ConfigurationManager.setProperty(CONF_OPTIONS_LNF, LNF_DEFAULT);
             Messages.showErrorMessage("123", sCurrent);//$NON-NLS-1$
         }
     }

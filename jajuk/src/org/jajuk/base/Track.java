@@ -464,21 +464,22 @@ public class Track extends Item implements Comparable{
      */
     public String getHumanValue(String sKey){
         if (XML_ALBUM.equals(sKey)){
-            Album album = (Album)AlbumManager.getInstance().getItem(getStringValue(sKey));
+            Album album = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));
             if (album != null){ //can be null after a fresh change
                 return album.getName2();
+                
             }
             return null;
         }
         else if (XML_AUTHOR.equals(sKey)){
-            Author author = (Author)AuthorManager.getInstance().getItem(getStringValue(sKey));
+            Author author = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
             if (author != null){ //can be null after a fresh change
                 return author.getName2();
             }
             return null;
         }
         else if (XML_STYLE.equals(sKey)){
-            Style style = (Style)StyleManager.getInstance().getItem(getStringValue(sKey));
+            Style style = StyleManager.getInstance().getStyleByID(getStringValue(sKey));
             if (style != null){ //can be null after a fresh change
                 return style.getName2();
             }
@@ -488,7 +489,7 @@ public class Track extends Item implements Comparable{
             return Util.formatTimeBySec(length,false);
         }
         else if (XML_TYPE.equals(sKey)){
-            return ((Type)TypeManager.getInstance().getItem(getStringValue(sKey))).getName();
+            return (TypeManager.getInstance().getTypeByID(getStringValue(sKey))).getName();
         }
         else if (XML_TRACK_YEAR.equals(sKey)){
             return Long.toString(lYear);

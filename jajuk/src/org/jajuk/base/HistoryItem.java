@@ -70,7 +70,7 @@ public class HistoryItem{
 	/** Human readable representation of this history item as read in the history bar
 	 *@return String*/
 	public String toString(){
-		File file = (File)FileManager.getInstance().getItem(getFileId());
+		File file = FileManager.getInstance().getFileByID(getFileId());
 		if (file == null){
 			return null;
 		}

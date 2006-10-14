@@ -451,12 +451,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                     PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
                     filter = new Filter(meta, jtfValue.getText(), true, false);
                 }
-                ArrayList<Album> albums = new ArrayList<Album>();
+                ArrayList<Album> albums = null;
                 final HashMap<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();
                 synchronized (TrackManager.getInstance().getLock()) {
-                    // filter on tracks properties
+                    // filter albums matching tracks
                     Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
-                    // keep matching albums (we use sets to drop duplicates)
+                    albums = new ArrayList<Album>(alAllTracks.size()/10);
+                    // keep matching albums
                     for (Item item : alAllTracks) {
                         Track track = (Track) item;
                         Album album = track.getAlbum();
@@ -464,19 +465,20 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                             albums.add(album);
                         }
                     }
-                    // sort albums
-                    final int index = jcbSorter.getSelectedIndex();
                     // store mapped tracks for perfs
+                    Set<Track> tracks = TrackManager.getInstance().getTracks();
                     for (Album album : albums) {
-                        for (Track track : TrackManager.getInstance().getTracks()) {
+                        for (Track track : tracks) {
                             if (track.getAlbum().equals(album)) {
                                 hmAlbumTrack.put(album, track);
                                 break;
                             }
+                            hmAlbumTrack.put(album, null);
                         }
-                        hmAlbumTrack.put(album, null);
                     }
 
+                    // sort albums
+                    final int index = jcbSorter.getSelectedIndex();
                     Collections.sort(albums, new Comparator<Album>() {
 
                         public int compare(Album album1, Album album2) {
@@ -549,21 +551,15 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                         hsItems.add(cover); // stores information on non-null covers
                     }
                 }
-                iNbPages = alItemsToDisplay.size() / CATALOG_PAGE_SIZE + // computes the number
-                        // of page
-                        ((alItemsToDisplay.size() % CATALOG_PAGE_SIZE == 0) ? 0 : 1); // add one
-                // page for
-                // trailling
-                // items
+                iNbPages = alItemsToDisplay.size() / CATALOG_PAGE_SIZE + // computes the number of page
+                        ((alItemsToDisplay.size() % CATALOG_PAGE_SIZE == 0) ? 0 : 1); 
+                // add one page for trailling items
                 // populate page selector
                 jcbPage.removeActionListener(CatalogView.this); // remove action listener
                 jcbPage.removeAllItems(); // void it
                 for (int i = 0; i < iNbPages; i++) { // add the pages
-                    jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1)); // start
-                    // at
-                    // page
-                    // 1,
-                    // not 0
+                    jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1)); 
+                    // start at page 1, not 0
                 }
                 if (iNbPages > 0) {
                     jcbPage.setSelectedIndex(page);

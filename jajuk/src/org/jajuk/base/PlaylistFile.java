@@ -800,7 +800,7 @@ public class PlaylistFile extends Item implements Comparable {
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){
-            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getStringValue(sKey)); 
+            Directory dParent = DirectoryManager.getInstance().getDirectoryByID(getStringValue(sKey)); 
             return dParent.getFio().getAbsolutePath();
         }
         else{//default

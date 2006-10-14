@@ -110,7 +110,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
             return ;
         }
         //check the ID maps an existing file
-        if (FileManager.getInstance().getItem(sFileId) == null){
+        if (FileManager.getInstance().getFileByID(sFileId) == null){
             return;
         }
         //OK, begin to add the new history item
@@ -322,7 +322,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
                 Log.debug("upload:"+sID); //$NON-NLS-1$
             }
             //test if this file is still kwown int the collection
-            if (FileManager.getInstance().getItem(sID) != null){
+            if (FileManager.getInstance().getFileByID(sID) != null){
                 HistoryItem hi = new HistoryItem(sID,Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
                 vHistory.add(hi);
             }

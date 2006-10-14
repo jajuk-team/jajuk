@@ -23,11 +23,10 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
@@ -216,10 +215,26 @@ public class StyleManager extends ItemManager {
         }
     }
 
+    /**
+     * @param sID Item ID
+     * @return item
+     */
+    public Style getStyleByID(String sID) {
+        synchronized(getLock()){
+            return (Style)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return styles list
+     */
     public Set<Style> getStyles() {
-        Set<Style> styleSet = new TreeSet<Style>();
-        for (Item item : getItems()) {
-            styleSet.add((Style) item);
+        Set<Style> styleSet = new LinkedHashSet<Style>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                styleSet.add((Style) item);
+            }
         }
         return styleSet;
     }

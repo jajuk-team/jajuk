@@ -325,7 +325,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
-			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance().getItem(sSynchroSource)));
+			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance().getDeviceByID(sSynchroSource)));
 			if (DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(XML_DEVICE_SYNCHRO_MODE))){
 				jrbBidirSynchro.setSelected(true);
 			}

@@ -198,17 +198,29 @@ public class File extends Item implements Comparable,ITechnicalStrings{
 	 */
 	public int compareTo(Object o){
         File otherFile = (File)o;
-        String sAbs = getAbsolutePath();
-        String sOtherAbs = otherFile.getAbsolutePath();
+        int comp = 0;
+        //Begin by comparing file parent directory for perf
+        comp = this.getDirectory().compareTo(otherFile.getDirectory());
+        if (comp != 0){
+            return comp;
+        }
+        //If both files are in the same directectory, sort by track order
         int iOrder = (int)getTrack().getOrder();
         int iOrderOther = (int)otherFile.getTrack().getOrder();
-        //If both files are in the same directectory, sort by track order
-        if (getDirectory().getAbsolutePath().equals(otherFile.getDirectory().getAbsolutePath())
-                && iOrder != iOrderOther){
+        if (iOrder != iOrderOther){
             return iOrder - iOrderOther;
         }
-        //else simply compare full path name
-        return sAbs.compareTo(sOtherAbs);
+        //if same order too, simply compare full path name
+        String sAbs = getAbsolutePath();
+        String sOtherAbs = otherFile.getAbsolutePath();
+        //should ignore case to get a B c ... and not Bac 
+        //but make sure to differentiate items with different cases
+        if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
+            return sAbs.compareTo(sOtherAbs);
+        }
+        else{
+            return sAbs.compareToIgnoreCase(sOtherAbs);
+        }
    }
 	
 	/**Return true if the file can be accessed right now 
@@ -272,7 +284,7 @@ public class File extends Item implements Comparable,ITechnicalStrings{
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){
-            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getStringValue(sKey)); 
+            Directory dParent = DirectoryManager.getInstance().getDirectoryByID(getStringValue(sKey)); 
             return dParent.getFio().getAbsolutePath();
         }
         else if (XML_TRACK.equals(sKey)){

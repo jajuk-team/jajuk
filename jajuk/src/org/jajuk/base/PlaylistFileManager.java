@@ -22,9 +22,9 @@ package org.jajuk.base;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
@@ -229,7 +229,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
                 File fNew = (File)properties.get(DETAIL_NEW);
                 File fileOld = (File)properties.get(DETAIL_OLD);
                 //search references in playlists
-                Iterator it = getItems().iterator();
+                Iterator it = hmItems.values().iterator();
                 for (int i=0; it.hasNext(); i++){
                     PlaylistFile plf = (PlaylistFile)it.next();
                     if (plf.isReady()){ //check only in mounted playlists, note that we can't change unmounted playlists
@@ -255,10 +255,26 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         return eventSubjectSet;
     }
     
+    /**
+     * @param sID Item ID
+     * @return item
+     */
+    public PlaylistFile getPlaylistFileByID(String sID) {
+        synchronized(getLock()){
+            return (PlaylistFile)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return playlist files list
+     */
     public Set<PlaylistFile> getPlaylistFiles(){
-        Set<PlaylistFile> playListFileSet = new TreeSet<PlaylistFile>();
-        for(Item item: getItems()){
-            playListFileSet.add((PlaylistFile)item);
+        Set<PlaylistFile> playListFileSet = new LinkedHashSet<PlaylistFile>();
+        synchronized (getLock()) {
+            for(Item item: getItems()){
+                playListFileSet.add((PlaylistFile)item);
+            }
         }
         return playListFileSet;
     }

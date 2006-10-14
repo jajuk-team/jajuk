@@ -21,12 +21,9 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.jajuk.util.MD5Processor;
 
@@ -151,7 +148,7 @@ public class DirectoryManager extends ItemManager {
         synchronized (DirectoryManager.getInstance().getLock()) {
             Iterator it = hmItems.keySet().iterator();
             while (it.hasNext()) {
-                Directory directory = (Directory) getItem((String) it.next());
+                Directory directory = getDirectoryByID((String) it.next());
                 if (directory.getDevice().getId().equals(sId)) {
                     it.remove();
                 }
@@ -167,7 +164,7 @@ public class DirectoryManager extends ItemManager {
      */
     public void removeDirectory(String sId) {
         synchronized (DirectoryManager.getInstance().getLock()) {
-            Directory dir = (Directory) getItem(sId);
+            Directory dir = getDirectoryByID(sId);
             if (dir == null) {// check the directory has not already been removed
                 return;
             }
@@ -209,7 +206,7 @@ public class DirectoryManager extends ItemManager {
 
     public Directory getDirectoryForIO(java.io.File fio) {
         synchronized (DirectoryManager.getInstance().getLock()) {
-            Iterator it = getItems().iterator();
+            Iterator it = hmItems.values().iterator();
             while (it.hasNext()) {
                 Directory dir = (Directory) it.next();
                 if (dir.getFio().equals(fio)) {
@@ -220,10 +217,26 @@ public class DirectoryManager extends ItemManager {
         }
     }
 
+     /**
+     * @param sID Item ID
+     * @return Element
+     */
+    public Directory getDirectoryByID(String sID) {
+        synchronized(getLock()){
+            return (Directory)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return directories list
+     */
     public Set<Directory> getDirectories() {
-        Set<Directory> directorySet = new TreeSet<Directory>();
-        for (Item item : getItems()) {
-            directorySet.add((Directory) item);
+        Set<Directory> directorySet = new LinkedHashSet<Directory>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                directorySet.add((Directory) item);
+            }
         }
         return directorySet;
     }

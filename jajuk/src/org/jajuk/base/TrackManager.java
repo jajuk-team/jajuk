@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 
@@ -527,21 +528,12 @@ public class TrackManager extends ItemManager implements Observer {
                 Iterator itFiles = track.getFiles().iterator();
                 while (itFiles.hasNext()) {
                     org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
-                    if ((File) FileManager.getInstance().getItem(file.getId()) == null) { // test
-                                                                                            // if
-                                                                                            // the
-                                                                                            // file
-                                                                                            // exists
-                                                                                            // in
-                                                                                            // the
-                                                                                            // main
-                                                                                            // file
-                                                                                            // repository
+                    if (FileManager.getInstance().getFileByID(file.getId()) == null) { 
                         itFiles.remove();// no? remove it from the track
                     }
                 }
                 if (track.getFiles().size() == 0) { // the track don't map anymore to any physical
-                                                    // item, just remove it
+                    // item, just remove it
                     itTracks.remove();
                 }
             }
@@ -647,7 +639,7 @@ public class TrackManager extends ItemManager implements Observer {
      * @author Bertrand Florat
      * @created 28 août 06
      */
-    static class AgeTrackFilter implements IItemFilter {
+    static class AgeTrackFilter  {
 
         private int iAge = 0;
 
@@ -660,9 +652,9 @@ public class TrackManager extends ItemManager implements Observer {
          * 
          * @see org.jajuk.base.IItemFilter#apply(java.util.ArrayList)
          */
-        public java.util.Collection<Item> apply(java.util.Collection<Item> al) {
+        public Set<Track> apply(Set<Track> al) {
             Date now = new Date();
-            java.util.Collection<Item> out = new ArrayList<Item>(al.size() / 2);
+            Set<Track> out = new HashSet<Track>(al.size() / 2);
             for (Item item : al) {
                 Track track = (Track) item;
                 int iTrackAge = (int) ((now.getTime() - track.getAdditionDate().getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
@@ -674,10 +666,26 @@ public class TrackManager extends ItemManager implements Observer {
         }
     }
 
+    /**
+     * @param sID Item ID
+     * @return item
+     */
+    public Track getTrackByID(String sID) {
+        synchronized(getLock()){
+            return (Track)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return tracks list
+     */
     public Set<Track> getTracks() {
-        Set<Track> tracks = new HashSet<Track>();
-        for (Item item : getItems()) {
-            tracks.add((Track) item);
+        Set<Track> tracks = new LinkedHashSet<Track>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                tracks.add((Track) item);
+            }
         }
         return tracks;
     }

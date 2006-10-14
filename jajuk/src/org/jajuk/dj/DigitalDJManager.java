@@ -365,7 +365,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory{
 					StringTokenizer st = new StringTokenizer(styles,","); //$NON-NLS-1$
 					Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()),""); //$NON-NLS-1$
 					while (st.hasMoreTokens()){
-						ambience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
+						ambience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
 					}
 					proportions.add(new Proportion(ambience,proportion));
 				}
@@ -454,18 +454,18 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory{
 					StringTokenizer st = new StringTokenizer(fromStyles,","); //$NON-NLS-1$
 					Ambience fromAmbience = new Ambience();
                     while (st.hasMoreTokens()){
-						fromAmbience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
+						fromAmbience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
 					}
 					String toStyles = attributes.getValue(attributes.getIndex(XML_DJ_TO));
 					Ambience toAmbience = new Ambience();
                     st = new StringTokenizer(toStyles,","); //$NON-NLS-1$
 					while (st.hasMoreTokens()){
-						toAmbience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
+						toAmbience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
 					}
 					transitions.add(new Transition(fromAmbience,toAmbience,number));
 				}
                 else if (XML_DJ_TRANSITIONS.equals(sQname)){
-                    startupStyle = (Style)StyleManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_DJ_STARTUP_STYLE)));
+                    startupStyle = StyleManager.getInstance().getStyleByID(attributes.getValue(attributes.getIndex(XML_DJ_STARTUP_STYLE)));
                 }
 			}
 		};

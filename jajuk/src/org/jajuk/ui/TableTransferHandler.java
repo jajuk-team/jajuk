@@ -57,7 +57,7 @@ public class TableTransferHandler extends TransferHandler implements ITechnicalS
         }
         Object o = ((JajukTableModel)jtable.getModel()).getItemAt(iSelectedRow);
         if ( o  == null){ //no? try to find a file for this id
-            o = FileManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
+            o = FileManager.getInstance().getFileByID(jtable.getModel().getValueAt(iSelectedRow,0).toString());
         }
         if ( o != null){
             return new TransferableTableRow(o);

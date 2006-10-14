@@ -20,11 +20,9 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
@@ -136,10 +134,7 @@ public class AuthorManager extends ItemManager{
             //re apply old properties from old item
             newItem.cloneProperties(old);
             //update tracks
-            ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
-            Iterator it = alTracks.iterator();
-            while (it.hasNext()){
-                Track track = (Track)it.next();
+            for (Track track:TrackManager.getInstance().getTracks()){
                 if (track.getAuthor().equals(old)){
                     TrackManager.getInstance().changeTrackAuthor(track,sNewName,null);
                 }
@@ -196,10 +191,26 @@ public class AuthorManager extends ItemManager{
         }
     }
     
-    public Set<Author> getAlbums() {
-        Set<Author> authorSet = new TreeSet<Author>();
-        for (Item item : getItems()) {
-            authorSet.add((Author) item);
+     /**
+     * @param sID Item ID
+     * @return Element
+     */
+    public Author getAuthorByID(String sID) {
+        synchronized(getLock()){
+            return (Author)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return albums list
+     */
+    public Set<Author> getAuthors() {
+        Set<Author> authorSet = new LinkedHashSet<Author>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                authorSet.add((Author) item);
+            }
         }
         return authorSet;
     }

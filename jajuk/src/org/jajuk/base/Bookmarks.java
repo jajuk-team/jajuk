@@ -61,7 +61,7 @@ public class Bookmarks implements ITechnicalStrings {
 		StringTokenizer stFiles = new StringTokenizer(sBookmarks,","); //$NON-NLS-1$
 		while ( stFiles.hasMoreTokens()){
 			String sId = stFiles.nextToken();
-			File file = (File)FileManager.getInstance().getItem(sId);
+			File file = FileManager.getInstance().getFileByID(sId);
 			if ( file != null){
 				alFiles.add(file);
 			}

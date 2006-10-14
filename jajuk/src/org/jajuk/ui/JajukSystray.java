@@ -294,7 +294,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
                     if (sID == null){
                         return;
                     }
-                    File file  = (File)FileManager.getInstance().getItem((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
+                    File file  = FileManager.getInstance().getFileByID((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
                     String sOut = ""; //$NON-NLS-1$
                     if (file != null ){
                         String sAuthor = file.getTrack().getAuthor().getName();

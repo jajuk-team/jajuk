@@ -22,10 +22,9 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 
@@ -284,7 +283,7 @@ public class DeviceManager extends ItemManager{
     public boolean isAnyDeviceRefreshing(){
         synchronized(DeviceManager.getInstance().getLock()){
             boolean bOut = false;
-            Iterator it = DeviceManager.getInstance().getItems().iterator();
+            Iterator it = DeviceManager.getInstance().getDevices().iterator();
             while ( it.hasNext()){
                 Device device = (Device)it.next();
                 if ( device.isRefreshing()){
@@ -337,7 +336,7 @@ public class DeviceManager extends ItemManager{
             long l = System.currentTimeMillis();
             lDateLastGlobalRefresh = System.currentTimeMillis();
             boolean bNeedUIRefresh = false;
-            for (Item item:getItems()){
+            for (Item item:getDevices()){
                 Device device = (Device)item;
                 double frequency = 60000 * device.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
                 //check if this device needs auto-refresh
@@ -352,7 +351,7 @@ public class DeviceManager extends ItemManager{
                     //cleanup device
                     bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();//logical or, not an error !
                     //refresh it
-                    bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(false); //logical or, not an error !
+                    bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(false,false); //logical or, not an error !
                 }
                 //If something changed, refresh device ASAP because scanning next device can take a while
                 if (bNeedUIRefresh){
@@ -383,10 +382,26 @@ public class DeviceManager extends ItemManager{
         }
     }
     
+     /**
+     * @param sID Item ID
+     * @return Element
+     */
+    public Device getDeviceByID(String sID) {
+        synchronized(getLock()){
+            return (Device)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return devices list
+     */
     public Set<Device> getDevices(){
-        Set<Device> deviceSet = new TreeSet<Device>();
-        for(Item item: getItems()){
-            deviceSet.add((Device)item);
+        Set<Device> deviceSet = new LinkedHashSet<Device>();
+        synchronized (getLock()) {
+            for(Item item: getItems()){
+                deviceSet.add((Device)item);
+            }
         }
         return deviceSet;
     }

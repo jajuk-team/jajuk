@@ -21,10 +21,8 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
@@ -114,10 +112,7 @@ public class AlbumManager extends ItemManager{
             //re apply old properties from old item
             newItem.cloneProperties(old);
             //update tracks
-            ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
-            Iterator it = alTracks.iterator();
-            while (it.hasNext()){
-                Track track = (Track)it.next();
+            for (Track track:TrackManager.getInstance().getTracks()){
                 if (track.getAlbum().equals(old)){
                     TrackManager.getInstance().changeTrackAlbum(track,sNewName,null);
                 }
@@ -155,10 +150,27 @@ public class AlbumManager extends ItemManager{
         return XML_ALBUMS;
     }
     
+    
+    /**
+     * @param sID Item ID
+     * @return Element
+     */
+    public Album getAlbumByID(String sID) {
+        synchronized(getLock()){
+            return (Album)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     * @return albums list
+     */
     public Set<Album> getAlbums() {
-        Set<Album> albumSet = new TreeSet<Album>();
-        for (Item item : getItems()) {
-            albumSet.add((Album) item);
+        Set<Album> albumSet = new LinkedHashSet<Album>();
+        synchronized (getLock()) {
+            for (Item item : getItems()) {
+                albumSet.add((Album) item);
+            }
         }
         return albumSet;
     }

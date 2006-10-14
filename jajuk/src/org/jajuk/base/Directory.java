@@ -215,7 +215,7 @@ public class Directory extends Item implements Comparable{
      */
     public ArrayList<org.jajuk.base.File> getFilesRecursively() {
         ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
-        for (Item item:FileManager.getInstance().getItems()){
+        for (Item item:FileManager.getInstance().getFiles()){
             org.jajuk.base.File file = (org.jajuk.base.File)item;
             if ( file.hasAncestor(this)){
                 alFiles.add(file);
@@ -274,7 +274,7 @@ public class Directory extends Item implements Comparable{
                 if (bIsMusic) {
                     String sId = FileManager.getID(files[i].getName(),this).intern();
                     //check the file is not already known in database
-                    org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().getItem(sId);
+                    org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
                     //if known file and no deep scan, just leave
                     if (fileRef != null && !bDeepScan){
                         continue;
@@ -315,7 +315,7 @@ public class Directory extends Item implements Comparable{
                 }
                 else{  //playlist file
                     String sId = PlaylistFileManager.getID(files[i].getName(),this);
-                    PlaylistFile plfRef = (PlaylistFile)PlaylistFileManager.getInstance().getItem(sId);
+                    PlaylistFile plfRef = PlaylistFileManager.getInstance().getPlaylistFileByID(sId);
                     //if known playlist file and no deep scan, just leave
                     if (plfRef != null && !bDeepScan){
                         continue;
@@ -380,8 +380,19 @@ public class Directory extends Item implements Comparable{
      */
     public int compareTo(Object o){
         Directory otherDirectory = (Directory)o;
+        int comp = 0;
+        if (getParentDirectory() != null &&
+                otherDirectory.getParentDirectory() != null){
+            comp = this.getParentDirectory()
+                .compareTo(otherDirectory.getParentDirectory()); 
+            if (comp != 0){
+                return comp;
+            }
+        }
         String sAbs = getAbsolutePath();
         String sOtherAbs = otherDirectory.getAbsolutePath();
+        //should ignore case to get a B c ... and not Bac 
+        //but make sure to differentiate items with different cases
         if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
             return sAbs.compareTo(sOtherAbs);
         }
@@ -422,7 +433,7 @@ public class Directory extends Item implements Comparable{
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY_PARENT.equals(sKey)){
-            Directory dParent = (Directory)DirectoryManager.getInstance().getItem((String)getValue(sKey)); 
+            Directory dParent = DirectoryManager.getInstance().getDirectoryByID((String)getValue(sKey)); 
             if (dParent == null){
               return ""; //no parent directory           //$NON-NLS-1$
             }
@@ -431,7 +442,7 @@ public class Directory extends Item implements Comparable{
             }
         }
         else if (XML_DEVICE.equals(sKey)){
-            return ((Device)DeviceManager.getInstance().getItem((String)getValue(sKey))).getName();
+            return (DeviceManager.getInstance().getDeviceByID((String)getValue(sKey))).getName();
         }
         if (XML_NAME.equals(sKey)){
             if (dParent == null){ //if no parent, take device name

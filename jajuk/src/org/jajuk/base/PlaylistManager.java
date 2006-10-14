@@ -21,8 +21,8 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -97,7 +97,7 @@ public class PlaylistManager extends ItemManager{
             else { //new playlist
                 //firstly, make sure the playlist file is not already referenced by another playlist
                 boolean bPresence = false;
-                for (Item item:getItems()){
+                for (Item item: getItems()){
                     Playlist pl = (Playlist)item;
                     if (pl.getPlaylistFiles().contains(plFile)){
                         bPresence = true;
@@ -142,7 +142,7 @@ public class PlaylistManager extends ItemManager{
                 if ( i == JOptionPane.OK_OPTION){
                     boolean bUnmountedItems = false;
                     //take a shallow copy of the array to avoid concurrency exception
-                    ArrayList<PlaylistFile> alFiles = (ArrayList)pl.getPlaylistFiles().clone();
+                    ArrayList<PlaylistFile> alFiles = (ArrayList<PlaylistFile>)pl.getPlaylistFiles().clone();
                     for (int j=0;j<alFiles.size();j++){
                         PlaylistFile plf = alFiles.get(j);
                         java.io.File fileToDelete = plf.getFio();
@@ -206,7 +206,7 @@ public class PlaylistManager extends ItemManager{
                 Iterator itPlaylistFiles = playlist.getPlaylistFiles().iterator();
                 while ( itPlaylistFiles.hasNext()){
                     PlaylistFile plf = (PlaylistFile)itPlaylistFiles.next();
-                    if (PlaylistFileManager.getInstance().getItem(plf.getId()) == null){
+                    if (PlaylistFileManager.getInstance().getPlaylistFileByID(plf.getId()) == null){
                         itPlaylistFiles.remove();	
                     }
                 }
@@ -224,7 +224,7 @@ public class PlaylistManager extends ItemManager{
      */
     public Playlist getPlaylist(PlaylistFile plf){
         synchronized(getLock()){
-            Iterator it = getItems().iterator();
+            Iterator it = hmItems.values().iterator();
             while (it.hasNext()){
                 Playlist pl = (Playlist)it.next();
                 if (pl.getPlaylistFiles().contains(plf)){
@@ -261,10 +261,26 @@ public class PlaylistManager extends ItemManager{
         return XML_PLAYLISTS;
     }
  
+    /**
+     * @param sID Item ID
+     * @return item
+     */
+    public Playlist getPlaylistByID(String sID) {
+        synchronized(getLock()){
+            return (Playlist)hmItems.get(sID);
+        }
+    }
+    
+    /**
+     * 
+     *@return playlists list
+     */
     public Set<Playlist> getPlayLists(){
-        Set<Playlist> playListSet = new HashSet<Playlist>();
-        for(Item item :getItems()){
-            playListSet.add((Playlist)item);
+        Set<Playlist> playListSet = new LinkedHashSet<Playlist>();
+        synchronized (getLock()) {
+            for(Item item : getItems()){
+                playListSet.add((Playlist)item);
+            }
         }
         return playListSet;
     }

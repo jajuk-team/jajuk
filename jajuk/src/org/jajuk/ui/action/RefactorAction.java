@@ -25,14 +25,11 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
-import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;

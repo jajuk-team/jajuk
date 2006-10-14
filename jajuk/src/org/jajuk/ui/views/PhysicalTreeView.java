@@ -554,7 +554,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     if (o instanceof TransferableTreeNode){
                         alSelected.add((Item)((TransferableTreeNode)o).getData());
                     }
-                    else{
+                    else{//root node
                         alSelected = new ArrayList<Item>(FileManager.getInstance().getFiles());
                         items = alSelected.size();
                         hsSelectedFiles.addAll(alSelected);
