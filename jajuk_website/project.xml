@@ -424,6 +424,14 @@
         <version>3.2</version> 
     </dependency>
     
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>l2fprod-common-buttonbar</artifactId>
+        <version>6.9.1</version> 
+    </dependency>
+    
+    
+    
    </dependencies>
   
   <build>

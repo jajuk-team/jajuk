@@ -115,7 +115,6 @@ API ADDITION PROCEDURE
 
 *********************************************************
 API CHANGE PROCEDURE
-- Change file in lib directory
 - Change dist-files/packaging/MANIFEST (check new versions)
 - Change JAJUK_WEBSITE project/project.xml maven file for dependencies
 - Change packaging/jws/jnlp file
