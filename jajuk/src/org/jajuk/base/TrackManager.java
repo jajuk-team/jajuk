@@ -32,7 +32,6 @@ import java.util.Set;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
@@ -144,11 +143,9 @@ public class TrackManager extends ItemManager implements Observer {
             long length, long lYear, long lOrder, Type type) {
         StringBuffer sb = new StringBuffer(100);
         sb.append(style.getId()).append(author.getId()).append(album.getId()).append(sName).append(
-                lYear).append(length).append(lOrder).append(type.getId()); // differenciate tracks
-                                                                            // by type because we
-                                                                            // can't find best file
-                                                                            // on different quality
-                                                                            // levels by format
+                lYear).append(length).append(lOrder).append(type.getId()); 
+        // differenciate tracks by type because we can't find best file
+        // on different quality levels by format
         return MD5Processor.hash(sb.toString());
     }
 
@@ -624,48 +621,7 @@ public class TrackManager extends ItemManager implements Observer {
         this.lMaxRate = lRate;
     }
 
-    /**
-     * @pamam iAge minimum age in days for a track since addition in collection to be token into
-     *        account
-     * @return an age filter
-     */
-    public static AgeTrackFilter getAgeFilter(int iAge) {
-        return new AgeTrackFilter(iAge);
-    }
-
-    /**
-     * Track filter by age
-     * 
-     * @author Bertrand Florat
-     * @created 28 août 06
-     */
-    static class AgeTrackFilter  {
-
-        private int iAge = 0;
-
-        public AgeTrackFilter(int iAge) {
-            this.iAge = iAge;
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.IItemFilter#apply(java.util.ArrayList)
-         */
-        public Set<Track> apply(Set<Track> al) {
-            Date now = new Date();
-            Set<Track> out = new HashSet<Track>(al.size() / 2);
-            for (Item item : al) {
-                Track track = (Track) item;
-                int iTrackAge = (int) ((now.getTime() - track.getAdditionDate().getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
-                if (iTrackAge <= iAge) {
-                    out.add(track);
-                }
-            }
-            return out;
-        }
-    }
-
+    
     /**
      * @param sID Item ID
      * @return item

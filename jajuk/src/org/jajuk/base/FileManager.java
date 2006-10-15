@@ -28,11 +28,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.collections.iterators.FilterIterator;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -258,7 +260,6 @@ public class FileManager extends ItemManager implements Observer {
     public void cleanDevice(String sId) {
         synchronized (FileManager.getInstance().getLock()) {
             Iterator it = hmItems.values().iterator();
-
             while (it.hasNext()) {
                 File file = (File) it.next();
                 if (file.getDirectory() == null
@@ -317,21 +318,21 @@ public class FileManager extends ItemManager implements Observer {
 
     /**
      * @return All accessible files of the collection
-     */
-    public ArrayList<File> getReadyFiles() {
-        synchronized (FileManager.getInstance().getLock()) {
-            // create a tempory table to remove unmounted files
-            ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
-            Iterator it = hmItems.values().iterator();
-            while (it.hasNext()) {
-                File file = (File) it.next();
-                if (file != null && file.isReady()) {
-                    alEligibleFiles.add(file);
-                }
-            }
-            return alEligibleFiles;
+    **/ 
+    public List<File> getReadyFiles() {
+        Set<File> files = null;
+        files = FileManager.getInstance().getFiles();
+        Iterator it = new FilterIterator(
+            files.iterator(),
+            new JajukPredicates.ReadyFilePredicate());
+        List<File> out = new ArrayList<File>(files.size()/2);
+        while (it.hasNext()){
+            out.add((File)it.next());
         }
+        return out;
     }
+    
+    
 
     /**
      * Return a shuffle mounted file from the entire collection
@@ -339,34 +340,30 @@ public class FileManager extends ItemManager implements Observer {
      * @return
      */
     public File getShuffleFile() {
-        synchronized (FileManager.getInstance().getLock()) {
-            ArrayList alEligibleFiles = getReadyFiles();
-
-            if (alEligibleFiles.size() == 0) {
-                return null;
-            }
-            return (File) alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
+        int index = (int)(new Random(System.currentTimeMillis()).nextFloat() * hmItems.size());
+        ArrayList<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
+        if (files.size() == 0) {
+            return null;
         }
-    }
+        return files.get(index);
+     }
 
     /**
      * Return a playlist with the entire accessible shuffle collection
      * 
      * @return The entire accessible shuffle collection (can return a void collection)
      */
-    public ArrayList<File> getGlobalShufflePlaylist() {
-        synchronized (FileManager.getInstance().getLock()) {
-            ArrayList<File> alEligibleFiles = getReadyFiles();
-            Collections.shuffle(alEligibleFiles,new Random(System.currentTimeMillis()));
-            //song level, just shuffle full collection
-            if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE)
-                    .equals(MODE_TRACK)){
-                return alEligibleFiles;
-            }
-            //else return shuffle albums
-            else {
-                return getShuffledFilesByAlbum(alEligibleFiles);
-            }
+    public List<File> getGlobalShufflePlaylist() {
+        List<File> alEligibleFiles = getReadyFiles();
+        Collections.shuffle(alEligibleFiles,new Random(System.currentTimeMillis()));
+        //song level, just shuffle full collection
+        if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE)
+                .equals(MODE_TRACK)){
+            return alEligibleFiles;
+        }
+        //else return shuffle albums
+        else {
+            return getShuffledFilesByAlbum(alEligibleFiles);
         }
     }
 
@@ -400,14 +397,13 @@ public class FileManager extends ItemManager implements Observer {
      * @return The entire accessible novelties collection
      */
     public ArrayList<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
-        synchronized (TrackManager.getInstance().getLock()) {
             ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
             // take tracks matching required age
-            Set<Track> alTracks = TrackManager.getAgeFilter(
-                    ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)).apply(
-                    TrackManager.getInstance().getTracks());
-            for (Item item : alTracks) {
-                Track track = (Track) item;
+            Set<Track> tracks = TrackManager.getInstance().getTracks();
+            Iterator it = new FilterIterator(tracks.iterator(),
+                new JajukPredicates.AgePredicate(ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));        
+            while (it.hasNext()){
+                Track track = (Track) it.next();
                 File file = track.getPlayeableFile(bHideUnmounted); 
                 // try to get a mounted file
                 // (can return null)
@@ -427,7 +423,6 @@ public class FileManager extends ItemManager implements Observer {
                 }
             });
             return alEligibleFiles;
-        }
     }
 
     /**
@@ -435,8 +430,7 @@ public class FileManager extends ItemManager implements Observer {
      * 
      * @return The entire accessible novelties collection
      */
-    public ArrayList<File> getShuffleNoveltiesPlaylist() {
-        synchronized (FileManager.getInstance().getLock()) {
+    public List<File> getShuffleNoveltiesPlaylist() {
             ArrayList<File> alEligibleFiles = getGlobalNoveltiesPlaylist(true);
             //song level, just shuffle full collection
             if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE)
@@ -447,7 +441,6 @@ public class FileManager extends ItemManager implements Observer {
             else {
                 return getShuffledFilesByAlbum(alEligibleFiles);
             }
-        }
     }
     
     /**
@@ -455,7 +448,7 @@ public class FileManager extends ItemManager implements Observer {
      * @param alEligibleFiles
      * @return Shuffled tracks by album
      */
-    private ArrayList<File> getShuffledFilesByAlbum(ArrayList<File> alEligibleFiles){
+    private List<File> getShuffledFilesByAlbum(List<File> alEligibleFiles){
         // start with filling a set of albums containing 
         // at least one ready file 
         HashMap<Album,ArrayList<File>> albumsFiles = 
@@ -472,7 +465,7 @@ public class FileManager extends ItemManager implements Observer {
             albumsFiles.put(album,files);
         }
         //build output
-        ArrayList<File> out = new ArrayList<File>(alEligibleFiles.size());
+        List<File> out = new ArrayList<File>(alEligibleFiles.size());
         ArrayList<Album> albums = new ArrayList<Album>(albumsFiles.keySet());
         //we need to force a new shuffle as internal hashmap arrange items
         Collections.shuffle(albums,new Random(System.currentTimeMillis()));
@@ -488,14 +481,12 @@ public class FileManager extends ItemManager implements Observer {
     /**
      * @return a sorted set of the collection by rate, highest first
      */
-    private ArrayList<File> getSortedByRate() {
-        synchronized (TrackManager.getInstance().getLock()) {
+    private List<File> getSortedByRate() {
             // use only mounted files
-            ArrayList<File> alEligibleFiles = getReadyFiles();
+            List<File> alEligibleFiles = getReadyFiles();
             // now sort by rate
             Collections.sort(alEligibleFiles, rateComparator);
             return alEligibleFiles;
-        }
     }
 
     /**
@@ -504,18 +495,16 @@ public class FileManager extends ItemManager implements Observer {
      * @return Shuffled best tracks (n% of favorite)
      */
     public ArrayList<File> getGlobalBestofPlaylist() {
-        synchronized (FileManager.getInstance().getLock()) {
-            ArrayList<File> al = getSortedByRate();
-            ArrayList<File> alBest = new ArrayList<File>();
-            if (al.size() > 0) {
-                int sup = (int) ((BESTOF_PROPORTION) * al.size()); // find superior interval value
-                if (sup > 0) {
-                    alBest = new ArrayList<File>(al.subList(0, sup - 1));
-                    Collections.shuffle(alBest,new Random(System.currentTimeMillis())); // shufflelize
-                }
+        List<File> al = getSortedByRate();
+        ArrayList<File> alBest = new ArrayList<File>();
+        if (al.size() > 0) {
+            int sup = (int) ((BESTOF_PROPORTION) * al.size()); // find superior interval value
+            if (sup > 0) {
+                alBest = new ArrayList<File>(al.subList(0, sup - 1));
+                Collections.shuffle(alBest,new Random(System.currentTimeMillis())); // shufflelize
             }
-            return alBest;
         }
+        return alBest;
     }
 
     /**
@@ -524,9 +513,7 @@ public class FileManager extends ItemManager implements Observer {
      * @return top files
      */
     public ArrayList getBestOfFiles() {
-        synchronized (FileManager.getInstance().getLock()) {
             return getBestOfFiles(true);
-        }
     }
 
     /**
@@ -536,11 +523,8 @@ public class FileManager extends ItemManager implements Observer {
      * @return top files
      */
     public ArrayList getBestOfFiles(boolean bHideUnmounted) {
-        synchronized (TrackManager.getInstance().getLock()) {
-            if (FileManager.getInstance().hasRateChanged() || alBestofFiles == null) { // test a
-                                                                                        // rate has
-                                                                                        // changed
-                                                                                        // for perfs
+            // test a rate has changed for perfs
+            if (FileManager.getInstance().hasRateChanged() || alBestofFiles == null) { 
                 // clear data
                 alBestofFiles.clear();
                 int iNbBestofFiles = Integer.parseInt(ConfigurationManager
@@ -565,7 +549,6 @@ public class FileManager extends ItemManager implements Observer {
                 setRateHasChanged(false);
             }
             return alBestofFiles;
-        }
     }
 
     /**
@@ -577,13 +560,14 @@ public class FileManager extends ItemManager implements Observer {
      */
     public File getNextFile(File file) {
         synchronized (FileManager.getInstance().getLock()) {
+            Set<Item> files = getItems();
             File fileNext = null;
             if (file == null) {
                 return fileNext;
             }
             // look for a correct file from index to collection end
             boolean bStarted = false;
-            Iterator it = getFiles().iterator();
+            Iterator it = files.iterator();
             while (it.hasNext()) {
                 fileNext = (File) it.next();
                 if (bStarted) {
@@ -597,7 +581,7 @@ public class FileManager extends ItemManager implements Observer {
                 }
             }
             // ok restart from collection from begining
-            it = getFiles().iterator();
+            it = files.iterator();
             while (it.hasNext()) {
                 fileNext = (File) it.next();
                 if (fileNext.isReady()) { // file must be on a mounted device not refreshing
@@ -618,11 +602,12 @@ public class FileManager extends ItemManager implements Observer {
      */
     public File getPreviousFile(File file) {
         synchronized (FileManager.getInstance().getLock()) {
+            Set<Item> files = getItems();
             if (file == null) {
                 return null;
             }
             File filePrevious = null;
-            ArrayList<Item> alSortedFiles = new ArrayList<Item>(getFiles());
+            ArrayList<Item> alSortedFiles = new ArrayList<Item>(files);
             int i = alSortedFiles.indexOf(file);
             // test if this file is the very first one
             if (i == 0) {
@@ -653,10 +638,11 @@ public class FileManager extends ItemManager implements Observer {
      */
     public boolean isVeryfirstFile(File file) {
         synchronized (FileManager.getInstance().getLock()) {
+            Set<Item> files = getItems();
             if (file == null || hmItems.size() == 0) {
                 return false;
             }
-            Iterator it = getFiles().iterator();
+            Iterator it = files.iterator();
             File first = (File) it.next();
             return (file.equals(first));
         }
@@ -666,23 +652,23 @@ public class FileManager extends ItemManager implements Observer {
      * @param file
      * @return All files in the same directory than the given one
      */
-    public ArrayList<File> getAllDirectory(File file) {
+    public Set<File> getAllDirectory(File file) {
         synchronized (getLock()) {
+            Set<Item> files = getItems();
             if (file == null) {
                 return null;
             }
-            ArrayList<File> alResu = new ArrayList<File>(10);
+            Set<File> out = new TreeSet<File>();
             Directory dir = file.getDirectory();
-            Iterator it = getFiles().iterator();
+            Iterator it = files.iterator();
             while (it.hasNext()) {
                 File f = (File) it.next();
                 Directory d = f.getDirectory();
                 if (d.equals(dir)) {
-                    alResu.add(f);
+                    out.add(f);
                 }
             }
-            Collections.sort(alResu);
-            return alResu;
+            return out;
         }
     }
 
@@ -690,28 +676,29 @@ public class FileManager extends ItemManager implements Observer {
      * @param file
      * @return All files in the same directory from the given one (includes the one)
      */
-    public ArrayList getAllDirectoryFrom(File file) {
+    public Set<File> getAllDirectoryFrom(File file) {
         synchronized (getLock()) {
             if (file == null) {
                 return null;
             }
-            ArrayList<File> alResu = new ArrayList<File>(10);
+            Set<Item> files = getItems();
+            Set<File> out = new TreeSet<File>();
             Directory dir = file.getDirectory();
-            Iterator it = getFiles().iterator();
+            Iterator it = files.iterator();
             boolean bSeenTheOne = false;
             while (it.hasNext()) {
                 File f = (File) it.next();
                 if (f.equals(file)) {
                     bSeenTheOne = true;
-                    alResu.add(f);
+                    out.add(f);
                 } else {
                     Directory d = f.getDirectory();
                     if (d.equals(dir) && bSeenTheOne) {
-                        alResu.add(f);
+                        out.add(f);
                     }
                 }
             }
-            return alResu;
+            return out;
         }
     }
 
@@ -807,6 +794,4 @@ public class FileManager extends ItemManager implements Observer {
         return fileSet;
     }
     
-    
-   
 }

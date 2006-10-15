@@ -22,6 +22,7 @@ package org.jajuk.dj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -93,10 +94,10 @@ public class TransitionDigitalDJ extends DigitalDJ {
      * @see org.jajuk.base.DigitalDJ#generatePlaylist()
      */
     @Override
-    public ArrayList<File> generatePlaylist() {
-        ArrayList<File> out = new ArrayList(500);
+    public List<File> generatePlaylist() {
+        List<File> out = new ArrayList(500);
         //get a global shuffle selection
-        ArrayList<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
+        List<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
         //Select by rate if needed
         filterFilesByRate(global);
         //None element, leave
@@ -104,9 +105,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
             return out;
         }
         //Sort tracks by FROM ambience (set of styles)
-        HashMap<Ambience,ArrayList<File>> hmAmbienceFiles = new HashMap(100); 
+        HashMap<Ambience,List<File>> hmAmbienceFiles = new HashMap<Ambience,List<File>>(100); 
         //This list contains all files not yet sorted (used for null key)
-        ArrayList<File> alFilesToSort = (ArrayList)global.clone();
+        List<File> alFilesToSort = (List)((ArrayList) global).clone();
         for (Transition tr:transitions){
             Ambience from = null;
             if (tr != null){
@@ -167,7 +168,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
                     bFirstTrack = false;
                 }
             }
-            ArrayList<File> files = hmAmbienceFiles.get(currentAmbience);
+            List<File> files = hmAmbienceFiles.get(currentAmbience);
             if (files != null && files.size() > nb){
                 for (int i=0;i<nb;i++){
                     File file = (File)Util.getShuffleItem(files);

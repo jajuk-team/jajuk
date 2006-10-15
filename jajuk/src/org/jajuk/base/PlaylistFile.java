@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -357,7 +358,7 @@ public class PlaylistFile extends Item implements Comparable {
 	 * Add some files to this playlist file. 
 	 * @param alFilesToAdd : List of File
 	 */
-	public synchronized void addFiles(ArrayList alFilesToAdd){
+	public synchronized void addFiles(List<File> alFilesToAdd){
 	    try{
 	        Iterator it = alFilesToAdd.iterator();
 	        while (it.hasNext()){

@@ -23,6 +23,7 @@ package org.jajuk.dj;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.jajuk.base.File;
@@ -54,8 +55,8 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      * @see org.jajuk.base.DigitalDJ#generatePlaylist()
      */
     @Override
-    public ArrayList<File> generatePlaylist() {
-        ArrayList<File> out = new ArrayList(100);
+    public List<File> generatePlaylist() {
+        List<File> out = new ArrayList<File>(100);
         out = getSequence(); 
         if ( !bUnicity && out.size() > 0){
             while (out.size() < MIN_TRACKS_NUMBER_WITHOUT_UNICITY){
@@ -69,17 +70,17 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      * 
      * @return a single loop sequence
      */
-    private ArrayList<File> getSequence(){
-        ArrayList<File> out = new ArrayList(100);
-        HashMap<Proportion,ArrayList<File>> list = new HashMap(10); 
+    private List<File> getSequence(){
+        List<File> out = new ArrayList<File>(100);
+        HashMap<Proportion,List<File>> list = new HashMap<Proportion,List<File>>(10); 
         //get a global shuffle selection, we will keep only tracks with wanted styles
-        ArrayList<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
+        List<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
         //Select by rate if needed
         filterFilesByRate(global);
         for (File file:global){
             for (Proportion prop:proportions){
                 if (prop.getStyles().contains(file.getTrack().getStyle())){
-                    ArrayList files = list.get(prop);
+                    List files = list.get(prop);
                     if (files == null){ //not yet file list
                         files = new ArrayList(100);
                         list.put(prop,files);
@@ -98,7 +99,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
         float fTotal = 0;
         for (Proportion prop:list.keySet()){
             fTotal += prop.getProportion();
-            ArrayList files = list.get(prop);
+            List files = list.get(prop);
             //keep proportion with smallest number of files
             if (minProp == null || files.size() < iMinSize ){
                 minProp = prop;
@@ -107,7 +108,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
         }
         //apply proportions
         for (Proportion prop:list.keySet()){
-            ArrayList<File> files = list.get(prop);
+            List<File> files = list.get(prop);
             out.addAll(files.subList(0,(int)(iMinSize*prop.getProportion())));
         }
         //complete this shuffle files if total sum < 100%

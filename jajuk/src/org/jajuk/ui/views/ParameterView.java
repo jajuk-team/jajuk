@@ -1045,7 +1045,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
         //Notify tables
         ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE));
-        
+        //display a message
+        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
     }
   
     /**

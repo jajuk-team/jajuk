@@ -20,9 +20,9 @@
 
 package org.jajuk.dj;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
@@ -104,7 +104,7 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
      * Filter by rate and remove duplicates (unicity)
      * @param files
      */
-    void filterFilesByRate(ArrayList<File> files){
+    void filterFilesByRate(List<File> files){
         //this set stores already used tracks
         HashSet<Track> selectedTracks =  new HashSet(files.size());
         //Select by rate if needed
@@ -182,7 +182,7 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
      * 
      * @return Generated playlist
      */
-    abstract public ArrayList<File> generatePlaylist();
+    abstract public List<File> generatePlaylist();
 
     public String getID() {
         return this.sID;

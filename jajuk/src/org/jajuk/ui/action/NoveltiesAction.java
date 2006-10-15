@@ -6,7 +6,7 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -33,7 +33,7 @@ public class NoveltiesAction extends ActionBase {
 
     public void perform(ActionEvent evt) throws JajukException {
         Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
-        ArrayList<File> alToPlay = Util.filterByAmbience(FileManager.
+        List<File> alToPlay = Util.filterByAmbience(FileManager.
             getInstance().getShuffleNoveltiesPlaylist(),ambience);
         if (alToPlay != null && alToPlay.size() > 0) {
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),

@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -125,7 +126,7 @@ public class FIFO implements ITechnicalStrings {
      * @param alItems
      * @param bAppend
      */
-    public void push(final ArrayList<StackItem> alItems, final boolean bAppend) {
+    public void push(final List<StackItem> alItems, final boolean bAppend) {
         Thread t = new Thread() { // do it in a thread to make UI more reactive
             public void run() {
                 try {
@@ -177,7 +178,7 @@ public class FIFO implements ITechnicalStrings {
      * @param bAppend
      *            keep previous files or stop them to start a new one ?
      */
-    private void pushCommand(ArrayList<StackItem> alItems, boolean bAppend) {
+    private void pushCommand(List<StackItem> alItems, boolean bAppend) {
         try {
             // wake up FIFO if stopped
             bStop = false;

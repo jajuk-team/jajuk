@@ -21,9 +21,10 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.StyleManager;
 import org.jajuk.dj.DigitalDJ;
 import org.jajuk.dj.DigitalDJManager;
@@ -63,7 +64,7 @@ public class DJAction extends ActionBase {
                     if (dj != null){
                         ConfigurationManager.setProperty(CONF_FADE_DURATION,Integer.toString(dj.getFadingDuration()));
                         Util.waiting();
-                        ArrayList al = dj.generatePlaylist();
+                        List<File> al = dj.generatePlaylist();
                         Util.stopWaiting();
                         if (al.size() == 0){ //DJ constraints cannot be respected
                             Messages.showErrorMessage("158"); //$NON-NLS-1$

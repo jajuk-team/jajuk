@@ -228,7 +228,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 */
 	synchronized void selectPlaylistFileItem(PlaylistFileItem plfi){
 		//remove item border
-		if (plfiSelected!=null){
+		if (plfiSelected != null ){
 			plfiSelected.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		}
 		plfi.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
@@ -238,7 +238,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
         Properties properties = new Properties();
         properties.put(DETAIL_ORIGIN,AbstractPlaylistRepositoryView.this);
         properties.put(DETAIL_SELECTION,plfi);
-        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_CHANGED,properties));
+        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED,properties));
   }
 	
 	

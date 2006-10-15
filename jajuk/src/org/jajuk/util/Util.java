@@ -897,11 +897,11 @@ public class Util implements ITechnicalStrings {
      * @param alFiles
      * @return Given list to play with shuffle or others runles applied
      */
-    public static ArrayList<org.jajuk.base.File> applyPlayOption(
-            ArrayList<org.jajuk.base.File> alFiles) {
+    public static List<org.jajuk.base.File> applyPlayOption(
+            List<org.jajuk.base.File> alFiles) {
         if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)) {
-            ArrayList<org.jajuk.base.File> alFilesToPlay = (ArrayList<org.jajuk.base.File>) alFiles
-                    .clone();
+            List<org.jajuk.base.File> alFilesToPlay = 
+                (List<org.jajuk.base.File>)((ArrayList<org.jajuk.base.File>) alFiles).clone();
             Collections.shuffle(alFilesToPlay,new Random(System.currentTimeMillis()));
             return alFilesToPlay;
         }
@@ -916,7 +916,7 @@ public class Util implements ITechnicalStrings {
      * @param bUserLauched
      * @return
      */
-    public static ArrayList<StackItem> createStackItems(ArrayList<org.jajuk.base.File> alFiles,
+    public static List<StackItem> createStackItems(List<org.jajuk.base.File> alFiles,
             boolean bRepeat, boolean bUserLauched) {
         ArrayList<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
         Iterator it = alFiles.iterator();
@@ -1457,8 +1457,8 @@ public class Util implements ITechnicalStrings {
      *            ambience
      * @return the list filtered
      */
-    public static ArrayList<org.jajuk.base.File> filterByAmbience(
-            ArrayList<org.jajuk.base.File> al, Ambience ambience) {
+    public static List<org.jajuk.base.File> filterByAmbience(
+            List<org.jajuk.base.File> al, Ambience ambience) {
         // Void filter, return the input
         if (ambience == null || ambience.getStyles().size() == 0) {
             return al;

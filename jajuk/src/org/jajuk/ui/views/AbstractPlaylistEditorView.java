@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -122,7 +123,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     int iType;
     
     /**Values*/
-    ArrayList<StackItem> alItems = new ArrayList<StackItem>(10);
+    List<StackItem> alItems = new ArrayList<StackItem>(10);
     
     /**Values planned*/
     ArrayList<StackItem> alPlanned = new ArrayList<StackItem>(10);
@@ -459,7 +460,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         ObservationManager.register(this);
         //DND
         //force a refresh
-        update(new Event(EventSubject.EVENT_PLAYLIST_CHANGED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_CHANGED)));
+        update(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED)));
         update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); //force first refresh
         //refresh columns if new property
     }
@@ -469,7 +470,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         eventSubjectSet.add(EventSubject.EVENT_PLAYLIST_REFRESH);
         eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
         eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-        eventSubjectSet.add(EventSubject.EVENT_PLAYLIST_CHANGED);
+        eventSubjectSet.add(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED);
         eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
         eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
         return eventSubjectSet;
@@ -532,7 +533,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     bReloading = true; //flag reloading to avoid wrong column events
                     Object origin = ObservationManager.getDetail(event,DETAIL_ORIGIN);
                     //changed of playlist
-                    if (EventSubject.EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
+                    if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject) && event.getDetails() != null){
                         //test mapping between editor and repository, to be refactored
                         if ((AbstractPlaylistEditorView.this instanceof PhysicalPlaylistEditorView && !(origin instanceof PhysicalPlaylistRepositoryView))
                                 || (AbstractPlaylistEditorView.this instanceof LogicalPlaylistEditorView && !(origin instanceof LogicalPlaylistRepositoryView))){

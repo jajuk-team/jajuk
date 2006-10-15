@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.jajuk.util.ConfigurationManager;
@@ -154,7 +155,7 @@ public class Bookmarks implements ITechnicalStrings {
 	 * Add files to this playlist
 	 * @param alFilesToAdd
 	 */
-	public void addFiles(ArrayList alFilesToAdd){
+	public void addFiles(List<File> alFilesToAdd){
 	    try{
 	        Iterator it = alFilesToAdd.iterator();
 	        while ( it.hasNext()){

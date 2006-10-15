@@ -21,6 +21,7 @@
 package org.jajuk.dj;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -49,12 +50,12 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      * @see org.jajuk.base.DigitalDJ#generatePlaylist()
      */
     @Override
-    public ArrayList<File> generatePlaylist() {
+    public List<File> generatePlaylist() {
         if (ambience == null){ //can be null if ambience has been removed
             Messages.showErrorMessage("159"); //$NON-NLS-1$
-            return new ArrayList();
+            return new ArrayList<File>();
         }
-        ArrayList<File> out = new ArrayList(100);
+        List<File> out = new ArrayList<File>(100);
         out = getSequence(); 
         if ( !bUnicity && out.size() > 0){
             while (out.size() < MIN_TRACKS_NUMBER_WITHOUT_UNICITY){
@@ -68,10 +69,10 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      * 
      * @return a single loop sequence
      */
-    private ArrayList<File> getSequence(){
-        ArrayList<File> out = new ArrayList(100);
+    private List<File> getSequence(){
+        List<File> out = new ArrayList<File>(100);
         //Get a shuffle selection
-        ArrayList<File> files = FileManager.getInstance().getGlobalShufflePlaylist();
+        List<File> files = FileManager.getInstance().getGlobalShufflePlaylist();
         //Keep only right styles and check for unicity
         for (File file:files){
             if (ambience.getStyles().contains(file.getTrack().getStyle())){

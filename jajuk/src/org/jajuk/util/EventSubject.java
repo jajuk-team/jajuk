@@ -48,7 +48,7 @@ public enum EventSubject {
     EVENT_PLAYER_PAUSE,//the pause button has been pressed
     EVENT_PLAYER_RESUME,//the resume button has been pressed
     EVENT_PLAYLIST_REFRESH,
-    EVENT_PLAYLIST_CHANGED,
+    EVENT_PLAYLIST_SELECTION_CHANGED,
     EVENT_FILE_LAUNCHED,//a file has been lauched by the fifo
     EVENT_HEART_BEAT,//heart beat for geenral use to refresh subscribers every n secs
     EVENT_ZERO, //a reinit has been required

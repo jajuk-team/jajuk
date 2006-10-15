@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -785,7 +786,7 @@ public class Main implements ITechnicalStrings {
      * Launch initial track at startup
      */
     private static void launchInitialTrack(){
-        ArrayList<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
+        List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
         org.jajuk.base.File fileToPlay = null;
         if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
             if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST) ||
