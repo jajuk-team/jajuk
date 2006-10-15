@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -984,7 +983,6 @@ public class Main implements ITechnicalStrings {
                     //Main panel
                     jpContentPane = new JPanel();
                     jpContentPane.setOpaque(true);
-                    jpContentPane.setBorder(BorderFactory.createEtchedBorder());
                     jpContentPane.setLayout(new BorderLayout());
                     
                     //Add static panels
