@@ -50,9 +50,9 @@ import org.xml.sax.Attributes;
  * @created    17 oct. 2003
  */
 public class Device extends Item implements ITechnicalStrings, Comparable{
-    
+
     private static final long serialVersionUID = 1L;
-	/**Device URL (used for perfs)*/
+    /**Device URL (used for perfs)*/
     private String sUrl;
     /** IO file for optimizations* */
     private java.io.File fio;
@@ -86,7 +86,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
     long lDateLastRefresh;
     /**Refresh message*/
     private String sFinalMessage = "";  //$NON-NLS-1$
-    
+
     /**
      * Device constructor
      * @param sId
@@ -97,14 +97,14 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
     public Device(String sId, String sName) {
         super(sId,sName);
     }
-    
+
     /* (non-Javadoc)
      * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_DEVICE;
     }
-    
+
     /**
      * toString method
      */
@@ -113,7 +113,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE)) +
         " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
     }
-    
+
     /**
      * Equal method to check two devices are identical
      * @param otherDevice
@@ -125,14 +125,14 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         return this.getId().equals(((Device)otherDevice).getId() );
     }
-    
+
     /**
      * hashcode ( used by the equals method )
      */
     public int hashCode(){
         return getId().hashCode();
     }
-    
+
     /**
      * Refresh : scan asynchronously the device to find tracks
      * @param bAsynchronous : set asynchonous or synchronous mode
@@ -141,7 +141,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
     public void refresh(boolean bAsynchronous) {
         refresh(bAsynchronous,false);
     }
-    
+
     /**
      * Refresh : scan asynchronously the device to find tracks
      * @param bAsynchronous : set asynchonous or synchronous mode
@@ -175,9 +175,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         else{
             manualRefresh(bAsk);
         }
-        
+
     }
-    
+
     /**
      * Manual refresh
      *@param bAsk: should we ask user if a deep or fast scan is required? default=deep
@@ -221,9 +221,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         catch (IOException e) {
             Log.error(e);
         }
-        
+
     }
-    
+
     /**
      * The refresh itself
      * 
@@ -264,7 +264,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                 Messages.showErrorMessage("101"); //$NON-NLS-1$
                 return false;
             }
-            
+
             //index init
             File fCurrent = fTop;
             int[] indexTab = new int[100]; //directory index  
@@ -273,7 +273,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             }
             int iDeep = 0; //deep
             Directory dParent = null;
-            
+
             //Create a directory for device itself and scan files to allow files at the root of the device
             if (!getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) 
                     || !getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
@@ -312,7 +312,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                     }
                 }					
             }
-            
+
             //Display end of refresh message with stats
             lTime = System.currentTimeMillis()-lTime;
             StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")). //$NON-NLS-1$ //$NON-NLS-2$
@@ -341,8 +341,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             bAlreadyRefreshing = false;
         }
     }
-    
-    
+
+
     /**
      * Synchroning asynchronously 
      * @param bAsynchronous : set asynchronous or synchronous mode
@@ -373,8 +373,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             synchronizeCommand();
         }
     }
-    
-    
+
+
     /**
      * Synchronize action itself
      *@param device : device to synchronize
@@ -394,7 +394,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                 return;
             }
             Device dSrc = DeviceManager.getInstance().getDeviceByID(sIdSrc);
-             //perform a fast refresh
+            //perform a fast refresh
             this.refreshCommand(false,true);
             //if bidi sync, refresh the other device as well (new file can have been copied to it)
             if (bidi){
@@ -432,8 +432,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             bAlreadySynchronizing = false;
         }
     }
-    
-    
+
+
     /**
      * Synchronize a device with another one (unidirectional)
      *@param device : device to synchronize
@@ -445,36 +445,35 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         HashSet<String> hsDesynchroPaths = new HashSet<String>(10); //contains paths ( relative to device) of desynchronized dirs
         HashSet<Directory> hsDestDirs = new HashSet<Directory>(100);
         int iNbCreatedFiles = 0;
-        synchronized(DirectoryManager.getInstance().getLock()){
-           it = DirectoryManager.getInstance().getDirectories().iterator();
-            while ( it.hasNext()){
-                Directory dir = (Directory)it.next();
-                if ( dir.getDevice().equals(dSrc)){
-                    if ( dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)){  //don't take desynchronized dirs into account //$NON-NLS-1$
-                        hsSourceDirs.add(dir);
-                    }
-                    else{
-                        hsDesynchroPaths.add(dir.getRelativePath());	
-                    }
+        it = DirectoryManager.getInstance().getDirectories().iterator();
+        while ( it.hasNext()){
+            Directory dir = (Directory)it.next();
+            if ( dir.getDevice().equals(dSrc)){
+                if ( dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)){  //don't take desynchronized dirs into account //$NON-NLS-1$
+                    hsSourceDirs.add(dir);
                 }
-            }
-            it = DirectoryManager.getInstance().getDirectories().iterator();
-            while ( it.hasNext()){
-                Directory dir = (Directory)it.next();
-                if ( dir.getDevice().equals(dest)){
-                    if ( dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)){  //don't take desynchronized dirs into account //$NON-NLS-1$
-                        hsDestDirs.add(dir);
-                    }
-                    else{
-                        hsDesynchroPaths.add(dir.getRelativePath());
-                    }
+                else{
+                    hsDesynchroPaths.add(dir.getRelativePath());	
                 }
             }
         }
+        it = DirectoryManager.getInstance().getDirectories().iterator();
+        while ( it.hasNext()){
+            Directory dir = (Directory)it.next();
+            if ( dir.getDevice().equals(dest)){
+                if ( dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)){  //don't take desynchronized dirs into account //$NON-NLS-1$
+                    hsDestDirs.add(dir);
+                }
+                else{
+                    hsDesynchroPaths.add(dir.getRelativePath());
+                }
+            }
+        }
+
         it = hsSourceDirs.iterator();
         Iterator it2;
         FileFilter filter = new JajukFileFilter(false,new FileFilter[]{
-                    JajukFileFilter.KnownTypeFilter.getInstance(),JajukFileFilter.ImageFilter.getInstance()}); //concidere known exte,sions and image files
+                JajukFileFilter.KnownTypeFilter.getInstance(),JajukFileFilter.ImageFilter.getInstance()}); //concidere known exte,sions and image files
         while ( it.hasNext()){
             //give a chance to exit during sync
             if (Main.isExiting()){
@@ -543,99 +542,93 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         return iNbCreatedFiles;
     }
-    
-    
+
+
     /**
      * @return
      */
     public boolean isMounted() {
         return bMounted;
     }
-    
+
     /**
      * @return
      */
     public String getDeviceTypeS() {
         return DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE));
     }
-    
+
     /**
      * @return
      */
     public long getDeviceType() {
         return getLongValue(XML_TYPE);
     }
-    
-    
+
+
     /**
      * @return
      */
     public String getUrl() {
         return sUrl;
     }
-    
+
     /**
      * @param url The sUrl to set.
      */
     public void setUrl(String url) {
-        synchronized (DeviceManager.getInstance().getLock()){
-            this.sUrl = url;
-            setProperty(XML_URL,url);
-            this.fio = new File(url);
-            /**Reset files*/
-            synchronized(FileManager.getInstance().getLock()){
-                Iterator it = FileManager.getInstance().getFiles().iterator();
-                while (it.hasNext()) {
-                    org.jajuk.base.File file = (org.jajuk.base.File) it.next();
-                    file.reset();
-                }
-            }
-            /**Reset playlist files*/
-            synchronized(PlaylistFileManager.getInstance().getLock()){
-                Iterator it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
-                while (it.hasNext()) {
-                    org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it.next();
-                    plf.reset();
-                }
-            }
+        this.sUrl = url;
+        setProperty(XML_URL,url);
+        this.fio = new File(url);
+        /**Reset files*/
+        Iterator it = FileManager.getInstance().getFiles().iterator();
+        while (it.hasNext()) {
+            org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+            file.reset();
+        }
+        /**Reset playlist files*/
+        it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
+        while (it.hasNext()) {
+            org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it.next();
+            plf.reset();
         }
     }
-    
+
     /**
      * @return
      */
     public ArrayList getDirectories() {
         return alDirectories;
     }
-    
+
     /**
      * @param directory
      */
     public void addDirectory(Directory directory) {
         alDirectories.add(directory);
     }
-    
+
     /** Tells if a device is refreshing
      */
     public boolean isRefreshing(){
         return bAlreadyRefreshing;
     }
-    
-    
+
+
     /** Tells if a device is synchronizing
      */
     public boolean isSynchronizing(){
         return bAlreadySynchronizing;
     }
-    
+
     /**
      * Mount the device
      */
     public  void mount() throws Exception{
         mount(true);
     }
-    
-    
+
+
     /**
      * Mount the device
      * @param bUIRefresh set wheter the UI should be refreshed
@@ -673,7 +666,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
         }
     }
-    
+
     /**
      * Unmount the device
      *
@@ -681,8 +674,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
     public  void unmount() throws Exception{
         unmount(false,true);
     }
-    
-    
+
+
     /**
      * Unmount the device with ejection 
      * @param bEjection set whether the device must be ejected
@@ -723,9 +716,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_UNMOUNT));
         }
     }
-    
-    
-    
+
+
+
     /**
      * Test device accessibility
      *@return true if the device is available
@@ -754,14 +747,12 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             if ( file.exists() && file.canRead()){ //see if the url exists and is readable
                 //check if this device was void
                 boolean bVoid = true;
-                synchronized(FileManager.getInstance().getLock()){
-                    Iterator it = FileManager.getInstance().getFiles().iterator();
-                    while (it.hasNext()){
-                        org.jajuk.base.File f = (org.jajuk.base.File)it.next();
-                        if (f.getDirectory().getDevice().equals(this)){ //at least one field in this device
-                            bVoid = false;
-                            break;
-                        }
+                Iterator it = FileManager.getInstance().getFiles().iterator();
+                while (it.hasNext()){
+                    org.jajuk.base.File f = (org.jajuk.base.File)it.next();
+                    if (f.getDirectory().getDevice().equals(this)){ //at least one field in this device
+                        bVoid = false;
+                        break;
                     }
                 }
                 if (!bVoid){  //if the device is not supposed to be void, check if it is the case, if no, the device must not be unix-mounted
@@ -788,14 +779,14 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         Util.stopWaiting();
         return bOK;
     }
-    
+
     /**
      * @return Returns the unix mount point.
      */
     public String getMountPoint() {
         return sMountPoint;
     }
-    
+
     /**
      *Alphabetical comparator used to display ordered lists of devices
      *@param other device to be compared
@@ -805,31 +796,29 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         Device otherDevice = (Device)o;
         return getName().compareToIgnoreCase(otherDevice.getName());
     }
-    
+
     /**
      * return child files recursively
      * @return child files recursively
      */
     public ArrayList<org.jajuk.base.File> getFilesRecursively() {
-        synchronized(DirectoryManager.getInstance().getLock()){
-            //looks for the root directory for this device
-            Directory dirRoot = null;
-            Collection dirs = DirectoryManager.getInstance().getDirectories();
-            Iterator it = dirs.iterator();
-            while (it.hasNext()){
-                Directory dir = (Directory)it.next();
-                if ( dir.getDevice().equals(this) && dir.getFio().equals(fio)){
-                    dirRoot = dir;
-                }
+        //looks for the root directory for this device
+        Directory dirRoot = null;
+        Collection dirs = DirectoryManager.getInstance().getDirectories();
+        Iterator it = dirs.iterator();
+        while (it.hasNext()){
+            Directory dir = (Directory)it.next();
+            if ( dir.getDevice().equals(this) && dir.getFio().equals(fio)){
+                dirRoot = dir;
             }
-            ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
-            if (dirRoot != null){
-                alFiles = dirRoot.getFilesRecursively();
-            }
-            return alFiles;
         }
+        ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
+        if (dirRoot != null){
+            alFiles = dirRoot.getFilesRecursively();
+        }
+        return alFiles;
     }
-    
+
     /**Return true if the device can be accessed right now 
      * @return true the file can be accessed right now*/
     public boolean isReady(){
@@ -838,21 +827,21 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         return false;
     }
-    
+
     /**
      * @return Returns the IO file reference to this directory.
      */
     public File getFio() {
         return fio;
     }
-    
+
     /**
      * Get item description
      */
     public String getDesc(){
         return Messages.getString("Item_Device")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    
+
     /* (non-Javadoc)
      * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
@@ -865,11 +854,11 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             return super.getHumanValue(sKey);
         }
     }
-    
+
     public long getDateLastRefresh() {
         return lDateLastRefresh;
     }
-    
+
     /**
      * Scan directories to cleanup removed files and playlist files
      * @param device device to cleanup
@@ -879,10 +868,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         boolean bChanges = false;
         long l = System.currentTimeMillis();
         //need to use a shallow copy to avoid concurent exceptions
-        Set<Directory> dirs = null;
-        synchronized(DirectoryManager.getInstance().getLock()){
-        	dirs = DirectoryManager.getInstance().getDirectories();
-        }
+        Set<Directory> dirs = DirectoryManager.getInstance().getDirectories();
         //directories scleanup
         for (Item item:dirs){
             Directory dir = (Directory)item;
@@ -891,45 +877,33 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                     && dir.getDevice().isMounted()){ 
                 if (!dir.getFio().exists()){
                     //note that associated files are removed too
-                    synchronized(DirectoryManager.getInstance().getLock()){
-                        DirectoryManager.getInstance().removeDirectory(dir.getId());
-                    }
+                    DirectoryManager.getInstance().removeDirectory(dir.getId());
                     Log.debug("Removed: "+dir); //$NON-NLS-1$
                     bChanges = true;
                 }
             }
         }
         //files cleanup
-        Set<org.jajuk.base.File> files = null;
-        synchronized(FileManager.getInstance().getLock()){
-        	files = FileManager.getInstance().getFiles();
-        }
+        Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
         for (org.jajuk.base.File file:files){
             if (!Main.isExiting() 
                     && file.getDirectory().getDevice().equals(this)
                     && file.isReady()){
                 if (!file.getIO().exists()){
-                    synchronized(FileManager.getInstance().getLock()){
-                        FileManager.getInstance().removeFile(file);
-                    }
+                    FileManager.getInstance().removeFile(file);
                     Log.debug("Removed: "+file); //$NON-NLS-1$
                     bChanges = true;
                 }
             }
         }
         //Playlist scleanup
-        Set<PlaylistFile> plfiles = null;
-        synchronized(PlaylistFileManager.getInstance().getLock()){
-            plfiles = PlaylistFileManager.getInstance().getPlaylistFiles();
-        }
+        Set<PlaylistFile> plfiles = PlaylistFileManager.getInstance().getPlaylistFiles();
         for (PlaylistFile plf:plfiles){
             if (!Main.isExiting()
                     && plf.getDirectory().getDevice().equals(this)
                     && plf.isReady()){
                 if (!plf.getFio().exists()){
-                    synchronized(PlaylistFileManager.getInstance().getLock()){
-                        PlaylistFileManager.getInstance().removePlaylistFile(plf);
-                    }
+                    PlaylistFileManager.getInstance().removePlaylistFile(plf);
                     Log.debug("Removed: "+plf); //$NON-NLS-1$
                     bChanges = true;
                 }
@@ -937,13 +911,13 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         //clear history to remove olf files referenced in it
         History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
-        
+
         l = System.currentTimeMillis()-l;
         Log.debug("Old file references cleaned in: " //$NON-NLS-1$
             +((l<1000)?l+" ms":l/1000+" s")); //$NON-NLS-1$ //$NON-NLS-2$
         return bChanges;
     }
-    
+
     /**
      * Set all personnal properties of an XML file for an item (doesn't overwrite existing properties for perfs)
      * 
@@ -988,7 +962,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
             }
         }
     }
-    
+
 }
 
 

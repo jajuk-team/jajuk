@@ -20,8 +20,8 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
@@ -138,7 +138,7 @@ public class Album extends Item implements Comparable{
         File fCover = null;
         File fDir = null; //analyzed directory
         //search for local covers in all directories mapping the current track to reach other devices covers and display them together
-        ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
+        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
         if (tracks.size() == 0){
             return null;
         }

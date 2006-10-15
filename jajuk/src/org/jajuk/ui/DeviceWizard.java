@@ -188,13 +188,11 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		//populate combo
-		synchronized(DeviceManager.getInstance().getLock()){
-		    Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-		    while (it.hasNext()) {
-		        Device device2 = it.next();
-		        alDevices.add(device2);
-		        jcbSynchronized.addItem(device2.getName());
-		    }
+		Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+		while (it.hasNext()) {
+		    Device device2 = it.next();
+		    alDevices.add(device2);
+		    jcbSynchronized.addItem(device2.getName());
 		}
 		jcbSynchronized.setEnabled(false);
 		jcbSynchronized.setToolTipText(Messages.getString("DeviceWizard.52")); //$NON-NLS-1$
@@ -287,18 +285,16 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		alDevices.clear();
         //set default values for widgets
         updateWidgetsDefault();
-        synchronized(DeviceManager.getInstance().getLock()){
-            Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-            while (it.hasNext()) {
-                Device device2 = it.next();
-                if ( !device2.equals(device)){
-                    alDevices.add(device2);
-                    jcbSynchronized.addItem(device2.getName());
-                }
+        Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+        while (it.hasNext()) {
+            Device device2 = it.next();
+            if ( !device2.equals(device)){
+                alDevices.add(device2);
+                jcbSynchronized.addItem(device2.getName());
             }
         }
         //then, specifics
-		jcbType.setSelectedItem(device.getDeviceTypeS());
+        jcbType.setSelectedItem(device.getDeviceTypeS());
 		jtfName.setText(device.getName());
 		jtfName.setEnabled(false); //device name cannot be changed
 		jtfUrl.setText(device.getUrl());

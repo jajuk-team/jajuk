@@ -445,10 +445,18 @@ public abstract class ItemManager implements ITechnicalStrings{
         return newItem;            
     }
     
+    /**
+     * 
+     * @return MUTEX used to avoid concurrent access to items
+     */
     public byte[] getLock() {
         return bLock;
     }
     
+    /**
+     * 
+     * @return number of item
+     */
     public int getElementCount(){
         synchronized(getLock()){
             return hmItems.size();

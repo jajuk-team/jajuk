@@ -209,24 +209,18 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
             sb.append(addTabs(1) + Tag.tagData(XML_URL, Util.formatXML(device.getUrl())) + NEWLINE);
             sb.append(addTabs(1) + Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device.getMountPoint())) + NEWLINE);          
             
-            ListIterator itr;
-            // Tag children directories of device.
-            synchronized (DirectoryManager.getInstance().getLock()) {
-                itr = new ArrayList(
+            ListIterator itr = new ArrayList(
                     DirectoryManager.getInstance()
                     .getDirectoryForIO(device.getFio()).getDirectories())
                 .listIterator();
-            }               
+            // Tag children directories of device.
             while (itr.hasNext()) { 
                 Directory directory = (Directory)itr.next();
                 sb.append(exportDirectoryHelper(1,directory));
             }
             
-            Iterator itr2;
+            Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio()).getFiles().iterator();
             // Tag children files of device.
-            synchronized (DirectoryManager.getInstance().getLock()) {               
-                itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio()).getFiles().iterator();
-            }
             while (itr2.hasNext()) {    
                 org.jajuk.base.File file = (org.jajuk.base.File)itr2.next();
                 sb.append(tagFile(file,1));
@@ -258,11 +252,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
             
             sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
             
-            Iterator<Device> itr0;
+            Iterator<Device> itr0 = DeviceManager.getInstance().getDevices().iterator();
             // Tag each device.
-            synchronized (DeviceManager.getInstance().getLock()) {
-                itr0 = DeviceManager.getInstance().getDevices().iterator();
-            }
             while (itr0.hasNext()) {
                 Device device = itr0.next();
                 
@@ -274,23 +265,17 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
                 sb.append(addTabs(2) + Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device.getMountPoint())) + NEWLINE);          
                 
                 
-                ListIterator itr1;
-                // Tag children directories of device.              
-                synchronized (DirectoryManager.getInstance().getLock()) {                   
-                    itr1 =  new ArrayList(DirectoryManager.getInstance()
+                ListIterator itr1 =  new ArrayList(DirectoryManager.getInstance()
                         .getDirectoryForIO(device.getFio())
                         .getDirectories()).listIterator();
-                }
+                // Tag children directories of device.              
                 while (itr1.hasNext()) {    
                     Directory directory = (Directory)itr1.next();
                     sb.append(exportDirectoryHelper(2,directory));
                 }
             
-                Iterator itr2;
+                Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio()).getFiles().iterator();
                 // Tag children files of device.
-                synchronized (DirectoryManager.getInstance().getLock()) {   
-                    itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio()).getFiles().iterator();
-                }
                 while (itr2.hasNext()) {
                     org.jajuk.base.File file = (org.jajuk.base.File)itr2.next();
                     sb.append(tagFile(file,2));
@@ -532,31 +517,22 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     
     private String getAuthorOfAlbum(Album album) {
         String sAuthorName = null;
-        Iterator<Track> itr;
-        synchronized (TrackManager.getInstance().getLock()) {
-            itr = TrackManager.getInstance().getTracks().iterator();
-        }
+        Iterator<Track> itr = TrackManager.getInstance().getTracks().iterator();
         while (itr.hasNext()) {
             Track track = itr.next();
-            
             if (track.getAlbum().getId().equals(album.getId())) {
                 sAuthorName = track.getAuthor().getName2();
                 break;
             }
         }   
-        
         return sAuthorName;
     }
     
     private String getStyleOfAlbum(Album album) {
         String sStyleName = null;
-        Iterator<Track> itr;
-        synchronized (TrackManager.getInstance().getLock()) {
-            itr = TrackManager.getInstance().getTracks().iterator();
-        }
+        Iterator<Track> itr = TrackManager.getInstance().getTracks().iterator();
         while (itr.hasNext()) {
             Track track = itr.next();
-            
             if (track.getAlbum().getId().equals(album.getId())) {
                 sStyleName = track.getStyle().getName2();
                 break;

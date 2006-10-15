@@ -817,19 +817,15 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     public synchronized void populateTree(){
         top.removeAllChildren();
         //add devices
-        synchronized (DeviceManager.getInstance().getLock()) {
             Iterator<Device> it1 = DeviceManager.getInstance().getDevices().iterator();
             while ( it1.hasNext()){
                 Device device = it1.next();
                 DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
                 top.add(nodeDevice);
             }
-        }
         //add directories
         ArrayList<Directory> directories = null;
-        synchronized (DirectoryManager.getInstance().getLock()) {
-            directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
-        }
+        directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
         Iterator it2 = directories.iterator();
         while (it2.hasNext()){
             Directory directory = (Directory)it2.next();
@@ -864,10 +860,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add files
-        ArrayList<File> files = null;
-        synchronized (FileManager.getInstance().getLock()) {
-            files = new ArrayList<File>(FileManager.getInstance().getFiles());
-        }
+        ArrayList<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
         Iterator it3 = files.iterator();
         while (it3.hasNext()){
             File file = (File)it3.next();
@@ -881,10 +874,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         
         //add playlist files
-        ArrayList<PlaylistFile> playlists = null;
-        synchronized (PlaylistFileManager.getInstance().getLock()) {
-            playlists = new ArrayList<PlaylistFile>(PlaylistFileManager.getInstance().getPlaylistFiles());
-        }
+        ArrayList<PlaylistFile> playlists = new ArrayList<PlaylistFile>(PlaylistFileManager.getInstance().getPlaylistFiles());
         Iterator it4 = playlists.iterator();
         while (it4.hasNext()){
             PlaylistFile playlistFile = (PlaylistFile)it4.next();

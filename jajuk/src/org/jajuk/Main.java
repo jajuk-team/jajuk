@@ -881,24 +881,22 @@ public class Main implements ITechnicalStrings {
      *
      */
     private static void autoMount(){
-        synchronized(DeviceManager.getInstance().getLock()){
-            for (Device device:DeviceManager.getInstance().getDevices()){
-                if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
-                    try{
-                        device.mount();
-                    }
-                    catch(Exception e){
-                        Log.error("112",device.getName(),e); //$NON-NLS-1$
-                        //show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrorMessage because main window is not yet displayed
-                        String sError = Messages.getErrorMessage("112") + " : " + device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
-                        InformationJPanel.getInstance().setMessage(sError,InformationJPanel.ERROR); //$NON-NLS-1$
-                        continue;
-                    }
+        for (Device device:DeviceManager.getInstance().getDevices()){
+            if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
+                try{
+                    device.mount();
+                }
+                catch(Exception e){
+                    Log.error("112",device.getName(),e); //$NON-NLS-1$
+                    //show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrorMessage because main window is not yet displayed
+                    String sError = Messages.getErrorMessage("112") + " : " + device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
+                    InformationJPanel.getInstance().setMessage(sError,InformationJPanel.ERROR); //$NON-NLS-1$
+                    continue;
                 }
             }
         }
     }
-    
+
     
     /**
      * @return Returns the main window.

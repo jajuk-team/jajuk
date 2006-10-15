@@ -57,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Serializable {
     private static final long serialVersionUID = 1L;
-	/** Self instance */
+    /** Self instance */
     private static Collection collection;
     private static long lTime;
     /**Current ItemManager manager*/
@@ -94,7 +94,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
         }
     };
-    
+
     /** Instance getter */
     public static synchronized Collection getInstance() {
         if (collection == null) {
@@ -102,11 +102,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         }
         return collection;
     }
-    
+
     /** Hidden constructor */
     private Collection() {
     }
-    
+
     /** Write current collection to collection file for persistence between sessions */
     public static void commit(String sFileName) throws IOException {
         long lTime = System.currentTimeMillis();
@@ -117,105 +117,85 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         //types
         bw.write(TypeManager.getInstance().toXML()); //$NON-NLS-1$
         Iterator it = null;
-        synchronized(TypeManager.getInstance().getLock()){
-            it = TypeManager.getInstance().getTypes().iterator();
-            while (it.hasNext()) {
-                Type type = (Type) it.next();
-                bw.write(type.toXml());
-            }
+        it = TypeManager.getInstance().getTypes().iterator();
+        while (it.hasNext()) {
+            Type type = (Type) it.next();
+            bw.write(type.toXml());
         }
         bw.write("\t</"+TypeManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //devices
         bw.write(DeviceManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(DeviceManager.getInstance().getLock()){
-            it = DeviceManager.getInstance().getDevices().iterator();
-            while (it.hasNext()) {
-                Device device = (Device) it.next();
-                bw.write(device.toXml());
-            }
+        it = DeviceManager.getInstance().getDevices().iterator();
+        while (it.hasNext()) {
+            Device device = (Device) it.next();
+            bw.write(device.toXml());
         }
         bw.write("\t</"+DeviceManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //styles
         bw.write(StyleManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(StyleManager.getInstance().getLock()){
-            it = StyleManager.getInstance().getStyles().iterator();
-            while (it.hasNext()) {
-                Style style = (Style) it.next();
-                bw.write(style.toXml());
-            }
+        it = StyleManager.getInstance().getStyles().iterator();
+        while (it.hasNext()) {
+            Style style = (Style) it.next();
+            bw.write(style.toXml());
         }
         bw.write("\t</"+StyleManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //authors
         bw.write(AuthorManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(AuthorManager.getInstance().getLock()){
-            it = AuthorManager.getInstance().getAuthors().iterator();
-            while (it.hasNext()) {
-                Author author = (Author) it.next();
-                bw.write(author.toXml());
-            }
+        it = AuthorManager.getInstance().getAuthors().iterator();
+        while (it.hasNext()) {
+            Author author = (Author) it.next();
+            bw.write(author.toXml());
         }
         bw.write("\t</"+AuthorManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //albums
         bw.write(AlbumManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(AlbumManager.getInstance().getLock()){
-            it = AlbumManager.getInstance().getAlbums().iterator();
-            while (it.hasNext()) {
-                Album album = (Album) it.next();
-                bw.write(album.toXml());
-            }
+        it = AlbumManager.getInstance().getAlbums().iterator();
+        while (it.hasNext()) {
+            Album album = (Album) it.next();
+            bw.write(album.toXml());
         }
         bw.write("\t</"+AlbumManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //tracks
         bw.write(TrackManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(TrackManager.getInstance().getLock()){
-            it = TrackManager.getInstance().getTracks().iterator();
-            while (it.hasNext()) {
-                Track track = (Track) it.next();
-                if (track.getFiles().size() > 0) { //this way we clean up all orphan tracks
-                    bw.write(track.toXml());
-                }
+        it = TrackManager.getInstance().getTracks().iterator();
+        while (it.hasNext()) {
+            Track track = (Track) it.next();
+            if (track.getFiles().size() > 0) { //this way we clean up all orphan tracks
+                bw.write(track.toXml());
             }
         }
         bw.write("\t</"+TrackManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //directories
         bw.write(DirectoryManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(DirectoryManager.getInstance().getLock()){
-            it = DirectoryManager.getInstance().getDirectories().iterator();
-            while (it.hasNext()) {
-                Directory directory = (Directory) it.next();
-                bw.write(directory.toXml());
-            }
+        it = DirectoryManager.getInstance().getDirectories().iterator();
+        while (it.hasNext()) {
+            Directory directory = (Directory) it.next();
+            bw.write(directory.toXml());
         }
         bw.write("\t</"+DirectoryManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //files
         bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(FileManager.getInstance().getLock()){
-            it = FileManager.getInstance().getFiles().iterator();
-            while (it.hasNext()) {
-                org.jajuk.base.File file = (org.jajuk.base.File) it.next();
-                bw.write(file.toXml());
-            }
+        it = FileManager.getInstance().getFiles().iterator();
+        while (it.hasNext()) {
+            org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+            bw.write(file.toXml());
         }
         bw.write("\t</"+FileManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //playlist files
         bw.write(PlaylistFileManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(PlaylistFileManager.getInstance().getLock()){
-            it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
-            while (it.hasNext()) {
-                PlaylistFile playlistFile = (PlaylistFile) it.next();
-                bw.write(playlistFile.toXml());
-            }
+        it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
+        while (it.hasNext()) {
+            PlaylistFile playlistFile = (PlaylistFile) it.next();
+            bw.write(playlistFile.toXml());
         }
         bw.write("\t</"+PlaylistFileManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //playlist
         bw.write(PlaylistManager.getInstance().toXML()); //$NON-NLS-1$
-        synchronized(PlaylistManager.getInstance().getLock()){
-            it = PlaylistManager.getInstance().getPlayLists().iterator();
-            while (it.hasNext()) {
-                Playlist playlist = (Playlist) it.next();
-                if (playlist.getPlaylistFiles().size() > 0) { //this way we clean up all orphan playlists
-                    bw.write(playlist.toXml());
-                }
+        it = PlaylistManager.getInstance().getPlayLists().iterator();
+        while (it.hasNext()) {
+            Playlist playlist = (Playlist) it.next();
+            if (playlist.getPlaylistFiles().size() > 0) { //this way we clean up all orphan playlists
+                bw.write(playlist.toXml());
             }
         }
         bw.write("\t</"+PlaylistManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -224,7 +204,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         bw.close();
         Log.debug("Collection commited in "+(System.currentTimeMillis()-lTime)+" ms");//$NON-NLS-1$ //$NON-NLS-2$
     }
-    
+
     /**
      * Parse collection.xml file and put all collection information into memory
      *  
@@ -246,7 +226,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         //start auto commit thread
         tAutoCommit.start();
     }
-    
+
     /**
      * Perform a collection clean up for logical items ( delete orphan data )
      * 
@@ -264,8 +244,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         //Playlists cleanup
         PlaylistManager.getInstance().cleanup();
     }
-    
-    
+
+
     /**
      * parsing warning
      * 
@@ -275,7 +255,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     public void warning(SAXParseException spe) throws SAXException {
         throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
-    
+
     /**
      * parsing error
      * 
@@ -285,7 +265,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     public void error(SAXParseException spe) throws SAXException {
         throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
-    
+
     /**
      * parsing fatal error
      * 
@@ -295,23 +275,23 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     public void fatalError(SAXParseException spe) throws SAXException {
         throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
-    
+
     /**
      * Called at parsing start
      */
     public void startDocument() {
         Log.debug("Starting collection file parsing..."); //$NON-NLS-1$
     }
-    
+
     /**
      * Called at parsing end
      */
     public void endDocument() {
         long l = (System.currentTimeMillis() - lTime);
         Log.debug("Collection file parsing done : " +  //$NON-NLS-1$
-             ((l < 1000)?l+" ms":(l/1000)+" s")); //$NON-NLS-1$ //$NON-NLS-2$
+            ((l < 1000)?l+" ms":(l/1000)+" s")); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    
+
     /**
      * Called when we start an element
      *  
@@ -485,7 +465,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                 //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and used deep hashcode, not used later
                 String sRightID = TrackManager.getID(sTrackName,album,style,author,length,lYear,lOrder,type).intern();
-                
+
                 //Date format should be OK
                 Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
                 Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style, author, length, lYear,lOrder, type);
@@ -682,6 +662,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     public HashMap<String, String> getHmWrongRightFileID() {
         return hmWrongRightFileID;
     }
-    
-        
+
+
 }

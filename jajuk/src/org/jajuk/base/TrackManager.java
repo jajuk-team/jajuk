@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
@@ -564,14 +565,14 @@ public class TrackManager extends ItemManager implements Observer {
     }
 
     /**
-     * Get tracks associated with this track
+     * Get tracks associated with this item
      * 
      * @param item
      * @return
      */
-    public ArrayList<Track> getAssociatedTracks(Item item) {
+    public Set<Track> getAssociatedTracks(Item item) {
         synchronized (TrackManager.getInstance().getLock()) {
-            ArrayList<Track> out = new ArrayList<Track>(10);
+            Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.STYLE_AUTHOR_ALBUM));
             for (Object item2 : hmItems.values()) {
                 Track track = (Track) item2;
                 if ((item instanceof Album && track.getAlbum().equals(item))
@@ -580,8 +581,6 @@ public class TrackManager extends ItemManager implements Observer {
                     out.add(track);
                 }
             }
-            // sort by style/author/album
-            Collections.sort(out, new TrackComparator(TrackComparator.STYLE_AUTHOR_ALBUM));
             return out;
         }
     }

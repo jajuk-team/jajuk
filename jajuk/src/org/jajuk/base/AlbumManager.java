@@ -107,18 +107,16 @@ public class AlbumManager extends ItemManager{
         if (old.getName2().equals(sNewName)){
             return old;
         }
-        synchronized(TrackManager.getInstance().getLock()){
-            Album newItem = registerAlbum(sNewName);
-            //re apply old properties from old item
-            newItem.cloneProperties(old);
-            //update tracks
-            for (Track track:TrackManager.getInstance().getTracks()){
-                if (track.getAlbum().equals(old)){
-                    TrackManager.getInstance().changeTrackAlbum(track,sNewName,null);
-                }
+        Album newItem = registerAlbum(sNewName);
+        //re apply old properties from old item
+        newItem.cloneProperties(old);
+        //update tracks
+        for (Track track:TrackManager.getInstance().getTracks()){
+            if (track.getAlbum().equals(old)){
+                TrackManager.getInstance().changeTrackAlbum(track,sNewName,null);
             }
-            return newItem;
         }
+        return newItem;
     }
 
     

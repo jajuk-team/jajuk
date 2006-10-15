@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -88,28 +87,25 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
      * Create playlists from collection 
      */
     public synchronized void populatePlaylists(){
-        synchronized(PlaylistFileManager.getInstance().getLock()){
-            super.populatePlaylists();
-            //normal playlists
-            ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getPlaylistFiles());
-            Iterator it = alItems.iterator();
-            while ( it.hasNext()){
-                PlaylistFile plf = (PlaylistFile)it.next();
-                if ( plf.shouldBeHidden()){
-                    continue;
-                }
-                PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
-                alPlaylistFileItems.add(plfi);
-                plfi.addMouseListener(ma);
-                plfi.setToolTipText(plf.getAbsolutePath());
-                jpRoot.add(plfi);
-                if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
-                    plfiSelected = plfi;
-                }
+        super.populatePlaylists();
+        //normal playlists
+        Iterator it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
+        while ( it.hasNext()){
+            PlaylistFile plf = (PlaylistFile)it.next();
+            if ( plf.shouldBeHidden()){
+                continue;
+            }
+            PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+            alPlaylistFileItems.add(plfi);
+            plfi.addMouseListener(ma);
+            plfi.setToolTipText(plf.getAbsolutePath());
+            jpRoot.add(plfi);
+            if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
+                plfiSelected = plfi;
             }
         }
     }
-    
+
     public synchronized void removeItem (PlaylistFileItem plfiSelected){
         if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
                 String sFileToDelete = plfiSelected.getPlaylistFile().getAbsolutePath(); //$NON-NLS-1$

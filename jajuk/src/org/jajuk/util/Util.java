@@ -54,11 +54,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.Box;
@@ -1412,13 +1414,13 @@ public class Util implements ITechnicalStrings {
         // computes selection
         ArrayList<org.jajuk.base.File> alSelectedFiles = new ArrayList<org.jajuk.base.File>(100);
         // computes logical selection if any
-        ArrayList<Track> alLogicalTracks = null;
+        Set<Track> alLogicalTracks = null;
         if (oData instanceof Style || oData instanceof Author || oData instanceof Album
                 || oData instanceof Track) {
             if (oData instanceof Style || oData instanceof Author || oData instanceof Album) {
                 alLogicalTracks = TrackManager.getInstance().getAssociatedTracks(oData);
             } else if (oData instanceof Track) {
-                alLogicalTracks = new ArrayList<Track>(100);
+                alLogicalTracks = new LinkedHashSet<Track>(100);
                 alLogicalTracks.add((Track) oData);
             }
             // prepare files

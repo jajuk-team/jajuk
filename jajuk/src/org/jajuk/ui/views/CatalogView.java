@@ -386,7 +386,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         if (!fThumb.exists()) {
             // search for local covers in all directories mapping the current track to reach other
             // devices covers and display them together
-            ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+            Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
             if (tracks.size() == 0) {
                 return false;
             }
@@ -453,7 +453,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 }
                 ArrayList<Album> albums = null;
                 final HashMap<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();
-                synchronized (TrackManager.getInstance().getLock()) {
                     // filter albums matching tracks
                     Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
                     albums = new ArrayList<Album>(alAllTracks.size()/10);
@@ -505,7 +504,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                         }
 
                     });
-                }
+                
                 // Now process each album
                 HashSet<Directory> directories = new HashSet<Directory>(albums.size());
                 ArrayList<CatalogItem> alItemsToDisplay = new ArrayList<CatalogItem>(albums.size());
@@ -514,8 +513,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                     // if hide unmounted tracks is set, continue
                     if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
                         // test if album contains at least one mounted file
-                        ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(
-                                album);
+                        tracks = TrackManager.getInstance().getAssociatedTracks(album);
                         if (tracks.size() > 0) {
                             boolean bOK = false;
                             for (Track track : tracks) {
@@ -841,7 +839,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         }
 
         private void play(boolean bRepeat, boolean bShuffle, boolean bPush) {
-            ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+            Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
             // compute selection
             ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(tracks.size());
             Iterator it = tracks.iterator();
@@ -1048,9 +1046,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
             timer.start();
 
-            ArrayList tracks = TrackManager.getInstance().getAssociatedTracks(
+            Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(
                     CatalogView.this.item.getAlbum());
-            Author author = ((Track) tracks.iterator().next()).getAuthor();
+            Author author = tracks.iterator().next().getAuthor();
             final String sQuery = (author.getName().equals(UNKNOWN_AUTHOR) ? "" : author.getName2()) //$NON-NLS-1$
                     + " " + CatalogView.this.item.getAlbum().getName2(); //$NON-NLS-1$
             jlSearch = new JLabel(
@@ -1148,7 +1146,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 // write cover in the first available directory we find
                 Album album = item.getAlbum();
                 // test if album contains at least one mounted file
-                ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+                Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
                 Track mountedTrack = null;
                 if (tracks.size() > 0) {
                     boolean bOK = false;

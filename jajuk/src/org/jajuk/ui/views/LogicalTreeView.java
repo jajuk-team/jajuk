@@ -476,10 +476,8 @@ ActionListener, Observer {
                         alSelected.add((Item) ((TransferableTreeNode) o)
                             .getData());
                     } else { // collection node
-                        synchronized (TrackManager.getInstance().getLock()) {
-                            alSelected = new ArrayList<Item>(TrackManager
+                        alSelected = new ArrayList<Item>(TrackManager
                                 .getInstance().getTracks());
-                        }
                         items = alSelected.size();
                         for (Item item:alSelected){
                             hsSelectedTracks.add((Track)item);
@@ -652,10 +650,7 @@ ActionListener, Observer {
     public void populateTreeByStyle() {
         // delete previous tree
         top.removeAllChildren();
-        ArrayList<Track> tracks;
-        synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
-        }
+        ArrayList<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
             if (!track.shouldBeHidden()) {
@@ -725,10 +720,7 @@ ActionListener, Observer {
     public void populateTreeByAuthor() {
         // delete previous tree
         top.removeAllChildren();
-        ArrayList<Track> tracks;
-        synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
-        }
+        ArrayList<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
             if (!track.shouldBeHidden()) {
@@ -780,10 +772,7 @@ ActionListener, Observer {
     public void populateTreeByAlbum() {
         // delete previous tree
         top.removeAllChildren();
-        ArrayList<Track> tracks;
-        synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
-        }
+        ArrayList<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
             if (!track.shouldBeHidden()) {
