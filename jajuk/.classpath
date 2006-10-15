@@ -33,6 +33,6 @@
 	<classpathentry kind="lib" path="lib/qdwizard-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/looks-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections_reduced-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
