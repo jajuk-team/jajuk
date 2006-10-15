@@ -34,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/looks-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/l2fprod-common-buttonbar-6.9.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

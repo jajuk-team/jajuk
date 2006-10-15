@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="$$codebase" href="l2fprod-common-buttonbar.jnlp">
+    <information>
+        <title>L2fprod buttonbar</title>
+        <vendor>L2fprod</vendor>
+    </information>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <resources>
+        <jar href="l2fprod-common-buttonbar-6.9.1.jar"/>
+    </resources>
+    <component-desc/>
+</jnlp>
