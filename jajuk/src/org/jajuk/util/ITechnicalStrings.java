@@ -156,7 +156,7 @@ public interface ITechnicalStrings {
     public static final URL ICON_PERSPECTIVE_CONFIGURATION  = Util.getResource("org/jajuk/icons/48x48/perspective_configuration.png");
     public static final URL ICON_PERSPECTIVE_PLAYER = Util.getResource("org/jajuk/icons/48x48/perspective_player.png");
     public static final URL ICON_PERSPECTIVE_CATALOG = Util.getResource("org/jajuk/icons/48x48/perspective_catalog.png");
-    public static final URL ICON_PERSPECTIVE_INFORMATION = Util.getResource("org/jajuk/icons/48x48/perspective_info.png");
+    public static final URL ICON_PERSPECTIVE_INFORMATION = Util.getResource("org/jajuk/icons/48x48/perspective_information.png");
     public static final URL ICON_PERSPECTIVE_HELP   = Util.getResource("org/jajuk/icons/48x48/perspective_help.png");
     public static final URL ICON_OPEN_FILE  = Util.getResource("org/jajuk/icons/16x16/fileopen.png");
     public static final URL ICON_EXIT=  Util.getResource("org/jajuk/icons/16x16/exit.png");
@@ -256,7 +256,7 @@ public interface ITechnicalStrings {
     public static final URL ICON_STAR_2 = Util.getResource("org/jajuk/icons/16x16/star2.png");
     public static final URL ICON_STAR_3 = Util.getResource("org/jajuk/icons/16x16/star3.png");
     public static final URL ICON_STAR_4 = Util.getResource("org/jajuk/icons/16x16/star4.png");
-    public static final URL ICON_DROP_DOWN = Util.getResource("org/jajuk/icons/16x16/dropdown.gif");
+    public static final URL ICON_DROP_DOWN = Util.getResource("org/jajuk/icons/16x16/dropdown.png");
     public static final URL ICON_DIGITAL_DJ = Util.getResource("org/jajuk/icons/16x16/ddj.png");
     public static final URL ICON_LIST = Util.getResource("org/jajuk/icons/16x16/contents.png");
     public static final URL ICON_PLAY2 = Util.getResource("org/jajuk/icons/16x16/play.png");

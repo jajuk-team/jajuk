@@ -52,6 +52,8 @@
         	<extension name="EntaggedFreedb" href="entagged_freedb.jnlp"/>
         	<extension name="CommonsCollections" href="commons_collections.jnlp"/>
         	<extension name="QDWizard" href="qdwizard.jnlp"/>
+        	<extension name="L2fprod buttonbar" href="l2fprod-common-buttonbar.jnlp"/>
+        	<extension name="VLDocking" href="vldocking.jnlp"/>
        </resources>
        <resources os="Windows">
            <jar       href="windows/jdic_stub.jar"/> 
