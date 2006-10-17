@@ -41,7 +41,6 @@ import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +50,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -129,7 +129,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	public JajukToggleButton jbContinue;
 	public JajukToggleButton jbIntro;
 	JToolBar jtbSpecial;
-    DropDownButton jbGlobalRandom;
+    DropDownButton ddbGlobalRandom;
     JMenuItem jmiShuffleModeSong;
     JMenuItem jmiShuffleModeAlbum;
     JPopupMenu popupGlobalRandom;
@@ -299,15 +299,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         //Special functions toolbar
 		VLToolBar vltbSpecial = new VLToolBar();
         jtbSpecial = new JToolBar(); //we have to use an intermediate 
-        jtbSpecial.setPreferredSize(new Dimension(180,25));
-        jbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
+        jtbSpecial.setPreferredSize(new Dimension(210,25));
+        ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
             private static final long serialVersionUID = 1L;
             @Override
             protected JPopupMenu getPopupMenu() {
                 return popupGlobalRandom;
             }
         };
-        jbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
+        ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
         popupGlobalRandom = new JPopupMenu();
         jmiShuffleModeSong = new JMenuItem(Messages.getString("CommandJPanel.20"));
         jmiShuffleModeSong.addActionListener(this);
@@ -315,16 +315,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         jmiShuffleModeAlbum.addActionListener(this);
         if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)){
             jmiShuffleModeSong.setSelected(true);
-            //display in bold (note that selection stick is not displayed on some Laf like liquid)
-            jmiShuffleModeSong.setFont(new Font("Dialog",Font.BOLD,11));
+            //select item (note that selection stick is not displayed on some Laf like liquid)
+            jmiShuffleModeSong.setBorder(BorderFactory.createEtchedBorder());
         }
         else{
             jmiShuffleModeAlbum.setSelected(true);
-            jmiShuffleModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
+            jmiShuffleModeAlbum.setBorder(BorderFactory.createEtchedBorder());
         }
         popupGlobalRandom.add(jmiShuffleModeSong);
         popupGlobalRandom.add(jmiShuffleModeAlbum);
-        jbGlobalRandom.setText("");//no text visible //$NON-NLS-1$
+        ddbGlobalRandom.setText("");//no text visible //$NON-NLS-1$
         
         jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
         
@@ -344,11 +344,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)){
             jmiNoveltiesModeSong.setSelected(true);
             //display in bold (note that selection stick is not displayed on some Laf like liquid)
-            jmiNoveltiesModeSong.setFont(new Font("Dialog",Font.BOLD,11));
+            jmiNoveltiesModeSong.setBorder(BorderFactory.createEtchedBorder());
         }
         else{
             jmiNoveltiesModeAlbum.setSelected(true);
-            jmiNoveltiesModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
+            jmiNoveltiesModeAlbum.setBorder(BorderFactory.createEtchedBorder());
         }
         popupNovelties.add(jmiNoveltiesModeSong);
         popupNovelties.add(jmiNoveltiesModeAlbum);
@@ -369,7 +369,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         
         ddbDDJ.addToToolBar(jtbSpecial);
         ddbNovelties.addToToolBar(jtbSpecial);
-        jtbSpecial.add(jbGlobalRandom);
+        ddbGlobalRandom.addToToolBar(jtbSpecial);
         jtbSpecial.add(jbBestof);
         jtbSpecial.add(jbNorm);
         vltbSpecial.add(jtbSpecial);
@@ -396,36 +396,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jpPlay.add(jbFwd);
         vltbPlay.add(jpPlay);
 
-		/*dimensions
-		int height1 = 25;  //buttons, components
-		int iXSeparator = 10;
-		//set default layout and size
-		double[][] size ={{iXSeparator/2,0.14,iXSeparator, //search box
-			TableLayout.FILL,iXSeparator,// history 
-			TableLayout.PREFERRED,iXSeparator, //mode buttons
-			0.1,iXSeparator, //Ambience combo
-            TableLayout.PREFERRED,iXSeparator, //special functions buttons
-			TableLayout.PREFERRED,iXSeparator, //play buttons
-			0.2,iXSeparator/2, //position
-			0.2,iXSeparator, //volume
-			20,iXSeparator},   //mute button
-			{height1}}; //note we can't set a % for history combo box because of popup size
-		TableLayout layout = new TableLayout(size);
-        setLayout(layout);
-		setAlignmentY(Component.CENTER_ALIGNMENT);
-
-		//add toolbars to main panel
-		add(vltbSearch,"1,0"); //$NON-NLS-1$
-		add(jcbHistory,"3,0"); //$NON-NLS-1$
-		add(jpMode,"5,0,c,c");  //$NON-NLS-1$
-		add(ambiencesCombo,"7,0,c,c"); //$NON-NLS-1$
-        add(jtbSpecial,"9,0,c,c"); //$NON-NLS-1$
-		add(jpPlay,"11,0,c,c"); //$NON-NLS-1$
-		add(jpPosition,"13,0"); //$NON-NLS-1$
-		add(jpVolume,"15,0"); //$NON-NLS-1$
-		add(jbMute,"17,0"); //$NON-NLS-1$*/
-        
-        setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+	    setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 
         topPanel.add(vltbSearch , new ToolBarConstraints(0,0));
         topPanel.add(vltbHistory , new ToolBarConstraints(0,1));
@@ -498,23 +469,23 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}
             else if (ae.getSource().equals(jmiNoveltiesModeSong)){
                 ConfigurationManager.setProperty(CONF_NOVELTIES_MODE, MODE_TRACK);
-                jmiNoveltiesModeSong.setFont(new Font("Dialog",Font.BOLD,11));
-                jmiNoveltiesModeAlbum.setFont(new Font("Dialog",Font.PLAIN,11));
+                jmiNoveltiesModeSong.setBorder(BorderFactory.createEtchedBorder());
+                jmiNoveltiesModeAlbum.setBorder(BorderFactory.createEmptyBorder());
             }
             else if (ae.getSource().equals(jmiNoveltiesModeAlbum)){
                 ConfigurationManager.setProperty(CONF_NOVELTIES_MODE, MODE_ALBUM);
-                jmiNoveltiesModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
-                jmiNoveltiesModeSong.setFont(new Font("Dialog",Font.PLAIN,11));
+                jmiNoveltiesModeAlbum.setBorder(BorderFactory.createEtchedBorder());
+                jmiNoveltiesModeSong.setBorder(BorderFactory.createEmptyBorder());
             }
             else if (ae.getSource().equals(jmiShuffleModeSong)){
                 ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
-                jmiShuffleModeSong.setFont(new Font("Dialog",Font.BOLD,11));
-                jmiShuffleModeAlbum.setFont(new Font("Dialog",Font.PLAIN,11));
+                jmiShuffleModeSong.setBorder(BorderFactory.createEtchedBorder());
+                jmiShuffleModeAlbum.setBorder(BorderFactory.createEmptyBorder());
             }
             else if (ae.getSource().equals(jmiShuffleModeAlbum)){
                 ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
-                jmiShuffleModeAlbum.setFont(new Font("Dialog",Font.BOLD,11));
-                jmiShuffleModeSong.setFont(new Font("Dialog",Font.PLAIN,11));
+                jmiShuffleModeAlbum.setBorder(BorderFactory.createEtchedBorder());
+                jmiShuffleModeSong.setBorder(BorderFactory.createEmptyBorder());
             }
 		}
 		catch(Exception e){
