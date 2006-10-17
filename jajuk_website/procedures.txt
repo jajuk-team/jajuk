@@ -109,7 +109,8 @@ NEW LANGUAGE PROCEDURE
 API ADDITION PROCEDURE
 - Add jar in MANIFEST
 - Change project.xml maven file for dependencies
-- Add jnlp file and update jajuk.jnlp file
+- Add jnlp file 
+- Update jajuk.jnlp file
 - Sign all new jars (jarsigner myjar.jar jajukteam)
 - Update website dependencies
 

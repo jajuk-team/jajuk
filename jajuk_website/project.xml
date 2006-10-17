@@ -430,7 +430,11 @@
         <version>6.9.1</version> 
     </dependency>
     
-    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>vldocking</artifactId>
+        <version>2.1</version> 
+    </dependency>
     
    </dependencies>
   
