@@ -316,6 +316,7 @@ public interface ITechnicalStrings {
     public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
     public static final String FILE_FIFO = FILE_JAJUK_DIR+"/fifo.lst";
     public static final String FILE_MPLAYER_EXE = "mplayer.exe";
+    public static final String FILE_TOOLBARS_CONF = FILE_JAJUK_DIR+"/toolbars.xml";
     
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 

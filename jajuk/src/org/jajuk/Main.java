@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -82,6 +83,10 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
 
+import com.vlsolutions.swing.docking.ui.DockingUISettings;
+import com.vlsolutions.swing.toolbars.ToolBarContainer;
+import com.vlsolutions.swing.toolbars.ToolBarIO;
+
 import ext.JSplash;
 
 
@@ -97,12 +102,12 @@ public class Main implements ITechnicalStrings {
     private static JajukWindow jw;
     /**Top command panel*/
     public static CommandJPanel command;
+    /**Toolbar container that can be serialized*/
+    private static ToolBarContainer tbcontainer;
     /**Left side perspective selection panel*/
     public static PerspectiveBarJPanel perspectiveBar;
     /**Lower information panel*/
     public static InformationJPanel information;
-    /**Main content pane*/
-    public static JPanel jpContentPane;
     /**Main frame panel*/
     public static JPanel jpFrame;
     /**splashscreen*/
@@ -302,6 +307,12 @@ public class Main implements ITechnicalStrings {
                                 //create a proof file
                                 Util.createEmptyFile(FILE_COLLECTION_EXIT_PROOF);
                             }
+                            //Commit toolbars
+                            ToolBarIO tbIO = new ToolBarIO(tbcontainer);
+                            FileOutputStream out = new FileOutputStream(FILE_TOOLBARS_CONF);
+                            tbIO.writeXML(out);
+                            out.flush();
+                            out.close();
                         }
                     } catch (IOException e) {
                         Log.error("", e); //$NON-NLS-1$
@@ -959,6 +970,10 @@ public class Main implements ITechnicalStrings {
                     //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                     
+                    //Prepare toolbars
+                    DockingUISettings.getInstance().installUI();
+                    tbcontainer = ToolBarContainer.createDefaultContainer(true, true, true, true);
+        
                     //starts ui
                     jw = JajukWindow.getInstance();
                     jw.setCursor(Util.WAIT_CURSOR);
@@ -977,11 +992,6 @@ public class Main implements ITechnicalStrings {
                     
                     // Create the information bar panel
                     information = InformationJPanel.getInstance();
-
-                    //Main panel
-                    jpContentPane = new JPanel();
-                    jpContentPane.setOpaque(true);
-                    jpContentPane.setLayout(new BorderLayout());
                     
                     //Add static panels
                     jpFrame.add(command, BorderLayout.NORTH);
@@ -1015,7 +1025,7 @@ public class Main implements ITechnicalStrings {
                     }
                     
                     PerspectiveManager.init();
-                    jpFrame.add(jpContentPane, BorderLayout.CENTER);
+                    jpFrame.add(tbcontainer, BorderLayout.CENTER);
                     jw.setCursor(Util.DEFAULT_CURSOR);
                     jw.addComponentListener();
                     
@@ -1090,6 +1100,14 @@ public class Main implements ITechnicalStrings {
      */
     public static JajukSystray getSystray() {
         return jsystray;
+    }
+
+
+    /**
+     * @return toolbar container
+     */
+    public static ToolBarContainer getToolbarContainer() {
+        return tbcontainer;
     }
 
 }

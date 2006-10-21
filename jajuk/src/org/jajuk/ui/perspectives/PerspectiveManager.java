@@ -20,6 +20,7 @@
 package org.jajuk.ui.perspectives;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,6 +37,9 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import com.vlsolutions.swing.toolbars.ToolBarContainer;
+import com.vlsolutions.swing.toolbars.ToolBarPanel;
+
 /**
  * Perspectives Manager
  * 
@@ -46,9 +50,9 @@ public class PerspectiveManager  implements ITechnicalStrings {
     /** Current perspective */
     private static IPerspective currentPerspective = null;
     /** Perspective name*/
-    private static ArrayList<String> alNames = new ArrayList(10);
+    private static ArrayList<String> alNames = new ArrayList<String>(10);
     /**perspective  */
-    private static ArrayList<IPerspective> alPerspectives = new ArrayList(10);
+    private static ArrayList<IPerspective> alPerspectives = new ArrayList<IPerspective>(10);
     /**Date used by probe */
     private static long lTime;
     /**Temporary perspective name used when parsing*/
@@ -140,12 +144,19 @@ public class PerspectiveManager  implements ITechnicalStrings {
                     }
 				}
 				currentPerspective = perspective;
-				if (Main.jpContentPane.getComponentCount() > 0 ){
-				    Main.jpContentPane.removeAll();
-				}
-				Main.jpContentPane.add(perspective.getContentPane(),BorderLayout.CENTER);
-				Main.jpContentPane.revalidate();
-				Main.jpContentPane.repaint();
+				ToolBarContainer tbcontainer = Main.getToolbarContainer();
+                //Remove all non-toolbar items
+                if (tbcontainer.getComponentCount() > 0 ){
+				    Component[] components = tbcontainer.getComponents();
+                    for (int i=0; i<components.length;i++){
+                        if (!(components[i] instanceof ToolBarPanel)){
+                            tbcontainer.remove(components[i]);
+                        }
+                    }
+              }
+				tbcontainer.add(perspective.getContentPane(),BorderLayout.CENTER);
+				tbcontainer.revalidate();
+				tbcontainer.repaint();
 				PerspectiveBarJPanel.getInstance().setActivated(perspective);
 				
                 Util.stopWaiting();
