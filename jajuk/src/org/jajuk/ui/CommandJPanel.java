@@ -289,19 +289,18 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         vltbPosition.add(jpPosition);
 
         //Ambience combo
-        VLToolBar vltbAmbience = new VLToolBar("ambience");
         ambiencesCombo = new SteppedComboBox();
         iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4);
         ambiencesCombo.setPopupWidth(iWidth);
+        ambiencesCombo.setPreferredSize(new Dimension(100,25)); //size of the combo itself
         populateAmbiences();
         ambienceListener = new ambienceListener();
         ambiencesCombo.addActionListener(ambienceListener);    
-        vltbAmbience.add(ambiencesCombo);
-
+        
         //Special functions toolbar
         VLToolBar vltbSpecial = new VLToolBar("smart");
         jtbSpecial = new JToolBar(); //we have to use an intermediate 
-        jtbSpecial.setPreferredSize(new Dimension(210,25));
+        jtbSpecial.setPreferredSize(new Dimension(320,25));
         ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
             private static final long serialVersionUID = 1L;
             @Override
@@ -369,6 +368,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         populateDJs();
         ddbDDJ.setText("");//no text visible //$NON-NLS-1$
 
+        jtbSpecial.add(ambiencesCombo);
         ddbDDJ.addToToolBar(jtbSpecial);
         ddbNovelties.addToToolBar(jtbSpecial);
         ddbGlobalRandom.addToToolBar(jtbSpecial);
@@ -410,7 +410,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 container.registerToolBar(vltbModes);
                 container.registerToolBar(vltbVolume);
                 container.registerToolBar(vltbPosition);
-                container.registerToolBar(vltbAmbience);
                 container.registerToolBar(vltbPlay);
                 container.registerToolBar(vltbSpecial);
 
@@ -433,7 +432,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             topPanel.add(vltbModes , new ToolBarConstraints(0,2));
             topPanel.add(vltbVolume , new ToolBarConstraints(0,3));
             topPanel.add(vltbPosition , new ToolBarConstraints(0,4));
-            topPanel.add(vltbAmbience , new ToolBarConstraints(1,0));
             topPanel.add(vltbPlay , new ToolBarConstraints(1,1));
             topPanel.add(vltbSpecial , new ToolBarConstraints(1,2));
         }
@@ -450,10 +448,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         }
         //start timer
         timer.start();
-
-
-
-    }
+   }
 
     public Set<EventSubject> getRegistrationKeys(){
         HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();

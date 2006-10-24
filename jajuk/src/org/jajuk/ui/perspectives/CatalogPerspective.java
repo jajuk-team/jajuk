@@ -20,13 +20,13 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.io.IOException;
-
-import net.infonode.docking.util.ViewMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.views.CatalogView;
-import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewFactory;
 
 /**
  *  Catalog perspective, shows all default covers by album
@@ -35,39 +35,26 @@ import org.jajuk.ui.views.IView;
  * @created    01/12/2005
  */
 public class CatalogPerspective extends PerspectiveAdapter {
-    
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
-     */
-    public void setDefaultViews() {
-        ViewMap viewMap = new ViewMap();
-		
-		IView view = new CatalogView();
-		net.infonode.docking.View dockingCatalogView = addView(view);
-		viewMap.addView(0,dockingCatalogView);
-		
-        setRootWindow(viewMap,dockingCatalogView);
-  }
-	
-    /* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws IOException{
-	    commit(FILE_CATALOG_PERSPECTIVE);
-	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#load()
-     */
-    public void load() throws IOException {
-        load(FILE_CATALOG_PERSPECTIVE);
-    }
+  
+    private static final long serialVersionUID = 1L;
+
     /* (non-Javadoc)
      * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
      */
     public String getDesc() {
         return Messages.getString("Perspective_Description_Catalog"); //$NON-NLS-1$
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IPerspective#getViews()
+     */
+    public Set<IView> getViews() {
+        if (views != null){
+            return views;
+        }
+        views = new HashSet<IView>(1);
+        views.add(ViewFactory.createView(CatalogView.class,this));
+        return views;
     }
 
 }

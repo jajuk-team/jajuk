@@ -85,13 +85,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         launchSearch(this.search);
     }
     
-   /* (non-Javadoc)
-	 * @see org.jajuk.ui.views.IView#getID()
-	 */
-	public String getID() {
-		return getClass().getName(); //$NON-NLS-1$
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */

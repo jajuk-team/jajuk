@@ -20,12 +20,12 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.io.IOException;
-
-import net.infonode.docking.util.ViewMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.views.IView;
+import org.jajuk.ui.IView;
+import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.ui.views.WikipediaView;
 
 /**
@@ -35,34 +35,10 @@ import org.jajuk.ui.views.WikipediaView;
  * @created    12/12/2005
  */
 public class InfoPerspective extends PerspectiveAdapter {
-    
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
-     */
-    public void setDefaultViews() {
-        ViewMap viewMap = new ViewMap();
-		
-		IView view = new WikipediaView();
-		net.infonode.docking.View dockingCatalogView = addView(view);
-		viewMap.addView(0,dockingCatalogView);
-		
-        setRootWindow(viewMap,dockingCatalogView);
-  }
-	
-    /* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws IOException{
-	    commit(FILE_INFO_PERSPECTIVE);
-	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#load()
-     */
-    public void load() throws IOException {
-        load(FILE_INFO_PERSPECTIVE);
-    }
+   	
+   
+    private static final long serialVersionUID = 1L;
+
     /* (non-Javadoc)
      * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
      */
@@ -70,4 +46,15 @@ public class InfoPerspective extends PerspectiveAdapter {
         return Messages.getString("Perspective_Description_Info"); //$NON-NLS-1$
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IPerspective#getViews()
+     */
+    public Set<IView> getViews() {
+        if (views != null){
+            return views;
+        }
+        views = new HashSet<IView>(1);
+        views.add(ViewFactory.createView(WikipediaView.class,this));
+        return views;
+    }
 }

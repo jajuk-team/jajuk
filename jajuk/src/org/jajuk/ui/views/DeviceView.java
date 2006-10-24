@@ -55,6 +55,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.util.EventSubject;
@@ -248,14 +249,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
         return eventSubjectSet;
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return VIEW_NAME_DEVICES;
-    }
-    
-    
+   
     private void refreshDevices(){
         synchronized(DeviceManager.getInstance().getLock()){
             //remove all devices
@@ -419,7 +413,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
         if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_DELETE.toString())){
             DeviceManager.getInstance().removeDevice(diSelected.getDevice());
             jpDevices.remove(diSelected);
-            ViewManager.notify(EventSubject.EVENT_VIEW_REFRESH_REQUEST,DeviceView.this);
+            ObservationManager.notify( new Event(EventSubject.EVENT_VIEW_REFRESH_REQUEST));
             //refresh views
             ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
         }
@@ -520,7 +514,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
      */
     public void mouseExited(MouseEvent arg0) {
     }
-    
+
+   
     
 }
 

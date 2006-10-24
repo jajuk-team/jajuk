@@ -131,6 +131,7 @@ public interface ITechnicalStrings {
     public static final URL ICON_LOGO = Util.getResource("org/jajuk/icons/64x64/jajuk-icon_64x64.png");
     public static final URL ICON_TRAY = Util.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
     public static final URL ICON_LOGO_FRAME = Util.getResource("org/jajuk/icons/16x16/jajuk-icon_16x16.png");
+    public static final URL ICON_VIEW = Util.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
     public static final URL ICON_REPEAT = Util.getResource("org/jajuk/icons/16x16/repeat.png");
     public static final URL ICON_SHUFFLE = Util.getResource("org/jajuk/icons/16x16/shuffle.png"); 
     public static final URL ICON_CONTINUE = Util.getResource("org/jajuk/icons/16x16/continue.png");
@@ -282,20 +283,21 @@ public interface ITechnicalStrings {
     public static final URL ARTIST_COLLECTION_XSLT = Util.getResource("org/jajuk/xslt/artist_collection.xsl");
     public static final URL ALBUM_COLLECTION_XSLT = Util.getResource("org/jajuk/xslt/album_collection.xsl");
     
+    //Default perspectives
+    public static final URL PERSPECTIVE_PHYSICAL = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.PhysicalPerspective.xml");
+    public static final URL PERSPECTIVE_LOGICAL = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.LogicalPerspective.xml");
+    public static final URL PERSPECTIVE_CATALOG = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.CatalogPerspective.xml");
+    public static final URL PERSPECTIVE_HELP = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.HelpPerspective.xml");
+    public static final URL PERSPECTIVE_CONFIGURATION = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.ConfigurationPerspective.xml");
+    public static final URL PERSPECTIVE_INFO = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.InfoPerspective.xml");
+    public static final URL PERSPECTIVE_PLAYER = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.PlayerPerspective.xml");
+    public static final URL PERSPECTIVE_STAT = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.StatPerspective.xml");
+        
     //files
     public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
     public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
     public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; //FIle written by the exit hook
     public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; //Void file created after exit collection file
-    public static final String FILE_PERSPECTIVES_CONF = FILE_JAJUK_DIR+"/perspectives.xml";
-    public static final String FILE_PHYSICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/physicalPerspectives.ser";
-    public static final String FILE_LOGICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/logicalPerspectives.ser";
-    public static final String FILE_PLAYER_PERSPECTIVE = FILE_JAJUK_DIR+"/playerPerspectives.ser";
-    public static final String FILE_CATALOG_PERSPECTIVE = FILE_JAJUK_DIR+"/catalogPerspectives.ser";
-    public static final String FILE_INFO_PERSPECTIVE = FILE_JAJUK_DIR+"/infoPerspectives.ser";
-    public static final String FILE_STAT_PERSPECTIVE = FILE_JAJUK_DIR+"/statPerspectives.ser";
-    public static final String FILE_HELP_PERSPECTIVE = FILE_JAJUK_DIR+"/helpPerspectives.ser";
-    public static final String FILE_CONFIGURATION_PERSPECTIVE = FILE_JAJUK_DIR+"/configurationPerspectives.ser";
     public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR+"/conf.properties";
     public static final String FILE_HISTORY = FILE_JAJUK_DIR+"/history.xml";
     public static final String FILE_LOCK = FILE_JAJUK_DIR+"/.lock";
@@ -317,6 +319,7 @@ public interface ITechnicalStrings {
     public static final String FILE_FIFO = FILE_JAJUK_DIR+"/fifo.lst";
     public static final String FILE_MPLAYER_EXE = "mplayer.exe";
     public static final String FILE_TOOLBARS_CONF = FILE_JAJUK_DIR+"/toolbars.xml";
+    public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
     
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
@@ -457,7 +460,7 @@ public interface ITechnicalStrings {
     public static final String LNF_TINY_CLASS = "de.muntjak.tinylookandfeel.TinyLookAndFeel";
     public static final String LNF_LOOKS = "Looks";
     public static final String LNF_LOOKS_CLASS = "com.jgoodies.looks.windows.WindowsLookAndFeel";
-    public static final String LNF_DEFAULT = LNF_LIQUID;//default look and feel name
+    public static final String LNF_DEFAULT = LNF_KUNSTSTOFF;//default look and feel name
 
     //statup mode
     public static final String STARTUP_MODE_NOTHING = "nothing";

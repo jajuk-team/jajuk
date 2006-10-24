@@ -20,16 +20,15 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.io.IOException;
-
-import net.infonode.docking.SplitWindow;
-import net.infonode.docking.util.ViewMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.views.CDScanView;
 import org.jajuk.ui.views.DeviceView;
-import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ParameterView;
+import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Configuration perspective
@@ -39,59 +38,29 @@ import org.jajuk.ui.views.ParameterView;
  */
 public class ConfigurationPerspective extends PerspectiveAdapter{
 	
-	/**
-	 * Constructor
-	 *
-	 */
-	public ConfigurationPerspective(){
-		super();
-	}
+	
+	private static final long serialVersionUID = 1L;
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Configuration"); //$NON-NLS-1$
 	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
-     */
-    public void setDefaultViews() {
-		ViewMap viewMap = new ViewMap();
-		
-		IView view = new ParameterView();
-		net.infonode.docking.View dockingParameterView = addView(view);
-		viewMap.addView(0,dockingParameterView);
-		
-		view = new DeviceView();
-		net.infonode.docking.View dockingDeviceView = addView(view);
-		viewMap.addView(1,dockingDeviceView);
-
-        view = new CDScanView();
-		net.infonode.docking.View dockingCDScanView = addView(view);
-		viewMap.addView(2,dockingCDScanView);
-        
-        SplitWindow horDeviceCDScan = new SplitWindow(false,0.7f,dockingDeviceView,dockingCDScanView);
-        SplitWindow verMainSplit = new SplitWindow(true,0.4f,horDeviceCDScan,dockingParameterView);
-				
-		setRootWindow(viewMap,verMainSplit);
-        
-        
-	}
-	
+    
     /* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws IOException{
-	    commit(FILE_CONFIGURATION_PERSPECTIVE);
-	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     * @see org.jajuk.ui.IPerspective#getViews()
      */
-    public void load() throws IOException {
-        load(FILE_CONFIGURATION_PERSPECTIVE);
+    public Set<IView> getViews() {
+        if (views != null){
+            return views;
+        }
+        views = new HashSet<IView>(1);
+        views.add(ViewFactory.createView(ParameterView.class,this));
+        views.add(ViewFactory.createView(CDScanView.class,this));
+        views.add(ViewFactory.createView(DeviceView.class,this));
+        return views;
     }
+	
 
 }

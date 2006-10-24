@@ -17,15 +17,13 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
-package org.jajuk.ui.perspectives;
+package org.jajuk.ui;
 
 
 import java.awt.Container;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Set;
 
-import org.jajuk.ui.views.IView;
 /**
  * Representation of a perspective
  * @author		Bertrand Florat
@@ -34,45 +32,16 @@ import org.jajuk.ui.views.IView;
 
 public interface IPerspective {
 
-	public void setDefaultViews();
-	/**
-	 * Add a view to the perspective but don't place it.
-	 *  @param view View to add to the perspective.
-	 */
-	public net.infonode.docking.View addView(IView view);
-	
-	/**
-	 * Add a view to the perspective.
-	 *  @param view View to add to the perspective.
-	 */
-	public net.infonode.docking.View addViewAndPlaceIt(IView view);
-	
-	/**
-	 * Remove a view from the perspective.
-	 * 
-	 * @param view View to remove.
-	 * @return void 
-	 */
-	public void removeView(IView view);
-	
-	/**
-	 * Remove all views from the perspective.
-	 * 
-	 * @return void 
-	 */
-	public void removeAllView();
-	
 	/**
 	 * @return the perspective's id
 	 */
 	public String getID();
 	
-	/**
-	 * Set id ( class ) of the perspective
-	 * @param sID ( class ) of the perspective
-	 */
-	public void setID(String sID);
-	
+    /**
+     * @param sid
+     */
+    public void setID(String sid);
+    
 	/**
 	 *  Type description
 	 *
@@ -97,7 +66,7 @@ public interface IPerspective {
 	/**
 	 * @return Arraylist views registered in the perspective.
 	 */
-	public ArrayList<IView> getViews();
+	public Set<IView> getViews();
 	
 	/**
 	 * @return Returns the desktop.
@@ -107,11 +76,17 @@ public interface IPerspective {
 	/**
 	 * Serialize the perspective
 	 */
-	public void commit()throws IOException;
+	public void commit()throws Exception;
 	
 	/**
 	 * Deserialize the perspective
 	 */
-	public void load()throws IOException;
+	public void load()throws Exception;
+    
+    /**
+     * Restaure defaults views
+     */
+    public void restoreDefaults();
 		
+   
 }

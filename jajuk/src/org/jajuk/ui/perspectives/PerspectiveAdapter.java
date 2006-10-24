@@ -21,29 +21,23 @@
 package org.jajuk.ui.perspectives;
 
 import java.awt.Container;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Set;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
-import net.infonode.docking.DockingWindow;
-import net.infonode.docking.RootWindow;
-import net.infonode.docking.theme.SlimFlatDockingTheme;
-import net.infonode.docking.util.DockingUtil;
-import net.infonode.docking.util.ViewMap;
-import net.infonode.util.Direction;
-
-import org.jajuk.ui.views.IView;
-import org.jajuk.ui.views.ViewManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IView;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
+import com.vlsolutions.swing.docking.DockableState;
+import com.vlsolutions.swing.docking.DockingDesktop;
 
 /**
  * Perspective adapter, provide default implementation for perspectives
@@ -51,19 +45,15 @@ import org.jajuk.util.ITechnicalStrings;
  * @author     Bertrand Florat
  * @created    15 nov. 2003
  */
-public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrings {
+public abstract class PerspectiveAdapter 
+        extends DockingDesktop 
+        implements IPerspective,ITechnicalStrings {
 	/** Perspective id (class)*/
 	private String sID;
 	/** Perspective icon path*/
 	private URL iconPath;
-	/** Perspective views list*/
-	private ArrayList alViews = new ArrayList(10);
-	/**Associated desktop pane*/
-	protected JPanel jpPerspectiveContentPane;
-	/**Contained by desktop pane*/
-    public RootWindow rootWindow;
-	
-	
+	/** Views list*/
+	protected Set<IView> views;
 	
 	/**
 	 * Constructor
@@ -71,73 +61,15 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @param sIconName
 	 */
 	public PerspectiveAdapter(){
-		this.jpPerspectiveContentPane = new JPanel();
-		this.jpPerspectiveContentPane.setLayout(new BoxLayout(this.jpPerspectiveContentPane,BoxLayout.Y_AXIS));
 	}
-	public void setDefaultViews(){
-		
-	}
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#addView(org.jajuk.ui.views.IView)
-	 */
-	public net.infonode.docking.View addView(IView view) {
-		alViews.add(view);
-		net.infonode.docking.View dockingView = ViewManager.registerView(view);
-		return dockingView;
-	}
-	/**
-	 * @param viewMap
-	 * @param add a view 
-	 */
-	public net.infonode.docking.View addViewAndPlaceIt(IView view){
-	    net.infonode.docking.View dockingView = addView(view);
-		DockingUtil.addWindow(dockingView,rootWindow);
-		return dockingView;
     
-    }
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#removeView(org.jajuk.ui.views.IView)
-	 */
-	public void removeView(IView view) {
-	 	ViewManager.removeView(view); // ?
-		alViews.remove(view);
-	}
-
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#removeAllView()
-     */
-    public void removeAllView() {
-        Iterator iterator = alViews.iterator();
-        while(iterator.hasNext()){
-            IView currentView = (IView)iterator.next();
-            ViewManager.removeView(currentView);
-        }
-       alViews.clear();
-       if (getContentPane().getComponentCount() > 0){
-           getContentPane().removeAll();
-       }
-    }
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#getID()
 	 */
 	public String getID() {
 		return sID;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#getViews()
-	 */
-	public ArrayList getViews() {
-		return alViews;
-	}
-
-	/**
-	 * @return Returns the desktop.
-	 */
-	public Container getContentPane() {
-		return jpPerspectiveContentPane;
-	}
-	
 	/**
 	 * toString method
 	 */
@@ -158,57 +90,95 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	public void setIconPath(URL iconURL) {
 		this.iconPath = iconURL;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IPerspective#setID(java.lang.String)
-	 */
-	public void setID(String sID) {
-		this.sID = sID;
-	}
 	
     /* (non-Javadoc)
      * @see org.jajuk.ui.perspectives.IPerspective#commit()
      */
-    public void commit() throws IOException {
+    public void commit() throws Exception {
+        File saveFile = new File(FILE_JAJUK_DIR + '/' + getID() + ".xml");
+        BufferedOutputStream out = new BufferedOutputStream(
+            new FileOutputStream(saveFile));
+        writeXML(out);
+        out.flush();
+        out.close(); // stream isn't closed in case you'd like to save something else after
     }
+    
     /* (non-Javadoc)
      * @see org.jajuk.ui.perspectives.IPerspective#load()
      */
-    public void load() throws IOException {
+    public void load() throws Exception {
+        // first : declare the dockables to the desktop (they will be in the "closed" dockable state).
+        for (IView view : getViews()){
+            registerDockable(view);
+        }
+        //Try to read XML conf file from home directory
+        File loadFile = new File(FILE_JAJUK_DIR 
+            + '/' + getID() + ".xml");
+        //If file doesn't exist (normaly only at first install), read perspective conf from the jar
+        if (!loadFile.exists()){
+            URL url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH+'/'+getID() + ".xml");
+            loadFile = new File(url.getFile());
+        }
+        BufferedInputStream in = new BufferedInputStream(
+            new FileInputStream(loadFile));
+        // then, load the workspace 
+        try{
+            readXML(in);
+        }
+        catch(Exception e){
+            //error parsing the file, we must avoid user to blocked, use default conf
+            Log.error("Error parsing conf file, use defaults - "+getID(),e);
+            URL url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH+'/'+getID() + ".xml");
+            loadFile = new File(url.getFile());
+            in = new BufferedInputStream(
+                new FileInputStream(loadFile));
+            readXML(in);
+        }
+        finally{
+           in.close(); // stream isn't closed
+        }
+    }    
+
+     /* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#getContentPane()
+     */
+    public Container getContentPane() {
+        return this;
     }
-    
-    
-	/**
-	 * @param strFile
-	 * @throws IOException Serialise the perspective
-	 */
-	protected  void commit(String strFile) throws IOException{
-	    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(strFile));
-		rootWindow.write(oos);
-		oos.close();
-	}
-	
-	
-	/**
-	 * @param strFile
-	 * @throws IOException Unserialise the perspective
-	 */
-	protected  void load(String strFile) throws IOException {
-	    File  file = new File(strFile);  
-        if ( file.exists() && file.canRead()){ //try to read serialized perspective, if file doesn't exist, it will be created at next shutdown
-            rootWindow.read(new ObjectInputStream(new FileInputStream(strFile)));    
+   
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IPerspective#restaureDefaults()
+     */
+    public void restoreDefaults(){
+        try{
+            
+            //Remove current conf file to force using default file from the jar
+            File loadFile = new File(FILE_JAJUK_DIR 
+                + '/' + getID() + ".xml");
+            loadFile.delete();
+            //Remove all registered dockables
+            DockableState[] ds = getDockables();
+            for ( int i=0; i<ds.length; i++){
+                remove(ds[i].getDockable());
+            }
+            //force reload
+            load();
+            //set perspective again to force UI refresh
+            PerspectiveManager.setCurrentPerspective(this);
+        }
+        catch(Exception e){
+            //display an error message
+            Log.error(e);
+            Messages.showErrorMessage("163");
         }
     }
+
     
-	/**
-	 * @param viewMap
-	 * @param dockingWindow create the root window and add it to desktop
-	 */
-	protected void setRootWindow(ViewMap viewMap,DockingWindow dockingWindow){
-		rootWindow = new RootWindow(viewMap,dockingWindow);
-		rootWindow.getRootWindowProperties().addSuperObject(SlimFlatDockingTheme.createRootWindowProperties());
-		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
-		jpPerspectiveContentPane.add(rootWindow);
-	}
-	
+    /**
+     * @param sid
+     */
+    public void setID(String sid) {
+        this.sID = sid;
+    }
+    
 }

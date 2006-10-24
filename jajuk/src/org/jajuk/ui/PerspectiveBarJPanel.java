@@ -23,12 +23,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -97,7 +97,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//no thread, it causes ugly screen repaint	
-					PerspectiveManager.notify(perspective.getID());
+					PerspectiveManager.setCurrentPerspective(perspective.getID());
 				}
 			});
 			jtbPerspective.add(jb);
@@ -112,13 +112,12 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	 * @param perspective
 	 */
 	public void setActivated(IPerspective perspective){
-		ArrayList alPerspectives = PerspectiveManager.getPerspectives();
+		Set<IPerspective> perspectives = PerspectiveManager.getPerspectives();
 		Iterator it = alButtons.iterator();
-		Iterator it2 = alPerspectives.iterator();
+		Iterator it2 = perspectives.iterator();
 		while ( it.hasNext()){
 			final JButton jb = (JButton)it.next();
 			IPerspective perspective2 = (IPerspective)it2.next();
-            
 			if ( perspective2.equals(perspective)){  //this perspective is selected 
 	            jb.setSelected(true);
 			}

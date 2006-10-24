@@ -633,15 +633,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     public String getDesc() {
         return "CatalogView.0"; //$NON-NLS-1$
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.CatalogView"; //$NON-NLS-1$
-    }
+    
 
     /*
      * (non-Javadoc)

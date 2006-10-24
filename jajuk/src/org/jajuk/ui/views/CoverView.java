@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -112,9 +113,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Used Cover index*/
     int index = 0;
     
-    /**ID*/
-    public String sID;
-    
     /**Generic locker*/
     private byte[] bLock = new byte[0];
     
@@ -137,8 +135,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * Constructor
      * @param sID ID used to store independently parameters of views
      */
-    public CoverView(String sID) {
-        this.sID = sID;
+    public CoverView() {
     }
     
     /* (non-Javadoc)
@@ -187,7 +184,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("CoverView.12")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("CoverView.13")); //$NON-NLS-1$
-        jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY+"_"+sID))); //$NON-NLS-1$
+        jcbAccuracy.setSelectedIndex(ConfigurationManager.getInt(CONF_COVERS_ACCURACY+"_"+getCoverID())); //$NON-NLS-1$
         jcbAccuracy.addActionListener(this);
         
         jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
@@ -237,6 +234,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         eventSubjectSet.add(EventSubject.EVENT_COVER_CHANGE);
         return eventSubjectSet;
     }    
+    
+    /**
+     * Compute cover ID used to store conf
+     * @return cover ID like "1"
+     */
+    private String getCoverID(){
+        StringTokenizer st = new StringTokenizer(getID(),"/");
+        st.nextToken();
+        return st.nextToken();
+    }
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
@@ -464,13 +471,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public String getDesc() {
         return "CoverView.3";    //$NON-NLS-1$
-    }
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.CoverView"; //$NON-NLS-1$
     }
     
     /* (non-Javadoc)
@@ -707,7 +707,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == jcbAccuracy){
-            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
+            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+getCoverID(),Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
             new Thread(){
                 public void run(){
                     update(new Event(EventSubject.EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH))); //force refreshing
@@ -920,7 +920,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public String createQuery(org.jajuk.base.File file){
         String sQuery = ""; //$NON-NLS-1$
-        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY+"_"+sID); //$NON-NLS-1$
+        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY+"_"+getCoverID()); //$NON-NLS-1$
         Track track = file.getTrack();
         Author author = track.getAuthor();
         Album album = track.getAlbum();
@@ -974,13 +974,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @return whether this view is in current perspective
      */
     public boolean isInCurrentPerspective(){
-        for (IView view:PerspectiveManager.getCurrentPerspective().getViews()){
-            if (view instanceof CoverView){
-                CoverView cv = (CoverView)view;
-                if (cv.sID.equals(sID)){
-                    return true;
-                }
-            }
+        if (getPerspective()
+                .equals(PerspectiveManager.getCurrentPerspective())){
+            return true;
         }
         return false;
     }

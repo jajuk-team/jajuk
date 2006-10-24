@@ -21,21 +21,21 @@ package org.jajuk.ui.perspectives;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.views.IView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -49,33 +49,32 @@ import com.vlsolutions.swing.toolbars.ToolBarPanel;
 public class PerspectiveManager  implements ITechnicalStrings {
     /** Current perspective */
     private static IPerspective currentPerspective = null;
-    /** Perspective name*/
-    private static ArrayList<String> alNames = new ArrayList<String>(10);
+    /** Perspective name -> perspective*/
+    private static HashMap<String,IPerspective> hmNameInstance 
+    = new HashMap<String,IPerspective>(10);
     /**perspective  */
-    private static ArrayList<IPerspective> alPerspectives = new ArrayList<IPerspective>(10);
+    private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
     /**Date used by probe */
     private static long lTime;
     /**Temporary perspective name used when parsing*/
     private static String sPerspectiveName;
-    /**Commit flag, if false, configuration will not be commited*/
-    public static boolean bShouldCommit = true;
-    
-    
-    
+
     /**
      * Reset registered perspectives
      *
      */
     private static void reset(){
-        alNames.clear();
-        alPerspectives.clear();
+        perspectives.clear();
+        hmNameInstance.clear();
     }
-    
+
     /**
      * Load configuration file
      * @throws JajukException
      */
     public static void load() throws JajukException{
+        //si fichiers existent, decouverte dynamique
+        //si aucun fichier ou si nouvelle version majeure, lecture des fichiers defaut du jar
         registerDefaultPerspectives();
         //upgrade code; if > 1.1, do not overwrie default conf by user conf
         String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
@@ -84,22 +83,20 @@ public class PerspectiveManager  implements ITechnicalStrings {
             ConfigurationManager.setProperty(CONF_RELEASE,JAJUK_VERSION);
             //upgrade message
             if (sRelease != null){
-            Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
+                Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
             }
             return;
         }
+        //Load each perspective
         try{
-            Iterator it = getPerspectives().iterator();
-            while (it.hasNext()){ //for each perspective
-                IPerspective perspective = (IPerspective)it.next();
+            for (IPerspective perspective: getPerspectives()){
                 perspective.load();
             } 
         } catch (Exception e) {
-            Log.error(e);
-            throw new JajukException("108"); //$NON-NLS-1$
+            throw new JajukException("108",e); //$NON-NLS-1$
         }
     }
-    
+
     /**
      * Begins management
      */
@@ -108,200 +105,168 @@ public class PerspectiveManager  implements ITechnicalStrings {
         if (sPerspective == null){
             sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT); //no? take the configuration ( user last perspective)
         }
-        int index = alNames.indexOf(sPerspective);
-        //test if perspective still exists still previous session
-        if (index < 0){
-            index = 0;
-        }    
-        IPerspective perspective = alPerspectives.get(index);
+        IPerspective perspective = hmNameInstance.get(sPerspective);
+        //If perspective is no more known, take first perspective found
+        if (perspective == null){
+            perspective = perspectives.iterator().next();
+        }
         setCurrentPerspective(perspective);
     }
-        
+
     /*
      * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
      */
     public static IPerspective getCurrentPerspective()  {
         return currentPerspective;
     }
-    
+
     /*
-	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
-	 */
+     * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
+     */
     public static void setCurrentPerspective(final IPerspective perspective) {
-		Util.waiting();
-		//views display 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Iterator it = perspective.getViews().iterator();
-				while ( it.hasNext()){
-					final IView view = (IView)it.next();
-					if (!view.isPopulated() ){
-						view.initUI();
-						view.setIsPopulated(true);
-					}
+        Util.waiting();
+        //views display 
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                for (IView view : perspective.getViews()){
+                    if (!view.isPopulated() ){
+                        view.initUI();
+                        view.setIsPopulated(true);
+                    }
                     else{//view already populated, should be activated
                         view.activate();
                     }
-				}
-				currentPerspective = perspective;
-				ToolBarContainer tbcontainer = Main.getToolbarContainer();
+                }
+                currentPerspective = perspective;
+                ToolBarContainer tbcontainer = Main.getToolbarContainer();
                 //Remove all non-toolbar items
                 if (tbcontainer.getComponentCount() > 0 ){
-				    Component[] components = tbcontainer.getComponents();
+                    Component[] components = tbcontainer.getComponents();
                     for (int i=0; i<components.length;i++){
                         if (!(components[i] instanceof ToolBarPanel)){
                             tbcontainer.remove(components[i]);
                         }
                     }
-              }
-				tbcontainer.add(perspective.getContentPane(),BorderLayout.CENTER);
-				tbcontainer.revalidate();
-				tbcontainer.repaint();
-				PerspectiveBarJPanel.getInstance().setActivated(perspective);
-				
+                }
+                tbcontainer.add(perspective.getContentPane(),BorderLayout.CENTER);
+                tbcontainer.revalidate();
+                tbcontainer.repaint();
+                PerspectiveBarJPanel.getInstance().setActivated(perspective);
+
+                ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,perspective.getID());
                 Util.stopWaiting();
-			}
-		});
+            }
+        });
     }  
-    
+
     /** 
      * Set current perspective
      * @param sPerspectiveName
      */
     public static void setCurrentPerspective(String sPerspectiveID) {
-        int index = alNames.indexOf(sPerspectiveID);
-        if (index != -1){
-            setCurrentPerspective(alPerspectives.get(index));
+        IPerspective perspective = hmNameInstance.get(sPerspectiveID);
+        if (perspective == null){
+            perspective = perspectives.iterator().next();
         }
+        setCurrentPerspective(perspective);
     }
-    
-    /**
-     * Notify the manager for  a perspective change request
-     * @param sPerspectiveName
-     */
-    public static void notify(String sPerspectiveName){
-        int index = alNames.indexOf(sPerspectiveName);
-        IPerspective perspective = alPerspectives.get(index);
-        if (perspective != null){
-            setCurrentPerspective(perspective);
-            ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,perspective.getID());
-        }
-    }
-    
+
     /**
      * Get all perspectives
      * @return all perspectives as a collection
      */
-    public static ArrayList getPerspectives(){
-        return alPerspectives;
+    public static Set<IPerspective> getPerspectives(){
+        return perspectives;
     }
-    
+
     /**
-     * Get a perspective by ID
+     * Get a perspective by ID or null if none associated perspective found
      * @param sID perspective ID
      * @return pespective
      */
     public static IPerspective getPerspective(String sID){
-        int index = alNames.indexOf(sID);
-        if (index == -1){
-            return null;
-        }
-        return alPerspectives.get(index);
+        return hmNameInstance.get(sID);
     }
-    
-    
+
+
     /**
      * Saves perspectives and views position in the perspective.xml file
      */
-    public static void commit() throws IOException {
-        if (!bShouldCommit){
-            return;
-        }
-        Iterator it = getPerspectives().iterator();
-        while (it.hasNext()){ //for each perspective
-            IPerspective perspective = (IPerspective)it.next();
+    public static void commit() throws Exception {
+        for (IPerspective perspective: getPerspectives()){
             perspective.commit();
         }
     }
-    
-    
+
+
     /**
      * Register default perspective configuration. Will be overwritten by perspective.xml parsing if it exists
      *
      */
     public static void registerDefaultPerspectives(){
-        //reset
         reset();
         IPerspective perspective = null;
-       //physical perspective
+        //physical perspective
         perspective = new PhysicalPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
         perspective.setID(PERSPECTIVE_NAME_PHYSICAL);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
-        
+
         //Logical perspective
         perspective = new LogicalPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
         perspective.setID(PERSPECTIVE_NAME_LOGICAL);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
-        
+
         // Player perspective
         perspective = new PlayerPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
         perspective.setID(PERSPECTIVE_NAME_PLAYER);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
-        
+
         // Catalog perspective
         perspective = new CatalogPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_CATALOG);
         perspective.setID(PERSPECTIVE_NAME_CATALOG);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
-        
+
         // Information perspective
-        /* jdic buggy under linux for the moment*/
+        //jdic buggy under linux for the moment
         if (Util.isUnderWindows()){
             perspective = new InfoPerspective();
             perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
             perspective.setID(PERSPECTIVE_NAME_INFO);
-            perspective.setDefaultViews();
             registerPerspective(perspective);
         }
-                
+
         //Configuration perspective
         perspective = new ConfigurationPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
         perspective.setID(PERSPECTIVE_NAME_CONFIGURATION);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
-        
+
         //Stats perspective
         perspective = new StatPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_STATISTICS);
         perspective.setID(PERSPECTIVE_NAME_STATISTICS);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
         
         //Help perspective
         perspective = new HelpPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_HELP);
         perspective.setID(PERSPECTIVE_NAME_HELP);
-        perspective.setDefaultViews();
         registerPerspective(perspective);
     }
-    
+
     /**
      * Register a new perspective
      * @param perspective
      * @return registered perspective
      */
     public static IPerspective registerPerspective(IPerspective perspective){
-        alNames.add(perspective.getID());
-        alPerspectives.add(perspective);
+        hmNameInstance.put(perspective.getID(),perspective);
+        perspectives.add(perspective);
         return perspective;
     }
-    
+
 }

@@ -72,13 +72,6 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.IView#getID()
-	 */
-	public String getID() {
-		return getClass().getName(); //$NON-NLS-1$
-	}
-	
-	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {

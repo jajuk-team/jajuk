@@ -1153,13 +1153,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.ParameterView"; //$NON-NLS-1$
-    }
-    
-    /* (non-Javadoc)
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {

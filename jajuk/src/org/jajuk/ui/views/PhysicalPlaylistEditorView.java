@@ -40,13 +40,6 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getID()
-	 */
-	public String getID() {
-	    return "org.jajuk.ui.views.PhysicalPlaylistEditorView"; //$NON-NLS-1$
-	}
-
-	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
 	 */
 	ArrayList getRepositoryCurrentPlaylistFileItem() {

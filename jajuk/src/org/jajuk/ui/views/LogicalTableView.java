@@ -127,14 +127,7 @@ public class LogicalTableView extends AbstractTableView{
         return model;
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.LogicalTableView"; //$NON-NLS-1$
-    }
-    
-    
+ 
     /* (non-Javadoc)
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */

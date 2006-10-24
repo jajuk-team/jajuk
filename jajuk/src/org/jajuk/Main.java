@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -78,6 +79,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -238,7 +240,7 @@ public class Main implements ITechnicalStrings {
             ItemManager.registerItemManager(org.jajuk.base.Type.class,TypeManager.getInstance());
             
             //Upgrade configuration from previous releases
-            upgradeStep1();
+            UpgradeManager.upgradeStep1();
             
             //Display user system configuration
             Log.debug(Util.getAnonymizedSystemProperties().toString());
@@ -314,7 +316,7 @@ public class Main implements ITechnicalStrings {
                             out.flush();
                             out.close();
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         Log.error("", e); //$NON-NLS-1$
                     }
                     finally{
@@ -916,38 +918,7 @@ public class Main implements ITechnicalStrings {
         return jw;
     }
     
-    /**
-     * Actions to migrate an existing installation
-     * Step1 just at startup
-     *
-     */
-    public static void upgradeStep1() throws Exception {
-        //--For jajuk < 0.2 : remove backup file : collection~.xml
-        File file = new File(FILE_COLLECTION+"~"); //$NON-NLS-1$
-        file.delete();
-        //upgrade code; if ugrade from <1.2, set default ambiences
-        String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-        if (sRelease == null || sRelease.matches("0..*") //$NON-NLS-1$
-                || sRelease.matches("1.0..*") //$NON-NLS-1$
-                || sRelease.matches("1.1.*")){ //$NON-NLS-1$
-            AmbienceManager.getInstance().createDefaultAmbiences();
-        }
-        //- For Jajuk < 1.3 : changed track pattern from %track to %title
-        String sPattern = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN);
-        if (sPattern.contains("track")){
-            ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, 
-                sPattern.replaceAll("track", "title"));
-        }
-        
-    }
     
-    /**
-     * Actions to migrate an existing installation
-     * Step 2 at the end of UI startup
-     */
-    public static void upgradeStep2() throws Exception {
-        
-    }
     
     /**
      * @return Returns whether jajuk is in exiting state
@@ -973,7 +944,8 @@ public class Main implements ITechnicalStrings {
                     //Prepare toolbars
                     DockingUISettings.getInstance().installUI();
                     tbcontainer = ToolBarContainer.createDefaultContainer(true, true, true, true);
-        
+                   // tbcontainer.setBorder(BorderFactory.createEtchedBorder());
+                    
                     //starts ui
                     jw = JajukWindow.getInstance();
                     jw.setCursor(Util.WAIT_CURSOR);
@@ -1003,7 +975,8 @@ public class Main implements ITechnicalStrings {
                     // Create the perspective tool bar panel
                     perspectiveBar = PerspectiveBarJPanel.getInstance();
                     jpFrame.add(perspectiveBar, BorderLayout.WEST);
-                    /*display window
+                    
+                    /*display main window
                     We have to apply position and size before and after window made visible
                     - If position/size are set after, we can see a small window on screen at random position                  because in some cases, the window is displayed at random position 
                     - If position/size are set only after, position can be lost
@@ -1023,17 +996,20 @@ public class Main implements ITechnicalStrings {
                         fsw.setVisible(true);
                         ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
                     }
-                    
+                                        
+                    //Initialize and add the desktop
                     PerspectiveManager.init();
+                    
+                    //Add main container (contains toolbars + desktop)
                     jpFrame.add(tbcontainer, BorderLayout.CENTER);
                     jw.setCursor(Util.DEFAULT_CURSOR);
                     jw.addComponentListener();
                     
                     //Upgrade step2
-                    upgradeStep2();
+                    UpgradeManager.upgradeStep2();
                     
+                    // Display tip of the day if required
                     if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
-                        // Display tip of the day
                         TipOfTheDay tipsView = new TipOfTheDay();
                         tipsView.setLocationRelativeTo(jw);
                         tipsView.setVisible(true);

@@ -94,12 +94,5 @@ public class HelpView extends ViewAdapter{
 		return "HelpView.2";	  //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getID()
-	 */
-	public String getID() {
-		return "org.jajuk.ui.views.HelpView"; //$NON-NLS-1$
-	}
-
-	
+		
 }

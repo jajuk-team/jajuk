@@ -75,14 +75,7 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
         return "PhysicalPlaylistRepositoryView.6";	 //$NON-NLS-1$
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
-    }
-    
-    
+ 
     /**
      * Create playlists from collection 
      */

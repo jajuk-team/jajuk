@@ -20,18 +20,17 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.io.IOException;
-
-import net.infonode.docking.SplitWindow;
-import net.infonode.docking.util.ViewMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.LogicalPlaylistEditorView;
 import org.jajuk.ui.views.LogicalPlaylistRepositoryView;
 import org.jajuk.ui.views.LogicalTableView;
 import org.jajuk.ui.views.LogicalTreeView;
+import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Logical perspective
@@ -41,65 +40,30 @@ import org.jajuk.ui.views.LogicalTreeView;
  */
 public class LogicalPerspective extends PerspectiveAdapter{
 	
-	/**
-	 * Constructor
-	 *
-	 */
-	public LogicalPerspective(){
-		super();
-	}
-
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
-     */
-    public void setDefaultViews() {
-        ViewMap viewMap = new ViewMap();
-		IView view = new LogicalTreeView();
-		net.infonode.docking.View dockingLogicalTreeView = addView(view);
-		viewMap.addView(0,dockingLogicalTreeView);
-
-        view = new LogicalTableView();
-	    net.infonode.docking.View dockingLogicalTableView = addView(view);
-		viewMap.addView(1,dockingLogicalTableView);
-        
-        view = new CoverView("1"); //$NON-NLS-1$
-	    net.infonode.docking.View dockingCoverView = addView(view);
-		viewMap.addView(2,dockingCoverView);
-        
-        view = new LogicalPlaylistRepositoryView();
-	    net.infonode.docking.View dockingLogicalPlaylistRepository = addView(view);
-		viewMap.addView(3,dockingLogicalPlaylistRepository);
-        
-        view = new LogicalPlaylistEditorView();
-	    net.infonode.docking.View dockingPlaylistEditorView = addView(view);
-		viewMap.addView(4,dockingPlaylistEditorView);
-        
-        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.5f,dockingPlaylistEditorView,dockingCoverView);
-        SplitWindow horTableCoverSplit = new SplitWindow(false,0.5f,dockingLogicalTableView,vertPlaylistCoverSplit);
-        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.75f,dockingLogicalTreeView,dockingLogicalPlaylistRepository);
-        SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
-		
-        setRootWindow(viewMap,verMainSplit);
-  }
+	
+	private static final long serialVersionUID = 1L;
 
     /* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws IOException{
-	    commit(FILE_LOGICAL_PERSPECTIVE);
-	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#load()
-     */
-    public void load() throws IOException {
-        load(FILE_LOGICAL_PERSPECTIVE);
-    }
-	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Logical"); //$NON-NLS-1$
 	}
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IPerspective#getViews()
+     */
+    public Set<IView> getViews() {
+        if (views != null){
+            return views;
+        }
+        views = new HashSet<IView>(1);
+        views.add(ViewFactory.createView(LogicalTreeView.class,this));
+        views.add(ViewFactory.createView(LogicalTableView.class,this));
+        views.add(ViewFactory.createView(LogicalPlaylistEditorView.class,this));
+        views.add(ViewFactory.createView(LogicalPlaylistRepositoryView.class,this));
+        views.add(ViewFactory.createView(CoverView.class,this));
+        return views;
+    }
 
 }

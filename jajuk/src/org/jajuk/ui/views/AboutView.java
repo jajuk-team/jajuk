@@ -164,11 +164,5 @@ public class AboutView extends ViewAdapter {
 		return "AboutView.10";	 //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getID()
-	 */
-	public String getID() {
-		return "org.jajuk.ui.views.AboutView"; //$NON-NLS-1$
-	}
-
+	
 }

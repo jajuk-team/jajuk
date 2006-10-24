@@ -20,12 +20,18 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IView;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
+import com.vlsolutions.swing.docking.DockKey;
 
 /**
  *  Default implementation for views
@@ -33,20 +39,37 @@ import org.jajuk.util.ITechnicalStrings;
  * @author     Bertrand Florat
  * @created    15 nov. 2003
  */
-public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStrings {
+public abstract class ViewAdapter 
+    extends JPanel 
+    implements IView,ITechnicalStrings {
 	
-	/**Displayed state */
+	/**Populated state */
 	private boolean bIsPopulated = false;
-	private static final Dimension d = new Dimension(0,0);
+	
+    /**View ID; note that a same view can be used several times in the same or in 
+     * others perspectives*/
+    private String sID;
+    
+    /**Associated perspective**/
+    private IPerspective perspective;
+    
+    /**Associated DockKey*/
+    private DockKey key;
+    
 	/**
 	 * Constructor
 	 */
 	public ViewAdapter()  {
-		super();
+        //create a new DockKey (note that ID is set in setID() method)
+        key = new DockKey();
 		setOpaque(true);
+        //View title
+        key.setName(Messages.getString(getDesc()));
+        //View icon
+        key.setIcon(Util.getIcon(ICON_VIEW));
 	}
-	
-	/**
+        
+    /**
 	 * toString method
 	 */
 	public String toString(){
@@ -108,17 +131,54 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
     }
 	
       
-    public Dimension getMinimumSize(){
-        return d;
+     /* (non-Javadoc)
+     * @see com.vlsolutions.swing.docking.Dockable#getDockKey()
+     */
+    public DockKey getDockKey() {
+        return key;
     }
     
-   
+    /* (non-Javadoc)
+     * @see com.vlsolutions.swing.docking.Dockable#getComponent()
+     */
+    public Component getComponent() {
+        return this;
+    }
+    
     /**
      * Activate
      */
     public void activate(){
-        
     }
-   
+    
+    /**
+     * Default impl for ID
+     */
+    public String getID(){
+        return sID;
+    }
+    
+    /**
+     * Set the view ID
+     * @param sID
+     */
+    public void setID(String sID){
+        key.setKey(sID);
+        this.sID = sID;
+    }
+       
+      /* (non-Javadoc)
+     * @see org.jajuk.ui.IView#getPerspective()
+     */
+    public IPerspective getPerspective() {
+        return null;
+    }
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.ui.IView#setPerspective(org.jajuk.ui.IPerspective)
+     */
+    public void setPerspective(IPerspective perspective) {
+        this.perspective = perspective;
+    }
     
 }

@@ -1253,13 +1253,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.PhysicalTreeView"; //$NON-NLS-1$
-    }
-    
     /**
      * Manages auto-expand 
      *

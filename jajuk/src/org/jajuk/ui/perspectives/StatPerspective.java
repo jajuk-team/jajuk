@@ -20,13 +20,13 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.io.IOException;
-
-import net.infonode.docking.util.ViewMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.views.IView;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.views.StatView;
+import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Statistics perspective
@@ -36,45 +36,28 @@ import org.jajuk.ui.views.StatView;
  */
 public class StatPerspective extends PerspectiveAdapter{
 	
-	/**
-	 * Constructor
-	 *
-	 */
-	public StatPerspective(){
-		super();
-	}
 
-	/* (non-Javadoc)
+
+	private static final long serialVersionUID = 1L;
+
+    /* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
 	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
-     */
-    public void setDefaultViews() {
-        ViewMap viewMap = new ViewMap();
-		IView view = new StatView();
-	    net.infonode.docking.View dockingStatView = addView(view);
-		viewMap.addView(0,dockingStatView);
-	    setRootWindow(viewMap,dockingStatView);
-    }
-    
-    /* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws IOException{
-	    commit(FILE_STAT_PERSPECTIVE);
-	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#load()
-     */
-    public void load() throws IOException {
-           load(FILE_STAT_PERSPECTIVE);    
-    }
-	
 
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IPerspective#getViews()
+     */
+    public Set<IView> getViews() {
+        if (views != null){
+            return views;
+        }
+        views = new HashSet<IView>(1);
+        IView view = ViewFactory.createView(StatView.class,this);
+        views.add(view);
+        return views;
+    }
+	
 }

@@ -20,15 +20,14 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.io.IOException;
-
-import net.infonode.docking.SplitWindow;
-import net.infonode.docking.util.ViewMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IView;
 import org.jajuk.ui.views.AboutView;
 import org.jajuk.ui.views.HelpView;
-import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewFactory;
 /**
  * Help perspective
  *
@@ -37,54 +36,29 @@ import org.jajuk.ui.views.IView;
  */
 public class HelpPerspective extends PerspectiveAdapter{
 	
-	/**
-	 * Constructor
-	 *
-	 */
-	public HelpPerspective(){
-		super();
-	}
+	
+	private static final long serialVersionUID = 1L;
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Help"); //$NON-NLS-1$
 	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
-     */
-    public void setDefaultViews() {
-        ViewMap viewMap = new ViewMap();
-	
-		IView view = new HelpView();
-		net.infonode.docking.View dockingHelpView = addView(view);
-		viewMap.addView(0,dockingHelpView);
-		
-	    view = new AboutView();
-	    net.infonode.docking.View dockingAboutView = addView(view);
-		viewMap.addView(3,dockingAboutView);
-	    
-	    SplitWindow verMainSplit = new SplitWindow(true,0.7f,dockingHelpView,dockingAboutView);
-		
-	    setRootWindow(viewMap,verMainSplit);
-        
-        
-	}
-	
+    
     /* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws IOException{
-	    commit(FILE_HELP_PERSPECTIVE);
-	}
-	
-	/* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     * @see org.jajuk.ui.IPerspective#getViews()
      */
-    public void load() throws IOException {
-        load(FILE_HELP_PERSPECTIVE);
+    public Set<IView> getViews() {
+        if (views != null){
+            return views;
+        }
+        views = new HashSet<IView>(1);
+        views.add(ViewFactory.createView(HelpView.class,this));
+        views.add(ViewFactory.createView(AboutView.class,this));
+        return views;
     }
 
+    
+	
 }

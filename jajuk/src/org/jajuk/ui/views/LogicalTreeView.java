@@ -1125,15 +1125,6 @@ ActionListener, Observer {
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.LogicalTreeView"; //$NON-NLS-1$
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {

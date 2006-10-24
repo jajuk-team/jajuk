@@ -351,13 +351,6 @@ public class StatView extends ViewAdapter implements Observer{
     }
 
     /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.StatView";   //$NON-NLS-1$
-    }
-
-    /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public synchronized  void update(Event event) {

@@ -121,12 +121,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		return "CDScanView.12";	 //$NON-NLS-1$
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getID()
-	 */
-	public String getID() {
-		return "org.jajuk.ui.views.CDScanView"; //$NON-NLS-1$
-	}
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -177,4 +171,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			}
 		}
 	}
+
+    
 }

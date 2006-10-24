@@ -22,6 +22,7 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 import java.net.URL;
@@ -49,6 +50,9 @@ public class PlaylistFileItem extends JPanel
 
 	/** Associated name */
 	private String sName;
+    
+    /**Icon*/
+    private JLabel jlIcon;
 
 	/** Playlist file type : 0: normal, 1:new, 2:bookmarks, 3:bestif */
 	private int iType = 0;
@@ -72,8 +76,7 @@ public class PlaylistFileItem extends JPanel
 	 * @param sName :
 	 *            nom of the playlist file to be displayed
 	 */
-	public PlaylistFileItem(int iType, URL urlIcon, PlaylistFile plf, String sName)
-	{
+	public PlaylistFileItem(int iType, URL urlIcon, PlaylistFile plf, String sName){
 		this(iType, Util.getIcon(urlIcon), plf, sName);
 	}
 
@@ -87,18 +90,18 @@ public class PlaylistFileItem extends JPanel
 	 * @param sName :
 	 *            nom of the playlist file to be displayed
 	 */
-	public PlaylistFileItem(int iType, ImageIcon icon, PlaylistFile plf, String sName)
-	{
+	public PlaylistFileItem(int iType, ImageIcon icon, PlaylistFile plf, String sName){
 		this.iType = iType;
 		this.plf = plf;
 		double[][] dSize =
 		{
-		{ 85 },
-		{ 40, 10, 5 } };
+		{ 200 },
+		{ 50, 10, 5 } };
 		TableLayout layout = new TableLayout(dSize);
 		layout.setVGap(5);
 		setLayout(layout);
-		JLabel jlIcon = new JLabel(icon);
+		jlIcon = new JLabel(icon);
+        jlIcon.setPreferredSize(new Dimension(100,100));
 		JLabel jlName = new JLabel(sName);
 		jlName.setFont(font); //$NON-NLS-1$
 		add(jlIcon, "0,0,c,c");
@@ -109,16 +112,14 @@ public class PlaylistFileItem extends JPanel
 	/**
 	 * @return Returns the playlist file.
 	 */
-	public PlaylistFile getPlaylistFile()
-	{
+	public PlaylistFile getPlaylistFile(){
 		return plf;
 	}
 
 	/**
 	 * @return Returns the Type.
 	 */
-	public int getType()
-	{
+	public int getType(){
 		return iType;
 	}
 
@@ -127,15 +128,12 @@ public class PlaylistFileItem extends JPanel
 	 * 
 	 * @return playlist file item name ( playlist name or label for special ones )
 	 */
-	public String getName()
-	{
+	public String getName(){
 		String sOut = ""; //$NON-NLS-1$
-		switch (iType)
-		{
+		switch (iType){
 		case 0: // regular playlist
 			PlaylistFile plf = getPlaylistFile();
-			if (plf != null)
-			{
+			if (plf != null){
 				sOut = plf.getName();
 			}
 			break;
@@ -157,4 +155,12 @@ public class PlaylistFileItem extends JPanel
 		}
 		return sOut;
 	}
+
+    
+    /**
+     * @return icon
+     */
+    public JLabel getIcon() {
+        return this.jlIcon;
+    }
 }

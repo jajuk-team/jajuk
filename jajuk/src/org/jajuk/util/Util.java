@@ -92,10 +92,9 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.dj.Ambience;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukContainer;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -432,14 +431,6 @@ public class Util implements ITechnicalStrings {
             IPerspective perspective = PerspectiveManager.getCurrentPerspective();
             if (perspective != null) {
                 container = perspective.getContentPane();
-                int numComp = container.getComponentCount();
-                Component comp = null;
-                for (int i = 0; i < numComp; i++) {
-                    comp = container.getComponent(i);
-                    if (comp instanceof JajukContainer) {// ?
-                        ((JajukContainer) comp).setWaiting(true);
-                    }
-                }
                 container.setCursor(WAIT_CURSOR);
                 CommandJPanel.getInstance().setCursor(WAIT_CURSOR);
                 InformationJPanel.getInstance().setCursor(WAIT_CURSOR);
@@ -455,14 +446,6 @@ public class Util implements ITechnicalStrings {
             IPerspective perspective = PerspectiveManager.getCurrentPerspective();
             if (perspective != null) {
                 container = perspective.getContentPane();
-                int numComp = container.getComponentCount();
-                Component comp = null;
-                for (int i = 0; i < numComp; i++) {
-                    comp = container.getComponent(i);
-                    if (comp instanceof JajukContainer) {// ?
-                        ((JajukContainer) comp).setWaiting(true);
-                    }
-                }
                 container.setCursor(DEFAULT_CURSOR);
                 CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
                 InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);

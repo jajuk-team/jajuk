@@ -73,13 +73,6 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
         return "LogicalPlaylistRepositoryView.0";	 //$NON-NLS-1$
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IView#getID()
-     */
-    public String getID() {
-        return "org.jajuk.ui.views.LogicalPlaylistRepositoryView"; //$NON-NLS-1$
-    }
-
     /**
      * Create playlists from collection 
      */

@@ -17,9 +17,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
-package org.jajuk.ui.views;
+package org.jajuk.ui;
 
 import java.awt.event.ComponentListener;
+
+import com.vlsolutions.swing.docking.Dockable;
 
 
 /**
@@ -29,13 +31,19 @@ import java.awt.event.ComponentListener;
  * @version	1.0
  * @created		5 oct. 2003
  */
-public interface IView extends ComponentListener{
+public interface IView extends ComponentListener,Dockable{
 	
 	/**
 	 * Returns the view identifier.
 	 * @return View identifier.
 	 */
 	public String getID();
+    
+    /**
+     * Set view ID
+     * @param sID
+     */
+    public void setID(String sID);
 	
 	/**
 	 * Returns the view description as i18n key
@@ -70,6 +78,17 @@ public interface IView extends ComponentListener{
      */
     public void activate();
     
+    /**
+     * 
+     * @return current perspective for this view
+     */
+    public IPerspective getPerspective();
+    
+    /**
+     * 
+     * @param perspective 
+     */
+    public void setPerspective(IPerspective perspective);
 	   
     
 }

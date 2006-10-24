@@ -104,7 +104,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void initUI(){
-		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+		//needed to get the vertical scroller (don't ask why)
+        setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		
 		//root pane
 		jpRoot = new JPanel();
@@ -171,10 +172,13 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		//refresh
 		populatePlaylists();
 		jpRoot.add(Box.createVerticalStrut(500));  //make sure playlists items are packed to the top
-		JScrollPane jsp = new JScrollPane(jpRoot);
+		//no ugly horizontal scrolling
+        JScrollPane jsp = new JScrollPane(jpRoot,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jsp.getVerticalScrollBar().setUnitIncrement(60);
         add(jsp);
-		//Register on the list for subject we are interrested in
+        //Register on the list for subject we are interrested in
 		ObservationManager.register(this);
 		//set queue playlist as default in playlist editor
 		selectPlaylistFileItem(plfiQueue);	
@@ -229,9 +233,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	synchronized void selectPlaylistFileItem(PlaylistFileItem plfi){
 		//remove item border
 		if (plfiSelected != null ){
-			plfiSelected.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+			plfiSelected.getIcon().setBorder(
+                BorderFactory.createEmptyBorder(5,5,5,5));
 		}
-		plfi.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+		plfi.getIcon().setBorder(
+            BorderFactory.createLineBorder(Color.BLACK,5));
 		//set new item
 		this.plfiSelected = plfi;
         FIFO.getInstance().setPlaylist(plfi.getPlaylistFile());
