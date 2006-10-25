@@ -107,6 +107,34 @@ public interface ITechnicalStrings {
     public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
     public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2006 The Jajuk Team";
     
+    //Files and paths
+    public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
+    public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
+    public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; //FIle written by the exit hook
+    public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; //Void file created after exit collection file
+    public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR+"/conf.properties";
+    public static final String FILE_HISTORY = FILE_JAJUK_DIR+"/history.xml";
+    public static final String FILE_LOCK = FILE_JAJUK_DIR+"/.lock";
+    public static final String FILE_DEFAULT_COVER = "cover";
+    public static final String FILE_DEFAULT_COVER_2 = "front";
+    public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
+    public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
+    public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
+    public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
+    public static final URL FILE_LOG4j_CONF = Util.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml"); 
+    public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR +"/cache"; 
+    public static final String FILE_THUMBS = FILE_JAJUK_DIR +"/thumbs";
+    public static final String FILE_THUMB_NO_COVER = "nocover.jpg";
+    public static final String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
+    public static final String FILE_DEFAULT_NOVELTIES_PLAYLIST = "novelties";
+    public static final String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
+    public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
+    public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
+    public static final String FILE_FIFO = FILE_JAJUK_DIR+"/fifo.lst";
+    public static final String FILE_MPLAYER_EXE = "mplayer.exe";
+    public static final String FILE_TOOLBARS_CONF = FILE_JAJUK_DIR+"/toolbars.xml";
+    public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
+
     //About 
     public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
     
@@ -115,11 +143,7 @@ public interface ITechnicalStrings {
     public static final String AMBIENCE_PREFIX = "jajuk.ambience.";
     
     // directory path
-    //public static final String PATH_ICONS = "jar:"+Util.getExecLocation()+"!/org/jajuk/icons/";
-    //public static final String PATH_IMAGES = "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
     public static final String PATH_RELATIVE_DOCS = "docs/";
-    //public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
-    //public static final String PATH_LOG_CONF = "jar:"+Util.getExecLocation()+"!/org/jajuk/util/log/";
             
     //Unknown
     public static final String UNKNOWN_AUTHOR = "unknown_author";
@@ -266,7 +290,7 @@ public interface ITechnicalStrings {
     
     //images
     public static final URL IMAGES_SPLASHSCREEN =  Util.getResource("org/jajuk/images/included/jajuk-splashscreen.jpg");
-    public static final URL IMAGE_NO_COVER = Util.getResource("org/jajuk/images/included/nocover.jpg");
+    public static final URL IMAGE_NO_COVER = Util.getResource("org/jajuk/images/included/"+FILE_THUMB_NO_COVER);
     public static final URL IMAGE_WRITE = Util.getResource("org/jajuk/images/included/write.png");
     public static final URL IMAGE_SEARCH = Util.getResource("org/jajuk/images/included/search.png");
     public static final URL IMAGE_DJ = Util.getResource("org/jajuk/images/included/dj.jpg");
@@ -292,34 +316,6 @@ public interface ITechnicalStrings {
     public static final URL PERSPECTIVE_INFO = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.InfoPerspective.xml");
     public static final URL PERSPECTIVE_PLAYER = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.PlayerPerspective.xml");
     public static final URL PERSPECTIVE_STAT = Util.getResource("org/jajuk/perspectives/org.jajuk.ui.perspectives.StatPerspective.xml");
-        
-    //files
-    public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
-    public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
-    public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; //FIle written by the exit hook
-    public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; //Void file created after exit collection file
-    public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR+"/conf.properties";
-    public static final String FILE_HISTORY = FILE_JAJUK_DIR+"/history.xml";
-    public static final String FILE_LOCK = FILE_JAJUK_DIR+"/.lock";
-    public static final String FILE_DEFAULT_COVER = "cover";
-    public static final String FILE_DEFAULT_COVER_2 = "front";
-    public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
-    public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
-    public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
-    public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
-    public static final URL FILE_LOG4j_CONF = Util.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml"); 
-    public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR +"/cache"; 
-    public static final String FILE_THUMBS = FILE_JAJUK_DIR +"/thumbs";
-    public static final String FILE_THUMB_NO_COVER = "nocover.jpg";
-    public static final String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
-    public static final String FILE_DEFAULT_NOVELTIES_PLAYLIST = "novelties";
-    public static final String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
-    public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
-    public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
-    public static final String FILE_FIFO = FILE_JAJUK_DIR+"/fifo.lst";
-    public static final String FILE_MPLAYER_EXE = "mplayer.exe";
-    public static final String FILE_TOOLBARS_CONF = FILE_JAJUK_DIR+"/toolbars.xml";
-    public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
     
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 

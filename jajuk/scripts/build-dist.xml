@@ -3,7 +3,7 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!--VARIABLES-->
-  <property name='version' value='1.3M1'/>
+  <property name='version' value='1.3M2'/>
   <property name='test' value='-test'/>
   <property name='jwsdeploy' value='test'/>
  	  
@@ -30,8 +30,7 @@
   <property name='uploaddir' value='${rootdir}/upload'/>
   <property name='helpdir' value='${rootdir}/help'/>
   <property name='jwsdir' value='${rootdir}/jws'/>
-  
-	  
+  	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
   

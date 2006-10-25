@@ -65,6 +65,6 @@
        </resources>
       <application-desc main-class="org.jajuk.Main">
       	<argument>-notaskbar</argument>
-      	<argument>-test</argument>
+      	<argument>TEST_FLAG_REPLACED_BY_ANT</argument>
       </aplication-desc>
     </jnlp>

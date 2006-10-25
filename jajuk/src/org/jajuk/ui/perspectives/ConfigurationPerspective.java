@@ -61,6 +61,5 @@ public class ConfigurationPerspective extends PerspectiveAdapter{
         views.add(ViewFactory.createView(DeviceView.class,this));
         return views;
     }
-	
-
+    
 }

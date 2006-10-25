@@ -54,6 +54,8 @@ public abstract class PerspectiveAdapter
 	private URL iconPath;
 	/** Views list*/
 	protected Set<IView> views;
+    /** As been selected flag (workaround for VLDocking issue when saving position)*/
+    protected boolean bAsBeenSelected = false;
 	
 	/**
 	 * Constructor
@@ -95,6 +97,10 @@ public abstract class PerspectiveAdapter
      * @see org.jajuk.ui.perspectives.IPerspective#commit()
      */
     public void commit() throws Exception {
+        //workaround for a VLDocking issue + performances
+        if (!bAsBeenSelected){
+            return;
+        }
         File saveFile = new File(FILE_JAJUK_DIR + '/' + getID() + ".xml");
         BufferedOutputStream out = new BufferedOutputStream(
             new FileOutputStream(saveFile));
@@ -150,8 +156,9 @@ public abstract class PerspectiveAdapter
      * @see org.jajuk.ui.IPerspective#restaureDefaults()
      */
     public void restoreDefaults(){
+        //SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
+        //to ensure views are not unvisible
         try{
-            
             //Remove current conf file to force using default file from the jar
             File loadFile = new File(FILE_JAJUK_DIR 
                 + '/' + getID() + ".xml");
@@ -172,7 +179,6 @@ public abstract class PerspectiveAdapter
             Messages.showErrorMessage("163");
         }
     }
-
     
     /**
      * @param sid
@@ -180,5 +186,13 @@ public abstract class PerspectiveAdapter
     public void setID(String sid) {
         this.sID = sid;
     }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IPerspective#setAsBeenSelected()
+     */
+    public void setAsBeenSelected(boolean b) {
+        bAsBeenSelected = b;
+    }
+    
     
 }

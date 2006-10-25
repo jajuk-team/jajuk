@@ -2,7 +2,7 @@
 <VLDocking version="2.1">
 <DockingDesktop name="">
 <DockingPanel>
-<Split orientation="1" location="-0.0">
+<Split orientation="1" location="0.7210727969348659">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.HelpView/0"/>
 </Dockable>

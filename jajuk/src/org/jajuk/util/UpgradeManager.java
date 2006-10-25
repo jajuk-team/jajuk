@@ -22,6 +22,7 @@ package org.jajuk.util;
 
 import java.io.File;
 
+import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.ui.perspectives.CatalogPerspective;
 import org.jajuk.ui.perspectives.ConfigurationPerspective;
@@ -60,6 +61,35 @@ public class UpgradeManager implements ITechnicalStrings{
         if (sPattern.contains("track")){
             ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, 
                 sPattern.replaceAll("track", "title"));
+        }
+        //- for Jajuk < 1.3: no more use of .ser files
+        file = new File(FILE_JAJUK_DIR);
+        File[] files = file.listFiles();
+        for (int i=0; i<files.length; i++){
+            //delete all .ser files
+            if (Util.getExtension(files[i]).equals("ser")){
+                files[i].delete();
+            }
+        }
+        //TO DO AFTER AN UPGRADE
+        if (Main.isUpgradeDetected()){
+            //- for Jajuk < 1.3: force nocover icon replacement
+            File fThumbs = new File(FILE_THUMBS+"/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+            if (fThumbs.exists()){
+                fThumbs.delete();
+            }
+            fThumbs = new File(FILE_THUMBS+"/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+            if (fThumbs.exists()){
+                fThumbs.delete();
+            }
+            fThumbs = new File(FILE_THUMBS+"/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+            if (fThumbs.exists()){
+                fThumbs.delete();
+            }
+            fThumbs = new File(FILE_THUMBS+"/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+            if (fThumbs.exists()){
+                fThumbs.delete();
+            }
         }
         
     }

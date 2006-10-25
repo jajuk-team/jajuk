@@ -322,6 +322,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jpItems.setScroller(jsp);
         jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
+        setOpaque(true);
+        setBackground(Color.WHITE);
         jsp.setOpaque(true);
         jsp.setBackground(Color.WHITE);
         jpItems.setOpaque(true);
@@ -350,7 +352,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         jmenu.add(jmiAlbumProperties);
 
         // global layout
-        double size[][] = { { 0.99 }, { 30, 10, 0.99 } };
+        double size[][] = { { 0.99 }, { 30, 0, 0.99 } };
         setLayout(new TableLayout(size));
         add(jpControl, "0,0"); //$NON-NLS-1$
         add(jsp, "0,2"); //$NON-NLS-1$
@@ -780,9 +782,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             setLayout(new TableLayout(dMain));
             setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             jpIcon = new JPanel();
-            double[][] dIcon = { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-                    { TableLayout.PREFERRED } };
-            jpIcon.setLayout(new TableLayout(dIcon));
             jlIcon = new JLabel();
             ImageIcon ii = null;
             String sPath = fCover.getAbsolutePath();

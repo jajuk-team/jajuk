@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -132,8 +131,11 @@ public class Main implements ITechnicalStrings {
     private static String sPerspective;
     /** Server socket used to check other sessions*/
     private static ServerSocket ss;
-    /** Upgrade from prior version flag*/
-    public static boolean bUpgrade  = false; 
+    /**Is it a minor or major X.Y upgrade*/
+    private static boolean bUpgraded = false;
+    /**Is it the first seesion ever ?*/
+    private static boolean bFirstSession = false;
+    
     
     /**
      * Main entry
@@ -170,7 +172,7 @@ public class Main implements ITechnicalStrings {
             Log.getInstance();
             Log.setVerbosity(Log.DEBUG);
             
-            //configuration manager startup. Depends on: initialCheckups
+            //Configuration manager startup. Depends on: initialCheckups
             org.jajuk.util.ConfigurationManager.getInstance();
             
             //Register locals, needed by ConfigurationManager to choose default language
@@ -189,7 +191,19 @@ public class Main implements ITechnicalStrings {
             ConfigurationManager.getInstance().setSystemLocal();
             
             //Load user configuration. Depends on: initialCheckups, setSystemLocal
-            org.jajuk.util.ConfigurationManager.load();
+            ConfigurationManager.load();
+            
+            //Upgrade detection. Depends on: Configuration manager load
+            String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+            //See if it is a new major 'x.y' release: 1.2 != 1.3 for instance
+            if (! bFirstSession //if first session, not conciderated as an upgrade
+                    &&  (sRelease == null || //null for jajuk releases < 1.2 
+                     !sRelease.substring(0,3).equals(JAJUK_VERSION.substring(0,3)))){ //$NON-NLS-1$
+                bUpgraded = true;
+            }
+            //Now set current release in the conf
+            ConfigurationManager.setProperty(CONF_RELEASE,JAJUK_VERSION);
+            
             
             //Set actual log verbosity. Depends on: ConfigurationManager.load
             //test mode is always in debug mode
@@ -381,6 +395,7 @@ public class Main implements ITechnicalStrings {
         //check for jajuk directory
         File fJajukDir = new File(FILE_JAJUK_DIR);
         if (!fJajukDir.exists()) {
+            bFirstSession = true; //first session ever
             fJajukDir.mkdir(); //create the directory if it doesn't exist
         }
         //check for configuration file presence
@@ -1084,6 +1099,21 @@ public class Main implements ITechnicalStrings {
      */
     public static ToolBarContainer getToolbarContainer() {
         return tbcontainer;
+    }
+
+
+    /**
+     * @return true if it is the first session after a minor or major upgrade session
+     */
+    public static boolean isUpgradeDetected() {
+        return bUpgraded;
+    }
+    
+     /**
+     * @return true if it first seession ever
+     */
+    public static boolean isVeryFirstSession() {
+        return bFirstSession;
     }
 
 }

@@ -87,6 +87,11 @@ public interface IPerspective {
      * Restaure defaults views
      */
     public void restoreDefaults();
-		
-   
+    
+     /**
+     * As been selected flag
+     */
+    public void setAsBeenSelected(boolean b);
+	
+    
 }

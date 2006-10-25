@@ -21,6 +21,7 @@ package org.jajuk.ui.perspectives;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -76,15 +77,16 @@ public class PerspectiveManager  implements ITechnicalStrings {
         //si fichiers existent, decouverte dynamique
         //si aucun fichier ou si nouvelle version majeure, lecture des fichiers defaut du jar
         registerDefaultPerspectives();
-        //upgrade code; if > 1.1, do not overwrie default conf by user conf
-        String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-        //See if it is a new major 'x.y' release: 1.2 != 1.3 for instance
-        if (sRelease == null || !sRelease.substring(0,3).equals(JAJUK_VERSION.substring(0,3))){ //$NON-NLS-1$
-            ConfigurationManager.setProperty(CONF_RELEASE,JAJUK_VERSION);
+        if (Main.isUpgradeDetected()){
             //upgrade message
-            if (sRelease != null){
-                Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
-            }
+            Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
+            //force loadinf of defaults perspectives
+            for (IPerspective perspective: getPerspectives()){
+                //Remove current conf file to force using default file from the jar
+                File loadFile = new File(FILE_JAJUK_DIR 
+                    + '/' + perspective.getID() + ".xml");
+                loadFile.delete();
+            } 
             return;
         }
         //Load each perspective
@@ -128,6 +130,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
         //views display 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                perspective.setAsBeenSelected(true);
                 for (IView view : perspective.getViews()){
                     if (!view.isPopulated() ){
                         view.initUI();
@@ -149,10 +152,12 @@ public class PerspectiveManager  implements ITechnicalStrings {
                     }
                 }
                 tbcontainer.add(perspective.getContentPane(),BorderLayout.CENTER);
+                //refresh UI
                 tbcontainer.revalidate();
                 tbcontainer.repaint();
+                //Select correct item in perspective selector
                 PerspectiveBarJPanel.getInstance().setActivated(perspective);
-
+                //store perspective selection
                 ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,perspective.getID());
                 Util.stopWaiting();
             }
