@@ -78,6 +78,7 @@
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
+     	<fileset file='${basedir}/dist-files/org/jajuk/icons/16x16/jajuk-uninstall.png'/>
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/scripts/jajuk.sh'/>

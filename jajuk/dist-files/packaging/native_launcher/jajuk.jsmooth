@@ -9,7 +9,7 @@
 <arguments></arguments>
 <embeddedJar>true</embeddedJar>
 <executableName>jajuk-VERSION_REPLACED_BY_ANT-win32.exe</executableName>
-<iconLocation>/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico</iconLocation>
+<iconLocation>/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-icon.ico</iconLocation>
 <initialMemoryHeap>-1</initialMemoryHeap>
 <jarLocation>/tmp/jajuk-dist/java/jajuk-java-installer-VERSION_REPLACED_BY_ANT.jar</jarLocation>
 <mainClassName>com.izforge.izpack.installer.Installer</mainClassName>

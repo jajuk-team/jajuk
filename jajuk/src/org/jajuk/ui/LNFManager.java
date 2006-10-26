@@ -89,7 +89,7 @@ public class LNFManager implements ITechnicalStrings {
                 hmNameClass.put(sName, sClass);
             }
         } catch (Exception e) {
-            // Ignore
+            Log.debug("Can't load LAF: "+sName);
         }
     }
 

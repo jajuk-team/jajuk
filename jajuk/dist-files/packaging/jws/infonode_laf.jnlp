@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="$$codebase" href="infonode_docking_windows.jnlp">
+    <jnlp spec="1.0+" codebase="$$codebase" href="infonode_laf.jnlp">
     <information>
-        <title>InfonodeDockingWindows</title>
+        <title>Infonode Look And Feel</title>
         <vendor>NNL Technology AB</vendor>
     </information>
     <resources>
-        <jar href="infonodeDockingWindows-1.4.0.jar"/>
+        <jar href="ilf-gpl-1.4.jar"/>
     </resources>
     <security> 
            <all-permissions/>

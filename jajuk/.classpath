@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/l2fprod-common-buttonbar-6.9.1.jar"/>
 	<classpathentry sourcepath="/prog/api/VLDocking-2.1/src" kind="lib" path="lib/vldocking-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/ilf-gpl-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

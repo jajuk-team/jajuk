@@ -384,8 +384,8 @@
     
      <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>infonodeDockingWindows</artifactId>
-        <version>1.4.0</version> 
+        <artifactId>ilf-gpl</artifactId>
+        <version>1.4</version> 
     </dependency>
     
      <dependency>

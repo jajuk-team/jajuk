@@ -89,14 +89,25 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_swe.html'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_esp.html'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_cat.html'/>
+            <!-- Windows specific -->
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
-           </file>
+           	</file>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-icon.ico'>
+            	<os family='windows'/>
+           	</file>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-uninstall.ico'>
+            	<os family='windows'/>
+           	</file>
+            <!--Unix specific -->
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.sh'>
             	<os family='unix'/>
-           </file>
+           	</file>
+           	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-uninstall.png'>
+            	<os family='windows'/>
+           	</file>
         </pack>
-         <pack name='sources' required='no'>
+        <pack name='sources' required='no'>
             <description>Sources</description>
             <fileset override='true' targetdir='$INSTALL_PATH/src' dir='/tmp/jajuk-dist/jajuk/src'/>
         </pack>

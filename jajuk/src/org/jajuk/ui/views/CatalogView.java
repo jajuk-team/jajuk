@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -324,11 +325,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
         setOpaque(true);
         setBackground(Color.WHITE);
-        jsp.setOpaque(true);
-        jsp.setBackground(Color.WHITE);
         jpItems.setOpaque(true);
         jpItems.setBackground(Color.WHITE);
-
         // Menu items
         // Album menu
         jmenu = new JPopupMenu();
@@ -366,7 +364,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         timer.start();
 
     }
-
+    
+    
     public Set<EventSubject> getRegistrationKeys() {
         HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
         eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);

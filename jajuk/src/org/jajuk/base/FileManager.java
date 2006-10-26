@@ -499,10 +499,11 @@ public class FileManager extends ItemManager implements Observer {
         ArrayList<File> alBest = new ArrayList<File>();
         if (al.size() > 0) {
             int sup = (int) ((BESTOF_PROPORTION) * al.size()); // find superior interval value
-            if (sup > 0) {
-                alBest = new ArrayList<File>(al.subList(0, sup - 1));
-                Collections.shuffle(alBest,new Random(System.currentTimeMillis())); // shufflelize
+            if (sup < 0){
+                sup = al.size();
             }
+            alBest = new ArrayList<File>(al.subList(0, sup - 1));
+            Collections.shuffle(alBest,new Random(System.currentTimeMillis())); // shufflelize
         }
         return alBest;
     }

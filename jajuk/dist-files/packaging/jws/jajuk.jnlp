@@ -29,7 +29,7 @@
         	<extension name="CommonsHttpClient" href="commons_httpclient.jnlp"/>
         	<extension name="CommonsLogging" href="commons_logging.jnlp"/>
         	<extension name="EntaggedAudioformats" href="entagged_audioformats.jnlp"/>
-        	<extension name="InfoNodeDockingWindows" href="infonode_docking_windows.jnlp"/>
+        	<extension name="InfoNodeLAF" href="infonode_laf.jnlp"/>
         	<extension name="Jdic" href="jdic.jnlp"/>
         	<extension name="Jfreechart" href="jfreechart.jnlp"/>
         	<extension name="JCommon" href="jcommon.jnlp"/>

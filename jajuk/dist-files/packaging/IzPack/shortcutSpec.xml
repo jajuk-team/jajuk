@@ -37,7 +37,7 @@
      workingDirectory=''
      description='Uninstall Jajuk'
      iconIndex='0'
-     iconFile='$INSTALL_PATH/dist-files/icons/16x16/delete.png'
+     iconFile='$INSTALL_PATH/jajuk-uninstall.png'
      initialState='noShow'
      os='unix'>
      <createForPack name='main pack'/>
@@ -56,7 +56,7 @@
      workingDirectory='$INSTALL_PATH/bin'
      description='Jajuk advanced JukeBox'
      iconIndex='0'
-     iconFile='$INSTALL_PATH/dist-files/images/jajuk-icon.ico'
+     iconFile='$INSTALL_PATH/jajuk-icon.ico'
      initialState='noShow'
      os='windows'>
      <createForPack name='main pack'/>
@@ -73,7 +73,7 @@
      workingDirectory='$INSTALL_PATH/Uninstaller'
      description='Uninstall Jajuk'
      iconIndex='0'
-     iconFile='$INSTALL_PATH/dist-files/images/jajuk-uninstall.ico'
+     iconFile='$INSTALL_PATH/jajuk-uninstall.ico'
      initialState='noShow'
      os='windows'>
      <createForPack name='main pack'/>
