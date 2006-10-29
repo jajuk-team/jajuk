@@ -25,33 +25,40 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *  Music-oriented file chooser 
- * <p>decorator
- * @author     Bertrand Florat
- * @created    12 oct. 2003
+ * Music-oriented file chooser
+ * <p>
+ * decorator
+ * 
+ * @author Bertrand Florat
+ * @created 12 oct. 2003
  */
 public class JajukFileChooser extends JFileChooser {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+
     javax.swing.filechooser.FileFilter filter;
 
-	/**
-	 * Constructor with specified file filter
-	 * @param jfilter filter to use
-	 */
-	public JajukFileChooser(JajukFileFilter jfilter) {
-		setDialogTitle(Messages.getString("JajukFileChooser.0"));//default title  //$NON-NLS-1$
-		this.filter = jfilter;
-		setFileFilter(jfilter);
-		setMultiSelectionEnabled(true);
-	}
+    /**
+         * Constructor with specified file filter
+         * 
+         * @param jfilter
+         *                filter to use
+         */
+    public JajukFileChooser(JajukFileFilter jfilter) {
+	setDialogTitle(Messages.getString("JajukFileChooser.0"));// default
+                                                                        // title
+                                                                        // //$NON-NLS-1$
+	this.filter = jfilter;
+	setFileFilter(jfilter);
+	setMultiSelectionEnabled(true);
+    }
 
-	/**
-	 * Default constructor
-	 *
-	 */
-	public JajukFileChooser() {
-		this(new JajukFileFilter());
-	}
-	
+    /**
+         * Default constructor
+         * 
+         */
+    public JajukFileChooser() {
+	this(new JajukFileFilter());
+    }
+
 }

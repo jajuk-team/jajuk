@@ -36,46 +36,50 @@ import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
 import org.jdesktop.swingx.decorator.RolloverHighlighter;
 
-
 /**
- *  An abstract physical or logical tree view. Contains common methods
- *
- * @author     Bertrand Florat
- * @created    6 mar 2004
+ * An abstract physical or logical tree view. Contains common methods
+ * 
+ * @author Bertrand Florat
+ * @created 6 mar 2004
  */
 public abstract class AbstractTreeView extends ViewAdapter {
-	
-	/** The tree scrollpane*/
-	JScrollPane jspTree;
-	
-	/** The phyical tree */
-	JXTree jtree;
-    
+
+    /** The tree scrollpane */
+    JScrollPane jspTree;
+
+    /** The phyical tree */
+    JXTree jtree;
+
     /** Current selection */
     TreePath[] paths;
-    
-    /**Items selection*/
-    ArrayList<Item> alSelected;
-    
-     /** Top tree node */
-    DefaultMutableTreeNode top;
-    
-    protected JTree createTree(){
-        jtree = new JXTree(top){
-            private static final long serialVersionUID = 1L;
 
-            public void setUI(TreeUI ui) { //overwrite this method to make sure all rows have icon own height
-                super.setUI(ui);
-                setRowHeight(-1);
-            }
-        };
-        jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
-        jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-        Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,Color.ORANGE);
-        HighlighterPipeline pipeHighlight = new HighlighterPipeline(new Highlighter[]{highlighter});
-        jtree.setHighlighters(pipeHighlight);
-        jtree.setRolloverEnabled(true);
-        return jtree;
+    /** Items selection */
+    ArrayList<Item> alSelected;
+
+    /** Top tree node */
+    DefaultMutableTreeNode top;
+
+    protected JTree createTree() {
+	jtree = new JXTree(top) {
+	    private static final long serialVersionUID = 1L;
+
+	    public void setUI(TreeUI ui) { // overwrite this method to make
+                                                // sure all rows have icon own
+                                                // height
+		super.setUI(ui);
+		setRowHeight(-1);
+	    }
+	};
+	jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
+	jtree.getSelectionModel().setSelectionMode(
+		TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+	Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,
+		Color.ORANGE);
+	HighlighterPipeline pipeHighlight = new HighlighterPipeline(
+		new Highlighter[] { highlighter });
+	jtree.setHighlighters(pipeHighlight);
+	jtree.setRolloverEnabled(true);
+	return jtree;
     }
-  
+
 }

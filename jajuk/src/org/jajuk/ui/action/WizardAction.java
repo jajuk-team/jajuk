@@ -28,7 +28,7 @@ import org.jajuk.util.Util;
 
 /**
  * Action for displaying the tip of the day.
- *
+ * 
  * @author Bart Cremers
  * @version 12-dec-2005
  */
@@ -37,17 +37,19 @@ public class WizardAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     WizardAction() {
-        super(Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
     }
 
     /**
-     * Invoked when an action occurs.
-     * @param evt
-     */
+         * Invoked when an action occurs.
+         * 
+         * @param evt
+         */
     public void perform(ActionEvent evt) {
-        FirstTimeWizard fsw = new FirstTimeWizard();
-        fsw.pack();
-        fsw.setLocationRelativeTo(Main.getWindow());
-        fsw.setVisible(true);
+	FirstTimeWizard fsw = new FirstTimeWizard();
+	fsw.pack();
+	fsw.setLocationRelativeTo(Main.getWindow());
+	fsw.setVisible(true);
     }
 }

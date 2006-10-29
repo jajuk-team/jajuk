@@ -35,68 +35,70 @@ import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 
 /**
- *  Type description
- *
- * @author     Bertrand Florat
- * @created    2 nov. 2005
+ * Type description
+ * 
+ * @author Bertrand Florat
+ * @created 2 nov. 2005
  */
-public class PasswordDialog extends JDialog implements ActionListener{
+public class PasswordDialog extends JDialog implements ActionListener {
     private static final long serialVersionUID = 1L;
-    JPasswordField pf;
-    JOptionPane optionPane;
-    
-    public PasswordDialog(String sMessage){
-        super(Main.getWindow(), true);
-        setTitle(sMessage); //$NON-NLS-1$
-        pf = new JPasswordField(20);
-        //Create the JOptionPane.
-        optionPane = new JOptionPane(new Object[]{Messages.getString("DownloadManager.0"),pf}, //$NON-NLS-1$
-                                    JOptionPane.QUESTION_MESSAGE,
-                                    JOptionPane.OK_CANCEL_OPTION);
-        optionPane.addPropertyChangeListener(
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent e) {
-                        String prop = e.getPropertyName();
-                        if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-                            String sPwd = new String(pf.getPassword());
-                            if (sPwd.trim().equals("")){ //$NON-NLS-1$
-                                sPwd = "NOP";//set a string to password to avoid reasking //$NON-NLS-1$
-                            }
-                            optionPane.setValue(sPwd);
-                            dispose();
-                        }
-                    }
-                });
 
-        //Make this dialog display it.
-        setContentPane(optionPane);
-        
-        //Handle window closing correctly.
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
-         //Register an event handler that puts the text into the option pane.
-        pf.addActionListener(this);
-        
-        //Ensure the text field always gets the first focus.
-        addComponentListener(new ComponentAdapter() {
-            public void componentShown(ComponentEvent ce) {
-                pf.requestFocusInWindow();
-            }
-        });
-        setLocation(Main.getWindow().getX()+Main.getWindow().getWidth()/3,Main.getWindow().getY()+Main.getWindow().getHeight()/3);
-        pack();
-        setVisible(true);
+    JPasswordField pf;
+
+    JOptionPane optionPane;
+
+    public PasswordDialog(String sMessage) {
+	super(Main.getWindow(), true);
+	setTitle(sMessage); //$NON-NLS-1$
+	pf = new JPasswordField(20);
+	// Create the JOptionPane.
+	optionPane = new JOptionPane(new Object[] {
+		Messages.getString("DownloadManager.0"), pf }, //$NON-NLS-1$
+		JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+	optionPane.addPropertyChangeListener(new PropertyChangeListener() {
+	    public void propertyChange(PropertyChangeEvent e) {
+		String prop = e.getPropertyName();
+		if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
+		    String sPwd = new String(pf.getPassword());
+		    if (sPwd.trim().equals("")) { //$NON-NLS-1$
+			sPwd = "NOP";// set a string to password to avoid
+                                        // reasking //$NON-NLS-1$
+		    }
+		    optionPane.setValue(sPwd);
+		    dispose();
+		}
+	    }
+	});
+
+	// Make this dialog display it.
+	setContentPane(optionPane);
+
+	// Handle window closing correctly.
+	setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+	// Register an event handler that puts the text into the option pane.
+	pf.addActionListener(this);
+
+	// Ensure the text field always gets the first focus.
+	addComponentListener(new ComponentAdapter() {
+	    public void componentShown(ComponentEvent ce) {
+		pf.requestFocusInWindow();
+	    }
+	});
+	setLocation(Main.getWindow().getX() + Main.getWindow().getWidth() / 3,
+		Main.getWindow().getY() + Main.getWindow().getHeight() / 3);
+	pack();
+	setVisible(true);
     }
 
     /** This method handles events for the text field. */
     public void actionPerformed(ActionEvent e) {
-        optionPane.setValue(new String(pf.getPassword()));
-        dispose();
+	optionPane.setValue(new String(pf.getPassword()));
+	dispose();
     }
-    
-    public JOptionPane getOptionPane(){
-        return optionPane;
+
+    public JOptionPane getOptionPane() {
+	return optionPane;
     }
-    
 
 }

@@ -21,55 +21,57 @@
 package org.jajuk.base;
 
 /**
- *  A search result, contains a file and a search description
- *
- * @author     Bertrand Florat
- * @created    16 janv. 2004
+ * A search result, contains a file and a search description
+ * 
+ * @author Bertrand Florat
+ * @created 16 janv. 2004
  */
-public class SearchResult implements Comparable{
-	
-	/** The associated file*/
-	File file;
-	/** Pre-calculated search string */
-	String sResu;
-	
-	 
-	public SearchResult(File file){
-		this(file,file.toStringSearch()); 	
-	}
-	
-	public SearchResult(File file,String sResu){
-	 	this.file = file;
-	 	this.sResu = sResu;
-	}
-	
-	/**
-	 * Return hashcode, used during sorting
-	 */
-	public int hashCode(){
-		return sResu.hashCode();
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object o) {
-		SearchResult sr = (SearchResult)o;
-		return  sResu.compareToIgnoreCase(sr.getResu());
-	}
-	
-	/**
-	 * @return Returns the file.
-	 */
-	public File getFile() {
-		return file;
-	}
+public class SearchResult implements Comparable {
 
-	/**
-	 * @return Returns the sResu.
-	 */
-	public String getResu() {
-		return sResu;
-	}
+    /** The associated file */
+    File file;
+
+    /** Pre-calculated search string */
+    String sResu;
+
+    public SearchResult(File file) {
+	this(file, file.toStringSearch());
+    }
+
+    public SearchResult(File file, String sResu) {
+	this.file = file;
+	this.sResu = sResu;
+    }
+
+    /**
+         * Return hashcode, used during sorting
+         */
+    public int hashCode() {
+	return sResu.hashCode();
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Comparable#compareTo(java.lang.Object)
+         */
+    public int compareTo(Object o) {
+	SearchResult sr = (SearchResult) o;
+	return sResu.compareToIgnoreCase(sr.getResu());
+    }
+
+    /**
+         * @return Returns the file.
+         */
+    public File getFile() {
+	return file;
+    }
+
+    /**
+         * @return Returns the sResu.
+         */
+    public String getResu() {
+	return sResu;
+    }
 
 }

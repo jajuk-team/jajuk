@@ -25,17 +25,20 @@ import java.util.Set;
 import org.jajuk.util.EventSubject;
 
 /**
- *  GoF Observer pattern Observer 
- * @author     Bertrand Florat
- * @created    12 dec. 2003
+ * GoF Observer pattern Observer
+ * 
+ * @author Bertrand Florat
+ * @created 12 dec. 2003
  */
 public interface Observer {
 
-	/**
-	 * Action to be done when receiving an event with this ID
-	 * @param lEventID Event ID, maps a subject and details
-	 */
-	public void update(Event event);
-	
+    /**
+         * Action to be done when receiving an event with this ID
+         * 
+         * @param lEventID
+         *                Event ID, maps a subject and details
+         */
+    public void update(Event event);
+
     public Set<EventSubject> getRegistrationKeys();
 }

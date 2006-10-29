@@ -18,59 +18,64 @@ import javax.swing.border.Border;
  */
 public class JajukToggleButton extends JajukButton {
     private static final long serialVersionUID = 1L;
-    private static final Border PRESSED_BORDER = BorderFactory.createLoweredBevelBorder();
-    private static final Border UNPRESSED_BORDER = BorderFactory.createRaisedBevelBorder();
+
+    private static final Border PRESSED_BORDER = BorderFactory
+	    .createLoweredBevelBorder();
+
+    private static final Border UNPRESSED_BORDER = BorderFactory
+	    .createRaisedBevelBorder();
 
     public JajukToggleButton() {
-        this(false);
+	this(false);
     }
 
     public JajukToggleButton(boolean selected) {
-        this(null, null, selected);
+	this(null, null, selected);
     }
 
     public JajukToggleButton(Icon icon) {
-        this(icon, false);
+	this(icon, false);
     }
 
     public JajukToggleButton(Icon icon, boolean selected) {
-        this(null, icon, selected);
+	this(null, icon, selected);
     }
 
     public JajukToggleButton(String text) {
-        this(text, false);
+	this(text, false);
     }
+
     public JajukToggleButton(String text, boolean selected) {
-        this(text, null, selected);
+	this(text, null, selected);
     }
 
     public JajukToggleButton(Action a) {
-        this(a, false);
+	this(a, false);
     }
 
     public JajukToggleButton(Action a, boolean selected) {
-        super(a);
-        setSelected(selected);
+	super(a);
+	setSelected(selected);
     }
 
     public JajukToggleButton(String text, Icon icon) {
-        this(text, icon, false);
+	this(text, icon, false);
     }
 
     public JajukToggleButton(String text, Icon icon, boolean selected) {
-        super(text, icon);
-        setSelected(selected);
+	super(text, icon);
+	setSelected(selected);
     }
 
     @Override
     public void setSelected(boolean b) {
-        super.setSelected(b);
-        setBorder(b ? PRESSED_BORDER : UNPRESSED_BORDER);
+	super.setSelected(b);
+	setBorder(b ? PRESSED_BORDER : UNPRESSED_BORDER);
     }
 
     @Override
     protected void fireActionPerformed(ActionEvent event) {
-        setSelected(!isSelected());
-        super.fireActionPerformed(event);
+	setSelected(!isSelected());
+	super.fireActionPerformed(event);
     }
 }

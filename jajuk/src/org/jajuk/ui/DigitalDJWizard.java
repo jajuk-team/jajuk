@@ -1,6 +1,5 @@
 package org.jajuk.ui;
 
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
@@ -53,1342 +52,1436 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
+
 /**
  * DJ creation wizard
- *
- * @author     Bertrand Florat
- * @created    4 mars 2006
+ * 
+ * @author Bertrand Florat
+ * @created 4 mars 2006
  */
-public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
+public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 
-    /**Wizard action*/
+    /** Wizard action */
     private static final String KEY_ACTION = "ACTION"; //$NON-NLS-1$
-    /**DJ type variable name */
+
+    /** DJ type variable name */
     private static final String KEY_DJ_TYPE = "TYPE"; //$NON-NLS-1$
-    /**DJ name variable name */
+
+    /** DJ name variable name */
     private static final String KEY_DJ_NAME = "NAME"; //$NON-NLS-1$
-    /**Track unicity */
+
+    /** Track unicity */
     private static final String KEY_UNICITY = "UNICITY"; //$NON-NLS-1$
-    /**Ratings level */
+
+    /** Ratings level */
     private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL"; //$NON-NLS-1$
-    /**Fade duration*/
+
+    /** Fade duration */
     private static final String KEY_FADE_DURATION = "FADE_DURATION"; //$NON-NLS-1$
-    /**transitions*/
+
+    /** transitions */
     private static final String KEY_TRANSITIONS = "TRANSITIONS"; //$NON-NLS-1$
-    /**proportions*/
+
+    /** proportions */
     private static final String KEY_PROPORTIONS = "PROPORTIONS"; //$NON-NLS-1$
-    /**Ambience*/
+
+    /** Ambience */
     private static final String KEY_AMBIENCE = "AMBIENCE"; //$NON-NLS-1$
-    /**DJ to remove*/
+
+    /** DJ to remove */
     private static final String KEY_REMOVE = "REMOVE"; //$NON-NLS-1$
-    /**DJ to change*/
+
+    /** DJ to change */
     private static final String KEY_CHANGE = "CHANGE"; //$NON-NLS-1$
-    /**Startup style*/
+
+    /** Startup style */
     private static final String KEY_STARTUP_STYLE = "STARTUP_STYLE"; //$NON-NLS-1$
-    
+
     /**
-     * 
-     * DJ type choice 
-     *
-     * @author     Bertrand Florat
-     * @created    4 march 2006
-     */
-    public static class TypeSelectionPanel extends Screen implements ActionListener{
-        private static final long serialVersionUID = 1L;
-        /**Transition DJ code*/
-        private static final String DJ_TYPE_TRANSITION = "0"; //$NON-NLS-1$
-        /**Proportions DJ code*/
-        private static final String DJ_TYPE_PROPORTION = "1"; //$NON-NLS-1$
-        /**Ambience DJ code*/
-        private static final String DJ_TYPE_AMBIENCE = "2"; //$NON-NLS-1$
-        
-     
-        ButtonGroup bgTypes;
-        JRadioButton jrbTransitions;
-        JRadioButton jrbProp;
-        JRadioButton jrbAmbiance;
-        
-      /**
-         * Create panel UI
-         *
+         * 
+         * DJ type choice
+         * 
+         * @author Bertrand Florat
+         * @created 4 march 2006
          */
-        public void initUI(){
-            double[][] size = new double[][]
-                    {{20,TableLayout.PREFERRED,20},
-                    {20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20}};
-            setLayout(new TableLayout(size));
-            bgTypes = new ButtonGroup();
-            jrbTransitions = new JRadioButton(Messages.getString("DigitalDJWizard.1")); //$NON-NLS-1$
-            jrbTransitions.addActionListener(this);
-            jrbTransitions.doClick(); //default selection
-            jrbProp = new JRadioButton(Messages.getString("DigitalDJWizard.2")); //$NON-NLS-1$
-            jrbProp.addActionListener(this);
-            jrbAmbiance = new JRadioButton(Messages.getString("DigitalDJWizard.3")); //$NON-NLS-1$
-            jrbAmbiance.addActionListener(this);
-            //can select ambience DJ only if at least one ambience defined
-            jrbAmbiance.setEnabled(AmbienceManager.getInstance().getAmbiences().size() > 0);
-            bgTypes.add(jrbProp);
-            bgTypes.add(jrbTransitions);
-            bgTypes.add(jrbAmbiance);
-            add(jrbTransitions,"1,1"); //$NON-NLS-1$
-            add(jrbProp,"1,3"); //$NON-NLS-1$
-            add(jrbAmbiance,"1,5"); //$NON-NLS-1$
-        }
-  
-        /* (non-Javadoc)
+    public static class TypeSelectionPanel extends Screen implements
+	    ActionListener {
+	private static final long serialVersionUID = 1L;
+
+	/** Transition DJ code */
+	private static final String DJ_TYPE_TRANSITION = "0"; //$NON-NLS-1$
+
+	/** Proportions DJ code */
+	private static final String DJ_TYPE_PROPORTION = "1"; //$NON-NLS-1$
+
+	/** Ambience DJ code */
+	private static final String DJ_TYPE_AMBIENCE = "2"; //$NON-NLS-1$
+
+	ButtonGroup bgTypes;
+
+	JRadioButton jrbTransitions;
+
+	JRadioButton jrbProp;
+
+	JRadioButton jrbAmbiance;
+
+	/**
+         * Create panel UI
+         * 
+         */
+	public void initUI() {
+	    double[][] size = new double[][] {
+		    { 20, TableLayout.PREFERRED, 20 },
+		    { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20,
+			    TableLayout.PREFERRED, 20 } };
+	    setLayout(new TableLayout(size));
+	    bgTypes = new ButtonGroup();
+	    jrbTransitions = new JRadioButton(Messages
+		    .getString("DigitalDJWizard.1")); //$NON-NLS-1$
+	    jrbTransitions.addActionListener(this);
+	    jrbTransitions.doClick(); // default selection
+	    jrbProp = new JRadioButton(Messages.getString("DigitalDJWizard.2")); //$NON-NLS-1$
+	    jrbProp.addActionListener(this);
+	    jrbAmbiance = new JRadioButton(Messages
+		    .getString("DigitalDJWizard.3")); //$NON-NLS-1$
+	    jrbAmbiance.addActionListener(this);
+	    // can select ambience DJ only if at least one ambience defined
+	    jrbAmbiance.setEnabled(AmbienceManager.getInstance().getAmbiences()
+		    .size() > 0);
+	    bgTypes.add(jrbProp);
+	    bgTypes.add(jrbTransitions);
+	    bgTypes.add(jrbAmbiance);
+	    add(jrbTransitions, "1,1"); //$NON-NLS-1$
+	    add(jrbProp, "1,3"); //$NON-NLS-1$
+	    add(jrbAmbiance, "1,5"); //$NON-NLS-1$
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == jrbTransitions){
-                data.put(KEY_DJ_TYPE,DJ_TYPE_TRANSITION);
-            }
-            else if (e.getSource() == jrbProp){
-                data.put(KEY_DJ_TYPE,DJ_TYPE_PROPORTION);
-            }
-            else if (e.getSource() == jrbAmbiance){
-                data.put(KEY_DJ_TYPE,DJ_TYPE_AMBIENCE);
-            }
-        }
-        
-        public String getDescription() {
-            return Messages.getString("DigitalDJWizard.0"); //$NON-NLS-1$
-        }
-        
-        public String getName() {
-            return Messages.getString("DigitalDJWizard.46"); //$NON-NLS-1$
-        }
+	public void actionPerformed(ActionEvent e) {
+	    if (e.getSource() == jrbTransitions) {
+		data.put(KEY_DJ_TYPE, DJ_TYPE_TRANSITION);
+	    } else if (e.getSource() == jrbProp) {
+		data.put(KEY_DJ_TYPE, DJ_TYPE_PROPORTION);
+	    } else if (e.getSource() == jrbAmbiance) {
+		data.put(KEY_DJ_TYPE, DJ_TYPE_AMBIENCE);
+	    }
+	}
+
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.0"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.46"); //$NON-NLS-1$
+	}
     }
-    
+
     /**
-     * 
-     * DJ removal 
-     *
-     * @author     Bertrand Florat
-     * @created    26 march 2006
-     */
-    public static class RemovePanel extends Screen implements ActionListener{
-        private static final long serialVersionUID = 1L;
-
-        JComponent[][] widgets;
-
-        ButtonGroup bgDJS;
-        ArrayList<DigitalDJ> djs;
-        
-       /**
-         * Create panel UI
-         *
+         * 
+         * DJ removal
+         * 
+         * @author Bertrand Florat
+         * @created 26 march 2006
          */
-        public void initUI(){
-            djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs()); 
-            Collections.sort(djs);
-            widgets = new JComponent[djs.size()][1];
-            double[] dVert = new double[djs.size()];
-            //prepare vertical layout
-            for (int i=0;i<djs.size();i++){
-                dVert[i] = 20;
-            }
-            double[][] size = new double[][]
-                                           {{0.99},dVert};
-            TableLayout layout = new TableLayout(size);
-            layout.setVGap(10);
-            layout.setHGap(10);
-            JPanel jpDjs = new JPanel(new TableLayout(size));
-            bgDJS = new ButtonGroup();
-            setCanFinish(true);
-            int index = 0;
-            for (DigitalDJ dj : djs){
-                JRadioButton jrb = new JRadioButton(dj.getName()); 
-                jrb.addActionListener(this);
-                bgDJS.add(jrb);
-                widgets[index][0] = jrb;
-                jpDjs.add(jrb,"0,"+index); //$NON-NLS-1$
-                index ++;
-            }
-            //main panel
-            double[][] main = new double[][]
-                                           {{0.99},{20,0.99}};
-            setLayout(new TableLayout(main));
-            add(new JScrollPane(jpDjs),"0,1"); //$NON-NLS-1$
-            setProblem(Messages.getString("DigitalDJWizard.40")); //$NON-NLS-1$
-            //select first ambience found
-            JRadioButton jrb = (JRadioButton)widgets[0][0];
-            jrb.doClick();
-          }
-  
-        /* (non-Javadoc)
+    public static class RemovePanel extends Screen implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
+	JComponent[][] widgets;
+
+	ButtonGroup bgDJS;
+
+	ArrayList<DigitalDJ> djs;
+
+	/**
+         * Create panel UI
+         * 
+         */
+	public void initUI() {
+	    djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance()
+		    .getDJs());
+	    Collections.sort(djs);
+	    widgets = new JComponent[djs.size()][1];
+	    double[] dVert = new double[djs.size()];
+	    // prepare vertical layout
+	    for (int i = 0; i < djs.size(); i++) {
+		dVert[i] = 20;
+	    }
+	    double[][] size = new double[][] { { 0.99 }, dVert };
+	    TableLayout layout = new TableLayout(size);
+	    layout.setVGap(10);
+	    layout.setHGap(10);
+	    JPanel jpDjs = new JPanel(new TableLayout(size));
+	    bgDJS = new ButtonGroup();
+	    setCanFinish(true);
+	    int index = 0;
+	    for (DigitalDJ dj : djs) {
+		JRadioButton jrb = new JRadioButton(dj.getName());
+		jrb.addActionListener(this);
+		bgDJS.add(jrb);
+		widgets[index][0] = jrb;
+		jpDjs.add(jrb, "0," + index); //$NON-NLS-1$
+		index++;
+	    }
+	    // main panel
+	    double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
+	    setLayout(new TableLayout(main));
+	    add(new JScrollPane(jpDjs), "0,1"); //$NON-NLS-1$
+	    setProblem(Messages.getString("DigitalDJWizard.40")); //$NON-NLS-1$
+	    // select first ambience found
+	    JRadioButton jrb = (JRadioButton) widgets[0][0];
+	    jrb.doClick();
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e) {
-            int row = getWidgetIndex(widgets,(JComponent)e.getSource());
-            data.put(KEY_REMOVE,djs.get(row));
-            setProblem(null);
-        }
-        
-        public String getDescription() {
-            return Messages.getString("DigitalDJWizard.40"); //$NON-NLS-1$
-        }
-        
-        public String getName() {
-            return Messages.getString("DigitalDJWizard.51"); //$NON-NLS-1$
-        }
-      }
-    
-     /**
-     * 
-     * DJ Selection for change 
-     *
-     * @author     Bertrand Florat
-     * @created    26 march 2006
-     */
-    public static class ChangePanel extends Screen implements ActionListener{
-        private static final long serialVersionUID = 1L;
-    
-        JComponent[][] widgets;
+	public void actionPerformed(ActionEvent e) {
+	    int row = getWidgetIndex(widgets, (JComponent) e.getSource());
+	    data.put(KEY_REMOVE, djs.get(row));
+	    setProblem(null);
+	}
 
-        ButtonGroup bgDJS;
-        ArrayList<DigitalDJ> djs;
-        
-       /**
-         * Create panel UI
-         *
-         */
-        public void initUI(){
-            djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs()); 
-            Collections.sort(djs);
-            widgets = new JComponent[djs.size()][1];
-            double[] dVert = new double[djs.size()];
-            //prepare vertical layout
-            for (int i=0;i<djs.size();i++){
-                dVert[i] = 30;
-            }
-            double[][] size = new double[][]
-                                           {{0.99},dVert};
-            TableLayout layout = new TableLayout(size);
-            layout.setVGap(10);
-            layout.setHGap(10);
-            JPanel jpDjs = new JPanel(new TableLayout(size));
-            bgDJS = new ButtonGroup();
-            int index = 0;
-            for (DigitalDJ dj : djs){
-                JRadioButton jrb = new JRadioButton(dj.getName()); 
-                jrb.addActionListener(this);
-                bgDJS.add(jrb);
-                widgets[index][0] = jrb;
-                jpDjs.add(jrb,"0,"+index); //$NON-NLS-1$
-                index ++;
-            }
-            //main panel
-            double[][] main = new double[][]
-                                           {{0.99},{20,0.99}};
-            setLayout(new TableLayout(main));
-            add(new JScrollPane(jpDjs),"0,1"); //$NON-NLS-1$
-            //If more than one DJ, select first
-            if (djs.size() > 0){
-                JRadioButton jrb = (JRadioButton)widgets[0][0];
-                jrb.doClick();
-            }
-            else{
-                setProblem(Messages.getString("DigitalDJWizard.40")); //$NON-NLS-1$
-            }
-          }
-  
-        /* (non-Javadoc)
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            int row = getWidgetIndex(widgets,(JComponent)e.getSource());
-            //set DJ type useful for screen choice 
-            DigitalDJ dj = djs.get(row);
-            data.put(KEY_CHANGE,dj);
-            if (dj instanceof AmbienceDigitalDJ){
-                data.put(KEY_DJ_TYPE,TypeSelectionPanel.DJ_TYPE_AMBIENCE);
-            }
-            if (dj instanceof ProportionDigitalDJ){
-                data.put(KEY_DJ_TYPE,TypeSelectionPanel.DJ_TYPE_PROPORTION);
-            }
-            if (dj instanceof TransitionDigitalDJ){
-                data.put(KEY_DJ_TYPE,TypeSelectionPanel.DJ_TYPE_TRANSITION);
-            }
-            setProblem(null);
-        }
-        
-        public String getDescription() {
-            return Messages.getString("DigitalDJWizard.44"); //$NON-NLS-1$
-        }
-        
-        public String getName() {
-            return Messages.getString("DigitalDJWizard.43"); //$NON-NLS-1$
-        }
-      }
-    
-    /**
-     * 
-     * Action type (new or alter)
-     *
-     * @author     Bertrand Florat
-     * @created    4 march 2006
-     */
-    public static class ActionSelectionPanel extends Screen implements ClearPoint,ActionListener{
-        private static final long serialVersionUID = 1L;
-        /**NEW code*/
-        public static final String ACTION_CREATION = "0"; //$NON-NLS-1$
-        /**CHANGE code*/
-        public static final String ACTION_CHANGE = "1"; //$NON-NLS-1$
-        /**DELETE code*/
-        public static final String ACTION_DELETE = "2"; //$NON-NLS-1$
-        
-        ButtonGroup bgActions;
-        JRadioButton jrbNew;
-        JRadioButton jrbChange;
-        JRadioButton jrbDelete;
-       
-        /**
-         * Create panel UI
-         *
-         */
-        public void initUI(){
-            double[][] size = new double[][]
-                                           {{20,TableLayout.FILL,10},
-                    {20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20}};
-            setLayout(new TableLayout(size));
-            bgActions = new ButtonGroup();
-            jrbNew = new JRadioButton(Messages.getString("DigitalDJWizard.17")); //$NON-NLS-1$
-            jrbNew.addActionListener(this);
-            jrbNew.doClick();
-            jrbChange = new JRadioButton(Messages.getString("DigitalDJWizard.18")); //$NON-NLS-1$
-            jrbChange.addActionListener(this);
-            jrbDelete = new JRadioButton(Messages.getString("DigitalDJWizard.19")); //$NON-NLS-1$
-            jrbDelete.addActionListener(this);
-            //disabled change and remove if none dj
-            if (DigitalDJManager.getInstance().getDJs().size() == 0){
-                jrbChange.setEnabled(false);
-                jrbDelete.setEnabled(false);
-            }
-            bgActions.add(jrbNew);
-            bgActions.add(jrbChange);
-            bgActions.add(jrbDelete);
-            add(jrbNew,"1,1"); //$NON-NLS-1$
-            add(jrbChange,"1,3"); //$NON-NLS-1$
-            add(jrbDelete,"1,5"); //$NON-NLS-1$
-        }
-  
-        /* (non-Javadoc)
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == jrbNew){
-                data.put(KEY_ACTION,ACTION_CREATION);
-            }
-            else if (e.getSource() == jrbChange){
-                data.put(KEY_ACTION,ACTION_CHANGE);
-            }
-            else if (e.getSource() == jrbDelete){
-                data.put(KEY_ACTION,ACTION_DELETE);
-            }
-        }
-        
-        public String getDescription() {
-            return Messages.getString("DigitalDJWizard.16"); //$NON-NLS-1$
-        }
-        
-        public String getName() {
-            return Messages.getString("DigitalDJWizard.45"); //$NON-NLS-1$
-        }
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.40"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.51"); //$NON-NLS-1$
+	}
     }
-    
-        
-       
-  
-     /**
-     * 
-     * General options panel 
-     *
-     * @author     Bertrand Florat
-     * @created    4 march 2006
-     */
-    public static class GeneralOptionsPanel extends Screen 
-        implements ActionListener,CaretListener,ChangeListener{
-        
-        private static final long serialVersionUID = 1L;
-        JLabel jlName;
-        JTextField jtfName;
-        JLabel jlRatingLevel;
-        JSlider jsRatingLevel;
-        JLabel jlFadeDuration;
-        JSlider jsFadeDuration;
-        JCheckBox jcbUnicity;
-        
-         public String getDescription() {
-            return Messages.getString("DigitalDJWizard.49"); //$NON-NLS-1$
-        }
-         
-         public String getName() {
-            return Messages.getString("DigitalDJWizard.48"); //$NON-NLS-1$
-        }
 
-        
-        /**
-         * Create panel UI
+    /**
+         * 
+         * DJ Selection for change
+         * 
+         * @author Bertrand Florat
+         * @created 26 march 2006
          */
-        public void initUI(){
-            if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))){
-                //default values
-                data.put(KEY_FADE_DURATION,10);
-                data.put(KEY_RATINGS_LEVEL,1); //all tracks by default
-                data.put(KEY_UNICITY,false);
-            }
-            else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){ //keep existing DJ values
-                DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                data.put(KEY_FADE_DURATION,dj.getFadingDuration());
-                data.put(KEY_RATINGS_LEVEL,dj.getRatingLevel());
-                data.put(KEY_UNICITY,dj.isTrackUnicity());
-            }
-            jlName = new JLabel(Messages.getString("DigitalDJWizard.6")); //$NON-NLS-1$
-            jtfName = new JTextField();
-            jtfName.setToolTipText(Messages.getString("DigitalDJWizard.6")); //$NON-NLS-1$
-            jtfName.addCaretListener(this);
-            jtfName.requestFocusInWindow();
-            jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8")); //$NON-NLS-1$
-            jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53")); //$NON-NLS-1$
-            jsRatingLevel = new JSlider(1,4,(Integer)data.get(KEY_RATINGS_LEVEL));
-            jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53")); //$NON-NLS-1$
-            jsRatingLevel.setMajorTickSpacing(1);
-            jsRatingLevel.setMinorTickSpacing(1);
-            jsRatingLevel.setPaintTicks(true);
-            jsRatingLevel.setPaintLabels(true);
-            jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.8")); //$NON-NLS-1$
-            jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
-            jsRatingLevel.addChangeListener(this);
-            jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9")); //$NON-NLS-1$
-            jlFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54")); //$NON-NLS-1$
-            jsFadeDuration = new JSlider(0,30,(Integer)data.get(KEY_FADE_DURATION));
-            jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54")); //$NON-NLS-1$
-            jsFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(jsFadeDuration));
-            jsFadeDuration.addChangeListener(this);
-            jsFadeDuration.setMajorTickSpacing(10);
-            jsFadeDuration.setMinorTickSpacing(1);
-            jsFadeDuration.setPaintTicks(true);
-            jsFadeDuration.setPaintLabels(true);
-            jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.9")); //$NON-NLS-1$
-            jcbUnicity = new JCheckBox(Messages.getString("DigitalDJWizard.10"),(Boolean)data.get(KEY_UNICITY)); //$NON-NLS-1$
-            jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55")); //$NON-NLS-1$
-            jcbUnicity.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    data.put(KEY_UNICITY,jcbUnicity.isSelected());
-                }
-            });
-            //DJ change, set default values
-            if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
-                DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                jtfName.setText(dj.getName());
-                jsFadeDuration.setValue((Integer)data.get(KEY_FADE_DURATION));
-                jsRatingLevel.setValue((Integer)data.get(KEY_RATINGS_LEVEL));
-                jcbUnicity.setSelected((Boolean)data.get(KEY_UNICITY));
-            }
-            else{ //new dj, dj name is required
-                setProblem(Messages.getString("DigitalDJWizard.41")); //$NON-NLS-1$
-            }
-            double[][] size = new double[][]
-                    {{10,0.5,20,TableLayout.FILL,10},
-                    {20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20,
-                        TableLayout.PREFERRED,20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20}};
-            setLayout(new TableLayout(size));
-            add(jlName,"1,1"); //$NON-NLS-1$
-            add(jtfName,"3,1"); //$NON-NLS-1$
-            add(jlRatingLevel,"1,3"); //$NON-NLS-1$
-            add(jsRatingLevel,"3,3"); //$NON-NLS-1$
-            add(jlFadeDuration,"1,5"); //$NON-NLS-1$
-            add(jsFadeDuration,"3,5"); //$NON-NLS-1$
-            add(jcbUnicity,"1,7"); //$NON-NLS-1$
-        }
+    public static class ChangePanel extends Screen implements ActionListener {
+	private static final long serialVersionUID = 1L;
 
-        /* (non-Javadoc)
+	JComponent[][] widgets;
+
+	ButtonGroup bgDJS;
+
+	ArrayList<DigitalDJ> djs;
+
+	/**
+         * Create panel UI
+         * 
+         */
+	public void initUI() {
+	    djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance()
+		    .getDJs());
+	    Collections.sort(djs);
+	    widgets = new JComponent[djs.size()][1];
+	    double[] dVert = new double[djs.size()];
+	    // prepare vertical layout
+	    for (int i = 0; i < djs.size(); i++) {
+		dVert[i] = 30;
+	    }
+	    double[][] size = new double[][] { { 0.99 }, dVert };
+	    TableLayout layout = new TableLayout(size);
+	    layout.setVGap(10);
+	    layout.setHGap(10);
+	    JPanel jpDjs = new JPanel(new TableLayout(size));
+	    bgDJS = new ButtonGroup();
+	    int index = 0;
+	    for (DigitalDJ dj : djs) {
+		JRadioButton jrb = new JRadioButton(dj.getName());
+		jrb.addActionListener(this);
+		bgDJS.add(jrb);
+		widgets[index][0] = jrb;
+		jpDjs.add(jrb, "0," + index); //$NON-NLS-1$
+		index++;
+	    }
+	    // main panel
+	    double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
+	    setLayout(new TableLayout(main));
+	    add(new JScrollPane(jpDjs), "0,1"); //$NON-NLS-1$
+	    // If more than one DJ, select first
+	    if (djs.size() > 0) {
+		JRadioButton jrb = (JRadioButton) widgets[0][0];
+		jrb.doClick();
+	    } else {
+		setProblem(Messages.getString("DigitalDJWizard.40")); //$NON-NLS-1$
+	    }
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent ae) {
-            if (ae.getSource() == jcbUnicity){
-                data.put(KEY_UNICITY,jcbUnicity.isSelected());
-            }
-        }
+	public void actionPerformed(ActionEvent e) {
+	    int row = getWidgetIndex(widgets, (JComponent) e.getSource());
+	    // set DJ type useful for screen choice
+	    DigitalDJ dj = djs.get(row);
+	    data.put(KEY_CHANGE, dj);
+	    if (dj instanceof AmbienceDigitalDJ) {
+		data.put(KEY_DJ_TYPE, TypeSelectionPanel.DJ_TYPE_AMBIENCE);
+	    }
+	    if (dj instanceof ProportionDigitalDJ) {
+		data.put(KEY_DJ_TYPE, TypeSelectionPanel.DJ_TYPE_PROPORTION);
+	    }
+	    if (dj instanceof TransitionDigitalDJ) {
+		data.put(KEY_DJ_TYPE, TypeSelectionPanel.DJ_TYPE_TRANSITION);
+	    }
+	    setProblem(null);
+	}
 
-        /* (non-Javadoc)
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.44"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.43"); //$NON-NLS-1$
+	}
+    }
+
+    /**
+         * 
+         * Action type (new or alter)
+         * 
+         * @author Bertrand Florat
+         * @created 4 march 2006
+         */
+    public static class ActionSelectionPanel extends Screen implements
+	    ClearPoint, ActionListener {
+	private static final long serialVersionUID = 1L;
+
+	/** NEW code */
+	public static final String ACTION_CREATION = "0"; //$NON-NLS-1$
+
+	/** CHANGE code */
+	public static final String ACTION_CHANGE = "1"; //$NON-NLS-1$
+
+	/** DELETE code */
+	public static final String ACTION_DELETE = "2"; //$NON-NLS-1$
+
+	ButtonGroup bgActions;
+
+	JRadioButton jrbNew;
+
+	JRadioButton jrbChange;
+
+	JRadioButton jrbDelete;
+
+	/**
+         * Create panel UI
+         * 
+         */
+	public void initUI() {
+	    double[][] size = new double[][] {
+		    { 20, TableLayout.FILL, 10 },
+		    { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20,
+			    TableLayout.PREFERRED, 20 } };
+	    setLayout(new TableLayout(size));
+	    bgActions = new ButtonGroup();
+	    jrbNew = new JRadioButton(Messages.getString("DigitalDJWizard.17")); //$NON-NLS-1$
+	    jrbNew.addActionListener(this);
+	    jrbNew.doClick();
+	    jrbChange = new JRadioButton(Messages
+		    .getString("DigitalDJWizard.18")); //$NON-NLS-1$
+	    jrbChange.addActionListener(this);
+	    jrbDelete = new JRadioButton(Messages
+		    .getString("DigitalDJWizard.19")); //$NON-NLS-1$
+	    jrbDelete.addActionListener(this);
+	    // disabled change and remove if none dj
+	    if (DigitalDJManager.getInstance().getDJs().size() == 0) {
+		jrbChange.setEnabled(false);
+		jrbDelete.setEnabled(false);
+	    }
+	    bgActions.add(jrbNew);
+	    bgActions.add(jrbChange);
+	    bgActions.add(jrbDelete);
+	    add(jrbNew, "1,1"); //$NON-NLS-1$
+	    add(jrbChange, "1,3"); //$NON-NLS-1$
+	    add(jrbDelete, "1,5"); //$NON-NLS-1$
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+	public void actionPerformed(ActionEvent e) {
+	    if (e.getSource() == jrbNew) {
+		data.put(KEY_ACTION, ACTION_CREATION);
+	    } else if (e.getSource() == jrbChange) {
+		data.put(KEY_ACTION, ACTION_CHANGE);
+	    } else if (e.getSource() == jrbDelete) {
+		data.put(KEY_ACTION, ACTION_DELETE);
+	    }
+	}
+
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.16"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.45"); //$NON-NLS-1$
+	}
+    }
+
+    /**
+         * 
+         * General options panel
+         * 
+         * @author Bertrand Florat
+         * @created 4 march 2006
+         */
+    public static class GeneralOptionsPanel extends Screen implements
+	    ActionListener, CaretListener, ChangeListener {
+
+	private static final long serialVersionUID = 1L;
+
+	JLabel jlName;
+
+	JTextField jtfName;
+
+	JLabel jlRatingLevel;
+
+	JSlider jsRatingLevel;
+
+	JLabel jlFadeDuration;
+
+	JSlider jsFadeDuration;
+
+	JCheckBox jcbUnicity;
+
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.49"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.48"); //$NON-NLS-1$
+	}
+
+	/**
+         * Create panel UI
+         */
+	public void initUI() {
+	    if (ActionSelectionPanel.ACTION_CREATION.equals(data
+		    .get(KEY_ACTION))) {
+		// default values
+		data.put(KEY_FADE_DURATION, 10);
+		data.put(KEY_RATINGS_LEVEL, 1); // all tracks by default
+		data.put(KEY_UNICITY, false);
+	    } else if (ActionSelectionPanel.ACTION_CHANGE.equals(data
+		    .get(KEY_ACTION))) { // keep existing DJ values
+		DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
+		data.put(KEY_FADE_DURATION, dj.getFadingDuration());
+		data.put(KEY_RATINGS_LEVEL, dj.getRatingLevel());
+		data.put(KEY_UNICITY, dj.isTrackUnicity());
+	    }
+	    jlName = new JLabel(Messages.getString("DigitalDJWizard.6")); //$NON-NLS-1$
+	    jtfName = new JTextField();
+	    jtfName.setToolTipText(Messages.getString("DigitalDJWizard.6")); //$NON-NLS-1$
+	    jtfName.addCaretListener(this);
+	    jtfName.requestFocusInWindow();
+	    jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8")); //$NON-NLS-1$
+	    jlRatingLevel.setToolTipText(Messages
+		    .getString("DigitalDJWizard.53")); //$NON-NLS-1$
+	    jsRatingLevel = new JSlider(1, 4, (Integer) data
+		    .get(KEY_RATINGS_LEVEL));
+	    jsRatingLevel.setToolTipText(Messages
+		    .getString("DigitalDJWizard.53")); //$NON-NLS-1$
+	    jsRatingLevel.setMajorTickSpacing(1);
+	    jsRatingLevel.setMinorTickSpacing(1);
+	    jsRatingLevel.setPaintTicks(true);
+	    jsRatingLevel.setPaintLabels(true);
+	    jsRatingLevel.setToolTipText(Messages
+		    .getString("DigitalDJWizard.8")); //$NON-NLS-1$
+	    jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(
+		    jsRatingLevel));
+	    jsRatingLevel.addChangeListener(this);
+	    jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9")); //$NON-NLS-1$
+	    jlFadeDuration.setToolTipText(Messages
+		    .getString("DigitalDJWizard.54")); //$NON-NLS-1$
+	    jsFadeDuration = new JSlider(0, 30, (Integer) data
+		    .get(KEY_FADE_DURATION));
+	    jsFadeDuration.setToolTipText(Messages
+		    .getString("DigitalDJWizard.54")); //$NON-NLS-1$
+	    jsFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(
+		    jsFadeDuration));
+	    jsFadeDuration.addChangeListener(this);
+	    jsFadeDuration.setMajorTickSpacing(10);
+	    jsFadeDuration.setMinorTickSpacing(1);
+	    jsFadeDuration.setPaintTicks(true);
+	    jsFadeDuration.setPaintLabels(true);
+	    jsFadeDuration.setToolTipText(Messages
+		    .getString("DigitalDJWizard.9")); //$NON-NLS-1$
+	    jcbUnicity = new JCheckBox(
+		    Messages.getString("DigitalDJWizard.10"), (Boolean) data.get(KEY_UNICITY)); //$NON-NLS-1$
+	    jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55")); //$NON-NLS-1$
+	    jcbUnicity.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+		    data.put(KEY_UNICITY, jcbUnicity.isSelected());
+		}
+	    });
+	    // DJ change, set default values
+	    if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
+		DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
+		jtfName.setText(dj.getName());
+		jsFadeDuration.setValue((Integer) data.get(KEY_FADE_DURATION));
+		jsRatingLevel.setValue((Integer) data.get(KEY_RATINGS_LEVEL));
+		jcbUnicity.setSelected((Boolean) data.get(KEY_UNICITY));
+	    } else { // new dj, dj name is required
+		setProblem(Messages.getString("DigitalDJWizard.41")); //$NON-NLS-1$
+	    }
+	    double[][] size = new double[][] {
+		    { 10, 0.5, 20, TableLayout.FILL, 10 },
+		    { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20,
+			    TableLayout.PREFERRED, 20, TableLayout.PREFERRED,
+			    20, TableLayout.PREFERRED, 20 } };
+	    setLayout(new TableLayout(size));
+	    add(jlName, "1,1"); //$NON-NLS-1$
+	    add(jtfName, "3,1"); //$NON-NLS-1$
+	    add(jlRatingLevel, "1,3"); //$NON-NLS-1$
+	    add(jsRatingLevel, "3,3"); //$NON-NLS-1$
+	    add(jlFadeDuration, "1,5"); //$NON-NLS-1$
+	    add(jsFadeDuration, "3,5"); //$NON-NLS-1$
+	    add(jcbUnicity, "1,7"); //$NON-NLS-1$
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+	public void actionPerformed(ActionEvent ae) {
+	    if (ae.getSource() == jcbUnicity) {
+		data.put(KEY_UNICITY, jcbUnicity.isSelected());
+	    }
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
          * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
          */
-        public void caretUpdate(CaretEvent ce) {
-            if (ce.getSource() == jtfName){
-                data.put(KEY_DJ_NAME,jtfName.getText());
-                String sName = jtfName.getText();
-                //string length = 0
-                if (sName.length() == 0){
-                    setProblem(Messages.getString("DigitalDJWizard.41")); //$NON-NLS-1$
-                }
-                //display an error message if the dj already exists and not in "change" mode
-                else if (DigitalDJManager.getInstance().getDJNames().contains(sName)){
-                    //if we are in change mode and the name is still the same, no error
-                    if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))
-                            &&  ((DigitalDJ)data.get(KEY_CHANGE)).getName().equals(sName) ){
-                        setProblem(null);
-                        return;
-                    }
-                    setProblem(Messages.getString("DigitalDJWizard.42")); //$NON-NLS-1$
-                }
-                else{
-                    setProblem(null); //no more problem
-                }
-            }
-        }
-        
+	public void caretUpdate(CaretEvent ce) {
+	    if (ce.getSource() == jtfName) {
+		data.put(KEY_DJ_NAME, jtfName.getText());
+		String sName = jtfName.getText();
+		// string length = 0
+		if (sName.length() == 0) {
+		    setProblem(Messages.getString("DigitalDJWizard.41")); //$NON-NLS-1$
+		}
+		// display an error message if the dj already exists and not in
+                // "change" mode
+		else if (DigitalDJManager.getInstance().getDJNames().contains(
+			sName)) {
+		    // if we are in change mode and the name is still the
+                        // same, no error
+		    if (ActionSelectionPanel.ACTION_CHANGE.equals(data
+			    .get(KEY_ACTION))
+			    && ((DigitalDJ) data.get(KEY_CHANGE)).getName()
+				    .equals(sName)) {
+			setProblem(null);
+			return;
+		    }
+		    setProblem(Messages.getString("DigitalDJWizard.42")); //$NON-NLS-1$
+		} else {
+		    setProblem(null); // no more problem
+		}
+	    }
+	}
 
-        /* (non-Javadoc)
+	/*
+         * (non-Javadoc)
+         * 
          * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
          */
-        public void stateChanged(ChangeEvent ie) {
-            if (ie.getSource() == jsFadeDuration && !jsFadeDuration.getValueIsAdjusting()){
-                data.put(KEY_FADE_DURATION,jsFadeDuration.getValue());
-            }
-            else if (ie.getSource() == jsRatingLevel && !jsRatingLevel.getValueIsAdjusting()){
-                data.put(KEY_RATINGS_LEVEL,jsRatingLevel.getValue());
-            }
-        
-        }
-    }
-    
-    
-    /**
-     * 
-     * Transitions panel
-     *
-     * @author     Bertrand Florat
-     * @created    4 march 2006
-     */
-    public static class TransitionsPanel extends Screen{
-            
-        private static final long serialVersionUID = 1L;
-        JLabel jlStartWith;
-        JComboBox jcbStartwith;
-        JPanel jpStartwith;
-        
-        /**All dynamic widgets*/
-        JComponent[][] widgets;
-        
-        /**Transitions**/
-        ArrayList<Transition> alTransitions;
-        
-          public String getDescription() {
-            return Messages.getString("DigitalDJWizard.52"); //$NON-NLS-1$
-        }
-         public String getName() {
-            return Messages.getString("DigitalDJWizard.20"); //$NON-NLS-1$
-        }
+	public void stateChanged(ChangeEvent ie) {
+	    if (ie.getSource() == jsFadeDuration
+		    && !jsFadeDuration.getValueIsAdjusting()) {
+		data.put(KEY_FADE_DURATION, jsFadeDuration.getValue());
+	    } else if (ie.getSource() == jsRatingLevel
+		    && !jsRatingLevel.getValueIsAdjusting()) {
+		data.put(KEY_RATINGS_LEVEL, jsRatingLevel.getValue());
+	    }
 
-         
-         /**
-          * 
-          * @return Filled transitions only
-          */
-         private ArrayList<Transition> getCleanedTransitions(){
-             ArrayList<Transition> out = new ArrayList<Transition>(alTransitions.size());
-             for (Transition transition:alTransitions){
-                 if (transition.getFrom() != null && transition.getTo() != null && 
-                         transition.getFrom().getStyles().size() > 0 && transition.getTo().getStyles().size() > 0){
-                     out.add(transition);
-                 }
-             }
-             return out;
-         }
-         
-         
-        /**
-         * Create panel UI
-         *
+	}
+    }
+
+    /**
+         * 
+         * Transitions panel
+         * 
+         * @author Bertrand Florat
+         * @created 4 march 2006
          */
-        public void initUI(){
-            final Vector<String> styles = StyleManager.getInstance().getStylesList();
-            if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
-                TransitionDigitalDJ dj = (TransitionDigitalDJ)data.get(KEY_CHANGE);
-                alTransitions = (ArrayList<Transition>)dj.getTransitions().clone();
-                data.put(KEY_TRANSITIONS,getCleanedTransitions());
-                alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
-                data.put(KEY_STARTUP_STYLE,dj.getStartupStyle());
-            }
-            else{ //DJ creation
-                alTransitions = new ArrayList<Transition>(10);
-                alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
-                setProblem(Messages.getString("DigitalDJWizard.26")); //$NON-NLS-1$
-                //set first style by default
-                data.put(KEY_STARTUP_STYLE,StyleManager.getInstance().
-                    getStyleByName(styles.get(0)));
-            }
-            setCanFinish(true);
-            jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25")); //$NON-NLS-1$
-            jcbStartwith = new JComboBox(styles);
-            AutoCompleteDecorator.decorate(jcbStartwith);
-            String startup = ((Style)data.get(KEY_STARTUP_STYLE)).getName();
-            int indexStyle = styles.indexOf(startup);
-            if (indexStyle >= 0){
-                jcbStartwith.setSelectedIndex(indexStyle);
-            }
-            jcbStartwith.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    data.put(KEY_STARTUP_STYLE,StyleManager.getInstance().
-                        getStyleByName(styles.get(jcbStartwith.getSelectedIndex())));
-                }
-            });
-            jpStartwith = new JPanel();
-            double[][] dSize = {{0.25,10,0.25},{20}};
-            jpStartwith.setLayout(new TableLayout(dSize));
-            jpStartwith.add(jlStartWith,"0,0"); //$NON-NLS-1$
-            jpStartwith.add(jcbStartwith,"2,0"); //$NON-NLS-1$
-             //set layout
-            double[][] dSizeGeneral = {{10,0.99,5},
-                    {10,TableLayout.PREFERRED,10,TableLayout.FILL,10}};
-            setLayout(new TableLayout(dSizeGeneral));
-            add(jpStartwith,"1,1"); //$NON-NLS-1$
-            add(getTransitionsPanel(),"1,3"); //$NON-NLS-1$
-        }
-        
-        /**
+    public static class TransitionsPanel extends Screen {
+
+	private static final long serialVersionUID = 1L;
+
+	JLabel jlStartWith;
+
+	JComboBox jcbStartwith;
+
+	JPanel jpStartwith;
+
+	/** All dynamic widgets */
+	JComponent[][] widgets;
+
+	/** Transitions* */
+	ArrayList<Transition> alTransitions;
+
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.52"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.20"); //$NON-NLS-1$
+	}
+
+	/**
+         * 
+         * @return Filled transitions only
+         */
+	private ArrayList<Transition> getCleanedTransitions() {
+	    ArrayList<Transition> out = new ArrayList<Transition>(alTransitions
+		    .size());
+	    for (Transition transition : alTransitions) {
+		if (transition.getFrom() != null && transition.getTo() != null
+			&& transition.getFrom().getStyles().size() > 0
+			&& transition.getTo().getStyles().size() > 0) {
+		    out.add(transition);
+		}
+	    }
+	    return out;
+	}
+
+	/**
+         * Create panel UI
+         * 
+         */
+	public void initUI() {
+	    final Vector<String> styles = StyleManager.getInstance()
+		    .getStylesList();
+	    if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
+		TransitionDigitalDJ dj = (TransitionDigitalDJ) data
+			.get(KEY_CHANGE);
+		alTransitions = (ArrayList<Transition>) dj.getTransitions()
+			.clone();
+		data.put(KEY_TRANSITIONS, getCleanedTransitions());
+		alTransitions.add(new Transition(
+			DEFAULT_TRANSITION_TRACK_NUMBER)); // add a void
+                                                                // transition
+		data.put(KEY_STARTUP_STYLE, dj.getStartupStyle());
+	    } else { // DJ creation
+		alTransitions = new ArrayList<Transition>(10);
+		alTransitions.add(new Transition(
+			DEFAULT_TRANSITION_TRACK_NUMBER)); // add a void
+                                                                // transition
+		setProblem(Messages.getString("DigitalDJWizard.26")); //$NON-NLS-1$
+		// set first style by default
+		data.put(KEY_STARTUP_STYLE, StyleManager.getInstance()
+			.getStyleByName(styles.get(0)));
+	    }
+	    setCanFinish(true);
+	    jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25")); //$NON-NLS-1$
+	    jcbStartwith = new JComboBox(styles);
+	    AutoCompleteDecorator.decorate(jcbStartwith);
+	    String startup = ((Style) data.get(KEY_STARTUP_STYLE)).getName();
+	    int indexStyle = styles.indexOf(startup);
+	    if (indexStyle >= 0) {
+		jcbStartwith.setSelectedIndex(indexStyle);
+	    }
+	    jcbStartwith.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+		    data.put(KEY_STARTUP_STYLE,
+			    StyleManager.getInstance()
+				    .getStyleByName(
+					    styles.get(jcbStartwith
+						    .getSelectedIndex())));
+		}
+	    });
+	    jpStartwith = new JPanel();
+	    double[][] dSize = { { 0.25, 10, 0.25 }, { 20 } };
+	    jpStartwith.setLayout(new TableLayout(dSize));
+	    jpStartwith.add(jlStartWith, "0,0"); //$NON-NLS-1$
+	    jpStartwith.add(jcbStartwith, "2,0"); //$NON-NLS-1$
+	    // set layout
+	    double[][] dSizeGeneral = { { 10, 0.99, 5 },
+		    { 10, TableLayout.PREFERRED, 10, TableLayout.FILL, 10 } };
+	    setLayout(new TableLayout(dSizeGeneral));
+	    add(jpStartwith, "1,1"); //$NON-NLS-1$
+	    add(getTransitionsPanel(), "1,3"); //$NON-NLS-1$
+	}
+
+	/**
          * 
          * @return a panel containing all transitions
          */
-        private JScrollPane getTransitionsPanel(){
-            widgets = new JComponent[alTransitions.size()][4];
-            JPanel out = new JPanel();
-            //Delete|FROM list| To list|nb tracks  
-            double[] dHoriz = {25,150,150,TableLayout.PREFERRED};
-            double[] dVert = new double[widgets.length+2]; 
-            dVert[0] = 20;
-            //now add all known transitions
-            for (int index=0;index<alTransitions.size();index++ ){
-                //Delete button
-                JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
-                jbDelete.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        alTransitions.remove(getWidgetIndex(widgets,(JComponent)ae.getSource()));
-                        refreshScreen();
-                        data.put(KEY_TRANSITIONS,getCleanedTransitions()); 
-                    }
-                });
-                //cannot delete if void selection
-                if (alTransitions.size() == 1){
-                    jbDelete.setEnabled(false);
-                }
-                jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.21")); //$NON-NLS-1$
-                widgets[index][0] = jbDelete;
-                //From style list
-                JButton jbFrom = new JButton(Util.getIcon(ICON_LIST));
-                Transition transition = alTransitions.get(index);
-                if (transition.getFrom().getStyles().size() > 0){
-                    jbFrom.setText(transition.getFromString());
-                    jbFrom.setToolTipText(transition.getFromString());
-                }
-                jbFrom.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
-                        addStyle(row,true);
-                    }
-                });
-                jbFrom.setToolTipText(Messages.getString("DigitalDJWizard.22")); //$NON-NLS-1$
-                widgets[index][1] = jbFrom;
-                //To style list
-                JButton jbTo = new JButton(Util.getIcon(ICON_LIST));
-                if (transition.getTo().getStyles().size() > 0){
-                    jbTo.setText(transition.getToString());
-                    jbTo.setToolTipText(transition.getToString());
-                }
-                jbTo.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
-                        addStyle(row,false);
-                    }
-                });
-                jbTo.setToolTipText(Messages.getString("DigitalDJWizard.23")); //$NON-NLS-1$
-                widgets[index][2] = jbTo;
-                //Nb of tracks
-                JSpinner jsNb = new JSpinner(new SpinnerNumberModel(transition.getNbTracks(),1,10,1));
-                jsNb.addChangeListener(new ChangeListener() {
-                    public void stateChanged(ChangeEvent ce) {
-                        int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
-                        int nb = Integer.parseInt(((JSpinner)ce.getSource()).getValue().toString());
-                        Transition transition = alTransitions.get(row);
-                        transition.setNb(nb);
-                    }
-                });
-                jsNb.setToolTipText(Messages.getString("DigitalDJWizard.24")); //$NON-NLS-1$
-                widgets[index][3] = jsNb;
-                //Set layout
-                dVert[index+1] = 20;
-            }
-            dVert[widgets.length+1] = 20; //final space
-            //Create layout
-            double[][] dSizeProperties = new double[][]{dHoriz,dVert};  
-            TableLayout layout = new TableLayout(dSizeProperties);
-            layout.setHGap(10);
-            layout.setVGap(10);
-            out.setLayout(layout);
-            //Create header
-            JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.22")); //$NON-NLS-1$
-            jlHeader2.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-            JLabel jlHeader3 = new JLabel(Messages.getString("DigitalDJWizard.23")); //$NON-NLS-1$
-            jlHeader3.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-            JLabel jlHeader4 = new JLabel(Messages.getString("DigitalDJWizard.24")); //$NON-NLS-1$
-            jlHeader4.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-            out.add(jlHeader2,"1,0"); //$NON-NLS-1$
-            out.add(jlHeader3,"2,0"); //$NON-NLS-1$
-            out.add(jlHeader4,"3,0"); //$NON-NLS-1$
-            //Add widgets
-            for (int i=0;i<dVert.length-2;i++){
-                out.add(widgets[i][0],"0,"+(i+1)+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                out.add(widgets[i][1],"1,"+(i+1)); //$NON-NLS-1$
-                out.add(widgets[i][2],"2,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
-                out.add(widgets[i][3],"3,"+(i+1)+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            return new JScrollPane(out);
-        }
-        
-        /**
-         * Add a style to a transition
-         * @param row row
-         * @param bFrom is it a from button ?
-         */
-        private void addStyle(int row,boolean bFrom){
-            synchronized(StyleManager.getInstance().getLock()){
-                Transition transition = alTransitions.get(row);
-                //create list of styles used in existing transitions
-                HashSet<Style> disabledStyles = new HashSet<Style>();
-                for (int i=0;i<alTransitions.size();i++){
-                    Transition t = alTransitions.get(i);
-                    //ignore all styles expect those from current button
-                    if (bFrom && i != row){   
-                        disabledStyles.addAll(t.getFrom().getStyles());
-                    }
-                }
-                StylesSelectionDialog dialog = new StylesSelectionDialog(disabledStyles);
-                if (bFrom){
-                    dialog.setSelection(transition.getFrom().getStyles());
-                }
-                else{
-                    dialog.setSelection(transition.getTo().getStyles());
-                }
-                dialog.setVisible(true);
-                HashSet<Style> styles =  dialog.getSelectedStyles();
-                //check if at least one style has been selected
-                if (styles.size() == 0){
-                    return;
-                }
-                String sText = ""; //$NON-NLS-1$
-                for (Style style:styles){
-                    sText += style.getName2()+',';  
-                }
-                sText = sText.substring(0,sText.length()-1);
-                int nb = Integer.parseInt(((JSpinner)widgets[row][3]).getValue().toString());
-                //Set button text
-                if (bFrom){
-                    ((JButton)widgets[row][1]).setText(sText);
-                }
-                else{
-                    ((JButton)widgets[row][2]).setText(sText);
-                }
-                //set selected style in transition object
-                if (bFrom){
-                    transition.setFrom(new Ambience(Long.toString(System.currentTimeMillis()),"",styles)); //$NON-NLS-1$
-                }
-                else{
-                    transition.setTo(new Ambience(Long.toString(System.currentTimeMillis()),"",styles)); //$NON-NLS-1$
-                }
-                //check if the transaction is fully selected now
-                if (transition.getFrom().getStyles().size() > 0 
-                        && transition.getTo().getStyles().size() > 0){
-                    //Make sure current delete button is now enabled
-                    ((JButton)widgets[row][0]).setEnabled(true);
-                    
-                    //Reset wizard error message
-                    setProblem(null);
-                    
-                    //Fill wizard data
-                    data.put(KEY_TRANSITIONS,getCleanedTransitions()); 
-                    
-                    //create a new void proportion if needed
-                    if (!containsVoidItem()){
-                        alTransitions.add(new Transition(nb)); //we duplicate the nb for new row
-                    }
-                    
-                    //Refresh screen to add a new void row
-                    refreshScreen();
-                }
-            }
-        }
-        
-        /**
-         * 
-         * @return whether a void item already exist 
-         * (used to avoid creating several void items)
-         */
-        private boolean containsVoidItem(){
-            for (int i=0;i<widgets.length;i++){
-                JButton jbFrom = (JButton)widgets[i][1];
-                JButton jbTo = (JButton)widgets[i][2];
-                if (jbFrom.getText().equals("") //$NON-NLS-1$
-                        || jbTo.getText().equals("")){ //$NON-NLS-1$
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        /**
-         * Refresh panel
-         *
-         */
-        private void refreshScreen(){
-            removeAll();
-            //refresh panel
-            add(jpStartwith,"1,1"); //$NON-NLS-1$
-            add(getTransitionsPanel(),"1,3"); //$NON-NLS-1$
-            revalidate();
-            repaint();
-        }
-        
-     
-    }
-        
-                  
-         
-     /**
-     * 
-     * Proportion panel
-     *
-     * @author     Bertrand Florat
-     * @created    17 march 2006
-     */
-    public static class ProportionsPanel extends Screen{
-          
-        private static final long serialVersionUID = 1L;
+	private JScrollPane getTransitionsPanel() {
+	    widgets = new JComponent[alTransitions.size()][4];
+	    JPanel out = new JPanel();
+	    // Delete|FROM list| To list|nb tracks
+	    double[] dHoriz = { 25, 150, 150, TableLayout.PREFERRED };
+	    double[] dVert = new double[widgets.length + 2];
+	    dVert[0] = 20;
+	    // now add all known transitions
+	    for (int index = 0; index < alTransitions.size(); index++) {
+		// Delete button
+		JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
+		jbDelete.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ae) {
+			alTransitions.remove(getWidgetIndex(widgets,
+				(JComponent) ae.getSource()));
+			refreshScreen();
+			data.put(KEY_TRANSITIONS, getCleanedTransitions());
+		    }
+		});
+		// cannot delete if void selection
+		if (alTransitions.size() == 1) {
+		    jbDelete.setEnabled(false);
+		}
+		jbDelete.setToolTipText(Messages
+			.getString("DigitalDJWizard.21")); //$NON-NLS-1$
+		widgets[index][0] = jbDelete;
+		// From style list
+		JButton jbFrom = new JButton(Util.getIcon(ICON_LIST));
+		Transition transition = alTransitions.get(index);
+		if (transition.getFrom().getStyles().size() > 0) {
+		    jbFrom.setText(transition.getFromString());
+		    jbFrom.setToolTipText(transition.getFromString());
+		}
+		jbFrom.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ae) {
+			int row = getWidgetIndex(widgets, (JComponent) ae
+				.getSource());
+			addStyle(row, true);
+		    }
+		});
+		jbFrom.setToolTipText(Messages.getString("DigitalDJWizard.22")); //$NON-NLS-1$
+		widgets[index][1] = jbFrom;
+		// To style list
+		JButton jbTo = new JButton(Util.getIcon(ICON_LIST));
+		if (transition.getTo().getStyles().size() > 0) {
+		    jbTo.setText(transition.getToString());
+		    jbTo.setToolTipText(transition.getToString());
+		}
+		jbTo.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ae) {
+			int row = getWidgetIndex(widgets, (JComponent) ae
+				.getSource());
+			addStyle(row, false);
+		    }
+		});
+		jbTo.setToolTipText(Messages.getString("DigitalDJWizard.23")); //$NON-NLS-1$
+		widgets[index][2] = jbTo;
+		// Nb of tracks
+		JSpinner jsNb = new JSpinner(new SpinnerNumberModel(transition
+			.getNbTracks(), 1, 10, 1));
+		jsNb.addChangeListener(new ChangeListener() {
+		    public void stateChanged(ChangeEvent ce) {
+			int row = getWidgetIndex(widgets, (JComponent) ce
+				.getSource());
+			int nb = Integer.parseInt(((JSpinner) ce.getSource())
+				.getValue().toString());
+			Transition transition = alTransitions.get(row);
+			transition.setNb(nb);
+		    }
+		});
+		jsNb.setToolTipText(Messages.getString("DigitalDJWizard.24")); //$NON-NLS-1$
+		widgets[index][3] = jsNb;
+		// Set layout
+		dVert[index + 1] = 20;
+	    }
+	    dVert[widgets.length + 1] = 20; // final space
+	    // Create layout
+	    double[][] dSizeProperties = new double[][] { dHoriz, dVert };
+	    TableLayout layout = new TableLayout(dSizeProperties);
+	    layout.setHGap(10);
+	    layout.setVGap(10);
+	    out.setLayout(layout);
+	    // Create header
+	    JLabel jlHeader2 = new JLabel(Messages
+		    .getString("DigitalDJWizard.22")); //$NON-NLS-1$
+	    jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+	    JLabel jlHeader3 = new JLabel(Messages
+		    .getString("DigitalDJWizard.23")); //$NON-NLS-1$
+	    jlHeader3.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+	    JLabel jlHeader4 = new JLabel(Messages
+		    .getString("DigitalDJWizard.24")); //$NON-NLS-1$
+	    jlHeader4.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+	    out.add(jlHeader2, "1,0"); //$NON-NLS-1$
+	    out.add(jlHeader3, "2,0"); //$NON-NLS-1$
+	    out.add(jlHeader4, "3,0"); //$NON-NLS-1$
+	    // Add widgets
+	    for (int i = 0; i < dVert.length - 2; i++) {
+		out.add(widgets[i][0], "0," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
+		out.add(widgets[i][1], "1," + (i + 1)); //$NON-NLS-1$
+		out.add(widgets[i][2], "2," + (i + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+		out.add(widgets[i][3], "3," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
+	    }
+	    return new JScrollPane(out);
+	}
 
-        /**All dynamic widgets*/
-        JComponent[][] widgets;
-        
-        /**Proportions**/
-        ArrayList<Proportion> proportions;
-        
-        public String getDescription() {
-            return Messages.getString("DigitalDJWizard.50"); //$NON-NLS-1$
-        }
-        
-        public String getName() {
-            return Messages.getString("DigitalDJWizard.29"); //$NON-NLS-1$
-        }
-        
-        /**
+	/**
+         * Add a style to a transition
+         * 
+         * @param row
+         *                row
+         * @param bFrom
+         *                is it a from button ?
+         */
+	private void addStyle(int row, boolean bFrom) {
+	    synchronized (StyleManager.getInstance().getLock()) {
+		Transition transition = alTransitions.get(row);
+		// create list of styles used in existing transitions
+		HashSet<Style> disabledStyles = new HashSet<Style>();
+		for (int i = 0; i < alTransitions.size(); i++) {
+		    Transition t = alTransitions.get(i);
+		    // ignore all styles expect those from current button
+		    if (bFrom && i != row) {
+			disabledStyles.addAll(t.getFrom().getStyles());
+		    }
+		}
+		StylesSelectionDialog dialog = new StylesSelectionDialog(
+			disabledStyles);
+		if (bFrom) {
+		    dialog.setSelection(transition.getFrom().getStyles());
+		} else {
+		    dialog.setSelection(transition.getTo().getStyles());
+		}
+		dialog.setVisible(true);
+		HashSet<Style> styles = dialog.getSelectedStyles();
+		// check if at least one style has been selected
+		if (styles.size() == 0) {
+		    return;
+		}
+		String sText = ""; //$NON-NLS-1$
+		for (Style style : styles) {
+		    sText += style.getName2() + ',';
+		}
+		sText = sText.substring(0, sText.length() - 1);
+		int nb = Integer.parseInt(((JSpinner) widgets[row][3])
+			.getValue().toString());
+		// Set button text
+		if (bFrom) {
+		    ((JButton) widgets[row][1]).setText(sText);
+		} else {
+		    ((JButton) widgets[row][2]).setText(sText);
+		}
+		// set selected style in transition object
+		if (bFrom) {
+		    transition.setFrom(new Ambience(Long.toString(System
+			    .currentTimeMillis()), "", styles)); //$NON-NLS-1$
+		} else {
+		    transition.setTo(new Ambience(Long.toString(System
+			    .currentTimeMillis()), "", styles)); //$NON-NLS-1$
+		}
+		// check if the transaction is fully selected now
+		if (transition.getFrom().getStyles().size() > 0
+			&& transition.getTo().getStyles().size() > 0) {
+		    // Make sure current delete button is now enabled
+		    ((JButton) widgets[row][0]).setEnabled(true);
+
+		    // Reset wizard error message
+		    setProblem(null);
+
+		    // Fill wizard data
+		    data.put(KEY_TRANSITIONS, getCleanedTransitions());
+
+		    // create a new void proportion if needed
+		    if (!containsVoidItem()) {
+			alTransitions.add(new Transition(nb)); // we duplicate
+                                                                // the nb for
+                                                                // new row
+		    }
+
+		    // Refresh screen to add a new void row
+		    refreshScreen();
+		}
+	    }
+	}
+
+	/**
+         * 
+         * @return whether a void item already exist (used to avoid creating
+         *         several void items)
+         */
+	private boolean containsVoidItem() {
+	    for (int i = 0; i < widgets.length; i++) {
+		JButton jbFrom = (JButton) widgets[i][1];
+		JButton jbTo = (JButton) widgets[i][2];
+		if (jbFrom.getText().equals("") //$NON-NLS-1$
+			|| jbTo.getText().equals("")) { //$NON-NLS-1$
+		    return true;
+		}
+	    }
+	    return false;
+	}
+
+	/**
+         * Refresh panel
+         * 
+         */
+	private void refreshScreen() {
+	    removeAll();
+	    // refresh panel
+	    add(jpStartwith, "1,1"); //$NON-NLS-1$
+	    add(getTransitionsPanel(), "1,3"); //$NON-NLS-1$
+	    revalidate();
+	    repaint();
+	}
+
+    }
+
+    /**
+         * 
+         * Proportion panel
+         * 
+         * @author Bertrand Florat
+         * @created 17 march 2006
+         */
+    public static class ProportionsPanel extends Screen {
+
+	private static final long serialVersionUID = 1L;
+
+	/** All dynamic widgets */
+	JComponent[][] widgets;
+
+	/** Proportions* */
+	ArrayList<Proportion> proportions;
+
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.50"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.29"); //$NON-NLS-1$
+	}
+
+	/**
          * Create panel UI
          */
-        public void initUI(){
-            if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
-                DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                proportions = (ArrayList)((ProportionDigitalDJ)dj).getProportions().clone();
-                data.put(KEY_PROPORTIONS,getCleanedProportions());
-                proportions.add(new Proportion()); //add a void item
-            }
-            else{
-                proportions = new ArrayList<Proportion>(10);
-                proportions.add(new Proportion()); //add a void item
-                setProblem(Messages.getString("DigitalDJWizard.30")); //$NON-NLS-1$
-            }
-            setCanFinish(true);
-            
-            //set layout
-            double[][] dSizeGeneral = {{10,0.99,5},
-                    {10,TableLayout.PREFERRED,10}};
-            setLayout(new TableLayout(dSizeGeneral));
-            add(getProportionsPanel(),"1,1"); //$NON-NLS-1$
-        }
-        
-        /**
-          * 
-          * @return Filled proportions only
-          */
-         private ArrayList<Proportion> getCleanedProportions(){
-             ArrayList<Proportion> out = new ArrayList<Proportion>(proportions.size());
-             for (Proportion proportion:proportions){
-                 if (proportion.getStyles() != null && proportion.getStyles().size() > 0){
-                     out.add(proportion);
-                 }
-             }
-             return out;
-         }
-        
-        /**
+	public void initUI() {
+	    if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
+		DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
+		proportions = (ArrayList) ((ProportionDigitalDJ) dj)
+			.getProportions().clone();
+		data.put(KEY_PROPORTIONS, getCleanedProportions());
+		proportions.add(new Proportion()); // add a void item
+	    } else {
+		proportions = new ArrayList<Proportion>(10);
+		proportions.add(new Proportion()); // add a void item
+		setProblem(Messages.getString("DigitalDJWizard.30")); //$NON-NLS-1$
+	    }
+	    setCanFinish(true);
+
+	    // set layout
+	    double[][] dSizeGeneral = { { 10, 0.99, 5 },
+		    { 10, TableLayout.PREFERRED, 10 } };
+	    setLayout(new TableLayout(dSizeGeneral));
+	    add(getProportionsPanel(), "1,1"); //$NON-NLS-1$
+	}
+
+	/**
+         * 
+         * @return Filled proportions only
+         */
+	private ArrayList<Proportion> getCleanedProportions() {
+	    ArrayList<Proportion> out = new ArrayList<Proportion>(proportions
+		    .size());
+	    for (Proportion proportion : proportions) {
+		if (proportion.getStyles() != null
+			&& proportion.getStyles().size() > 0) {
+		    out.add(proportion);
+		}
+	    }
+	    return out;
+	}
+
+	/**
          * 
          * @return a panel containing all proportions
          */
-        private JScrollPane getProportionsPanel(){
-            widgets = new JComponent[proportions.size()][3];
-            JPanel out = new JPanel();
-            //Delete|Style list|proportion in %  
-            double[] dHoriz = {25,TableLayout.FILL,250,TableLayout.FILL,TableLayout.PREFERRED};
-            double[] dVert = new double[widgets.length+2]; 
-            dVert[0] = 20;
-            //now add all known proportions
-            for (int index=0;index<proportions.size();index++ ){
-                //Delete button
-                JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
-                jbDelete.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        proportions.remove(getWidgetIndex(widgets,(JComponent)ae.getSource()));
-                        data.put(KEY_PROPORTIONS,getCleanedProportions());
-                        refreshScreen();
-                    }
-                });
-                //cannot delete if void selection
-                if (proportions.size() == 1){
-                    jbDelete.setEnabled(false);
-                }
-                jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.21")); //$NON-NLS-1$
-                widgets[index][0] = jbDelete;
-                //style list
-                JButton jbStyle = new JButton(Util.getIcon(ICON_LIST));
-                Proportion proportion = proportions.get(index);
-                if (proportion.getStyles() != null){
-                    jbStyle.setText(proportion.getStylesDesc());
-                    jbStyle.setToolTipText(proportion.getStylesDesc());
-                }
-                jbStyle.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
-                        addStyle(row);
-                    }
-                });
-                jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27")); //$NON-NLS-1$
-                widgets[index][1] = jbStyle;
-                //Proportion
-                JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
-                    (int)(proportion.getProportion()*100),1,100,1));
-                jsNb.addChangeListener(new ChangeListener() {
-                    public void stateChanged(ChangeEvent ce) {
-                        if (getTotalValue() > 100){
-                            setProblem(Messages.getString("DigitalDJWizard.59")); //$NON-NLS-1$
-                            return;
-                        }
-                        else{
-                            setProblem(null);
-                        }
-                        int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
-                        int nb = Integer.parseInt(((JSpinner)ce.getSource()).getValue().toString());
-                        Proportion proportion = proportions.get(row);
-                        proportion.setProportion(((float)nb)/100);
-                    }
-                });
-                jsNb.setToolTipText(Messages.getString("DigitalDJWizard.28")); //$NON-NLS-1$
-                widgets[index][2] = jsNb;
-                //Set layout
-                dVert[index+1] = 20;
-            }
-            dVert[widgets.length+1] = 20; //final space
-            //Create layout
-            double[][] dSizeProperties = new double[][]{dHoriz,dVert};  
-            TableLayout layout = new TableLayout(dSizeProperties);
-            layout.setHGap(10);
-            layout.setVGap(10);
-            out.setLayout(layout);
-            //Create header
-            JLabel jlHeader1 = new JLabel(Messages.getString("DigitalDJWizard.27")); //$NON-NLS-1$
-            jlHeader1.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-            JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.28")); //$NON-NLS-1$
-            jlHeader2.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-            out.add(jlHeader1,"2,0"); //$NON-NLS-1$
-            out.add(jlHeader2,"4,0"); //$NON-NLS-1$
-            //Add widgets
-            for (int i=0;i<dVert.length-2;i++){
-                out.add(widgets[i][0],"0,"+(i+1)+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                out.add(widgets[i][1],"2,"+(i+1)); //$NON-NLS-1$
-                out.add(widgets[i][2],"4,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            //Display an error message if sum of proportion is > 100%
-            if (getTotalValue() > 100){
-                setProblem(Messages.getString("DigitalDJWizard.59")); //$NON-NLS-1$
-            }
-            return new JScrollPane(out);
-        }
-        
-        /**
+	private JScrollPane getProportionsPanel() {
+	    widgets = new JComponent[proportions.size()][3];
+	    JPanel out = new JPanel();
+	    // Delete|Style list|proportion in %
+	    double[] dHoriz = { 25, TableLayout.FILL, 250, TableLayout.FILL,
+		    TableLayout.PREFERRED };
+	    double[] dVert = new double[widgets.length + 2];
+	    dVert[0] = 20;
+	    // now add all known proportions
+	    for (int index = 0; index < proportions.size(); index++) {
+		// Delete button
+		JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
+		jbDelete.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ae) {
+			proportions.remove(getWidgetIndex(widgets,
+				(JComponent) ae.getSource()));
+			data.put(KEY_PROPORTIONS, getCleanedProportions());
+			refreshScreen();
+		    }
+		});
+		// cannot delete if void selection
+		if (proportions.size() == 1) {
+		    jbDelete.setEnabled(false);
+		}
+		jbDelete.setToolTipText(Messages
+			.getString("DigitalDJWizard.21")); //$NON-NLS-1$
+		widgets[index][0] = jbDelete;
+		// style list
+		JButton jbStyle = new JButton(Util.getIcon(ICON_LIST));
+		Proportion proportion = proportions.get(index);
+		if (proportion.getStyles() != null) {
+		    jbStyle.setText(proportion.getStylesDesc());
+		    jbStyle.setToolTipText(proportion.getStylesDesc());
+		}
+		jbStyle.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ae) {
+			int row = getWidgetIndex(widgets, (JComponent) ae
+				.getSource());
+			addStyle(row);
+		    }
+		});
+		jbStyle
+			.setToolTipText(Messages
+				.getString("DigitalDJWizard.27")); //$NON-NLS-1$
+		widgets[index][1] = jbStyle;
+		// Proportion
+		JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
+			(int) (proportion.getProportion() * 100), 1, 100, 1));
+		jsNb.addChangeListener(new ChangeListener() {
+		    public void stateChanged(ChangeEvent ce) {
+			if (getTotalValue() > 100) {
+			    setProblem(Messages.getString("DigitalDJWizard.59")); //$NON-NLS-1$
+			    return;
+			} else {
+			    setProblem(null);
+			}
+			int row = getWidgetIndex(widgets, (JComponent) ce
+				.getSource());
+			int nb = Integer.parseInt(((JSpinner) ce.getSource())
+				.getValue().toString());
+			Proportion proportion = proportions.get(row);
+			proportion.setProportion(((float) nb) / 100);
+		    }
+		});
+		jsNb.setToolTipText(Messages.getString("DigitalDJWizard.28")); //$NON-NLS-1$
+		widgets[index][2] = jsNb;
+		// Set layout
+		dVert[index + 1] = 20;
+	    }
+	    dVert[widgets.length + 1] = 20; // final space
+	    // Create layout
+	    double[][] dSizeProperties = new double[][] { dHoriz, dVert };
+	    TableLayout layout = new TableLayout(dSizeProperties);
+	    layout.setHGap(10);
+	    layout.setVGap(10);
+	    out.setLayout(layout);
+	    // Create header
+	    JLabel jlHeader1 = new JLabel(Messages
+		    .getString("DigitalDJWizard.27")); //$NON-NLS-1$
+	    jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+	    JLabel jlHeader2 = new JLabel(Messages
+		    .getString("DigitalDJWizard.28")); //$NON-NLS-1$
+	    jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+	    out.add(jlHeader1, "2,0"); //$NON-NLS-1$
+	    out.add(jlHeader2, "4,0"); //$NON-NLS-1$
+	    // Add widgets
+	    for (int i = 0; i < dVert.length - 2; i++) {
+		out.add(widgets[i][0], "0," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
+		out.add(widgets[i][1], "2," + (i + 1)); //$NON-NLS-1$
+		out.add(widgets[i][2], "4," + (i + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+	    }
+	    // Display an error message if sum of proportion is > 100%
+	    if (getTotalValue() > 100) {
+		setProblem(Messages.getString("DigitalDJWizard.59")); //$NON-NLS-1$
+	    }
+	    return new JScrollPane(out);
+	}
+
+	/**
          * 
          * @return Sum of all proportions
          */
-        private int getTotalValue(){
-            int total = 0;
-            for (int i=0;i<widgets.length;i++){
-                JSpinner jsp = (JSpinner)widgets[i][2];
-                //Only filled proportions are token into account
-                JButton jb = (JButton)widgets[i][1];
-                if (jb.getText() == null || jb.getText().equals("")){ //$NON-NLS-1$
-                    continue;
-                }
-                total += Integer.parseInt(jsp.getValue().toString());
-            }
-            return total;
-        }
-        
-        /**
+	private int getTotalValue() {
+	    int total = 0;
+	    for (int i = 0; i < widgets.length; i++) {
+		JSpinner jsp = (JSpinner) widgets[i][2];
+		// Only filled proportions are token into account
+		JButton jb = (JButton) widgets[i][1];
+		if (jb.getText() == null || jb.getText().equals("")) { //$NON-NLS-1$
+		    continue;
+		}
+		total += Integer.parseInt(jsp.getValue().toString());
+	    }
+	    return total;
+	}
+
+	/**
          * Add a style to a proportion
-         * @param row row
-         */
-        private void addStyle(int row){
-            synchronized(StyleManager.getInstance().getLock()){
-                Proportion proportion = proportions.get(row);
-                //create list of styles used in existing transitions
-                HashSet<Style> disabledStyles = new HashSet<Style>();
-                for (int i=0;i<proportions.size();i++){
-                    if (i != row){ //do not exlude current proportion that will be selected
-                        disabledStyles.addAll(proportions.get(i).getStyles());    
-                    }
-                }
-                StylesSelectionDialog dialog = new StylesSelectionDialog(disabledStyles);
-                dialog.setSelection(proportion.getStyles());
-                dialog.setVisible(true);
-                HashSet<Style> styles =  dialog.getSelectedStyles();
-                //check if at least one style has been selected
-                if (styles.size() == 0){
-                    return;
-                }
-                //reset styles
-                proportion.setStyle(new Ambience());
-                String sText = ""; //$NON-NLS-1$
-                for (Style style:styles){
-                    proportion.addStyle(style);
-                    sText += style.getName2()+',';  
-                }
-                sText = sText.substring(0,sText.length()-1);
-                //Set button text
-                ((JButton)widgets[row][1]).setText(sText);
-                //check if the proportion is fully selected now
-                if (proportion.getStyles().size() > 0 ){
-                    //Make sure current delete button is now enabled
-                    ((JButton)widgets[row][0]).setEnabled(true);
-                    
-                    //Reset wizard error message
-                    setProblem(null);
-                    
-                    //Fill wizard data
-                    data.put(KEY_PROPORTIONS,getCleanedProportions());
-                    
-                    //create a new void proportion if needed
-                    if (!containsVoidItem()){
-                        proportions.add(new Proportion());
-                    }
-                    
-                    //Refresh screen to add a new void row
-                    refreshScreen();
-                }
-            }
-        }
-        
-        /**
          * 
-         * @return whether a void item already exist 
-         * (used to avoid creating several void items)
+         * @param row
+         *                row
          */
-        private boolean containsVoidItem(){
-            for (int i=0;i<widgets.length;i++){
-                JButton jb = (JButton)widgets[i][1];
-                if (jb.getText().equals("")){ //$NON-NLS-1$
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        /**
+	private void addStyle(int row) {
+	    synchronized (StyleManager.getInstance().getLock()) {
+		Proportion proportion = proportions.get(row);
+		// create list of styles used in existing transitions
+		HashSet<Style> disabledStyles = new HashSet<Style>();
+		for (int i = 0; i < proportions.size(); i++) {
+		    if (i != row) { // do not exlude current proportion that
+                                        // will be selected
+			disabledStyles.addAll(proportions.get(i).getStyles());
+		    }
+		}
+		StylesSelectionDialog dialog = new StylesSelectionDialog(
+			disabledStyles);
+		dialog.setSelection(proportion.getStyles());
+		dialog.setVisible(true);
+		HashSet<Style> styles = dialog.getSelectedStyles();
+		// check if at least one style has been selected
+		if (styles.size() == 0) {
+		    return;
+		}
+		// reset styles
+		proportion.setStyle(new Ambience());
+		String sText = ""; //$NON-NLS-1$
+		for (Style style : styles) {
+		    proportion.addStyle(style);
+		    sText += style.getName2() + ',';
+		}
+		sText = sText.substring(0, sText.length() - 1);
+		// Set button text
+		((JButton) widgets[row][1]).setText(sText);
+		// check if the proportion is fully selected now
+		if (proportion.getStyles().size() > 0) {
+		    // Make sure current delete button is now enabled
+		    ((JButton) widgets[row][0]).setEnabled(true);
+
+		    // Reset wizard error message
+		    setProblem(null);
+
+		    // Fill wizard data
+		    data.put(KEY_PROPORTIONS, getCleanedProportions());
+
+		    // create a new void proportion if needed
+		    if (!containsVoidItem()) {
+			proportions.add(new Proportion());
+		    }
+
+		    // Refresh screen to add a new void row
+		    refreshScreen();
+		}
+	    }
+	}
+
+	/**
+         * 
+         * @return whether a void item already exist (used to avoid creating
+         *         several void items)
+         */
+	private boolean containsVoidItem() {
+	    for (int i = 0; i < widgets.length; i++) {
+		JButton jb = (JButton) widgets[i][1];
+		if (jb.getText().equals("")) { //$NON-NLS-1$
+		    return true;
+		}
+	    }
+	    return false;
+	}
+
+	/**
          * Refresh panel
-         *
+         * 
          */
-        private void refreshScreen(){
-            removeAll();
-            //refresh panel
-            add(getProportionsPanel(),"1,1"); //$NON-NLS-1$
-            revalidate();
-            repaint();
-        }
+	private void refreshScreen() {
+	    removeAll();
+	    // refresh panel
+	    add(getProportionsPanel(), "1,1"); //$NON-NLS-1$
+	    revalidate();
+	    repaint();
+	}
     }
-    
-     /**
-     * 
-     * Ambience based
-     *
-     * @author     Bertrand Florat
-     * @created    18 march 2006
-     */
-    public static class AmbiencePanel extends Screen implements ActionListener{
-        
-        private static final long serialVersionUID = 1L;
-    
-        /**All dynamic widgets*/
-        JComponent[][] widgets;
-        
-        /**Ambiences**/
-        ArrayList<Ambience> ambiences;
-        
-        /**DJ**/
-        AmbienceDigitalDJ dj = null;
-        
-        /**Selected ambience index*/
-        int ambienceIndex = 0;
-        
-        public String getDescription() {
-            return Messages.getString("DigitalDJWizard.47"); //$NON-NLS-1$
-        }
-         
-         public String getName() {
-            return Messages.getString("DigitalDJWizard.31"); //$NON-NLS-1$
-        }
-         
-        /**
-         * Create panel UI
-         *
+
+    /**
+         * 
+         * Ambience based
+         * 
+         * @author Bertrand Florat
+         * @created 18 march 2006
          */
-        public void initUI(){
-            ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
-            Collections.sort(ambiences);
-            widgets = new JComponent[ambiences.size()][1];
-            //We need at least one ambience
-            if (AmbienceManager.getInstance().getAmbiences().size() == 0){
-                setProblem(Messages.getString("DigitalDJWizard.38"));     //$NON-NLS-1$
-            }
-            setCanFinish(true);
-            //Get DJ
-            dj = (AmbienceDigitalDJ)DigitalDJManager.getInstance().getDJByName((String)data.get(KEY_DJ_NAME));
-            //set layout
-            double[] dVert = new double[ambiences.size()];
-            //prepare vertical layout
-            for (int i=0;i<ambiences.size();i++){
-                dVert[i] = 20;
-            }
-            double[][] size = new double[][]
-                      {{TableLayout.PREFERRED},dVert};
-            ButtonGroup bg = new ButtonGroup();
-            JPanel jpAmbiences = new JPanel();
-            TableLayout layout = new TableLayout(size);
-            layout.setVGap(10);
-            layout.setHGap(10);
-            jpAmbiences.setLayout(layout);
-            int index = 0;
-            for (Ambience ambience : ambiences){
-                JRadioButton jrb = new JRadioButton(ambience.getName()); 
-                jrb.addActionListener(this);
-                bg.add(jrb);
-                widgets[index][0] = jrb;
-                jpAmbiences.add(jrb,"0,"+index); //$NON-NLS-1$
-                index ++;
-            }
-            //main panel
-            double[][] main = new double[][]
-                                           {{0.99},{20,0.99}};
-            setLayout(new TableLayout(main));
-            add(new JScrollPane(jpAmbiences),"0,1"); //$NON-NLS-1$
-            //DJ change, set right ambience
-            if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
-                DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                Ambience ambience = ((AmbienceDigitalDJ)dj).getAmbience();
-                index = 0;
-                for (Ambience a:ambiences){
-                    if (a.equals(ambience)){
-                        JRadioButton jrb = (JRadioButton)widgets[index][0];
-                        jrb.doClick();//select right ambience, it will set right value into data
-                        break;
-                    }
-                    index ++;
-                }
-            }else{
-                //select first ambience found
-                JRadioButton jrb = (JRadioButton)widgets[0][0];
-                jrb.doClick();
-            }
-        }
-        
-         /* (non-Javadoc)
+    public static class AmbiencePanel extends Screen implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
+	/** All dynamic widgets */
+	JComponent[][] widgets;
+
+	/** Ambiences* */
+	ArrayList<Ambience> ambiences;
+
+	/** DJ* */
+	AmbienceDigitalDJ dj = null;
+
+	/** Selected ambience index */
+	int ambienceIndex = 0;
+
+	public String getDescription() {
+	    return Messages.getString("DigitalDJWizard.47"); //$NON-NLS-1$
+	}
+
+	public String getName() {
+	    return Messages.getString("DigitalDJWizard.31"); //$NON-NLS-1$
+	}
+
+	/**
+         * Create panel UI
+         * 
+         */
+	public void initUI() {
+	    ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance()
+		    .getAmbiences());
+	    Collections.sort(ambiences);
+	    widgets = new JComponent[ambiences.size()][1];
+	    // We need at least one ambience
+	    if (AmbienceManager.getInstance().getAmbiences().size() == 0) {
+		setProblem(Messages.getString("DigitalDJWizard.38")); //$NON-NLS-1$
+	    }
+	    setCanFinish(true);
+	    // Get DJ
+	    dj = (AmbienceDigitalDJ) DigitalDJManager.getInstance()
+		    .getDJByName((String) data.get(KEY_DJ_NAME));
+	    // set layout
+	    double[] dVert = new double[ambiences.size()];
+	    // prepare vertical layout
+	    for (int i = 0; i < ambiences.size(); i++) {
+		dVert[i] = 20;
+	    }
+	    double[][] size = new double[][] { { TableLayout.PREFERRED }, dVert };
+	    ButtonGroup bg = new ButtonGroup();
+	    JPanel jpAmbiences = new JPanel();
+	    TableLayout layout = new TableLayout(size);
+	    layout.setVGap(10);
+	    layout.setHGap(10);
+	    jpAmbiences.setLayout(layout);
+	    int index = 0;
+	    for (Ambience ambience : ambiences) {
+		JRadioButton jrb = new JRadioButton(ambience.getName());
+		jrb.addActionListener(this);
+		bg.add(jrb);
+		widgets[index][0] = jrb;
+		jpAmbiences.add(jrb, "0," + index); //$NON-NLS-1$
+		index++;
+	    }
+	    // main panel
+	    double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
+	    setLayout(new TableLayout(main));
+	    add(new JScrollPane(jpAmbiences), "0,1"); //$NON-NLS-1$
+	    // DJ change, set right ambience
+	    if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
+		DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
+		Ambience ambience = ((AmbienceDigitalDJ) dj).getAmbience();
+		index = 0;
+		for (Ambience a : ambiences) {
+		    if (a.equals(ambience)) {
+			JRadioButton jrb = (JRadioButton) widgets[index][0];
+			jrb.doClick();// select right ambience, it will set
+                                        // right value into data
+			break;
+		    }
+		    index++;
+		}
+	    } else {
+		// select first ambience found
+		JRadioButton jrb = (JRadioButton) widgets[0][0];
+		jrb.doClick();
+	    }
+	}
+
+	/*
+         * (non-Javadoc)
+         * 
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e) {
-            int row = getWidgetIndex(widgets,(JComponent)e.getSource());
-            data.put(KEY_AMBIENCE,ambiences.get(row));
-            setProblem(null);
-        }
-        
-       }
-    
-    /**
-     * 
-     * @param widget
-     * @return index of a given widget row in the widget table
-     */
-    private static int getWidgetIndex(JComponent[][] widgets,JComponent widget){
-        for (int row=0;row<widgets.length;row++){ 
-            for (int col=0;col<widgets[0].length;col++){
-                if (widget.equals(widgets[row][col])){
-                    return row;
-                }    
-            }
-        }
-        return -1; 
+	public void actionPerformed(ActionEvent e) {
+	    int row = getWidgetIndex(widgets, (JComponent) e.getSource());
+	    data.put(KEY_AMBIENCE, ambiences.get(row));
+	    setProblem(null);
+	}
+
     }
-    
-   
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
-     */
+
+    /**
+         * 
+         * @param widget
+         * @return index of a given widget row in the widget table
+         */
+    private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {
+	for (int row = 0; row < widgets.length; row++) {
+	    for (int col = 0; col < widgets[0].length; col++) {
+		if (widget.equals(widgets[row][col])) {
+		    return row;
+		}
+	    }
+	}
+	return -1;
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
+         */
     @Override
     public Class getPreviousScreen(Class screen) {
-        if (ActionSelectionPanel.class.equals(getCurrentScreen())){
-            return null;
-        }
-        else if (TypeSelectionPanel.class.equals(getCurrentScreen())){
-            return ActionSelectionPanel.class;
-        }
-        else if (GeneralOptionsPanel.class.equals(getCurrentScreen())){
-            if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))){
-                return TypeSelectionPanel.class;
-            }
-            else{
-                return ChangePanel.class;
-            }
-        }
-        else if (TransitionsPanel.class.equals(getCurrentScreen())
-                || ProportionsPanel.class.equals(getCurrentScreen())
-                || AmbiencePanel.class.equals(getCurrentScreen())){
-            return GeneralOptionsPanel.class;
-        }
-        else if (RemovePanel.class.equals(getCurrentScreen())){
-            return ActionSelectionPanel.class;
-        }
-        else if (ChangePanel.class.equals(getCurrentScreen())){
-            return ActionSelectionPanel.class;
-        }
-        return null;
+	if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
+	    return null;
+	} else if (TypeSelectionPanel.class.equals(getCurrentScreen())) {
+	    return ActionSelectionPanel.class;
+	} else if (GeneralOptionsPanel.class.equals(getCurrentScreen())) {
+	    if (ActionSelectionPanel.ACTION_CREATION.equals(data
+		    .get(KEY_ACTION))) {
+		return TypeSelectionPanel.class;
+	    } else {
+		return ChangePanel.class;
+	    }
+	} else if (TransitionsPanel.class.equals(getCurrentScreen())
+		|| ProportionsPanel.class.equals(getCurrentScreen())
+		|| AmbiencePanel.class.equals(getCurrentScreen())) {
+	    return GeneralOptionsPanel.class;
+	} else if (RemovePanel.class.equals(getCurrentScreen())) {
+	    return ActionSelectionPanel.class;
+	} else if (ChangePanel.class.equals(getCurrentScreen())) {
+	    return ActionSelectionPanel.class;
+	}
+	return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
-     */
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
+         */
     @Override
     public Class getNextScreen(Class screen) {
-        if (ActionSelectionPanel.class.equals(getCurrentScreen())){
-            String sAction = (String)data.get(KEY_ACTION);
-            if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
-                return TypeSelectionPanel.class;
-            }
-            else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)){
-                return ChangePanel.class;
-            }
-            else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)){
-                return RemovePanel.class;
-            }
-        }
-        else if (TypeSelectionPanel.class.equals(getCurrentScreen())){
-            return GeneralOptionsPanel.class;
-        }
-        else if (GeneralOptionsPanel.class.equals(getCurrentScreen())){
-            String sType = (String)data.get(KEY_DJ_TYPE);
-            if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)){
-                return AmbiencePanel.class;
-            }
-            else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)){
-                return ProportionsPanel.class;
-            }
-            else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)){
-                return TransitionsPanel.class;
-            }
-        }
-        else if (RemovePanel.class.equals(getCurrentScreen())){
-            return null;
-        }
-        else if (ChangePanel.class.equals(getCurrentScreen())){
-            return GeneralOptionsPanel.class;
-        }
-        return null;
+	if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
+	    String sAction = (String) data.get(KEY_ACTION);
+	    if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
+		return TypeSelectionPanel.class;
+	    } else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)) {
+		return ChangePanel.class;
+	    } else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)) {
+		return RemovePanel.class;
+	    }
+	} else if (TypeSelectionPanel.class.equals(getCurrentScreen())) {
+	    return GeneralOptionsPanel.class;
+	} else if (GeneralOptionsPanel.class.equals(getCurrentScreen())) {
+	    String sType = (String) data.get(KEY_DJ_TYPE);
+	    if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)) {
+		return AmbiencePanel.class;
+	    } else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)) {
+		return ProportionsPanel.class;
+	    } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
+		return TransitionsPanel.class;
+	    }
+	} else if (RemovePanel.class.equals(getCurrentScreen())) {
+	    return null;
+	} else if (ChangePanel.class.equals(getCurrentScreen())) {
+	    return GeneralOptionsPanel.class;
+	}
+	return null;
     }
-    
+
     public DigitalDJWizard() {
-        super(Messages.getString("DigitalDJWizard.4"),ActionSelectionPanel.class, //$NON-NLS-1$
-            Util.getIcon(IMAGE_DJ),Main.getWindow(),
-            new Locale(Messages.getInstance().getLocal()));
+	super(
+		Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, //$NON-NLS-1$
+		Util.getIcon(IMAGE_DJ), Main.getWindow(), new Locale(Messages
+			.getInstance().getLocal()));
     }
 
-
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.wizard.Wizard#finish()
-     */
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.wizard.Wizard#finish()
+         */
     @Override
     public void finish() {
-        DigitalDJ dj = null;
-        String sAction = (String)data.get(KEY_ACTION);
-        if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)){
-            DigitalDJManager.getInstance().remove((DigitalDJ)data.get(KEY_REMOVE));
-        }
-        else if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
-            String sType = (String)data.get(KEY_DJ_TYPE);
-            String sName = (String)data.get(KEY_DJ_NAME);
-            //create a unique ID for this DJ, simply use current time in ms
-            String sID = Long.toString(System.currentTimeMillis());
-            if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)){
-                Ambience ambience = (Ambience)data.get(KEY_AMBIENCE);
-                dj = new AmbienceDigitalDJ(sID);
-                ((AmbienceDigitalDJ)dj).setAmbience(ambience);
-            }
-            else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)){
-                dj = new ProportionDigitalDJ(sID);
-                ArrayList<Proportion> proportions = (ArrayList<Proportion>)data.get(KEY_PROPORTIONS);
-                ((ProportionDigitalDJ)dj).setProportions(proportions);
-            }
-            else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)){
-                ArrayList<Transition> transitions = (ArrayList<Transition>)data.get(KEY_TRANSITIONS);
-                dj = new TransitionDigitalDJ(sID);
-                ((TransitionDigitalDJ)dj).setTransitions(transitions);
-                Style startup = (Style)data.get(KEY_STARTUP_STYLE);
-                ((TransitionDigitalDJ)dj).setStartupStyle(startup);
-            }
-            int iFadeDuration = (Integer)data.get(KEY_FADE_DURATION);
-            int iRateLevel = (Integer)data.get(KEY_RATINGS_LEVEL);
-            boolean bUnicity = (Boolean)data.get(KEY_UNICITY);
-            dj.setName(sName);
-            dj.setFadingDuration(iFadeDuration);
-            dj.setRatingLevel(iRateLevel);
-            dj.setTrackUnicity(bUnicity);
-            DigitalDJManager.getInstance().register(dj);
-            //commit the DJ right now
-            DigitalDJManager.commit(dj);
-            //If first DJ, select it as default
-            if (DigitalDJManager.getInstance().getDJs().size() == 1){
-                ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
-            }
-        }
-        else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)){
-            String sType = (String)data.get(KEY_DJ_TYPE);
-            dj = (DigitalDJ)data.get(KEY_CHANGE);
-            if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)){
-                Ambience ambience = (Ambience)data.get(KEY_AMBIENCE);
-                ((AmbienceDigitalDJ)dj).setAmbience(ambience);
-            }
-            else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)){
-                ArrayList<Proportion> proportions = (ArrayList)data.get(KEY_PROPORTIONS);
-                ((ProportionDigitalDJ)dj).setProportions(proportions);
-            }
-            else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)){
-                ArrayList<Transition> transitions = (ArrayList)data.get(KEY_TRANSITIONS);
-                ((TransitionDigitalDJ)dj).setTransitions(transitions);
-                Style startup = (Style)data.get(KEY_STARTUP_STYLE);
-                ((TransitionDigitalDJ)dj).setStartupStyle(startup);
-            }
-            String sName = (String)data.get(KEY_DJ_NAME);
-            int iFadeDuration = (Integer)data.get(KEY_FADE_DURATION);
-            int iRateLevel = (Integer)data.get(KEY_RATINGS_LEVEL);
-            boolean bUnicity = (Boolean)data.get(KEY_UNICITY);
-            dj.setName(sName);
-            dj.setFadingDuration(iFadeDuration);
-            dj.setRatingLevel(iRateLevel);
-            dj.setTrackUnicity(bUnicity);
-            //commit the DJ right now
-            DigitalDJManager.commit(dj);
-        }
-        //Refresh command panel (usefull for ie if DJ names changed)
-        ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
+	DigitalDJ dj = null;
+	String sAction = (String) data.get(KEY_ACTION);
+	if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)) {
+	    DigitalDJManager.getInstance().remove(
+		    (DigitalDJ) data.get(KEY_REMOVE));
+	} else if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
+	    String sType = (String) data.get(KEY_DJ_TYPE);
+	    String sName = (String) data.get(KEY_DJ_NAME);
+	    // create a unique ID for this DJ, simply use current time in ms
+	    String sID = Long.toString(System.currentTimeMillis());
+	    if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)) {
+		Ambience ambience = (Ambience) data.get(KEY_AMBIENCE);
+		dj = new AmbienceDigitalDJ(sID);
+		((AmbienceDigitalDJ) dj).setAmbience(ambience);
+	    } else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)) {
+		dj = new ProportionDigitalDJ(sID);
+		ArrayList<Proportion> proportions = (ArrayList<Proportion>) data
+			.get(KEY_PROPORTIONS);
+		((ProportionDigitalDJ) dj).setProportions(proportions);
+	    } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
+		ArrayList<Transition> transitions = (ArrayList<Transition>) data
+			.get(KEY_TRANSITIONS);
+		dj = new TransitionDigitalDJ(sID);
+		((TransitionDigitalDJ) dj).setTransitions(transitions);
+		Style startup = (Style) data.get(KEY_STARTUP_STYLE);
+		((TransitionDigitalDJ) dj).setStartupStyle(startup);
+	    }
+	    int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
+	    int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
+	    boolean bUnicity = (Boolean) data.get(KEY_UNICITY);
+	    dj.setName(sName);
+	    dj.setFadingDuration(iFadeDuration);
+	    dj.setRatingLevel(iRateLevel);
+	    dj.setTrackUnicity(bUnicity);
+	    DigitalDJManager.getInstance().register(dj);
+	    // commit the DJ right now
+	    DigitalDJManager.commit(dj);
+	    // If first DJ, select it as default
+	    if (DigitalDJManager.getInstance().getDJs().size() == 1) {
+		ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());
+	    }
+	} else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)) {
+	    String sType = (String) data.get(KEY_DJ_TYPE);
+	    dj = (DigitalDJ) data.get(KEY_CHANGE);
+	    if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)) {
+		Ambience ambience = (Ambience) data.get(KEY_AMBIENCE);
+		((AmbienceDigitalDJ) dj).setAmbience(ambience);
+	    } else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)) {
+		ArrayList<Proportion> proportions = (ArrayList) data
+			.get(KEY_PROPORTIONS);
+		((ProportionDigitalDJ) dj).setProportions(proportions);
+	    } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
+		ArrayList<Transition> transitions = (ArrayList) data
+			.get(KEY_TRANSITIONS);
+		((TransitionDigitalDJ) dj).setTransitions(transitions);
+		Style startup = (Style) data.get(KEY_STARTUP_STYLE);
+		((TransitionDigitalDJ) dj).setStartupStyle(startup);
+	    }
+	    String sName = (String) data.get(KEY_DJ_NAME);
+	    int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
+	    int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
+	    boolean bUnicity = (Boolean) data.get(KEY_UNICITY);
+	    dj.setName(sName);
+	    dj.setFadingDuration(iFadeDuration);
+	    dj.setRatingLevel(iRateLevel);
+	    dj.setTrackUnicity(bUnicity);
+	    // commit the DJ right now
+	    DigitalDJManager.commit(dj);
+	}
+	// Refresh command panel (usefull for ie if DJ names changed)
+	ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
     }
 }

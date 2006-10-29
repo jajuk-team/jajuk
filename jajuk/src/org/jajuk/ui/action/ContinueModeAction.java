@@ -26,33 +26,36 @@ import org.jajuk.util.error.JajukException;
 public class ContinueModeAction extends ActionBase {
 
     private static final long serialVersionUID = 1L;
-    
+
     ContinueModeAction() {
-        super(Messages.getString("JajukJMenuBar.12"), Util.getIcon(ICON_CONTINUE), //$NON-NLS-1$
-              true); //$NON-NLS-1$
-        setShortDescription(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.12"), Util.getIcon(ICON_CONTINUE), //$NON-NLS-1$
+		true); //$NON-NLS-1$
+	setShortDescription(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) throws JajukException {
-        boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
-        ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
+	boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
+	ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean
+		.toString(!b));
 
-        JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
-        CommandJPanel.getInstance().jbContinue.setSelected(!b);
+	JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
+	CommandJPanel.getInstance().jbContinue.setSelected(!b);
 
-        if (!b) { //enabled button
-            CommandJPanel.getInstance().jbContinue.setBorder(
-                BorderFactory.createLoweredBevelBorder());
-            if (FIFO.isStopped()) {
-                //if nothing playing, play next track if possible
-                StackItem item = FIFO.getInstance().getLastPlayed();
-                if (item != null) {
-                    FIFO.getInstance().push(new StackItem(FileManager.getInstance().getNextFile(
-                        item.getFile())), false);
-                }
-            }
-        }
-        //computes planned tracks
-        FIFO.getInstance().computesPlanned(false);
+	if (!b) { // enabled button
+	    CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory
+		    .createLoweredBevelBorder());
+	    if (FIFO.isStopped()) {
+		// if nothing playing, play next track if possible
+		StackItem item = FIFO.getInstance().getLastPlayed();
+		if (item != null) {
+		    FIFO.getInstance().push(
+			    new StackItem(FileManager.getInstance()
+				    .getNextFile(item.getFile())), false);
+		}
+	    }
+	}
+	// computes planned tracks
+	FIFO.getInstance().computesPlanned(false);
     }
 }

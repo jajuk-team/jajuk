@@ -25,14 +25,13 @@ import javax.swing.plaf.basic.ComboPopup;
 /**
  * combobox ui for liquid laf
  * 
- * @author Bertrand Florat 
+ * @author Bertrand Florat
  * @created 28 nov. 2003
  */
 public class LiquidComboBoxUI extends com.birosoft.liquid.LiquidComboBoxUI {
-	protected ComboPopup createPopup() {
-		BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
-		popup.getAccessibleContext().setAccessibleParent(comboBox);
-		return popup;
-	}
+    protected ComboPopup createPopup() {
+	BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
+	popup.getAccessibleContext().setAccessibleParent(comboBox);
+	return popup;
+    }
 }
-

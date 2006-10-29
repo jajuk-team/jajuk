@@ -27,7 +27,7 @@ import org.jajuk.util.Util;
 
 /**
  * Action for displaying the tip of the day.
- *
+ * 
  * @author Bart Cremers
  * @version 12-dec-2005
  */
@@ -36,16 +36,18 @@ public class TipOfTheDayAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     TipOfTheDayAction() {
-        super(Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL), true); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL), true); //$NON-NLS-1$
     }
 
     /**
-     * Invoked when an action occurs.
-     * @param evt
-     */
+         * Invoked when an action occurs.
+         * 
+         * @param evt
+         */
     public void perform(ActionEvent evt) {
-        TipOfTheDay tipsView = new TipOfTheDay();
-        tipsView.setLocationRelativeTo(null);
-        tipsView.setVisible(true);
+	TipOfTheDay tipsView = new TipOfTheDay();
+	tipsView.setLocationRelativeTo(null);
+	tipsView.setVisible(true);
     }
 }

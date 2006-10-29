@@ -38,75 +38,76 @@ import entagged.freedb.FreedbReadResult;
 public class CDDBTableModel extends JajukTableModel {
 
     private static final long serialVersionUID = 1L;
-    
+
     ArrayList<CDDBTrack> alItems;
 
     /**
-     * Model constructor
-     * 
-     * @param iColNum
-     *            number of rows
-     * @param sColName
-     *            columns names
-     */
+         * Model constructor
+         * 
+         * @param iColNum
+         *                number of rows
+         * @param sColName
+         *                columns names
+         */
     public CDDBTableModel(ArrayList<CDDBTrack> alItems) {
-        super(5);
-        this.alItems = alItems;
+	super(5);
+	this.alItems = alItems;
 
-        // Current Album title 
-        vColNames.add(Messages.getString("CDDBWizard.3")); //$NON-NLS-1$
-        vId.add("CDDBWizard.1"); //$NON-NLS-1$
+	// Current Album title
+	vColNames.add(Messages.getString("CDDBWizard.3")); //$NON-NLS-1$
+	vId.add("CDDBWizard.1"); //$NON-NLS-1$
 
-        // Filename
-        vColNames.add(Messages.getString("CDDBWizard.1")); //$NON-NLS-1$
-        vId.add("CDDBWizard.2"); //$NON-NLS-1$
+	// Filename
+	vColNames.add(Messages.getString("CDDBWizard.1")); //$NON-NLS-1$
+	vId.add("CDDBWizard.2"); //$NON-NLS-1$
 
-        // Current Track title
-        vColNames.add(Messages.getString("CDDBWizard.2")); //$NON-NLS-1$
-        vId.add("CDDBWizard.3"); //$NON-NLS-1$
+	// Current Track title
+	vColNames.add(Messages.getString("CDDBWizard.2")); //$NON-NLS-1$
+	vId.add("CDDBWizard.3"); //$NON-NLS-1$
 
-        // Proposed Track Name
-        vColNames.add(Messages.getString("CDDBWizard.4")); //$NON-NLS-1$
-        vId.add("CDDBWizard.4"); //$NON-NLS-1$
+	// Proposed Track Name
+	vColNames.add(Messages.getString("CDDBWizard.4")); //$NON-NLS-1$
+	vId.add("CDDBWizard.4"); //$NON-NLS-1$
     }
 
     /**
-     * Fill model with tracks
-     */
-    public void populateModel(FreedbReadResult fdbReader) {               
-        iRowNum = alItems.size();
-        int iColNum = iNumberStandardCols;
-        Iterator it = alItems.iterator();
-        oValues = new Object[iRowNum][iColNum];
-        oItems = new Item[iRowNum];
-        bCellEditable = new boolean[iRowNum][iColNum];
-        for (int iRow = 0; it.hasNext(); iRow++) {
-            Track track = ((CDDBTrack) it.next()).track;
-            setItemAt(iRow, track);
-            ArrayList file = track.getFiles();
-            Iterator ifi = file.iterator();
-            String filename = ""; //$NON-NLS-1$
-            while(ifi.hasNext()){
-                File f = (File) ifi.next();
-                filename = f.getName();
-                if (filename!=null) break;
-            }                       
-                        
-            // Id
-            oItems[iRow] = track;
-            //  File name            
-            oValues[iRow][0] = track.getAlbum().getName2();
-            bCellEditable[iRow][0] = false;
-            // Track name          
-            oValues[iRow][1] = filename;
-            bCellEditable[iRow][1] = false;
-            // Album
-            oValues[iRow][2] = track.getName();
-            bCellEditable[iRow][2] = false;
-            // Author
-            oValues[iRow][3] = fdbReader.getTrackTitle(iRow);
-            bCellEditable[iRow][3] = false;
-        }
+         * Fill model with tracks
+         */
+    public void populateModel(FreedbReadResult fdbReader) {
+	iRowNum = alItems.size();
+	int iColNum = iNumberStandardCols;
+	Iterator it = alItems.iterator();
+	oValues = new Object[iRowNum][iColNum];
+	oItems = new Item[iRowNum];
+	bCellEditable = new boolean[iRowNum][iColNum];
+	for (int iRow = 0; it.hasNext(); iRow++) {
+	    Track track = ((CDDBTrack) it.next()).track;
+	    setItemAt(iRow, track);
+	    ArrayList file = track.getFiles();
+	    Iterator ifi = file.iterator();
+	    String filename = ""; //$NON-NLS-1$
+	    while (ifi.hasNext()) {
+		File f = (File) ifi.next();
+		filename = f.getName();
+		if (filename != null)
+		    break;
+	    }
+
+	    // Id
+	    oItems[iRow] = track;
+	    // File name
+	    oValues[iRow][0] = track.getAlbum().getName2();
+	    bCellEditable[iRow][0] = false;
+	    // Track name
+	    oValues[iRow][1] = filename;
+	    bCellEditable[iRow][1] = false;
+	    // Album
+	    oValues[iRow][2] = track.getName();
+	    bCellEditable[iRow][2] = false;
+	    // Author
+	    oValues[iRow][3] = fdbReader.getTrackTitle(iRow);
+	    bCellEditable[iRow][3] = false;
+	}
     }
 
     @Override

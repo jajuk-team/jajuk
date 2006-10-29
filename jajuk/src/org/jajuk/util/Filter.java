@@ -23,57 +23,59 @@ package org.jajuk.util;
 import org.jajuk.base.PropertyMetaInformation;
 
 /**
- *  Filter on meta information
- *
- * @author     Bertrand Florat
- * @created    7 déc. 2005
+ * Filter on meta information
+ * 
+ * @author Bertrand Florat
+ * @created 7 déc. 2005
  */
 public class Filter {
-    
-    /**Property*/
+
+    /** Property */
     PropertyMetaInformation meta;
-    
-    /**Value**/
+
+    /** Value* */
     String sValue;
-    
-    /**Human**/
+
+    /** Human* */
     boolean bHuman = false;
-    
-    /**Exact**/
+
+    /** Exact* */
     boolean bExact = false;
 
-    
     /**
-     * Filter constructor
-     * @param meta meta property
-     * @param sValue value
-     * @param bHuman is the filter apply value itself or its human representation if different ?
-     * @param bExact is the filter should match exactly the value ?
-     */
-    public Filter(PropertyMetaInformation meta,String sValue,boolean bHuman,boolean bExact){
-        this.meta = meta;
-        this.sValue = sValue;
-        this.bHuman = bHuman;
-        this.bExact = bExact;
+         * Filter constructor
+         * 
+         * @param meta
+         *                meta property
+         * @param sValue
+         *                value
+         * @param bHuman
+         *                is the filter apply value itself or its human
+         *                representation if different ?
+         * @param bExact
+         *                is the filter should match exactly the value ?
+         */
+    public Filter(PropertyMetaInformation meta, String sValue, boolean bHuman,
+	    boolean bExact) {
+	this.meta = meta;
+	this.sValue = sValue;
+	this.bHuman = bHuman;
+	this.bExact = bExact;
     }
-
 
     public boolean isExact() {
-        return bExact;
+	return bExact;
     }
-
 
     public boolean isHuman() {
-        return bHuman;
+	return bHuman;
     }
-
 
     public PropertyMetaInformation getProperty() {
-        return meta;
+	return meta;
     }
 
-
     public String getValue() {
-        return sValue;
+	return sValue;
     }
 }

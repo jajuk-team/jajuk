@@ -26,131 +26,137 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 
 /**
- *  Encapsulates a label with a text and an icon, used for tables
- *
- * @author     Bertrand Florat
- * @created    12 nov. 2004
+ * Encapsulates a label with a text and an icon, used for tables
+ * 
+ * @author Bertrand Florat
+ * @created 12 nov. 2004
  */
 /**
- *  Type description
- *
- * @author     Bertrand Florat
- * @created    22 févr. 2006
+ * Type description
+ * 
+ * @author Bertrand Florat
+ * @created 22 févr. 2006
  */
-public class IconLabel implements Comparable{
-    
-    /**Icon*/
+public class IconLabel implements Comparable {
+
+    /** Icon */
     private ImageIcon icon;
-    
-     /**Text*/
+
+    /** Text */
     private String sText;
-    
-    /**Background color*/
+
+    /** Background color */
     private Color cBackground;
-    
-    /**Foreground color*/
+
+    /** Foreground color */
     private Color cForeground;
-    
-    /**Font*/
+
+    /** Font */
     private Font font;
-    
-    /**Tooltip*/
+
+    /** Tooltip */
     private String sTooltip;
-    
-    /**Whether this is a integer*/
+
+    /** Whether this is a integer */
     private boolean bInteger = false;
-    
+
     /**
-     * Constructor
-     * @param icon
-     * @param sText
-     * @param cBackground
-     * @param cForeground
-     * @param font
-     */
-    public IconLabel(ImageIcon icon,String sText,Color cBackground,Color cForeground,Font font,String sTooltip){
-        this.icon = icon;
-        this.sText = sText;
-        this.cBackground = cBackground;
-        this.cForeground = cForeground;
-        this.font = font;
-        this.sTooltip = sTooltip;
+         * Constructor
+         * 
+         * @param icon
+         * @param sText
+         * @param cBackground
+         * @param cForeground
+         * @param font
+         */
+    public IconLabel(ImageIcon icon, String sText, Color cBackground,
+	    Color cForeground, Font font, String sTooltip) {
+	this.icon = icon;
+	this.sText = sText;
+	this.cBackground = cBackground;
+	this.cForeground = cForeground;
+	this.font = font;
+	this.sTooltip = sTooltip;
     }
-   
-    public IconLabel(ImageIcon icon,String sText){
-        this.icon = icon;
-        this.sText = sText;
+
+    public IconLabel(ImageIcon icon, String sText) {
+	this.icon = icon;
+	this.sText = sText;
     }
-    
-    
+
     /**
-     * @return Returns the sText.
-     */
+         * @return Returns the sText.
+         */
     public String getText() {
-        return sText;
+	return sText;
     }
+
     /**
-     * @return Returns the icon.
-     */
+         * @return Returns the icon.
+         */
     public ImageIcon getIcon() {
-        return icon;
+	return icon;
     }
-    
+
     /**
-     * @return Returns the cBackground.
-     */
+         * @return Returns the cBackground.
+         */
     public Color getBackground() {
-        return cBackground;
+	return cBackground;
     }
+
     /**
-     * @return Returns the cForeground.
-     */
+         * @return Returns the cForeground.
+         */
     public Color getForeground() {
-        return cForeground;
+	return cForeground;
     }
+
     /**
-     * @return Returns the font.
-     */
+         * @return Returns the font.
+         */
     public Font getFont() {
-        return font;
+	return font;
     }
-    
+
     /**
-     * toString method
-     */
-    public String toString(){
-        return sText;
+         * toString method
+         */
+    public String toString() {
+	return sText;
     }
+
     /**
-     * @return Returns the sTooltip.
-     */
+         * @return Returns the sTooltip.
+         */
     public String getTooltip() {
-        return sTooltip;
+	return sTooltip;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(T)
-     */
+    /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Comparable#compareTo(T)
+         */
     public int compareTo(Object o) {
-        IconLabel ilOther =(IconLabel)o;
-        if (ilOther.getTooltip() != null && this.getTooltip() != null){
-            if (bInteger){ //is this item represents an integer ?
-                long l = Long.parseLong(getTooltip());
-                long lOther = Long.parseLong(ilOther.getTooltip());
-                return (int)(l - lOther);
-            }
-            else{ //simply compare tooltip strings
-                return ilOther.getTooltip().compareTo(getTooltip());
-            }
-        }else{
-            return 0;
-        }
+	IconLabel ilOther = (IconLabel) o;
+	if (ilOther.getTooltip() != null && this.getTooltip() != null) {
+	    if (bInteger) { // is this item represents an integer ?
+		long l = Long.parseLong(getTooltip());
+		long lOther = Long.parseLong(ilOther.getTooltip());
+		return (int) (l - lOther);
+	    } else { // simply compare tooltip strings
+		return ilOther.getTooltip().compareTo(getTooltip());
+	    }
+	} else {
+	    return 0;
+	}
     }
 
     /**
-     * @param integer
-     */
+         * @param integer
+         */
     public void setInteger(boolean integer) {
-        bInteger = integer;
+	bInteger = integer;
     }
 }

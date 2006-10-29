@@ -23,47 +23,47 @@ package org.jajuk.base;
 import java.util.ArrayList;
 
 /**
- *  This class contains an Author and an ArrayList of PopulatedAlbums
- *  associated with this Author. This class is used in the
- *  exporting process.
- *
- * @author     Ronak Patel
- * @created    Aug 26, 2006
+ * This class contains an Author and an ArrayList of PopulatedAlbums associated
+ * with this Author. This class is used in the exporting process.
+ * 
+ * @author Ronak Patel
+ * @created Aug 26, 2006
  */
 public class PopulatedAuthor {
-	private Author author = null;
-	private ArrayList<PopulatedAlbum> albums = null;
-	
-	public PopulatedAuthor(Author author) {
-		this.author = author;
-		this.albums = new ArrayList<PopulatedAlbum>();
-	}
-	
-	public PopulatedAuthor(Author author, ArrayList<PopulatedAlbum> albums) {
-		this.author = author;
-		this.albums = albums;
-	}
+    private Author author = null;
 
-	public ArrayList<PopulatedAlbum> getAlbums() {
-		return albums;
-	}
+    private ArrayList<PopulatedAlbum> albums = null;
 
-	public void setAlbums(ArrayList<PopulatedAlbum> albums) {
-		this.albums = albums;
-	}
+    public PopulatedAuthor(Author author) {
+	this.author = author;
+	this.albums = new ArrayList<PopulatedAlbum>();
+    }
 
-	public Author getAuthor() {
-		return author;
-	}
+    public PopulatedAuthor(Author author, ArrayList<PopulatedAlbum> albums) {
+	this.author = author;
+	this.albums = albums;
+    }
 
-	public void setAuthor(Author author) {
-		this.author = author;
+    public ArrayList<PopulatedAlbum> getAlbums() {
+	return albums;
+    }
+
+    public void setAlbums(ArrayList<PopulatedAlbum> albums) {
+	this.albums = albums;
+    }
+
+    public Author getAuthor() {
+	return author;
+    }
+
+    public void setAuthor(Author author) {
+	this.author = author;
+    }
+
+    public void addAlbum(PopulatedAlbum album) {
+	if (albums == null) {
+	    albums = new ArrayList<PopulatedAlbum>();
 	}
-	
-	public void addAlbum(PopulatedAlbum album) {
-		if (albums == null) {
-			albums = new ArrayList<PopulatedAlbum>();
-		}
-		albums.add(album);
-	}
+	albums.add(album);
+    }
 }

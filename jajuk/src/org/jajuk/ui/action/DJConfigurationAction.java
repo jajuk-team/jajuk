@@ -27,23 +27,24 @@ import org.jajuk.util.Util;
 
 /**
  * Action for configure DJs
- *
+ * 
  * @author Bertrand Florat
  * @version 27-08-2006
  */
 public class DJConfigurationAction extends ActionBase {
 
     /**
-     * 
-     */
+         * 
+         */
     private static final long serialVersionUID = 1L;
 
     DJConfigurationAction() {
-        super(Messages.getString("CommandJPanel.17"), Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$ //$NON-NLS-2$
+	super(
+		Messages.getString("CommandJPanel.17"), Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        DigitalDJWizard wizard = new DigitalDJWizard(); //display the DJ wizard
-        wizard.show();
+	DigitalDJWizard wizard = new DigitalDJWizard(); // display the DJ wizard
+	wizard.show();
     }
 }

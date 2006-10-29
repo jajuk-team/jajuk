@@ -23,47 +23,47 @@ package org.jajuk.base;
 import java.util.ArrayList;
 
 /**
- *  This class contains a Style and an ArrayList of 
- *  PopulatedAuthors associated with this Style.
- *  This class is used in the exporting process.
- *
- * @author     Ronak Patel
- * @created    Aug 26, 2006
+ * This class contains a Style and an ArrayList of PopulatedAuthors associated
+ * with this Style. This class is used in the exporting process.
+ * 
+ * @author Ronak Patel
+ * @created Aug 26, 2006
  */
 public class PopulatedStyle {
-	private Style style = null;
-	private ArrayList<PopulatedAuthor> authors = null;
-	
-	public PopulatedStyle(Style style) {
-		this.style = style;
-		this.authors = new ArrayList<PopulatedAuthor>();
-	}
-	
-	public PopulatedStyle(Style style, ArrayList<PopulatedAuthor> authors) {
-		this.style = style;
-		this.authors = authors;
-	}
+    private Style style = null;
 
-	public ArrayList<PopulatedAuthor> getAuthors() {
-		return authors;
-	}
+    private ArrayList<PopulatedAuthor> authors = null;
 
-	public void setAuthors(ArrayList<PopulatedAuthor> authors) {
-		this.authors = authors;
-	}
+    public PopulatedStyle(Style style) {
+	this.style = style;
+	this.authors = new ArrayList<PopulatedAuthor>();
+    }
 
-	public Style getStyle() {
-		return style;
-	}
+    public PopulatedStyle(Style style, ArrayList<PopulatedAuthor> authors) {
+	this.style = style;
+	this.authors = authors;
+    }
 
-	public void setStyle(Style style) {
-		this.style = style;
+    public ArrayList<PopulatedAuthor> getAuthors() {
+	return authors;
+    }
+
+    public void setAuthors(ArrayList<PopulatedAuthor> authors) {
+	this.authors = authors;
+    }
+
+    public Style getStyle() {
+	return style;
+    }
+
+    public void setStyle(Style style) {
+	this.style = style;
+    }
+
+    public void addAuthor(PopulatedAuthor author) {
+	if (this.authors == null) {
+	    authors = new ArrayList<PopulatedAuthor>();
 	}
-	
-	public void addAuthor(PopulatedAuthor author) {
-		if (this.authors == null) {
-			authors = new ArrayList<PopulatedAuthor>();
-		}
-		authors.add(author);
-	}
+	authors.add(author);
+    }
 }

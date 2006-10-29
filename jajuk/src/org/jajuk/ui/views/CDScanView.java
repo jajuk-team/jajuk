@@ -43,134 +43,153 @@ import org.jajuk.util.Util;
 
 import ext.SwingWorker;
 
-
 /**
- *Scan CD to build the collection as fast as possible
- * <p>Configuration perspective
- *  * <p>Singleton
- * @author     Bertrand Florat
- * @created   29 dec. 2003
+ * Scan CD to build the collection as fast as possible
+ * <p>
+ * Configuration perspective *
+ * <p>
+ * Singleton
+ * 
+ * @author Bertrand Florat
+ * @created 29 dec. 2003
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
-	
-    private static final long serialVersionUID = 1L;
-    
-	/**Self instance*/
-	private static CDScanView cds;
-	
-	JLabel jlName;
-	JTextField jtfName;
-	JLabel jlMountPoint;
-	JTextField jtfMountPoint;
-	JButton jbScan;
-	JButton jbUrl;
-	
-	/**Return self instance*/
-	public static synchronized CDScanView getInstance(){
-		if (cds == null){
-			cds = new CDScanView();
-		}
-		return cds;
-	}
-	
-	/**
-	 * Constructor
-	 */
-	public CDScanView() {
-		cds = this;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI(){
-		float fXSeparator = 0.05f;
-		float fYSeparator = 0.15f;
-		double[][] dSize={
-				{fXSeparator,0.35,fXSeparator,0.4,fXSeparator,40,fXSeparator},
-				{fYSeparator,20,fYSeparator,20,fYSeparator,20,fYSeparator}
-		};
-		setLayout(new TableLayout(dSize));
-		jlName = new JLabel(Messages.getString("CDScanView.0")); //$NON-NLS-1$
-		jlName.setToolTipText(Messages.getString("CDScanView.1")); //$NON-NLS-1$
-		jtfName =  new JTextField(10);
-		jtfName.setToolTipText(Messages.getString("CDScanView.2")); //$NON-NLS-1$
-		jlMountPoint = new JLabel(Messages.getString("CDScanView.3")); //$NON-NLS-1$
-		jlMountPoint.setToolTipText(Messages.getString("CDScanView.4")); //$NON-NLS-1$
-		jtfMountPoint = new JTextField(10);
-		jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5")); //$NON-NLS-1$
-		jbScan = new JButton(Messages.getString("CDScanView.6"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
-		jbScan.setToolTipText(Messages.getString("CDScanView.18")); //$NON-NLS-1$
-		jbScan.addActionListener(this);
-		jbUrl = new JButton(Util.getIcon(ICON_OPEN_FILE)); //$NON-NLS-1$
-		jbUrl.setToolTipText(Messages.getString("CDScanView.19")); //$NON-NLS-1$
-		jbUrl.addActionListener(this);
-		add(jlName,"1,1"); //$NON-NLS-1$
-		
-		add(jtfName,"3,1"); //$NON-NLS-1$
-		add(jlMountPoint,"1,3"); //$NON-NLS-1$
-		add(jtfMountPoint,"3,3"); //$NON-NLS-1$
-		add(jbScan,"1,5"); //$NON-NLS-1$
-		add(jbUrl,"5,3"); //$NON-NLS-1$
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return "CDScanView.12";	 //$NON-NLS-1$
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jbScan){
-			SwingWorker sw = new SwingWorker() {
-				public Object construct() {
-					if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
-					    Device device = null;
-					     device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim());
-                         device.setProperty(XML_DEVICE_MOUNT_POINT,jtfMountPoint.getText().trim());
-					     try{
-							device.mount();
-							device.refresh(false); //refresh synchronously
-							device.unmount(true,true);
-						}
-						catch(Exception ex){
-							DeviceManager.getInstance().removeDevice(device);
-							Messages.showErrorMessage("016"); //$NON-NLS-1$
-							//refresh views
-							ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-						}
-					}
-					return null;
-					
-				}	
-				public void finished() {
-					jtfName.setText(""); //$NON-NLS-1$
-					jtfName.requestFocusInWindow();
-				}
-			};
-			sw.start();
-		}
-		else if (e.getSource() == jbUrl){
-			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
-			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
-			jfc.setMultiSelectionEnabled(false);
-			String sMountPoint = jtfMountPoint.getText(); 
-			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory //$NON-NLS-1$
-			    jfc.setCurrentDirectory(new File(sMountPoint));
-			}
-			int returnVal = jfc.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				java.io.File file = jfc.getSelectedFile();
-				jtfMountPoint.setText(file.getAbsolutePath());	
-			}
-		}
-	}
 
-    
+    private static final long serialVersionUID = 1L;
+
+    /** Self instance */
+    private static CDScanView cds;
+
+    JLabel jlName;
+
+    JTextField jtfName;
+
+    JLabel jlMountPoint;
+
+    JTextField jtfMountPoint;
+
+    JButton jbScan;
+
+    JButton jbUrl;
+
+    /** Return self instance */
+    public static synchronized CDScanView getInstance() {
+	if (cds == null) {
+	    cds = new CDScanView();
+	}
+	return cds;
+    }
+
+    /**
+         * Constructor
+         */
+    public CDScanView() {
+	cds = this;
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IView#display()
+         */
+    public void initUI() {
+	float fXSeparator = 0.05f;
+	float fYSeparator = 0.15f;
+	double[][] dSize = {
+		{ fXSeparator, 0.35, fXSeparator, 0.4, fXSeparator, 40,
+			fXSeparator },
+		{ fYSeparator, 20, fYSeparator, 20, fYSeparator, 20,
+			fYSeparator } };
+	setLayout(new TableLayout(dSize));
+	jlName = new JLabel(Messages.getString("CDScanView.0")); //$NON-NLS-1$
+	jlName.setToolTipText(Messages.getString("CDScanView.1")); //$NON-NLS-1$
+	jtfName = new JTextField(10);
+	jtfName.setToolTipText(Messages.getString("CDScanView.2")); //$NON-NLS-1$
+	jlMountPoint = new JLabel(Messages.getString("CDScanView.3")); //$NON-NLS-1$
+	jlMountPoint.setToolTipText(Messages.getString("CDScanView.4")); //$NON-NLS-1$
+	jtfMountPoint = new JTextField(10);
+	jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5")); //$NON-NLS-1$
+	jbScan = new JButton(
+		Messages.getString("CDScanView.6"), Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
+	jbScan.setToolTipText(Messages.getString("CDScanView.18")); //$NON-NLS-1$
+	jbScan.addActionListener(this);
+	jbUrl = new JButton(Util.getIcon(ICON_OPEN_FILE)); //$NON-NLS-1$
+	jbUrl.setToolTipText(Messages.getString("CDScanView.19")); //$NON-NLS-1$
+	jbUrl.addActionListener(this);
+	add(jlName, "1,1"); //$NON-NLS-1$
+
+	add(jtfName, "3,1"); //$NON-NLS-1$
+	add(jlMountPoint, "1,3"); //$NON-NLS-1$
+	add(jtfMountPoint, "3,3"); //$NON-NLS-1$
+	add(jbScan, "1,5"); //$NON-NLS-1$
+	add(jbUrl, "5,3"); //$NON-NLS-1$
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IView#getDesc()
+         */
+    public String getDesc() {
+	return "CDScanView.12"; //$NON-NLS-1$
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+    public void actionPerformed(ActionEvent e) {
+	if (e.getSource() == jbScan) {
+	    SwingWorker sw = new SwingWorker() {
+		public Object construct() {
+		    if (!"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())) { //$NON-NLS-1$ //$NON-NLS-2$
+			Device device = null;
+			device = DeviceManager.getInstance().registerDevice(
+				jtfName.getText().trim(), 1,
+				jtfMountPoint.getText().trim());
+			device.setProperty(XML_DEVICE_MOUNT_POINT,
+				jtfMountPoint.getText().trim());
+			try {
+			    device.mount();
+			    device.refresh(false); // refresh synchronously
+			    device.unmount(true, true);
+			} catch (Exception ex) {
+			    DeviceManager.getInstance().removeDevice(device);
+			    Messages.showErrorMessage("016"); //$NON-NLS-1$
+			    // refresh views
+			    ObservationManager.notify(new Event(
+				    EventSubject.EVENT_DEVICE_REFRESH));
+			}
+		    }
+		    return null;
+
+		}
+
+		public void finished() {
+		    jtfName.setText(""); //$NON-NLS-1$
+		    jtfName.requestFocusInWindow();
+		}
+	    };
+	    sw.start();
+	} else if (e.getSource() == jbUrl) {
+	    JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+		    JajukFileFilter.DirectoryFilter.getInstance()));
+	    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	    jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
+	    jfc.setMultiSelectionEnabled(false);
+	    String sMountPoint = jtfMountPoint.getText();
+	    if (!sMountPoint.equals("")) { // if url is already set, use it
+                                                // as root directory
+                                                // //$NON-NLS-1$
+		jfc.setCurrentDirectory(new File(sMountPoint));
+	    }
+	    int returnVal = jfc.showOpenDialog(this);
+	    if (returnVal == JFileChooser.APPROVE_OPTION) {
+		java.io.File file = jfc.getSelectedFile();
+		jtfMountPoint.setText(file.getAbsolutePath());
+	    }
+	}
+    }
+
 }

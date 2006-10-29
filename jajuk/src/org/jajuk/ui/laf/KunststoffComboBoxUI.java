@@ -26,14 +26,14 @@ import javax.swing.plaf.basic.ComboPopup;
 /**
  * combobox ui for windows or gtk laf
  * 
- * @author Bertrand Florat 
+ * @author Bertrand Florat
  * @created 28 nov. 2003
  */
-public class KunststoffComboBoxUI extends com.incors.plaf.kunststoff.KunststoffComboBoxUI {
-	protected ComboPopup createPopup() {
-		BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
-		popup.getAccessibleContext().setAccessibleParent(comboBox);
-		return popup;
-	}
+public class KunststoffComboBoxUI extends
+	com.incors.plaf.kunststoff.KunststoffComboBoxUI {
+    protected ComboPopup createPopup() {
+	BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
+	popup.getAccessibleContext().setAccessibleParent(comboBox);
+	return popup;
+    }
 }
-

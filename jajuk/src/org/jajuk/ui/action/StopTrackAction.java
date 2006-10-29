@@ -19,11 +19,12 @@ public class StopTrackAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     StopTrackAction() {
-        super(Messages.getString("JajukWindow.11"), Util.getIcon(ICON_STOP), "ctrl S", false); //$NON-NLS-1$ //$NON-NLS-2$
-        setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukWindow.11"), Util.getIcon(ICON_STOP), "ctrl S", false); //$NON-NLS-1$ //$NON-NLS-2$
+	setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {
-        FIFO.getInstance().stopRequest();
+	FIFO.getInstance().stopRequest();
     }
 }

@@ -24,58 +24,68 @@ import java.util.Date;
 
 /**
  * An history item
- * @author     Bertrand Florat
- * @created    19 nov. 2003
+ * 
+ * @author Bertrand Florat
+ * @created 19 nov. 2003
  */
-public class HistoryItem{
-	/**File Id*/
-	private String sFileId;
-	/**Play date*/
-	private long lDate;
-    
-	public HistoryItem(String sFileId,long lDate){
-		this.sFileId = sFileId;
-		this.lDate = lDate;
-	}
-	
-	
-	/**
-	 * @return Returns the date.
-	 */
-	public long getDate() {
-		return lDate;
-	}
+public class HistoryItem {
+    /** File Id */
+    private String sFileId;
 
-	/**
-	 * @param date The date to set.
-	 */
-	public void setDate(long lDate) {
-		this.lDate = lDate;
-	}
+    /** Play date */
+    private long lDate;
 
-	/**
-	 * @return Returns the sFileId.
-	 */
-	public String getFileId() {
-		return sFileId;
-	}
+    public HistoryItem(String sFileId, long lDate) {
+	this.sFileId = sFileId;
+	this.lDate = lDate;
+    }
 
-	/**
-	 * @param fileId The sFileId to set.
-	 */
-	public void setFileId(String fileId) {
-		sFileId = fileId;
-	}
+    /**
+         * @return Returns the date.
+         */
+    public long getDate() {
+	return lDate;
+    }
 
-	/** Human readable representation of this history item as read in the history bar
-	 *@return String*/
-	public String toString(){
-		File file = FileManager.getInstance().getFileByID(getFileId());
-		if (file == null){
-			return null;
-		}
-		StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor().getName2());
-		String sDate = History.getInstance().getDateFormatter().format(new Date(getDate())); //$NON-NLS-1$
-        return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    /**
+         * @param date
+         *                The date to set.
+         */
+    public void setDate(long lDate) {
+	this.lDate = lDate;
+    }
+
+    /**
+         * @return Returns the sFileId.
+         */
+    public String getFileId() {
+	return sFileId;
+    }
+
+    /**
+         * @param fileId
+         *                The sFileId to set.
+         */
+    public void setFileId(String fileId) {
+	sFileId = fileId;
+    }
+
+    /**
+         * Human readable representation of this history item as read in the
+         * history bar
+         * 
+         * @return String
+         */
+    public String toString() {
+	File file = FileManager.getInstance().getFileByID(getFileId());
+	if (file == null) {
+	    return null;
 	}
+	StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor()
+		.getName2());
+	String sDate = History.getInstance().getDateFormatter().format(
+		new Date(getDate())); //$NON-NLS-1$
+	return sbAuthor
+		.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
 }

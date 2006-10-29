@@ -28,37 +28,39 @@ import org.jajuk.ui.IView;
 import org.jajuk.ui.views.AboutView;
 import org.jajuk.ui.views.HelpView;
 import org.jajuk.ui.views.ViewFactory;
+
 /**
  * Help perspective
- *
- * @author     Bertrand Florat
- * @created    15 nov. 2003
+ * 
+ * @author Bertrand Florat
+ * @created 15 nov. 2003
  */
-public class HelpPerspective extends PerspectiveAdapter{
-	
-	
-	private static final long serialVersionUID = 1L;
+public class HelpPerspective extends PerspectiveAdapter {
 
-    /* (non-Javadoc)
-	 * @see org.jajuk.ui.IPerspective#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("Perspective_Description_Help"); //$NON-NLS-1$
-	}
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IPerspective#getViews()
-     */
-    public Set<IView> getViews() {
-        if (views != null){
-            return views;
-        }
-        views = new HashSet<IView>(1);
-        views.add(ViewFactory.createView(HelpView.class,this));
-        views.add(ViewFactory.createView(AboutView.class,this));
-        return views;
+    private static final long serialVersionUID = 1L;
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IPerspective#getDesc()
+         */
+    public String getDesc() {
+	return Messages.getString("Perspective_Description_Help"); //$NON-NLS-1$
     }
 
-    
-	
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IPerspective#getViews()
+         */
+    public Set<IView> getViews() {
+	if (views != null) {
+	    return views;
+	}
+	views = new HashSet<IView>(1);
+	views.add(ViewFactory.createView(HelpView.class, this));
+	views.add(ViewFactory.createView(AboutView.class, this));
+	return views;
+    }
+
 }

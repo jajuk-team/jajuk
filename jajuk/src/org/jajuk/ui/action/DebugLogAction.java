@@ -29,31 +29,32 @@ public class DebugLogAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     DebugLogAction() {
-        super(Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-        setShortDescription(Messages.getString("JajukJMenuBar.23")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+	setShortDescription(Messages.getString("JajukJMenuBar.23")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {
-        //Store current traces
-        String traces = "";
-        Iterator it = Log.getSpool();
-        while (it.hasNext()){
-            traces += it.next().toString() +'\n';
-        }
-        JTextArea jtaTraces = new JTextArea(traces); //$NON-NLS-1$
-        jtaTraces.setLineWrap(true);
-        jtaTraces.setWrapStyleWord(true);
-        jtaTraces.setEditable(false);
-        jtaTraces.setMargin(new Insets(10,10,10,10));
-        jtaTraces.setOpaque(true);
-        jtaTraces.setForeground(Color.DARK_GRAY);
-        jtaTraces.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-        JDialog dialog = new JDialog(Main.getWindow(),
-            Messages.getString("DebugLogAction.0"),true);
-        dialog.add(new JScrollPane(jtaTraces));
-        dialog.setPreferredSize(new Dimension(800,600));
-        dialog.pack();
-        dialog.setLocationRelativeTo(Main.getWindow());
-        dialog.setVisible(true);
+	// Store current traces
+	String traces = "";
+	Iterator it = Log.getSpool();
+	while (it.hasNext()) {
+	    traces += it.next().toString() + '\n';
+	}
+	JTextArea jtaTraces = new JTextArea(traces); //$NON-NLS-1$
+	jtaTraces.setLineWrap(true);
+	jtaTraces.setWrapStyleWord(true);
+	jtaTraces.setEditable(false);
+	jtaTraces.setMargin(new Insets(10, 10, 10, 10));
+	jtaTraces.setOpaque(true);
+	jtaTraces.setForeground(Color.DARK_GRAY);
+	jtaTraces.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+	JDialog dialog = new JDialog(Main.getWindow(), Messages
+		.getString("DebugLogAction.0"), true);
+	dialog.add(new JScrollPane(jtaTraces));
+	dialog.setPreferredSize(new Dimension(800, 600));
+	dialog.pack();
+	dialog.setLocationRelativeTo(Main.getWindow());
+	dialog.setVisible(true);
     }
 }

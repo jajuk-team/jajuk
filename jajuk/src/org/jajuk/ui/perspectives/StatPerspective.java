@@ -30,34 +30,36 @@ import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Statistics perspective
- *
- * @author     Bertrand Florat
- * @created    15 nov. 2003
+ * 
+ * @author Bertrand Florat
+ * @created 15 nov. 2003
  */
-public class StatPerspective extends PerspectiveAdapter{
-	
+public class StatPerspective extends PerspectiveAdapter {
 
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-    /* (non-Javadoc)
-	 * @see org.jajuk.ui.IPerspective#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
-	}
-
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IPerspective#getViews()
-     */
-    public Set<IView> getViews() {
-        if (views != null){
-            return views;
-        }
-        views = new HashSet<IView>(1);
-        IView view = ViewFactory.createView(StatView.class,this);
-        views.add(view);
-        return views;
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IPerspective#getDesc()
+         */
+    public String getDesc() {
+	return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
     }
-	
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IPerspective#getViews()
+         */
+    public Set<IView> getViews() {
+	if (views != null) {
+	    return views;
+	}
+	views = new HashSet<IView>(1);
+	IView view = ViewFactory.createView(StatView.class, this);
+	views.add(view);
+	return views;
+    }
+
 }

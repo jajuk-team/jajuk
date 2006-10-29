@@ -28,29 +28,29 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 /**
- *  Button render inside a table
- *
- * @author     Bertrand Florat
- * @created    9 march 2006
+ * Button render inside a table
+ * 
+ * @author Bertrand Florat
+ * @created 9 march 2006
  */
 public class ButtonRenderer extends JButton implements TableCellRenderer {
 
     private static final long serialVersionUID = 1L;
-    
-    public ButtonRenderer(String sText,Icon icon){
-        super(sText,icon);
-    }
-    
-    /* (non-Javadoc)
-     * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
-     */
-    public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
-        setToolTipText(this.getText());
-        return this;
+
+    public ButtonRenderer(String sText, Icon icon) {
+	super(sText, icon);
     }
 
-    
-
-   
+    /*
+         * (non-Javadoc)
+         * 
+         * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable,
+         *      java.lang.Object, boolean, boolean, int, int)
+         */
+    public Component getTableCellRendererComponent(JTable arg0, Object arg1,
+	    boolean arg2, boolean arg3, int arg4, int arg5) {
+	setToolTipText(this.getText());
+	return this;
+    }
 
 }

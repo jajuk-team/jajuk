@@ -27,67 +27,77 @@ import javax.swing.KeyStroke;
 
 /**
  * Utility class for swing actions.
- *
+ * 
  * @author Bart Cremers
  * @since 12-dec-2005
  */
 public final class ActionUtil {
 
     /**
-     * The character to use as mnemonic indicator.
-     */
+         * The character to use as mnemonic indicator.
+         */
     public static final char INDICATOR = '_';
 
     private ActionUtil() {
-        // Private access to disallow construction.
+	// Private access to disallow construction.
     }
 
     /**
-     * Strips a mnemonic character out of a given text. A text's mnemonic is the first character
-     * following a <code>'_'</code> character.
-     *
-     * @param text The text to strip the mnemonic character from.
-     * @return An <code>int</code> defining the mnemonic character for the given text. If there was
-     *         no mnemonic indicator found, <code>-1</code> will be returned.
-     */
+         * Strips a mnemonic character out of a given text. A text's mnemonic is
+         * the first character following a <code>'_'</code> character.
+         * 
+         * @param text
+         *                The text to strip the mnemonic character from.
+         * @return An <code>int</code> defining the mnemonic character for the
+         *         given text. If there was no mnemonic indicator found,
+         *         <code>-1</code> will be returned.
+         */
     public static int getMnemonic(String text) {
-        for (int i = 0; i < text.length() - 1; i++) {
-            if (text.charAt(i) == INDICATOR) {
-                return text.charAt(i + 1);
-            }
-        }
-        return -1;
+	for (int i = 0; i < text.length() - 1; i++) {
+	    if (text.charAt(i) == INDICATOR) {
+		return text.charAt(i + 1);
+	    }
+	}
+	return -1;
     }
 
     /**
-     * Strips the text from mnemonic indicators.
-     *
-     * @param text The text to work on.
-     * @return The text with all mnemonic indicators stripped. If there are no indicators in the
-     *         given text, the original text will be returned.
-     * @see #INDICATOR
-     */
+         * Strips the text from mnemonic indicators.
+         * 
+         * @param text
+         *                The text to work on.
+         * @return The text with all mnemonic indicators stripped. If there are
+         *         no indicators in the given text, the original text will be
+         *         returned.
+         * @see #INDICATOR
+         */
     public static String strip(String text) {
-        return text.replace(String.valueOf(INDICATOR), ""); //$NON-NLS-1$
+	return text.replace(String.valueOf(INDICATOR), ""); //$NON-NLS-1$
     }
 
     /**
-     * Install the keystrokes for several actions on a single button. The keystrokes are added with
-     * {@link JComponent#WHEN_IN_FOCUSED_WINDOW} condition.
-     *
-     * @param component The component to which the key stroke will be added.
-     * @param actions   The actions to add to the keystrokes.
-     */
-    public static void installKeystrokes(JComponent component, Action... actions) {
-        for (Action action : actions) {
-            KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-            if (stroke != null) {
-                InputMap keyMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-                keyMap.put(stroke, action);
+         * Install the keystrokes for several actions on a single button. The
+         * keystrokes are added with {@link JComponent#WHEN_IN_FOCUSED_WINDOW}
+         * condition.
+         * 
+         * @param component
+         *                The component to which the key stroke will be added.
+         * @param actions
+         *                The actions to add to the keystrokes.
+         */
+    public static void installKeystrokes(JComponent component,
+	    Action... actions) {
+	for (Action action : actions) {
+	    KeyStroke stroke = (KeyStroke) action
+		    .getValue(Action.ACCELERATOR_KEY);
+	    if (stroke != null) {
+		InputMap keyMap = component
+			.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		keyMap.put(stroke, action);
 
-                ActionMap actionMap = component.getActionMap();
-                actionMap.put(action, action);
-            }
-        }
+		ActionMap actionMap = component.getActionMap();
+		actionMap.put(action, action);
+	    }
+	}
     }
 }

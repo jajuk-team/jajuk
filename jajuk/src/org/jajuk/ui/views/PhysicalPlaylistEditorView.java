@@ -24,27 +24,31 @@ import java.util.ArrayList;
 
 /**
  * Playlist editor/manager
- * <p>Physical perspective</p>
- * @author     Bertrand Florat
- * @created   29 dec. 2003
+ * <p>
+ * Physical perspective
+ * </p>
+ * 
+ * @author Bertrand Florat
+ * @created 29 dec. 2003
  */
-public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
-        
-	private static final long serialVersionUID = 1L;
+public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-	 * Constructor
-	 */
-	public PhysicalPlaylistEditorView() {
-	}
-	
+         * Constructor
+         */
+    public PhysicalPlaylistEditorView() {
+    }
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
-	 */
-	ArrayList getRepositoryCurrentPlaylistFileItem() {
-		return PhysicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
-	}
-	
-	
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
+         */
+    ArrayList getRepositoryCurrentPlaylistFileItem() {
+	return PhysicalPlaylistRepositoryView.getInstance()
+		.getPlaylistFileItems();
+    }
+
 }

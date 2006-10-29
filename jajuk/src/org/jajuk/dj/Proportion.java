@@ -24,104 +24,106 @@ import java.util.HashSet;
 
 import org.jajuk.base.Style;
 
-
 /**
- *  Represent a style proportion (used by digital DJs)
- *
- * @author     Bertrand Florat
- * @created    27/02/2006
+ * Represent a style proportion (used by digital DJs)
+ * 
+ * @author Bertrand Florat
+ * @created 27/02/2006
  */
 public class Proportion {
-    /** styles  */
+    /** styles */
     private Ambience ambience;
-    
-    /**Proportion**/
+
+    /** Proportion* */
     private float proportion;
-    
-    /**Constructor
-     * @param style styles
-     * @param proportion style proportion in %. Ex: 0.1
-     * */
-    public Proportion(Ambience ambience, float proportion){
-        this.ambience = ambience;
-        this.proportion = proportion;
-    }
-       
-    /**Constructor for void proportion
-     * */
-    public Proportion(){
-        this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),""); //$NON-NLS-1$
-        this.proportion = 0.2f;
-    }
-   
-    
-    /**
-     * equals method
-     * @return whether two object are equals
-     */
-    public boolean equals(Object other){
-        if (other == null || !(other instanceof Proportion)){
-            return false;
-        }
-        return getProportion() == ((Proportion)other).getProportion()
-            && getStyles().equals(((Proportion)other).getStyles());
-    }
-
 
     /**
-     * @return Returns the styles
-     */
+         * Constructor
+         * 
+         * @param style
+         *                styles
+         * @param proportion
+         *                style proportion in %. Ex: 0.1
+         */
+    public Proportion(Ambience ambience, float proportion) {
+	this.ambience = ambience;
+	this.proportion = proportion;
+    }
+
+    /**
+         * Constructor for void proportion
+         */
+    public Proportion() {
+	this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),
+		""); //$NON-NLS-1$
+	this.proportion = 0.2f;
+    }
+
+    /**
+         * equals method
+         * 
+         * @return whether two object are equals
+         */
+    public boolean equals(Object other) {
+	if (other == null || !(other instanceof Proportion)) {
+	    return false;
+	}
+	return getProportion() == ((Proportion) other).getProportion()
+		&& getStyles().equals(((Proportion) other).getStyles());
+    }
+
+    /**
+         * @return Returns the styles
+         */
     public HashSet<Style> getStyles() {
-        return this.ambience.getStyles();
-    }
-    
-    /**
-     * Add a style
-     */
-    public void addStyle(Style style) {
-        ambience.addStyle(style);
-    }
-    
-    /**
-     * @return String representation of this proportion
-     */
-    public String toString(){
-        return ""+proportion; //$NON-NLS-1$
-    }
-        
-    /**
-     * From String, return style1,style2,...
-     */
-    public String getStylesDesc(){
-        String out = ""; //$NON-NLS-1$
-        for (Style s:ambience.getStyles()){
-            out += s.getName2()+',';
-        }
-        if (out.length() > 0){
-            out = out.substring(0,out.length()-1); //remove trailling ,
-        }
-        return out;
-    }
-    
-    /**
-     * 
-     * @return next style to be played or null if no idea
-     */
-    public Style getNextStyle(){
-        return null;
+	return this.ambience.getStyles();
     }
 
+    /**
+         * Add a style
+         */
+    public void addStyle(Style style) {
+	ambience.addStyle(style);
+    }
+
+    /**
+         * @return String representation of this proportion
+         */
+    public String toString() {
+	return "" + proportion; //$NON-NLS-1$
+    }
+
+    /**
+         * From String, return style1,style2,...
+         */
+    public String getStylesDesc() {
+	String out = ""; //$NON-NLS-1$
+	for (Style s : ambience.getStyles()) {
+	    out += s.getName2() + ',';
+	}
+	if (out.length() > 0) {
+	    out = out.substring(0, out.length() - 1); // remove trailling ,
+	}
+	return out;
+    }
+
+    /**
+         * 
+         * @return next style to be played or null if no idea
+         */
+    public Style getNextStyle() {
+	return null;
+    }
 
     public float getProportion() {
-        return this.proportion;
+	return this.proportion;
     }
 
-
     public void setStyle(Ambience ambience) {
-        this.ambience = ambience;
+	this.ambience = ambience;
     }
 
     public void setProportion(float proportion) {
-        this.proportion = proportion;
+	this.proportion = proportion;
     }
 }

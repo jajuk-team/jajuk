@@ -30,52 +30,56 @@ import javax.swing.JPanel;
 import org.jajuk.i18n.Messages;
 
 /**
- *  Ok Cancel generic panel
- *
- * @author     Bertrand Florat
- * @created    20 juin 2005
+ * Ok Cancel generic panel
+ * 
+ * @author Bertrand Florat
+ * @created 20 juin 2005
  */
 public class OKCancelPanel extends JPanel {
-    
+
     private static final long serialVersionUID = 1L;
+
     private JButton jbOk;
+
     private JButton jbCancel;
-    
-    /**Associated action listener*/
+
+    /** Associated action listener */
     ActionListener al;
 
-    public OKCancelPanel(ActionListener al){
-        this.al = al;
-        //buttons
-        double[][] dSize ={{TableLayout.TRAILING,TableLayout.FILL,TableLayout.TRAILING,TableLayout.FILL,TableLayout.TRAILING},
-                {0.99}};
-        setLayout(new TableLayout(dSize));
-        jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
-        jbOk.addActionListener(al);
-        jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
-        jbCancel.addActionListener(al);
-        add(jbOk,"1,0"); //$NON-NLS-1$
-        add(jbCancel,"3,0"); //$NON-NLS-1$
+    public OKCancelPanel(ActionListener al) {
+	this.al = al;
+	// buttons
+	double[][] dSize = {
+		{ TableLayout.TRAILING, TableLayout.FILL, TableLayout.TRAILING,
+			TableLayout.FILL, TableLayout.TRAILING }, { 0.99 } };
+	setLayout(new TableLayout(dSize));
+	jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
+	jbOk.addActionListener(al);
+	jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
+	jbCancel.addActionListener(al);
+	add(jbOk, "1,0"); //$NON-NLS-1$
+	add(jbCancel, "3,0"); //$NON-NLS-1$
     }
-    
+
     /**
-     * OK Cancel panel with given button names
-     * @param al
-     * @param sOKTitle
-     * @param sCancelTitle
-     */
-    public OKCancelPanel(ActionListener al,String sOKTitle,String sCancelTitle){
-        this(al);
-        jbOk.setText(sOKTitle);
-        jbCancel.setText(sCancelTitle);
+         * OK Cancel panel with given button names
+         * 
+         * @param al
+         * @param sOKTitle
+         * @param sCancelTitle
+         */
+    public OKCancelPanel(ActionListener al, String sOKTitle, String sCancelTitle) {
+	this(al);
+	jbOk.setText(sOKTitle);
+	jbCancel.setText(sCancelTitle);
     }
-    
-    public JButton getOKButton(){
-        return jbOk;
+
+    public JButton getOKButton() {
+	return jbOk;
     }
-    
-    public JButton getCancelButton(){
-        return jbCancel;
+
+    public JButton getCancelButton() {
+	return jbCancel;
     }
-    
+
 }

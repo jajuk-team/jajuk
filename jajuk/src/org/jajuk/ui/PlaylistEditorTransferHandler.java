@@ -40,99 +40,126 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
- *  DND handler for table
- * @author     Bertrand Florat
- * @created    13 feb. 2004
+ * DND handler for table
+ * 
+ * @author Bertrand Florat
+ * @created 13 feb. 2004
  */
 
-public class PlaylistEditorTransferHandler extends TransferHandler implements ITechnicalStrings {
-    
+public class PlaylistEditorTransferHandler extends TransferHandler implements
+	ITechnicalStrings {
+
     private static final long serialVersionUID = 1L;
+
     private JTable jtable;
+
     public static int iSelectedRow = 0;
-    
-    /**Constructor*/
+
+    /** Constructor */
     public PlaylistEditorTransferHandler(JTable jtable) {
-        this.jtable = jtable;
+	this.jtable = jtable;
     }
-    
-    /**
-     * Called when draging
-     */
-    protected Transferable createTransferable(JComponent c) {
-        //make sure to remove others selected rows (can occur during the drag)
-        jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
-        if (jtable instanceof JajukTable){//sorting only for jajuk table
-            iSelectedRow = ((JajukTable)jtable).convertRowIndexToModel(iSelectedRow); //selected row in model
-        }
-        Object o = ((JajukTableModel)jtable.getModel()).getItemAt(iSelectedRow);
-        if ( o  == null){ //no? try to find a file for this id
-            o = FileManager.getInstance().getFileByID(jtable.getModel().getValueAt(iSelectedRow,0).toString());
-        }
-        if ( o != null){
-            return new TransferableTableRow(o);
-        }
-        
-        return null;
-    }
-    
 
     /**
-     * return action type
-     */
-    public int getSourceActions(JComponent c) {
-        return COPY_OR_MOVE;
+         * Called when draging
+         */
+    protected Transferable createTransferable(JComponent c) {
+	// make sure to remove others selected rows (can occur during the drag)
+	jtable.getSelectionModel().setSelectionInterval(iSelectedRow,
+		iSelectedRow);
+	if (jtable instanceof JajukTable) {// sorting only for jajuk table
+	    iSelectedRow = ((JajukTable) jtable)
+		    .convertRowIndexToModel(iSelectedRow); // selected row
+                                                                // in model
+	}
+	Object o = ((JajukTableModel) jtable.getModel())
+		.getItemAt(iSelectedRow);
+	if (o == null) { // no? try to find a file for this id
+	    o = FileManager.getInstance().getFileByID(
+		    jtable.getModel().getValueAt(iSelectedRow, 0).toString());
+	}
+	if (o != null) {
+	    return new TransferableTableRow(o);
+	}
+
+	return null;
     }
-    
+
     /**
-     * Called when dropping
-     */
-  public boolean importData(JComponent c, Transferable t) {
-        try{
-            if (canImport(c, t.getTransferDataFlavors())) {
-                JComponent comp = (JComponent)c.getParent().getParent().getParent();
-                PlaylistFileItem plfi = ((AbstractPlaylistEditorView)comp).getCurrentPlaylistFileItem();
-                Object oData = null;
-                DataFlavor flavor = t.getTransferDataFlavors()[0];
-                if ( flavor.getHumanPresentableName().equals(TransferableTableRow.ROW_FLAVOR.getHumanPresentableName())){ 
-                    TransferableTableRow ttr = (TransferableTableRow)t.getTransferData(TransferableTableRow.ROW_FLAVOR);
-                    oData = ttr.getData();  
-                }
-                else if ( flavor.getHumanPresentableName().equals(TransferableTreeNode.NODE_FLAVOR.getHumanPresentableName())){ 
-                    TransferableTreeNode ttn = (TransferableTreeNode)t.getTransferData(TransferableTreeNode.NODE_FLAVOR);
-                    oData = ttn.getData();  
-                }
-                ArrayList<File> alSelectedFiles = Util.getFilesFromSelection((Item)oData);
-                //queue case
-                if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alSelectedFiles),
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
-                }
-                //bookmark case
-                else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
-                    Bookmarks.getInstance().addFiles(Util.applyPlayOption(alSelectedFiles));
-                }
-                //normal or new playlist case
-                else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
-                    plfi.getPlaylistFile().addFiles(Util.applyPlayOption(alSelectedFiles));
-                }
-                return true;
-            }
-        }
-        catch(Exception e){
-            Log.error(e);
-        }
-        return false;
-        
-        
+         * return action type
+         */
+    public int getSourceActions(JComponent c) {
+	return COPY_OR_MOVE;
     }
-    
+
+    /**
+         * Called when dropping
+         */
+    public boolean importData(JComponent c, Transferable t) {
+	try {
+	    if (canImport(c, t.getTransferDataFlavors())) {
+		JComponent comp = (JComponent) c.getParent().getParent()
+			.getParent();
+		PlaylistFileItem plfi = ((AbstractPlaylistEditorView) comp)
+			.getCurrentPlaylistFileItem();
+		Object oData = null;
+		DataFlavor flavor = t.getTransferDataFlavors()[0];
+		if (flavor.getHumanPresentableName().equals(
+			TransferableTableRow.ROW_FLAVOR
+				.getHumanPresentableName())) {
+		    TransferableTableRow ttr = (TransferableTableRow) t
+			    .getTransferData(TransferableTableRow.ROW_FLAVOR);
+		    oData = ttr.getData();
+		} else if (flavor.getHumanPresentableName().equals(
+			TransferableTreeNode.NODE_FLAVOR
+				.getHumanPresentableName())) {
+		    TransferableTreeNode ttn = (TransferableTreeNode) t
+			    .getTransferData(TransferableTreeNode.NODE_FLAVOR);
+		    oData = ttn.getData();
+		}
+		ArrayList<File> alSelectedFiles = Util
+			.getFilesFromSelection((Item) oData);
+		// queue case
+		if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+		    FIFO
+			    .getInstance()
+			    .push(
+				    Util
+					    .createStackItems(
+						    Util
+							    .applyPlayOption(alSelectedFiles),
+						    ConfigurationManager
+							    .getBoolean(CONF_STATE_REPEAT),
+						    true),
+				    ConfigurationManager
+					    .getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
+		}
+		// bookmark case
+		else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+		    Bookmarks.getInstance().addFiles(
+			    Util.applyPlayOption(alSelectedFiles));
+		}
+		// normal or new playlist case
+		else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL
+			|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
+		    plfi.getPlaylistFile().addFiles(
+			    Util.applyPlayOption(alSelectedFiles));
+		}
+		return true;
+	    }
+	} catch (Exception e) {
+	    Log.error(e);
+	}
+	return false;
+
+    }
+
     public boolean canImport(JComponent c, DataFlavor[] flavors) {
-        String sFlavor  = flavors[0].getHumanPresentableName(); 
-        if ( sFlavor.equals("Node") || sFlavor.equals("Row")){ //$NON-NLS-1$ //$NON-NLS-2$
-            return true;
-        }
-        return false;
-    } 
-    
+	String sFlavor = flavors[0].getHumanPresentableName();
+	if (sFlavor.equals("Node") || sFlavor.equals("Row")) { //$NON-NLS-1$ //$NON-NLS-2$
+	    return true;
+	}
+	return false;
+    }
+
 }

@@ -25,78 +25,79 @@ import java.util.Properties;
 import org.jajuk.util.EventSubject;
 
 /**
- *  Jajuk event (Observer pattern)
- *
- * @author     bflorat
- * @created    4 mars 2005
+ * Jajuk event (Observer pattern)
+ * 
+ * @author bflorat
+ * @created 4 mars 2005
  */
 public class Event {
 
-	/**
-	 * Event subject
-	 */
-	private EventSubject subject;
-	
-	/**
-	 * Event properties
-	 */
-	private Properties pDetails;
-	
-	
-	/**
-	 * Event constructor
-	 * @param sSubject
-	 * @param pDetails
-	 */
-	public Event(EventSubject subject,Properties pDetails){
-		this.subject = subject;
-		this.pDetails = pDetails;
-	}
-	
-	/**
-	 * Event constructor
-	 * @param sSubject
-	 */
-	public Event(EventSubject subject){
-		this(subject,null);
-	}
-	
-	
-	/**
-	 * @return Returns the pDetails.
-	 */
-	public Properties getDetails() {
-		return pDetails;
-	}
-	/**
-	 * @return Returns the sSubject.
-	 */
-	public EventSubject getSubject() {
-		return subject;
-	}
-	
-	/**
-	 * ToString method
-	 */
-	public String toString(){
-		return subject+" "+((pDetails==null)?"no details":pDetails.toString()); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-    
     /**
-     * event equals method
-     */
-    public boolean equals(Object obj){
-        Event event = (Event)obj;
-        boolean bOut = false;
-        if (this.subject.equals(event.getSubject())){
-            if (this.pDetails == null && event.pDetails == null){
-                bOut = true;
-            }
-            else if (this.pDetails != null && event.pDetails != null 
-                    && this.pDetails.equals(event.getDetails())){
-                bOut = true;
-            }
-        }
-        return bOut;
+         * Event subject
+         */
+    private EventSubject subject;
+
+    /**
+         * Event properties
+         */
+    private Properties pDetails;
+
+    /**
+         * Event constructor
+         * 
+         * @param sSubject
+         * @param pDetails
+         */
+    public Event(EventSubject subject, Properties pDetails) {
+	this.subject = subject;
+	this.pDetails = pDetails;
+    }
+
+    /**
+         * Event constructor
+         * 
+         * @param sSubject
+         */
+    public Event(EventSubject subject) {
+	this(subject, null);
+    }
+
+    /**
+         * @return Returns the pDetails.
+         */
+    public Properties getDetails() {
+	return pDetails;
+    }
+
+    /**
+         * @return Returns the sSubject.
+         */
+    public EventSubject getSubject() {
+	return subject;
+    }
+
+    /**
+         * ToString method
+         */
+    public String toString() {
+	return subject
+		+ " " + ((pDetails == null) ? "no details" : pDetails.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+         * event equals method
+         */
+    public boolean equals(Object obj) {
+	Event event = (Event) obj;
+	boolean bOut = false;
+	if (this.subject.equals(event.getSubject())) {
+	    if (this.pDetails == null && event.pDetails == null) {
+		bOut = true;
+	    } else if (this.pDetails != null && event.pDetails != null
+		    && this.pDetails.equals(event.getDetails())) {
+		bOut = true;
+	    }
+	}
+	return bOut;
     }
 }

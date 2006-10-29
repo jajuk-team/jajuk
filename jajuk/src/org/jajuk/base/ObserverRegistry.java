@@ -30,54 +30,59 @@ import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
     private Hashtable<EventSubject, ArrayList<Observer>> hEventComponents = new Hashtable<EventSubject, ArrayList<Observer>>(
-            10);
+	    10);
 
     synchronized void notifySync(Event event) {
-        EventSubject subject = event.getSubject();
-        ArrayList<Observer> alComponents = hEventComponents.get(subject);
-        if (alComponents == null) {
-            return;
-        }
-        alComponents = (ArrayList<Observer>) alComponents.clone(); // try to avoid duplicate key
-        // exceptions
-        Iterator<Observer> it = alComponents.iterator();
-        while (it.hasNext()) {
-            Observer obs = null;
-            try {
-                obs = it.next();
-                if (obs != null) {
-                    try {
-                        obs.update(event);
-                    } catch (Throwable t) {
-                        Log.error(t);
-                    }
-                }
-            }
-            // Concurrent exceptions can occur for unknown reasons
-            catch (ConcurrentModificationException ce) {
-                ce.printStackTrace();
-                Log.debug("Concurrent exception for subject: " + subject + " on observer: " + obs);//$NON-NLS-1$ //$NON-NLS-2$ 
-            }
-        }
+	EventSubject subject = event.getSubject();
+	ArrayList<Observer> alComponents = hEventComponents.get(subject);
+	if (alComponents == null) {
+	    return;
+	}
+	alComponents = (ArrayList<Observer>) alComponents.clone(); // try
+                                                                        // to
+                                                                        // avoid
+                                                                        // duplicate
+                                                                        // key
+	// exceptions
+	Iterator<Observer> it = alComponents.iterator();
+	while (it.hasNext()) {
+	    Observer obs = null;
+	    try {
+		obs = it.next();
+		if (obs != null) {
+		    try {
+			obs.update(event);
+		    } catch (Throwable t) {
+			Log.error(t);
+		    }
+		}
+	    }
+	    // Concurrent exceptions can occur for unknown reasons
+	    catch (ConcurrentModificationException ce) {
+		ce.printStackTrace();
+		Log
+			.debug("Concurrent exception for subject: " + subject + " on observer: " + obs);//$NON-NLS-1$ //$NON-NLS-2$ 
+	    }
+	}
     }
 
     synchronized boolean register(EventSubject subject, Observer observer) {
-        ArrayList<Observer> alComponents = hEventComponents.get(subject);
-        if (alComponents == null) {
-            alComponents = new ArrayList<Observer>(1);
-            hEventComponents.put(subject, alComponents);
-        }
-        if (!alComponents.contains(observer)) {
-            return alComponents.add(observer);
-        }
-        return false;
+	ArrayList<Observer> alComponents = hEventComponents.get(subject);
+	if (alComponents == null) {
+	    alComponents = new ArrayList<Observer>(1);
+	    hEventComponents.put(subject, alComponents);
+	}
+	if (!alComponents.contains(observer)) {
+	    return alComponents.add(observer);
+	}
+	return false;
     }
 
     synchronized boolean unregister(EventSubject subject, Observer observer) {
-        ArrayList alComponents = hEventComponents.get(subject);
-        if (alComponents != null) {
-            return alComponents.remove(observer);
-        }
-        return false;
+	ArrayList alComponents = hEventComponents.get(subject);
+	if (alComponents != null) {
+	    return alComponents.remove(observer);
+	}
+	return false;
     }
 }

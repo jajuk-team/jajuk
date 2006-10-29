@@ -51,130 +51,174 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
 /**
- *  Jajuk menu bar
- * <p>Singleton
- * @author     Bertrand Florat
- * @created    4 oct. 2003
+ * Jajuk menu bar
+ * <p>
+ * Singleton
+ * 
+ * @author Bertrand Florat
+ * @created 4 oct. 2003
  */
-public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
+public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
     private static final long serialVersionUID = 1L;
+
     static JajukJMenuBar jjmb;
-        JMenu file;
-            JMenuItem jmiFileOpen;
-                JajukFileChooser jfchooser;
-            JMenuItem jmiFileExit;
-        JMenu views;
-            JMenuItem jmiRestoreDefaultViews;
-        JMenu properties;
-            JMenuItem jmiNewProperty;
-            JMenuItem jmiDeleteProperty;
-        JMenu mode;
-            public JCheckBoxMenuItem jcbmiRepeat;
-            public JCheckBoxMenuItem jcbmiShuffle;
-            public JCheckBoxMenuItem jcbmiContinue;
-            public JCheckBoxMenuItem jcbmiIntro;
-        JMenu configuration;
-            JMenuItem jmiDJ;
-            JMenuItem jmiAmbience;
-            JMenuItem jmiWizard;
-            JMenuItem jmiOptions;
-        JMenu help;
-            JMenuItem jmiHelp;
-            JMenuItem jmiTipOfTheDay;
-            JMenuItem jmiQualityAgent;
-            JMenuItem jmiTraces;
-            JMenuItem jmiAbout;
-            
-        /**Hashmap JCheckBoxMenuItem -> associated view*/
-        public HashMap hmCheckboxView = new HashMap(10);
 
-    private JajukJMenuBar(){
-        setAlignmentX(0.0f);
-        //File menu
-        file = new JMenu(Messages.getString("JajukJMenuBar.0")); //$NON-NLS-1$
+    JMenu file;
 
-        jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
-        file.add(jmiFileExit);
+    JMenuItem jmiFileOpen;
 
-        //Properties menu
-        properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
-        jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$
-        jmiNewProperty.addActionListener(JajukListener.getInstance());
-        jmiNewProperty.setActionCommand(EventSubject.EVENT_CREATE_PROPERTY.toString());
-        jmiNewProperty.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.7"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
-        jmiDeleteProperty.addActionListener(JajukListener.getInstance());
-        jmiDeleteProperty.setActionCommand(EventSubject.EVENT_DELETE_PROPERTY.toString());
-        properties.add(jmiNewProperty);
-        properties.add(jmiDeleteProperty);
+    JajukFileChooser jfchooser;
 
-        //View menu
-        views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
-        jmiRestoreDefaultViews = new JMenuItem(Messages.getString("JajukJMenuBar.17"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
-        jmiRestoreDefaultViews.addActionListener(JajukListener.getInstance());
-        jmiRestoreDefaultViews.setActionCommand(EventSubject.EVENT_VIEW_RESTORE_DEFAULTS.toString());
-        views.add(jmiRestoreDefaultViews);
+    JMenuItem jmiFileExit;
 
-        //Mode menu
-        String modeText = Messages.getString("JajukJMenuBar.9"); //$NON-NLS-1$
-        mode = new JMenu(ActionUtil.strip(modeText));
-        mode.setMnemonic(ActionUtil.getMnemonic(modeText));
+    JMenu views;
 
-        jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
-        jcbmiRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
-        jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
-        jcbmiShuffle.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
-        jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE_STATUS_CHANGED));
-        jcbmiContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
-        jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
-        jcbmiIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
+    JMenuItem jmiRestoreDefaultViews;
 
-        mode.add(jcbmiRepeat);
-        mode.add(jcbmiShuffle);
-        mode.add(jcbmiContinue);
-        mode.add(jcbmiIntro);
+    JMenu properties;
 
-        //Configuration menu
-        configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
-        jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
-        jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
-        jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
-        jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
-        configuration.add(jmiDJ);
-        configuration.add(jmiAmbience);
-        configuration.add(jmiWizard);
-        configuration.add(jmiOptions);
-        
-        //Help menu
-        String helpText = Messages.getString("JajukJMenuBar.14"); //$NON-NLS-1$
-        help = new JMenu(ActionUtil.strip(helpText));
-        help.setMnemonic(ActionUtil.getMnemonic(helpText));
-        jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
-        jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
-        jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
-        jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
-        jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
+    JMenuItem jmiNewProperty;
 
-        help.add(jmiHelp);
-        help.add(jmiTipOfTheDay);
-        help.add(jmiQualityAgent);
-        help.add(jmiTraces);
-        help.add(jmiAbout);
-        
-        //add menus
-        add(file);
-        add(views);
-        add(properties);
-        add(mode);
-        add(configuration);
-        add(help);
+    JMenuItem jmiDeleteProperty;
+
+    JMenu mode;
+
+    public JCheckBoxMenuItem jcbmiRepeat;
+
+    public JCheckBoxMenuItem jcbmiShuffle;
+
+    public JCheckBoxMenuItem jcbmiContinue;
+
+    public JCheckBoxMenuItem jcbmiIntro;
+
+    JMenu configuration;
+
+    JMenuItem jmiDJ;
+
+    JMenuItem jmiAmbience;
+
+    JMenuItem jmiWizard;
+
+    JMenuItem jmiOptions;
+
+    JMenu help;
+
+    JMenuItem jmiHelp;
+
+    JMenuItem jmiTipOfTheDay;
+
+    JMenuItem jmiQualityAgent;
+
+    JMenuItem jmiTraces;
+
+    JMenuItem jmiAbout;
+
+    /** Hashmap JCheckBoxMenuItem -> associated view */
+    public HashMap hmCheckboxView = new HashMap(10);
+
+    private JajukJMenuBar() {
+	setAlignmentX(0.0f);
+	// File menu
+	file = new JMenu(Messages.getString("JajukJMenuBar.0")); //$NON-NLS-1$
+
+	jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
+	file.add(jmiFileExit);
+
+	// Properties menu
+	properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
+	jmiNewProperty = new JMenuItem(
+		Messages.getString("JajukJMenuBar.6"), Util.getIcon(ICON_NEW)); //$NON-NLS-1$
+	jmiNewProperty.addActionListener(JajukListener.getInstance());
+	jmiNewProperty.setActionCommand(EventSubject.EVENT_CREATE_PROPERTY
+		.toString());
+	jmiNewProperty.setLayout(new FlowLayout(FlowLayout.LEFT));
+	jmiDeleteProperty = new JMenuItem(
+		Messages.getString("JajukJMenuBar.7"), Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
+	jmiDeleteProperty.addActionListener(JajukListener.getInstance());
+	jmiDeleteProperty.setActionCommand(EventSubject.EVENT_DELETE_PROPERTY
+		.toString());
+	properties.add(jmiNewProperty);
+	properties.add(jmiDeleteProperty);
+
+	// View menu
+	views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
+	jmiRestoreDefaultViews = new JMenuItem(Messages
+		.getString("JajukJMenuBar.17"), Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
+	jmiRestoreDefaultViews.addActionListener(JajukListener.getInstance());
+	jmiRestoreDefaultViews
+		.setActionCommand(EventSubject.EVENT_VIEW_RESTORE_DEFAULTS
+			.toString());
+	views.add(jmiRestoreDefaultViews);
+
+	// Mode menu
+	String modeText = Messages.getString("JajukJMenuBar.9"); //$NON-NLS-1$
+	mode = new JMenu(ActionUtil.strip(modeText));
+	mode.setMnemonic(ActionUtil.getMnemonic(modeText));
+
+	jcbmiRepeat = new JCheckBoxMenuItem(ActionManager
+		.getAction(REPEAT_MODE_STATUS_CHANGE));
+	jcbmiRepeat.setSelected(ConfigurationManager
+		.getBoolean(CONF_STATE_REPEAT));
+	jcbmiShuffle = new JCheckBoxMenuItem(ActionManager
+		.getAction(SHUFFLE_MODE_STATUS_CHANGED));
+	jcbmiShuffle.setSelected(ConfigurationManager
+		.getBoolean(CONF_STATE_SHUFFLE));
+	jcbmiContinue = new JCheckBoxMenuItem(ActionManager
+		.getAction(CONTINUE_MODE_STATUS_CHANGED));
+	jcbmiContinue.setSelected(ConfigurationManager
+		.getBoolean(CONF_STATE_CONTINUE));
+	jcbmiIntro = new JCheckBoxMenuItem(ActionManager
+		.getAction(INTRO_MODE_STATUS_CHANGED));
+	jcbmiIntro.setSelected(ConfigurationManager
+		.getBoolean(CONF_STATE_INTRO));
+
+	mode.add(jcbmiRepeat);
+	mode.add(jcbmiShuffle);
+	mode.add(jcbmiContinue);
+	mode.add(jcbmiIntro);
+
+	// Configuration menu
+	configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
+	jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
+	jmiAmbience = new JMenuItem(ActionManager
+		.getAction(CONFIGURE_AMBIENCES));
+	jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
+	jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
+	configuration.add(jmiDJ);
+	configuration.add(jmiAmbience);
+	configuration.add(jmiWizard);
+	configuration.add(jmiOptions);
+
+	// Help menu
+	String helpText = Messages.getString("JajukJMenuBar.14"); //$NON-NLS-1$
+	help = new JMenu(ActionUtil.strip(helpText));
+	help.setMnemonic(ActionUtil.getMnemonic(helpText));
+	jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
+	jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
+	jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
+	jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
+	jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
+
+	help.add(jmiHelp);
+	help.add(jmiTipOfTheDay);
+	help.add(jmiQualityAgent);
+	help.add(jmiTraces);
+	help.add(jmiAbout);
+
+	// add menus
+	add(file);
+	add(views);
+	add(properties);
+	add(mode);
+	add(configuration);
+	add(help);
     }
 
-    static public synchronized JajukJMenuBar getInstance(){
-        if (jjmb == null){
-            jjmb = new JajukJMenuBar();
-        }
-        return jjmb;
+    static public synchronized JajukJMenuBar getInstance() {
+	if (jjmb == null) {
+	    jjmb = new JajukJMenuBar();
+	}
+	return jjmb;
     }
 }

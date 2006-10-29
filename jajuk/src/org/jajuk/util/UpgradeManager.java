@@ -34,83 +34,84 @@ import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.ui.perspectives.StatPerspective;
 
 /**
- *  Maintain all behavior needed upgrades from releases to releases
- *
- * @author     Bertrand Florat
- * @created    21 oct. 06
+ * Maintain all behavior needed upgrades from releases to releases
+ * 
+ * @author Bertrand Florat
+ * @created 21 oct. 06
  */
-public class UpgradeManager implements ITechnicalStrings{
+public class UpgradeManager implements ITechnicalStrings {
     /**
-     * Actions to migrate an existing installation
-     * Step1 just at startup
-     *
-     */
+         * Actions to migrate an existing installation Step1 just at startup
+         * 
+         */
     public static void upgradeStep1() throws Exception {
-        //--For jajuk < 0.2 : remove backup file : collection~.xml
-        File file = new File(FILE_COLLECTION+"~"); //$NON-NLS-1$
-        file.delete();
-        //upgrade code; if ugrade from <1.2, set default ambiences
-        String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-        if (sRelease == null || sRelease.matches("0..*") //$NON-NLS-1$
-                || sRelease.matches("1.0..*") //$NON-NLS-1$
-                || sRelease.matches("1.1.*")){ //$NON-NLS-1$
-            AmbienceManager.getInstance().createDefaultAmbiences();
-        }
-        //- For Jajuk < 1.3 : changed track pattern from %track to %title
-        String sPattern = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN);
-        if (sPattern.contains("track")){
-            ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, 
-                sPattern.replaceAll("track", "title"));
-        }
-        //- for Jajuk < 1.3: no more use of .ser files
-        file = new File(FILE_JAJUK_DIR);
-        File[] files = file.listFiles();
-        for (int i=0; i<files.length; i++){
-            //delete all .ser files
-            if (Util.getExtension(files[i]).equals("ser")){
-                files[i].delete();
-            }
-        }
-        //TO DO AFTER AN UPGRADE
-        if (Main.isUpgradeDetected()){
-            //- for Jajuk < 1.3: force nocover icon replacement
-            File fThumbs = new File(FILE_THUMBS+"/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
-            if (fThumbs.exists()){
-                fThumbs.delete();
-            }
-            fThumbs = new File(FILE_THUMBS+"/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
-            if (fThumbs.exists()){
-                fThumbs.delete();
-            }
-            fThumbs = new File(FILE_THUMBS+"/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
-            if (fThumbs.exists()){
-                fThumbs.delete();
-            }
-            fThumbs = new File(FILE_THUMBS+"/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
-            if (fThumbs.exists()){
-                fThumbs.delete();
-            }
-        }
-        
+	// --For jajuk < 0.2 : remove backup file : collection~.xml
+	File file = new File(FILE_COLLECTION + "~"); //$NON-NLS-1$
+	file.delete();
+	// upgrade code; if ugrade from <1.2, set default ambiences
+	String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+	if (sRelease == null || sRelease.matches("0..*") //$NON-NLS-1$
+		|| sRelease.matches("1.0..*") //$NON-NLS-1$
+		|| sRelease.matches("1.1.*")) { //$NON-NLS-1$
+	    AmbienceManager.getInstance().createDefaultAmbiences();
+	}
+	// - For Jajuk < 1.3 : changed track pattern from %track to %title
+	String sPattern = ConfigurationManager
+		.getProperty(CONF_REFACTOR_PATTERN);
+	if (sPattern.contains("track")) {
+	    ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, sPattern
+		    .replaceAll("track", "title"));
+	}
+	// - for Jajuk < 1.3: no more use of .ser files
+	file = new File(FILE_JAJUK_DIR);
+	File[] files = file.listFiles();
+	for (int i = 0; i < files.length; i++) {
+	    // delete all .ser files
+	    if (Util.getExtension(files[i]).equals("ser")) {
+		files[i].delete();
+	    }
+	}
+	// TO DO AFTER AN UPGRADE
+	if (Main.isUpgradeDetected()) {
+	    // - for Jajuk < 1.3: force nocover icon replacement
+	    File fThumbs = new File(FILE_THUMBS
+		    + "/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+	    if (fThumbs.exists()) {
+		fThumbs.delete();
+	    }
+	    fThumbs = new File(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+	    if (fThumbs.exists()) {
+		fThumbs.delete();
+	    }
+	    fThumbs = new File(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+	    if (fThumbs.exists()) {
+		fThumbs.delete();
+	    }
+	    fThumbs = new File(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+	    if (fThumbs.exists()) {
+		fThumbs.delete();
+	    }
+	}
+
     }
-    
+
     /**
-     * Actions to migrate an existing installation
-     * Step 2 at the end of UI startup
-     */
+         * Actions to migrate an existing installation Step 2 at the end of UI
+         * startup
+         */
     public static void upgradeStep2() throws Exception {
-        
+
     }
-    
-    
+
     /**
-     * 
-     * @return array of perspectives to be reseted
-     */
-    public static Class[] getPerspectivesToReset(){
-        return new Class[]{PhysicalPerspective.class,LogicalPerspective.class,
-             CatalogPerspective.class,ConfigurationPerspective.class,
-             HelpPerspective.class,InfoPerspective.class,
-             PlayerPerspective.class,StatPerspective.class};
+         * 
+         * @return array of perspectives to be reseted
+         */
+    public static Class[] getPerspectivesToReset() {
+	return new Class[] { PhysicalPerspective.class,
+		LogicalPerspective.class, CatalogPerspective.class,
+		ConfigurationPerspective.class, HelpPerspective.class,
+		InfoPerspective.class, PlayerPerspective.class,
+		StatPerspective.class };
     }
 }

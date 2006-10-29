@@ -24,160 +24,161 @@ import org.jajuk.base.Style;
 import org.jajuk.util.Util;
 
 /**
- *  Represent a transition from one style to another (used by digital DJs)
- *
- * @author     Bertrand Florat
- * @created    27/02/2006
+ * Represent a transition from one style to another (used by digital DJs)
+ * 
+ * @author Bertrand Florat
+ * @created 27/02/2006
  */
 public class Transition {
-    /** From styles  */
+    /** From styles */
     private Ambience from;
-    
-    /** To styles  */
+
+    /** To styles */
     private Ambience to;
-    
-    /** Nb of tracks  */
+
+    /** Nb of tracks */
     private int nb;
-    
-    /**Constructor
-     * @param from source styles
-     * @param to destination style
-     * @param nb number of tracks played before changing style
-     * */
-    public Transition(Ambience from, Ambience to, int nb){
-        this.from = from;
-        this.to = to;
-        this.nb = nb;
-    }
-    
-    /**
-     * Constructor for void transition
-     * @param nb initial number of tracks
-     **/
-    public Transition(int nb){
-        this.from = new Ambience(Long.toString(System.currentTimeMillis()),""); //$NON-NLS-1$
-        this.to = new Ambience(Long.toString(System.currentTimeMillis()-100),""); //$NON-NLS-1$
-        this.nb = nb;
-    }
-    
-    
-    /**
-     * equals method
-     * @return whether two object are equals
-     */
-    public boolean equals(Object other){
-        if (!(other instanceof Transition)){
-            return false;
-        }
-        return getFrom().equals(((Transition)other).getFrom())
-            && getTo().equals(((Transition)other).getTo());
-    }
-
 
     /**
-     * @return Returns the from.
-     */
+         * Constructor
+         * 
+         * @param from
+         *                source styles
+         * @param to
+         *                destination style
+         * @param nb
+         *                number of tracks played before changing style
+         */
+    public Transition(Ambience from, Ambience to, int nb) {
+	this.from = from;
+	this.to = to;
+	this.nb = nb;
+    }
+
     /**
-     * @return
-     */
+         * Constructor for void transition
+         * 
+         * @param nb
+         *                initial number of tracks
+         */
+    public Transition(int nb) {
+	this.from = new Ambience(Long.toString(System.currentTimeMillis()), ""); //$NON-NLS-1$
+	this.to = new Ambience(Long.toString(System.currentTimeMillis() - 100),
+		""); //$NON-NLS-1$
+	this.nb = nb;
+    }
+
+    /**
+         * equals method
+         * 
+         * @return whether two object are equals
+         */
+    public boolean equals(Object other) {
+	if (!(other instanceof Transition)) {
+	    return false;
+	}
+	return getFrom().equals(((Transition) other).getFrom())
+		&& getTo().equals(((Transition) other).getTo());
+    }
+
+    /**
+         * @return Returns the from.
+         */
+    /**
+         * @return
+         */
     public Ambience getFrom() {
-        return this.from;
-    }
-        
-    /**
-     * From String, return style1,style2,...
-     */
-    public String getFromString(){
-        String out = ""; //$NON-NLS-1$
-        for (Style s:from.getStyles()){
-            out += s.getName2()+',';
-        }
-        if (out.length() > 0){
-            out = out.substring(0,out.length()-1); //remove trailling ,
-        }
-        return out;
-    }
-    
-    /**
-     * "To" String, return style1,style2,...
-     */
-    public String getToString(){
-        String out = ""; //$NON-NLS-1$
-        for (Style s:to.getStyles()){
-            out += s.getName2()+',';
-        }
-        if (out.length() > 0){
-            out = out.substring(0,out.length()-1); //remove trailling ,
-        }
-        return out;
+	return this.from;
     }
 
     /**
-     * @return Returns the to.
-     */
+         * From String, return style1,style2,...
+         */
+    public String getFromString() {
+	String out = ""; //$NON-NLS-1$
+	for (Style s : from.getStyles()) {
+	    out += s.getName2() + ',';
+	}
+	if (out.length() > 0) {
+	    out = out.substring(0, out.length() - 1); // remove trailling ,
+	}
+	return out;
+    }
+
     /**
-     * @return
-     */
+         * "To" String, return style1,style2,...
+         */
+    public String getToString() {
+	String out = ""; //$NON-NLS-1$
+	for (Style s : to.getStyles()) {
+	    out += s.getName2() + ',';
+	}
+	if (out.length() > 0) {
+	    out = out.substring(0, out.length() - 1); // remove trailling ,
+	}
+	return out;
+    }
+
+    /**
+         * @return Returns the to.
+         */
+    /**
+         * @return
+         */
     public Ambience getTo() {
-        return this.to;
-    }
-    
-    public void addFromStyle(Style style){
-        from.addStyle(style);
-    }
-    
-    /**
-     * @param style
-     */
-    public void removeFromStyle(Style style){
-        from.removeStyle(style);
-    }
-    
-    public void addToStyle(Style style){
-        to.addStyle(style);
-    }
-    
-    /**
-     * @param style
-     */
-    public void removeToStyle(Style style){
-        to.removeStyle(style);
-    }
-    
-    /**
-     * 
-     * @return next style to be played or null if no idea
-     */
-    public Style getNextStyle(){
-        if (to.getStyles().size() == 0){
-            return null;
-        }
-        else if (to.getStyles().size() == 1){
-            return to.getStyles().iterator().next();
-        }
-        else{
-            //several destination styles, return a shuffle one
-            return (Style)Util.getShuffleItem(to.getStyles());
-        }
+	return this.to;
     }
 
+    public void addFromStyle(Style style) {
+	from.addStyle(style);
+    }
+
+    /**
+         * @param style
+         */
+    public void removeFromStyle(Style style) {
+	from.removeStyle(style);
+    }
+
+    public void addToStyle(Style style) {
+	to.addStyle(style);
+    }
+
+    /**
+         * @param style
+         */
+    public void removeToStyle(Style style) {
+	to.removeStyle(style);
+    }
+
+    /**
+         * 
+         * @return next style to be played or null if no idea
+         */
+    public Style getNextStyle() {
+	if (to.getStyles().size() == 0) {
+	    return null;
+	} else if (to.getStyles().size() == 1) {
+	    return to.getStyles().iterator().next();
+	} else {
+	    // several destination styles, return a shuffle one
+	    return (Style) Util.getShuffleItem(to.getStyles());
+	}
+    }
 
     public int getNbTracks() {
-        return this.nb;
+	return this.nb;
     }
-
 
     public void setFrom(Ambience from) {
-        this.from = from;
+	this.from = from;
     }
-
 
     public void setTo(Ambience to) {
-        this.to = to;
+	this.to = to;
     }
 
-
     public void setNb(int nb) {
-        this.nb = nb;
+	this.nb = nb;
     }
 }

@@ -17,20 +17,21 @@ import org.jajuk.util.Util;
  */
 public class ExitAction extends ActionBase {
     /**
-     * 
-     */
+         * 
+         */
     private static final long serialVersionUID = 1L;
 
     ExitAction() {
-        super(Messages.getString("JajukWindow.4"), Util.getIcon(ICON_EXIT), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-        setShortDescription(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukWindow.4"), Util.getIcon(ICON_EXIT), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+	setShortDescription(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {
-        if (Main.getWindow() != null){
-            //Hide window ASAP
-            Main.getWindow().setVisible(false);
-        }
-        Main.exit(0);
+	if (Main.getWindow() != null) {
+	    // Hide window ASAP
+	    Main.getWindow().setVisible(false);
+	}
+	Main.exit(0);
     }
 }

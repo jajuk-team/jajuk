@@ -22,30 +22,33 @@ package org.jajuk.ui.views;
 
 import java.util.ArrayList;
 
-
-
 /**
- * Playlist editor/manager 
- * <p>Logical perspective</p>
- * @author     Bertrand Florat
- * @created   29 dec. 2003
+ * Playlist editor/manager
+ * <p>
+ * Logical perspective
+ * </p>
+ * 
+ * @author Bertrand Florat
+ * @created 29 dec. 2003
  */
-public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
-   
-   
+public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView {
+
 	private static final long serialVersionUID = 1L;
 
-    /**
+	/**
 	 * Constructor
 	 */
 	public LogicalPlaylistEditorView() {
-    }
-	
-	/* (non-Javadoc)
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
 	 */
 	ArrayList getRepositoryCurrentPlaylistFileItem() {
-		return LogicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
+		return LogicalPlaylistRepositoryView.getInstance()
+				.getPlaylistFileItems();
 	}
-	
+
 }

@@ -27,7 +27,7 @@ import org.jajuk.util.Util;
 
 /**
  * Action for configure ambiences
- *
+ * 
  * @author Bertrand Florat
  * @version 27-08-2006
  */
@@ -36,11 +36,13 @@ public class AmbienceConfigurationAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     AmbienceConfigurationAction() {
-        super(Messages.getString("CommandJPanel.19"), Util.getIcon(ICON_STYLE), true); //$NON-NLS-1$ //$NON-NLS-2$
+	super(
+		Messages.getString("CommandJPanel.19"), Util.getIcon(ICON_STYLE), true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        AmbienceWizard ambience = new AmbienceWizard(); //display the ambience wizard
-        ambience.show();
+	AmbienceWizard ambience = new AmbienceWizard(); // display the ambience
+                                                        // wizard
+	ambience.show();
     }
 }

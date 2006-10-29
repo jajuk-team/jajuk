@@ -28,41 +28,46 @@ import org.jajuk.util.log.Log;
 
 /**
  * The base abstract class for exporting music contents to different formats.
- *
- * @author     Ronak Patel
- * @created    Aug 20, 2006
+ * 
+ * @author Ronak Patel
+ * @created Aug 20, 2006
  */
 public abstract class Exporter {
-	
-	/**
-	 * Default Exporter Constructor
-	 *
-	 */
-	public Exporter() {		
+
+    /**
+         * Default Exporter Constructor
+         * 
+         */
+    public Exporter() {
+    }
+
+    /**
+         * This method will export the String sContent to the specified sPath.
+         * 
+         * @param sContent
+         *                The content to export.
+         * @param sPath
+         *                The path of the file to export to. Will create it if
+         *                it does not exist.
+         * @return Returns true if the contents were saved successfully, false
+         *         otherwise.
+         */
+    public boolean saveToFile(String sContent, String sPath) {
+	boolean result = false;
+
+	try {
+	    FileWriter fw = new FileWriter(sPath);
+	    BufferedWriter bw = new BufferedWriter(fw);
+	    // Writer the contents to the file.
+	    bw.write(sContent);
+	    // Close the BufferedWriter
+	    bw.close();
+	    // The file wrote out successfully.
+	    result = true;
+	} catch (IOException e) {
+	    Log.error(e);
 	}
-	
-	/**
-	 * This method will export the String sContent to the specified sPath.
-	 * @param sContent The content to export.
-	 * @param sPath The path of the file to export to. Will create it if it does not exist.
-	 * @return Returns true if the contents were saved successfully, false otherwise.
-	 */
-	public boolean saveToFile(String sContent, String sPath) {
-		boolean result = false;
-		
-		try {			
-			FileWriter fw = new FileWriter(sPath);
-			BufferedWriter bw = new BufferedWriter(fw);
-			// Writer the contents to the file.
-			bw.write(sContent);
-			// Close the BufferedWriter
-			bw.close();
-			// The file wrote out successfully.
-			result = true;
-		} catch (IOException e) {
-			Log.error(e);			
-		}
-		
-		return result;
-	}
+
+	return result;
+    }
 }

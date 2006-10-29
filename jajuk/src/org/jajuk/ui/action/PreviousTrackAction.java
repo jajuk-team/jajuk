@@ -19,7 +19,7 @@ import org.jajuk.util.log.Log;
 /**
  * Action class for jumping to the previous track. Installed keystroke:
  * <code>CTRL + LEFT ARROW</code>.
- *
+ * 
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
@@ -28,34 +28,37 @@ public class PreviousTrackAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     PreviousTrackAction() {
-        super(Messages.getString("JajukWindow.13"), Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-        setShortDescription(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukWindow.13"), Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+	setShortDescription(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {
-        int mod = evt.getModifiers();
+	int mod = evt.getModifiers();
 
-        if ((mod & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-            ActionManager.getAction(JajukAction.PREVIOUS_ALBUM).actionPerformed(evt);
-        } else {
-            synchronized (MUTEX) {
-                new Thread() {
-                    public void run() {
-                        try {
-                            FIFO.getInstance().playPrevious();
-                        } catch (Exception e) {
-                            Log.error(e);
-                        }
-                    }
-                }.start();
+	if ((mod & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+	    ActionManager.getAction(JajukAction.PREVIOUS_ALBUM)
+		    .actionPerformed(evt);
+	} else {
+	    synchronized (MUTEX) {
+		new Thread() {
+		    public void run() {
+			try {
+			    FIFO.getInstance().playPrevious();
+			} catch (Exception e) {
+			    Log.error(e);
+			}
+		    }
+		}.start();
 
-                // Player was paused, reset pause button when changing of track
-                if (Player.isPaused()) {
-                    Player.setPaused(false);
-                    ObservationManager.notify(new Event(
-                            EventSubject.EVENT_PLAYER_RESUME));  //notify of this event
-                }
-            }
-        }
+		// Player was paused, reset pause button when changing of track
+		if (Player.isPaused()) {
+		    Player.setPaused(false);
+		    ObservationManager.notify(new Event(
+			    EventSubject.EVENT_PLAYER_RESUME)); // notify of
+                                                                // this event
+		}
+	    }
+	}
     }
 }

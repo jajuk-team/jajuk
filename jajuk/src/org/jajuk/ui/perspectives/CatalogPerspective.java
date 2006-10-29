@@ -29,32 +29,36 @@ import org.jajuk.ui.views.CatalogView;
 import org.jajuk.ui.views.ViewFactory;
 
 /**
- *  Catalog perspective, shows all default covers by album
- *
- * @author     Bertrand Florat
- * @created    01/12/2005
+ * Catalog perspective, shows all default covers by album
+ * 
+ * @author Bertrand Florat
+ * @created 01/12/2005
  */
 public class CatalogPerspective extends PerspectiveAdapter {
-  
+
     private static final long serialVersionUID = 1L;
 
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
-     */
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
+         */
     public String getDesc() {
-        return Messages.getString("Perspective_Description_Catalog"); //$NON-NLS-1$
+	return Messages.getString("Perspective_Description_Catalog"); //$NON-NLS-1$
     }
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.IPerspective#getViews()
-     */
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.ui.IPerspective#getViews()
+         */
     public Set<IView> getViews() {
-        if (views != null){
-            return views;
-        }
-        views = new HashSet<IView>(1);
-        views.add(ViewFactory.createView(CatalogView.class,this));
-        return views;
+	if (views != null) {
+	    return views;
+	}
+	views = new HashSet<IView>(1);
+	views.add(ViewFactory.createView(CatalogView.class, this));
+	return views;
     }
 
 }

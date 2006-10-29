@@ -20,20 +20,20 @@
 
 package org.jajuk.base;
 
-
 /**
- *  Collection item filter
- *
- * @author     Bertrand Florat
- * @created    28 août 06
+ * Collection item filter
+ * 
+ * @author Bertrand Florat
+ * @created 28 août 06
  */
 public interface IItemFilter {
 
-    
     /**
-     * Apply filter
-     * @param al ordored list to be filtered
-     * @return filtered a *new* ordored list (can contain 0 elements)
-     */
+         * Apply filter
+         * 
+         * @param al
+         *                ordored list to be filtered
+         * @return filtered a *new* ordored list (can contain 0 elements)
+         */
     public java.util.Collection<Item> apply(java.util.Collection<Item> col);
 }

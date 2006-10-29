@@ -28,7 +28,7 @@ import org.jajuk.util.Util;
 
 /**
  * Action for displaying the tip of the day.
- *
+ * 
  * @author Bart Cremers
  * @version 12-dec-2005
  */
@@ -37,17 +37,19 @@ public class QualityAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     QualityAction() {
-        super(Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
     }
 
     /**
-     * Invoked when an action occurs.
-     * @param evt
-     */
+         * Invoked when an action occurs.
+         * 
+         * @param evt
+         */
     public void perform(ActionEvent evt) {
-        QualityFeedbackWizard qfw =  new QualityFeedbackWizard();
-        qfw.pack();
-        qfw.setLocationRelativeTo(Main.getWindow());
-        qfw.setVisible(true);
+	QualityFeedbackWizard qfw = new QualityFeedbackWizard();
+	qfw.pack();
+	qfw.setLocationRelativeTo(Main.getWindow());
+	qfw.setVisible(true);
     }
 }

@@ -22,28 +22,34 @@ public class ShuffleModeAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     ShuffleModeAction() {
-        super(Messages.getString("JajukJMenuBar.11"), Util.getIcon(ICON_SHUFFLE), "ctrl H", true); //$NON-NLS-1$ //$NON-NLS-2$
-        setShortDescription(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.11"), Util.getIcon(ICON_SHUFFLE), "ctrl H", true); //$NON-NLS-1$ //$NON-NLS-2$
+	setShortDescription(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
     }
 
     /**
-     * Invoked when an action occurs.
-     * @param evt
-     */
+         * Invoked when an action occurs.
+         * 
+         * @param evt
+         */
     public void perform(ActionEvent evt) {
-        boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
-        ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
+	boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
+	ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean
+		.toString(!b));
 
-        JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
-        CommandJPanel.getInstance().jbRandom.setSelected(!b);
-        if (!b) { //enabled button
-            FIFO.getInstance().shuffle(); //shuffle current selection
-            //now make sure we can't have a single repeated file after a non-repeated file (by design)
-            if (FIFO.getInstance().containsRepeat() && !FIFO.getInstance().containsOnlyRepeat()){
-                FIFO.getInstance().setRepeatModeToAll(false); //yes? un-repeat all
-            }
-        }
-        //computes planned tracks
-        FIFO.getInstance().computesPlanned(true);
+	JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
+	CommandJPanel.getInstance().jbRandom.setSelected(!b);
+	if (!b) { // enabled button
+	    FIFO.getInstance().shuffle(); // shuffle current selection
+	    // now make sure we can't have a single repeated file after a
+                // non-repeated file (by design)
+	    if (FIFO.getInstance().containsRepeat()
+		    && !FIFO.getInstance().containsOnlyRepeat()) {
+		FIFO.getInstance().setRepeatModeToAll(false); // yes?
+                                                                // un-repeat all
+	    }
+	}
+	// computes planned tracks
+	FIFO.getInstance().computesPlanned(true);
     }
 }

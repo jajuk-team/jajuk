@@ -27,19 +27,21 @@ import org.jajuk.util.Util;
 
 /**
  * Action for configurate the application
- *
+ * 
  * @author Bertrand Florat
  * @version 28/08/2006
  */
 public class ConfigurationRequiredAction extends ActionBase {
 
     private static final long serialVersionUID = 1L;
-    
+
     ConfigurationRequiredAction() {
-        super(Messages.getString("JajukJMenuBar.22"), Util.getIcon(ICON_CONFIGURATION),true); //$NON-NLS-1$ //$NON-NLS-2$
+	super(
+		Messages.getString("JajukJMenuBar.22"), Util.getIcon(ICON_CONFIGURATION), true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+	PerspectiveManager
+		.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
     }
 }

@@ -27,32 +27,35 @@ import javax.swing.JSlider;
 
 /**
  * A basic Mouse wheel listener for jsliders
- *
- * @author     Bertrand Florat
- * @created    22 may 2006
+ * 
+ * @author Bertrand Florat
+ * @created 22 may 2006
  */
-public class DefaultMouseWheelListener implements MouseWheelListener{
+public class DefaultMouseWheelListener implements MouseWheelListener {
 
     JSlider js;
-    
+
     /**
-     * 
-     * @param js associated jslider
-     */
+         * 
+         * @param js
+         *                associated jslider
+         */
     public DefaultMouseWheelListener(JSlider js) {
-        super();
-        this.js = js;
+	super();
+	this.js = js;
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-     */
+    /*
+         * (non-Javadoc)
+         * 
+         * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+         */
     public void mouseWheelMoved(MouseWheelEvent mwe) {
-        int iOld = js.getValue();
-        int iNew = iOld - mwe.getWheelRotation();
-        if (js.isEnabled()){
-            js.setValue(iNew);
-        }
+	int iOld = js.getValue();
+	int iNew = iOld - mwe.getWheelRotation();
+	if (js.isEnabled()) {
+	    js.setValue(iNew);
+	}
     }
 
 }

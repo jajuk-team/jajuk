@@ -21,55 +21,60 @@ package org.jajuk.util.error;
 
 import org.jajuk.i18n.Messages;
 
-
 /**
  * JajukException
- * @author		sgringoi
- * @created		5 oct. 2003
+ * 
+ * @author sgringoi
+ * @created 5 oct. 2003
  */
 public class JajukException extends Exception {
-	private static final long serialVersionUID = 1L;
-    /** Error code */
-	private String code = null;
-		
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param pCode Code of the current error.
-	 */
-	public JajukException(String pCode) {
-		this(pCode,null,null);
-	}
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param pCode Code of the current error.
-	 * @param pCause Original exception of the error.
-	 */
-	public JajukException(String pCode, Throwable pCause) {
-        this(pCode,null,pCause);
-	}
-	
-	
-	public String getCode(){
-		return this.code;
-	}
-	
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param pCode Code of the current error.
-	 * @param pMessage Message.
-	 * @param pCause Original exception of the error.
-	 */
-	public JajukException(String pCode, String pMessage, Throwable pCause) {
-		super((pMessage!=null && pMessage.length()>0)?
-                Messages.getErrorMessage(pCode)+" : "+pMessage: //$NON-NLS-1$
-                Messages.getErrorMessage(pCode)
-                ,pCause);
-        code = pCode;
-	}
-	
+    /** Error code */
+    private String code = null;
+
+    /**
+         * JajukException constructor.
+         * 
+         * @param pCode
+         *                Code of the current error.
+         */
+    public JajukException(String pCode) {
+	this(pCode, null, null);
+    }
+
+    /**
+         * JajukException constructor.
+         * 
+         * @param pCode
+         *                Code of the current error.
+         * @param pCause
+         *                Original exception of the error.
+         */
+    public JajukException(String pCode, Throwable pCause) {
+	this(pCode, null, pCause);
+    }
+
+    public String getCode() {
+	return this.code;
+    }
+
+    /**
+         * JajukException constructor.
+         * 
+         * @param pCode
+         *                Code of the current error.
+         * @param pMessage
+         *                Message.
+         * @param pCause
+         *                Original exception of the error.
+         */
+    public JajukException(String pCode, String pMessage, Throwable pCause) {
+	super((pMessage != null && pMessage.length() > 0) ? Messages
+		.getErrorMessage(pCode)
+		+ " : " + pMessage : //$NON-NLS-1$
+		Messages.getErrorMessage(pCode), pCause);
+	code = pCode;
+    }
 
 }

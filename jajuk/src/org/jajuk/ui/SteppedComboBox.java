@@ -27,57 +27,58 @@ import javax.swing.JComboBox;
 import javax.swing.plaf.ComboBoxUI;
 
 /**
-*  Stepped combo box allowing to display a long text in the history bar
-* @Author    Bertrand Florat
-* @created    17 oct. 2003
-*/
+ * Stepped combo box allowing to display a long text in the history bar
+ * 
+ * @Author Bertrand Florat
+ * @created 17 oct. 2003
+ */
 
 public class SteppedComboBox extends JComboBox {
-  private static final long serialVersionUID = 1L;
-protected int popupWidth;
+    private static final long serialVersionUID = 1L;
 
-  public SteppedComboBox() {
-    super();
-    init();
-  }
+    protected int popupWidth;
 
-  public SteppedComboBox(ComboBoxModel aModel) {
-    super(aModel);
-    init();
-  }
-
-  public SteppedComboBox(final Object[] items) {
-    super(items);
-    init();
-  }
-
-  public SteppedComboBox(Vector items) {
-    super(items);
-    init();
-  }
-
-  public void setPopupWidth(int width) {
-    popupWidth = width;
-  }
-
-  public Dimension getPopupSize() {
-    Dimension size = getSize();
-    if (popupWidth < 1) popupWidth = size.width;
-    return new Dimension(popupWidth, size.height);
-  }
-
-  protected void init() {
-    try{
-    	ComboBoxUI cbui = LNFManager.getSteppedComboBoxClass();
-    	if (cbui !=null){
-    		setUI(cbui);
-    		popupWidth = 0;
-    	}
+    public SteppedComboBox() {
+	super();
+	init();
     }
-    catch(Exception e){
-    	e.printStackTrace();
+
+    public SteppedComboBox(ComboBoxModel aModel) {
+	super(aModel);
+	init();
     }
-  	
-  }
+
+    public SteppedComboBox(final Object[] items) {
+	super(items);
+	init();
+    }
+
+    public SteppedComboBox(Vector items) {
+	super(items);
+	init();
+    }
+
+    public void setPopupWidth(int width) {
+	popupWidth = width;
+    }
+
+    public Dimension getPopupSize() {
+	Dimension size = getSize();
+	if (popupWidth < 1)
+	    popupWidth = size.width;
+	return new Dimension(popupWidth, size.height);
+    }
+
+    protected void init() {
+	try {
+	    ComboBoxUI cbui = LNFManager.getSteppedComboBoxClass();
+	    if (cbui != null) {
+		setUI(cbui);
+		popupWidth = 0;
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+    }
 }
-

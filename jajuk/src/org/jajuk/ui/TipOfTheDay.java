@@ -47,122 +47,129 @@ import org.jajuk.util.Util;
 public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 
     private static final long serialVersionUID = 1L;
+
     private static final String[] tips = Messages.getAll("TipOfTheDay"); //$NON-NLS-1$
+
     private int iLastTip;
+
     private JCheckBox cbShow;
+
     private JTextArea tipArea;
+
     private JLabel lCounter;
 
     public TipOfTheDay() {
-        super(Messages.getString("TipOfTheDayView.0")); //$NON-NLS-1$
-        setAlwaysOnTop(true);
-        setIconImage(Util.getIcon(ICON_LOGO).getImage());
-        this.iLastTip = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
+	super(Messages.getString("TipOfTheDayView.0")); //$NON-NLS-1$
+	setAlwaysOnTop(true);
+	setIconImage(Util.getIcon(ICON_LOGO).getImage());
+	this.iLastTip = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
 
-        cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2")); //$NON-NLS-1$
-        cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
+	cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2")); //$NON-NLS-1$
+	cbShow.setSelected(ConfigurationManager
+		.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
 
-        tipArea = new JTextArea();
-        tipArea.setWrapStyleWord(true);
-        tipArea.setLineWrap(true);
-        tipArea.setEditable(false);
+	tipArea = new JTextArea();
+	tipArea.setWrapStyleWord(true);
+	tipArea.setLineWrap(true);
+	tipArea.setEditable(false);
 
-        lCounter = new JLabel("999/999"); //$NON-NLS-1$
-        JButton bNext = new JButton(Util.getIcon(ICON_NEXT));
-        bNext.setMargin(new Insets(1, 1, 1, 1));
-        bNext.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionevent) {
-                iLastTip = (iLastTip + 1) % TipOfTheDay.tips.length;
-                setTip(iLastTip);
-            }
-        });
+	lCounter = new JLabel("999/999"); //$NON-NLS-1$
+	JButton bNext = new JButton(Util.getIcon(ICON_NEXT));
+	bNext.setMargin(new Insets(1, 1, 1, 1));
+	bNext.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent actionevent) {
+		iLastTip = (iLastTip + 1) % TipOfTheDay.tips.length;
+		setTip(iLastTip);
+	    }
+	});
 
-        JButton bPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
-        bPrevious.setMargin(new Insets(1, 1, 1, 1));
-        bPrevious.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionevent) {
-                iLastTip = iLastTip - 1;
-                if (iLastTip == -1) {
-                    iLastTip = TipOfTheDay.tips.length - 1;
-                }
-                setTip(iLastTip);
-            }
-        });
+	JButton bPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
+	bPrevious.setMargin(new Insets(1, 1, 1, 1));
+	bPrevious.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent actionevent) {
+		iLastTip = iLastTip - 1;
+		if (iLastTip == -1) {
+		    iLastTip = TipOfTheDay.tips.length - 1;
+		}
+		setTip(iLastTip);
+	    }
+	});
 
-        JButton bClose = new JButton(Util.getIcon(ICON_OK));
-        bClose.setMaximumSize(bClose.getPreferredSize());
-        bClose.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionevent) {
-                setVisible(false);
-            }
-        });
+	JButton bClose = new JButton(Util.getIcon(ICON_OK));
+	bClose.setMaximumSize(bClose.getPreferredSize());
+	bClose.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent actionevent) {
+		setVisible(false);
+	    }
+	});
 
-        JScrollPane scroll = new JScrollPane(tipArea);
-        scroll.setPreferredSize(new Dimension(200, 100));
+	JScrollPane scroll = new JScrollPane(tipArea);
+	scroll.setPreferredSize(new Dimension(200, 100));
 
-        JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), //$NON-NLS-1$
-                                   JLabel.LEFT); //$NON-NLS-1$
-        Font fTitle = lTitle.getFont();
-        lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(),
-                                (int) (fTitle.getSize() * 1.3)));
-        JLabel lIcon = new JLabel(Util.getIcon(ICON_TIP), JLabel.LEFT);
+	JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), //$NON-NLS-1$
+		JLabel.LEFT); //$NON-NLS-1$
+	Font fTitle = lTitle.getFont();
+	lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(),
+		(int) (fTitle.getSize() * 1.3)));
+	JLabel lIcon = new JLabel(Util.getIcon(ICON_TIP), JLabel.LEFT);
 
-        JPanel pTop = new JPanel(new BorderLayout());
-        pTop.add(lIcon, BorderLayout.WEST);
-        pTop.add(lTitle, BorderLayout.CENTER);
+	JPanel pTop = new JPanel(new BorderLayout());
+	pTop.add(lIcon, BorderLayout.WEST);
+	pTop.add(lTitle, BorderLayout.CENTER);
 
-        JPanel pCenter = new JPanel(new BorderLayout());
-        pCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 3, 10));
-        pCenter.add(scroll, BorderLayout.CENTER);
+	JPanel pCenter = new JPanel(new BorderLayout());
+	pCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 3, 10));
+	pCenter.add(scroll, BorderLayout.CENTER);
 
-        JPanel pPrevNext = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-        pPrevNext.add(bPrevious);
-        pPrevNext.add(lCounter);
-        pPrevNext.add(bNext);
+	JPanel pPrevNext = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+	pPrevNext.add(bPrevious);
+	pPrevNext.add(lCounter);
+	pPrevNext.add(bNext);
 
-        JPanel pControls = new JPanel(new BorderLayout());
-        pControls.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        pControls.add(cbShow, BorderLayout.WEST);
-        pControls.add(pPrevNext);
+	JPanel pControls = new JPanel(new BorderLayout());
+	pControls.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+	pControls.add(cbShow, BorderLayout.WEST);
+	pControls.add(pPrevNext);
 
-        JPanel pButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        pButton.add(bClose);
+	JPanel pButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	pButton.add(bClose);
 
-        JPanel pBottom = new JPanel(new BorderLayout());
-        pBottom.add(pControls, BorderLayout.NORTH);
-        pBottom.add(pButton);
+	JPanel pBottom = new JPanel(new BorderLayout());
+	pBottom.add(pControls, BorderLayout.NORTH);
+	pBottom.add(pButton);
 
-        add(pTop, BorderLayout.NORTH);
-        add(pCenter, BorderLayout.CENTER);
-        add(pBottom, BorderLayout.SOUTH);
+	add(pTop, BorderLayout.NORTH);
+	add(pCenter, BorderLayout.CENTER);
+	add(pBottom, BorderLayout.SOUTH);
 
-        setTip(this.iLastTip);
-        pack();
-        if (getWidth() < 400) {
-            setSize(400, getHeight());
-        }
+	setTip(this.iLastTip);
+	pack();
+	if (getWidth() < 400) {
+	    setSize(400, getHeight());
+	}
     }
 
     public void setTip(int i) {
-        iLastTip = i;
-        if (i >= tips.length) {
-            i = 0;
-        }
-        tipArea.setText(tips[i]);
-        lCounter.setText((new StringBuilder()).append("").append(i + 1).append("/").append( //$NON-NLS-1$ //$NON-NLS-2$
-            tips.length).toString());
-        tipArea.setCaretPosition(0);
+	iLastTip = i;
+	if (i >= tips.length) {
+	    i = 0;
+	}
+	tipArea.setText(tips[i]);
+	lCounter.setText((new StringBuilder())
+		.append("").append(i + 1).append("/").append( //$NON-NLS-1$ //$NON-NLS-2$
+			tips.length).toString());
+	tipArea.setCaretPosition(0);
     }
 
     public void setVisible(boolean flag) {
-        super.setVisible(flag);
-        if (flag) {
-            toFront();
-        } else {
-            ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX,
-                                             String.valueOf((iLastTip + 1) % TipOfTheDay.tips.length));
-            ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP,
-                                             String.valueOf(cbShow.isSelected()));
-        }
+	super.setVisible(flag);
+	if (flag) {
+	    toFront();
+	} else {
+	    ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String
+		    .valueOf((iLastTip + 1) % TipOfTheDay.tips.length));
+	    ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, String
+		    .valueOf(cbShow.isSelected()));
+	}
     }
 }

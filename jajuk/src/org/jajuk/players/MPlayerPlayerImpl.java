@@ -31,7 +31,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
-
 /**
  * Jajuk player implementation based on Mplayer
  * 
@@ -48,297 +47,313 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
     /** Length to be played in secs */
     private long length;
-    
-    /**Starting position */
+
+    /** Starting position */
     private float fPosition;
 
     /** Stored Volume */
     private float fVolume;
 
-    /** Current track estimated duration in ms*/
+    /** Current track estimated duration in ms */
     private long lDuration;
 
-    /**Cross fade duration in ms*/
+    /** Cross fade duration in ms */
     int iFadeDuration = 0;
 
-    /**Fading state*/
+    /** Fading state */
     private volatile boolean bFading = false;
 
-    /**Progress step in ms*/
-    private static final int PROGRESS_STEP = 300;//need a fast refresh, especially for fading
+    /** Progress step in ms */
+    private static final int PROGRESS_STEP = 300;// need a fast refresh,
+                                                        // especially for fading
 
-    /**current file*/
+    /** current file */
     private org.jajuk.base.File fCurrent;
 
-    /** Mplayer process*/
+    /** Mplayer process */
     private volatile Process proc;
 
-    /**pause flag **/
+    /** pause flag * */
     private volatile boolean bPaused = false;
-    
-    /**File is opened flag **/
+
+    /** File is opened flag * */
     private volatile boolean bOpening = false;
 
-    /**Current position thread*/
+    /** Current position thread */
     private volatile PositionThread position;
 
-    /**Current reader thread*/
+    /** Current reader thread */
     private volatile ReaderThread reader;
-    
-    
-     /**
-     * Position and elapsed time getter
-     */
-    private class PositionThread extends Thread{
-        /**Stop flag*/
-        volatile boolean bStop = false;
 
-        public void run(){
-            while (!bStop){ //stop this thread when exiting
-                try {
-                    Thread.sleep(PROGRESS_STEP);
-                    if (!bPaused && !bStop){ //a get_percent_pos resumes (mplayer issue)
-                        sendCommand("get_time_pos");
-                    }
-                }     
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    /**
+         * Position and elapsed time getter
+         */
+    private class PositionThread extends Thread {
+	/** Stop flag */
+	volatile boolean bStop = false;
 
-        public void stopThread(){
-            this.bStop = true;
-        }
+	public void run() {
+	    while (!bStop) { // stop this thread when exiting
+		try {
+		    Thread.sleep(PROGRESS_STEP);
+		    if (!bPaused && !bStop) { // a get_percent_pos resumes
+                                                // (mplayer issue)
+			sendCommand("get_time_pos");
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	}
+
+	public void stopThread() {
+	    this.bStop = true;
+	}
     }
 
     /**
-     * Reader : read information from mplayer like position 
-     */
-    private class ReaderThread extends Thread{
-        public void run(){
-            try {
-                BufferedReader in = new BufferedReader(
-                    new InputStreamReader(proc.getInputStream()));
-                String line = null;
-                for (; (line = in.readLine()) != null;) {
-                    if (line.matches(".*ANS_TIME_POSITION.*")){
-                        StringTokenizer st = new StringTokenizer(line,"=");
-                        st.nextToken();
-                        lTime = (int)(Float.parseFloat(st.nextToken()) * 1000);
-                        //Cross-Fade test
-                        if (!bFading
-                                && iFadeDuration > 0 
-                                && lDuration > 0 //can be null before getting length
-                                && lTime > (lDuration - iFadeDuration)){
-                            bFading = true;
-                            //force a finished (that doesn't stop but only make a FIFO request to switch track)
-                            FIFO.getInstance().finished();
-                        }
-                        // test end of length for intro mode
-                        if (length != TO_THE_END 
-                                && lDuration > 0 //can be null before getting length
-                                && (lTime-(fPosition*lDuration)) > length) {
-                            // length=-1 means there is no max length
-                            MPlayerPlayerImpl.this.stop();
-                            FIFO.getInstance().finished();
-                        }
-                    }
-                    else if (line.matches("ANS_LENGTH.*")){
-                        StringTokenizer st = new StringTokenizer(line,"=");
-                        st.nextToken();
-                        lDuration = (long)(Float.parseFloat(st.nextToken()))*1000;
-                    }
-                    //EOF
-                    else if (line.matches("Exiting.*End.*")){
-                        //Launch next track
-                        try{
-                            //End of file
-                            // inc rate by 1 if file is fully played
-                            fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); 
-                            FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
-                            if (!bFading){ //if using crossfade, ignore end of file
-                                System.gc();//Benefit from end of file to perform a full gc
-                                FIFO.getInstance().finished();
-                            }
-                            else{
-                                bFading = false;
-                            }
-                        }
-                        catch (Exception e) {
-                            Log.error(e);
-                        }
-                        break;
-                    }
-                    //Opening ?
-                    else if (line.matches(".*Starting playback.*")){
-                        bOpening = false;
-                    }
-                }
-                //can reach this point at the end of file
-                in.close();
-                return;
-            }
-            catch (Exception e) {
-                //A stop causes a steam close exception, so ignore it 
-                if (!e.getMessage().matches(".*Stream closed")){
-                    Log.error(e);
-                }
-            }
-        }
+         * Reader : read information from mplayer like position
+         */
+    private class ReaderThread extends Thread {
+	public void run() {
+	    try {
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+			proc.getInputStream()));
+		String line = null;
+		for (; (line = in.readLine()) != null;) {
+		    if (line.matches(".*ANS_TIME_POSITION.*")) {
+			StringTokenizer st = new StringTokenizer(line, "=");
+			st.nextToken();
+			lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+			// Cross-Fade test
+			if (!bFading && iFadeDuration > 0 && lDuration > 0 // can
+                                                                                // be
+                                                                                // null
+                                                                                // before
+                                                                                // getting
+                                                                                // length
+				&& lTime > (lDuration - iFadeDuration)) {
+			    bFading = true;
+			    // force a finished (that doesn't stop but only
+                                // make a FIFO request to switch track)
+			    FIFO.getInstance().finished();
+			}
+			// test end of length for intro mode
+			if (length != TO_THE_END && lDuration > 0 // can
+                                                                        // be
+                                                                        // null
+                                                                        // before
+                                                                        // getting
+                                                                        // length
+				&& (lTime - (fPosition * lDuration)) > length) {
+			    // length=-1 means there is no max length
+			    MPlayerPlayerImpl.this.stop();
+			    FIFO.getInstance().finished();
+			}
+		    } else if (line.matches("ANS_LENGTH.*")) {
+			StringTokenizer st = new StringTokenizer(line, "=");
+			st.nextToken();
+			lDuration = (long) (Float.parseFloat(st.nextToken())) * 1000;
+		    }
+		    // EOF
+		    else if (line.matches("Exiting.*End.*")) {
+			// Launch next track
+			try {
+			    // End of file
+			    // inc rate by 1 if file is fully played
+			    fCurrent.getTrack().setRate(
+				    fCurrent.getTrack().getRate() + 1);
+			    FileManager.getInstance().setRateHasChanged(true); // alert
+                                                                                // bestof
+                                                                                // playlist
+                                                                                // something
+                                                                                // changed
+			    if (!bFading) { // if using crossfade, ignore
+                                                // end of file
+				System.gc();// Benefit from end of file to
+                                                // perform a full gc
+				FIFO.getInstance().finished();
+			    } else {
+				bFading = false;
+			    }
+			} catch (Exception e) {
+			    Log.error(e);
+			}
+			break;
+		    }
+		    // Opening ?
+		    else if (line.matches(".*Starting playback.*")) {
+			bOpening = false;
+		    }
+		}
+		// can reach this point at the end of file
+		in.close();
+		return;
+	    } catch (Exception e) {
+		// A stop causes a steam close exception, so ignore it
+		if (!e.getMessage().matches(".*Stream closed")) {
+		    Log.error(e);
+		}
+	    }
+	}
     }
-   
+
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
-     */
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float,
+         *      long, float)
+         */
     public void play(org.jajuk.base.File file, float fPosition, long length,
-            float fVolume) throws Exception {
-        this.lTime = 0;
-        this.fVolume = fVolume;
-        this.length = length;
-        this.fPosition = fPosition;
-        this.bFading = false;
-        this.fCurrent = file;
-        this.bOpening = true;
-        this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
-        //Start
-        String sCommand = "mplayer";
-        if (Util.isUnderWindows()){
-            sCommand = Util.getMPlayerPath();
-        }
-        String[] cmd = {sCommand,"-quiet","-slave",file.getAbsolutePath()};
-        proc = Runtime.getRuntime().exec(cmd);
-        if (position == null){
-            position = new PositionThread();
-            position.start();
-        }
-        reader = new ReaderThread();
-        reader.start();
-        //if opening, wait
-        int i = 0;
-        while (bOpening && i<500){
-            try {
-                Thread.sleep(10);
-                i++;
-            }
-            catch (InterruptedException e) {
-                Log.error(e);
-            }
-        }
-        setVolume(fVolume);
-        //Get track length
-        sendCommand("get_time_length");
-        if (fPosition > 0.0f) {
-           seek(fPosition);
-        }
+	    float fVolume) throws Exception {
+	this.lTime = 0;
+	this.fVolume = fVolume;
+	this.length = length;
+	this.fPosition = fPosition;
+	this.bFading = false;
+	this.fCurrent = file;
+	this.bOpening = true;
+	this.iFadeDuration = 1000 * ConfigurationManager
+		.getInt(CONF_FADE_DURATION);
+	// Start
+	String sCommand = "mplayer";
+	if (Util.isUnderWindows()) {
+	    sCommand = Util.getMPlayerPath();
+	}
+	String[] cmd = { sCommand, "-quiet", "-slave", file.getAbsolutePath() };
+	proc = Runtime.getRuntime().exec(cmd);
+	if (position == null) {
+	    position = new PositionThread();
+	    position.start();
+	}
+	reader = new ReaderThread();
+	reader.start();
+	// if opening, wait
+	int i = 0;
+	while (bOpening && i < 500) {
+	    try {
+		Thread.sleep(10);
+		i++;
+	    } catch (InterruptedException e) {
+		Log.error(e);
+	    }
+	}
+	setVolume(fVolume);
+	// Get track length
+	sendCommand("get_time_length");
+	if (fPosition > 0.0f) {
+	    seek(fPosition);
+	}
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.base.IPlayerImpl#stop()
-     */
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.base.IPlayerImpl#stop()
+         */
     public void stop() throws Exception {
-        //Kill abrutely the mplayer process (this way, killing is synchronous, and easier than sending a quit command)
-        Log.debug("Stop");
-        if (proc != null){
-            proc.destroy();
-        }
+	// Kill abrutely the mplayer process (this way, killing is synchronous,
+        // and easier than sending a quit command)
+	Log.debug("Stop");
+	if (proc != null) {
+	    proc.destroy();
+	}
     }
- 
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.base.IPlayerImpl#setVolume(float)
-     */
-    public void setVolume(float fVolume)  {
-        this.fVolume = fVolume;
-        Log.debug("Volume="+(int)(100*fVolume));
-        sendCommand("volume "+(int)(100*fVolume)+" 2");
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.base.IPlayerImpl#setVolume(float)
+         */
+    public void setVolume(float fVolume) {
+	this.fVolume = fVolume;
+	Log.debug("Volume=" + (int) (100 * fVolume));
+	sendCommand("volume " + (int) (100 * fVolume) + " 2");
     }
 
     /**
-     * Send a command to mplayer slave
-     * @param command
-     */
-    private void sendCommand(String command){
-        if (proc != null){
-            PrintStream out = new PrintStream(proc.getOutputStream());
-            out.print(command+'\n'); //Do not use a println : it doesn't work under windows
-            out.flush();
-        }
+         * Send a command to mplayer slave
+         * 
+         * @param command
+         */
+    private void sendCommand(String command) {
+	if (proc != null) {
+	    PrintStream out = new PrintStream(proc.getOutputStream());
+	    out.print(command + '\n'); // Do not use a println : it doesn't
+                                        // work under windows
+	    out.flush();
+	}
     }
 
     /**
-     * @return current position as a float ex: 0.2f
-     */
+         * @return current position as a float ex: 0.2f
+         */
     public float getCurrentPosition() {
-        if (lDuration == 0){
-            return 0;
-        }
-        return ((float)lTime)/lDuration;
+	if (lDuration == 0) {
+	    return 0;
+	}
+	return ((float) lTime) / lDuration;
     }
 
     /**
-     * @return current volume as a float ex: 0.2f
-     */
+         * @return current volume as a float ex: 0.2f
+         */
     public float getCurrentVolume() {
-        return fVolume;
+	return fVolume;
     }
 
     /**
-     * @return Returns the lTime in ms
-     */
+         * @return Returns the lTime in ms
+         */
     public long getElapsedTime() {
-        return lTime;
+	return lTime;
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.players.IPlayerImpl#pause()
-     */
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.players.IPlayerImpl#pause()
+         */
     public void pause() throws Exception {
-        bPaused = true;
-        sendCommand("pause");
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.players.IPlayerImpl#resume()
-     */
-    public void resume() throws Exception {
-        bPaused = false;
-        sendCommand("pause");
+	bPaused = true;
+	sendCommand("pause");
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
-     */
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.players.IPlayerImpl#resume()
+         */
+    public void resume() throws Exception {
+	bPaused = false;
+	sendCommand("pause");
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not
+         *      yet supported
+         */
     public void seek(float posValue) {
-        //if fading, ignore
-        if (bFading){
-            return;
-        }
-        //save current position
-        String command = "seek "+(int)(100*posValue) +" 1";
-        sendCommand(command);
-        setVolume(fVolume); //need this because a seek reset volume 
+	// if fading, ignore
+	if (bFading) {
+	    return;
+	}
+	// save current position
+	String command = "seek " + (int) (100 * posValue) + " 1";
+	sendCommand(command);
+	setVolume(fVolume); // need this because a seek reset volume
     }
 
     /**
-     * @return player state, -1 if player is null.
-     */
+         * @return player state, -1 if player is null.
+         */
     public int getState() {
-        if (bFading){
-            return FADING_STATUS;
-        }
-        else {
-            return -1;
-        }
+	if (bFading) {
+	    return FADING_STATUS;
+	} else {
+	    return -1;
+	}
     }
 }

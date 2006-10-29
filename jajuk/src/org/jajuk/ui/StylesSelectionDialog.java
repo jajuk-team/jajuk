@@ -45,148 +45,152 @@ import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 
 /**
- *  Allow a user to select a list of styles 
- *
- * @author     Bertrand Florat
- * @created    9 march 2006
+ * Allow a user to select a list of styles
+ * 
+ * @author Bertrand Florat
+ * @created 9 march 2006
  */
-public class StylesSelectionDialog extends JDialog implements ActionListener{
+public class StylesSelectionDialog extends JDialog implements ActionListener {
 
     private static final long serialVersionUID = 1L;
+
     JComboBox jcbAmbiences;
+
     JList jlist;
+
     OKCancelPanel okc;
-    
+
     HashSet<Style> selectedStyles;
-    
+
     HashSet<Style> disabledStyles;
-    
+
     Vector<String> list;
-    
+
     /**
-     * @throws HeadlessException
-     */
-    public StylesSelectionDialog(HashSet disabledStyles) throws HeadlessException {
-        super();
-        this.selectedStyles = new HashSet();
-        this.disabledStyles = disabledStyles; 
-        setLocationByPlatform(true);
-        setTitle(Messages.getString("DigitalDJWizard.14")); //$NON-NLS-1$
-        setModal(true);
-        initUI();
-        pack();
-    }
-    
-    /**
-     * Set selected item
-     * @param selection or null to void it
-     */
-    public void setSelection(HashSet<Style> selection){
-        if (selection != null){
-            int[] indices = new int[selection.size()];
-            //reset all indices to -1 to avoid selecting zero th item
-            for (int i=0;i<selection.size();i++){
-                indices[i] = -1;
-            }
-            //find all matching items
-            int comp = 0;
-            for (int i=0;i<jlist.getModel().getSize();i++){
-                String modelStyle = (String)jlist.getModel().getElementAt(i);
-                for (Style style:selection){
-                    if (style.getName2().equals(modelStyle)){
-                        indices[comp] = i;
-                        comp ++;
-                    }
-                }
-            }
-            //select item in the list
-            jlist.setSelectedIndices(indices);
-        }
+         * @throws HeadlessException
+         */
+    public StylesSelectionDialog(HashSet disabledStyles)
+	    throws HeadlessException {
+	super();
+	this.selectedStyles = new HashSet();
+	this.disabledStyles = disabledStyles;
+	setLocationByPlatform(true);
+	setTitle(Messages.getString("DigitalDJWizard.14")); //$NON-NLS-1$
+	setModal(true);
+	initUI();
+	pack();
     }
 
-    
     /**
-     * 
-     * @return selected styles 
-     */
-    public HashSet<Style> getSelectedStyles(){
-        return selectedStyles;
-    }
-    
-    private void initUI(){
-        list = (Vector)StyleManager.getInstance().getStylesList().clone();
-        //remove disabled items
-        if (disabledStyles != null){
-            Iterator it = list.iterator();
-            while (it.hasNext()){
-                String testedStyle = (String)it.next();
-                for (Style disabledStyle:disabledStyles){
-                    if (disabledStyle.getName2().equals(testedStyle)){
-                        it.remove();
-                    }
-                }
-            }
-        }
-        //main part of the dialog
-        //populate ambience combo
-        jcbAmbiences = new JComboBox();
-        for (Ambience ambience:AmbienceManager.getInstance().getAmbiences()){
-           jcbAmbiences.addItem(ambience.getName()); 
-        }
-        //none ambience selected by default
-        jcbAmbiences.setSelectedIndex(-1);
-        jcbAmbiences.addActionListener(this);
-        JPanel jpAmbiences = new JPanel();
-        double[][] layoutCombo = new double[][]{
-                {TableLayout.PREFERRED,10,TableLayout.FILL},
-                {20}
-        };
-        jpAmbiences.setLayout(new TableLayout(layoutCombo));
-        jpAmbiences.add(new JLabel(Messages.getString("DigitalDJWizard.58")),"0,0"); //$NON-NLS-1$ //$NON-NLS-2$
-        jpAmbiences.add(jcbAmbiences,"2,0"); //$NON-NLS-1$
-        jlist = new JList(list);
-        jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
-        jlist.setPreferredSize(new Dimension(600,600));
-        jlist.setVisibleRowCount(-1);
-        okc = new OKCancelPanel(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                if (ae.getSource() == okc.getOKButton()){
-                    int[] selection = jlist.getSelectedIndices();
-                    for (int i=0;i<selection.length;i++){
-                        selectedStyles.add(
-                            StyleManager.getInstance().getStyleByName( 
-                                (String)jlist.getModel().getElementAt(selection[i])));
-                    }
-                }
-                dispose();
-            }
-        });
-        
-        JScrollPane jsp = new JScrollPane(jlist);
-        double[][] layout = new double[][]{
-                {10,TableLayout.PREFERRED,10},
-                {10,20,5,TableLayout.PREFERRED,5,20,10}
-        };
-        setLayout(new TableLayout(layout));
-        add(jpAmbiences,"1,1"); //$NON-NLS-1$
-        add(jsp,"1,3"); //$NON-NLS-1$
-        add(okc,"1,5"); //$NON-NLS-1$
-        getRootPane().setDefaultButton(okc.getOKButton());
+         * Set selected item
+         * 
+         * @param selection
+         *                or null to void it
+         */
+    public void setSelection(HashSet<Style> selection) {
+	if (selection != null) {
+	    int[] indices = new int[selection.size()];
+	    // reset all indices to -1 to avoid selecting zero th item
+	    for (int i = 0; i < selection.size(); i++) {
+		indices[i] = -1;
+	    }
+	    // find all matching items
+	    int comp = 0;
+	    for (int i = 0; i < jlist.getModel().getSize(); i++) {
+		String modelStyle = (String) jlist.getModel().getElementAt(i);
+		for (Style style : selection) {
+		    if (style.getName2().equals(modelStyle)) {
+			indices[comp] = i;
+			comp++;
+		    }
+		}
+	    }
+	    // select item in the list
+	    jlist.setSelectedIndices(indices);
+	}
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    /**
+         * 
+         * @return selected styles
+         */
+    public HashSet<Style> getSelectedStyles() {
+	return selectedStyles;
+    }
+
+    private void initUI() {
+	list = (Vector) StyleManager.getInstance().getStylesList().clone();
+	// remove disabled items
+	if (disabledStyles != null) {
+	    Iterator it = list.iterator();
+	    while (it.hasNext()) {
+		String testedStyle = (String) it.next();
+		for (Style disabledStyle : disabledStyles) {
+		    if (disabledStyle.getName2().equals(testedStyle)) {
+			it.remove();
+		    }
+		}
+	    }
+	}
+	// main part of the dialog
+	// populate ambience combo
+	jcbAmbiences = new JComboBox();
+	for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
+	    jcbAmbiences.addItem(ambience.getName());
+	}
+	// none ambience selected by default
+	jcbAmbiences.setSelectedIndex(-1);
+	jcbAmbiences.addActionListener(this);
+	JPanel jpAmbiences = new JPanel();
+	double[][] layoutCombo = new double[][] {
+		{ TableLayout.PREFERRED, 10, TableLayout.FILL }, { 20 } };
+	jpAmbiences.setLayout(new TableLayout(layoutCombo));
+	jpAmbiences.add(
+		new JLabel(Messages.getString("DigitalDJWizard.58")), "0,0"); //$NON-NLS-1$ //$NON-NLS-2$
+	jpAmbiences.add(jcbAmbiences, "2,0"); //$NON-NLS-1$
+	jlist = new JList(list);
+	jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
+	jlist.setPreferredSize(new Dimension(600, 600));
+	jlist.setVisibleRowCount(-1);
+	okc = new OKCancelPanel(new ActionListener() {
+	    public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource() == okc.getOKButton()) {
+		    int[] selection = jlist.getSelectedIndices();
+		    for (int i = 0; i < selection.length; i++) {
+			selectedStyles.add(StyleManager.getInstance()
+				.getStyleByName(
+					(String) jlist.getModel().getElementAt(
+						selection[i])));
+		    }
+		}
+		dispose();
+	    }
+	});
+
+	JScrollPane jsp = new JScrollPane(jlist);
+	double[][] layout = new double[][] { { 10, TableLayout.PREFERRED, 10 },
+		{ 10, 20, 5, TableLayout.PREFERRED, 5, 20, 10 } };
+	setLayout(new TableLayout(layout));
+	add(jpAmbiences, "1,1"); //$NON-NLS-1$
+	add(jsp, "1,3"); //$NON-NLS-1$
+	add(okc, "1,5"); //$NON-NLS-1$
+	getRootPane().setDefaultButton(okc.getOKButton());
+    }
+
+    /*
+         * (non-Javadoc)
+         * 
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource().equals(jcbAmbiences)){
-            ArrayList<Ambience> alAmbiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
-            Ambience ambience = alAmbiences.get(jcbAmbiences.getSelectedIndex());
-            //select all styles for this ambience
-            setSelection(ambience.getStyles());
-        }
+	if (ae.getSource().equals(jcbAmbiences)) {
+	    ArrayList<Ambience> alAmbiences = new ArrayList(AmbienceManager
+		    .getInstance().getAmbiences());
+	    Ambience ambience = alAmbiences
+		    .get(jcbAmbiences.getSelectedIndex());
+	    // select all styles for this ambience
+	    setSelection(ambience.getStyles());
+	}
     }
-    
-    
-    
 
 }

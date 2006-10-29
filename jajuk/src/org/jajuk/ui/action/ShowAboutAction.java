@@ -29,7 +29,7 @@ import org.jajuk.util.Util;
 
 /**
  * Action for displaying the tip of the day.
- *
+ * 
  * @author Bart Cremers
  * @version 12-dec-2005
  */
@@ -38,23 +38,24 @@ public class ShowAboutAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     ShowAboutAction() {
-        super(Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
-        setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
+	setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
     }
 
     /**
-     * Invoked when an action occurs.
-     */
+         * Invoked when an action occurs.
+         */
     public void perform(ActionEvent evt) {
-        //set default perspective to show if UIi is not yet started
-        if (Main.isUILauched()) {
-            PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
-        } else {
-            Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
-        }
-        //make frame visible
-        if (!JajukWindow.getInstance().isVisible()) {
-            JajukWindow.getInstance().setShown(true);
-        }
+	// set default perspective to show if UIi is not yet started
+	if (Main.isUILauched()) {
+	    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+	} else {
+	    Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+	}
+	// make frame visible
+	if (!JajukWindow.getInstance().isVisible()) {
+	    JajukWindow.getInstance().setShown(true);
+	}
     }
 }

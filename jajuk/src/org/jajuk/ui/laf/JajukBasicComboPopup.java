@@ -31,41 +31,44 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import org.jajuk.ui.SteppedComboBox;
 
 /**
- *  Type description
- *
- * @author     Bertrand Florat
- * @created    28 nov. 2003
+ * Type description
+ * 
+ * @author Bertrand Florat
+ * @created 28 nov. 2003
  */
 public class JajukBasicComboPopup extends BasicComboPopup {
 
-		
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    public JajukBasicComboPopup(JComboBox jcb){
-		super(jcb);
+    public JajukBasicComboPopup(JComboBox jcb) {
+	super(jcb);
+    }
+
+    public void show() {
+	Dimension popupSize = ((SteppedComboBox) comboBox).getPopupSize();
+	popupSize.setSize(popupSize.width, getPopupHeightForRowCount(comboBox
+		.getMaximumRowCount()));
+	Rectangle popupBounds = computePopupBounds(0,
+		comboBox.getBounds().height, popupSize.width, popupSize.height);
+	scroller.setMaximumSize(popupBounds.getSize());
+	scroller.setPreferredSize(popupBounds.getSize());
+	scroller.setMinimumSize(popupBounds.getSize());
+	list.invalidate();
+	int selectedIndex = comboBox.getSelectedIndex();
+	if (selectedIndex == -1) {
+	    list.clearSelection();
+	} else {
+	    list.setSelectedIndex(selectedIndex);
 	}
-	
-	public void show() {
-				Dimension popupSize = ((SteppedComboBox) comboBox).getPopupSize();
-				popupSize.setSize(popupSize.width, getPopupHeightForRowCount(comboBox.getMaximumRowCount()));
-				Rectangle popupBounds = computePopupBounds(0, comboBox.getBounds().height, popupSize.width, popupSize.height);
-				scroller.setMaximumSize(popupBounds.getSize());
-				scroller.setPreferredSize(popupBounds.getSize());
-				scroller.setMinimumSize(popupBounds.getSize());
-				list.invalidate();
-				int selectedIndex = comboBox.getSelectedIndex();
-				if (selectedIndex == -1) {
-					list.clearSelection();
-				} else {
-					list.setSelectedIndex(selectedIndex);
-				}
-				list.ensureIndexIsVisible(list.getSelectedIndex());
-				setLightWeightPopupEnabled(comboBox.isLightWeightPopupEnabled());
-				show(comboBox, popupBounds.x, popupBounds.y);
-			}
+	list.ensureIndexIsVisible(list.getSelectedIndex());
+	setLightWeightPopupEnabled(comboBox.isLightWeightPopupEnabled());
+	show(comboBox, popupBounds.x, popupBounds.y);
+    }
 
-			protected JScrollPane createScroller() {
-				return new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			}
-	
+    protected JScrollPane createScroller() {
+	return new JScrollPane(list,
+		ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    }
+
 }

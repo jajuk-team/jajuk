@@ -19,34 +19,36 @@
  */
 package org.jajuk.util.error;
 
-
 /**
  * JajukException
- * @author		bflorat
- * @created		06 oct. 2005
+ * 
+ * @author bflorat
+ * @created 06 oct. 2005
  */
 public class NoneAccessibleFileException extends JajukException {
-		
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     /**
-	 * constructor.
-	 * 
-	 * @param pCode Code of the current error.
-	 */
-	public NoneAccessibleFileException(String pCode) {
-		super(pCode);
-	}
+         * constructor.
+         * 
+         * @param pCode
+         *                Code of the current error.
+         */
+    public NoneAccessibleFileException(String pCode) {
+	super(pCode);
+    }
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param pCode Code of the current error.
-	 * @param pCause Original exception of the error.
-	 */
-	public NoneAccessibleFileException(String pCode, Throwable pCause) {
-		super(pCode,pCause);
-	}
-	
+    /**
+         * JajukException constructor.
+         * 
+         * @param pCode
+         *                Code of the current error.
+         * @param pCause
+         *                Original exception of the error.
+         */
+    public NoneAccessibleFileException(String pCode, Throwable pCause) {
+	super(pCode, pCause);
+    }
 
 }

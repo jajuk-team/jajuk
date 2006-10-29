@@ -27,7 +27,7 @@ import org.jajuk.util.Util;
 
 /**
  * Action for displaying the online help
- *
+ * 
  * @author Bart Cremers
  * @since 4-jan-2006
  */
@@ -36,10 +36,11 @@ public class HelpRequiredAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     HelpRequiredAction() {
-        super(Messages.getString("JajukJMenuBar.15"), Util.getIcon(ICON_INFO), "F1", true); //$NON-NLS-1$ //$NON-NLS-2$
+	super(
+		Messages.getString("JajukJMenuBar.15"), Util.getIcon(ICON_INFO), "F1", true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+	PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
     }
 }

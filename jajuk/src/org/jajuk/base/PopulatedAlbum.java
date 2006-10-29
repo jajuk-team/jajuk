@@ -23,46 +23,47 @@ package org.jajuk.base;
 import java.util.ArrayList;
 
 /**
- *  This class contains an Album and an ArrayList of the Tracks
- *  associated with the Album. Used in the exporting process.
- *
- * @author     Ronak Patel
- * @created    Aug 26, 2006
+ * This class contains an Album and an ArrayList of the Tracks associated with
+ * the Album. Used in the exporting process.
+ * 
+ * @author Ronak Patel
+ * @created Aug 26, 2006
  */
 public class PopulatedAlbum {
-	private Album album = null;
-	private ArrayList<Track> tracks = null;
-	
-	public PopulatedAlbum(Album album) {
-		this.album = album;
-		this.tracks = new ArrayList<Track>();
+    private Album album = null;
+
+    private ArrayList<Track> tracks = null;
+
+    public PopulatedAlbum(Album album) {
+	this.album = album;
+	this.tracks = new ArrayList<Track>();
+    }
+
+    public PopulatedAlbum(Album album, ArrayList<Track> tracks) {
+	this.album = album;
+	this.tracks = tracks;
+    }
+
+    public Album getAlbum() {
+	return this.album;
+    }
+
+    public void setAlbum(Album album) {
+	this.album = album;
+    }
+
+    public ArrayList<Track> getTracks() {
+	return this.tracks;
+    }
+
+    public void setTracks(ArrayList<Track> tracks) {
+	this.tracks = tracks;
+    }
+
+    public void addTrack(Track track) {
+	if (tracks == null) {
+	    tracks = new ArrayList<Track>();
 	}
-	
-	public PopulatedAlbum(Album album, ArrayList<Track> tracks) {
-		this.album = album;
-		this.tracks = tracks;
-	}
-	
-	public Album getAlbum() {
-		return this.album;
-	}
-	
-	public void setAlbum(Album album) {
-		this.album = album;
-	}
-	
-	public ArrayList<Track> getTracks() {
-		return this.tracks;
-	}
-	
-	public void setTracks(ArrayList<Track> tracks) {
-		this.tracks = tracks;
-	}
-	
-	public void addTrack(Track track) {
-		if (tracks == null) {
-			tracks = new ArrayList<Track>();
-		}
-		tracks.add(track);
-	}
+	tracks.add(track);
+    }
 }

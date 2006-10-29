@@ -21,14 +21,17 @@ public class IntroModeAction extends ActionBase {
     private static final long serialVersionUID = 1L;
 
     IntroModeAction() {
-        super(Messages.getString("JajukJMenuBar.13"), Util.getIcon(ICON_INTRO), true); //$NON-NLS-1$
-        setShortDescription(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
+	super(
+		Messages.getString("JajukJMenuBar.13"), Util.getIcon(ICON_INTRO), true); //$NON-NLS-1$
+	setShortDescription(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
     }
 
-   public void perform(ActionEvent evt) {
-       boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO));
-       ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
-       JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
-       CommandJPanel.getInstance().jbIntro.setSelected(!b);
+    public void perform(ActionEvent evt) {
+	boolean b = Boolean.valueOf(ConfigurationManager
+		.getProperty(CONF_STATE_INTRO));
+	ConfigurationManager
+		.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
+	JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
+	CommandJPanel.getInstance().jbIntro.setSelected(!b);
     }
 }
