@@ -411,7 +411,7 @@ public class Directory extends Item implements Comparable {
 		while (!bTop && dCurrent != null) {
 			dCurrent = dCurrent.getParentDirectory();
 			if (dCurrent != null && !dCurrent.getName().equals("")) { //$NON-NLS-1$ 
-				// if it is the root directory, no  parent
+				// if it is the root directory, no parent
 				sbOut.insert(0, java.io.File.separatorChar).insert(1,
 						dCurrent.getName());
 			} else {
@@ -516,7 +516,7 @@ public class Directory extends Item implements Comparable {
 			} else {
 				return getName();
 			}
-		} else { 
+		} else {
 			// default
 			return super.getHumanValue(sKey);
 		}

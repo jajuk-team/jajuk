@@ -35,22 +35,22 @@ import javax.swing.table.TableCellRenderer;
  */
 public class ButtonRenderer extends JButton implements TableCellRenderer {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public ButtonRenderer(String sText, Icon icon) {
-	super(sText, icon);
-    }
+	public ButtonRenderer(String sText, Icon icon) {
+		super(sText, icon);
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable,
-         *      java.lang.Object, boolean, boolean, int, int)
-         */
-    public Component getTableCellRendererComponent(JTable arg0, Object arg1,
-	    boolean arg2, boolean arg3, int arg4, int arg5) {
-	setToolTipText(this.getText());
-	return this;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable,
+	 *      java.lang.Object, boolean, boolean, int, int)
+	 */
+	public Component getTableCellRendererComponent(JTable arg0, Object arg1,
+			boolean arg2, boolean arg3, int arg4, int arg5) {
+		setToolTipText(this.getText());
+		return this;
+	}
 
 }

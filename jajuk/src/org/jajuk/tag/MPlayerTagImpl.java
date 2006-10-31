@@ -34,173 +34,173 @@ import entagged.audioformats.Tag;
  */
 public class MPlayerTagImpl implements ITagImpl, ITechnicalStrings {
 
-    private Tag tag;
+	private Tag tag;
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getTrackName()
-         */
-    public String getTrackName() throws Exception {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getTrackName()
+	 */
+	public String getTrackName() throws Exception {
+		return null;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getAlbumName()
-         */
-    public String getAlbumName() throws Exception {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getAlbumName()
+	 */
+	public String getAlbumName() throws Exception {
+		return null;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getAuthorName()
-         */
-    public String getAuthorName() throws Exception {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getAuthorName()
+	 */
+	public String getAuthorName() throws Exception {
+		return null;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getStyleName()
-         */
-    public String getStyleName() throws Exception {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getStyleName()
+	 */
+	public String getStyleName() throws Exception {
+		return null;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getLength()
-         */
-    public long getLength() throws Exception {
-	return 0;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getLength()
+	 */
+	public long getLength() throws Exception {
+		return 0;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getYear()
-         */
-    public long getYear() throws Exception {
-	return 0;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getYear()
+	 */
+	public long getYear() throws Exception {
+		return 0;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getQuality()
-         */
-    public long getQuality() throws Exception {
-	return 0;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getQuality()
+	 */
+	public long getQuality() throws Exception {
+		return 0;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getComment()
-         */
-    public String getComment() throws Exception {
-	return "";
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getComment()
+	 */
+	public String getComment() throws Exception {
+		return "";
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#getOrder()
-         */
-    public long getOrder() throws Exception {
-	String sOrder = tag.getFirstTrack();
-	return Long.parseLong(sOrder); // try to parse integer
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#getOrder()
+	 */
+	public long getOrder() throws Exception {
+		String sOrder = tag.getFirstTrack();
+		return Long.parseLong(sOrder); // try to parse integer
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
-         */
-    public void setTrackName(String sTrackName) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
+	 */
+	public void setTrackName(String sTrackName) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
-         */
-    public void setAlbumName(String sAlbumName) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
+	 */
+	public void setAlbumName(String sAlbumName) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
-         */
-    public void setAuthorName(String sAuthorName) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
+	 */
+	public void setAuthorName(String sAuthorName) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
-         */
-    public void setStyleName(String style) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
+	 */
+	public void setStyleName(String style) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
-         */
-    public void setOrder(long lOrder) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
+	 */
+	public void setOrder(long lOrder) throws Exception {
+	}
 
-    public void setComment(String sComment) throws Exception {
-    }
+	public void setComment(String sComment) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
-         */
-    public String getTagItem(String sTagItem) throws Exception {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
+	 */
+	public String getTagItem(String sTagItem) throws Exception {
+		return null;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String,
-         *      java.lang.String)
-         */
-    public void setTagItem(String sTagItem, String sValue) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String,
+	 *      java.lang.String)
+	 */
+	public void setTagItem(String sTagItem, String sValue) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#commit()
-         */
-    public void commit() throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#commit()
+	 */
+	public void commit() throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#setYear(int)
-         */
-    public void setYear(long lYear) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#setYear(int)
+	 */
+	public void setYear(long lYear) throws Exception {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#setFile(java.io.File)
-         */
-    public void setFile(File fio) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#setFile(java.io.File)
+	 */
+	public void setFile(File fio) throws Exception {
+	}
 
 }

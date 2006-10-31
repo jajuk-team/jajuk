@@ -178,8 +178,8 @@ public class Album extends Item implements Comparable {
 			// found
 			for (int i = 0; files != null && i < files.length; i++) {
 				if (files[i].canRead() // test file is readable
-						&& files[i].length() < MAX_COVER_SIZE * 1024) { 
-					// check  size to avoid out of memory errors
+						&& files[i].length() < MAX_COVER_SIZE * 1024) {
+					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
 					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						if (Util.isStandardCover(files[i].getAbsolutePath())) {
@@ -196,8 +196,8 @@ public class Album extends Item implements Comparable {
 			// found
 			for (int i = 0; files != null && i < files.length; i++) {
 				if (files[i].canRead() // test file is readable
-						&& files[i].length() < MAX_COVER_SIZE * 1024) { 
-					// check  size to avoid out of memory errors
+						&& files[i].length() < MAX_COVER_SIZE * 1024) {
+					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
 					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						return files[i];

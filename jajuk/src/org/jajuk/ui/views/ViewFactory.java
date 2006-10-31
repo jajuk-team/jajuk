@@ -35,39 +35,39 @@ import org.jajuk.ui.IView;
  */
 public class ViewFactory {
 
-    /** Maps view class -> view instances set */
-    private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
+	/** Maps view class -> view instances set */
+	private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
 
-    /**
-         * No instanciation *
-         */
-    private ViewFactory() {
-    }
+	/**
+	 * No instanciation *
+	 */
+	private ViewFactory() {
+	}
 
-    /**
-         * Create a new view instance
-         * 
-         * @param className
-         * @return
-         */
-    public static IView createView(Class className, IPerspective perspective) {
-	Set<IView> views = hmClassesInstances.get(className);
-	if (views == null) {
-	    views = new LinkedHashSet<IView>();
-	    hmClassesInstances.put(className, views);
+	/**
+	 * Create a new view instance
+	 * 
+	 * @param className
+	 * @return
+	 */
+	public static IView createView(Class className, IPerspective perspective) {
+		Set<IView> views = hmClassesInstances.get(className);
+		if (views == null) {
+			views = new LinkedHashSet<IView>();
+			hmClassesInstances.put(className, views);
+		}
+		int index = views.size(); // new view size is last index + 1
+		IView view;
+		try {
+			view = (IView) className.newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		view.setID(className.getName() + '/' + index);
+		view.setPerspective(perspective);
+		// store the new view
+		views.add(view);
+		return view;
 	}
-	int index = views.size(); // new view size is last index + 1
-	IView view;
-	try {
-	    view = (IView) className.newInstance();
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
-	}
-	view.setID(className.getName() + '/' + index);
-	view.setPerspective(perspective);
-	// store the new view
-	views.add(view);
-	return view;
-    }
 
 }

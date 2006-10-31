@@ -30,40 +30,40 @@ import java.util.ArrayList;
  * @created Aug 26, 2006
  */
 public class PopulatedStyle {
-    private Style style = null;
+	private Style style = null;
 
-    private ArrayList<PopulatedAuthor> authors = null;
+	private ArrayList<PopulatedAuthor> authors = null;
 
-    public PopulatedStyle(Style style) {
-	this.style = style;
-	this.authors = new ArrayList<PopulatedAuthor>();
-    }
-
-    public PopulatedStyle(Style style, ArrayList<PopulatedAuthor> authors) {
-	this.style = style;
-	this.authors = authors;
-    }
-
-    public ArrayList<PopulatedAuthor> getAuthors() {
-	return authors;
-    }
-
-    public void setAuthors(ArrayList<PopulatedAuthor> authors) {
-	this.authors = authors;
-    }
-
-    public Style getStyle() {
-	return style;
-    }
-
-    public void setStyle(Style style) {
-	this.style = style;
-    }
-
-    public void addAuthor(PopulatedAuthor author) {
-	if (this.authors == null) {
-	    authors = new ArrayList<PopulatedAuthor>();
+	public PopulatedStyle(Style style) {
+		this.style = style;
+		this.authors = new ArrayList<PopulatedAuthor>();
 	}
-	authors.add(author);
-    }
+
+	public PopulatedStyle(Style style, ArrayList<PopulatedAuthor> authors) {
+		this.style = style;
+		this.authors = authors;
+	}
+
+	public ArrayList<PopulatedAuthor> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(ArrayList<PopulatedAuthor> authors) {
+		this.authors = authors;
+	}
+
+	public Style getStyle() {
+		return style;
+	}
+
+	public void setStyle(Style style) {
+		this.style = style;
+	}
+
+	public void addAuthor(PopulatedAuthor author) {
+		if (this.authors == null) {
+			authors = new ArrayList<PopulatedAuthor>();
+		}
+		authors.add(author);
+	}
 }

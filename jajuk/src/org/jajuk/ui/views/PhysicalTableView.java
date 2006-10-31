@@ -52,296 +52,296 @@ import org.jajuk.util.log.Log;
  * @created 13 dec. 2003
  */
 public class PhysicalTableView extends AbstractTableView implements
-	MouseListener {
+		MouseListener {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /** Self instance */
-    private static PhysicalTableView ltv;
+	/** Self instance */
+	private static PhysicalTableView ltv;
 
-    JPopupMenu jmenuFile;
+	JPopupMenu jmenuFile;
 
-    JMenuItem jmiFilePlay;
+	JMenuItem jmiFilePlay;
 
-    JMenuItem jmiFilePush;
+	JMenuItem jmiFilePush;
 
-    JMenuItem jmiFilePlayShuffle;
+	JMenuItem jmiFilePlayShuffle;
 
-    JMenuItem jmiFilePlayRepeat;
+	JMenuItem jmiFilePlayRepeat;
 
-    JMenuItem jmiFilePlayDirectory;
+	JMenuItem jmiFilePlayDirectory;
 
-    JMenuItem jmiFileAddFavorites;
+	JMenuItem jmiFileAddFavorites;
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#getDesc()
-         */
-    public String getDesc() {
-	return "PhysicalTableView.0"; //$NON-NLS-1$
-    }
-
-    /** Return singleton */
-    public static synchronized PhysicalTableView getInstance() {
-	if (ltv == null) {
-	    ltv = new PhysicalTableView();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#getDesc()
+	 */
+	public String getDesc() {
+		return "PhysicalTableView.0"; //$NON-NLS-1$
 	}
-	return ltv;
-    }
 
-    /** Constructor */
-    public PhysicalTableView() {
-	super();
-	ltv = this;
-	// File menu
-	jmenuFile = new JPopupMenu();
-	jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); //$NON-NLS-1$
-	jmiFilePlay.addActionListener(this);
-	jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2")); //$NON-NLS-1$
-	jmiFilePush.addActionListener(this);
-	jmiFilePlayShuffle = new JMenuItem(Messages
-		.getString("PhysicalTableView.3")); //$NON-NLS-1$
-	jmiFilePlayShuffle.addActionListener(this);
-	jmiFilePlayRepeat = new JMenuItem(Messages
-		.getString("PhysicalTableView.4")); //$NON-NLS-1$
-	jmiFilePlayRepeat.addActionListener(this);
-	jmiFilePlayDirectory = new JMenuItem(Messages
-		.getString("PhysicalTableView.15")); //$NON-NLS-1$
-	jmiFilePlayDirectory.addActionListener(this);
-	jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
-	jmiProperties.addActionListener(this);
-	jmiFileAddFavorites = new JMenuItem(Messages
-		.getString("PhysicalTableView.16")); //$NON-NLS-1$
-	jmiFileAddFavorites.addActionListener(this);
-	jmenuFile.add(jmiFilePlay);
-	jmenuFile.add(jmiFilePush);
-	jmenuFile.add(jmiFilePlayShuffle);
-	jmenuFile.add(jmiFilePlayRepeat);
-	jmenuFile.add(jmiFilePlayDirectory);
-	jmenuFile.add(jmiFileAddFavorites);
-	jmenuFile.add(jmiProperties);
-    }
-
-    /** populate the table */
-    public JajukTableModel populateTable() {
-	// model creation
-	FilesTableModel model = new FilesTableModel();
-	model.addTableModelListener(this);
-	return model;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-         */
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-         */
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-         */
-    public void mouseExited(MouseEvent e) {
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-         */
-    public void mousePressed(MouseEvent e) {
-	int iSelectedCol = jtable.getSelectedColumn(); // selected column in
-                                                        // view
-	// Test click on play icon
-	// launch track only if only first column is selected (fixes issue with
-        // Ctrl-A)
-	if (jtable.getSelectedColumnCount() == 1
-		&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0) // click
-                                                                                // on
-                                                                                // play
-                                                                                // icon
-		|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) { // double
-                                                                                // click
-                                                                                // on
-                                                                                // any
-                                                                                // column
-                                                                                // and
-                                                                                // edition
-                                                                                // state
-                                                                                // false
-	    int iSelectedRow = jtable.getSelectedRow(); // selected row in view
-	    File file = (File) model.getItemAt(jtable
-		    .convertRowIndexToModel(iSelectedRow));
-	    try {
-		FIFO.getInstance().push(
-			new StackItem(file, ConfigurationManager
-				.getBoolean(CONF_STATE_REPEAT), true),
-			ConfigurationManager
-				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));// launch
-                                                                                // it
-	    } catch (JajukException je) {
-		Log.error(je);
-	    }
-	} else if (e.getClickCount() == 1) {
-	    int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-	    TableTransferHandler.iSelectedRow = iSelectedRow;
-	    if (e.getButton() == MouseEvent.BUTTON3) { // right clic on a
-                                                        // selected node set
-		// if none or 1 node is selected, a right click on another node
-                // select it
-		// if more than 1, we keep selection and display a popup for
-                // them
-		if (jtable.getSelectedRowCount() < 2) {
-		    jtable.getSelectionModel().setSelectionInterval(
-			    iSelectedRow, iSelectedRow);
+	/** Return singleton */
+	public static synchronized PhysicalTableView getInstance() {
+		if (ltv == null) {
+			ltv = new PhysicalTableView();
 		}
-		jmenuFile.show(jtable, e.getX(), e.getY());
-	    }
+		return ltv;
 	}
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-         */
-    public void mouseReleased(MouseEvent e) {
-    }
+	/** Constructor */
+	public PhysicalTableView() {
+		super();
+		ltv = this;
+		// File menu
+		jmenuFile = new JPopupMenu();
+		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); //$NON-NLS-1$
+		jmiFilePlay.addActionListener(this);
+		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2")); //$NON-NLS-1$
+		jmiFilePush.addActionListener(this);
+		jmiFilePlayShuffle = new JMenuItem(Messages
+				.getString("PhysicalTableView.3")); //$NON-NLS-1$
+		jmiFilePlayShuffle.addActionListener(this);
+		jmiFilePlayRepeat = new JMenuItem(Messages
+				.getString("PhysicalTableView.4")); //$NON-NLS-1$
+		jmiFilePlayRepeat.addActionListener(this);
+		jmiFilePlayDirectory = new JMenuItem(Messages
+				.getString("PhysicalTableView.15")); //$NON-NLS-1$
+		jmiFilePlayDirectory.addActionListener(this);
+		jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
+		jmiProperties.addActionListener(this);
+		jmiFileAddFavorites = new JMenuItem(Messages
+				.getString("PhysicalTableView.16")); //$NON-NLS-1$
+		jmiFileAddFavorites.addActionListener(this);
+		jmenuFile.add(jmiFilePlay);
+		jmenuFile.add(jmiFilePush);
+		jmenuFile.add(jmiFilePlayShuffle);
+		jmenuFile.add(jmiFilePlayRepeat);
+		jmenuFile.add(jmiFilePlayDirectory);
+		jmenuFile.add(jmiFileAddFavorites);
+		jmenuFile.add(jmiProperties);
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-    public void othersActionPerformed(final ActionEvent e) {
-	new Thread() {
-	    public void run() {
-		// computes selected files
-		ArrayList<File> alFilesToPlay = new ArrayList<File>(jtable
-			.getSelectedRowCount());
-		ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable
-			.getSelectedRowCount());
-		int[] indexes = jtable.getSelectedRows();
-		for (int i = 0; i < indexes.length; i++) { // each selected
-                                                                // track
-		    File file = (File) model.getItemAt(jtable
-			    .convertRowIndexToModel(indexes[i]));
-		    alSelectedFiles.add(file);
-		    ArrayList<File> alFilesToPlay2 = new ArrayList<File>(
-			    indexes.length);
-		    if (e.getSource() == jmiFilePlayDirectory) {
-			alFilesToPlay2.addAll(FileManager.getInstance()
-				.getAllDirectory(file));
-		    } else {
-			alFilesToPlay2.add(file);
-		    }
-		    Iterator it = alFilesToPlay2.iterator();
-		    while (it.hasNext()) { // each selected file from the
-                                                // same directory
-			File file2 = (File) it.next();
-			if (!alFilesToPlay.contains(file2)) {
-			    alFilesToPlay.add(file2);
+	/** populate the table */
+	public JajukTableModel populateTable() {
+		// model creation
+		FilesTableModel model = new FilesTableModel();
+		model.addTableModelListener(this);
+		return model;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 */
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 */
+	public void mouseExited(MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
+	public void mousePressed(MouseEvent e) {
+		int iSelectedCol = jtable.getSelectedColumn(); // selected column in
+		// view
+		// Test click on play icon
+		// launch track only if only first column is selected (fixes issue with
+		// Ctrl-A)
+		if (jtable.getSelectedColumnCount() == 1
+				&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0) // click
+				// on
+				// play
+				// icon
+				|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) { // double
+			// click
+			// on
+			// any
+			// column
+			// and
+			// edition
+			// state
+			// false
+			int iSelectedRow = jtable.getSelectedRow(); // selected row in view
+			File file = (File) model.getItemAt(jtable
+					.convertRowIndexToModel(iSelectedRow));
+			try {
+				FIFO.getInstance().push(
+						new StackItem(file, ConfigurationManager
+								.getBoolean(CONF_STATE_REPEAT), true),
+						ConfigurationManager
+								.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));// launch
+				// it
+			} catch (JajukException je) {
+				Log.error(je);
 			}
-		    }
-		}
-		// simple play
-		if (e.getSource() == jmiFilePlay
-			|| e.getSource() == jmiFilePlayDirectory) {
-		    FIFO.getInstance().push(
-			    Util.createStackItems(Util
-				    .applyPlayOption(alFilesToPlay),
-				    ConfigurationManager
-					    .getBoolean(CONF_STATE_REPEAT),
-				    true), false);
-		}
-		// push
-		else if (e.getSource() == jmiFilePush) {
-		    FIFO.getInstance().push(
-			    Util.createStackItems(Util
-				    .applyPlayOption(alFilesToPlay),
-				    ConfigurationManager
-					    .getBoolean(CONF_STATE_REPEAT),
-				    true), true);
-		}
-		// shuffle play
-		else if (e.getSource() == jmiFilePlayShuffle) {
-		    Collections.shuffle(alFilesToPlay, new Random(System
-			    .currentTimeMillis()));
-		    FIFO.getInstance().push(
-			    Util.createStackItems(alFilesToPlay,
-				    ConfigurationManager
-					    .getBoolean(CONF_STATE_REPEAT),
-				    true), false);
-		}
-		// repeat play
-		else if (e.getSource() == jmiFilePlayRepeat) {
-		    FIFO.getInstance().push(
-			    Util
-				    .createStackItems(Util
-					    .applyPlayOption(alFilesToPlay),
-					    true, true), false);
-		}
-		// Bookmark
-		else if (e.getSource() == jmiFileAddFavorites) {
-		    Bookmarks.getInstance().addFiles(alFilesToPlay);
-		}
-		// editable state
-		else if (e.getSource() == jtbEditable) {
-		    ConfigurationManager.setProperty(
-			    CONF_PHYSICAL_TABLE_EDITION, Boolean
-				    .toString(jtbEditable.isSelected()));
-		    model.setEditable(jtbEditable.isSelected());
-		}
-		// properties
-		else if (e.getSource() == jmiProperties) {
-		    ArrayList<Item> alItems1 = new ArrayList<Item>(1); // file
-                                                                        // items
-		    ArrayList<Item> alItems2 = new ArrayList<Item>(1); // tracks
-                                                                        // items
-		    if (jtable.getSelectedRowCount() == 1) { // mono
-                                                                // selection
-			File file = (File) model
-				.getItemAt(jtable.convertRowIndexToModel(jtable
-					.getSelectedRow()));
-			// show file and associated track properties
-			alItems1.add(file);
-			alItems2.add(file.getTrack());
-		    } else {// multi selection
-			for (int i = 0; i <= jtable.getRowCount(); i++) {
-			    if (jtable.getSelectionModel().isSelectedIndex(i)) {
-				File file = (File) model.getItemAt(jtable
-					.convertRowIndexToModel(i));
-				alItems1.add(file);
-				alItems2.add(file.getTrack());
-			    }
+		} else if (e.getClickCount() == 1) {
+			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+			TableTransferHandler.iSelectedRow = iSelectedRow;
+			if (e.getButton() == MouseEvent.BUTTON3) { // right clic on a
+				// selected node set
+				// if none or 1 node is selected, a right click on another node
+				// select it
+				// if more than 1, we keep selection and display a popup for
+				// them
+				if (jtable.getSelectedRowCount() < 2) {
+					jtable.getSelectionModel().setSelectionInterval(
+							iSelectedRow, iSelectedRow);
+				}
+				jmenuFile.show(jtable, e.getX(), e.getY());
 			}
-		    }
-		    new PropertiesWizard(alItems1, alItems2);
 		}
-	    }
-	}.start();
-    }
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.views.AbstractTableView#initTable()
-         */
-    @Override
-    void initTable() {
-	jtbEditable.setSelected(ConfigurationManager
-		.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void othersActionPerformed(final ActionEvent e) {
+		new Thread() {
+			public void run() {
+				// computes selected files
+				ArrayList<File> alFilesToPlay = new ArrayList<File>(jtable
+						.getSelectedRowCount());
+				ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable
+						.getSelectedRowCount());
+				int[] indexes = jtable.getSelectedRows();
+				for (int i = 0; i < indexes.length; i++) { // each selected
+					// track
+					File file = (File) model.getItemAt(jtable
+							.convertRowIndexToModel(indexes[i]));
+					alSelectedFiles.add(file);
+					ArrayList<File> alFilesToPlay2 = new ArrayList<File>(
+							indexes.length);
+					if (e.getSource() == jmiFilePlayDirectory) {
+						alFilesToPlay2.addAll(FileManager.getInstance()
+								.getAllDirectory(file));
+					} else {
+						alFilesToPlay2.add(file);
+					}
+					Iterator it = alFilesToPlay2.iterator();
+					while (it.hasNext()) { // each selected file from the
+						// same directory
+						File file2 = (File) it.next();
+						if (!alFilesToPlay.contains(file2)) {
+							alFilesToPlay.add(file2);
+						}
+					}
+				}
+				// simple play
+				if (e.getSource() == jmiFilePlay
+						|| e.getSource() == jmiFilePlayDirectory) {
+					FIFO.getInstance().push(
+							Util.createStackItems(Util
+									.applyPlayOption(alFilesToPlay),
+									ConfigurationManager
+											.getBoolean(CONF_STATE_REPEAT),
+									true), false);
+				}
+				// push
+				else if (e.getSource() == jmiFilePush) {
+					FIFO.getInstance().push(
+							Util.createStackItems(Util
+									.applyPlayOption(alFilesToPlay),
+									ConfigurationManager
+											.getBoolean(CONF_STATE_REPEAT),
+									true), true);
+				}
+				// shuffle play
+				else if (e.getSource() == jmiFilePlayShuffle) {
+					Collections.shuffle(alFilesToPlay, new Random(System
+							.currentTimeMillis()));
+					FIFO.getInstance().push(
+							Util.createStackItems(alFilesToPlay,
+									ConfigurationManager
+											.getBoolean(CONF_STATE_REPEAT),
+									true), false);
+				}
+				// repeat play
+				else if (e.getSource() == jmiFilePlayRepeat) {
+					FIFO.getInstance().push(
+							Util
+									.createStackItems(Util
+											.applyPlayOption(alFilesToPlay),
+											true, true), false);
+				}
+				// Bookmark
+				else if (e.getSource() == jmiFileAddFavorites) {
+					Bookmarks.getInstance().addFiles(alFilesToPlay);
+				}
+				// editable state
+				else if (e.getSource() == jtbEditable) {
+					ConfigurationManager.setProperty(
+							CONF_PHYSICAL_TABLE_EDITION, Boolean
+									.toString(jtbEditable.isSelected()));
+					model.setEditable(jtbEditable.isSelected());
+				}
+				// properties
+				else if (e.getSource() == jmiProperties) {
+					ArrayList<Item> alItems1 = new ArrayList<Item>(1); // file
+					// items
+					ArrayList<Item> alItems2 = new ArrayList<Item>(1); // tracks
+					// items
+					if (jtable.getSelectedRowCount() == 1) { // mono
+						// selection
+						File file = (File) model
+								.getItemAt(jtable.convertRowIndexToModel(jtable
+										.getSelectedRow()));
+						// show file and associated track properties
+						alItems1.add(file);
+						alItems2.add(file.getTrack());
+					} else {// multi selection
+						for (int i = 0; i <= jtable.getRowCount(); i++) {
+							if (jtable.getSelectionModel().isSelectedIndex(i)) {
+								File file = (File) model.getItemAt(jtable
+										.convertRowIndexToModel(i));
+								alItems1.add(file);
+								alItems2.add(file.getTrack());
+							}
+						}
+					}
+					new PropertiesWizard(alItems1, alItems2);
+				}
+			}
+		}.start();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.views.AbstractTableView#initTable()
+	 */
+	@Override
+	void initTable() {
+		jtbEditable.setSelected(ConfigurationManager
+				.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
+	}
 
 }

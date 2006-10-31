@@ -30,40 +30,40 @@ import java.util.ArrayList;
  * @created Aug 26, 2006
  */
 public class PopulatedAuthor {
-    private Author author = null;
+	private Author author = null;
 
-    private ArrayList<PopulatedAlbum> albums = null;
+	private ArrayList<PopulatedAlbum> albums = null;
 
-    public PopulatedAuthor(Author author) {
-	this.author = author;
-	this.albums = new ArrayList<PopulatedAlbum>();
-    }
-
-    public PopulatedAuthor(Author author, ArrayList<PopulatedAlbum> albums) {
-	this.author = author;
-	this.albums = albums;
-    }
-
-    public ArrayList<PopulatedAlbum> getAlbums() {
-	return albums;
-    }
-
-    public void setAlbums(ArrayList<PopulatedAlbum> albums) {
-	this.albums = albums;
-    }
-
-    public Author getAuthor() {
-	return author;
-    }
-
-    public void setAuthor(Author author) {
-	this.author = author;
-    }
-
-    public void addAlbum(PopulatedAlbum album) {
-	if (albums == null) {
-	    albums = new ArrayList<PopulatedAlbum>();
+	public PopulatedAuthor(Author author) {
+		this.author = author;
+		this.albums = new ArrayList<PopulatedAlbum>();
 	}
-	albums.add(album);
-    }
+
+	public PopulatedAuthor(Author author, ArrayList<PopulatedAlbum> albums) {
+		this.author = author;
+		this.albums = albums;
+	}
+
+	public ArrayList<PopulatedAlbum> getAlbums() {
+		return albums;
+	}
+
+	public void setAlbums(ArrayList<PopulatedAlbum> albums) {
+		this.albums = albums;
+	}
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
+	public void addAlbum(PopulatedAlbum album) {
+		if (albums == null) {
+			albums = new ArrayList<PopulatedAlbum>();
+		}
+		albums.add(album);
+	}
 }

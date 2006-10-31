@@ -40,159 +40,159 @@ import com.vlsolutions.swing.docking.DockKey;
  * @created 15 nov. 2003
  */
 public abstract class ViewAdapter extends JPanel implements IView,
-	ITechnicalStrings {
+		ITechnicalStrings {
 
-    /** Populated state */
-    private boolean bIsPopulated = false;
+	/** Populated state */
+	private boolean bIsPopulated = false;
 
-    /**
-         * View ID; note that a same view can be used several times in the same
-         * or in others perspectives
-         */
-    private String sID;
+	/**
+	 * View ID; note that a same view can be used several times in the same or
+	 * in others perspectives
+	 */
+	private String sID;
 
-    /** Associated perspective* */
-    private IPerspective perspective;
+	/** Associated perspective* */
+	private IPerspective perspective;
 
-    /** Associated DockKey */
-    private DockKey key;
+	/** Associated DockKey */
+	private DockKey key;
 
-    /**
-         * Constructor
-         */
-    public ViewAdapter() {
-	// create a new DockKey (note that ID is set in setID() method)
-	key = new DockKey();
-	setOpaque(true);
-	// View title
-	key.setName(Messages.getString(getDesc()));
-	// View icon
-	key.setIcon(Util.getIcon(ICON_VIEW));
-    }
-
-    /**
-         * toString method
-         */
-    public String toString() {
-	return "View[name=" + getID() + " description='" + getDesc() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
-    /**
-         * @return Returns the bIsPopulated.
-         */
-    public boolean isPopulated() {
-	return bIsPopulated;
-    }
-
-    /**
-         * @param isDisplayed
-         *                The bIsPopulated to set.
-         */
-    public void setIsPopulated(boolean isPopulated) {
-	bIsPopulated = isPopulated;
-    }
-
-    /**
-         * View refresh
-         */
-    public void refresh() {
-	if (getComponentCount() > 0) {
-	    removeAll();
+	/**
+	 * Constructor
+	 */
+	public ViewAdapter() {
+		// create a new DockKey (note that ID is set in setID() method)
+		key = new DockKey();
+		setOpaque(true);
+		// View title
+		key.setName(Messages.getString(getDesc()));
+		// View icon
+		key.setIcon(Util.getIcon(ICON_VIEW));
 	}
-	initUI();
-	this.revalidate();
-	this.repaint();
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
-         */
-    public void componentHidden(ComponentEvent e) {
-    }
+	/**
+	 * toString method
+	 */
+	public String toString() {
+		return "View[name=" + getID() + " description='" + getDesc() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
-         */
-    public void componentMoved(ComponentEvent e) {
-    }
+	/**
+	 * @return Returns the bIsPopulated.
+	 */
+	public boolean isPopulated() {
+		return bIsPopulated;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
-         */
-    public void componentResized(ComponentEvent e) {
-    }
+	/**
+	 * @param isDisplayed
+	 *            The bIsPopulated to set.
+	 */
+	public void setIsPopulated(boolean isPopulated) {
+		bIsPopulated = isPopulated;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
-         */
-    public void componentShown(ComponentEvent e) {
-    }
+	/**
+	 * View refresh
+	 */
+	public void refresh() {
+		if (getComponentCount() > 0) {
+			removeAll();
+		}
+		initUI();
+		this.revalidate();
+		this.repaint();
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see com.vlsolutions.swing.docking.Dockable#getDockKey()
-         */
-    public DockKey getDockKey() {
-	return key;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+	 */
+	public void componentHidden(ComponentEvent e) {
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see com.vlsolutions.swing.docking.Dockable#getComponent()
-         */
-    public Component getComponent() {
-	return this;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+	 */
+	public void componentMoved(ComponentEvent e) {
+	}
 
-    /**
-         * Activate
-         */
-    public void activate() {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+	 */
+	public void componentResized(ComponentEvent e) {
+	}
 
-    /**
-         * Default impl for ID
-         */
-    public String getID() {
-	return sID;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+	 */
+	public void componentShown(ComponentEvent e) {
+	}
 
-    /**
-         * Set the view ID
-         * 
-         * @param sID
-         */
-    public void setID(String sID) {
-	key.setKey(sID);
-	this.sID = sID;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vlsolutions.swing.docking.Dockable#getDockKey()
+	 */
+	public DockKey getDockKey() {
+		return key;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#getPerspective()
-         */
-    public IPerspective getPerspective() {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vlsolutions.swing.docking.Dockable#getComponent()
+	 */
+	public Component getComponent() {
+		return this;
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#setPerspective(org.jajuk.ui.IPerspective)
-         */
-    public void setPerspective(IPerspective perspective) {
-	this.perspective = perspective;
-    }
+	/**
+	 * Activate
+	 */
+	public void activate() {
+	}
+
+	/**
+	 * Default impl for ID
+	 */
+	public String getID() {
+		return sID;
+	}
+
+	/**
+	 * Set the view ID
+	 * 
+	 * @param sID
+	 */
+	public void setID(String sID) {
+		key.setKey(sID);
+		this.sID = sID;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#getPerspective()
+	 */
+	public IPerspective getPerspective() {
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#setPerspective(org.jajuk.ui.IPerspective)
+	 */
+	public void setPerspective(IPerspective perspective) {
+		this.perspective = perspective;
+	}
 
 }

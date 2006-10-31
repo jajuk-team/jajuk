@@ -143,12 +143,12 @@ public class JajukTimer {
 	 *         time to play). Returns -1 if repeat mode
 	 */
 	public long getTotalTimeToPlay() {
-		if (FIFO.getInstance().containsRepeat()) { 
+		if (FIFO.getInstance().containsRepeat()) {
 			// if repeat mode, total
 			// time has no sense
 			return -1;
 		}
-		return lTimeToPlay - getCurrentTrackEllapsedTime(); 
+		return lTimeToPlay - getCurrentTrackEllapsedTime();
 		// total time to play equals total time to play -
 		// current track elapsed time
 	}

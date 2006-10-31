@@ -30,9 +30,9 @@ import javax.swing.plaf.basic.ComboPopup;
  * @created 28 nov. 2003
  */
 public class MetalComboBoxUI extends javax.swing.plaf.metal.MetalComboBoxUI {
-    protected ComboPopup createPopup() {
-	BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
-	popup.getAccessibleContext().setAccessibleParent(comboBox);
-	return popup;
-    }
+	protected ComboPopup createPopup() {
+		BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
+		popup.getAccessibleContext().setAccessibleParent(comboBox);
+		return popup;
+	}
 }

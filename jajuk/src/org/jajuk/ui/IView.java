@@ -32,65 +32,65 @@ import com.vlsolutions.swing.docking.Dockable;
  */
 public interface IView extends ComponentListener, Dockable {
 
-    /**
-         * Returns the view identifier.
-         * 
-         * @return View identifier.
-         */
-    public String getID();
+	/**
+	 * Returns the view identifier.
+	 * 
+	 * @return View identifier.
+	 */
+	public String getID();
 
-    /**
-         * Set view ID
-         * 
-         * @param sID
-         */
-    public void setID(String sID);
+	/**
+	 * Set view ID
+	 * 
+	 * @param sID
+	 */
+	public void setID(String sID);
 
-    /**
-         * Returns the view description as i18n key
-         * 
-         * @return View description.
-         */
-    public String getDesc();
+	/**
+	 * Returns the view description as i18n key
+	 * 
+	 * @return View description.
+	 */
+	public String getDesc();
 
-    /**
-         * Display view UI
-         */
-    public void initUI();
+	/**
+	 * Display view UI
+	 */
+	public void initUI();
 
-    /**
-         * Get displayed state
-         * 
-         * @return populated state
-         */
-    public boolean isPopulated();
+	/**
+	 * Get displayed state
+	 * 
+	 * @return populated state
+	 */
+	public boolean isPopulated();
 
-    /**
-         * @param The
-         *                bIsPopulated to set.
-         */
-    public void setIsPopulated(boolean isDisplayed);
+	/**
+	 * @param The
+	 *            bIsPopulated to set.
+	 */
+	public void setIsPopulated(boolean isDisplayed);
 
-    /**
-         * View refresh
-         */
-    public void refresh();
+	/**
+	 * View refresh
+	 */
+	public void refresh();
 
-    /**
-         * Activate Calls when perspective is selected
-         */
-    public void activate();
+	/**
+	 * Activate Calls when perspective is selected
+	 */
+	public void activate();
 
-    /**
-         * 
-         * @return current perspective for this view
-         */
-    public IPerspective getPerspective();
+	/**
+	 * 
+	 * @return current perspective for this view
+	 */
+	public IPerspective getPerspective();
 
-    /**
-         * 
-         * @param perspective
-         */
-    public void setPerspective(IPerspective perspective);
+	/**
+	 * 
+	 * @param perspective
+	 */
+	public void setPerspective(IPerspective perspective);
 
 }

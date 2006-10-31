@@ -24,25 +24,25 @@ import org.jajuk.util.error.JajukException;
  */
 public class NoveltiesAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    NoveltiesAction() {
-	super(
-		Messages.getString("JajukWindow.15"), Util.getIcon(ICON_NOVELTIES), true); //$NON-NLS-1$
-	setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
-    }
-
-    public void perform(ActionEvent evt) throws JajukException {
-	Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
-	List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
-		.getShuffleNoveltiesPlaylist(), ambience);
-	if (alToPlay != null && alToPlay.size() > 0) {
-	    FIFO.getInstance().push(
-		    Util.createStackItems(Util.applyPlayOption(alToPlay),
-			    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-			    false), false);
-	} else { // none novelty found
-	    Messages.showWarningMessage(Messages.getString("Error.127")); //$NON-NLS-1$
+	NoveltiesAction() {
+		super(
+				Messages.getString("JajukWindow.15"), Util.getIcon(ICON_NOVELTIES), true); //$NON-NLS-1$
+		setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
 	}
-    }
+
+	public void perform(ActionEvent evt) throws JajukException {
+		Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
+		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
+				.getShuffleNoveltiesPlaylist(), ambience);
+		if (alToPlay != null && alToPlay.size() > 0) {
+			FIFO.getInstance().push(
+					Util.createStackItems(Util.applyPlayOption(alToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+							false), false);
+		} else { // none novelty found
+			Messages.showWarningMessage(Messages.getString("Error.127")); //$NON-NLS-1$
+		}
+	}
 }

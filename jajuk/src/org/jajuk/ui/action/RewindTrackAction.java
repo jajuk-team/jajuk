@@ -20,23 +20,23 @@ import org.jajuk.util.Util;
  */
 public class RewindTrackAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final float JUMP_SIZE = 0.1f;
+	private static final float JUMP_SIZE = 0.1f;
 
-    RewindTrackAction() {
-	super(Util.getIcon(ICON_REW), "ctrl alt LEFT", false); //$NON-NLS-1$
-	setShortDescription(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
+	RewindTrackAction() {
+		super(Util.getIcon(ICON_REW), "ctrl alt LEFT", false); //$NON-NLS-1$
+		setShortDescription(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
 
-    }
-
-    public void perform(ActionEvent evt) {
-	if ((evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-	    // replay the entire file
-	    Player.seek(0);
-	} else {
-	    float fCurrentPosition = Player.getCurrentPosition();
-	    Player.seek(fCurrentPosition - JUMP_SIZE);
 	}
-    }
+
+	public void perform(ActionEvent evt) {
+		if ((evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+			// replay the entire file
+			Player.seek(0);
+		} else {
+			float fCurrentPosition = Player.getCurrentPosition();
+			Player.seek(fCurrentPosition - JUMP_SIZE);
+		}
+	}
 }

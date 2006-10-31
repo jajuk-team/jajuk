@@ -54,164 +54,163 @@ import org.jajuk.util.Util;
  */
 public final class JSplash extends JFrame implements ITechnicalStrings {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-         * Progress bar to use in the splash screen.
-         */
-    private JProgressBar m_progress = null;
+	/**
+	 * Progress bar to use in the splash screen.
+	 */
+	private JProgressBar m_progress = null;
 
-    /**
-         * Check for whether to use the progress bar or not.
-         */
-    private boolean m_progressBar = false;
+	/**
+	 * Check for whether to use the progress bar or not.
+	 */
+	private boolean m_progressBar = false;
 
-    /**
-         * Check for whether to use progress bar messages or not.
-         */
-    private boolean m_progressBarMessages = false;
+	/**
+	 * Check for whether to use progress bar messages or not.
+	 */
+	private boolean m_progressBarMessages = false;
 
-    /**
-         * Check for whether to use precentage values or not.
-         */
-    private boolean m_progressBarPercent = false;
+	/**
+	 * Check for whether to use precentage values or not.
+	 */
+	private boolean m_progressBarPercent = false;
 
-    /**
-         * Constructor for the splash window.
-         * <p>
-         * 
-         * @param url
-         *                Image for ImageIcon.
-         * @param progress
-         *                Do we want a progress bar at all?
-         * @param messages
-         *                If we want a progress bar, do we want to display
-         *                messages inside the progress bar?
-         * @param percent
-         *                If we want a progress bar, do we want to display the
-         *                percent?
-         * @param CopyrightString
-         *                Copyright notice
-         * @param versionString
-         *                If null no string is displayed on the bottom-right of
-         *                the splash window.
-         * @param versionStringFont
-         *                Font for version string, if null default.
-         * @param versionStringColor
-         *                Color for version string, if null default.
-         *                <p>
-         *                <b>NOTE:</b> Use only one flag for: messages /
-         *                percent (one or the other, NOT both).
-         */
-    public JSplash(URL url, boolean progress, boolean messages,
-	    boolean percent, String copyrightString, String versionString,
-	    Font versionStringFont, Color versionStringColor) {
-	super();
-	setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
-	setIconImage(Util.getIcon(ICON_LOGO).getImage());
-	setUndecorated(true);
+	/**
+	 * Constructor for the splash window.
+	 * <p>
+	 * 
+	 * @param url
+	 *            Image for ImageIcon.
+	 * @param progress
+	 *            Do we want a progress bar at all?
+	 * @param messages
+	 *            If we want a progress bar, do we want to display messages
+	 *            inside the progress bar?
+	 * @param percent
+	 *            If we want a progress bar, do we want to display the percent?
+	 * @param CopyrightString
+	 *            Copyright notice
+	 * @param versionString
+	 *            If null no string is displayed on the bottom-right of the
+	 *            splash window.
+	 * @param versionStringFont
+	 *            Font for version string, if null default.
+	 * @param versionStringColor
+	 *            Color for version string, if null default.
+	 *            <p>
+	 *            <b>NOTE:</b> Use only one flag for: messages / percent (one
+	 *            or the other, NOT both).
+	 */
+	public JSplash(URL url, boolean progress, boolean messages,
+			boolean percent, String copyrightString, String versionString,
+			Font versionStringFont, Color versionStringColor) {
+		super();
+		setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
+		setIconImage(Util.getIcon(ICON_LOGO).getImage());
+		setUndecorated(true);
 
-	m_progressBar = progress;
-	m_progressBarMessages = messages;
-	m_progressBarPercent = percent;
+		m_progressBar = progress;
+		m_progressBarMessages = messages;
+		m_progressBarPercent = percent;
 
-	// build a panel with a black line for border,
-	// and set it as the content pane
-	//
-	JPanel panel = new JPanel();
-	panel.setLayout(new BorderLayout());
-	panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-	setContentPane(panel);
+		// build a panel with a black line for border,
+		// and set it as the content pane
+		//
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		setContentPane(panel);
 
-	// build a label and set it's icon
-	//
-	JSplashLabel label = new JSplashLabel(url, copyrightString,
-		versionString, versionStringFont, versionStringColor);
+		// build a label and set it's icon
+		//
+		JSplashLabel label = new JSplashLabel(url, copyrightString,
+				versionString, versionStringFont, versionStringColor);
 
-	// build a progress bar
-	//
-	if (m_progressBar) {
-	    m_progress = new JProgressBar();
+		// build a progress bar
+		//
+		if (m_progressBar) {
+			m_progress = new JProgressBar();
 
-	    if (m_progressBarMessages || m_progressBarPercent) {
-		m_progress.setStringPainted(true);
-	    } else {
-		m_progress.setStringPainted(false);
-	    }
+			if (m_progressBarMessages || m_progressBarPercent) {
+				m_progress.setStringPainted(true);
+			} else {
+				m_progress.setStringPainted(false);
+			}
 
-	    if (m_progressBarMessages && !m_progressBarPercent) {
-		m_progress.setString(""); //$NON-NLS-1$
-	    }
+			if (m_progressBarMessages && !m_progressBarPercent) {
+				m_progress.setString(""); //$NON-NLS-1$
+			}
 
-	    m_progress.setMaximum(100);
-	    m_progress.setMinimum(0);
-	    m_progress.setValue(0);
-	    m_progress.setFont(new Font("Dialog", Font.BOLD, 15)); //$NON-NLS-1$
+			m_progress.setMaximum(100);
+			m_progress.setMinimum(0);
+			m_progress.setValue(0);
+			m_progress.setFont(new Font("Dialog", Font.BOLD, 15)); //$NON-NLS-1$
+		}
+
+		// add the components to the panel
+		//
+		getContentPane().add(label, BorderLayout.CENTER);
+
+		if (m_progressBar) {
+			getContentPane().add(m_progress, BorderLayout.SOUTH);
+		}
+
+		// validate, and display the components
+		pack();
+
+		// center on screen
+		setLocationRelativeTo(this);
+
+		// hide the panel for now...
+		setVisible(false);
 	}
 
-	// add the components to the panel
-	//
-	getContentPane().add(label, BorderLayout.CENTER);
+	/**
+	 * Displays the splash screen
+	 */
+	public void splashOn() {
+		setVisible(true);
 
-	if (m_progressBar) {
-	    getContentPane().add(m_progress, BorderLayout.SOUTH);
 	}
 
-	// validate, and display the components
-	pack();
-
-	// center on screen
-	setLocationRelativeTo(this);
-
-	// hide the panel for now...
-	setVisible(false);
-    }
-
-    /**
-         * Displays the splash screen
-         */
-    public void splashOn() {
-	setVisible(true);
-
-    }
-
-    /**
-         * Hides and disposes the splash screen
-         */
-    public void splashOff() {
-	setVisible(false);
-	dispose();
-    }
-
-    /**
-         * Sets the progress indicator (values: 0 - 100).
-         * <p>
-         * 
-         * @param value
-         *                The progress indicator value.
-         */
-    public void setProgress(int value) {
-	if (m_progressBar && value >= 0 && value <= 100) {
-	    m_progress.setValue(value);
+	/**
+	 * Hides and disposes the splash screen
+	 */
+	public void splashOff() {
+		setVisible(false);
+		dispose();
 	}
-    }
 
-    /**
-         * Sets the progress indicator (values: 0 - 100) and a label to print
-         * inside the progress bar.
-         * <p>
-         * 
-         * @param value
-         *                The progress indicator value.
-         * @param msg
-         *                The message to print.
-         */
-    public void setProgress(int value, String msg) {
-	setProgress(value);
-
-	if (m_progressBarMessages && !m_progressBarPercent && msg != null) {
-	    m_progress.setString(msg);
+	/**
+	 * Sets the progress indicator (values: 0 - 100).
+	 * <p>
+	 * 
+	 * @param value
+	 *            The progress indicator value.
+	 */
+	public void setProgress(int value) {
+		if (m_progressBar && value >= 0 && value <= 100) {
+			m_progress.setValue(value);
+		}
 	}
-    }
+
+	/**
+	 * Sets the progress indicator (values: 0 - 100) and a label to print inside
+	 * the progress bar.
+	 * <p>
+	 * 
+	 * @param value
+	 *            The progress indicator value.
+	 * @param msg
+	 *            The message to print.
+	 */
+	public void setProgress(int value, String msg) {
+		setProgress(value);
+
+		if (m_progressBarMessages && !m_progressBarPercent && msg != null) {
+			m_progress.setString(msg);
+		}
+	}
 
 }

@@ -23,64 +23,64 @@ import javax.swing.border.Border;
  */
 public class JajukButton extends JButton {
 
-    private static final long serialVersionUID = 1L;
-
-    private static final Border JAJUK_BORDER = BorderFactory.createEmptyBorder(
-	    4, 4, 4, 4);
-
-    public JajukButton() {
-	this(null, null);
-    }
-
-    public JajukButton(Icon icon) {
-	this(null, icon);
-    }
-
-    public JajukButton(String text) {
-	this(text, null);
-    }
-
-    public JajukButton(Action a) {
-	super(a);
-    }
-
-    public JajukButton(String text, Icon icon) {
-	super(text, icon);
-    }
-
-    @Override
-    protected void init(String text, Icon icon) {
-	// Hide action text on button
-	if (icon != null) {
-	    putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
-	}
-	super.init(text, icon);
-	setBorder(JAJUK_BORDER);
-    }
-
-    @Override
-    protected void configurePropertiesFromAction(Action action) {
-	if (action.getValue(Action.SMALL_ICON) != null) {
-	    putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
-	}
-
-	super.configurePropertiesFromAction(action);
-
-	KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-	if (stroke != null) {
-	    InputMap keyMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-	    keyMap.put(stroke, "action"); //$NON-NLS-1$
-
-	    ActionMap actionMap = getActionMap();
-	    actionMap.put("action", new ActionWrapper()); //$NON-NLS-1$
-	}
-    }
-
-    private class ActionWrapper extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
-	    fireActionPerformed(e);
+	private static final Border JAJUK_BORDER = BorderFactory.createEmptyBorder(
+			4, 4, 4, 4);
+
+	public JajukButton() {
+		this(null, null);
 	}
-    }
+
+	public JajukButton(Icon icon) {
+		this(null, icon);
+	}
+
+	public JajukButton(String text) {
+		this(text, null);
+	}
+
+	public JajukButton(Action a) {
+		super(a);
+	}
+
+	public JajukButton(String text, Icon icon) {
+		super(text, icon);
+	}
+
+	@Override
+	protected void init(String text, Icon icon) {
+		// Hide action text on button
+		if (icon != null) {
+			putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
+		}
+		super.init(text, icon);
+		setBorder(JAJUK_BORDER);
+	}
+
+	@Override
+	protected void configurePropertiesFromAction(Action action) {
+		if (action.getValue(Action.SMALL_ICON) != null) {
+			putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
+		}
+
+		super.configurePropertiesFromAction(action);
+
+		KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+		if (stroke != null) {
+			InputMap keyMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+			keyMap.put(stroke, "action"); //$NON-NLS-1$
+
+			ActionMap actionMap = getActionMap();
+			actionMap.put("action", new ActionWrapper()); //$NON-NLS-1$
+		}
+	}
+
+	private class ActionWrapper extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(ActionEvent e) {
+			fireActionPerformed(e);
+		}
+	}
 }

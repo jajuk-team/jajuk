@@ -55,201 +55,201 @@ import org.jajuk.util.log.Log;
  * @created 27 avr. 2005
  */
 public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
-	ActionListener {
-    private static final long serialVersionUID = 1L;
+		ActionListener {
+	private static final long serialVersionUID = 1L;
 
-    JLabel jlLeftIcon;
+	JLabel jlLeftIcon;
 
-    JPanel jpRightPanel;
+	JPanel jpRightPanel;
 
-    JLabel jlWelcome;
+	JLabel jlWelcome;
 
-    JLabel jlFileSelection;
+	JLabel jlFileSelection;
 
-    JTextField jtfFileSelected;
+	JTextField jtfFileSelected;
 
-    JButton jbFileSelection;
+	JButton jbFileSelection;
 
-    JCheckBox jcbAutoCover;
+	JCheckBox jcbAutoCover;
 
-    JLabel jlRefreshTime;
+	JLabel jlRefreshTime;
 
-    JTextField jtfRefreshTime;
+	JTextField jtfRefreshTime;
 
-    JLabel jlMins;
+	JLabel jlMins;
 
-    JCheckBox jcbHelp;
+	JCheckBox jcbHelp;
 
-    JPanel jpButtons;
+	JPanel jpButtons;
 
-    JButton jbOk;
+	JButton jbOk;
 
-    JButton jbCancel;
+	JButton jbCancel;
 
-    JPanel jpMain;
+	JPanel jpMain;
 
-    /** Selected directory */
-    private File fDir;
+	/** Selected directory */
+	private File fDir;
 
-    /**
-         * First time wizard
-         */
-    public FirstTimeWizard() {
-	super(Main.getWindow(), true); // make it modal
-	setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
-	int iX_SEPARATOR = 5;
-	int iY_SEPARATOR = 10;
-	jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
-	jpRightPanel = new JPanel();
-	jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
-	jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
-	jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_DIR));
-	jtfFileSelected = new JTextField(""); //$NON-NLS-1$
-	jtfFileSelected.setForeground(Color.BLUE);
-	jtfFileSelected.setEditable(false);
-	jbFileSelection.addActionListener(this);
-	jcbAutoCover = new JCheckBox(Messages.getString("FirstTimeWizard.3")); //$NON-NLS-1$
-	// can't change auto-cover if not first connection
-	if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
-	    jcbAutoCover.setSelected(true);
-	} else {
-	    jcbAutoCover.setEnabled(false);
-	}
-	jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
-	// Refresh time
-	jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
-	jtfRefreshTime = new JTextField("5");// 5 mins by default
-                                                // //$NON-NLS-1$
-	jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
-	JPanel jpRefresh = new JPanel();
-	double sizeRefresh[][] = {
-		{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
-			TableLayout.PREFERRED }, { 20 } };
-	jpRefresh.setLayout(new TableLayout(sizeRefresh));
-	jpRefresh.add(jlRefreshTime, "0,0"); //$NON-NLS-1$
-	jpRefresh.add(jtfRefreshTime, "2,0"); //$NON-NLS-1$
-	jpRefresh.add(jlMins, "4,0"); //$NON-NLS-1$
-	// buttons
-	jpButtons = new JPanel();
-	jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-	jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
-	jbOk.setEnabled(false);
-	jbOk.addActionListener(this);
-	jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
-	jbCancel.addActionListener(this);
-	jpButtons.add(jbOk);
-	jpButtons.add(jbCancel);
-	double sizeRight[][] = {
-		{ 0.99, iX_SEPARATOR },
-		{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR,
-			TableLayout.PREFERRED, iY_SEPARATOR, 20,
-			4 * iY_SEPARATOR, 40, iY_SEPARATOR, 40, iY_SEPARATOR,
-			40, iY_SEPARATOR, 40 } };
-
-	FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
-	JPanel jpFileSelection = new JPanel();
-	jpFileSelection.setLayout(flSelection);
-	jpFileSelection.add(jbFileSelection);
-	jpFileSelection.add(Box.createHorizontalStrut(10));
-	jpFileSelection.add(jlFileSelection);
-
-	jpRightPanel.setLayout(new TableLayout(sizeRight));
-	jpRightPanel.add(jlWelcome, "0,1"); //$NON-NLS-1$
-	jpRightPanel.add(jpFileSelection, "0,3"); //$NON-NLS-1$
-	jpRightPanel.add(jtfFileSelected, "0,5"); //$NON-NLS-1$
-	jpRightPanel.add(jpRefresh, "0,7"); //$NON-NLS-1$
-	jpRightPanel.add(jcbAutoCover, "0,9"); //$NON-NLS-1$
-	jpRightPanel.add(jcbHelp, "0,11"); //$NON-NLS-1$
-	jpRightPanel.add(jpButtons, "0,13"); //$NON-NLS-1$
-	double size[][] = {
-		{ 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED },
-		{ 0.99 } };
-	jpMain = (JPanel) getContentPane();
-	jpMain.setLayout(new TableLayout(size));
-	jpMain.add(jlLeftIcon, "1,0"); //$NON-NLS-1$
-	jpMain.add(jpRightPanel, "3,0"); //$NON-NLS-1$
-	getRootPane().setDefaultButton(jbOk);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-	if (e.getSource() == jbCancel) {
-	    dispose(); // close window
-	} else if (e.getSource() == jbFileSelection) {
-	    JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-		    JajukFileFilter.DirectoryFilter.getInstance()));
-	    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	    jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));//$NON-NLS-1$
-	    jfc.setMultiSelectionEnabled(false);
-	    int returnVal = jfc.showOpenDialog(this);
-	    if (returnVal == JFileChooser.APPROVE_OPTION) {
-		fDir = jfc.getSelectedFile();
-		// check device availibility
-		String sCode = DeviceManager.getInstance()
-			.checkDeviceAvailablity(fDir.getName(), 0,
-				fDir.getAbsolutePath(), fDir.getAbsolutePath(),
-				true);
-		if (!sCode.equals("0")) { //$NON-NLS-1$
-		    Messages.showErrorMessage(sCode);
-		    jbOk.setEnabled(false);
-		    return;
-		}
-		jtfFileSelected.setText(fDir.getAbsolutePath());
-		jbOk.setEnabled(true);
-		jbOk.grabFocus();
-	    }
-	} else if (e.getSource() == jbOk) {
-	    /*
-                 * Set perspective to display. We differentiate first connection
-                 * or not because during first connection, perspectives are not
-                 * yet initialized, so we just tell it whish perspective to use
-                 * at startup
-                 */
-	    if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
-		if (jcbHelp.isSelected()) {
-		    // set parameter perspective
-		    Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+	/**
+	 * First time wizard
+	 */
+	public FirstTimeWizard() {
+		super(Main.getWindow(), true); // make it modal
+		setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
+		int iX_SEPARATOR = 5;
+		int iY_SEPARATOR = 10;
+		jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
+		jpRightPanel = new JPanel();
+		jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
+		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
+		jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_DIR));
+		jtfFileSelected = new JTextField(""); //$NON-NLS-1$
+		jtfFileSelected.setForeground(Color.BLUE);
+		jtfFileSelected.setEditable(false);
+		jbFileSelection.addActionListener(this);
+		jcbAutoCover = new JCheckBox(Messages.getString("FirstTimeWizard.3")); //$NON-NLS-1$
+		// can't change auto-cover if not first connection
+		if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
+			jcbAutoCover.setSelected(true);
 		} else {
-		    // set physical perspective
-		    Main.setDefaultPerspective(PERSPECTIVE_NAME_PHYSICAL);
+			jcbAutoCover.setEnabled(false);
 		}
-	    } else {
-		// go to help perspective if required
-		if (jcbHelp.isSelected()) {
-		    // set parameter perspective
-		    PerspectiveManager
-			    .setCurrentPerspective(PERSPECTIVE_NAME_HELP);
-		}
-	    }
-	    // Set auto cover property
-	    if (jcbAutoCover.isEnabled()) {
-		ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,
-			Boolean.toString(jcbAutoCover.isSelected()));
-	    }
-	    // Create a directory device
-	    Device device = DeviceManager.getInstance().registerDevice(
-		    fDir.getName(), 0, fDir.getAbsolutePath());
-	    device.setProperty(XML_DEVICE_MOUNT_POINT, fDir.getAbsolutePath());
-	    device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
-	    // Set refresh time
-	    double dRefreshTime = 5d;
-	    try {
-		dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
-		if (dRefreshTime < 0) {
-		    dRefreshTime = 0;
-		}
-	    } catch (NumberFormatException e1) {
-		dRefreshTime = 0;
-	    }
-	    device.setProperty(XML_DEVICE_AUTO_REFRESH, dRefreshTime);
-	    try {
-		device.refresh(true, false);
-	    } catch (Exception e2) {
-		Log.error("112", device.getName(), e2); //$NON-NLS-1$
-		Messages.showErrorMessage("112", device.getName()); //$NON-NLS-1$
-	    }
-	    // exit
-	    dispose();
+		jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
+		// Refresh time
+		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
+		jtfRefreshTime = new JTextField("5");// 5 mins by default
+		// //$NON-NLS-1$
+		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
+		JPanel jpRefresh = new JPanel();
+		double sizeRefresh[][] = {
+				{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
+						TableLayout.PREFERRED }, { 20 } };
+		jpRefresh.setLayout(new TableLayout(sizeRefresh));
+		jpRefresh.add(jlRefreshTime, "0,0"); //$NON-NLS-1$
+		jpRefresh.add(jtfRefreshTime, "2,0"); //$NON-NLS-1$
+		jpRefresh.add(jlMins, "4,0"); //$NON-NLS-1$
+		// buttons
+		jpButtons = new JPanel();
+		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
+		jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
+		jbOk.setEnabled(false);
+		jbOk.addActionListener(this);
+		jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
+		jbCancel.addActionListener(this);
+		jpButtons.add(jbOk);
+		jpButtons.add(jbCancel);
+		double sizeRight[][] = {
+				{ 0.99, iX_SEPARATOR },
+				{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR,
+						TableLayout.PREFERRED, iY_SEPARATOR, 20,
+						4 * iY_SEPARATOR, 40, iY_SEPARATOR, 40, iY_SEPARATOR,
+						40, iY_SEPARATOR, 40 } };
+
+		FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
+		JPanel jpFileSelection = new JPanel();
+		jpFileSelection.setLayout(flSelection);
+		jpFileSelection.add(jbFileSelection);
+		jpFileSelection.add(Box.createHorizontalStrut(10));
+		jpFileSelection.add(jlFileSelection);
+
+		jpRightPanel.setLayout(new TableLayout(sizeRight));
+		jpRightPanel.add(jlWelcome, "0,1"); //$NON-NLS-1$
+		jpRightPanel.add(jpFileSelection, "0,3"); //$NON-NLS-1$
+		jpRightPanel.add(jtfFileSelected, "0,5"); //$NON-NLS-1$
+		jpRightPanel.add(jpRefresh, "0,7"); //$NON-NLS-1$
+		jpRightPanel.add(jcbAutoCover, "0,9"); //$NON-NLS-1$
+		jpRightPanel.add(jcbHelp, "0,11"); //$NON-NLS-1$
+		jpRightPanel.add(jpButtons, "0,13"); //$NON-NLS-1$
+		double size[][] = {
+				{ 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED },
+				{ 0.99 } };
+		jpMain = (JPanel) getContentPane();
+		jpMain.setLayout(new TableLayout(size));
+		jpMain.add(jlLeftIcon, "1,0"); //$NON-NLS-1$
+		jpMain.add(jpRightPanel, "3,0"); //$NON-NLS-1$
+		getRootPane().setDefaultButton(jbOk);
 	}
-    }
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == jbCancel) {
+			dispose(); // close window
+		} else if (e.getSource() == jbFileSelection) {
+			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+					JajukFileFilter.DirectoryFilter.getInstance()));
+			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));//$NON-NLS-1$
+			jfc.setMultiSelectionEnabled(false);
+			int returnVal = jfc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				fDir = jfc.getSelectedFile();
+				// check device availibility
+				String sCode = DeviceManager.getInstance()
+						.checkDeviceAvailablity(fDir.getName(), 0,
+								fDir.getAbsolutePath(), fDir.getAbsolutePath(),
+								true);
+				if (!sCode.equals("0")) { //$NON-NLS-1$
+					Messages.showErrorMessage(sCode);
+					jbOk.setEnabled(false);
+					return;
+				}
+				jtfFileSelected.setText(fDir.getAbsolutePath());
+				jbOk.setEnabled(true);
+				jbOk.grabFocus();
+			}
+		} else if (e.getSource() == jbOk) {
+			/*
+			 * Set perspective to display. We differentiate first connection or
+			 * not because during first connection, perspectives are not yet
+			 * initialized, so we just tell it whish perspective to use at
+			 * startup
+			 */
+			if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
+				if (jcbHelp.isSelected()) {
+					// set parameter perspective
+					Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+				} else {
+					// set physical perspective
+					Main.setDefaultPerspective(PERSPECTIVE_NAME_PHYSICAL);
+				}
+			} else {
+				// go to help perspective if required
+				if (jcbHelp.isSelected()) {
+					// set parameter perspective
+					PerspectiveManager
+							.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+				}
+			}
+			// Set auto cover property
+			if (jcbAutoCover.isEnabled()) {
+				ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,
+						Boolean.toString(jcbAutoCover.isSelected()));
+			}
+			// Create a directory device
+			Device device = DeviceManager.getInstance().registerDevice(
+					fDir.getName(), 0, fDir.getAbsolutePath());
+			device.setProperty(XML_DEVICE_MOUNT_POINT, fDir.getAbsolutePath());
+			device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
+			// Set refresh time
+			double dRefreshTime = 5d;
+			try {
+				dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
+				if (dRefreshTime < 0) {
+					dRefreshTime = 0;
+				}
+			} catch (NumberFormatException e1) {
+				dRefreshTime = 0;
+			}
+			device.setProperty(XML_DEVICE_AUTO_REFRESH, dRefreshTime);
+			try {
+				device.refresh(true, false);
+			} catch (Exception e2) {
+				Log.error("112", device.getName(), e2); //$NON-NLS-1$
+				Messages.showErrorMessage("112", device.getName()); //$NON-NLS-1$
+			}
+			// exit
+			dispose();
+		}
+	}
 
 }

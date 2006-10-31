@@ -25,40 +25,40 @@ import org.jajuk.util.log.Log;
  */
 public class PreviousTrackAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    PreviousTrackAction() {
-	super(
-		Messages.getString("JajukWindow.13"), Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-	setShortDescription(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
-    }
-
-    public void perform(ActionEvent evt) {
-	int mod = evt.getModifiers();
-
-	if ((mod & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-	    ActionManager.getAction(JajukAction.PREVIOUS_ALBUM)
-		    .actionPerformed(evt);
-	} else {
-	    synchronized (MUTEX) {
-		new Thread() {
-		    public void run() {
-			try {
-			    FIFO.getInstance().playPrevious();
-			} catch (Exception e) {
-			    Log.error(e);
-			}
-		    }
-		}.start();
-
-		// Player was paused, reset pause button when changing of track
-		if (Player.isPaused()) {
-		    Player.setPaused(false);
-		    ObservationManager.notify(new Event(
-			    EventSubject.EVENT_PLAYER_RESUME)); // notify of
-                                                                // this event
-		}
-	    }
+	PreviousTrackAction() {
+		super(
+				Messages.getString("JajukWindow.13"), Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+		setShortDescription(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
 	}
-    }
+
+	public void perform(ActionEvent evt) {
+		int mod = evt.getModifiers();
+
+		if ((mod & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+			ActionManager.getAction(JajukAction.PREVIOUS_ALBUM)
+					.actionPerformed(evt);
+		} else {
+			synchronized (MUTEX) {
+				new Thread() {
+					public void run() {
+						try {
+							FIFO.getInstance().playPrevious();
+						} catch (Exception e) {
+							Log.error(e);
+						}
+					}
+				}.start();
+
+				// Player was paused, reset pause button when changing of track
+				if (Player.isPaused()) {
+					Player.setPaused(false);
+					ObservationManager.notify(new Event(
+							EventSubject.EVENT_PLAYER_RESUME)); // notify of
+					// this event
+				}
+			}
+		}
+	}
 }

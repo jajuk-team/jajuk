@@ -33,27 +33,27 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class JajukCellRender extends DefaultTableCellRenderer {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public Component getTableCellRendererComponent(JTable table, Object oValue,
-	    boolean selected, boolean focused, int row, int column) {
-	setEnabled(table == null || table.isEnabled()); // see question above
-	if (oValue instanceof IconLabel) {
-	    IconLabel iconLabel = (IconLabel) oValue;
-	    setIcon(iconLabel.getIcon());
-	    if (iconLabel.getText() != null) {
-		setText(iconLabel.getText());
-	    }
-	    setBackground(iconLabel.getBackground());
-	    setForeground(iconLabel.getForeground());
-	    super.getTableCellRendererComponent(table, oValue, selected,
-		    focused, row, column); // do it here, called to set
-                                                // blue if selection
-	    if (iconLabel.getFont() != null) {
-		setFont(iconLabel.getFont());
-	    }
+	public Component getTableCellRendererComponent(JTable table, Object oValue,
+			boolean selected, boolean focused, int row, int column) {
+		setEnabled(table == null || table.isEnabled()); // see question above
+		if (oValue instanceof IconLabel) {
+			IconLabel iconLabel = (IconLabel) oValue;
+			setIcon(iconLabel.getIcon());
+			if (iconLabel.getText() != null) {
+				setText(iconLabel.getText());
+			}
+			setBackground(iconLabel.getBackground());
+			setForeground(iconLabel.getForeground());
+			super.getTableCellRendererComponent(table, oValue, selected,
+					focused, row, column); // do it here, called to set
+			// blue if selection
+			if (iconLabel.getFont() != null) {
+				setFont(iconLabel.getFont());
+			}
+		}
+		return this;
 	}
-	return this;
-    }
 
 }

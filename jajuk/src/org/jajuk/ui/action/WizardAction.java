@@ -34,22 +34,22 @@ import org.jajuk.util.Util;
  */
 public class WizardAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    WizardAction() {
-	super(
-		Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
-    }
+	WizardAction() {
+		super(
+				Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
+	}
 
-    /**
-         * Invoked when an action occurs.
-         * 
-         * @param evt
-         */
-    public void perform(ActionEvent evt) {
-	FirstTimeWizard fsw = new FirstTimeWizard();
-	fsw.pack();
-	fsw.setLocationRelativeTo(Main.getWindow());
-	fsw.setVisible(true);
-    }
+	/**
+	 * Invoked when an action occurs.
+	 * 
+	 * @param evt
+	 */
+	public void perform(ActionEvent evt) {
+		FirstTimeWizard fsw = new FirstTimeWizard();
+		fsw.pack();
+		fsw.setLocationRelativeTo(Main.getWindow());
+		fsw.setVisible(true);
+	}
 }

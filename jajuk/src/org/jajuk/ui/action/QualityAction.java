@@ -34,22 +34,22 @@ import org.jajuk.util.Util;
  */
 public class QualityAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    QualityAction() {
-	super(
-		Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
-    }
+	QualityAction() {
+		super(
+				Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
+	}
 
-    /**
-         * Invoked when an action occurs.
-         * 
-         * @param evt
-         */
-    public void perform(ActionEvent evt) {
-	QualityFeedbackWizard qfw = new QualityFeedbackWizard();
-	qfw.pack();
-	qfw.setLocationRelativeTo(Main.getWindow());
-	qfw.setVisible(true);
-    }
+	/**
+	 * Invoked when an action occurs.
+	 * 
+	 * @param evt
+	 */
+	public void perform(ActionEvent evt) {
+		QualityFeedbackWizard qfw = new QualityFeedbackWizard();
+		qfw.pack();
+		qfw.setLocationRelativeTo(Main.getWindow());
+		qfw.setVisible(true);
+	}
 }

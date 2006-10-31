@@ -296,13 +296,12 @@ public class CoverView extends ViewAdapter implements Observer,
 					if (fCurrent == null) {
 						this.dirCurrent = null;
 					} else {
-						this.dirCurrent = fCurrent.getDirectory(); // store
-						// this
-						// dir
+						// store this dir
+						this.dirCurrent = fCurrent.getDirectory();
 					}
-					alCovers.clear(); // remove all existing covers
-					// if current file is null ( probably a file cannot be
-					// read )
+					// remove all existing covers if current file is null (
+					// probably a file cannot be read )
+					alCovers.clear();
 					if (this.dirCurrent == null) {
 						alCovers.add(coverDefault);
 						index = 0;
@@ -313,14 +312,11 @@ public class CoverView extends ViewAdapter implements Observer,
 					// the current track to reach other devices covers and
 					// display them together
 					Track trackCurrent = fCurrent.getTrack();
-					ArrayList alFiles = trackCurrent.getFiles();
+					ArrayList<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
 					/*
 					 * list of files mapping the track
 					 */
-					Iterator it = alFiles.iterator();
-					while (it.hasNext()) {
-						org.jajuk.base.File file = (org.jajuk.base.File) it
-								.next();
+					for (org.jajuk.base.File file:alFiles){
 						Directory dirScanned = file.getDirectory();
 						if (!dirScanned.getDevice().isMounted()) {
 							/*

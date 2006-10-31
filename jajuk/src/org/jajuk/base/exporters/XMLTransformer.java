@@ -42,61 +42,61 @@ import org.jajuk.util.log.Log;
  * @created Aug 22, 2006
  */
 public class XMLTransformer {
-    /**
-         * This method will convert an XML String into an HTML String.
-         * 
-         * @param xml
-         *                The XML String to convert.
-         * @param xsltPath
-         *                The path to the XSLT Transform to use.
-         * @return Returns a string containing HTML markup.
-         */
-    public static String xmlToHTML(String xml, URL xsltPath) {
-	String content = null;
+	/**
+	 * This method will convert an XML String into an HTML String.
+	 * 
+	 * @param xml
+	 *            The XML String to convert.
+	 * @param xsltPath
+	 *            The path to the XSLT Transform to use.
+	 * @return Returns a string containing HTML markup.
+	 */
+	public static String xmlToHTML(String xml, URL xsltPath) {
+		String content = null;
 
-	try {
-	    StringWriter writer = new StringWriter();
-	    StringReader reader = new StringReader(xml);
+		try {
+			StringWriter writer = new StringWriter();
+			StringReader reader = new StringReader(xml);
 
-	    File xslt = new File(xsltPath.getFile());
+			File xslt = new File(xsltPath.getFile());
 
-	    // Create streams for the XML String and XSLT File
-	    StreamSource xmlStream = new StreamSource(reader);
-	    StreamSource xsltStream = new StreamSource(xslt);
+			// Create streams for the XML String and XSLT File
+			StreamSource xmlStream = new StreamSource(reader);
+			StreamSource xsltStream = new StreamSource(xslt);
 
-	    // Get an instance of the TransformerFactory
-	    TransformerFactory transformerFactory = TransformerFactory
-		    .newInstance();
-	    Transformer transformer;
+			// Get an instance of the TransformerFactory
+			TransformerFactory transformerFactory = TransformerFactory
+					.newInstance();
+			Transformer transformer;
 
-	    // Load the XSLT File Stream.
-	    transformer = transformerFactory.newTransformer(xsltStream);
-	    // Do the transformation.
-	    transformer.transform(xmlStream, new StreamResult(writer));
+			// Load the XSLT File Stream.
+			transformer = transformerFactory.newTransformer(xsltStream);
+			// Do the transformation.
+			transformer.transform(xmlStream, new StreamResult(writer));
 
-	    // Save output.
-	    content = writer.toString();
-	} catch (TransformerConfigurationException e) {
-	    Log.error(e);
-	} catch (TransformerException e) {
-	    Log.error(e);
+			// Save output.
+			content = writer.toString();
+		} catch (TransformerConfigurationException e) {
+			Log.error(e);
+		} catch (TransformerException e) {
+			Log.error(e);
+		}
+
+		return content;
 	}
 
-	return content;
-    }
+	public static void main(String[] args) {
+		String xml = "";
 
-    public static void main(String[] args) {
-	String xml = "";
+		xml += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<source>"
+				+ "<title>Example</title>" + "<author>Ronak Patel</author>"
+				+ "</source>";
 
-	xml += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<source>"
-		+ "<title>Example</title>" + "<author>Ronak Patel</author>"
-		+ "</source>";
-
-	try {
-	    System.out.println(XMLTransformer.xmlToHTML(xml, new URL(
-		    "file://C:/Documents and Settings/rpx/Desktop/boo.xsl")));
-	} catch (MalformedURLException e) {
-	    Log.error(e);
+		try {
+			System.out.println(XMLTransformer.xmlToHTML(xml, new URL(
+					"file://C:/Documents and Settings/rpx/Desktop/boo.xsl")));
+		} catch (MalformedURLException e) {
+			Log.error(e);
+		}
 	}
-    }
 }

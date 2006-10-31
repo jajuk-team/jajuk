@@ -19,15 +19,15 @@ import org.jajuk.ui.CommandJPanel;
  */
 public class IncreaseVolumeAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    IncreaseVolumeAction() {
-	super("increase volume", "ctrl UP", true); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+	IncreaseVolumeAction() {
+		super("increase volume", "ctrl UP", true); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
-    public void perform(ActionEvent evt) {
-	int iOld = CommandJPanel.getInstance().getCurrentVolume();
-	int iNew = iOld + 5;
-	Player.setVolume(((float) iNew) / 100);
-    }
+	public void perform(ActionEvent evt) {
+		int iOld = CommandJPanel.getInstance().getCurrentVolume();
+		int iNew = iOld + 5;
+		Player.setVolume(((float) iNew) / 100);
+	}
 }

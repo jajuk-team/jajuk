@@ -60,180 +60,180 @@ import org.jdesktop.jdic.desktop.Message;
  * @created 20 juin 2005
  */
 public class QualityFeedbackWizard extends JDialog implements KeyListener,
-	ActionListener, ITechnicalStrings {
-    private static final long serialVersionUID = 1L;
+		ActionListener, ITechnicalStrings {
+	private static final long serialVersionUID = 1L;
 
-    JPanel jpMain;
+	JPanel jpMain;
 
-    JTextArea jtaNotice;
+	JTextArea jtaNotice;
 
-    JLabel jlType;
+	JLabel jlType;
 
-    JComboBox jcbType;
+	JComboBox jcbType;
 
-    JLabel jlFrom;
+	JLabel jlFrom;
 
-    JTextField jtfFrom;
+	JTextField jtfFrom;
 
-    JLabel jlDesc;
+	JLabel jlDesc;
 
-    JTextField jtfDesc;
+	JTextField jtfDesc;
 
-    JLabel jlDetail;
+	JLabel jlDetail;
 
-    JTextArea jtaDetail;
+	JTextArea jtaDetail;
 
-    OKCancelPanel okp;
+	OKCancelPanel okp;
 
-    /**
-         * Constructor
-         */
-    public QualityFeedbackWizard() {
-	super(Main.getWindow(), Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
-	getContentPane().setPreferredSize(new Dimension(800, 600));
-	// Notice
-	jtaNotice = new JTextArea(Messages.getString("QualityFeedbackWizard.7")); //$NON-NLS-1$
-	jtaNotice.setLineWrap(true);
-	jtaNotice.setWrapStyleWord(true);
-	jtaNotice.setEditable(false);
-	jtaNotice.setMargin(new Insets(10, 10, 10, 10));
-	jtaNotice.setOpaque(true);
-	jtaNotice.setBackground(Color.ORANGE);
-	jtaNotice.setForeground(Color.DARK_GRAY);
-	jtaNotice.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-	// From
-	jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
-	jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
-	jtfFrom = new JTextField();
-	jtfFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
-	// Description
-	jlDesc = new JLabel(Messages.getString("QualityFeedbackWizard.3")); //$NON-NLS-1$
-	jlDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
-	jtfDesc = new JTextField();
-	jtfDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
-	jtfDesc.addKeyListener(this);
-	// Type
-	jlType = new JLabel(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
-	jlType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
-	jcbType = new JComboBox();
-	jcbType.addItem(Messages.getString("QualityFeedbackWizard.8")); //$NON-NLS-1$
-	jcbType.addItem(Messages.getString("QualityFeedbackWizard.9")); //$NON-NLS-1$
-	jcbType.addItem(Messages.getString("QualityFeedbackWizard.10")); //$NON-NLS-1$
-	jcbType.addItem(Messages.getString("QualityFeedbackWizard.11")); //$NON-NLS-1$
-	jcbType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
-	// Details
-	jlDetail = new JLabel(Messages.getString("QualityFeedbackWizard.5")); //$NON-NLS-1$
-	jlDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
-	jtaDetail = new JTextArea();
-	jtaDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
-	okp = new OKCancelPanel(this);
-	okp.getOKButton().setEnabled(false);
-	jpMain = new JPanel();
-	int iXSeparator = 10;
-	int iYSeparator = 20;
-	double[][] dSize = {
-		{ iXSeparator, 0.3, iXSeparator, 0.7, iXSeparator },
-		{ iYSeparator, TableLayout.PREFERRED, iYSeparator,
-			TableLayout.PREFERRED, iYSeparator, 20, iYSeparator,
-			20, iYSeparator, 0.99, iYSeparator, 20, iYSeparator } };
-	jpMain.setLayout(new TableLayout(dSize));
-	jpMain.add(new JLabel(Util.getIcon(IMAGE_WRITE)), "1,1"); //$NON-NLS-1$
-	jpMain.add(jtaNotice, "3,1"); //$NON-NLS-1$
-	jpMain.add(jlType, "1,3"); //$NON-NLS-1$
-	jpMain.add(jcbType, "3,3"); //$NON-NLS-1$
-	jpMain.add(jlFrom, "1,5"); //$NON-NLS-1$
-	jpMain.add(jtfFrom, "3,5"); //$NON-NLS-1$
-	jpMain.add(jlDesc, "1,7"); //$NON-NLS-1$
-	jpMain.add(jtfDesc, "3,7"); //$NON-NLS-1$
-	jpMain.add(jlDetail, "1,9"); //$NON-NLS-1$
-	jpMain.add(new JScrollPane(jtaDetail), "3,9"); //$NON-NLS-1$
-	jpMain.add(okp, "3,11"); //$NON-NLS-1$
-	getContentPane().add(jpMain);
-	addWindowListener(new WindowAdapter() {
-	    public void windowActivated(WindowEvent e) {
-		jtfFrom.requestFocusInWindow();
-	    }
-	});
-	getRootPane().setDefaultButton(okp.getOKButton());
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-    public void actionPerformed(ActionEvent ae) {
-	if (ae.getSource().equals(this.okp.getOKButton())) {
-	    final Message message = new Message();
-	    message.setSubject(jtfDesc.getText());
-	    ArrayList<String> alTo = new ArrayList<String>();
-	    alTo.add(FEEDBACK_EMAIL);
-	    message.setToAddrs(alTo);
-	    String sBody = ""; //$NON-NLS-1$
-	    sBody += "Type: " + jcbType.getSelectedItem() + '\n'; //$NON-NLS-1$
-	    sBody += "From: " + jtfFrom.getText() + '\n'; //$NON-NLS-1$
-	    sBody += "Subject: " + jtfDesc.getText() + '\n'; //$NON-NLS-1$
-	    sBody += "Details: " + jtaDetail.getText() + '\n'; //$NON-NLS-1$
-	    sBody += "Version: " + JAJUK_VERSION + '\n'; //$NON-NLS-1$
-	    if (jcbType.getSelectedIndex() == 0) { // bug
-		sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
-		sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
-		Iterator it = Log.getSpool();
-		while (it.hasNext()) {
-		    sBody += it.next().toString() + '\n';
-		}
-	    }
-	    message.setBody(sBody);
-	    new Thread() {
-		public void run() {
-		    try {
-			Desktop.mail(message);
-		    } catch (Exception e) {
-			Messages.showErrorMessage("136"); //$NON-NLS-1$
-			Log.error(e);
-		    }
-		}
-	    }.start();
-	    dispose();
-	} else if (ae.getSource().equals(this.okp.getCancelButton())) {
-	    dispose();
+	/**
+	 * Constructor
+	 */
+	public QualityFeedbackWizard() {
+		super(Main.getWindow(), Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
+		getContentPane().setPreferredSize(new Dimension(800, 600));
+		// Notice
+		jtaNotice = new JTextArea(Messages.getString("QualityFeedbackWizard.7")); //$NON-NLS-1$
+		jtaNotice.setLineWrap(true);
+		jtaNotice.setWrapStyleWord(true);
+		jtaNotice.setEditable(false);
+		jtaNotice.setMargin(new Insets(10, 10, 10, 10));
+		jtaNotice.setOpaque(true);
+		jtaNotice.setBackground(Color.ORANGE);
+		jtaNotice.setForeground(Color.DARK_GRAY);
+		jtaNotice.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+		// From
+		jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
+		jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
+		jtfFrom = new JTextField();
+		jtfFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
+		// Description
+		jlDesc = new JLabel(Messages.getString("QualityFeedbackWizard.3")); //$NON-NLS-1$
+		jlDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
+		jtfDesc = new JTextField();
+		jtfDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
+		jtfDesc.addKeyListener(this);
+		// Type
+		jlType = new JLabel(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
+		jlType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
+		jcbType = new JComboBox();
+		jcbType.addItem(Messages.getString("QualityFeedbackWizard.8")); //$NON-NLS-1$
+		jcbType.addItem(Messages.getString("QualityFeedbackWizard.9")); //$NON-NLS-1$
+		jcbType.addItem(Messages.getString("QualityFeedbackWizard.10")); //$NON-NLS-1$
+		jcbType.addItem(Messages.getString("QualityFeedbackWizard.11")); //$NON-NLS-1$
+		jcbType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
+		// Details
+		jlDetail = new JLabel(Messages.getString("QualityFeedbackWizard.5")); //$NON-NLS-1$
+		jlDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
+		jtaDetail = new JTextArea();
+		jtaDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
+		okp = new OKCancelPanel(this);
+		okp.getOKButton().setEnabled(false);
+		jpMain = new JPanel();
+		int iXSeparator = 10;
+		int iYSeparator = 20;
+		double[][] dSize = {
+				{ iXSeparator, 0.3, iXSeparator, 0.7, iXSeparator },
+				{ iYSeparator, TableLayout.PREFERRED, iYSeparator,
+						TableLayout.PREFERRED, iYSeparator, 20, iYSeparator,
+						20, iYSeparator, 0.99, iYSeparator, 20, iYSeparator } };
+		jpMain.setLayout(new TableLayout(dSize));
+		jpMain.add(new JLabel(Util.getIcon(IMAGE_WRITE)), "1,1"); //$NON-NLS-1$
+		jpMain.add(jtaNotice, "3,1"); //$NON-NLS-1$
+		jpMain.add(jlType, "1,3"); //$NON-NLS-1$
+		jpMain.add(jcbType, "3,3"); //$NON-NLS-1$
+		jpMain.add(jlFrom, "1,5"); //$NON-NLS-1$
+		jpMain.add(jtfFrom, "3,5"); //$NON-NLS-1$
+		jpMain.add(jlDesc, "1,7"); //$NON-NLS-1$
+		jpMain.add(jtfDesc, "3,7"); //$NON-NLS-1$
+		jpMain.add(jlDetail, "1,9"); //$NON-NLS-1$
+		jpMain.add(new JScrollPane(jtaDetail), "3,9"); //$NON-NLS-1$
+		jpMain.add(okp, "3,11"); //$NON-NLS-1$
+		getContentPane().add(jpMain);
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				jtfFrom.requestFocusInWindow();
+			}
+		});
+		getRootPane().setDefaultButton(okp.getOKButton());
 	}
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
-         */
-    public void itemStateChanged(ItemEvent e) {
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-         */
-    public void keyTyped(KeyEvent e) {
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-         */
-    public void keyPressed(KeyEvent e) {
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-         */
-    public void keyReleased(KeyEvent e) {
-	if (!jtfDesc.getText().trim().equals("")) { //$NON-NLS-1$
-	    okp.getOKButton().setEnabled(true);
-	} else {
-	    okp.getOKButton().setEnabled(false);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource().equals(this.okp.getOKButton())) {
+			final Message message = new Message();
+			message.setSubject(jtfDesc.getText());
+			ArrayList<String> alTo = new ArrayList<String>();
+			alTo.add(FEEDBACK_EMAIL);
+			message.setToAddrs(alTo);
+			String sBody = ""; //$NON-NLS-1$
+			sBody += "Type: " + jcbType.getSelectedItem() + '\n'; //$NON-NLS-1$
+			sBody += "From: " + jtfFrom.getText() + '\n'; //$NON-NLS-1$
+			sBody += "Subject: " + jtfDesc.getText() + '\n'; //$NON-NLS-1$
+			sBody += "Details: " + jtaDetail.getText() + '\n'; //$NON-NLS-1$
+			sBody += "Version: " + JAJUK_VERSION + '\n'; //$NON-NLS-1$
+			if (jcbType.getSelectedIndex() == 0) { // bug
+				sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
+				sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
+				Iterator it = Log.getSpool();
+				while (it.hasNext()) {
+					sBody += it.next().toString() + '\n';
+				}
+			}
+			message.setBody(sBody);
+			new Thread() {
+				public void run() {
+					try {
+						Desktop.mail(message);
+					} catch (Exception e) {
+						Messages.showErrorMessage("136"); //$NON-NLS-1$
+						Log.error(e);
+					}
+				}
+			}.start();
+			dispose();
+		} else if (ae.getSource().equals(this.okp.getCancelButton())) {
+			dispose();
+		}
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+	 */
+	public void itemStateChanged(ItemEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
+	public void keyTyped(KeyEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
+	public void keyPressed(KeyEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
+	public void keyReleased(KeyEvent e) {
+		if (!jtfDesc.getText().trim().equals("")) { //$NON-NLS-1$
+			okp.getOKButton().setEnabled(true);
+		} else {
+			okp.getOKButton().setEnabled(false);
+		}
+	}
 }

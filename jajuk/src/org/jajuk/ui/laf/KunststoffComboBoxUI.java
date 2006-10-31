@@ -30,10 +30,10 @@ import javax.swing.plaf.basic.ComboPopup;
  * @created 28 nov. 2003
  */
 public class KunststoffComboBoxUI extends
-	com.incors.plaf.kunststoff.KunststoffComboBoxUI {
-    protected ComboPopup createPopup() {
-	BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
-	popup.getAccessibleContext().setAccessibleParent(comboBox);
-	return popup;
-    }
+		com.incors.plaf.kunststoff.KunststoffComboBoxUI {
+	protected ComboPopup createPopup() {
+		BasicComboPopup popup = new JajukBasicComboPopup(comboBox);
+		popup.getAccessibleContext().setAccessibleParent(comboBox);
+		return popup;
+	}
 }

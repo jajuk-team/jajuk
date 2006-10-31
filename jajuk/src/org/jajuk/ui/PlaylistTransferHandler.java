@@ -62,173 +62,173 @@ import org.jajuk.util.log.Log;
  * @created 13 feb. 2004
  */
 public class PlaylistTransferHandler implements DropTargetListener,
-	ITechnicalStrings {
+		ITechnicalStrings {
 
-    private Component jpanel;
+	private Component jpanel;
 
-    private DropTarget dropTarget; // droptarget
+	private DropTarget dropTarget; // droptarget
 
-    public PlaylistTransferHandler(Component c, int action) {
-	this.jpanel = c;
-	dropTarget = new DropTarget(jpanel, action, this);
-    }
-
-    public final void dragExit(DragSourceEvent dse) {
-	dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-    }
-
-    /* Methods for DropTargetListener */
-
-    public final void dragEnter(DropTargetDragEvent dtde) {
-    }
-
-    public final void dragExit(DropTargetEvent dte) {
-    }
-
-    public final void dragOver(DropTargetDragEvent dtde) {
-	Component c = ((DropTarget) dtde.getSource()).getComponent();
-	PlaylistFileItem plfi = null;
-	if (c instanceof PlaylistFileItem) {
-	    plfi = (PlaylistFileItem) c;
-	} else if (c instanceof AbstractPlaylistEditorView) {
-	    plfi = ((AbstractPlaylistEditorView) c)
-		    .getCurrentPlaylistFileItem();
-	} else if (c instanceof JTable) {
-	    c = c.getParent().getParent().getParent();
-	    plfi = ((AbstractPlaylistEditorView) c)
-		    .getCurrentPlaylistFileItem();
+	public PlaylistTransferHandler(Component c, int action) {
+		this.jpanel = c;
+		dropTarget = new DropTarget(jpanel, action, this);
 	}
-	if (plfi != null
-		&& (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF || plfi
-			.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES)) { // no
-                                                                                        // dnd
-                                                                                        // to
-                                                                                        // best
-                                                                                        // of
-                                                                                        // playlist
-	    dtde.rejectDrag();
+
+	public final void dragExit(DragSourceEvent dse) {
+		dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
 	}
-    }
 
-    public final void dropActionChanged(DropTargetDragEvent dtde) {
-	int action = dtde.getDropAction();
-	dtde.acceptDrag(action);
-    }
+	/* Methods for DropTargetListener */
 
-    public final void drop(DropTargetDropEvent dtde) {
-	try {
-	    int action = dtde.getDropAction();
-	    Transferable transferable = dtde.getTransferable();
-	    Component c = ((DropTarget) dtde.getSource()).getComponent();
-	    PlaylistFileItem plfi = null;
-	    if (c instanceof PlaylistFileItem) {
-		plfi = (PlaylistFileItem) c;
-	    } else if (c instanceof AbstractPlaylistEditorView) {
-		plfi = ((AbstractPlaylistEditorView) c)
-			.getCurrentPlaylistFileItem();
-	    } else if (c instanceof JTable) {
-		c = c.getParent().getParent().getParent();
-		plfi = ((AbstractPlaylistEditorView) c)
-			.getCurrentPlaylistFileItem();
-	    }
-	    if (plfi == null) {
-		return;
-	    }
-	    Object oData = null;
-	    if (transferable
-		    .isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR)
-		    || transferable
-			    .isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
-		String sFlavor = (Arrays.asList(transferable
-			.getTransferDataFlavors()).get(0))
-			.getHumanPresentableName();
-		if (sFlavor.equals("Node")) { //$NON-NLS-1$
-		    dtde.acceptDrop(action);
-		    dtde.dropComplete(true);
-		    TransferableTreeNode ttn = (TransferableTreeNode) transferable
-			    .getTransferData(TransferableTreeNode.NODE_FLAVOR);
-		    oData = ttn.getData();
-		} else if (sFlavor.equals("Row")) { //$NON-NLS-1$
-		    dtde.acceptDrop(action);
-		    dtde.dropComplete(true);
-		    TransferableTableRow ttr = (TransferableTableRow) transferable
-			    .getTransferData(TransferableTableRow.ROW_FLAVOR);
-		    oData = ttr.getData();
-		} else {
-		    dtde.rejectDrop();
-		    dtde.dropComplete(false);
+	public final void dragEnter(DropTargetDragEvent dtde) {
+	}
+
+	public final void dragExit(DropTargetEvent dte) {
+	}
+
+	public final void dragOver(DropTargetDragEvent dtde) {
+		Component c = ((DropTarget) dtde.getSource()).getComponent();
+		PlaylistFileItem plfi = null;
+		if (c instanceof PlaylistFileItem) {
+			plfi = (PlaylistFileItem) c;
+		} else if (c instanceof AbstractPlaylistEditorView) {
+			plfi = ((AbstractPlaylistEditorView) c)
+					.getCurrentPlaylistFileItem();
+		} else if (c instanceof JTable) {
+			c = c.getParent().getParent().getParent();
+			plfi = ((AbstractPlaylistEditorView) c)
+					.getCurrentPlaylistFileItem();
 		}
-	    }
-	    // computes selection
-	    ArrayList<File> alSelectedFiles = new ArrayList<File>(100);
-	    // computes logical selection if any
-	    Set<Track> alLogicalTracks = null;
-	    if (oData instanceof Style || oData instanceof Author
-		    || oData instanceof Album || oData instanceof Track) {
-		if (oData instanceof Style || oData instanceof Author
-			|| oData instanceof Album) {
-		    alLogicalTracks = TrackManager.getInstance()
-			    .getAssociatedTracks((Item) oData);
-		} else if (oData instanceof Track) {
-		    alLogicalTracks = new LinkedHashSet<Track>(100);
-		    alLogicalTracks.add((Track) oData);
+		if (plfi != null
+				&& (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF || plfi
+						.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES)) { // no
+			// dnd
+			// to
+			// best
+			// of
+			// playlist
+			dtde.rejectDrag();
 		}
-		// prepare files
-		if (alLogicalTracks != null && alLogicalTracks.size() > 0) {
-		    Iterator it = alLogicalTracks.iterator();
-		    while (it.hasNext()) {
-			Track track = (Track) it.next();
-			File file = track.getPlayeableFile(false);
-			if (file == null) { // none mounted file for this
-                                                // track
-			    continue;
+	}
+
+	public final void dropActionChanged(DropTargetDragEvent dtde) {
+		int action = dtde.getDropAction();
+		dtde.acceptDrag(action);
+	}
+
+	public final void drop(DropTargetDropEvent dtde) {
+		try {
+			int action = dtde.getDropAction();
+			Transferable transferable = dtde.getTransferable();
+			Component c = ((DropTarget) dtde.getSource()).getComponent();
+			PlaylistFileItem plfi = null;
+			if (c instanceof PlaylistFileItem) {
+				plfi = (PlaylistFileItem) c;
+			} else if (c instanceof AbstractPlaylistEditorView) {
+				plfi = ((AbstractPlaylistEditorView) c)
+						.getCurrentPlaylistFileItem();
+			} else if (c instanceof JTable) {
+				c = c.getParent().getParent().getParent();
+				plfi = ((AbstractPlaylistEditorView) c)
+						.getCurrentPlaylistFileItem();
 			}
-			alSelectedFiles.add(file);
-		    }
+			if (plfi == null) {
+				return;
+			}
+			Object oData = null;
+			if (transferable
+					.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR)
+					|| transferable
+							.isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
+				String sFlavor = (Arrays.asList(transferable
+						.getTransferDataFlavors()).get(0))
+						.getHumanPresentableName();
+				if (sFlavor.equals("Node")) { //$NON-NLS-1$
+					dtde.acceptDrop(action);
+					dtde.dropComplete(true);
+					TransferableTreeNode ttn = (TransferableTreeNode) transferable
+							.getTransferData(TransferableTreeNode.NODE_FLAVOR);
+					oData = ttn.getData();
+				} else if (sFlavor.equals("Row")) { //$NON-NLS-1$
+					dtde.acceptDrop(action);
+					dtde.dropComplete(true);
+					TransferableTableRow ttr = (TransferableTableRow) transferable
+							.getTransferData(TransferableTableRow.ROW_FLAVOR);
+					oData = ttr.getData();
+				} else {
+					dtde.rejectDrop();
+					dtde.dropComplete(false);
+				}
+			}
+			// computes selection
+			ArrayList<File> alSelectedFiles = new ArrayList<File>(100);
+			// computes logical selection if any
+			Set<Track> alLogicalTracks = null;
+			if (oData instanceof Style || oData instanceof Author
+					|| oData instanceof Album || oData instanceof Track) {
+				if (oData instanceof Style || oData instanceof Author
+						|| oData instanceof Album) {
+					alLogicalTracks = TrackManager.getInstance()
+							.getAssociatedTracks((Item) oData);
+				} else if (oData instanceof Track) {
+					alLogicalTracks = new LinkedHashSet<Track>(100);
+					alLogicalTracks.add((Track) oData);
+				}
+				// prepare files
+				if (alLogicalTracks != null && alLogicalTracks.size() > 0) {
+					Iterator it = alLogicalTracks.iterator();
+					while (it.hasNext()) {
+						Track track = (Track) it.next();
+						File file = track.getPlayeableFile(false);
+						if (file == null) { // none mounted file for this
+							// track
+							continue;
+						}
+						alSelectedFiles.add(file);
+					}
+				}
+			}
+			// computes physical selection if any
+			else if (oData instanceof File || oData instanceof Directory
+					|| oData instanceof Device) {
+				if (oData instanceof File) {
+					alSelectedFiles.add((File) oData);
+				} else if (oData instanceof Directory) {
+					alSelectedFiles = ((Directory) oData).getFilesRecursively();
+				} else if (oData instanceof Device) {
+					alSelectedFiles = ((Device) oData).getFilesRecursively();
+				}
+			}
+			// display a warning message if none accessible file can found
+			// for these tracks
+			if (alSelectedFiles.size() == 0) {
+				Messages.showWarningMessage(Messages.getErrorMessage("018"));//$NON-NLS-1$
+				return;
+			}
+			// queue case
+			if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+				FIFO.getInstance().push(
+						Util.createStackItems(Util
+								.applyPlayOption(alSelectedFiles),
+								ConfigurationManager
+										.getBoolean(CONF_STATE_REPEAT), true),
+						ConfigurationManager
+								.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
+			}
+			// bookmark case
+			else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+				Bookmarks.getInstance().addFiles(
+						Util.applyPlayOption(alSelectedFiles));
+			}
+			// normal or new playlist case
+			else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL
+					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
+				plfi.getPlaylistFile().addFiles(
+						Util.applyPlayOption(alSelectedFiles));
+			}
+		} catch (Exception e) {
+			Log.error(e);
+			dtde.rejectDrop();
+			dtde.dropComplete(false);
 		}
-	    }
-	    // computes physical selection if any
-	    else if (oData instanceof File || oData instanceof Directory
-		    || oData instanceof Device) {
-		if (oData instanceof File) {
-		    alSelectedFiles.add((File) oData);
-		} else if (oData instanceof Directory) {
-		    alSelectedFiles = ((Directory) oData).getFilesRecursively();
-		} else if (oData instanceof Device) {
-		    alSelectedFiles = ((Device) oData).getFilesRecursively();
-		}
-	    }
-	    // display a warning message if none accessible file can found
-                // for these tracks
-	    if (alSelectedFiles.size() == 0) {
-		Messages.showWarningMessage(Messages.getErrorMessage("018"));//$NON-NLS-1$
-		return;
-	    }
-	    // queue case
-	    if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-		FIFO.getInstance().push(
-			Util.createStackItems(Util
-				.applyPlayOption(alSelectedFiles),
-				ConfigurationManager
-					.getBoolean(CONF_STATE_REPEAT), true),
-			ConfigurationManager
-				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
-	    }
-	    // bookmark case
-	    else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
-		Bookmarks.getInstance().addFiles(
-			Util.applyPlayOption(alSelectedFiles));
-	    }
-	    // normal or new playlist case
-	    else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL
-		    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
-		plfi.getPlaylistFile().addFiles(
-			Util.applyPlayOption(alSelectedFiles));
-	    }
-	} catch (Exception e) {
-	    Log.error(e);
-	    dtde.rejectDrop();
-	    dtde.dropComplete(false);
 	}
-    }
 }

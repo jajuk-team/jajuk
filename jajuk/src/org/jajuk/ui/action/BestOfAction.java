@@ -24,20 +24,20 @@ import org.jajuk.util.error.JajukException;
  */
 public class BestOfAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    BestOfAction() {
-	super(
-		Messages.getString("JajukWindow.7"), Util.getIcon(ICON_BESTOF), true); //$NON-NLS-1$
-	setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
-    }
+	BestOfAction() {
+		super(
+				Messages.getString("JajukWindow.7"), Util.getIcon(ICON_BESTOF), true); //$NON-NLS-1$
+		setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
+	}
 
-    public void perform(ActionEvent evt) throws JajukException {
-	Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
-	List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
-		.getGlobalBestofPlaylist(), ambience);
-	FIFO.getInstance().push(
-		Util.createStackItems(alToPlay, ConfigurationManager
-			.getBoolean(CONF_STATE_REPEAT), false), false);
-    }
+	public void perform(ActionEvent evt) throws JajukException {
+		Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
+		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
+				.getGlobalBestofPlaylist(), ambience);
+		FIFO.getInstance().push(
+				Util.createStackItems(alToPlay, ConfigurationManager
+						.getBoolean(CONF_STATE_REPEAT), false), false);
+	}
 }

@@ -35,27 +35,27 @@ import org.jajuk.util.Util;
  */
 public class ShowAboutAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    ShowAboutAction() {
-	super(
-		Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
-	setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
-    }
+	ShowAboutAction() {
+		super(
+				Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
+		setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
+	}
 
-    /**
-         * Invoked when an action occurs.
-         */
-    public void perform(ActionEvent evt) {
-	// set default perspective to show if UIi is not yet started
-	if (Main.isUILauched()) {
-	    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
-	} else {
-	    Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+	/**
+	 * Invoked when an action occurs.
+	 */
+	public void perform(ActionEvent evt) {
+		// set default perspective to show if UIi is not yet started
+		if (Main.isUILauched()) {
+			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+		} else {
+			Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+		}
+		// make frame visible
+		if (!JajukWindow.getInstance().isVisible()) {
+			JajukWindow.getInstance().setShown(true);
+		}
 	}
-	// make frame visible
-	if (!JajukWindow.getInstance().isVisible()) {
-	    JajukWindow.getInstance().setShown(true);
-	}
-    }
 }

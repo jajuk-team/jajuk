@@ -115,7 +115,7 @@ public class PhysicalPlaylistRepositoryView extends
 
 	public synchronized void removeItem(PlaylistFileItem plfiSelected) {
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) { // file
-			// delete  confirmation
+			// delete confirmation
 			String sFileToDelete = plfiSelected.getPlaylistFile()
 					.getAbsolutePath(); //$NON-NLS-1$
 			String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$

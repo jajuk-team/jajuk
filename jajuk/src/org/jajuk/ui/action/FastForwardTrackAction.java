@@ -20,17 +20,17 @@ import org.jajuk.util.Util;
  */
 public class FastForwardTrackAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final float JUMP_SIZE = 0.1f;
+	private static final float JUMP_SIZE = 0.1f;
 
-    FastForwardTrackAction() {
-	super(Util.getIcon(ICON_FWD), "ctrl alt RIGHT", false); //$NON-NLS-1$
-	setShortDescription(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
-    }
+	FastForwardTrackAction() {
+		super(Util.getIcon(ICON_FWD), "ctrl alt RIGHT", false); //$NON-NLS-1$
+		setShortDescription(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
+	}
 
-    public void perform(ActionEvent evt) {
-	float fCurrentPosition = Player.getCurrentPosition();
-	Player.seek(fCurrentPosition + JUMP_SIZE);
-    }
+	public void perform(ActionEvent evt) {
+		float fCurrentPosition = Player.getCurrentPosition();
+		Player.seek(fCurrentPosition + JUMP_SIZE);
+	}
 }

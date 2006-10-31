@@ -40,36 +40,36 @@ import org.jajuk.ui.views.ViewFactory;
  */
 public class LogicalPerspective extends PerspectiveAdapter {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IPerspective#getDesc()
-         */
-    public String getDesc() {
-	return Messages.getString("Perspective_Description_Logical"); //$NON-NLS-1$
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IPerspective#getViews()
-         */
-    public Set<IView> getViews() {
-	if (views != null) {
-	    return views;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IPerspective#getDesc()
+	 */
+	public String getDesc() {
+		return Messages.getString("Perspective_Description_Logical"); //$NON-NLS-1$
 	}
-	views = new HashSet<IView>(1);
-	views.add(ViewFactory.createView(LogicalTreeView.class, this));
-	views.add(ViewFactory.createView(LogicalTableView.class, this));
-	views
-		.add(ViewFactory.createView(LogicalPlaylistEditorView.class,
-			this));
-	views.add(ViewFactory.createView(LogicalPlaylistRepositoryView.class,
-		this));
-	views.add(ViewFactory.createView(CoverView.class, this));
-	return views;
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IPerspective#getViews()
+	 */
+	public Set<IView> getViews() {
+		if (views != null) {
+			return views;
+		}
+		views = new HashSet<IView>(1);
+		views.add(ViewFactory.createView(LogicalTreeView.class, this));
+		views.add(ViewFactory.createView(LogicalTableView.class, this));
+		views
+				.add(ViewFactory.createView(LogicalPlaylistEditorView.class,
+						this));
+		views.add(ViewFactory.createView(LogicalPlaylistRepositoryView.class,
+				this));
+		views.add(ViewFactory.createView(CoverView.class, this));
+		return views;
+	}
 
 }

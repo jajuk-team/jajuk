@@ -36,54 +36,54 @@ import org.jajuk.util.ITechnicalStrings;
  * @created 11 oct. 06
  */
 public class PatternInputVerifier extends InputVerifier implements
-	ITechnicalStrings {
+		ITechnicalStrings {
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.InputVerifier#verify(javax.swing.JComponent)
-         */
-    @Override
-    public boolean verify(JComponent input) {
-	JTextField tf = (JTextField) input;
-	String sText = tf.getText().toLowerCase();
-	try {
-	    String[] stPattern = sText.split("[% /-]"); //$NON-NLS-1$
-	    for (String sPattern : stPattern) {
-		if (!sPattern.equals("")) { //$NON-NLS-1$
-		    if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))
-			    || sPattern.equalsIgnoreCase(PATTERN_ARTIST
-				    .substring(1))
-			    || sPattern.equalsIgnoreCase(PATTERN_YEAR
-				    .substring(1))
-			    || sPattern.equalsIgnoreCase(PATTERN_TRACKNAME
-				    .substring(1))
-			    || sPattern.equalsIgnoreCase(PATTERN_TRACKORDER
-				    .substring(1))
-			    || sPattern.equalsIgnoreCase(PATTERN_GENRE
-				    .substring(1))) {
-		    } else {
-			JOptionPane.showMessageDialog(Main.getWindow(),
-				Messages.getString("Error.146"), //$NON-NLS-1$
-				Messages.getString("Error"), //$NON-NLS-1$
-				JOptionPane.ERROR_MESSAGE);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.InputVerifier#verify(javax.swing.JComponent)
+	 */
+	@Override
+	public boolean verify(JComponent input) {
+		JTextField tf = (JTextField) input;
+		String sText = tf.getText().toLowerCase();
+		try {
+			String[] stPattern = sText.split("[% /-]"); //$NON-NLS-1$
+			for (String sPattern : stPattern) {
+				if (!sPattern.equals("")) { //$NON-NLS-1$
+					if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_ARTIST
+									.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_YEAR
+									.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_TRACKNAME
+									.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_TRACKORDER
+									.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_GENRE
+									.substring(1))) {
+					} else {
+						JOptionPane.showMessageDialog(Main.getWindow(),
+								Messages.getString("Error.146"), //$NON-NLS-1$
+								Messages.getString("Error"), //$NON-NLS-1$
+								JOptionPane.ERROR_MESSAGE);
+						return false;
+					}
+				}
+			}
+		} catch (Exception e) {
 			return false;
-		    }
 		}
-	    }
-	} catch (Exception e) {
-	    return false;
+		return true;
 	}
-	return true;
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.InputVerifier#shouldYieldFocus(javax.swing.JComponent)
-         */
-    public boolean shouldYieldFocus(JComponent input) {
-	return verify(input);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.InputVerifier#shouldYieldFocus(javax.swing.JComponent)
+	 */
+	public boolean shouldYieldFocus(JComponent input) {
+		return verify(input);
+	}
 
 }

@@ -28,12 +28,12 @@ package org.jajuk.base;
  */
 public interface IItemFilter {
 
-    /**
-         * Apply filter
-         * 
-         * @param al
-         *                ordored list to be filtered
-         * @return filtered a *new* ordored list (can contain 0 elements)
-         */
-    public java.util.Collection<Item> apply(java.util.Collection<Item> col);
+	/**
+	 * Apply filter
+	 * 
+	 * @param al
+	 *            ordored list to be filtered
+	 * @return filtered a *new* ordored list (can contain 0 elements)
+	 */
+	public java.util.Collection<Item> apply(java.util.Collection<Item> col);
 }

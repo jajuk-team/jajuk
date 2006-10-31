@@ -33,15 +33,15 @@ import org.jajuk.util.Util;
  */
 public class ConfigurationRequiredAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    ConfigurationRequiredAction() {
-	super(
-		Messages.getString("JajukJMenuBar.22"), Util.getIcon(ICON_CONFIGURATION), true); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+	ConfigurationRequiredAction() {
+		super(
+				Messages.getString("JajukJMenuBar.22"), Util.getIcon(ICON_CONFIGURATION), true); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
-    public void perform(ActionEvent evt) {
-	PerspectiveManager
-		.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-    }
+	public void perform(ActionEvent evt) {
+		PerspectiveManager
+				.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+	}
 }

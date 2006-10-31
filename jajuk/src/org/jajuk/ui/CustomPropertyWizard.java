@@ -52,94 +52,94 @@ import org.jajuk.util.Util;
  * @created 21 juin 2005
  */
 public abstract class CustomPropertyWizard extends JDialog implements
-	ActionListener, ItemListener, ITechnicalStrings {
-    JPanel jpMain;
+		ActionListener, ItemListener, ITechnicalStrings {
+	JPanel jpMain;
 
-    JLabel jlItemChoice;
+	JLabel jlItemChoice;
 
-    JComboBox jcbItemChoice;
+	JComboBox jcbItemChoice;
 
-    OKCancelPanel okp;
+	OKCancelPanel okp;
 
-    JLabel jlName;
+	JLabel jlName;
 
-    /**
-         * Constuctor
-         * 
-         * @param sTitle
-         */
-    CustomPropertyWizard(String sTitle) {
-	super(Main.getWindow(), sTitle, true);
-    }
-
-    /**
-         * Create common UI for property wizards
-         * 
-         */
-    void populate() {
-	getContentPane().setLayout(
-		new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-	Util.setShuffleLocation(this, 400, 400);
-	jlItemChoice = new JLabel(Messages.getString("CustomPropertyWizard.0")); //$NON-NLS-1$
-	jlName = new JLabel(Messages.getString("CustomPropertyWizard.1")); //$NON-NLS-1$
-	jcbItemChoice = new JComboBox();
-	jcbItemChoice.addItem(Messages.getString("Item_Track")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_File")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_Style")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_Author")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_Album")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_Device")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_Directory")); //$NON-NLS-1$
-	jcbItemChoice.addItem(Messages.getString("Item_Playlist")); // playlist
-                                                                        // file
-                                                                        // actually
-                                                                        // //$NON-NLS-1$
-	okp = new OKCancelPanel(this);
-	okp.getOKButton().setEnabled(false);
-	// In physical perspective, default item is file, otherwise, it is track
-	if (PerspectiveManager.getCurrentPerspective().getClass().equals(
-		PhysicalPerspective.class)) {
-	    jcbItemChoice.setSelectedIndex(1);
-	} else {
-	    jcbItemChoice.setSelectedIndex(0);
+	/**
+	 * Constuctor
+	 * 
+	 * @param sTitle
+	 */
+	CustomPropertyWizard(String sTitle) {
+		super(Main.getWindow(), sTitle, true);
 	}
-	jcbItemChoice.addItemListener(this);
-	jpMain = new JPanel();
-    }
 
-    /**
-         * 
-         * @return ItemManager associated with selected element in combo box
-         */
-    ItemManager getItemManager() {
-	ItemManager im = null;
-	switch (jcbItemChoice.getSelectedIndex()) {
-	case 0:
-	    im = TrackManager.getInstance();
-	    break;
-	case 1:
-	    im = FileManager.getInstance();
-	    break;
-	case 2:
-	    im = StyleManager.getInstance();
-	    break;
-	case 3:
-	    im = AuthorManager.getInstance();
-	    break;
-	case 4:
-	    im = AlbumManager.getInstance();
-	    break;
-	case 5:
-	    im = DeviceManager.getInstance();
-	    break;
-	case 6:
-	    im = DirectoryManager.getInstance();
-	    break;
-	case 7:
-	    im = PlaylistFileManager.getInstance();
-	    break;
+	/**
+	 * Create common UI for property wizards
+	 * 
+	 */
+	void populate() {
+		getContentPane().setLayout(
+				new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		Util.setShuffleLocation(this, 400, 400);
+		jlItemChoice = new JLabel(Messages.getString("CustomPropertyWizard.0")); //$NON-NLS-1$
+		jlName = new JLabel(Messages.getString("CustomPropertyWizard.1")); //$NON-NLS-1$
+		jcbItemChoice = new JComboBox();
+		jcbItemChoice.addItem(Messages.getString("Item_Track")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_File")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Style")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Author")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Album")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Device")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Directory")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Playlist")); // playlist
+		// file
+		// actually
+		// //$NON-NLS-1$
+		okp = new OKCancelPanel(this);
+		okp.getOKButton().setEnabled(false);
+		// In physical perspective, default item is file, otherwise, it is track
+		if (PerspectiveManager.getCurrentPerspective().getClass().equals(
+				PhysicalPerspective.class)) {
+			jcbItemChoice.setSelectedIndex(1);
+		} else {
+			jcbItemChoice.setSelectedIndex(0);
+		}
+		jcbItemChoice.addItemListener(this);
+		jpMain = new JPanel();
 	}
-	return im;
-    }
+
+	/**
+	 * 
+	 * @return ItemManager associated with selected element in combo box
+	 */
+	ItemManager getItemManager() {
+		ItemManager im = null;
+		switch (jcbItemChoice.getSelectedIndex()) {
+		case 0:
+			im = TrackManager.getInstance();
+			break;
+		case 1:
+			im = FileManager.getInstance();
+			break;
+		case 2:
+			im = StyleManager.getInstance();
+			break;
+		case 3:
+			im = AuthorManager.getInstance();
+			break;
+		case 4:
+			im = AlbumManager.getInstance();
+			break;
+		case 5:
+			im = DeviceManager.getInstance();
+			break;
+		case 6:
+			im = DirectoryManager.getInstance();
+			break;
+		case 7:
+			im = PlaylistFileManager.getInstance();
+			break;
+		}
+		return im;
+	}
 
 }

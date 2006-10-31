@@ -42,101 +42,101 @@ import org.jajuk.util.error.NoneAccessibleFileException;
  * @created 29 dec. 2003
  */
 public class LogicalPlaylistRepositoryView extends
-	AbstractPlaylistRepositoryView implements Observer {
+		AbstractPlaylistRepositoryView implements Observer {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /** Self instance */
-    static LogicalPlaylistRepositoryView lpr;
+	/** Self instance */
+	static LogicalPlaylistRepositoryView lpr;
 
-    /** Return self instance */
-    public static synchronized LogicalPlaylistRepositoryView getInstance() {
-	if (lpr == null) {
-	    lpr = new LogicalPlaylistRepositoryView();
+	/** Return self instance */
+	public static synchronized LogicalPlaylistRepositoryView getInstance() {
+		if (lpr == null) {
+			lpr = new LogicalPlaylistRepositoryView();
+		}
+		return lpr;
 	}
-	return lpr;
-    }
 
-    /**
-         * Constructor
-         */
-    public LogicalPlaylistRepositoryView() {
-	lpr = this;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#display()
-         */
-    public void initUI() {
-	super.initUI();
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#getDesc()
-         */
-    public String getDesc() {
-	return "LogicalPlaylistRepositoryView.0"; //$NON-NLS-1$
-    }
-
-    /**
-         * Create playlists from collection
-         */
-    public synchronized void populatePlaylists() {
-	super.populatePlaylists();
-	// normal playlists
-	Iterator<Playlist> it = PlaylistManager.getInstance().getPlayLists()
-		.iterator();
-	while (it.hasNext()) {
-	    Playlist pl = it.next();
-	    PlaylistFile plf = pl.getPlayeablePlaylistFile();
-	    // if none accessible and hide devices unmounted, continue
-	    if (plf == null
-		    && ConfigurationManager
-			    .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
-		continue;
-	    }
-	    // if none accessible playlist, keep a chance to mount the first
-                // playlist file found
-	    if (plf == null && pl.getPlaylistFiles().size() > 0) {
-		plf = pl.getPlaylistFiles().get(0);
-	    }
-	    PlaylistFileItem plfi = new PlaylistFileItem(
-		    PlaylistFileItem.PLAYLIST_TYPE_NORMAL,
-		    ICON_PLAYLIST_NORMAL, plf, plf.getName());
-	    alPlaylistFileItems.add(plfi);
-	    plfi.addMouseListener(ma);
-	    plfi.setToolTipText(plf.getName());
-	    jpRoot.add(plfi);
-	    if (plfiSelected != null
-		    && plfi.getPlaylistFile().equals(
-			    plfiSelected.getPlaylistFile())) {
-		plfiSelected = plfi;
-	    }
+	/**
+	 * Constructor
+	 */
+	public LogicalPlaylistRepositoryView() {
+		lpr = this;
 	}
-    }
 
-    public synchronized void removeItem(PlaylistFileItem plfiSelected) {
-	Playlist pl = PlaylistManager.getInstance().getPlayList(
-		plfiSelected.getPlaylistFile());
-	if (pl != null) {
-	    PlaylistManager.getInstance().removePlaylist(pl);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void initUI() {
+		super.initUI();
 	}
-    }
 
-    public void play(PlaylistFileItem plfi) throws JajukException {
-	Playlist pl = PlaylistManager.getInstance().getPlayList(
-		plfiSelected.getPlaylistFile());
-	if (pl != null) {
-	    PlaylistFile plf = pl.getPlayeablePlaylistFile();
-	    if (plf == null) {
-		throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
-	    }
-	    plf.play();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#getDesc()
+	 */
+	public String getDesc() {
+		return "LogicalPlaylistRepositoryView.0"; //$NON-NLS-1$
 	}
-    }
+
+	/**
+	 * Create playlists from collection
+	 */
+	public synchronized void populatePlaylists() {
+		super.populatePlaylists();
+		// normal playlists
+		Iterator<Playlist> it = PlaylistManager.getInstance().getPlayLists()
+				.iterator();
+		while (it.hasNext()) {
+			Playlist pl = it.next();
+			PlaylistFile plf = pl.getPlayeablePlaylistFile();
+			// if none accessible and hide devices unmounted, continue
+			if (plf == null
+					&& ConfigurationManager
+							.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+				continue;
+			}
+			// if none accessible playlist, keep a chance to mount the first
+			// playlist file found
+			if (plf == null && pl.getPlaylistFiles().size() > 0) {
+				plf = pl.getPlaylistFiles().get(0);
+			}
+			PlaylistFileItem plfi = new PlaylistFileItem(
+					PlaylistFileItem.PLAYLIST_TYPE_NORMAL,
+					ICON_PLAYLIST_NORMAL, plf, plf.getName());
+			alPlaylistFileItems.add(plfi);
+			plfi.addMouseListener(ma);
+			plfi.setToolTipText(plf.getName());
+			jpRoot.add(plfi);
+			if (plfiSelected != null
+					&& plfi.getPlaylistFile().equals(
+							plfiSelected.getPlaylistFile())) {
+				plfiSelected = plfi;
+			}
+		}
+	}
+
+	public synchronized void removeItem(PlaylistFileItem plfiSelected) {
+		Playlist pl = PlaylistManager.getInstance().getPlayList(
+				plfiSelected.getPlaylistFile());
+		if (pl != null) {
+			PlaylistManager.getInstance().removePlaylist(pl);
+		}
+	}
+
+	public void play(PlaylistFileItem plfi) throws JajukException {
+		Playlist pl = PlaylistManager.getInstance().getPlayList(
+				plfiSelected.getPlaylistFile());
+		if (pl != null) {
+			PlaylistFile plf = pl.getPlayeablePlaylistFile();
+			if (plf == null) {
+				throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+			}
+			plf.play();
+		}
+	}
 
 }

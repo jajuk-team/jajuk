@@ -57,365 +57,365 @@ import org.jajuk.util.log.Log;
  * @created 11 oct. 2003
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings,
-	Observer {
-    private static final long serialVersionUID = 1L;
+		Observer {
+	private static final long serialVersionUID = 1L;
 
-    // consts
-    /** Informative message type ( displayed in blue ) * */
-    public static final int INFORMATIVE = 0;
+	// consts
+	/** Informative message type ( displayed in blue ) * */
+	public static final int INFORMATIVE = 0;
 
-    /** Informative message type ( displayed in red )* */
-    public static final int ERROR = 1;
+	/** Informative message type ( displayed in red )* */
+	public static final int ERROR = 1;
 
-    /** Warning message type ( displayed in orange )* */
-    public static final int WARNING = 2;
+	/** Warning message type ( displayed in orange )* */
+	public static final int WARNING = 2;
 
-    /** Self instance */
-    static private InformationJPanel ijp = null;
+	/** Self instance */
+	static private InformationJPanel ijp = null;
 
-    /** Swing Timer to refresh the component */
-    private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,
-	    new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    update(new Event(EventSubject.EVENT_HEART_BEAT));
+	/** Swing Timer to refresh the component */
+	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,
+			new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					update(new Event(EventSubject.EVENT_HEART_BEAT));
+				}
+			});
+
+	/**
+	 * Singleton access
+	 * 
+	 * @return
+	 */
+	public static synchronized InformationJPanel getInstance() {
+		if (ijp == null) {
+			ijp = new InformationJPanel();
 		}
-	    });
-
-    /**
-         * Singleton access
-         * 
-         * @return
-         */
-    public static synchronized InformationJPanel getInstance() {
-	if (ijp == null) {
-	    ijp = new InformationJPanel();
+		return ijp;
 	}
-	return ijp;
-    }
 
-    // widgets declaration
-    JLabel jlMessage;
+	// widgets declaration
+	JLabel jlMessage;
 
-    JLabel jlSelection;
+	JLabel jlSelection;
 
-    JLabel jlQuality;
+	JLabel jlQuality;
 
-    JPanel jpTotal;
+	JPanel jpTotal;
 
-    JLabel jlTotal;
+	JLabel jlTotal;
 
-    JPanel jpCurrent;
+	JPanel jpCurrent;
 
-    JProgressBar jpbCurrent;
+	JProgressBar jpbCurrent;
 
-    JLabel jlCurrent;
+	JLabel jlCurrent;
 
-    // attributes
-    String sMessage;
+	// attributes
+	String sMessage;
 
-    /** Current message type */
-    int iType = 0;
+	/** Current message type */
+	int iType = 0;
 
-    String sSelection;
+	String sSelection;
 
-    int iTotalStatus;
+	int iTotalStatus;
 
-    String sTotalStatus;
+	String sTotalStatus;
 
-    int iCurrentStatus;
+	int iCurrentStatus;
 
-    String sCurrentStatus;
+	String sCurrentStatus;
 
-    private InformationJPanel() {
-	// dimensions
-	// set current jpanel properties
-	setBorder(BorderFactory.createEtchedBorder());
-	double size[][] = { { 0.42, 0.13, 0.05, 0.07, 0.33 }, { 20 } };
-	setLayout(new TableLayout(size));
+	private InformationJPanel() {
+		// dimensions
+		// set current jpanel properties
+		setBorder(BorderFactory.createEtchedBorder());
+		double size[][] = { { 0.42, 0.13, 0.05, 0.07, 0.33 }, { 20 } };
+		setLayout(new TableLayout(size));
 
-	// message bar
-	jlMessage = new JLabel();
-	jlMessage.setBorder(BorderFactory
-		.createEtchedBorder(EtchedBorder.LOWERED));
-	jlMessage.setOpaque(true);
-	setMessage(
-		Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-
-	// selection bar
-	jlSelection = new JLabel();
-	jlSelection.setBorder(BorderFactory
-		.createEtchedBorder(EtchedBorder.LOWERED));
-
-	// total progress bar
-	jpTotal = new JPanel();
-	jpTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
-	jpTotal.setLayout(new BoxLayout(jpTotal, BoxLayout.X_AXIS));
-	jpTotal.setBorder(BorderFactory
-		.createEtchedBorder(EtchedBorder.LOWERED));
-	jlTotal = new JLabel();
-	jpTotal.add(jlTotal);
-	jpTotal.add(Box.createHorizontalStrut(3));
-
-	// Quality
-	jlQuality = new JLabel();
-	jlQuality.setToolTipText(Messages.getString("InformationJPanel.6")); //$NON-NLS-1$
-	jlQuality.setBorder(BorderFactory
-		.createEtchedBorder(EtchedBorder.LOWERED));
-
-	// current progress bar
-	jpCurrent = new JPanel();
-	jpCurrent.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
-	jpCurrent.setLayout(new BoxLayout(jpCurrent, BoxLayout.X_AXIS));
-	jpCurrent.setBorder(BorderFactory
-		.createEtchedBorder(EtchedBorder.LOWERED));
-	jpbCurrent = new JProgressBar(0, 100);
-	jpbCurrent.setStringPainted(true);
-	jlCurrent = new JLabel();
-	jpCurrent.add(jlCurrent);
-	jpCurrent.add(Box.createHorizontalStrut(6));
-	jpCurrent.add(jpbCurrent);
-
-	// add widgets
-	add(jlMessage, "0,0"); //$NON-NLS-1$
-	add(jlSelection, "1,0"); //$NON-NLS-1$
-	add(jlQuality, "2,0"); //$NON-NLS-1$
-	add(jpTotal, "3,0"); //$NON-NLS-1$
-	add(jpCurrent, "4,0"); //$NON-NLS-1$
-
-	// check if some track has been lauched before the view has been
-        // displayed
-	update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-		.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
-	// check if some errors occured before the view has been displayed
-	if (ObservationManager.containsEvent(EventSubject.EVENT_PLAY_ERROR)) {
-	    update(new Event(EventSubject.EVENT_PLAY_ERROR, ObservationManager
-		    .getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
-	}
-	// register for given events
-	ObservationManager.register(this);
-	// start timer
-	timer.start();
-    }
-
-    public Set<EventSubject> getRegistrationKeys() {
-	HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-	eventSubjectSet.add(EventSubject.EVENT_ZERO);
-	eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-	eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
-	return eventSubjectSet;
-    }
-
-    /**
-         * @return
-         */
-    public int getCurrentStatus() {
-	return iCurrentStatus;
-    }
-
-    /**
-         * @return
-         */
-    public int getTotalStatus() {
-	return iTotalStatus;
-    }
-
-    /**
-         * @return
-         */
-    public String getMessage() {
-	return sMessage;
-    }
-
-    /**
-         * @return
-         */
-    public String getSelection() {
-	return this.sSelection;
-    }
-
-    /**
-         * @param i
-         */
-    public void setCurrentStatus(int i) {
-	iCurrentStatus = i;
-	jpbCurrent.setValue(i);
-    }
-
-    /**
-         * @param label
-         */
-    public void setMessage(final String sMessage, final int iMessageType) {
-	this.sMessage = sMessage;
-	this.iType = iMessageType;
-	SwingUtilities.invokeLater(new Runnable() {
-	    public void run() {
-		InformationJPanel.this.sMessage = sMessage;
-		switch (iMessageType) {
-		case INFORMATIVE:
-		    jlMessage.setForeground(Color.BLUE);
-		    break;
-		case ERROR:
-		    jlMessage.setForeground(Color.RED);
-		    break;
-		case WARNING:
-		    jlMessage.setForeground(new Color(255, 80, 0));
-		    break;
-		default:
-		    jlMessage.setForeground(Color.BLUE);
-		    break;
-		}
-		jlMessage.setText(sMessage);
-		jlMessage.setToolTipText(sMessage);
-	    }
-	});
-    }
-
-    /**
-         * @param label
-         */
-    public void setSelection(String sSelection) {
-	this.sSelection = sSelection;
-	jlSelection.setText(sSelection);
-	jlSelection.setToolTipText(sSelection);
-    }
-
-    /**
-         * Set the quality box info
-         * 
-         * @param sQuality
-         */
-    public void setQuality(String sQuality) {
-	jlQuality.setText(sQuality);
-    }
-
-    /**
-         * @return
-         */
-    public String getCurrentStatusMessage() {
-	return sCurrentStatus;
-    }
-
-    /**
-         * @return
-         */
-    public String getTotalStatusMessage() {
-	return sTotalStatus;
-    }
-
-    /**
-         * 
-         * Set the current status for current track ex : 01:01:01/02:02:02
-         * 
-         * @param string
-         */
-    public void setCurrentStatusMessage(String string) {
-	sCurrentStatus = string;
-	jlCurrent.setText(string);
-    }
-
-    /**
-         * @param string
-         */
-    public void setTotalStatusMessage(String string) {
-	sTotalStatus = string;
-	jlTotal.setText(string);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.Observer#update(java.lang.String)
-         */
-    public synchronized void update(final Event event) { // we
-                                                                // synchronize
-                                                                // this method
-                                                                // to make error
-                                                                // message is
-                                                                // visible all 2
-                                                                // secs
-	final EventSubject subject = event.getSubject();
-	// do not insert this subject inside the invokeLater because we have to
-        // leave the awt dispatcher called inside the setMessage and THEN, sleep
-        // for 2 secs.
-	if (EventSubject.EVENT_PLAY_ERROR.equals(subject)) {
-	    try {
-		// reset data
-		setCurrentStatusMessage(Util.formatTimeBySec(0, false)
-			+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
-		setCurrentStatus(0);
-		setQuality(""); //$NON-NLS-1$
-		// set error message
-		File fCurrent = (File) ObservationManager.getDetail(event,
-			DETAIL_CURRENT_FILE);
-		if (fCurrent != null) {
-		    // display associated error code is given
-		    String sReason = (String) ObservationManager.getDetail(
-			    event, DETAIL_REASON);
-		    if (sReason != null) {
-			setMessage(
-				Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
-		    } else {// default message
-			setMessage(
-				Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
-		    }
-		} else { // none specified file
-		    setMessage(
-			    Messages.getString("Error.007"), InformationJPanel.ERROR);//$NON-NLS-1$
-		}
-	    } catch (Exception e) {
-		Log.error(e);
-	    }
-	} else {
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    if (EventSubject.EVENT_HEART_BEAT.equals(subject)
-			    && !FIFO.isStopped() && !Player.isPaused()) {
-			long length = JajukTimer.getInstance()
-				.getCurrentTrackTotalTime();
-			long lTime = JajukTimer.getInstance()
-				.getCurrentTrackEllapsedTime();
-			int iPos = (int) (100 * JajukTimer.getInstance()
-				.getCurrentTrackPosition());
-			setCurrentStatus(iPos);
-			String sCurrentTotalMessage = Util.formatTimeBySec(
-				JajukTimer.getInstance().getTotalTimeToPlay(),
-				false);
-			setTotalStatusMessage(sCurrentTotalMessage);
-			setCurrentStatusMessage(Util.formatTimeBySec(lTime,
-				false)
-				+ " / " + Util.formatTimeBySec(length, false)); //$NON-NLS-1$);
-		    } else if (EventSubject.EVENT_ZERO.equals(subject)) {
-			setCurrentStatusMessage(Util.formatTimeBySec(0, false)
-				+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
-			setCurrentStatus(0);
-			setTotalStatusMessage("00:00:00");//$NON-NLS-1$
-			setMessage(
+		// message bar
+		jlMessage = new JLabel();
+		jlMessage.setBorder(BorderFactory
+				.createEtchedBorder(EtchedBorder.LOWERED));
+		jlMessage.setOpaque(true);
+		setMessage(
 				Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-			setQuality(""); //$NON-NLS-1$
-		    } else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
-			File file = FIFO.getInstance().getCurrentFile();
-			if (file != null) {
-			    String sMessage = Messages.getString("FIFO.10") + " " + file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$
-				    + " / " + file.getTrack().getAlbum().getName2() + " / " //$NON-NLS-1$ //$NON-NLS-2$
-				    + file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			    setMessage(sMessage, InformationJPanel.INFORMATIVE);
-			    setQuality(file.getQuality()
-				    + Messages.getString("FIFO.13")); //$NON-NLS-1$
-			}
-		    }
+
+		// selection bar
+		jlSelection = new JLabel();
+		jlSelection.setBorder(BorderFactory
+				.createEtchedBorder(EtchedBorder.LOWERED));
+
+		// total progress bar
+		jpTotal = new JPanel();
+		jpTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
+		jpTotal.setLayout(new BoxLayout(jpTotal, BoxLayout.X_AXIS));
+		jpTotal.setBorder(BorderFactory
+				.createEtchedBorder(EtchedBorder.LOWERED));
+		jlTotal = new JLabel();
+		jpTotal.add(jlTotal);
+		jpTotal.add(Box.createHorizontalStrut(3));
+
+		// Quality
+		jlQuality = new JLabel();
+		jlQuality.setToolTipText(Messages.getString("InformationJPanel.6")); //$NON-NLS-1$
+		jlQuality.setBorder(BorderFactory
+				.createEtchedBorder(EtchedBorder.LOWERED));
+
+		// current progress bar
+		jpCurrent = new JPanel();
+		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
+		jpCurrent.setLayout(new BoxLayout(jpCurrent, BoxLayout.X_AXIS));
+		jpCurrent.setBorder(BorderFactory
+				.createEtchedBorder(EtchedBorder.LOWERED));
+		jpbCurrent = new JProgressBar(0, 100);
+		jpbCurrent.setStringPainted(true);
+		jlCurrent = new JLabel();
+		jpCurrent.add(jlCurrent);
+		jpCurrent.add(Box.createHorizontalStrut(6));
+		jpCurrent.add(jpbCurrent);
+
+		// add widgets
+		add(jlMessage, "0,0"); //$NON-NLS-1$
+		add(jlSelection, "1,0"); //$NON-NLS-1$
+		add(jlQuality, "2,0"); //$NON-NLS-1$
+		add(jpTotal, "3,0"); //$NON-NLS-1$
+		add(jpCurrent, "4,0"); //$NON-NLS-1$
+
+		// check if some track has been lauched before the view has been
+		// displayed
+		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+		// check if some errors occured before the view has been displayed
+		if (ObservationManager.containsEvent(EventSubject.EVENT_PLAY_ERROR)) {
+			update(new Event(EventSubject.EVENT_PLAY_ERROR, ObservationManager
+					.getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
 		}
-	    });
+		// register for given events
+		ObservationManager.register(this);
+		// start timer
+		timer.start();
 	}
-    }
 
-    /**
-         * ToString() method
-         */
-    public String toString() {
-	return getClass().getName();
-    }
+	public Set<EventSubject> getRegistrationKeys() {
+		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+		eventSubjectSet.add(EventSubject.EVENT_ZERO);
+		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
+		return eventSubjectSet;
+	}
 
-    public int getMessageType() {
-	return iType;
-    }
+	/**
+	 * @return
+	 */
+	public int getCurrentStatus() {
+		return iCurrentStatus;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getTotalStatus() {
+		return iTotalStatus;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getMessage() {
+		return sMessage;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getSelection() {
+		return this.sSelection;
+	}
+
+	/**
+	 * @param i
+	 */
+	public void setCurrentStatus(int i) {
+		iCurrentStatus = i;
+		jpbCurrent.setValue(i);
+	}
+
+	/**
+	 * @param label
+	 */
+	public void setMessage(final String sMessage, final int iMessageType) {
+		this.sMessage = sMessage;
+		this.iType = iMessageType;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				InformationJPanel.this.sMessage = sMessage;
+				switch (iMessageType) {
+				case INFORMATIVE:
+					jlMessage.setForeground(Color.BLUE);
+					break;
+				case ERROR:
+					jlMessage.setForeground(Color.RED);
+					break;
+				case WARNING:
+					jlMessage.setForeground(new Color(255, 80, 0));
+					break;
+				default:
+					jlMessage.setForeground(Color.BLUE);
+					break;
+				}
+				jlMessage.setText(sMessage);
+				jlMessage.setToolTipText(sMessage);
+			}
+		});
+	}
+
+	/**
+	 * @param label
+	 */
+	public void setSelection(String sSelection) {
+		this.sSelection = sSelection;
+		jlSelection.setText(sSelection);
+		jlSelection.setToolTipText(sSelection);
+	}
+
+	/**
+	 * Set the quality box info
+	 * 
+	 * @param sQuality
+	 */
+	public void setQuality(String sQuality) {
+		jlQuality.setText(sQuality);
+	}
+
+	/**
+	 * @return
+	 */
+	public String getCurrentStatusMessage() {
+		return sCurrentStatus;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getTotalStatusMessage() {
+		return sTotalStatus;
+	}
+
+	/**
+	 * 
+	 * Set the current status for current track ex : 01:01:01/02:02:02
+	 * 
+	 * @param string
+	 */
+	public void setCurrentStatusMessage(String string) {
+		sCurrentStatus = string;
+		jlCurrent.setText(string);
+	}
+
+	/**
+	 * @param string
+	 */
+	public void setTotalStatusMessage(String string) {
+		sTotalStatus = string;
+		jlTotal.setText(string);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public synchronized void update(final Event event) { // we
+		// synchronize
+		// this method
+		// to make error
+		// message is
+		// visible all 2
+		// secs
+		final EventSubject subject = event.getSubject();
+		// do not insert this subject inside the invokeLater because we have to
+		// leave the awt dispatcher called inside the setMessage and THEN, sleep
+		// for 2 secs.
+		if (EventSubject.EVENT_PLAY_ERROR.equals(subject)) {
+			try {
+				// reset data
+				setCurrentStatusMessage(Util.formatTimeBySec(0, false)
+						+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
+				setCurrentStatus(0);
+				setQuality(""); //$NON-NLS-1$
+				// set error message
+				File fCurrent = (File) ObservationManager.getDetail(event,
+						DETAIL_CURRENT_FILE);
+				if (fCurrent != null) {
+					// display associated error code is given
+					String sReason = (String) ObservationManager.getDetail(
+							event, DETAIL_REASON);
+					if (sReason != null) {
+						setMessage(
+								Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+					} else {// default message
+						setMessage(
+								Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+					}
+				} else { // none specified file
+					setMessage(
+							Messages.getString("Error.007"), InformationJPanel.ERROR);//$NON-NLS-1$
+				}
+			} catch (Exception e) {
+				Log.error(e);
+			}
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (EventSubject.EVENT_HEART_BEAT.equals(subject)
+							&& !FIFO.isStopped() && !Player.isPaused()) {
+						long length = JajukTimer.getInstance()
+								.getCurrentTrackTotalTime();
+						long lTime = JajukTimer.getInstance()
+								.getCurrentTrackEllapsedTime();
+						int iPos = (int) (100 * JajukTimer.getInstance()
+								.getCurrentTrackPosition());
+						setCurrentStatus(iPos);
+						String sCurrentTotalMessage = Util.formatTimeBySec(
+								JajukTimer.getInstance().getTotalTimeToPlay(),
+								false);
+						setTotalStatusMessage(sCurrentTotalMessage);
+						setCurrentStatusMessage(Util.formatTimeBySec(lTime,
+								false)
+								+ " / " + Util.formatTimeBySec(length, false)); //$NON-NLS-1$);
+					} else if (EventSubject.EVENT_ZERO.equals(subject)) {
+						setCurrentStatusMessage(Util.formatTimeBySec(0, false)
+								+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
+						setCurrentStatus(0);
+						setTotalStatusMessage("00:00:00");//$NON-NLS-1$
+						setMessage(
+								Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+						setQuality(""); //$NON-NLS-1$
+					} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+						File file = FIFO.getInstance().getCurrentFile();
+						if (file != null) {
+							String sMessage = Messages.getString("FIFO.10") + " " + file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$
+									+ " / " + file.getTrack().getAlbum().getName2() + " / " //$NON-NLS-1$ //$NON-NLS-2$
+									+ file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							setMessage(sMessage, InformationJPanel.INFORMATIVE);
+							setQuality(file.getQuality()
+									+ Messages.getString("FIFO.13")); //$NON-NLS-1$
+						}
+					}
+				}
+			});
+		}
+	}
+
+	/**
+	 * ToString() method
+	 */
+	public String toString() {
+		return getClass().getName();
+	}
+
+	public int getMessageType() {
+		return iType;
+	}
 }

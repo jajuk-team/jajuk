@@ -38,31 +38,31 @@ import org.jajuk.ui.views.ViewFactory;
  */
 public class ConfigurationPerspective extends PerspectiveAdapter {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IPerspective#getDesc()
-         */
-    public String getDesc() {
-	return Messages.getString("Perspective_Description_Configuration"); //$NON-NLS-1$
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IPerspective#getViews()
-         */
-    public Set<IView> getViews() {
-	if (views != null) {
-	    return views;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IPerspective#getDesc()
+	 */
+	public String getDesc() {
+		return Messages.getString("Perspective_Description_Configuration"); //$NON-NLS-1$
 	}
-	views = new HashSet<IView>(1);
-	views.add(ViewFactory.createView(ParameterView.class, this));
-	views.add(ViewFactory.createView(CDScanView.class, this));
-	views.add(ViewFactory.createView(DeviceView.class, this));
-	return views;
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IPerspective#getViews()
+	 */
+	public Set<IView> getViews() {
+		if (views != null) {
+			return views;
+		}
+		views = new HashSet<IView>(1);
+		views.add(ViewFactory.createView(ParameterView.class, this));
+		views.add(ViewFactory.createView(CDScanView.class, this));
+		views.add(ViewFactory.createView(DeviceView.class, this));
+		return views;
+	}
 
 }

@@ -23,30 +23,30 @@ import org.jajuk.util.log.Log;
  */
 public class PreviousAlbumAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    PreviousAlbumAction() {
-	super("previous album", "ctrl shift LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    public void perform(ActionEvent evt) {
-	synchronized (MUTEX) {
-	    new Thread() {
-		public void run() {
-		    try {
-			FIFO.getInstance().playPreviousAlbum();
-		    } catch (Exception e) {
-			Log.error(e);
-		    }
-		}
-	    }.start();
-	    if (Player.isPaused()) { // player was paused, reset pause button
-                                        // when changing of track
-		Player.setPaused(false);
-		ObservationManager.notify(new Event(
-			EventSubject.EVENT_PLAYER_RESUME)); // notify of
-                                                                // this event
-	    }
+	PreviousAlbumAction() {
+		super("previous album", "ctrl shift LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-    }
+
+	public void perform(ActionEvent evt) {
+		synchronized (MUTEX) {
+			new Thread() {
+				public void run() {
+					try {
+						FIFO.getInstance().playPreviousAlbum();
+					} catch (Exception e) {
+						Log.error(e);
+					}
+				}
+			}.start();
+			if (Player.isPaused()) { // player was paused, reset pause button
+				// when changing of track
+				Player.setPaused(false);
+				ObservationManager.notify(new Event(
+						EventSubject.EVENT_PLAYER_RESUME)); // notify of
+				// this event
+			}
+		}
+	}
 }

@@ -28,61 +28,62 @@ import javax.swing.filechooser.FileFilter;
  * @created 26 dec. 2005
  */
 public class ExportFileFilter extends FileFilter {
-    private String sFilterType;
+	private String sFilterType;
 
-    /**
-         * Constructor
-         * 
-         * @param Takes
-         *                a String that represents the file to be filtered.
-         *                Example: ".htm" or ".pdf"
-         */
-    public ExportFileFilter(String filtertype) throws NullPointerException,
-	    IllegalArgumentException {
-	if (filtertype != null) {
-	    if (filtertype.length() != 0) {
-		if (filtertype.charAt(0) != '.') {
-		    filtertype = "." + filtertype;
+	/**
+	 * Constructor
+	 * 
+	 * @param Takes
+	 *            a String that represents the file to be filtered. Example:
+	 *            ".htm" or ".pdf"
+	 */
+	public ExportFileFilter(String pFiltertype) throws NullPointerException,
+			IllegalArgumentException {
+		String filtertype = pFiltertype;
+		if (filtertype != null) {
+			if (filtertype.length() != 0) {
+				if (filtertype.charAt(0) != '.') {
+					filtertype = "." + filtertype;
+				}
+				sFilterType = filtertype;
+			} else {
+				throw new IllegalArgumentException();
+			}
+		} else {
+			throw new NullPointerException();
 		}
-		sFilterType = filtertype;
-	    } else {
-		throw new IllegalArgumentException();
-	    }
-	} else {
-	    throw new NullPointerException();
-	}
-    }
-
-    /**
-         * @return Returns true if file is accepted by filter, false otherwise.
-         */
-    public boolean accept(java.io.File f) {
-	if (f.isDirectory()) {
-	    return true;
 	}
 
-	String filename = f.getName().toLowerCase();
-	if (filename != null) {
-	    if (filename.endsWith(sFilterType)) {
-		return true;
-	    }
+	/**
+	 * @return Returns true if file is accepted by filter, false otherwise.
+	 */
+	public boolean accept(java.io.File f) {
+		if (f.isDirectory()) {
+			return true;
+		}
+
+		String filename = f.getName().toLowerCase();
+		if (filename != null) {
+			if (filename.endsWith(sFilterType)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
-	return false;
-    }
+	/**
+	 * @return Returns description of filter.
+	 */
+	public String getDescription() {
+		return sFilterType + " File";
+	}
 
-    /**
-         * @return Returns description of filter.
-         */
-    public String getDescription() {
-	return sFilterType + " File";
-    }
-
-    /**
-         * 
-         * @return Returns the file extension.
-         */
-    public String getExtension() {
-	return sFilterType.substring(1);
-    }
+	/**
+	 * 
+	 * @return Returns the file extension.
+	 */
+	public String getExtension() {
+		return sFilterType.substring(1);
+	}
 }

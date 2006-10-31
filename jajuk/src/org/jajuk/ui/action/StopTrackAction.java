@@ -16,15 +16,15 @@ import org.jajuk.util.Util;
  * @since 13-dec-2005
  */
 public class StopTrackAction extends ActionBase {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    StopTrackAction() {
-	super(
-		Messages.getString("JajukWindow.11"), Util.getIcon(ICON_STOP), "ctrl S", false); //$NON-NLS-1$ //$NON-NLS-2$
-	setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
-    }
+	StopTrackAction() {
+		super(
+				Messages.getString("JajukWindow.11"), Util.getIcon(ICON_STOP), "ctrl S", false); //$NON-NLS-1$ //$NON-NLS-2$
+		setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
+	}
 
-    public void perform(ActionEvent evt) {
-	FIFO.getInstance().stopRequest();
-    }
+	public void perform(ActionEvent evt) {
+		FIFO.getInstance().stopRequest();
+	}
 }

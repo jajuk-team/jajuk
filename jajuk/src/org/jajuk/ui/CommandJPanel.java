@@ -118,878 +118,878 @@ import ext.SwingWorker;
  * @created 3 oct. 2003
  */
 public class CommandJPanel extends JPanel implements ITechnicalStrings,
-	ActionListener, ListSelectionListener, ChangeListener, Observer,
-	MouseWheelListener {
+		ActionListener, ListSelectionListener, ChangeListener, Observer,
+		MouseWheelListener {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    // singleton
-    static private CommandJPanel command;
+	// singleton
+	static private CommandJPanel command;
 
-    // Toolbar panel
-    ToolBarPanel topPanel;
+	// Toolbar panel
+	ToolBarPanel topPanel;
 
-    // widgets declaration
-    SearchBox sbSearch;
+	// widgets declaration
+	SearchBox sbSearch;
 
-    SteppedComboBox jcbHistory;
+	SteppedComboBox jcbHistory;
 
-    public JajukToggleButton jbRepeat;
+	public JajukToggleButton jbRepeat;
 
-    public JajukToggleButton jbRandom;
+	public JajukToggleButton jbRandom;
 
-    public JajukToggleButton jbContinue;
+	public JajukToggleButton jbContinue;
 
-    public JajukToggleButton jbIntro;
+	public JajukToggleButton jbIntro;
 
-    JToolBar jtbSpecial;
+	JToolBar jtbSpecial;
 
-    DropDownButton ddbGlobalRandom;
+	DropDownButton ddbGlobalRandom;
 
-    JMenuItem jmiShuffleModeSong;
+	JMenuItem jmiShuffleModeSong;
 
-    JMenuItem jmiShuffleModeAlbum;
+	JMenuItem jmiShuffleModeAlbum;
 
-    JPopupMenu popupGlobalRandom;
+	JPopupMenu popupGlobalRandom;
 
-    JButton jbBestof;
+	JButton jbBestof;
 
-    DropDownButton ddbNovelties;
+	DropDownButton ddbNovelties;
 
-    JPopupMenu popupNovelties;
+	JPopupMenu popupNovelties;
 
-    JMenuItem jmiNoveltiesModeSong;
+	JMenuItem jmiNoveltiesModeSong;
 
-    JMenuItem jmiNoveltiesModeAlbum;
+	JMenuItem jmiNoveltiesModeAlbum;
 
-    JButton jbNorm;
+	JButton jbNorm;
 
-    DropDownButton ddbDDJ;
+	DropDownButton ddbDDJ;
 
-    JPopupMenu popupDDJ;
+	JPopupMenu popupDDJ;
 
-    SteppedComboBox ambiencesCombo;
+	SteppedComboBox ambiencesCombo;
 
-    JPanel jpPlay;
+	JPanel jpPlay;
 
-    JButton jbPrevious;
+	JButton jbPrevious;
 
-    JButton jbNext;
+	JButton jbNext;
 
-    JPressButton jbRew;
+	JPressButton jbRew;
 
-    JButton jbPlayPause;
+	JButton jbPlayPause;
 
-    JButton jbStop;
+	JButton jbStop;
 
-    JPressButton jbFwd;
+	JPressButton jbFwd;
 
-    JLabel jlVolume;
+	JLabel jlVolume;
 
-    JPanel jpVolume;
+	JPanel jpVolume;
 
-    JSlider jsVolume;
+	JSlider jsVolume;
 
-    JPanel jpPosition;
+	JPanel jpPosition;
 
-    JLabel jlPosition;
+	JLabel jlPosition;
 
-    JSlider jsPosition;
+	JSlider jsPosition;
 
-    public JajukToggleButton jbMute;
+	public JajukToggleButton jbMute;
 
-    // variables declaration
-    /** Repeat mode flag */
-    static boolean bIsRepeatEnabled = false;
+	// variables declaration
+	/** Repeat mode flag */
+	static boolean bIsRepeatEnabled = false;
 
-    /** Shuffle mode flag */
-    static boolean bIsShuffleEnabled = false;
+	/** Shuffle mode flag */
+	static boolean bIsShuffleEnabled = false;
 
-    /** Continue mode flag */
-    static boolean bIsContinueEnabled = true;
+	/** Continue mode flag */
+	static boolean bIsContinueEnabled = true;
 
-    /** Intro mode flag */
-    static boolean bIsIntroEnabled = false;
+	/** Intro mode flag */
+	static boolean bIsIntroEnabled = false;
 
-    /** Forward or rewind jump size in track percentage */
-    static final float JUMP_SIZE = 0.1f;
+	/** Forward or rewind jump size in track percentage */
+	static final float JUMP_SIZE = 0.1f;
 
-    /** Last slider manual move date */
-    private static long lDateLastAdjust;
+	/** Last slider manual move date */
+	private static long lDateLastAdjust;
 
-    /** Swing Timer to refresh the component */
-    private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,
-	    new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    update(new Event(EventSubject.EVENT_HEART_BEAT));
-		}
-	    });
-
-    /** Ambience combo listener */
-    class ambienceListener implements ActionListener {
-	public void actionPerformed(ActionEvent ae) {
-	    // Selected 'Any" ambience
-	    if (ambiencesCombo.getSelectedIndex() == 0) {
-		// reset default ambience
-		ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ""); //$NON-NLS-1$
-	    } else {// Selected an ambience
-		Ambience ambience = AmbienceManager.getInstance()
-			.getAmbienceByName(
-				(String) ambiencesCombo.getSelectedItem());
-		ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,
-			ambience.getID());
-	    }
-	    ObservationManager.notify(new Event(
-		    EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
-	}
-    }
-
-    /** An instance of the ambience combo listener */
-    ambienceListener ambienceListener;
-
-    /**
-         * @return singleton
-         */
-    public static synchronized CommandJPanel getInstance() {
-	if (command == null) {
-	    command = new CommandJPanel();
-	}
-	return command;
-    }
-
-    /**
-         * Constructor, this objects needs to be implemented for the tray (child
-         * object)
-         */
-    CommandJPanel() {
-	// mute
-	jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
-    }
-
-    public void initUI() {
-	ToolBarContainer container = Main.getToolbarContainer();
-	topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
-
-	// Search
-	VLToolBar vltbSearch = new VLToolBar("search");
-	sbSearch = new SearchBox(CommandJPanel.this);
-	sbSearch.setPreferredSize(new Dimension(-1, 25)); // size of the
-                                                                // combo itself
-	vltbSearch.add(sbSearch);
-
-	// History
-	VLToolBar vltbHistory = new VLToolBar("history");
-	jcbHistory = new SteppedComboBox();
-	vltbHistory.add(jcbHistory);
-	// we use a combobox model to make sure we get good performances after
-        // rebuilding the entire model like after a refresh
-	jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance()
-		.getHistory()));
-	int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-		.getWidth() / 2);
-	jcbHistory.setPopupWidth(iWidth); // size of popup
-	jcbHistory.setPreferredSize(new Dimension(300, 25)); // size of the
-                                                                // combo itself
-	jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
-	jcbHistory.addActionListener(CommandJPanel.this);
-
-	// Mode toolbar
-	VLToolBar vltbModes = new VLToolBar("modes");
-	jbRepeat = new JajukToggleButton(ActionManager
-		.getAction(REPEAT_MODE_STATUS_CHANGE));
-	jbRepeat
-		.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
-	jbRandom = new JajukToggleButton(ActionManager
-		.getAction(SHUFFLE_MODE_STATUS_CHANGED));
-	jbRandom.setSelected(ConfigurationManager
-		.getBoolean(CONF_STATE_SHUFFLE));
-	jbContinue = new JajukToggleButton(ActionManager
-		.getAction(JajukAction.CONTINUE_MODE_STATUS_CHANGED));
-	jbContinue.setSelected(ConfigurationManager
-		.getBoolean(CONF_STATE_CONTINUE));
-	jbIntro = new JajukToggleButton(ActionManager
-		.getAction(JajukAction.INTRO_MODE_STATUS_CHANGED));
-	jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
-	vltbModes.add(jbRepeat);
-	vltbModes.add(jbRandom);
-	vltbModes.add(jbContinue);
-	vltbModes.add(jbIntro);
-
-	// Volume
-	VLToolBar vltbVolume = new VLToolBar("volume");
-	jpVolume = new JPanel();
-	ActionUtil.installKeystrokes(jpVolume, ActionManager
-		.getAction(DECREASE_VOLUME), ActionManager
-		.getAction(INCREASE_VOLUME));
-
-	jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
-	jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
-	int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
-	if (iVolume > 100) { // can occur in some undefined cases
-	    iVolume = 100;
-	}
-	jsVolume = new JSlider(0, 100, iVolume);
-	jpVolume.add(jlVolume);
-	jpVolume.add(jsVolume);
-	jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
-	jsVolume.addChangeListener(CommandJPanel.this);
-	jsVolume.addMouseWheelListener(CommandJPanel.this);
-	jsVolume.setPreferredSize(new Dimension(150, 0)); // size of the
-                                                                // combo itself
-	vltbVolume.add(jpVolume);
-
-	// Position
-	VLToolBar vltbPosition = new VLToolBar("position");
-	jpPosition = new JPanel();
-	jpPosition.setLayout(new BoxLayout(jpPosition, BoxLayout.X_AXIS));
-	jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
-	jsPosition = new JSlider(0, 100, 0);
-	jpPosition.add(jlPosition);
-	jpPosition.add(jsPosition);
-	jsPosition.addChangeListener(CommandJPanel.this);
-	jsPosition.setEnabled(false);
-	jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-	vltbPosition.add(jpPosition);
-
-	// Ambience combo
-	ambiencesCombo = new SteppedComboBox();
-	iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
-	ambiencesCombo.setPopupWidth(iWidth);
-	ambiencesCombo.setPreferredSize(new Dimension(100, 25)); // size
-                                                                        // of
-                                                                        // the
-                                                                        // combo
-                                                                        // itself
-	populateAmbiences();
-	ambienceListener = new ambienceListener();
-	ambiencesCombo.addActionListener(ambienceListener);
-
-	// Special functions toolbar
-	VLToolBar vltbSpecial = new VLToolBar("smart");
-	jtbSpecial = new JToolBar(); // we have to use an intermediate
-	jtbSpecial.setPreferredSize(new Dimension(320, 25));
-	ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
-	    private static final long serialVersionUID = 1L;
-
-	    @Override
-	    protected JPopupMenu getPopupMenu() {
-		return popupGlobalRandom;
-	    }
-	};
-	ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
-	popupGlobalRandom = new JPopupMenu();
-	jmiShuffleModeSong = new JMenuItem(Messages
-		.getString("CommandJPanel.20"));
-	jmiShuffleModeSong.addActionListener(this);
-	jmiShuffleModeAlbum = new JMenuItem(Messages
-		.getString("CommandJPanel.21"));
-	jmiShuffleModeAlbum.addActionListener(this);
-	if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(
-		MODE_TRACK)) {
-	    jmiShuffleModeSong.setSelected(true);
-	    // select item (note that selection stick is not displayed on
-                // some Laf like liquid)
-	    jmiShuffleModeSong.setBorder(BorderFactory.createEtchedBorder());
-	} else {
-	    jmiShuffleModeAlbum.setSelected(true);
-	    jmiShuffleModeAlbum.setBorder(BorderFactory.createEtchedBorder());
-	}
-	popupGlobalRandom.add(jmiShuffleModeSong);
-	popupGlobalRandom.add(jmiShuffleModeAlbum);
-	ddbGlobalRandom.setText("");// no text visible //$NON-NLS-1$
-
-	jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
-
-	ddbNovelties = new DropDownButton(Util.getIcon(ICON_NOVELTIES)) {
-	    private static final long serialVersionUID = 1L;
-
-	    @Override
-	    protected JPopupMenu getPopupMenu() {
-		return popupNovelties;
-	    }
-	};
-	ddbNovelties.setAction(ActionManager.getAction(NOVELTIES));
-	popupNovelties = new JPopupMenu();
-	jmiNoveltiesModeSong = new JMenuItem(Messages
-		.getString("CommandJPanel.20"));
-	jmiNoveltiesModeSong.addActionListener(this);
-	jmiNoveltiesModeAlbum = new JMenuItem(Messages
-		.getString("CommandJPanel.21"));
-	jmiNoveltiesModeAlbum.addActionListener(this);
-	if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(
-		MODE_TRACK)) {
-	    jmiNoveltiesModeSong.setSelected(true);
-	    // display in bold (note that selection stick is not displayed
-                // on some Laf like liquid)
-	    jmiNoveltiesModeSong.setBorder(BorderFactory.createEtchedBorder());
-	} else {
-	    jmiNoveltiesModeAlbum.setSelected(true);
-	    jmiNoveltiesModeAlbum.setBorder(BorderFactory.createEtchedBorder());
-	}
-	popupNovelties.add(jmiNoveltiesModeSong);
-	popupNovelties.add(jmiNoveltiesModeAlbum);
-	ddbNovelties.setText("");// no text visible //$NON-NLS-1$
-
-	jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
-	popupDDJ = new JPopupMenu();
-	ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
-	    private static final long serialVersionUID = 1L;
-
-	    @Override
-	    protected JPopupMenu getPopupMenu() {
-		return popupDDJ;
-	    }
-	};
-	ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
-	populateDJs();
-	ddbDDJ.setText("");// no text visible //$NON-NLS-1$
-
-	jtbSpecial.add(ambiencesCombo);
-	ddbDDJ.addToToolBar(jtbSpecial);
-	ddbNovelties.addToToolBar(jtbSpecial);
-	ddbGlobalRandom.addToToolBar(jtbSpecial);
-	jtbSpecial.add(jbBestof);
-	jtbSpecial.add(jbNorm);
-	vltbSpecial.add(jtbSpecial);
-
-	// Play toolbar
-	VLToolBar vltbPlay = new VLToolBar("player");
-	jpPlay = new JPanel();
-	ActionUtil
-		.installKeystrokes(jpPlay, ActionManager.getAction(NEXT_ALBUM),
-			ActionManager.getAction(PREVIOUS_ALBUM));
-	jpPlay.setLayout(new BoxLayout(jpPlay, BoxLayout.X_AXIS));
-	jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
-	jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
-	jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
-	jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
-	jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-	jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
-
-	jpPlay.add(jbPrevious);
-	jpPlay.add(jbNext);
-	jpPlay.add(Box.createHorizontalGlue());
-	jpPlay.add(jbRew);
-	jpPlay.add(jbPlayPause);
-	jpPlay.add(jbStop);
-	jpPlay.add(jbFwd);
-	vltbPlay.add(jpPlay);
-
-	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
-	boolean bToolbarInstallationOK = false; // flag
-
-	if (new File(FILE_TOOLBARS_CONF).exists()) {
-	    try {
-		// Read toolbars configuration
-		container.registerToolBar(vltbSearch);
-		container.registerToolBar(vltbHistory);
-		container.registerToolBar(vltbModes);
-		container.registerToolBar(vltbVolume);
-		container.registerToolBar(vltbPosition);
-		container.registerToolBar(vltbPlay);
-		container.registerToolBar(vltbSpecial);
-
-		// install them from XML
-		ToolBarIO tbIO = new ToolBarIO(container);
-		FileInputStream in = new FileInputStream(FILE_TOOLBARS_CONF);
-		tbIO.readXML(in);
-		bToolbarInstallationOK = true;
-		in.close();
-	    } catch (Exception e) {
-		Log.error(e);
-		bToolbarInstallationOK = false;
-	    }
-	}
-
-	if (!bToolbarInstallationOK) { // toolbars have not been installed
-	    topPanel.add(vltbSearch, new ToolBarConstraints(0, 0));
-	    topPanel.add(vltbHistory, new ToolBarConstraints(0, 1));
-	    topPanel.add(vltbModes, new ToolBarConstraints(0, 2));
-	    topPanel.add(vltbVolume, new ToolBarConstraints(0, 3));
-	    topPanel.add(vltbPosition, new ToolBarConstraints(0, 4));
-	    topPanel.add(vltbPlay, new ToolBarConstraints(1, 1));
-	    topPanel.add(vltbSpecial, new ToolBarConstraints(1, 2));
-	}
-
-	// register to player events
-	ObservationManager.register(CommandJPanel.this);
-
-	// if a track is playing, display right state
-	if (FIFO.getInstance().getCurrentFile() != null) {
-	    // update initial state
-	    update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
-		    .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
-	    // check if some track has been lauched before the view has been
-                // displayed
-	    update(new Event(EventSubject.EVENT_HEART_BEAT));
-	}
-	// start timer
-	timer.start();
-    }
-
-    public Set<EventSubject> getRegistrationKeys() {
-	HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-	eventSubjectSet.add(EventSubject.EVENT_PLAYER_PLAY);
-	eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
-	eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
-	eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
-	eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
-	eventSubjectSet.add(EventSubject.EVENT_SPECIAL_MODE);
-	eventSubjectSet.add(EventSubject.EVENT_ZERO);
-	eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
-	eventSubjectSet.add(EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED);
-	eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-	eventSubjectSet.add(EventSubject.EVENT_CLEAR_HISTORY);
-	eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
-	eventSubjectSet.add(EventSubject.EVENT_DJS_CHANGE);
-	eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
-	eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
-	return eventSubjectSet;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-    public void actionPerformed(final ActionEvent ae) {
-	// do not run this in a separate thread because Player actions would die
-        // with the thread
-	try {
-	    if (ae.getSource() == jcbHistory) {
-		HistoryItem hi;
-		hi = History.getInstance().getHistoryItem(
-			jcbHistory.getSelectedIndex());
-		if (hi != null) {
-		    org.jajuk.base.File file = FileManager.getInstance()
-			    .getFileByID(hi.getFileId());
-		    if (file != null) {
-			try {
-			    FIFO.getInstance().push(
-				    new StackItem(file, ConfigurationManager
-					    .getBoolean(CONF_STATE_REPEAT),
-					    true), false);
-			} catch (JajukException je) { // can be thrown if file
-                                                        // is null
+	/** Swing Timer to refresh the component */
+	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,
+			new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					update(new Event(EventSubject.EVENT_HEART_BEAT));
+				}
+			});
+
+	/** Ambience combo listener */
+	class ambienceListener implements ActionListener {
+		public void actionPerformed(ActionEvent ae) {
+			// Selected 'Any" ambience
+			if (ambiencesCombo.getSelectedIndex() == 0) {
+				// reset default ambience
+				ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ""); //$NON-NLS-1$
+			} else {// Selected an ambience
+				Ambience ambience = AmbienceManager.getInstance()
+						.getAmbienceByName(
+								(String) ambiencesCombo.getSelectedItem());
+				ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,
+						ambience.getID());
 			}
-		    } else {
-			Messages.showErrorMessage("120"); //$NON-NLS-1$ //$NON-NLS-2$
-			jcbHistory.setSelectedItem(null);
-		    }
+			ObservationManager.notify(new Event(
+					EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 		}
-	    } else if (ae.getSource().equals(jmiNoveltiesModeSong)) {
-		ConfigurationManager.setProperty(CONF_NOVELTIES_MODE,
-			MODE_TRACK);
-		jmiNoveltiesModeSong.setBorder(BorderFactory
-			.createEtchedBorder());
-		jmiNoveltiesModeAlbum.setBorder(BorderFactory
-			.createEmptyBorder());
-	    } else if (ae.getSource().equals(jmiNoveltiesModeAlbum)) {
-		ConfigurationManager.setProperty(CONF_NOVELTIES_MODE,
-			MODE_ALBUM);
-		jmiNoveltiesModeAlbum.setBorder(BorderFactory
-			.createEtchedBorder());
-		jmiNoveltiesModeSong.setBorder(BorderFactory
-			.createEmptyBorder());
-	    } else if (ae.getSource().equals(jmiShuffleModeSong)) {
-		ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE,
-			MODE_TRACK);
-		jmiShuffleModeSong
-			.setBorder(BorderFactory.createEtchedBorder());
-		jmiShuffleModeAlbum
-			.setBorder(BorderFactory.createEmptyBorder());
-	    } else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
-		ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE,
-			MODE_ALBUM);
-		jmiShuffleModeAlbum.setBorder(BorderFactory
-			.createEtchedBorder());
-		jmiShuffleModeSong.setBorder(BorderFactory.createEmptyBorder());
-	    }
-	} catch (Exception e) {
-	    Log.error(e);
-	} finally {
-	    ObservationManager.notify(new Event(
-		    EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-                                                                // playlist
-                                                                // editor
 	}
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
-         */
-    public void valueChanged(final ListSelectionEvent e) {
-	SwingWorker sw = new SwingWorker() {
-	    public Object construct() {
-		if (!e.getValueIsAdjusting()) {
-		    SearchResult sr = (SearchResult) sbSearch.alResults
-			    .get(sbSearch.jlist.getSelectedIndex());
-		    try {
-			FIFO.getInstance().push(
-				new StackItem(sr.getFile(),
-					ConfigurationManager
-						.getBoolean(CONF_STATE_REPEAT),
-					true), false);
-		    } catch (JajukException je) {
-			Log.error(je);
-		    }
+	/** An instance of the ambience combo listener */
+	ambienceListener ambienceListener;
+
+	/**
+	 * @return singleton
+	 */
+	public static synchronized CommandJPanel getInstance() {
+		if (command == null) {
+			command = new CommandJPanel();
 		}
-		return null;
-	    }
+		return command;
+	}
 
-	    public void finished() {
-		if (!e.getValueIsAdjusting()) {
-		    sbSearch.popup.hide();
-		    requestFocusInWindow();
+	/**
+	 * Constructor, this objects needs to be implemented for the tray (child
+	 * object)
+	 */
+	CommandJPanel() {
+		// mute
+		jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
+	}
+
+	public void initUI() {
+		ToolBarContainer container = Main.getToolbarContainer();
+		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
+
+		// Search
+		VLToolBar vltbSearch = new VLToolBar("search");
+		sbSearch = new SearchBox(CommandJPanel.this);
+		sbSearch.setPreferredSize(new Dimension(-1, 25)); // size of the
+		// combo itself
+		vltbSearch.add(sbSearch);
+
+		// History
+		VLToolBar vltbHistory = new VLToolBar("history");
+		jcbHistory = new SteppedComboBox();
+		vltbHistory.add(jcbHistory);
+		// we use a combobox model to make sure we get good performances after
+		// rebuilding the entire model like after a refresh
+		jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance()
+				.getHistory()));
+		int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
+				.getWidth() / 2);
+		jcbHistory.setPopupWidth(iWidth); // size of popup
+		jcbHistory.setPreferredSize(new Dimension(300, 25)); // size of the
+		// combo itself
+		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
+		jcbHistory.addActionListener(CommandJPanel.this);
+
+		// Mode toolbar
+		VLToolBar vltbModes = new VLToolBar("modes");
+		jbRepeat = new JajukToggleButton(ActionManager
+				.getAction(REPEAT_MODE_STATUS_CHANGE));
+		jbRepeat
+				.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+		jbRandom = new JajukToggleButton(ActionManager
+				.getAction(SHUFFLE_MODE_STATUS_CHANGED));
+		jbRandom.setSelected(ConfigurationManager
+				.getBoolean(CONF_STATE_SHUFFLE));
+		jbContinue = new JajukToggleButton(ActionManager
+				.getAction(JajukAction.CONTINUE_MODE_STATUS_CHANGED));
+		jbContinue.setSelected(ConfigurationManager
+				.getBoolean(CONF_STATE_CONTINUE));
+		jbIntro = new JajukToggleButton(ActionManager
+				.getAction(JajukAction.INTRO_MODE_STATUS_CHANGED));
+		jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
+		vltbModes.add(jbRepeat);
+		vltbModes.add(jbRandom);
+		vltbModes.add(jbContinue);
+		vltbModes.add(jbIntro);
+
+		// Volume
+		VLToolBar vltbVolume = new VLToolBar("volume");
+		jpVolume = new JPanel();
+		ActionUtil.installKeystrokes(jpVolume, ActionManager
+				.getAction(DECREASE_VOLUME), ActionManager
+				.getAction(INCREASE_VOLUME));
+
+		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
+		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
+		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
+		if (iVolume > 100) { // can occur in some undefined cases
+			iVolume = 100;
 		}
-	    }
-	};
-	sw.start();
-    }
+		jsVolume = new JSlider(0, 100, iVolume);
+		jpVolume.add(jlVolume);
+		jpVolume.add(jsVolume);
+		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
+		jsVolume.addChangeListener(CommandJPanel.this);
+		jsVolume.addMouseWheelListener(CommandJPanel.this);
+		jsVolume.setPreferredSize(new Dimension(150, 0)); // size of the
+		// combo itself
+		vltbVolume.add(jpVolume);
 
-    /*
-         * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-         */
-    public void stateChanged(ChangeEvent e) {
-	if (e.getSource() == jsVolume) {
-	    if (System.currentTimeMillis() - lDateLastAdjust > 20) { // this
-                                                                        // value
-                                                                        // should
-                                                                        // be
-                                                                        // low
-                                                                        // to
-                                                                        // make
-                                                                        // sure
-                                                                        // we
-                                                                        // can
-                                                                        // reach
-                                                                        // zero
-		setVolume((float) jsVolume.getValue() / 100);
-		lDateLastAdjust = System.currentTimeMillis();
-	    }
-	} else if (e.getSource() == jsPosition) {
-	    lDateLastAdjust = System.currentTimeMillis();
-	    setPosition((float) jsPosition.getValue() / 100);
-	}
-    }
+		// Position
+		VLToolBar vltbPosition = new VLToolBar("position");
+		jpPosition = new JPanel();
+		jpPosition.setLayout(new BoxLayout(jpPosition, BoxLayout.X_AXIS));
+		jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
+		jsPosition = new JSlider(0, 100, 0);
+		jpPosition.add(jlPosition);
+		jpPosition.add(jsPosition);
+		jsPosition.addChangeListener(CommandJPanel.this);
+		jsPosition.setEnabled(false);
+		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
+		vltbPosition.add(jpPosition);
 
-    /**
-         * Call a seek
-         * 
-         * @param fPosition
-         */
-    private void setPosition(final float fPosition) {
-	new Thread() {
-	    public void run() {
-		Player.seek(fPosition);
-	    }
-	}.start();
-    }
+		// Ambience combo
+		ambiencesCombo = new SteppedComboBox();
+		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
+		ambiencesCombo.setPopupWidth(iWidth);
+		ambiencesCombo.setPreferredSize(new Dimension(100, 25)); // size
+		// of
+		// the
+		// combo
+		// itself
+		populateAmbiences();
+		ambienceListener = new ambienceListener();
+		ambiencesCombo.addActionListener(ambienceListener);
 
-    /**
-         * @return Position value
-         */
-    public int getCurrentPosition() {
-	return this.jsPosition.getValue();
-    }
+		// Special functions toolbar
+		VLToolBar vltbSpecial = new VLToolBar("smart");
+		jtbSpecial = new JToolBar(); // we have to use an intermediate
+		jtbSpecial.setPreferredSize(new Dimension(320, 25));
+		ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
+			private static final long serialVersionUID = 1L;
 
-    /**
-         * @return Volume value
-         */
-    public int getCurrentVolume() {
-	return this.jsVolume.getValue();
-    }
-
-    private void setVolume(final float fVolume) {
-	jsVolume.removeChangeListener(CommandJPanel.this);
-	jsVolume.removeMouseWheelListener(CommandJPanel.this);
-	// if user move the volume slider, unmute
-	if (Player.isMuted()) {
-	    Player.mute(false);
-	}
-	Player.setVolume(fVolume);
-	jsVolume.addChangeListener(CommandJPanel.this);
-	jsVolume.addMouseWheelListener(CommandJPanel.this);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.Observer#update(java.lang.String)
-         */
-    public void update(final Event event) {
-	SwingUtilities.invokeLater(new Runnable() {
-	    public void run() {
-		EventSubject subject = event.getSubject();
-		if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
-			|| EventSubject.EVENT_ZERO.equals(subject)) {
-		    ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
-		    ActionManager.getAction(NEXT_TRACK).setEnabled(false);
-		    ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-		    ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(false);
-		    ActionManager.getAction(STOP_TRACK).setEnabled(false);
-		    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(
-			    false);
-		    ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
-		    ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
-		    ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-		    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
-			    Util.getIcon(ICON_PAUSE));
-		    jsPosition.setEnabled(false);
-		    jsPosition.removeMouseWheelListener(CommandJPanel.this);
-		    jsPosition.removeChangeListener(CommandJPanel.this);
-		    jsPosition.setValue(0);// use set value, not
-                                                // setPosition that would cause
-                                                // a seek that could fail with
-                                                // some formats
-		    ConfigurationManager.setProperty(
-			    CONF_STARTUP_LAST_POSITION, "0");// reset startup
-                                                                // position
-                                                                // //$NON-NLS-1$
-		} else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)) {
-		    // remove and re-add listener to make sure not to add it
-                        // twice
-		    jsPosition.removeMouseWheelListener(CommandJPanel.this);
-		    jsPosition.addMouseWheelListener(CommandJPanel.this);
-		    jsPosition.removeChangeListener(CommandJPanel.this);
-		    jsPosition.addChangeListener(CommandJPanel.this);
-		    ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-		    ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-		    ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-		    ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
-		    ActionManager.getAction(STOP_TRACK).setEnabled(true);
-		    ActionManager.getAction(FAST_FORWARD_TRACK)
-			    .setEnabled(true);
-		    ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
-		    ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
-		    ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-		    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
-			    Util.getIcon(ICON_PAUSE));
-		    jsPosition.setEnabled(true);
-		} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
-		    ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-		    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(
-			    false);
-		    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
-			    Util.getIcon(ICON_PLAY));
-		    jsPosition.setEnabled(false);
-		    jsPosition.removeMouseWheelListener(CommandJPanel.this);
-		    jsPosition.removeChangeListener(CommandJPanel.this);
-		} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
-		    // remove and re-add listener to make sure not to add it
-                        // twice
-		    jsPosition.removeMouseWheelListener(CommandJPanel.this);
-		    jsPosition.addMouseWheelListener(CommandJPanel.this);
-		    jsPosition.removeChangeListener(CommandJPanel.this);
-		    jsPosition.addChangeListener(CommandJPanel.this);
-		    ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-		    ActionManager.getAction(FAST_FORWARD_TRACK)
-			    .setEnabled(true);
-		    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
-			    Util.getIcon(ICON_PAUSE));
-		    jsPosition.setEnabled(true);
-		} else if (EventSubject.EVENT_HEART_BEAT.equals(subject)
-			&& !FIFO.isStopped() && !Player.isPaused()) {
-		    // if position is adjusting, no dont disturb user
-		    if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
-			return;
-		    }
-		    // make sure not to set to old position
-		    if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
-			return;
-		    }
-		    int iPos = (int) (100 * JajukTimer.getInstance()
-			    .getCurrentTrackPosition());
-		    jsPosition.removeChangeListener(CommandJPanel.this);
-		    jsPosition.removeChangeListener(CommandJPanel.this);
-		    jsPosition.setValue(iPos);
-		    jsPosition.addChangeListener(CommandJPanel.this);
-		} else if (EventSubject.EVENT_SPECIAL_MODE.equals(subject)) {
-		    if (ObservationManager.getDetail(event, DETAIL_ORIGIN)
-			    .equals(DETAIL_SPECIAL_MODE_NORMAL)) {
-			// deselect shuffle mode
-			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE,
-				FALSE);
-			JajukJMenuBar.getInstance().jcbmiShuffle
-				.setSelected(false);
-			CommandJPanel.getInstance().jbRandom.setSelected(false);
-			// computes planned tracks
-			FIFO.getInstance().computesPlanned(true);
-		    }
-		} else if (EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED
-			.equals(subject)) {
-		    if (ObservationManager.getDetail(event, DETAIL_SELECTION)
-			    .equals(FALSE)) {
-			// deselect repeat mode
-			ConfigurationManager.setProperty(CONF_STATE_REPEAT,
-				FALSE);
-			JajukJMenuBar.getInstance().jcbmiRepeat
-				.setSelected(false);
-			CommandJPanel.getInstance().jbRepeat.setSelected(false);
-		    }
-		} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
-		    // Remove history listener, otherwise u get a recursive
-                        // event generation
-		    jcbHistory.removeActionListener(CommandJPanel.this);
-		    if (jcbHistory.getItemCount() > 0) {
-			jcbHistory.setSelectedIndex(0);
-		    }
-		    jcbHistory.addActionListener(CommandJPanel.this);
-		} else if (EventSubject.EVENT_CLEAR_HISTORY.equals(event
-			.getSubject())) {
-		    jcbHistory.setSelectedItem(null); // clear selection bar
-                                                        // (data itself is clear
-                                                        // from the model by
-                                                        // History class)
-		} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
-			.getSubject())) {
-		    jsVolume.removeChangeListener(CommandJPanel.this);
-		    jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
-		    jsVolume.addChangeListener(CommandJPanel.this);
-		    jbMute.setSelected(false);
-		} else if (EventSubject.EVENT_DJS_CHANGE.equals(event
-			.getSubject())) {
-		    populateDJs();
-		    // If no more DJ, chnage the tooltip
-		    if (DigitalDJManager.getInstance().getDJs().size() == 0) {
-			ActionBase action = ActionManager
-				.getAction(JajukAction.DJ);
-			action.setShortDescription(Messages
-				.getString("CommandJPanel.18")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		    }
-		} else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(event
-			.getSubject())
-			|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE
-				.equals(event.getSubject())) {
-		    populateAmbiences();
-		    updateTooltips();
+			@Override
+			protected JPopupMenu getPopupMenu() {
+				return popupGlobalRandom;
+			}
+		};
+		ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
+		popupGlobalRandom = new JPopupMenu();
+		jmiShuffleModeSong = new JMenuItem(Messages
+				.getString("CommandJPanel.20"));
+		jmiShuffleModeSong.addActionListener(this);
+		jmiShuffleModeAlbum = new JMenuItem(Messages
+				.getString("CommandJPanel.21"));
+		jmiShuffleModeAlbum.addActionListener(this);
+		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(
+				MODE_TRACK)) {
+			jmiShuffleModeSong.setSelected(true);
+			// select item (note that selection stick is not displayed on
+			// some Laf like liquid)
+			jmiShuffleModeSong.setBorder(BorderFactory.createEtchedBorder());
+		} else {
+			jmiShuffleModeAlbum.setSelected(true);
+			jmiShuffleModeAlbum.setBorder(BorderFactory.createEtchedBorder());
 		}
-	    }
-	});
-    }
+		popupGlobalRandom.add(jmiShuffleModeSong);
+		popupGlobalRandom.add(jmiShuffleModeAlbum);
+		ddbGlobalRandom.setText("");// no text visible //$NON-NLS-1$
 
-    /**
-         * Update global functions tooltip after a change in ambiences or an
-         * ambience selection using the ambience selector
-         * 
-         */
-    private void updateTooltips() {
-	// Selected 'Any" ambience
-	if (ambiencesCombo.getSelectedIndex() == 0) {
-	    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-	    action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
-	    action = ActionManager.getAction(JajukAction.BEST_OF);
-	    action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
-	    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-	    action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
-	} else {// Selected an ambience
-	    Ambience ambience = AmbienceManager.getInstance()
-		    .getAmbienceByName(
-			    (String) ambiencesCombo.getSelectedItem());
-	    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-	    action
-		    .setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>" + ambience.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-	    action
-		    .setShortDescription("<html>" + Messages.getString("JajukWindow.23") + "<p><b>" + ambience.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	    action = ActionManager.getAction(JajukAction.BEST_OF);
-	    action
-		    .setShortDescription("<html>" + Messages.getString("JajukWindow.24") + "<p><b>" + ambience.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
+
+		ddbNovelties = new DropDownButton(Util.getIcon(ICON_NOVELTIES)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected JPopupMenu getPopupMenu() {
+				return popupNovelties;
+			}
+		};
+		ddbNovelties.setAction(ActionManager.getAction(NOVELTIES));
+		popupNovelties = new JPopupMenu();
+		jmiNoveltiesModeSong = new JMenuItem(Messages
+				.getString("CommandJPanel.20"));
+		jmiNoveltiesModeSong.addActionListener(this);
+		jmiNoveltiesModeAlbum = new JMenuItem(Messages
+				.getString("CommandJPanel.21"));
+		jmiNoveltiesModeAlbum.addActionListener(this);
+		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(
+				MODE_TRACK)) {
+			jmiNoveltiesModeSong.setSelected(true);
+			// display in bold (note that selection stick is not displayed
+			// on some Laf like liquid)
+			jmiNoveltiesModeSong.setBorder(BorderFactory.createEtchedBorder());
+		} else {
+			jmiNoveltiesModeAlbum.setSelected(true);
+			jmiNoveltiesModeAlbum.setBorder(BorderFactory.createEtchedBorder());
+		}
+		popupNovelties.add(jmiNoveltiesModeSong);
+		popupNovelties.add(jmiNoveltiesModeAlbum);
+		ddbNovelties.setText("");// no text visible //$NON-NLS-1$
+
+		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
+		popupDDJ = new JPopupMenu();
+		ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected JPopupMenu getPopupMenu() {
+				return popupDDJ;
+			}
+		};
+		ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
+		populateDJs();
+		ddbDDJ.setText("");// no text visible //$NON-NLS-1$
+
+		jtbSpecial.add(ambiencesCombo);
+		ddbDDJ.addToToolBar(jtbSpecial);
+		ddbNovelties.addToToolBar(jtbSpecial);
+		ddbGlobalRandom.addToToolBar(jtbSpecial);
+		jtbSpecial.add(jbBestof);
+		jtbSpecial.add(jbNorm);
+		vltbSpecial.add(jtbSpecial);
+
+		// Play toolbar
+		VLToolBar vltbPlay = new VLToolBar("player");
+		jpPlay = new JPanel();
+		ActionUtil
+				.installKeystrokes(jpPlay, ActionManager.getAction(NEXT_ALBUM),
+						ActionManager.getAction(PREVIOUS_ALBUM));
+		jpPlay.setLayout(new BoxLayout(jpPlay, BoxLayout.X_AXIS));
+		jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+		jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
+		jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
+		jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
+		jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
+		jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
+
+		jpPlay.add(jbPrevious);
+		jpPlay.add(jbNext);
+		jpPlay.add(Box.createHorizontalGlue());
+		jpPlay.add(jbRew);
+		jpPlay.add(jbPlayPause);
+		jpPlay.add(jbStop);
+		jpPlay.add(jbFwd);
+		vltbPlay.add(jpPlay);
+
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+		boolean bToolbarInstallationOK = false; // flag
+
+		if (new File(FILE_TOOLBARS_CONF).exists()) {
+			try {
+				// Read toolbars configuration
+				container.registerToolBar(vltbSearch);
+				container.registerToolBar(vltbHistory);
+				container.registerToolBar(vltbModes);
+				container.registerToolBar(vltbVolume);
+				container.registerToolBar(vltbPosition);
+				container.registerToolBar(vltbPlay);
+				container.registerToolBar(vltbSpecial);
+
+				// install them from XML
+				ToolBarIO tbIO = new ToolBarIO(container);
+				FileInputStream in = new FileInputStream(FILE_TOOLBARS_CONF);
+				tbIO.readXML(in);
+				bToolbarInstallationOK = true;
+				in.close();
+			} catch (Exception e) {
+				Log.error(e);
+				bToolbarInstallationOK = false;
+			}
+		}
+
+		if (!bToolbarInstallationOK) { // toolbars have not been installed
+			topPanel.add(vltbSearch, new ToolBarConstraints(0, 0));
+			topPanel.add(vltbHistory, new ToolBarConstraints(0, 1));
+			topPanel.add(vltbModes, new ToolBarConstraints(0, 2));
+			topPanel.add(vltbVolume, new ToolBarConstraints(0, 3));
+			topPanel.add(vltbPosition, new ToolBarConstraints(0, 4));
+			topPanel.add(vltbPlay, new ToolBarConstraints(1, 1));
+			topPanel.add(vltbSpecial, new ToolBarConstraints(1, 2));
+		}
+
+		// register to player events
+		ObservationManager.register(CommandJPanel.this);
+
+		// if a track is playing, display right state
+		if (FIFO.getInstance().getCurrentFile() != null) {
+			// update initial state
+			update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
+					.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
+			// check if some track has been lauched before the view has been
+			// displayed
+			update(new Event(EventSubject.EVENT_HEART_BEAT));
+		}
+		// start timer
+		timer.start();
 	}
-    }
 
-    /**
-         * Populate DJs
-         * 
-         */
-    private void populateDJs() {
-	try {
-	    popupDDJ.removeAll();
-	    JMenuItem jmiNew = new JMenuItem(ActionManager
-		    .getAction(CONFIGURE_DJS)); //$NON-NLS-1$
-	    popupDDJ.add(jmiNew);
-	    popupDDJ.addSeparator();
-	    // Ambiences
-	    JMenuItem jmiAmbiences = new JMenuItem(ActionManager
-		    .getAction(CONFIGURE_AMBIENCES)); //$NON-NLS-1$
-	    popupDDJ.addSeparator();
-	    popupDDJ.add(jmiAmbiences);
-	    Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
-	    while (it.hasNext()) {
-		final DigitalDJ dj = (DigitalDJ) it.next();
-		JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
-			Util.getIcon(ICON_DIGITAL_DJ));
-		jmi.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent arg0) {
-			ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj
-				.getID());
-			populateDJs();
-			ActionBase action = ActionManager
-				.getAction(JajukAction.DJ);
-			action
-				.setShortDescription("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>" + dj.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		    }
+	public Set<EventSubject> getRegistrationKeys() {
+		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+		eventSubjectSet.add(EventSubject.EVENT_PLAYER_PLAY);
+		eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+		eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
+		eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
+		eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
+		eventSubjectSet.add(EventSubject.EVENT_SPECIAL_MODE);
+		eventSubjectSet.add(EventSubject.EVENT_ZERO);
+		eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
+		eventSubjectSet.add(EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED);
+		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_CLEAR_HISTORY);
+		eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
+		eventSubjectSet.add(EventSubject.EVENT_DJS_CHANGE);
+		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
+		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
+		return eventSubjectSet;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(final ActionEvent ae) {
+		// do not run this in a separate thread because Player actions would die
+		// with the thread
+		try {
+			if (ae.getSource() == jcbHistory) {
+				HistoryItem hi;
+				hi = History.getInstance().getHistoryItem(
+						jcbHistory.getSelectedIndex());
+				if (hi != null) {
+					org.jajuk.base.File file = FileManager.getInstance()
+							.getFileByID(hi.getFileId());
+					if (file != null) {
+						try {
+							FIFO.getInstance().push(
+									new StackItem(file, ConfigurationManager
+											.getBoolean(CONF_STATE_REPEAT),
+											true), false);
+						} catch (JajukException je) { // can be thrown if file
+							// is null
+						}
+					} else {
+						Messages.showErrorMessage("120"); //$NON-NLS-1$ //$NON-NLS-2$
+						jcbHistory.setSelectedItem(null);
+					}
+				}
+			} else if (ae.getSource().equals(jmiNoveltiesModeSong)) {
+				ConfigurationManager.setProperty(CONF_NOVELTIES_MODE,
+						MODE_TRACK);
+				jmiNoveltiesModeSong.setBorder(BorderFactory
+						.createEtchedBorder());
+				jmiNoveltiesModeAlbum.setBorder(BorderFactory
+						.createEmptyBorder());
+			} else if (ae.getSource().equals(jmiNoveltiesModeAlbum)) {
+				ConfigurationManager.setProperty(CONF_NOVELTIES_MODE,
+						MODE_ALBUM);
+				jmiNoveltiesModeAlbum.setBorder(BorderFactory
+						.createEtchedBorder());
+				jmiNoveltiesModeSong.setBorder(BorderFactory
+						.createEmptyBorder());
+			} else if (ae.getSource().equals(jmiShuffleModeSong)) {
+				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE,
+						MODE_TRACK);
+				jmiShuffleModeSong
+						.setBorder(BorderFactory.createEtchedBorder());
+				jmiShuffleModeAlbum
+						.setBorder(BorderFactory.createEmptyBorder());
+			} else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
+				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE,
+						MODE_ALBUM);
+				jmiShuffleModeAlbum.setBorder(BorderFactory
+						.createEtchedBorder());
+				jmiShuffleModeSong.setBorder(BorderFactory.createEmptyBorder());
+			}
+		} catch (Exception e) {
+			Log.error(e);
+		} finally {
+			ObservationManager.notify(new Event(
+					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
+			// playlist
+			// editor
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+	 */
+	public void valueChanged(final ListSelectionEvent e) {
+		SwingWorker sw = new SwingWorker() {
+			public Object construct() {
+				if (!e.getValueIsAdjusting()) {
+					SearchResult sr = sbSearch.alResults
+							.get(sbSearch.jlist.getSelectedIndex());
+					try {
+						FIFO.getInstance().push(
+								new StackItem(sr.getFile(),
+										ConfigurationManager
+												.getBoolean(CONF_STATE_REPEAT),
+										true), false);
+					} catch (JajukException je) {
+						Log.error(je);
+					}
+				}
+				return null;
+			}
+
+			public void finished() {
+				if (!e.getValueIsAdjusting()) {
+					sbSearch.popup.hide();
+					requestFocusInWindow();
+				}
+			}
+		};
+		sw.start();
+	}
+
+	/*
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	public void stateChanged(ChangeEvent e) {
+		if (e.getSource() == jsVolume) {
+			if (System.currentTimeMillis() - lDateLastAdjust > 20) { // this
+				// value
+				// should
+				// be
+				// low
+				// to
+				// make
+				// sure
+				// we
+				// can
+				// reach
+				// zero
+				setVolume((float) jsVolume.getValue() / 100);
+				lDateLastAdjust = System.currentTimeMillis();
+			}
+		} else if (e.getSource() == jsPosition) {
+			lDateLastAdjust = System.currentTimeMillis();
+			setPosition((float) jsPosition.getValue() / 100);
+		}
+	}
+
+	/**
+	 * Call a seek
+	 * 
+	 * @param fPosition
+	 */
+	private void setPosition(final float fPosition) {
+		new Thread() {
+			public void run() {
+				Player.seek(fPosition);
+			}
+		}.start();
+	}
+
+	/**
+	 * @return Position value
+	 */
+	public int getCurrentPosition() {
+		return this.jsPosition.getValue();
+	}
+
+	/**
+	 * @return Volume value
+	 */
+	public int getCurrentVolume() {
+		return this.jsVolume.getValue();
+	}
+
+	private void setVolume(final float fVolume) {
+		jsVolume.removeChangeListener(CommandJPanel.this);
+		jsVolume.removeMouseWheelListener(CommandJPanel.this);
+		// if user move the volume slider, unmute
+		if (Player.isMuted()) {
+			Player.mute(false);
+		}
+		Player.setVolume(fVolume);
+		jsVolume.addChangeListener(CommandJPanel.this);
+		jsVolume.addMouseWheelListener(CommandJPanel.this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public void update(final Event event) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				EventSubject subject = event.getSubject();
+				if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
+						|| EventSubject.EVENT_ZERO.equals(subject)) {
+					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
+					ActionManager.getAction(NEXT_TRACK).setEnabled(false);
+					ActionManager.getAction(REWIND_TRACK).setEnabled(false);
+					ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(false);
+					ActionManager.getAction(STOP_TRACK).setEnabled(false);
+					ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(
+							false);
+					ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
+					ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
+					ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
+					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
+							Util.getIcon(ICON_PAUSE));
+					jsPosition.setEnabled(false);
+					jsPosition.removeMouseWheelListener(CommandJPanel.this);
+					jsPosition.removeChangeListener(CommandJPanel.this);
+					jsPosition.setValue(0);// use set value, not
+					// setPosition that would cause
+					// a seek that could fail with
+					// some formats
+					ConfigurationManager.setProperty(
+							CONF_STARTUP_LAST_POSITION, "0");// reset startup
+					// position
+					// //$NON-NLS-1$
+				} else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)) {
+					// remove and re-add listener to make sure not to add it
+					// twice
+					jsPosition.removeMouseWheelListener(CommandJPanel.this);
+					jsPosition.addMouseWheelListener(CommandJPanel.this);
+					jsPosition.removeChangeListener(CommandJPanel.this);
+					jsPosition.addChangeListener(CommandJPanel.this);
+					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+					ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+					ActionManager.getAction(REWIND_TRACK).setEnabled(true);
+					ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+					ActionManager.getAction(STOP_TRACK).setEnabled(true);
+					ActionManager.getAction(FAST_FORWARD_TRACK)
+							.setEnabled(true);
+					ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
+					ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
+					ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
+					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
+							Util.getIcon(ICON_PAUSE));
+					jsPosition.setEnabled(true);
+				} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+					ActionManager.getAction(REWIND_TRACK).setEnabled(false);
+					ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(
+							false);
+					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
+							Util.getIcon(ICON_PLAY));
+					jsPosition.setEnabled(false);
+					jsPosition.removeMouseWheelListener(CommandJPanel.this);
+					jsPosition.removeChangeListener(CommandJPanel.this);
+				} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+					// remove and re-add listener to make sure not to add it
+					// twice
+					jsPosition.removeMouseWheelListener(CommandJPanel.this);
+					jsPosition.addMouseWheelListener(CommandJPanel.this);
+					jsPosition.removeChangeListener(CommandJPanel.this);
+					jsPosition.addChangeListener(CommandJPanel.this);
+					ActionManager.getAction(REWIND_TRACK).setEnabled(true);
+					ActionManager.getAction(FAST_FORWARD_TRACK)
+							.setEnabled(true);
+					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(
+							Util.getIcon(ICON_PAUSE));
+					jsPosition.setEnabled(true);
+				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject)
+						&& !FIFO.isStopped() && !Player.isPaused()) {
+					// if position is adjusting, no dont disturb user
+					if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
+						return;
+					}
+					// make sure not to set to old position
+					if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
+						return;
+					}
+					int iPos = (int) (100 * JajukTimer.getInstance()
+							.getCurrentTrackPosition());
+					jsPosition.removeChangeListener(CommandJPanel.this);
+					jsPosition.removeChangeListener(CommandJPanel.this);
+					jsPosition.setValue(iPos);
+					jsPosition.addChangeListener(CommandJPanel.this);
+				} else if (EventSubject.EVENT_SPECIAL_MODE.equals(subject)) {
+					if (ObservationManager.getDetail(event, DETAIL_ORIGIN)
+							.equals(DETAIL_SPECIAL_MODE_NORMAL)) {
+						// deselect shuffle mode
+						ConfigurationManager.setProperty(CONF_STATE_SHUFFLE,
+								FALSE);
+						JajukJMenuBar.getInstance().jcbmiShuffle
+								.setSelected(false);
+						CommandJPanel.getInstance().jbRandom.setSelected(false);
+						// computes planned tracks
+						FIFO.getInstance().computesPlanned(true);
+					}
+				} else if (EventSubject.EVENT_REPEAT_MODE_STATUS_CHANGED
+						.equals(subject)) {
+					if (ObservationManager.getDetail(event, DETAIL_SELECTION)
+							.equals(FALSE)) {
+						// deselect repeat mode
+						ConfigurationManager.setProperty(CONF_STATE_REPEAT,
+								FALSE);
+						JajukJMenuBar.getInstance().jcbmiRepeat
+								.setSelected(false);
+						CommandJPanel.getInstance().jbRepeat.setSelected(false);
+					}
+				} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+					// Remove history listener, otherwise u get a recursive
+					// event generation
+					jcbHistory.removeActionListener(CommandJPanel.this);
+					if (jcbHistory.getItemCount() > 0) {
+						jcbHistory.setSelectedIndex(0);
+					}
+					jcbHistory.addActionListener(CommandJPanel.this);
+				} else if (EventSubject.EVENT_CLEAR_HISTORY.equals(event
+						.getSubject())) {
+					jcbHistory.setSelectedItem(null); // clear selection bar
+					// (data itself is clear
+					// from the model by
+					// History class)
+				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
+						.getSubject())) {
+					jsVolume.removeChangeListener(CommandJPanel.this);
+					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
+					jsVolume.addChangeListener(CommandJPanel.this);
+					jbMute.setSelected(false);
+				} else if (EventSubject.EVENT_DJS_CHANGE.equals(event
+						.getSubject())) {
+					populateDJs();
+					// If no more DJ, chnage the tooltip
+					if (DigitalDJManager.getInstance().getDJs().size() == 0) {
+						ActionBase action = ActionManager
+								.getAction(JajukAction.DJ);
+						action.setShortDescription(Messages
+								.getString("CommandJPanel.18")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					}
+				} else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(event
+						.getSubject())
+						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE
+								.equals(event.getSubject())) {
+					populateAmbiences();
+					updateTooltips();
+				}
+			}
 		});
-		popupDDJ.add(jmi);
-		jmi.setSelected(ConfigurationManager.getProperty(
-			CONF_DEFAULT_DJ).equals(dj.getID()));
-	    }
-	} catch (Exception e) {
-	    Log.error(e);
 	}
-    }
 
-    /**
-         * Populate ambiences combo
-         * 
-         */
-    void populateAmbiences() {
-	ambiencesCombo.removeActionListener(ambienceListener);
-	ambiencesCombo.removeAllItems();
-	ambiencesCombo.addItem("<html><i>" + //$NON-NLS-1$
-		Messages.getString("DigitalDJWizard.64") + "</i></html>");
-	// Add available ambiences
-	for (final Ambience ambience : AmbienceManager.getInstance()
-		.getAmbiences()) {
-	    ambiencesCombo.addItem(ambience.getName());
+	/**
+	 * Update global functions tooltip after a change in ambiences or an
+	 * ambience selection using the ambience selector
+	 * 
+	 */
+	private void updateTooltips() {
+		// Selected 'Any" ambience
+		if (ambiencesCombo.getSelectedIndex() == 0) {
+			ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+			action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
+			action = ActionManager.getAction(JajukAction.BEST_OF);
+			action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
+			action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+			action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
+		} else {// Selected an ambience
+			Ambience ambience = AmbienceManager.getInstance()
+					.getAmbienceByName(
+							(String) ambiencesCombo.getSelectedItem());
+			ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+			action
+					.setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>" + ambience.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+			action
+					.setShortDescription("<html>" + Messages.getString("JajukWindow.23") + "<p><b>" + ambience.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			action = ActionManager.getAction(JajukAction.BEST_OF);
+			action
+					.setShortDescription("<html>" + Messages.getString("JajukWindow.24") + "<p><b>" + ambience.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
 	}
-	// Select right item
-	ambiencesCombo.setSelectedIndex(0); // Any by default
-	// or any other existing ambience
-	Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-		ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
-	if (defaultAmbience != null) {
-	    ambiencesCombo.setSelectedItem(defaultAmbience.getName());
-	}
-	ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
-	ambiencesCombo.addActionListener(ambienceListener);
-    }
 
-    /**
-         * ToString() method
-         */
-    public String toString() {
-	return getClass().getName();
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-         */
-    public void mouseWheelMoved(MouseWheelEvent e) {
-	if (e.getSource() == jsPosition) {
-	    int iOld = jsPosition.getValue();
-	    int iNew = iOld - (e.getUnitsToScroll() * 3);
-	    jsPosition.setValue(iNew);
-	} else if (e.getSource() == jsVolume) {
-	    int iOld = jsVolume.getValue();
-	    int iNew = iOld - (e.getUnitsToScroll() * 3);
-	    jsVolume.setValue(iNew);
+	/**
+	 * Populate DJs
+	 * 
+	 */
+	private void populateDJs() {
+		try {
+			popupDDJ.removeAll();
+			JMenuItem jmiNew = new JMenuItem(ActionManager
+					.getAction(CONFIGURE_DJS)); //$NON-NLS-1$
+			popupDDJ.add(jmiNew);
+			popupDDJ.addSeparator();
+			// Ambiences
+			JMenuItem jmiAmbiences = new JMenuItem(ActionManager
+					.getAction(CONFIGURE_AMBIENCES)); //$NON-NLS-1$
+			popupDDJ.addSeparator();
+			popupDDJ.add(jmiAmbiences);
+			Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
+			while (it.hasNext()) {
+				final DigitalDJ dj = (DigitalDJ) it.next();
+				JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
+						Util.getIcon(ICON_DIGITAL_DJ));
+				jmi.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj
+								.getID());
+						populateDJs();
+						ActionBase action = ActionManager
+								.getAction(JajukAction.DJ);
+						action
+								.setShortDescription("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>" + dj.getName() + "</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					}
+				});
+				popupDDJ.add(jmi);
+				jmi.setSelected(ConfigurationManager.getProperty(
+						CONF_DEFAULT_DJ).equals(dj.getID()));
+			}
+		} catch (Exception e) {
+			Log.error(e);
+		}
 	}
-    }
+
+	/**
+	 * Populate ambiences combo
+	 * 
+	 */
+	void populateAmbiences() {
+		ambiencesCombo.removeActionListener(ambienceListener);
+		ambiencesCombo.removeAllItems();
+		ambiencesCombo.addItem("<html><i>" + //$NON-NLS-1$
+				Messages.getString("DigitalDJWizard.64") + "</i></html>");
+		// Add available ambiences
+		for (final Ambience ambience : AmbienceManager.getInstance()
+				.getAmbiences()) {
+			ambiencesCombo.addItem(ambience.getName());
+		}
+		// Select right item
+		ambiencesCombo.setSelectedIndex(0); // Any by default
+		// or any other existing ambience
+		Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
+				ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
+		if (defaultAmbience != null) {
+			ambiencesCombo.setSelectedItem(defaultAmbience.getName());
+		}
+		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
+		ambiencesCombo.addActionListener(ambienceListener);
+	}
+
+	/**
+	 * ToString() method
+	 */
+	public String toString() {
+		return getClass().getName();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.getSource() == jsPosition) {
+			int iOld = jsPosition.getValue();
+			int iNew = iOld - (e.getUnitsToScroll() * 3);
+			jsPosition.setValue(iNew);
+		} else if (e.getSource() == jsVolume) {
+			int iOld = jsVolume.getValue();
+			int iNew = iOld - (e.getUnitsToScroll() * 3);
+			jsVolume.setValue(iNew);
+		}
+	}
 
 }

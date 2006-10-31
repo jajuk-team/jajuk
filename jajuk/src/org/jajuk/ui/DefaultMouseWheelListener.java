@@ -33,29 +33,29 @@ import javax.swing.JSlider;
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
 
-    JSlider js;
+	JSlider js;
 
-    /**
-         * 
-         * @param js
-         *                associated jslider
-         */
-    public DefaultMouseWheelListener(JSlider js) {
-	super();
-	this.js = js;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-         */
-    public void mouseWheelMoved(MouseWheelEvent mwe) {
-	int iOld = js.getValue();
-	int iNew = iOld - mwe.getWheelRotation();
-	if (js.isEnabled()) {
-	    js.setValue(iNew);
+	/**
+	 * 
+	 * @param js
+	 *            associated jslider
+	 */
+	public DefaultMouseWheelListener(JSlider js) {
+		super();
+		this.js = js;
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
+	public void mouseWheelMoved(MouseWheelEvent mwe) {
+		int iOld = js.getValue();
+		int iNew = iOld - mwe.getWheelRotation();
+		if (js.isEnabled()) {
+			js.setValue(iNew);
+		}
+	}
 
 }

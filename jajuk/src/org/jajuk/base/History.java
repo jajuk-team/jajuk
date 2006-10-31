@@ -230,7 +230,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 	 * 
 	 * @exception JajukException
 	 */
-	public static void load() throws JajukException {
+	public static void load() {
 		try {
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);

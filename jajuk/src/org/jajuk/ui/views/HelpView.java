@@ -43,64 +43,64 @@ import org.jajuk.util.log.Log;
  */
 public class HelpView extends ViewAdapter {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /** Self instance */
-    private static HelpView hv;
+	/** Self instance */
+	private static HelpView hv;
 
-    /** hepl set */
-    HelpSet hs;
+	/** hepl set */
+	HelpSet hs;
 
-    /** Help broker */
-    HelpBroker hb;
+	/** Help broker */
+	HelpBroker hb;
 
-    /** Help component */
-    JHelp jhelp;
+	/** Help component */
+	JHelp jhelp;
 
-    /** Return self instance */
-    public static synchronized HelpView getInstance() {
-	if (hv == null) {
-	    hv = new HelpView();
+	/** Return self instance */
+	public static synchronized HelpView getInstance() {
+		if (hv == null) {
+			hv = new HelpView();
+		}
+		return hv;
 	}
-	return hv;
-    }
 
-    /**
-         * Constructor
-         */
-    public HelpView() {
-	hv = this;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#display()
-         */
-    public void initUI() {
-	try {
-	    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-	    ClassLoader cl = HelpView.class.getClassLoader();
-	    URL url = HelpSet
-		    .findHelpSet(
-			    cl,
-			    "jajuk.hs", new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); //$NON-NLS-1$
-	    hs = new HelpSet(null, url);
-	    hb = hs.createHelpBroker();
-	    jhelp = new JHelp(hs);
-	    add(jhelp);
-	} catch (Exception e) {
-	    Log.error(e);
+	/**
+	 * Constructor
+	 */
+	public HelpView() {
+		hv = this;
 	}
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.ui.IView#getDesc()
-         */
-    public String getDesc() {
-	return "HelpView.2"; //$NON-NLS-1$
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void initUI() {
+		try {
+			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+			ClassLoader cl = HelpView.class.getClassLoader();
+			URL url = HelpSet
+					.findHelpSet(
+							cl,
+							"jajuk.hs", new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); //$NON-NLS-1$
+			hs = new HelpSet(null, url);
+			hb = hs.createHelpBroker();
+			jhelp = new JHelp(hs);
+			add(jhelp);
+		} catch (Exception e) {
+			Log.error(e);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#getDesc()
+	 */
+	public String getDesc() {
+		return "HelpView.2"; //$NON-NLS-1$
+	}
 
 }

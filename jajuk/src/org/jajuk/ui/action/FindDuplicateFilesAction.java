@@ -31,38 +31,38 @@ import org.jajuk.i18n.Messages;
 
 public class FindDuplicateFilesAction extends ActionBase {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    protected FindDuplicateFilesAction(String name, boolean enabled) {
-	super(name, enabled);
-    }
+	protected FindDuplicateFilesAction(String name, boolean enabled) {
+		super(name, enabled);
+	}
 
-    @Override
-    protected void perform(ActionEvent evt) throws Exception {
-	List<File> duplicateFilesList = new ArrayList<File>();
-	for (Track track : TrackManager.getInstance().getTracks()) {
-	    List<File> trackFileList = track.getFiles();
-	    if (trackFileList.size() > 1) {
-		for (int i = 1; i < trackFileList.size(); i++) {
-		    duplicateFilesList.add(trackFileList.get(i));
+	@Override
+	protected void perform(ActionEvent evt) throws Exception {
+		List<File> duplicateFilesList = new ArrayList<File>();
+		for (Track track : TrackManager.getInstance().getTracks()) {
+			List<File> trackFileList = track.getFiles();
+			if (trackFileList.size() > 1) {
+				for (int i = 1; i < trackFileList.size(); i++) {
+					duplicateFilesList.add(trackFileList.get(i));
+				}
+			}
 		}
-	    }
+		if (duplicateFilesList.size() < 1) {
+			Messages.showInfoMessage("FindDuplicateFilesAction.0");
+		} else {
+			Messages.showDetailedErrorMessage("FindDuplicateFilesAction.1", "",
+					convertToString(duplicateFilesList));
+		}
 	}
-	if (duplicateFilesList.size() < 1) {
-	    Messages.showInfoMessage("FindDuplicateFilesAction.0");
-	} else {
-	    Messages.showDetailedErrorMessage("FindDuplicateFilesAction.1", "",
-		    convertToString(duplicateFilesList));
-	}
-    }
 
-    private String convertToString(List<File> duplicateFilesList) {
-	StringBuffer buffer = new StringBuffer();
-	for (File file : duplicateFilesList) {
-	    buffer.append('\t');
-	    buffer.append(file.getName());
-	    buffer.append('\n');
+	private String convertToString(List<File> duplicateFilesList) {
+		StringBuffer buffer = new StringBuffer();
+		for (File file : duplicateFilesList) {
+			buffer.append('\t');
+			buffer.append(file.getName());
+			buffer.append('\n');
+		}
+		return buffer.toString();
 	}
-	return buffer.toString();
-    }
 }

@@ -40,233 +40,233 @@ import entagged.audioformats.Tag;
  */
 public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 
-    private Tag tag;
+	private Tag tag;
 
-    private AudioFile audioFile;
+	private AudioFile audioFile;
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getTrackName()
-         */
-    public String getTrackName() throws Exception {
-	String sOut = tag.getFirstTitle();
-	if (sOut == null) {//$NON-NLS-1$
-	    return ""; // doing that, the item wil be the default jajuk unknown
-                        // string //$NON-NLS-1$
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getTrackName()
+	 */
+	public String getTrackName() throws Exception {
+		String sOut = tag.getFirstTitle();
+		if (sOut == null) {//$NON-NLS-1$
+			return ""; // doing that, the item wil be the default jajuk unknown
+			// string //$NON-NLS-1$
+		}
+		return sOut;
 	}
-	return sOut;
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getAlbumName()
-         */
-    public String getAlbumName() throws Exception {
-	String sOut = tag.getFirstAlbum();
-	if (sOut == null) {//$NON-NLS-1$
-	    return ""; // doing that, the item wil be the default jajuk unknown
-                        // string //$NON-NLS-1$
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getAlbumName()
+	 */
+	public String getAlbumName() throws Exception {
+		String sOut = tag.getFirstAlbum();
+		if (sOut == null) {//$NON-NLS-1$
+			return ""; // doing that, the item wil be the default jajuk unknown
+			// string //$NON-NLS-1$
+		}
+		return sOut;
 	}
-	return sOut;
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getAuthorName()
-         */
-    public String getAuthorName() throws Exception {
-	String sOut = tag.getFirstArtist();
-	if (sOut == null) {//$NON-NLS-1$
-	    return ""; // doing that, the item wil be the default jajuk unknown
-                        // string //$NON-NLS-1$
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getAuthorName()
+	 */
+	public String getAuthorName() throws Exception {
+		String sOut = tag.getFirstArtist();
+		if (sOut == null) {//$NON-NLS-1$
+			return ""; // doing that, the item wil be the default jajuk unknown
+			// string //$NON-NLS-1$
+		}
+		return sOut;
 	}
-	return sOut;
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getStyleName()
-         */
-    public String getStyleName() throws Exception {
-	String sOut = tag.getFirstGenre();
-	if (sOut == null || sOut.equals("genre")) {//$NON-NLS-1$
-	    return ""; // doing that, the item wil be the default jajuk unknown
-                        // string //$NON-NLS-1$
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getStyleName()
+	 */
+	public String getStyleName() throws Exception {
+		String sOut = tag.getFirstGenre();
+		if (sOut == null || sOut.equals("genre")) {//$NON-NLS-1$
+			return ""; // doing that, the item wil be the default jajuk unknown
+			// string //$NON-NLS-1$
+		}
+		// Sometimes, the style has this form : (nb)
+		if (sOut.matches("\\(.*\\)")) {//$NON-NLS-1$
+			sOut = sOut.substring(1, sOut.indexOf(')'));
+			try {
+				sOut = Util.genres[Integer.parseInt(sOut)];
+			} catch (Exception e) {
+				return ""; // error, return unknown //$NON-NLS-1$
+			}
+		}
+		return sOut;
 	}
-	// Sometimes, the style has this form : (nb)
-	if (sOut.matches("\\(.*\\)")) {//$NON-NLS-1$
-	    sOut = sOut.substring(1, sOut.indexOf(')'));
-	    try {
-		sOut = Util.genres[Integer.parseInt(sOut)];
-	    } catch (Exception e) {
-		return ""; // error, return unknown //$NON-NLS-1$
-	    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getLength()
+	 */
+	public long getLength() throws Exception {
+		return audioFile.getLength();
 	}
-	return sOut;
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getLength()
-         */
-    public long getLength() throws Exception {
-	return audioFile.getLength();
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getYear()
-         */
-    public long getYear() throws Exception {
-	String sOut = tag.getFirstYear();
-	if (sOut == null || sOut.equals("")) {//$NON-NLS-1$
-	    return 0;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getYear()
+	 */
+	public long getYear() throws Exception {
+		String sOut = tag.getFirstYear();
+		if (sOut == null || sOut.equals("")) {//$NON-NLS-1$
+			return 0;
+		}
+		return Long.parseLong(sOut);
 	}
-	return Long.parseLong(sOut);
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getQuality()
-         */
-    public long getQuality() throws Exception {
-	long lQuality = audioFile.getBitrate();
-	return lQuality;
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#getComment()
-         */
-    public String getComment() throws Exception {
-	List list = tag.getComment();
-	String sOut = ""; //$NON-NLS-1$
-	if (list != null) {
-	    Iterator it = list.iterator();
-	    while (it.hasNext()) {
-		sOut += ' ' + it.next().toString();
-	    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getQuality()
+	 */
+	public long getQuality() throws Exception {
+		long lQuality = audioFile.getBitrate();
+		return lQuality;
 	}
-	return sOut;
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#getOrder()
-         */
-    public long getOrder() throws Exception {
-	String sOrder = tag.getFirstTrack();
-	return Long.parseLong(sOrder); // try to parse integer
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
-         */
-    public void setTrackName(String sTrackName) throws Exception {
-	tag.setTitle(sTrackName);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
-         */
-    public void setAlbumName(String sAlbumName) throws Exception {
-	tag.setAlbum(sAlbumName);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
-         */
-    public void setAuthorName(String sAuthorName) throws Exception {
-	tag.setArtist(sAuthorName);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
-         */
-    public void setStyleName(String style) throws Exception {
-	tag.setGenre(style);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
-         */
-    public void setOrder(long lOrder) throws Exception {
-	tag.setTrack(Long.toString(lOrder));
-    }
-
-    public void setComment(String sComment) throws Exception {
-	tag.setComment(sComment);
-    }
-
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
-         */
-    public void setFile(File fio) throws Exception {
-	try {
-	    audioFile = AudioFileIO.read(fio);
-	    tag = audioFile.getTag();
-	} catch (Throwable t) { // can throw OutOfMemory errors
-	    throw new JajukException("103", fio.toString(), t); //$NON-NLS-1$
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#getComment()
+	 */
+	public String getComment() throws Exception {
+		List list = tag.getComment();
+		String sOut = ""; //$NON-NLS-1$
+		if (list != null) {
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				sOut += ' ' + it.next().toString();
+			}
+		}
+		return sOut;
 	}
-    }
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
-         */
-    public String getTagItem(String sTagItem) throws Exception {
-	return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#getOrder()
+	 */
+	public long getOrder() throws Exception {
+		String sOrder = tag.getFirstTrack();
+		return Long.parseLong(sOrder); // try to parse integer
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String,
-         *      java.lang.String)
-         */
-    public void setTagItem(String sTagItem, String sValue) throws Exception {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
+	 */
+	public void setTrackName(String sTrackName) throws Exception {
+		tag.setTitle(sTrackName);
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#commit()
-         */
-    public void commit() throws Exception {
-	// tag.setEncoding("ISO-8859-1");//have to set it here to fix an issue
-        // with audio-formats 0.12
-	audioFile.commit();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
+	 */
+	public void setAlbumName(String sAlbumName) throws Exception {
+		tag.setAlbum(sAlbumName);
+	}
 
-    /*
-         * (non-Javadoc)
-         * 
-         * @see org.jajuk.tag.ITagImpl#setYear(int)
-         */
-    public void setYear(long lYear) throws Exception {
-	tag.setYear(Long.toString(lYear));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
+	 */
+	public void setAuthorName(String sAuthorName) throws Exception {
+		tag.setArtist(sAuthorName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
+	 */
+	public void setStyleName(String style) throws Exception {
+		tag.setGenre(style);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
+	 */
+	public void setOrder(long lOrder) throws Exception {
+		tag.setTrack(Long.toString(lOrder));
+	}
+
+	public void setComment(String sComment) throws Exception {
+		tag.setComment(sComment);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
+	 */
+	public void setFile(File fio) throws Exception {
+		try {
+			audioFile = AudioFileIO.read(fio);
+			tag = audioFile.getTag();
+		} catch (Throwable t) { // can throw OutOfMemory errors
+			throw new JajukException("103", fio.toString(), t); //$NON-NLS-1$
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
+	 */
+	public String getTagItem(String sTagItem) throws Exception {
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String,
+	 *      java.lang.String)
+	 */
+	public void setTagItem(String sTagItem, String sValue) throws Exception {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#commit()
+	 */
+	public void commit() throws Exception {
+		// tag.setEncoding("ISO-8859-1");//have to set it here to fix an issue
+		// with audio-formats 0.12
+		audioFile.commit();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.tag.ITagImpl#setYear(int)
+	 */
+	public void setYear(long lYear) throws Exception {
+		tag.setYear(Long.toString(lYear));
+	}
 
 }
