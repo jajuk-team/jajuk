@@ -288,8 +288,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
 				.getWidth() / 2);
 		jcbHistory.setPopupWidth(iWidth); // size of popup
-		jcbHistory.setPreferredSize(new Dimension(300, 25)); // size of the
-		// combo itself
+		// size of the combo itself
+		jcbHistory.setPreferredSize(new Dimension(300, 25)); 
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
 
@@ -355,11 +355,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		ambiencesCombo = new SteppedComboBox();
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
 		ambiencesCombo.setPopupWidth(iWidth);
-		ambiencesCombo.setPreferredSize(new Dimension(100, 25)); // size
-		// of
-		// the
-		// combo
-		// itself
+		// size of the combo itself
+		ambiencesCombo.setPreferredSize(new Dimension(100, 25)); 
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
@@ -367,7 +364,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		// Special functions toolbar
 		VLToolBar vltbSpecial = new VLToolBar("smart");
 		jtbSpecial = new JToolBar(); // we have to use an intermediate
-		jtbSpecial.setPreferredSize(new Dimension(320, 25));
+		jtbSpecial.setPreferredSize(new Dimension(330, 25));
 		ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
 			private static final long serialVersionUID = 1L;
 

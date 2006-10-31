@@ -96,7 +96,6 @@ public class PerspectiveManager implements ITechnicalStrings {
 						+ perspective.getID() + ".xml");
 				loadFile.delete();
 			}
-			return;
 		}
 		// Load each perspective
 		try {

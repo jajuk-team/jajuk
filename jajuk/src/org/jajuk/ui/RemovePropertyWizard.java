@@ -44,7 +44,7 @@ import org.jajuk.util.EventSubject;
  * @author Bertrand Florat
  * @created 20 juin 2005
  */
-class RemovePropertyWizard extends CustomPropertyWizard {
+public class RemovePropertyWizard extends CustomPropertyWizard {
 	private static final long serialVersionUID = 1L;
 
 	JComboBox jcbName;

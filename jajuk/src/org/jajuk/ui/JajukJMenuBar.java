@@ -22,6 +22,8 @@ package org.jajuk.ui;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
 import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_ADD;
+import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_REMOVE;
 import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
 import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.OPTIONS;
@@ -31,9 +33,9 @@ import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
 import static org.jajuk.ui.action.JajukAction.SHOW_TRACES;
 import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
+import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 
-import java.awt.FlowLayout;
 import java.util.HashMap;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -46,9 +48,7 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  * Jajuk menu bar
@@ -80,7 +80,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
 	JMenuItem jmiNewProperty;
 
-	JMenuItem jmiDeleteProperty;
+	JMenuItem jmiRemoveProperty;
 
 	JMenu mode;
 
@@ -127,28 +127,16 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
 		// Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
-		jmiNewProperty = new JMenuItem(
-				Messages.getString("JajukJMenuBar.6"), Util.getIcon(ICON_NEW)); //$NON-NLS-1$
-		jmiNewProperty.addActionListener(JajukListener.getInstance());
-		jmiNewProperty.setActionCommand(EventSubject.EVENT_CREATE_PROPERTY
-				.toString());
-		jmiNewProperty.setLayout(new FlowLayout(FlowLayout.LEFT));
-		jmiDeleteProperty = new JMenuItem(
-				Messages.getString("JajukJMenuBar.7"), Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
-		jmiDeleteProperty.addActionListener(JajukListener.getInstance());
-		jmiDeleteProperty.setActionCommand(EventSubject.EVENT_DELETE_PROPERTY
-				.toString());
+		jmiNewProperty = new JMenuItem(ActionManager
+				.getAction(CUSTOM_PROPERTIES_ADD));
+		jmiRemoveProperty = new JMenuItem(ActionManager
+				.getAction(CUSTOM_PROPERTIES_REMOVE));
 		properties.add(jmiNewProperty);
-		properties.add(jmiDeleteProperty);
+		properties.add(jmiRemoveProperty);
 
 		// View menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
-		jmiRestoreDefaultViews = new JMenuItem(Messages
-				.getString("JajukJMenuBar.17"), Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
-		jmiRestoreDefaultViews.addActionListener(JajukListener.getInstance());
-		jmiRestoreDefaultViews
-				.setActionCommand(EventSubject.EVENT_VIEW_RESTORE_DEFAULTS
-						.toString());
+		jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
 		views.add(jmiRestoreDefaultViews);
 
 		// Mode menu

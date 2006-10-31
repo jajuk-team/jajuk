@@ -1153,15 +1153,11 @@ public class Util implements ITechnicalStrings {
 	public static Object parse(String sValue, Class cType) throws Exception {
 		Object oDefaultValue = sValue; // String by default
 		if (cType.equals(Boolean.class)) {
-			if (sValue.equals("y")) { // "y" and "n" is an old boolean
-				// //$NON-NLS-1$
-				// attribute notation prior to 1.0
-				// //$NON-NLS-1$
+			// "y" and "n" is an old boolean
+			// attribute notation prior to 1.0
+			if (sValue.equals("y")) {
 				oDefaultValue = true;
-			} else if (sValue.equals("n")) { // "y" and "n" is an old boolean
-				// //$NON-NLS-1$
-				// attribute notation prior to
-				// 1.0 //$NON-NLS-1$
+			} else if (sValue.equals("n")) {
 				oDefaultValue = false;
 			} else {
 				oDefaultValue = Boolean.parseBoolean(sValue);
@@ -1189,9 +1185,8 @@ public class Util implements ITechnicalStrings {
 	public static String format(Object oValue, PropertyMetaInformation meta)
 			throws Exception {
 		Class cType = meta.getType();
-		String sValue = oValue.toString();// default (works for strings,
-		// long
-		// and double)
+		// default (works for strings, long and double)
+		String sValue = oValue.toString();
 		if (cType.equals(Date.class)) {
 			sValue = getAdditionDateFormat().format(oValue);
 		} else if (cType.equals(Class.class)) {
@@ -1234,17 +1229,10 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void createThumbnail(File orig, File thumb, int maxDim)
 			throws Exception {
-		createThumbnail(new ImageIcon(orig.getAbsolutePath()), thumb, maxDim); // do
-		// not
-		// use
-		// URL
-		// object
-		// has
-		// it
-		// can
-		// corrupt
-		// special
-		// paths
+		/*
+		 * do not use URL object has it can corrupt special paths
+		 */
+		createThumbnail(new ImageIcon(orig.getAbsolutePath()), thumb, maxDim);
 	}
 
 	/**
@@ -1331,18 +1319,15 @@ public class Util implements ITechnicalStrings {
 	public static Properties getAnonymizedSystemProperties() {
 		Properties properties = (Properties) System.getProperties().clone();
 		// We remove sensible data from logs
-		properties.remove("java.library.path"); // can contain external program
-		// //$NON-NLS-1$
-		// paths
-		properties.remove("java.class.path"); // can contain external program
-		// //$NON-NLS-1$
-		// paths
-		properties.remove("user.name"); // user name is private //$NON-NLS-1$
-		properties.remove("java.ext.dirs");// can contain external program
-		// //$NON-NLS-1$
-		// paths
-		properties.remove("sun.boot.class.path");// can contain external
-		// //$NON-NLS-1$
+		/*
+		 * can contain external program paths
+		 */
+		properties.remove("java.library.path"); 
+		properties.remove("java.class.path"); 
+		// user name is private 
+		properties.remove("user.name");//$NON-NLS-1$ 
+		properties.remove("java.ext.dirs");
+		properties.remove("sun.boot.class.path");
 		properties.remove("deployment.user.security.trusted.certs"); //$NON-NLS-1$
 		properties.remove("deployment.user.security.trusted.clientauthcerts"); //$NON-NLS-1$
 		properties.remove("jajuk.log"); //$NON-NLS-1$

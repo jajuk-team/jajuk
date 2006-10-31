@@ -295,8 +295,8 @@ public class Directory extends Item implements Comparable {
 				// Check file name is correct (usefull to fix name encoding
 				// issues)
 				if (!new File(files[i].getAbsolutePath()).exists()) {
-					Log
-							.warn("Cannot read file name (please rename it): {{" + files[i].getAbsolutePath() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+					Log.warn("Cannot read file name (please rename it): {{"
+							+ files[i].getAbsolutePath() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 				boolean bIsMusic = (Boolean) TypeManager.getInstance()
@@ -314,10 +314,9 @@ public class Directory extends Item implements Comparable {
 					}
 					// New file or deep scan case
 					Tag tag = null;
-					tag = new Tag(files[i], true); // ignore tag error to
-					// make sure to get a
-					// tag object in all
-					// cases
+					// ignore tag error to make sure to get a
+					// tag object in all cases
+					tag = new Tag(files[i], true); 
 					if (tag.isCorrupted()) {
 						device.iNbCorruptedFiles++; // stats
 						Log.error("103", "{{" + files[i].getAbsolutePath()
@@ -334,7 +333,8 @@ public class Directory extends Item implements Comparable {
 					String sComment = tag.getComment();
 					long lOrder = tag.getOrder();
 					if (fileRef == null) {
-						device.iNbNewFiles++; // stats, do it here and not
+						device.iNbNewFiles++; 
+						// stats, do it here and not
 						// before because we ignore the
 						// file if we cannot read it
 					}

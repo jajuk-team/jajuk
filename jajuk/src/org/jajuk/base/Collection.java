@@ -193,8 +193,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw
-				.write("\t</" + DirectoryManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier()
+				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		// files
 		bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
 		it = FileManager.getInstance().getFiles().iterator();
@@ -210,27 +210,26 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw
-				.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier()
+				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		// playlist
 		bw.write(PlaylistManager.getInstance().toXML()); //$NON-NLS-1$
 		it = PlaylistManager.getInstance().getPlayLists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
-			if (playlist.getPlaylistFiles().size() > 0) { // this way we
-				// clean up all
-				// orphan
-				// playlists
+			if (playlist.getPlaylistFiles().size() > 0) {
+				// this way we clean up all orphan playlists
 				bw.write(playlist.toXml());
 			}
 		}
 		bw
-				.write("\t</" + PlaylistManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+				.write("\t</" + PlaylistManager.getInstance().getIdentifier()
+						+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.write("</" + XML_COLLECTION + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.flush();
 		bw.close();
-		Log
-				.debug("Collection commited in " + (System.currentTimeMillis() - lTime) + " ms");//$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Collection commited in "
+				+ (System.currentTimeMillis() - lTime) + " ms");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -349,8 +348,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 				manager = TrackManager.getInstance();
 			} else if (XML_TYPES.equals(sQName)) {
 				manager = TypeManager.getInstance();
-			} else if (XML_PROPERTY.equals(sQName)) { // A property
-				// description
+			} else if (XML_PROPERTY.equals(sQName)) { 
+				// A property description
 				String sPropertyName = attributes.getValue(
 						attributes.getIndex(XML_NAME)).intern();
 				boolean bCustom = Boolean.parseBoolean(attributes
@@ -369,17 +368,22 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 						attributes.getIndex(XML_DEFAULT_VALUE)).intern();
 				Object oDefaultValue = null;
 				if (sDefaultValue != null && sDefaultValue.trim().length() > 0) { //$NON-NLS-1$
-					oDefaultValue = Util.parse(sDefaultValue, cType);
+					try{
+						//Date format has changed from 1.3 (only yyyyMMdd addition format is used)
+						// so an exception will be thrown when upgrading from 1.2
+						//we reset default value to "today"
+						oDefaultValue = Util.parse(sDefaultValue, cType);
+					}
+					catch(Exception e){
+						oDefaultValue = new Date();
+					}
 				}
 				PropertyMetaInformation meta = new PropertyMetaInformation(
 						sPropertyName, bCustom, bConstructor,
 						bShouldBeDisplayed, bEditable, bUnique, cType,
 						oDefaultValue);
-				if (manager.getMetaInformation(sPropertyName) == null) { // standard
-					// properties
-					// are
-					// already
-					// loaded
+				if (manager.getMetaInformation(sPropertyName) == null) {
+					// standard properties are already loaded
 					manager.registerProperty(meta);
 				}
 			} else if (XML_DEVICE.equals(sQName)) {
@@ -500,11 +504,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 							.getIndex(XML_TRACK_YEAR)));
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
-						Log
-								.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
-						// format
-						// //$NON-NLS-1$
-						// //$NON-NLS-2$
+						// wrong format
+						Log.debug(Messages.getString("Error.137") + ":"
+								+ sTrackName);
 					}
 				}
 				// Idem for order
@@ -514,11 +516,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 							.getIndex(XML_TRACK_ORDER)));
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
-						Log
-								.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
-						// format
-						// //$NON-NLS-1$
-						// //$NON-NLS-2$
+						// wrong format
+						Log.debug(Messages.getString("Error.137")
+								+ ":" + sTrackName); // wrong
 					}
 				}
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and
@@ -633,11 +633,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 							.getIndex(XML_QUALITY)));
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
-						Log
-								.debug(Messages.getString("Error.137") + ":" + sItemName); // wrong
-						// format
-						// //$NON-NLS-1$
-						// //$NON-NLS-2$
+						// wrong format
+						Log.debug(Messages.getString("Error.137")
+								+ ":" + sItemName); // wrong
 					}
 				}
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
@@ -688,14 +686,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 			} else if (XML_PLAYLIST.equals(sQName)) {
 				String sPlaylistFiles = attributes.getValue(
 						attributes.getIndex(XML_PLAYLIST_FILES)).intern();
-				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ","); // playlist
-				// file
-				// list
-				// with
-				// ','
-				// //$NON-NLS-1$
+				// playlist file list with ','
+				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ","); 
 				Playlist playlist = null;
-				if (st.hasMoreTokens()) { // if none mapped file, ignore
+				if (st.hasMoreTokens()) { 
+					// if none mapped file, ignore
 					// it so it will be removed at
 					// next commit
 					do {

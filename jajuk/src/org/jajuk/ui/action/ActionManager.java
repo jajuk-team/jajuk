@@ -19,36 +19,7 @@
  */
 package org.jajuk.ui.action;
 
-import static org.jajuk.ui.action.JajukAction.BEST_OF;
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
-import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
-import static org.jajuk.ui.action.JajukAction.DJ;
-import static org.jajuk.ui.action.JajukAction.EXIT;
-import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
-import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
-import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
-import static org.jajuk.ui.action.JajukAction.INCREASE_VOLUME;
-import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.MUTE_STATE;
-import static org.jajuk.ui.action.JajukAction.NEXT_ALBUM;
-import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
-import static org.jajuk.ui.action.JajukAction.NOVELTIES;
-import static org.jajuk.ui.action.JajukAction.OPTIONS;
-import static org.jajuk.ui.action.JajukAction.PLAY_PAUSE_TRACK;
-import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
-import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.action.JajukAction.QUALITY;
-import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
-import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
-import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
-import static org.jajuk.ui.action.JajukAction.SHOW_TRACES;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_GLOBAL;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
-import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
-import static org.jajuk.ui.action.JajukAction.WIZARD;
+import static org.jajuk.ui.action.JajukAction.*;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -122,6 +93,14 @@ public final class ActionManager {
 
 		// JajukJMenuBar: File Menu
 		installAction(EXIT, new ExitAction(), false);
+
+		// JajukJMenuBar: views
+		installAction(VIEW_RESTORE_DEFAULTS, new RestoreViewsAction(), false);
+
+		// JajukJMenuBar: attributes
+		installAction(CUSTOM_PROPERTIES_ADD, new NewPropertyAction(), false);
+		installAction(CUSTOM_PROPERTIES_REMOVE, new RemovePropertyAction(),
+				false);
 
 		// JajukJMenuBar: configuration
 		installAction(CONFIGURE_DJS, new DJConfigurationAction(), false);

@@ -342,8 +342,6 @@ public class CatalogView extends ViewAdapter implements Observer,
 		setBackground(Color.WHITE);
 		jpItems.setOpaque(true);
 		jpItems.setBackground(Color.WHITE);
-		jsp.setOpaque(true);
-		jsp.setBackground(Color.WHITE);
 		// Menu items
 		// Album menu
 		jmenu = new JPopupMenu();
