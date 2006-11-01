@@ -90,11 +90,13 @@ public class PerspectiveManager implements ITechnicalStrings {
 			Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
 			// force loadinf of defaults perspectives
 			for (IPerspective perspective : getPerspectives()) {
-				// Remove current conf file to force using default file from the
-				// jar
+				/* Remove current conf file to force 
+				 using default file from the jar*/
 				File loadFile = new File(FILE_JAJUK_DIR + '/'
 						+ perspective.getID() + ".xml");
-				loadFile.delete();
+				if (loadFile.exists()){
+					loadFile.delete();
+				}
 			}
 		}
 		// Load each perspective

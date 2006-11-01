@@ -135,8 +135,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		}
 		// Try to read XML conf file from home directory
 		File loadFile = new File(FILE_JAJUK_DIR + '/' + getID() + ".xml");
-		// If file doesn't exist (normaly only at first install), read
-		// perspective conf from the jar
+		/* If file doesn't exist (normaly only at first install), read
+		 perspective conf from the jar*/
 		if (!loadFile.exists()) {
 			URL url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
 					+ getID() + ".xml");

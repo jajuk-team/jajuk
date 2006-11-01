@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <installation version='1.0'>
     <info>
-        <appname>jajuk</appname>
+        <appname>Jajuk</appname>
         <appversion>VERSION_REPLACED_BY_ANT</appversion>
         <javaversion>1.5</javaversion>
       <url>http://jajuk.sourceforge.net</url>
