@@ -228,10 +228,6 @@
     <signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass"/>
     	
     <delete dir='${distdir}/${classdir}'/>
-	<!-- Copy jajuk jar in the workspace -->
-    <copy todir='${basedir}' >
-     <fileset file='${distdir}/bin/${jarname}'/>
-  	</copy>
   	<!-- Copy jajuk jar in the RPM distdir -->
   	<copy todir='${rpmdistdir_suse}/usr/lib/jajuk/bin' >
     	<fileset file='${distdir}/bin/${jarname}'/>
