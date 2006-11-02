@@ -33,7 +33,7 @@ public class NoveltiesAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {
-		Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
+		Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
 		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
 				.getShuffleNoveltiesPlaylist(), ambience);
 		if (alToPlay != null && alToPlay.size() > 0) {

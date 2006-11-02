@@ -78,6 +78,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IntellipadManager;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -210,6 +211,11 @@ public class Main implements ITechnicalStrings {
 
 			// Set default local (from system). Depends on registerLocal
 			ConfigurationManager.getInstance().setSystemLocal();
+
+			/* Initialize intellipad listener*/
+			if (Util.isUnderWindows()){
+				IntellipadManager.init();
+			}
 
 			// Load user configuration. Depends on: initialCheckups,
 			// setSystemLocal
@@ -355,14 +361,15 @@ public class Main implements ITechnicalStrings {
 					try {
 						Player.stop(true); // stop sound ASAP
 					} catch (Exception e) {
-						e.printStackTrace(); // no log to make sure to reach
-						// collection commit
+						e.printStackTrace();
+						// no log to make sure to reach collection commit
 					}
 					try {
-						if (iExitCode == 0) { // commit only if exit is safe
-							// (to avoid commiting empty
-							// collection)
-							// commit ambiences
+						if (iExitCode == 0) {
+							/*
+							 * commit only if exit is safe (to avoid commiting
+							 * empty collection) commit ambiences
+							 */
 							AmbienceManager.getInstance().commit();
 							// commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
@@ -386,9 +393,13 @@ public class Main implements ITechnicalStrings {
 							tbIO.writeXML(out);
 							out.flush();
 							out.close();
+							/*release intellipad resources*/			 
+							if (Util.isUnderWindows()){
+								IntellipadManager.cleanup();
+							}
 						}
 					} catch (Exception e) {
-						Log.error("", e); //$NON-NLS-1$
+						Log.error(e); //$NON-NLS-1$
 					} finally {
 						Log.debug("Exit Hook end");//$NON-NLS-1$
 					}
@@ -417,10 +428,10 @@ public class Main implements ITechnicalStrings {
 				sc.setProgress(80, Messages.getString("SplashScreen.3")); //$NON-NLS-1$
 				launchUI();
 			}
-	
+
 			// start the tray
 			launchTray();
-	
+
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose
 			Log.error(je);
@@ -1097,10 +1108,10 @@ public class Main implements ITechnicalStrings {
 			public void run() {
 				try {
 					// Init heavyweight support (for jdic)
-					//have to be done here, not after
+					// have to be done here, not after
 					DockingPreferences.initHeavyWeightUsage();
 					DockingPreferences.setSingleHeavyWeightComponent(true);
-					
+
 					// Set look and feel, needs local to be set for error
 					// messages
 					LNFManager.setLookAndFeel(ConfigurationManager

@@ -165,9 +165,10 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
 
 	/**
 	 * 
-	 * @return default Ambience
+	 * @return currently selected ambience or null if "all"
+	 *  ambience selected
 	 */
-	public Ambience getDefaultAmbience() {
+	public Ambience getSelectedAmbience() {
 		String sDefault = ConfigurationManager
 				.getProperty(CONF_DEFAULT_AMBIENCE);
 		return getAmbience(sDefault);
@@ -257,32 +258,33 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
 				new Ambience("1", Messages.getString("Ambience.1"), stylesRap)); //$NON-NLS-1$ //$NON-NLS-2$
 		String[] stylesHardRock = new String[] {
 				"Grunge", "Metal", "Industrial", "Death Metal", "Fusion", "Punk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-				"Gothic", "Darkwave", "Fast Fusion", "Hard Rock", "Gothic Rock", "Progressive Rock", "Punk Rock" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"Gothic",
+				"Darkwave",
+				"Fast Fusion",
+				"Hard Rock", "Gothic Rock", "Progressive Rock", "Punk Rock" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				,
 				"Terror", "Negerpunk", "Polsk Punk", "Heavy Metal", "Black Metal", "Thrash Metal" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		AmbienceManager.getInstance().registerAmbience(
-				new Ambience(
-						"2", Messages.getString("Ambience.2"), stylesHardRock)); //$NON-NLS-1$ //$NON-NLS-2$
+				new Ambience("2", Messages.getString("Ambience.2"),
+						stylesHardRock)); //$NON-NLS-1$ //$NON-NLS-2$
 		String[] stylesTechno = new String[] {
 				"Dance", "New Age", "Techno", "Euro-Techno", "Ambient", "Trance", "House", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				"Game", "Space", "Techno-Industrial", "Eurodance", "Dream", "Jungle", "Rave", "Euro-House", "Goa", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 				"Club-House", "Hardcore", "Beat" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		AmbienceManager.getInstance().registerAmbience(
-				new Ambience(
-						"3", Messages.getString("Ambience.3"), stylesTechno)); //$NON-NLS-1$ //$NON-NLS-2$
+				new Ambience("3", Messages.getString("Ambience.3"),
+						stylesTechno)); //$NON-NLS-1$ //$NON-NLS-2$
 		String[] stylesElectro = new String[] {
 				"Trip-Hop", "Acid", "Electronic", "Club" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		AmbienceManager.getInstance().registerAmbience(
-				new Ambience(
-						"4", Messages.getString("Ambience.4"), stylesElectro)); //$NON-NLS-1$ //$NON-NLS-2$
+				new Ambience("4", Messages.getString("Ambience.4"),
+						stylesElectro)); //$NON-NLS-1$ //$NON-NLS-2$
 		String[] stylesClassical = new String[] {
 				"Classical", "Chorus", "Opera", "Chamber Music", "Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				"Symphony" }; //$NON-NLS-1$
-		AmbienceManager
-				.getInstance()
-				.registerAmbience(
-						new Ambience(
-								"5", Messages.getString("Ambience.5"), stylesClassical)); //$NON-NLS-1$ //$NON-NLS-2$
+		AmbienceManager.getInstance().registerAmbience(
+				new Ambience("5", Messages.getString("Ambience.5"),
+						stylesClassical)); //$NON-NLS-1$ //$NON-NLS-2$
 		String[] stylesSoft = new String[] {
 				"Reggae", "Acid Jazz", "Slow Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 				"Jazz", "Easy Listening", "Acoustic", "Ballad" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$

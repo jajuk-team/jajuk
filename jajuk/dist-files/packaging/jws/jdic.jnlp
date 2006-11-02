@@ -5,7 +5,7 @@
         <vendor>Sun</vendor>
     </information>
     <resources>
-        <jar href="jdic-0.9.1.jar"/>
+        <jar href="jdic-20060613.jar"/>
     </resources>
     <security> 
            <all-permissions/>

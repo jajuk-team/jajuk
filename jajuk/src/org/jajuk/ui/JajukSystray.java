@@ -200,7 +200,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 
 		// Ambiences menu
 		Ambience defaultAmbience = AmbienceManager.getInstance()
-				.getDefaultAmbience();
+				.getSelectedAmbience();
 		jmAmbience = new JMenu(Messages.getString("JajukWindow.36")
 				+ " "
 				+ ((defaultAmbience == null) ? Messages
@@ -394,12 +394,12 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE
 								.equals(subject)) {
 					Ambience ambience = AmbienceManager.getInstance()
-							.getDefaultAmbience();
+							.getSelectedAmbience();
 					if (ambience != null) {
 						jmAmbience.setText(Messages.getString("JajukWindow.36")
 								+ " "
 								+ AmbienceManager.getInstance()
-										.getDefaultAmbience().getName());
+										.getSelectedAmbience().getName());
 					} else {
 						jmAmbience
 								.setText(Messages.getString("JajukWindow.37"));

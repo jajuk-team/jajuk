@@ -38,12 +38,10 @@ public class FinishAlbumAction extends ActionBase {
 		// current item
 		FIFO.getInstance().clear(); // clear fifo
 		Directory dir = item.getFile().getDirectory();
+		// then re-add current item
 		FIFO.getInstance().push(
 				Util.createStackItems(dir.getFilesFromFile(item.getFile()),
-						item.isRepeat(), item.isUserLaunch()), true); // then
-		// re-add
-		// current
-		// item
+						item.isRepeat(), item.isUserLaunch()), true); 
 		FIFO.getInstance().computesPlanned(true); // update planned list
 		Properties properties = new Properties();
 		properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);

@@ -106,6 +106,8 @@
            	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-uninstall.png'>
             	<os family='windows'/>
            	</file>
+           	<executable targetfile='$INSTALL_PATH/lib/linux/x86/mozembed-linux-gtk1.2' os='unix' stage='never'/>
+           	<executable targetfile='$INSTALL_PATH/lib/linux/x86/mozembed-linux-gtk2' os='unix' stage='never'/>
         </pack>
         <pack name='sources' required='no'>
             <description>Sources</description>

@@ -121,10 +121,17 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		double size[][] = { { 0.99 }, { 30, 0, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new WebBrowser();
-		// WebBrowser.setDebug(true);
+		//WebBrowser.setDebug(true);
 		add(jpControl, "0,0"); //$NON-NLS-1$
 		add(browser, "0,2"); //$NON-NLS-1$
 
+		//Display default page at startup is none track launch
+		//avoid to launch this if a track is playing
+		//to avoid thread concurrency 
+		if (FIFO.getInstance().getCurrentFile() == null){
+			reset();
+		}
+		
 		// subscriptions to events
 		ObservationManager.register(WikipediaView.this);
 
@@ -155,7 +162,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED);
 			String search = FIFO.getInstance().getCurrentFile().getTrack()
 					.getAuthor().getName2();
-			if (details != null && !search.equals(this.search)) {
+			if (details != null && search != null && !search.equals(this.search)) {
 				// a file has been launch before view creation
 				this.search = search;
 				launchSearch(search);
@@ -165,8 +172,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		else if (subject.equals(EventSubject.EVENT_ZERO)) {
 			reset();
 		}
-		// User changed author name, so we have to reload new author wikipedia
-		// page
+		// User changed author name, so we have to reload 
+		// new author wikipedia page
 		else if (subject.equals(EventSubject.EVENT_AUTHOR_CHANGED)) {
 			update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
 		}
@@ -200,10 +207,12 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 	 * Reset view by making a request to jajuk SF website
 	 */
 	private void reset() {
+		//Reset current search
+		this.search = null;
+		//Display jajuk page (in a thread to avoid freezing UI)
 		new Thread() {
 			public void run() {
 				if (browser != null) {
-
 					try {
 						browser.setURL(new URL(WIKIPEDIA_VIEW_DEFAULT_URL));
 					} catch (MalformedURLException e) {

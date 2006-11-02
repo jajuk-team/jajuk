@@ -234,7 +234,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 	 */
 	public static void registerDefaultPerspectives() {
 		reset();
-		
+
 		IPerspective perspective = null;
 		// physical perspective
 		perspective = new PhysicalPerspective();
@@ -261,19 +261,39 @@ public class PerspectiveManager implements ITechnicalStrings {
 		registerPerspective(perspective);
 
 		// Information perspective
-		// Load info perspective only for x86 linux
-		if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
+		// Load info perspective only for windows or x86 linux
+		if (Util.isUnderWindows()){
+			//No need to test, we are sure to find IE under windows
+			perspective = new InfoPerspective();
+			perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
+			perspective.setID(PERSPECTIVE_NAME_INFO);
+			registerPerspective(perspective);
+		}
+		else if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
 			try {
-				//Check mozilla executable is available in the PATH (exec() method
-				//uses PATH natively)
-				Process proc = Runtime.getRuntime().exec(new String[]{"mozilla","--version"});
+				/*
+				 * Check mozilla executable is available in the PATH (exec()
+				 * method uses PATH natively). Don't autorize to install this
+				 * perspective if mozilla is not present as it can causes
+				 * freezes
+				 */
+				Process proc = Runtime.getRuntime().exec(
+						new String[] { "mozilla", "--version" });
 				int out = proc.waitFor();
-				//mozilla available ?
-				if (out == 0) {
+				/*
+				 * mozilla available ? / 0 return code means mozilla is found
+				 * and is a binary / 1 return code means mozilla is found but
+				 * cannot be executed under JNLP because it is a sh script but
+				 * we don't care it cannot be executed, we just test its
+				 * presence
+				 */
+				if (out == 0 || out == 1) {
 					perspective = new InfoPerspective();
 					perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 					perspective.setID(PERSPECTIVE_NAME_INFO);
 					registerPerspective(perspective);
+				} else {
+					throw new Exception("Cannot execute mozilla");
 				}
 			} catch (Exception e) {
 				Log.debug("No mozilla available, disable InfoPerspective");

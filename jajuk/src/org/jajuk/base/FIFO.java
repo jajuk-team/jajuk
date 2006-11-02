@@ -33,6 +33,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -107,9 +108,6 @@ public class FIFO implements ITechnicalStrings {
 		index = 0;
 		playlist = null;
 		itemLast = null;
-		//Clear details for last launch track
-		ObservationManager.getDetailsLastOccurence(
-				EventSubject.EVENT_FILE_LAUNCHED).clear();
 	}
 
 	/**
@@ -142,11 +140,9 @@ public class FIFO implements ITechnicalStrings {
 				} catch (Exception e) {
 					Log.error(e);
 				} finally {
+					// refresh playlist editor
 					ObservationManager.notify(new Event(
-							EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-					// playlist
-					// editor
-					// Util.waiting();
+							EventSubject.EVENT_PLAYLIST_REFRESH)); 
 					Util.stopWaiting();
 				}
 			}
@@ -199,7 +195,16 @@ public class FIFO implements ITechnicalStrings {
 			bStop = false;
 			// display an error message if selection is void
 			if (alItems.size() == 0) {
-				Messages.showWarningMessage(Messages.getString("Error.018")); //$NON-NLS-1$
+				//If current ambience is not "all", show selected  ambience
+				//to alert user he selected it
+				if (AmbienceManager.getInstance().getSelectedAmbience() == null) {
+					Messages
+							.showWarningMessage(Messages.getString("Error.018")); //$NON-NLS-1$
+				} else {
+					Messages
+							.showWarningMessage(Messages.getString("Error.164")
+									+ " " + AmbienceManager.getInstance().getSelectedAmbience().getName()); //$NON-NLS-1$
+				}
 			}
 			// first try to mount needed devices
 			Iterator it = alItems.iterator();
