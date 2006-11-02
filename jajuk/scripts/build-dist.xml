@@ -71,10 +71,13 @@
   	</copy>
   	<mkdir dir='${distdir}/dist-files'/>
     <copy todir='${distdir}/dist-files/org/jajuk/icons' >
-     <fileset file='${basedir}/dist-files/org/jajuk//icons/**'/>
+     <fileset file='${basedir}/dist-files/org/jajuk/icons/**'/>
      </copy>
     <copy todir='${distdir}/dist-files/org/jajuk/images' >
      <fileset file='${basedir}/dist-files/org/jajuk/images/**'/>
+     </copy>
+    <copy todir='${distdir}/dist-files/org/jajuk/perspectives' >
+     <fileset file='${basedir}/dist-files/org/jajuk/perspectives/**'/>
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
@@ -191,7 +194,9 @@
     </javac>
     <mkdir dir='${distdir}/${classdir}/org/jajuk/icons'/>
     <mkdir dir='${distdir}/${classdir}/org/jajuk/images'/>
+  	<mkdir dir='${distdir}/${classdir}/org/jajuk/perspectives'/>
   	<mkdir dir='${distdir}/${classdir}/org/jajuk/docs'/>
+  	<!-- Copy files to embedde into the jar -->
   	<copy todir='${distdir}/${classdir}/org/jajuk/icons' >
      <fileset dir='${basedir}/dist-files/org/jajuk/icons'/>
   	</copy>
@@ -207,12 +212,16 @@
   	<copy todir='${distdir}/${classdir}/org/jajuk/util/log' >
      <fileset file='${basedir}/src/org/jajuk/util/log/jajuk-log4j-conf.xml'/>
   	</copy>
+  	<copy todir='${distdir}/${classdir}/org/jajuk/perspectives' >
+     <fileset file='${basedir}/dist-files/org/jajuk/perspectives/*.xml'/>
+  	</copy>
   </target>
  
   <target name='jar' description='o Create the jar' depends='compile'>
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' 
-    	basedir='${distdir}/${classdir}' 
-    	manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'/>
+    	manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'>
+	    <fileset dir='${distdir}/${classdir}'/>
+	</jar>
     <!--Sign jajuk jars (others are signed manually once) -->
     <!--for security reason (this file is commited with keystore password), 
     keystore password is changed after this script execution, password is temporary -->

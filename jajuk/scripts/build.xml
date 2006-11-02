@@ -39,6 +39,8 @@
 		<mkdir dir='${classdir}/org/jajuk/icons' />
 		<mkdir dir='${classdir}/org/jajuk/images' />
 		<mkdir dir='${classdir}/org/jajuk/docs' />
+		<mkdir dir='${classdir}/org/jajuk/perspectives'/>
+		  	
 		<copy todir='${classdir}/'>
 			<fileset dir='${distfilesdir}' />
 		</copy>
@@ -49,8 +51,11 @@
 			<fileset file='${srcdir}/log4j.properties' />
 		</copy>
 		<copy todir='${classdir}/org/jajuk/util/log'>
-                        <fileset file='${srcdir}/org/jajuk/util/log/*.xml'/>
-                </copy>
+            <fileset file='${srcdir}/org/jajuk/util/log/*.xml'/>
+        </copy>
+		<copy todir='${classdir}/org/jajuk/perspectives' >
+		    <fileset file='${distfilesdir}/org/jajuk/perspectives/*.xml'/>
+		</copy>
 
 	</target>
 

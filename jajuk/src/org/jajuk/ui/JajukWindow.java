@@ -88,8 +88,7 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 	 */
 	public JajukWindow() {
 		// mac integration (disable for the moment as users reported issues)
-		// System.setProperty( "apple.laf.useScreenMenuBar",
-		// "true");//$NON-NLS-1$ //$NON-NLS-2$
+		// System.setProperty( "apple.laf.useScreenMenuBar","true");
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP, true);
 		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
@@ -117,7 +116,7 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 				Main.exit(0);
 			}
 		});
-		// display correct title if a track is lauched at startup
+		// display correct title if a track is launched at startup
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
 				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
 	}
@@ -155,11 +154,13 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 	 */
 	private void saveSize() {
 		Rectangle rec = getBounds();
-		ConfigurationManager
-				.setProperty(
-						CONF_WINDOW_POSITION,
-						(int) rec.getMinX()
-								+ "," + (int) rec.getMinY() + "," + (int) rec.getWidth() + "," + (int) rec.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, (int) rec
+				.getMinX()
+				+ ","
+				+ (int) rec.getMinY()
+				+ ","
+				+ (int) rec.getWidth()
+				+ "," + (int) rec.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
@@ -215,13 +216,11 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 	 * @param visible
 	 *            The bVisible to set.
 	 */
-	public void setShown(boolean visible) {
+	public void setShown(final boolean visible) {
 		// start ui if needed
 		if (visible && !Main.isUILauched()) {
-			if (SwingUtilities.isEventDispatchThread()) { // must be
-				// lauched from
-				// another
-				// thread
+			if (SwingUtilities.isEventDispatchThread()) {
+				// must be lauched from another thread
 				Thread t = new Thread() {
 					public void run() {
 						try {
@@ -240,19 +239,28 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 				}
 			}
 		}
-		// store state
-		bVisible = visible;
-		// show
-		if (visible) {
-			setVisible(true);
-		}
-		// hide
-		else {
-			if (Main.isNoTaskBar()) { // hide the window only if it is
-				// explicitely required
-				setVisible(false);
+		SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				// store state
+				bVisible = visible;
+				// show
+				if (visible) {
+					applyStoredSize();
+					setVisible(true);
+				}
+				// hide
+				else {
+					if (Main.isNoTaskBar()) {
+						// hide the window only if it is
+						// explicitely required
+						saveSize();
+						setVisible(false);
+					}
+				}
 			}
-		}
+
+		});
 	}
 
 }

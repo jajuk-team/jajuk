@@ -37,6 +37,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -90,11 +91,13 @@ public class PerspectiveManager implements ITechnicalStrings {
 			Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
 			// force loadinf of defaults perspectives
 			for (IPerspective perspective : getPerspectives()) {
-				/* Remove current conf file to force 
-				 using default file from the jar*/
+				/*
+				 * Remove current conf file to force using default file from the
+				 * jar
+				 */
 				File loadFile = new File(FILE_JAJUK_DIR + '/'
-						+ perspective.getID() + ".xml");
-				if (loadFile.exists()){
+						+ perspective.getClass().getName() + ".xml");
+				if (loadFile.exists()) {
 					loadFile.delete();
 				}
 			}
@@ -113,18 +116,15 @@ public class PerspectiveManager implements ITechnicalStrings {
 	 * Begins management
 	 */
 	public static void init() {
-		String sPerspective = Main.getDefaultPerspective(); // take a look
-		// to see if a
-		// default
-		// perspective
-		// is set (About
-		// tray for
-		// exemple)
+		String sPerspective = Main.getDefaultPerspective();
+		/*
+		 * take a look to see if a default perspective is set (About tray for
+		 * exemple)
+		 */
 		if (sPerspective == null) {
 			sPerspective = ConfigurationManager
-					.getProperty(CONF_PERSPECTIVE_DEFAULT); // no? take the
-			// configuration
-			// ( user last
+					.getProperty(CONF_PERSPECTIVE_DEFAULT);
+			// no? take the configuration ( user last
 			// perspective)
 		}
 		IPerspective perspective = hmNameInstance.get(sPerspective);
@@ -234,6 +234,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 	 */
 	public static void registerDefaultPerspectives() {
 		reset();
+		
 		IPerspective perspective = null;
 		// physical perspective
 		perspective = new PhysicalPerspective();
@@ -260,12 +261,23 @@ public class PerspectiveManager implements ITechnicalStrings {
 		registerPerspective(perspective);
 
 		// Information perspective
-		// jdic buggy under linux for the moment
-		if (Util.isUnderWindows()) {
-			perspective = new InfoPerspective();
-			perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
-			perspective.setID(PERSPECTIVE_NAME_INFO);
-			registerPerspective(perspective);
+		// Load info perspective only for x86 linux
+		if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
+			try {
+				//Check mozilla executable is available in the PATH (exec() method
+				//uses PATH natively)
+				Process proc = Runtime.getRuntime().exec(new String[]{"mozilla","--version"});
+				int out = proc.waitFor();
+				//mozilla available ?
+				if (out == 0) {
+					perspective = new InfoPerspective();
+					perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
+					perspective.setID(PERSPECTIVE_NAME_INFO);
+					registerPerspective(perspective);
+				}
+			} catch (Exception e) {
+				Log.debug("No mozilla available, disable InfoPerspective");
+			}
 		}
 
 		// Configuration perspective

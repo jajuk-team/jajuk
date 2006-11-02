@@ -127,12 +127,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 						st.nextToken();
 						lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
 						// Cross-Fade test
-						if (!bFading && iFadeDuration > 0 && lDuration > 0 // can
-								// be
-								// null
-								// before
-								// getting
-								// length
+						if (!bFading && iFadeDuration > 0 && lDuration > 0 
+								// can be null before getting length
 								&& lTime > (lDuration - iFadeDuration)) {
 							bFading = true;
 							// force a finished (that doesn't stop but only
@@ -140,12 +136,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 							FIFO.getInstance().finished();
 						}
 						// test end of length for intro mode
-						if (length != TO_THE_END && lDuration > 0 // can
-								// be
-								// null
-								// before
-								// getting
-								// length
+						if (length != TO_THE_END && lDuration > 0 
+								// can be null before getting  length
 								&& (lTime - (fPosition * lDuration)) > length) {
 							// length=-1 means there is no max length
 							MPlayerPlayerImpl.this.stop();
@@ -164,14 +156,12 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 							// inc rate by 1 if file is fully played
 							fCurrent.getTrack().setRate(
 									fCurrent.getTrack().getRate() + 1);
-							FileManager.getInstance().setRateHasChanged(true); // alert
-							// bestof
-							// playlist
-							// something
-							// changed
-							if (!bFading) { // if using crossfade, ignore
-								// end of file
-								System.gc();// Benefit from end of file to
+							// alert bestof playlist something changed
+							FileManager.getInstance().setRateHasChanged(true); 
+							if (!bFading) { 
+								// if using crossfade, ignore end of file
+								System.gc();
+								// Benefit from end of file to
 								// perform a full gc
 								FIFO.getInstance().finished();
 							} else {

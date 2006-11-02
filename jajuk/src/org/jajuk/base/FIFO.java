@@ -107,6 +107,9 @@ public class FIFO implements ITechnicalStrings {
 		index = 0;
 		playlist = null;
 		itemLast = null;
+		//Clear details for last launch track
+		ObservationManager.getDetailsLastOccurence(
+				EventSubject.EVENT_FILE_LAUNCHED).clear();
 	}
 
 	/**

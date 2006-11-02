@@ -204,22 +204,14 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
 		properties.put(CONF_COVERS_MIN_SIZE, "10"); //$NON-NLS-1$
 		properties.put(CONF_COVERS_MAX_SIZE, "70"); //$NON-NLS-1$
-		properties.put(CONF_COVERS_ACCURACY + "_0", "1"); // medium
-		// accuracy
-		// //$NON-NLS-1$
-		// //$NON-NLS-2$
-		properties.put(CONF_COVERS_ACCURACY + "_1", "1"); // medium
-		// accuracy
-		// //$NON-NLS-1$
-		// //$NON-NLS-2$
-		properties.put(CONF_COVERS_ACCURACY + "_2", "3"); // Author
-		// accuracy
-		// //$NON-NLS-1$
-		// //$NON-NLS-2$
-		properties.put(CONF_COVERS_ACCURACY + "_3", "4"); // Album
-		// accuracy
-		// //$NON-NLS-1$
-		// //$NON-NLS-2$
+		// medium  accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_0", "1"); 
+		// medium  accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_1", "1"); 
+		// Author accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_2", "3"); 
+		// Album  accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_3", "4"); 
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK
 				+ ',' + XML_ALBUM + ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE
@@ -275,14 +267,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 	 */
 	public void setSystemLocal() {
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
-		if (Messages.getInstance().getLocals().contains(sLanguage)) { // user
-			// language
-			// exists
-			// in
-			// jajuk,
-			// take
-			// it as
-			// default
+		if (Messages.getInstance().contains(sLanguage)) { 
+			// user language exists in jajuk, take it as default
 			properties.put(CONF_OPTIONS_LANGUAGE, sLanguage);
 		} else { // user language is unknown, take english as a default,
 			// user will be able to change it later anyway

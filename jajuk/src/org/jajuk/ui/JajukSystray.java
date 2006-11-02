@@ -76,7 +76,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 
 	JMenuItem jmiMute;
 
-	JMenuItem jmiAbout;
+	JMenuItem jmiHelp;
 
 	JMenuItem jmiShuffle;
 
@@ -150,8 +150,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 
 		jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
 		jmiMute = new JMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
-		jmiAbout = new JMenuItem(ActionManager
-				.getAction(JajukAction.SHOW_ABOUT));
+		jmiHelp = new JMenuItem(ActionManager
+				.getAction(JajukAction.HELP_REQUIRED));
 		jmiShuffle = new JMenuItem(ActionManager
 				.getAction(JajukAction.SHUFFLE_GLOBAL));
 		jmiBestof = new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
@@ -225,7 +225,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmenu.add(jmiNovelties);
 		jmenu.add(jmiNorm);
 		jmenu.addSeparator();
-		jmenu.add(jmiAbout);
+		jmenu.add(jmiHelp);
 		jmenu.addSeparator();
 		jmenu.add(jmiMute);
 		jmenu.addSeparator();
@@ -239,16 +239,13 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		trayIcon.setIconAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// hide menu if opened
-				if (jmenu != null && jmenu.isVisible()) {
-					jmenu.setVisible(false);
-				}
 				// show window if it is not visible and hide it if it is visible
 				if (!JajukWindow.getInstance().isVisible()) {
 					JajukWindow.getInstance().setShown(true);
 				} else {
 					JajukWindow.getInstance().setShown(false);
 				}
+
 			}
 		});
 		stray.addTrayIcon(trayIcon);
@@ -304,9 +301,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			Log.error(e2);
 		} finally {
 			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-			// playlist
-			// editor
+					EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 

@@ -24,7 +24,6 @@ import java.awt.Container;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Set;
@@ -113,13 +112,13 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		if (!bAsBeenSelected) {
 			return;
 		}
-		File saveFile = new File(FILE_JAJUK_DIR + '/' + getID() + ".xml");
+		File saveFile = new File(FILE_JAJUK_DIR + '/'
+				+ getClass().getSimpleName() + ".xml");
 		BufferedOutputStream out = new BufferedOutputStream(
 				new FileOutputStream(saveFile));
 		writeXML(out);
 		out.flush();
-		out.close(); // stream isn't closed in case you'd like to save
-		// something else after
+		out.close();
 	}
 
 	/*
@@ -134,16 +133,18 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 			registerDockable(view);
 		}
 		// Try to read XML conf file from home directory
-		File loadFile = new File(FILE_JAJUK_DIR + '/' + getID() + ".xml");
-		/* If file doesn't exist (normaly only at first install), read
-		 perspective conf from the jar*/
+		File loadFile = new File(FILE_JAJUK_DIR + '/'
+				+ getClass().getSimpleName() + ".xml");
+		/*
+		 * If file doesn't exist (normaly only at first install), read
+		 * perspective conf from the jar
+		 */
+		URL url = loadFile.toURL();
 		if (!loadFile.exists()) {
-			URL url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-					+ getID() + ".xml");
-			loadFile = new File(url.getFile());
+			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
+					+ getClass().getSimpleName() + ".xml");
 		}
-		BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-				loadFile));
+		BufferedInputStream in = new BufferedInputStream(url.openStream());
 		// then, load the workspace
 		try {
 			readXML(in);
@@ -151,10 +152,9 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 			// error parsing the file, we must avoid user to blocked, use
 			// default conf
 			Log.error("Error parsing conf file, use defaults - " + getID(), e);
-			URL url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-					+ getID() + ".xml");
-			loadFile = new File(url.getFile());
-			in = new BufferedInputStream(new FileInputStream(loadFile));
+			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
+					+ getClass().getSimpleName() + ".xml");
+			in = new BufferedInputStream(url.openStream());
 			readXML(in);
 		} finally {
 			in.close(); // stream isn't closed
@@ -181,7 +181,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		try {
 			// Remove current conf file to force using default file from the
 			// jar
-			File loadFile = new File(FILE_JAJUK_DIR + '/' + getID() + ".xml");
+			File loadFile = new File(FILE_JAJUK_DIR + '/'
+					+ getClass().getSimpleName() + ".xml");
 			loadFile.delete();
 			// Remove all registered dockables
 			DockableState[] ds = getDockables();

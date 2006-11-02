@@ -84,6 +84,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
 
+import com.vlsolutions.swing.docking.DockingPreferences;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarIO;
@@ -416,9 +417,10 @@ public class Main implements ITechnicalStrings {
 				sc.setProgress(80, Messages.getString("SplashScreen.3")); //$NON-NLS-1$
 				launchUI();
 			}
-
+	
 			// start the tray
 			launchTray();
+	
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose
 			Log.error(je);
@@ -803,9 +805,9 @@ public class Main implements ITechnicalStrings {
 		if (Boolean.valueOf(
 				ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT))
 				.booleanValue()) {
-			int iResu = Messages
-					.getChoice(
-							Messages.getString("Confirmation_exit"), JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			int iResu = Messages.getChoice(Messages
+					.getString("Confirmation_exit"),
+					JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
 				return;
 			}
@@ -818,12 +820,12 @@ public class Main implements ITechnicalStrings {
 		Main.iExitCode = iExitCode;
 		// force sound to stop quickly
 		FIFO.getInstance().stopRequest();
-		ObservationManager
-				.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // alert
 		/*
-		 * playlists editors ( queue playlist ) something changed for him hide
-		 * window
+		 * alert playlists editors ( queue playlist ) something changed for him
+		 * hide window
 		 */
+		ObservationManager
+				.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		if (jw != null)
 			jw.setShown(false);
 		// hide systray
@@ -1094,6 +1096,11 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// Init heavyweight support (for jdic)
+					//have to be done here, not after
+					DockingPreferences.initHeavyWeightUsage();
+					DockingPreferences.setSingleHeavyWeightComponent(true);
+					
 					// Set look and feel, needs local to be set for error
 					// messages
 					LNFManager.setLookAndFeel(ConfigurationManager

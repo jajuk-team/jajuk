@@ -34,7 +34,9 @@ Jajuk main principles are :
    /usr/share/applications/*
    /usr/share/doc/packages/jajuk/*
    /usr/share/pixmaps/*
-
+%defattr(555,root,root)
+	/usr/lib/jajuk/lib/linux/x86/*
+   
 %post
 
 %postun

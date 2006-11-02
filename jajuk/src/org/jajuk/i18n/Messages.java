@@ -64,7 +64,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/** Supported Locals */
 	public ArrayList<String> alLocals = new ArrayList<String>(10);
 
-	/** Locals description */
+	/** Locales description */
 	public ArrayList<String> alDescs = new ArrayList<String>(10);
 
 	/** self instance for singleton */
@@ -177,10 +177,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/**
 	 * Register a local
 	 * 
-	 * @param sName :
-	 *            local name like "english"
-	 * @param sLocal :
-	 *            local name like "en"
+	 * @param sLocale :
+	 *            standard local name like "en"
+	 * @param sDesc :
+	 *            a language-independant desc like "Language_desc_en"
 	 */
 	public void registerLocal(String sLocal, String sDesc) {
 		alLocals.add(sLocal);
@@ -192,8 +192,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * 
 	 * @return
 	 */
-	public ArrayList<String> getLocals() {
-		return alLocals;
+	public static ArrayList<String> getLocales() {
+		return mesg.alLocals;
 	}
 
 	/**
@@ -201,8 +201,17 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * 
 	 * @return
 	 */
-	public ArrayList<String> getDescs() {
-		return alDescs;
+	public static ArrayList<String> getDescs() {
+		return mesg.alDescs;
+	}
+	
+	/**
+	 * Return Description for a given locale id
+	 * 
+	 * @return localized description
+	 */
+	public static String getHumanForLocale(String sLocale) {
+		return getString(mesg.alDescs.get(mesg.alLocals.indexOf(sLocale)));
 	}
 
 	/**

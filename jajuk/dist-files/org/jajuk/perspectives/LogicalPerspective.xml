@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<DockingDesktop version="2.0">
+<DockingPanel>
+<Split orientation="1" location="0.3238341968911917">
+<Dockable>
+<Key dockName="org.jajuk.ui.views.LogicalTreeView/0" dockLabel="key0"/>
+</Dockable>
+<Split orientation="0" location="0.5">
+<Dockable>
+<Key dockName="org.jajuk.ui.views.LogicalTableView/0" dockLabel="key1"/>
+</Dockable>
+<Split orientation="1" location="0.5">
+<Dockable>
+<Key dockName="org.jajuk.ui.views.LogicalPlaylistEditorView/0" dockLabel="key2"/>
+</Dockable>
+<Dockable>
+<Key dockName="org.jajuk.ui.views.CoverView/1" dockLabel="key4"/>
+</Dockable>
+</Split>
+</Split>
+</Split>
+</DockingPanel>
+<Border zone="1">
+<Dockable>
+<Key dockName="org.jajuk.ui.views.LogicalPlaylistRepositoryView/0" dockLabel="key3"/>
+<RelativePosition x="0.0" y="0.0" w="0.25" h="1.0" />
+</Dockable>
+</Border>
+<TabGroups>
+</TabGroups>
+</DockingDesktop>

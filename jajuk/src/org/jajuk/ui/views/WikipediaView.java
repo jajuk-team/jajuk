@@ -22,7 +22,8 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
@@ -30,12 +31,9 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -55,7 +53,7 @@ import org.jdesktop.jdic.browser.WebBrowser;
  * @created 12/12/2005
  */
 public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
-		Observer, ChangeListener {
+		Observer, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,7 +62,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 
 	JLabel jlLanguage;
 
-	JSpinner jspLanguage;
+	JComboBox jcbLanguage;
 
 	/** JDIC web browser: ie or netscape */
 	WebBrowser browser;
@@ -73,23 +71,13 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 	int index = 0;
 
 	/** Current search */
-	String search = ""; //$NON-NLS-1$
+	String search = null; //$NON-NLS-1$
 
 	/**
 	 * Constructor
 	 * 
 	 */
 	public WikipediaView() {
-	}
-
-	/**
-	 * Overwride paint method to fix an issue with WebBrowser: when user select
-	 * another perspective and come back, it is void We have to force setUrl to
-	 * repaint it
-	 */
-	public void paint(Graphics g) {
-		super.paint(g);
-		launchSearch(this.search);
 	}
 
 	/*
@@ -117,47 +105,28 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 				{ 25 } };
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1")); //$NON-NLS-1$
-		jspLanguage = new JSpinner();
-		String[] model = new String[Messages.getInstance().getDescs().size()];
-		// set startup locale
-		int i = 0;
-		String local = ConfigurationManager
-				.getProperty(CONF_WIKIPEDIA_LANGUAGE);
-		if (local == null || local.trim().length() == 0) {
-			index = 0; // english as default in case of error
-		} else {
-			for (String s : Messages.getInstance().getDescs()) {
-				model[i] = Messages.getString(s);
-				// set index to current language
-				if (Messages.getInstance().getLocals().get(i).equals(local)) {
-					index = i;
-				}
-				i++;
-			}
+		jcbLanguage = new JComboBox();
+		for (String sLocale : Messages.getLocales()) {
+			jcbLanguage.addItem(Messages.getHumanForLocale(sLocale));
 		}
-		// we use a spinner and not a combo because browser native window
-		// can hide combo popup
-		jspLanguage = new JSpinner(new SpinnerListModel(model));
-		int defaultLang = Messages.getInstance().getLocals().indexOf(
+		// get stored language
+		index = Messages.getLocales().indexOf(
 				ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
-		jspLanguage.setValue(Messages.getString(Messages.getInstance()
-				.getDescs().get(defaultLang)));
-		jspLanguage.addChangeListener(this);
+		jcbLanguage.setSelectedIndex(index);
+		jcbLanguage.addActionListener(this);
 		jpControl.add(jlLanguage, "1,0");//$NON-NLS-1$
-		jpControl.add(jspLanguage, "3,0");//$NON-NLS-1$
+		jpControl.add(jcbLanguage, "3,0");//$NON-NLS-1$
 
 		// global layout
 		double size[][] = { { 0.99 }, { 30, 0, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new WebBrowser();
-		WebBrowser.setDebug(true);
-		launchSearch(""); //$NON-NLS-1$
-
+		// WebBrowser.setDebug(true);
 		add(jpControl, "0,0"); //$NON-NLS-1$
 		add(browser, "0,2"); //$NON-NLS-1$
 
 		// subscriptions to events
-		ObservationManager.register(this);
+		ObservationManager.register(WikipediaView.this);
 
 		// force event
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
@@ -186,22 +155,15 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED);
 			String search = FIFO.getInstance().getCurrentFile().getTrack()
 					.getAuthor().getName2();
-			if (details != null && !search.equals(this.search)) { // a
-				// file
-				// has
-				// been
-				// laucnh
-				// before
-				// view
-				// creation
+			if (details != null && !search.equals(this.search)) {
+				// a file has been launch before view creation
 				this.search = search;
 				launchSearch(search);
 			}
 		}
 		// Reset the page when stopping
 		else if (subject.equals(EventSubject.EVENT_ZERO)) {
-			this.search = ""; // reset //$NON-NLS-1$
-			launchSearch(search);
+			reset();
 		}
 		// User changed author name, so we have to reload new author wikipedia
 		// page
@@ -215,18 +177,41 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 	 * 
 	 * @param search
 	 */
-	private void launchSearch(String search) {
-		try {
-			URL url = new URL("http://" + //$NON-NLS-1$
-					Messages.getInstance().getLocals().get(index)
-					+ ".wikipedia.org/wiki/" + search); //$NON-NLS-1$
-			Log.debug("Wikipedia search: " + url); //$NON-NLS-1$
-			if (browser != null) {
-				browser.setURL(url);
+	private void launchSearch(final String search) {
+		new Thread() {
+			public void run() {
+				try {
+					URL url = new URL("http://" + //$NON-NLS-1$
+							Messages.getLocales().get(index)
+							+ ".wikipedia.org/wiki/" + search); //$NON-NLS-1$
+					Log.debug("Wikipedia search: " + url); //$NON-NLS-1$
+					if (browser != null) {
+						browser.setURL(url);
+					}
+				} catch (MalformedURLException e) {
+					Log.error(e);
+				}
+
 			}
-		} catch (MalformedURLException e) {
-			Log.error(e);
-		}
+		}.start();
+	}
+
+	/*
+	 * Reset view by making a request to jajuk SF website
+	 */
+	private void reset() {
+		new Thread() {
+			public void run() {
+				if (browser != null) {
+
+					try {
+						browser.setURL(new URL(WIKIPEDIA_VIEW_DEFAULT_URL));
+					} catch (MalformedURLException e) {
+						Log.error(e);
+					}
+				}
+			}
+		}.start();
 	}
 
 	/*
@@ -234,20 +219,13 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 	 * 
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
-	public void stateChanged(ChangeEvent arg0) {
-		if (arg0.getSource() == jspLanguage) {
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == jcbLanguage) {
+			index = jcbLanguage.getSelectedIndex();
 			// update index
-			int i = 0;
-			for (String sDesc : Messages.getInstance().getDescs()) {
-				if (jspLanguage.getValue().equals(Messages.getString(sDesc))) {
-					this.index = i;
-					ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE,
-							Messages.getInstance().getLocals().get(index));
-					break;
-				} else {
-					i++;
-				}
-			}
+			ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages
+					.getLocales().get(index));
+
 			// launch wikipedia search for this language
 			launchSearch(this.search);
 		}

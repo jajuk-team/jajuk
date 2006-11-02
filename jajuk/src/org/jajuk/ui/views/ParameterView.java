@@ -483,7 +483,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,
 		jpCombos.setLayout(new TableLayout(sizeCombos));
 		jlLanguage = new JLabel(Messages.getString("ParameterView.38")); //$NON-NLS-1$
 		scbLanguage = new SteppedComboBox();
-		Iterator itDescs = Messages.getInstance().getDescs().iterator();
+		Iterator itDescs = Messages.getDescs().iterator();
 		while (itDescs.hasNext()) {
 			String sDesc = (String) itDescs.next();
 			scbLanguage.addItem(Messages.getString(sDesc));
@@ -1123,21 +1123,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,
 										.getProperty(CONF_OPTIONS_LNF));
 								SwingUtilities.updateComponentTreeUI(Main
 										.getWindow());
+								// force the perspective panel to refresh
 								PerspectiveBarJPanel
 										.getInstance()
 										.setActivated(
 												PerspectiveManager
-														.getCurrentPerspective()); // force
-								// the
-								// perspective
-								// panel
-								// to
-								// refresh
+														.getCurrentPerspective());
+
 							}
 						});
 					}
 				} else if (e.getSource() == scbLanguage) {
-					String sLocal = Messages.getInstance().getLocals().get(
+					String sLocal = Messages.getLocales().get(
 							scbLanguage.getSelectedIndex());
 					String sPreviousLocal = Messages.getInstance().getLocal();
 					if (!sPreviousLocal.equals(sLocal)) { // local has
@@ -1363,7 +1360,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,
 		jcbSyncTableTree.setSelected(ConfigurationManager
 				.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
 		scbLanguage
-				.setSelectedIndex(Messages.getInstance().getLocals()
+				.setSelectedIndex(Messages.getLocales()
 						.indexOf(
 								ConfigurationManager
 										.getProperty(CONF_OPTIONS_LANGUAGE)));
