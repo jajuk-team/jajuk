@@ -30,7 +30,7 @@ public class DebugLogAction extends ActionBase {
 
 	DebugLogAction() {
 		super(
-				Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+				Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES),true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
 		setShortDescription(Messages.getString("JajukJMenuBar.23")); //$NON-NLS-1$
 	}
 
