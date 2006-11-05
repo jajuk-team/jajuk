@@ -20,6 +20,7 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -29,7 +30,11 @@ import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.JIntellitype;
 
 /**
  * Common super class for Swing actions. This class provides useful construction
@@ -40,12 +45,27 @@ import org.jajuk.util.log.Log;
  * @since 12-dec-2005
  */
 public abstract class ActionBase extends AbstractAction implements
-		ITechnicalStrings {
+		ITechnicalStrings, HotkeyListener {
 
 	/**
 	 * Shared mutex for locking.
 	 */
 	protected static final byte[] MUTEX = new byte[0];
+
+	private static HashMap<ActionBase, Integer> hmActionIndex = new HashMap<ActionBase, Integer>(
+			20);
+
+	/**
+	 * Jintellitype object used for hotkeys and intellitype events management
+	 * under winodws only
+	 */
+	private static JIntellitype jintellitype;
+
+	static {
+		if (Util.isUnderWindows()) {
+			jintellitype = new JIntellitype();
+		}
+	}
 
 	/**
 	 * Construct an action with the given name, icon and accelerator keystroke.
@@ -77,7 +97,15 @@ public abstract class ActionBase extends AbstractAction implements
 			setIcon(icon);
 		}
 		if (stroke != null) {
-			setAcceleratorKey(stroke);
+			if (Util.isUnderWindows()) {
+				int index = hmActionIndex.size() - 1;
+				jintellitype.registerHotKey(index + 1, 
+						stroke.getModifiers(),stroke.getKeyCode());
+				hmActionIndex.put(this,index);
+				jintellitype.addHotKeyListener(this);
+			} else {
+				setAcceleratorKey(stroke);
+			}
 		}
 		setEnabled(enabled);
 	}
@@ -340,4 +368,23 @@ public abstract class ActionBase extends AbstractAction implements
 	 * @param evt
 	 */
 	protected abstract void perform(ActionEvent evt) throws Exception;
+
+	// listen for hotkey
+	public void onHotKey(int aIdentifier) {
+		try {
+			perform(null);
+		} catch (Throwable e2) {
+			Log.error(e2);
+		} finally {
+			ObservationManager.notify(new Event(
+					EventSubject.EVENT_PLAYLIST_REFRESH));
+		}
+	}
+
+	/**
+	 * Free intellipad ressources
+	 */
+	public static void cleanup() {
+		jintellitype.cleanUp();
+	}
 }

@@ -30,13 +30,15 @@ public class DebugLogAction extends ActionBase {
 
 	DebugLogAction() {
 		super(
-				Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES),true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+				Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES), true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
 		setShortDescription(Messages.getString("JajukJMenuBar.23")); //$NON-NLS-1$
 	}
 
 	public void perform(ActionEvent evt) {
-		// Store current traces
-		String traces = "";
+		//Store system properties
+		String traces = Util.getAnonymizedSystemProperties().toString() + '\n'
+				+ Util.getAnonymizedJajukProperties().toString() + '\n';
+		// Store last traces
 		Iterator it = Log.getSpool();
 		while (it.hasNext()) {
 			traces += it.next().toString() + '\n';

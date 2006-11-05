@@ -38,6 +38,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.jdic.browser.BrowserEngineManager;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -262,14 +263,17 @@ public class PerspectiveManager implements ITechnicalStrings {
 
 		// Information perspective
 		// Load info perspective only for windows or x86 linux
-		if (Util.isUnderWindows()){
-			//No need to test, we are sure to find IE under windows
+		if (Util.isUnderWindows()) {
+			// No need to test, we are sure to find IE under windows
 			perspective = new InfoPerspective();
 			perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 			perspective.setID(PERSPECTIVE_NAME_INFO);
 			registerPerspective(perspective);
-		}
-		else if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
+			// force using IE under Windows to avoid freezes
+			BrowserEngineManager.instance().setActiveEngine(
+					BrowserEngineManager.IE);
+		} else if (Util.isUnderLinux()
+				&& System.getProperty("os.arch").equals("i386")) {
 			try {
 				/*
 				 * Check mozilla executable is available in the PATH (exec()
@@ -292,6 +296,9 @@ public class PerspectiveManager implements ITechnicalStrings {
 					perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 					perspective.setID(PERSPECTIVE_NAME_INFO);
 					registerPerspective(perspective);
+					// Not the choice but set Mozilla in case of
+					BrowserEngineManager.instance().setActiveEngine(
+							BrowserEngineManager.MOZILLA);
 				} else {
 					throw new Exception("Cannot execute mozilla");
 				}

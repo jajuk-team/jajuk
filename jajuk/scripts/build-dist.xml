@@ -5,7 +5,7 @@
   <!--VARIABLES-->
   <property name='version' value='1.3M2'/>
   <property name='test' value='-test'/>
-  <property name='jwsdeploy' value='test'/>
+  <property name='jnlpdeploy' value='test'/>
  	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
@@ -29,7 +29,7 @@
   <property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip'/>
   <property name='uploaddir' value='${rootdir}/upload'/>
   <property name='helpdir' value='${rootdir}/help'/>
-  <property name='jwsdir' value='${rootdir}/jws'/>
+  <property name='jnlpdir' value='${rootdir}/jnlp'/>
   	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
@@ -62,6 +62,10 @@
       <fileset dir='${basedir}/dist-files/doc'>
       	<include name='README*.html'/>
       </fileset>
+    </copy>
+    <!--copy native dll to bin directory-->
+    <copy todir='${distdir}/bin' >
+     <fileset file='${basedir}/*.dll'/>
     </copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
@@ -152,7 +156,7 @@
     <copy todir='${rpmdistdir_suse}/usr/share/pixmaps' >
     	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
     </copy>
-        	<!--Mandrake-->
+    	<!--Mandrake-->
     <copy todir='${rpmbuilddir_mdk}/SPECS' >
     	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk-mdk.spec'/>
     </copy>
@@ -405,50 +409,50 @@
         izPackDir='/prog/IzPack'/>
       </target>
       
-   <target name='jws' description='o Create the Java Web Start war distribution' depends='jar,helpsetjar'>
+   <target name='jnlp' description='o Create the Java Web Start war distribution' depends='jar,helpsetjar'>
 	<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
-	<mkdir dir='${jwsdir}'/>
-	<mkdir dir='${jwsdir}/windows'/>
-    <mkdir dir='${jwsdir}/linux'/>
+	<mkdir dir='${jnlpdir}'/>
+	<mkdir dir='${jnlpdir}/windows'/>
+    <mkdir dir='${jnlpdir}/linux'/>
     <!--Copy files -->
-    <copy todir='${jwsdir}'>
+    <copy todir='${jnlpdir}'>
     	<fileset file='${distdir}/lib/*.jar'/>
     </copy>
-    <copy todir='${jwsdir}'>
+    <copy todir='${jnlpdir}'>
     	<fileset file='${distdir}/bin/*.jar'/>
     </copy>
-    <copy todir='${jwsdir}'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/*.jnlp'/>
+    <copy todir='${jnlpdir}'>
+    	<fileset file='${basedir}/dist-files/packaging/jnlp/*.jnlp'/>
     </copy>
-    <copy todir='${jwsdir}'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/*.gif'/>
+    <copy todir='${jnlpdir}'>
+    	<fileset file='${basedir}/dist-files/packaging/jnlp/*.gif'/>
     </copy>
-    <copy todir='${jwsdir}'>
+    <copy todir='${jnlpdir}'>
     	<fileset file='${basedir}/dist-files/org/jajuk/images/included/jajuk-splashscreen.jpg'/>
     </copy>
    
     <!--Copy native jars -->
-    <copy todir='${jwsdir}/linux'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/linux/jdic-native.jar'/>
+    <copy todir='${jnlpdir}/linux'>
+    	<fileset file='${basedir}/dist-files/packaging/jnlp/linux/*.jar'/>
     	<fileset file='${basedir}/lib/linux/jdic_stub.jar'/>
     </copy>
-    <copy todir='${jwsdir}/windows'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/windows/jdic-native.jar'/>
+    <copy todir='${jnlpdir}/windows'>
+    	<fileset file='${basedir}/dist-files/packaging/jnlp/windows/*.jar'/>
 	   	<fileset file='${basedir}/lib/windows/jdic_stub.jar'/>
     </copy>
-    <replace dir='${jwsdir}' value='${test}'>
+    <replace dir='${jnlpdir}' value='${test}'>
   		<include name='jajuk.jnlp'/>
   		<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  	</replace>
- 	<replace dir='${jwsdir}' value='${jwsdeploy}'>
+ 	<replace dir='${jnlpdir}' value='${jnlpdeploy}'>
   		<include name='*.jnlp'/>
-  		<replacetoken>JWS_DEPLOY_REPLACED_BY_ANT</replacetoken>
+  		<replacetoken>JNLP_DEPLOY_REPLACED_BY_ANT</replacetoken>
  	</replace>
  	<!-- Create the war -->
- 	<war destfile='${rootdir}/jajuk${test}.war' webxml='${basedir}/dist-files/packaging/jws/web.xml'>
-	  <fileset dir='${jwsdir}'/>
-  	  <fileset file='${jwsdir}'/>
-  	  <lib file='${basedir}/dist-files/packaging/jws/jnlp-servlet.jar'/>
+ 	<war destfile='${rootdir}/jajuk${test}.war' webxml='${basedir}/dist-files/packaging/jnlp/web.xml'>
+	  <fileset dir='${jnlpdir}'/>
+  	  <fileset file='${jnlpdir}'/>
+  	  <lib file='${basedir}/dist-files/packaging/jnlp/jnlp-servlet.jar'/>
   	</war>
   </target>
       
@@ -465,7 +469,7 @@
       
    <!-- Prepare upload-->
    <target name='prepare_upload' description='o Put all generated packages in the same upload directory'
-   	depends='izpack,rpm,sourcesdist,sfx,jws'>
+   	depends='izpack,rpm,sourcesdist,sfx,jnlp'>
   	 <mkdir dir='${uploaddir}'/>
       <copy todir='${uploaddir}' >
       	<fileset file='${sourcesdist}'/>

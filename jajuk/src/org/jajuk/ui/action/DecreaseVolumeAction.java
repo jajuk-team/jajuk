@@ -25,8 +25,11 @@ public class DecreaseVolumeAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) {
+		System.out.println("here");
 		int iOld = CommandJPanel.getInstance().getCurrentVolume();
 		int iNew = iOld - 5;
 		Player.setVolume(((float) iNew) / 100);
 	}
+	
+	
 }

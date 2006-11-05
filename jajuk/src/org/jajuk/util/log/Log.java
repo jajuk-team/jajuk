@@ -348,7 +348,8 @@ public class Log implements ITechnicalStrings {
 	 * @param e
 	 */
 	private static void spool(Throwable e) {
-		spool("[ERROR] " + e.getClass() + " / " + e.getMessage() + " / " + e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		spool("[ERROR] " + e.getClass() + " / " + e.getMessage()
+				+ " / " + e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		StackTraceElement[] ste = e.getStackTrace();
 		for (int i = 0; i < ste.length; i++) {
 			spool(ste[i].toString());

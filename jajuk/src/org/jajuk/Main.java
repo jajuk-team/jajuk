@@ -78,7 +78,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IntellipadManager;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -211,11 +210,6 @@ public class Main implements ITechnicalStrings {
 
 			// Set default local (from system). Depends on registerLocal
 			ConfigurationManager.getInstance().setSystemLocal();
-
-			/* Initialize intellipad listener*/
-			if (Util.isUnderWindows()){
-				IntellipadManager.init();
-			}
 
 			// Load user configuration. Depends on: initialCheckups,
 			// setSystemLocal
@@ -395,7 +389,7 @@ public class Main implements ITechnicalStrings {
 							out.close();
 							/*release intellipad resources*/			 
 							if (Util.isUnderWindows()){
-								IntellipadManager.cleanup();
+								org.jajuk.ui.action.ActionBase.cleanup();
 							}
 						}
 					} catch (Exception e) {
@@ -409,7 +403,8 @@ public class Main implements ITechnicalStrings {
 
 			Runtime.getRuntime().addShutdownHook(tHook);
 
-			// Auto mount devices
+			// Auto mount devices, freeze for SMB drives
+			//if network is not reacheable
 			autoMount();
 
 			// Launch auto-refresh thread

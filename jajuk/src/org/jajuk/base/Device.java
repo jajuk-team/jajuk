@@ -765,28 +765,21 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			Messages.showErrorMessage("111"); //$NON-NLS-1$
 		}
 		try {
-			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { // not
-				// under
-				// windows
-				// //$NON-NLS-1$
-				// //$NON-NLS-2$
+			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { 
 				// look to see if the device is already mounted ( the mount
 				// command cannot say that )
 				File file = new File(getMountPoint());
-				if (file.exists() && file.list().length == 0) {// if none file
-					// in this
-					// directory, it
-					// probably
-					// means device
-					// is not
-					// mounted, try
-					// to mount it
+				if (file.exists() && file.list().length == 0) {
+					// if none file in this directory, it probably
+					// means device is not mounted, try to mount it
+					
+					// run the actual mount command //$NON-NLS-1$
 					Process process = Runtime.getRuntime().exec(
-							"mount " + getMountPoint());// run the actual mount
-					// command //$NON-NLS-1$
-					process.waitFor(); // just make a try, do not report error
+							"mount " + getMountPoint());
+					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
+					process.waitFor(); 
 				}
 			} else { // windows mount point or mount point not given, check
 				// if path exists

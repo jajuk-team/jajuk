@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="$$codebase" href="jintellitype.jnlp">
+    <information>
+        <title>Jintellitype</title>
+        <vendor>melloware.com</vendor>
+    </information>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <resources>
+        <jar href="jintellitype-1.0.jar"/>
+    </resources>
+    <component-desc/>
+</jnlp>

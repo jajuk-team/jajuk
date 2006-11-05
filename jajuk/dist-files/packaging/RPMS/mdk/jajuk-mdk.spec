@@ -40,13 +40,12 @@ Jajuk main principles are :
 %defattr(-,root,root)
   /usr/bin/jajuk
   /usr/lib/jajuk/bin/*
-  /usr/lib/jajuk/lib/*
   /usr/share/doc/jajuk/*
   /usr/share/icons/*
   /usr/lib/menu/*
 
 %defattr(555,root,root)
-   /usr/lib/jajuk/lib/linux/x86/*
+   /usr/lib/jajuk/lib/*
 
 %post
 update-menus
