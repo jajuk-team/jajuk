@@ -35,6 +35,7 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.IntellitypeListener;
 import com.melloware.jintellitype.JIntellitype;
 
 /**
@@ -59,9 +60,57 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
      */
     private static JIntellitype jintellitype;
 
+    // Instantiate a static jintellitype object
     static {
         if (Util.isUnderWindows()) {
             jintellitype = new JIntellitype();
+            // assign this class to be a IntellitypeListener
+            jintellitype.addIntellitypeListener(new IntellitypeListener() {
+
+                /*
+                 * (non-Javadoc)
+                 * 
+                 * @see com.melloware.jintellitype.IntellitypeListener#onIntellitype(int)
+                 */
+                public void onIntellitype(int aCommand) {
+                    try {
+                        //Perform right action according to intellitype command
+                        switch (aCommand) {
+                        case JIntellitype.APPCOMMAND_MEDIA_NEXTTRACK:
+                            ActionManager.getAction(JajukAction.NEXT_TRACK).perform(null);
+                            break;
+                        case JIntellitype.APPCOMMAND_MEDIA_PLAY_PAUSE:
+                            ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK).perform(null);
+                            break;
+                        case JIntellitype.APPCOMMAND_MEDIA_PREVIOUSTRACK:
+                            ActionManager.getAction(JajukAction.PREVIOUS_TRACK).perform(null);
+                            break;
+                        case JIntellitype.APPCOMMAND_MEDIA_STOP:
+                            ActionManager.getAction(JajukAction.STOP_TRACK).perform(null);
+                            break;
+                        case JIntellitype.APPCOMMAND_VOLUME_DOWN:
+                            ActionManager.getAction(JajukAction.DECREASE_VOLUME).perform(null);
+                            break;
+                        case JIntellitype.APPCOMMAND_VOLUME_UP:
+                            ActionManager.getAction(JajukAction.INCREASE_VOLUME).perform(null);
+                            break;
+                        case JIntellitype.APPCOMMAND_VOLUME_MUTE:
+                            ActionManager.getAction(JajukAction.MUTE_STATE).perform(null);
+                            break;
+                        default:
+                            Log.debug("Undefined INTELLITYPE message caught "
+                                    + Integer.toString(aCommand));
+                            break;
+                        }
+                    } catch (Throwable e2) {
+                        Log.error(e2);
+                    } finally {
+                        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+                    }
+                }
+
+            });
+
         }
     }
 
@@ -92,16 +141,16 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
         }
         if (stroke != null) {
             if (Util.isUnderWindows()) {
-                //under windows, use hotkey that can be used even when window has not the focus
+                // under windows, use hotkey that can be used even when window has not the focus
                 int index = hmIndexAction.size() - 1;
                 jintellitype.registerHotKey(index + 1, swingToIntelliType(stroke.getModifiers()),
                         stroke.getKeyCode());
-                //register the action with its index
+                // register the action with its index
                 hmIndexAction.put(index + 1, this);
-                //add the listener
+                // add the listener
                 jintellitype.addHotKeyListener(this);
             } else {
-                //else use standard swing keystroke feature
+                // else use standard swing keystroke feature
                 setAcceleratorKey(stroke);
             }
         }
@@ -336,10 +385,10 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 
     // listen for hotkey
     public void onHotKey(int aIdentifier) {
-        //check it is the right listener that caught the event
+        // check it is the right listener that caught the event
         if (this.equals(hmIndexAction.get(aIdentifier))) {
             try {
-                //Call action itself
+                // Call action itself
                 perform(null);
             } catch (Throwable e2) {
                 Log.error(e2);
