@@ -334,9 +334,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
-		jsVolume.setPreferredSize(new Dimension(150, 0)); // size of the
-		// combo itself
-		vltbVolume.add(jpVolume);
+		// size of the combo itself
+        jsVolume.setPreferredSize(new Dimension(150, 0)); 
+        vltbVolume.add(jpVolume);
 
 		// Position
 		VLToolBar vltbPosition = new VLToolBar("position");
@@ -567,8 +567,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 									new StackItem(file, ConfigurationManager
 											.getBoolean(CONF_STATE_REPEAT),
 											true), false);
-						} catch (JajukException je) { // can be thrown if file
-							// is null
+						} catch (JajukException je) { 
+                            // can be thrown if file is null
 						}
 					} else {
 						Messages.showErrorMessage("120"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -607,9 +607,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 			Log.error(e);
 		} finally {
 			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-			// playlist
-			// editor
+					EventSubject.EVENT_PLAYLIST_REFRESH)); 
 		}
 	}
 
@@ -652,19 +650,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == jsVolume) {
-			if (System.currentTimeMillis() - lDateLastAdjust > 20) { // this
-				// value
-				// should
-				// be
-				// low
-				// to
-				// make
-				// sure
-				// we
-				// can
-				// reach
-				// zero
-				setVolume((float) jsVolume.getValue() / 100);
+			// this  value should be low to make sure we can reach zero
+            if (System.currentTimeMillis() - lDateLastAdjust > 20) { 
+                setVolume((float) jsVolume.getValue() / 100);
 				lDateLastAdjust = System.currentTimeMillis();
 			}
 		} else if (e.getSource() == jsPosition) {
