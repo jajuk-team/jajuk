@@ -837,11 +837,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 					jcbHistory.addActionListener(CommandJPanel.this);
 				} else if (EventSubject.EVENT_CLEAR_HISTORY.equals(event
 						.getSubject())) {
-					jcbHistory.setSelectedItem(null); // clear selection bar
-					// (data itself is clear
-					// from the model by
-					// History class)
-				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
+					// clear selection bar (data itself is clear 
+                    // from the model by History class)
+                    jcbHistory.setSelectedItem(null); 
+                } else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
 						.getSubject())) {
 					jsVolume.removeChangeListener(CommandJPanel.this);
 					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
