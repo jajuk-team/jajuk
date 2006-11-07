@@ -282,10 +282,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		return eventSubjectSet;
 	}
 
-	public JPopupMenu getPopup() {
-		return jmenu;
-	}
-
+	
 	/**
 	 * ActionListener
 	 */
