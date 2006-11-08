@@ -470,7 +470,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && track.equals(current.getTrack())) {
 						setFont(new Font("Dialog", Font.BOLD, 10)); //$NON-NLS-1$
-						setForeground(Color.DARK_GRAY);
+						setForeground(new Color(200,70,10));
 					}
 				}
 				return this;

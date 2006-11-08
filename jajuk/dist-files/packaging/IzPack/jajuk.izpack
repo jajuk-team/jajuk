@@ -99,6 +99,9 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-uninstall.ico'>
             	<os family='windows'/>
            	</file>
+            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/JIntellitype.dll'>
+            	<os family='windows'/>
+           	</file>
             <!--Unix specific -->
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.sh'>
             	<os family='unix'/>

@@ -519,7 +519,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && file.equals(current)) {
 						setFont(new Font("Dialog", Font.BOLD, 10)); //$NON-NLS-1$
-						setForeground(Color.DARK_GRAY);
+						setForeground(new Color(200,70,10));
 					}
 				} else if (value instanceof PlaylistFileNode) {
 					setBorder(null);

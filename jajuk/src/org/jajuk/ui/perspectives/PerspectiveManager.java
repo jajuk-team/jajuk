@@ -296,9 +296,6 @@ public class PerspectiveManager implements ITechnicalStrings {
 					perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 					perspective.setID(PERSPECTIVE_NAME_INFO);
 					registerPerspective(perspective);
-					// Not the choice but set Mozilla in case of
-					BrowserEngineManager.instance().setActiveEngine(
-							BrowserEngineManager.MOZILLA);
 				} else {
 					throw new Exception("Cannot execute mozilla");
 				}
