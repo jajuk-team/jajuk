@@ -647,9 +647,7 @@ public class FIFO implements ITechnicalStrings {
 			Log.error(e);
 		} finally {
 			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-			// playlist
-			// editor
+					EventSubject.EVENT_PLAYLIST_REFRESH)); 
 		}
 	}
 
@@ -658,6 +656,10 @@ public class FIFO implements ITechnicalStrings {
 	 */
 	public synchronized void playPreviousAlbum() {
 		try {
+			// if playing, stop all playing players
+			if (Player.isPlaying()) {
+				Player.stop(false);
+			}
 			// we don't support album navigation inside repeated tracks
 			if ((getItem(0)).isRepeat()) {
 				playPrevious();
@@ -739,6 +741,10 @@ public class FIFO implements ITechnicalStrings {
 	 */
 	public synchronized void playNextAlbum() {
 		try {
+			// if playing, stop all playing players
+			if (Player.isPlaying()) {
+				Player.stop(false);
+			}
 			// we don't support album navigation inside repeated tracks
 			if (getItem(0).isRepeat()) {
 				playNext();

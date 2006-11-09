@@ -126,6 +126,9 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
 						lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+						//Store current position for use at next startup
+						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,
+								Float.toString(getCurrentPosition()));
 						// Cross-Fade test
 						if (!bFading && iFadeDuration > 0 && lDuration > 0 
 								// can be null before getting length
@@ -158,11 +161,11 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 									fCurrent.getTrack().getRate() + 1);
 							// alert bestof playlist something changed
 							FileManager.getInstance().setRateHasChanged(true); 
+							// if using crossfade, ignore end of file
 							if (!bFading) { 
-								// if using crossfade, ignore end of file
-								System.gc();
 								// Benefit from end of file to
 								// perform a full gc
+								System.gc();
 								FIFO.getInstance().finished();
 							} else {
 								bFading = false;
@@ -270,8 +273,9 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	private void sendCommand(String command) {
 		if (proc != null) {
 			PrintStream out = new PrintStream(proc.getOutputStream());
-			out.print(command + '\n'); // Do not use a println : it doesn't
+			// Do not use println() : it doesn't
 			// work under windows
+			out.print(command + '\n'); 
 			out.flush();
 		}
 	}

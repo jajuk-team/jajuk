@@ -25,13 +25,17 @@ public class RewindTrackAction extends ActionBase {
 	private static final float JUMP_SIZE = 0.1f;
 
 	RewindTrackAction() {
-		super(Util.getIcon(ICON_REW), "ctrl alt LEFT", false); //$NON-NLS-1$
+		super(Util.getIcon(ICON_REW), "alt F9", false, true); //$NON-NLS-1$
 		setShortDescription(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
 
 	}
 
 	public void perform(ActionEvent evt) {
-		if ((evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+		// check modifiers to see if it is a movement inside track, between
+		// tracks or between albums
+		if (evt != null
+				//evt == null when using hotkeys
+				&& (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
 			// replay the entire file
 			Player.seek(0);
 		} else {

@@ -109,6 +109,13 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	/** Refresh message */
 	private String sFinalMessage = ""; //$NON-NLS-1$
 
+	// Refresh Options
+	private static final int OPTION_REFRESH_FAST = 0;
+
+	private static final int OPTION_REFRESH_DEEP = 1;
+
+	private static final int OPTION_REFRESH_CANCEL = 2;
+
 	/**
 	 * Device constructor
 	 * 
@@ -189,9 +196,6 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				device.mount();
 			} catch (Exception e) {
 				Log.error("011", "{{" + getName() + "}}", e); // mount failed
-				// //$NON-NLS-1$
-				// //$NON-NLS-2$
-				// //$NON-NLS-3$
 				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
 				return;
 			}
@@ -222,7 +226,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 *            default=deep
 	 */
 	private void manualRefresh(boolean bAsk) {
-		int i = 1;
+		int i = OPTION_REFRESH_DEEP;
 		if (bAsk) {
 			Object[] possibleValues = {
 					Messages.getString("PhysicalTreeView.60"),// fast
@@ -230,20 +234,19 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 					Messages.getString("PhysicalTreeView.61"),// deep
 					// //$NON-NLS-1$
 					Messages.getString("Cancel") };// cancel //$NON-NLS-1$
-			// 0:fast, 1:deep, 2: cancel
 			i = JOptionPane.showOptionDialog(null,
 					Messages.getString("PhysicalTreeView.59"), //$NON-NLS-1$
 					Messages.getString("Option"), //$NON-NLS-1$
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
 					null, possibleValues, possibleValues[0]);
-			if (i == 2) { // Cancel
+			if (i == OPTION_REFRESH_CANCEL) { // Cancel
 				return;
 			}
 		}
 		// clean old files up
 		cleanRemovedFiles();
 		// Actual refresh
-		refreshCommand((i == 1), true);
+		refreshCommand((i == OPTION_REFRESH_DEEP), true);
 		InformationJPanel.getInstance().setMessage(sFinalMessage,
 				InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		// notify views to refresh
@@ -765,21 +768,21 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			Messages.showErrorMessage("111"); //$NON-NLS-1$
 		}
 		try {
-			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { 
+			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
 				// look to see if the device is already mounted ( the mount
 				// command cannot say that )
 				File file = new File(getMountPoint());
 				if (file.exists() && file.list().length == 0) {
 					// if none file in this directory, it probably
 					// means device is not mounted, try to mount it
-					
+
 					// run the actual mount command //$NON-NLS-1$
 					Process process = Runtime.getRuntime().exec(
 							"mount " + getMountPoint());
 					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
-					process.waitFor(); 
+					process.waitFor();
 				}
 			} else { // windows mount point or mount point not given, check
 				// if path exists

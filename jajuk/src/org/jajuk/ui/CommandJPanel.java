@@ -470,6 +470,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jpPlay.add(jbPlayPause);
 		jpPlay.add(jbStop);
 		jpPlay.add(jbFwd);
+		jpPlay.add(Box.createHorizontalGlue());
+		jpPlay.add(jbMute);
 		vltbPlay.add(jpPlay);
 
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

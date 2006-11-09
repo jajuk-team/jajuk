@@ -20,8 +20,8 @@ public class MuteAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	MuteAction() {
-		super(
-				Messages.getString("JajukWindow.2"), Util.getIcon(ICON_MUTE), "F8", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
+		super(Messages.getString("JajukWindow.2"), Util.getIcon(ICON_MUTE),
+				"F8", true, true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
 		setShortDescription(Messages.getString("JajukWindow.19")); //$NON-NLS-1$
 	}
 

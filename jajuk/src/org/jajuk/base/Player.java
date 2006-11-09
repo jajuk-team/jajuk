@@ -132,10 +132,8 @@ public class Player implements ITechnicalStrings {
 							.setMessage(
 									Messages.getString("Player.0"), InformationJPanel.WARNING); //$NON-NLS-1$
 					try {
-						FIFO.getInstance().wait(WAIT_AFTER_ERROR); // wait
-						// for
-						// the
-						// line
+						// wait for the line
+						FIFO.getInstance().wait(WAIT_AFTER_ERROR);
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
@@ -147,18 +145,17 @@ public class Player implements ITechnicalStrings {
 			pDetails.put(DETAIL_CURRENT_FILE, file);
 			ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,
 					pDetails)); // notify the error
-			Log
-					.error(
-							"007", Messages.getString("Player.0") + fCurrent.getAbsolutePath() + "}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.error("007", Messages.getString("Player.0")
+					+ fCurrent.getAbsolutePath() + "}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// process playing error asynchonously to avoid loop problems
 			// when capscading errors
 			new Thread() {
 				public void run() {
 					Player.stop(false);
 					try {
-						Thread.sleep(WAIT_AFTER_ERROR); // make sure user has
-						// time to see this
+						// make sure user has time to see this
 						// error message
+						Thread.sleep(WAIT_AFTER_ERROR); 
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}

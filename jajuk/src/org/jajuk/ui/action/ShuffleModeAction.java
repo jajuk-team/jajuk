@@ -22,8 +22,8 @@ public class ShuffleModeAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	ShuffleModeAction() {
-		super(
-				Messages.getString("JajukJMenuBar.11"), Util.getIcon(ICON_SHUFFLE), "ctrl H", true); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Messages.getString("JajukJMenuBar.11"), Util
+				.getIcon(ICON_SHUFFLE), "ctrl H", true, false); //$NON-NLS-1$ //$NON-NLS-2$
 		setShortDescription(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
 	}
 

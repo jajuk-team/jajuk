@@ -26,7 +26,7 @@ public class PreviousAlbumAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	PreviousAlbumAction() {
-		super("previous album", "ctrl shift LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$
+		super("previous album", "shift F9", false, true); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void perform(ActionEvent evt) {

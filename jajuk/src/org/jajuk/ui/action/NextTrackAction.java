@@ -27,15 +27,17 @@ public class NextTrackAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	NextTrackAction() {
-		super(
-				Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT), "ctrl RIGHT", false); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT),
+				"F10", false, true); //$NON-NLS-1$ //$NON-NLS-2$
 		setShortDescription(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
 	}
 
 	public void perform(ActionEvent evt) {
-		int mod = evt.getModifiers();
-
-		if ((mod & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+		// check modifiers to see if it is a movement inside track, between
+		// tracks or between albums
+		if (evt != null
+				//evt == null when using hotkeys
+				&& (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
 			ActionManager.getAction(JajukAction.NEXT_ALBUM)
 					.actionPerformed(evt);
 		} else {
@@ -54,8 +56,7 @@ public class NextTrackAction extends ActionBase {
 				if (Player.isPaused()) {
 					Player.setPaused(false);
 					ObservationManager.notify(new Event(
-							EventSubject.EVENT_PLAYER_RESUME)); // notify of
-					// this event
+							EventSubject.EVENT_PLAYER_RESUME));
 				}
 			}
 		}

@@ -84,7 +84,7 @@ public final class ActionManager {
 		installAction(REWIND_TRACK, new RewindTrackAction(), true);
 		installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
 		installAction(STOP_TRACK, new StopTrackAction(), false);
-		installAction(FAST_FORWARD_TRACK, new FastForwardTrackAction(), true);
+		installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
 
 		// CommandJPanel: Volume control
 		installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);

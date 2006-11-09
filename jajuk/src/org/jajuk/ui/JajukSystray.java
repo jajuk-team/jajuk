@@ -181,12 +181,6 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jsPosition.addMouseWheelListener(this);
 		jsPosition.addChangeListener(this);
 
-		/**
-		 * Important: due to a bug probably in swing or jdic, we have to add a
-		 * jmenuitem in the popup menu and not the panel itself, otherwise no
-		 * action event occurs
-		 */
-
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
 		sTitle = Messages.getString("JajukWindow.33"); //$NON-NLS-1$
 		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
@@ -207,8 +201,11 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						.getString("DigitalDJWizard.64") : defaultAmbience
 						.getName()));
 		populateAmbiences();
-
-		jmenu.add(new JLabel(Util.getIcon(IMAGE_TRAY_TITLE)));
+		// Add a title. Important: do not add a JLabel, it present action event
+		// to occur under windows
+		JMenuItem jmiTitle = new JMenuItem("Jajuk");
+		jmiTitle.setFont(new Font("Dialog", Font.BOLD, 20));
+		jmenu.add(jmiTitle);
 		jmenu.addSeparator();
 		jmenu.add(jmAmbience);
 		jmenu.addSeparator();
@@ -282,7 +279,6 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		return eventSubjectSet;
 	}
 
-	
 	/**
 	 * ActionListener
 	 */

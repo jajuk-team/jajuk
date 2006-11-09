@@ -20,7 +20,8 @@ public class StopTrackAction extends ActionBase {
 
 	StopTrackAction() {
 		super(
-				Messages.getString("JajukWindow.11"), Util.getIcon(ICON_STOP), "ctrl S", false); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("JajukWindow.11"), 
+				Util.getIcon(ICON_STOP), "ctrl S", false, false); //$NON-NLS-1$ //$NON-NLS-2$
 		setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
 	}
 

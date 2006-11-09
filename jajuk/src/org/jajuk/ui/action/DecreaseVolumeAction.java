@@ -21,7 +21,7 @@ public class DecreaseVolumeAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	DecreaseVolumeAction() {
-		super("decrease volume", "ctrl DOWN", true); //$NON-NLS-1$ //$NON-NLS-2$
+		super("decrease volume", "ctrl DOWN", true, true); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void perform(ActionEvent evt) {
