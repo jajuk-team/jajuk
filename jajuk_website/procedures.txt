@@ -112,13 +112,13 @@ API ADDITION PROCEDURE
 - Add jnlp file 
 - Update jajuk.jnlp file
 - Sign all new jars (jarsigner myjar.jar jajukteam)
-- Update website dependencies
+- Update website dependencies in jajuk_dependencies.html
 
 *********************************************************
 API CHANGE PROCEDURE
 - Change dist-files/packaging/MANIFEST (check new versions)
 - Change JAJUK_WEBSITE project/project.xml maven file for dependencies
-- Change packaging/jws/jnlp file
+- Change packaging/jnlp/jnlp file
 - Sign all jar (jarsigner myjar.jar jajukteam)
 
 *********************************************************

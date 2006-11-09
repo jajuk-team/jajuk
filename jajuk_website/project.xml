@@ -301,13 +301,13 @@
    <dependency>
 	   <groupId>lib</groupId>
         <artifactId>jdic</artifactId>
-        <version>0.9.1</version> 
+        <version>20060613</version> 
     </dependency>
 
    <dependency>
 	   <groupId>lib</groupId>
         <artifactId>qdwizard</artifactId>
-        <version>1.7</version> 
+        <version>1.8</version> 
     </dependency>
 
     <dependency>
@@ -428,6 +428,12 @@
 	   <groupId>lib</groupId>
         <artifactId>l2fprod-common-buttonbar</artifactId>
         <version>6.9.1</version> 
+    </dependency>
+    
+    <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>jintellitype</artifactId>
+        <version>1.0</version> 
     </dependency>
     
      <dependency>

@@ -35,8 +35,9 @@
       <item name='Roadmap' href='./roadmap.html' />
       <item name='Help wanted' href='./jobs.html' />
       <item name='Tasks list' href='http://sourceforge.net/pm/?group_id=91412' />
-      <item name='Translator guide' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />
+      <item name='Translator guide' href='./translation_howto.html' />
+      <item name='Tester guide' href='./tester_guide.html' />
       <item name='Brand Identity Guidelines' href='./jajuk_bi_quidelines.html' />
       <item name='Team' href='./team-list.html' />      
       <item name='Specifications (PDF) ' href='./specs.pdf' />
