@@ -1,3 +1,4 @@
+TS: TIMESTAMP_REPLACED_BY_ANT
 <?xml version="1.0" encoding="utf-8"?>
     <jnlp spec="1.0+" codebase="$$codebase" href="log4j.jnlp">
     <information>
@@ -5,7 +6,7 @@
         <vendor>Apache Fondation</vendor>
     </information>
     <resources>
-        <jar href="log4j_reduced-1.2.6.jar"/>
+        <jar href="log4j_reduced-1.2.6.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

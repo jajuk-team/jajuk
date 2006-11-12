@@ -3,10 +3,20 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!--VARIABLES-->
-  <property name='version' value='1.3RC2'/>
-  <property name='test' value='-test'/>
-  <property name='jnlpdeploy' value='test'/>
- 	  
+  
+  <!--Distribution release-->
+  <property name='version' value='1.3RC3'/>
+  
+  <!--Previous release used for JNLP incremental upgrade-->
+  <property name='previous_version' value='1.3RC3'/>
+ 
+ <!--Test flag: values: test or notest -->
+  <property name='test' value='test'/> 	
+  
+  <!--Timestamp used by Web Start -->
+  <property name='jajuktimestamp' value='2006-11-11 00:00:00'/>
+
+  	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
@@ -29,7 +39,10 @@
   <property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip'/>
   <property name='uploaddir' value='${rootdir}/upload'/>
   <property name='helpdir' value='${rootdir}/help'/>
-  <property name='jnlpdir' value='${rootdir}/jnlp'/>
+  <!-- This is the intermediate directory used to build war file, we use a persisitent 
+ 	directory to use jar files in next war (each war contains current and previous jars for incremental upgrade) -->
+  <property name='jnlpdir' value='/data/java/jnlp-dist/${version}'/>
+  <property name='previousjnlpdir' value='/data/java/jnlp-dist/${previous_version}'/>
   	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
@@ -37,10 +50,15 @@
   <target name='startup'>
    	<echo message='Building Jajuk release: ${version}'/>
    	<echo message='Basedir: ${basedir}'/>
+ 	<!--Prepare timestamp-->
+ 	<tstamp>
+    	<format property="JAJUK_TIMESTAMP" pattern="yyyy-MM-dd HH:mm:ss"/>
+  	</tstamp>
   </target>
     
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${rootdir}'/>
+    <delete dir='${jnlpdir}'/>
    </target>
   
   <target name='mkdist' description='o Create the Jajuk distribution structure' depends='clean'>
@@ -333,21 +351,21 @@
   	<include name='build.xml'/>
   	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  </replace>
- <!-- Set debug value in scripts--> 
-  <replace dir='${distdir}' value='${test}'>
+<!-- Set debug value in scripts--> 
+  <replace dir='${distdir}' value='-${test}'>
   	<include name='jajuk.sh'/>
   	<include name='jajuk.bat'/>
   	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- <replace dir='${rpmdistdir_suse}/usr/bin' value='${test}'>
+ <replace dir='${rpmdistdir_suse}/usr/bin' value='-${test}'>
   	<include name='jajuk'/>
 	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- <replace dir='${rpmdistdir_mdk}/usr/bin' value='${test}'>
+ <replace dir='${rpmdistdir_mdk}/usr/bin' value='-${test}'>
   	<include name='jajuk'/>
 	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- <replace dir='${izpackdir}' value='${test}'>
+ <replace dir='${izpackdir}' value='-${test}'>
   	<include name='shortcutSpec.xml'/>
   	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
@@ -411,47 +429,75 @@
       
    <target name='jnlp' description='o Create the Java Web Start war distribution' depends='jar,helpsetjar'>
 	<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
+	<!-- Unlike standalone distributions, JNLP have to use JDIC platform distributions jars, browser will
+	not work with cross-platform distributions-->
 	<mkdir dir='${jnlpdir}'/>
-	<mkdir dir='${jnlpdir}/windows'/>
-    <mkdir dir='${jnlpdir}/linux'/>
-    <!--Copy files -->
-    <copy todir='${jnlpdir}'>
+	<mkdir dir='${jnlpdir}/app'/>
+	<mkdir dir='${jnlpdir}/app/windows'/>
+    <mkdir dir='${jnlpdir}/app/linux'/>
+    <!--Copy current jars -->
+    <copy todir='${jnlpdir}/app'>
     	<fileset file='${distdir}/lib/*.jar'/>
     </copy>
-    <copy todir='${jnlpdir}'>
+    <copy todir='${jnlpdir}/app'>
     	<fileset file='${distdir}/bin/*.jar'/>
     </copy>
-    <copy todir='${jnlpdir}'>
+    <copy todir='${jnlpdir}/app'>
     	<fileset file='${basedir}/dist-files/packaging/jnlp/*.jnlp'/>
     </copy>
-    <copy todir='${jnlpdir}'>
+    <copy todir='${jnlpdir}/app'>
     	<fileset file='${basedir}/dist-files/packaging/jnlp/*.gif'/>
     </copy>
-    <copy todir='${jnlpdir}'>
+    <copy todir='${jnlpdir}/app'>
     	<fileset file='${basedir}/dist-files/org/jajuk/images/included/jajuk-splashscreen.jpg'/>
     </copy>
-   
     <!--Copy native jars -->
-    <copy todir='${jnlpdir}/linux'>
+    <copy todir='${jnlpdir}/app/linux'>
     	<fileset file='${basedir}/dist-files/packaging/jnlp/linux/*.jar'/>
-    	<fileset file='${basedir}/lib/linux/jdic_stub.jar'/>
     </copy>
-    <copy todir='${jnlpdir}/windows'>
+    <copy todir='${jnlpdir}/app/windows'>
     	<fileset file='${basedir}/dist-files/packaging/jnlp/windows/*.jar'/>
-	   	<fileset file='${basedir}/lib/windows/jdic_stub.jar'/>
-    </copy>
-    <replace dir='${jnlpdir}' value='${test}'>
-  		<include name='jajuk.jnlp'/>
+	</copy>
+    <replace dir='${jnlpdir}/app' value='-${test}'>
+  		<include name='launch.jnlp'/>
   		<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  	</replace>
- 	<replace dir='${jnlpdir}' value='${jnlpdeploy}'>
+ 	<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
+    <move todir="${jnlpdir}">
+    <fileset dir="${jnlpdir}">
+      <include name="**/*.jar"/>
+    </fileset>
+    	<mapper type="glob" from="*.jar" to="*__V${version}.jar"/>
+  	</move>
+    
+ 	 <!-- Set release in user jnlp file--> 
+ 	 <replace dir='${jnlpdir}/app' value='${version}'>
+  		<include name='*.jnlp'/>
+  		<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ 	</replace>
+ 	 <!-- Set test or no test in jnlp file--> 
+ 	<replace dir='${jnlpdir}/app' value='-${test}'>
   		<include name='*.jnlp'/>
   		<replacetoken>JNLP_DEPLOY_REPLACED_BY_ANT</replacetoken>
  	</replace>
+ 	
+ 	<!--Copy previous release jars, comment this if you have no previous release -->
+    <copy todir='${jnlpdir}/app'>
+    	<fileset dir="${previousjnlpdir}/app">
+    	  <include name="**/*.jar"/>
+    	</fileset>
+    </copy>
+    
+ 	 <!-- Set Timestamp in jnlp file--> 
+ 	<replace dir='${jnlpdir}/app' value='${jajuktimestamp}'>
+  		<include name='*.jnlp'/>
+  		<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
+ 	</replace>
+ 	 	
  	<!-- Create the war -->
- 	<war destfile='${rootdir}/jajuk${test}.war' webxml='${basedir}/dist-files/packaging/jnlp/web.xml'>
+ 	<war destfile='${rootdir}/jajuk-${test}.war' 
+ 		webxml='${basedir}/dist-files/packaging/jnlp/web.xml'>
 	  <fileset dir='${jnlpdir}'/>
-  	  <fileset file='${jnlpdir}'/>
   	  <lib file='${basedir}/dist-files/packaging/jnlp/jnlp-servlet.jar'/>
   	</war>
   </target>

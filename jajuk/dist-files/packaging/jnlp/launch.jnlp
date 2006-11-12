@@ -1,0 +1,76 @@
+TS: TIMESTAMP_REPLACED_BY_ANT
+<?xml version='1.0' encoding='UTF-8'?> 
+    <!-- Jajuk JNLP File --> 
+    <jnlp spec='1.0+' codebase='$$codebase' href='$$name'> 
+        <information> 
+            <title>Jajuk</title> 
+            <vendor>Jajuk team</vendor> 
+            <description>Jajuk advanced jukebox</description> 
+           <description kind='short'>Jajuk advanced jukebox</description> 
+            <icon href='jajuk-icon_64x64.gif'/>
+		    <icon kind='splash' href='jajuk-splashscreen.jpg'/>
+		    <shortcut online='true'>
+      			<desktop/>
+      			<menu submenu='Jajuk'/>
+    		</shortcut>
+           <offline-allowed/> 
+       </information> 
+       <security> 
+           <all-permissions/>
+       </security> 
+       <resources>
+           <j2se version='1.5+' java-vm-args='-client -Xms35M -Xmx256M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12'/>
+           <property name='apple.laf.useScreenMenuBar' value='true'/>
+           <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
+           <jar href='jajuk-help.jar' version='VERSION_REPLACED_BY_ANT'/> 
+           <jar href='jajuk-help_fr.jar' version='VERSION_REPLACED_BY_ANT'/> 
+			<extension name='Animation' href='animation.jnlp' />
+        	<extension name='BasicPlayer' href='basic_player.jnlp'/>
+        	<extension name='CommonsCodec' href='commons_codec.jnlp'/>
+        	<extension name='CommonsHttpClient' href='commons_httpclient.jnlp'/>
+        	<extension name='CommonsLogging' href='commons_logging.jnlp'/>
+        	<extension name='EntaggedAudioformats' href='entagged_audioformats.jnlp'/>
+        	<extension name='InfoNodeLAF' href='infonode_laf.jnlp'/>
+        	<extension name='Jfreechart' href='jfreechart.jnlp'/>
+        	<extension name='JCommon' href='jcommon.jnlp'/>
+        	<extension name='JavaHelp' href='java_help.jnlp'/>
+        	<extension name='JLayer' href='jlayer.jnlp'/>
+        	<extension name='Jogg' href='jogg.jnlp'/>
+        	<extension name='Jorbis' href='jorbis.jnlp'/>
+        	<extension name='JSpeex' href='jspeex.jnlp'/>
+        	<extension name='Kunststoff' href='kunststoff.jnlp'/>
+        	<extension name='Liquid' href='liquid.jnlp'/>
+        	<extension name='Log4j' href='log4j.jnlp'/>
+        	<extension name='Looks' href='looks.jnlp'/>
+        	<extension name='Mp3spi' href='mp3spi.jnlp'/>
+        	<extension name='Squareness' href='squareness.jnlp'/>
+        	<extension name='Swingx' href='swingx.jnlp'/>
+        	<extension name='TableLayout' href='table_layout.jnlp'/>
+        	<extension name='Tiny' href='tiny.jnlp'/>
+        	<extension name='Tritonus' href='tritonous.jnlp'/>
+        	<extension name='Vorbisspi' href='vorbisspi.jnlp'/>
+        	<extension name='EntaggedFreedb' href='entagged_freedb.jnlp'/>
+        	<extension name='CommonsCollections' href='commons_collections.jnlp'/>
+        	<extension name='QDWizard' href='qdwizard.jnlp'/>
+        	<extension name='L2fprod buttonbar' href='l2fprod-common-buttonbar.jnlp'/>
+        	<extension name='VLDocking' href='vldocking.jnlp'/>
+        	<extension name='JIntellitype' href='jintellitype.jnlp'/>
+       </resources>
+       <resources os='Windows'>
+           <jar       href='windows/jdic-win-20061102.jar' version='VERSION_REPLACED_BY_ANT'/> 
+           <!-- This jar contains .exe and .exe 
+		   and have to be named jdic-native.jar to work-->
+           <nativelib href='windows/jdic-native.jar' version='VERSION_REPLACED_BY_ANT'/>
+           <nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>
+       </resources>
+       <resources os='Linux'>
+           <jar       href='linux/jdic-lin-20061102.jar' version='VERSION_REPLACED_BY_ANT'/> 
+		   <!-- This jar contains .so and executables 
+		   and have to be named jdic-native.jar to work-->
+           <nativelib href='linux/jdic-native.jar' version='VERSION_REPLACED_BY_ANT'/>
+       </resources>
+      <application-desc main-class='org.jajuk.Main'>
+      	<argument>-notaskbar</argument>
+      	<argument>TEST_FLAG_REPLACED_BY_ANT</argument>
+      </application-desc>
+</jnlp>

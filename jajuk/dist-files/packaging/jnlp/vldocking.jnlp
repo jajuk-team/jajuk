@@ -1,3 +1,4 @@
+TS: TIMESTAMP_REPLACED_BY_ANT
 <?xml version="1.0" encoding="utf-8"?>
     <jnlp spec="1.0+" codebase="$$codebase" href="vldocking.jnlp">
     <information>
@@ -5,7 +6,7 @@
         <vendor>Hans Bickel</vendor>
     </information>
     <resources>
-        <jar href="vldocking-2.1.jar"/>
+        <jar href="vldocking-2.1.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

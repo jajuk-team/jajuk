@@ -1,3 +1,4 @@
+TS: TIMESTAMP_REPLACED_BY_ANT
 <?xml version="1.0" encoding="utf-8"?>
     <jnlp spec="1.0+" codebase="$$codebase" href="animation.jnlp">
     <information>
@@ -8,7 +9,7 @@
            <all-permissions/>
     </security> 
     <resources>
-        <jar href="entagged-freedb-0.04.jar"/>
+        <jar href="entagged-freedb-0.04.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <component-desc/>
 </jnlp>
