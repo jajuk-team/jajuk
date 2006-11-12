@@ -43,8 +43,7 @@ public class NextAlbumAction extends ActionBase {
 				// when changing of track
 				Player.setPaused(false);
 				ObservationManager.notify(new Event(
-						EventSubject.EVENT_PLAYER_RESUME)); // notify of
-				// this event
+						EventSubject.EVENT_PLAYER_RESUME)); 
 			}
 		}
 	}
