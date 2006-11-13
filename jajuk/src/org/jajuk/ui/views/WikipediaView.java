@@ -79,6 +79,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 	 */
 	public WikipediaView() {
 	}
+		
 
 	/*
 	 * (non-Javadoc)

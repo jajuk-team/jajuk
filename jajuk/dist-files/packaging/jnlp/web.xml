@@ -1,4 +1,5 @@
 <web-app>
+  <display-name>Jajuk</display-name>
   <servlet>
     <servlet-name>JnlpDownloadServlet</servlet-name>
     <servlet-class>jnlp.sample.servlet.JnlpDownloadServlet</servlet-class>
