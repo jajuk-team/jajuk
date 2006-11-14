@@ -145,18 +145,18 @@ public class StatView extends ViewAdapter implements Observer {
 					String sName = keys.next();
 					Integer i = tm.get(sName);
 					double d = i.doubleValue();
-					if (iTotal > 0 && d / iTotal < 0.05) { // less than 5%
-						// -> go to
-						// others
+					if (iTotal > 0 && d / iTotal < 0.05) {
+						// less than 5% -> go to others
 						dOthers += d;
 					} else {
-						pdata.setValue(sName, new Double(d / iTotal));
+						double dValue = Math
+								.round(100 * new Double(d / iTotal));
+						pdata.setValue(sName, dValue);
 					}
 				}
 				if (iTotal > 0 && dOthers > 0) {
-					pdata
-							.setValue(
-									Messages.getString("StatView.0"), new Double(dOthers / iTotal)); //$NON-NLS-1$
+					double dValue = Math.round(100 * (dOthers / iTotal));
+					pdata.setValue(Messages.getString("StatView.0"), dValue); //$NON-NLS-1$
 				}
 				// chart
 				jfchart = ChartFactory.createPieChart3D(Messages
@@ -167,9 +167,9 @@ public class StatView extends ViewAdapter implements Observer {
 				plot.setNoDataMessage(Messages.getString("StatView.2")); //$NON-NLS-1$
 				plot.setForegroundAlpha(0.5f);
 				plot.setBackgroundAlpha(0.5f);
-				// plot.setShowSeriesLabels(true);
-				// plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
-				plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
+				StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator(
+						"{0} = {2}");
+				plot.setLabelGenerator(labels);
 				cpanel = new ChartPanel(jfchart);
 			} catch (Exception e) {
 				Log.error(e);
@@ -210,23 +210,17 @@ public class StatView extends ViewAdapter implements Observer {
 			while (itDevices.hasNext()) {
 				Device device = itDevices.next();
 				long lSize = lSizes[alDevices.indexOf(device)];
-				if (lTotalSize > 0 && (double) lSize / lTotalSize < 0.05) { // less
-					// than
-					// 5%
-					// ->
-					// go
-					// to
-					// others
+				if (lTotalSize > 0 && (double) lSize / lTotalSize < 0.05) {
+					// less than 5% -> go to others
 					dOthers += lSize;
 				} else {
-					pdata.setValue(device.getName(), new Double(
-							(double) lSize / 1073741824));
+					double dValue = Math.round((double) lSize / 1073741824);
+					pdata.setValue(device.getName(), dValue);
 				}
 			}
 			if (dOthers > 0) {
-				pdata
-						.setValue(
-								Messages.getString("StatView.3"), new Double(dOthers / 1073741824)); //$NON-NLS-1$
+				double dValue = Math.round((dOthers / 1073741824));
+				pdata.setValue(Messages.getString("StatView.3"), dValue); //$NON-NLS-1$
 			}
 			// chart
 			jfchart = ChartFactory.createPieChart3D(Messages
@@ -237,7 +231,6 @@ public class StatView extends ViewAdapter implements Observer {
 			plot.setNoDataMessage(Messages.getString("StatView.5")); //$NON-NLS-1$
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			// plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
 			plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
 			cpanel = new ChartPanel(jfchart);
 		} catch (Exception e) {
@@ -256,19 +249,10 @@ public class StatView extends ViewAdapter implements Observer {
 		try {
 			CategoryDataset cdata = null;
 			JFreeChart jfchart = null;
-			int iMounthsNumber = 10; // number of mounts we show, mounts
+			int iMounthsNumber = 5; // number of mounts we show, mounts
 			// before are set together in 'before'
-			long lSizeByMounth[] = new long[iMounthsNumber + 1]; // contains
-			// size
-			// ( in
-			// Go )
-			// for
-			// each
-			// mounth,
-			// first
-			// cell
-			// is
-			// before
+			long lSizeByMounth[] = new long[iMounthsNumber + 1];
+			// contains size ( in Go ) for each mounth, first cell is before
 			// data
 			int[] iMounts = getMounts(iMounthsNumber);
 			Iterator<Track> it = TrackManager.getInstance().getTracks()
@@ -332,20 +316,12 @@ public class StatView extends ViewAdapter implements Observer {
 		try {
 			CategoryDataset cdata = null;
 			JFreeChart jfchart = null;
-			int iMounthsNumber = 10; // number of mounts we show, mounts
+			// number of mounts we show, mounts
 			// before are set together in 'before'
-			int iTracksByMounth[] = new int[iMounthsNumber + 1]; // contains
-			// number
-			// of
-			// tracks
-			// for
-			// each
-			// mounth,
-			// first
-			// cell
-			// is
-			// 'before'
+			int iMounthsNumber = 5;
+			// contains number of tracks for each mounth, first cell is 'before'
 			// data
+			int iTracksByMounth[] = new int[iMounthsNumber + 1];
 			int[] iMounts = getMounts(iMounthsNumber);
 			Iterator<Track> it = TrackManager.getInstance().getTracks()
 					.iterator();
@@ -448,12 +424,8 @@ public class StatView extends ViewAdapter implements Observer {
 	private String[] getMountsLabels(int iMounthsNumber) {
 		int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE)
 				.format(new Date())) / 100; // reference mounth
-		String sMounths[] = new String[iMounthsNumber + 1]; // contains
-		// number of
-		// tracks for
-		// each mounth,
-		// first cell is
-		// 'before'
+		String sMounths[] = new String[iMounthsNumber + 1];
+		// contains number of tracks for each mounth, first cell is 'before'
 		int iYear = iNow / 100;
 		int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
 		for (int k = 0; k < iMounthsNumber; k++) {
