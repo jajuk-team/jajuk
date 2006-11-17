@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
@@ -179,6 +180,15 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 			update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
 		}
 	}
+	
+	 /**
+     * Overwride paint method to fix an issue with WebBrowser: when user select another perspective and come back, it is void
+     * We have to force setUrl to repaint it
+     */
+    public void paint(Graphics g){
+        super.paint(g);
+        launchSearch(this.search);
+    }
 
 	/**
 	 * Perform wikipedia search

@@ -295,6 +295,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 
 		// Mode toolbar
 		VLToolBar vltbModes = new VLToolBar("modes");
+		vltbModes.setBorder(BorderFactory.createEmptyBorder(3, 2, 2,2));
 		jbRepeat = new JajukToggleButton(ActionManager
 				.getAction(REPEAT_MODE_STATUS_CHANGE));
 		jbRepeat
@@ -364,7 +365,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		// Special functions toolbar
 		VLToolBar vltbSpecial = new VLToolBar("smart");
 		jtbSpecial = new JToolBar(); // we have to use an intermediate
-		jtbSpecial.setPreferredSize(new Dimension(330, 25));
 		ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
 			private static final long serialVersionUID = 1L;
 

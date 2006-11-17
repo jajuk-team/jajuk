@@ -131,9 +131,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * Fetch all messages from a given base key. <P/> Example:
 	 * 
 	 * <pre>
-	 *    example.0=Message 1
-	 *    example.1=Message 2
-	 *    example.2=Message 3
+	 *     example.0=Message 1
+	 *     example.1=Message 2
+	 *     example.2=Message 3
 	 * </pre>
 	 * 
 	 * Using <tt>Messages.getAll("example");</tt> will return a size 3 String
@@ -204,7 +204,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static ArrayList<String> getDescs() {
 		return mesg.alDescs;
 	}
-	
+
 	/**
 	 * Return Description for a given locale id
 	 * 
@@ -226,7 +226,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	}
 
 	/***************************************************************************
-	 * Parse a factice properties file inside an XML file as CDATA
+	 * Parse a fake properties file inside an XML file as CDATA
 	 * 
 	 * @param sLocal
 	 * @return a properties with all entries
@@ -241,7 +241,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 			sbFilename.append('_').append(sLocal);
 		}
 		sbFilename.append(FILE_LANGPACK_PART2);
-		URL url; // property file URL, either in the jajuk.jar jar
+		URL url; 
+		// property file URL, either in the jajuk.jar jar
 		// (normal execution) or found as regular file if in
 		// development debug mode
 		url = Util.getResource("org/jajuk/i18n/" + sbFilename.toString());
@@ -253,12 +254,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 			spf.setNamespaceAware(false);
 			SAXParser saxParser = spf.newSAXParser();
 			saxParser.parse(url.openStream(), new DefaultHandler() {
-				StringBuffer sb = new StringBuffer(15000); // this buffer
-
-				// will contain
-				// the entire
-				// properties
-				// strings
+				// this buffer will contain the entire properties strings
+				StringBuffer sb = new StringBuffer(15000);
 
 				// call for each element strings, actually will be called
 				// several time if the element is large (our case : large CDATA)
@@ -323,7 +320,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 						.showMessageDialog(
 								Main.getWindow(),
 								"<html><b>" + Messages.getErrorMessage(sCode) + "</b></html>",//$NON-NLS-1$ //$NON-NLS-2$
-								Messages.getErrorMessage("102"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getErrorMessage("102"),
+								JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
 	}
@@ -392,7 +390,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 			// use invokeLatter
 			message.run();
 		} else { // not in the awt dispatcher thread
-			SwingUtilities.invokeLater(message);
+			try {
+				// block until user reply
+				SwingUtilities.invokeAndWait(message);
+			} catch (InterruptedException e) {
+				Log.error(e);
+			} catch (InvocationTargetException e) {
+				Log.error(e);
+			}
 		}
 	}
 
@@ -408,13 +413,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		HideableMessageDialog message = new HideableMessageDialog(sMessage,
 				getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty,
 				JOptionPane.WARNING_MESSAGE, null);
-		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
-			// thread, no need to
-			// use invokeLatter
+		if (SwingUtilities.isEventDispatchThread()) {
+			// in the dispatcher thread, no need to use invokeLatter
 			message.run();
 		} else { // not in the awt dispatcher thread
-			SwingUtilities.invokeLater(message);
+			try {
+				SwingUtilities.invokeAndWait(message);
+			} catch (InterruptedException e) {
+				Log.error(e);
+			} catch (InvocationTargetException e) {
+				Log.error(e);
+			}
 		}
+		message.getResu();
 	}
 
 	/**
@@ -677,6 +688,7 @@ class DetailsMessageDialog implements Runnable {
 				}
 			});
 			jp.add(Util.getCentredPanel(jbOK));
+			dialogDetail.setModal(true);
 			dialogDetail.setContentPane(jp);
 			dialogDetail.pack();
 			dialogDetail.setLocationRelativeTo(Main.getWindow());
@@ -707,6 +719,9 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 
 	/** Icon */
 	private Icon icon;
+
+	/** Dialog output */
+	private int iResu = -2;
 
 	/**
 	 * Message dialog constructor
@@ -742,12 +757,23 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 			optionPane.setIcon(icon);
 		}
 		JDialog dialog = optionPane.createDialog(null, sTitle);
-		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("Hide"))) { // Not
-			// shoow
-			// again
+		// keep it modal (useful at startup)
+		dialog.setModal(true);
+		if (optionPane.getValue().equals(Messages.getString("Hide"))) {
+			// Not show again
 			ConfigurationManager.setProperty(sProperty, TRUE);
 		}
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
+	}
+
+	/**
+	 * 
+	 * @return the user option
+	 */
+	public int getResu() {
+		return iResu;
 	}
 
 }

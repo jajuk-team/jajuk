@@ -152,7 +152,17 @@ public class Main implements ITechnicalStrings {
 
 	/** Is it the first seesion ever ? */
 	private static boolean bFirstSession = false;
+	
+	/** Mplayer state*/
+	private static MPlayerStatus mplayerStatus;
 
+	/**MPlayer status possible values **/
+	public static enum MPlayerStatus {
+		MPLAYER_STATUS_OK, 
+		MPLAYER_STATUS_NOT_FOUND, 
+		MPLAYER_STATUS_WRONG_VERSION
+	}
+	
 	/**
 	 * Main entry
 	 * 
@@ -387,7 +397,7 @@ public class Main implements ITechnicalStrings {
 							tbIO.writeXML(out);
 							out.flush();
 							out.close();
-							/*release intellipad resources*/			 
+							/* release intellipad resources */			 
 							if (Util.isUnderWindows()){
 								org.jajuk.ui.action.ActionBase.cleanup();
 							}
@@ -404,7 +414,7 @@ public class Main implements ITechnicalStrings {
 			Runtime.getRuntime().addShutdownHook(tHook);
 
 			// Auto mount devices, freeze for SMB drives
-			//if network is not reacheable
+			// if network is not reacheable
 			autoMount();
 
 			// Launch auto-refresh thread
@@ -537,7 +547,7 @@ public class Main implements ITechnicalStrings {
 			// mplayer tests: 0: OK, 1: no mplayer in path, 2: wrong mplayer
 			// release
 			// test mplayer presence in PATH
-			int result = 0;
+			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 			if (Util.isUnderWindows()) {
 				// try to find mplayer executable in know locations first
 				if (Util.getMPlayerPath() == null ||
@@ -553,7 +563,7 @@ public class Main implements ITechnicalStrings {
 								.getProperty(CONF_MPLAYER_URL)), new File(
 								FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE));
 					} catch (Exception e) {
-						result = 1;
+						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 					}
 				}
 			}
@@ -561,41 +571,45 @@ public class Main implements ITechnicalStrings {
 			// using external standard distributions
 			else {
 				Process proc = null;
+				mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 				try {
 					proc = Runtime.getRuntime().exec("mplayer");
-					result = proc.waitFor();
+					proc.waitFor();
 					// check Mplayer release : 1.0pre8 min
 					proc = Runtime.getRuntime().exec(
 							new String[] { "mplayer", "-input", "cmdlist" });
 					BufferedReader in = new BufferedReader(
 							new InputStreamReader(proc.getInputStream()));
 					String line = null;
-					result = 2;
+					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
 					for (; (line = in.readLine()) != null;) {
 						if (line.matches("get_time_pos.*")) {
-							result = 0;
+							mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 							break;
 						}
 					}
 				} catch (IOException ioe) {
-					result = 1;
+					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 				}
 			}
-			// Display warning messages if needed
-			if (result != 0) { // no mplayer
-				// Test if user didn't already select "don't show again"
-				if (!ConfigurationManager
-						.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
-					if (result == 1) {
-						// No mplayer
-						Messages.showHideableWarningMessage(Messages
-								.getString("Warning.0"),
-								CONF_NOT_SHOW_AGAIN_PLAYER);
-					} else if (result == 2) {
-						// wrong mplayer release
-						Messages.showHideableWarningMessage(Messages
-								.getString("Warning.1"),
-								CONF_NOT_SHOW_AGAIN_PLAYER);
+			// Choose player according to mplayer presence or not
+			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no mplayer
+				//Show mplayer warnings
+				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no mplayer
+					// Test if user didn't already select "don't show again"
+					if (!ConfigurationManager
+							.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
+						if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
+							// No mplayer
+							Messages.showHideableWarningMessage(Messages
+									.getString("Warning.0"),
+									CONF_NOT_SHOW_AGAIN_PLAYER);
+						} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
+							// wrong mplayer release
+							Messages.showHideableWarningMessage(Messages
+									.getString("Warning.1"),
+									CONF_NOT_SHOW_AGAIN_PLAYER);
+						}
 					}
 				}
 				// mp3
@@ -1197,6 +1211,7 @@ public class Main implements ITechnicalStrings {
 						tipsView.setLocationRelativeTo(jw);
 						tipsView.setVisible(true);
 					}
+			
 				} catch (Exception e) { // last chance to catch any error for
 					// logging purpose
 					e.printStackTrace();

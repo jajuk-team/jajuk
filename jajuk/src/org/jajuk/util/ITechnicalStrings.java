@@ -137,7 +137,7 @@ public interface ITechnicalStrings {
 
 	/** Wikipedia view default URL */
 	public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.sourceforge.net";
-	
+
 	// Jajuk version
 	public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
 
@@ -174,12 +174,12 @@ public interface ITechnicalStrings {
 	public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 
 	// langpack name : jajuk_<locale>.properties
-	public static final String FILE_LANGPACK_PART1 = "jajuk"; 
+	public static final String FILE_LANGPACK_PART1 = "jajuk";
 
-	public static final String FILE_LANGPACK_PART2 = ".properties"; 
-	
+	public static final String FILE_LANGPACK_PART2 = ".properties";
+
 	// logs
-	public static final String FILE_LOGS = FILE_JAJUK_DIR + "/jajuk.log"; 
+	public static final String FILE_LOGS = FILE_JAJUK_DIR + "/jajuk.log";
 
 	public static final URL FILE_LOG4j_CONF = Util
 			.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
@@ -687,13 +687,13 @@ public interface ITechnicalStrings {
 
 	// Command line options
 	// if selected, no jajuk window at startup, only tray
-	public static final String CLI_NOTASKBAR = "notaskbar"; 
-	
+	public static final String CLI_NOTASKBAR = "notaskbar";
+
 	// Tells jajuk it is inside the IDE
-	public static final String CLI_IDE = "ide"; 
+	public static final String CLI_IDE = "ide";
 
 	// Tells jajuk to use a .jajuk_test repository
-	public static final String CLI_TEST = "test"; 
+	public static final String CLI_TEST = "test";
 
 	// players impls
 	public static final String PLAYER_IMPL_JAVALAYER = "org.jajuk.players.JavaLayerPlayerImpl";
@@ -966,8 +966,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_STATE_INTRO = "jajuk.state.mode.intro";
 
 	// whether user exited jajuk in stop state or playing state
-	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing"; 
-	
+	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing";
+
 	public static final String CONF_STARTUP_FILE = "jajuk.startup.file";
 
 	public static final String CONF_STARTUP_MODE = "jajuk.startup.mode";
@@ -1000,21 +1000,21 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 
-	// number  of visible planned tracks
-	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; 
+	// number of visible planned tracks
+	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";
 
 	// default action (play or push) when clicking on an item
-	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click"; 
+	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click";
 
 	// default action (play or push) when droping on an item
-	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop"; 
+	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop";
 
 	// synchronize table and tree views
-	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree"; 
+	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
 
-	// show  popup
-	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup"; 
-	
+	// show popup
+	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup";
+
 	public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 
 	public static final String CONF_P2P_ADD_REMOTE_PROPERTIES = "jajuk.options.p2p.add_remote_properties";
@@ -1030,26 +1030,26 @@ public interface ITechnicalStrings {
 	public static final String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
 
 	// contains files id separated by a colon
-	public static final String CONF_BOOKMARKS = "jajuk.bookmarks"; 
-	
-	// show  jajuk window at startup
-	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup"; 
-	
-	//best of size
-	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size"; 
-	
+	public static final String CONF_BOOKMARKS = "jajuk.bookmarks";
+
+	// show jajuk window at startup
+	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup";
+
+	// best of size
+	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size";
+
 	// gain (float)
-	public static final String CONF_VOLUME = "jajuk.volume"; 
+	public static final String CONF_VOLUME = "jajuk.volume";
 
 	// use regular expressions ?
-	public static final String CONF_REGEXP = "jajuk.regexp"; 
+	public static final String CONF_REGEXP = "jajuk.regexp";
 
 	// Collection backup size in MB
-	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size"; 
+	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size";
 
 	// collection file charset (utf-8 or utf-16)
 	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";
-	
+
 	public static final String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
 
 	public static final String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
@@ -1073,90 +1073,90 @@ public interface ITechnicalStrings {
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
 
 	// Load cover at each track
-	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track"; 
+	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track";
 
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 
 	// Last Option selected tab
-	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; 
-	
+	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab";
+
 	// data buffer size in bytes
-	public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; 
-	
+	public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size";
+
 	// Audio buffer size in bytes
-	public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; 
-	
+	public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size";
+
 	// Window position and size
-	public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; 
-	
-	// Physical  table columns
-	public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; 
-	
+	public static final String CONF_WINDOW_POSITION = "jajuk.window_position";
+
+	// Physical table columns
+	public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
+
 	// Physical table edition state
-	public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; 
-	
+	public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition";
+
 	// Logical table columns
-	public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; 
-	
+	public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns";
+
 	// playlist editor columns to display
-	public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns"; 
-	
+	public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
+
 	// Logical table edition state
-	public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; 
-	
+	public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition";
+
 	// Catalog items size
-	public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; 
-	
+	public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";
+
 	// Catalog items size
-	public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; 
-	
+	public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover";
+
 	// Catalog sorter
-	public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter"; 
-	
+	public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter";
+
 	// Catalog filter
-	public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter"; 
-	
+	public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter";
+
 	// Display tips on startup
-	public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; 
-	
+	public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup";
+
 	// Index of current displayed tip
-	public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; 
-	
+	public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index";
+
 	// wikipedia language
-	public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; 
-	
-	// cross  fade duration in secs
-	public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; 
-	
+	public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang";
+
+	// cross fade duration in secs
+	public static final String CONF_FADE_DURATION = "jajuk.fade_duration";
+
 	// logical tree sort order
 	public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";
-	
+
 	// logical tree sort order
 	public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";
-	
+
 	// default dj
-	public static final String CONF_DEFAULT_DJ = "jajuk.default_dj"; 
-	
+	public static final String CONF_DEFAULT_DJ = "jajuk.default_dj";
+
 	// default ambience
-	public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience"; 
-	
+	public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
+
 	// wrong player not show again flag
-	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player"; 
-	
+	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
+
 	// mplayer exe URL
-	public static final String CONF_MPLAYER_URL = "jajuk.mplayer_url"; 
-	
+	public static final String CONF_MPLAYER_URL = "jajuk.mplayer_url";
+
 	// Global random mode: song or album level ?
-	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode"; 
-	
-	// Novelties  random mode: song or album level ?
-	public static final String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode"; 
-	
+	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";
+
+	// Novelties random mode: song or album level ?
+	public static final String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode";
+
 	// animation pattern
-	public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern"; 
-	
+	public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
+
 	// Shuffle/novelties mode
 	public static final String MODE_ALBUM = "album";
 
@@ -1321,47 +1321,47 @@ public interface ITechnicalStrings {
 
 	public static final String XML_TYPE_SEEK_SUPPORTED = "seek";
 
-	// type  description as given in the steam
-	public static final String XML_TYPE_TECH_DESC = "tech_desc"; 
-	
+	// type description as given in the steam
+	public static final String XML_TYPE_TECH_DESC = "tech_desc";
+
 	// icon used in the physical tree
-	public static final String XML_TYPE_ICON = "icon"; 
-	
+	public static final String XML_TYPE_ICON = "icon";
+
 	// comment tag
-	public static final String XML_TRACK_COMMENT = "comment"; 
-	
+	public static final String XML_TRACK_COMMENT = "comment";
+
 	// track number
-	public static final String XML_TRACK_NUMBER = "number"; 
+	public static final String XML_TRACK_NUMBER = "number";
 
 	// "any" criteria
-	public static final String XML_ANY = "any"; 
+	public static final String XML_ANY = "any";
 
 	// constructor property flag
-	public static final String XML_CONSTRUCTOR = "constructor"; 
+	public static final String XML_CONSTRUCTOR = "constructor";
 
 	// property should be displayed ?
-	public static final String XML_VISIBLE = "visible"; 
+	public static final String XML_VISIBLE = "visible";
 
-	//property editable ?
-	public static final String XML_EDITABLE = "editable"; 
-	
-	//Property unique ?
-	public static final String XML_UNIQUE = "unique"; 
+	// property editable ?
+	public static final String XML_EDITABLE = "editable";
+
+	// Property unique ?
+	public static final String XML_UNIQUE = "unique";
 
 	// custom property flag
-	public static final String XML_CUSTOM = "custom"; 
+	public static final String XML_CUSTOM = "custom";
 
-	//Property
+	// Property
 	public static final String XML_PROPERTY = "property";
 
 	// default value
-	public static final String XML_DEFAULT_VALUE = "default_value"; 
-	
+	public static final String XML_DEFAULT_VALUE = "default_value";
+
 	// general dj tag
-	public static final String XML_DJ_DJ = "dj"; 
+	public static final String XML_DJ_DJ = "dj";
 
 	// general parameters
-	public static final String XML_DJ_GENERAL = "general_parameters"; 
+	public static final String XML_DJ_GENERAL = "general_parameters";
 
 	public static final String XML_DJ_RATING_LEVEL = "rating_level";
 
@@ -1401,9 +1401,10 @@ public interface ITechnicalStrings {
 
 	public static final String XML_DJ_STARTUP_STYLE = "startup_style";
 
-	/* Reserved XML tags for property names (note that a user can choose a
-	 property name equals to meta information attributes names without
-	 pbm)*/
+	/*
+	 * Reserved XML tags for property names (note that a user can choose a
+	 * property name equals to meta information attributes names without pbm)
+	 */
 	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME,
 			XML_ID, XML_TYPE_EXTENSION, XML_TYPE_PLAYER_IMPL,
 			XML_TYPE_TAG_IMPL, XML_TYPE_TECH_DESC, XML_TYPE_SEEK_SUPPORTED,
@@ -1469,5 +1470,7 @@ public interface ITechnicalStrings {
 	public static final String ACTION_FINISH = "finish";
 
 	public static final String ACTION_Cancel = "cancel";
+
+	
 
 }
