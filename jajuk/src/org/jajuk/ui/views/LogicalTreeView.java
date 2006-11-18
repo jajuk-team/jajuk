@@ -470,7 +470,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && track.equals(current.getTrack())) {
 						setFont(new Font("Dialog", Font.BOLD, 10)); //$NON-NLS-1$
-						setForeground(new Color(200,70,10));
+						setForeground(new Color(200, 70, 10));
 					}
 				}
 				return this;
@@ -1044,6 +1044,15 @@ public class LogicalTreeView extends AbstractTreeView implements
 					filechooser.setDialogTitle(Messages
 							.getString("LogicalTreeView.33"));
 					filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					//set a default file name
+					if (alSelected.size() == 1) {
+						Item item = alSelected.get(0);
+						filechooser.setSelectedFile(new java.io.File(item.getName()));
+					}
+					else if (alSelected.size() > 1){ 
+						//collection node selected
+						filechooser.setSelectedFile(new java.io.File("collection"));
+					}
 					filechooser.setDialogType(JFileChooser.SAVE_DIALOG);
 
 					int returnVal = filechooser
@@ -1278,10 +1287,8 @@ public class LogicalTreeView extends AbstractTreeView implements
 	 */
 	public void update(Event event) {
 		EventSubject subject = event.getSubject();
-		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) { // used for
-			// current track
-			// display
-			// refresh
+		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+			// used for current track display refresh
 			repaint();
 		} else if (subject.equals(EventSubject.EVENT_DEVICE_MOUNT)
 				|| subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT)) {

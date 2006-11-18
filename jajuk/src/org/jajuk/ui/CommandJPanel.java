@@ -273,7 +273,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search");
 		sbSearch = new SearchBox(CommandJPanel.this);
-		sbSearch.setPreferredSize(new Dimension(-1, 25)); // size of the
+		sbSearch.setPreferredSize(new Dimension(150, 30)); // size of the
 		// combo itself
 		vltbSearch.add(sbSearch);
 
@@ -289,13 +289,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 				.getWidth() / 2);
 		jcbHistory.setPopupWidth(iWidth); // size of popup
 		// size of the combo itself
-		jcbHistory.setPreferredSize(new Dimension(300, 25)); 
+		jcbHistory.setPreferredSize(new Dimension(300, 30)); 
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
 
 		// Mode toolbar
 		VLToolBar vltbModes = new VLToolBar("modes");
-		vltbModes.setBorder(BorderFactory.createEmptyBorder(3, 2, 2,2));
+		vltbModes.setPreferredSize(new Dimension(130, 30)); 
 		jbRepeat = new JajukToggleButton(ActionManager
 				.getAction(REPEAT_MODE_STATUS_CHANGE));
 		jbRepeat
@@ -336,7 +336,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
 		// size of the combo itself
-        jsVolume.setPreferredSize(new Dimension(150, 0)); 
+        jsVolume.setPreferredSize(new Dimension(150, 30)); 
         vltbVolume.add(jpVolume);
 
 		// Position
@@ -350,14 +350,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsPosition.addChangeListener(CommandJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-		vltbPosition.add(jpPosition);
+		jsPosition.setPreferredSize(new Dimension(150, 30)); 
+        vltbPosition.add(jpPosition);
 
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
 		ambiencesCombo.setPopupWidth(iWidth);
 		// size of the combo itself
-		ambiencesCombo.setPreferredSize(new Dimension(100, 25)); 
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
@@ -472,7 +472,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jpPlay.add(jbFwd);
 		jpPlay.add(Box.createHorizontalGlue());
 		jpPlay.add(jbMute);
+		jpPlay.setPreferredSize(new Dimension(200, 25));
 		vltbPlay.add(jpPlay);
+		
 
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 

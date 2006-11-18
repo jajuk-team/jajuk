@@ -409,6 +409,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDevConfiguration.addActionListener(this);
 		jmiDevExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
 		jmiDevExport.addActionListener(this);
+		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevPlay);
 		jmenuDev.add(jmiDevPush);
 		jmenuDev.add(jmiDevPlayShuffle);
@@ -419,7 +420,6 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmenuDev.add(jmiDevSynchronize);
 		jmenuDev.add(jmiDevTest);
 		jmenuDev.add(jmiDevCreatePlaylist);
-		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevCDDBQuery);
 		jmenuDev.add(jmiDevExport);
 		jmenuDev.add(jmiDevProperties);
@@ -519,7 +519,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && file.equals(current)) {
 						setFont(new Font("Dialog", Font.BOLD, 10)); //$NON-NLS-1$
-						setForeground(new Color(200,70,10));
+						setForeground(new Color(200, 70, 10));
 					}
 				} else if (value instanceof PlaylistFileNode) {
 					setBorder(null);
@@ -661,20 +661,9 @@ public class PhysicalTreeView extends AbstractTreeView implements
 								.nextElement();
 						if (node instanceof FileNode) {
 							File file = ((FileNode) node).getFile();
-							if (hsSelectedFiles.contains(file)) { // don't
-								// count
-								// the
-								// same
-								// file
-								// twice
-								// if
-								// user
-								// select
-								// directory
-								// and
-								// then
-								// files
-								// inside
+							if (hsSelectedFiles.contains(file)) {
+								// don't count same file twice if user select
+								// directory and then files inside
 								continue;
 							}
 							lSize += file.getSize();
@@ -695,15 +684,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				}
 				InformationJPanel.getInstance().setSelection(sbOut.toString());
 				if (ConfigurationManager
-						.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) { // if
-					// table
-					// is
-					// synchronized
-					// with
-					// tree,
-					// notify
-					// the
-					// selection
+						.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+					// if table is synchronized with tree, notify the selection
 					// change
 					Properties properties = new Properties();
 					properties.put(DETAIL_SELECTION, hsSelectedFiles);
@@ -784,17 +766,12 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						}
 					}
 				} else if (e.getClickCount() == 1
-						&& e.getButton() == MouseEvent.BUTTON3) { // right
-					// clic
-					// on a
-					// selected
-					// node
-					// set
-					// Right clic behavior identical to konqueror tree:
-					// if none or 1 node is selected, a right click on
-					// another node select it
-					// if more than 1, we keep selection and display a popup
-					// for them
+						&& e.getButton() == MouseEvent.BUTTON3) {
+					// right clic on a selected node set Right clic behavior
+					// identical to konqueror tree:
+					// if none or 1 node is selected, a right click on another
+					// node select it if more than 1, we keep selection and
+					// display a popup for them
 					if (jtree.getSelectionCount() < 2) {
 						jtree.getSelectionModel().setSelectionPath(path);
 					}
@@ -1130,7 +1107,15 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			filechooser.addChoosableFileFilter(xmlFilter);
 			filechooser.addChoosableFileFilter(htmlFilter);
 			// filechooser.addChoosableFileFilter(pdfFilter);
-
+			// set a default file name
+			if (alSelected.size() == 1) {
+				Item item = alSelected.get(0);
+				filechooser.setSelectedFile(new java.io.File(item.getName()));
+			} else if (alSelected.size() > 1) {
+				// collection node selected
+				filechooser.setSelectedFile(new java.io.File("collection"));
+			}
+					
 			filechooser.setCurrentDirectory(new java.io.File(System
 					.getProperty("user.home"))); //$NON-NLS-1$ 
 			filechooser.setDialogTitle(Messages
