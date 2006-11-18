@@ -46,6 +46,7 @@
 </head>
 <body>
 	<h1>Jajuk Music Report</h1>
+	<p><i>Protect the environment, please do not print</i></p>
 	<xsl:apply-templates select="device" />
 </body>
 </html>
