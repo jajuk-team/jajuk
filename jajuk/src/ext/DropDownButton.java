@@ -40,7 +40,6 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 		arrowButton.addActionListener(this);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
 		mainButton.addPropertyChangeListener("enabled", this); // NOI18N
-		// //$NON-NLS-1$
 	}
 
 	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
@@ -92,11 +91,8 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 
 		mainButton.getModel().setRollover(false);
 		arrowButton.getModel().setSelected(false);
-		((JPopupMenu) e.getSource()).removePopupMenuListener(this); // act
-		// as
-		// good
-		// programmer
-		// :)
+		((JPopupMenu) e.getSource()).removePopupMenuListener(this); 
+		// act as good programmer :)
 	}
 
 	public void popupMenuCanceled(PopupMenuEvent e) {
