@@ -53,7 +53,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -170,8 +169,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 
 	SteppedComboBox ambiencesCombo;
 
-	JPanel jpPlay;
-
 	JButton jbPrevious;
 
 	JButton jbNext;
@@ -273,7 +270,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search");
 		sbSearch = new SearchBox(CommandJPanel.this);
-		sbSearch.setPreferredSize(new Dimension(150, 30)); // size of the
+		sbSearch.setPreferredSize(new Dimension(150, 35)); // size of the
 		// combo itself
 		vltbSearch.add(sbSearch);
 
@@ -289,13 +286,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 				.getWidth() / 2);
 		jcbHistory.setPopupWidth(iWidth); // size of popup
 		// size of the combo itself
-		jcbHistory.setPreferredSize(new Dimension(300, 30)); 
+		jcbHistory.setPreferredSize(new Dimension(300, 35)); 
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
 
 		// Mode toolbar
 		VLToolBar vltbModes = new VLToolBar("modes");
-		vltbModes.setPreferredSize(new Dimension(130, 30)); 
+		vltbModes.setCollapsible(false);
+		//we need an inner toolbar to apply size properly
+		JToolBar jtbModes = new JToolBar();
+		jtbModes.setRollover(true);
+		jtbModes.setPreferredSize(new Dimension(130, 35));
 		jbRepeat = new JajukToggleButton(ActionManager
 				.getAction(REPEAT_MODE_STATUS_CHANGE));
 		jbRepeat
@@ -311,10 +312,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jbIntro = new JajukToggleButton(ActionManager
 				.getAction(JajukAction.INTRO_MODE_STATUS_CHANGED));
 		jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
-		vltbModes.add(jbRepeat);
-		vltbModes.add(jbRandom);
-		vltbModes.add(jbContinue);
-		vltbModes.add(jbIntro);
+		jtbModes.add(jbRepeat);
+		jtbModes.addSeparator();
+		jtbModes.add(jbRandom);
+		jtbModes.addSeparator();
+		jtbModes.add(jbContinue);
+		jtbModes.addSeparator();
+		jtbModes.add(jbIntro);
+		vltbModes.add(jtbModes);
 
 		// Volume
 		VLToolBar vltbVolume = new VLToolBar("volume");
@@ -336,7 +341,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
 		// size of the combo itself
-        jsVolume.setPreferredSize(new Dimension(150, 30)); 
+        jsVolume.setPreferredSize(new Dimension(150, 35)); 
         vltbVolume.add(jpVolume);
 
 		// Position
@@ -350,7 +355,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsPosition.addChangeListener(CommandJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-		jsPosition.setPreferredSize(new Dimension(150, 30)); 
+		jsPosition.setPreferredSize(new Dimension(150, 35)); 
         vltbPosition.add(jpPosition);
 
 		// Ambience combo
@@ -364,6 +369,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 
 		// Special functions toolbar
 		VLToolBar vltbSpecial = new VLToolBar("smart");
+		vltbSpecial.setCollapsible(false);
 		jtbSpecial = new JToolBar(); // we have to use an intermediate
 		ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
 			private static final long serialVersionUID = 1L;
@@ -451,11 +457,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 
 		// Play toolbar
 		VLToolBar vltbPlay = new VLToolBar("player");
-		jpPlay = new JPanel();
+		vltbPlay.setCollapsible(false);
+		JToolBar jtbPlay = new JToolBar();
+		jtbPlay.setRollover(true);
 		ActionUtil
-				.installKeystrokes(jpPlay, ActionManager.getAction(NEXT_ALBUM),
+				.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM),
 						ActionManager.getAction(PREVIOUS_ALBUM));
-		jpPlay.setLayout(new BoxLayout(jpPlay, BoxLayout.X_AXIS));
 		jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
 		jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
 		jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
@@ -463,23 +470,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
 		jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
 
-		jpPlay.add(jbPrevious);
-		jpPlay.add(jbNext);
-		jpPlay.add(Box.createHorizontalGlue());
-		jpPlay.add(jbRew);
-		jpPlay.add(jbPlayPause);
-		jpPlay.add(jbStop);
-		jpPlay.add(jbFwd);
-		jpPlay.add(Box.createHorizontalGlue());
-		jpPlay.add(jbMute);
-		jpPlay.setPreferredSize(new Dimension(200, 25));
-		vltbPlay.add(jpPlay);
+		jtbPlay.add(jbPrevious);
+		jtbPlay.add(jbNext);
+		jtbPlay.addSeparator();
+		jtbPlay.add(jbRew);
+		jtbPlay.add(jbPlayPause);
+		jtbPlay.add(jbStop);
+		jtbPlay.add(jbFwd);
+		jtbPlay.addSeparator();
+		jtbPlay.add(jbMute);
+		jtbPlay.setPreferredSize(new Dimension(200, 35));
+		vltbPlay.add(jtbPlay);
 		
-
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
 		boolean bToolbarInstallationOK = false; // flag
 
+		//Load stored toolbar configuration
 		if (new File(FILE_TOOLBARS_CONF).exists()) {
 			try {
 				// Read toolbars configuration
