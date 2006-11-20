@@ -1033,7 +1033,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 					// ExportFileFilter pdfFilter = new
 					// ExportFileFilter(".pdf");
 
-					JFileChooser filechooser = new JFileChooser();
+					final JFileChooser filechooser = new JFileChooser();
 					// Add filters.
 					filechooser.addChoosableFileFilter(xmlFilter);
 					filechooser.addChoosableFileFilter(htmlFilter);
@@ -1044,14 +1044,15 @@ public class LogicalTreeView extends AbstractTreeView implements
 					filechooser.setDialogTitle(Messages
 							.getString("LogicalTreeView.33"));
 					filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					//set a default file name
+					// set a default file name
 					if (alSelected.size() == 1) {
 						Item item = alSelected.get(0);
-						filechooser.setSelectedFile(new java.io.File(item.getName()));
-					}
-					else if (alSelected.size() > 1){ 
-						//collection node selected
-						filechooser.setSelectedFile(new java.io.File("collection"));
+						filechooser.setSelectedFile(new java.io.File(item
+								.getName()));
+					} else if (alSelected.size() > 1) {
+						// collection node selected
+						filechooser.setSelectedFile(new java.io.File(
+								"collection"));
 					}
 					filechooser.setDialogType(JFileChooser.SAVE_DIALOG);
 
@@ -1059,161 +1060,176 @@ public class LogicalTreeView extends AbstractTreeView implements
 							.showSaveDialog(LogicalTreeView.this);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						java.io.File file = filechooser.getSelectedFile();
+						// make it in a separated thread to avoid freezing
+						// screen for big collections
+						new Thread() {
+							public void run() {
 
-						String filepath = file.getAbsolutePath();
-						String filetypename = Util.getExtension(file);
+								java.io.File file = filechooser
+										.getSelectedFile();
 
-						if (filetypename.equals("")) {
-							ExportFileFilter filter = (ExportFileFilter) filechooser
-									.getFileFilter();
-							filetypename = filter.getExtension();
-							filepath += "." + filetypename;
-						}
+								String filepath = file.getAbsolutePath();
+								String filetypename = Util.getExtension(file);
 
-						String result = null; //$NON-NLS-1$                		
+								if (filetypename.equals("")) {
+									ExportFileFilter filter = (ExportFileFilter) filechooser
+											.getFileFilter();
+									filetypename = filter.getExtension();
+									filepath += "." + filetypename;
+								}
 
-						// If we are exporting to xml...
-						if (filetypename.equals("xml")) { //$NON-NLS-1$
-							XMLExporter xmlExporter = XMLExporter.getInstance();
+								String result = null; //$NON-NLS-1$                		
 
-							// If we are exporting a album...
-							if (e.getSource() == jmiAlbumExport) {
-								PopulatedAlbum album = LogicalTreeUtilities
-										.getPopulatedAlbumFromTree((DefaultMutableTreeNode) paths[0]
-												.getLastPathComponent());
-								result = xmlExporter.process(album);
-								// Else if we are exporting an author in any
-								// other view...
-							} else if (e.getSource() == jmiAuthorExport) {
-								PopulatedAuthor author = LogicalTreeUtilities
-										.getPopulatedAuthorFromTree((DefaultMutableTreeNode) paths[0]
-												.getLastPathComponent());
-								result = xmlExporter.process(author);
-								// Else if we are exporting a style...
-							} else if (e.getSource() == jmiStyleExport) {
-								PopulatedStyle style = LogicalTreeUtilities
-										.getPopulatedStyleFromTree((DefaultMutableTreeNode) paths[0]
-												.getLastPathComponent());
-								result = xmlExporter.process(style);
-								// Else if we are exporting a collection...
-							} else if (e.getSource() == jmiCollectionExport) {
-								// If we are exporting the styles...
-								if (iSortOrder == 0) {
-									DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent();
-									ArrayList collection = LogicalTreeUtilities
-											.getStyleCollectionFromTree(node);
-									result = xmlExporter
-											.processCollection(
-													XMLExporter.LOGICAL_GENRE_COLLECTION,
-													collection);
-									// Else if we are exporting the
-									// authors...
-								} else if (iSortOrder == 1) {
-									DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent();
-									ArrayList collection = LogicalTreeUtilities
-											.getAuthorCollectionFromTree(node);
-									result = xmlExporter
-											.processCollection(
-													XMLExporter.LOGICAL_ARTIST_COLLECTION,
-													collection);
-									// Else if we are exporting the
-									// albums...
-								} else if (iSortOrder == 2) {
-									DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent();
-									ArrayList collection = LogicalTreeUtilities
-											.getAlbumCollectionFromTree(node);
-									result = xmlExporter
-											.processCollection(
-													XMLExporter.LOGICAL_ALBUM_COLLECTION,
-													collection);
+								// If we are exporting to xml...
+								if (filetypename.equals("xml")) { //$NON-NLS-1$
+									XMLExporter xmlExporter = XMLExporter
+											.getInstance();
+
+									// If we are exporting a album...
+									if (e.getSource() == jmiAlbumExport) {
+										PopulatedAlbum album = LogicalTreeUtilities
+												.getPopulatedAlbumFromTree((DefaultMutableTreeNode) paths[0]
+														.getLastPathComponent());
+										result = xmlExporter.process(album);
+										// Else if we are exporting an author in
+										// any
+										// other view...
+									} else if (e.getSource() == jmiAuthorExport) {
+										PopulatedAuthor author = LogicalTreeUtilities
+												.getPopulatedAuthorFromTree((DefaultMutableTreeNode) paths[0]
+														.getLastPathComponent());
+										result = xmlExporter.process(author);
+										// Else if we are exporting a style...
+									} else if (e.getSource() == jmiStyleExport) {
+										PopulatedStyle style = LogicalTreeUtilities
+												.getPopulatedStyleFromTree((DefaultMutableTreeNode) paths[0]
+														.getLastPathComponent());
+										result = xmlExporter.process(style);
+										// Else if we are exporting a
+										// collection...
+									} else if (e.getSource() == jmiCollectionExport) {
+										// If we are exporting the styles...
+										if (iSortOrder == 0) {
+											DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
+													.getLastPathComponent();
+											ArrayList collection = LogicalTreeUtilities
+													.getStyleCollectionFromTree(node);
+											result = xmlExporter
+													.processCollection(
+															XMLExporter.LOGICAL_GENRE_COLLECTION,
+															collection);
+											// Else if we are exporting the
+											// authors...
+										} else if (iSortOrder == 1) {
+											DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
+													.getLastPathComponent();
+											ArrayList collection = LogicalTreeUtilities
+													.getAuthorCollectionFromTree(node);
+											result = xmlExporter
+													.processCollection(
+															XMLExporter.LOGICAL_ARTIST_COLLECTION,
+															collection);
+											// Else if we are exporting the
+											// albums...
+										} else if (iSortOrder == 2) {
+											DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
+													.getLastPathComponent();
+											ArrayList collection = LogicalTreeUtilities
+													.getAlbumCollectionFromTree(node);
+											result = xmlExporter
+													.processCollection(
+															XMLExporter.LOGICAL_ALBUM_COLLECTION,
+															collection);
+										}
+									}
+
+									if (result != null) {
+										// Save the results.
+										if (!xmlExporter.saveToFile(result,
+												filepath)) {
+											Log
+													.error("Could not write out the xml to the specified file.");
+										}
+									} else {
+										Log.error("Could not create report.");
+									}
+									// Else if we are exporting to html...
+								} else if (filetypename.equals("html")
+										|| filetypename.equals("htm")) {
+									HTMLExporter htmlExporter = HTMLExporter
+											.getInstance();
+
+									// If we are exporting an album...
+									if (e.getSource() == jmiAlbumExport) {
+										PopulatedAlbum album = LogicalTreeUtilities
+												.getPopulatedAlbumFromTree((DefaultMutableTreeNode) paths[0]
+														.getLastPathComponent());
+										result = htmlExporter.process(album);
+										// Else if we are exporting an author in
+										// any
+										// other view...
+									} else if (e.getSource() == jmiAuthorExport) {
+										PopulatedAuthor author = LogicalTreeUtilities
+												.getPopulatedAuthorFromTree((DefaultMutableTreeNode) paths[0]
+														.getLastPathComponent());
+										result = htmlExporter.process(author);
+										// Else if we are exporting a style...
+									} else if (e.getSource() == jmiStyleExport) {
+										PopulatedStyle style = LogicalTreeUtilities
+												.getPopulatedStyleFromTree((DefaultMutableTreeNode) paths[0]
+														.getLastPathComponent());
+										result = htmlExporter.process(style);
+										// Else if we are exporting a
+										// collection...
+									} else if (e.getSource() == jmiCollectionExport) {
+										// If we are exporting the styles...
+										if (iSortOrder == 0) {
+											DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
+													.getLastPathComponent();
+											ArrayList collection = LogicalTreeUtilities
+													.getStyleCollectionFromTree(node);
+											result = htmlExporter
+													.processCollection(
+															HTMLExporter.LOGICAL_GENRE_COLLECTION,
+															collection);
+											// Else if we are exporting the
+											// authors...
+										} else if (iSortOrder == 1) {
+											DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
+													.getLastPathComponent();
+											ArrayList collection = LogicalTreeUtilities
+													.getAuthorCollectionFromTree(node);
+											result = htmlExporter
+													.processCollection(
+															HTMLExporter.LOGICAL_ARTIST_COLLECTION,
+															collection);
+											// Else if we are exporting the
+											// albums...
+										} else if (iSortOrder == 2) {
+											DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
+													.getLastPathComponent();
+											ArrayList collection = LogicalTreeUtilities
+													.getAlbumCollectionFromTree(node);
+											result = htmlExporter
+													.processCollection(
+															HTMLExporter.LOGICAL_ALBUM_COLLECTION,
+															collection);
+										}
+									}
+
+									if (result != null) {
+										// Save the results.
+										if (!htmlExporter.saveToFile(result,
+												filepath)) {
+											Log
+													.error("Could not write out the xml to the specified file.");
+										}
+									} else {
+										Log.error("Could not create report.");
+									}
 								}
 							}
-
-							if (result != null) {
-								// Save the results.
-								if (!xmlExporter.saveToFile(result, filepath)) {
-									Log
-											.error("Could not write out the xml to the specified file.");
-								}
-							} else {
-								Log.error("Could not create report.");
-							}
-							// Else if we are exporting to html...
-						} else if (filetypename.equals("html")
-								|| filetypename.equals("htm")) {
-							HTMLExporter htmlExporter = HTMLExporter
-									.getInstance();
-
-							// If we are exporting an album...
-							if (e.getSource() == jmiAlbumExport) {
-								PopulatedAlbum album = LogicalTreeUtilities
-										.getPopulatedAlbumFromTree((DefaultMutableTreeNode) paths[0]
-												.getLastPathComponent());
-								result = htmlExporter.process(album);
-								// Else if we are exporting an author in any
-								// other view...
-							} else if (e.getSource() == jmiAuthorExport) {
-								PopulatedAuthor author = LogicalTreeUtilities
-										.getPopulatedAuthorFromTree((DefaultMutableTreeNode) paths[0]
-												.getLastPathComponent());
-								result = htmlExporter.process(author);
-								// Else if we are exporting a style...
-							} else if (e.getSource() == jmiStyleExport) {
-								PopulatedStyle style = LogicalTreeUtilities
-										.getPopulatedStyleFromTree((DefaultMutableTreeNode) paths[0]
-												.getLastPathComponent());
-								result = htmlExporter.process(style);
-								// Else if we are exporting a collection...
-							} else if (e.getSource() == jmiCollectionExport) {
-								// If we are exporting the styles...
-								if (iSortOrder == 0) {
-									DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent();
-									ArrayList collection = LogicalTreeUtilities
-											.getStyleCollectionFromTree(node);
-									result = htmlExporter
-											.processCollection(
-													HTMLExporter.LOGICAL_GENRE_COLLECTION,
-													collection);
-									// Else if we are exporting the
-									// authors...
-								} else if (iSortOrder == 1) {
-									DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent();
-									ArrayList collection = LogicalTreeUtilities
-											.getAuthorCollectionFromTree(node);
-									result = htmlExporter
-											.processCollection(
-													HTMLExporter.LOGICAL_ARTIST_COLLECTION,
-													collection);
-									// Else if we are exporting the
-									// albums...
-								} else if (iSortOrder == 2) {
-									DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent();
-									ArrayList collection = LogicalTreeUtilities
-											.getAlbumCollectionFromTree(node);
-									result = htmlExporter
-											.processCollection(
-													HTMLExporter.LOGICAL_ALBUM_COLLECTION,
-													collection);
-								}
-							}
-
-							if (result != null) {
-								// Save the results.
-								if (!htmlExporter.saveToFile(result, filepath)) {
-									Log
-											.error("Could not write out the xml to the specified file.");
-								}
-							} else {
-								Log.error("Could not create report.");
-							}
-						}
+						}.start();
 					}
 				} else {
 					// compute selection

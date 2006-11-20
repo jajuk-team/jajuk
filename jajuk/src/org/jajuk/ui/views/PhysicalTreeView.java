@@ -1102,7 +1102,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			ExportFileFilter htmlFilter = new ExportFileFilter(".html");
 			// ExportFileFilter pdfFilter = new ExportFileFilter(".pdf");
 
-			JFileChooser filechooser = new JFileChooser();
+			final JFileChooser filechooser = new JFileChooser();
 			// Add filters.
 			filechooser.addChoosableFileFilter(xmlFilter);
 			filechooser.addChoosableFileFilter(htmlFilter);
@@ -1115,7 +1115,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				// collection node selected
 				filechooser.setSelectedFile(new java.io.File("collection"));
 			}
-					
+
 			filechooser.setCurrentDirectory(new java.io.File(System
 					.getProperty("user.home"))); //$NON-NLS-1$ 
 			filechooser.setDialogTitle(Messages
@@ -1135,91 +1135,100 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				java.io.File file = filechooser.getSelectedFile();
-				String filepath = file.getAbsolutePath();
-				String filetypename = Util.getExtension(file);
+				//make it in a separated thread to avoid freezing screen for big collections
+				new Thread() {
+					public void run() {
 
-				if (filetypename.equals("")) {
-					ExportFileFilter filter = (ExportFileFilter) filechooser
-							.getFileFilter();
-					filetypename = filter.getExtension();
-					filepath += "." + filetypename;
-				}
+						java.io.File file = filechooser.getSelectedFile();
+						String filepath = file.getAbsolutePath();
+						String filetypename = Util.getExtension(file);
 
-				String result = ""; //$NON-NLS-1$
-
-				// If we are exporting to xml...
-				if (filetypename.equals("xml")) { //$NON-NLS-1$
-					XMLExporter xmlExporter = XMLExporter.getInstance();
-
-					// If we are exporting a directory...
-					if (e.getSource() == jmiDirExport) {
-						Directory dir = ((DirectoryNode) paths[0]
-								.getLastPathComponent()).getDirectory();
-						result = xmlExporter.process(dir);
-						// Else if we are exporting a device...
-					} else if (e.getSource() == jmiDevExport) {
-						Device device = ((DeviceNode) paths[0]
-								.getLastPathComponent()).getDevice();
-						result = xmlExporter.process(device);
-						// Else if we are exporting the entire collection...
-					} else if (e.getSource() == jmiCollectionExport) {
-						result = xmlExporter.processCollection(
-								XMLExporter.PHYSICAL_COLLECTION, null);
-					}
-
-					if (result != null) {
-						// Save the results.
-						if (!xmlExporter.saveToFile(result, filepath)) {
-							Log
-									.error("Could not write out the xml to the specified file.");
+						if (filetypename.equals("")) {
+							ExportFileFilter filter = (ExportFileFilter) filechooser
+									.getFileFilter();
+							filetypename = filter.getExtension();
+							filepath += "." + filetypename;
 						}
-					} else {
-						Log.error("Could not create report.");
-					}
-					// Else if we are exporting to html...
-				} else if (filetypename.equals("html")
-						|| filetypename.equals("htm")) {
-					HTMLExporter htmlExporter = HTMLExporter.getInstance();
 
-					// If we are exporting a directory...
-					if (e.getSource() == jmiDirExport) {
-						Directory dir = ((DirectoryNode) paths[0]
-								.getLastPathComponent()).getDirectory();
-						result = htmlExporter.process(dir);
-						// Else if we are exporting a device...
-					} else if (e.getSource() == jmiDevExport) {
-						Device device = ((DeviceNode) paths[0]
-								.getLastPathComponent()).getDevice();
-						result = htmlExporter.process(device);
-						// Else if we are exporting the entire collection...
-					} else if (e.getSource() == jmiCollectionExport) {
-						result = htmlExporter.processCollection(
-								HTMLExporter.PHYSICAL_COLLECTION, null);
-					}
+						String result = ""; //$NON-NLS-1$
 
-					if (result != null) {
-						// Save the results.
-						if (!htmlExporter.saveToFile(result, filepath)) {
-							Log
-									.error("Could not write out the html to the specified file.");
-						}
-					} else {
-						Log.error("Could not create report.");
+						// If we are exporting to xml...
+						if (filetypename.equals("xml")) { //$NON-NLS-1$
+							XMLExporter xmlExporter = XMLExporter.getInstance();
+
+							// If we are exporting a directory...
+							if (e.getSource() == jmiDirExport) {
+								Directory dir = ((DirectoryNode) paths[0]
+										.getLastPathComponent()).getDirectory();
+								result = xmlExporter.process(dir);
+								// Else if we are exporting a device...
+							} else if (e.getSource() == jmiDevExport) {
+								Device device = ((DeviceNode) paths[0]
+										.getLastPathComponent()).getDevice();
+								result = xmlExporter.process(device);
+								// Else if we are exporting the entire
+								// collection...
+							} else if (e.getSource() == jmiCollectionExport) {
+								result = xmlExporter.processCollection(
+										XMLExporter.PHYSICAL_COLLECTION, null);
+							}
+
+							if (result != null) {
+								// Save the results.
+								if (!xmlExporter.saveToFile(result, filepath)) {
+									Log
+											.error("Could not write out the xml to the specified file.");
+								}
+							} else {
+								Log.error("Could not create report.");
+							}
+							// Else if we are exporting to html...
+						} else if (filetypename.equals("html")
+								|| filetypename.equals("htm")) {
+							HTMLExporter htmlExporter = HTMLExporter
+									.getInstance();
+
+							// If we are exporting a directory...
+							if (e.getSource() == jmiDirExport) {
+								Directory dir = ((DirectoryNode) paths[0]
+										.getLastPathComponent()).getDirectory();
+								result = htmlExporter.process(dir);
+								// Else if we are exporting a device...
+							} else if (e.getSource() == jmiDevExport) {
+								Device device = ((DeviceNode) paths[0]
+										.getLastPathComponent()).getDevice();
+								result = htmlExporter.process(device);
+								// Else if we are exporting the entire
+								// collection...
+							} else if (e.getSource() == jmiCollectionExport) {
+								result = htmlExporter.processCollection(
+										HTMLExporter.PHYSICAL_COLLECTION, null);
+							}
+
+							if (result != null) {
+								// Save the results.
+								if (!htmlExporter.saveToFile(result, filepath)) {
+									Log
+											.error("Could not write out the html to the specified file.");
+								}
+							} else {
+								Log.error("Could not create report.");
+							}
+							// Else if we are exporting to pdf...
+						} /*
+							 * else if (filetypename.equals("pdf")) { boolean
+							 * bResult = false; PDFExporter pdfExporter =
+							 * PDFExporter.getInstance(); // If we are exporting
+							 * a directory... if (e.getSource() == jmiDirExport) {
+							 * Directory dir =
+							 * ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();
+							 * bResult = pdfExporter.process(dir, filepath); }
+							 * 
+							 * if (bResult == false) { Log.error("Could not
+							 * create the pdf file."); } }
+							 */
 					}
-					// Else if we are exporting to pdf...
-				} /*
-					 * else if (filetypename.equals("pdf")) { boolean bResult =
-					 * false; PDFExporter pdfExporter =
-					 * PDFExporter.getInstance(); // If we are exporting a
-					 * directory... if (e.getSource() == jmiDirExport) {
-					 * Directory dir =
-					 * ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();
-					 * bResult = pdfExporter.process(dir, filepath); }
-					 * 
-					 * if (bResult == false) { Log.error("Could not create the
-					 * pdf file."); } }
-					 */
+				}.start();
 			}
 		} else if (alFiles != null
 				&& (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)) {
