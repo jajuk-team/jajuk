@@ -64,7 +64,9 @@ public class TracksTableModel extends JajukTableModel {
 		super(12);
 
 		// Columns names
-		vColNames.add(""); //$NON-NLS-1$
+		//First column is play icon, need to set a space character
+		//for proper display in some look and feel
+		vColNames.add(" "); //$NON-NLS-1$
 		vId.add(XML_PLAY);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));

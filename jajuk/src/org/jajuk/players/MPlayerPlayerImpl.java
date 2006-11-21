@@ -29,6 +29,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -76,6 +77,9 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
 	/** pause flag * */
 	private volatile boolean bPaused = false;
+
+	/** End of file flag * */
+	private volatile boolean bEOF = false;
 
 	/** File is opened flag * */
 	private volatile boolean bOpening = false;
@@ -143,7 +147,6 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 								// can be null before getting  length
 								&& (lTime - (fPosition * lDuration)) > length) {
 							// length=-1 means there is no max length
-							MPlayerPlayerImpl.this.stop();
 							FIFO.getInstance().finished();
 						}
 					} else if (line.matches("ANS_LENGTH.*")) {
@@ -153,6 +156,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 					}
 					// EOF
 					else if (line.matches("Exiting.*End.*")) {
+						bEOF = true;
+						bOpening = false;
 						// Launch next track
 						try {
 							// End of file
@@ -207,6 +212,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		this.bFading = false;
 		this.fCurrent = file;
 		this.bOpening = true;
+		this.bEOF = false;
 		this.iFadeDuration = 1000 * ConfigurationManager
 				.getInt(CONF_FADE_DURATION);
 		// Start
@@ -231,6 +237,10 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			} catch (InterruptedException e) {
 				Log.error(e);
 			}
+		}
+		//If end of file already reached, it means that file cannot be read
+		if (bEOF){
+			throw new JajukException("Error opening file");
 		}
 		setVolume(fVolume);
 		// Get track length

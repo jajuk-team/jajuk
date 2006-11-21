@@ -459,6 +459,7 @@ public class FileManager extends ItemManager implements Observer {
 		// song level, just shuffle full collection
 		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(
 				MODE_TRACK)) {
+			Collections.shuffle(alEligibleFiles);
 			return alEligibleFiles;
 		}
 		// else return shuffle albums

@@ -155,7 +155,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 				String sOut = getInstance().getProperties().getProperty(
 						base + "." + i); //$NON-NLS-1$
 
-				if (sOut == null) { // this property is unknown for this
+				if (sOut == null) { 
+					// this property is unknown for this
 					// local, try in english
 					sOut = getInstance().getPropertiesEn().getProperty(
 							base + "." + i); //$NON-NLS-1$
@@ -276,10 +277,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 								&& !sLine.startsWith("#") && sLine.indexOf('=') != -1) { //$NON-NLS-1$
 							StringTokenizer stLine = new StringTokenizer(sLine,
 									"="); //$NON-NLS-1$
-							properties.put(stLine.nextToken().trim(), stLine
-									.nextToken()); // trim to ignore space
-							// at begin end end of
-							// lines
+							//get full value after thet '=', we don't use the stringtokenize to allow 
+							//using = characters in the value
+							String sValue = sLine.substring(sLine.indexOf('=')+1);
+							// trim to ignore space at begin end end of lines
+							properties.put(stLine.nextToken().trim(), sValue); 
 						}
 					}
 				}

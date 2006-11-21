@@ -52,8 +52,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -61,6 +61,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -145,9 +146,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 
 	DropDownButton ddbGlobalRandom;
 
-	JMenuItem jmiShuffleModeSong;
+	JRadioButtonMenuItem jmiShuffleModeSong;
 
-	JMenuItem jmiShuffleModeAlbum;
+	JRadioButtonMenuItem jmiShuffleModeAlbum;
 
 	JPopupMenu popupGlobalRandom;
 
@@ -157,9 +158,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 
 	JPopupMenu popupNovelties;
 
-	JMenuItem jmiNoveltiesModeSong;
+	JRadioButtonMenuItem jmiNoveltiesModeSong;
 
-	JMenuItem jmiNoveltiesModeAlbum;
+	JRadioButtonMenuItem jmiNoveltiesModeAlbum;
 
 	JButton jbNorm;
 
@@ -286,14 +287,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 				.getWidth() / 2);
 		jcbHistory.setPopupWidth(iWidth); // size of popup
 		// size of the combo itself
-		jcbHistory.setPreferredSize(new Dimension(300, 35)); 
+		jcbHistory.setPreferredSize(new Dimension(300, 35));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
 
 		// Mode toolbar
 		VLToolBar vltbModes = new VLToolBar("modes");
 		vltbModes.setCollapsible(false);
-		//we need an inner toolbar to apply size properly
+		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
 		jtbModes.setRollover(true);
 		jtbModes.setPreferredSize(new Dimension(130, 35));
@@ -341,8 +342,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
 		// size of the combo itself
-        jsVolume.setPreferredSize(new Dimension(150, 35)); 
-        vltbVolume.add(jpVolume);
+		jsVolume.setPreferredSize(new Dimension(150, 35));
+		vltbVolume.add(jpVolume);
 
 		// Position
 		VLToolBar vltbPosition = new VLToolBar("position");
@@ -355,8 +356,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jsPosition.addChangeListener(CommandJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-		jsPosition.setPreferredSize(new Dimension(150, 35)); 
-        vltbPosition.add(jpPosition);
+		jsPosition.setPreferredSize(new Dimension(150, 35));
+		vltbPosition.add(jpPosition);
 
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
@@ -381,22 +382,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		};
 		ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
 		popupGlobalRandom = new JPopupMenu();
-		jmiShuffleModeSong = new JMenuItem(Messages
+		jmiShuffleModeSong = new JRadioButtonMenuItem(Messages
 				.getString("CommandJPanel.20"));
 		jmiShuffleModeSong.addActionListener(this);
-		jmiShuffleModeAlbum = new JMenuItem(Messages
+		jmiShuffleModeAlbum = new JRadioButtonMenuItem(Messages
 				.getString("CommandJPanel.21"));
 		jmiShuffleModeAlbum.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(
 				MODE_TRACK)) {
 			jmiShuffleModeSong.setSelected(true);
-			// select item (note that selection stick is not displayed on
-			// some Laf like liquid)
-			jmiShuffleModeSong.setBorder(BorderFactory.createEtchedBorder());
 		} else {
 			jmiShuffleModeAlbum.setSelected(true);
-			jmiShuffleModeAlbum.setBorder(BorderFactory.createEtchedBorder());
 		}
+		ButtonGroup bgGlobalRandom = new ButtonGroup();
+		bgGlobalRandom.add(jmiShuffleModeSong);
+		bgGlobalRandom.add(jmiShuffleModeAlbum);
 		popupGlobalRandom.add(jmiShuffleModeSong);
 		popupGlobalRandom.add(jmiShuffleModeAlbum);
 		ddbGlobalRandom.setText("");// no text visible //$NON-NLS-1$
@@ -413,22 +413,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		};
 		ddbNovelties.setAction(ActionManager.getAction(NOVELTIES));
 		popupNovelties = new JPopupMenu();
-		jmiNoveltiesModeSong = new JMenuItem(Messages
+		jmiNoveltiesModeSong = new JRadioButtonMenuItem(Messages
 				.getString("CommandJPanel.20"));
 		jmiNoveltiesModeSong.addActionListener(this);
-		jmiNoveltiesModeAlbum = new JMenuItem(Messages
+		jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages
 				.getString("CommandJPanel.21"));
 		jmiNoveltiesModeAlbum.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(
 				MODE_TRACK)) {
 			jmiNoveltiesModeSong.setSelected(true);
-			// display in bold (note that selection stick is not displayed
-			// on some Laf like liquid)
-			jmiNoveltiesModeSong.setBorder(BorderFactory.createEtchedBorder());
 		} else {
 			jmiNoveltiesModeAlbum.setSelected(true);
-			jmiNoveltiesModeAlbum.setBorder(BorderFactory.createEtchedBorder());
 		}
+		ButtonGroup bgNovelties = new ButtonGroup();
+		bgNovelties.add(jmiNoveltiesModeSong);
+		bgNovelties.add(jmiNoveltiesModeAlbum);
 		popupNovelties.add(jmiNoveltiesModeSong);
 		popupNovelties.add(jmiNoveltiesModeAlbum);
 		ddbNovelties.setText("");// no text visible //$NON-NLS-1$
@@ -461,8 +460,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setRollover(true);
 		ActionUtil
-				.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM),
-						ActionManager.getAction(PREVIOUS_ALBUM));
+				.installKeystrokes(jtbPlay,
+						ActionManager.getAction(NEXT_ALBUM), ActionManager
+								.getAction(PREVIOUS_ALBUM));
 		jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
 		jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
 		jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
@@ -481,10 +481,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		jtbPlay.add(jbMute);
 		jtbPlay.setPreferredSize(new Dimension(200, 35));
 		vltbPlay.add(jtbPlay);
-		
+
 		boolean bToolbarInstallationOK = false; // flag
 
-		//Load stored toolbar configuration
+		// Load stored toolbar configuration
 		if (new File(FILE_TOOLBARS_CONF).exists()) {
 			try {
 				// Read toolbars configuration
@@ -576,8 +576,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 									new StackItem(file, ConfigurationManager
 											.getBoolean(CONF_STATE_REPEAT),
 											true), false);
-						} catch (JajukException je) { 
-                            // can be thrown if file is null
+						} catch (JajukException je) {
+							// can be thrown if file is null
 						}
 					} else {
 						Messages.showErrorMessage("120"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -587,36 +587,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 			} else if (ae.getSource().equals(jmiNoveltiesModeSong)) {
 				ConfigurationManager.setProperty(CONF_NOVELTIES_MODE,
 						MODE_TRACK);
-				jmiNoveltiesModeSong.setBorder(BorderFactory
-						.createEtchedBorder());
-				jmiNoveltiesModeAlbum.setBorder(BorderFactory
-						.createEmptyBorder());
 			} else if (ae.getSource().equals(jmiNoveltiesModeAlbum)) {
 				ConfigurationManager.setProperty(CONF_NOVELTIES_MODE,
 						MODE_ALBUM);
-				jmiNoveltiesModeAlbum.setBorder(BorderFactory
-						.createEtchedBorder());
-				jmiNoveltiesModeSong.setBorder(BorderFactory
-						.createEmptyBorder());
 			} else if (ae.getSource().equals(jmiShuffleModeSong)) {
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE,
 						MODE_TRACK);
-				jmiShuffleModeSong
-						.setBorder(BorderFactory.createEtchedBorder());
-				jmiShuffleModeAlbum
-						.setBorder(BorderFactory.createEmptyBorder());
 			} else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE,
 						MODE_ALBUM);
-				jmiShuffleModeAlbum.setBorder(BorderFactory
-						.createEtchedBorder());
-				jmiShuffleModeSong.setBorder(BorderFactory.createEmptyBorder());
 			}
 		} catch (Exception e) {
 			Log.error(e);
 		} finally {
 			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); 
+					EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 
@@ -629,8 +614,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 		SwingWorker sw = new SwingWorker() {
 			public Object construct() {
 				if (!e.getValueIsAdjusting()) {
-					SearchResult sr = sbSearch.alResults
-							.get(sbSearch.jlist.getSelectedIndex());
+					SearchResult sr = sbSearch.alResults.get(sbSearch.jlist
+							.getSelectedIndex());
 					try {
 						FIFO.getInstance().push(
 								new StackItem(sr.getFile(),
@@ -659,9 +644,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == jsVolume) {
-			// this  value should be low to make sure we can reach zero
-            if (System.currentTimeMillis() - lDateLastAdjust > 20) { 
-                setVolume((float) jsVolume.getValue() / 100);
+			// this value should be low to make sure we can reach zero
+			if (System.currentTimeMillis() - lDateLastAdjust > 20) {
+				setVolume((float) jsVolume.getValue() / 100);
 				lDateLastAdjust = System.currentTimeMillis();
 			}
 		} else if (e.getSource() == jsPosition) {
@@ -834,10 +819,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,
 					jcbHistory.addActionListener(CommandJPanel.this);
 				} else if (EventSubject.EVENT_CLEAR_HISTORY.equals(event
 						.getSubject())) {
-					// clear selection bar (data itself is clear 
-                    // from the model by History class)
-                    jcbHistory.setSelectedItem(null); 
-                } else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
+					// clear selection bar (data itself is clear
+					// from the model by History class)
+					jcbHistory.setSelectedItem(null);
+				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
 						.getSubject())) {
 					jsVolume.removeChangeListener(CommandJPanel.this);
 					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));

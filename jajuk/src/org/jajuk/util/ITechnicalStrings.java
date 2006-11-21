@@ -54,7 +54,7 @@ public interface ITechnicalStrings {
 	public static final long TO_THE_END = -1;
 
 	/** Time we wait after an error in ms */
-	public static final int WAIT_AFTER_ERROR = 2000;
+	public static final int WAIT_AFTER_ERROR = 3000;
 
 	/** Default playlist file name */
 	public static final String DEFAULT_PLAYLIST_FILE = "playlist";

@@ -153,8 +153,7 @@ public class Player implements ITechnicalStrings {
 				public void run() {
 					Player.stop(false);
 					try {
-						// make sure user has time to see this
-						// error message
+						// make sure user has time to see this error message
 						Thread.sleep(WAIT_AFTER_ERROR); 
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();

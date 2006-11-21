@@ -299,8 +299,7 @@ public class CoverView extends ViewAdapter implements Observer,
 						// store this dir
 						this.dirCurrent = fCurrent.getDirectory();
 					}
-					// remove all existing covers if current file is null (
-					// probably a file cannot be read )
+					// remove all existing covers
 					alCovers.clear();
 					if (this.dirCurrent == null) {
 						alCovers.add(coverDefault);
@@ -312,30 +311,28 @@ public class CoverView extends ViewAdapter implements Observer,
 					// the current track to reach other devices covers and
 					// display them together
 					Track trackCurrent = fCurrent.getTrack();
-					ArrayList<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
-					/*
-					 * list of files mapping the track
-					 */
-					for (org.jajuk.base.File file:alFiles){
+					ArrayList<org.jajuk.base.File> alFiles = trackCurrent
+							.getFiles();
+					// list of files mapping the track
+					for (org.jajuk.base.File file : alFiles) {
 						Directory dirScanned = file.getDirectory();
 						if (!dirScanned.getDevice().isMounted()) {
-							/*
-							 * if the device is not ready, just ignore it
-							 * continue;
-							 */
+							// if the device is not ready, just ignore it
+							continue;
 						}
 						java.io.File[] files = dirScanned.getFio().listFiles();
 						// null if none file found
 						boolean bAbsoluteCover = false;
-						// whether an absolute
-						// cover ( unique) has been found
+						// whether an absolute cover (unique) has been found
 						for (int i = 0; files != null && i < files.length; i++) {
 							// check size to avoid out of memory errors
 							if (files[i].length() > MAX_COVER_SIZE * 1024) {
 								continue;
 							}
 							String sExt = Util.getExtension(files[i]);
-							if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							if (sExt.equalsIgnoreCase("jpg")
+									|| sExt.equalsIgnoreCase("png")
+									|| sExt.equalsIgnoreCase("gif")) {
 								if (!bAbsoluteCover
 										&& Util.isAbsoluteDefaultCover(FIFO
 												.getInstance().getCurrentFile()
@@ -367,17 +364,15 @@ public class CoverView extends ViewAdapter implements Observer,
 							final String sQuery = createQuery(fCurrent);
 							Log.debug("Query={{" + sQuery + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 							if (!sQuery.equals("")) {
-								// there is not enough
-								// information in tags
+								// there is not enough information in tags
 								// for a web search
-								// //$NON-NLS-1$
 								ArrayList<URL> alUrls;
 								alUrls = DownloadManager
 										.getRemoteCoversList(sQuery);
-								bOnceConnected = true; // user managed once to
-								// connect to the web
-								if (alUrls.size() > MAX_REMOTE_COVERS) { // limit
-									// number of remote covers
+								bOnceConnected = true; 
+								// user managed once to connect to the web
+								if (alUrls.size() > MAX_REMOTE_COVERS) { 
+									// limit number of remote covers
 									alUrls = new ArrayList<URL>(alUrls.subList(
 											0, MAX_REMOTE_COVERS));
 								}
@@ -386,10 +381,9 @@ public class CoverView extends ViewAdapter implements Observer,
 								Iterator it2 = alUrls.iterator();
 								// add found covers
 								while (it2.hasNext()
-										&& this.iEventID == iLocalEventID) { // load
-									// each cover (pre-load or
-									// post-load) and stop if a
-									// signal has been emitted
+										&& this.iEventID == iLocalEventID) {
+									// load each cover (pre-load or post-load)
+									// and stop if a signal has been emitted
 									URL url = (URL) it2.next();
 									try {
 										Cover cover = new Cover(url,
