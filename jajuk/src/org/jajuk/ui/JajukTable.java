@@ -70,8 +70,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 			boolean bSortable, String sConf) {
 		super(model, colModel);
 		this.sConf = sConf;
+		setShowGrid(false);
+		setOpaque(false);
 		init(bSortable);
 	}
+	
+	
 
 	/**
 	 * Constructor
@@ -85,6 +89,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	public JajukTable(TableModel model, boolean bSortable, String sConf) {
 		super(model);
 		this.sConf = sConf;
+		setShowGrid(false);
+		setOpaque(false);
 		init(bSortable);
 	}
 

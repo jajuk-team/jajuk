@@ -78,6 +78,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		HighlighterPipeline pipeHighlight = new HighlighterPipeline(
 				new Highlighter[] { highlighter });
 		jtree.setHighlighters(pipeHighlight);
+		jtree.setRowHeight(20);
 		jtree.setRolloverEnabled(true);
 		return jtree;
 	}

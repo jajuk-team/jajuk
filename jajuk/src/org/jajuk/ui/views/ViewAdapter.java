@@ -23,11 +23,10 @@ package org.jajuk.ui.views;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JPanel;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
+import org.jajuk.ui.JajukJPanel;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -39,7 +38,7 @@ import com.vlsolutions.swing.docking.DockKey;
  * @author Bertrand Florat
  * @created 15 nov. 2003
  */
-public abstract class ViewAdapter extends JPanel implements IView,
+public abstract class ViewAdapter extends JajukJPanel implements IView,
 		ITechnicalStrings {
 
 	/** Populated state */
@@ -63,12 +62,11 @@ public abstract class ViewAdapter extends JPanel implements IView,
 	public ViewAdapter() {
 		// create a new DockKey (note that ID is set in setID() method)
 		key = new DockKey();
-		setOpaque(true);
 		// View title
 		key.setName(Messages.getString(getDesc()));
 		// View icon
 		key.setIcon(Util.getIcon(ICON_VIEW));
-	}
+ 	}
 
 	/**
 	 * toString method

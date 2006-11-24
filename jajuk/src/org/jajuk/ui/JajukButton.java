@@ -10,12 +10,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.KeyStroke;
-import javax.swing.border.Border;
+
+import org.jajuk.util.Util;
 
 /**
  * @author Bart Cremers
@@ -24,9 +24,6 @@ import javax.swing.border.Border;
 public class JajukButton extends JButton {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final Border JAJUK_BORDER = BorderFactory.createEmptyBorder(
-			4, 4, 4, 4);
 
 	public JajukButton() {
 		this(null, null);
@@ -42,11 +39,14 @@ public class JajukButton extends JButton {
 
 	public JajukButton(Action a) {
 		super(a);
+		setBorder(Util.getShadowBorder());
 	}
 
 	public JajukButton(String text, Icon icon) {
 		super(text, icon);
+		setBorder(Util.getShadowBorder());
 	}
+	
 
 	@Override
 	protected void init(String text, Icon icon) {
@@ -55,7 +55,6 @@ public class JajukButton extends JButton {
 			putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
 		}
 		super.init(text, icon);
-		setBorder(JAJUK_BORDER);
 	}
 
 	@Override

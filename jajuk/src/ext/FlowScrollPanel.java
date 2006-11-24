@@ -15,12 +15,13 @@ import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 
-public class FlowScrollPanel extends JPanel implements Scrollable {
+import org.jdesktop.swingx.JXPanel;
+
+public class FlowScrollPanel extends JXPanel implements Scrollable {
 	private static final long serialVersionUID = 1L;
 
 	private FlowLayout layout = new FlowLayout();
@@ -35,7 +36,7 @@ public class FlowScrollPanel extends JPanel implements Scrollable {
 		super();
 		super.setLayout(layout);
 		setScroller(scrollPane);
-	}
+ 	}
 
 	public void setScroller(JScrollPane scrollPane) {
 		if (scroller != scrollPane) {

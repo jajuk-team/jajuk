@@ -27,7 +27,6 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -35,7 +34,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.EtchedBorder;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -129,45 +127,40 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	private InformationJPanel() {
 		// dimensions
 		// set current jpanel properties
-		setBorder(BorderFactory.createEtchedBorder());
 		double size[][] = { { 0.42, 0.13, 0.05, 0.07, 0.33 }, { 20 } };
 		setLayout(new TableLayout(size));
 
 		// message bar
 		jlMessage = new JLabel();
-		jlMessage.setBorder(BorderFactory
-				.createEtchedBorder(EtchedBorder.LOWERED));
 		jlMessage.setOpaque(true);
 		setMessage(
 				Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-
+		jlMessage.setBorder(Util.getShadowBorder());
+		
 		// selection bar
 		jlSelection = new JLabel();
-		jlSelection.setBorder(BorderFactory
-				.createEtchedBorder(EtchedBorder.LOWERED));
-
+		jlSelection.setBorder(Util.getShadowBorder());
+		
 		// total progress bar
 		jpTotal = new JPanel();
 		jpTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
 		jpTotal.setLayout(new BoxLayout(jpTotal, BoxLayout.X_AXIS));
-		jpTotal.setBorder(BorderFactory
-				.createEtchedBorder(EtchedBorder.LOWERED));
+		jpTotal.setBorder(Util.getShadowBorder());
 		jlTotal = new JLabel();
 		jpTotal.add(jlTotal);
 		jpTotal.add(Box.createHorizontalStrut(3));
-
+		
+		
 		// Quality
 		jlQuality = new JLabel();
 		jlQuality.setToolTipText(Messages.getString("InformationJPanel.6")); //$NON-NLS-1$
-		jlQuality.setBorder(BorderFactory
-				.createEtchedBorder(EtchedBorder.LOWERED));
+		jlQuality.setBorder(Util.getShadowBorder());
 
 		// current progress bar
 		jpCurrent = new JPanel();
 		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
 		jpCurrent.setLayout(new BoxLayout(jpCurrent, BoxLayout.X_AXIS));
-		jpCurrent.setBorder(BorderFactory
-				.createEtchedBorder(EtchedBorder.LOWERED));
+		jpCurrent.setBorder(Util.getShadowBorder());
 		jpbCurrent = new JProgressBar(0, 100);
 		jpbCurrent.setStringPainted(true);
 		jlCurrent = new JLabel();

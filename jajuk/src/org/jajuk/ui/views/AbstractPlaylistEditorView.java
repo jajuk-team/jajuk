@@ -170,12 +170,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 
 		private static final long serialVersionUID = 1L;
 
-		final Font fontPlanned = new Font("serif", Font.ITALIC, 12); // font
-
-		// for
-		// planned
-		// items
-		// //$NON-NLS-1$
+		// font for planned items
+		final Font fontPlanned = new Font("serif", Font.ITALIC, 12);
 
 		public PlayListEditorTableModel() {
 			super(15);
@@ -318,22 +314,15 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 								"", null, null, font, Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
 					} else {
 						if (item.isRepeat()) {
+							// normal file, repeated
 							oValues[iRow][0] = new IconLabel(
 									iconRepeat,
-									"", null, null, font, Messages.getString("AbstractPlaylistEditorView.19")); // normal
-							// file,
-							// repeated
-							// //$NON-NLS-1$
-							// //$NON-NLS-2$
+									"", null, null, font, Messages.getString("AbstractPlaylistEditorView.19")); 
 						} else {
+							// normal file, not repeated
 							oValues[iRow][0] = new IconLabel(
 									iconNormal,
-									"", null, null, font, Messages.getString("AbstractPlaylistEditorView.18")); // normal
-							// file,
-							// not
-							// repeated
-							// //$NON-NLS-1$
-							// //$NON-NLS-2$
+									"", null, null, font, Messages.getString("AbstractPlaylistEditorView.18")); 
 						}
 					}
 				} else {
@@ -360,17 +349,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 				oValues[iRow][8] = bf.getTrack().getStringValue(
 						XML_TRACK_COMMENT);
 				// Date discovery
-				oValues[iRow][9] = bf.getTrack().getAdditionDate(); // show
-				// date
-				// using
-				// default
-				// local
-				// format
-				// and
-				// not
-				// technical
-				// representation
-				// Order
+				oValues[iRow][9] = bf.getTrack().getAdditionDate(); 
+				// show date using default local format and not technical representation Order
 				oValues[iRow][10] = bf.getTrack().getOrder();
 				// Device name
 				oValues[iRow][11] = bf.getDevice().getName();
@@ -491,9 +471,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 		jtable.setDragEnabled(true);
 		jtable.setTransferHandler(new PlaylistEditorTransferHandler(jtable));
 		setRenderers();
-		jtable.getColumnModel().getColumn(0).setPreferredWidth(20); // just
-		// an
-		// icon
+		// just an icon
+		jtable.getColumnModel().getColumn(0).setPreferredWidth(20);
 		jtable.getColumnModel().getColumn(0).setMaxWidth(20);
 		jtable.getTableHeader().setPreferredSize(new Dimension(0, 20));
 		jtable.addHighlighter(new ConditionalHighlighter(Color.ORANGE,
@@ -503,22 +482,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 			protected boolean test(ComponentAdapter adapter) {
 				StackItem item = getItem(adapter.row);
 				StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
-				if (itemCurrent != null && itemCurrent.equals(item)) { // if it
-					// is
-					// the
-					// currently
-					// played
-					// track,
-					// change
-					// color
-					if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) { // for
-						// queue
-						// playlist,
-						// only
-						// highlight
-						// real
-						// current
-						// track
+				if (itemCurrent != null && itemCurrent.equals(item)) {
+					// if it is the currently played track, change color
+					if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+						// for queue playlist, only highlight real current track
 						return (adapter.row == FIFO.getInstance().getIndex());
 					} else { // for others, we can't guess whish one to
 						// highlight if several times the same EVO
@@ -531,11 +498,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 		});
 		jtable.addMouseListener(this);
 		jtable.showColumns(jtable.getColumnsConf());
-		jtable.getColumnModel().addColumnModelListener(this); // add this
-		// listener
-		// after hiding
-		// columns
+		// add this listener after hiding columns
 		// selection listener to hide some buttons when selecting planned tracks
+		jtable.getColumnModel().addColumnModelListener(this);
 		ListSelectionModel lsm = jtable.getSelectionModel();
 		lsm.addListSelectionListener(this);
 		double size[][] = { { 0.99 }, { 30, 0.99 } };
@@ -656,17 +621,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 							return;
 						}
 						// clear planned
-						alPlanned = new ArrayList<StackItem>(0); // make
-						// sure
-						// planned
-						// is
-						// voided
-						// if
-						// not
-						// in
-						// Queue
-						jtable.getSelectionModel().clearSelection(); // remove
-						// selection
+						// make sure planned is voided if not in Queue
+						alPlanned = new ArrayList<StackItem>(0);
+						// remove selection
+						jtable.getSelectionModel().clearSelection();
 						PlaylistFileItem plfi = (PlaylistFileItem) ObservationManager
 								.getDetail(event, DETAIL_SELECTION);
 						AbstractPlaylistEditorView.this.iType = plfi.getType();
@@ -940,11 +898,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 			} else if (ae.getSource() == jbSave) {
 				// normal playlist
 				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL) {
-					if (this instanceof LogicalPlaylistEditorView) { // if
-						// logical
-						// editor,
-						// warning
-						// message
+					// if logical editor, warning message
+					if (this instanceof LogicalPlaylistEditorView) {
 						StringBuffer sbOut = new StringBuffer(Messages
 								.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
 						Playlist pl = PlaylistManager.getInstance()
@@ -966,17 +921,16 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 									PlaylistFile plf = (PlaylistFile) it.next();
 									plf.setModified(true);
 									try {
+										// set same files for all playlist files
 										plf.setFiles(plfi.getPlaylistFile()
-												.getFiles()); // set same
-										// files for all
-										// playlist
-										// files
+												.getFiles());
 										plf.commit();
 										InformationJPanel
 												.getInstance()
 												.setMessage(
 														Messages
-																.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+																.getString("AbstractPlaylistEditorView.22"),
+														InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 									} catch (JajukException je) {
 										Log.error(je);
 									}
@@ -990,7 +944,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 									.getInstance()
 									.setMessage(
 											Messages
-													.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+													.getString("AbstractPlaylistEditorView.22"),
+											InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 						} catch (JajukException je) {
 							Log.error(je);
 							Messages.showErrorMessage(je.getCode(), je
@@ -1001,22 +956,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 					// as
 					plfi.getPlaylistFile().saveAs();
 				}
+				// notify playlist repository to refresh
 				ObservationManager.notify(new Event(
-						EventSubject.EVENT_DEVICE_REFRESH)); // notify
-				// playlist
-				// repository to
-				// refresh
+						EventSubject.EVENT_DEVICE_REFRESH)); 
+				
 			} else if (ae.getSource() == jbClear) {
+				// if it is the queue playlist, stop the selection
 				plfi.getPlaylistFile().clear();
-				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) { // if
-					// it
-					// is
-					// the
-					// queue
-					// playlist,
-					// stop
-					// the
-					// selection
+				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) { 
 					FIFO.getInstance().stopRequest();
 				}
 			} else if (ae.getSource() == jbDown || ae.getSource() == jbUp) {
@@ -1025,26 +972,22 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 					if (ae.getSource() == jbDown) {
 						plfi.getPlaylistFile().down(iRow);
 						if (iRow < jtable.getModel().getRowCount() - 1) {
+							// force immediate table refresh
 							update(new Event(
 									EventSubject.EVENT_PLAYLIST_REFRESH,
 									ObservationManager
-											.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); // force
-							// immediate
-							// table
-							// refresh
+											.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); 
 							jtable.getSelectionModel().setSelectionInterval(
 									iRow + 1, iRow + 1);
 						}
 					} else if (ae.getSource() == jbUp) {
 						plfi.getPlaylistFile().up(iRow);
 						if (iRow > 0) {
+							// force immediate table refresh
 							update(new Event(
 									EventSubject.EVENT_PLAYLIST_REFRESH,
 									ObservationManager
-											.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); // force
-							// immediate
-							// table
-							// refresh
+											.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_REFRESH))); 
 							jtable.getSelectionModel().setSelectionInterval(
 									iRow - 1, iRow - 1);
 						}
@@ -1058,13 +1001,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 							jtable.getRowCount() - 1);
 				}
 				for (int i = 0; i < iRows.length; i++) {
-					plfi.getPlaylistFile().remove(iRows[i] - i); // don't
-					// forget
-					// that
-					// index
-					// changes
-					// when
-					// removing
+					// don't  forget that index changes when removing
+					plfi.getPlaylistFile().remove(iRows[i] - i); 
 				}
 				// set selection to last line if end reached
 				int iLastRow = jtable.getRowCount() - 1;
@@ -1197,82 +1135,46 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE
 						&& lsm.getMinSelectionIndex() == 0
 						|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF
-						|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { // neither
-					// for
-					// bestof
-					// or
-					// novelties
-					// playlist
+						|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { 
+					// neither for bestof nor novelties playlist
 					jbRemove.setEnabled(false);
 				} else {
 					jbRemove.setEnabled(true);
 				}
 			}
 			// Add shuffle button
-			if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF // neither
-					// for
-					// bestof
-					// playlist
+			if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF 
+					// neither for bestof playlist
 					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES
-					|| lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() // multiple
-					// selection
-					// not
-					// supported
+					|| lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() 
+					// multiple  selection not supported
 					|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm
-							.getMinSelectionIndex() == 0)// can't add
-					// track at
-					// current track
-					// position
+							.getMinSelectionIndex() == 0)
+							// can't add track at current track position
 					|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && selectedRow > FIFO
-							.getInstance().getFIFO().size())// no add for
-			// planned track
-			// but user can
-			// add over
-			// first planned
-			// track to
-			// extand FIFO
+							.getInstance().getFIFO().size())
+							// no add for planned track but user can add over first planned track to extand FIFO
 			) {
 				jbAddShuffle.setEnabled(false);
 			} else {
 				jbAddShuffle.setEnabled(true);
 			}
 			// Up button
-			if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() // check
-					// if
-					// several
-					// rows
-					// have
-					// been
-					// selected
-					// :
-					// doesn't
-					// supported
-					// yet
+			if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() 
+					// check if several rows have been selected :
+					// doesn't supported yet
 					|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO
-							.getInstance().containsRepeat()) // check if we
-					// are in the
-					// queue with
-					// repeated
-					// tracks : not
-					// supported yet
+							.getInstance().containsRepeat()) 
+					// check if we are in the queue with repeated tracks : 
+					//		not supported yet
 					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF
-					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { // neither
-				// for
-				// bestof
-				// or
-				// novelties
-				// playlist
+					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { 
+				// neither for bestof nor novelties playlist
 				jbUp.setEnabled(false);
 			} else { // yet here ?
 				if (bPlanned) {
-					if (lsm.getMaxSelectionIndex() > alItems.size()) { // a
-						// planned
-						// track
-						// can't
-						// go to
-						// normal
-						// files
-						// stack
+					if (lsm.getMaxSelectionIndex() > alItems.size()) { 
+						// a planned track can't go to normal files stack
 						jbUp.setEnabled(true);
 					} else {
 						jbUp.setEnabled(false);
@@ -1280,15 +1182,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 				} else { // normal item
 					if (lsm.getMinSelectionIndex() == 0
 							|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm
-									.getMinSelectionIndex() == 1)) {// check
-						// if we
-						// selected
-						// second
-						// track
-						// just
-						// after
-						// current
-						// tracks
+									.getMinSelectionIndex() == 1)) {
+						// check if we selected second track just after current tracks
 						jbUp.setEnabled(false); // already at the top
 					} else {
 						jbUp.setEnabled(true);
@@ -1296,31 +1191,15 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 				}
 			}
 			// Down button
-			if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() // check
-					// if
-					// several
-					// rows
-					// have
-					// been
-					// selected
-					// :
-					// doesn't
-					// supported
-					// yet
+			if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() 
+					// check if several rows have been selected :
+					// doesn't supported yet
 					|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO
-							.getInstance().containsRepeat()) // check if we
-					// are in the
-					// queue with
-					// repeated
-					// tracks : not
-					// supported yet
+							.getInstance().containsRepeat()) 
+							// check if we are in the queue with repeated tracks : 
+							//not supported yet
 					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF
-					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { // neither
-				// for
-				// bestof
-				// playlist
-				// nor
-				// novelties
+					|| plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { 
 				jbDown.setEnabled(false);
 			} else { // yet here ?
 				if (bPlanned) {
@@ -1332,21 +1211,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 					}
 				} else { // normal item
 					if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE
-							&& lsm.getMaxSelectionIndex() == 0) { // current
-						// track
-						// can't
-						// go
-						// down
+							&& lsm.getMaxSelectionIndex() == 0) { 
+						// current track can't go down
 						jbDown.setEnabled(false);
-					} else if (lsm.getMaxSelectionIndex() < alItems.size() - 1) { // a
-						// normal
-						// item
-						// can't
-						// go
-						// in
-						// the
-						// planned
-						// items
+					} else if (lsm.getMaxSelectionIndex() < alItems.size() - 1) { 
+						// a normal item can't go in the planned items
 						jbDown.setEnabled(true);
 					} else {
 						jbDown.setEnabled(false);
@@ -1355,5 +1224,4 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 			}
 		}
 	}
-
 }

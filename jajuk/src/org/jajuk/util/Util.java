@@ -22,6 +22,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -98,6 +99,8 @@ import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -142,6 +145,14 @@ public class Util implements ITechnicalStrings {
 
 	/** Mplayer exe path */
 	private static String sMplayerPath = null;
+
+	/** downdown shadow border */
+	private static DropShadowBorder shadowBorder = new DropShadowBorder(
+			Color.BLACK, 0, 5, .5f, 12, false, true, true, true);
+
+	/** Generic gradiant* */
+	private static BasicGradientPainter grandiant = new BasicGradientPainter(
+			BasicGradientPainter.NIGHT_GRAY_LIGHT);
 
 	/**
 	 * Genres
@@ -1322,9 +1333,9 @@ public class Util implements ITechnicalStrings {
 		/*
 		 * can contain external program paths
 		 */
-		properties.remove("java.library.path"); 
-		properties.remove("java.class.path"); 
-		// user name is private 
+		properties.remove("java.library.path");
+		properties.remove("java.class.path");
+		// user name is private
 		properties.remove("user.name");//$NON-NLS-1$ 
 		properties.remove("java.ext.dirs");
 		properties.remove("sun.boot.class.path");
@@ -1686,6 +1697,14 @@ public class Util implements ITechnicalStrings {
 			}
 		}
 		return out;
+	}
+
+	public static DropShadowBorder getShadowBorder() {
+		return shadowBorder;
+	}
+
+	public static BasicGradientPainter getGrandiant() {
+		return grandiant;
 	}
 
 }

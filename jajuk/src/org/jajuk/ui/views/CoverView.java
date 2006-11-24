@@ -369,9 +369,9 @@ public class CoverView extends ViewAdapter implements Observer,
 								ArrayList<URL> alUrls;
 								alUrls = DownloadManager
 										.getRemoteCoversList(sQuery);
-								bOnceConnected = true; 
+								bOnceConnected = true;
 								// user managed once to connect to the web
-								if (alUrls.size() > MAX_REMOTE_COVERS) { 
+								if (alUrls.size() > MAX_REMOTE_COVERS) {
 									// limit number of remote covers
 									alUrls = new ArrayList<URL>(alUrls.subList(
 											0, MAX_REMOTE_COVERS));
@@ -588,9 +588,8 @@ public class CoverView extends ViewAdapter implements Observer,
 					if (alCovers.size() == 0) {
 						// should not append
 						alCovers.add(coverDefault);
-						// Add at last the
-						// default cover if all
-						// remote cover has been discarded
+						// Add at last the default cover if all remote cover has
+						// been discarded
 						try {
 							prepareDisplay(0);
 						} catch (JajukException e) {
@@ -615,15 +614,14 @@ public class CoverView extends ViewAdapter implements Observer,
 							prepareDisplay(index);
 							return null; // OK, leave
 						} catch (Exception e) {
-							Log
-									.debug("Removed cover: {{" + alCovers.get(index) + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+							Log.debug("Removed cover: {{" + alCovers.get(index)
+									+ "}}"); 
 							alCovers.remove(index);
 							// refresh number of found covers
 							if (!bGotoBetter) {
-								// we go to worse covers. If we
-								// go to better covers, we just
-								// keep the same index
-								// try a worse cover...
+								// we go to worse covers. If we go to better
+								// covers, we just
+								// keep the same index try a worse cover...
 								if (index - 1 >= 0) {
 									index--;
 								} else { // no more worse cover
@@ -637,8 +635,7 @@ public class CoverView extends ViewAdapter implements Observer,
 					// if this code is executed, it means than no available
 					// cover was found, then display default cover
 					alCovers.add(coverDefault); // Add at last the default cover
-					// if all remote cover has been
-					// discarded
+					// if all remote cover has been discarded
 					try {
 						index = 0;
 						prepareDisplay(index);
@@ -666,9 +663,8 @@ public class CoverView extends ViewAdapter implements Observer,
 	 * 
 	 */
 	private void displayCover(int index) {
-		if (alCovers.size() == 0 || index >= alCovers.size() || index < 0) { // just
-			// a
-			// check
+		if (alCovers.size() == 0 || index >= alCovers.size() || index < 0) { 
+			// just a check
 			alCovers.add(coverDefault); // display default cover by default
 			displayCover(0);
 			return;

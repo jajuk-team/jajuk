@@ -225,7 +225,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 
 		hsItems = new HashSet<CatalogItem>();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -271,8 +271,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jcbFilter = new SteppedComboBox();
 		jcbFilter.setEditable(false);
 		// note that a single album can contains tracks with different authors
-		// or styles, we will
-		// show it only one
+		// or styles, we will show it only one
 		for (PropertyMetaInformation meta : alFilters) {
 			jcbFilter.addItem(meta.getHumanName());
 		}
@@ -336,12 +335,10 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jsp = new JScrollPane(jpItems,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		jsp.setOpaque(false);
 		jpItems.setScroller(jsp);
 		jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
-		setOpaque(true);
-		setBackground(Color.WHITE);
-		jpItems.setOpaque(true);
-		jpItems.setBackground(Color.WHITE);
+		jpItems.setOpaque(false);
 		// Menu items
 		// Album menu
 		jmenu = new JPopupMenu();
@@ -411,19 +408,14 @@ public class CatalogView extends ViewAdapter implements Observer,
 			if (tracks.size() == 0) {
 				return false;
 			}
-			Track trackCurrent = tracks.iterator().next(); // take first
-			// track found
-			// to get
-			// associated directories as we
-			// assume all tracks for an
-			// album are in the same
-			// directory
+			// take first track found to get associated directories as we
+			// assume all tracks for an album are in the same directory
+			Track trackCurrent = tracks.iterator().next();
 			fCover = trackCurrent.getAlbum().getCoverFile();
 			if (fCover == null) {
 				try {
 					// use void file to store the fact we didn't find a
-					// cover, too long to scan
-					// again
+					// cover, too long to scan again
 					fThumb.createNewFile();
 				} catch (Exception e) {
 					Log.error(e);
@@ -608,9 +600,8 @@ public class CatalogView extends ViewAdapter implements Observer,
 					jcbPage.addActionListener(CatalogView.this);
 					// Add all items
 					int max = alItemsToDisplay.size(); // upper limit
-					if (page < (iNbPages - 1)) { // if last page, take
-						// simply to total
-						// number of
+					if (page < (iNbPages - 1)) {
+						// if last page, take simply to total number of
 						// items to display
 						max = (page + 1) * CATALOG_PAGE_SIZE;
 					}
@@ -841,6 +832,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			jpIcon = new JPanel();
 			jlIcon = new JLabel();
+			jlIcon.setBorder(Util.getShadowBorder());
 			ImageIcon ii = null;
 			String sPath = fCover.getAbsolutePath();
 			if (noCoversCache.containsKey(sPath)) {
@@ -854,34 +846,37 @@ public class CatalogView extends ViewAdapter implements Observer,
 				// use old image
 			}
 			jlIcon.setIcon(ii);
-			jpIcon.setOpaque(true);
-			jpIcon.setBackground(Color.WHITE);
+			jpIcon.setOpaque(false);
 			addMouseListener(this);
 			jpIcon.add(jlIcon, "1,0"); //$NON-NLS-1$
 			int iRows = 9 + 3 * (jcbSize.getSelectedIndex());
+			Font customFont = new Font("verdana",Font.BOLD,10);
+			Color mediumGray = new Color(172,172,172);
+			
 			// take first track author as author
 			jlAuthor = new JTextArea(track.getAuthor().getName2(), 1, iRows);
 			jlAuthor.setLineWrap(true);
 			jlAuthor.setWrapStyleWord(true);
 			jlAuthor.setEditable(false);
-			jlAuthor.setOpaque(true);
-			jlAuthor.setBackground(Color.WHITE);
-
+			jlAuthor.setOpaque(false);
+			jlAuthor.setFont(customFont);
+			jlAuthor.setForeground(mediumGray);
+			
 			jlAlbum = new JTextArea(album.getName2(), 1, iRows);
 			jlAlbum.setLineWrap(true);
 			jlAlbum.setWrapStyleWord(true);
 			jlAlbum.setEditable(false);
 			jlAuthor.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
 			jlAlbum.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-			jlAlbum.setOpaque(true);
-			jlAlbum.setBackground(Color.WHITE);
-
+			jlAlbum.setOpaque(false);
+			jlAlbum.setFont(customFont);
+			jlAlbum.setForeground(mediumGray);
+			
 			add(jpIcon, "1,0"); //$NON-NLS-1$
 			add(jlAuthor, "1,2"); //$NON-NLS-1$
 			add(jlAlbum, "1,4"); //$NON-NLS-1$
 			setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-			setOpaque(true);
-			setBackground(Color.WHITE);
+			setOpaque(false);
 		}
 
 		public boolean isNoCover() {

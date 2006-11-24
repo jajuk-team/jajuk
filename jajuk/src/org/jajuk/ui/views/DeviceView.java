@@ -61,6 +61,7 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import ext.FlowScrollPanel;
 
@@ -204,6 +205,10 @@ public class DeviceView extends ViewAdapter implements IView,
 
 		// devices
 		jpDevices = new FlowScrollPanel();
+		jpDevices.setOpaque(false);
+		jpDevices.setBackgroundPainter(new BasicGradientPainter(
+			BasicGradientPainter.GRAY));
+
 		Dimension dim = new Dimension(getWidth(), getHeight());
 		jpDevices.setPreferredSize(dim);
 		JScrollPane jsp = new JScrollPane(jpDevices,
@@ -595,6 +600,7 @@ class DeviceItem extends JPanel {
 		add(jlIcon);
 		JLabel jlName = new JLabel(sName);
 		add(jlName);
+		setOpaque(false);
 	}
 
 	/**

@@ -30,6 +30,8 @@ import javax.swing.Icon;
 import javax.swing.UIManager;
 import javax.swing.plaf.ButtonUI;
 
+import org.jdesktop.swingx.border.DropShadowBorder;
+
 /**
  * A specialized button, firing successive <code>ActionEvent</code>'s as long
  * as the button remains pressed.
@@ -167,6 +169,9 @@ public class JPressButton extends JajukButton {
 
 		// initialize
 		init(text, icon);
+		
+		//Set border
+		setBorder(new DropShadowBorder());
 	}
 
 	/**

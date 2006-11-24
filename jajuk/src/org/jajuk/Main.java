@@ -152,17 +152,15 @@ public class Main implements ITechnicalStrings {
 
 	/** Is it the first seesion ever ? */
 	private static boolean bFirstSession = false;
-	
-	/** Mplayer state*/
+
+	/** Mplayer state */
 	private static MPlayerStatus mplayerStatus;
 
-	/**MPlayer status possible values **/
+	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
-		MPLAYER_STATUS_OK, 
-		MPLAYER_STATUS_NOT_FOUND, 
-		MPLAYER_STATUS_WRONG_VERSION
+		MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION
 	}
-	
+
 	/**
 	 * Main entry
 	 * 
@@ -397,8 +395,8 @@ public class Main implements ITechnicalStrings {
 							tbIO.writeXML(out);
 							out.flush();
 							out.close();
-							/* release intellipad resources */			 
-							if (Util.isUnderWindows()){
+							/* release intellipad resources */
+							if (Util.isUnderWindows()) {
 								org.jajuk.ui.action.ActionBase.cleanup();
 							}
 						}
@@ -593,9 +591,11 @@ public class Main implements ITechnicalStrings {
 				}
 			}
 			// Choose player according to mplayer presence or not
-			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no mplayer
-				//Show mplayer warnings
-				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no mplayer
+			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no
+				// mplayer
+				// Show mplayer warnings
+				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no
+					// mplayer
 					// Test if user didn't already select "don't show again"
 					if (!ConfigurationManager
 							.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
@@ -968,34 +968,30 @@ public class Main implements ITechnicalStrings {
 							.getFileByID(
 									ConfigurationManager
 											.getProperty(CONF_STARTUP_FILE));
-				} else { // last file from begining or last file keep
-					// position
+				} else {
+					// last file from begining or last file keep position
 					if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
 							&& History.getInstance().getHistory().size() > 0) {
-						/*
-						 * make sure user didn't exit jajuk in the stopped state
-						 * and that history is not void
-						 */
+						// make sure user didn't exit jajuk in the stopped state
+						// and that history is not void
 						fileToPlay = FileManager.getInstance().getFileByID(
 								History.getInstance().getLastFile());
 					} else {
-						/*
-						 * do not try to lauch anything, stay in stop state
-						 */
+						// do not try to lauch anything, stay in stop state
 						return;
 					}
 				}
 				if (fileToPlay != null) {
-					if (fileToPlay.isReady()) { // we try to launch at startup
-						// only existing and mounted
+					if (fileToPlay.isReady()) {
+						// we try to launch at startup only existing and mounted
 						// files
 						alToPlay.add(fileToPlay);
-					} else { // file exists but is not mounted, just notify
-						// the error without anoying dialog at each
-						// startup
-						// try to mount device
-						Log
-								.debug("Startup file located on an unmounted device, try to mount it"); //$NON-NLS-1$
+					} else {
+						// file exists but is not mounted, just notify the error
+						// without anoying dialog at each startup try to mount
+						// device
+						Log.debug("Startup file located on an unmounted device"
+								+ ", try to mount it"); //$NON-NLS-1$
 						try {
 							fileToPlay.getDevice().mount(true);
 							Log.debug("Mount OK"); //$NON-NLS-1$
@@ -1010,11 +1006,12 @@ public class Main implements ITechnicalStrings {
 							FIFO.setFirstFile(false); // no more first file
 						}
 					}
-				} else { // file no more exists
-					Messages
-							.getChoice(
-									Messages.getErrorMessage("023"), JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
-					FIFO.setFirstFile(false); // no more first file
+				} else {
+					// file no more exists
+					Messages.getChoice(Messages.getErrorMessage("023"),
+							JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
+					FIFO.setFirstFile(false);
+					// no more first file
 					return;
 				}
 				// For last tracks playing, add all ready files from last
@@ -1057,6 +1054,11 @@ public class Main implements ITechnicalStrings {
 				if (alToPlay != null && alToPlay.size() > 0) {
 					Collections.shuffle(alToPlay, new Random(System
 							.currentTimeMillis()));// shuffle the selection
+				} else {
+					//Alert user that no novelties have been found
+					InformationJPanel.getInstance().setMessage(
+							Messages.getString("Error.127"),
+							InformationJPanel.ERROR);
 				}
 			}
 			// launch selected file
@@ -1140,7 +1142,7 @@ public class Main implements ITechnicalStrings {
 					jpFrame = (JPanel) jw.getContentPane();
 					jpFrame.setOpaque(true);
 					jpFrame.setLayout(new BorderLayout());
-
+					
 					// Set menu bar to the frame
 					jw.setJMenuBar(JajukJMenuBar.getInstance());
 
@@ -1211,7 +1213,7 @@ public class Main implements ITechnicalStrings {
 						tipsView.setLocationRelativeTo(jw);
 						tipsView.setVisible(true);
 					}
-			
+
 				} catch (Exception e) { // last chance to catch any error for
 					// logging purpose
 					e.printStackTrace();

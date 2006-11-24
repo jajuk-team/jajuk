@@ -21,6 +21,7 @@
 package org.jajuk.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -104,6 +105,10 @@ public class SearchBox extends JTextField implements KeyListener {
 		timer.start();
 		addKeyListener(this);
 		setToolTipText(Messages.getString("SearchBox.0")); //$NON-NLS-1$
+		setBorder(BorderFactory.createEtchedBorder());
+		setFont(new Font("dialog", Font.BOLD, 18));
+		Color mediumGray = new Color(172,172,172);
+		setForeground(mediumGray);
 	}
 
 	/*
@@ -126,9 +131,8 @@ public class SearchBox extends JTextField implements KeyListener {
 		}
 		bNeedSearch = false; // stop clock for auto-search
 		sTyped = getText();
-		if (sTyped.length() >= MIN_CRITERIA_LENGTH) { // perform automatic
-			// search only when user
-			// provide more than 5
+		if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
+			// perform automatic search only when user provide more than 5
 			// letters
 			if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 				search();
@@ -160,8 +164,8 @@ public class SearchBox extends JTextField implements KeyListener {
 			if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
 				// second test to get sure user didn't
 				// typed before entering this method
-				TreeSet<SearchResult> tsResu = FileManager.getInstance().search(
-						sTyped.toString());
+				TreeSet<SearchResult> tsResu = FileManager.getInstance()
+						.search(sTyped.toString());
 				if (tsResu.size() > 0) {
 					DefaultListModel model = new DefaultListModel();
 					alResults = new ArrayList<SearchResult>();
@@ -179,27 +183,13 @@ public class SearchBox extends JTextField implements KeyListener {
 					if (popup != null) {
 						popup.hide();
 					}
-					Point point = new Point(0, 0); // take upper-left point
-					// relative to the
+					// take upper-left point  relative to the
 					// textfield
-					SwingUtilities.convertPointToScreen(point, this); // take
-					// absolute
-					// coordonates
-					// in
-					// the
-					// screen
-					// (
-					// popups
-					// works
-					// only
-					// on
-					// absolute
-					// coordonates
-					// in
-					// oposition
-					// to
-					// swing
+					Point point = new Point(0, 0); 
+					// take absolute coordonates in the screen (popups works
+					// only on absolute coordonates in oposition to swing
 					// widgets)
+					SwingUtilities.convertPointToScreen(point, this);
 					popup = factory.getPopup(this, jsp, (int) point.getX(),
 							(int) point.getY() + 25);
 					popup.show();

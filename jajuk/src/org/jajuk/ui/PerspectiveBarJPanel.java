@@ -26,12 +26,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXPanel;
 
 import com.l2fprod.common.swing.JButtonBar;
 
@@ -41,7 +41,7 @@ import com.l2fprod.common.swing.JButtonBar;
  * @author Bertrand Florat
  * @created 6 oct. 2003
  */
-public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings {
+public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
@@ -72,7 +72,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings {
 	 * Constructor for PerspectiveBarJPanel.
 	 */
 	private PerspectiveBarJPanel() {
-		super();
+		setBackgroundPainter(Util.getGrandiant());
 		update();
 	}
 
@@ -81,6 +81,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings {
 	 * 
 	 */
 	public void update() {
+
 		// Perspectives tool bar
 		jtbPerspective = new JButtonBar(JButtonBar.VERTICAL);
 		Iterator it = PerspectiveManager.getPerspectives().iterator();

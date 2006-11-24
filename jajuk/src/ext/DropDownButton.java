@@ -40,6 +40,7 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 		arrowButton.addActionListener(this);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
 		mainButton.addPropertyChangeListener("enabled", this); // NOI18N
+		setBorder(Util.getShadowBorder());
 	}
 
 	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
