@@ -163,8 +163,8 @@ public class CoverView extends ViewAdapter implements Observer,
 	 */
 	public void initUI() {
 		// global layout
-		double size[][] = { { 0.99 },
-				{ TableLayout.PREFERRED, TableLayout.FILL } };
+		double size[][] = { { TableLayout.FILL  },
+				{ TableLayout.PREFERRED, 5, TableLayout.FILL, 5 } };
 		setLayout(new TableLayout(size));
 		// Control panel
 		jpControl = new JPanel();
@@ -241,11 +241,9 @@ public class CoverView extends ViewAdapter implements Observer,
 			public void run() {
 				try {
 					if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)) {
-						DownloadManager.getRemoteCoversList("");
-						/*
-						 * try to open connexion, this can take about 30 sec
-						 * under linux if network not available
-						 */
+						//try to open connexion, this can take about 30 sec
+						//under linux if network not available
+						 DownloadManager.getRemoteCoversList("");
 					}
 					Thread.sleep(3000); // more sec in case of...
 				} catch (Exception e) {
@@ -732,7 +730,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			removeAll();
 		}
 		add(jpControl, "0,0");//$NON-NLS-1$
-		add(jl, "0,1,c,c");//$NON-NLS-1$
+		add(jl, "0,2,c,c");//$NON-NLS-1$
 		setCursor(Util.DEFAULT_CURSOR);
 		searching(false);
 	}

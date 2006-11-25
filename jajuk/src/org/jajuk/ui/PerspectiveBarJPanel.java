@@ -47,10 +47,10 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	private static final long serialVersionUID = 1L;
 
 	/** Perspectives tool bar* */
-	private JButtonBar jtbPerspective = null;
+	private JButtonBar jtbPerspective;
 
 	/** Self instance */
-	static private PerspectiveBarJPanel pb = null;
+	static private PerspectiveBarJPanel pb;
 
 	/**
 	 * Perspective button
@@ -85,6 +85,8 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	public void update() {
 		// Perspectives tool bar
 		jtbPerspective = new JButtonBar(JButtonBar.VERTICAL);
+		jtbPerspective.setOpaque(false);
+		jtbPerspective.setBorder(null);
 		Iterator it = PerspectiveManager.getPerspectives().iterator();
 		int index = 0;
 		while (it.hasNext()) {
