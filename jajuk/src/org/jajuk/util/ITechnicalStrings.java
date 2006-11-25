@@ -63,7 +63,7 @@ public interface ITechnicalStrings {
 	public static final int STOP_TO_SEARCH = 5;
 
 	/** Listening port to check others jajuk sessions */
-	public static final int PORT = 62321;
+	public static final int PORT = 62322;
 
 	/** Quality agent e-mail */
 	public static final String FEEDBACK_EMAIL = "jajuk-support@lists.sourceforge.net";

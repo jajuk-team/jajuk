@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.jajuk.ui.JajukButton;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -28,7 +29,7 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 		ITechnicalStrings {
 	private final JButton mainButton = this;
 
-	private final JButton arrowButton = new JButton(Util
+	private final JButton arrowButton = new JajukButton(Util
 			.getIcon(ICON_DROP_DOWN));
 
 	private boolean popupVisible = false;

@@ -44,6 +44,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.browser.WebBrowser;
 
@@ -104,10 +105,11 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		double sizeControl[][] =
 		// Language by lang
 		{ { 3 * iXspace, TableLayout.PREFERRED, iXspace, 200, 3 * iXspace },
-				{ 25 } };
+				{ 5,25,5 } };
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1")); //$NON-NLS-1$
 		jcbLanguage = new JComboBox();
+		jcbLanguage.setBorder(Util.getShadowBorder());
 		for (String sLocale : Messages.getLocales()) {
 			jcbLanguage.addItem(Messages.getHumanForLocale(sLocale));
 		}
@@ -116,11 +118,12 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 				ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
 		jcbLanguage.setSelectedIndex(index);
 		jcbLanguage.addActionListener(this);
-		jpControl.add(jlLanguage, "1,0");//$NON-NLS-1$
-		jpControl.add(jcbLanguage, "3,0");//$NON-NLS-1$
+		jpControl.add(jlLanguage, "1,1");//$NON-NLS-1$
+		jpControl.add(jcbLanguage, "3,1");//$NON-NLS-1$
 
 		// global layout
-		double size[][] = { { 0.99 }, { 30, 0, TableLayout.FILL } };
+		double size[][] = { { TableLayout.FILL }, { TableLayout.PREFERRED, 5
+			, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new WebBrowser();
 		//WebBrowser.setDebug(true);

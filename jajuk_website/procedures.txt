@@ -46,7 +46,7 @@ o- Send a message in the developer forum
 FIX RELEASE (x.y.z) PROCEDURE
 *Code*
 o- Refresh workspace
-o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
+o- Set right version (no more rc), test to '-notest', previous_release and change jajuktimestamp in build-dist script
 o- Check new incoming updates (i18n)
 o- Search for debug System.out
 - Search for wrong Messages class
@@ -78,7 +78,7 @@ o- Send a message in the developer forum
 RELEASE CANDIDATE (x.y.zRCn) PROCEDURE
 *Code*
 - Refresh workspace
-- Set right version (no - ex: 1.0.4rc4), debug to '-test' and jwsdeploy to 'test'  in build-dist script
+- Set right version (no - ex: 1.0.4rc4), debug to '-test', previous_release and change jajuktimestamp in build-dist script
 - Set 'test' to JWS_DIR in make_jajuk script
 - Check new incoming updates (i18n)
 - Generate packages

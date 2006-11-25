@@ -2,54 +2,76 @@
 <html>
 <head>
 
+
+  
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+
+  
+
+
+  
   <title>Jajuk tester guide</title>
-
-
   <meta name="GENERATOR" content="OpenOffice.org 1.1.3 (Linux)">
 
+
+  
   <meta name="CREATED" content="20040503;23532900">
 
-  <meta name="CHANGED" content="20050522;13201400">
 
+  
+  <meta name="CHANGED" content="20050522;13201400">
 </head>
 
 
 <body style="direction: ltr;" lang="fr-FR">
 
+
 <h1>Jajuk Tester Guide</h1>
+
 
 <u>Last change</u>: 2006/11/05
 <p lang="en-GB">Welcome to new Jajuk testers ! Have fun.</p>
 
+
 <h2>
 How many time does it take ?</h2>
 
+
 <ul>
 
+
   <li>5 minutes to register</li>
+
 
   <li>About 5 minutes
 per test case (there are currently from 40 to 50 test cases) : please
 choose a set of test cases that have not already been tested according
 the time you have.</li>
 
+
 </ul>
+
 
 <h2>How to get support ?</h2>
 
+
 <ul>
+
 
   <li>Please read the<a href="http://jajuk.sourceforge.net/jajuk-hs/default/html/intro.html">
 Jajuk user manual</a></li>
+
 
   <li>In case of doubt, don't hesitate to send your
 questions&nbsp;at <a href="mailto:jajuk-support@lists.sourceforge.net">jajuk-support@lists.sourceforge.net</a>
   </li>
 
+
 </ul>
 
+
 <h2>How to become Jajuk tester ?</h2>
+
 
 Jajuk needs testers all the year but especially within
 the&nbsp;one-month qualification time frame&nbsp;before a major
@@ -59,47 +81,60 @@ Center (to be
 done only once):
 <ul>
 
+
   <li>Go to <a href="http://www.florat.net/testlink/firstLogin.php">http://www.florat.net/testlink/firstLogin.php</a>
 and
 create an account in Jajuk Quality Center (this will grant you a
 read-only
 access, not enough to perform tests)</li>
 
+
   <li>Send us an e-mail at <a href="mailto:jajuk-support@lists.sourceforge.net">jajuk-support@lists.sourceforge.net</a>
 with the platform(s) you plan to use (Windows, Linux or MAC). We will
 grant you "tester" rights on selected platforms and you will be able to
 start&nbsp;testing</li>
 
+
   <li>Subscribe to <a href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers">Jajuk list</a> to be aware of new release
 candidates<a href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers" class="externalLink" title="External Link"><span lang="en-GB"></span></a><span lang="en-GB"> </span></li>
 
+
 </ul>
+
 
 <h2>How to get last Jajuk release running ?</h2>
 
+
 <ul>
+
 
   <li>[Linux and Mac only] If under Linux or Mac OS, make sure to
 get&nbsp;mplayer
 1.0 pre8 or later and mozilla 1.7 or later running on your system
 (nothing needed for Windows).</li>
 
+
   <li>Make sure to have a Java 5 runtime environment (JRE 1.5
 or later). If needed, <a href="http://www.java.com">download and install JRE</a> (for free).</li>
 
-  <li>Launch last Jajuk release available at <a href="http://www.florat.net:8001/jajuk-test/jajuk.jnlp">http://www.florat.net:8001/jajuk-test/jajuk.jnlp</a>
+
+  <li>Launch last Jajuk release available at <a href="http://82.239.70.252:8001/jajuk-test/app/">http://82.239.70.252:8001/jajuk-test/app/</a>
 (this link never change, you can bookmark it). This will install and
 launch Jajuk in Java Web Start mode, next release will be upgraded
 automatically.</li>
+
 
   <li>Check the Jajuk release in the splashscreen or in the About
 view (you would continue to use previous release if your
 client cannot connect&nbsp;to Java Web Start server in a short time
 frame).</li>
 
+
 </ul>
 
+
 <h2>How to test ?</h2>
+
 
 Jajuk quality Center is based on <a href="http://testlink.org">TestLink</a>, a
 great GPL test case management tool. TestLink manual is available from
@@ -108,15 +143,20 @@ the
 testing is very simple&nbsp;:
 <ul>
 
+
   <li>Log in <a href="http://www.florat.net/testlink/login.php">Jajuk Quality Center</a><a href="http://www.florat.net/testlink/login.php"></a></li>
 
+
   <li>Click on "Execute" tab in the TestLink Portal</li>
+
 
   <li>Select test case in the right-side tree by expending
 categories (choose a "Not tested" test in black: "Passed" tests are in
 green, "Failed" in red and "Blocked" in blue)</li>
 
+
   <li>Perform the test in Jajuk application</li>
+
 
   <li>Come back to the test page, select result (Passed, Failed,
 Blocked). If test failed, detail the problem in the text area. Please
@@ -125,39 +165,52 @@ provide any interesting trace by copy/pasting them from Jajuk
 "Show
 debug traces"). Then save the result using the save button. </li>
 
+
 </ul>
 
+
 <h2>Bug tracker system</h2>
+
 
 <h3>For Release Candidate (RC) versions
 (during&nbsp;qualification):</h3>
 
+
 <ul>
+
 
   <li>We don't use bug tracker in qualification (ie working on
 release
 candidate / RC versions), defects are simply noted in the test result
 field</li>
 
+
   <li>Please do not report RC bugs using SourceForge bug tracker.</li>
+
 
 </ul>
 
+
 <h3>For final / production releases</h3>
+
 
 You're welcomed to report issues on production releases using the Jajuk
 Quality Agent (In Jajuk main menu -&gt; "Help" -&gt; "Report a
 bug or feature request")
 <h2>Notes</h2>
 
+
 <ul>
+
 
   <li>RC releases use the '-test' flag so Jajuk data will be
 store in &lt;HOME&gt;/.jajuk_test directory and not
 &lt;HOME&gt;/.jajuk directory used by final releases. This way,
 you can continue to use stable jajuk and test releases together.</li>
 
+
 </ul>
+
 
 </body>
 </html>

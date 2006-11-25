@@ -20,8 +20,8 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 /**
  *  a customized JXPanel that supports gradiant
@@ -31,15 +31,16 @@ import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
  */
 public class JajukJPanel extends JXPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	/**
-	 * 
+	 * Constructor
 	 */
 	public JajukJPanel() {
 		setOpaque(false);
-		setBackgroundPainter(new BasicGradientPainter(
-			BasicGradientPainter.GRAY));
+		setBackgroundPainter(Util.getGrandiant());
 	}
 
-	private static final long serialVersionUID = 1L;
+	
 
 }

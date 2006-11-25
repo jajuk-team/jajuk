@@ -71,6 +71,8 @@ cp -rp $DOC_SOURCE/README*.html $DOC_DEST
 mkdir -p $DOC_DEST/images/logos
 cp -rp $WEBSITE_SOURCE/images/* $DOC_DEST/images/
 
+cp -rp $WEBSITE_SOURCE/new $XDOC_DEST/
+
 cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.js $WEBSITE_SOURCE/*.fml $XDOC_DEST
 rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
 #replace official qdwizard page by a notice

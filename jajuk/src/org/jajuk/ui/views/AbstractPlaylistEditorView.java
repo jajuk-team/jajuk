@@ -40,7 +40,6 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -73,6 +72,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
@@ -101,19 +101,19 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 
 	JPanel jpControl;
 
-	JButton jbRun;
+	JajukButton jbRun;
 
-	JButton jbSave;
+	JajukButton jbSave;
 
-	JButton jbRemove;
+	JajukButton jbRemove;
 
-	JButton jbUp;
+	JajukButton jbUp;
 
-	JButton jbDown;
+	JajukButton jbDown;
 
-	JButton jbAddShuffle;
+	JajukButton jbAddShuffle;
 
-	JButton jbClear;
+	JajukButton jbClear;
 
 	JLabel jlTitle;
 
@@ -416,52 +416,53 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 	public void initUI() {
 		// Control panel
 		jpControl = new JPanel();
+		jpControl.setOpaque(false);
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
-		int iXspace = 2;
 		// Note : we don't use toolbar because it's buggy in Metal look and feel
 		// : icon get bigger
 		double sizeControl[][] = {
-				{ iXspace, 20, iXspace, 20, iXspace, 20, iXspace, 20, iXspace,
-						20, iXspace, 20, iXspace, 20, iXspace,
-						TableLayout.FILL, iXspace }, { 25, 0.99 } };
-		jpControl.setLayout(new TableLayout(sizeControl));
-		jbRun = new JButton(Util.getIcon(ICON_RUN));
+				{ 5, 20, 20, 20, 20, 20, 20, 20, TableLayout.FILL, 5}
+				, { 5,25,5 } };
+		TableLayout layout = new TableLayout(sizeControl);
+		layout.setHGap(2);
+		jpControl.setLayout(layout);
+		jbRun = new JajukButton(Util.getIcon(ICON_RUN));
 		jbRun
 				.setToolTipText(Messages
 						.getString("AbstractPlaylistEditorView.2")); //$NON-NLS-1$
 		jbRun.addActionListener(this);
-		jbSave = new JButton(Util.getIcon(ICON_SAVE));
+		jbSave = new JajukButton(Util.getIcon(ICON_SAVE));
 		jbSave.setToolTipText(Messages
 				.getString("AbstractPlaylistEditorView.3")); //$NON-NLS-1$
 		jbSave.addActionListener(this);
-		jbRemove = new JButton(Util.getIcon(ICON_REMOVE));
+		jbRemove = new JajukButton(Util.getIcon(ICON_REMOVE));
 		jbRemove.setToolTipText(Messages
 				.getString("AbstractPlaylistEditorView.5")); //$NON-NLS-1$
 		jbRemove.addActionListener(this);
-		jbUp = new JButton(Util.getIcon(ICON_UP));
+		jbUp = new JajukButton(Util.getIcon(ICON_UP));
 		jbUp.setToolTipText(Messages.getString("AbstractPlaylistEditorView.6")); //$NON-NLS-1$
 		jbUp.addActionListener(this);
-		jbDown = new JButton(Util.getIcon(ICON_DOWN));
+		jbDown = new JajukButton(Util.getIcon(ICON_DOWN));
 		jbDown.setToolTipText(Messages
 				.getString("AbstractPlaylistEditorView.7")); //$NON-NLS-1$
 		jbDown.addActionListener(this);
-		jbAddShuffle = new JButton(Util.getIcon(ICON_ADD_SHUFFLE));
+		jbAddShuffle = new JajukButton(Util.getIcon(ICON_ADD_SHUFFLE));
 		jbAddShuffle.setToolTipText(Messages
 				.getString("AbstractPlaylistEditorView.10")); //$NON-NLS-1$
 		jbAddShuffle.addActionListener(this);
-		jbClear = new JButton(Util.getIcon(ICON_CLEAR));
+		jbClear = new JajukButton(Util.getIcon(ICON_CLEAR));
 		jbClear.setToolTipText(Messages
 				.getString("AbstractPlaylistEditorView.9")); //$NON-NLS-1$
 		jbClear.addActionListener(this);
 		jlTitle = new JLabel(""); //$NON-NLS-1$
-		jpControl.add(jbRun, "1,0"); //$NON-NLS-1$
-		jpControl.add(jbSave, "3,0"); //$NON-NLS-1$
-		jpControl.add(jbRemove, "5,0"); //$NON-NLS-1$
-		jpControl.add(jbAddShuffle, "7,0"); //$NON-NLS-1$
-		jpControl.add(jbUp, "9,0"); //$NON-NLS-1$
-		jpControl.add(jbDown, "11,0"); //$NON-NLS-1$
-		jpControl.add(jbClear, "13,0"); //$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlTitle), "15,0"); //$NON-NLS-1$
+		jpControl.add(jbRun, "1,1"); //$NON-NLS-1$
+		jpControl.add(jbSave, "2,1"); //$NON-NLS-1$
+		jpControl.add(jbRemove, "3,1"); //$NON-NLS-1$
+		jpControl.add(jbAddShuffle, "4,1"); //$NON-NLS-1$
+		jpControl.add(jbUp, "5,1"); //$NON-NLS-1$
+		jpControl.add(jbDown, "6,1"); //$NON-NLS-1$
+		jpControl.add(jbClear, "7,1"); //$NON-NLS-1$
+		jpControl.add(Util.getCentredPanel(jlTitle), "8,1"); //$NON-NLS-1$
 		model = new PlayListEditorTableModel();
 		jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS);
 		jtable
@@ -503,7 +504,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 		jtable.getColumnModel().addColumnModelListener(this);
 		ListSelectionModel lsm = jtable.getSelectionModel();
 		lsm.addListSelectionListener(this);
-		double size[][] = { { 0.99 }, { 30, 0.99 } };
+		double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
 		setLayout(new TableLayout(size));
 		add(jpControl, "0,0"); //$NON-NLS-1$
 		add(new JScrollPane(jtable), "0,1"); //$NON-NLS-1$

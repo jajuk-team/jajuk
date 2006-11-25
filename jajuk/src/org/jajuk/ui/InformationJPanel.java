@@ -127,7 +127,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	private InformationJPanel() {
 		// dimensions
 		// set current jpanel properties
-		double size[][] = { { 0.42, 0.13, 0.05, 0.07, 0.33 }, { 20 } };
+		double size[][] = { { 0.40, 0.13, 0.07, 0.07, 0.33 }, { 20 } };
 		setLayout(new TableLayout(size));
 
 		// message bar
@@ -136,11 +136,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 		setMessage(
 				Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		jlMessage.setBorder(Util.getShadowBorder());
-		
+
 		// selection bar
 		jlSelection = new JLabel();
 		jlSelection.setBorder(Util.getShadowBorder());
-		
+
 		// total progress bar
 		jpTotal = new JPanel();
 		jpTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
@@ -149,8 +149,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 		jlTotal = new JLabel();
 		jpTotal.add(jlTotal);
 		jpTotal.add(Box.createHorizontalStrut(3));
-		
-		
+
 		// Quality
 		jlQuality = new JLabel();
 		jlQuality.setToolTipText(Messages.getString("InformationJPanel.6")); //$NON-NLS-1$
@@ -319,12 +318,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	 * 
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(final Event event) { // we
-		// synchronize
-		// this method
-		// to make error
-		// message is
-		// visible all 2
+	public synchronized void update(final Event event) {
+		// we synchronize this method to make error message is visible all 2
 		// secs
 		final EventSubject subject = event.getSubject();
 		// do not insert this subject inside the invokeLater because we have to
@@ -352,8 +347,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 								Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
 					}
 				} else { // none specified file
-					setMessage(
-							Messages.getString("Error.007"), InformationJPanel.ERROR);//$NON-NLS-1$
+					setMessage(Messages.getString("Error.007"),
+							InformationJPanel.ERROR);//$NON-NLS-1$
 				}
 			} catch (Exception e) {
 				Log.error(e);
@@ -402,7 +397,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	}
 
 	/**
-	 * ToString() method
+	 * toString() method
 	 */
 	public String toString() {
 		return getClass().getName();

@@ -20,7 +20,6 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -34,7 +33,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -59,6 +57,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.StyleManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
@@ -73,6 +72,7 @@ import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.border.DropShadowBorder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -104,9 +104,9 @@ public abstract class AbstractTableView extends ViewAdapter implements
 
 	JTextField jtfValue;
 
-	JButton jbClearFilter;
+	JajukButton jbClearFilter;
 
-	JButton jbAdvancedFilter;
+	JajukButton jbAdvancedFilter;
 
 	JMenuItem jmiProperties;
 
@@ -192,6 +192,7 @@ public abstract class AbstractTableView extends ViewAdapter implements
 			public void finished() {
 				// Control panel
 				jpControl = new JPanel();
+				jpControl.setOpaque(false);
 				jpControl.setBorder(BorderFactory.createEtchedBorder());
 				jtbEditable = new JajukToggleButton(Util.getIcon(ICON_EDIT));
 				jtbEditable.setToolTipText(Messages
@@ -200,6 +201,7 @@ public abstract class AbstractTableView extends ViewAdapter implements
 				jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
 				// properties combo box, fill with colums names expect ID
 				jcbProperty = new JComboBox();
+				jcbProperty.setBorder(new DropShadowBorder());
 				// "any" criteria
 				jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //$NON-NLS-1$
 				for (int i = 1; i < model.getColumnCount(); i++) {
@@ -211,6 +213,7 @@ public abstract class AbstractTableView extends ViewAdapter implements
 				jcbProperty.addItemListener(AbstractTableView.this);
 				jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
 				jtfValue = new JTextField();
+				jtfValue.setBorder(Util.getShadowBorder());
 				jtfValue.addKeyListener(new KeyAdapter() {
 					public void keyReleased(KeyEvent e) {
 						bNeedSearch = true;
@@ -220,9 +223,9 @@ public abstract class AbstractTableView extends ViewAdapter implements
 				jtfValue.setToolTipText(Messages
 						.getString("AbstractTableView.3")); //$NON-NLS-1$
 				// buttons
-				jbClearFilter = new JButton(Util.getIcon(ICON_CLEAR_FILTER));
+				jbClearFilter = new JajukButton(Util.getIcon(ICON_CLEAR_FILTER));
 				jbClearFilter.addActionListener(AbstractTableView.this);
-				jbAdvancedFilter = new JButton(Util
+				jbAdvancedFilter = new JajukButton(Util
 						.getIcon(ICON_ADVANCED_FILTER));
 				jbAdvancedFilter.addActionListener(AbstractTableView.this);
 				jbClearFilter.setToolTipText(Messages
@@ -235,20 +238,17 @@ public abstract class AbstractTableView extends ViewAdapter implements
 						{ iXspace, 20, 3 * iXspace, TableLayout.FILL, iXspace,
 								0.3, TableLayout.FILL, TableLayout.FILL,
 								iXspace, 0.3, iXspace, 20, iXspace, 20, iXspace },
-						{ 22 } };
-				jpControl.setLayout(new TableLayout(sizeControl));
-				jpControl.add(jtbEditable, "1,0"); //$NON-NLS-1$
-				jpControl.add(jlFilter, "3,0"); //$NON-NLS-1$
-				jpControl.add(jcbProperty, "5,0"); //$NON-NLS-1$
-				jpControl.add(jlEquals, "7,0"); //$NON-NLS-1$
-				jpControl.add(jtfValue, "9,0"); //$NON-NLS-1$
-				jpControl.add(jbClearFilter, "11,0"); //$NON-NLS-1$
-				jpControl.add(jbAdvancedFilter, "13,0"); //$NON-NLS-1$
-				jpControl.setMinimumSize(new Dimension(0, 0)); // allow resing
-				// with info
-				// node
-				// add
-				double size[][] = { { 0.99 }, { 30, 0.99 } };
+						{ 5,25,5 } };
+				TableLayout layout = new TableLayout(sizeControl);
+				jpControl.setLayout(layout);
+				jpControl.add(jtbEditable, "1,1"); //$NON-NLS-1$
+				jpControl.add(jlFilter, "3,1"); //$NON-NLS-1$
+				jpControl.add(jcbProperty, "5,1"); //$NON-NLS-1$
+				jpControl.add(jlEquals, "7,1"); //$NON-NLS-1$
+				jpControl.add(jtfValue, "9,1"); //$NON-NLS-1$
+				jpControl.add(jbClearFilter, "11,1"); //$NON-NLS-1$
+				jpControl.add(jbAdvancedFilter, "13,1"); //$NON-NLS-1$
+				double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
 				setLayout(new TableLayout(size));
 				add(jpControl, "0,0"); //$NON-NLS-1$
 				if (AbstractTableView.this instanceof PhysicalTableView) {
@@ -304,8 +304,9 @@ public abstract class AbstractTableView extends ViewAdapter implements
 	public void actionPerformed(final ActionEvent e) {
 		// not in a thread because it is always called inside a thread created
 		// from sub-classes
-		if (e.getSource() == jbClearFilter) { // remove all filters
-			jtfValue.setText(""); // clear value textfield //$NON-NLS-1$
+		if (e.getSource() == jbClearFilter) { 
+			// remove all filters, clear value textfield
+			jtfValue.setText(""); 
 			this.sAppliedFilter = null;
 			this.sAppliedCriteria = null;
 			applyFilter(sAppliedCriteria, sAppliedFilter);
@@ -356,25 +357,22 @@ public abstract class AbstractTableView extends ViewAdapter implements
 							|| EventSubject.EVENT_SYNC_TREE_TABLE
 									.equals(subject)) {
 						jtable.clearSelection();
-						applyFilter(sAppliedCriteria, sAppliedFilter); // force
-						// filter
-						// to
-						// refresh
+						// force filter to refresh
+						applyFilter(sAppliedCriteria, sAppliedFilter); 
+						
 					} else if (EventSubject.EVENT_DEVICE_REFRESH
 							.equals(subject)
 							|| EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
-						applyFilter(sAppliedCriteria, sAppliedFilter); // force
-						// filter
-						// to
-						// refresh
+						// force filter to refresh
+						applyFilter(sAppliedCriteria, sAppliedFilter); 
 					} else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD
 							.equals(subject)) {
 						Properties properties = event.getDetails();
-						if (properties == null) { // can be null at view
-							// populate
+						if (properties == null) { 
+							// can be null at view populate
 							return;
 						}
-						model = populateTable();// create a new model
+						model = populateTable();
 						jtable.setModel(model);
 						setRenderers();
 						// add new item in configuration cols

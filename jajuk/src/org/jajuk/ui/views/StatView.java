@@ -277,9 +277,7 @@ public class StatView extends ViewAdapter implements Observer {
 			jfchart = ChartFactory.createBarChart3D(Messages
 					.getString("StatView.7"), // chart title //$NON-NLS-1$
 					Messages.getString("StatView.8"), // domain axis label
-					// //$NON-NLS-1$
 					Messages.getString("StatView.9"), // range axis label
-					// //$NON-NLS-1$
 					cdata, // data
 					PlotOrientation.VERTICAL, // orientation
 					false, // include legend
@@ -346,9 +344,7 @@ public class StatView extends ViewAdapter implements Observer {
 			jfchart = ChartFactory.createBarChart3D(Messages
 					.getString("StatView.12"), // chart title //$NON-NLS-1$
 					Messages.getString("StatView.13"), // domain axis label
-					// //$NON-NLS-1$
 					Messages.getString("StatView.14"), // range axis label
-					// //$NON-NLS-1$
 					cdata, // data
 					PlotOrientation.VERTICAL, // orientation
 					false, // include legend
@@ -397,15 +393,19 @@ public class StatView extends ViewAdapter implements Observer {
 				removeAll();
 			}
 			ChartPanel cp1 = createStyleRepartition();
+			cp1.setOpaque(false);
 			if (cp1 != null)
 				add(cp1, "0,0"); //$NON-NLS-1$
 			ChartPanel cp2 = createCollectionSize();
+			cp2.setOpaque(false);
 			if (cp2 != null)
 				add(cp2, "0,2"); //$NON-NLS-1$
 			ChartPanel cp3 = createTrackNumber();
+			cp3.setOpaque(false);
 			if (cp3 != null)
 				add(cp3, "2,2"); //$NON-NLS-1$
 			ChartPanel cp4 = createDeviceRepartition();
+			cp4.setOpaque(false);
 			if (cp4 != null)
 				add(cp4, "2,0"); //$NON-NLS-1$
 			StatView.getInstance().revalidate();

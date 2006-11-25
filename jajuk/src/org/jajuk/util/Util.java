@@ -152,7 +152,7 @@ public class Util implements ITechnicalStrings {
 
 	/** Generic gradiant* */
 	private static BasicGradientPainter grandiant = new BasicGradientPainter(
-			BasicGradientPainter.NIGHT_GRAY_LIGHT);
+			BasicGradientPainter.GRAY);
 
 	/**
 	 * Genres

@@ -61,7 +61,6 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import ext.FlowScrollPanel;
 
@@ -206,9 +205,6 @@ public class DeviceView extends ViewAdapter implements IView,
 		// devices
 		jpDevices = new FlowScrollPanel();
 		jpDevices.setOpaque(false);
-		jpDevices.setBackgroundPainter(new BasicGradientPainter(
-			BasicGradientPainter.GRAY));
-
 		Dimension dim = new Dimension(getWidth(), getHeight());
 		jpDevices.setPreferredSize(dim);
 		JScrollPane jsp = new JScrollPane(jpDevices,
@@ -216,6 +212,8 @@ public class DeviceView extends ViewAdapter implements IView,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jpDevices.setScroller(jsp);
 		jpDevices.setOpaque(false);
+		jsp.setOpaque(false);
+		jsp.getViewport().setOpaque(false);
 
 		jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -413,10 +411,7 @@ public class DeviceView extends ViewAdapter implements IView,
 		}
 		diSelected = (DeviceItem) e.getSource();
 		// Test if it is the "NEW" device
-		if (((DeviceItem) e.getSource()).getDevice() == null) { // means that it
-			// is "NEW"
-			// device, just
-			// leave
+		if (((DeviceItem) e.getSource()).getDevice() == null) {
 			return;
 		}
 		// remove options for non synchronized devices
@@ -427,14 +422,14 @@ public class DeviceView extends ViewAdapter implements IView,
 			jbSynchro.setEnabled(false);
 			jmiSynchronize.setEnabled(false);
 		}
-		if (bSameDevice && e.getButton() == 1) { // one device already
-			// selected + right
-			// click
+		if (bSameDevice && e.getButton() == 1) {
+			// one device already selected + right click
 			DeviceWizard dw = new DeviceWizard();
 			dw.updateWidgets(diSelected.getDevice());
 			dw.pack();
 			dw.setVisible(true);
-		} else { // a new device is selected
+		} else {
+			// a new device is selected
 			diSelected
 					.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 			if (e.getButton() == 3) {
@@ -496,13 +491,13 @@ public class DeviceView extends ViewAdapter implements IView,
 				// pbm for ie)
 				public void run() {
 					if (diSelected.getDevice().test()) {
-						Messages
-								.showInfoMessage(
-										Messages.getString("DeviceView.21"), Util.getIcon(ICON_OK)); //$NON-NLS-1$
+						Messages.showInfoMessage(Messages
+								.getString("DeviceView.21"), Util
+								.getIcon(ICON_OK)); //$NON-NLS-1$
 					} else {
-						Messages
-								.showInfoMessage(
-										Messages.getString("DeviceView.22"), Util.getIcon(ICON_KO)); //$NON-NLS-1$
+						Messages.showInfoMessage(Messages
+								.getString("DeviceView.22"), Util
+								.getIcon(ICON_KO)); //$NON-NLS-1$
 					}
 				}
 			}.start();

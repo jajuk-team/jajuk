@@ -127,10 +127,9 @@ public class Player implements ITechnicalStrings {
 					}
 					bWaitingLine = true;
 					Log.debug("Line occupied, waiting"); //$NON-NLS-1$
-					InformationJPanel
-							.getInstance()
-							.setMessage(
-									Messages.getString("Player.0"), InformationJPanel.WARNING); //$NON-NLS-1$
+					InformationJPanel.getInstance().setMessage(
+							Messages.getString("Player.0"),
+							InformationJPanel.WARNING); //$NON-NLS-1$
 					try {
 						// wait for the line
 						FIFO.getInstance().wait(WAIT_AFTER_ERROR);
@@ -143,21 +142,20 @@ public class Player implements ITechnicalStrings {
 		} catch (final Throwable t) {
 			Properties pDetails = new Properties();
 			pDetails.put(DETAIL_CURRENT_FILE, file);
-			ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,
-					pDetails)); // notify the error
+			ObservationManager.notifySync(new Event(
+					EventSubject.EVENT_PLAY_ERROR, pDetails));
 			Log.error("007", Messages.getString("Player.0")
 					+ fCurrent.getAbsolutePath() + "}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// process playing error asynchonously to avoid loop problems
-			// when capscading errors
+			// when cascading errors
 			new Thread() {
 				public void run() {
 					Player.stop(false);
 					try {
-						// make sure user has time to see this error message
-						Thread.sleep(WAIT_AFTER_ERROR); 
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
+						Thread.sleep(WAIT_AFTER_ERROR);
+					} catch (InterruptedException e) {
+						Log.error(e);
+					}					
 					FIFO.getInstance().finished();
 				}
 			}.start();
@@ -189,8 +187,8 @@ public class Player implements ITechnicalStrings {
 				bPlaying = false;
 			}
 		} catch (Exception e) {
-			Log
-					.debug(Messages.getString("Error.008") + ":" + fCurrent.getName() + " " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.debug(Messages.getString("Error.008")
+					+ ":" + fCurrent.getName() + " " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

@@ -142,7 +142,7 @@ public class FIFO implements ITechnicalStrings {
 				} finally {
 					// refresh playlist editor
 					ObservationManager.notify(new Event(
-							EventSubject.EVENT_PLAYLIST_REFRESH)); 
+							EventSubject.EVENT_PLAYLIST_REFRESH));
 					Util.stopWaiting();
 				}
 			}
@@ -159,8 +159,8 @@ public class FIFO implements ITechnicalStrings {
 	 * @param bAppend
 	 */
 	public void push(final StackItem item, final boolean bAppend) {
-		Thread t = new Thread() { // do it in a thread to make UI more
-			// reactive
+		Thread t = new Thread() { 
+			// do it in a thread to make UI more reactive
 			public void run() {
 				try {
 					Util.waiting();
@@ -168,10 +168,9 @@ public class FIFO implements ITechnicalStrings {
 				} catch (Exception e) {
 					Log.error(e);
 				} finally {
+					// refresh playlist editor
 					ObservationManager.notify(new Event(
-							EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-					// playlist
-					// editor
+							EventSubject.EVENT_PLAYLIST_REFRESH));
 					// Util.waiting();
 					Util.stopWaiting();
 				}
@@ -195,8 +194,8 @@ public class FIFO implements ITechnicalStrings {
 			bStop = false;
 			// display an error message if selection is void
 			if (alItems.size() == 0) {
-				//If current ambience is not "all", show selected  ambience
-				//to alert user he selected it
+				// If current ambience is not "all", show selected ambience
+				// to alert user he selected it
 				if (AmbienceManager.getInstance().getSelectedAmbience() == null) {
 					Messages
 							.showWarningMessage(Messages.getString("Error.018")); //$NON-NLS-1$
@@ -317,25 +316,23 @@ public class FIFO implements ITechnicalStrings {
 			if (getCurrentItem() == null) {
 				return;
 			}
-			if (getCurrentItem().isRepeat()) { // if the track was in repeat
-				// mode, don't remove it from
-				// the fifo, just inc index
+			if (getCurrentItem().isRepeat()) { 
+				// if the track was in repeat mode, don't remove it from sthe fifo, just inc index
 				// find the next item is repeat mode if any
 				if (index + 1 < alFIFO.size()) {
 					StackItem itemNext = alFIFO.get(index + 1);
-					if (itemNext.isRepeat()) { // if next track is repeat, inc
-						// index
+					// if next track is repeat, inc index
+					if (itemNext.isRepeat()) { 
 						index++;
-					} else { // no next track in repeat mode, come back to
-						// first element in fifo
+					// no next track in repeat mode, come back to first element in fifo
+					} else { 
 						index = 0;
 					}
 				} else { // no next element
 					index = 0; // come back to first element
 				}
-			} else if (index < alFIFO.size()) { // current track was not in
-				// repeat mode, remove it from
-				// fifo
+			} else if (index < alFIFO.size()) { 
+				// current track was not in repeat mode, remove it from fifo
 				StackItem item = alFIFO.get(index);
 				JajukTimer.getInstance().removeTrackTime(item.getFile());
 				alFIFO.remove(index); // remove this file from fifo
@@ -345,38 +342,36 @@ public class FIFO implements ITechnicalStrings {
 						&& itemLast != null) { // check if we are in continue
 					// mode
 					File file = null;
-					if (alPlanned.size() != 0) { // if some tracks are
-						// planned (can be 0 if
-						// planned size=0)
+					// if some tracks are planned (can be 0 if planned size=0)
+					if (alPlanned.size() != 0) { 
 						file = alPlanned.get(0).getFile();
-						alPlanned.remove(0); // remove the planned track
-					} else { // otherwise, take next track from file manager
+						// remove the planned track
+						alPlanned.remove(0); 
+					} else { 
+						// otherwise, take next track from file manager
 						file = FileManager.getInstance().getNextFile(
-								itemLast.getFile()); // take next available
-						// file
+								itemLast.getFile()); 
 					}
 					if (file != null) {
-						pushCommand(new StackItem(file), false); // push
-						// it,
-						// it
-						// will
-						// be
-						// played
-					} else { // probably end of collection option "restart"
-						// off
+						// push it, it will be played
+						pushCommand(new StackItem(file), false); 
+					} else { 
+						// probably end of collection option "restart" off
 						JajukTimer.getInstance().reset();
 						bStop = true;
 						ObservationManager.notify(new Event(
 								EventSubject.EVENT_ZERO));
 					}
-				} else { // no ? just reset UI and leave
+				} else { 
+					// no ? just reset UI and leave
 					JajukTimer.getInstance().reset();
 					bStop = true;
 					ObservationManager
 							.notify(new Event(EventSubject.EVENT_ZERO));
 					return;
 				}
-			} else { // something more in FIFO
+			} else { 
+				// something more in FIFO
 				launch(index);
 			}
 			// computes planned tracks
@@ -384,10 +379,9 @@ public class FIFO implements ITechnicalStrings {
 		} catch (Exception e) {
 			Log.error(e);
 		} finally {
+			// refresh playlist editor
 			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-			// playlist
-			// editor
+					EventSubject.EVENT_PLAYLIST_REFRESH)); 
 		}
 	}
 
@@ -547,8 +541,8 @@ public class FIFO implements ITechnicalStrings {
 						item = new StackItem(file, false);
 					}
 				}
-			} catch (JajukException je) { // can be thrown if FileManager
-				// return a null file (like when
+			} catch (JajukException je) {
+				// can be thrown if FileManager return a null file (like when
 				// reaching end of collection)
 				break;
 			}
@@ -647,7 +641,7 @@ public class FIFO implements ITechnicalStrings {
 			Log.error(e);
 		} finally {
 			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); 
+					EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 

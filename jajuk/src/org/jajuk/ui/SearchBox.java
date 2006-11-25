@@ -100,7 +100,7 @@ public class SearchBox extends JTextField implements KeyListener {
 	 * @param lsl
 	 */
 	public SearchBox(ListSelectionListener lsl) {
-		super(10);
+		super(7);
 		this.lsl = lsl;
 		timer.start();
 		addKeyListener(this);
@@ -109,6 +109,7 @@ public class SearchBox extends JTextField implements KeyListener {
 		setFont(new Font("dialog", Font.BOLD, 18));
 		Color mediumGray = new Color(172,172,172);
 		setForeground(mediumGray);
+		setBorder(BorderFactory.createLineBorder(Color.BLUE));
 	}
 
 	/*

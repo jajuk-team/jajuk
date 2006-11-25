@@ -160,18 +160,20 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 						bOpening = false;
 						// Launch next track
 						try {
-							// End of file
-							// inc rate by 1 if file is fully played
+							// End of file: inc rate by 1 if file is fully played
 							fCurrent.getTrack().setRate(
 									fCurrent.getTrack().getRate() + 1);
 							// alert bestof playlist something changed
 							FileManager.getInstance().setRateHasChanged(true); 
 							// if using crossfade, ignore end of file
 							if (!bFading) { 
-								// Benefit from end of file to
-								// perform a full gc
+								// Benefit from end of file to perform a full gc
 								System.gc();
-								FIFO.getInstance().finished();
+								if (length > 0){
+									//if corrumpted file, length=0 and we have not not call finished
+									//as it is managed my Player
+									FIFO.getInstance().finished();
+								}
 							} else {
 								bFading = false;
 							}
@@ -240,7 +242,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		}
 		//If end of file already reached, it means that file cannot be read
 		if (bEOF){
-			throw new JajukException("Error opening file");
+			throw new JajukException("007");
 		}
 		setVolume(fVolume);
 		// Get track length

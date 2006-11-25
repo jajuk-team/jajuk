@@ -39,7 +39,6 @@ import java.util.StringTokenizer;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -60,6 +59,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
@@ -94,17 +94,17 @@ public class CoverView extends ViewAdapter implements Observer,
 	// control panel
 	JPanel jpControl;
 
-	JButton jbPrevious;
+	JajukButton jbPrevious;
 
-	JButton jbNext;
+	JajukButton jbNext;
 
-	JButton jbDelete;
+	JajukButton jbDelete;
 
-	JButton jbSave;
+	JajukButton jbSave;
 
-	JButton jbSaveAs;
+	JajukButton jbSaveAs;
 
-	JButton jbDefault;
+	JajukButton jbDefault;
 
 	JLabel jlSize;
 
@@ -163,33 +163,37 @@ public class CoverView extends ViewAdapter implements Observer,
 	 */
 	public void initUI() {
 		// global layout
-		double size[][] = { { 0.99 }, { 30, 0.99 } };
+		double size[][] = { { 0.99 },
+				{ TableLayout.PREFERRED, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		// Control panel
 		jpControl = new JPanel();
+		jpControl.setOpaque(false);
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 1;
 		double sizeControl[][] = {
-				{ 20, iXspace, 20, 2 * iXspace, 20, iXspace, 20, iXspace, 20,
-						iXspace, 20, iXspace, 0.30, iXspace, 0.30, 2 * iXspace,
-						0.40, 2 * iXspace, 20 }, { 25 } };
+				{ 2, 20, iXspace, 20, 2 * iXspace, 20, iXspace, 20, iXspace,
+						20, iXspace, 20, 5, TableLayout.PREFERRED, 
+						10, TableLayout.PREFERRED,
+						2, TableLayout.FILL, 2 * iXspace, 20 },
+						{ 5, 25, 5 } };
 		jpControl.setLayout(new TableLayout(sizeControl));
-		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
+		jbPrevious = new JajukButton(Util.getIcon(ICON_PREVIOUS));
 		jbPrevious.addActionListener(this);
 		jbPrevious.setToolTipText(Messages.getString("CoverView.4")); //$NON-NLS-1$
-		jbNext = new JButton(Util.getIcon(ICON_NEXT));
+		jbNext = new JajukButton(Util.getIcon(ICON_NEXT));
 		jbNext.addActionListener(this);
 		jbNext.setToolTipText(Messages.getString("CoverView.5")); //$NON-NLS-1$
-		jbDelete = new JButton(Util.getIcon(ICON_DELETE));
+		jbDelete = new JajukButton(Util.getIcon(ICON_DELETE));
 		jbDelete.addActionListener(this);
 		jbDelete.setToolTipText(Messages.getString("CoverView.2")); //$NON-NLS-1$
-		jbSave = new JButton(Util.getIcon(ICON_SAVE));
+		jbSave = new JajukButton(Util.getIcon(ICON_SAVE));
 		jbSave.addActionListener(this);
 		jbSave.setToolTipText(Messages.getString("CoverView.6")); //$NON-NLS-1$
-		jbSaveAs = new JButton(Util.getIcon(ICON_SAVE_AS));
+		jbSaveAs = new JajukButton(Util.getIcon(ICON_SAVE_AS));
 		jbSaveAs.addActionListener(this);
 		jbSaveAs.setToolTipText(Messages.getString("CoverView.7")); //$NON-NLS-1$
-		jbDefault = new JButton(Util.getIcon(ICON_DEFAULT_COVER));
+		jbDefault = new JajukButton(Util.getIcon(ICON_DEFAULT_COVER));
 		jbDefault.addActionListener(this);
 		jbDefault.setToolTipText(Messages.getString("CoverView.8")); //$NON-NLS-1$
 		jlSize = new JLabel(""); //$NON-NLS-1$
@@ -197,6 +201,7 @@ public class CoverView extends ViewAdapter implements Observer,
 		jlSearching = new JLabel(
 				"", Util.getIcon(ICON_NET_SEARCH), JLabel.CENTER); //$NON-NLS-1$
 		jcbAccuracy = new JComboBox();
+		jcbAccuracy.setBorder(Util.getShadowBorder());
 		jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
 		jcbAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
 		jcbAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
@@ -208,18 +213,18 @@ public class CoverView extends ViewAdapter implements Observer,
 				.getInt(CONF_COVERS_ACCURACY + "_" + getCoverID())); //$NON-NLS-1$
 		jcbAccuracy.addActionListener(this);
 
-		jpControl.add(jbPrevious, "0,0");//$NON-NLS-1$
-		jpControl.add(jbNext, "2,0");//$NON-NLS-1$
-		jpControl.add(jbDelete, "4,0");//$NON-NLS-1$
-		jpControl.add(jbSave, "6,0");//$NON-NLS-1$
-		jpControl.add(jbSaveAs, "8,0");//$NON-NLS-1$
-		jpControl.add(jbDefault, "10,0");//$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlSize, BoxLayout.X_AXIS), "12,0");//$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlFound, BoxLayout.X_AXIS), "14,0");//$NON-NLS-1$
+		jpControl.add(jbPrevious, "1,1");//$NON-NLS-1$
+		jpControl.add(jbNext, "3,1");//$NON-NLS-1$
+		jpControl.add(jbDelete, "5,1");//$NON-NLS-1$
+		jpControl.add(jbSave, "7,1");//$NON-NLS-1$
+		jpControl.add(jbSaveAs, "9,1");//$NON-NLS-1$
+		jpControl.add(jbDefault, "11,1");//$NON-NLS-1$
+		jpControl.add(Util.getCentredPanel(jlSize, BoxLayout.X_AXIS), "13,1");//$NON-NLS-1$
+		jpControl.add(Util.getCentredPanel(jlFound, BoxLayout.X_AXIS), "15,1");//$NON-NLS-1$
 		jpControl.add(Util.getCentredPanel(jcbAccuracy, BoxLayout.X_AXIS),
-				"16,0");//$NON-NLS-1$
+				"17,1");//$NON-NLS-1$
 		jpControl.add(Util.getCentredPanel(jlSearching, BoxLayout.X_AXIS),
-				"18,0");//$NON-NLS-1$
+				"19,1");//$NON-NLS-1$
 		ObservationManager.register(this);
 		try {
 			// instanciate default cover
@@ -615,7 +620,7 @@ public class CoverView extends ViewAdapter implements Observer,
 							return null; // OK, leave
 						} catch (Exception e) {
 							Log.debug("Removed cover: {{" + alCovers.get(index)
-									+ "}}"); 
+									+ "}}");
 							alCovers.remove(index);
 							// refresh number of found covers
 							if (!bGotoBetter) {
@@ -663,7 +668,7 @@ public class CoverView extends ViewAdapter implements Observer,
 	 * 
 	 */
 	private void displayCover(int index) {
-		if (alCovers.size() == 0 || index >= alCovers.size() || index < 0) { 
+		if (alCovers.size() == 0 || index >= alCovers.size() || index < 0) {
 			// just a check
 			alCovers.add(coverDefault); // display default cover by default
 			displayCover(0);
@@ -682,16 +687,20 @@ public class CoverView extends ViewAdapter implements Observer,
 			jbSave.setEnabled(false);
 			String sType = " (L)"; // local cover //$NON-NLS-1$
 			if (cover.getType() == Cover.REMOTE_COVER) {
-				sType = " (@)"; // Web cover //$NON-NLS-1$
+				sType = "(@)"; // Web cover //$NON-NLS-1$
 				jbSave.setEnabled(true);
 			}
 			String size = cover.getSize();
 			jl = new JLabel(ii);
+			jl.setBorder(Util.getShadowBorder());
 			jl.setMinimumSize(new Dimension(0, 0)); // required for info
 			// node resizing
 			jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			setSizeText(size + "K" + sType); //$NON-NLS-1$
 			setFoundText();
+			// make sure the image is repainted to avoid overlapping covers
+			CoverView.this.revalidate(); 
+			CoverView.this.repaint();
 		}
 		// set tooltip for previous and next track
 		try {
@@ -723,7 +732,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			removeAll();
 		}
 		add(jpControl, "0,0");//$NON-NLS-1$
-		add(jl, "0,1");//$NON-NLS-1$
+		add(jl, "0,1,c,c");//$NON-NLS-1$
 		setCursor(Util.DEFAULT_CURSOR);
 		searching(false);
 	}

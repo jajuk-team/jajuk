@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -155,7 +156,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 
 	JPopupMenu popupGlobalRandom;
 
-	JButton jbBestof;
+	JajukButton jbBestof;
 
 	DropDownButton ddbNovelties;
 
@@ -165,7 +166,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 
 	JRadioButtonMenuItem jmiNoveltiesModeAlbum;
 
-	JButton jbNorm;
+	JajukButton jbNorm;
 
 	DropDownButton ddbDDJ;
 
@@ -275,7 +276,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		VLToolBar vltbSearch = new VLToolBar("search");
 		vltbSearch.setBorder(Util.getShadowBorder());
 		sbSearch = new SearchBox(CommandJPanel.this);
-		sbSearch.setPreferredSize(new Dimension(150, 30)); // size of the
+		sbSearch.setBorder(BorderFactory.createEmptyBorder(6,5,7,5));
 		// combo itself
 		vltbSearch.add(sbSearch);
 
@@ -291,8 +292,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 				.getHistory()));
 		int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
 				.getWidth() / 2);
-		jcbHistory.setPopupWidth(iWidth); // size of popup
-		// size of the combo itself
+		// size of popup
+		jcbHistory.setPopupWidth(iWidth); 
+		// size of the combo itself, keep it! as text can be very long
 		jcbHistory.setPreferredSize(new Dimension(300, 35));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
@@ -303,9 +305,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		vltbModes.setCollapsible(false);
 		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
-		jtbModes.setBorder(BorderFactory.createEmptyBorder(7,5,7,5));
+		//make it not floatable as this behavior is managed by vldocking
+		jtbModes.setFloatable(false);
 		jtbModes.setRollover(true);
-		jtbModes.setPreferredSize(new Dimension(130, 35));
 		jbRepeat = new JajukToggleButton(ActionManager
 				.getAction(REPEAT_MODE_STATUS_CHANGE));
 		jbRepeat
@@ -322,12 +324,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 				.getAction(JajukAction.INTRO_MODE_STATUS_CHANGED));
 		jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
 		jtbModes.add(jbRepeat);
-		jtbModes.addSeparator();
 		jtbModes.add(jbRandom);
-		jtbModes.addSeparator();
 		jtbModes.add(jbContinue);
-		jtbModes.addSeparator();
 		jtbModes.add(jbIntro);
+		//we use a strut as empty borders are now always applied on toolbars
+		vltbModes.add(Box.createVerticalStrut(35));
 		vltbModes.add(jtbModes);
 
 		// Volume
@@ -339,6 +340,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 				.getAction(INCREASE_VOLUME));
 
 		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
+		jpVolume.setBorder(BorderFactory.createEmptyBorder(6,0,6,0));
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
 		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
 		if (iVolume > 100) { // can occur in some undefined cases
@@ -352,7 +354,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
 		// size of the combo itself
-		jsVolume.setPreferredSize(new Dimension(150, 35));
 		vltbVolume.add(jpVolume);
 
 		// Position
@@ -360,6 +361,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		vltbPosition.setBorder(Util.getShadowBorder());
 		jpPosition = new JPanel();
 		jpPosition.setLayout(new BoxLayout(jpPosition, BoxLayout.X_AXIS));
+		jpPosition.setBorder(BorderFactory.createEmptyBorder(6,0,6,0));
 		jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
 		jsPosition = new JSlider(0, 100, 0);
 		jsPosition.setBorder(new DropShadowBorder());
@@ -368,7 +370,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		jsPosition.addChangeListener(CommandJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-		jsPosition.setPreferredSize(new Dimension(150, 35));
 		vltbPosition.add(jpPosition);
 
 		// Special functions toolbar
@@ -378,6 +379,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
 		ambiencesCombo.setPopupWidth(iWidth);
 		// size of the combo itself
+		ambiencesCombo.setPreferredSize(new Dimension(100, 31));
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
@@ -385,6 +387,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		vltbSpecial.setBorder(Util.getShadowBorder());
 		vltbSpecial.setCollapsible(false);
 		jtbSpecial = new JToolBar(); // we have to use an intermediate
+		jtbSpecial.setFloatable(false);
 		ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
 			private static final long serialVersionUID = 1L;
 
@@ -472,8 +475,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		vltbPlay.setBorder(Util.getShadowBorder());
 		vltbPlay.setCollapsible(false);
 		JToolBar jtbPlay = new JToolBar();
-		//add some space to get generic size
+		jtbPlay.setFloatable(false);
 		jtbPlay.setBorder(BorderFactory.createEmptyBorder(6,5,6,5));
+		//add some space to get generic size
 		jtbPlay.setRollover(true);
 		ActionUtil
 				.installKeystrokes(jtbPlay,
@@ -495,6 +499,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		jtbPlay.add(jbFwd);
 		jtbPlay.addSeparator();
 		jtbPlay.add(jbMute);
+		//we use a strut as empty borders are now always applied on toolbars
+		vltbPlay.add(Box.createVerticalStrut(35));
 		vltbPlay.add(jtbPlay);
 
 		boolean bToolbarInstallationOK = false; // flag
@@ -526,11 +532,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		if (!bToolbarInstallationOK) { // toolbars have not been installed
 			topPanel.add(vltbSearch, new ToolBarConstraints(0, 0));
 			topPanel.add(vltbHistory, new ToolBarConstraints(0, 1));
-			topPanel.add(vltbModes, new ToolBarConstraints(0, 2));
-			topPanel.add(vltbVolume, new ToolBarConstraints(0, 3));
-			topPanel.add(vltbPosition, new ToolBarConstraints(0, 4));
-			topPanel.add(vltbPlay, new ToolBarConstraints(1, 1));
-			topPanel.add(vltbSpecial, new ToolBarConstraints(1, 2));
+			topPanel.add(vltbVolume, new ToolBarConstraints(0, 2));
+			topPanel.add(vltbPosition, new ToolBarConstraints(0, 3));
+			topPanel.add(vltbPlay, new ToolBarConstraints(1, 0));
+			topPanel.add(vltbSpecial, new ToolBarConstraints(1, 1));
+			topPanel.add(vltbModes, new ToolBarConstraints(1, 2));
+			
 		}
 
 		// register to player events

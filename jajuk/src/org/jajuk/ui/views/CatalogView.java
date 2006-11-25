@@ -49,8 +49,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -78,6 +79,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.SteppedComboBox;
@@ -127,11 +129,11 @@ public class CatalogView extends ViewAdapter implements Observer,
 
 	JComboBox jcbSize;
 
-	JButton jbRefresh;
+	JajukButton jbRefresh;
 
-	JButton jbPrev;
+	JajukButton jbPrev;
 
-	JButton jbNext;
+	JajukButton jbNext;
 
 	SteppedComboBox jcbPage;
 
@@ -235,30 +237,29 @@ public class CatalogView extends ViewAdapter implements Observer,
 		// Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
-		int iXspace = 10;
 		double sizeControl[][] =
 
-		{ { iXspace, TableLayout.PREFERRED,// "Sort by"
-				iXspace, 0.1,// combo sorter
-				3 * iXspace, TableLayout.PREFERRED, // "Filter:"
-				iXspace, 0.1,// combo filter
-				iXspace, TableLayout.PREFERRED,// "contains:"
-				iXspace, 0.2,// value textfield
-				iXspace, TableLayout.PREFERRED,// show albums without covers
-				iXspace, 0.15, // Size combo
-				3 * iXspace, TableLayout.PREFERRED,// previous button
-				5, 0.15, // page selector
-				5, TableLayout.PREFERRED,// next button
-				TableLayout.FILL, TableLayout.PREFERRED },// Refresh
-				// button
-				{ 25 } };
-		jpControl.setLayout(new TableLayout(sizeControl));
+		{ { TableLayout.PREFERRED,
+				 TableLayout.PREFERRED,
+				TableLayout.PREFERRED, 
+				TableLayout.PREFERRED,
+				TableLayout.PREFERRED,
+				TableLayout.PREFERRED,
+				TableLayout.FILL,
+				TableLayout.PREFERRED,10},
+				{ TableLayout.PREFERRED,TableLayout.PREFERRED } };
+		
+		TableLayout layout = new TableLayout(sizeControl);
+		layout.setVGap(5);
+		layout.setHGap(15);
+		jpControl.setLayout(layout);
+		jpControl.setOpaque(false);
 		jlSorter = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
 		jcbSorter = new SteppedComboBox();
+		jcbSorter.setBorder(Util.getShadowBorder());
 		jcbSorter.setEditable(false);
 		// note that a single album can contains tracks with different authors
-		// or styles, we will
-		// show it only one
+		// or styles, we will show it only one
 		for (PropertyMetaInformation meta : alSorters) {
 			jcbSorter.addItem(meta.getHumanName());
 		}
@@ -269,6 +270,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
 		jlContains = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
 		jcbFilter = new SteppedComboBox();
+		jcbFilter.setBorder(Util.getShadowBorder());
 		jcbFilter.setEditable(false);
 		// note that a single album can contains tracks with different authors
 		// or styles, we will show it only one
@@ -279,6 +281,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 				.getInt(CONF_THUMBS_FILTER));
 		jcbFilter.addActionListener(this);
 		jtfValue = new JTextField(10);
+		jtfValue.setBorder(Util.getShadowBorder());
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				bNeedSearch = true;
@@ -287,11 +290,14 @@ public class CatalogView extends ViewAdapter implements Observer,
 		});
 
 		jcbShow = new JCheckBox(Messages.getString("CatalogView.2")); //$NON-NLS-1$
+		jcbShow.setBorder(Util.getShadowBorder());
 		jcbShow.setSelected(ConfigurationManager
 				.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
 		jcbShow.addActionListener(this);
 
 		jcbSize = new JComboBox();
+		jcbSize.setBorder(Util.getShadowBorder());
+		jcbSize.setBorder(Util.getShadowBorder());
 		jcbSize.addItem(THUMBNAIL_SIZE_50x50);
 		jcbSize.addItem(THUMBNAIL_SIZE_100x100);
 		jcbSize.addItem(THUMBNAIL_SIZE_150x150);
@@ -301,32 +307,37 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jcbSize.addActionListener(this);
 		jcbSize.setToolTipText(Messages.getString("CatalogView.4")); //$NON-NLS-1$
 
-		jbRefresh = new JButton(Util.getIcon(ICON_REFRESH));
+		jbRefresh = new JajukButton(Util.getIcon(ICON_REFRESH));
 		jbRefresh.setToolTipText(Messages.getString("CatalogView.3")); //$NON-NLS-1$
 		jbRefresh.addActionListener(this);
 
-		jbPrev = new JButton(Util.getIcon(ICON_PREVIOUS));
+		JPanel jpPage = new JPanel();
+		jpPage.setLayout(new BoxLayout(jpPage,BoxLayout.X_AXIS));
+		jbPrev = new JajukButton(Util.getIcon(ICON_PREVIOUS));
 		jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
 		jbPrev.addActionListener(this);
-		jbNext = new JButton(Util.getIcon(ICON_NEXT));
+		jbNext = new JajukButton(Util.getIcon(ICON_NEXT));
 		jbNext.setToolTipText(Messages.getString("CatalogView.13"));
 		jbNext.addActionListener(this);
 		jcbPage = new SteppedComboBox();
+		jcbPage.setBorder(Util.getShadowBorder());
 		jcbPage.setToolTipText(Messages.getString("CatalogView.14"));
 		jcbPage.addActionListener(this);
-
-		jpControl.add(jlSorter, "1,0");//$NON-NLS-1$
-		jpControl.add(jcbSorter, "3,0");//$NON-NLS-1$
-		jpControl.add(jlFilter, "5,0");//$NON-NLS-1$
-		jpControl.add(jcbFilter, "7,0");//$NON-NLS-1$
-		jpControl.add(jlContains, "9,0");//$NON-NLS-1$
-		jpControl.add(jtfValue, "11,0");//$NON-NLS-1$
-		jpControl.add(jcbShow, "13,0");//$NON-NLS-1$
-		jpControl.add(jcbSize, "15,0");//$NON-NLS-1$
-		jpControl.add(jbPrev, "17,0");//$NON-NLS-1$
-		jpControl.add(jcbPage, "19,0");//$NON-NLS-1$
-		jpControl.add(jbNext, "21,0");//$NON-NLS-1$
-		jpControl.add(jbRefresh, "23,0");//$NON-NLS-1$
+		jpPage.add(jbPrev);
+		jpPage.add(Box.createHorizontalStrut(4));
+		jpPage.add(jcbPage);
+		jpPage.add(jbNext);		
+		
+		jpControl.add(jlSorter, "0,0");//$NON-NLS-1$
+		jpControl.add(jcbSorter, "1,0");//$NON-NLS-1$
+		jpControl.add(jlFilter, "2,0");//$NON-NLS-1$
+		jpControl.add(jcbFilter, "3,0");//$NON-NLS-1$
+		jpControl.add(jlContains, "4,0");//$NON-NLS-1$
+		jpControl.add(jtfValue, "5,0");//$NON-NLS-1$
+		jpControl.add(jcbShow, "0,1");//$NON-NLS-1$
+		jpControl.add(jcbSize, "1,1");//$NON-NLS-1$
+		jpControl.add(jpPage, "5,1");//$NON-NLS-1$
+		jpControl.add(jbRefresh, "7,1,r,c");//$NON-NLS-1$
 
 		// Covers
 		jpItems = new FlowScrollPanel();
@@ -336,6 +347,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setOpaque(false);
+		jsp.getViewport().setOpaque(false);
 		jpItems.setScroller(jsp);
 		jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jpItems.setOpaque(false);
@@ -365,7 +377,8 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jmenu.add(jmiAlbumProperties);
 
 		// global layout
-		double size[][] = { { 0.99 }, { 30, 0, 0.99 } };
+		double size[][] = { { TableLayout.FILL }, 
+				{ TableLayout.PREFERRED, 5, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		add(jpControl, "0,0"); //$NON-NLS-1$
 		add(jsp, "0,2"); //$NON-NLS-1$
@@ -1027,9 +1040,9 @@ public class CatalogView extends ViewAdapter implements Observer,
 
 		JPanel jpControls;
 
-		JButton jbPrevious;
+		JajukButton jbPrevious;
 
-		JButton jbNext;
+		JajukButton jbNext;
 
 		JLabel jlIndex;
 
@@ -1076,7 +1089,6 @@ public class CatalogView extends ViewAdapter implements Observer,
 		 */
 		public CoverSelectionWizard() {
 			super(Main.getWindow(), Messages.getString("CatalogView.7"), true); // modal
-			// //$NON-NLS-1$
 			// Control
 			double[][] dControl = {
 					{ TableLayout.FILL, TableLayout.PREFERRED,
@@ -1087,10 +1099,10 @@ public class CatalogView extends ViewAdapter implements Observer,
 			okc = new OKCancelPanel(this);
 			okc.getCancelButton().setText(Messages.getString("Close")); //$NON-NLS-1$
 			okc.getOKButton().setEnabled(false);
-			jbPrevious = new JButton(Messages.getString("CatalogView.9")); //$NON-NLS-1$
+			jbPrevious = new JajukButton(Messages.getString("CatalogView.9")); //$NON-NLS-1$
 			jbPrevious.setEnabled(false); // always false at startup
 			jbPrevious.addActionListener(this);
-			jbNext = new JButton(Messages.getString("CatalogView.10")); //$NON-NLS-1$
+			jbNext = new JajukButton(Messages.getString("CatalogView.10")); //$NON-NLS-1$
 			jbNext.addActionListener(this);
 			jbNext.setEnabled(false);
 			jlIndex = new JLabel(""); //$NON-NLS-1$
@@ -1153,10 +1165,8 @@ public class CatalogView extends ViewAdapter implements Observer,
 					ImageIcon image = new ImageIcon(cover.getFile().toURL());
 					image = Util.getScaledImage(image, width);
 					// !!! need to flush image because thy read image from a
-					// file with same name
-					// than previous image and a buffer would display the
-					// old image
-					// check image
+					// file with same name than previous image and a buffer would display the
+					// old image check image
 					if (image.getImageLoadStatus() != MediaTracker.COMPLETE) {
 						throw new JajukException("129"); //$NON-NLS-1$
 					}
