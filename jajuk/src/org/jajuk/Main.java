@@ -557,9 +557,15 @@ public class Main implements ITechnicalStrings {
 						Log.debug("Download Mplayer from: "
 								+ ConfigurationManager
 										.getProperty(CONF_MPLAYER_URL));
+						File fMplayer = new File(
+								FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE);
 						DownloadManager.download(new URL(ConfigurationManager
-								.getProperty(CONF_MPLAYER_URL)), new File(
-								FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE));
+								.getProperty(CONF_MPLAYER_URL)), fMplayer);
+						//make sure to delete corrupted mplayer in case of download problem
+						if (fMplayer.length() != MPLAYER_EXE_SIZE){
+							fMplayer.delete();
+							throw new JajukException("Mplayer corrupted");
+						}
 					} catch (Exception e) {
 						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 					}

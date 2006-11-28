@@ -1565,7 +1565,7 @@ public class Util implements ITechnicalStrings {
 			return sMplayerPath;
 		}
 		File file = null;
-		// Check in ~/.jajuk/ directory (used by .exe or .jar distribution
+		// Check in ~/.jajuk directory (used by .exe or .jar distribution
 		// installers)
 		if ((file = new java.io.File(FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE))
 				.exists()) {
