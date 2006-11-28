@@ -1,6 +1,8 @@
-#Fri Jun 17 21:28:37 CEST 2005
+#Sun Nov 26 12:03:20 CET 2006
 eclipse.preferences.version=1
 internal.default.compliance=default
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true
+org.eclipse.jdt.ui.javadoc=true
+org.eclipse.jdt.ui.keywordthis=true
 org.eclipse.jdt.ui.overrideannotation=true

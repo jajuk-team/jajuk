@@ -90,6 +90,9 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_esp.html'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_cat.html'/>
             <!-- Windows specific -->
+            <file override='true' targetdir='$INSTALL_PATH' src='./dist-files/packaging/mplayer.exe'>
+            	<os family='windows'/>
+           	</file>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
            	</file>
