@@ -78,8 +78,11 @@ public interface IPlayerImpl {
 	/** Seek to a given position in %. ex : 0.2 for 20% */
 	public void seek(float fPosition);
 
-	/** Return track position in % */
+	/** Return track LENGTH in  */
 	public float getCurrentPosition();
+
+	/** Return track position in ms */
+	public long getCurrentLength();
 
 	/** Return volume in % */
 	public float getCurrentVolume();

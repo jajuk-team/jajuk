@@ -5,7 +5,6 @@
  */
 package org.jajuk.ui;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -15,10 +14,6 @@ import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.KeyStroke;
-import javax.swing.border.Border;
-
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * @author Bart Cremers
@@ -28,9 +23,6 @@ public class JajukButton extends JButton {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static Border border = new DropShadowBorder(
-			Color.BLACK, 0, 5, .1f, 20, false, true, true, true);
-
 	public JajukButton() {
 		this(null, null);
 	}
@@ -45,12 +37,13 @@ public class JajukButton extends JButton {
 
 	public JajukButton(Action a) {
 		super(a);
-		setBorder(Util.getShadowBorder());
+		setRolloverEnabled(true);
+		setOpaque(false);
 	}
 
 	public JajukButton(String text, Icon icon) {
 		super(text, icon);
-		setBorder(border);
+		setOpaque(false);
 	}
 	
 

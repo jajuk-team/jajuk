@@ -96,8 +96,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 
 	JLabel jlSelection;
 
-	JLabel jlQuality;
-
 	JPanel jpTotal;
 
 	JLabel jlTotal;
@@ -127,7 +125,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	private InformationJPanel() {
 		// dimensions
 		// set current jpanel properties
-		double size[][] = { { 0.40, 0.13, 0.07, 0.07, 0.33 }, { 20 } };
+		double size[][] = { { 0.47, 0.13, 0.07, 0.33 }, { 20 } };
 		setLayout(new TableLayout(size));
 
 		// message bar
@@ -150,11 +148,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 		jpTotal.add(jlTotal);
 		jpTotal.add(Box.createHorizontalStrut(3));
 
-		// Quality
-		jlQuality = new JLabel();
-		jlQuality.setToolTipText(Messages.getString("InformationJPanel.6")); //$NON-NLS-1$
-		jlQuality.setBorder(Util.getShadowBorder());
-
 		// current progress bar
 		jpCurrent = new JPanel();
 		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
@@ -170,9 +163,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 		// add widgets
 		add(jlMessage, "0,0"); //$NON-NLS-1$
 		add(jlSelection, "1,0"); //$NON-NLS-1$
-		add(jlQuality, "2,0"); //$NON-NLS-1$
-		add(jpTotal, "3,0"); //$NON-NLS-1$
-		add(jpCurrent, "4,0"); //$NON-NLS-1$
+		add(jpTotal, "2,0"); //$NON-NLS-1$
+		add(jpCurrent, "3,0"); //$NON-NLS-1$
 
 		// check if some track has been lauched before the view has been
 		// displayed
@@ -272,15 +264,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	}
 
 	/**
-	 * Set the quality box info
-	 * 
-	 * @param sQuality
-	 */
-	public void setQuality(String sQuality) {
-		jlQuality.setText(sQuality);
-	}
-
-	/**
 	 * @return
 	 */
 	public String getCurrentStatusMessage() {
@@ -331,7 +314,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 				setCurrentStatusMessage(Util.formatTimeBySec(0, false)
 						+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
 				setCurrentStatus(0);
-				setQuality(""); //$NON-NLS-1$
 				// set error message
 				File fCurrent = (File) ObservationManager.getDetail(event,
 						DETAIL_CURRENT_FILE);
@@ -379,7 +361,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 						setTotalStatusMessage("00:00:00");//$NON-NLS-1$
 						setMessage(
 								Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-						setQuality(""); //$NON-NLS-1$
 					} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
 						File file = FIFO.getInstance().getCurrentFile();
 						if (file != null) {
@@ -387,8 +368,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 									+ " / " + file.getTrack().getAlbum().getName2() + " / " //$NON-NLS-1$ //$NON-NLS-2$
 									+ file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
-							setQuality(file.getQuality()
-									+ Messages.getString("FIFO.13")); //$NON-NLS-1$
 						}
 					}
 				}

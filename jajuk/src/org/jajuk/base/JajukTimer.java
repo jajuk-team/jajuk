@@ -130,11 +130,7 @@ public class JajukTimer {
 	 * @return Current track total time in secs
 	 */
 	public long getCurrentTrackTotalTime() {
-		File fileCurrent = FIFO.getInstance().getCurrentFile();
-		if (fileCurrent == null) { // between two tracks or stopped
-			return 0;
-		}
-		return fileCurrent.getTrack().getLength();
+		return Player.getCurrentLength() / 1000;
 	}
 
 	/**

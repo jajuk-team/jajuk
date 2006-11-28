@@ -25,13 +25,13 @@ import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.plaf.TreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Item;
 import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
 import org.jdesktop.swingx.decorator.RolloverHighlighter;
@@ -60,25 +60,16 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	DefaultMutableTreeNode top;
 
 	protected JTree createTree() {
-		jtree = new JXTree(top) {
-			private static final long serialVersionUID = 1L;
-
-			public void setUI(TreeUI ui) { // overwrite this method to make
-				// sure all rows have icon own
-				// height
-				super.setUI(ui);
-				setRowHeight(-1);
-			}
-		};
+		jtree = new JXTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,
 				Color.ORANGE);
+		Highlighter hAlternate = new AlternateRowHighlighter();
 		HighlighterPipeline pipeHighlight = new HighlighterPipeline(
-				new Highlighter[] { highlighter });
+				new Highlighter[] { highlighter,hAlternate });
 		jtree.setHighlighters(pipeHighlight);
-		jtree.setRowHeight(20);
 		jtree.setRolloverEnabled(true);
 		return jtree;
 	}

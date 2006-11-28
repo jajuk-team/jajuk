@@ -375,6 +375,17 @@ public class Player implements ITechnicalStrings {
 			return 0.0f;
 		}
 	}
+	
+	/**
+	 * @return current track length in secs
+	 */
+	public static long getCurrentLength() {
+		if (playerImpl != null) {
+			return playerImpl.getCurrentLength();
+		} else {
+			return 0l;
+		}
+	}
 
 	/**
 	 * @return volume in track in %

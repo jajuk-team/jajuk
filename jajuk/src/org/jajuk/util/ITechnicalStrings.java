@@ -209,6 +209,8 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
 
+	public static final String URL_MPLAYER = "http://82.239.70.252:8001/mplayer/1.0pre8/mplayer.exe";
+	
 	// About
 	public static final String ABOUT = "<html>Jajuk version " + JAJUK_VERSION
 			+ "</html>";
@@ -303,28 +305,28 @@ public interface ITechnicalStrings {
 			.getResource("org/jajuk/icons/16x16/info.png");
 
 	public static final URL ICON_PERSPECTIVE_PHYSICAL = Util
-			.getResource("org/jajuk/icons/48x48/perspective_physic.png");
+			.getResource("org/jajuk/icons/40x40/perspective_physic.png");
 
 	public static final URL ICON_PERSPECTIVE_LOGICAL = Util
-			.getResource("org/jajuk/icons/48x48/perspective_logic.png");
+			.getResource("org/jajuk/icons/40x40/perspective_logic.png");
 
 	public static final URL ICON_PERSPECTIVE_STATISTICS = Util
-			.getResource("org/jajuk/icons/48x48/perspective_stat.png");
+			.getResource("org/jajuk/icons/40x40/perspective_stat.png");
 
 	public static final URL ICON_PERSPECTIVE_CONFIGURATION = Util
-			.getResource("org/jajuk/icons/48x48/perspective_configuration.png");
+			.getResource("org/jajuk/icons/40x40/perspective_configuration.png");
 
 	public static final URL ICON_PERSPECTIVE_PLAYER = Util
-			.getResource("org/jajuk/icons/48x48/perspective_player.png");
+			.getResource("org/jajuk/icons/40x40/perspective_player.png");
 
 	public static final URL ICON_PERSPECTIVE_CATALOG = Util
-			.getResource("org/jajuk/icons/48x48/perspective_catalog.png");
+			.getResource("org/jajuk/icons/40x40/perspective_catalog.png");
 
 	public static final URL ICON_PERSPECTIVE_INFORMATION = Util
-			.getResource("org/jajuk/icons/48x48/perspective_information.png");
+			.getResource("org/jajuk/icons/40x40/perspective_information.png");
 
 	public static final URL ICON_PERSPECTIVE_HELP = Util
-			.getResource("org/jajuk/icons/48x48/perspective_help.png");
+			.getResource("org/jajuk/icons/40x40/perspective_help.png");
 
 	public static final URL ICON_OPEN_FILE = Util
 			.getResource("org/jajuk/icons/16x16/fileopen.png");
@@ -637,6 +639,9 @@ public interface ITechnicalStrings {
 
 	public static final URL ICON_DEFAULTS_BIG = Util
 			.getResource("org/jajuk/icons/22x22/undo.png");
+
+	public static final URL ICON_SEARCH = Util
+			.getResource("org/jajuk/icons/16x16/help.png");
 
 	// images
 	public static final URL IMAGES_SPLASHSCREEN = Util

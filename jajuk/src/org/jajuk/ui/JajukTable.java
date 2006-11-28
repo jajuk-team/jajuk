@@ -35,6 +35,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
 import org.jdesktop.swingx.decorator.RolloverHighlighter;
@@ -109,9 +110,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		super.setSortable(bSortable);
 		super.setColumnControlVisible(true);
 		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,
-				Color.WHITE);
+				Color.BLACK);
+		Highlighter hAlternate = new AlternateRowHighlighter();
 		HighlighterPipeline pipeHighlight = new HighlighterPipeline(
-				new Highlighter[] { highlighter });
+				new Highlighter[] { hAlternate,highlighter });
 		setHighlighters(pipeHighlight);
 		setRolloverEnabled(true);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

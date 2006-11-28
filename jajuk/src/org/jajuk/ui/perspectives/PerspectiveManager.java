@@ -39,6 +39,7 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.browser.BrowserEngineManager;
+import org.jdesktop.jdic.browser.WebBrowser;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -123,8 +124,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 		if (sPerspective == null) {
 			sPerspective = ConfigurationManager
 					.getProperty(CONF_PERSPECTIVE_DEFAULT);
-			// no? take the configuration ( user last
-			// perspective)
+			// no? take the configuration ( user last perspective)
 		}
 		IPerspective perspective = hmNameInstance.get(sPerspective);
 		// If perspective is no more known, take first perspective found
@@ -154,7 +154,8 @@ public class PerspectiveManager implements ITechnicalStrings {
 					if (!view.isPopulated()) {
 						view.initUI();
 						view.setIsPopulated(true);
-					} else {// view already populated, should be activated
+					} else {
+						// view already populated, should be activated
 						view.activate();
 					}
 				}
@@ -290,6 +291,12 @@ public class PerspectiveManager implements ITechnicalStrings {
 				 * presence
 				 */
 				if (out == 0 || out == 1) {
+					//Now check browser can actually be loaded by JDIC
+					WebBrowser browser = new WebBrowser();
+					if (browser.getBrowserEngine() == null){
+						throw new Exception("Cannot execute mozilla");
+					}
+					//OK, create the perspective
 					perspective = new InfoPerspective();
 					perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 					perspective.setID(PERSPECTIVE_NAME_INFO);

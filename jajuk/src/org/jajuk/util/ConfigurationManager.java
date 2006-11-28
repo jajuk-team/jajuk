@@ -141,8 +141,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_STATE_CONTINUE, TRUE);
 		properties.put(CONF_STATE_INTRO, FALSE);
 		properties.put(CONF_STATE_WAS_PLAYING, TRUE);
-		properties.put(CONF_STARTUP_FILE, ""); // no startup file by default
-		// //$NON-NLS-1$
+		// no startup file by default
+		properties.put(CONF_STARTUP_FILE, ""); 
 		properties.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);
 		properties.put(CONF_STARTUP_LAST_POSITION, "0"); //$NON-NLS-1$
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE, TRUE);
@@ -158,10 +158,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE, "30"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_VISIBLE_PLANNED, "10"); //$NON-NLS-1$
 		properties.put(CONF_BUFFER_SIZE, "16000"); //$NON-NLS-1$
-		properties.put(CONF_AUDIO_BUFFER_SIZE, "-1"); //$NON-NLS-1$ //-1 : max available buffer
-
-		// set default trace level, debug in debug mode and warning in normal
-		// mode
+		//-1 : max available buffer set default trace level, debug in debug mode and warning in normal mode
+		properties.put(CONF_AUDIO_BUFFER_SIZE, "-1"); //$NON-NLS-1$ 
 		if (Main.bIdeMode) {
 			properties.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.DEBUG));
 		} else {
@@ -191,10 +189,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_REFACTOR_PATTERN, PATTERN_DEFAULT_REORG);//$NON-NLS-1$        
 		properties.put(CONF_COLLECTION_CHARSET, "UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY, FALSE);
-		properties.put(CONF_NETWORK_PROXY_HOSTNAME, "proxy");// default proxy
-		// name, just a
-		// guess
-		// //$NON-NLS-1$
+		// default proxy name, just a guess
+		properties.put(CONF_NETWORK_PROXY_HOSTNAME, "proxy");
 		properties.put(CONF_NETWORK_PROXY_PORT, "3128"); //$NON-NLS-1$
 		properties.put(CONF_NETWORK_PROXY_LOGIN, ""); //$NON-NLS-1$
 		properties.put(CONF_NETWORK_CONNECTION_TO, "3"); //$NON-NLS-1$
@@ -204,14 +200,14 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
 		properties.put(CONF_COVERS_MIN_SIZE, "10"); //$NON-NLS-1$
 		properties.put(CONF_COVERS_MAX_SIZE, "70"); //$NON-NLS-1$
-		// medium  accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_0", "1"); 
-		// medium  accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_1", "1"); 
+		// medium accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_0", "1");
+		// medium accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_1", "1");
 		// Author accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_2", "3"); 
-		// Album  accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_3", "4"); 
+		properties.put(CONF_COVERS_ACCURACY + "_2", "3");
+		// Album accuracy
+		properties.put(CONF_COVERS_ACCURACY + "_3", "4");
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK
 				+ ',' + XML_ALBUM + ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE
@@ -224,37 +220,33 @@ public class ConfigurationManager implements ITechnicalStrings {
 						CONF_PLAYLIST_EDITOR_COLUMNS,
 						"0"		+ ',' + XML_TRACK_NAME + ',' + ',' + XML_TRACK_AUTHOR + ',' + //$NON-NLS-1$
 								XML_TRACK_RATE);
+		// Window position: X,Y,X_size,Y_size
 		properties.put(CONF_WINDOW_POSITION,
 				"100,100," + //$NON-NLS-1$
 						(int) (Toolkit.getDefaultToolkit().getScreenSize()
 								.getWidth() - 250)
 						+ "," + //$NON-NLS-1$
 						(int) (Toolkit.getDefaultToolkit().getScreenSize()
-								.getHeight() - 250)); // Window position:
-		// X,Y,X_size,Y_size
+								.getHeight() - 250)); 
 		properties.put(CONF_LOGICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
 		properties.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150x150);
 		properties.put(CONF_THUMBS_SORTER, "2"); // sort by album
-		// //$NON-NLS-1$
-		properties.put(CONF_THUMBS_FILTER, "2"); // filter on albums
-		// //$NON-NLS-1$
+		// filter on albums
+		properties.put(CONF_THUMBS_FILTER, "2"); 
 		properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
 		properties.put(CONF_TIP_OF_DAY_INDEX, "0"); //$NON-NLS-1$
 		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance()
 				.getLocal());
 		properties.put(CONF_FADE_DURATION, "0"); //$NON-NLS-1$
-		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0"); // sort by style
-		// //$NON-NLS-1$
+		// sort by style
+		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0"); 
 		properties.put(CONF_DEFAULT_DJ, "");// default dj //$NON-NLS-1$
 		properties.put(CONF_DEFAULT_AMBIENCE, "");// default ambience
-		// //$NON-NLS-1$
-		properties.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);// wrong player
-		// show again
-		// boolean
-		properties.put(CONF_MPLAYER_URL,
-				"http://82.239.70.252:8001/mplayer/1.0pre8/mplayer.exe");
+		// wrong player show again boolean
+		properties.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
+		properties.put(CONF_MPLAYER_URL, URL_MPLAYER);
 		properties.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
 		properties.put(CONF_NOVELTIES_MODE, MODE_TRACK);
 		properties.put(CONF_ANIMATION_PATTERN, PATTERN_DEFAULT_ANIMATION);
@@ -267,7 +259,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 	 */
 	public void setSystemLocal() {
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
-		if (Messages.getInstance().contains(sLanguage)) { 
+		if (Messages.getLocales().contains(sLanguage)) {
 			// user language exists in jajuk, take it as default
 			properties.put(CONF_OPTIONS_LANGUAGE, sLanguage);
 		} else { // user language is unknown, take english as a default,

@@ -24,7 +24,6 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.jajuk.i18n.Messages;
@@ -39,9 +38,9 @@ public class OKCancelPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private JButton jbOk;
+	private JajukButton jbOk;
 
-	private JButton jbCancel;
+	private JajukButton jbCancel;
 
 	/** Associated action listener */
 	ActionListener al;
@@ -53,9 +52,9 @@ public class OKCancelPanel extends JPanel {
 				{ TableLayout.TRAILING, TableLayout.FILL, TableLayout.TRAILING,
 						TableLayout.FILL, TableLayout.TRAILING }, { 0.99 } };
 		setLayout(new TableLayout(dSize));
-		jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
+		jbOk = new JajukButton(Messages.getString("OK")); //$NON-NLS-1$
 		jbOk.addActionListener(al);
-		jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
+		jbCancel = new JajukButton(Messages.getString("Cancel")); //$NON-NLS-1$
 		jbCancel.addActionListener(al);
 		add(jbOk, "1,0"); //$NON-NLS-1$
 		add(jbCancel, "3,0"); //$NON-NLS-1$
@@ -74,11 +73,11 @@ public class OKCancelPanel extends JPanel {
 		jbCancel.setText(sCancelTitle);
 	}
 
-	public JButton getOKButton() {
+	public JajukButton getOKButton() {
 		return jbOk;
 	}
 
-	public JButton getCancelButton() {
+	public JajukButton getCancelButton() {
 		return jbCancel;
 	}
 

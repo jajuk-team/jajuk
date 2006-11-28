@@ -20,7 +20,6 @@
 package org.jajuk.ui;
 
 import static org.jajuk.ui.action.JajukAction.BEST_OF;
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
 import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
@@ -38,6 +37,7 @@ import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.action.JajukAction.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -52,7 +52,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -271,20 +270,22 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 	public void initUI() {
 		ToolBarContainer container = Main.getToolbarContainer();
 		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
-		
+
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search");
-		vltbSearch.setBorder(Util.getShadowBorder());
+		double[][] sizeSearch = new double[][]{
+				{TableLayout.PREFERRED,2,TableLayout.PREFERRED},
+				{TableLayout.PREFERRED}};
+		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
-		sbSearch.setBorder(BorderFactory.createEmptyBorder(6,5,7,5));
-		// combo itself
-		vltbSearch.add(sbSearch);
+		jpSearch.add(new JLabel(Util.getIcon(ICON_SEARCH)),"0,0");
+		jpSearch.add(sbSearch,"2,0");
+		vltbSearch.add(jpSearch);
 
 		// History
 		VLToolBar vltbHistory = new VLToolBar("history");
 		vltbHistory.setBorder(Util.getShadowBorder());
 		jcbHistory = new SteppedComboBox();
-		jcbHistory.setBorder(new DropShadowBorder());
 		vltbHistory.add(jcbHistory);
 		// we use a combobox model to make sure we get good performances after
 		// rebuilding the entire model like after a refresh
@@ -293,19 +294,21 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
 				.getWidth() / 2);
 		// size of popup
-		jcbHistory.setPopupWidth(iWidth); 
+		jcbHistory.setPopupWidth(iWidth);
 		// size of the combo itself, keep it! as text can be very long
-		jcbHistory.setPreferredSize(new Dimension(300, 35));
+		jcbHistory.setPreferredSize(new Dimension(300, 25));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
 
 		// Mode toolbar
 		VLToolBar vltbModes = new VLToolBar("modes");
-		vltbModes.setBorder(Util.getShadowBorder());
+		vltbModes.setOpaque(false);
 		vltbModes.setCollapsible(false);
 		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
-		//make it not floatable as this behavior is managed by vldocking
+		jtbModes.setOpaque(false);
+		jtbModes.setBorder(null);
+		// make it not floatable as this behavior is managed by vldocking
 		jtbModes.setFloatable(false);
 		jtbModes.setRollover(true);
 		jbRepeat = new JajukToggleButton(ActionManager
@@ -327,20 +330,20 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		jtbModes.add(jbRandom);
 		jtbModes.add(jbContinue);
 		jtbModes.add(jbIntro);
-		//we use a strut as empty borders are now always applied on toolbars
-		vltbModes.add(Box.createVerticalStrut(35));
+		// we use a strut as empty borders are now always applied on toolbars
+		vltbModes.add(Box.createVerticalStrut(30));
 		vltbModes.add(jtbModes);
 
 		// Volume
 		VLToolBar vltbVolume = new VLToolBar("volume");
-		vltbVolume.setBorder(Util.getShadowBorder());
+		vltbVolume.setOpaque(false);
 		jpVolume = new JPanel();
 		ActionUtil.installKeystrokes(jpVolume, ActionManager
 				.getAction(DECREASE_VOLUME), ActionManager
 				.getAction(INCREASE_VOLUME));
 
 		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
-		jpVolume.setBorder(BorderFactory.createEmptyBorder(6,0,6,0));
+		jpVolume.setOpaque(false);
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
 		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
 		if (iVolume > 100) { // can occur in some undefined cases
@@ -358,10 +361,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 
 		// Position
 		VLToolBar vltbPosition = new VLToolBar("position");
-		vltbPosition.setBorder(Util.getShadowBorder());
+		vltbPosition.setOpaque(false);
 		jpPosition = new JPanel();
+		jpPosition.setOpaque(false);
 		jpPosition.setLayout(new BoxLayout(jpPosition, BoxLayout.X_AXIS));
-		jpPosition.setBorder(BorderFactory.createEmptyBorder(6,0,6,0));
 		jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
 		jsPosition = new JSlider(0, 100, 0);
 		jsPosition.setBorder(new DropShadowBorder());
@@ -375,18 +378,20 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		// Special functions toolbar
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
-		ambiencesCombo.setBorder(new DropShadowBorder());
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
 		ambiencesCombo.setPopupWidth(iWidth);
 		// size of the combo itself
-		ambiencesCombo.setPreferredSize(new Dimension(100, 31));
+		ambiencesCombo.setMaximumSize(new Dimension(100, 20));
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
 		VLToolBar vltbSpecial = new VLToolBar("smart");
-		vltbSpecial.setBorder(Util.getShadowBorder());
+		vltbSpecial.setOpaque(false);
 		vltbSpecial.setCollapsible(false);
-		jtbSpecial = new JToolBar(); // we have to use an intermediate
+		jtbSpecial = new JToolBar();
+		jtbSpecial.setOpaque(false);
+		jtbSpecial.setBorder(null);
+		jtbSpecial.setRollover(true);
 		jtbSpecial.setFloatable(false);
 		ddbGlobalRandom = new DropDownButton(Util.getIcon(ICON_SHUFFLE_GLOBAL)) {
 			private static final long serialVersionUID = 1L;
@@ -460,24 +465,32 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		};
 		ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
 		populateDJs();
-		ddbDDJ.setText("");// no text visible //$NON-NLS-1$
+		// no text visible
+		ddbDDJ.setText(""); //$NON-NLS-1$
 
 		jtbSpecial.add(ambiencesCombo);
+		jtbSpecial.addSeparator();
 		ddbDDJ.addToToolBar(jtbSpecial);
+		jtbSpecial.addSeparator();
 		ddbNovelties.addToToolBar(jtbSpecial);
+		jtbSpecial.addSeparator();
 		ddbGlobalRandom.addToToolBar(jtbSpecial);
+		jtbSpecial.addSeparator();
 		jtbSpecial.add(jbBestof);
+		jtbSpecial.addSeparator();
 		jtbSpecial.add(jbNorm);
 		vltbSpecial.add(jtbSpecial);
-
+		
+		
 		// Play toolbar
 		VLToolBar vltbPlay = new VLToolBar("player");
-		vltbPlay.setBorder(Util.getShadowBorder());
+		vltbPlay.setOpaque(false);
 		vltbPlay.setCollapsible(false);
 		JToolBar jtbPlay = new JToolBar();
+		jtbPlay.setBorder(null);
 		jtbPlay.setFloatable(false);
-		jtbPlay.setBorder(BorderFactory.createEmptyBorder(6,5,6,5));
-		//add some space to get generic size
+		jtbPlay.setOpaque(false);
+		// add some space to get generic size
 		jtbPlay.setRollover(true);
 		ActionUtil
 				.installKeystrokes(jtbPlay,
@@ -499,8 +512,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		jtbPlay.add(jbFwd);
 		jtbPlay.addSeparator();
 		jtbPlay.add(jbMute);
-		//we use a strut as empty borders are now always applied on toolbars
-		vltbPlay.add(Box.createVerticalStrut(35));
+		// we use a strut as empty borders are now always applied on toolbars
 		vltbPlay.add(jtbPlay);
 
 		boolean bToolbarInstallationOK = false; // flag
@@ -537,7 +549,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 			topPanel.add(vltbPlay, new ToolBarConstraints(1, 0));
 			topPanel.add(vltbSpecial, new ToolBarConstraints(1, 1));
 			topPanel.add(vltbModes, new ToolBarConstraints(1, 2));
-			
+
 		}
 
 		// register to player events
@@ -911,12 +923,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 			JMenuItem jmiNew = new JMenuItem(ActionManager
 					.getAction(CONFIGURE_DJS)); //$NON-NLS-1$
 			popupDDJ.add(jmiNew);
-			popupDDJ.addSeparator();
-			// Ambiences
-			JMenuItem jmiAmbiences = new JMenuItem(ActionManager
-					.getAction(CONFIGURE_AMBIENCES)); //$NON-NLS-1$
-			popupDDJ.addSeparator();
-			popupDDJ.add(jmiAmbiences);
 			Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
 			while (it.hasNext()) {
 				final DigitalDJ dj = (DigitalDJ) it.next();

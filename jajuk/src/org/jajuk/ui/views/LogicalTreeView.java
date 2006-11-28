@@ -248,6 +248,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 		JPanel jpsort = new JPanel();
 		jpsort.setLayout(new TableLayout(dSizeSort));
 		jlSort = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
+		jlSort.setOpaque(false);
 		jcbSort = new JComboBox();
 		jcbSort.addItem(Messages.getString("Property_style")); //$NON-NLS-1$
 		jcbSort.addItem(Messages.getString("Property_author")); //$NON-NLS-1$
@@ -258,7 +259,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 		jcbSort.addActionListener(this);
 		jpsort.add(jlSort, "1,0"); //$NON-NLS-1$
 		jpsort.add(jcbSort, "3,0"); //$NON-NLS-1$
-
+		
 		// Collection menu
 		jmenuCollection = new JPopupMenu();
 		btCollection = new ButtonGroup();

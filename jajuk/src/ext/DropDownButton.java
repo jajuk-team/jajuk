@@ -35,13 +35,17 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 	private boolean popupVisible = false;
 
 	public DropDownButton(ImageIcon icon) {
+		setOpaque(false);
 		mainButton.getModel().addChangeListener(this);
 		mainButton.setIcon(icon);
+		mainButton.setRolloverEnabled(true);
+		mainButton.setOpaque(false);
 		arrowButton.getModel().addChangeListener(this);
 		arrowButton.addActionListener(this);
+		arrowButton.setBorder(null);
+		arrowButton.setOpaque(false);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
 		mainButton.addPropertyChangeListener("enabled", this); // NOI18N
-		setBorder(Util.getShadowBorder());
 	}
 
 	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
@@ -93,7 +97,7 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 
 		mainButton.getModel().setRollover(false);
 		arrowButton.getModel().setSelected(false);
-		((JPopupMenu) e.getSource()).removePopupMenuListener(this); 
+		((JPopupMenu) e.getSource()).removePopupMenuListener(this);
 		// act as good programmer :)
 	}
 
@@ -107,6 +111,9 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 
 	public JButton addToToolBar(JToolBar toolbar) {
 		JToolBar tempBar = new JToolBar();
+		tempBar.setBorder(null);
+		tempBar.setRollover(true);
+		tempBar.setOpaque(false);
 		tempBar.setAlignmentX(0.5f);
 		tempBar.setRollover(true);
 		tempBar.add(mainButton);

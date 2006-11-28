@@ -659,17 +659,6 @@ public class Main implements ITechnicalStrings {
 						.setProperty(XML_TYPE_TECH_DESC,
 								TYPE_PROPERTY_TECH_DESC_AU);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU);
-				// aiff
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.aiff"), EXT_AIFF,
-						Class.forName(PLAYER_IMPL_JAVALAYER),
-						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_AIFF);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AIFF);
-
 			} else { // mplayer enabled
 				// mp3
 				Type type = TypeManager.getInstance().registerType(
@@ -718,16 +707,6 @@ public class Main implements ITechnicalStrings {
 						.setProperty(XML_TYPE_TECH_DESC,
 								TYPE_PROPERTY_TECH_DESC_AU);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU);
-				// aiff
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.aiff"), EXT_AIFF,
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_AIFF);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AIFF);
 				// flac
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.flac"), EXT_FLAC,
@@ -1132,8 +1111,8 @@ public class Main implements ITechnicalStrings {
 					DockingUISettings.getInstance().installUI();
 					tbcontainer = ToolBarContainer.createDefaultContainer(true,
 							true, true, true);
-					// tbcontainer.setBorder(BorderFactory.createEtchedBorder());
-
+					tbcontainer.setOpaque(false);
+					
 					// starts ui
 					jw = JajukWindow.getInstance();
 					jw.setCursor(Util.WAIT_CURSOR);

@@ -122,13 +122,14 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		jpControl.add(jcbLanguage, "3,1");//$NON-NLS-1$
 
 		// global layout
-		double size[][] = { { TableLayout.FILL }, { TableLayout.PREFERRED, 5
+		double size[][] = { { 10,TableLayout.FILL,10 }, 
+				{ TableLayout.PREFERRED, 5
 			, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new WebBrowser();
 		//WebBrowser.setDebug(true);
-		add(jpControl, "0,0"); //$NON-NLS-1$
-		add(browser, "0,2"); //$NON-NLS-1$
+		add(jpControl, "1,0"); //$NON-NLS-1$
+		add(browser, "1,2"); //$NON-NLS-1$
 
 		//Display default page at startup is none track launch
 		//avoid to launch this if a track is playing

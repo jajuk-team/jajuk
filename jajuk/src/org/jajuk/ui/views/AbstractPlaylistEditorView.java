@@ -46,6 +46,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -421,7 +422,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 		// Note : we don't use toolbar because it's buggy in Metal look and feel
 		// : icon get bigger
 		double sizeControl[][] = {
-				{ 5, 20, 20, 20, 20, 20, 20, 20, TableLayout.FILL, 5}
+				{ 5, TableLayout.PREFERRED, 15, TableLayout.FILL, 5}
 				, { 5,25,5 } };
 		TableLayout layout = new TableLayout(sizeControl);
 		layout.setHGap(2);
@@ -455,14 +456,21 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 				.getString("AbstractPlaylistEditorView.9")); //$NON-NLS-1$
 		jbClear.addActionListener(this);
 		jlTitle = new JLabel(""); //$NON-NLS-1$
-		jpControl.add(jbRun, "1,1"); //$NON-NLS-1$
-		jpControl.add(jbSave, "2,1"); //$NON-NLS-1$
-		jpControl.add(jbRemove, "3,1"); //$NON-NLS-1$
-		jpControl.add(jbAddShuffle, "4,1"); //$NON-NLS-1$
-		jpControl.add(jbUp, "5,1"); //$NON-NLS-1$
-		jpControl.add(jbDown, "6,1"); //$NON-NLS-1$
-		jpControl.add(jbClear, "7,1"); //$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlTitle), "8,1"); //$NON-NLS-1$
+		JToolBar jtb = new JToolBar();
+		jtb.setRollover(true);
+		jtb.setBorder(null);
+		jtb.setOpaque(false);
+		
+		jtb.add(jbRun);
+		jtb.add(jbSave);
+		jtb.add(jbRemove);
+		jtb.add(jbAddShuffle);
+		jtb.add(jbUp);
+		jtb.add(jbDown);
+		jtb.add(jbClear);
+		
+		jpControl.add(jtb, "1,1"); //$NON-NLS-1$
+		jpControl.add(jlTitle, "3,1,c,c"); //$NON-NLS-1$
 		model = new PlayListEditorTableModel();
 		jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS);
 		jtable
@@ -534,9 +542,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements
 				EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED,
 				ObservationManager
 						.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED)));
-		update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); // force first
-		// refresh
-		// refresh columns if new property
+		update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH)); 
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {

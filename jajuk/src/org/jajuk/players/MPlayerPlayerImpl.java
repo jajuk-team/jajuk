@@ -152,7 +152,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 					} else if (line.matches("ANS_LENGTH.*")) {
 						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
-						lDuration = (long) (Float.parseFloat(st.nextToken())) * 1000;
+						lDuration = (long) (Float.parseFloat(st.nextToken())* 1000) ;
 					}
 					// EOF
 					else if (line.matches("Exiting.*End.*")) {
@@ -169,7 +169,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 							if (!bFading) { 
 								// Benefit from end of file to perform a full gc
 								System.gc();
-								if (length > 0){
+								if (lDuration > 0){
 									//if corrumpted file, length=0 and we have not not call finished
 									//as it is managed my Player
 									FIFO.getInstance().finished();
@@ -285,8 +285,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	private void sendCommand(String command) {
 		if (proc != null) {
 			PrintStream out = new PrintStream(proc.getOutputStream());
-			// Do not use println() : it doesn't
-			// work under windows
+			// Do not use println() : it doesn't work under windows
 			out.print(command + '\n'); 
 			out.flush();
 		}
@@ -362,5 +361,12 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		} else {
 			return -1;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
+	 */
+	public long getCurrentLength() {
+		return lDuration;
 	}
 }

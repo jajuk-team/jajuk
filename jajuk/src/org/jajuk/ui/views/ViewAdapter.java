@@ -28,7 +28,6 @@ import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
 import org.jajuk.ui.JajukJPanel;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 import com.vlsolutions.swing.docking.DockKey;
 
@@ -64,8 +63,6 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 		key = new DockKey();
 		// View title
 		key.setName(Messages.getString(getDesc()));
-		// View icon
-		key.setIcon(Util.getIcon(ICON_VIEW));
  	}
 
 	/**

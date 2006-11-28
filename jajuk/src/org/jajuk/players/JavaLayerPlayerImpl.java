@@ -374,5 +374,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 */
 	public void setController(BasicController arg0) {
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
+	 */
+	public long getCurrentLength() {
+		return (lDuration/1000);
+	}
 
 }

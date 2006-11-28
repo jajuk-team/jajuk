@@ -37,13 +37,13 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
@@ -171,13 +171,10 @@ public class CoverView extends ViewAdapter implements Observer,
 		jpControl.setOpaque(false);
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 1;
-		double sizeControl[][] = {
-				{ 2, 20, iXspace, 20, 2 * iXspace, 20, iXspace, 20, iXspace,
-						20, iXspace, 20, 5, TableLayout.PREFERRED, 
-						10, TableLayout.PREFERRED,
-						2, TableLayout.FILL, 2 * iXspace, 20 },
-						{ 5, 25, 5 } };
-		jpControl.setLayout(new TableLayout(sizeControl));
+		JToolBar jtb = new JToolBar();
+		jtb.setRollover(true);
+		jtb.setOpaque(false);
+		jtb.setBorder(null);
 		jbPrevious = new JajukButton(Util.getIcon(ICON_PREVIOUS));
 		jbPrevious.addActionListener(this);
 		jbPrevious.setToolTipText(Messages.getString("CoverView.4")); //$NON-NLS-1$
@@ -213,18 +210,28 @@ public class CoverView extends ViewAdapter implements Observer,
 				.getInt(CONF_COVERS_ACCURACY + "_" + getCoverID())); //$NON-NLS-1$
 		jcbAccuracy.addActionListener(this);
 
-		jpControl.add(jbPrevious, "1,1");//$NON-NLS-1$
-		jpControl.add(jbNext, "3,1");//$NON-NLS-1$
-		jpControl.add(jbDelete, "5,1");//$NON-NLS-1$
-		jpControl.add(jbSave, "7,1");//$NON-NLS-1$
-		jpControl.add(jbSaveAs, "9,1");//$NON-NLS-1$
-		jpControl.add(jbDefault, "11,1");//$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlSize, BoxLayout.X_AXIS), "13,1");//$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlFound, BoxLayout.X_AXIS), "15,1");//$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jcbAccuracy, BoxLayout.X_AXIS),
-				"17,1");//$NON-NLS-1$
-		jpControl.add(Util.getCentredPanel(jlSearching, BoxLayout.X_AXIS),
-				"19,1");//$NON-NLS-1$
+		jtb.add(jbPrevious);
+		jtb.add(jbNext);
+		jtb.addSeparator();
+		jtb.add(jbDelete);
+		jtb.add(jbSave);
+		jtb.add(jbSaveAs);
+		jtb.add(jbDefault);
+		
+		double sizeControl[][] = {
+				{ 5, TableLayout.PREFERRED, 15, 
+					TableLayout.PREFERRED, 15, 
+					TableLayout.PREFERRED, 5, 
+					TableLayout.FILL, 5, 25, 5 },
+				{ 5, 25, 5 } };
+		TableLayout layout = new TableLayout(sizeControl);
+		jpControl.setLayout(layout);
+		
+		jpControl.add(jtb, "1,1");//$NON-NLS-1$
+		jpControl.add(jlSize, "3,1,c,c");//$NON-NLS-1$
+		jpControl.add(jlFound, "5,1");//$NON-NLS-1$
+		jpControl.add(jcbAccuracy,"7,1,c,c");//$NON-NLS-1$
+		jpControl.add(jlSearching,"9,1,c,c");//$NON-NLS-1$
 		ObservationManager.register(this);
 		try {
 			// instanciate default cover
