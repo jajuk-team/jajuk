@@ -1571,10 +1571,18 @@ public class Util implements ITechnicalStrings {
 				.exists()) {
 			sMplayerPath = file.getAbsolutePath();
 			return sMplayerPath;
-		} else if ((file = new File(Util.getRuntimeDirectory() + "../"
-				+ FILE_MPLAYER_EXE)).exists()) {
-			sMplayerPath = file.getAbsolutePath();
-			return sMplayerPath;
+		} else{
+			//Current jajuk.jar jar full path
+			String sJarPATH = Util.getRuntimeDirectory();
+			//Keep only path
+			String sDistPath = sJarPATH.substring(0,sJarPATH.lastIndexOf('/'));
+			//Remove the 'bin'
+			sDistPath = sDistPath.substring(0,sDistPath.length()-3);
+			System.out.println(new File(sDistPath+ FILE_MPLAYER_EXE)+" "+new File(sDistPath+ FILE_MPLAYER_EXE).exists());
+			//Add MPlayer file name
+			if ((file = new File(sDistPath+ FILE_MPLAYER_EXE)).exists()) {
+				sMplayerPath = file.getAbsolutePath();
+			}
 		}
 		return sMplayerPath;
 	}

@@ -209,7 +209,7 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
 
-	public static final String URL_MPLAYER = "http://82.239.70.252:8001/mplayer/1.0pre8/mplayer.exe";
+	public static final String URL_MPLAYER = "http://82.239.70.252/mplayer/1.0pre8/mplayer.exe";
 	
 	// About
 	public static final String ABOUT = "<html>Jajuk version " + JAJUK_VERSION
@@ -1149,9 +1149,6 @@ public interface ITechnicalStrings {
 
 	// wrong player not show again flag
 	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
-
-	// mplayer exe URL
-	public static final String CONF_MPLAYER_URL = "jajuk.mplayer_url";
 
 	// Global random mode: song or album level ?
 	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";

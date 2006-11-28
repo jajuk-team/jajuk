@@ -246,7 +246,6 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_DEFAULT_AMBIENCE, "");// default ambience
 		// wrong player show again boolean
 		properties.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
-		properties.put(CONF_MPLAYER_URL, URL_MPLAYER);
 		properties.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
 		properties.put(CONF_NOVELTIES_MODE, MODE_TRACK);
 		properties.put(CONF_ANIMATION_PATTERN, PATTERN_DEFAULT_ANIMATION);

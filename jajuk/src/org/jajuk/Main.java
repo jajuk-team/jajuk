@@ -554,17 +554,14 @@ public class Main implements ITechnicalStrings {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
-						Log.debug("Download Mplayer from: "
-								+ ConfigurationManager
-										.getProperty(CONF_MPLAYER_URL));
-						File fMplayer = new File(
+						Log.debug("Download Mplayer from: "+ URL_MPLAYER);
+						File fMPlayer = new File(
 								FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE);
-						DownloadManager.download(new URL(ConfigurationManager
-								.getProperty(CONF_MPLAYER_URL)), fMplayer);
+						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						//make sure to delete corrupted mplayer in case of download problem
-						if (fMplayer.length() != MPLAYER_EXE_SIZE){
-							fMplayer.delete();
-							throw new JajukException("Mplayer corrupted");
+						if (fMPlayer.length() != MPLAYER_EXE_SIZE){
+							fMPlayer.delete();
+							throw new Exception("MPlayer corrupted");
 						}
 					} catch (Exception e) {
 						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
