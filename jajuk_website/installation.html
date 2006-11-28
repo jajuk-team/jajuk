@@ -2,145 +2,96 @@
 <html>
 <head>
 
+
+  
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-  <title>Installation guide</title>
 
-
+  
+  <title>Installation guides</title>
 </head>
 
 
 <body>
 
-<h1>Installation guide</h1>
 
-<h2>Targeted platforms</h2>
+<h1>Installation guides</h1>
 
-This documentation targets: Gnu/Linux and others Unix, MS Windows and
-MacOS.
-<h2>Requirements</h2>
 
-Java Runtime environment (JRE) 1.5 and above. If needed, you can get
-it for free at <a href="http://www.java.com">http://www.java.com</a>.
-<p><span style="font-weight: bold;">Install JRE
-under Linux</span></p>
+<br>
 
-Download the JRE RPM version (.rpm.bin file).
-<ul>
 
-  <li>Lauch installer :<span style="font-family: monospace;">
-sh
-j2re-{version}.rpm.bin</span></li>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="10" cellspacing="10">
 
-  <li>Log as root and install the RPM : <span style="font-family: monospace;">rpm -ivh j2re-{version}.rpm</span></li>
 
-</ul>
+  <tbody>
 
-<h2>Download</h2>
 
-Download Jajuk last distribution at <a href="http://sourceforge.net/project/showfiles.php?group_id=91412">http://sourceforge.net/project/showfiles.php?group_id=91412</a>.
-<h2>Support</h2>
+    <tr>
 
-In case of problem (installing Java JRE for instance), you can emit a
-support request at <a href="http://sourceforge.net/project/stats/?group_id=91412">http://sourceforge.net/project/stats/?group_id=91412</a>
-<h2>Installation</h2>
 
-<h3>o Under Linux</h3>
+      <td><a href="installation_windows.html">Windows
+installation guide</a></td>
 
-We provide two packages for Linux : Suse RPM (<span style="font-family: monospace;">jajuk-${version}-suse.noarch.rpm</span>)
-and
-Mandrake RPM (<span style="font-family: monospace;">jajuk-${version}-1mdk.noarch.rpm</span>).
-Suse and Mandrake RPM should work with most others Linux&nbsp;
-distributions even if&nbsp; you may encounter menu icons creation
-and
-dependencies issues on JRE with others distributions. To install, use
-your favorite graphical tool (Yast, Drake...) or log as root and launch
-<span style="font-family: monospace;">rpm -ivh
-jajuk-${version}.rpm. </span>If
-system complains for a java2 package and that we already have java
-installed (check it with command<span style="font-family: monospace;">
-java --version</span>), force installation :<span style="font-family: monospace;"> </span><span style="font-family: monospace;">rpm -ivh --nodeps
-jajuk-${version}.rpm<br>
 
-</span>
-<p><u>Notes</u>:</p>
+    </tr>
 
-<ul>
 
-  <li>In both distributions, it can take a while for shortcut to
-appear
-in menu.</li>
+    <tr>
 
-  <li>Under Suse, shortcut is created in "Multimedia" menu
-section.</li>
 
-  <li>Under Mandrake, shortcut is created in "Multimedia/Sound"
-menu
-section.</li>
+      <td><a href="installation_linux.html">Linux
+installation guide</a></td>
 
-  <li>Check your path points to the right JRE (type <span style="font-family: monospace;">java --version</span>
-in case of
-problem) and not to gcj or others JVM that are not supported by Jajuk for the moment,
-it is a common issue, especially for Fedora, take a look in <a href="http://sourceforge.net/project/stats/?group_id=91412">support</a>
-database.<span style="font-family: monospace;"></span><br>
 
-  </li>
+    </tr>
 
-</ul>
 
-<h3><span style="font-weight: bold;">o Under Windows</span></h3>
+    <tr>
 
-<span style="font-weight: bold;">
-</span>We provide a self-extracting Windows archive (<span style="font-family: monospace;">Jajuk-${version}.exe</span>).
-Double
-click on it and follow installation.<span style="font-weight: bold;"><br>
 
-</span>
-<h3><span style="font-weight: bold;">o Under Mac OS X</span><span style="font-weight: bold;"></span><br>
+      <td><a href="installation_mac.html">Mac OS
+installation guide</a></td>
 
-</h3>
 
-<ul>
+    </tr>
 
-  <li>Note that even after installing java 1.5, Java 1.4.2 is
-still in use under Mac OS X, you have to display java 1.5 panel control
-and choose Java 1.5 as the first choice and default JVM. Note that in
-terminals, 1.4.2 will still be in used even after this change.</li>
 
-  <li>Use
-Web Start link : <a href="http://jajuk.sourceforge.net/jws.html">http://jajuk.sourceforge.net/jws.html</a>
-to install
-and start Jajuk (Java installer will fail due to JVM 1.4.2 default use).</li>
+  
+  </tbody>
+</table>
 
-</ul>
 
-<span style="font-weight: bold;"></span>
-<h3><span style="font-weight: bold;">o Under
-Linux/Unix, Windows, MacOsX</span><br>
+<br>
 
-</h3>
 
-<p>
-You can use the provided IzPack Java Installer (<span style="font-family: monospace;">jajuk-java-installer-${version}.jar</span>).
-The distribution file is an
+<h3>For all others OS supporting Java 1.5 (Solaris, AIX,
+FreeBSD...) :</h3>
+
+
+<p>Please use the&nbsp;Java Installer ..
+This distribution file is an
 executable jar file, the Java version of a 'setup.exe' file but working
 with any operating system.
 </p>
 
+
 <ol>
 
-  <li>Double-click on the downloaded
-file ( jajuk-java-installer-${version}.jar). If nothing
-appends, it means .jar extension is not mapped to the java program.
-Then, you can map it (open with...)&nbsp; or launch
+
+  <li>Launch
 it by typing in a console:&nbsp; <span style="font-family: monospace;">java
 -jar
 jajuk-java-installer-${version}.jar</span></li>
 
+
   <li>Select your language for installation</li>
+
 
   <li>Read carefully the provided README file</li>
 
+
   <li>Read and accept GPL license.</li>
+
 
   <li>Select installation target :
 Example: <span style="font-family: monospace;">/usr/local/jajuk</span>
@@ -149,119 +100,12 @@ Unix,&nbsp; <span style="font-family: monospace;">c:\Program
 Files\jajuk</span>
 under Windows.</li>
 
-  <li>Create shortcuts (if your OS is supported) : just click on
-the
-'Next' button.<span style="font-weight: bold;"></span></li>
+
+  <li>Create shortcuts (if your OS is support</li>
+
 
 </ol>
 
-<h2>Launching</h2>
 
-<h3><span style="font-weight: bold;">o Under
-Linux/Unix</span></h3>
-
-<ul>
-
-  <li>(Optional) If you used the IzPack Java installer and that
-your
-Unix OS is
-not supported by IzPack (Linux is supported), you will have to create
-your own shortcuts if you need them. <br>
-
-  </li>
-
-  <li>If you installed using RPM, you should get a shortcut in
-Applications/Audio under Suse and Multimedia/Sound under Mandrake. You
-can also launch Jajuk with <span style="font-family: monospace;">jajuk</span>
-(in <span style="font-family: monospace;">/usr/bin</span>)<span style="font-family: monospace;">.</span> It can take a
-while for
-shortcuts to appear.</li>
-
-  <li>Using command line, launch Jajuk with:&nbsp; <span style="font-family: monospace;">sh {jajuk installation
-path}/jajuk.sh</span></li>
-
-</ul>
-
-<h3><span style="font-weight: bold;">o Under Windows</span></h3>
-
-Launch Jajuk by clicking on Jajuk icon : Start / Jajuk / Jajuk
-<p><u>Note for MS Windows 95/98/Me users</u>: Some
-users report
-problems (error
-window : "Main-window couldn't be created" ). If this occurs, launch
-Jajuk by double-clicking on the file <span style="font-family: monospace;">{Jajuk installation
-path}/bin/jajuk.jar</span>.
-See <a href="http://sourceforge.net/tracker/?group_id=91412">support
-request
-no 938666</a>.<br>
-
-</p>
-
-<h3><span style="font-weight: bold;">o Under Mac OS X</span><span style="font-weight: bold;"></span><br>
-
-</h3>
-
-Use Web Start link.<span style="font-weight: bold;"><br>
-
-</span>
-<h2>Upgrade</h2>
-
-<h3><span style="font-weight: bold;">o Under all
-systems</span></h3>
-
-If you already have an installed Jajuk release:
-<ul>
-
-  <li>It is safe to install the new release over previous one
-without
-uninstalling, Jajuk supports backwards compatibility. Your collection
-and configuration is kept and is stored under <span style="font-family: monospace;">{your home directory}/.jajuk</span></li>
-
-  <li>However Jajuk doesn't support downwards compatibility: A
-Jajuk
-release may not work with a collection built by a newer release than
-the one you use. For downgrading to releases &lt; 0.3.3.4 using exe
-or jar installer, please uninstall first.</li>
-
-</ul>
-
-<h3>o Under Linux only</h3>
-
-<p>To upgrade Jajuk, log as root and launch <span style="font-family: monospace;">rpm -Uvh
-jajuk-${version}-suse.rpm</span></p>
-
-<ul>
-
-</ul>
-
-<h2>Uninstallation</h2>
-
-<h3><span style="font-weight: bold;">o Under
-Linux/Unix</span></h3>
-
-<ul>
-
-  <li>If you used the IzPack Java installer, <span style="text-decoration: underline;"></span>launch : <span style="font-family: monospace;">java -jar {jajuk
-installation
-path}/Unistaller/uninstaller.jar</span></li>
-
-  <li>If you installed using RPM, use
-your favorite graphical tool (Yast, Drake...) or log as root and
-launch: <span style="font-family: monospace;">rpm -e
-jajuk-{version}</span></li>
-
-</ul>
-
-<h3><b>o Under Windows</b><br>
-
-</h3>
-
-Launch uninstaller by clicking on 'Uninstall' icon next to 'Jajuk ' one<br>
-
-<h3><b>o Under&nbsp;Linux/Unix and Windows</b></h3>
-
-Remove <span style="font-family: monospace;">{user
-home}/.jajuk</span>
-directory for each user you want to uninstall.
 </body>
 </html>
