@@ -542,8 +542,6 @@ public class Main implements ITechnicalStrings {
 	 */
 	private static void registerTypes() {
 		try {
-			// mplayer tests: 0: OK, 1: no mplayer in path, 2: wrong mplayer
-			// release
 			// test mplayer presence in PATH
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 			if (Util.isUnderWindows()) {
