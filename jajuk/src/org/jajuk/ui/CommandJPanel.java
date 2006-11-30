@@ -469,15 +469,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		ddbDDJ.setText(""); //$NON-NLS-1$
 
 		jtbSpecial.add(ambiencesCombo);
-		jtbSpecial.addSeparator();
 		ddbDDJ.addToToolBar(jtbSpecial);
-		jtbSpecial.addSeparator();
 		ddbNovelties.addToToolBar(jtbSpecial);
-		jtbSpecial.addSeparator();
 		ddbGlobalRandom.addToToolBar(jtbSpecial);
-		jtbSpecial.addSeparator();
 		jtbSpecial.add(jbBestof);
-		jtbSpecial.addSeparator();
 		jtbSpecial.add(jbNorm);
 		vltbSpecial.add(jtbSpecial);
 		

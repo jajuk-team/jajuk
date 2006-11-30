@@ -304,9 +304,6 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(final Event event) {
-		if (jsystray == null) { // test if the systray is visible
-			return;
-		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				EventSubject subject = event.getSubject();
@@ -326,17 +323,17 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					File file = FileManager.getInstance().getFileByID(
 							(String) ObservationManager.getDetail(event,
 									DETAIL_CURRENT_FILE_ID));
-					String sOut = ""; //$NON-NLS-1$
+					String sOut = "<HTML>"; //$NON-NLS-1$
 					if (file != null) {
 						String sAuthor = file.getTrack().getAuthor().getName();
 						if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-							sOut += sAuthor + " / "; //$NON-NLS-1$
+							sOut += sAuthor + "<br>"; //$NON-NLS-1$
 						}
 						String sAlbum = file.getTrack().getAlbum().getName();
 						if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-							sOut += sAlbum + " / "; //$NON-NLS-1$
+							sOut += sAlbum + "<br>"; //$NON-NLS-1$
 						}
-						sOut += file.getTrack().getName();
+						sOut += "<b>"+file.getTrack().getName() +"</b></HTML>";
 						if (ConfigurationManager
 								.getBoolean(CONF_OPTIONS_SHOW_POPUP)) {
 							trayIcon

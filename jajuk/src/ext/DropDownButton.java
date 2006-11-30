@@ -24,54 +24,50 @@ import org.jajuk.util.Util;
  * 
  * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
  */
-public abstract class DropDownButton extends JButton implements ChangeListener,
+public abstract class DropDownButton extends JajukButton implements ChangeListener,
 		PopupMenuListener, ActionListener, PropertyChangeListener,
 		ITechnicalStrings {
-	private final JButton mainButton = this;
-
+	
 	private final JButton arrowButton = new JajukButton(Util
 			.getIcon(ICON_DROP_DOWN));
 
 	private boolean popupVisible = false;
 
 	public DropDownButton(ImageIcon icon) {
-		setOpaque(false);
-		mainButton.getModel().addChangeListener(this);
-		mainButton.setIcon(icon);
-		mainButton.setRolloverEnabled(true);
-		mainButton.setOpaque(false);
+		super(icon);
+		getModel().addChangeListener(this);
 		arrowButton.getModel().addChangeListener(this);
 		arrowButton.addActionListener(this);
 		arrowButton.setBorder(null);
 		arrowButton.setOpaque(false);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
-		mainButton.addPropertyChangeListener("enabled", this); // NOI18N
+		addPropertyChangeListener("enabled", this); // NOI18N
 	}
 
 	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		arrowButton.setEnabled(mainButton.isEnabled());
+		arrowButton.setEnabled(isEnabled());
 	}
 
 	/*------------------------------[ ChangeListener ]---------------------------------------------------*/
 
 	public void stateChanged(ChangeEvent e) {
-		if (e.getSource() == mainButton.getModel()) {
-			if (popupVisible && !mainButton.getModel().isRollover()) {
-				mainButton.getModel().setRollover(true);
+		if (e.getSource() == getModel()) {
+			if (popupVisible && !getModel().isRollover()) {
+				getModel().setRollover(true);
 				return;
 			}
 			arrowButton.getModel().setRollover(
-					mainButton.getModel().isRollover());
-			arrowButton.setSelected(mainButton.getModel().isArmed()
-					&& mainButton.getModel().isPressed());
+					getModel().isRollover());
+			arrowButton.setSelected(getModel().isArmed()
+					&& getModel().isPressed());
 		} else {
 			if (popupVisible && !arrowButton.getModel().isSelected()) {
 				arrowButton.getModel().setSelected(true);
 				return;
 			}
-			mainButton.getModel().setRollover(
+			getModel().setRollover(
 					arrowButton.getModel().isRollover());
 		}
 	}
@@ -81,21 +77,21 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 	public void actionPerformed(ActionEvent ae) {
 		JPopupMenu popup = getPopupMenu();
 		popup.addPopupMenuListener(this);
-		popup.show(mainButton, 0, mainButton.getHeight());
+		popup.show(this, 0, getHeight());
 	}
 
 	/*------------------------------[ PopupMenuListener ]---------------------------------------------------*/
 
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 		popupVisible = true;
-		mainButton.getModel().setRollover(true);
+		getModel().setRollover(true);
 		arrowButton.getModel().setSelected(true);
 	}
 
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 		popupVisible = false;
 
-		mainButton.getModel().setRollover(false);
+		getModel().setRollover(false);
 		arrowButton.getModel().setSelected(false);
 		((JPopupMenu) e.getSource()).removePopupMenuListener(this);
 		// act as good programmer :)
@@ -116,10 +112,10 @@ public abstract class DropDownButton extends JButton implements ChangeListener,
 		tempBar.setOpaque(false);
 		tempBar.setAlignmentX(0.5f);
 		tempBar.setRollover(true);
-		tempBar.add(mainButton);
-		tempBar.add(arrowButton);
 		tempBar.setFloatable(false);
+		tempBar.add(this);
+		tempBar.add(arrowButton);
 		toolbar.add(tempBar);
-		return mainButton;
+		return this;
 	}
 }

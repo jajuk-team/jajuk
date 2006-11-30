@@ -49,8 +49,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -62,6 +60,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.Timer;
 
 import org.jajuk.Main;
@@ -281,7 +280,6 @@ public class CatalogView extends ViewAdapter implements Observer,
 				.getInt(CONF_THUMBS_FILTER));
 		jcbFilter.addActionListener(this);
 		jtfValue = new JTextField(10);
-		jtfValue.setBorder(Util.getShadowBorder());
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				bNeedSearch = true;
@@ -311,8 +309,9 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jbRefresh.setToolTipText(Messages.getString("CatalogView.3")); //$NON-NLS-1$
 		jbRefresh.addActionListener(this);
 
-		JPanel jpPage = new JPanel();
-		jpPage.setLayout(new BoxLayout(jpPage,BoxLayout.X_AXIS));
+		JToolBar jtbPage = new JToolBar();
+		jtbPage.setFloatable(false);
+		jtbPage.setRollover(true);
 		jbPrev = new JajukButton(Util.getIcon(ICON_PREVIOUS));
 		jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
 		jbPrev.addActionListener(this);
@@ -323,10 +322,9 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jcbPage.setBorder(Util.getShadowBorder());
 		jcbPage.setToolTipText(Messages.getString("CatalogView.14"));
 		jcbPage.addActionListener(this);
-		jpPage.add(jbPrev);
-		jpPage.add(Box.createHorizontalStrut(4));
-		jpPage.add(jcbPage);
-		jpPage.add(jbNext);		
+		jtbPage.add(jbPrev);
+		jtbPage.add(jcbPage);
+		jtbPage.add(jbNext);		
 		
 		jpControl.add(jlSorter, "0,0");//$NON-NLS-1$
 		jpControl.add(jcbSorter, "1,0");//$NON-NLS-1$
@@ -336,7 +334,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 		jpControl.add(jtfValue, "5,0");//$NON-NLS-1$
 		jpControl.add(jcbShow, "0,1");//$NON-NLS-1$
 		jpControl.add(jcbSize, "1,1");//$NON-NLS-1$
-		jpControl.add(jpPage, "5,1");//$NON-NLS-1$
+		jpControl.add(jtbPage, "5,1");//$NON-NLS-1$
 		jpControl.add(jbRefresh, "7,1,r,c");//$NON-NLS-1$
 
 		// Covers
