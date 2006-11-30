@@ -1567,18 +1567,16 @@ public class Util implements ITechnicalStrings {
 			return sMplayerPath;
 		} else{
 			//Current jajuk.jar jar full path
-			String sJarPATH = null;
+			String sPATH = null;
             try {
                 //Extract file name from URL
-                sJarPATH = new File(getJarLocation(Main.class).toURI()).getAbsolutePath();
+                sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getAbsolutePath();
             } catch (URISyntaxException e) {
                 return sMplayerPath;
             }
-			//Remove the 'bin'
-			String sDistPath = sJarPATH.substring(0,sJarPATH.length()-3);
-			System.out.println(new File(sDistPath+ FILE_MPLAYER_EXE)+" "+new File(sDistPath+ FILE_MPLAYER_EXE).exists());
+			System.out.println(new File(sPATH+"/"+ FILE_MPLAYER_EXE)+" "+new File(sPATH+ "/"+FILE_MPLAYER_EXE).exists());
 			//Add MPlayer file name
-			if ((file = new File(sDistPath+ FILE_MPLAYER_EXE)).exists()) {
+			if ((file = new File(sPATH+ FILE_MPLAYER_EXE)).exists()) {
 				sMplayerPath = file.getAbsolutePath();
 			}
 		}
