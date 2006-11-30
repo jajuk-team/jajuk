@@ -773,13 +773,6 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * @return Jajuk installation runtime directory
-	 */
-	public static String getRuntimeDirectory() {
-		return getJarLocation(Main.class).getPath();
-	}
-
-	/**
 	 * @return whether we are under Windows
 	 */
 	public static boolean isUnderWindows() {
@@ -1573,11 +1566,9 @@ public class Util implements ITechnicalStrings {
 			return sMplayerPath;
 		} else{
 			//Current jajuk.jar jar full path
-			String sJarPATH = Util.getRuntimeDirectory();
-			//Keep only path
-			String sDistPath = sJarPATH.substring(0,sJarPATH.lastIndexOf('/'));
+			String sJarPATH = new File(getJarLocation(Main.class).getFile()).getAbsolutePath();
 			//Remove the 'bin'
-			sDistPath = sDistPath.substring(0,sDistPath.length()-3);
+			String sDistPath = sJarPATH.substring(0,sJarPATH.length()-3);
 			System.out.println(new File(sDistPath+ FILE_MPLAYER_EXE)+" "+new File(sDistPath+ FILE_MPLAYER_EXE).exists());
 			//Add MPlayer file name
 			if ((file = new File(sDistPath+ FILE_MPLAYER_EXE)).exists()) {

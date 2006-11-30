@@ -105,7 +105,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		double sizeControl[][] =
 		// Language by lang
 		{ { 3 * iXspace, TableLayout.PREFERRED, iXspace, 200, 3 * iXspace },
-				{ 5,25,5 } };
+				{ 5,TableLayout.PREFERRED,5 } };
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1")); //$NON-NLS-1$
 		jcbLanguage = new JComboBox();
@@ -122,7 +122,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		jpControl.add(jcbLanguage, "3,1");//$NON-NLS-1$
 
 		// global layout
-		double size[][] = { { 10,TableLayout.FILL,10 }, 
+		double size[][] = { { 2,TableLayout.FILL,5 }, 
 				{ TableLayout.PREFERRED, 5
 			, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
