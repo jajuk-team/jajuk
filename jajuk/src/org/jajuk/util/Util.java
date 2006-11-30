@@ -44,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -1566,7 +1567,13 @@ public class Util implements ITechnicalStrings {
 			return sMplayerPath;
 		} else{
 			//Current jajuk.jar jar full path
-			String sJarPATH = new File(getJarLocation(Main.class).getFile()).getAbsolutePath();
+			String sJarPATH = null;
+            try {
+                //Extract file name from URL
+                sJarPATH = new File(getJarLocation(Main.class).toURI()).getAbsolutePath();
+            } catch (URISyntaxException e) {
+                return sMplayerPath;
+            }
 			//Remove the 'bin'
 			String sDistPath = sJarPATH.substring(0,sJarPATH.length()-3);
 			System.out.println(new File(sDistPath+ FILE_MPLAYER_EXE)+" "+new File(sDistPath+ FILE_MPLAYER_EXE).exists());
