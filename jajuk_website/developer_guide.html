@@ -2,43 +2,58 @@
 <html>
 <head>
 
+
+  
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+
+  
+
+
+  
   <title>Jajuk developer guide</title>
-
-
   <meta name="GENERATOR" content="OpenOffice.org 1.1.3 (Linux)">
 
+
+  
   <meta name="CREATED" content="20040503;23532900">
 
-  <meta name="CHANGED" content="20050522;13201400">
 
+  
+  <meta name="CHANGED" content="20050522;13201400">
 </head>
 
 
 <body style="direction: ltr;" lang="fr-FR">
 
+
 <h1><a name="bodyColumn"></a><a name="Developer_guide"></a>
 Developer guide</h1>
 
+
 <span style="text-decoration: underline;"><br>
+
 
 Last change</span>: 2006/02/12<br>
 
+
 <p lang="en-GB">Welcome to new Jajuk developers ! Have fun.</p>
+
 
 <h2 lang="en-GB">Natural Language</h2>
 
+
 <p lang="en-GB">Jajuk code and comments have
 to&nbsp;be in English
-natural language only.<br>
+natural language only.<a href="./specs.pdf"></a>
 
 </p>
-
 <h2>Jajuk Brand Identity Guidelines</h2>
+
 
 Please find Jajuk brand identity guidelines (colors, icons...) <a href="./jajuk_bi_quidelines.html">here</a>.
 <h2 lang="en-GB"><a name="Mailing_List___forum"></a>Mailing
 List / Forum</h2>
+
 
 <p><span lang="en-GB">It is <b>mandatory</b>
 to subscribe to Jajuk
@@ -49,46 +64,69 @@ this list is the project main&nbsp;communication stream. You
 may also use and monitor the public Open Discussion forum
 (</span><a href="http://sourceforge.net/forum/forum.php?forum_id=315360"><span lang="en-GB">http://sourceforge.net/forum/forum.php?forum_id=315360)</span></a></p>
 
+
 <h2 lang="en-GB">Voting system</h2>
+
 
 Each vote should contain following information:<br>
 
+
 <ul>
+
 
   <li>[VOTE] in the message title to clearly identify this is a
 vote</li>
 
+
   <li>In the message body:</li>
 
+
+  
   <ul>
 
+
     <li>[SUBJECT]: theme and goal of the vote</li>
+
 
     <li>[METHOD]: voting method of this vote. &nbsp;Standard
 voting methods are:</li>
 
+
+    
     <ul>
+
 
       <li>Apache Group voting system (<a href="http://httpd.apache.org/dev/guidelines.html">http://httpd.apache.org/dev/guidelines.html</a>)
 for binary decisions.</li>
 
+
       <li>Cumulative Vote (<a href="http://en.wikipedia.org/wiki/Cumulative_voting">http://en.wikipedia.org/wiki/Cumulative_voting</a>)
 on 100 points for single choice between a set of elements.</li>
 
+
+    
     </ul>
 
+
     <li>[DELAY]: Give the vote duration and a given ending date.</li>
+
 
     <li>[VOTING POPULATION]: Details people having the right to
 vote</li>
 
+
     <li>[CHOICES]: Clearly identifies options that can be taken.</li>
 
+
+  
   </ul>
+
 
 </ul>
 
+
 <h2 lang="en-GB">IDE</h2>
+
 
 <p><span lang="en-GB">We advice to use the </span><a href="http://www.eclipse.org/"><span style="background: transparent none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;"><span lang="en-GB">Eclipse</span></span></a>
 <span lang="en-GB">platform to develop. All following
@@ -96,72 +134,100 @@ documentation
 (CVS...) deals with Eclipse only. </span>
 </p>
 
+
 <h2 lang="en-GB"><a name="CVS"></a>CVS</h2>
+
 
 <p><span lang="en-GB">We assume you know CVS. If you
 are not so
 familiar with CVS, please read the CVS manual :
 </span><a href="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><span lang="en-GB">http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html.</span></a></p>
 
+
 <h3 lang="en-GB"><a name="Connexion"></a>Connexion</h3>
+
 
 <p lang="en-GB">The Connexion String is
 <font face="monospace">:extssh:login@jajuk.cvs.sourceforge.net:/cvsroot/jajuk<br>
+
 
 </font>Under
 eclipse CVS repository location looks like (replace bflorat by your
 login):<br>
 
+
 <br>
+
 
 <img src="images/cvs_connexion.png" name="Image1" align="bottom" border="0" height="567" width="637"><br>
 
+
 </p>
+
 
 <h3 lang="en-GB"><a name="CVS_rules"></a>CVS
 rules</h3>
 
+
 <ul>
 
+
   <li>
+    
     <p lang="en-GB">Make sure the whole project yet
 compiles and is in an acceptable stability state before committing
 something. if you feel your work not stable enough, keep it on your
 local workspace for the moment. </p>
 
+
   </li>
 
+
   <li>
+    
     <p lang="en-GB">During a release process, please
 follow freezes (see release process part).</p>
 
+
   </li>
 
+
   <li>
+    
     <p lang="en-GB">You should work most of the time in
 the HEAD branch.</p>
 
+
   </li>
 
+
   <li>
+    
     <p lang="en-GB">If you start to code a
 complex&nbsp;feature full&nbsp;of impacts on the project and
 potentially dangerous for current release, please create your own
 branch for this feature and merge your work into the HEAD when you feel
 ready and when no release is planned for some weeks.</p>
 
+
   </li>
+
 
   <li>All bugs should be double-fixed into the maintenance branch
 of last release and into the head (see version rules bellow).</li>
 
+
 </ul>
+
 
 <h3>Version rules</h3>
 
+
 <ul>
 
+
   <li>
+    
     <p>Jajuk releases (from 1.0) follow this
 version scheme:
 &lt;major&gt;.&lt;minor&gt;.&lt;fix&gt;.
@@ -169,13 +235,18 @@ Example: 1.1.4
 : Fourth fix release of second minor release of first&nbsp;major
 release.</p>
 
+
   </li>
+
 
 </ul>
 
+
 <ul>
 
+
   <li>
+    
     <p>When
 a new minor release starts, we create a maintenance
 branch&nbsp;used&nbsp;for fixes. Example: when starting 1.1
@@ -187,54 +258,75 @@ fixed
 in the <span style="font-style: italic;">maintenance_1_1 </span>branch
 AND in the head (future 1.2 release).&nbsp;</p>
 
+
   </li>
 
+
   <li>
+    
     <p>Major and minor releases are maintened during one minor
 releases (for example, 1.1 is
 maintened until 1.2 is released) and a fix pack release (x.y.z) is
 released ASAP if critical bug found or about every one or two weeks for
 minor issues.</p>
 
+
   </li>
 
+
 </ul>
+
 
 <h2><a name="Eclipse_configuration"></a>Eclipse
 configuration</h2>
 
+
 <ul>
 
+
   <li>
+    
     <p lang="en-GB">In preferences / "Java/Code
 generation/Code and comments" or "Java/Code Style/Code templates",
 please import <a href="./utils/code_generation.xml">this
 file</a>. This is a template for new java sources.</p>
 
+
   </li>
+
 
   <li>
+    
     <p lang="en-GB">See default configuration: </p>
 
+
   </li>
+
 
 </ul>
 
+
 <p lang="en-GB"><br>
+
 
 <img src="images/configuration_2.png" name="Graphic1" align="bottom" border="0" height="789" width="822"><br>
 
+
 </p>
+
 
 <p lang="en-GB"><span style="font-weight: bold;">Program
 arguments:</span></p>
 
+
 <ul>
+
 
   <li><span style="font-family: monospace;">-ide </span>argument
 tells
 jajuk that it is executing inside an IDE (probably Eclipse) . This
 changes the&nbsp;resources path (images, doc...).</li>
+
 
   <li><span style="font-family: monospace;">-test</span>
 argument tells
@@ -242,93 +334,128 @@ jajuk to use the ~/.jajuk_debug repository and not the ~/.jajuk,
 reserved for stable releases (this way a jajuk developer can use a
 stable release of jajuk when working on a new release) .</li>
 
+
   <li><span style="font-family: monospace;">-notaskbar</span>
 (optional) : tells jajuk to hide from task bar when reduced as tray.</li>
 
+
 </ul>
 
+
 <span style="font-weight: bold;">VM arguments:<br>
+
 
 </span>VM arguments are currently: <span style="font-family: monospace;">-client -Xms25M -Xmx512M
 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20
 -Dapple.laf.useScreenMenuBar=true</span><span style="font-weight: bold;"></span>
 <p lang="en-GB"><img src="images/configuration_1.png" name="Graphic2" align="bottom" border="0" height="789" width="822"></p>
 
+
 <ul>
 
+
   <li>
+    
     <p lang="en-GB">Only use UTF-8 for your source. Use
 preference screen to set it:</p>
 
+
   </li>
+
 
 </ul>
 
+
 <p><img src="images/eclipse_encoding.png" name="Graphic3" align="bottom" border="0" height="585" width="637"></p>
+
 
 <p lang="en-GB">Check your .properties file uses correct
 encoding
 (especially under Eclipse 3.0 final) by selecting
 file/properties/info. If the file is in ISO8859-1, set UTF-8 instead.</p>
 
+
 <h2 lang="en-GB">ant scripts and i18n</h2>
+
 
 <p lang="en-GB">You shouldn't have to use any provided ant
 script when under Eclipse environment. Two ant scripts are found in
 the tree:</p>
 
+
 <ul>
 
+
   <li>
+    
     <p lang="en-GB"><i>scripts/build.xml</i> :
 this is the stored build file packaged with the distribution and used
 in command line to recompile Jajuk using a standard installation. Do
 not use it under Eclipse.</p>
 
+
   </li>
 
+
   <li>
+    
     <p><i>scripts/build-dist.xml</i> : this is the
 ant script used by the packager to generate Jajuk distribution. You
 shouldn't have to use it.<br>
 
+
     </p>
+
 
   </li>
 
+
 </ul>
+
 
 <h2 lang="en-GB"><a name="Release_process"></a>Release
 process</h2>
+
 
 <p lang="en-GB">The Jajuk release process usually takes
 from 2 to 4
 weeks.</p>
 
+
 <ul>
 
+
   <li>
+    
     <p lang="en-GB">The release process is announced with
 a message in the developer mailing list (make sure you subscribed to
 this list). All developments are then frozen in the repository. English
 labels are frozen as &nbsp;well to allow translators to begin their
 work.</p>
 
+
   </li>
+
 
 </ul>
 
+
 <ul>
 
+
   <li>
+    
     <p><span lang="en-GB">Translators can complete
 their translations during the entire process. Note that translators can
 translate current releases even outside release process periods. </span><a href="translation_howto.html"><span lang="en-GB">Translator
 guide is available here</span></a><span lang="en-GB">.</span></p>
 
+
   </li>
 
+
   <li>
+    
     <p><span lang="en-GB">Testers qualify and
 developers fixes bugs discovered during this period. We try to release
 a release candidate (rc) every 2 or 3 days during this period. Note
@@ -337,36 +464,50 @@ public bug tracker to report them but use developer list instead. All
 these rc are internal only and should not be distributed to public.
 Testers can base their work on this </span><a href="qualification/qualification-model.html"><span lang="en-GB">qualification form</span></a><span lang="en-GB">. A mail is send on developer list at each rc.</span></p>
 
+
   </li>
 
+
   <li>
+    
     <p>When we estimate that the last rc is stable enough, the
 packager releases it on SourceForge as a stable release and a
 maintenance branch is created. We wait at least 3 days between last RC
 and final release.</p>
 
+
   </li>
 
+
   <li>
+    
     <p>The communication delegate send the news in Freshmeat and
 other web sites after one week without critical issue.</p>
 
+
   </li>
 
+
 </ul>
+
 
 <h2 lang="en-GB"><a name="Code_conventions"></a>Code
 conventions</h2>
 
+
 <p lang="en-GB">We use generic Eclipse-built in&nbsp;
 formatter configuration (please format you code using Eclipse formatter)</p>
 
+
 <h3 lang="en-GB">String externalization</h3>
+
 
 <ul>
 
+
   <li>All application labels have to be externalized (see<a href="translation_howto.html"> translator guide</a>)
 as &lt;Class name&gt;.&lt;number from 0&gt; .</li>
+
 
   <li>For common labels like OK, Cancel... we use generic
 externalized labels (see <span style="font-family: monospace;">jajuk.properties</span>).
@@ -375,182 +516,250 @@ generic labels to minimum and when creating new generic labels, keep in
 mind that some language (French, German...) are genre-sensitive in
 opposition to English.&nbsp;</li>
 
+
   <li>Do not reuse&nbsp;existing&nbsp;label
 ids&nbsp;but always increment&nbsp;a
 new number for new strings because removed labels can still be present
 in out-of-date langpacks.</li>
 
+
   <li>Make sure to cleanup useless labels to reduce translators
 work.</li>
+
 
   <li>Under Eclipse, use the externalizer tool
 (Source-&gt;Find Strings to Externalize) and uncheck all keys and
 technical strings.</li>
 
+
 </ul>
 
+
 <h3 lang="en-GB"><a name="Interfaces"></a>Interfaces</h3>
+
 
 <p lang="en-GB">Begin interfaces with a upper ' I '. The
 'i' is not
 taken into account for variables names:<br>
 
+
 <br>
+
 
 <font face="monospace">IPerspectiveManager
 pm;</font></p>
 
+
 <h3 lang="en-GB"><a name="XML"></a>XML</h3>
 
+
 <ul>
+
 
   <li>Avoid to use PCDATA values, use attributes instead :
 it's faster to parse and much easier to code.</li>
 
+
 </ul>
+
 
 <ul>
 
+
   <li>
+    
     <p lang="en-GB">Use single quotes, not double quotes. </p>
+
 
   </li>
 
+
 </ul>
+
 
 <h3 lang="en-GB"><a name="Comments___Javadoc"></a>Comments
 / Javadoc&nbsp;</h3>
+
 
 <p>Please correctly comment attributes and methods with
 javadoc&nbsp;( <font face="Courier, monospace">/**
 comments */</font> ).</p>
 
+
 <h3>Dead code</h3>
+
 
 Please remove any dead code and move it to some personal junk
 project&nbsp;if you want to keep it.
 <h3>Class headers</h3>
 
+
 Please use the standard Jajuk header (see Eclipse templates
 configuration before) and set your own copyright.
 <h3>Code quality</h3>
+
 
 Please keep Eclipse&nbsp;standard level of warnings (imports,
 static
 context...) and make sure to cleanup imports (Control-Alt-o).
 <h3>Performances</h3>
 
+
 <ul>
+
 
   <li>Please a thread or a SwingWorker to launch long tasks in
 AWT-Dispatcher thread to avoid freezing UI.</li>
 
+
 </ul>
+
 
 <h3>Documentation</h3>
 
+
 <ul>
+
 
   <li>Please document&nbsp;your features at least in English
 into Java Help HTML pages (<span style="font-family: monospace;">dist-files/doc/java-help/default</span>).</li>
 
+
   <li>If needed, please add new tips of the day in
 jajuk_properties file.</li>
 
+
 </ul>
 
+
 <h3>Code review/fixes</h3>
+
 
 Jajuk entire code can be updated by anyone if justified (in commit
 comments for ie). We encourage developers to review&nbsp;code from
 each others or enhance it.
 <h3>Using managers</h3>
 
+
 Managers are the only way to access (list or change) items (Track,
 File, Type, Directory, Playlist, PlaylistFile, Device, Author, album
 and Style). For example, listing devices is done this way: <br>
 
+
 <pre>DeviceManager.getInstance.getDevices()</pre>
+
 
 <p>Note that getXXXs() methods&nbsp;return copies that can be
 changed safely.<br>
 
+
 </p>
 
+
 <h3>Anonymizer</h3>
+
 
 For any private data (track name, user info...), use {{ braces in logs.
 Example for Cover URL search:<br>
 
+
 <span style="font-family: monospace;">Log.debug("Search
 URL: {{"+sURL+"}}");</span><br>
 
+
 All strings between {{ and }} are replaced by *** in quality agent.<br>
+
 
 <br>
 
+
 <h3>Files filters</h3>
+
 
 Jajuk provides a powerful JajukFileFilter class to filter files.
 &nbsp;Example: to keep only audio files or directories: new
 JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),JajukFileFilter.AudioFilter.getInstance());<br>
 
+
 Jajuk provides several predefined filters: Audio, NotAudio, Playlist,
 Directory, KnownType, AnyFile than can be used in conjunction using a
 AND or an OR between them.<br>
 
+
 &nbsp;&nbsp; <br>
 
+
 <h3>Collection filters</h3>
+
 
 Jajuk uses Jakarta Commons-Collections features to filter collections.
 Filtering is done by using decorated iterators using Predicates.
 Example:<br>
 
+
 <pre>Iterator it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));</pre>
+
 
 allows to iterate only on items of given age.<br>
 
+
 New predicates&nbsp;should be centralized&nbsp;into the
 JajukPredicates class.<br>
+
 
 &nbsp;
 <h2 lang="en-GB"><a name="Project_rules"></a>Project
 Rules</h2>
 
+
 <h3>Becoming a new developer</h3>
 
+
 <ul>
+
 
   <li>A new developer will be added in the project only after
 having written&nbsp;significant code and having accepted
 the Team rules (see below).&nbsp;</li>
+
 
   <li>This code can be a unreserved feature implementation chosen
 from task list
 ( http://sourceforge.net/pm/?group_id=91412 ) or from&nbsp;its
 own choice.&nbsp;</li>
 
+
 </ul>
 
+
 <h3>Team rules</h3>
+
 
 <p lang="en-GB">We ask members&nbsp;to follow these
 basic rules :</p>
 
+
 <ul>
 
+
   <li>
+    
     <p>Members have to be SourceForge member.</p>
 
+
   </li>
 
+
   <li>
+    
     <p>Members have to communicate in English.</p>
 
+
   </li>
 
+
   <li>
+    
     <p>Members have to subscribe
 on developer
 mailing list. This is the main communication stream so people don't
@@ -559,34 +768,49 @@ Unsubscribing from this list will be understood a wish
 to&nbsp;leave&nbsp;the
 project.</p>
 
+
   </li>
 
+
   <li>
+    
     <p lang="en-GB">Members should give minimum planning
 and actions on the project so we can plan releases.</p>
 
+
   </li>
+
 
   <li>Members have to follow CVS rules.</li>
 
+
 </ul>
+
 
 <h3>Leaving project</h3>
 
+
 <ul>
 
+
   <li>Please tell us ASAP if you give up or have no more time.</li>
+
 
   <li>Members may be removed from the project if we don't
 heard about them after&nbsp;3 mouths.</li>
 
+
   <li>Any member can leave project and come back later.</li>
+
 
   <li>Left&nbsp;members will keep copyright on their
 work&nbsp;and&nbsp;be listed in this <a href="http://jajuk.sourceforge.net/team-list.html">Contributor
 Registry.</a></li>
 
+
 </ul>
+<h2>Project initial specifications (2003)</h2>
+<a href="specs.pdf">Specifications</a>
 
 </body>
 </html>

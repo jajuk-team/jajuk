@@ -42,6 +42,7 @@ if [ "$1" = "site" ]; then
 
 #Cleanup
 rm -rf $DOC_DEST/*
+rm -rf $XDOC_DEST/*
 
 #Copy doc files
 

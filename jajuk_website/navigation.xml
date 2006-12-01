@@ -1,52 +1,44 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <project name='Jajuk'>
   <title>Jajuk Project Home Page</title>
   <body>
     <!-- footer will be placed above the (c) -->
     <footer>
       <A href='http://sourceforge.net'> <IMG src='http://sourceforge.net/sflogo.php?group_id=91412&amp;type=5' width='210' height='62' border='0' alt='SourceForge.net Logo' /></A>
+      <a href='./jajuk.pdf'>PDF version of this Web Site</a>
     </footer>
     <links>
       <item name='Download' href='./downloads.html' />
+      <item name='Features' href='./features.html' />
+      <item name='Screenshots' href='./screenshots.html' />
       <item name='Sourceforge Jajuk page' href='http://sourceforge.net/projects/jajuk/' />
     </links>
     <menu name='Overview'>
       <item name='-Home-' href='./index.html' />      
       <item name='Download' href='./downloads.html' />
-      <item name='Changelog' href='./changes-report.html' />
-      <item name='Support/Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
-      <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
-      <item name='Features' href='./index.html#Features' />
+      <item name='Features' href='./features.html' />
       <item name='Screenshots' href='./screenshots.html' />
-      <item name='Mailing list' href='./mail-lists.html' />
-      <item name='Press' href='./references.html' />
+      <item name='Support / Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
+      <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
+      <item name='Media coverage' href='./references.html' />
     </menu>
     <search/>
     <menu name='Documentation'>
-      <item name='Jajuk manual' href='./jajuk-hs/default/html/intro.html' />
       <item name='Installation' href='./installation.html' />
-      <item name='Release notes' href='./main_qualification.html' />
-      <item name='README notes' href='./README.html' />
+      <item name='Jajuk manual' href='./manuals.html' />
       <item name='FAQ' href='./faq.html' />
-      <item name='Site documentation (PDF)' href='./jajuk.pdf' />
       <item name="Get Java" href="http://java.com/java/download/index.jsp?cid=jdp77505" img="http://java.com/en/img/everywhere/getjava_med.gif?cid=jdp77505"/>
     </menu>
     <menu name='Project'>
+      <item name='Changelog' href='./changes-report.html' />
       <item name='Roadmap' href='./roadmap.html' />
       <item name='Help wanted' href='./jobs.html' />
-      <item name='Tasks list' href='http://sourceforge.net/pm/?group_id=91412' />
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Translator guide' href='./translation_howto.html' />
       <item name='Tester guide' href='./tester_guide.html' />
       <item name='Brand Identity Guidelines' href='./jajuk_bi_quidelines.html' />
       <item name='Team' href='./team-list.html' />      
-      <item name='Specifications (PDF) ' href='./specs.pdf' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
-      <item name='QDWizard' href='http://qdwizard.sourceforge.net/' />
-      <item name='Last commits' href='./statcvs-xml-out/commitlog.html#Commit_Log' />
-      <item name='Javadoc' href='./apidocs/index.html' />
-      <item name='CVS web repository' href='http://jajuk.cvs.sourceforge.net/jajuk/' />
-      <item name='Sources XREF' href='./xref/index.html' />
       <item name='Code statistics' href='./statcvs-xml-out/index.html' />
     </menu>
    </body>
