@@ -128,7 +128,7 @@ public class Player implements ITechnicalStrings {
 					bWaitingLine = true;
 					Log.debug("Line occupied, waiting"); //$NON-NLS-1$
 					InformationJPanel.getInstance().setMessage(
-							Messages.getString("Player.0"),
+							Messages.getString("Player.0"), //$NON-NLS-1$
 							InformationJPanel.WARNING); //$NON-NLS-1$
 					try {
 						// wait for the line
@@ -144,7 +144,7 @@ public class Player implements ITechnicalStrings {
 			pDetails.put(DETAIL_CURRENT_FILE, file);
 			ObservationManager.notifySync(new Event(
 					EventSubject.EVENT_PLAY_ERROR, pDetails));
-			Log.error("007", Messages.getString("Player.0")
+			Log.error("007", Messages.getString("Player.0") //$NON-NLS-1$ //$NON-NLS-2$
 					+ fCurrent.getAbsolutePath() + "}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// process playing error asynchonously to avoid loop problems
 			// when cascading errors
@@ -187,7 +187,7 @@ public class Player implements ITechnicalStrings {
 				bPlaying = false;
 			}
 		} catch (Exception e) {
-			Log.debug(Messages.getString("Error.008")
+			Log.debug(Messages.getString("Error.008") //$NON-NLS-1$
 					+ ":" + fCurrent.getName() + " " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}

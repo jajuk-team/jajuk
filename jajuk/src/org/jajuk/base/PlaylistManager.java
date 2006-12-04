@@ -137,7 +137,7 @@ public class PlaylistManager extends ItemManager {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void removePlaylist(Playlist pl) {
 		synchronized (PlaylistManager.getInstance().getLock()) {
 			// file deletion confirmation

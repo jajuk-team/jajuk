@@ -170,7 +170,7 @@ public class TracksTableModel extends JajukTableModel {
 				// '*'
 				sNewPattern = sNewPattern.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
 				sNewPattern = ".*" + sNewPattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-			} else if ("".equals(sNewPattern)) {// in regexp mode, if none
+			} else if ("".equals(sNewPattern)) {// in regexp mode, if none //$NON-NLS-1$
 				// selection, display all rows
 				// //$NON-NLS-1$
 				sNewPattern = ".*"; //$NON-NLS-1$

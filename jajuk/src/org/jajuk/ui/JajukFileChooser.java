@@ -45,7 +45,7 @@ public class JajukFileChooser extends JFileChooser {
 	 *            filter to use
 	 */
 	public JajukFileChooser(JajukFileFilter jfilter) {
-		setDialogTitle(Messages.getString("JajukFileChooser.0"));// default
+		setDialogTitle(Messages.getString("JajukFileChooser.0"));// default //$NON-NLS-1$
 		// title
 		// //$NON-NLS-1$
 		this.filter = jfilter;

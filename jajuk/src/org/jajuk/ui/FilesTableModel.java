@@ -62,10 +62,10 @@ public class FilesTableModel extends JajukTableModel implements
 	 *            columns names
 	 */
 	public FilesTableModel() {
-		super(17);
+		super(18);
 		// Columns names
-		//First column is play icon, need to set a space character
-		//for proper display in some look and feel
+		// First column is play icon, need to set a space character
+		// for proper display in some look and feel
 		vColNames.add(" "); //$NON-NLS-1$
 		vId.add(XML_PLAY);
 
@@ -113,11 +113,14 @@ public class FilesTableModel extends JajukTableModel implements
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
 		vId.add(XML_DIRECTORY);
 
-		vColNames.add(Messages.getString("Property_file_date"));
+		vColNames.add(Messages.getString("Property_file_date")); //$NON-NLS-1$
 		vId.add(XML_FILE_DATE);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
 		vId.add(XML_TRACK_HITS);
+
+		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
+		vId.add(XML_TRACK_ADDED);
 
 		// custom properties now
 		// for tracks
@@ -156,84 +159,50 @@ public class FilesTableModel extends JajukTableModel implements
 		Iterator it = files.iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
+			// show it if no sync option or if item is in the selection
 			bShowWithTree = !bSyncWithTreeOption
-					|| ((hs != null && hs.size() > 0 && hs.contains(file))); // show
-			// it
-			// if
-			// no
-			// sync
-			// option
-			// or
-			// if
-			// item
-			// is
-			// in
-			// the
-			// selection
+					|| ((hs != null && hs.size() > 0 && hs.contains(file)));
 			if (!file.shouldBeHidden() && bShowWithTree) {
 				alToShow.add(file);
 			}
 		}
-		// Filter values using given pattern
-		if (sPropertyName != null && sPattern != null) { // null means no
-			// filtering
+		// Filter values using given pattern, null means no filtering
+		if (sPropertyName != null && sPattern != null) {
 			it = alToShow.iterator();
 			// Prepare filter pattern
 			String sNewPattern = sPattern;
-			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) { // do we
-				// use
-				// regular
-				// expression
-				// or
-				// not?
-				// if
-				// not,
-				// we
-				// allow
-				// user
-				// to
-				// use
-				// '*'
+			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
+				// do we use regular expression or not?
+				// if not, we allow user to use '*'
 				sNewPattern = sNewPattern.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
 				sNewPattern = ".*" + sNewPattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-			} else if ("".equals(sNewPattern)) {// in regexp mode, if none
-				// selection, display all rows
-				// //$NON-NLS-1$
+			} else if ("".equals(sNewPattern)) { //$NON-NLS-1$
+				// in regexp mode, if none selection, display all rows
 				sNewPattern = ".*"; //$NON-NLS-1$
 			}
 			while (it.hasNext()) {
 				File file = (File) it.next();
-				if (sPropertyName != null && sNewPattern != null) { // if
-					// name
-					// or
-					// value
-					// is
-					// null,
-					// means
-					// there
-					// is no
-					// filter
+				if (sPropertyName != null && sNewPattern != null) {
+					// if name or value is null, means there is no filter
 					String sValue = file.getHumanValue(sPropertyName);
-					if (sValue == null) { // try to filter on a unknown
-						// property, don't take this
+					if (sValue == null) {
+						// try to filter on a unknown property, don't take this
 						// file
 						continue;
 					} else {
 						boolean bMatch = false;
 						try { // test using regular expressions
 							bMatch = sValue.toLowerCase().matches(
-									sNewPattern.toLowerCase()); // test if the
-							// file property
-							// contains this
-							// property
-							// value (ignore
-							// case)
-						} catch (PatternSyntaxException pse) { // wrong pattern
-							// syntax
+									sNewPattern.toLowerCase());
+							// test if the file property contains this property
+							// value (ignore case)
+						} catch (PatternSyntaxException pse) {
+							// wrong pattern syntax
 							bMatch = false;
 						}
 						if (!bMatch) {
-							it.remove(); // no? remove it
+							// no? remove it
+							it.remove();
 						}
 					}
 				}
@@ -324,6 +293,9 @@ public class FilesTableModel extends JajukTableModel implements
 			// Hits
 			oValues[iRow][16] = file.getTrack().getHits();
 			bCellEditable[iRow][16] = false;
+			// Discovery date
+			oValues[iRow][17] = file.getTrack().getAdditionDate();
+			bCellEditable[iRow][17] = false;
 
 			// Custom properties now
 			// files

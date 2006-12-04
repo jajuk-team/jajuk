@@ -69,7 +69,7 @@ public class StylesSelectionDialog extends JDialog implements ActionListener {
 	/**
 	 * @throws HeadlessException
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public StylesSelectionDialog(HashSet disabledStyles)
 			throws HeadlessException {
 		super();
@@ -119,7 +119,7 @@ public class StylesSelectionDialog extends JDialog implements ActionListener {
 		return selectedStyles;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	private void initUI() {
 		list = (Vector) StyleManager.getInstance().getStylesList().clone();
 		// remove disabled items

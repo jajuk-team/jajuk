@@ -491,7 +491,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					int row, boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, sel, expanded,
 						leaf, row, hasFocus);
-				setFont(new Font("Dialog", Font.PLAIN, 10)); //$NON-NLS-1$
+				setFont(new Font("Dialog", Font.PLAIN, 12)); //$NON-NLS-1$
 				if (value instanceof FileNode) {
 					setBorder(null);
 					File file = ((FileNode) value).getFile();
@@ -518,7 +518,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					}
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && file.equals(current)) {
-						setFont(new Font("Dialog", Font.BOLD, 10)); //$NON-NLS-1$
+						setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
 						setForeground(new Color(200, 70, 10));
 					}
 				} else if (value instanceof PlaylistFileNode) {

@@ -68,7 +68,7 @@ public class PlaylistFileItem extends JPanel {
 
 	public static final int PLAYLIST_TYPE_NOVELTIES = 5;
 
-	private static final Font font = new Font("Dialog", Font.PLAIN, 10);
+	private static final Font font = new Font("Dialog", Font.PLAIN, 10); //$NON-NLS-1$
 
 	/**
 	 * Constructor
@@ -107,8 +107,8 @@ public class PlaylistFileItem extends JPanel {
 		jlIcon.setPreferredSize(new Dimension(100, 100));
 		JLabel jlName = new JLabel(sName);
 		jlName.setFont(font); //$NON-NLS-1$
-		add(jlIcon, "0,0,c,c");
-		add(jlName, "0,1,c,c");
+		add(jlIcon, "0,0,c,c"); //$NON-NLS-1$
+		add(jlName, "0,1,c,c"); //$NON-NLS-1$
 		new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
 	}
 

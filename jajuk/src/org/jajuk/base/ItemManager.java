@@ -113,7 +113,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Remove a custom property to all items for the given manager */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void applyRemoveProperty(PropertyMetaInformation meta) {
 		synchronized (getLock()) {
 			Collection<Item> items = hmItems.values();
@@ -126,7 +126,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Add a custom property to all items for the given manager */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public void applyNewProperty(PropertyMetaInformation meta) {
 		synchronized (getLock()) {
 			Collection<Item> items = hmItems.values();
@@ -280,7 +280,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Return all registred items with filter applied */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public Collection<Item> getItems(Filter filter) {
 		synchronized (getLock()) {
 			if (filter == null) {
@@ -478,7 +478,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Return all registred items */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	protected Set<Item> getItems() {
 		synchronized (getLock()) {
 			return hmItems.inverseBidiMap().keySet();

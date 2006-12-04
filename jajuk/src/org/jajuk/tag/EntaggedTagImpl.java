@@ -52,7 +52,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	public String getTrackName() throws Exception {
 		String sOut = tag.getFirstTitle();
 		if (sOut == null) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown
+			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
 			// string //$NON-NLS-1$
 		}
 		return sOut;
@@ -66,7 +66,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	public String getAlbumName() throws Exception {
 		String sOut = tag.getFirstAlbum();
 		if (sOut == null) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown
+			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
 			// string //$NON-NLS-1$
 		}
 		return sOut;
@@ -80,7 +80,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	public String getAuthorName() throws Exception {
 		String sOut = tag.getFirstArtist();
 		if (sOut == null) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown
+			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
 			// string //$NON-NLS-1$
 		}
 		return sOut;
@@ -94,7 +94,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	public String getStyleName() throws Exception {
 		String sOut = tag.getFirstGenre();
 		if (sOut == null || sOut.equals("genre")) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown
+			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
 			// string //$NON-NLS-1$
 		}
 		// Sometimes, the style has this form : (nb)

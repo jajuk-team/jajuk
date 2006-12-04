@@ -151,7 +151,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		} catch (Exception e) {
 			// error parsing the file, we must avoid user to blocked, use
 			// default conf
-			Log.error("Error parsing conf file, use defaults - " + getID(), e);
+			Log.error(e);
+			Log.debug("Error parsing conf file, use defaults - " + getID());
 			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
 					+ getClass().getSimpleName() + ".xml");
 			in = new BufferedInputStream(url.openStream());

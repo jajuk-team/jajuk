@@ -90,7 +90,7 @@ public abstract class CustomPropertyWizard extends JDialog implements
 		jcbItemChoice.addItem(Messages.getString("Item_Album")); //$NON-NLS-1$
 		jcbItemChoice.addItem(Messages.getString("Item_Device")); //$NON-NLS-1$
 		jcbItemChoice.addItem(Messages.getString("Item_Directory")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Playlist")); // playlist
+		jcbItemChoice.addItem(Messages.getString("Item_Playlist")); // playlist //$NON-NLS-1$
 		// file
 		// actually
 		// //$NON-NLS-1$

@@ -306,7 +306,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource() == jbNew) {
 				ambiences.add(new Ambience(Long.toString(System
-						.currentTimeMillis()), "")); // create a void
+						.currentTimeMillis()), "")); // create a void //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
 				// ambience
 				// //$NON-NLS-1$
 				Collections.sort(ambiences);

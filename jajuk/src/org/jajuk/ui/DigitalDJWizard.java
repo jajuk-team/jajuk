@@ -202,7 +202,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void initUI() {
 			djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance()
 					.getDJs());
@@ -281,7 +281,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void initUI() {
 			djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance()
 					.getDJs());
@@ -677,7 +677,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void initUI() {
 			final Vector<String> styles = StyleManager.getInstance()
 					.getStylesList();
@@ -982,7 +982,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * Create panel UI
 		 */
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		public void initUI() {
 			if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
 				DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
@@ -1429,7 +1429,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	 * @see org.jajuk.ui.wizard.Wizard#finish()
 	 */
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public void finish() {
 		DigitalDJ dj = null;

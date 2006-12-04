@@ -127,7 +127,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,
 		// windows title: name of the element of only one item, or "selection"
 		// word otherwise
 		super(Main.getWindow(), alItems.size() == 1 ? (alItems.get(0))
-				.getDesc() : Messages.getString("PropertiesWizard.6"), true); // modal
+				.getDesc() : Messages.getString("PropertiesWizard.6"), true); // modal //$NON-NLS-1$
 		// //$NON-NLS-1$
 		this.alItems = alItems;
 		boolean bMerged = false;
@@ -156,7 +156,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,
 		// windows title: name of the element of only one item, or "selection"
 		// word otherwise
 		super(Main.getWindow(), alItems1.size() == 1 ? (alItems1.get(0))
-				.getDesc() : Messages.getString("PropertiesWizard.6"), true); // modal
+				.getDesc() : Messages.getString("PropertiesWizard.6"), true); // modal //$NON-NLS-1$
 		// //$NON-NLS-1$
 		this.alItems = alItems1;
 		this.alItems2 = alItems2;
@@ -398,7 +398,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,
 				// Set widgets
 				// Property name
 				String sName = meta.getHumanName();
-				JLabel jlName = new JLabel(sName + " :"); // check if
+				JLabel jlName = new JLabel(sName + " :"); // check if //$NON-NLS-1$
 				// property name
 				// is translated
 				// (for custom

@@ -145,7 +145,7 @@ public class Playlist extends Item implements Comparable {
 			alPlaylistFiles.add(plFile);
 			String sPlaylistFiles = plFile.getId();
 			if (this.containsProperty(XML_PLAYLIST_FILES)) {
-				sPlaylistFiles += "," + getValue(XML_PLAYLIST_FILES); // add
+				sPlaylistFiles += "," + getValue(XML_PLAYLIST_FILES); // add //$NON-NLS-1$
 				// previous
 				// playlist
 				// files

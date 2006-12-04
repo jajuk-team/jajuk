@@ -237,7 +237,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		final Properties properties = new Properties();
 		// Choose right jajuk_<lang>.properties file to load
 		StringBuffer sbFilename = new StringBuffer(FILE_LANGPACK_PART1);
-		if (!sLocal.equals("en")) { // for english, properties file is
+		if (!sLocal.equals("en")) { // for english, properties file is //$NON-NLS-1$
 			// simply jajuk.properties //$NON-NLS-1$
 			sbFilename.append('_').append(sLocal);
 		}
@@ -246,7 +246,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		// property file URL, either in the jajuk.jar jar
 		// (normal execution) or found as regular file if in
 		// development debug mode
-		url = Util.getResource("org/jajuk/i18n/" + sbFilename.toString());
+		url = Util.getResource("org/jajuk/i18n/" + sbFilename.toString()); //$NON-NLS-1$
 		// parse it, actually it is a big properties file as CDATA in an XML
 		// file
 		try {
@@ -322,7 +322,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 						.showMessageDialog(
 								Main.getWindow(),
 								"<html><b>" + Messages.getErrorMessage(sCode) + "</b></html>",//$NON-NLS-1$ //$NON-NLS-2$
-								Messages.getErrorMessage("102"),
+								Messages.getErrorMessage("102"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
@@ -674,7 +674,7 @@ class DetailsMessageDialog implements Runnable {
 		}
 		JDialog dialog = optionPane.createDialog(null, sTitle);
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("Details"))) { // details
+		if (optionPane.getValue().equals(Messages.getString("Details"))) { // details //$NON-NLS-1$
 			// //$NON-NLS-1$
 			final JDialog dialogDetail = new JDialog(dialog, Messages
 					.getString("Details")); //$NON-NLS-1$
@@ -761,7 +761,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 		JDialog dialog = optionPane.createDialog(null, sTitle);
 		// keep it modal (useful at startup)
 		dialog.setModal(true);
-		if (optionPane.getValue().equals(Messages.getString("Hide"))) {
+		if (optionPane.getValue().equals(Messages.getString("Hide"))) { //$NON-NLS-1$
 			// Not show again
 			ConfigurationManager.setProperty(sProperty, TRUE);
 		}

@@ -90,7 +90,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 							.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
 		}
 		// Fill date formater
-		formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
+		formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0")); //$NON-NLS-1$
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {
@@ -113,7 +113,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 
 	/** Add an history item */
 	public synchronized void addItem(String sFileId, long lDate) {
-		if (ConfigurationManager.getProperty(CONF_HISTORY).equals("0")) { // no
+		if (ConfigurationManager.getProperty(CONF_HISTORY).equals("0")) { // no //$NON-NLS-1$
 			// history
 			// //$NON-NLS-1$
 			return;
@@ -212,12 +212,12 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(FILE_HISTORY), "UTF-8")); //$NON-NLS-1$
 		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
-		bw.write("<history jajuk_version='" + JAJUK_VERSION
+		bw.write("<history jajuk_version='" + JAJUK_VERSION //$NON-NLS-1$
 				+ "' begin_date='" + Long.toString(lDateStart) + "'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		Iterator it = vHistory.iterator();
 		while (it.hasNext()) {
 			HistoryItem hi = (HistoryItem) it.next();
-			bw.write("\t<play file='" + hi.getFileId()
+			bw.write("\t<play file='" + hi.getFileId() //$NON-NLS-1$
 					+ "' date='" + hi.getDate() + "'/>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		bw.write("</history>"); //$NON-NLS-1$
@@ -380,7 +380,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 			} else if (EventSubject.EVENT_LANGUAGE_CHANGED.equals(subject)) {
 				// reset formatter
 				formatter = new SimpleDateFormat(Messages
-						.getString("HistoryItem.0"));
+						.getString("HistoryItem.0")); //$NON-NLS-1$
 			} else if (EventSubject.EVENT_FILE_NAME_CHANGED.equals(subject)) {
 				Properties properties = event.getDetails();
 				org.jajuk.base.File fileOld = (org.jajuk.base.File) properties

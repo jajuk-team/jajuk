@@ -156,9 +156,9 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 		Rectangle rec = getBounds();
 		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, (int) rec
 				.getMinX()
-				+ ","
+				+ "," //$NON-NLS-1$
 				+ (int) rec.getMinY()
-				+ ","
+				+ "," //$NON-NLS-1$
 				+ (int) rec.getWidth()
 				+ "," + (int) rec.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

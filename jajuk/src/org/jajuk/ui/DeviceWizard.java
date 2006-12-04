@@ -464,7 +464,7 @@ public class DeviceWizard extends JDialog implements ActionListener,
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sUrl = jtfUrl.getText();
-			if (!sUrl.equals("")) { // if url is already set, use it as root
+			if (!sUrl.equals("")) { // if url is already set, use it as root //$NON-NLS-1$
 				// directory //$NON-NLS-1$
 				jfc.setCurrentDirectory(new File(sUrl));
 			}
@@ -480,7 +480,7 @@ public class DeviceWizard extends JDialog implements ActionListener,
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.47"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sMountPoint = jtfMountPoint.getText();
-			if (!sMountPoint.equals("")) { // if url is already set, use it
+			if (!sMountPoint.equals("")) { // if url is already set, use it //$NON-NLS-1$
 				// as root directory
 				// //$NON-NLS-1$
 				jfc.setCurrentDirectory(new File(sMountPoint));

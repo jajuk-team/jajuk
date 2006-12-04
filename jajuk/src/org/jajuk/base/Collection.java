@@ -193,7 +193,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier()
+		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier() //$NON-NLS-1$
 				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		// files
 		bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
@@ -210,7 +210,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier()
+		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() //$NON-NLS-1$
 				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		// playlist
 		bw.write(PlaylistManager.getInstance().toXML()); //$NON-NLS-1$
@@ -223,12 +223,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 			}
 		}
 		bw
-				.write("\t</" + PlaylistManager.getInstance().getIdentifier()
+				.write("\t</" + PlaylistManager.getInstance().getIdentifier() //$NON-NLS-1$
 						+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.write("</" + XML_COLLECTION + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.flush();
 		bw.close();
-		Log.debug("Collection commited in "
+		Log.debug("Collection commited in " //$NON-NLS-1$
 				+ (System.currentTimeMillis() - lTime) + " ms");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -505,7 +505,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") + ":"
+						Log.debug(Messages.getString("Error.137") + ":" //$NON-NLS-1$ //$NON-NLS-2$
 								+ sTrackName);
 					}
 				}
@@ -517,8 +517,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137")
-								+ ":" + sTrackName); // wrong
+						Log.debug(Messages.getString("Error.137") //$NON-NLS-1$
+								+ ":" + sTrackName); // wrong //$NON-NLS-1$
 					}
 				}
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and
@@ -634,8 +634,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137")
-								+ ":" + sItemName); // wrong
+						Log.debug(Messages.getString("Error.137") //$NON-NLS-1$
+								+ ":" + sItemName); // wrong //$NON-NLS-1$
 					}
 				}
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
@@ -687,7 +687,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 				String sPlaylistFiles = attributes.getValue(
 						attributes.getIndex(XML_PLAYLIST_FILES)).intern();
 				// playlist file list with ','
-				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ","); 
+				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ",");  //$NON-NLS-1$
 				Playlist playlist = null;
 				if (st.hasMoreTokens()) { 
 					// if none mapped file, ignore

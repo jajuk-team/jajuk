@@ -329,7 +329,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 								Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
 					}
 				} else { // none specified file
-					setMessage(Messages.getString("Error.007"),
+					setMessage(Messages.getString("Error.007"), //$NON-NLS-1$
 							InformationJPanel.ERROR);//$NON-NLS-1$
 				}
 			} catch (Exception e) {

@@ -23,7 +23,6 @@ package org.jajuk.base.exporters;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.transform.Transformer;
@@ -84,19 +83,5 @@ public class XMLTransformer {
 
 		return content;
 	}
-
-	public static void main(String[] args) {
-		String xml = "";
-
-		xml += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<source>"
-				+ "<title>Example</title>" + "<author>Ronak Patel</author>"
-				+ "</source>";
-
-		try {
-			System.out.println(XMLTransformer.xmlToHTML(xml, new URL(
-					"file://C:/Documents and Settings/rpx/Desktop/boo.xsl")));
-		} catch (MalformedURLException e) {
-			Log.error(e);
-		}
-	}
+	
 }

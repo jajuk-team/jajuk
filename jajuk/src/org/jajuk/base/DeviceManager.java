@@ -204,21 +204,17 @@ public class DeviceManager extends ItemManager {
 				if (!Util.isUnderWindows() && sMountPoint != null
 						&& !sMountPoint.equals("")) { //$NON-NLS-1$
 					try {
+						// run the actual mount command
 						Process process = Runtime.getRuntime().exec(
-								"mount " + sMountPoint); // run the
-						// actual mount
-						// command
-						// //$NON-NLS-1$
+								"mount " + sMountPoint); //$NON-NLS-1$ 
 						process.waitFor();
 					} catch (Exception e) {
 					}
 				}
 				// test directory is available
 				File file = new File(sUrl);
-				if (!file.exists() || !file.canRead()) { // see if the
-					// url exists
-					// and is
-					// readable
+				// check if the url exists and is readable
+				if (!file.exists() || !file.canRead()) { 
 					return "143"; //$NON-NLS-1$
 				}
 			}
@@ -397,17 +393,10 @@ public class DeviceManager extends ItemManager {
 				if (!device.isRefreshing() && files != null && files.length > 0) {
 					// cleanup device
 					bNeedUIRefresh = bNeedUIRefresh
-							| device.cleanRemovedFiles();// logical or,
-					// not an error
-					// !
-					// refresh it
+							| device.cleanRemovedFiles();
+					// logical or, not an error !  refresh it
 					bNeedUIRefresh = bNeedUIRefresh
-							| device.refreshCommand(false, false); // logical
-					// or,
-					// not
-					// an
-					// error
-					// !
+							| device.refreshCommand(false, false); 
 				}
 			}
 
@@ -424,8 +413,6 @@ public class DeviceManager extends ItemManager {
 			}
 			// Display end of refresh message with stats
 			l = System.currentTimeMillis() - l;
-			// Log.debug("Global refresh done in: "+((l<1000)?l+"
-			// ms":l/1000+" s")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} catch (Exception e) {
 			Log.error(e);
 		} finally {
@@ -445,7 +432,7 @@ public class DeviceManager extends ItemManager {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return devices list
 	 */
 	public Set<Device> getDevices() {

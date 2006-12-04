@@ -295,7 +295,7 @@ public class Directory extends Item implements Comparable {
 				// Check file name is correct (usefull to fix name encoding
 				// issues)
 				if (!new File(files[i].getAbsolutePath()).exists()) {
-					Log.warn("Cannot read file name (please rename it): {{"
+					Log.warn("Cannot read file name (please rename it): {{" //$NON-NLS-1$
 							+ files[i].getAbsolutePath() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
@@ -319,7 +319,7 @@ public class Directory extends Item implements Comparable {
 					tag = new Tag(files[i], true); 
 					if (tag.isCorrupted()) {
 						device.iNbCorruptedFiles++; // stats
-						Log.error("103", "{{" + files[i].getAbsolutePath()
+						Log.error("103", "{{" + files[i].getAbsolutePath() //$NON-NLS-1$ //$NON-NLS-2$
 								+ "}}", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					}
 					// if an error occurs, just notice it but keep the track
@@ -388,7 +388,7 @@ public class Directory extends Item implements Comparable {
 					}
 				}
 			} catch (Exception e) {
-				Log.error("103", files.length > 0 ? "{{" + files[i].toString()
+				Log.error("103", files.length > 0 ? "{{" + files[i].toString() //$NON-NLS-1$ //$NON-NLS-2$
 						+ "}}" : "", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			}
 		}
@@ -400,9 +400,9 @@ public class Directory extends Item implements Comparable {
 	 * @return String
 	 */
 	public String getRelativePath() {
-		if (getName().equals("")) { // if this directory is a root device
+		if (getName().equals("")) { // if this directory is a root device //$NON-NLS-1$
 			// directory //$NON-NLS-1$
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		StringBuffer sbOut = new StringBuffer().append(
 				java.io.File.separatorChar).append(getName());

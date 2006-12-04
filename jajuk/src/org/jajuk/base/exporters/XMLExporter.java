@@ -54,9 +54,9 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	public static int LOGICAL_ALBUM_COLLECTION = 3;
 
 	/** Private Constants */
-	private final static String NEWLINE = "\n";
+	private final static String NEWLINE = "\n"; //$NON-NLS-1$
 
-	private final static String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
+	private final static String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>"; //$NON-NLS-1$
 
 	/** Keep an instance of the class. */
 	private static XMLExporter self = null;
@@ -506,8 +506,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		StringBuffer sb = new StringBuffer();
 
 		String sAlbumName = Util.formatXML(album.getAlbum().getName2());
-		String sGenreName = "";
-		String sAuthorName = "";
+		String sGenreName = ""; //$NON-NLS-1$
+		String sAuthorName = ""; //$NON-NLS-1$
 
 		if (album.getTracks() != null && !album.getTracks().isEmpty()) {
 			sGenreName = Util.formatXML(album.getTracks().get(0).getStyle()
@@ -628,11 +628,11 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
  */
 class Tag {
 	public static String openTag(String tagname) {
-		return "<" + tagname + ">";
+		return "<" + tagname + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static String closeTag(String tagname) {
-		return "</" + tagname + ">";
+		return "</" + tagname + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static String tagData(String tagname, String data) {

@@ -148,7 +148,7 @@ public class AboutView extends ViewAdapter {
 		alContribs.add(new Contributor(
 				"Sébastien Gringoire", "sgringoire@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor(
-				"Fabrice Dutron", "fdutron@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+				"Ronak Patel", "")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor(
 				"Josep Carles Collazos", "jespo@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Bart Cremers", "bcremers@gmail.com")); //$NON-NLS-1$ //$NON-NLS-2$

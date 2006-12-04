@@ -27,7 +27,7 @@ public class NextTrackAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	NextTrackAction() {
-		super(Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT),
+		super(Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT), //$NON-NLS-1$
 				"F10", false, true); //$NON-NLS-1$ //$NON-NLS-2$
 		setShortDescription(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
 	}

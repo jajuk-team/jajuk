@@ -167,7 +167,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		mode.add(jcbmiIntro);
 
 		// Configuration menu
-		configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
+		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); //$NON-NLS-1$
 		jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
 		jmiAmbience = new JMenuItem(ActionManager
 				.getAction(CONFIGURE_AMBIENCES));

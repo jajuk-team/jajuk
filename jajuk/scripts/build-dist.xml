@@ -5,16 +5,16 @@
   <!--VARIABLES-->
   
   <!--Distribution release-->
-  <property name='version' value='1.3RC5'/>
+  <property name='version' value='1.3RC8'/>
   
   <!--Previous release used for JNLP incremental upgrade-->
-  <property name='previous_version' value='1.3RC4'/>
+  <property name='previous_version' value='1.3RC7'/>
  
  <!--Test flag: values: test or notest -->
   <property name='test' value='test'/> 	
   
   <!--Timestamp used by Web Start -->
-  <property name='jajuktimestamp' value='2006-11-11 00:00:00'/>
+  <property name='jajuktimestamp' value='2006-11-30 00:00:00'/>
 
   	  
   <!--CONST-->
@@ -132,6 +132,7 @@
     <mkdir dir='${rpmdistdir_suse}/usr/bin'/>
     <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/bin'/>
     <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/lib'/>
+    <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/lib/linux'/>
     <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/native'/>
     <mkdir dir='${rpmdistdir_suse}/usr/share/applications'/>
     <mkdir dir='${rpmdistdir_suse}/usr/share/doc/packages/jajuk'/>
@@ -147,6 +148,7 @@
     <mkdir dir='${rpmdistdir_mdk}/usr/bin'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/bin'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/lib'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/lib/linux'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/native'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/share/applications'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/share/doc/jajuk'/>
@@ -163,8 +165,11 @@
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
     <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib' >
-    	<fileset dir='${basedir}/lib'/>
-    </copy>
+    	<fileset file="${basedir}/lib/*.jar"/>
+   </copy>
+   <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib/linux' >
+    	<fileset file="${basedir}/lib/linux/*"/>
+   </copy>
     <copy todir='${rpmdistdir_suse}/usr/share/applications' >
     	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/Jajuk.desktop'/>
     </copy>
@@ -181,10 +186,13 @@
     <copy todir='${rpmdistdir_mdk}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/lib' >
-    	<fileset dir='${basedir}/lib'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/share/doc/jajuk' >
+      <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib' >
+    	<fileset file="${basedir}/lib/*.jar"/>
+   </copy>
+   <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib/linux' >
+    	<fileset file="${basedir}/lib/linux/*"/>
+   </copy>
+  <copy todir='${rpmdistdir_mdk}/usr/share/doc/jajuk' >
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
     </copy>
     <copy todir='${rpmdistdir_mdk}/usr/share/icons' >

@@ -195,7 +195,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			try {
 				device.mount();
 			} catch (Exception e) {
-				Log.error("011", "{{" + getName() + "}}", e); // mount failed
+				Log.error("011", "{{" + getName() + "}}", e); // mount failed //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
 				return;
 			}
@@ -229,9 +229,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		int i = OPTION_REFRESH_DEEP;
 		if (bAsk) {
 			Object[] possibleValues = {
-					Messages.getString("PhysicalTreeView.60"),// fast
+					Messages.getString("PhysicalTreeView.60"),// fast //$NON-NLS-1$
 					// //$NON-NLS-1$
-					Messages.getString("PhysicalTreeView.61"),// deep
+					Messages.getString("PhysicalTreeView.61"),// deep //$NON-NLS-1$
 					// //$NON-NLS-1$
 					Messages.getString("Cancel") };// cancel //$NON-NLS-1$
 			i = JOptionPane.showOptionDialog(null,
@@ -423,7 +423,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			try {
 				device.mount();
 			} catch (Exception e) {
-				Log.error("011", "{{" + getName() + "}}", e); // mount failed
+				Log.error("011", "{{" + getName() + "}}", e); // mount failed //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				// //$NON-NLS-1$
 				// //$NON-NLS-2$
 				// //$NON-NLS-3$
@@ -768,7 +768,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			Messages.showErrorMessage("111"); //$NON-NLS-1$
 		}
 		try {
-			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
+			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { //$NON-NLS-1$
 				// look to see if the device is already mounted ( the mount
 				// command cannot say that )
 				File file = new File(getMountPoint());
@@ -778,7 +778,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 
 					// run the actual mount command //$NON-NLS-1$
 					Process process = Runtime.getRuntime().exec(
-							"mount " + getMountPoint());
+							"mount " + getMountPoint()); //$NON-NLS-1$
 					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
@@ -827,7 +827,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		// command cannot say that )
 		new File(getMountPoint());
 		if (!bMounted) {
-			Messages.showErrorMessage("125"); // already unmounted
+			Messages.showErrorMessage("125"); // already unmounted //$NON-NLS-1$
 			// //$NON-NLS-1$
 			return;
 		}
@@ -838,7 +838,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		}
 		String sOS = (String) System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows") == -1 && !getMountPoint().trim().equals("")) { // not
+		if (sOS.trim().toLowerCase().lastIndexOf("windows") == -1 && !getMountPoint().trim().equals("")) { // not //$NON-NLS-1$ //$NON-NLS-2$
 			// a
 			// windows
 			// //$NON-NLS-1$
@@ -856,7 +856,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 					process.waitFor();
 				}
 			} catch (Exception e) {
-				Log.error("012", Integer.toString(iExit), e); // mount failed
+				Log.error("012", Integer.toString(iExit), e); // mount failed //$NON-NLS-1$
 				// //$NON-NLS-1$
 				Messages.showErrorMessage("012", getName()); //$NON-NLS-1$
 				return;

@@ -41,7 +41,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 		arrowButton.setBorder(null);
 		arrowButton.setOpaque(false);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
-		addPropertyChangeListener("enabled", this); // NOI18N
+		addPropertyChangeListener("enabled", this); // NOI18N //$NON-NLS-1$
 	}
 
 	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/

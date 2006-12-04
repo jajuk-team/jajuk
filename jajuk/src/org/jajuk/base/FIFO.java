@@ -201,7 +201,7 @@ public class FIFO implements ITechnicalStrings {
 							.showWarningMessage(Messages.getString("Error.018")); //$NON-NLS-1$
 				} else {
 					Messages
-							.showWarningMessage(Messages.getString("Error.164")
+							.showWarningMessage(Messages.getString("Error.164") //$NON-NLS-1$
 									+ " " + AmbienceManager.getInstance().getSelectedAmbience().getName()); //$NON-NLS-1$
 				}
 			}
@@ -920,7 +920,7 @@ public class FIFO implements ITechnicalStrings {
 	/**
 	 * @return Returns a shallow copy of the fifo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public synchronized ArrayList<StackItem> getFIFO() {
 		return (ArrayList<StackItem>) alFIFO.clone();
 	}
@@ -1118,7 +1118,7 @@ public class FIFO implements ITechnicalStrings {
 	/**
 	 * @return Returns a shallow copy of planned files
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public synchronized ArrayList<StackItem> getPlanned() {
 		return (ArrayList<StackItem>) alPlanned.clone();
 	}
@@ -1147,7 +1147,7 @@ public class FIFO implements ITechnicalStrings {
 	 * @param device:
 	 *            Device to clean
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	public synchronized void cleanDevice(Device device) {
 		if (alFIFO.size() > 0) {
 			ArrayList<StackItem> alFIFOCopy = (ArrayList<StackItem>) alFIFO

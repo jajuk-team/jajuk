@@ -96,7 +96,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
 	 * 
 	 * @see org.jajuk.base.DigitalDJ#generatePlaylist()
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //$NON-NLS-1$
 	@Override
 	public List<File> generatePlaylist() {
 		List<File> out = new ArrayList<File>(500);
@@ -231,7 +231,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
 			sb.append("\t\t<" + XML_DJ_TRANSITION + " " + //$NON-NLS-1$ //$NON-NLS-2$
 					XML_DJ_FROM
 					+ "='" + transition.getFrom().toXML() + //$NON-NLS-1$
-					"' " + XML_DJ_TO
+					"' " + XML_DJ_TO //$NON-NLS-1$
 					+ "='" + transition.getTo().toXML() + "' " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					XML_DJ_NUMBER + "='" + transition.getNbTracks() + "'/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}

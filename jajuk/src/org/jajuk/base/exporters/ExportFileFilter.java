@@ -43,7 +43,7 @@ public class ExportFileFilter extends FileFilter {
 		if (filtertype != null) {
 			if (filtertype.length() != 0) {
 				if (filtertype.charAt(0) != '.') {
-					filtertype = "." + filtertype;
+					filtertype = "." + filtertype; //$NON-NLS-1$
 				}
 				sFilterType = filtertype;
 			} else {
@@ -76,7 +76,7 @@ public class ExportFileFilter extends FileFilter {
 	 * @return Returns description of filter.
 	 */
 	public String getDescription() {
-		return sFilterType + " File";
+		return sFilterType + " File"; //$NON-NLS-1$
 	}
 
 	/**

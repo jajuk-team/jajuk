@@ -458,7 +458,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 					int row, boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, sel, expanded,
 						leaf, row, hasFocus);
-				setFont(new Font("Dialog", Font.PLAIN, 10)); //$NON-NLS-1$
+				setFont(new Font("Dialog", Font.PLAIN, 12)); //$NON-NLS-1$
 				if (value instanceof StyleNode) {
 					setIcon(Util.getIcon(ICON_STYLE));
 				} else if (value instanceof AuthorNode) {
@@ -470,7 +470,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 					Track track = ((TrackNode) value).getTrack();
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && track.equals(current.getTrack())) {
-						setFont(new Font("Dialog", Font.BOLD, 10)); //$NON-NLS-1$
+						setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
 						setForeground(new Color(200, 70, 10));
 					}
 				}

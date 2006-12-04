@@ -104,7 +104,7 @@ public class LNFManager implements ITechnicalStrings {
 				hmNameClass.put(sName, sClass);
 			}
 		} catch (Exception e) {
-			Log.debug("Can't load LAF: " + sName);
+			Log.debug("Can't load LAF: " + sName); //$NON-NLS-1$
 		}
 	}
 

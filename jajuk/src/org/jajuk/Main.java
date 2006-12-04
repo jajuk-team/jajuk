@@ -172,7 +172,7 @@ public class Main implements ITechnicalStrings {
 			// check JVM version
 			if (!JVM.current().isOrLater(JVM.JDK1_5)) {
 				System.out
-						.println("Java Runtime Environment 1.5 minimum required."
+						.println("Java Runtime Environment 1.5 minimum required." //$NON-NLS-1$
 								+ " You use a JVM " + JVM.current()); //$NON-NLS-1$
 				System.exit(2); // error code 2 : wrong JVM
 			}
@@ -273,8 +273,8 @@ public class Main implements ITechnicalStrings {
 					LNFManager.setLookAndFeel(ConfigurationManager
 							.getProperty(CONF_OPTIONS_LNF));
 					sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false,
-							JAJUK_COPYRIGHT, JAJUK_VERSION + " "
-									+ JAJUK_VERSION_DATE, new Font("Dialog",
+							JAJUK_COPYRIGHT, JAJUK_VERSION + " " //$NON-NLS-1$
+									+ JAJUK_VERSION_DATE, new Font("Dialog", //$NON-NLS-1$
 									Font.TRUETYPE_FONT, 12), null); //$NON-NLS-1$
 					sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
 					sc.splashOn();
@@ -439,7 +439,7 @@ public class Main implements ITechnicalStrings {
 			// logging purpose
 			Log.error(je);
 			if (je.getCode().equals("005")) { //$NON-NLS-1$
-				Messages.getChoice(Messages.getErrorMessage("005"),
+				Messages.getChoice(Messages.getErrorMessage("005"), //$NON-NLS-1$
 						JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 				exit(1);
 			}
@@ -552,14 +552,14 @@ public class Main implements ITechnicalStrings {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
-						Log.debug("Download Mplayer from: "+ URL_MPLAYER);
+						Log.debug("Download Mplayer from: "+ URL_MPLAYER); //$NON-NLS-1$
 						File fMPlayer = new File(
-								FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE);
+								FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE); //$NON-NLS-1$
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						//make sure to delete corrupted mplayer in case of download problem
 						if (fMPlayer.length() != MPLAYER_EXE_SIZE){
 							fMPlayer.delete();
-							throw new Exception("MPlayer corrupted");
+							throw new Exception("MPlayer corrupted"); //$NON-NLS-1$
 						}
 					} catch (Exception e) {
 						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -572,17 +572,17 @@ public class Main implements ITechnicalStrings {
 				Process proc = null;
 				mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 				try {
-					proc = Runtime.getRuntime().exec("mplayer");
+					proc = Runtime.getRuntime().exec("mplayer"); //$NON-NLS-1$
 					proc.waitFor();
 					// check Mplayer release : 1.0pre8 min
 					proc = Runtime.getRuntime().exec(
-							new String[] { "mplayer", "-input", "cmdlist" });
+							new String[] { "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					BufferedReader in = new BufferedReader(
 							new InputStreamReader(proc.getInputStream()));
 					String line = null;
 					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
 					for (; (line = in.readLine()) != null;) {
-						if (line.matches("get_time_pos.*")) {
+						if (line.matches("get_time_pos.*")) { //$NON-NLS-1$
 							mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 							break;
 						}
@@ -603,19 +603,19 @@ public class Main implements ITechnicalStrings {
 						if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
 							// No mplayer
 							Messages.showHideableWarningMessage(Messages
-									.getString("Warning.0"),
+									.getString("Warning.0"), //$NON-NLS-1$
 									CONF_NOT_SHOW_AGAIN_PLAYER);
 						} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
 							// wrong mplayer release
 							Messages.showHideableWarningMessage(Messages
-									.getString("Warning.1"),
+									.getString("Warning.1"), //$NON-NLS-1$
 									CONF_NOT_SHOW_AGAIN_PLAYER);
 						}
 					}
 				}
 				// mp3
 				Type type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.mp3"), EXT_MP3,
+						Messages.getString("Type.mp3"), EXT_MP3, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_JAVALAYER),
 						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -625,13 +625,13 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3);
 				// playlists
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.playlist"), EXT_PLAYLIST,
+						Messages.getString("Type.playlist"), EXT_PLAYLIST, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, false); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
 				// Ogg vorbis
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.ogg"), EXT_OGG,
+						Messages.getString("Type.ogg"), EXT_OGG, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_JAVALAYER),
 						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -641,7 +641,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG);
 				// Wave
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.wav"), EXT_WAV,
+						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_JAVALAYER),
 						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -651,7 +651,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV);
 				// au
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.au"), EXT_AU,
+						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_JAVALAYER),
 						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -663,7 +663,7 @@ public class Main implements ITechnicalStrings {
 			} else { // mplayer enabled
 				// mp3
 				Type type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.mp3"), EXT_MP3,
+						Messages.getString("Type.mp3"), EXT_MP3, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER),
 						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -673,13 +673,13 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3);
 				// playlists
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.playlist"), EXT_PLAYLIST,
+						Messages.getString("Type.playlist"), EXT_PLAYLIST, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, false); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
 				// Ogg vorbis
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.ogg"), EXT_OGG,
+						Messages.getString("Type.ogg"), EXT_OGG, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER),
 						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -689,7 +689,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG);
 				// Wave
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.wav"), EXT_WAV,
+						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER),
 						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -699,7 +699,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV);
 				// au
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.au"), EXT_AU,
+						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER),
 						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -710,7 +710,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU);
 				// flac
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.flac"), EXT_FLAC,
+						Messages.getString("Type.flac"), EXT_FLAC, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER),
 						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -720,7 +720,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_FLAC);
 				// WMA
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.wma"), EXT_WMA,
+						Messages.getString("Type.wma"), EXT_WMA, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER),
 						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
@@ -730,7 +730,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WMA);
 				// AAC
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.aac"), EXT_AAC,
+						Messages.getString("Type.aac"), EXT_AAC, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
@@ -739,7 +739,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC);
 				// Real audio
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.real"), EXT_REAL,
+						Messages.getString("Type.real"), EXT_REAL, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
@@ -806,7 +806,7 @@ public class Main implements ITechnicalStrings {
 				ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT))
 				.booleanValue()) {
 			int iResu = Messages.getChoice(Messages
-					.getString("Confirmation_exit"),
+					.getString("Confirmation_exit"), //$NON-NLS-1$
 					JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
 				return;
@@ -970,7 +970,7 @@ public class Main implements ITechnicalStrings {
 						// file exists but is not mounted, just notify the error
 						// without anoying dialog at each startup try to mount
 						// device
-						Log.debug("Startup file located on an unmounted device"
+						Log.debug("Startup file located on an unmounted device" //$NON-NLS-1$
 								+ ", try to mount it"); //$NON-NLS-1$
 						try {
 							fileToPlay.getDevice().mount(true);
@@ -988,7 +988,7 @@ public class Main implements ITechnicalStrings {
 					}
 				} else {
 					// file no more exists
-					Messages.getChoice(Messages.getErrorMessage("023"),
+					Messages.getChoice(Messages.getErrorMessage("023"), //$NON-NLS-1$
 							JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
 					FIFO.setFirstFile(false);
 					// no more first file
@@ -1002,7 +1002,7 @@ public class Main implements ITechnicalStrings {
 								.equals(STARTUP_MODE_LAST_KEEP_POS)) {
 					File fifo = new File(FILE_FIFO);
 					if (!fifo.exists()) {
-						Log.debug("No fifo file");
+						Log.debug("No fifo file"); //$NON-NLS-1$
 					} else {
 						try {
 							BufferedReader br = new BufferedReader(
@@ -1037,7 +1037,7 @@ public class Main implements ITechnicalStrings {
 				} else {
 					//Alert user that no novelties have been found
 					InformationJPanel.getInstance().setMessage(
-							Messages.getString("Error.127"),
+							Messages.getString("Error.127"), //$NON-NLS-1$
 							InformationJPanel.ERROR);
 				}
 			}

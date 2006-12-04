@@ -272,18 +272,18 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
 
 		// Search
-		VLToolBar vltbSearch = new VLToolBar("search");
+		VLToolBar vltbSearch = new VLToolBar("search"); //$NON-NLS-1$
 		double[][] sizeSearch = new double[][]{
 				{TableLayout.PREFERRED,2,TableLayout.PREFERRED},
 				{TableLayout.PREFERRED}};
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
-		jpSearch.add(new JLabel(Util.getIcon(ICON_SEARCH)),"0,0");
-		jpSearch.add(sbSearch,"2,0");
+		jpSearch.add(new JLabel(Util.getIcon(ICON_SEARCH)),"0,0"); //$NON-NLS-1$
+		jpSearch.add(sbSearch,"2,0"); //$NON-NLS-1$
 		vltbSearch.add(jpSearch);
 
 		// History
-		VLToolBar vltbHistory = new VLToolBar("history");
+		VLToolBar vltbHistory = new VLToolBar("history"); //$NON-NLS-1$
 		vltbHistory.setBorder(Util.getShadowBorder());
 		jcbHistory = new SteppedComboBox();
 		vltbHistory.add(jcbHistory);
@@ -301,7 +301,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		jcbHistory.addActionListener(CommandJPanel.this);
 
 		// Mode toolbar
-		VLToolBar vltbModes = new VLToolBar("modes");
+		VLToolBar vltbModes = new VLToolBar("modes"); //$NON-NLS-1$
 		vltbModes.setOpaque(false);
 		vltbModes.setCollapsible(false);
 		// we need an inner toolbar to apply size properly
@@ -335,7 +335,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		vltbModes.add(jtbModes);
 
 		// Volume
-		VLToolBar vltbVolume = new VLToolBar("volume");
+		VLToolBar vltbVolume = new VLToolBar("volume"); //$NON-NLS-1$
 		vltbVolume.setOpaque(false);
 		jpVolume = new JPanel();
 		ActionUtil.installKeystrokes(jpVolume, ActionManager
@@ -360,7 +360,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		vltbVolume.add(jpVolume);
 
 		// Position
-		VLToolBar vltbPosition = new VLToolBar("position");
+		VLToolBar vltbPosition = new VLToolBar("position"); //$NON-NLS-1$
 		vltbPosition.setOpaque(false);
 		jpPosition = new JPanel();
 		jpPosition.setOpaque(false);
@@ -385,7 +385,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
-		VLToolBar vltbSpecial = new VLToolBar("smart");
+		VLToolBar vltbSpecial = new VLToolBar("smart"); //$NON-NLS-1$
 		vltbSpecial.setOpaque(false);
 		vltbSpecial.setCollapsible(false);
 		jtbSpecial = new JToolBar();
@@ -404,10 +404,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
 		popupGlobalRandom = new JPopupMenu();
 		jmiShuffleModeSong = new JRadioButtonMenuItem(Messages
-				.getString("CommandJPanel.20"));
+				.getString("CommandJPanel.20")); //$NON-NLS-1$
 		jmiShuffleModeSong.addActionListener(this);
 		jmiShuffleModeAlbum = new JRadioButtonMenuItem(Messages
-				.getString("CommandJPanel.21"));
+				.getString("CommandJPanel.21")); //$NON-NLS-1$
 		jmiShuffleModeAlbum.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(
 				MODE_TRACK)) {
@@ -435,10 +435,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		ddbNovelties.setAction(ActionManager.getAction(NOVELTIES));
 		popupNovelties = new JPopupMenu();
 		jmiNoveltiesModeSong = new JRadioButtonMenuItem(Messages
-				.getString("CommandJPanel.20"));
+				.getString("CommandJPanel.20")); //$NON-NLS-1$
 		jmiNoveltiesModeSong.addActionListener(this);
 		jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages
-				.getString("CommandJPanel.21"));
+				.getString("CommandJPanel.21")); //$NON-NLS-1$
 		jmiNoveltiesModeAlbum.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(
 				MODE_TRACK)) {
@@ -478,7 +478,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		
 		
 		// Play toolbar
-		VLToolBar vltbPlay = new VLToolBar("player");
+		VLToolBar vltbPlay = new VLToolBar("player"); //$NON-NLS-1$
 		vltbPlay.setOpaque(false);
 		vltbPlay.setCollapsible(false);
 		JToolBar jtbPlay = new JToolBar();
@@ -754,7 +754,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 					// a seek that could fail with
 					// some formats
 					ConfigurationManager.setProperty(
-							CONF_STARTUP_LAST_POSITION, "0");// reset startup
+							CONF_STARTUP_LAST_POSITION, "0");// reset startup //$NON-NLS-1$
 					// position
 					// //$NON-NLS-1$
 				} else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)) {
@@ -951,7 +951,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		ambiencesCombo.removeActionListener(ambienceListener);
 		ambiencesCombo.removeAllItems();
 		ambiencesCombo.addItem("<html><i>" + //$NON-NLS-1$
-				Messages.getString("DigitalDJWizard.64") + "</i></html>");
+				Messages.getString("DigitalDJWizard.64") + "</i></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 		// Add available ambiences
 		for (final Ambience ambience : AmbienceManager.getInstance()
 				.getAmbiences()) {
@@ -965,7 +965,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		if (defaultAmbience != null) {
 			ambiencesCombo.setSelectedItem(defaultAmbience.getName());
 		}
-		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
+		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66")); //$NON-NLS-1$
 		ambiencesCombo.addActionListener(ambienceListener);
 	}
 

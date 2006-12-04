@@ -105,7 +105,7 @@ public class MPlayerTagImpl implements ITagImpl, ITechnicalStrings {
 	 * @see org.jajuk.base.ITagImpl#getComment()
 	 */
 	public String getComment() throws Exception {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/*

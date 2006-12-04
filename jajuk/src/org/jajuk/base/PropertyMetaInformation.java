@@ -108,7 +108,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 			this.sHumanType = Messages.getString("Property_Format_Boolean"); //$NON-NLS-1$
 		} else if (cType.equals(String.class)) {
 			if (oDefaultValue == null) {
-				this.oDefaultValue = ""; // if no default is given, ""
+				this.oDefaultValue = ""; // if no default is given, "" //$NON-NLS-1$
 				// //$NON-NLS-1$
 			}
 			this.sHumanType = Messages.getString("Property_Format_String"); //$NON-NLS-1$

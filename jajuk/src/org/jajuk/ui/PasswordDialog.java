@@ -61,7 +61,7 @@ public class PasswordDialog extends JDialog implements ActionListener {
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
 					String sPwd = new String(pf.getPassword());
 					if (sPwd.trim().equals("")) { //$NON-NLS-1$
-						sPwd = "NOP";// set a string to password to avoid
+						sPwd = "NOP";// set a string to password to avoid //$NON-NLS-1$
 						// reasking //$NON-NLS-1$
 					}
 					optionPane.setValue(sPwd);

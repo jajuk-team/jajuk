@@ -216,7 +216,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	 */
 	public CDDBWizard(final ArrayList<Item> alGivenTracks) {
 		// windows title: absolute path name of the given directory
-		super(Main.getWindow(), Messages.getString("CDDBWizard.19"), true); // modal
+		super(Main.getWindow(), Messages.getString("CDDBWizard.19"), true); // modal //$NON-NLS-1$
 		// //$NON-NLS-1$
 		SwingWorker sw = new SwingWorker() {
 

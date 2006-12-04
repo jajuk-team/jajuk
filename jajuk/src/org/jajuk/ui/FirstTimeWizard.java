@@ -118,7 +118,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 		jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
 		// Refresh time
 		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
-		jtfRefreshTime = new JTextField("5");// 5 mins by default
+		jtfRefreshTime = new JTextField("5");// 5 mins by default //$NON-NLS-1$ //$NON-NLS-1$
 		// //$NON-NLS-1$
 		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
 		JPanel jpRefresh = new JPanel();

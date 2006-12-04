@@ -63,6 +63,7 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 		key = new DockKey();
 		// View title
 		key.setName(Messages.getString(getDesc()));
+		key.setResizeWeight(0.5f);
  	}
 
 	/**
