@@ -34,26 +34,25 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
-		<Program_Version>1.2.2</Program_Version>
-		<Program_Release_Month>09</Program_Release_Month>
-		<Program_Release_Day>11</Program_Release_Day>
+		<Program_Version>1.3</Program_Version>
+		<Program_Release_Month>12</Program_Release_Month>
+		<Program_Release_Day>10</Program_Release_Day>
 		<Program_Release_Year>2006</Program_Release_Year>
 		<Program_Cost_Dollars>0</Program_Cost_Dollars>
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
 		<Program_Type>Freeware</Program_Type>
-		<Program_Release_Status>Minor Update</Program_Release_Status>
+		<Program_Release_Status>New Release</Program_Release_Status>
 		<Program_Install_Support>No Install Support</Program_Install_Support>
 		<Program_OS_Support>Win 3.1x,Win95,Win98,WinME,WinNT 3.x,WinNT 4.x,Windows2000,WinXP,Windows2003,Windows Vista Starter,Windows Vista Home Basic,Windows Vista Home Premium,Windows Vista Business,Windows Vista Enterprise,Windows Vista Ultimate,Windows Vista Home Basic x64,Windows Vista Home Premium x64,Windows Vista Business x64,Windows Vista Enterprise x64,Windows Vista Ultimate x64,Unix,Linux,Linux Gnome,Linux GPL,Linux Open Source,Mac OS X,Mac OS X 10.1,Mac OS X 10.2,Mac OS X 10.3,Mac OS X 10.4,Mac OS X 10.5,Java</Program_OS_Support>
 		<Program_Language>English,Catalan,Dutch,French,German,Italian,Korean,Spanish,Swedish</Program_Language>
-		<Program_Change_Info>Bug fixes</Program_Change_Info>
 		<Program_Specific_Category>Audio</Program_Specific_Category>
 		<Program_Category_Class>Audio &amp; Multimedia::Audio File Players</Program_Category_Class>
 		<Program_System_Requirements>P3 500Mhz, 256 Mb RAM</Program_System_Requirements>
 		<File_Info>
-			<File_Size_Bytes>11046400</File_Size_Bytes>
-			<File_Size_K>10787</File_Size_K>
-			<File_Size_MB>10.53</File_Size_MB>
+			<File_Size_Bytes>15161856</File_Size_Bytes>
+			<File_Size_K>14806</File_Size_K>
+			<File_Size_MB>14.45</File_Size_MB>
 		</File_Info>
 		<Expire_Info>
 			<Has_Expire_Info>N</Has_Expire_Info>
@@ -75,7 +74,7 @@
 			<Char_Desc_2000>Jajuk is a Java music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk is a Free Software published under GPL license.
 Jajuk main principles are :
     * Maximum features: Jajuk is made firstly for advanced users looking for powerful functionalities
-    * Maximum portability and integration: 100% pure Java but native packaging and features like tray
+    * Maximum portability and desktop integration
     * Maximum usability: Jajuk is designed to be intuitive, fast and provide multiple ways to perform the same operation</Char_Desc_2000>
 		</English>
 		<French>
@@ -96,7 +95,7 @@ Jajuk main principles are :
 			<Application_XML_File_URL>http://jajuk.sourceforge.net/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.2.2-win32.exe?download&amp;target=jajuk.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.3-win32.exe?download&amp;target=jajuk.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />

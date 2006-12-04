@@ -26,40 +26,10 @@
         Which formats are supported?
       </question>
       <answer>
-        <p><u>Music files</u></p>
-        <ul>
-         <li>MP3</li>
-         <li>Ogg Vorbis</li>
-         <li>Wave</li>
-         <li>Au (Sun Audio)</li>
-         <li>Aiff (Apple Audio Interchange)</li>
-         <li>SPEEX</li>
-        </ul>
-        <p><u>Playlist files</u></p>
-        <ul>
-         <li>M3u</li>
-        </ul>
-        <p><u>Tags</u></p>
-        <ul>
-         <li>ID3 V1</li>
-         <li>ID3 V2 (except 2.4)</li>
-         <li>Ogg Vorbis tags</li>
-        </ul>
+       	<p>Please find <a href='jajuk-hs/default/html/formats.html'>full list</a></p>
       </answer>
     </faq>
-    
-    <faq id="wma">
-     <question>
-        Is the WMA supported, is it planned to be supported ?
-      </question>
-      <answer>
-        <p>WMA is a proprietary format from Microsoft that we don't support. We only use 100% pure Java APIs (from javazoom) and this format 
-        is not yet available by any Java API. Anyway, we don't want to encourage the use of WMA to avoid even more dependence to Microsoft. Prefer Ogg Vorbis, a free, open and better
-        sound format if you look for a MP3 replacement.</p>
-      </answer>
-    </faq>
-   </part>
-
+  </part>
     
 	<part id="install">
     	<title>Installation</title>
@@ -135,11 +105,10 @@
 
     <faq id="sound_pauses">
     	<question>
-        	I experience sound small pauses
+        	I experience sound skips
       	</question>
       	<answer>
-        	<p>o It can occurs curring thumbnails generation (only once).</p>
-        	<p>o Try without fading (set fade duration=0 in configuration perspective/Parameter view)</p>
+      		<p>Make sure to use mplayer if under Linux</p>
       	</answer>
     	</faq>
 
