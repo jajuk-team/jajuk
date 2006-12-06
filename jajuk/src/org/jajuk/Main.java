@@ -153,6 +153,9 @@ public class Main implements ITechnicalStrings {
 	/** Is it the first seesion ever ? */
 	private static boolean bFirstSession = false;
 
+	/** Does this session follows a crash revover ? */
+	private static boolean bCrashRecover = false;
+
 	/** Mplayer state */
 	private static MPlayerStatus mplayerStatus;
 
@@ -861,6 +864,7 @@ public class Main implements ITechnicalStrings {
 				Util.backupFile(new File(FILE_COLLECTION), ConfigurationManager
 						.getInt(CONF_BACKUP_SIZE));
 			} else {
+				bCrashRecover = true;
 				throw new JajukException("005"); //$NON-NLS-1$
 			}
 		} catch (Exception e) {
@@ -1282,6 +1286,10 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static boolean isVeryFirstSession() {
 		return bFirstSession;
+	}
+
+	public static boolean isCrashRecover() {
+		return bCrashRecover;
 	}
 
 }

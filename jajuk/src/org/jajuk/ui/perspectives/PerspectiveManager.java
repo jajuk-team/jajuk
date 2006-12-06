@@ -94,7 +94,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 			// force loadinf of defaults perspectives
 			for (IPerspective perspective : getPerspectives()) {
 				// Remove current conf file to force using default file from the
-				//jar
+				// jar
 				File loadFile = new File(FILE_JAJUK_DIR + '/'
 						+ perspective.getClass().getName() + ".xml");
 				if (loadFile.exists()) {
@@ -116,20 +116,27 @@ public class PerspectiveManager implements ITechnicalStrings {
 	 * Begins management
 	 */
 	public static void init() {
-		String sPerspective = Main.getDefaultPerspective();
-		/*
-		 * take a look to see if a default perspective is set (About tray for
-		 * exemple)
-		 */
-		if (sPerspective == null) {
-			sPerspective = ConfigurationManager
-					.getProperty(CONF_PERSPECTIVE_DEFAULT);
-			// no? take the configuration ( user last perspective)
-		}
-		IPerspective perspective = hmNameInstance.get(sPerspective);
-		// If perspective is no more known, take first perspective found
-		if (perspective == null) {
-			perspective = perspectives.iterator().next();
+		// Use physical perspective as a default
+		IPerspective perspective = hmNameInstance
+				.get(PERSPECTIVE_NAME_PHYSICAL);
+		//If it is a crash recover, force physical perspective to avoid
+		//being locked on a buggy perspecive like Information
+		if (!Main.isCrashRecover()) {
+			String sPerspective = Main.getDefaultPerspective();
+			/*
+			 * take a look to see if a default perspective is set (About tray
+			 * for exemple)
+			 */
+			if (sPerspective == null) {
+				sPerspective = ConfigurationManager
+						.getProperty(CONF_PERSPECTIVE_DEFAULT);
+				// no? take the configuration ( user last perspective)
+			}
+			perspective = hmNameInstance.get(sPerspective);
+			// If perspective is no more known, take first perspective found
+			if (perspective == null) {
+				perspective = perspectives.iterator().next();
+			}
 		}
 		setCurrentPerspective(perspective);
 	}
@@ -291,12 +298,14 @@ public class PerspectiveManager implements ITechnicalStrings {
 				 * presence
 				 */
 				if (out == 0 || out == 1) {
-					//Now check browser can actually be loaded by JDIC
+					// Now check browser can actually be loaded by JDIC
 					WebBrowser browser = new WebBrowser();
-					if (browser.getBrowserEngine() == null){
+					if (browser.getBrowserEngine() == null) {
+						Log.debug("Brower engine: "
+								+ browser.getBrowserEngine());
 						throw new Exception("Cannot execute mozilla");
 					}
-					//OK, create the perspective
+					// OK, create the perspective
 					perspective = new InfoPerspective();
 					perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 					perspective.setID(PERSPECTIVE_NAME_INFO);

@@ -41,6 +41,8 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.InfoPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -127,7 +129,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 			, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new WebBrowser();
-		//WebBrowser.setDebug(true);
+		WebBrowser.setDebug(true);
 		add(jpControl, "1,0"); //$NON-NLS-1$
 		add(browser, "1,2"); //$NON-NLS-1$
 
@@ -171,7 +173,12 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 			if (details != null && search != null && !search.equals(this.search)) {
 				// a file has been launch before view creation
 				this.search = search;
-				launchSearch(search);
+				//Do not perform search if current perspective is not info for perfs
+				if (PerspectiveManager.getCurrentPerspective() instanceof InfoPerspective
+						//current perspective is null if initial display
+						|| PerspectiveManager.getCurrentPerspective() == null){
+					launchSearch(search);
+				}
 			}
 		}
 		// Reset the page when stopping
@@ -185,15 +192,18 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		}
 	}
 	
+	 
 	 /**
      * Overwride paint method to fix an issue with WebBrowser: when user select another perspective and come back, it is void
      * We have to force setUrl to repaint it
      */
     public void paint(Graphics g){
         super.paint(g);
-        launchSearch(this.search);
+        if (search != null){
+        	launchSearch(this.search);
+        }
     }
-
+	
 	/**
 	 * Perform wikipedia search
 	 * 
@@ -203,14 +213,14 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,
 		new Thread() {
 			public void run() {
 				try {
-					URL url = new URL("http://" + //$NON-NLS-1$
+					final URL url = new URL("http://" + //$NON-NLS-1$
 							Messages.getLocales().get(index)
 							+ ".wikipedia.org/wiki/" + search); //$NON-NLS-1$
 					Log.debug("Wikipedia search: " + url); //$NON-NLS-1$
 					if (browser != null) {
 						browser.setURL(url);
 					}
-				} catch (MalformedURLException e) {
+				} catch (Exception e) {
 					Log.error(e);
 				}
 

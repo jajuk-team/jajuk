@@ -331,8 +331,10 @@ public class PhysicalTableView extends AbstractTableView implements
 	 */
 	@Override
 	void initTable() {
-		jtbEditable.setSelected(ConfigurationManager
-				.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
+		boolean bEditable = ConfigurationManager
+				.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
+		jtbEditable.setSelected(bEditable);
+		model.setEditable(bEditable);
 	}
 
 }

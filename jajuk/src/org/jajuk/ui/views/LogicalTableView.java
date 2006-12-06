@@ -369,8 +369,10 @@ public class LogicalTableView extends AbstractTableView {
 	 */
 	@Override
 	void initTable() {
-		jtbEditable.setSelected(ConfigurationManager
-				.getBoolean(CONF_LOGICAL_TABLE_EDITION));
+		boolean bEditable = ConfigurationManager
+				.getBoolean(CONF_LOGICAL_TABLE_EDITION);
+		jtbEditable.setSelected(bEditable);
+		model.setEditable(bEditable);
 	}
 
 }
