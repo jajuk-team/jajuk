@@ -4,11 +4,15 @@
 
 
 
+
+  
   
   
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
 
+
+  
   
   
   <title>Linux Installation Guide</title>
@@ -19,11 +23,14 @@
 
 
 
+
 <h1>Linux Installation Guide</h1>
 
 
 
+
 <h2>Targeted platforms</h2>
+
 
 
 
@@ -33,11 +40,14 @@ Slackware, Gentoo etc..)
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>[Mandatory] Java Runtime environment (JRE) 1.5 and
@@ -45,13 +55,17 @@ above.&nbsp;</p>
 
 
 
+
   </li>
 
 
 
+
+  
   
   
   <ul>
+
 
 
 
@@ -62,8 +76,10 @@ and type: <span style="font-family: monospace;">java
 
 
 
+
     <li>If needed, you can get
 JRE&nbsp;for free at <a href="http://www.java.com/">http://www.java.com</a></li>
+
 
 
 
@@ -73,13 +89,17 @@ Jajuk !</li>
 
 
 
+
+  
   
   
   </ul>
 
 
 
+
   <li>
+    
     
     
     <p>[Strongly recommended] MPlayer 1.0 pre8 and above
@@ -88,7 +108,9 @@ more audio formats such flac)</p>
 
 
 
+
   </li>
+
 
 
 
@@ -97,7 +119,9 @@ from the $PATH (this will provide the Wikipedia view)</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -106,12 +130,15 @@ under Linux</span></p>
 
 
 
+
 Download the JRE RPM version (.rpm.bin file).
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>Lauch installer :<span style="font-family: monospace;">
@@ -120,22 +147,28 @@ j2re-{version}.rpm.bin</span></p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>Log as root and install the RPM : <span style="font-family: monospace;">rpm -ivh j2re-{version}.rpm</span></p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>If
@@ -144,13 +177,17 @@ installed in /opt/java directory that is not in the PATH by default).</p>
 
 
 
+
   </li>
 
 
 
+
+  
   
   
   <ul>
+
 
 
 
@@ -161,12 +198,16 @@ this by your own directory) in /etc/profile or ~/.bashrc for instance</li>
 
 
 
+
+  
   
   
   </ul>
 
 
+
   <li>
+    
     
     
     <p>Check you now use the new&nbsp;JRE by opening&nbsp; a console
@@ -174,7 +215,9 @@ and typing: <span style="font-family: monospace;">java
 --version</span></p>
 
 
+
   </li>
+
 
 
 
@@ -182,7 +225,9 @@ and typing: <span style="font-family: monospace;">java
 
 
 
+
 <h2>Download</h2>
+
 
 
 
@@ -190,14 +235,14 @@ Download Jajuk last distribution at <a href="http://sourceforge.net/project/show
 <h2>Jajuk Installation</h2>
 
 
-We provide two packages for Linux : Suse RPM (<span style="font-family: monospace;">jajuk-${version}-suse.noarch.rpm</span>)
-and
-Mandrake RPM (<span style="font-family: monospace;">jajuk-${version}-1mdk.noarch.rpm</span>).
-Suse and Mandrake RPM should work with most others Linux&nbsp;
-distributions but menu icons may not be created. To install, use
+
+We provide a single&nbsp;package for Linux &nbsp;(<span style="font-family: monospace;">jajuk-${version}-noarch.rpm</span>)&nbsp;.
+This RPM will&nbsp;work with any&nbsp;Linux&nbsp;
+distributions but menu icons may not be created (in this case, please do it manually if required). To install, use
 your favorite graphical tool (Yast, Drake...) or log as root and launch
 <span style="font-family: monospace;">rpm -ivh
 jajuk-${version}.rpm.&nbsp;</span><span style="font-family: monospace;"><br>
+
 
 
 
@@ -206,11 +251,14 @@ jajuk-${version}.rpm.&nbsp;</span><span style="font-family: monospace;"><br>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>It can take a while for shortcut to
@@ -218,65 +266,52 @@ appear
 in menu.</p>
 
 
-  </li>
-
-
-  <li>
-    
-    
-    <p>Under Suse, shortcut is created in "Multimedia" menu
-section.</p>
-
 
   </li>
-
-
   <li>
-    
-    
-    <p>Under Mandrake, shortcut is created in "Multimedia/Sound"
-menu
-section.</p>
-
-
-  </li>
-
-
-  <li>
-    
-    
     <p>Note that you can also install Jajuk under Linux using the Java installer (see <a href="installation.html">main installation guides</a>).</p>
 
 
+
   </li>
+
 
 
 
 </ul>
 
 
+
 <h2>Launching<br>
 
 
+
 </h2>
+
 
 
 <ul>
 
 
 
+
   <li>
     
-    <p>Use the new shortcuts&nbsp;in
-Applications/Audio under Suse and Multimedia/Sound under Mandrake</p>
+    
+    <p>Use the new menu shortcut if created</p>
+
 
   </li>
 
+
   <li>
+    
     
     <p>Or simply type <span style="font-family: monospace;">jajuk</span> in a console</p>
 
+
   </li>
+
 
 
 
@@ -285,21 +320,26 @@ Applications/Audio under Suse and Multimedia/Sound under Mandrake</p>
 </ul>
 
 
+
 <h2>Upgrade</h2>
 
 
 
 
+
 <p>To upgrade Jajuk, log as root and launch <span style="font-family: monospace;">rpm -Uvh
-jajuk-${version}-suse.rpm</span>
+jajuk-${version}-noarch.rpm</span>
 </p>
+
 
 
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>It is safe to install the new release over previous one
@@ -308,10 +348,13 @@ uninstalling, Jajuk supports backwards compatibility. Your collection
 and configuration is kept and is stored under <span style="font-family: monospace;">{your home directory}/.jajuk</span></p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Jajuk doesn't support downwards compatibility: A
@@ -320,7 +363,9 @@ release&nbsp;may not work with a collection built by a newer release than
 the one you use.&nbsp;</p>
 
 
+
   </li>
+
 
 
 
@@ -328,37 +373,49 @@ the one you use.&nbsp;</p>
 </ul>
 
 
+
 <h2>Uninstallation<br>
 
 
+
 </h2>
+
 
 
 <ul>
 
 
 
+
   <li>
+    
     
     <p>If you installed using RPM, use
 your favorite graphical tool (Yast, Drake...) or log as root and
 launch: <span style="font-family: monospace;">rpm -e
 jajuk-{version}</span></p>
 
+
   </li>
 
+
   <li>
+    
     
     <p><span style="font-family: monospace;"></span>Remove <span style="font-family: monospace;">{user
 home}/.jajuk</span>
 directory for each user you want to uninstall</p>
 
+
   </li>
+
 
 </ul>
 
 
+
 <h2>Support</h2>
+
 
 In case of problem, feel free to&nbsp;<a href="http://sourceforge.net/project/stats/?group_id=91412">emit a
 support request</a>.
