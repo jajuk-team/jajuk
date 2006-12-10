@@ -64,8 +64,8 @@ public class TracksTableModel extends JajukTableModel {
 		super(12);
 
 		// Columns names
-		//First column is play icon, need to set a space character
-		//for proper display in some look and feel
+		// First column is play icon, need to set a space character
+		// for proper display in some look and feel
 		vColNames.add(" "); //$NON-NLS-1$
 		vId.add(XML_PLAY);
 
@@ -84,12 +84,10 @@ public class TracksTableModel extends JajukTableModel {
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
 		vId.add(XML_TRACK_RATE);
 
-		vColNames
-				.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
+		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
 		vId.add(XML_TRACK_LENGTH);
 
-		vColNames.add(Messages
-				.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
+		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
 		vId.add(XML_TRACK_COMMENT);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
@@ -105,8 +103,7 @@ public class TracksTableModel extends JajukTableModel {
 		vId.add(XML_TRACK_HITS);
 
 		// custom properties now
-		Iterator it = TrackManager.getInstance().getCustomProperties()
-				.iterator();
+		Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
 		while (it.hasNext()) {
 			PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
 			vColNames.add(meta.getName());
@@ -122,88 +119,53 @@ public class TracksTableModel extends JajukTableModel {
 		// if needed
 		boolean bShowWithTree = true;
 		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(
-				EventSubject.EVENT_SYNC_TREE_TABLE, DETAIL_SELECTION);// look
-		// at
-		// selection
-		boolean bSyncWithTreeOption = ConfigurationManager
-				.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+				EventSubject.EVENT_SYNC_TREE_TABLE, DETAIL_SELECTION);
+		// look at selection
+		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		Set<Track> alTracks = TrackManager.getInstance().getTracks();
 		ArrayList<Track> alToShow = new ArrayList<Track>(alTracks.size());
 		for (Track track : alTracks) {
 			bShowWithTree = !bSyncWithTreeOption
-					|| ((hs != null && hs.size() > 0 && hs.contains(track))); // show
-			// it
-			// if
-			// no
-			// sync
-			// option
-			// or
-			// if
-			// item
-			// is
-			// in
-			// the
-			// selection
+					|| ((hs != null && hs.size() > 0 && hs.contains(track)));
+			// show it if no sync option or if item is in the selection
 			if (!track.shouldBeHidden() && bShowWithTree) {
 				alToShow.add(track);
 			}
 		}
 		// Filter values using given pattern
-		if (sPropertyName != null && sPattern != null) { // null means no
-			// filtering
+		if (sPropertyName != null && sPattern != null) {
+			// null means no filtering
 			Iterator it = alToShow.iterator();
 			// Prepare filter pattern
 			String sNewPattern = sPattern;
-			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) { // do we
-				// use
-				// regular
-				// expression
-				// or
-				// not?
-				// if
-				// not,
-				// we
-				// allow
-				// user
-				// to
-				// use
-				// '*'
+			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
+				// do we use regular expression or not? if not, we allow user to
+				// use '*'
 				sNewPattern = sNewPattern.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
 				sNewPattern = ".*" + sNewPattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-			} else if ("".equals(sNewPattern)) {// in regexp mode, if none //$NON-NLS-1$
+			} else if ("".equals(sNewPattern)) {// in regexp mode, if none
+				// //$NON-NLS-1$
 				// selection, display all rows
 				// //$NON-NLS-1$
 				sNewPattern = ".*"; //$NON-NLS-1$
 			}
 			while (it.hasNext()) {
 				Track track = (Track) it.next();
-				if (sPropertyName != null && sNewPattern != null) { // if
-					// name
-					// or
-					// value
-					// is
-					// null,
-					// means
-					// there
-					// is no
-					// filter
+				if (sPropertyName != null && sNewPattern != null) {
+					// if name or value is null, means there is no filter
 					String sValue = track.getHumanValue(sPropertyName);
-					if (sValue == null) { // try to filter on a unknown
-						// property, don't take this
+					if (sValue == null) {
+						// try to filter on a unknown property, don't take this
 						// file
 						continue;
 					} else {
 						boolean bMatch = false;
 						try { // test using regular expressions
-							bMatch = sValue.toLowerCase().matches(
-									sNewPattern.toLowerCase()); // test if the
-							// file property
-							// contains this
-							// property
-							// value (ignore
-							// case)
-						} catch (PatternSyntaxException pse) { // wrong pattern
-							// syntax
+							bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());
+							// test if the file property contains this property
+							// value (ignore case)
+						} catch (PatternSyntaxException pse) {
+							// wrong pattern syntax
 							bMatch = false;
 						}
 						if (!bMatch) {
@@ -216,8 +178,7 @@ public class TracksTableModel extends JajukTableModel {
 		// sort by album
 		Collections.sort(alToShow, new TrackComparator(2));
 		Iterator it = alToShow.iterator();
-		int iColNum = iNumberStandardCols
-				+ TrackManager.getInstance().getCustomProperties().size();
+		int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
 		iRowNum = alToShow.size();
 		it = alToShow.iterator();
 		oValues = new Object[iRowNum][iColNum];
@@ -232,8 +193,7 @@ public class TracksTableModel extends JajukTableModel {
 			// Play
 			IconLabel il = null;
 			if (track.getPlayeableFile(true) != null) {
-				il = new IconLabel(
-						PLAY_ICON,
+				il = new IconLabel(PLAY_ICON,
 						"", null, null, null, Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				il = new IconLabel(
@@ -242,13 +202,12 @@ public class TracksTableModel extends JajukTableModel {
 			}
 			// Note: if you want to add an image, use an ImageIcon class and
 			// change
-			// AbstractTableView.setRenderer()
 			oValues[iRow][0] = il;
 			bCellEditable[iRow][0] = false;
 			// check track has an associated tag editor (not null)
 			boolean bHasATagEditor = false;
-			File file = track.getFiles().get(0); // all files have the
-			// same type
+			File file = track.getFiles().get(0);
+			// all files have the same type
 			Type type = file.getType();
 			if (type != null) {
 				bHasATagEditor = (type.getTaggerClass() != null);
@@ -292,17 +251,14 @@ public class TracksTableModel extends JajukTableModel {
 			oValues[iRow][11] = track.getHits();
 			bCellEditable[iRow][11] = false;
 			// Custom properties now
-			Iterator it2 = TrackManager.getInstance().getCustomProperties()
-					.iterator();
+			Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
 			for (int i = 0; it2.hasNext(); i++) {
-				PropertyMetaInformation meta = (PropertyMetaInformation) it2
-						.next();
+				PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
 				Object o = properties.get(meta.getName());
 				if (o != null) {
 					oValues[iRow][iNumberStandardCols + i] = o;
 				} else {
-					oValues[iRow][iNumberStandardCols + i] = meta
-							.getDefaultValue();
+					oValues[iRow][iNumberStandardCols + i] = meta.getDefaultValue();
 				}
 				// Date values not editable, use properties panel instead to
 				// edit
@@ -314,5 +270,4 @@ public class TracksTableModel extends JajukTableModel {
 			}
 		}
 	}
-
 }

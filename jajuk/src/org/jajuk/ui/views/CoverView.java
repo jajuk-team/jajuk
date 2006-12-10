@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +39,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -60,6 +60,7 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
@@ -69,6 +70,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 import ext.SwingWorker;
 
@@ -102,8 +104,6 @@ public class CoverView extends ViewAdapter implements Observer,
 
 	JajukButton jbSave;
 
-	JajukButton jbSaveAs;
-
 	JajukButton jbDefault;
 
 	JLabel jlSize;
@@ -112,7 +112,7 @@ public class CoverView extends ViewAdapter implements Observer,
 
 	JLabel jlSearching;
 
-	JComboBox jcbAccuracy;
+	SteppedComboBox jcbAccuracy;
 
 	/** Date last resize (used for adjustment management) */
 	private long lDateLastResize;
@@ -187,9 +187,6 @@ public class CoverView extends ViewAdapter implements Observer,
 		jbSave = new JajukButton(Util.getIcon(ICON_SAVE));
 		jbSave.addActionListener(this);
 		jbSave.setToolTipText(Messages.getString("CoverView.6")); //$NON-NLS-1$
-		jbSaveAs = new JajukButton(Util.getIcon(ICON_SAVE_AS));
-		jbSaveAs.addActionListener(this);
-		jbSaveAs.setToolTipText(Messages.getString("CoverView.7")); //$NON-NLS-1$
 		jbDefault = new JajukButton(Util.getIcon(ICON_DEFAULT_COVER));
 		jbDefault.addActionListener(this);
 		jbDefault.setToolTipText(Messages.getString("CoverView.8")); //$NON-NLS-1$
@@ -197,8 +194,10 @@ public class CoverView extends ViewAdapter implements Observer,
 		jlFound = new JLabel(""); //$NON-NLS-1$
 		jlSearching = new JLabel(
 				"", Util.getIcon(ICON_NET_SEARCH), JLabel.CENTER); //$NON-NLS-1$
-		jcbAccuracy = new JComboBox();
+		jcbAccuracy = new SteppedComboBox();
+		jcbAccuracy.setPopupWidth(200);
 		jcbAccuracy.setBorder(Util.getShadowBorder());
+		jcbAccuracy.setMinimumSize(new Dimension(20,0));
 		jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
 		jcbAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
 		jcbAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
@@ -215,14 +214,20 @@ public class CoverView extends ViewAdapter implements Observer,
 		jtb.addSeparator();
 		jtb.add(jbDelete);
 		jtb.add(jbSave);
-		jtb.add(jbSaveAs);
+		//TODO remove definitly ? jtb.add(jbSaveAs);
 		jtb.add(jbDefault);
 		
 		double sizeControl[][] = {
-				{ 5, TableLayout.PREFERRED, 15, 
-					TableLayout.PREFERRED, 15, 
-					TableLayout.PREFERRED, 5, 
-					TableLayout.FILL, 5, 25, 5 },
+				//Toolbar
+				{ 5, TableLayout.PREFERRED, 10,
+					//size label
+					TableLayout.FILL, 10,
+					//nb of found covers label
+					TableLayout.FILL, 5, 
+					// Accuracy combo
+					TableLayout.FILL, 5, 
+					//searching icon
+					25, 5 },
 				{ 5, 25, 5 } };
 		TableLayout layout = new TableLayout(sizeControl);
 		jpControl.setLayout(layout);
@@ -230,7 +235,7 @@ public class CoverView extends ViewAdapter implements Observer,
 		jpControl.add(jtb, "1,1");//$NON-NLS-1$
 		jpControl.add(jlSize, "3,1,c,c");//$NON-NLS-1$
 		jpControl.add(jlFound, "5,1");//$NON-NLS-1$
-		jpControl.add(jcbAccuracy,"7,1,c,c");//$NON-NLS-1$
+		jpControl.add(jcbAccuracy,"7,1");//$NON-NLS-1$
 		jpControl.add(jlSearching,"9,1,c,c");//$NON-NLS-1$
 		ObservationManager.register(this);
 		try {
@@ -697,7 +702,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			}
 			String size = cover.getSize();
 			jl = new JLabel(ii);
-			jl.setBorder(Util.getShadowBorder());
+			jl.setBorder(new DropShadowBorder(Color.BLACK, 0, 5, 0.5f, 5, false, true, false, true));
 			jl.setMinimumSize(new Dimension(0, 0)); // required for info
 			// node resizing
 			jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -937,46 +942,10 @@ public class CoverView extends ViewAdapter implements Observer,
 			// then make it the default cover in this directory
 			dirCurrent.setProperty("default_cover", sFilename); //$NON-NLS-1$
 
-		} else if (e.getSource() == jbSave) { // save a file with its original
-			// name
-			new Thread() {
-				public void run() {
-					Cover cover = alCovers.get(index);
-					// should not happen, only remote covers here
-					if (cover.getType() != Cover.REMOTE_COVER) {
-						Log.debug("Try to save a local cover");//$NON-NLS-1$
-						return;
-					}
-					String sFilePath = null;
-					sFilePath = dirCurrent.getFio().getPath()
-							+ "/" + Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
-					try {
-						// copy file from cache
-						File fSource = new File(Util.getCachePath(cover
-								.getURL()));
-						File file = new File(sFilePath);
-						Util.copy(fSource, file);
-						InformationJPanel
-								.getInstance()
-								.setMessage(
-										Messages.getString("CoverView.11"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-						Cover cover2 = new Cover(file.toURL(),
-								Cover.ABSOLUTE_DEFAULT_COVER);
-						if (!alCovers.contains(cover2)) {
-							alCovers.add(cover2);
-							setFoundText();
-						}
-						ObservationManager.notify(new Event(
-								EventSubject.EVENT_COVER_REFRESH));
-						// add new cover in others cover views
-					} catch (Exception ex) {
-						Log.error("024", ex); //$NON-NLS-1$
-						Messages.showErrorMessage("024"); //$NON-NLS-1$
-					}
-				}
-			}.start();
-		} else if (e.getSource() == jbSaveAs) { // save a file as... (can be
-			// local now)
+		} 
+		else if (e.getSource() == jbSave
+			&& ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) { 
+			// save a file as... (can be local now)
 			new Thread() {
 				public void run() {
 					Cover cover = alCovers.get(index);
@@ -1022,6 +991,45 @@ public class CoverView extends ViewAdapter implements Observer,
 							Log.error("024", ex); //$NON-NLS-1$
 							Messages.showErrorMessage("024"); //$NON-NLS-1$
 						}
+					}
+				}
+			}.start();
+		}
+		else if (e.getSource() == jbSave){
+			// save a file with its original name
+			new Thread() {
+				public void run() {
+					Cover cover = alCovers.get(index);
+					// should not happen, only remote covers here
+					if (cover.getType() != Cover.REMOTE_COVER) {
+						Log.debug("Try to save a local cover");//$NON-NLS-1$
+						return;
+					}
+					String sFilePath = null;
+					sFilePath = dirCurrent.getFio().getPath()
+							+ "/" + Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
+					try {
+						// copy file from cache
+						File fSource = new File(Util.getCachePath(cover
+								.getURL()));
+						File file = new File(sFilePath);
+						Util.copy(fSource, file);
+						InformationJPanel
+								.getInstance()
+								.setMessage(
+										Messages.getString("CoverView.11"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+						Cover cover2 = new Cover(file.toURL(),
+								Cover.ABSOLUTE_DEFAULT_COVER);
+						if (!alCovers.contains(cover2)) {
+							alCovers.add(cover2);
+							setFoundText();
+						}
+						ObservationManager.notify(new Event(
+								EventSubject.EVENT_COVER_REFRESH));
+						// add new cover in others cover views
+					} catch (Exception ex) {
+						Log.error("024", ex); //$NON-NLS-1$
+						Messages.showErrorMessage("024"); //$NON-NLS-1$
 					}
 				}
 			}.start();

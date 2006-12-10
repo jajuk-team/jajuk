@@ -37,7 +37,7 @@ public class JajukCellRender extends DefaultTableCellRenderer {
 
 	public Component getTableCellRendererComponent(JTable table, Object oValue,
 			boolean selected, boolean focused, int row, int column) {
-		setEnabled(table == null || table.isEnabled()); // see question above
+		setEnabled(table == null || table.isEnabled()); 
 		if (oValue instanceof IconLabel) {
 			IconLabel iconLabel = (IconLabel) oValue;
 			setIcon(iconLabel.getIcon());
@@ -47,8 +47,7 @@ public class JajukCellRender extends DefaultTableCellRenderer {
 			setBackground(iconLabel.getBackground());
 			setForeground(iconLabel.getForeground());
 			super.getTableCellRendererComponent(table, oValue, selected,
-					focused, row, column); // do it here, called to set
-			// blue if selection
+					focused, row, column); 
 			if (iconLabel.getFont() != null) {
 				setFont(iconLabel.getFont());
 			}

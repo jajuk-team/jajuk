@@ -65,8 +65,7 @@ public class Tag implements ITechnicalStrings {
 	public Tag(java.io.File fio, boolean bIgnoreErrors) throws JajukException {
 		try {
 			this.fio = fio;
-			Type type = TypeManager.getInstance().getTypeByExtension(
-					Util.getExtension(fio));
+			Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
 			tagImpl = type.getTagImpl();
 			tagImpl.setFile(fio);
 			bCorrupted = false;
@@ -110,26 +109,10 @@ public class Tag implements ITechnicalStrings {
 		String sTemp = "".intern(); //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAlbumName().trim().intern();
-			if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)) { // it is
-				// done
-				// to
-				// avoid
-				// duplicates
-				// unknown
-				// albums
-				// if
-				// the
-				// tag
-				// is
-				// the
-				// real
-				// string
-				// "unknown"
-				// in
-				// the
-				// current
-				// language
-				// //$NON-NLS-1$
+			if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)) {
+				// it is done to avoid duplicates unknown styles if
+				// the tag is the real string "unknown" in the
+				// current language
 				sAlbumlName = UNKNOWN_ALBUM; //$NON-NLS-1$
 			} else if (!"".equals(sTemp)) { //$NON-NLS-1$
 				sAlbumlName = sTemp;
@@ -138,24 +121,13 @@ public class Tag implements ITechnicalStrings {
 			Log.info("Wrong album name:{{" + fio.getName() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if (sAlbumlName == null) { // album tag cannot be found
-			if (Boolean.valueOf(
-					ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR))
+			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR))
 					.booleanValue()) {
-				sAlbumlName = fio.getParentFile().getName().intern(); // if
-				// album
-				// is
-				// not
-				// found,
-				// take
-				// current
-				// dirtectory
-				// as
-				// album
-				// name
+				sAlbumlName = fio.getParentFile().getName().intern();
+				// if album is not found, take current directory as album name
 			} else {
-				sAlbumlName = Messages.getString(UNKNOWN_ALBUM); // album
-				// inconnu
-				// //$NON-NLS-1$
+				sAlbumlName = Messages.getString(UNKNOWN_ALBUM);
+				// unknwon album
 			}
 		}
 		sAlbumlName = Util.formatTag(sAlbumlName).intern();
@@ -174,26 +146,10 @@ public class Tag implements ITechnicalStrings {
 		String sTemp = "".intern(); //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAuthorName().trim().intern();
-			if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)) { // it is
-				// done
-				// to
-				// avoid
-				// duplicates
-				// unknown
-				// authors
-				// if
-				// the
-				// tag
-				// is
-				// the
-				// real
-				// string
-				// "unknown"
-				// in
-				// the
-				// current
-				// language
-				// //$NON-NLS-1$
+			if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)) {
+				// it is done to avoid duplicates unknown styles if
+				// the tag is the real string "unknown" in the
+				// current language
 				sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
 			} else if (!"".equals(sTemp)) { //$NON-NLS-1$
 				sAuthorName = Util.formatTag(sTemp).intern();
@@ -217,26 +173,10 @@ public class Tag implements ITechnicalStrings {
 		String sTemp = "".intern(); //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getStyleName().trim().intern();
-			if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)) { // it is
-				// done
-				// to
-				// avoid
-				// duplicates
-				// unknown
-				// styles
-				// if
-				// the
-				// tag
-				// is
-				// the
-				// real
-				// string
-				// "unknown"
-				// in
-				// the
-				// current
-				// language
-				// //$NON-NLS-1$
+			if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)) {
+				// it is done to avoid duplicates unknown styles if
+				// the tag is the real string "unknown" in the
+				// current language
 				style = UNKNOWN_STYLE; //$NON-NLS-1$
 			} else if (!"".equals(sTemp)) { //$NON-NLS-1$
 				if (sTemp.equals("unknown")) { //$NON-NLS-1$
@@ -431,12 +371,10 @@ public class Tag implements ITechnicalStrings {
 					.setMessage(
 							Messages.getString("PropertiesWizard.11") + " " + fio.getName(), InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (Log.isDebugEnabled()) {
-				Log
-						.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+				Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getName()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} catch (Exception e) {
-			throw new JajukException(
-					"104", fio.getName() + "\n" + e.getMessage(), e); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new JajukException("104", fio.getName() + "\n" + e.getMessage(), e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

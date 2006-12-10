@@ -200,7 +200,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
 	 * 
 	 */
 	public void commit() {
-		// first, remove all ambience from configuration
+		// first, remove all ambiences from configuration
 		Properties properties = ConfigurationManager.getProperties();
 		Iterator it = properties.keySet().iterator();
 		while (it.hasNext()) {

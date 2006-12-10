@@ -40,6 +40,7 @@ import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -274,12 +275,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search"); //$NON-NLS-1$
 		double[][] sizeSearch = new double[][]{
-				{TableLayout.PREFERRED,2,TableLayout.PREFERRED},
+				{3,TableLayout.PREFERRED,3,TableLayout.PREFERRED},
 				{TableLayout.PREFERRED}};
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
-		jpSearch.add(new JLabel(Util.getIcon(ICON_SEARCH)),"0,0"); //$NON-NLS-1$
-		jpSearch.add(sbSearch,"2,0"); //$NON-NLS-1$
+		jpSearch.add(new JLabel(Util.getIcon(ICON_SEARCH)),"1,0"); //$NON-NLS-1$
+		jpSearch.add(sbSearch,"3,0"); //$NON-NLS-1$
 		vltbSearch.add(jpSearch);
 
 		// History
@@ -528,6 +529,16 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings,
 				ToolBarIO tbIO = new ToolBarIO(container);
 				FileInputStream in = new FileInputStream(FILE_TOOLBARS_CONF);
 				tbIO.readXML(in);
+				//Check toolbars have been actually installed as the XML toolbar conf file could be voided
+				Component[] panels = container.getComponents();
+				int installedToolbars = 0;
+				for (int i=0;i<panels.length;i++){
+					ToolBarPanel panel = (ToolBarPanel)panels[i];
+					installedToolbars += panel.getComponentCount();
+				}
+				if (installedToolbars != container.getRegisteredToolBars().size()){
+					throw new Exception("Wrong number of toolbars");
+				}
 				bToolbarInstallationOK = true;
 				in.close();
 			} catch (Exception e) {

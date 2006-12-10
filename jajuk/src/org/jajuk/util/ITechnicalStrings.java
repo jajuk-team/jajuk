@@ -336,6 +336,9 @@ public interface ITechnicalStrings {
 
 	public static final URL ICON_NEW = Util
 			.getResource("org/jajuk/icons/16x16/new.png");
+	
+	public static final URL ICON_SEARCH = Util
+			.getResource("org/jajuk/icons/16x16/search.png");
 
 	public static final URL ICON_DELETE = Util
 			.getResource("org/jajuk/icons/16x16/delete.png");
@@ -640,7 +643,7 @@ public interface ITechnicalStrings {
 	public static final URL ICON_DEFAULTS_BIG = Util
 			.getResource("org/jajuk/icons/22x22/undo.png");
 
-	public static final URL ICON_SEARCH = Util
+	public static final URL ICON_HELP = Util
 			.getResource("org/jajuk/icons/16x16/help.png");
 
 	// images

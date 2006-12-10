@@ -40,7 +40,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * Table model used for physical table view
@@ -48,8 +47,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 29 feb. 2004
  */
-public class FilesTableModel extends JajukTableModel implements
-		ITechnicalStrings {
+public class FilesTableModel extends JajukTableModel implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
@@ -84,8 +82,7 @@ public class FilesTableModel extends JajukTableModel implements
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
 		vId.add(XML_TRACK_RATE);
 
-		vColNames
-				.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
+		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
 		vId.add(XML_TRACK_LENGTH);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
@@ -94,8 +91,7 @@ public class FilesTableModel extends JajukTableModel implements
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILE_NAME));
 		vId.add(XML_NAME);
 
-		vColNames.add(Messages
-				.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
+		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
 		vId.add(XML_TRACK_COMMENT);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_QUALITY));
@@ -122,22 +118,22 @@ public class FilesTableModel extends JajukTableModel implements
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
 		vId.add(XML_TRACK_ADDED);
 
-		// custom properties now
-		// for tracks
-		Iterator it = TrackManager.getInstance().getCustomProperties()
-				.iterator();
-		while (it.hasNext()) {
-			PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
-			vColNames.add(meta.getName());
-			vId.add(meta.getName());
-		}
+		// -- Custom properties now--
 		// for files
-		it = FileManager.getInstance().getCustomProperties().iterator();
+		Iterator it = FileManager.getInstance().getCustomProperties().iterator();
 		while (it.hasNext()) {
 			PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
 			vColNames.add(meta.getName());
 			vId.add(meta.getName());
 		}
+		// for tracks
+		it = TrackManager.getInstance().getCustomProperties().iterator();
+		while (it.hasNext()) {
+			PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+			vColNames.add(meta.getName());
+			vId.add(meta.getName());
+		}
+		
 	}
 
 	/**
@@ -147,12 +143,10 @@ public class FilesTableModel extends JajukTableModel implements
 		// Filter mounted files if needed and apply sync table with tree option
 		// if needed
 		boolean bShowWithTree = true;
-		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(
-				EventSubject.EVENT_SYNC_TREE_TABLE, DETAIL_SELECTION);// look
-		// at
-		// selection
-		boolean bSyncWithTreeOption = ConfigurationManager
-				.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(EventSubject.EVENT_SYNC_TREE_TABLE,
+				DETAIL_SELECTION);
+		// look at selection
+		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		Set<File> files = FileManager.getInstance().getFiles();
 		ArrayList<File> alToShow = new ArrayList<File>(files.size());
 		oItems = new Item[iRowNum];
@@ -160,8 +154,7 @@ public class FilesTableModel extends JajukTableModel implements
 		while (it.hasNext()) {
 			File file = (File) it.next();
 			// show it if no sync option or if item is in the selection
-			bShowWithTree = !bSyncWithTreeOption
-					|| ((hs != null && hs.size() > 0 && hs.contains(file)));
+			bShowWithTree = !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(file)));
 			if (!file.shouldBeHidden() && bShowWithTree) {
 				alToShow.add(file);
 			}
@@ -192,8 +185,7 @@ public class FilesTableModel extends JajukTableModel implements
 					} else {
 						boolean bMatch = false;
 						try { // test using regular expressions
-							bMatch = sValue.toLowerCase().matches(
-									sNewPattern.toLowerCase());
+							bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());
 							// test if the file property contains this property
 							// value (ignore case)
 						} catch (PatternSyntaxException pse) {
@@ -209,8 +201,7 @@ public class FilesTableModel extends JajukTableModel implements
 			}
 		}
 		it = alToShow.iterator();
-		int iColNum = iNumberStandardCols
-				+ FileManager.getInstance().getCustomProperties().size()
+		int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size()
 				+ TrackManager.getInstance().getCustomProperties().size();
 		iRowNum = alToShow.size();
 		it = alToShow.iterator();
@@ -226,9 +217,7 @@ public class FilesTableModel extends JajukTableModel implements
 			// Play
 			IconLabel il = null;
 			if (file.isReady()) {
-				il = new IconLabel(
-						PLAY_ICON,
-						"", null, null, null, Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+				il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				il = new IconLabel(
 						UNMOUNT_PLAY_ICON,
@@ -259,8 +248,7 @@ public class FilesTableModel extends JajukTableModel implements
 			oValues[iRow][5] = ilRate;
 			bCellEditable[iRow][5] = false;
 			// Length
-			oValues[iRow][6] = Util.formatTimeBySec(
-					file.getTrack().getLength(), false);
+			oValues[iRow][6] = Util.formatTimeBySec(file.getTrack().getLength(), false);
 			bCellEditable[iRow][6] = false;
 			// Device
 			oValues[iRow][7] = file.getDirectory().getDevice().getName();
@@ -297,29 +285,16 @@ public class FilesTableModel extends JajukTableModel implements
 			oValues[iRow][17] = file.getTrack().getAdditionDate();
 			bCellEditable[iRow][17] = false;
 
-			// Custom properties now
-			// files
-			Iterator it2 = FileManager.getInstance().getCustomProperties()
-					.iterator();
+			// -- Custom properties now --
+			// files custom tags
+			Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
 			for (int i = 0; it2.hasNext(); i++) {
-				PropertyMetaInformation meta = (PropertyMetaInformation) it2
-						.next();
+				PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
 				Object o = properties.get(meta.getName());
 				if (o != null) {
-					oValues[iRow][iNumberStandardCols + i] = properties
-							.get(meta.getName());
+					oValues[iRow][iNumberStandardCols + i] = o;
 				} else {
-					oValues[iRow][iNumberStandardCols + i] = meta
-							.getDefaultValue();
-				}
-				// For date format, just display date conversion
-				if (meta.getType().equals(Date.class)) {
-					try {
-						oValues[iRow][iNumberStandardCols + i] = Util.format(
-								oValues[iRow][iNumberStandardCols + i], meta);
-					} catch (Exception e) {
-						Log.error(e);
-					}
+					oValues[iRow][iNumberStandardCols + i] = meta.getDefaultValue();
 				}
 				// Date values not editable, use properties panel instead to
 				// edit
@@ -329,28 +304,16 @@ public class FilesTableModel extends JajukTableModel implements
 					bCellEditable[iRow][iNumberStandardCols + i] = true;
 				}
 			}
-			// tracks
+			// tracks custom properties
 			it2 = TrackManager.getInstance().getCustomProperties().iterator();
-			for (int i = FileManager.getInstance().getCustomProperties().size(); it2
-					.hasNext(); i++) {
-				PropertyMetaInformation meta = (PropertyMetaInformation) it2
-						.next();
+			for (int i = FileManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
+				PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+				properties = file.getTrack().getProperties();
 				Object o = properties.get(meta.getName());
 				if (o != null) {
-					oValues[iRow][iNumberStandardCols + i] = properties
-							.get(meta.getName());
+					oValues[iRow][iNumberStandardCols + i] = properties.get(meta.getName());
 				} else {
-					oValues[iRow][iNumberStandardCols + i] = meta
-							.getDefaultValue();
-				}
-				// For date format, just display date conversion
-				if (meta.getType().equals(Date.class)) {
-					try {
-						oValues[iRow][iNumberStandardCols + i] = Util.format(
-								oValues[iRow][iNumberStandardCols + i], meta);
-					} catch (Exception e) {
-						Log.error(e);
-					}
+					oValues[iRow][iNumberStandardCols + i] = meta.getDefaultValue();
 				}
 				// Date values not editable, use properties panel instead to
 				// edit

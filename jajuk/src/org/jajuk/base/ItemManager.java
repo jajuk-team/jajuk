@@ -262,7 +262,11 @@ public abstract class ItemManager implements ITechnicalStrings {
 				Item item = (Item) it.next();
 				// check if this item still maps some tracks
 				if (!hsItems.contains(item)) {
-					it.remove();
+					//For styles, keep it even if none tracj uses it if it is a default style
+					if (this instanceof StyleManager && 
+							!StyleManager.getInstance().getStylesList().contains(item.getName())){
+						it.remove();
+					}
 				}
 			}
 		}

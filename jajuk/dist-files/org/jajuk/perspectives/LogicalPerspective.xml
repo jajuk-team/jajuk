@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <DockingDesktop version="2.0">
 <DockingPanel>
-<Split orientation="1" location="0.3238341968911917">
+<Split orientation="1" location="0.30">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.LogicalTreeView/0" dockLabel="key0"/>
 </Dockable>

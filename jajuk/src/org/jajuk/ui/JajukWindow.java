@@ -247,7 +247,15 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 				// show
 				if (visible) {
 					applyStoredSize();
+					//setVisible(true) must be done after setSize to be right
 					setVisible(true);
+					//Wait some time and set size again to fix the half screen issue
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						Log.error(e);
+					}
+					applyStoredSize();
 				}
 				// hide
 				else {

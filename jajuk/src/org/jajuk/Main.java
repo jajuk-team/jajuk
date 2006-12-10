@@ -391,13 +391,15 @@ public class Main implements ITechnicalStrings {
 								Util
 										.createEmptyFile(FILE_COLLECTION_EXIT_PROOF);
 							}
-							// Commit toolbars
-							ToolBarIO tbIO = new ToolBarIO(tbcontainer);
-							FileOutputStream out = new FileOutputStream(
-									FILE_TOOLBARS_CONF);
-							tbIO.writeXML(out);
-							out.flush();
-							out.close();
+							// Commit toolbars (only if it is visible to avoid commiting void screen)
+							if (getWindow()!= null && getWindow().isVisible()){
+								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
+								FileOutputStream out = new FileOutputStream(
+										FILE_TOOLBARS_CONF);
+								tbIO.writeXML(out);
+								out.flush();
+								out.close();
+							}
 							/* release intellipad resources */
 							if (Util.isUnderWindows()) {
 								org.jajuk.ui.action.ActionBase.cleanup();
@@ -967,8 +969,7 @@ public class Main implements ITechnicalStrings {
 				}
 				if (fileToPlay != null) {
 					if (fileToPlay.isReady()) {
-						// we try to launch at startup only existing and mounted
-						// files
+						// we try to launch at startup only existing and mounted files
 						alToPlay.add(fileToPlay);
 					} else {
 						// file exists but is not mounted, just notify the error
@@ -1160,6 +1161,8 @@ public class Main implements ITechnicalStrings {
 					jw.applyStoredSize(); // apply size and position as
 					// stored in the user properties
 					jw.setVisible(true); // show main window
+					//Wait some time and set size again to fix the half screen issue
+					Thread.sleep(500);
 					jw.applyStoredSize(); // apply size and position as
 					// stored in the user properties
 

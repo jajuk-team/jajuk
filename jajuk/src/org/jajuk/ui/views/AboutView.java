@@ -127,6 +127,7 @@ public class AboutView extends ViewAdapter {
 						jd.setLocationRelativeTo(Main.getWindow());
 						jd.setVisible(true);
 					} catch (Exception e) {
+						//No logs
 					}
 				}
 			}

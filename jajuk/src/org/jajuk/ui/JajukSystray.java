@@ -111,12 +111,11 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	private static JajukSystray jsystray;
 
 	/** Swing Timer to refresh the component */
-	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,
-			new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					update(new Event(EventSubject.EVENT_HEART_BEAT));
-				}
-			});
+	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			update(new Event(EventSubject.EVENT_HEART_BEAT));
+		}
+	});
 
 	/**
 	 * 
@@ -150,28 +149,21 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 
 		jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
 		jmiMute = new JMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
-		jmiHelp = new JMenuItem(ActionManager
-				.getAction(JajukAction.HELP_REQUIRED));
-		jmiShuffle = new JMenuItem(ActionManager
-				.getAction(JajukAction.SHUFFLE_GLOBAL));
+		jmiHelp = new JMenuItem(ActionManager.getAction(JajukAction.HELP_REQUIRED));
+		jmiShuffle = new JMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
 		jmiBestof = new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
 		jmiDJ = new JMenuItem(ActionManager.getAction(JajukAction.DJ));
-		jmiNorm = new JMenuItem(ActionManager
-				.getAction(JajukAction.FINISH_ALBUM));
-		jmiNovelties = new JMenuItem(ActionManager
-				.getAction(JajukAction.NOVELTIES));
+		jmiNorm = new JMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+		jmiNovelties = new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
 
-		jcbmiVisible = new JCheckBoxMenuItem(Messages
-				.getString("JajukWindow.8")); //$NON-NLS-1$
+		jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
 		jcbmiVisible.setState(JajukWindow.getInstance().isVisible());
 		jcbmiVisible.addActionListener(this);
 		jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25")); //$NON-NLS-1$
 
-		jmiPause = new JMenuItem(ActionManager
-				.getAction(JajukAction.PLAY_PAUSE_TRACK));
+		jmiPause = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK));
 		jmiStop = new JMenuItem(ActionManager.getAction(JajukAction.STOP_TRACK));
-		jmiPrevious = new JMenuItem(ActionManager
-				.getAction(JajukAction.PREVIOUS_TRACK));
+		jmiPrevious = new JMenuItem(ActionManager.getAction(JajukAction.PREVIOUS_TRACK));
 		jmiNext = new JMenuItem(ActionManager.getAction(JajukAction.NEXT_TRACK));
 
 		jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
@@ -193,13 +185,12 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jsVolume.addChangeListener(this);
 
 		// Ambiences menu
-		Ambience defaultAmbience = AmbienceManager.getInstance()
-				.getSelectedAmbience();
-		jmAmbience = new JMenu(Messages.getString("JajukWindow.36") //$NON-NLS-1$
-				+ " " //$NON-NLS-1$
-				+ ((defaultAmbience == null) ? Messages
-						.getString("DigitalDJWizard.64") : defaultAmbience //$NON-NLS-1$
-						.getName()));
+		Ambience defaultAmbience = AmbienceManager.getInstance().getSelectedAmbience();
+		jmAmbience = new JMenu(
+				Messages.getString("JajukWindow.36") //$NON-NLS-1$
+						+ " " //$NON-NLS-1$
+						+ ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64") : defaultAmbience //$NON-NLS-1$
+										.getName()));
 		populateAmbiences();
 		// Add a title. Important: do not add a JLabel, it present action event
 		// to occur under windows
@@ -231,8 +222,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmenu.addSeparator();
 		jmenu.add(jmiExit);
 		jmenu.add(new JMenuItem(" ")); // used to close the tray //$NON-NLS-1$
-		trayIcon = new TrayIcon(Util.getIcon(ICON_TRAY), Messages
-				.getString("JajukWindow.18"), jmenu); //$NON-NLS-1$);
+		trayIcon = new TrayIcon(Util.getIcon(ICON_TRAY),
+				Messages.getString("JajukWindow.18"), jmenu); //$NON-NLS-1$);
 		trayIcon.setIconAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -256,10 +247,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			update(new Event(EventSubject.EVENT_PLAYER_STOP, ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_STOP)));
 		} else {
-			update(new Event(
-					EventSubject.EVENT_FILE_LAUNCHED,
-					ObservationManager
-							.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+			update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
 		}
 	}
 
@@ -293,8 +282,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		} catch (Exception e2) {
 			Log.error(e2);
 		} finally {
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH));
+			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 
@@ -315,43 +303,39 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					jsPosition.removeChangeListener(JajukSystray.this);
 					jsPosition.addChangeListener(JajukSystray.this);
 					jsPosition.setEnabled(true);
+					jmiPause.setEnabled(true);
+					jmiStop.setEnabled(true);
+					jmiNext.setEnabled(true);
+					jmiPrevious.setEnabled(true);
+					jmiNorm.setEnabled(true);
 					String sID = (String) ObservationManager.getDetail(event,
 							DETAIL_CURRENT_FILE_ID);
 					if (sID == null) {
 						return;
 					}
 					File file = FileManager.getInstance().getFileByID(
-							(String) ObservationManager.getDetail(event,
-									DETAIL_CURRENT_FILE_ID));
-					//check show baloon option
-					if (ConfigurationManager
-								.getBoolean(CONF_OPTIONS_SHOW_POPUP)) {
+							(String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
+					// check show baloon option
+					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP)) {
 						String sOut = "";
-						if (Util.isUnderLinux()){
+						if (Util.isUnderLinux()) {
 							sOut = getHTMLFormatText(file);
-						}
-						else{
+						} else {
 							sOut = getBasicFormatText(file);
 						}
-						trayIcon
-									.displayMessage(
-											Messages
-													.getString("JajukWindow.35"), 
-													sOut, 
-													TrayIcon.INFO_MESSAGE_TYPE); //$NON-NLS-1$
+						trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
+								TrayIcon.INFO_MESSAGE_TYPE); //$NON-NLS-1$
 					}
 					String sOut = null;
-					//check if a file is currently playing
-					if (file == null){
-						//display a "Ready to play" message
+					// check if a file is currently playing
+					if (file == null) {
+						// display a "Ready to play" message
 						sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
-					}
-					else{
-						//Display a full tootip with author...
-						if (Util.isUnderLinux()){
+					} else {
+						// Display a full tootip with author...
+						if (Util.isUnderLinux()) {
 							sOut = getHTMLFormatText(file);
-						}
-						else{
+						} else {
 							sOut = getBasicFormatText(file);
 						}
 					}
@@ -385,25 +369,20 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					jsPosition.setEnabled(false);
 				} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
 					JajukSystray.super.update(event);
-				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event
-						.getSubject())) {
+				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
 					JajukSystray.super.update(event);
-				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject)
-						&& !FIFO.isStopped() && !Player.isPaused()) {
+				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
+						&& !Player.isPaused()) {
 					JajukSystray.super.update(event);
 				} else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(subject)
-						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE
-								.equals(subject)) {
-					Ambience ambience = AmbienceManager.getInstance()
-							.getSelectedAmbience();
+						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
+					Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
 					if (ambience != null) {
 						jmAmbience.setText(Messages.getString("JajukWindow.36") //$NON-NLS-1$
 								+ " " //$NON-NLS-1$
-								+ AmbienceManager.getInstance()
-										.getSelectedAmbience().getName());
+								+ AmbienceManager.getInstance().getSelectedAmbience().getName());
 					} else {
-						jmAmbience
-								.setText(Messages.getString("JajukWindow.37")); //$NON-NLS-1$
+						jmAmbience.setText(Messages.getString("JajukWindow.37")); //$NON-NLS-1$
 					}
 					populateAmbiences();
 				}
@@ -426,7 +405,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	 * 
 	 * @param file
 	 *            current played file
-	 * @return text to be displayed in the tray ballon and tooltip with HTML formating that is used correctly under Linux
+	 * @return text to be displayed in the tray ballon and tooltip with HTML
+	 *         formating that is used correctly under Linux
 	 */
 	public String getHTMLFormatText(File file) {
 		String sOut = "";
@@ -434,11 +414,11 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			sOut += "<HTML>"; //$NON-NLS-1$
 			String sAuthor = file.getTrack().getAuthor().getName();
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-				sOut += "<p>"+ sAuthor + "</p>"; //$NON-NLS-1$
+				sOut += "<p>" + sAuthor + "</p>"; //$NON-NLS-1$
 			}
 			String sAlbum = file.getTrack().getAlbum().getName();
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-				sOut += "<p>" +sAlbum + "</p>"; //$NON-NLS-1$
+				sOut += "<p>" + sAlbum + "</p>"; //$NON-NLS-1$
 			}
 			sOut += "<p><b>" + file.getTrack().getName() + "</b></p></HTML>"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -449,7 +429,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	 * 
 	 * @param file
 	 *            current played file
-	 * @return Text to be displayed in the tootip and baloon under windows. 
+	 * @return Text to be displayed in the tootip and baloon under windows.
 	 * 
 	 */
 	public String getBasicFormatText(File file) {
@@ -485,14 +465,12 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					// reset default ambience
 					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ""); //$NON-NLS-1$
 				} else {// Selected an ambience
-					Ambience ambience = AmbienceManager.getInstance()
-							.getAmbienceByName(jmi.getActionCommand());
-					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,
-							ambience.getID());
+					Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
+							jmi.getActionCommand());
+					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
 				}
 				jmi.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
+				ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 			}
 		};
 		// Remove all item
@@ -507,8 +485,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		// Add available ambiences
 		for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
 			JMenuItem jmi = new JMenuItem(ambience.getName());
-			if (ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(
-					ambience.getID())) {
+			if (ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
 				jmiAll.setFont(new Font("Dialog", Font.PLAIN, 12)); //$NON-NLS-1$
 				jmi.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
 			}

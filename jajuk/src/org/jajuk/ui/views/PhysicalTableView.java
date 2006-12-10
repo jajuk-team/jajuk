@@ -128,6 +128,8 @@ public class PhysicalTableView extends AbstractTableView implements
 		// model creation
 		FilesTableModel model = new FilesTableModel();
 		model.addTableModelListener(this);
+		model.setEditable(ConfigurationManager
+				.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
 		return model;
 	}
 
@@ -161,18 +163,18 @@ public class PhysicalTableView extends AbstractTableView implements
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
-		int iSelectedCol = jtable.getSelectedColumn(); 
+		int iSelectedCol = jtable.getSelectedColumn();
 		// selected column in view Test click on play icon
 		// launch track only if only first column is selected (fixes issue with
 		// Ctrl-A)
 		if (jtable.getSelectedColumnCount() == 1
-				&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0) 
-				// click on  play icon
-				|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) { 
+				&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
+				// click on play icon
+				|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) {
 			// double click on any column and edition state false
-			
+
 			// selected row in view
-			int iSelectedRow = jtable.getSelectedRow(); 
+			int iSelectedRow = jtable.getSelectedRow();
 			File file = (File) model.getItemAt(jtable
 					.convertRowIndexToModel(iSelectedRow));
 			try {
@@ -188,11 +190,13 @@ public class PhysicalTableView extends AbstractTableView implements
 		} else if (e.getClickCount() == 1) {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
 			TableTransferHandler.iSelectedRow = iSelectedRow;
-			// right clic on a selected node set ? 
-			if (e.getButton() == MouseEvent.BUTTON3) { 
-				//o if none or 1 node is selected, a right click on another node
-				// select it 
-				//o if more than 1, we keep selection and display a popup for them
+			// right clic on a selected node set ?
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				// o if none or 1 node is selected, a right click on another
+				// node
+				// select it
+				// o if more than 1, we keep selection and display a popup for
+				// them
 				if (jtable.getSelectedRowCount() < 2) {
 					jtable.getSelectionModel().setSelectionInterval(
 							iSelectedRow, iSelectedRow);

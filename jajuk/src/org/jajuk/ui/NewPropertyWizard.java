@@ -72,7 +72,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 
 	JXDatePicker jdpDefault;
 
-	// Type constants
+	// Types
 	private static final int STRING = 0;
 
 	private static final int LONG = 1;

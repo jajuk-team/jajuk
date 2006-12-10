@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -52,6 +53,9 @@ public class DeviceManager extends ItemManager {
 	/** Date last global refresh */
 	private long lDateLastGlobalRefresh = 0;
 
+	/** List of deep-refresh devices after an upgrade */
+	private Set<Device> devicesDeepRefreshed = new HashSet<Device>();
+
 	/** Auto-refresh thread */
 	private Thread tAutoRefresh = new Thread() {
 		public void run() {
@@ -75,35 +79,35 @@ public class DeviceManager extends ItemManager {
 		super();
 		// register properties
 		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+				String.class, null));
 		// Name
-		registerProperty(new PropertyMetaInformation(XML_NAME, false, true,
-				true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, false, false,
+				String.class, null));
 		// Type
-		registerProperty(new PropertyMetaInformation(XML_TYPE, false, true,
-				true, false, false, Long.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE, false, true, true, false, false,
+				Long.class, null));
 		// URL
-		registerProperty(new PropertyMetaInformation(XML_URL, false, true,
-				true, false, false, Long.class, null));
+		registerProperty(new PropertyMetaInformation(XML_URL, false, true, true, false, false,
+				Long.class, null));
 		// Mount point
-		registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,
-				false, true, true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT, false, true, true,
+				false, false, String.class, null));
 		// Auto-mount
-		registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,
-				false, true, true, false, false, Boolean.class, null));
+		registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT, false, true, true,
+				false, false, Boolean.class, null));
 		// Auto-refresh
-		registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,
-				false, true, true, false, false, Double.class, 0d));
+		registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH, false, true, true,
+				false, false, Double.class, 0d));
 		// Expand
-		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false,
-				false, false, false, true, Boolean.class, false));
+		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false,
+				true, Boolean.class, false));
 		// Synchro source
-		registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE,
-				false, false, true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE, false, false, true,
+				false, false, String.class, null));
 		// Synchro mode
-		registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_MODE,
-				false, false, true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_MODE, false, false, true,
+				false, false, String.class, null));
 	}
 
 	public void startAutoRefreshThread() {
@@ -138,8 +142,7 @@ public class DeviceManager extends ItemManager {
 	 * @param sName
 	 * @return device
 	 */
-	public Device registerDevice(String sId, String sName, long lDeviceType,
-			String sUrl) {
+	public Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
 		synchronized (DeviceManager.getInstance().getLock()) {
 			Device device = new Device(sId, sName);
 			device.setProperty(XML_TYPE, lDeviceType);
@@ -170,8 +173,8 @@ public class DeviceManager extends ItemManager {
 	 *            is it a new device ?
 	 * @return 0:ok or error code
 	 */
-	public String checkDeviceAvailablity(String sName, int iDeviceType,
-			String sUrl, String sMountPoint, boolean bNew) {
+	public String checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
+			String sMountPoint, boolean bNew) {
 		synchronized (DeviceManager.getInstance().getLock()) {
 			// check name and path
 			Iterator it = hmItems.values().iterator();
@@ -179,14 +182,10 @@ public class DeviceManager extends ItemManager {
 				Device deviceToCheck = (Device) it.next();
 				// if we check an existing device, do not compare it with itself
 				// ...
-				if (!bNew
-						&& deviceToCheck.getName().equals(
-								deviceToCheck.getName())) {
+				if (!bNew && deviceToCheck.getName().equals(deviceToCheck.getName())) {
 					continue;
 				}
-				if (bNew
-						&& (sName.toLowerCase().equals(deviceToCheck.getName()
-								.toLowerCase()))) {
+				if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
 					return "019"; //$NON-NLS-1$
 				}
 				String sUrlChecked = deviceToCheck.getUrl();
@@ -201,12 +200,10 @@ public class DeviceManager extends ItemManager {
 			// check availability
 			if (iDeviceType != 2) { // not a remote device, TBI for remote
 				// make sure it's mounted if under unix
-				if (!Util.isUnderWindows() && sMountPoint != null
-						&& !sMountPoint.equals("")) { //$NON-NLS-1$
+				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) { //$NON-NLS-1$
 					try {
 						// run the actual mount command
-						Process process = Runtime.getRuntime().exec(
-								"mount " + sMountPoint); //$NON-NLS-1$ 
+						Process process = Runtime.getRuntime().exec("mount " + sMountPoint); //$NON-NLS-1$ 
 						process.waitFor();
 					} catch (Exception e) {
 					}
@@ -214,7 +211,7 @@ public class DeviceManager extends ItemManager {
 				// test directory is available
 				File file = new File(sUrl);
 				// check if the url exists and is readable
-				if (!file.exists() || !file.canRead()) { 
+				if (!file.exists() || !file.canRead()) {
 					return "143"; //$NON-NLS-1$
 				}
 			}
@@ -263,12 +260,10 @@ public class DeviceManager extends ItemManager {
 	public void removeDevice(Device device) {
 		synchronized (DeviceManager.getInstance().getLock()) {
 			// show confirmation message if required
-			if (ConfigurationManager
-					.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
+			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
 				int iResu = Messages
 						.getChoice(
-								Messages
-										.getString("Confirmation_remove_device"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getString("Confirmation_remove_device"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu != JOptionPane.YES_OPTION) {
 					return;
 				}
@@ -304,8 +299,7 @@ public class DeviceManager extends ItemManager {
 			while (it.hasNext()) {
 				Device deviceToCheck = (Device) it.next();
 				if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
-					String sSyncSource = deviceToCheck
-							.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
+					String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
 					if (sSyncSource.equals(device.getId())) {
 						deviceToCheck.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
 					}
@@ -377,12 +371,10 @@ public class DeviceManager extends ItemManager {
 			boolean bNeedUIRefresh = false;
 			for (Item item : getDevices()) {
 				Device device = (Device) item;
-				double frequency = 60000 * device
-						.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
+				double frequency = 60000 * device.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
 				// check if this device needs auto-refresh
 				if (frequency == 0d
-						|| device.getDateLastRefresh() > (System
-								.currentTimeMillis() - frequency)) {
+						|| device.getDateLastRefresh() > (System.currentTimeMillis() - frequency)) {
 					continue;
 				}
 				// Check of mounted device contains files, otherwise it is not
@@ -391,12 +383,19 @@ public class DeviceManager extends ItemManager {
 				// musn't remove all references
 				File[] files = new File(device.getUrl()).listFiles();
 				if (!device.isRefreshing() && files != null && files.length > 0) {
+					// Check if this device should be deep-refresh after an
+					// upgrade
+					boolean bNeedDeepAfterUpgrade = Main.isUpgradeDetected()
+							&& !devicesDeepRefreshed.contains(device);
+					if (bNeedDeepAfterUpgrade){
+						//Store this device to avoid duplicate deep refreshes
+						devicesDeepRefreshed.add(device);
+					}
 					// cleanup device
+					bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
+					// logical or, not an error ! refresh it
 					bNeedUIRefresh = bNeedUIRefresh
-							| device.cleanRemovedFiles();
-					// logical or, not an error !  refresh it
-					bNeedUIRefresh = bNeedUIRefresh
-							| device.refreshCommand(false, false); 
+							| device.refreshCommand(bNeedDeepAfterUpgrade, false);
 				}
 			}
 
@@ -408,8 +407,7 @@ public class DeviceManager extends ItemManager {
 				AuthorManager.getInstance().cleanup();
 				PlaylistManager.getInstance().cleanup();
 				// notify views to refresh
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_DEVICE_REFRESH));
+				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			}
 			// Display end of refresh message with stats
 			l = System.currentTimeMillis() - l;
@@ -432,7 +430,7 @@ public class DeviceManager extends ItemManager {
 	}
 
 	/**
-	 *
+	 * 
 	 * @return devices list
 	 */
 	public Set<Device> getDevices() {

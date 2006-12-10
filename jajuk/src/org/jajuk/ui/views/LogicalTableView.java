@@ -103,20 +103,15 @@ public class LogicalTableView extends AbstractTableView {
 		jmiTrackPlay.addActionListener(this);
 		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8")); //$NON-NLS-1$
 		jmiTrackPush.addActionListener(this);
-		jmiTrackPlayShuffle = new JMenuItem(Messages
-				.getString("LogicalTableView.9")); //$NON-NLS-1$
+		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9")); //$NON-NLS-1$
 		jmiTrackPlayShuffle.addActionListener(this);
-		jmiTrackPlayRepeat = new JMenuItem(Messages
-				.getString("LogicalTableView.10")); //$NON-NLS-1$
+		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10")); //$NON-NLS-1$
 		jmiTrackPlayRepeat.addActionListener(this);
-		jmiTrackPlayAlbum = new JMenuItem(Messages
-				.getString("LogicalTableView.11")); //$NON-NLS-1$
+		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11")); //$NON-NLS-1$
 		jmiTrackPlayAlbum.addActionListener(this);
-		jmiTrackPlayAuthor = new JMenuItem(Messages
-				.getString("LogicalTableView.12")); //$NON-NLS-1$
+		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); //$NON-NLS-1$
 		jmiTrackPlayAuthor.addActionListener(this);
-		jmiTrackAddFavorite = new JMenuItem(Messages
-				.getString("LogicalTableView.15")); //$NON-NLS-1$
+		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15")); //$NON-NLS-1$
 		jmiTrackAddFavorite.addActionListener(this);
 		jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
@@ -135,6 +130,7 @@ public class LogicalTableView extends AbstractTableView {
 		// model creation
 		TracksTableModel model = new TracksTableModel();
 		model.addTableModelListener(this);
+		model.setEditable(ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION));
 		return model;
 	}
 
@@ -168,39 +164,29 @@ public class LogicalTableView extends AbstractTableView {
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
-		int iSelectedCol = jtable.getSelectedColumn(); // selected column in
-		// view
-		// Test click on play icon
-		// launch track only if only first column is selected (fixes issue with
+		int iSelectedCol = jtable.getSelectedColumn();
+		// selected column in view Test click on play icon launch track only if
+		// only first column is selected (fixes issue with
 		// Ctrl-A)
 		if (jtable.getSelectedColumnCount() == 1
-				&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0) // click
-				// on
-				// play
-				// icon
-				|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) { // double
-			// click
-			// on
-			// any
-			// column
-			// and
-			// edition
-			// state
-			// false
-			int iSelectedRow = jtable.getSelectedRow(); // selected row in view
-			Track track = (Track) model.getItemAt(jtable
-					.convertRowIndexToModel(iSelectedRow));
+		// click on play icon
+				&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
+				// double click on any column and edition state false
+				|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) {
+			// selected row in view
+			int iSelectedRow = jtable.getSelectedRow();
+			Track track = (Track) model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
 			File file = track.getPlayeableFile(false);
 			if (file != null) {
 				try {
-					FIFO
-							.getInstance()
+					// launch it
+					FIFO.getInstance()
 							.push(
 									new StackItem(file, ConfigurationManager
 											.getBoolean(CONF_STATE_REPEAT)),
 									ConfigurationManager
-											.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));// launch
-					// it
+											.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+
 				} catch (JajukException je) {
 					Log.error(je);
 				}
@@ -211,15 +197,13 @@ public class LogicalTableView extends AbstractTableView {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
 			// Store real row index
 			TableTransferHandler.iSelectedRow = iSelectedRow;
-			if (e.getButton() == MouseEvent.BUTTON3) { // right clic on a
-				// selected node set
-				// if none or 1 node is selected, a right click on another node
-				// select it
-				// if more than 1, we keep selection and display a popup for
-				// them
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				// right clic on a selected node set if none or 1 node is
+				// selected, a right click on another node
+				// select it if more than 1, we keep selection and display a
+				// popup for them
 				if (jtable.getSelectedRowCount() < 2) {
-					jtable.getSelectionModel().setSelectionInterval(
-							iSelectedRow, iSelectedRow);
+					jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
 				}
 				jmenuTrack.show(jtable, e.getX(), e.getY());
 			}
@@ -245,37 +229,28 @@ public class LogicalTableView extends AbstractTableView {
 				// computes selected tracks
 				ArrayList<File> alFilesToPlay = new ArrayList<File>(10);
 				int[] indexes = jtable.getSelectedRows();
-				ArrayList<Item> alSelectedTracks = new ArrayList<Item>(
-						indexes.length);
+				ArrayList<Item> alSelectedTracks = new ArrayList<Item>(indexes.length);
 				for (int i = 0; i < indexes.length; i++) { // each track in
 					// selection
-					Track track = (Track) model.getItemAt(jtable
-							.convertRowIndexToModel(indexes[i]));
+					Track track = (Track) model
+							.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
 					alSelectedTracks.add(track);
-					ArrayList<Track> alTracks = new ArrayList<Track>(
-							indexes.length);
+					ArrayList<Track> alTracks = new ArrayList<Track>(indexes.length);
 					if (e.getSource() == jmiTrackPlayAlbum) {
 						Album album = track.getAlbum();
-						alTracks.addAll(TrackManager.getInstance()
-								.getAssociatedTracks(album)); // add all
-						// tracks from
-						// the same
-						// album
+						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album)); 
+						// add all tracks from the same album
 					}
 					if (e.getSource() == jmiTrackPlayAuthor) {
 						Author author = track.getAuthor();
-						alTracks.addAll(TrackManager.getInstance()
-								.getAssociatedTracks(author)); // add all
-						// tracks from
-						// the same
-						// author
+						// add all tracks from the same author
+						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author)); 
 					} else {
 						alTracks.add(track);
 					}
 					Iterator it = alTracks.iterator();
-					while (it.hasNext()) { // each selected track and
-						// tracks from same album
-						// /author if required
+					while (it.hasNext()) { 
+						// each selected track and tracks from same album author if required
 						Track track2 = (Track) it.next();
 						File file = track2.getPlayeableFile(false);
 						if (file != null && !alFilesToPlay.contains(file)) {
@@ -288,42 +263,33 @@ public class LogicalTableView extends AbstractTableView {
 					return;
 				}
 				// simple play
-				if (e.getSource() == jmiTrackPlay
-						|| e.getSource() == jmiTrackPlayAlbum
+				if (e.getSource() == jmiTrackPlay || e.getSource() == jmiTrackPlayAlbum
 						|| e.getSource() == jmiTrackPlayAuthor) {
 					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alFilesToPlay),
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), false);
+							Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
+							false);
 				}
 				// push
 				else if (e.getSource() == jmiTrackPush) {
-					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alFilesToPlay),
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), true);
+					FIFO.getInstance()
+							.push(
+									Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+											true), true);
 				}
 				// shuffle play
 				else if (e.getSource() == jmiTrackPlayShuffle) {
-					Collections.shuffle(alFilesToPlay, new Random(System
-							.currentTimeMillis()));
+					Collections.shuffle(alFilesToPlay, new Random(System.currentTimeMillis()));
 					FIFO.getInstance().push(
-							Util.createStackItems(alFilesToPlay,
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), false);
+							Util.createStackItems(alFilesToPlay, ConfigurationManager
+									.getBoolean(CONF_STATE_REPEAT), true), false);
 				}
 				// repeat play
 				else if (e.getSource() == jmiTrackPlayRepeat) {
 					FIFO.getInstance().push(
-							Util
-									.createStackItems(Util
-											.applyPlayOption(alFilesToPlay),
-											true, true), false);
+							Util.createStackItems(Util.applyPlayOption(alFilesToPlay), true, true),
+							false);
 				}
 				// bookmark
 				else if (e.getSource() == jmiTrackAddFavorite) {
@@ -331,18 +297,16 @@ public class LogicalTableView extends AbstractTableView {
 				}
 				// editable state
 				else if (e.getSource() == jtbEditable) {
-					ConfigurationManager.setProperty(
-							CONF_LOGICAL_TABLE_EDITION, Boolean
-									.toString(jtbEditable.isSelected()));
+					ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION, Boolean
+							.toString(jtbEditable.isSelected()));
 					model.setEditable(jtbEditable.isSelected());
 				}
 				// properties
 				else if (e.getSource() == jmiProperties) {
-					if (jtable.getSelectedRowCount() == 1) { // mono
-						// selection
-						Track track = (Track) model
-								.getItemAt(jtable.convertRowIndexToModel(jtable
-										.getSelectedRow()));
+					if (jtable.getSelectedRowCount() == 1) { 
+						// mono selection
+						Track track = (Track) model.getItemAt(jtable.convertRowIndexToModel(jtable
+								.getSelectedRow()));
 						ArrayList<Item> alItems = new ArrayList<Item>(1);
 						alItems.add(track);
 						new PropertiesWizard(alItems);
@@ -369,8 +333,7 @@ public class LogicalTableView extends AbstractTableView {
 	 */
 	@Override
 	void initTable() {
-		boolean bEditable = ConfigurationManager
-				.getBoolean(CONF_LOGICAL_TABLE_EDITION);
+		boolean bEditable = ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
 		jtbEditable.setSelected(bEditable);
 		model.setEditable(bEditable);
 	}

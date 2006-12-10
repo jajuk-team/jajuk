@@ -142,8 +142,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 */
 	public String toString() {
 		return "Device[ID=" + sId + " Name=" + sName + " Type=" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				DeviceManager.getInstance().getDeviceType(
-						getLongValue(XML_TYPE))
+				DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE))
 				+ " URL=" + sUrl + " Mount point=" + sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
 
@@ -195,7 +194,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			try {
 				device.mount();
 			} catch (Exception e) {
-				Log.error("011", "{{" + getName() + "}}", e); // mount failed //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Log.error("011", "{{" + getName() + "}}", e); // mount failed
 				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
 				return;
 			}
@@ -228,17 +227,14 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	private void manualRefresh(boolean bAsk) {
 		int i = OPTION_REFRESH_DEEP;
 		if (bAsk) {
-			Object[] possibleValues = {
-					Messages.getString("PhysicalTreeView.60"),// fast //$NON-NLS-1$
-					// //$NON-NLS-1$
-					Messages.getString("PhysicalTreeView.61"),// deep //$NON-NLS-1$
-					// //$NON-NLS-1$
+			Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),// fast
+					Messages.getString("PhysicalTreeView.61"),// deep
 					Messages.getString("Cancel") };// cancel //$NON-NLS-1$
 			i = JOptionPane.showOptionDialog(null,
 					Messages.getString("PhysicalTreeView.59"), //$NON-NLS-1$
 					Messages.getString("Option"), //$NON-NLS-1$
-					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-					null, possibleValues, possibleValues[0]);
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, possibleValues,
+					possibleValues[0]);
 			if (i == OPTION_REFRESH_CANCEL) { // Cancel
 				return;
 			}
@@ -247,8 +243,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		cleanRemovedFiles();
 		// Actual refresh
 		refreshCommand((i == OPTION_REFRESH_DEEP), true);
-		InformationJPanel.getInstance().setMessage(sFinalMessage,
-				InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+		InformationJPanel.getInstance().setMessage(sFinalMessage, InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		// notify views to refresh
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		// cleanup logical items
@@ -274,8 +269,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 * @return true if some changes occured in device
 	 * 
 	 */
-	protected synchronized boolean refreshCommand(boolean bDeepScan,
-			boolean bManual) {
+	protected synchronized boolean refreshCommand(boolean bDeepScan, boolean bManual) {
 		try {
 			bAlreadyRefreshing = true;
 			long lTime = System.currentTimeMillis();
@@ -296,8 +290,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			 * clear the device, display a warning message
 			 */
 			File file = new File(getUrl());
-			if (file.exists()
-					&& (file.list() == null || file.list().length == 0)) {
+			if (file.exists() && (file.list() == null || file.list().length == 0)) {
 				int i = Messages
 						.getChoice(
 								Messages.getString("Confirmation_void_refresh"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -306,8 +299,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				}
 			}
 			iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
-			iNbDirsBeforeRefresh = DirectoryManager.getInstance()
-					.getElementCount();
+			iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
 			iNbNewFiles = 0;
 			iNbCorruptedFiles = 0;
 			if (bDeepScan && Log.isDebugEnabled()) {
@@ -332,8 +324,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			// files at the root of the device
 			if (!getDeviceTypeS().equals(DEVICE_TYPE_REMOTE)
 					|| !getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)) {
-				Directory d = DirectoryManager.getInstance().registerDirectory(
-						this);
+				Directory d = DirectoryManager.getInstance().registerDirectory(this);
 				dParent = d;
 				d.scan(bDeepScan);
 			}
@@ -358,15 +349,13 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 						indexTab[iDeep]++; // inc index for next time we
 						// will reach this deep
 						fCurrent = files[indexTab[iDeep]];
-						dParent = DirectoryManager.getInstance()
-								.registerDirectory(fCurrent.getName(), dParent,
-										this);
+						dParent = DirectoryManager.getInstance().registerDirectory(
+								fCurrent.getName(), dParent, this);
 						if (bManual) {
 							InformationJPanel
 									.getInstance()
 									.setMessage(
-											new StringBuffer(Messages
-													.getString("Device.21")).append(this.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(), InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+											new StringBuffer(Messages.getString("Device.21")).append(this.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(), InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						}
 						dParent.scan(bDeepScan);
 						iDeep++;
@@ -384,8 +373,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			// Display end of refresh message with stats
 			lTime = System.currentTimeMillis() - lTime;
 			StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(
-							((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")). //$NON-NLS-1$ //$NON-NLS-2$
+					append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")). //$NON-NLS-1$ //$NON-NLS-2$
 					append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iNbCorruptedFiles > 0) {
 				sbOut
@@ -423,10 +411,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			try {
 				device.mount();
 			} catch (Exception e) {
-				Log.error("011", "{{" + getName() + "}}", e); // mount failed //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				// //$NON-NLS-1$
-				// //$NON-NLS-2$
-				// //$NON-NLS-3$
+				Log.error("011", "{{" + getName() + "}}", e); // mount failed
 				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
 				return;
 			}
@@ -458,8 +443,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			iNbCreatedFilesSrc = 0;
 			iNbDeletedFiles = 0;
 			lVolume = 0;
-			boolean bidi = (getValue(XML_DEVICE_SYNCHRO_MODE)
-					.equals(DEVICE_SYNCHRO_MODE_BI));
+			boolean bidi = (getValue(XML_DEVICE_SYNCHRO_MODE).equals(DEVICE_SYNCHRO_MODE_BI));
 			// check this device is synchronized
 			String sIdSrc = (String) getValue(XML_DEVICE_SYNCHRO_SOURCE);
 			if (sIdSrc == null || sIdSrc.equals(getId())) { // cannot
@@ -478,8 +462,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			// start message
 			InformationJPanel.getInstance().setMessage(
 					new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
-							append(dSrc.getName()).append(',').append(
-									this.getName()).append("]"). //$NON-NLS-1$
+							append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$
 							toString(), InformationJPanel.INFORMATIVE);
 			// in both cases (bi or uni-directional), make an unidirectional
 			// sync from source device to this one
@@ -490,8 +473,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			lTime = System.currentTimeMillis() - lTime;
 			String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					.append(" - ").append(iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(lVolume / 1048576).append(
-							Messages.getString("Device.36")).toString(); //$NON-NLS-1$
+					append(lVolume / 1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
 			// perform a fast refresh
 			this.refreshCommand(false, true);
 			// if bidi sync, refresh the other device as well (new file can
@@ -499,15 +481,14 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			if (bidi) {
 				dSrc.refreshCommand(false, true);
 			}
-			InformationJPanel.getInstance().setMessage(sOut,
-					InformationJPanel.INFORMATIVE);
+			InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.INFORMATIVE);
 			Log.debug(sOut);
 		} catch (RuntimeException re) { // runtime error are thrown
 			throw re;
 		} catch (Exception e) { // and regular ones logged
 			Log.error(e);
-		} finally { // make sure to unlock sychronizing even if an error
-			// occured
+		} finally {
+			// make sure to unlock sychronizing even if an error occured
 			bAlreadySynchronizing = false;
 		}
 	}
@@ -522,28 +503,16 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	private int synchronizeUnidirectonal(Device dSrc, Device dest) {
 		Iterator it = null;
 		HashSet<Directory> hsSourceDirs = new HashSet<Directory>(100);
-		HashSet<String> hsDesynchroPaths = new HashSet<String>(10); // contains
-		// paths
-		// (
-		// relative
-		// to
-		// device)
-		// of
-		// desynchronized
-		// dirs
+		// contains paths ( relative to device) of desynchronized dirs
+		HashSet<String> hsDesynchroPaths = new HashSet<String>(10);
 		HashSet<Directory> hsDestDirs = new HashSet<Directory>(100);
 		int iNbCreatedFiles = 0;
 		it = DirectoryManager.getInstance().getDirectories().iterator();
 		while (it.hasNext()) {
 			Directory dir = (Directory) it.next();
 			if (dir.getDevice().equals(dSrc)) {
-				if (dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) { // don't
-					// take
-					// desynchronized
-					// dirs
-					// into
-					// account
-					// //$NON-NLS-1$
+				// don't take desynchronized dirs into account
+				if (dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) {
 					hsSourceDirs.add(dir);
 				} else {
 					hsDesynchroPaths.add(dir.getRelativePath());
@@ -554,13 +523,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		while (it.hasNext()) {
 			Directory dir = (Directory) it.next();
 			if (dir.getDevice().equals(dest)) {
-				if (dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) { // don't
-					// take
-					// desynchronized
-					// dirs
-					// into
-					// account
-					// //$NON-NLS-1$
+				if (dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) {
+					// don't take desynchronized dirs into account
 					hsDestDirs.add(dir);
 				} else {
 					hsDesynchroPaths.add(dir.getRelativePath());
@@ -570,13 +534,10 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 
 		it = hsSourceDirs.iterator();
 		Iterator it2;
+		// handle known extesions and image files
 		FileFilter filter = new JajukFileFilter(false, new FileFilter[] {
 				JajukFileFilter.KnownTypeFilter.getInstance(),
-				JajukFileFilter.ImageFilter.getInstance() }); // concidere
-		// known
-		// exte,sions
-		// and image
-		// files
+				JajukFileFilter.ImageFilter.getInstance() });
 		while (it.hasNext()) {
 			// give a chance to exit during sync
 			if (Main.isExiting()) {
@@ -593,36 +554,31 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			it2 = hsDestDirs.iterator();
 			while (it2.hasNext()) {
 				Directory dir2 = (Directory) it2.next();
-				if (dir2.getRelativePath().equals(sPath)) { // directory
-					// already
-					// exists on
-					// this device
+				if (dir2.getRelativePath().equals(sPath)) {
+					// directory already exists on this device
 					bNeedCreate = false;
 					break;
 				}
 			}
 			// create it if needed
-			File fileNewDir = new File(new StringBuffer(dest.getUrl()).append(
-					sPath).toString());
+			File fileNewDir = new File(new StringBuffer(dest.getUrl()).append(sPath).toString());
 			if (bNeedCreate) {
 				fileNewDir.mkdirs();
 			}
 			// synchronize files
-			File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(
-					sPath).toString());
+			File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(sPath).toString());
 			File[] fSrcFiles = fileSrc.listFiles(filter);
 			if (fSrcFiles != null) {
 				for (int i = 0; i < fSrcFiles.length; i++) {
 					File[] files = fileNewDir.listFiles(filter);
-					if (files == null) { // fileNewDir is not a directory
-						// or an error occured (
+					if (files == null) {
+						// fileNewDir is not a directory or an error occured (
 						// read/write right ? )
 						continue;
 					}
 					boolean bNeedCopy = true;
 					for (int j = 0; j < files.length; j++) {
-						if (fSrcFiles[i].getName().equalsIgnoreCase(
-								files[j].getName())) {
+						if (fSrcFiles[i].getName().equalsIgnoreCase(files[j].getName())) {
 							bNeedCopy = false;
 						}
 					}
@@ -631,36 +587,22 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 							Util.copyToDir(fSrcFiles[i], fileNewDir);
 							iNbCreatedFiles++;
 							lVolume += fSrcFiles[i].length();
-							InformationJPanel
-									.getInstance()
-									.setMessage(
-											new StringBuffer(Messages
-													.getString("Device.41")). //$NON-NLS-1$
-													append(dSrc.getName())
-													.append(',')
-													.append(dest.getName())
-													.append(
-															Messages
-																	.getString("Device.42")) //$NON-NLS-1$
-													.append(
-															fSrcFiles[i]
-																	.getAbsolutePath())
-													.append("]"). //$NON-NLS-1$
-													toString(),
-											InformationJPanel.INFORMATIVE);
+							InformationJPanel.getInstance().setMessage(
+									new StringBuffer(Messages.getString("Device.41")). //$NON-NLS-1$
+											append(dSrc.getName()).append(',').append(
+													dest.getName()).append(
+													Messages.getString("Device.42")) //$NON-NLS-1$
+											.append(fSrcFiles[i].getAbsolutePath()).append("]"). //$NON-NLS-1$
+											toString(), InformationJPanel.INFORMATIVE);
 						} catch (JajukException je) {
-							Messages.showErrorMessage(je.getCode(),
-									fSrcFiles[i].getAbsolutePath());
+							Messages.showErrorMessage(je.getCode(), fSrcFiles[i].getAbsolutePath());
 							Messages.showErrorMessage("027"); //$NON-NLS-1$
 							Log.error(je);
 							return iNbCreatedFiles;
 						} catch (Exception e) {
-							Messages.showErrorMessage(
-									"020", fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
+							Messages.showErrorMessage("020", fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
 							Messages.showErrorMessage("027"); //$NON-NLS-1$
-							Log
-									.error(
-											"020", "{{" + fSrcFiles[i].getAbsolutePath() + "}}", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							Log.error("020", "{{" + fSrcFiles[i].getAbsolutePath() + "}}", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							return iNbCreatedFiles;
 						}
 					}
@@ -681,8 +623,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 * @return
 	 */
 	public String getDeviceTypeS() {
-		return DeviceManager.getInstance()
-				.getDeviceType(getLongValue(XML_TYPE));
+		return DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE));
 	}
 
 	/**
@@ -716,8 +657,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		/** Reset playlist files */
 		it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
 		while (it.hasNext()) {
-			org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it
-					.next();
+			org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it.next();
 			plf.reset();
 		}
 	}
@@ -777,8 +717,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 					// means device is not mounted, try to mount it
 
 					// run the actual mount command //$NON-NLS-1$
-					Process process = Runtime.getRuntime().exec(
-							"mount " + getMountPoint()); //$NON-NLS-1$
+					Process process = Runtime.getRuntime().exec("mount " + getMountPoint()); //$NON-NLS-1$
 					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
@@ -801,8 +740,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		}
 		// notify views to refresh if needed
 		if (bUIRefresh) {
-			ObservationManager
-					.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
 		}
 	}
 
@@ -827,7 +765,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		// command cannot say that )
 		new File(getMountPoint());
 		if (!bMounted) {
-			Messages.showErrorMessage("125"); // already unmounted //$NON-NLS-1$
+			Messages.showErrorMessage("125"); // already unmounted
+			// //$NON-NLS-1$
 			// //$NON-NLS-1$
 			return;
 		}
@@ -838,25 +777,21 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		}
 		String sOS = (String) System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows") == -1 && !getMountPoint().trim().equals("")) { // not //$NON-NLS-1$ //$NON-NLS-2$
-			// a
-			// windows
-			// //$NON-NLS-1$
-			// //$NON-NLS-2$
+		if (sOS.trim().toLowerCase().lastIndexOf("windows") == -1 && !getMountPoint().trim().equals("")) { 
+			// not  a windows
 			try {
 				// we try to unmount the device if under Unix. Note that this is
 				// useless most of the time with Linux 2.6+, so it's just a try
 				// and we don't check exit code anymore
-				Process process = Runtime.getRuntime().exec(
-						"umount " + getMountPoint()); //$NON-NLS-1$
+				Process process = Runtime.getRuntime().exec("umount " + getMountPoint()); //$NON-NLS-1$
 				iExit = process.waitFor();
 				if (bEjection) { // jection if required
-					process = Runtime.getRuntime().exec(
-							"eject " + getMountPoint()); //$NON-NLS-1$
+					process = Runtime.getRuntime().exec("eject " + getMountPoint()); //$NON-NLS-1$
 					process.waitFor();
 				}
 			} catch (Exception e) {
-				Log.error("012", Integer.toString(iExit), e); // mount failed //$NON-NLS-1$
+				Log.error("012", Integer.toString(iExit), e); // mount failed
+				// //$NON-NLS-1$
 				// //$NON-NLS-1$
 				Messages.showErrorMessage("012", getName()); //$NON-NLS-1$
 				return;
@@ -864,8 +799,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		}
 		bMounted = false;
 		if (bUIRefresh) {
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_DEVICE_UNMOUNT));
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_UNMOUNT));
 		}
 	}
 
@@ -903,13 +837,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				Iterator it = FileManager.getInstance().getFiles().iterator();
 				while (it.hasNext()) {
 					org.jajuk.base.File f = (org.jajuk.base.File) it.next();
-					if (f.getDirectory().getDevice().equals(this)) { // at
-						// least
-						// one
-						// field
-						// in
-						// this
-						// device
+					if (f.getDirectory().getDevice().equals(this)) { 
+						// at least one field in this device
 						bVoid = false;
 						break;
 					}
@@ -974,8 +903,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				dirRoot = dir;
 			}
 		}
-		ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(
-				100);
+		ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
 		if (dirRoot != null) {
 			alFiles = dirRoot.getFilesRecursively();
 		}
@@ -1041,8 +969,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		// directories scleanup
 		for (Item item : dirs) {
 			Directory dir = (Directory) item;
-			if (!Main.isExiting() && dir.getDevice().equals(this)
-					&& dir.getDevice().isMounted()) {
+			if (!Main.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()) {
 				if (!dir.getFio().exists()) {
 					// note that associated files are removed too
 					DirectoryManager.getInstance().removeDirectory(dir.getId());
@@ -1054,9 +981,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		// files cleanup
 		Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
 		for (org.jajuk.base.File file : files) {
-			if (!Main.isExiting()
-					&& file.getDirectory().getDevice().equals(this)
-					&& file.isReady()) {
+			if (!Main.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
 				if (!file.getIO().exists()) {
 					FileManager.getInstance().removeFile(file);
 					Log.debug("Removed: " + file); //$NON-NLS-1$
@@ -1065,12 +990,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			}
 		}
 		// Playlist scleanup
-		Set<PlaylistFile> plfiles = PlaylistFileManager.getInstance()
-				.getPlaylistFiles();
+		Set<PlaylistFile> plfiles = PlaylistFileManager.getInstance().getPlaylistFiles();
 		for (PlaylistFile plf : plfiles) {
-			if (!Main.isExiting()
-					&& plf.getDirectory().getDevice().equals(this)
-					&& plf.isReady()) {
+			if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
 				if (!plf.getFio().exists()) {
 					PlaylistFileManager.getInstance().removePlaylistFile(plf);
 					Log.debug("Removed: " + plf); //$NON-NLS-1$
@@ -1080,10 +1002,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		}
 		// clear history to remove olf files referenced in it
 		History.getInstance().clear(
-				Integer
-						.parseInt(ConfigurationManager
-								.getProperty(CONF_HISTORY))); // delete old
-		// history items
+				Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); 
+		// delete old history items
 
 		l = System.currentTimeMillis() - l;
 		Log.debug("Old file references cleaned in: " //$NON-NLS-1$
@@ -1107,8 +1027,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				// compatibility code for <1.1 : auto-refresh is now a double,
 				// no more a boolean
 				if (meta.getName().equals(XML_DEVICE_AUTO_REFRESH)
-						&& (sValue.equalsIgnoreCase(TRUE) || sValue
-								.equalsIgnoreCase(FALSE))) {
+						&& (sValue.equalsIgnoreCase(TRUE) || sValue.equalsIgnoreCase(FALSE))) {
 					switch ((int) this.getDeviceType()) {
 					case 0: // directory
 						sValue = "0.5d"; //$NON-NLS-1$

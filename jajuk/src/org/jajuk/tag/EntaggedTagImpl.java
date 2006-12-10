@@ -80,8 +80,8 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	public String getAuthorName() throws Exception {
 		String sOut = tag.getFirstArtist();
 		if (sOut == null) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-			// string //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+			// doing that, the item wil be the default jajuk unknown  string 
 		}
 		return sOut;
 	}
@@ -94,11 +94,11 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	public String getStyleName() throws Exception {
 		String sOut = tag.getFirstGenre();
 		if (sOut == null || sOut.equals("genre")) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-			// string //$NON-NLS-1$
+			// the item wil be the default jajuk unknown string
+			return ""; //$NON-NLS-1$
 		}
 		// Sometimes, the style has this form : (nb)
-		if (sOut.matches("\\(.*\\)")) {//$NON-NLS-1$
+		if (sOut.matches("\\(.*\\).*")) {//$NON-NLS-1$
 			sOut = sOut.substring(1, sOut.indexOf(')'));
 			try {
 				sOut = Util.genres[Integer.parseInt(sOut)];
@@ -165,6 +165,14 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public long getOrder() throws Exception {
 		String sOrder = tag.getFirstTrack();
+		//no tag = 0
+		if (sOrder.equals("")){
+			return 0;
+		}
+		//Sometimes, order are given in x/y format
+		if (sOrder.matches(".*/.*")){
+			sOrder = sOrder.substring(0,sOrder.indexOf('/'));
+		}
 		return Long.parseLong(sOrder); // try to parse integer
 	}
 
