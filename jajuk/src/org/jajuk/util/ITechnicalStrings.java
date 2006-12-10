@@ -243,7 +243,7 @@ public interface ITechnicalStrings {
 
 	public static final URL ICON_LOGO_FRAME = Util
 			.getResource("org/jajuk/icons/16x16/jajuk-icon_16x16.png");
-
+	
 	public static final URL ICON_VIEW = Util
 			.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
 

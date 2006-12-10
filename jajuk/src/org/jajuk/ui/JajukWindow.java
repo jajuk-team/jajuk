@@ -96,7 +96,7 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize()
 				.getHeight());
 		setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
-		setIconImage(Util.getIcon(ICON_LOGO).getImage());
+		setIconImage(Util.getIcon(ICON_LOGO_FRAME).getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// register for given events
 		ObservationManager.register(this);

@@ -1,0 +1,10 @@
+[Desktop Entry]
+X-SuSE-translate=true
+Name=Jajuk
+Comment=Jajuk Advanced Jukebox
+Exec=jajuk
+Icon=jajuk-icon_64x64
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=AudioVideo
