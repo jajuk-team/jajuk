@@ -5,25 +5,23 @@
   <!--VARIABLES-->
   
   <!--Distribution release-->
-  <property name='version' value='1.3RC8'/>
+  <property name='version' value='1.3RC10'/>
   
   <!--Previous release used for JNLP incremental upgrade-->
-  <property name='previous_version' value='1.3RC7'/>
+  <property name='previous_version' value='1.3RC9'/>
  
  <!--Test flag: values: test or notest -->
   <property name='test' value='test'/> 	
   
   <!--Timestamp used by Web Start -->
-  <property name='jajuktimestamp' value='2006-11-30 00:00:00'/>
+  <property name='jajuktimestamp' value='2006-12-05 00:00:00'/>
 
   	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
-  <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD'/>
-  <property name='rpmbuilddir_mdk' value='${rootdir}/mdk/RPMBUILD'/>
-  <property name='rpmdistdir_suse' value='${rpmbuilddir_suse}/jajuk'/>
-  <property name='rpmdistdir_mdk' value='${rpmbuilddir_mdk}/jajuk'/>
+  <property name='rpmbuilddire' value='${rootdir}/RPMBUILD'/>
+  <property name='rpmdistdir' value='${rpmbuilddir}/jajuk'/>
   <property name='windowsdir' value='${rootdir}/windows'/>
   <property name='izpackdir' value='${rootdir}/java'/>
   <property name='sourcesdir' value='${rootdir}/src'/>
@@ -120,92 +118,50 @@
      </copy>
 	<!--RPM specific--> 
     <!-- Create structure-->
-    	<!--Suse-->
     <mkdir dir='${rootdir}'/>
-    <mkdir dir='${rpmbuilddir_suse}'/>
-    <mkdir dir='${rpmbuilddir_suse}/tmp'/>
-    <mkdir dir='${rpmbuilddir_suse}/SRMPS'/>
-    <mkdir dir='${rpmbuilddir_suse}/RPMS'/>
-    <mkdir dir='${rpmbuilddir_suse}/SPECS'/>
-    <mkdir dir='${rpmbuilddir_suse}/BUILD'/>
-    <mkdir dir='${rpmdistdir_suse}'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/bin'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/bin'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/lib'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/lib/linux'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/lib/jajuk/native'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/share/applications'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/share/doc/packages/jajuk'/>
-    <mkdir dir='${rpmdistdir_suse}/usr/share/pixmaps'/>
-    	<!--Mandrake-->
-    <mkdir dir='${rpmbuilddir_mdk}'/>
-    <mkdir dir='${rpmbuilddir_mdk}/tmp'/>
-    <mkdir dir='${rpmbuilddir_mdk}/SRMPS'/>
-    <mkdir dir='${rpmbuilddir_mdk}/RPMS'/>
-    <mkdir dir='${rpmbuilddir_mdk}/SPECS'/>
-    <mkdir dir='${rpmbuilddir_mdk}/BUILD'/>
-    <mkdir dir='${rpmdistdir_mdk}'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/bin'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/bin'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/lib'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/lib/linux'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/native'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/share/applications'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/share/doc/jajuk'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/share/icons/mini'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/share/icons/large'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/lib/menu'/>
+    <mkdir dir='${rpmbuilddir}'/>
+    <mkdir dir='${rpmbuilddir}/tmp'/>
+    <mkdir dir='${rpmbuilddir}/SRMPS'/>
+    <mkdir dir='${rpmbuilddir}/RPMS'/>
+    <mkdir dir='${rpmbuilddir}/SPECS'/>
+    <mkdir dir='${rpmbuilddir}/BUILD'/>
+    <mkdir dir='${rpmdistdir}'/>
+    <mkdir dir='${rpmdistdir}/usr/bin'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/bin'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/lib'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/lib/linux'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/native'/>
+    <mkdir dir='${rpmdistdir}/usr/share/applications'/>
+    <mkdir dir='${rpmdistdir}/usr/share/doc/packages/jajuk'/>
+    <mkdir dir='${rpmdistdir}/usr/share/pixmaps'/>
     
     <!-- Copy files -->
-    	<!--Suse-->
-    <copy todir='${rpmbuilddir_suse}/SPECS' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/jajuk-suse.spec'/>
+    	<!--RPM-->
+    <copy todir='${rpmbuilddir}/SPECS' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/jajuk.spec'/>
     </copy>
-    <copy todir='${rpmdistdir_suse}/usr/bin' >
+    <copy todir='${rpmdistdir}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib' >
+    <!--DO SOMETHING BETTER HERE -->
+    <copy todir='${rpmdistdir}/usr/lib/jajuk/lib' >
     	<fileset file="${basedir}/lib/*.jar"/>
    </copy>
-   <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib/linux' >
+   <copy todir='${rpmdistdir}/usr/lib/jajuk/lib/linux' >
     	<fileset file="${basedir}/lib/linux/*"/>
    </copy>
-    <copy todir='${rpmdistdir_suse}/usr/share/applications' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/Jajuk.desktop'/>
+   <copy todir='${rpmdistdir}/usr/lib/jajuk/lib/linux/x86' >
+    	<fileset file="${basedir}/lib/linux/x86/*"/>
+   </copy>
+   <!-- -->
+    <copy todir='${rpmdistdir}/usr/share/applications' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/Jajuk.desktop'/>
     </copy>
-    <copy todir='${rpmdistdir_suse}/usr/share/doc/packages/jajuk' >
+    <copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
     </copy>
-    <copy todir='${rpmdistdir_suse}/usr/share/pixmaps' >
+    <copy todir='${rpmdistdir}/usr/share/pixmaps' >
     	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
-    </copy>
-    	<!--Mandrake-->
-    <copy todir='${rpmbuilddir_mdk}/SPECS' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk-mdk.spec'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/bin' >
-    	<fileset file='${basedir}/scripts/jajuk'/>
-    </copy>
-      <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib' >
-    	<fileset file="${basedir}/lib/*.jar"/>
-   </copy>
-   <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib/linux' >
-    	<fileset file="${basedir}/lib/linux/*"/>
-   </copy>
-  <copy todir='${rpmdistdir_mdk}/usr/share/doc/jajuk' >
-    	<fileset file='${basedir}/dist-files/doc/README*.html'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/share/icons' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/icons/32x32/jajuk-icon_32x32.png'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/share/icons/mini' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/icons/16x16/jajuk-icon_16x16.png'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/share/icons/large' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/icons/48x48/jajuk-icon_48x48.png'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/lib/menu' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk'/>
     </copy>
   </target>
   
@@ -259,13 +215,10 @@
     	
     <delete dir='${distdir}/${classdir}'/>
   	<!-- Copy jajuk jar in the RPM distdir -->
-  	<copy todir='${rpmdistdir_suse}/usr/lib/jajuk/bin' >
+  	<copy todir='${rpmdistdir}/usr/lib/jajuk/bin' >
     	<fileset file='${distdir}/bin/${jarname}'/>
     </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/bin' >
-    	<fileset file='${distdir}/bin/${jarname}'/>
-    </copy>
-  </target>
+   </target>
 
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
  	 <!--Copy-->
@@ -299,13 +252,10 @@
     <jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
 	<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass"/>
   	<!-- Copy jajuk helpset jars in the RPM distdir -->
-  	<copy todir='${rpmdistdir_suse}/usr/lib/jajuk/bin' >
+  	<copy todir='${rpmdistdir}/usr/lib/jajuk/bin' >
 		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
     </copy>
-  	<copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/bin' >
-		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
-    </copy>
-    <!-- Copy jajuk jar in the workspace -->
+  <!-- Copy jajuk jar in the workspace -->
     <copy todir='${basedir}' >
      <fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
   	</copy>
@@ -344,14 +294,9 @@
   	<include name='jajuk.jsmooth'/>
   	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  </replace>
- <!-- Set release in Suse RPM descriptor file--> 
- <replace dir='${rpmbuilddir_suse}/SPECS' value='${version}'>
-  	<include name='jajuk-suse.spec'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in Mdk RPM descriptor file--> 
- <replace dir='${rpmbuilddir_mdk}/SPECS' value='${version}'>
-  	<include name='jajuk-mdk.spec'/>
+ <!-- Set release in RPM descriptor file--> 
+ <replace dir='${rpmbuilddir}/SPECS' value='${version}'>
+  	<include name='jajuk.spec'/>
   	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  </replace>
  <!-- Set release in user build.xml file--> 
@@ -365,11 +310,7 @@
   	<include name='jajuk.bat'/>
   	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- <replace dir='${rpmdistdir_suse}/usr/bin' value='-${test}'>
-  	<include name='jajuk'/>
-	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
- </replace>
- <replace dir='${rpmdistdir_mdk}/usr/bin' value='-${test}'>
+ <replace dir='${rpmdistdir}/usr/bin' value='-${test}'>
   	<include name='jajuk'/>
 	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
@@ -404,23 +345,17 @@
     
     <target name='rpm' depends='jar,helpsetjar'>
  	  	<!-- rights-->
-   		<chmod file='${rpmdistdir_suse}/usr/bin/jajuk' perm='ugo+rx'/>
-   		<chmod file='${rpmdistdir_suse}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
-   		<chmod file='${rpmdistdir_mdk}/usr/bin/jajuk' perm='ugo+rx'/>
- 
-    	<!--Suse-->
+   		<chmod file='${rpmdistdir}/usr/bin/jajuk' perm='ugo+rx'/>
+   		<chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
+   		
+    	<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
     	<copy todir='/home/bflorat' overwrite='yes'>
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
+    		<fileset file='${basedir}/dist-files/packaging/RPMS/.rpmmacros'/>
     	</copy>
- 		<rpm specFile='jajuk-suse.spec' topDir='${rpmbuilddir_suse}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
-    	<!--Mandrake-->
-    	<copy todir='/home/bflorat'  overwrite='yes'>
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/.rpmmacros'/>
-    	</copy>
- 		<rpm specFile='jajuk-mdk.spec' topDir='${rpmbuilddir_mdk}' cleanBuildDir='yes' removeSpec='no' command='-bb' /> 
- 		<!-- Reset .rpmmacros to suse -->
+ 		<rpm specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
+		<!-- Reset .rpmmacros -->
  		<copy todir='/home/bflorat'  overwrite='yes'>
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
+    		<fileset file='${basedir}/dist-files/packaging/RPMS/.rpmmacros'/>
     	</copy>
    </target>
       
@@ -527,8 +462,7 @@
   	 <mkdir dir='${uploaddir}'/>
       <copy todir='${uploaddir}' >
       	<fileset file='${sourcesdist}'/>
-     	<fileset file='${rpmbuilddir_suse}/RPMS/noarch/*'/>
-     	<fileset file='${rpmbuilddir_mdk}/RPMS/*'/>
+     	<fileset file='${rpmbuilddir}/RPMS/noarch/*'/>
      	 <fileset file='${windowsdir}/jajuk-${version}-win32.exe'/>
      	 <fileset file='${izpackdir}/jajuk-java-installer-${version}.jar'/>
      </copy>
