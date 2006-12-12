@@ -151,12 +151,6 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 	}
 
 	/**
-	 * Activate
-	 */
-	public void activate() {
-	}
-
-	/**
 	 * Default impl for ID
 	 */
 	public String getID() {

@@ -76,11 +76,7 @@ public interface IView extends ComponentListener, Dockable {
 	 */
 	public void refresh();
 
-	/**
-	 * Activate Calls when perspective is selected
-	 */
-	public void activate();
-
+	
 	/**
 	 * 
 	 * @return current perspective for this view
