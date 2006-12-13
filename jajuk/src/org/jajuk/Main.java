@@ -1158,14 +1158,14 @@ public class Main implements ITechnicalStrings {
 					 * only after, position can be lost this way, the window is
 					 * always at right position
 					 */
+					jw.pack();
 					jw.applyStoredSize(); // apply size and position as
 					// stored in the user properties
 					jw.setVisible(true); // show main window
 					//Wait some time and set size again to fix the half screen issue
 					Thread.sleep(500);
-					jw.applyStoredSize(); // apply size and position as
-					// stored in the user properties
-
+					jw.applyStoredSize(); 
+					// apply size and position as stored in the user properties
 					// Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)
 							&& DeviceManager.getInstance().getElementCount() == 0) {
