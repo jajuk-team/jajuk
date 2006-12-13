@@ -86,12 +86,10 @@ public class PlaylistFile extends Item implements Comparable {
 	 * @param sHashcode
 	 * @param sParentDirectory
 	 */
-	public PlaylistFile(int iType, String sId, String sName,
-			Directory dParentDirectory) {
+	public PlaylistFile(int iType, String sId, String sName, Directory dParentDirectory) {
 		super(sId, sName);
 		this.dParentDirectory = dParentDirectory;
-		setProperty(
-				XML_DIRECTORY,
+		setProperty(XML_DIRECTORY,
 				dParentDirectory == null ? "-1" : dParentDirectory.getId().intern()); //$NON-NLS-1$
 		this.iType = iType;
 	}
@@ -114,8 +112,7 @@ public class PlaylistFile extends Item implements Comparable {
 	 * @param sParentDirectory
 	 */
 	public PlaylistFile(String sId, String sName, Directory dParentDirectory) {
-		this(PlaylistFileItem.PLAYLIST_TYPE_NORMAL, sId, sName,
-				dParentDirectory);
+		this(PlaylistFileItem.PLAYLIST_TYPE_NORMAL, sId, sName, dParentDirectory);
 	}
 
 	/**
@@ -123,8 +120,7 @@ public class PlaylistFile extends Item implements Comparable {
 	 */
 	public String toString() {
 		return "Playlist file[ID=" + sId + " Name={{" + getName() + "}} Hashcode=" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				getStringValue(XML_HASHCODE)
-				+ " Dir=" + dParentDirectory.getId() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+				getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getId() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -151,9 +147,9 @@ public class PlaylistFile extends Item implements Comparable {
 			return sAbs;
 		}
 		Directory dCurrent = getDirectory();
-		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice()
-				.getUrl()).append(dCurrent.getRelativePath()).append(
-				java.io.File.separatorChar).append(this.getName());
+		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl()).append(
+				dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(
+				this.getName());
 		sAbs = sbOut.toString();
 		return sAbs;
 	}
@@ -225,8 +221,7 @@ public class PlaylistFile extends Item implements Comparable {
 	public int compareTo(Object o) {
 		PlaylistFile otherPlaylistFile = (PlaylistFile) o;
 		String sAbs = getName() + getAbsolutePath();
-		String sOtherAbs = otherPlaylistFile.getName()
-				+ otherPlaylistFile.getAbsolutePath();
+		String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
 		if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)) {
 			return sAbs.compareTo(sOtherAbs);
 		} else {
@@ -241,75 +236,50 @@ public class PlaylistFile extends Item implements Comparable {
 		// if normal playlist, propose to mount device if unmounted
 		if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && !isReady()) {
 			String sMessage = Messages.getString("Error.025") + " (" + getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			int i = Messages.getChoice(sMessage,
-					JOptionPane.INFORMATION_MESSAGE);
+			int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
 			if (i == JOptionPane.YES_OPTION) {
 				try {
 					// mount. Note that we don't refresh UI to keep
 					// selection on this playlist (otherwise the event reset
 					// selection).
 					getDirectory().getDevice().mount(
-							ConfigurationManager
-									.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+							ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 				} catch (Exception e) {
 					Log.error(e);
-					Messages.showErrorMessage(
-							"011", getDirectory().getDevice().getName()); //$NON-NLS-1$
-					throw new JajukException(
-							"141", getFio().getAbsolutePath(), null); //$NON-NLS-1$
+					Messages.showErrorMessage("011", getDirectory().getDevice().getName()); //$NON-NLS-1$
+					throw new JajukException("141", getFio().getAbsolutePath(), null); //$NON-NLS-1$
 				}
 			} else {
-				throw new JajukException(
-						"141", getFio().getAbsolutePath(), null); //$NON-NLS-1$
+				throw new JajukException("141", getFio().getAbsolutePath(), null); //$NON-NLS-1$
 			}
 		}
-		if (iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null) { // normal
-			// playlist,
-			// test
-			// if
-			// list
-			// is
-			// null
-			// for
-			// perfs
-			// (avoid
-			// reading
-			// again
-			// the
-			// m3u
-			// file)
-			if (getFio().exists() && getFio().canRead()) { // check device
-				// is mounted
+		if (iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null) {
+			// normal playlist, test if list is null for perfs(avoid reading
+			// again the m3u file)
+			if (getFio().exists() && getFio().canRead()) {
+				// check device is mounted
 				alFiles = load(); // populate playlist
 				if (containsExtFiles()) {
-					Messages
-							.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
+					Messages.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
 				}
 			} else { // error accessing playlist file
-				throw new JajukException(
-						"009", getFio().getAbsolutePath(), new Exception()); //$NON-NLS-1$
+				throw new JajukException("009", getFio().getAbsolutePath(), new Exception()); //$NON-NLS-1$
 			}
-		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) { // bestof
-			// playlist
+		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
+			// bestof playlist
 			alFiles = new ArrayList<File>(10);
+			// even unmounted files if required
 			Iterator it = FileManager.getInstance().getBestOfFiles(
-					ConfigurationManager
-							.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED))
-					.iterator(); // even unmounted files if required
+					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator();
 			while (it.hasNext()) {
 				alFiles.add((File) it.next());
 			}
-		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) { // novelties
-			// playlist
+		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) {
+			// novelties playlist
 			alFiles = new ArrayList<File>(10);
-			ArrayList alNovelties = FileManager.getInstance()
-					.getGlobalNoveltiesPlaylist(
-							ConfigurationManager
-									.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));// even
-			// unmounted
-			// files
-			// if
-			// required
+			ArrayList alNovelties = FileManager.getInstance().getGlobalNoveltiesPlaylist(
+					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+			// even unmounted files if required
 			if (alNovelties == null) {
 				return alFiles;
 			}
@@ -317,25 +287,23 @@ public class PlaylistFile extends Item implements Comparable {
 			while (it.hasNext()) {
 				alFiles.add((File) it.next());
 			}
-		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) { // bookmark
-			// playlist
+		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+			// bookmark playlist
 			alFiles = new ArrayList<File>(10);
 			Iterator it = Bookmarks.getInstance().getFiles().iterator();
 			while (it.hasNext()) {
 				alFiles.add((File) it.next());
 			}
-		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NEW) { // new
-			// playlist
+		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
+			// new playlist
 			if (alFiles == null) {
 				alFiles = new ArrayList<File>(10);
 			}
-		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) { // queue
-			// playlist
-			// clean data
+		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+			// queue playlist clean data
 			alFiles = new ArrayList<File>(10);
 			if (!FIFO.isStopped()) {
-				ArrayList alQueue = (ArrayList) FIFO.getInstance().getFIFO()
-						.clone();
+				ArrayList alQueue = (ArrayList) FIFO.getInstance().getFIFO().clone();
 				Iterator it = alQueue.iterator();
 				while (it.hasNext()) {
 					alFiles.add(((StackItem) it.next()).getFile());
@@ -364,8 +332,7 @@ public class PlaylistFile extends Item implements Comparable {
 	 * @param index
 	 * @param bf
 	 */
-	public synchronized void addFile(int index, File file)
-			throws JajukException {
+	public synchronized void addFile(int index, File file) throws JajukException {
 		if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
 			Bookmarks.getInstance().addFile(index, file);
 		}
@@ -381,9 +348,10 @@ public class PlaylistFile extends Item implements Comparable {
 				} else {
 					item.setRepeat(false);
 				}
-				FIFO.getInstance().insert(item, index); // insert this track in
-				// the fifo
-			} else { // start immediatly playing
+				// insert this track in the fifo
+				FIFO.getInstance().insert(item, index);
+			} else {
+				// start immediatly playing
 				FIFO.getInstance().push(item, false);
 			}
 		} else {
@@ -419,10 +387,7 @@ public class PlaylistFile extends Item implements Comparable {
 		} catch (Exception e) {
 			Log.error(e);
 		} finally {
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-			// playlist
-			// editor
+			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 
@@ -436,15 +401,12 @@ public class PlaylistFile extends Item implements Comparable {
 			Bookmarks.getInstance().down(index);
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
 			FIFO.getInstance().down(index);
-		} else if (alFiles != null && index < alFiles.size() - 1) { // the
-			// last
-			// track
-			// cannot
-			// go
-			// depper
+		} else if (alFiles != null && index < alFiles.size() - 1) {
+			// the last track cannot go depper
 			File file = alFiles.get(index + 1); // save n+1 file
 			alFiles.set(index + 1, alFiles.get(index));
-			alFiles.set(index, file); // n+1 file becomes nth file
+			// n+1 file becomes nth file
+			alFiles.set(index, file);
 			setModified(true);
 		}
 	}
@@ -598,15 +560,9 @@ public class PlaylistFile extends Item implements Comparable {
 						if (PlaylistManager.getInstance().getPlayList(this) != null) {
 							PlaylistManager.getInstance().refreshPlaylist(this);
 						}
-						ObservationManager.notify(new Event(
-								EventSubject.EVENT_DEVICE_REFRESH)); // refresh
-						// repository
-						// list
-						// (mandatory
-						// for
-						// logical
-						// playlist
-						// collapse/merge)
+						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+						// refresh repository list(mandatory for logical
+						// playlist collapse/merge)
 					} catch (IOException e1) {
 						throw new JajukException("028", getName(), e1); //$NON-NLS-1$
 					}
@@ -629,35 +585,34 @@ public class PlaylistFile extends Item implements Comparable {
 				if (sLine.length() == 0) { // void line
 					continue;
 				}
-				sLine = sLine.replace('\\', '/'); // replace '\' by '/'
-				if (sLine.charAt(0) == '.') { // deal with url begining by
-					// "./something"
+				// replace '\' by '/'
+				sLine = sLine.replace('\\', '/');
+				// deal with url begining by "./something"
+				if (sLine.charAt(0) == '.') {
 					sLine = sLine.substring(1, sLine.length());
 				}
 				StringBuffer sb = new StringBuffer(sLine);
-				if (sb.charAt(0) == '#') { // comment
+				// comment
+				if (sb.charAt(0) == '#') {
 					continue;
 				} else {
 					java.io.File fileTrack = null;
-					StringBuffer sbFileDir = new StringBuffer(getDirectory()
-							.getDevice().getUrl()).append(getDirectory()
-							.getRelativePath());
+					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl())
+							.append(getDirectory().getRelativePath());
 					if (sLine.charAt(0) != '/') {
 						sb.insert(0, '/');
 					}
 					// take a look relatively to playlist directory to check
 					// files exists
-					fileTrack = new java.io.File(sbFileDir.append(sb)
-							.toString());
-					File file = FileManager.getInstance().getFileByPath(
-							fileTrack.getAbsolutePath());
+					fileTrack = new java.io.File(sbFileDir.append(sb).toString());
+					File file = FileManager.getInstance()
+							.getFileByPath(fileTrack.getAbsolutePath());
 					if (file == null) { // check if this file is known in
 						// collection
 						fileTrack = new java.io.File(sLine); // check if
 						// given url is
 						// not absolute
-						file = FileManager.getInstance().getFileByPath(
-								fileTrack.getAbsolutePath());
+						file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
 						if (file == null) { // no more ? leave
 							bUnknownDevicesMessage = true;
 							continue;
@@ -680,8 +635,7 @@ public class PlaylistFile extends Item implements Comparable {
 					br.close();
 				} catch (IOException e1) {
 					Log.error(e1);
-					throw new JajukException(
-							"017", getFio().getAbsolutePath(), e1); //$NON-NLS-1$
+					throw new JajukException("017", getFio().getAbsolutePath(), e1); //$NON-NLS-1$
 				}
 			}
 		}
@@ -707,12 +661,8 @@ public class PlaylistFile extends Item implements Comparable {
 	 */
 	public boolean shouldBeHidden() {
 		if (getDirectory().getDevice().isMounted()
-				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { // option
-			// "only
-			// display
-			// mounted
-			// devices
-			// "
+				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) {
+			// option "only display mounted devices"
 			return false;
 		}
 		return true;
@@ -763,9 +713,8 @@ public class PlaylistFile extends Item implements Comparable {
 			Messages.showErrorMessage("018"); //$NON-NLS-1$
 		} else {
 			FIFO.getInstance().push(
-					Util.createStackItems(Util.applyPlayOption(alFiles),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-							true), false);
+					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
+							.getBoolean(CONF_STATE_REPEAT), true), false);
 		}
 	}
 
@@ -804,31 +753,25 @@ public class PlaylistFile extends Item implements Comparable {
 		if (alFiles.size() > 0) {
 			File file = alFiles.get(0);
 			if (getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
-				sPlaylist = file.getDevice().getUrl()
-						+ java.io.File.separatorChar
+				sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
 						+ FILE_DEFAULT_BESTOF_PLAYLIST;
 			} else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
-				sPlaylist = file.getDevice().getUrl()
-						+ java.io.File.separatorChar
+				sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
 						+ FILE_DEFAULT_BOOKMARKS_PLAYLIST;
 			} else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) {
-				sPlaylist = file.getDevice().getUrl()
-						+ java.io.File.separatorChar
+				sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
 						+ FILE_DEFAULT_BOOKMARKS_PLAYLIST;
 			} else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-				sPlaylist = file.getDevice().getUrl()
-						+ java.io.File.separatorChar
+				sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
 						+ FILE_DEFAULT_QUEUE_PLAYLIST;
 			} else {
-				sPlaylist = file.getDirectory().getAbsolutePath()
-						+ java.io.File.separatorChar
+				sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
 						+ file.getTrack().getHumanValue(XML_ALBUM);
 			}
 		} else {
 			return;
 		}
-		jfchooser.setSelectedFile(new java.io.File(sPlaylist
-				+ "." + EXT_PLAYLIST));//$NON-NLS-1$
+		jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + EXT_PLAYLIST));//$NON-NLS-1$
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			java.io.File file = jfchooser.getSelectedFile();
@@ -836,19 +779,18 @@ public class PlaylistFile extends Item implements Comparable {
 			if (file.getAbsolutePath().endsWith(EXT_PLAYLIST)) {
 				file = new java.io.File(file.getAbsolutePath());
 			} else {
-				file = new java.io.File(file.getAbsolutePath()
-						+ "." + EXT_PLAYLIST);//$NON-NLS-1$
+				file = new java.io.File(file.getAbsolutePath() + "." + EXT_PLAYLIST);//$NON-NLS-1$
 			}
 
-			this.setFio(file); // set new file path ( this playlist is a
-			// special playlist, just in memory )
+			// set new file path ( this playlist is a special playlist, just in
+			// memory )
+			this.setFio(file);
 			this.commit(); // write it on the disk
 			java.io.File fDir = file.getParentFile();
-			Directory dir = DirectoryManager.getInstance().getDirectoryForIO(
-					fDir);
+			Directory dir = DirectoryManager.getInstance().getDirectoryForIO(fDir);
 			if (dir != null) { // the new playlist file in inside collection
-				PlaylistFile plFile = PlaylistFileManager.getInstance()
-						.registerPlaylistFile(file, dir);
+				PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(file,
+						dir);
 				PlaylistManager.getInstance().registerPlaylist(plFile);
 				dir.addPlaylistFile(plFile);
 			}
@@ -861,8 +803,7 @@ public class PlaylistFile extends Item implements Comparable {
 	 */
 	protected void setParentDirectory(Directory parentDirectory) {
 		this.dParentDirectory = parentDirectory;
-		setProperty(XML_DIRECTORY,
-				parentDirectory == null ? "-1" : parentDirectory.getId()); //$NON-NLS-1$
+		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getId()); //$NON-NLS-1$
 	}
 
 	/**
@@ -887,8 +828,8 @@ public class PlaylistFile extends Item implements Comparable {
 	 */
 	public String getHumanValue(String sKey) {
 		if (XML_DIRECTORY.equals(sKey)) {
-			Directory dParent = DirectoryManager.getInstance()
-					.getDirectoryByID(getStringValue(sKey));
+			Directory dParent = DirectoryManager.getInstance().getDirectoryByID(
+					getStringValue(sKey));
 			return dParent.getFio().getAbsolutePath();
 		} else {// default
 			return super.getHumanValue(sKey);
