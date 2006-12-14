@@ -909,8 +909,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 				}
 			}
 			if (bShuffle) {
-				Collections.shuffle(alFilesToPlay, new Random(System
-						.currentTimeMillis()));
+				Collections.shuffle(alFilesToPlay, new Random());
 			}
 			FIFO.getInstance().push(
 					Util.createStackItems(alFilesToPlay, bRepeat, true), bPush);

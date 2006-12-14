@@ -124,7 +124,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
 			}
 		}
 		// shuffle selection
-		Collections.shuffle(out, new Random(System.currentTimeMillis()));
+		Collections.shuffle(out, new Random());
 		return out;
 	}
 

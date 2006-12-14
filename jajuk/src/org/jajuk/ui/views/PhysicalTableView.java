@@ -271,8 +271,7 @@ public class PhysicalTableView extends AbstractTableView implements
 				}
 				// shuffle play
 				else if (e.getSource() == jmiFilePlayShuffle) {
-					Collections.shuffle(alFilesToPlay, new Random(System
-							.currentTimeMillis()));
+					Collections.shuffle(alFilesToPlay, new Random());
 					FIFO.getInstance().push(
 							Util.createStackItems(alFilesToPlay,
 									ConfigurationManager

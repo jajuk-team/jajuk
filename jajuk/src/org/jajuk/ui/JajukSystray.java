@@ -324,7 +324,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 							sOut = getBasicFormatText(file);
 						}
 						trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
-								TrayIcon.INFO_MESSAGE_TYPE); //$NON-NLS-1$
+								TrayIcon.INFO_MESSAGE_TYPE); //$NON-NLS-1$		
 					}
 					String sOut = null;
 					// check if a file is currently playing

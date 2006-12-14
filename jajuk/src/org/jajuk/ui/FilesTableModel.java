@@ -133,7 +133,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			vColNames.add(meta.getName());
 			vId.add(meta.getName());
 		}
-		
+
 	}
 
 	/**
@@ -143,18 +143,19 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		// Filter mounted files if needed and apply sync table with tree option
 		// if needed
 		boolean bShowWithTree = true;
-		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(EventSubject.EVENT_SYNC_TREE_TABLE,
-				DETAIL_SELECTION);
+		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(
+				EventSubject.EVENT_SYNC_TREE_TABLE, DETAIL_SELECTION);
 		// look at selection
 		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		Set<File> files = FileManager.getInstance().getFiles();
-		ArrayList<File> alToShow = new ArrayList<File>(files.size());
+		ArrayList<File> alToShow = new ArrayList<File>(files.size() / 2);
 		oItems = new Item[iRowNum];
 		Iterator it = files.iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
 			// show it if no sync option or if item is in the selection
-			bShowWithTree = !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(file)));
+			bShowWithTree = !bSyncWithTreeOption || hs == null
+					|| (hs.size() > 0 && hs.contains(file));
 			if (!file.shouldBeHidden() && bShowWithTree) {
 				alToShow.add(file);
 			}
@@ -217,7 +218,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			// Play
 			IconLabel il = null;
 			if (file.isReady()) {
-				il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+				il = new IconLabel(PLAY_ICON,
+						"", null, null, null, Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				il = new IconLabel(
 						UNMOUNT_PLAY_ICON,

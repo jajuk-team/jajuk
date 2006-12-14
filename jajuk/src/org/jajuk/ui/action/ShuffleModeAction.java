@@ -22,8 +22,8 @@ public class ShuffleModeAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	ShuffleModeAction() {
-		super(Messages.getString("JajukJMenuBar.11"), Util
-				.getIcon(ICON_SHUFFLE), "ctrl H", true, false); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Messages.getString("JajukJMenuBar.11"), Util.getIcon(ICON_SHUFFLE),
+				"ctrl H", true, false); //$NON-NLS-1$ //$NON-NLS-2$
 		setShortDescription(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
 	}
 
@@ -34,8 +34,7 @@ public class ShuffleModeAction extends ActionBase {
 	 */
 	public void perform(ActionEvent evt) {
 		boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
-		ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean
-				.toString(!b));
+		ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 
 		JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 		CommandJPanel.getInstance().jbRandom.setSelected(!b);
@@ -43,13 +42,13 @@ public class ShuffleModeAction extends ActionBase {
 			FIFO.getInstance().shuffle(); // shuffle current selection
 			// now make sure we can't have a single repeated file after a
 			// non-repeated file (by design)
-			if (FIFO.getInstance().containsRepeat()
-					&& !FIFO.getInstance().containsOnlyRepeat()) {
+			if (FIFO.getInstance().containsRepeat() && !FIFO.getInstance().containsOnlyRepeat()) {
 				FIFO.getInstance().setRepeatModeToAll(false); // yes?
 				// un-repeat all
 			}
+			// computes planned tracks
+			FIFO.getInstance().computesPlanned(true);
 		}
-		// computes planned tracks
-		FIFO.getInstance().computesPlanned(true);
+
 	}
 }

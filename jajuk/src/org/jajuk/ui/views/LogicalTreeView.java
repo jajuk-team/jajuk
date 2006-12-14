@@ -1268,8 +1268,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 					} else if ((e.getSource() == jmiAlbumPlayShuffle
 							|| e.getSource() == jmiAuthorPlayShuffle || e
 							.getSource() == jmiStylePlayShuffle)) {
-						Collections.shuffle(alFilesToPlay, new Random(System
-								.currentTimeMillis()));
+						Collections.shuffle(alFilesToPlay, new Random());
 						FIFO.getInstance().push(
 								Util.createStackItems(alFilesToPlay,
 										ConfigurationManager

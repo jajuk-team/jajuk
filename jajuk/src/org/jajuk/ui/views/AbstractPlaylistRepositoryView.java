@@ -66,8 +66,8 @@ import ext.SwingWorker;
  * @author Bertrand Florat
  * @created 29 dec. 2003
  */
-abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
-		implements Observer, ActionListener {
+abstract public class AbstractPlaylistRepositoryView extends ViewAdapter implements Observer,
+		ActionListener {
 
 	/** Selected playlist file item */
 	PlaylistFileItem plfiSelected;
@@ -88,8 +88,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 	PlaylistFileItem plfiNovelties;
 
 	/** List of playlistfile item */
-	ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList<PlaylistFileItem>(
-			10);
+	ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList<PlaylistFileItem>(10);
 
 	/** Concorency flag */
 	boolean bReleased = true;
@@ -119,28 +118,25 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 
 		// root pane
 		jpRoot = new JPanel();
+		jpRoot.setOpaque(false);
 		jpRoot.setLayout(new BoxLayout(jpRoot, BoxLayout.Y_AXIS));
 
 		// Popup menus
 		jpmenu = new JPopupMenu();
 
-		jmiPlay = new JMenuItem(Messages
-				.getString("PhysicalPlaylistRepositoryView.0")); //$NON-NLS-1$
+		jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0")); //$NON-NLS-1$
 		jmiPlay.addActionListener(this);
 		jpmenu.add(jmiPlay);
 
-		jmiDelete = new JMenuItem(Messages
-				.getString("PhysicalPlaylistRepositoryView.3")); //$NON-NLS-1$
+		jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3")); //$NON-NLS-1$
 		jmiDelete.addActionListener(this);
 		jpmenu.add(jmiDelete);
 
-		jmiSaveAs = new JMenuItem(Messages
-				.getString("PhysicalPlaylistRepositoryView.2")); //$NON-NLS-1$
+		jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2")); //$NON-NLS-1$
 		jmiSaveAs.addActionListener(this);
 		jpmenu.add(jmiSaveAs);
 
-		jmiProperties = new JMenuItem(Messages
-				.getString("PhysicalPlaylistRepositoryView.4")); //$NON-NLS-1$
+		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4")); //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
 		jpmenu.add(jmiProperties);
 
@@ -156,10 +152,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 						try {
 							play(plfi);
 						} catch (JajukException je) {
-							Log.error(je.getCode(), plfiSelected.getName(),
-									null); //$NON-NLS-1$
-							Messages.showErrorMessage(je.getCode(),
-									plfiSelected.getName()); //$NON-NLS-1$
+							Log.error(je.getCode(), plfiSelected.getName(), null); //$NON-NLS-1$
+							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
 							selectQueue();
 							return;
 						}
@@ -183,12 +177,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 		};
 		// refresh
 		populatePlaylists();
-		jpRoot.add(Box.createVerticalStrut(500)); // make sure playlists
-		// items are packed to
-		// the top
-		// no ugly horizontal scrolling
-		JScrollPane jsp = new JScrollPane(jpRoot,
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		// make sure playlists items are packed to the top no ugly horizontal
+		// scrolling
+		jpRoot.add(Box.createVerticalStrut(500));
+		JScrollPane jsp = new JScrollPane(jpRoot, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jsp.getVerticalScrollBar().setUnitIncrement(60);
 		add(jsp);
@@ -246,19 +238,17 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 	synchronized void selectPlaylistFileItem(PlaylistFileItem plfi) {
 		// remove item border
 		if (plfiSelected != null) {
-			plfiSelected.getIcon().setBorder(
-					BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			plfiSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		}
-		plfi.getIcon()
-				.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+		plfi.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		// set new item
 		this.plfiSelected = plfi;
 		FIFO.getInstance().setPlaylist(plfi.getPlaylistFile());
 		Properties properties = new Properties();
 		properties.put(DETAIL_ORIGIN, AbstractPlaylistRepositoryView.this);
 		properties.put(DETAIL_SELECTION, plfi);
-		ObservationManager.notify(new Event(
-				EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED, properties));
+		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED,
+				properties));
 	}
 
 	/*
@@ -299,24 +289,18 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 					populatePlaylists();
 					// try to keep back previous selected playlist if it
 					// exists
-					if (plfiSelected == null
-							|| !alPlaylistFileItems.contains(plfiSelected)) {
+					if (plfiSelected == null || !alPlaylistFileItems.contains(plfiSelected)) {
 						plfiSelected = plfiQueue;
 					}
 					return null;
 				}
 
 				public void finished() {
-					jpRoot.add(Box.createVerticalStrut(500)); // make sure
-					// specials
-					// playlists are
-					// packed to the
-					// top
+					// make sure specials playlists are packed to the top
+					jpRoot.add(Box.createVerticalStrut(500)); 
 					if (plfiSelected.getPlaylistFile().getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL
-							|| PlaylistFileManager.getInstance()
-									.getPlaylistFileByID(
-											plfiSelected.getPlaylistFile()
-													.getId()) != null) {
+							|| PlaylistFileManager.getInstance().getPlaylistFileByID(
+									plfiSelected.getPlaylistFile().getId()) != null) {
 						selectPlaylistFileItem(plfiSelected);
 					} else { // means previously selected playlist has
 						// changed, select queue
@@ -328,8 +312,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 				}
 			};
 			int i = 0;
-			while (!bReleased && i < 100) { // wait until ressource is
-				// released
+			while (!bReleased && i < 100) { 
+				// wait until ressource is released
 				// we can't just synchronize because action is done in 2 methods
 				// of swing worker
 				try {
@@ -351,6 +335,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 		alPlaylistFileItems.clear();
 		// special playlists
 		JPanel jpSpecials = new JPanel();
+		jpSpecials.setOpaque(false);
 		jpSpecials.setBorder(BorderFactory.createTitledBorder(Messages
 				.getString("PhysicalPlaylistRepositoryView.8"))); //$NON-NLS-1$
 		jpSpecials.setLayout(new BoxLayout(jpSpecials, BoxLayout.Y_AXIS));
@@ -360,14 +345,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 			plfiQueue = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
 					ICON_PLAYLIST_QUEUE,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
-							"1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiQueue.setToolTipText(Messages
-					.getString("PhysicalPlaylistRepositoryView.10")); //$NON-NLS-1$
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE, "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
+			plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10")); //$NON-NLS-1$
 			plfiQueue.addMouseListener(ma);
 		} else if (plfiSelected != null
-				&& plfiQueue.getPlaylistFile().equals(
-						plfiSelected.getPlaylistFile())) {
+				&& plfiQueue.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
 			plfiSelected = plfiQueue;
 		}
 		jpSpecials.add(plfiQueue);
@@ -378,14 +360,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 			plfiNew = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_NEW,
 					ICON_PLAYLIST_NEW,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW,
-							"2", null, null), Messages.getString("PhysicalPlaylistRepositoryView.11")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiNew.setToolTipText(Messages
-					.getString("PhysicalPlaylistRepositoryView.12")); //$NON-NLS-1$
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW, "2", null, null), Messages.getString("PhysicalPlaylistRepositoryView.11")); //$NON-NLS-1$ //$NON-NLS-2$
+			plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12")); //$NON-NLS-1$
 			plfiNew.addMouseListener(ma);
 		} else if (plfiSelected != null
-				&& plfiNew.getPlaylistFile().equals(
-						plfiSelected.getPlaylistFile())) {
+				&& plfiNew.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
 			plfiSelected = plfiNew;
 		}
 		jpSpecials.add(plfiNew);
@@ -395,14 +374,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 			plfiBookmarks = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,
 					ICON_PLAYLIST_BOOKMARK,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,
-							"3", null, null), Messages.getString("PhysicalPlaylistRepositoryView.13")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiBookmarks.setToolTipText(Messages
-					.getString("PhysicalPlaylistRepositoryView.14")); //$NON-NLS-1$
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK, "3", null, null), Messages.getString("PhysicalPlaylistRepositoryView.13")); //$NON-NLS-1$ //$NON-NLS-2$
+			plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14")); //$NON-NLS-1$
 			plfiBookmarks.addMouseListener(ma);
 		} else if (plfiSelected != null
-				&& plfiBookmarks.getPlaylistFile().equals(
-						plfiSelected.getPlaylistFile())) {
+				&& plfiBookmarks.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
 			plfiSelected = plfiBookmarks;
 		}
 		jpSpecials.add(plfiBookmarks);
@@ -412,21 +388,17 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 			plfiBestof = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_BESTOF,
 					ICON_PLAYLIST_BESTOF,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,
-							"4", null, null), Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiBestof.setToolTipText(Messages
-					.getString("PhysicalPlaylistRepositoryView.16")); //$NON-NLS-1$
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF, "4", null, null), Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$ //$NON-NLS-2$
+			plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16")); //$NON-NLS-1$
 			plfiBestof.addMouseListener(ma);
 		} else if (plfiSelected != null
-				&& plfiBestof.getPlaylistFile().equals(
-						plfiSelected.getPlaylistFile())) {
+				&& plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
 			plfiSelected = plfiBestof;
 		}
 		jpSpecials.add(plfiBestof);
 		alPlaylistFileItems.add(plfiBestof);
 		if (plfiSelected != null
-				&& plfiBestof.getPlaylistFile().equals(
-						plfiSelected.getPlaylistFile())) {
+				&& plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
 			plfiSelected = plfiBestof;
 		}
 		// Novelties
@@ -434,14 +406,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 			plfiNovelties = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,
 					ICON_PLAYLIST_NOVELTIES,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,
-							"1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.17")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiNovelties.setToolTipText(Messages
-					.getString("PhysicalPlaylistRepositoryView.18")); //$NON-NLS-1$
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES, "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.17")); //$NON-NLS-1$ //$NON-NLS-2$
+			plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18")); //$NON-NLS-1$
 			plfiNovelties.addMouseListener(ma);
 		} else if (plfiSelected != null
-				&& plfiNovelties.getPlaylistFile().equals(
-						plfiSelected.getPlaylistFile())) {
+				&& plfiNovelties.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
 			plfiSelected = plfiNovelties;
 		}
 		jpSpecials.add(plfiNovelties);
@@ -477,16 +446,13 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 				else {
 					if (ae.getSource() == jmiDelete) {
 						removeItem(plfiSelected);
-						ObservationManager.notify(new Event(
-								EventSubject.EVENT_DEVICE_REFRESH));
+						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 					} else if (ae.getSource() == jmiPlay) {
 						try {
 							play(plfiSelected);
 						} catch (JajukException je) {
-							Log.error(je.getCode(),
-									"{{" + plfiSelected.getName() + "}}", null); //$NON-NLS-1$ //$NON-NLS-2$
-							Messages.showErrorMessage(je.getCode(),
-									plfiSelected.getName()); //$NON-NLS-1$
+							Log.error(je.getCode(), "{{" + plfiSelected.getName() + "}}", null); //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
 							selectQueue();
 							return;
 						}
@@ -495,32 +461,22 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter
 						if (AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView) {
 							alItems.add(plfiSelected.getPlaylistFile());
 						} else {
-							alItems
-									.add(PlaylistManager.getInstance()
-											.getPlayList(
-													plfiSelected
-															.getPlaylistFile()));
+							alItems.add(PlaylistManager.getInstance().getPlayList(
+									plfiSelected.getPlaylistFile()));
 						}
 						new PropertiesWizard(alItems);
 					} else if (ae.getSource() == jmiSaveAs) { // save as
 						try {
 							plfiSelected.getPlaylistFile().saveAs();
-							ObservationManager.notify(new Event(
-									EventSubject.EVENT_DEVICE_REFRESH)); // notify
-							// playlist
-							// repository
-							// to
-							// refresh
+							ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); 
 						}
-
 						catch (JajukException je) {
 							Log.error(je);
 							Messages.showErrorMessage(je.getCode());
 						} catch (Exception e) {
 							Log.error(e);
 						}
-						ObservationManager.notify(new Event(
-								EventSubject.EVENT_PLAYLIST_REFRESH));
+						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 					}
 				}
 			}

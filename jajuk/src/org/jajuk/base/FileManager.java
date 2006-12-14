@@ -353,7 +353,7 @@ public class FileManager extends ItemManager implements Observer {
 	 * @return
 	 */
 	public File getShuffleFile() {
-		int index = (int) (new Random(System.currentTimeMillis()).nextFloat() * hmItems
+		int index = (int) (new Random().nextFloat() * hmItems
 				.size());
 		ArrayList<File> files = new ArrayList<File>(FileManager.getInstance()
 				.getFiles());
@@ -371,8 +371,7 @@ public class FileManager extends ItemManager implements Observer {
 	 */
 	public List<File> getGlobalShufflePlaylist() {
 		List<File> alEligibleFiles = getReadyFiles();
-		Collections.shuffle(alEligibleFiles, new Random(System
-				.currentTimeMillis()));
+		Collections.shuffle(alEligibleFiles, new Random());
 		// song level, just shuffle full collection
 		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(
 				MODE_TRACK)) {
@@ -494,10 +493,10 @@ public class FileManager extends ItemManager implements Observer {
 		List<File> out = new ArrayList<File>(alEligibleFiles.size());
 		ArrayList<Album> albums = new ArrayList<Album>(albumsFiles.keySet());
 		// we need to force a new shuffle as internal hashmap arrange items
-		Collections.shuffle(albums, new Random(System.currentTimeMillis()));
+		Collections.shuffle(albums, new Random());
 		for (Album album : albums) {
 			ArrayList<File> files = albumsFiles.get(album);
-			Collections.shuffle(files, new Random(System.currentTimeMillis()));
+			Collections.shuffle(files, new Random());
 			out.addAll(files);
 		}
 		return out;
@@ -531,7 +530,7 @@ public class FileManager extends ItemManager implements Observer {
 				sup = al.size();
 			}
 			alBest = new ArrayList<File>(al.subList(0, sup - 1));
-			Collections.shuffle(alBest, new Random(System.currentTimeMillis())); // shufflelize
+			Collections.shuffle(alBest, new Random()); // shufflelize
 		}
 		return alBest;
 	}

@@ -72,8 +72,7 @@ public class Directory extends Item implements Comparable {
 	public Directory(String sId, String sName, Directory dParent, Device device) {
 		super(sId, sName);
 		this.dParent = dParent;
-		setProperty(XML_DIRECTORY_PARENT,
-				(dParent == null ? "-1" : dParent.getId())); //$NON-NLS-1$
+		setProperty(XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getId())); //$NON-NLS-1$
 		this.device = device;
 		setProperty(XML_DEVICE, device.getId());
 		this.fio = new File(device.getUrl() + getRelativePath());
@@ -214,11 +213,9 @@ public class Directory extends Item implements Comparable {
 	 * 
 	 * @return child files
 	 */
-	public ArrayList<org.jajuk.base.File> getFilesFromFile(
-			org.jajuk.base.File fileStart) {
+	public ArrayList<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
 		Iterator it = files.iterator();
-		ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(
-				files.size());
+		ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
 		boolean bOK = false;
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
@@ -236,8 +233,7 @@ public class Directory extends Item implements Comparable {
 	 * @return child files recursively
 	 */
 	public ArrayList<org.jajuk.base.File> getFilesRecursively() {
-		ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(
-				100);
+		ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
 		for (Item item : FileManager.getInstance().getFiles()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) item;
 			if (file.hasAncestor(this)) {
@@ -265,8 +261,7 @@ public class Directory extends Item implements Comparable {
 	/**
 	 * @param directory
 	 */
-	public void changeFile(org.jajuk.base.File fileOld,
-			org.jajuk.base.File fileNew) {
+	public void changeFile(org.jajuk.base.File fileOld, org.jajuk.base.File fileNew) {
 		files.remove(fileOld);
 		files.add(fileNew);
 	}
@@ -287,8 +282,9 @@ public class Directory extends Item implements Comparable {
 			try { // check errors for each file
 				// check date, file modified before
 				long lastModified = files[i].lastModified();
-				if (lastModified > DeviceManager.getInstance()
-						.getDateLastGlobalRefresh()
+				// Look at the file in all cases (deep or not) if it is newer
+				// than last deep refresh
+				if (lastModified < DeviceManager.getInstance().getDateLastGlobalRefresh()
 						&& !bDeepScan) {
 					continue;
 				}
@@ -299,15 +295,12 @@ public class Directory extends Item implements Comparable {
 							+ files[i].getAbsolutePath() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
-				boolean bIsMusic = (Boolean) TypeManager.getInstance()
-						.getTypeByExtension(Util.getExtension(files[i]))
-						.getValue(XML_TYPE_IS_MUSIC);
+				boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
+						Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
 				if (bIsMusic) {
-					String sId = FileManager.getID(files[i].getName(), this)
-							.intern();
+					String sId = FileManager.getID(files[i].getName(), this).intern();
 					// check the file is not already known in database
-					org.jajuk.base.File fileRef = FileManager.getInstance()
-							.getFileByID(sId);
+					org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
 					// if known file and no deep scan, just leave
 					if (fileRef != null && !bDeepScan) {
 						continue;
@@ -316,7 +309,7 @@ public class Directory extends Item implements Comparable {
 					Tag tag = null;
 					// ignore tag error to make sure to get a
 					// tag object in all cases
-					tag = new Tag(files[i], true); 
+					tag = new Tag(files[i], true);
 					if (tag.isCorrupted()) {
 						device.iNbCorruptedFiles++; // stats
 						Log.error("103", "{{" + files[i].getAbsolutePath() //$NON-NLS-1$ //$NON-NLS-2$
@@ -333,26 +326,21 @@ public class Directory extends Item implements Comparable {
 					String sComment = tag.getComment();
 					long lOrder = tag.getOrder();
 					if (fileRef == null) {
-						device.iNbNewFiles++; 
+						device.iNbNewFiles++;
 						// stats, do it here and not
 						// before because we ignore the
 						// file if we cannot read it
 					}
-					Album album = AlbumManager.getInstance().registerAlbum(
-							sAlbumName);
-					Style style = StyleManager.getInstance().registerStyle(
-							sStyle);
-					Author author = AuthorManager.getInstance().registerAuthor(
-							sAuthorName);
+					Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
+					Style style = StyleManager.getInstance().registerStyle(sStyle);
+					Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
 					Type type = TypeManager.getInstance().getTypeByExtension(
 							Util.getExtension(files[i]));
-					Track track = TrackManager.getInstance().registerTrack(
-							sTrackName, album, style, author, length, lYear,
-							lOrder, type);
+					Track track = TrackManager.getInstance().registerTrack(sTrackName, album,
+							style, author, length, lYear, lOrder, type);
 					track.setAdditionDate(new Date());
-					org.jajuk.base.File file = FileManager.getInstance()
-							.registerFile(sId, files[i].getName(), this, track,
-									files[i].length(), lQuality);
+					org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
+							files[i].getName(), this, track, files[i].length(), lQuality);
 					// Set file date
 					file.setProperty(XML_FILE_DATE, new Date(lastModified));
 					/*
@@ -362,16 +350,15 @@ public class Directory extends Item implements Comparable {
 					 */
 					track.setComment(sComment);
 				} else { // playlist file
-					String sId = PlaylistFileManager.getID(files[i].getName(),
-							this);
+					String sId = PlaylistFileManager.getID(files[i].getName(), this);
 					PlaylistFile plfRef = PlaylistFileManager.getInstance()
 							.getPlaylistFileByID(sId);
 					// if known playlist file and no deep scan, just leave
 					if (plfRef != null && !bDeepScan) {
 						continue;
 					}
-					PlaylistFile plFile = PlaylistFileManager.getInstance()
-							.registerPlaylistFile(files[i], this);
+					PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(
+							files[i], this);
 					// set hashcode to this playlist file
 					String sHashcode = plFile.computesHashcode();
 					plFile.forceRefresh(); // force refresh
@@ -400,20 +387,20 @@ public class Directory extends Item implements Comparable {
 	 * @return String
 	 */
 	public String getRelativePath() {
-		if (getName().equals("")) { // if this directory is a root device //$NON-NLS-1$
+		if (getName().equals("")) { // if this directory is a root device
+									// //$NON-NLS-1$
 			// directory //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
-		StringBuffer sbOut = new StringBuffer().append(
-				java.io.File.separatorChar).append(getName());
+		StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar)
+				.append(getName());
 		boolean bTop = false;
 		Directory dCurrent = this;
 		while (!bTop && dCurrent != null) {
 			dCurrent = dCurrent.getParentDirectory();
 			if (dCurrent != null && !dCurrent.getName().equals("")) { //$NON-NLS-1$ 
 				// if it is the root directory, no parent
-				sbOut.insert(0, java.io.File.separatorChar).insert(1,
-						dCurrent.getName());
+				sbOut.insert(0, java.io.File.separatorChar).insert(1, dCurrent.getName());
 			} else {
 				bTop = true;
 			}
@@ -442,10 +429,8 @@ public class Directory extends Item implements Comparable {
 	public int compareTo(Object o) {
 		Directory otherDirectory = (Directory) o;
 		int comp = 0;
-		if (getParentDirectory() != null
-				&& otherDirectory.getParentDirectory() != null) {
-			comp = this.getParentDirectory().compareTo(
-					otherDirectory.getParentDirectory());
+		if (getParentDirectory() != null && otherDirectory.getParentDirectory() != null) {
+			comp = this.getParentDirectory().compareTo(otherDirectory.getParentDirectory());
 			if (comp != 0) {
 				return comp;
 			}
@@ -499,16 +484,15 @@ public class Directory extends Item implements Comparable {
 	 */
 	public String getHumanValue(String sKey) {
 		if (XML_DIRECTORY_PARENT.equals(sKey)) {
-			Directory dParent = DirectoryManager.getInstance()
-					.getDirectoryByID((String) getValue(sKey));
+			Directory dParent = DirectoryManager.getInstance().getDirectoryByID(
+					(String) getValue(sKey));
 			if (dParent == null) {
 				return ""; // no parent directory //$NON-NLS-1$
 			} else {
 				return dParent.getFio().getAbsolutePath();
 			}
 		} else if (XML_DEVICE.equals(sKey)) {
-			return (DeviceManager.getInstance()
-					.getDeviceByID((String) getValue(sKey))).getName();
+			return (DeviceManager.getInstance().getDeviceByID((String) getValue(sKey))).getName();
 		}
 		if (XML_NAME.equals(sKey)) {
 			if (dParent == null) { // if no parent, take device name

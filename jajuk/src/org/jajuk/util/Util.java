@@ -927,8 +927,7 @@ public class Util implements ITechnicalStrings {
 		if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)) {
 			List<org.jajuk.base.File> alFilesToPlay = (List<org.jajuk.base.File>) ((ArrayList<org.jajuk.base.File>) alFiles)
 					.clone();
-			Collections.shuffle(alFilesToPlay, new Random(System
-					.currentTimeMillis()));
+			Collections.shuffle(alFilesToPlay, new Random());
 			return alFilesToPlay;
 		}
 		return alFiles;

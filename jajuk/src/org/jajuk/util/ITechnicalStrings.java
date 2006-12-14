@@ -239,8 +239,8 @@ public interface ITechnicalStrings {
 			.getResource("org/jajuk/icons/64x64/jajuk-icon_64x64.png");
 
 	public static final URL ICON_TRAY = Util
-			.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
-
+			.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.jpg");
+	
 	public static final URL ICON_LOGO_FRAME = Util
 			.getResource("org/jajuk/icons/16x16/jajuk-icon_16x16.png");
 	
@@ -499,14 +499,23 @@ public interface ITechnicalStrings {
 	public static final URL ICON_PLAYLIST_QUEUE = Util
 			.getResource("org/jajuk/icons/40x40/playlist_queue.png");
 
+	public static final URL ICON_PLAYLIST_QUEUE_SMALL = Util
+			.getResource("org/jajuk/icons/16x16/playlist_queue.png");
+
 	public static final URL ICON_PLAYLIST_NORMAL = Util
 			.getResource("org/jajuk/icons/40x40/playlist_normal.png");
 
 	public static final URL ICON_PLAYLIST_NEW = Util
 			.getResource("org/jajuk/icons/40x40/playlist_new.png");
-
+	
+	public static final URL ICON_PLAYLIST_NEW_SMALL = Util
+			.getResource("org/jajuk/icons/16x16/playlist_new.png");
+	
 	public static final URL ICON_PLAYLIST_BOOKMARK = Util
 			.getResource("org/jajuk/icons/40x40/playlist_bookmark.png");
+
+	public static final URL ICON_PLAYLIST_BOOKMARK_SMALL = Util
+			.getResource("org/jajuk/icons/16x16/playlist_bookmark.png");
 
 	public static final URL ICON_PLAYLIST_BESTOF = Util
 			.getResource("org/jajuk/icons/40x40/playlist_bestof.png");

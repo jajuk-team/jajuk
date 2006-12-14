@@ -280,7 +280,7 @@ public class LogicalTableView extends AbstractTableView {
 				}
 				// shuffle play
 				else if (e.getSource() == jmiTrackPlayShuffle) {
-					Collections.shuffle(alFilesToPlay, new Random(System.currentTimeMillis()));
+					Collections.shuffle(alFilesToPlay, new Random());
 					FIFO.getInstance().push(
 							Util.createStackItems(alFilesToPlay, ConfigurationManager
 									.getBoolean(CONF_STATE_REPEAT), true), false);

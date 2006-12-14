@@ -1225,9 +1225,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,
 		if (!sBestofSize.equals("")) { //$NON-NLS-1$
 			ConfigurationManager.setProperty(CONF_BESTOF_SIZE, sBestofSize);
 		}
-		FileManager.getInstance().setRateHasChanged(true); // force refresh
-		// of bestof
-		// files
+		// force refresh of bestof files
+		FileManager.getInstance().setRateHasChanged(true); 
 		String sNoveltiesAge = jtfNoveltiesAge.getText();
 		if (!sNoveltiesAge.equals("")) { //$NON-NLS-1$
 			ConfigurationManager.setProperty(CONF_OPTIONS_NOVELTIES_AGE,
@@ -1337,9 +1336,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,
 		// notify playlist editor (usefull for novelties)
 		ObservationManager
 				.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-		// Notify tables
-		ObservationManager
-				.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE));
 		// display a message
 		InformationJPanel
 				.getInstance()

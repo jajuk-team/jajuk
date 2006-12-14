@@ -1239,7 +1239,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		} else if (alFiles != null
 				&& (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)) {
 			Collections
-					.shuffle(alFiles, new Random(System.currentTimeMillis()));
+					.shuffle(alFiles, new Random());
 			FIFO.getInstance().push(
 					Util.createStackItems(alFiles, ConfigurationManager
 							.getBoolean(CONF_STATE_REPEAT), true), false);
@@ -1346,8 +1346,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 											.getBoolean(CONF_STATE_REPEAT),
 									true), true);
 				} else if (e.getSource() == jmiPlaylistFilePlayShuffle) {
-					Collections.shuffle(alFiles, new Random(System
-							.currentTimeMillis()));
+					Collections.shuffle(alFiles, new Random());
 					FIFO.getInstance().push(
 							Util.createStackItems(alFiles, ConfigurationManager
 									.getBoolean(CONF_STATE_REPEAT), true),
