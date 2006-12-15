@@ -165,6 +165,11 @@
 			<roles><role>Korean translation</role></roles>
 		</contributor>
 		<contributor>
+			<name>Omazaram</name>
+			<roles><role>Testing</role></roles>
+			<email></email>
+		</contributor>
+		<contributor>
 			<name>Mike Kelp</name>
 			<roles><role>Documentation/English labels review</role></roles>
 			<email></email>

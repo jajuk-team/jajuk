@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1157405454</time>
+<time>1166223126</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -39,7 +39,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 <group_id>91412</group_id>
 <unix_name>jajuk</unix_name>
 <descriptive_name>Jajuk</descriptive_name>
-<description>Jajuk is a MP3/OGG/WAV/AU/AIFF/SPEEX jukebox for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections.</description>
+<description>Jajuk is a jukebox for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections.</description>
 <license>gpl</license>
 <home_page_url>jajuk.sourceforge.net</home_page_url>
 <registration_description>Jajuk is a music organizer written in Java/Swing. The main goal of this project is to provide a fully-featured application for advances users in order to help them to manage big music collections. 
@@ -85,6 +85,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <user_name>skyreacher</user_name>
 <public_name>Gerhard Dietrichsteiner</public_name>
 <email>skyreacher@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
+<url>https://sourceforge.net/users/dhadley519/</url>
+<user_id>1038035</user_id>
+<user_name>dhadley519</user_name>
+<public_name>David Hadley</public_name>
+<email>dhadley519@users.sourceforge.net</email>
 <project_admin>No</project_admin>
 </projectmember>
 <projectmember>
@@ -176,7 +184,7 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <tracker_id>716053</tracker_id>
 <tracker_name>Request for bug reproduction</tracker_name>
 <description>Request for bug reproduction</description>
-<is_public>All site users</is_public>
+<is_public>Project members only</is_public>
 <allow_anonymous>Yes</allow_anonymous>
 <tracker_id>778343</tracker_id>
 <tracker_name>Limitations</tracker_name>
@@ -761,6 +769,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>598700</file_size>
 <release_time>1155594906</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=444820</url>
+<filename>jajuk-1.2.2-1mdk.noarch.rpm</filename>
+<release_id>444820</release_id>
+<package_id>96449</package_id>
+<file_size>8370407</file_size>
+<release_time>1157413064</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=444820</url>
+<filename>jajuk-1.2.2-suse.noarch.rpm</filename>
+<release_id>444820</release_id>
+<package_id>96449</package_id>
+<file_size>8366928</file_size>
+<release_time>1157413074</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=444820</url>
+<filename>jajuk-1.2.2-win32.exe</filename>
+<release_id>444820</release_id>
+<package_id>96449</package_id>
+<file_size>11046400</file_size>
+<release_time>1157413088</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=444820</url>
+<filename>jajuk-java-installer-1.2.2.jar</filename>
+<release_id>444820</release_id>
+<package_id>96449</package_id>
+<file_size>10648092</file_size>
+<release_time>1157413103</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=444820</url>
+<filename>jajuk-sources-1.2.2.zip</filename>
+<release_id>444820</release_id>
+<package_id>96449</package_id>
+<file_size>589552</file_size>
+<release_time>1157413114</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -821,6 +859,272 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
 <forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3930359</url>
+<msg_id>3930359</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Push vs play - playlist scheduling use ca</subject>
+<thread_id>1570452</thread_id>
+<is_followup_to>3930014</is_followup_to>
+<has_followups>0</has_followups>
+<date>1159129869</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+
+Thanks again for your feedback. 
+&#62;Basicaly one window to pick songs and one window to see the playlist. 
+Here I'm not sure to understand exactly what you mean but I looks near from what's exist: the queue playlist contains playlist you build and play and the others playlists contains either smart playlists (build automaticaly) or real playlists (m3u files).
+
+About Push before feature, I think I understand what you mean but I'm not sure the complexity it brings worses it (perhaps): when do you want to use a push before  ? when creating playlists or when playling a playlist ? doesn't the up/down arrows in playlists editor view makes the trick ? this way, you can push an item (at last position) and then bring it up to first position (a drag 'n drop feature should be better and could be done somedays) ?
+
+About randome playlists, I'm not sure to undertand what you mean with 9 tracks... Do you mean Random smart playlists (in the playlist repository view) or the queue playlist after using global random function (this way, it's all your collection that is shuffle only once and added to queue playlist) ?
+
+Cheers,
+
+Bertrand
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3930014</url>
+<msg_id>3930014</msg_id>
+<poster_user>ge0ffrey</poster_user>
+<poster_name>Geoffrey De Smet</poster_name>
+<subject>RE: Push vs play - playlist scheduling use ca</subject>
+<thread_id>1570452</thread_id>
+<is_followup_to>3907852</is_followup_to>
+<has_followups>1</has_followups>
+<date>1159101619</date>
+<is_deleted>No</is_deleted>
+<body>I just found that right click menu recently (after working with jajuk for over a year), never thaught to check that. Anyway there are still 2 issues with that: 
+- 2 button clicks (right and left) is still to much for an essential action. 
+- Partially: there is no &#34;push before&#34;: force play clears the playlist you just took the time to setup.
+
+
+The main mission of jajuk is to provide an usefull PC jukebox, this experience could be improved even further I believe.
+
+Here's a scenario I 'd really like to use:
+Basicaly one window to pick songs and one window to see the playlist.
+
+- One window which shows the playlist with:
+-- a clear distinction between user selected and system randomly added. This is there now.
+-- a stable system random selected: now it plays the first one next and randomizes the other 9 to 9 new. It should be stable after randomizing up to 10 following, and allow to remove songs with a single click.
+
+- Another window to select and push after/before songs with:
+-- a single click to push after/before. The playlist should not be cleared, instead the playlist should have a clear button.
+-- Besides filtering and sorting (which are there now), I 'd also like a random view (8 songs shown by default) (kinda what is now happening in the playlist window): there it should be possible with one click to push before/after with or without rerandomizing the random view.
+
+Hope it's not to confusing :)
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3921365</url>
+<msg_id>3921365</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: flac and MusicBrainz support</subject>
+<thread_id>1573902</thread_id>
+<is_followup_to>3919538</is_followup_to>
+<has_followups>0</has_followups>
+<date>1158650126</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+Flac should be supported either in upcoming 1.3 (we are trying to integrate mplayer that plays flac into jajuk) or if it fails by the end of the year with the new JavaZoom API.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3919538</url>
+<msg_id>3919538</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>flac and MusicBrainz support</subject>
+<thread_id>1573902</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1158616787</date>
+<is_deleted>No</is_deleted>
+<body>Is there any plan to support the flac format ?
+
+Today freedb is dead. What about MusicBrainz for tagging ?
+
+Best Regards</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3915537</url>
+<msg_id>3915537</msg_id>
+<poster_user>park100</poster_user>
+<poster_name>park100</poster_name>
+<subject>RE: Why &#34;Unresolved compilation problem&#34;?</subject>
+<thread_id>1572376</thread_id>
+<is_followup_to>3914141</is_followup_to>
+<has_followups>0</has_followups>
+<date>1158326779</date>
+<is_deleted>No</is_deleted>
+<body>thanks</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3914193</url>
+<msg_id>3914193</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Why &#34;Unresolved compilation problem&#34;?</subject>
+<thread_id>1572376</thread_id>
+<is_followup_to>3914141</is_followup_to>
+<has_followups>0</has_followups>
+<date>1158247536</date>
+<is_deleted>No</is_deleted>
+<body>Source zip distribution alone only contains Jajuk java code (only for consultation) and can't work by itself. If you want to code Jajuk under eclipse, you have to make a CVS checkout and fill right &#34;run&#34; arguments. Everyhing should be explained in the developer guide (http://jajuk.sourceforge.net/developer_guide.html), otherwise, do not hesitate to come back.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3914141</url>
+<msg_id>3914141</msg_id>
+<poster_user>park100</poster_user>
+<poster_name>park100</poster_name>
+<subject>Why &#34;Unresolved compilation problem&#34;?</subject>
+<thread_id>1572376</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1158245736</date>
+<is_deleted>No</is_deleted>
+<body>I downloaded the jajuk-sources-1.2.2.zip but couldn't run it in eclipse, here is the error message:
+////////////////
+java.lang.Error: Unresolved compilation problem: 
+
+	at org.jajuk.util.Util.setExecLocation(Util.java:803)
+	at org.jajuk.Main.main(Main.java:163)
+Exception in thread &#34;main&#34; java.lang.Error: Unresolved compilation problem: 
+
+	at org.jajuk.util.log.Log.error(Log.java:194)
+	at org.jajuk.Main.main(Main.java:358)
+//////////////
+I followed all the instructions of the guide but it seems to be a quite bizarre problem 
+my jvm is 1.5.0_06 under windows2k, has anyone encountered it?
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3908104</url>
+<msg_id>3908104</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Push vs play - playlist scheduling use ca</subject>
+<thread_id>1570452</thread_id>
+<is_followup_to>3907852</is_followup_to>
+<has_followups>0</has_followups>
+<date>1157923762</date>
+<is_deleted>No</is_deleted>
+<body>doesn't contextual menu (right click) on items (in trees, tables...) that provides push/play makes the trick ?  </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3908100</url>
+<msg_id>3908100</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Create DJ doesn't work on Win JRE1.5?</subject>
+<thread_id>1565732</thread_id>
+<is_followup_to>3907826</is_followup_to>
+<has_followups>0</has_followups>
+<date>1157923630</date>
+<is_deleted>No</is_deleted>
+<body>Did you try 1.2.2 ? it should fix this issue, please come back if it is not the case.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3907874</url>
+<msg_id>3907874</msg_id>
+<poster_user>ge0ffrey</poster_user>
+<poster_name>Geoffrey De Smet</poster_name>
+<subject>RE: Push vs play - playlist scheduling use ca</subject>
+<thread_id>1570452</thread_id>
+<is_followup_to>3907852</is_followup_to>
+<has_followups>0</has_followups>
+<date>1157905067</date>
+<is_deleted>No</is_deleted>
+<body>Actually, a normal play that erases the play list is pretty useless. Erasing the play list should be a different button all together in the play list editor. So you 'd end up with
+[Push before = play now] [Push after = old push] | Artist | Song
+</body>
+</forum_post>
+</forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3907852</url>
+<msg_id>3907852</msg_id>
+<poster_user>ge0ffrey</poster_user>
+<poster_name>Geoffrey De Smet</poster_name>
+<subject>Push vs play - playlist scheduling use case</subject>
+<thread_id>1570452</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1157904416</date>
+<is_deleted>No</is_deleted>
+<body>Currently I am just using 2 windows of jajuk:
+
+- physical table: to search for songs and select one or more
+- playlist editor: to see what's comming next
+
+In the settings I can ask to push on double click instead of play, but actually I want to be able to do both:
+- Play directly if I want to hear it now
+- Push it to play after the other few I selected
+- Push before: play directly but push my already selected songs after the current one
+Currently I can do the push feature by drag and dropping, but that just takes to long.
+
+Anyway, jajuk would be a lot more usefull if you 'd add a button next to the play button in physical table to push the song. That way you have somethign like this:
+
+[Play][Push before][Push (after)] | Artist | Song
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3907826</url>
+<msg_id>3907826</msg_id>
+<poster_user>ge0ffrey</poster_user>
+<poster_name>Geoffrey De Smet</poster_name>
+<subject>RE: Create DJ doesn't work on Win JRE1.5?</subject>
+<thread_id>1565732</thread_id>
+<is_followup_to>3896177</is_followup_to>
+<has_followups>1</has_followups>
+<date>1157903324</date>
+<is_deleted>No</is_deleted>
+<body>Thanks :)
+
+I checked the log in my .jajuk folder, but nothing noted there. I expected a stack-trace, but it seems it gets eaten somewhere.  When pushing the next button, the button's backgroundcolor stays darkblue, which seem to indicate that indeed an exception is thrown so the button can't reset the color after pushing it down.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3904713</url>
+<msg_id>3904713</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: missing qdwizard in source</subject>
+<thread_id>1568830</thread_id>
+<is_followup_to>3904625</is_followup_to>
+<has_followups>0</has_followups>
+<date>1157715726</date>
+<is_deleted>No</is_deleted>
+<body>We will add some details in the dependencies page. QDWizard lib has been splited into a separated project. See http://qdwizard.sf.net , zip distribution includes qdwizard sources.
+
+Thanks for feedback.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3904625</url>
+<msg_id>3904625</msg_id>
+<poster_user>ralul</poster_user>
+<poster_name>RalphUL</poster_name>
+<subject>missing qdwizard in source</subject>
+<thread_id>1568830</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1157710316</date>
+<is_deleted>No</is_deleted>
+<body>The lib &#34;qdwizard&#34; is missing in the sources. And for some other libs, i guess from sun, there could be a description where to get!</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3898461</url>
+<msg_id>3898461</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Create DJ doesn't work on Win JRE1.5?</subject>
+<thread_id>1565732</thread_id>
+<is_followup_to>3896280</is_followup_to>
+<has_followups>0</has_followups>
+<date>1157405559</date>
+<is_deleted>No</is_deleted>
+<body>This should be fixed in 1.2.2</body>
+</forum_post>
+<forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3896280</url>
 <msg_id>3896280</msg_id>
 <poster_user>bflorat</poster_user>
@@ -828,7 +1132,7 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <subject>RE: Create DJ doesn't work on Win JRE1.5?</subject>
 <thread_id>1565732</thread_id>
 <is_followup_to>3896177</is_followup_to>
-<has_followups>0</has_followups>
+<has_followups>1</has_followups>
 <date>1157218748</date>
 <is_deleted>No</is_deleted>
 <body>Hi,
@@ -897,6 +1201,7 @@ I have an idee for jajuk but I don&#226;&#8364;&#8482;t know if it&#226;&#8364;&
 
 Ps sorry for my English but I&#226;&#8364;&#8482;m French and I really  like jajuk</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3751950</url>
 <msg_id>3751950</msg_id>
@@ -970,7 +1275,6 @@ Thanks in advance...</body>
 <is_deleted>No</is_deleted>
 <body>You may be right, we will have a try for 1.1 to limit to 2/3 max.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3522386</url>
 <msg_id>3522386</msg_id>
@@ -1040,6 +1344,7 @@ Yes, I did that now. When I decrease the volume to ca. 50-60% of the maximum the
 Doesn't look like a GC problem to me, too.
 The breaks sound like atmospheric disturbance on radio or something like that.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3459429</url>
 <msg_id>3459429</msg_id>
@@ -1207,7 +1512,6 @@ What I meant was break of voice and music. There are these abrupt breaks, like w
 <is_deleted>No</is_deleted>
 <body>What do you mean by strange noise ? blanks ? during playing or at stopping ? where are located your files ? on a network drive ? hard drive?  </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3451091</url>
 <msg_id>3451091</msg_id>
@@ -1297,6 +1601,7 @@ Thanx for the link.
 Effectively it works perfectly now.
 If you need it in english, please ask me and I'll try to translate ;o)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3335326</url>
 <msg_id>3335326</msg_id>
@@ -1375,7 +1680,6 @@ I have been hunting around for java and artsd intergration.  I'll post what I fi
 
 -chris worley</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282256</url>
 <msg_id>3282256</msg_id>
@@ -1460,6 +1764,7 @@ down
 - SunAwtRobot never starts with metal look and feel
 Right ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280599</url>
 <msg_id>3280599</msg_id>
@@ -1576,7 +1881,6 @@ This is the output in the log when I press play.
 2005/08/04 08:27:23 [DEBUG] Player state changed: OPENED:2048  [Thread-20] (Log.java:83)
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3279503</url>
 <msg_id>3279503</msg_id>
@@ -1668,6 +1972,7 @@ félicitations pour Jajuk qui est une très bonne alternative &#710; itunes. Sous 
 Merci d'avance
 chris </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3241549</url>
 <msg_id>3241549</msg_id>
@@ -1744,7 +2049,6 @@ I'm running debian based Xandros. I used the .jar installer and everythin went s
 
 Anyways. This seems to be fixed. Thanks. And good job!</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3012158</url>
 <msg_id>3012158</msg_id>
@@ -1829,6 +2133,7 @@ o Use a FM emettor :
 
 http://www.nanocrew.net/blog/</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2982011</url>
 <msg_id>2982011</msg_id>
@@ -1919,7 +2224,6 @@ JAVA_HOME=
 <is_deleted>No</is_deleted>
 <body>When launching IzPack installer, you should have set an installation path, isn't it ? If install was OK, you should get an ${installation_path}/jajuk.sh file...</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2972104</url>
 <msg_id>2972104</msg_id>
@@ -2043,6 +2347,7 @@ Win XP home
 
 no problems :)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2920579</url>
 <msg_id>2920579</msg_id>
@@ -2127,7 +2432,6 @@ Could you tell us:
 
 Thanks in advance.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902639</url>
 <msg_id>2902639</msg_id>
@@ -2221,6 +2525,7 @@ But I still think it's imported to split up the buffering (loading from disk to 
 For the moment (0.3.1), I will try to increase dramaticaly the buffer size (from 60Kb to something like 5Mb) and at the same time set the awt dispatcher thread priority from  6 (http://www.wilsonmar.com/1threads.htm)  to something like 2 or 3. Player thread is yet 10.
 Then we will see if some deeper changes are needed.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840300</url>
 <msg_id>2840300</msg_id>
@@ -2306,7 +2611,6 @@ Willing to help me? I suggest collaborating on http://maven-plugins.sourceforge.
 <is_deleted>No</is_deleted>
 <body>PS: Just using BufferedInputStream doesn't do the trick: it only reads new data from the hard disk when the buffer is empty and more data is requested. read() still blocks (but not each time).</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840176</url>
 <msg_id>2840176</msg_id>
@@ -2393,6 +2697,7 @@ Then it uses more memory but works faster too.</body>
 Tests using 1.3 or higher have proven it rivals C++.
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829625</url>
 <msg_id>2829625</msg_id>
@@ -2474,7 +2779,6 @@ I need some help : I would like to change tracks attributes, such as note or som
 I mention that the &#34;collection&#34; is on a windows partition.
 Thanks a lot...</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2547735</url>
 <msg_id>2547735</msg_id>
@@ -15079,6 +15383,62 @@ exemple that has no path reference .</details>
 </history_entry>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1602284</url>
+<id>1602284</id>
+<status_id>1</status_id>
+<category_id>571112</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>dhalsim44</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1164374033</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>taskBar entry</summary>
+<details>I've got a little bug under linux, the song name displayed on the taskbar (gnome) isn't updated when song changed. It always display the first song i've played.</details>
+<followups>
+<followup>
+<id>2197866</id>
+<submitter>bflorat</submitter>
+<date>1164380041</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Hi Erwan :-)
+
+Is it the same in upcoming 1.3 (http://82.239.70.252:8001/jajuk-test/app/) ?</details>
+</followup>
+<followup>
+<id>2197985</id>
+<submitter>dhalsim44</submitter>
+<date>1164387886</date>
+<details>Logged In: YES 
+user_id=1404100
+Originator: YES
+
+hi bertrand !
+
+Yes i forget to say it, I'm using the 1.3 RC2 release for now. I will try with newer RC this week end.</details>
+</followup>
+<followup>
+<id>2198043</id>
+<submitter>bflorat</submitter>
+<date>1164392017</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+In this case I'm afraid there nothing I can do for now except reporting a bug at jdic...</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -17547,15 +17907,15 @@ http://jajuk.sourceforge.net/jajuk-hs/default/html/pm.html </details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1546507</url>
 <id>1546507</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
-<assignee>nobody</assignee>
-<closer>nobody</closer>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
 <submit_date>1156495892</submit_date>
-<close_date>0</close_date>
-<priority>5</priority>
+<close_date>1157405514</close_date>
+<priority>8</priority>
 <summary>DJ Feature not working</summary>
 <details>Hi,
 I tried JAJUK on windows and Linux with the correct
@@ -17588,10 +17948,48 @@ Agent (Help-&#62;Report an issue) so we would get debug logs.
 
 Thanks for feedback.</details>
 </followup>
+<followup>
+<id>2111951</id>
+<submitter>bflorat</submitter>
+<date>1157405514</date>
+<details>Logged In: YES 
+user_id=363565
+
+This should be fixed in 1.2.2
+</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3861087</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1157405514</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3861088</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1157405514</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3861089</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1157405514</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3861090</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1157405514</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -19537,14 +19935,14 @@ an API (file system proxy).</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1052318</url>
 <id>1052318</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>panfr</submitter>
-<assignee>nobody</assignee>
-<closer>nobody</closer>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
 <submit_date>1098463053</submit_date>
-<close_date>0</close_date>
+<close_date>1166222594</close_date>
 <priority>5</priority>
 <summary>More formats, please...</summary>
 <details>Jajuk's UI is simply exhellent. Too bad I cannot do
@@ -19614,10 +20012,41 @@ heard about any java implementation.</details>
 
 yes, .mpc would be great!!!</details>
 </followup>
+<followup>
+<id>2220696</id>
+<submitter>bflorat</submitter>
+<date>1166222594</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Done in 1.3 (expect MPC)</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087466</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222594</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087467</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1166222594</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087468</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222594</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -20220,14 +20649,14 @@ Done 1.1</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1153443</url>
 <id>1153443</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109594947</submit_date>
-<close_date>0</close_date>
+<close_date>1166222665</close_date>
 <priority>3</priority>
 <summary>Allow a cover repository if device is ro</summary>
 <details>Allow a cover repository if device is ro :
@@ -20249,10 +20678,34 @@ similar. This is
 but wanted to mention
 &#62; it anyways.</details>
 <followups>
+<followup>
+<id>2220697</id>
+<submitter>bflorat</submitter>
+<date>1166222665</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: YES
+
+Not a good idea</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087471</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222665</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087472</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222665</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -21128,14 +21581,14 @@ Thanks :)</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1445357</url>
 <id>1445357</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1141790605</submit_date>
-<close_date>0</close_date>
+<close_date>1166222799</close_date>
 <priority>5</priority>
 <summary>Add Cover from HD</summary>
 <details>It's possible a feature for add a cover from any folder
@@ -21157,23 +21610,47 @@ Hi,
 Simply copy cover files into the targeted album 
 directory...</details>
 </followup>
+<followup>
+<id>2220701</id>
+<submitter>bflorat</submitter>
+<date>1166222799</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Probably not a good idea...</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087478</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222799</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087479</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222799</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1487686</url>
 <id>1487686</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
-<assignee>nobody</assignee>
-<closer>nobody</closer>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
 <submit_date>1147474566</submit_date>
-<close_date>0</close_date>
+<close_date>1166222543</close_date>
 <priority>5</priority>
 <summary>mp4 and flac support</summary>
 <details>I would like it if jajuk supported either external
@@ -21228,10 +21705,41 @@ should come soon from javazoom and we are waiting open
 sourcing of simplecenter, a java jukebox than could bring
 more formats ???  more to come...</details>
 </followup>
+<followup>
+<id>2220694</id>
+<submitter>bflorat</submitter>
+<date>1166222543</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Done in 1.3</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087455</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087456</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1166222543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087457</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222543</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -21311,14 +21819,14 @@ idea ...</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1492038</url>
 <id>1492038</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1148124815</submit_date>
-<close_date>0</close_date>
+<close_date>1166222715</close_date>
 <priority>3</priority>
 <summary>file chaging</summary>
 <details>before i try this program....
@@ -21370,6 +21878,20 @@ is a music organizer of already available MP3 or OGG and Wav.</details>
 <field_name>priority</field_name>
 <old_value>5</old_value>
 <date>1148126240</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087476</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222715</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087477</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222715</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -21442,14 +21964,14 @@ Bertrand.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1522934</url>
 <id>1522934</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571115</category_id>
 <group_id>340387</group_id>
 <submitter>nobody</submitter>
-<assignee>nobody</assignee>
-<closer>nobody</closer>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
 <submit_date>1152952097</submit_date>
-<close_date>0</close_date>
+<close_date>1166222521</close_date>
 <priority>5</priority>
 <summary>to be able to choose information displayed in Animation view</summary>
 <details>to be able to choose informations displayed in
@@ -21465,23 +21987,54 @@ user_id=363565
 
 Good idea ! should be done for 1.3...</details>
 </followup>
+<followup>
+<id>2220693</id>
+<submitter>bflorat</submitter>
+<date>1166222521</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Done in 1.3</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087452</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222521</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087453</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1166222521</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087454</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222521</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1531198</url>
 <id>1531198</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
-<assignee>nobody</assignee>
-<closer>nobody</closer>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
 <submit_date>1154256829</submit_date>
-<close_date>0</close_date>
+<close_date>1166222833</close_date>
 <priority>5</priority>
 <summary>modify buffers for network sharing </summary>
 <details>hi all,
@@ -21604,23 +22157,54 @@ Try to set higher values for jajuk.buffer_size and
 jajuk.audio_buffer_size in the conf.properties file located
 in &#60;your home&#62;/.jajuk directory and please provide feedback.</details>
 </followup>
+<followup>
+<id>2220702</id>
+<submitter>bflorat</submitter>
+<date>1166222833</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Should be fixed in 1.3 using mplayer</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087480</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222833</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087481</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1166222833</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087482</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222833</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1539470</url>
 <id>1539470</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571115</category_id>
 <group_id>100</group_id>
 <submitter>hrobache</submitter>
-<assignee>nobody</assignee>
-<closer>nobody</closer>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
 <submit_date>1155458963</submit_date>
-<close_date>0</close_date>
+<close_date>1166222492</close_date>
 <priority>5</priority>
 <summary>enhance random mode</summary>
 <details>It would be nice to have an album random play mode.
@@ -21638,10 +22222,41 @@ user_id=363565
 
 Excellent idea, we add a task for that.</details>
 </followup>
+<followup>
+<id>2220690</id>
+<submitter>bflorat</submitter>
+<date>1166222492</date>
+<details>Logged In: YES 
+user_id=363565
+Originator: NO
+
+Done in 1.3</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087447</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222492</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087448</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1166222492</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087449</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222492</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -21877,14 +22492,14 @@ we will think about it indeed...</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1549449</url>
 <id>1549449</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>vehakki</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1156959444</submit_date>
-<close_date>0</close_date>
+<close_date>1166222406</close_date>
 <priority>5</priority>
 <summary>easier rating system</summary>
 <details>as far as i know to be able to rate a song you need to
@@ -21911,6 +22526,85 @@ Properties (see the manual).</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087445</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222406</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087446</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222406</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1576836</url>
+<id>1576836</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1160770927</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Equalizer</summary>
+<details>To completly replace Winamp and to be used like a &#34;DJ&#34;
+the program is still missing some kind of Equalizer
+like nearly all MP3 Programs and Players got today.
+It would be really nice to see this.
+With best regards, and thank you in advance.</details>
+<followups>
+<followup>
+<id>2153854</id>
+<submitter>bflorat</submitter>
+<date>1160779240</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi,
+
+This feature is already plan for some future releases,
+probably in 1.4.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3946864</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1160779240</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3946865</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1160779240</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3946866</id>
+<field_name>status_id</field_name>
+<old_value>2</old_value>
+<date>1160779280</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3946867</id>
+<field_name>close_date</field_name>
+<old_value>1160779240</old_value>
+<date>1160779280</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -22013,7 +22707,7 @@ itself and not only the title bar.
 <closer>nobody</closer>
 <submit_date>1101979607</submit_date>
 <close_date>0</close_date>
-<priority>2</priority>
+<priority>1</priority>
 <summary>Several tracks highlighted in Playlist Editor</summary>
 <details>For all playlists but queue one, in playlist editor :
 normaly, current played track is highlighted in orange.
@@ -22036,6 +22730,13 @@ them will be highlighted and not only current one.</details>
 <field_name>summary</field_name>
 <old_value>Serveral tracks highlighted in Playlist Editor</old_value>
 <date>1102024245</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087444</id>
+<field_name>priority</field_name>
+<old_value>2</old_value>
+<date>1166222334</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -22430,14 +23131,14 @@ fixed in 1.0</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1156270</url>
 <id>1156270</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109890092</submit_date>
-<close_date>0</close_date>
+<close_date>1166222315</close_date>
 <priority>2</priority>
 <summary>Elapsted time for wav files</summary>
 <details>For WAV files : because of buffering (useful for MP3
@@ -22453,6 +23154,20 @@ refreshed with some delay.</details>
 <field_name>priority</field_name>
 <old_value>5</old_value>
 <date>1117037666</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087442</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222315</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087443</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222315</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -22678,14 +23393,14 @@ workaround: use only one directory with a given case.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1189543</url>
 <id>1189543</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1114441867</submit_date>
-<close_date>0</close_date>
+<close_date>1166222298</close_date>
 <priority>2</priority>
 <summary>Elasped time for some MP3 files</summary>
 <details>For an unknown reason, on some seldom files, remaining
@@ -22713,6 +23428,234 @@ indicates a wrong encoding. I found one that indicated
 <date>1114444388</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>4087440</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166222298</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087441</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166222298</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1607155</url>
+<id>1607155</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1165013133</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>|Linux] Freeze when mounting network drives</summary>
+<details>If auto-mount option is use on a network drive (Netbios, NFS...) and network unavailable, a freeze could occur on some operating systems until the device is made accessible.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>4056582</id>
+<field_name>priority</field_name>
+<old_value>4</old_value>
+<date>1165013154</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087436</id>
+<field_name>summary</field_name>
+<old_value>Freeze when mounting network drives</old_value>
+<date>1166222280</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1607158</url>
+<id>1607158</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1165013315</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>Wrong file date</summary>
+<details>Due to some refactoring, the &#34;file date&#34; value in physical table view can be wrong if upgrading from 1.2 (be the current day date). 
+
+Workaround: make a deep refresh: select device from Physical tree view / &#60;right click&#62; / force refresh / &#60;select Deep&#62;. </details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1607167</url>
+<id>1607167</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1165013893</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>Date custom properties lost</summary>
+<details>When upgrading from 1.2, date-format custom properties should be lost. In the future, they will be saved correctly. In case of important issue, please contact us.
+
+</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1612134</url>
+<id>1612134</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1165668587</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>Cannot save maximalized views configuration</summary>
+<details>When maximizing a view, its position will be reset at next startup. Should be fixed soon.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1613492</url>
+<id>1613492</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1165870884</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Systray popup flashing under Linux/Java 6</summary>
+<details>Under Linux/JRE 1.6: systray popup is just flashing when right-cliking on it.
+
+WORKAROUND
+Keep your finger down one second, popup will be visible</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>4087435</id>
+<field_name>summary</field_name>
+<old_value>Systray popup flashing</old_value>
+<date>1166222248</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1615263</url>
+<id>1615263</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1166043109</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>JavaScript errors on wikipedia view</summary>
+<details>On some seldom wikipedia pages under Windows only, a javascript popup can appear twice. It can't be masked for now.
+
+WORKAROUD: none, close the popup manually</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>4082195</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1166043126</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1616002</url>
+<id>1616002</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1166129222</submit_date>
+<close_date>0</close_date>
+<priority>1</priority>
+<summary>Internal drag and drop issue in playlist editor</summary>
+<details>In Playlist editor view using the &#34;Use Push when dropping&#34; option, when draging an item to the same view, it is the playing item and not the dragged item that is used</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1616080</url>
+<id>1616080</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1166137823</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Systray icon ugly under Windows 2000</summary>
+<details>For totaly unknown reason, Jajuk tray icon is saturated under W2K. 
+
+WORKAROUND: none</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>4087434</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1166222216</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -22722,10 +23665,10 @@ indicates a wrong encoding. I found one that indicated
 <tracker_id>716053</tracker_id>
 <name>Request for bug reproduction</name>
 <description>Request for bug reproduction</description>
-<is_public>All site users</is_public>
+<is_public>Project members only</is_public>
 <allow_anon>Yes</allow_anon>
 <email_updates>No</email_updates>
-<due_period>86400000</due_period>
+<due_period>63072000</due_period>
 <submit_instructions>This is a list of non-reproductible bugs we, developers
 detected and didn't manage to isolate. If you find
 some, please tell us with a reproduction procedure if
@@ -23361,15 +24304,15 @@ after a window display (jauk not displayed at startup)</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1334965</url>
 <id>1334965</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1129997521</submit_date>
-<close_date>0</close_date>
+<close_date>1166221876</close_date>
 <priority>7</priority>
 <summary>Cannot seek in ogg files</summary>
 <details>Due to javazoom APIs limitations, we cannot seek (fast
@@ -23379,6 +24322,20 @@ rewind or forward) in ogg files for the moment.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>4087417</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1166221876</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>4087418</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1166221876</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -23775,8 +24732,8 @@ https://sourceforge.net/tracker/index.php?func=detail&#38;aid=1177560&#38;group_
 <status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
-<dependent_of>110972</dependent_of>
 <dependent_of>114572</dependent_of>
+<dependent_of>110972</dependent_of>
 </dependencies>
 <assignees>
 <assignee>bflorat</assignee>
@@ -23822,11 +24779,11 @@ Stock others properties for items: volume, balance, ...</old_value>
 </task>
 <task>
 <task_id>110972</task_id>
-<summary>[very hard] Network-type device (P2P)</summary>
+<summary>[RESERVED] [very hard] Network-type device (P2P)</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
-<priority>6</priority>
-<hours>0</hours>
+<priority>5</priority>
+<hours>50</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
@@ -23835,14 +24792,35 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependent_on>110971</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>skyreacher</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>110972</task_id>
+<field_name>priority</field_name>
+<old_value>6</old_value>
+<updator>bflorat</updator>
+<date>1161451696</date>
+</history_entry>
+<history_entry>
+<task_id>110972</task_id>
+<field_name>summary</field_name>
+<old_value>[very hard] Network-type device (P2P)</old_value>
+<updator>bflorat</updator>
+<date>1161451696</date>
+</history_entry>
+<history_entry>
+<task_id>110972</task_id>
+<field_name>hours</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1161451696</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>110973</task_id>
-<summary>[hard] [Reserved] File functions (cut/copy/paste,delete,..)</summary>
+<summary>[hard] File functions (cut/copy/paste,delete,..)</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -23855,7 +24833,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>bartcr</assignee>
+<assignee>nobody</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -23899,6 +24877,13 @@ Stock others properties for items: volume, balance, ...</old_value>
 <old_value>[hard] File functions (cut/copy/paste,delete,..)</old_value>
 <updator>bflorat</updator>
 <date>1153167785</date>
+</history_entry>
+<history_entry>
+<task_id>110973</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] [Reserved] File functions (cut/copy/paste,delete,..)</old_value>
+<updator>bflorat</updator>
+<date>1158175851</date>
 </history_entry>
 </history_entries>
 </task>
@@ -24185,15 +25170,15 @@ Stock others properties for items: volume, balance, ...</old_value>
 </task>
 <task>
 <task_id>110980</task_id>
-<summary>[medium] Export data in html or XML </summary>
+<summary>[medium] [Reserved] Export data in html or XML </summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>80</percent_complete>
 <priority>6</priority>
 <hours>10</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
@@ -24257,6 +25242,84 @@ Notes:
 <old_value>[medium] [Reserved] Export data in html or XML </old_value>
 <updator>bflorat</updator>
 <date>1152453165</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1160426358</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>details</field_name>
+<old_value>o Look is already pretty good but I wonder if tables presentation should
+not be better ? The presentation is too squatered and should be much
+more compact according to me..
+The use cases I thought about when creating the task were:
+1- Produce a compact document that give the user the opportunity to get
+a summary of its collection for himself or to be sended to others for
+future sharing for ie.
+2- Produce Web pages with HREF links on files in order to download/play
+them directly from  a personnal web site
+3- XML format output could possibly help integration into others programms
+
+o According to me, each item should take only a single line. For ie:
+foodir - path: /tmp/foodir
+   file1.mp3  (no need for full path to be displayed but make a link on
+file1.mp3 to http://&#60;full path&#62;/file1.mp3 if link option has been
+selected, see below)
+   file2.mp3
+
+o Others item data should be displayed in others columns if using a
+table or displayed like current version but using a collapsable panel
+(collapsed by default).
+However, collapse panel is probably complexe and not available for PDF,
+so  table is probably the best option... Note that the table should
+display custom properties as well (just iterate on item.getProperties,
+it includes custom properties). On the other hand, the table option has
+a drawback: can be too large in some cases... I see two complementary
+solutions:
+- Add a combo option (say in a new Parameter view tab: &#34;Reporting&#34;)
+allowing user to select table (default) or expended (the actual
+presentation)
++ Add a pattern-based option %t - %n ... using same variables convention
+than already used for rettaging (see Tags tab). One pattern by item ?
+
+o Moreover, isn't be better to replace &#34;directory&#34;, &#34;album&#34;... words by
+icons (available in jajuk dist-files/icons directory) ? + a tooltip on
+the image to display &#34;directory&#34;... to help a user having forget icon
+meaning. Note that custom properties name is available using metadata
+from PropertyMetaInformation class.
+
+o About HTML links, best option could be to create an option (default=
+false) on Report options tab with: A checkbox &#34;Create HTTP links&#34; + a
+textfield giving Web prefix
+for which to create links. For exemple, a user can put some mp3 files in
+/srv/www/htdocs/music/album/file1.mp3 that can be accessed from
+http://www.foo.com/dir1/dir2/album/file1.mp3, &#34;music&#34; being the jajuk
+device. Web prefix should be &#34;http://www.foo.com/dir1/dir2&#34;.
+If the &#34;Create HTTP links&#34; isn't selected, create links to &#34;file://&#60;full
+file path&#62;&#34; so user will be able to launch local files from his web browser.
+
+o Thanks to add a visible notice somewhere telling to avoid printing the
+report (I'd like avoiding jajuk being responsable for environmental issues)</old_value>
+<updator>bflorat</updator>
+<date>1160426358</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>summary</field_name>
+<old_value>[medium] Export data in html or XML </old_value>
+<updator>bflorat</updator>
+<date>1160513888</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1160595021</date>
 </history_entry>
 </history_entries>
 </task>
@@ -24378,7 +25441,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 </task>
 <task>
 <task_id>110987</task_id>
-<summary>[easy] Flac and MPC support </summary>
+<summary>[easy] Missing formats support </summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>6</priority>
@@ -24394,6 +25457,25 @@ http://www.singularsys.com/jep/index.html</old_value>
 <assignee>nobody</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>110987</task_id>
+<field_name>summary</field_name>
+<old_value>[easy] Flac and MPC support </old_value>
+<updator>bflorat</updator>
+<date>1160426465</date>
+</history_entry>
+<history_entry>
+<task_id>110987</task_id>
+<field_name>details</field_name>
+<old_value>Missing from 1.3:
+AAC tag read/write
+RAM tag read/write
+APE
+MPC
+</old_value>
+<updator>bflorat</updator>
+<date>1160426465</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -25206,7 +26288,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 </task>
 <task>
 <task_id>128872</task_id>
-<summary>[Hard] [Reserved] Last.FM support</summary>
+<summary>[Hard] Last.FM support</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -25229,6 +26311,13 @@ http://www.singularsys.com/jep/index.html</old_value>
 <updator>bflorat</updator>
 <date>1153167750</date>
 </history_entry>
+<history_entry>
+<task_id>128872</task_id>
+<field_name>summary</field_name>
+<old_value>[Hard] [Reserved] Last.FM support</old_value>
+<updator>bflorat</updator>
+<date>1160595094</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -25241,19 +26330,26 @@ http://www.singularsys.com/jep/index.html</old_value>
 <start_date>1152914400</start_date>
 <end_date>1152914400</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>129021</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1160595080</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>129055</task_id>
-<summary>[Hard] [Reserved] Web radio support</summary>
+<summary>[Hard]  Web radio support</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -25266,18 +26362,59 @@ http://www.singularsys.com/jep/index.html</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>dhalsim44</assignee>
+<assignee>nobody</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>129055</task_id>
+<field_name>summary</field_name>
+<old_value>[Hard] [Reserved] Web radio support</old_value>
+<updator>bflorat</updator>
+<date>1158175869</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>129834</task_id>
-<summary>[Easy] Duplicates finder</summary>
+<summary>[Easy] [Reserved] Duplicates finder</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
 <hours>5</hours>
+<start_date>1155420000</start_date>
+<end_date>1155420000</end_date>
+<creator>bflorat</creator>
+<status_id>2</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>dhadley519</assignee>
+</assignees>
+<history_entries>
+<history_entry>
+<task_id>129834</task_id>
+<field_name>summary</field_name>
+<old_value>[Easy] Duplicates finder</old_value>
+<updator>bflorat</updator>
+<date>1158175939</date>
+</history_entry>
+<history_entry>
+<task_id>129834</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1160595043</date>
+</history_entry>
+</history_entries>
+</task>
+<task>
+<task_id>129835</task_id>
+<summary>[Easy] Album grain shuffle mode</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>8</hours>
 <start_date>1155420000</start_date>
 <end_date>1155420000</end_date>
 <creator>bflorat</creator>
@@ -25292,14 +26429,14 @@ http://www.singularsys.com/jep/index.html</old_value>
 </history_entries>
 </task>
 <task>
-<task_id>129835</task_id>
-<summary>[Easy] Album grain shuffle mode</summary>
+<task_id>130697</task_id>
+<summary>[Easy] Add a comment meta-data on properties</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
-<priority>5</priority>
-<hours>8</hours>
-<start_date>1155420000</start_date>
-<end_date>1155420000</end_date>
+<priority>2</priority>
+<hours>5</hours>
+<start_date>1157407200</start_date>
+<end_date>1157407200</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>
@@ -25620,3 +26757,5 @@ http://www.singularsys.com/jep/index.html</old_value>
 </project>
 </tasks>
 </document>
+
+ 	  	 
