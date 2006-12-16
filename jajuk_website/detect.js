@@ -182,7 +182,7 @@ document.write( navigator.family + " browser version " );
 document.write( navigator.version + " under " + navigator.OS + ". \n" );
 
 if ((jws150Installed && jwsInstalled) || (navigator.userAgent.indexOf("Gecko") !=-1)) {
-    document.write("<br><br><a href=\"http://82.239.70.252:8001/jajuk-notest/jajuk.jnlp\"><img style=\"width: 300px; height: 37px;\" alt=\"Web start me now !\" src=\"./images/webstartmenow.png\"></a>");
+    document.write("<br><br><a href=\"http://82.239.70.252:8001/jajuk-notest/app\"><img style=\"width: 300px; height: 37px;\" alt=\"Web start me now !\" src=\"./images/webstartmenow.png\"></a>");
 } else {
     document.write("Click ");
     document.write("<a href=http://java.sun.com/PluginBrowserCheck?pass=http://jajuk.sourceforge.net/jreinstall.html&fail=http://java.sun.com/j2se/1.5.0/download.html>here</a> ");
