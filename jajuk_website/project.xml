@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='ISO-8859-15'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <project>
  
   <pomVersion>3</pomVersion>
@@ -150,7 +150,7 @@
 
  	<contributors>
 		<contributor>
-			<name>Jérome Fortain</name>
+			<name>JÃ©rome Fortain</name>
 			 <email>jf_sourceforge@khiplus.fr</email>
 			<roles><role>Bug reports, qualification</role></roles>
 		</contributor>
@@ -200,7 +200,7 @@
 			<roles><role>Dutch translator</role></roles>
 		</contributor>
 		<contributor>
-			<name>Sébastien Gringoire</name>
+			<name>SÃ©bastien Gringoire</name>
 			<roles><role>Design, some early developments</role></roles>
 		</contributor>
 		<contributor>
@@ -238,7 +238,7 @@
 			<email>kournikola@users.sourceforge.net</email>
 		</contributor>
 		<contributor>
-			<name>Aurélien Pedron</name>
+			<name>AurÃ©lien Pedron</name>
 			<roles><role>Bug reports, qualification</role></roles>
 		</contributor>
 		<contributor>

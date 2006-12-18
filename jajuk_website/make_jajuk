@@ -105,4 +105,6 @@ cp /tmp/downloads.html .
 
 #Apply CSS styles
 cp $WEBSITE_SOURCE/styles/* $DOC_DEST/style/
+#Update PAD file
+cp $WEBSITE_SOURCE/jajuk_pad.xml $DOC_DEST
 fi
