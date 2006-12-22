@@ -25,47 +25,6 @@
 
 <body style="direction: ltr;" lang="en-US">
 
-<script type="text/javascript">
-var global = this;
-
-function getRequestObject() {
-var request = null;
-
-if( ('object' == typeof global.XMLHttpRequest)
-|| ('function' == typeof global.XMLHttpRequest))
-{
-request = new XMLHttpRequest();
-} else if('function' == typeof global.ActiveXObject) {
-/*@cc_on @*/
-/*@if(@_jscript_version >= 5)
-try {
-request = new ActiveXObject('Msxml2.XMLHTTP');
-} catch(e) {
-try {
-request = new ActiveXObject('Microsoft.XMLHTTP');
-} catch(e) {
-request = null;
-}
-}
-@end @*/
-}
-return (request && ('object' == typeof request))
-? request
-: null;
-}
-
-var httpRequest = getRequestObject(),
-url = 'http://82.239.70.252:8001/jajuk/downloads_home.html';
-
-if(httpRequest) {
-httpRequest.open('HEAD', url, false);
-httpRequest.send(null);
-
-if(404 != httpRequest.status) {
-location.replace(url);
-}
-}
-</script>
 
 <h1 lang="en-GB">Jajuk downloads</h1>
 

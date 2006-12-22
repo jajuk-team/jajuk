@@ -110,6 +110,7 @@ NEW LANGUAGE PROCEDURE
 API ADDITION PROCEDURE
 - Add jar in MANIFEST
 - Change project.xml maven file for dependencies
+- Install the jar in the maven repository: mvn install:install-file -DgroupId=CommonsCollection -DartifactId=commons-collections -Dversion=3.2 -Dpackaging=jar -Dfile=commons-collections-3.2.jar
 - Add jnlp file 
 - Update jajuk.jnlp file
 - Sign all new jars (jarsigner myjar.jar jajukteam)
@@ -119,6 +120,7 @@ API ADDITION PROCEDURE
 API CHANGE PROCEDURE
 - Change dist-files/packaging/MANIFEST (check new versions)
 - Change JAJUK_WEBSITE project/project.xml maven file for dependencies
+- Install the jar in the maven repository: mvn install:install-file -DgroupId=CommonsCollection -DartifactId=commons-collections -Dversion=3.2 -Dpackaging=jar -Dfile=commons-collections-3.2.jar
 - Change packaging/jnlp/jnlp file
 - Sign all jar (jarsigner myjar.jar jajukteam)
 

@@ -7,38 +7,38 @@
       <a href='http://sourceforge.net'> <IMG src='http://sourceforge.net/sflogo.php?group_id=91412&amp;type=5' width='210' height='62' border='0' alt='SourceForge.net Logo' /></a>
     </footer>
     <links>
-      <item name='Download' href='./downloads.html' />
-      <item name='Features' href='./features.html' />
-      <item name='Screenshots' href='./screenshots.html' />
+      <item name='Download' href='http://jajuk.sourceforge.net/downloads.html' />
+      <item name='Features' href='http://jajuk.sourceforge.net/features.html' />
+      <item name='Screenshots' href='http://jajuk.sourceforge.net/screenshots.html' />
       <item name='Sourceforge Jajuk page' href='http://sourceforge.net/projects/jajuk/' />
     </links>
     <menu name='Overview'>
-      <item name='-Home-' href='./index.html' />      
-      <item name='Download' href='./downloads.html' />
-      <item name='Features' href='./features.html' />
-      <item name='Screenshots' href='./screenshots.html' />
+      <item name='-Home-' href='http://jajuk.sourceforge.net/index.html' />      
+      <item name='Download' href='http://jajuk.sourceforge.net/downloads.html' />
+      <item name='Features' href='http://jajuk.sourceforge.net/features.html' />
+      <item name='Screenshots' href='http://jajuk.sourceforge.net/screenshots.html' />
       <item name='Support / Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
       <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
-      <item name='Media coverage' href='./references.html' />
+      <item name='Media coverage' href='http://jajuk.sourceforge.net/references.html' />
     </menu>
     <search/>
     <menu name='Documentation'>
-      <item name='Installation' href='./installation.html' />
-      <item name='Jajuk manual' href='./manuals.html' />
-      <item name='FAQ' href='./faq.html' />
+      <item name='Installation' href='http://jajuk.sourceforge.net/installation.html' />
+      <item name='Jajuk manual' href='http://jajuk.sourceforge.net/manuals.html' />
+      <item name='FAQ' href='http://jajuk.sourceforge.net/faq.html' />
       <item name="Get Java" href="http://java.com/java/download/index.jsp?cid=jdp77505" img="http://java.com/en/img/everywhere/getjava_med.gif?cid=jdp77505"/>
     </menu>
     <menu name='Project'>
-      <item name='Changelog' href='./changes-report.html' />
-      <item name='Roadmap' href='./roadmap.html' />
-      <item name='Help wanted' href='./jobs.html' />
-      <item name='Developer guide' href='./developer_guide.html' />
-      <item name='Translator guide' href='./translation_howto.html' />
-      <item name='Tester guide' href='./tester_guide.html' />
-      <item name='Brand Identity Guidelines' href='./jajuk_bi_quidelines.html' />
-      <item name='Team' href='./team-list.html' />      
-      <item name='Dependencies' href='./jajuk_dependencies.html' />
-      <item name='Code statistics' href='./statcvs-xml-out/index.html' />
+      <item name='Changelog' href='http://jajuk.sourceforge.net/changes-report.html' />
+      <item name='Roadmap' href='http://jajuk.sourceforge.net/roadmap.html' />
+      <item name='Help wanted' href='http://jajuk.sourceforge.net/jobs.html' />
+      <item name='Developer guide' href='http://jajuk.sourceforge.net/developer_guide.html' />
+      <item name='Translator guide' href='http://jajuk.sourceforge.net/translation_howto.html' />
+      <item name='Tester guide' href='http://jajuk.sourceforge.net/tester_guide.html' />
+      <item name='Brand Identity Guidelines' href='http://jajuk.sourceforge.net/jajuk_bi_quidelines.html' />
+      <item name='Team' href='http://jajuk.sourceforge.net/team-list.html' />      
+      <item name='Dependencies' href='http://jajuk.sourceforge.net/jajuk_dependencies.html' />
+      <item name='Code statistics' href='http://jajuk.sourceforge.net/statcvs-xml-out/index.html' />
     </menu>
    </body>
 </project>

@@ -27,11 +27,6 @@ color:#34363b;
 text-decoration: none;
 }
 
-a.externalLink, a.externalLink:link, a.externalLink:visited, a.externalLink:active, a.externalLink:hover {
-background: url(../images/external.png) right center no-repeat;
-padding-right: 15px;
-}
-
 a.newWindow, a.newWindow:link, a.newWindow:visited, a.newWindow:active, a.newWindow:hover {
 background: url(../images/newwindow.png) right center no-repeat;
 padding-right: 18px;

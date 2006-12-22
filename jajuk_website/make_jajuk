@@ -26,7 +26,7 @@ fi
 
 ### PDF TASK ####
 if [ "$1" = "pdf" ]; then
- maven pdf
+ mvn pdf
  exit 0
 fi
 
@@ -46,8 +46,7 @@ rm -rf $XDOC_DEST/*
 
 #Copy doc files
 
-cp -p $WEBSITE_SOURCE/project.xml $MAVEN_DIR
-cp -p $WEBSITE_SOURCE/maven.xml $MAVEN_DIR
+cp -p $WEBSITE_SOURCE/pom.xml $MAVEN_DIR
 cp -p $WEBSITE_SOURCE/project.properties $MAVEN_DIR
 cp -p $WEBSITE_SOURCE/LICENSE.txt $MAVEN_DIR
 
@@ -75,7 +74,7 @@ cp -rp $WEBSITE_SOURCE/images/* $DOC_DEST/images/
 cp -rp $WEBSITE_SOURCE/new $XDOC_DEST/
 
 cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.js $WEBSITE_SOURCE/*.fml $XDOC_DEST
-rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
+rm $XDOC_DEST/pom.xml $XDOC_DEST/maven.xml
 #replace official qdwizard page by a notice
 cp $WEBSITE_SOURCE/qdwizard_info.html $XDOC_DEST/QDWizard.html
 
@@ -91,7 +90,7 @@ java -Xmx256M -jar $STATCVS_JAR -output-dir $XDOC_DEST/statcvs-xml-out -renderer
 maven announcement
 
 #Web site generation
-maven site
+mvn site
 
 #Replace variables
 cd $DOC_DEST

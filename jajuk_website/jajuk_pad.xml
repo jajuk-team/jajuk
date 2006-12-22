@@ -95,7 +95,7 @@ Jajuk main principles are :
 			<Application_XML_File_URL>http://jajuk.sourceforge.net/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.3.1-win32.exe?download&amp;target=jajuk.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.3.1.1-win32.exe?download&amp;target=jajuk.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
