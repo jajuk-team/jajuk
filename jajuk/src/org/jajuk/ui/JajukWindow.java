@@ -20,10 +20,9 @@
 
 package org.jajuk.ui;
 
-import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
@@ -45,7 +44,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXFrame;
 
 /**
  * Jajuk main window
@@ -55,7 +53,7 @@ import org.jdesktop.swingx.JXFrame;
  * @author Bertrand Florat
  * @created 23 mars 2004
  */
-public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer {
+public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -91,10 +89,8 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 		// System.setProperty( "apple.laf.useScreenMenuBar","true");
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP, true);
-		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getWidth());
-		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getHeight());
+		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
 		setIconImage(Util.getIcon(ICON_LOGO_FRAME).getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -116,6 +112,7 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 				Main.exit(0);
 			}
 		});
+
 		// display correct title if a track is launched at startup
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
 				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
@@ -128,11 +125,12 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 		return eventSubjectSet;
 	}
 
+	/**
+	 * Look for frame size change to save it
+	 * 
+	 */
 	public void addComponentListener() {
-		addComponentListener(new ComponentListener() {
-
-			public void componentShown(ComponentEvent e) {
-			}
+		addComponentListener(new ComponentAdapter() {
 
 			public void componentResized(ComponentEvent e) {
 				saveSize();
@@ -141,10 +139,6 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 			public void componentMoved(ComponentEvent e) {
 				saveSize();
 			}
-
-			public void componentHidden(ComponentEvent e) {
-			}
-
 		});
 	}
 
@@ -153,14 +147,11 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 	 * 
 	 */
 	private void saveSize() {
-		Rectangle rec = getBounds();
-		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, (int) rec
-				.getMinX()
-				+ "," //$NON-NLS-1$
-				+ (int) rec.getMinY()
-				+ "," //$NON-NLS-1$
-				+ (int) rec.getWidth()
-				+ "," + (int) rec.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String sValue = (int) Math.abs(getLocationOnScreen().getX()) + "," //$NON-NLS-1$
+				+ (int) Math.abs(getLocationOnScreen().getY()) + "," //$NON-NLS-1$
+				+ (int) getSize().getWidth() + "," + (int) getSize().getHeight();
+		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		Log.debug("Frame moved or resized, new bounds=" + sValue);
 	}
 
 	/**
@@ -169,20 +160,17 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 	 */
 	public void applyStoredSize() {
 		// read stored position and size
-		String sPosition = ConfigurationManager
-				.getProperty(CONF_WINDOW_POSITION);
+		String sPosition = ConfigurationManager.getProperty(CONF_WINDOW_POSITION);
 		StringTokenizer st = new StringTokenizer(sPosition, ","); //$NON-NLS-1$
 		int iX = Integer.parseInt(st.nextToken());
 		int iY = Integer.parseInt(st.nextToken());
 		int iXsize = Integer.parseInt(st.nextToken());
 		if (iXsize == 0) { // if zero, display max size
-			iXsize = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-					.getWidth());
+			iXsize = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		}
 		int iYsize = Integer.parseInt(st.nextToken());
 		if (iYsize == 0) {// if zero, display max size
-			iYsize = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-					.getHeight());
+			iYsize = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		}
 		setLocation(iX, iY);
 		setSize(iXsize, iYsize);
@@ -247,9 +235,10 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings, Observer 
 				// show
 				if (visible) {
 					applyStoredSize();
-					//setVisible(true) must be done after setSize to be right
+					// setVisible(true) must be done after setSize to be right
 					setVisible(true);
-					//Wait some time and set size again to fix the half screen issue
+					// Wait some time and set size again to fix the half screen
+					// issue
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {

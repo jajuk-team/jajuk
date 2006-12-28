@@ -2,13 +2,11 @@
 <toc version="2.0">
 <tocitem text="Aide Jajuk">
    	<tocitem text="Introduction" target="top"/>
-	<tocitem text="Formats supportés" target="formats"/>
-	<tocitem text="Performances" target="perfs"/>
-   	<tocitem text="Notions générales" expand="true">
+		<tocitem text="Notions générales" expand="true">
 		<tocitem text="Vues et perspectives" target="pav"/>
    		<tocitem text="Utiliser les supports" target="devices"/>
 		<tocitem text="Jouer de la musique" target="pm"/>
-   		<tocitem text="Utiliser les playlistes" target="up"/>
+   		<tocitem text="Utiliser les listes de lecture" target="up"/>
   		<tocitem text="Modifier les tags et attributs" target="editing"/>
 		<tocitem text="Utiliser les DJs" target="dj"/>
 	 	<tocitem text="Utiliser le tray" target="tray"/>
@@ -22,8 +20,8 @@
 		<tocitem text="La vue Arbre Physique" target="view_physical_tree"/>
 		<tocitem text="La vue Arbre Logique" target="view_logical_tree"/>
 		<tocitem text="La vue Table Physique/Logique" target="view_table"/>
-		<tocitem text="La vue Référentiel de playlistes" target="view_playlist_repository"/>
-		<tocitem text="La vue Editeur de playlistes" target="view_playlist_editor"/>
+		<tocitem text="La vue Référentiel de listes de lecture" target="view_playlist_repository"/>
+		<tocitem text="La vue Editeur de listes de lecture" target="view_playlist_editor"/>
 		<tocitem text="La vue Pochettes" target="view_cover"/>
 		<tocitem text="La vue Catalogue" target="view_catalog"/>
 		<tocitem text="La vue Animation" target="view_animation"/>
@@ -35,5 +33,10 @@
 		<tocitem text="La vue Aide" target="view_help"/>
 		<tocitem text="La vue A Propos" target="view_about"/>
 	</tocitem>
+	<tocitem text="Technique"  expand="true">
+		<tocitem text="Formats supportés" target="formats"/>
+		<tocitem text="Performances" target="perfs"/>
+  	</tocitem>
+	
 </tocitem>
 </toc>

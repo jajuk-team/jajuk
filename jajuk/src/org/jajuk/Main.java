@@ -545,6 +545,7 @@ public class Main implements ITechnicalStrings {
 					try {
 						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
 						File fMPlayer = new File(FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE); //$NON-NLS-1$
+						sc.setProgress(5, Messages.getString("Main.22")); //$NON-NLS-1$
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						// make sure to delete corrupted mplayer in case of
 						// download problem

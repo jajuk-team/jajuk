@@ -766,8 +766,6 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		new File(getMountPoint());
 		if (!bMounted) {
 			Messages.showErrorMessage("125"); // already unmounted
-			// //$NON-NLS-1$
-			// //$NON-NLS-1$
 			return;
 		}
 		// ask fifo if it doens't use any track from this device
@@ -775,10 +773,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			Messages.showErrorMessage("121"); //$NON-NLS-1$
 			return;
 		}
-		String sOS = (String) System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows") == -1 && !getMountPoint().trim().equals("")) { 
-			// not  a windows
+		if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
+			// not a windows
 			try {
 				// we try to unmount the device if under Unix. Note that this is
 				// useless most of the time with Linux 2.6+, so it's just a try
@@ -837,7 +834,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				Iterator it = FileManager.getInstance().getFiles().iterator();
 				while (it.hasNext()) {
 					org.jajuk.base.File f = (org.jajuk.base.File) it.next();
-					if (f.getDirectory().getDevice().equals(this)) { 
+					if (f.getDirectory().getDevice().equals(this)) {
 						// at least one field in this device
 						bVoid = false;
 						break;
@@ -1002,7 +999,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		}
 		// clear history to remove olf files referenced in it
 		History.getInstance().clear(
-				Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); 
+				Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY)));
 		// delete old history items
 
 		l = System.currentTimeMillis() - l;

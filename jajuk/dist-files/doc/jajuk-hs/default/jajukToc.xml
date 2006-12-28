@@ -2,8 +2,6 @@
 <toc version="2.0">
 	<tocitem text="Jajuk Help">
 		<tocitem text="Introduction" target="top"/>
-		<tocitem text="Supported formats" target="formats"/>
-		<tocitem text="Performance tips" target="perfs"/>
 		<tocitem text="General use" expand="true">
 			<tocitem text="Perspectives and views" target="pav"/>
 			<tocitem text="Using devices" target="devices"/>
@@ -34,6 +32,10 @@
 			<tocitem text="The Statistics view" target="view_stats"/>
 			<tocitem text="The Help view" target="view_help"/>
 			<tocitem text="The About view" target="view_about"/>
+		</tocitem>
+		<tocitem text="Technical"  expand="true">
+			<tocitem text="Supported formats" target="formats"/>
+			<tocitem text="Performance tips" target="perfs"/>
 		</tocitem>
 	</tocitem>
 </toc>

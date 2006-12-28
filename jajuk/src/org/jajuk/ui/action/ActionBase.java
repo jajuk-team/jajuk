@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -153,7 +154,8 @@ public abstract class ActionBase extends AbstractAction implements
 	 */
 	protected ActionBase(String pName, Icon icon, KeyStroke stroke,
 			boolean enabled, boolean bHotkey) {
-		this.bHotkey = bHotkey;
+		//check hotkeys are enabled (false by default)
+		this.bHotkey = bHotkey && ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
 		String name = pName;
 		if (name != null) {
 			int mnemonic = ActionUtil.getMnemonic(name);
@@ -167,7 +169,7 @@ public abstract class ActionBase extends AbstractAction implements
 			setIcon(icon);
 		}
 		if (stroke != null) {
-			if (Util.isUnderWindows() & bHotkey) {
+			if (Util.isUnderWindows() && this.bHotkey) {
 				// under windows, use hotkey that can be used even when window
 				// has not the focus. Note that all keys are nor hotkeys (given
 				// by bHotkey flag)
@@ -488,7 +490,11 @@ public abstract class ActionBase extends AbstractAction implements
 
 	// listen for hotkey
 	public void onHotKey(int aIdentifier) {
-		// check it is the right listener that caught the event
+		//Leave if user disabled hotkeys
+        if (!ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS)){
+		    return;
+        }
+        // check it is the right listener that caught the event
 		if (this.equals(hmIndexAction.get(aIdentifier))) {
 			try {
 				// Call action itself

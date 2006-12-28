@@ -209,7 +209,7 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
 
-	public static final String URL_MPLAYER = "http://82.239.70.252/mplayer/1.0pre8/mplayer.exe";
+	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
 	
 	// About
 	public static final String ABOUT = "<html>Jajuk version " + JAJUK_VERSION
@@ -241,12 +241,10 @@ public interface ITechnicalStrings {
 	public static final URL ICON_TRAY = Util
 			.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
 	
+	//Correctly displayed under JRE 1.6, ugly under Linux/JRE 1.5 
 	public static final URL ICON_LOGO_FRAME = Util
 			.getResource("org/jajuk/icons/16x16/jajuk-icon_16x16.png");
 	
-	public static final URL ICON_VIEW = Util
-			.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
-
 	public static final URL ICON_REPEAT = Util
 			.getResource("org/jajuk/icons/16x16/repeat.png");
 
@@ -1171,6 +1169,9 @@ public interface ITechnicalStrings {
 	// animation pattern
 	public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
 
+	// Hotkeys flag
+	public static final String CONF_OPTIONS_HOTKEYS = "false";
+	
 	// Shuffle/novelties mode
 	public static final String MODE_ALBUM = "album";
 

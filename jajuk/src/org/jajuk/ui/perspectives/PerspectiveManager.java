@@ -22,6 +22,7 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -40,9 +41,10 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.browser.BrowserEngineManager;
-import org.jdesktop.jdic.browser.WebBrowser;
+import org.mozilla.xpcom.GREVersionRange;
+import org.mozilla.xpcom.IAppFileLocProvider;
+import org.mozilla.xpcom.Mozilla;
+import org.mozilla.xpcom.XPCOMException;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -54,285 +56,307 @@ import com.vlsolutions.swing.toolbars.ToolBarPanel;
  * @version 1.0
  * @created 14 nov. 03
  */
-public class PerspectiveManager implements ITechnicalStrings {
-    /** Current perspective */
-    private static IPerspective currentPerspective = null;
+public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider {
+	/** Current perspective */
+	private static IPerspective currentPerspective = null;
 
-    /** Perspective name -> perspective */
-    private static HashMap<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(
-            10);
+	/** Perspective name -> perspective */
+	private static HashMap<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(
+			10);
 
-    /** perspective */
-    private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
+	/** perspective */
+	private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
-    /** Date used by probe */
-    private static long lTime;
+	/** Date used by probe */
+	private static long lTime;
 
-    /** Temporary perspective name used when parsing */
-    private static String sPerspectiveName;
+	/** Temporary perspective name used when parsing */
+	private static String sPerspectiveName;
 
-    /**
-     * Reset registered perspectives
-     * 
-     */
-    private static void reset() {
-        perspectives.clear();
-        hmNameInstance.clear();
-    }
+	/**
+	 * Reset registered perspectives
+	 * 
+	 */
+	private static void reset() {
+		perspectives.clear();
+		hmNameInstance.clear();
+	}
 
-    /**
-     * Load configuration file
-     * 
-     * @throws JajukException
-     */
-    public static void load() throws JajukException {
-        // si fichiers existent, decouverte dynamique
-        // si aucun fichier ou si nouvelle version majeure, lecture des fichiers
-        // defaut du jar
-        registerDefaultPerspectives();
-        if (Main.isUpgradeDetected()) {
-            // upgrade message
-            Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
-            // force loadinf of defaults perspectives
-            for (IPerspective perspective : getPerspectives()) {
-                // Remove current conf file to force using default file from the
-                // jar
-                File loadFile = new File(FILE_JAJUK_DIR + '/' + perspective.getClass().getName()
-                        + ".xml");
-                if (loadFile.exists()) {
-                    loadFile.delete();
-                }
-            }
-        }
-        // Load each perspective
-        try {
-            for (IPerspective perspective : getPerspectives()) {
-                perspective.load();
-            }
-        } catch (Exception e) {
-            throw new JajukException("108", e); //$NON-NLS-1$
-        }
-    }
+	/**
+	 * Load configuration file
+	 * 
+	 * @throws JajukException
+	 */
+	public static void load() throws JajukException {
+		// si fichiers existent, decouverte dynamique
+		// si aucun fichier ou si nouvelle version majeure, lecture des fichiers
+		// defaut du jar
+		registerDefaultPerspectives();
+		if (Main.isUpgradeDetected()) {
+			// upgrade message
+			Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
+			// force loadinf of defaults perspectives
+			for (IPerspective perspective : getPerspectives()) {
+				// Remove current conf file to force using default file from the
+				// jar
+				File loadFile = new File(FILE_JAJUK_DIR + '/' + perspective.getClass().getName()
+						+ ".xml");
+				if (loadFile.exists()) {
+					loadFile.delete();
+				}
+			}
+		}
+		// Load each perspective
+		try {
+			for (IPerspective perspective : getPerspectives()) {
+				perspective.load();
+			}
+		} catch (Exception e) {
+			throw new JajukException("108", e); //$NON-NLS-1$
+		}
+	}
 
-    /**
-     * Begins management
-     */
-    public static void init() {
-        // Use physical perspective as a default
-        IPerspective perspective = hmNameInstance.get(PERSPECTIVE_NAME_PHYSICAL);
-        // If it is a crash recover, force physical perspective to avoid
-        // being locked on a buggy perspecive like Information
-        if (!Main.isCrashRecover()) {
-            String sPerspective = Main.getDefaultPerspective();
-            /*
-             * take a look to see if a default perspective is set (About tray for exemple)
-             */
-            if (sPerspective == null) {
-                sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT);
-                // no? take the configuration ( user last perspective)
-            }
-            perspective = hmNameInstance.get(sPerspective);
-            // If perspective is no more known, take first perspective found
-            if (perspective == null) {
-                perspective = perspectives.iterator().next();
-            }
-        }
-        setCurrentPerspective(perspective);
-    }
+	/**
+	 * Begins management
+	 */
+	public static void init() {
+		// Use physical perspective as a default
+		IPerspective perspective = hmNameInstance.get(PERSPECTIVE_NAME_PHYSICAL);
+		// If it is a crash recover, force physical perspective to avoid
+		// being locked on a buggy perspecive like Information
+		if (!Main.isCrashRecover()) {
+			String sPerspective = Main.getDefaultPerspective();
+			/*
+			 * take a look to see if a default perspective is set (About tray
+			 * for exemple)
+			 */
+			if (sPerspective == null) {
+				sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT);
+				// no? take the configuration ( user last perspective)
+			}
+			perspective = hmNameInstance.get(sPerspective);
+			// If perspective is no more known, take first perspective found
+			if (perspective == null) {
+				perspective = perspectives.iterator().next();
+			}
+		}
+		setCurrentPerspective(perspective);
+	}
 
-    /*
-     * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
-     */
-    public static IPerspective getCurrentPerspective() {
-        return currentPerspective;
-    }
+	/*
+	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
+	 */
+	public static IPerspective getCurrentPerspective() {
+		return currentPerspective;
+	}
 
-    /*
-     * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
-     */
-    public static void setCurrentPerspective(final IPerspective perspective) {
-        Util.waiting();
-        // views display
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                perspective.setAsBeenSelected(true);
-                currentPerspective = perspective;
-                for (IView view : perspective.getViews()) {
-                    if (!view.isPopulated()) {
-                        view.initUI();
-                        view.setIsPopulated(true);
-                    }
-                }
-                ToolBarContainer tbcontainer = Main.getToolbarContainer();
-                // Remove all non-toolbar items
-                if (tbcontainer.getComponentCount() > 0) {
-                    Component[] components = tbcontainer.getComponents();
-                    for (int i = 0; i < components.length; i++) {
-                        if (!(components[i] instanceof ToolBarPanel)) {
-                            tbcontainer.remove(components[i]);
-                        }
-                    }
-                }
-                tbcontainer.add(perspective.getContentPane(), BorderLayout.CENTER);
-                // refresh UI
-                tbcontainer.revalidate();
-                tbcontainer.repaint();
-                // Select right item in perspective selector
-                PerspectiveBarJPanel.getInstance().setActivated(perspective);
-                // store perspective selection
-                ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
-                Util.stopWaiting();
-                // Emit a event
-                ObservationManager.notify(new Event(EventSubject.EVENT_PERPECTIVE_CHANGED,
-                        ObservationManager
-                                .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
-            }
-        });
-    }
+	/*
+	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
+	 */
+	public static void setCurrentPerspective(final IPerspective perspective) {
+		Util.waiting();
+		// views display
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				perspective.setAsBeenSelected(true);
+				currentPerspective = perspective;
+				for (IView view : perspective.getViews()) {
+					if (!view.isPopulated()) {
+						view.initUI();
+						view.setIsPopulated(true);
+					}
+				}
+				ToolBarContainer tbcontainer = Main.getToolbarContainer();
+				// Remove all non-toolbar items
+				if (tbcontainer.getComponentCount() > 0) {
+					Component[] components = tbcontainer.getComponents();
+					for (int i = 0; i < components.length; i++) {
+						if (!(components[i] instanceof ToolBarPanel)) {
+							tbcontainer.remove(components[i]);
+						}
+					}
+				}
+				tbcontainer.add(perspective.getContentPane(), BorderLayout.CENTER);
+				// refresh UI
+				tbcontainer.revalidate();
+				tbcontainer.repaint();
+				// Select right item in perspective selector
+				PerspectiveBarJPanel.getInstance().setActivated(perspective);
+				// store perspective selection
+				ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
+				Util.stopWaiting();
+				// Emit a event
+				ObservationManager.notify(new Event(EventSubject.EVENT_PERPECTIVE_CHANGED,
+						ObservationManager
+								.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+			}
+		});
+	}
 
-    /**
-     * Set current perspective
-     * 
-     * @param sPerspectiveName
-     */
-    public static void setCurrentPerspective(String sPerspectiveID) {
-        IPerspective perspective = hmNameInstance.get(sPerspectiveID);
-        if (perspective == null) {
-            perspective = perspectives.iterator().next();
-        }
-        setCurrentPerspective(perspective);
-    }
+	/**
+	 * Set current perspective
+	 * 
+	 * @param sPerspectiveName
+	 */
+	public static void setCurrentPerspective(String sPerspectiveID) {
+		IPerspective perspective = hmNameInstance.get(sPerspectiveID);
+		if (perspective == null) {
+			perspective = perspectives.iterator().next();
+		}
+		setCurrentPerspective(perspective);
+	}
 
-    /**
-     * Get all perspectives
-     * 
-     * @return all perspectives as a collection
-     */
-    public static Set<IPerspective> getPerspectives() {
-        return perspectives;
-    }
+	/**
+	 * Get all perspectives
+	 * 
+	 * @return all perspectives as a collection
+	 */
+	public static Set<IPerspective> getPerspectives() {
+		return perspectives;
+	}
 
-    /**
-     * Get a perspective by ID or null if none associated perspective found
-     * 
-     * @param sID
-     *            perspective ID
-     * @return pespective
-     */
-    public static IPerspective getPerspective(String sID) {
-        return hmNameInstance.get(sID);
-    }
+	/**
+	 * Get a perspective by ID or null if none associated perspective found
+	 * 
+	 * @param sID
+	 *            perspective ID
+	 * @return pespective
+	 */
+	public static IPerspective getPerspective(String sID) {
+		return hmNameInstance.get(sID);
+	}
 
-    /**
-     * Saves perspectives and views position in the perspective.xml file
-     */
-    public static void commit() throws Exception {
-        for (IPerspective perspective : getPerspectives()) {
-            perspective.commit();
-        }
-    }
+	/**
+	 * Saves perspectives and views position in the perspective.xml file
+	 */
+	public static void commit() throws Exception {
+		for (IPerspective perspective : getPerspectives()) {
+			perspective.commit();
+		}
+	}
 
-    /**
-     * Register default perspective configuration. Will be overwritten by perspective.xml parsing if it exists
-     * 
-     */
-    public static void registerDefaultPerspectives() {
-        reset();
+	/**
+	 * Register default perspective configuration. Will be overwritten by
+	 * perspective.xml parsing if it exists
+	 * 
+	 */
+	public static void registerDefaultPerspectives() {
+		reset();
 
-        IPerspective perspective = null;
-        // physical perspective
-        perspective = new PhysicalPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
-        perspective.setID(PERSPECTIVE_NAME_PHYSICAL);
-        registerPerspective(perspective);
+		IPerspective perspective = null;
+		// physical perspective
+		perspective = new PhysicalPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
+		perspective.setID(PERSPECTIVE_NAME_PHYSICAL);
+		registerPerspective(perspective);
 
-        // Logical perspective
-        perspective = new LogicalPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
-        perspective.setID(PERSPECTIVE_NAME_LOGICAL);
-        registerPerspective(perspective);
+		// Logical perspective
+		perspective = new LogicalPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
+		perspective.setID(PERSPECTIVE_NAME_LOGICAL);
+		registerPerspective(perspective);
 
-        // Player perspective
-        perspective = new PlayerPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
-        perspective.setID(PERSPECTIVE_NAME_PLAYER);
-        registerPerspective(perspective);
+		// Player perspective
+		perspective = new PlayerPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
+		perspective.setID(PERSPECTIVE_NAME_PLAYER);
+		registerPerspective(perspective);
 
-        // Catalog perspective
-        perspective = new CatalogPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_CATALOG);
-        perspective.setID(PERSPECTIVE_NAME_CATALOG);
-        registerPerspective(perspective);
+		// Catalog perspective
+		perspective = new CatalogPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_CATALOG);
+		perspective.setID(PERSPECTIVE_NAME_CATALOG);
+		registerPerspective(perspective);
 
-        // Information perspective
-        // Load info perspective only for windows or x86 linux
-        if (Util.isUnderWindows()) {
-            // No need to test, we are sure to find IE under windows
-            perspective = new InfoPerspective();
-            perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
-            perspective.setID(PERSPECTIVE_NAME_INFO);
-            registerPerspective(perspective);
-            // force using IE under Windows to avoid freezes
-            BrowserEngineManager.instance().setActiveEngine(BrowserEngineManager.IE);
-        } else if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
-            try {
-                /*
-                 * Check mozilla executable is available in the PATH (exec() method uses PATH natively). Don't autorize to install this perspective if mozilla is not present as it can causes freezes
-                 */
-                Process proc = Runtime.getRuntime().exec(new String[] { "mozilla", "--version" });
-                int out = proc.waitFor();
-                /*
-                 * mozilla available ? / 0 return code means mozilla is found and is a binary / 1 return code means mozilla is found but cannot be executed under JNLP because it is a sh script but we don't care it cannot be executed, we just test its presence
-                 */
-                if (out == 0 || out == 1) {
-                    // Now check browser can actually be loaded by JDIC
-                    WebBrowser browser = new WebBrowser();
-                    if (browser.getBrowserEngine() == null) {
-                        Log.debug("Brower engine: " + browser.getBrowserEngine());
-                        throw new Exception("Cannot execute mozilla");
-                    }
-                    // OK, create the perspective
-                    perspective = new InfoPerspective();
-                    perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
-                    perspective.setID(PERSPECTIVE_NAME_INFO);
-                    registerPerspective(perspective);
-                } else {
-                    throw new Exception("Cannot execute mozilla");
-                }
-            } catch (Exception e) {
-                Log.debug("No mozilla available, disable InfoPerspective");
-            }
-        }
+		// Information perspective
+		// Load info perspective only for windows or x86 linux
+		/*
+		 * if (Util.isUnderWindows()) { // No need to test, we are sure to find
+		 * IE under windows perspective = new InfoPerspective();
+		 * perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
+		 * perspective.setID(PERSPECTIVE_NAME_INFO);
+		 * registerPerspective(perspective); // force using IE under Windows to
+		 * avoid freezes
+		 * BrowserEngineManager.instance().setActiveEngine(BrowserEngineManager.IE); }
+		 * else if (Util.isUnderLinux() &&
+		 * System.getProperty("os.arch").equals("i386")) { try { //Check mozilla
+		 * executable is available in the PATH (exec() method uses PATH
+		 * natively). Don't autorize to install this perspective if mozilla is
+		 * not present as it can causes freezes Process proc =
+		 * Runtime.getRuntime().exec(new String[] { "mozilla", "--version" });
+		 * int out = proc.waitFor(); //mozilla available ? / 0 return code means
+		 * mozilla is found and is a binary / 1 return code means mozilla is
+		 * found but cannot be executed under JNLP because it is a sh script but
+		 * we don't care it cannot be executed, we just test its presence if
+		 * (out == 0 || out == 1) { // Now check browser can actually be loaded
+		 * by JDIC WebBrowser browser = new WebBrowser(); if
+		 * (browser.getBrowserEngine() == null) { Log.debug("Brower engine: " +
+		 * browser.getBrowserEngine()); throw new Exception("Cannot execute
+		 * mozilla"); } // OK, create the perspective perspective = new
+		 * InfoPerspective();
+		 * perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
+		 * perspective.setID(PERSPECTIVE_NAME_INFO);
+		 * registerPerspective(perspective); } else { throw new
+		 * Exception("Cannot execute mozilla"); } } catch (Exception e) {
+		 * Log.debug("No mozilla available, disable InfoPerspective"); } }
+		 */
+		Mozilla mozilla = Mozilla.getInstance();
+		GREVersionRange[] range = new GREVersionRange[1];
+		range[0] = new GREVersionRange("1.8.0", true, "1.9", false);
+		// work with trunk nightly version 1.9a1 ^^
 
-        // Configuration perspective
-        perspective = new ConfigurationPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
-        perspective.setID(PERSPECTIVE_NAME_CONFIGURATION);
-        registerPerspective(perspective);
+	/*	try {
+			File grePath = Mozilla.getGREPathWithProperties(range, null);
+			mozilla.initEmbedding(grePath, grePath, this);
+		} catch (FileNotFoundException e) {
+			// this exception is thrown if greGREPathWithProperties cannot find
+			// a GRE
+		} catch (XPCOMException e) {
+			// this exception is thrown if initEmbedding failed
+		}*/
 
-        // Stats perspective
-        perspective = new StatPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_STATISTICS);
-        perspective.setID(PERSPECTIVE_NAME_STATISTICS);
-        registerPerspective(perspective);
+		// Configuration perspective
+		perspective = new ConfigurationPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
+		perspective.setID(PERSPECTIVE_NAME_CONFIGURATION);
+		registerPerspective(perspective);
 
-        // Help perspective
-        perspective = new HelpPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_HELP);
-        perspective.setID(PERSPECTIVE_NAME_HELP);
-        registerPerspective(perspective);
-    }
+		// Stats perspective
+		perspective = new StatPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_STATISTICS);
+		perspective.setID(PERSPECTIVE_NAME_STATISTICS);
+		registerPerspective(perspective);
 
-    /**
-     * Register a new perspective
-     * 
-     * @param perspective
-     * @return registered perspective
-     */
-    public static IPerspective registerPerspective(IPerspective perspective) {
-        hmNameInstance.put(perspective.getID(), perspective);
-        perspectives.add(perspective);
-        return perspective;
-    }
+		// Help perspective
+		perspective = new HelpPerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_HELP);
+		perspective.setID(PERSPECTIVE_NAME_HELP);
+		registerPerspective(perspective);
+	}
 
-}
+	/**
+	 * Register a new perspective
+	 * 
+	 * @param perspective
+	 * @return registered perspective
+	 */
+	public static IPerspective registerPerspective(IPerspective perspective) {
+		hmNameInstance.put(perspective.getID(), perspective);
+		perspectives.add(perspective);
+		return perspective;
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see org.mozilla.xpcom.IAppFileLocProvider#getFile(java.lang.String, boolean[])
+	 */
+	public File getFile(String prop, boolean[] persistent) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.mozilla.xpcom.IAppFileLocProvider#getFiles(java.lang.String)
+	 */
+	public File[] getFiles(String prop) {
+		return null;
+	}}

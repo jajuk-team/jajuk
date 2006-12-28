@@ -280,14 +280,11 @@ public class Directory extends Item implements Comparable {
 		}
 		for (int i = 0; i < files.length; i++) {
 			try { // check errors for each file
-				// check date, file modified before
+				// Note date for file date property. CAUTION: do not try to
+				// check current date to accelerate refreshing if file has not
+				// been modified since last refresh as user can rename a parent
+				// directory and the files are not modified
 				long lastModified = files[i].lastModified();
-				// Look at the file in all cases (deep or not) if it is newer
-				// than last deep refresh
-				if (lastModified < DeviceManager.getInstance().getDateLastGlobalRefresh()
-						&& !bDeepScan) {
-					continue;
-				}
 				// Check file name is correct (usefull to fix name encoding
 				// issues)
 				if (!new File(files[i].getAbsolutePath()).exists()) {
@@ -388,7 +385,7 @@ public class Directory extends Item implements Comparable {
 	 */
 	public String getRelativePath() {
 		if (getName().equals("")) { // if this directory is a root device
-									// //$NON-NLS-1$
+			// //$NON-NLS-1$
 			// directory //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}

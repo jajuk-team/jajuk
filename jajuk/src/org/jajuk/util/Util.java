@@ -1577,7 +1577,7 @@ public class Util implements ITechnicalStrings {
 				return sMplayerPath;
 			}
 			// Add MPlayer file name
-			if ((file = new File(sPATH + FILE_MPLAYER_EXE)).exists()) {
+			if ((file = new File(sPATH + '/'+ FILE_MPLAYER_EXE)).exists()) {
 				sMplayerPath = file.getAbsolutePath();
 			}
 		}
