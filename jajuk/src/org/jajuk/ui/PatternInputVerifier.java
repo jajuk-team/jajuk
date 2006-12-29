@@ -30,13 +30,14 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 
 /**
- * Input verifier used for predefined patterns
+ * Input verifier used for predefined patterns. Pattern should contain at least
+ * one / as this pattern verifier is used for organizer and organizer need to
+ * create at least one directory to avoid mess on disk
  * 
  * @author Bertrand Florat
  * @created 11 oct. 06
  */
-public class PatternInputVerifier extends InputVerifier implements
-		ITechnicalStrings {
+public class PatternInputVerifier extends InputVerifier implements ITechnicalStrings {
 
 	/*
 	 * (non-Javadoc)
@@ -47,24 +48,26 @@ public class PatternInputVerifier extends InputVerifier implements
 	public boolean verify(JComponent input) {
 		JTextField tf = (JTextField) input;
 		String sText = tf.getText().toLowerCase();
+		// Check pattern contains at least one /
+		if (sText.indexOf('/') == -1) {
+			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
+					Messages.getString("Error"), //$NON-NLS-1$
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 		try {
 			String[] stPattern = sText.split("[% /-]"); //$NON-NLS-1$
 			for (String sPattern : stPattern) {
 				if (!sPattern.equals("")) { //$NON-NLS-1$
 					if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_ARTIST
-									.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_YEAR
-									.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_TRACKNAME
-									.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_TRACKORDER
-									.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_GENRE
-									.substring(1))) {
+							|| sPattern.equalsIgnoreCase(PATTERN_ARTIST.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_YEAR.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_TRACKNAME.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_TRACKORDER.substring(1))
+							|| sPattern.equalsIgnoreCase(PATTERN_GENRE.substring(1))) {
 					} else {
-						JOptionPane.showMessageDialog(Main.getWindow(),
-								Messages.getString("Error.146"), //$NON-NLS-1$
+						JOptionPane.showMessageDialog(Main.getWindow(), Messages
+								.getString("Error.146"), //$NON-NLS-1$
 								Messages.getString("Error"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 						return false;

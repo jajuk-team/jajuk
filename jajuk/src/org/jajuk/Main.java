@@ -703,6 +703,14 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC);
+				// M4u (=AAC)
+				type = TypeManager.getInstance().registerType(
+						Messages.getString("Type.aac"), EXT_M4U, //$NON-NLS-1$
+						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC);
 				// Real audio
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.real"), EXT_REAL, //$NON-NLS-1$
@@ -789,7 +797,7 @@ public class Main implements ITechnicalStrings {
 		 */
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		if (jw != null)
-			jw.setShown(false);
+			jw.display(false);
 		// hide systray
 		if (jsystray != null)
 			jsystray.closeSystray();
@@ -1092,32 +1100,21 @@ public class Main implements ITechnicalStrings {
 					perspectiveBar = PerspectiveBarJPanel.getInstance();
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
 
-					/*
-					 * display main window We have to apply position and size
-					 * before and after window made visible - If position/size
-					 * are set after, we can see a small window on screen at
-					 * random position because in some cases, the window is
-					 * displayed at random position - If position/size are set
-					 * only after, position can be lost this way, the window is
-					 * always at right position
-					 */
-					jw.pack();
-					jw.applyStoredSize(); // apply size and position as
-					// stored in the user properties
-					jw.setVisible(true); // show main window
-					// Wait some time and set size again to fix the half screen
-					// issue
-					Thread.sleep(500);
+					// Apply size and location BEFORE setVisible
 					jw.applyStoredSize();
-					// apply size and position as stored in the user properties
-					// Display info message if first session
+					// Display the frame
+					jw.setVisible(true);
+					// Force frame content to reorganize and display
+					jw.getContentPane().validate();
+
+					// make sure none device already exist to avoid checking
+					// availability
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)
 							&& DeviceManager.getInstance().getElementCount() == 0) {
-						/*
-						 * make none device already exist to avoid checking
-						 * availability
-						 */
-						sc.dispose(); // make sure to hide splashscreen
+						//Set tips of the day to true
+						ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, TRUE);
+						// Hide splashscreen
+						sc.dispose(); 
 						// First time wizard
 						FirstTimeWizard fsw = new FirstTimeWizard();
 						fsw.pack();
@@ -1132,7 +1129,6 @@ public class Main implements ITechnicalStrings {
 					// Add main container (contains toolbars + desktop)
 					jpFrame.add(tbcontainer, BorderLayout.CENTER);
 					jw.setCursor(Util.DEFAULT_CURSOR);
-					jw.addComponentListener();
 
 					// Upgrade step2
 					UpgradeManager.upgradeStep2();
@@ -1177,7 +1173,7 @@ public class Main implements ITechnicalStrings {
 	/**
 	 * @return Returns the bUILauched.
 	 */
-	public static boolean isUILauched() {
+	public static boolean isUILaunched() {
 		return bUILauched;
 	}
 
@@ -1224,13 +1220,6 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static boolean isUpgradeDetected() {
 		return bUpgraded;
-	}
-
-	/**
-	 * @return true if it first seession ever
-	 */
-	public static boolean isVeryFirstSession() {
-		return bFirstSession;
 	}
 
 	public static boolean isCrashRecover() {

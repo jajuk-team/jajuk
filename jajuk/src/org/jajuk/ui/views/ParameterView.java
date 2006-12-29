@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -211,7 +212,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JLabel jlRefactorPattern;
 
-	JTextField jtfRefactorPattern;
+	JFormattedTextField jtfRefactorPattern;
 
 	JLabel jlAnimationPattern;
 
@@ -711,7 +712,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
 		jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192")); //$NON-NLS-1$
 		jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
-		jtfRefactorPattern = new JTextField();
+		jtfRefactorPattern = new JFormattedTextField();
 		jtfRefactorPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
 		jtfRefactorPattern.setInputVerifier(new PatternInputVerifier());
 		jlAnimationPattern = new JLabel(Messages.getString("ParameterView.195")); //$NON-NLS-1$
@@ -1204,7 +1205,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// tags
 		ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir
 				.isSelected()));
-		ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, jtfRefactorPattern.getText());
+		//Get and check reorg pattern
+		String sPattern = jtfRefactorPattern.getText();
+		ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, sPattern);
 		ConfigurationManager.setProperty(CONF_ANIMATION_PATTERN, jtfAnimationPattern.getText());
 		// Advanced
 		ConfigurationManager.setProperty(CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));

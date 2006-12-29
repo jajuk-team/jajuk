@@ -189,20 +189,6 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 *            default=deep
 	 */
 	public void refresh(boolean bAsynchronous, final boolean bAsk) {
-		final Device device = this;
-		if (!device.isMounted()) {
-			try {
-				device.mount();
-			} catch (Exception e) {
-				Log.error("011", "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
-				return;
-			}
-		}
-		if (bAlreadyRefreshing) {
-			Messages.showErrorMessage("107"); //$NON-NLS-1$
-			return;
-		}
 		if (bAsynchronous) {
 			Thread t = new Thread() {
 				public void run() {
@@ -238,6 +224,20 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			if (i == OPTION_REFRESH_CANCEL) { // Cancel
 				return;
 			}
+		}
+		final Device device = this;
+		if (!device.isMounted()) {
+			try {
+				device.mount();
+			} catch (Exception e) {
+				Log.error("011", "{{" + getName() + "}}", e); // mount failed
+				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
+				return;
+			}
+		}
+		if (bAlreadyRefreshing) {
+			Messages.showErrorMessage("107"); //$NON-NLS-1$
+			return;
 		}
 		// clean old files up
 		cleanRemovedFiles();
@@ -284,11 +284,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			if (!isMounted()) {
 				return false;
 			}
-			/*
-			 * check target directory is not void because it could mean that the
-			 * device is not actually system-mounted and then a refresh would
-			 * clear the device, display a warning message
-			 */
+			//check target directory is not void because it could mean that the
+			// device is not actually system-mounted and then a refresh would
+			// clear the device, display a warning message
 			File file = new File(getUrl());
 			if (file.exists() && (file.list() == null || file.list().length == 0)) {
 				int i = Messages
@@ -330,22 +328,20 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			}
 			// Start actual scan
 			while (iDeep >= 0 && !Main.isExiting()) {
-				File[] files = fCurrent.listFiles(Util.dirFilter); // only
-				// directories
-				if (files == null || files.length == 0) { // files is null
-					// if fCurrent
-					// is a not a
-					// directory
-					indexTab[iDeep] = -1;// re-init for next time we will
-					// reach this deep
+				// only directories
+				File[] files = fCurrent.listFiles(Util.dirFilter);
+				// files is null if fCurrent is a not a directory
+				if (files == null || files.length == 0) {
+					// re-init for next time we will reach this deep
+					indexTab[iDeep] = -1;
 					iDeep--; // come up
 					fCurrent = fCurrent.getParentFile();
 					if (dParent != null) {
 						dParent = dParent.getParentDirectory();
 					}
 				} else {
-					if (indexTab[iDeep] < files.length - 1) { // enter
-						// sub-directory
+					if (indexTab[iDeep] < files.length - 1) {
+						// enter sub-directory
 						indexTab[iDeep]++; // inc index for next time we
 						// will reach this deep
 						fCurrent = files[indexTab[iDeep]];
@@ -788,8 +784,6 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				}
 			} catch (Exception e) {
 				Log.error("012", Integer.toString(iExit), e); // mount failed
-				// //$NON-NLS-1$
-				// //$NON-NLS-1$
 				Messages.showErrorMessage("012", getName()); //$NON-NLS-1$
 				return;
 			}

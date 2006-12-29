@@ -51,8 +51,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 13 dec. 2003
  */
-public class PhysicalTableView extends AbstractTableView implements
-		MouseListener {
+public class PhysicalTableView extends AbstractTableView implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -100,19 +99,15 @@ public class PhysicalTableView extends AbstractTableView implements
 		jmiFilePlay.addActionListener(this);
 		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2")); //$NON-NLS-1$
 		jmiFilePush.addActionListener(this);
-		jmiFilePlayShuffle = new JMenuItem(Messages
-				.getString("PhysicalTableView.3")); //$NON-NLS-1$
+		jmiFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTableView.3")); //$NON-NLS-1$
 		jmiFilePlayShuffle.addActionListener(this);
-		jmiFilePlayRepeat = new JMenuItem(Messages
-				.getString("PhysicalTableView.4")); //$NON-NLS-1$
+		jmiFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4")); //$NON-NLS-1$
 		jmiFilePlayRepeat.addActionListener(this);
-		jmiFilePlayDirectory = new JMenuItem(Messages
-				.getString("PhysicalTableView.15")); //$NON-NLS-1$
+		jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); //$NON-NLS-1$
 		jmiFilePlayDirectory.addActionListener(this);
 		jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages
-				.getString("PhysicalTableView.16")); //$NON-NLS-1$
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16")); //$NON-NLS-1$
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
@@ -128,8 +123,7 @@ public class PhysicalTableView extends AbstractTableView implements
 		// model creation
 		FilesTableModel model = new FilesTableModel();
 		model.addTableModelListener(this);
-		model.setEditable(ConfigurationManager
-				.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
+		model.setEditable(ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
 		return model;
 	}
 
@@ -175,15 +169,14 @@ public class PhysicalTableView extends AbstractTableView implements
 
 			// selected row in view
 			int iSelectedRow = jtable.getSelectedRow();
-			File file = (File) model.getItemAt(jtable
-					.convertRowIndexToModel(iSelectedRow));
+			File file = (File) model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
 			try {
+				// launch it
 				FIFO.getInstance().push(
-						new StackItem(file, ConfigurationManager
-								.getBoolean(CONF_STATE_REPEAT), true),
-						ConfigurationManager
-								.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));// launch
-				// it
+						new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+								true),
+						ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+				
 			} catch (JajukException je) {
 				Log.error(je);
 			}
@@ -193,13 +186,10 @@ public class PhysicalTableView extends AbstractTableView implements
 			// right clic on a selected node set ?
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				// o if none or 1 node is selected, a right click on another
-				// node
-				// select it
-				// o if more than 1, we keep selection and display a popup for
-				// them
+				// node, select it
+				// o if more than 1, we keep selection and display a popup for them
 				if (jtable.getSelectedRowCount() < 2) {
-					jtable.getSelectionModel().setSelectionInterval(
-							iSelectedRow, iSelectedRow);
+					jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
 				}
 				jmenuFile.show(jtable, e.getX(), e.getY());
 			}
@@ -223,21 +213,16 @@ public class PhysicalTableView extends AbstractTableView implements
 		new Thread() {
 			public void run() {
 				// computes selected files
-				ArrayList<File> alFilesToPlay = new ArrayList<File>(jtable
-						.getSelectedRowCount());
-				ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable
-						.getSelectedRowCount());
+				ArrayList<File> alFilesToPlay = new ArrayList<File>(jtable.getSelectedRowCount());
+				ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable.getSelectedRowCount());
 				int[] indexes = jtable.getSelectedRows();
 				for (int i = 0; i < indexes.length; i++) { // each selected
 					// track
-					File file = (File) model.getItemAt(jtable
-							.convertRowIndexToModel(indexes[i]));
+					File file = (File) model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
 					alSelectedFiles.add(file);
-					ArrayList<File> alFilesToPlay2 = new ArrayList<File>(
-							indexes.length);
+					ArrayList<File> alFilesToPlay2 = new ArrayList<File>(indexes.length);
 					if (e.getSource() == jmiFilePlayDirectory) {
-						alFilesToPlay2.addAll(FileManager.getInstance()
-								.getAllDirectory(file));
+						alFilesToPlay2.addAll(FileManager.getInstance().getAllDirectory(file));
 					} else {
 						alFilesToPlay2.add(file);
 					}
@@ -251,40 +236,32 @@ public class PhysicalTableView extends AbstractTableView implements
 					}
 				}
 				// simple play
-				if (e.getSource() == jmiFilePlay
-						|| e.getSource() == jmiFilePlayDirectory) {
+				if (e.getSource() == jmiFilePlay || e.getSource() == jmiFilePlayDirectory) {
 					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alFilesToPlay),
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), false);
+							Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
+							false);
 				}
 				// push
 				else if (e.getSource() == jmiFilePush) {
-					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alFilesToPlay),
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), true);
+					FIFO.getInstance()
+							.push(
+									Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+											true), true);
 				}
 				// shuffle play
 				else if (e.getSource() == jmiFilePlayShuffle) {
 					Collections.shuffle(alFilesToPlay, new Random());
 					FIFO.getInstance().push(
-							Util.createStackItems(alFilesToPlay,
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), false);
+							Util.createStackItems(alFilesToPlay, ConfigurationManager
+									.getBoolean(CONF_STATE_REPEAT), true), false);
 				}
 				// repeat play
 				else if (e.getSource() == jmiFilePlayRepeat) {
 					FIFO.getInstance().push(
-							Util
-									.createStackItems(Util
-											.applyPlayOption(alFilesToPlay),
-											true, true), false);
+							Util.createStackItems(Util.applyPlayOption(alFilesToPlay), true, true),
+							false);
 				}
 				// Bookmark
 				else if (e.getSource() == jmiFileAddFavorites) {
@@ -292,9 +269,8 @@ public class PhysicalTableView extends AbstractTableView implements
 				}
 				// editable state
 				else if (e.getSource() == jtbEditable) {
-					ConfigurationManager.setProperty(
-							CONF_PHYSICAL_TABLE_EDITION, Boolean
-									.toString(jtbEditable.isSelected()));
+					ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_EDITION, Boolean
+							.toString(jtbEditable.isSelected()));
 					model.setEditable(jtbEditable.isSelected());
 				}
 				// properties
@@ -305,17 +281,16 @@ public class PhysicalTableView extends AbstractTableView implements
 					// items
 					if (jtable.getSelectedRowCount() == 1) { // mono
 						// selection
-						File file = (File) model
-								.getItemAt(jtable.convertRowIndexToModel(jtable
-										.getSelectedRow()));
+						File file = (File) model.getItemAt(jtable.convertRowIndexToModel(jtable
+								.getSelectedRow()));
 						// show file and associated track properties
 						alItems1.add(file);
 						alItems2.add(file.getTrack());
 					} else {// multi selection
 						for (int i = 0; i <= jtable.getRowCount(); i++) {
 							if (jtable.getSelectionModel().isSelectedIndex(i)) {
-								File file = (File) model.getItemAt(jtable
-										.convertRowIndexToModel(i));
+								File file = (File) model
+										.getItemAt(jtable.convertRowIndexToModel(i));
 								alItems1.add(file);
 								alItems2.add(file.getTrack());
 							}
@@ -334,8 +309,7 @@ public class PhysicalTableView extends AbstractTableView implements
 	 */
 	@Override
 	void initTable() {
-		boolean bEditable = ConfigurationManager
-				.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
+		boolean bEditable = ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
 		jtbEditable.setSelected(bEditable);
 		model.setEditable(bEditable);
 	}

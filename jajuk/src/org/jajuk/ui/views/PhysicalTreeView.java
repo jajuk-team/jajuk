@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -72,6 +73,8 @@ import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
+import org.jajuk.base.Type;
+import org.jajuk.base.TypeManager;
 import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.base.exporters.HTMLExporter;
 import org.jajuk.base.exporters.XMLExporter;
@@ -495,26 +498,18 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				if (value instanceof FileNode) {
 					setBorder(null);
 					File file = ((FileNode) value).getFile();
-					if (Util.getExtension(file.getIO()).equals(
-							TYPE_PROPERTY_TECH_DESC_MP3)) {
-						setIcon(Util.getIcon(ICON_TYPE_MP3));
-					} else if (Util.getExtension(file.getIO()).equals(
-							TYPE_PROPERTY_TECH_DESC_OGG)) {
-						setIcon(Util.getIcon(ICON_TYPE_OGG));
-					} else if (Util.getExtension(file.getIO()).equals(
-							TYPE_PROPERTY_TECH_DESC_FLAC)) {
-						setIcon(Util.getIcon(ICON_TYPE_FLAC));
-					} else if (Util.getExtension(file.getIO()).equals(
-							TYPE_PROPERTY_TECH_DESC_WMA)) {
-						setIcon(Util.getIcon(ICON_TYPE_WMA));
-					} else if (Util.getExtension(file.getIO()).equals(
-							TYPE_PROPERTY_TECH_DESC_RAM)) {
-						setIcon(Util.getIcon(ICON_TYPE_RAM));
-					} else if (Util.getExtension(file.getIO()).equals(
-							TYPE_PROPERTY_TECH_DESC_AAC)) {
-						setIcon(Util.getIcon(ICON_TYPE_AAC));
-					} else {
+					String ext = Util.getExtension(file.getIO());
+					Type type = TypeManager.getInstance().getTypeByExtension(ext);
+					//Find associated icon with this type
+					URL icon = null;
+					if (type != null){
+						icon = (URL)type.getProperties().get(XML_TYPE_ICON);
+					}
+					if (icon == null){
 						setIcon(Util.getIcon(ICON_TYPE_WAV));
+					}
+					else{
+						setIcon(Util.getIcon(icon));
 					}
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && file.equals(current)) {
@@ -1121,17 +1116,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			filechooser.setDialogTitle(Messages
 					.getString("PhysicalTreeView.58"));
 			filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			/*
-			 * java.text.DateFormat dateFormat = new
-			 * java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); java.util.Date
-			 * date = new java.util.Date(); try {
-			 * filechooser.setSelectedFile(new
-			 * java.io.File("JajukMusicReport-"+dateFormat.parse(dateFormat.format(date)))); }
-			 * catch (java.text.ParseException ex) { Log.error(ex);
-			 * filechooser.setSelectedFile(new
-			 * java.io.File("JajukMusicReport")); }
-			 */
-
+		
 			int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1408,8 +1393,9 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		} else if (e.getSource() == jmiDevProperties) {
 			Device device = ((DeviceNode) paths[0].getLastPathComponent())
 					.getDevice();
-			ArrayList<Device> alItems = new ArrayList<Device>(1);
+			ArrayList<Item> alItems = new ArrayList<Item>(1);
 			alItems.add(device);
+			new PropertiesWizard(alItems);
 		} else if (e.getSource() == jmiPlaylistFileProperties) {
 			PlaylistFile plf = ((PlaylistFileNode) paths[0]
 					.getLastPathComponent()).getPlaylistFile();

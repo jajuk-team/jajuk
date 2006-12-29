@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import static org.jajuk.ui.action.JajukAction.WIZARD;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -39,13 +38,11 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Device;
@@ -56,8 +53,6 @@ import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.IView;
-import org.jajuk.ui.JajukButton;
-import org.jajuk.ui.action.ActionManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -79,26 +74,6 @@ public class DeviceView extends ViewAdapter implements IView,
 	private static final long serialVersionUID = 1L;
 
 	static private DeviceView dv; // self instance
-
-	JToolBar jtbButtons;
-
-	JButton jbNew;
-
-	JButton jbDelete;
-
-	JButton jbProperties;
-
-	JButton jbMount;
-
-	JButton jbUnmount;
-
-	JButton jbTest;
-
-	JButton jbRefresh;
-
-	JButton jbSynchro;
-
-	JajukButton jbWizard;
 
 	FlowScrollPanel jpDevices;
 
@@ -130,78 +105,6 @@ public class DeviceView extends ViewAdapter implements IView,
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void initUI() {
-		// buttons
-		jtbButtons = new JToolBar();
-		jtbButtons.setRollover(true);
-		jtbButtons.setFloatable(false);
-		jtbButtons.setBorder(BorderFactory.createEtchedBorder());
-
-		jbNew = new JButton(Util.getIcon(ICON_NEW));
-		jbNew.setActionCommand(EventSubject.EVENT_DEVICE_NEW.toString());
-		jbNew.addActionListener(this);
-		jbNew.setToolTipText(Messages.getString("DeviceView.0")); //$NON-NLS-1$
-
-		jbDelete = new JButton(Util.getIcon(ICON_DELETE));
-		jbDelete.setActionCommand(EventSubject.EVENT_DEVICE_DELETE.toString());
-		jbDelete.addActionListener(this);
-		jbDelete.setToolTipText(Messages.getString("DeviceView.1")); //$NON-NLS-1$
-		jbProperties = new JButton(Util.getIcon(ICON_PROPERTIES));
-		jbProperties.setActionCommand(EventSubject.EVENT_DEVICE_PROPERTIES
-				.toString());
-		jbProperties.addActionListener(this);
-		jbProperties.setToolTipText(Messages.getString("DeviceView.2")); //$NON-NLS-1$
-
-		jbMount = new JButton(Util.getIcon(ICON_MOUNT));
-		jbMount.setActionCommand(EventSubject.EVENT_DEVICE_MOUNT.toString());
-		jbMount.addActionListener(this);
-		jbMount.setToolTipText(Messages.getString("DeviceView.3")); //$NON-NLS-1$
-
-		jbUnmount = new JButton(Util.getIcon(ICON_UNMOUNT));
-		jbUnmount
-				.setActionCommand(EventSubject.EVENT_DEVICE_UNMOUNT.toString());
-		jbUnmount.addActionListener(this);
-		jbUnmount.setToolTipText(Messages.getString("DeviceView.4")); //$NON-NLS-1$
-
-		jbTest = new JButton(Util.getIcon(ICON_TEST));
-		jbTest.setActionCommand(EventSubject.EVENT_DEVICE_TEST.toString());
-		jbTest.addActionListener(this);
-		jbTest.setToolTipText(Messages.getString("DeviceView.5")); //$NON-NLS-1$
-
-		jbRefresh = new JButton(Util.getIcon(ICON_REFRESH));
-		jbRefresh
-				.setActionCommand(EventSubject.EVENT_DEVICE_REFRESH.toString());
-		jbRefresh.addActionListener(this);
-		jbRefresh.setToolTipText(Messages.getString("DeviceView.6")); //$NON-NLS-1$
-
-		jbSynchro = new JButton(Util.getIcon(ICON_SYNCHRO));
-		jbSynchro
-				.setActionCommand(EventSubject.EVENT_DEVICE_SYNCHRO.toString());
-		jbSynchro.addActionListener(this);
-		jbSynchro.setToolTipText(Messages.getString("DeviceView.7")); //$NON-NLS-1$
-
-		jbWizard = new JajukButton(ActionManager.getAction(WIZARD));
-		jbWizard.setActionCommand(EventSubject.EVENT_WIZARD.toString());
-		jbWizard.setToolTipText(Messages.getString("JajukJMenuBar.18")); //$NON-NLS-1$
-
-		jtbButtons.add(jbNew);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbDelete);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbProperties);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbMount);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbUnmount);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbTest);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbRefresh);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbSynchro);
-		jtbButtons.addSeparator();
-		jtbButtons.add(jbWizard);
-		jtbButtons.addSeparator();
-
 		// devices
 		jpDevices = new FlowScrollPanel();
 		jpDevices.setOpaque(false);
@@ -269,11 +172,10 @@ public class DeviceView extends ViewAdapter implements IView,
 		// add devices
 		refreshDevices();
 
-		// add
-		double size[][] = { { 0.99 }, { 30, 0.99 } };
+		// add components
+		double size[][] = { { TableLayout.FILL }, { TableLayout.FILL } };
 		setLayout(new TableLayout(size));
-		add(jtbButtons, "0,0"); //$NON-NLS-1$
-		add(jsp, "0,1"); //$NON-NLS-1$
+		add(jsp, "0,0"); //$NON-NLS-1$
 		// Register on the list for subject we are interrested in
 		ObservationManager.register(this);
 	}
@@ -416,10 +318,8 @@ public class DeviceView extends ViewAdapter implements IView,
 		}
 		// remove options for non synchronized devices
 		if (diSelected.getDevice().containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
-			jbSynchro.setEnabled(true);
 			jmiSynchronize.setEnabled(true);
 		} else {
-			jbSynchro.setEnabled(false);
 			jmiSynchronize.setEnabled(false);
 		}
 		if (bSameDevice && e.getButton() == 1) {

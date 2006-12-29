@@ -180,9 +180,8 @@ public class DeviceManager extends ItemManager {
 			Iterator it = hmItems.values().iterator();
 			while (it.hasNext()) {
 				Device deviceToCheck = (Device) it.next();
-				// if we check an existing device, do not compare it with itself
-				// ...
-				if (!bNew && deviceToCheck.getName().equals(deviceToCheck.getName())) {
+				//If we check an existing device unchanged, just leave
+				if (!bNew && sUrl.equals(deviceToCheck.getUrl())){
 					continue;
 				}
 				if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
@@ -387,8 +386,8 @@ public class DeviceManager extends ItemManager {
 					// upgrade
 					boolean bNeedDeepAfterUpgrade = Main.isUpgradeDetected()
 							&& !devicesDeepRefreshed.contains(device);
-					if (bNeedDeepAfterUpgrade){
-						//Store this device to avoid duplicate deep refreshes
+					if (bNeedDeepAfterUpgrade) {
+						// Store this device to avoid duplicate deep refreshes
 						devicesDeepRefreshed.add(device);
 					}
 					// cleanup device

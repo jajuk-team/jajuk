@@ -54,6 +54,7 @@ import javax.swing.JTextField;
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
@@ -69,8 +70,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 9 nov. 2003
  */
-public class DeviceWizard extends JDialog implements ActionListener,
-		ITechnicalStrings {
+public class DeviceWizard extends JDialog implements ActionListener, ITechnicalStrings {
 	private static final long serialVersionUID = 1L;
 
 	JPanel jpMain;
@@ -134,6 +134,9 @@ public class DeviceWizard extends JDialog implements ActionListener,
 	/** All devices expect itself */
 	ArrayList<Device> alDevices = new ArrayList<Device>(10);
 
+	/** Initial URL* */
+	private String sInitialURL;
+
 	/**
 	 * Device wizard by default, is used for void configuration
 	 */
@@ -145,8 +148,8 @@ public class DeviceWizard extends JDialog implements ActionListener,
 			}
 		});
 		setTitle(Messages.getString("DeviceWizard.0"));//$NON-NLS-1$
-		setLocation(org.jajuk.Main.getWindow().getX() + 100, org.jajuk.Main
-				.getWindow().getY() + 100);
+		setLocation(org.jajuk.Main.getWindow().getX() + 100,
+				org.jajuk.Main.getWindow().getY() + 100);
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
 		jp1 = new JPanel();
@@ -197,15 +200,13 @@ public class DeviceWizard extends JDialog implements ActionListener,
 		jlAutoRefresh = new JLabel(Messages.getString("DeviceWizard.53")); //$NON-NLS-1$
 		jlAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50")); //$NON-NLS-1$
 		jlMinutes = new JLabel(Messages.getString("DeviceWizard.54")); //$NON-NLS-1$
-		jftfAutoRefresh = new JFormattedTextField(NumberFormat
-				.getNumberInstance()); //$NON-NLS-1$
+		jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance()); //$NON-NLS-1$
 		// miminum delay is half a minute
 		jftfAutoRefresh.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
 				String prop = e.getPropertyName();
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-					double value = new Double(jftfAutoRefresh.getValue()
-							.toString());
+					double value = new Double(jftfAutoRefresh.getValue().toString());
 					if (value < 0 || (value < 0.5d && value != 0)) {
 						jftfAutoRefresh.setValue(0.5d);
 					}
@@ -218,8 +219,7 @@ public class DeviceWizard extends JDialog implements ActionListener,
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		// populate combo
-		Iterator<Device> it = DeviceManager.getInstance().getDevices()
-				.iterator();
+		Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
 		while (it.hasNext()) {
 			Device device2 = it.next();
 			alDevices.add(device2);
@@ -230,15 +230,12 @@ public class DeviceWizard extends JDialog implements ActionListener,
 		// Default automount behavior
 		jcbType.addActionListener(this);
 		bgSynchro = new ButtonGroup();
-		jrbUnidirSynchro = new JRadioButton(Messages
-				.getString("DeviceWizard.11")); //$NON-NLS-1$
+		jrbUnidirSynchro = new JRadioButton(Messages.getString("DeviceWizard.11")); //$NON-NLS-1$
 		jrbUnidirSynchro.setToolTipText(Messages.getString("DeviceWizard.12")); //$NON-NLS-1$
-		jrbUnidirSynchro
-				.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		jrbUnidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jrbUnidirSynchro.setEnabled(false);
 		jrbUnidirSynchro.addActionListener(this);
-		jrbBidirSynchro = new JRadioButton(Messages
-				.getString("DeviceWizard.13")); //$NON-NLS-1$
+		jrbBidirSynchro = new JRadioButton(Messages.getString("DeviceWizard.13")); //$NON-NLS-1$
 		jrbBidirSynchro.setToolTipText(Messages.getString("DeviceWizard.14")); //$NON-NLS-1$
 		jrbBidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jrbBidirSynchro.setEnabled(false);
@@ -316,8 +313,7 @@ public class DeviceWizard extends JDialog implements ActionListener,
 		alDevices.clear();
 		// set default values for widgets
 		updateWidgetsDefault();
-		Iterator<Device> it = DeviceManager.getInstance().getDevices()
-				.iterator();
+		Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
 		while (it.hasNext()) {
 			Device device2 = it.next();
 			if (!device2.equals(device)) {
@@ -330,6 +326,7 @@ public class DeviceWizard extends JDialog implements ActionListener,
 		jtfName.setText(device.getName());
 		jtfName.setEnabled(false); // device name cannot be changed
 		jtfUrl.setText(device.getUrl());
+		this.sInitialURL = device.getUrl();
 		jtfMountPoint.setText(device.getMountPoint());
 		jcbRefresh.setEnabled(false); // no instant refresh for updates
 		jcbRefresh.setSelected(false);
@@ -339,25 +336,22 @@ public class DeviceWizard extends JDialog implements ActionListener,
 		} else {
 			jcbAutoMount.setSelected(false);
 		}
-		jftfAutoRefresh
-				.setValue(device.getDoubleValue(XML_DEVICE_AUTO_REFRESH));
+		jftfAutoRefresh.setValue(device.getDoubleValue(XML_DEVICE_AUTO_REFRESH));
 		if (jcbSynchronized.getItemCount() == 0) {
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
 			jrbBidirSynchro.setEnabled(false);
 		}
 		if (device.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
-			String sSynchroSource = device
-					.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
+			String sSynchroSource = device.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
 			jrbBidirSynchro.setEnabled(true);
 			jrbUnidirSynchro.setEnabled(true);
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
-			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager
-					.getInstance().getDeviceByID(sSynchroSource)));
-			if (DEVICE_SYNCHRO_MODE_BI.equals(device
-					.getValue(XML_DEVICE_SYNCHRO_MODE))) {
+			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance()
+					.getDeviceByID(sSynchroSource)));
+			if (DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(XML_DEVICE_SYNCHRO_MODE))) {
 				jrbBidirSynchro.setSelected(true);
 			} else {
 				jrbUnidirSynchro.setSelected(true);
@@ -401,9 +395,8 @@ public class DeviceWizard extends JDialog implements ActionListener,
 				return;
 			}
 			// check device availibility (test name only if new device)
-			String sCode = DeviceManager.getInstance().checkDeviceAvailablity(
-					jtfName.getText(), jcbType.getSelectedIndex(),
-					jtfUrl.getText(), jtfMountPoint.getText(), bNew);
+			String sCode = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
+					jcbType.getSelectedIndex(), jtfUrl.getText(), jtfMountPoint.getText(), bNew);
 			if (!sCode.equals("0")) { //$NON-NLS-1$
 				Messages.showErrorMessage(sCode);
 				this.setVisible(true); // display wizzard window which has been
@@ -411,49 +404,44 @@ public class DeviceWizard extends JDialog implements ActionListener,
 				return;
 			}
 			if (bNew) {
-				device = DeviceManager.getInstance().registerDevice(
-						jtfName.getText(), jcbType.getSelectedIndex(),
-						jtfUrl.getText());
+				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
+						jcbType.getSelectedIndex(), jtfUrl.getText());
 			}
 			device.setProperty(XML_DEVICE_MOUNT_POINT, jtfMountPoint.getText());
-			device
-					.setProperty(XML_DEVICE_AUTO_MOUNT, jcbAutoMount
-							.isSelected());
-			device.setProperty(XML_DEVICE_AUTO_REFRESH, new Double(
-					jftfAutoRefresh.getValue().toString()));
+			device.setProperty(XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
+			device.setProperty(XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
+					.toString()));
 			device.setProperty(XML_TYPE, new Long(jcbType.getSelectedIndex()));
 			device.setUrl(jtfUrl.getText());
-			if (jcbSynchronized.isEnabled()
-					&& jcbSynchronized.getSelectedItem() != null) {
+			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null) {
 				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE, alDevices.get(
 						jcbSynchronized.getSelectedIndex()).getId());
 				if (jrbBidirSynchro.isSelected()) {
-					device.setProperty(XML_DEVICE_SYNCHRO_MODE,
-							DEVICE_SYNCHRO_MODE_BI);
+					device.setProperty(XML_DEVICE_SYNCHRO_MODE, DEVICE_SYNCHRO_MODE_BI);
 				} else {
-					device.setProperty(XML_DEVICE_SYNCHRO_MODE,
-							DEVICE_SYNCHRO_MODE_UNI);
+					device.setProperty(XML_DEVICE_SYNCHRO_MODE, DEVICE_SYNCHRO_MODE_UNI);
 				}
 			} else { // no synchro
 				device.removeProperty(XML_DEVICE_SYNCHRO_MODE);
 				device.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
 			}
-			if (jcbRefresh.isSelected() && bNew) {
+			//Force deep refresh if it is a new device or if URL changed
+			if ( (jcbRefresh.isSelected() && bNew)  
+					|| (!this.sInitialURL.equals(jtfUrl.getText()))) {
 				try {
+					//Drop existing directory to avoid phantom directories if existing device
+					DirectoryManager.getInstance().removeDirectory(device.getId());
 					device.refresh(true);
 				} catch (Exception e2) {
 					Log.error("112", device.getName(), e2); //$NON-NLS-1$
 					Messages.showErrorMessage("112", device.getName()); //$NON-NLS-1$
 				}
 			}
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_DEVICE_REFRESH));
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			dispose();
 			if (bNew) {
-				InformationJPanel
-						.getInstance()
-						.setMessage(
-								Messages.getString("DeviceWizard.44"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+				InformationJPanel.getInstance().setMessage(
+						Messages.getString("DeviceWizard.44"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			}
 		} else if (e.getSource() == jbCancel) {
 			dispose(); // close window
@@ -464,8 +452,8 @@ public class DeviceWizard extends JDialog implements ActionListener,
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sUrl = jtfUrl.getText();
-			if (!sUrl.equals("")) { // if url is already set, use it as root //$NON-NLS-1$
-				// directory //$NON-NLS-1$
+			if (!sUrl.equals("")) {
+				// if url is already set, use it as root directory
 				jfc.setCurrentDirectory(new File(sUrl));
 			}
 			int returnVal = jfc.showOpenDialog(this);
@@ -480,9 +468,8 @@ public class DeviceWizard extends JDialog implements ActionListener,
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.47"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sMountPoint = jtfMountPoint.getText();
-			if (!sMountPoint.equals("")) { // if url is already set, use it //$NON-NLS-1$
-				// as root directory
-				// //$NON-NLS-1$
+			if (!sMountPoint.equals("")) {
+				// if url is already set, use it as root directory
 				jfc.setCurrentDirectory(new File(sMountPoint));
 			}
 			int returnVal = jfc.showOpenDialog(this);

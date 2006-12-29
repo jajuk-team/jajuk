@@ -48,14 +48,14 @@ public class ShowAboutAction extends ActionBase {
 	 */
 	public void perform(ActionEvent evt) {
 		// set default perspective to show if UIi is not yet started
-		if (Main.isUILauched()) {
+		if (Main.isUILaunched()) {
 			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
 		} else {
 			Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
 		}
 		// make frame visible
 		if (!JajukWindow.getInstance().isVisible()) {
-			JajukWindow.getInstance().setShown(true);
+			JajukWindow.getInstance().display(true);
 		}
 	}
 }

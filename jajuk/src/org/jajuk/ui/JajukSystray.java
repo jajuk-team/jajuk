@@ -229,9 +229,9 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			public void actionPerformed(ActionEvent arg0) {
 				// show window if it is not visible and hide it if it is visible
 				if (!JajukWindow.getInstance().isVisible()) {
-					JajukWindow.getInstance().setShown(true);
+					JajukWindow.getInstance().display(true);
 				} else {
-					JajukWindow.getInstance().setShown(false);
+					JajukWindow.getInstance().display(false);
 				}
 
 			}

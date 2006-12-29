@@ -21,8 +21,8 @@
 package org.jajuk.ui;
 
 import java.awt.Toolkit;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
@@ -53,7 +53,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 23 mars 2004
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
+public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, ComponentListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -112,6 +112,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				Main.exit(0);
 			}
 		});
+		
+		//Add move/size change listener to save them
+		addComponentListener(this);
 
 		// display correct title if a track is launched at startup
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
@@ -125,23 +128,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		return eventSubjectSet;
 	}
 
-	/**
-	 * Look for frame size change to save it
-	 * 
-	 */
-	public void addComponentListener() {
-		addComponentListener(new ComponentAdapter() {
-
-			public void componentResized(ComponentEvent e) {
-				saveSize();
-			}
-
-			public void componentMoved(ComponentEvent e) {
-				saveSize();
-			}
-		});
-	}
-
+	
 	/**
 	 * Save current window size and position
 	 * 
@@ -204,29 +191,16 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 	 * @param visible
 	 *            The bVisible to set.
 	 */
-	public void setShown(final boolean visible) {
+	public void display(final boolean visible) {
 		// start ui if needed
-		if (visible && !Main.isUILauched()) {
-			if (SwingUtilities.isEventDispatchThread()) {
-				// must be lauched from another thread
-				Thread t = new Thread() {
-					public void run() {
-						try {
-							Main.launchUI();
-						} catch (Exception e) {
-							Log.error(e);
-						}
-					}
-				};
-				t.start();
-			} else {
-				try {
-					Main.launchUI();
-				} catch (Exception e) {
-					Log.error(e);
-				}
+		if (visible && !Main.isUILaunched()) {
+			try {
+				Main.launchUI();
+			} catch (Exception e) {
+				Log.error(e);
 			}
 		}
+		// Show or hide the frame
 		SwingUtilities.invokeLater(new Runnable() {
 
 			public void run() {
@@ -235,22 +209,13 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				// show
 				if (visible) {
 					applyStoredSize();
-					// setVisible(true) must be done after setSize to be right
 					setVisible(true);
-					// Wait some time and set size again to fix the half screen
-					// issue
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						Log.error(e);
-					}
-					applyStoredSize();
+					getContentPane().validate();
 				}
 				// hide
 				else {
 					if (Main.isNoTaskBar()) {
-						// hide the window only if it is
-						// explicitely required
+						// hide the window only if it is explicitely required
 						saveSize();
 						setVisible(false);
 					}
@@ -258,6 +223,40 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			}
 
 		});
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+	 */
+	public void componentHidden(ComponentEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+	 */
+	public void componentMoved(ComponentEvent e) {
+		saveSize();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+	 */
+	public void componentResized(ComponentEvent e) {
+		saveSize();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+	 */
+	public void componentShown(ComponentEvent e) {
 	}
 
 }

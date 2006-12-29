@@ -70,8 +70,7 @@ public class RefactorAction implements ITechnicalStrings {
 			public void run() {
 				Util.waiting();
 				refactor();
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_DEVICE_REFRESH));
+				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			}
 		}.start();
 		Util.stopWaiting();
@@ -104,12 +103,10 @@ public class RefactorAction implements ITechnicalStrings {
 			fNew.getParentFile().mkdirs();
 
 			// Move file and related cover but save old Directory pathname
-			// for
-			// futur deletion
+			// for future deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
 			if (fCover != null) {
-				fCover.renameTo(new java.io.File(fNew.getParent() + sFS
-						+ fCover.getName()));
+				fCover.renameTo(new java.io.File(fNew.getParent() + sFS + fCover.getName()));
 			}
 			boolean bState = false;
 
@@ -123,8 +120,8 @@ public class RefactorAction implements ITechnicalStrings {
 						sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
 								+ Messages.getString("Error.154") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					Log.debug("[Refactoring] " + fNew.getAbsolutePath() //$NON-NLS-1$
-							+ " Success ? " + bState); //$NON-NLS-1$
+					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() //$NON-NLS-1$
+							+ "}} Success ? " + bState); //$NON-NLS-1$
 
 				} else {
 					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
@@ -137,30 +134,27 @@ public class RefactorAction implements ITechnicalStrings {
 			String sTest[] = sPathname.split(sRoot.replace("\\", "\\\\")); //$NON-NLS-1$ //$NON-NLS-2$
 			sFirstDir = sTest[1].split("\\" + sFS)[1]; //$NON-NLS-1$
 
-			Directory dir = DirectoryManager.getInstance().registerDirectory(
-					sFirstDir,
-					DirectoryManager.getInstance().getDirectoryForIO(
-							fCurrent.getDevice().getFio()),
-					fCurrent.getDevice());
+			Directory dir = DirectoryManager.getInstance()
+					.registerDirectory(
+							sFirstDir,
+							DirectoryManager.getInstance().getDirectoryForIO(
+									fCurrent.getDevice().getFio()), fCurrent.getDevice());
 
 			registerFile(dir);
 
 			// See if old directory contain other files and move them
 			java.io.File dOld = fOld.getParentFile();
-			java.io.File[] list = dOld.listFiles(new JajukFileFilter(
-					JajukFileFilter.NotAudioFilter.getInstance()));
+			java.io.File[] list = dOld.listFiles(new JajukFileFilter(JajukFileFilter.NotAudioFilter
+					.getInstance()));
 			if (list == null) {
-				DirectoryManager.getInstance()
-						.removeDirectory(fOld.getParent());
+				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
 			} else if (list.length != 0) {
 				for (java.io.File f : list) {
-					f.renameTo(new java.io.File(fNew.getParent() + sFS
-							+ f.getName()));
+					f.renameTo(new java.io.File(fNew.getParent() + sFS + f.getName()));
 				}
 			} else if (list.length == 0) {
 				if (dOld.delete()) {
-					DirectoryManager.getInstance().removeDirectory(
-							fOld.getParent());
+					DirectoryManager.getInstance().removeDirectory(fOld.getParent());
 
 				}
 			}
@@ -173,10 +167,8 @@ public class RefactorAction implements ITechnicalStrings {
 		if (!sErrors.equals("")) { //$NON-NLS-1$
 			Messages.showDetailedErrorMessage("147", "", sErrors); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			InformationJPanel
-					.getInstance()
-					.setMessage(
-							Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			InformationJPanel.getInstance().setMessage(
+					Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		}
 
 	}
@@ -208,13 +200,12 @@ public class RefactorAction implements ITechnicalStrings {
 	public void registerFile(Directory d) {
 
 		java.io.File fList[] = d.getFio().listFiles(
-				new JajukFileFilter(JajukFileFilter.DirectoryFilter
-						.getInstance()));
+				new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
 
 		if (fList != null && fList.length != 0) {
 			for (java.io.File f : fList) {
-				Directory dir = DirectoryManager.getInstance()
-						.registerDirectory(f.getName(), d, d.getDevice());
+				Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(), d,
+						d.getDevice());
 				registerFile(dir);
 			}
 		} else {

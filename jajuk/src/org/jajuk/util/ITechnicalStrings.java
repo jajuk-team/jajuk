@@ -847,6 +847,8 @@ public interface ITechnicalStrings {
 	public static final String EXT_APE = "ape";
 
 	public static final String EXT_AAC = "aac";
+	
+	public static final String EXT_M4U = "m4u";
 
 	public static final String EXT_REAL = "ram";
 
@@ -1171,7 +1173,7 @@ public interface ITechnicalStrings {
 
 	// Hotkeys flag
 	public static final String CONF_OPTIONS_HOTKEYS = "false";
-	
+
 	// Shuffle/novelties mode
 	public static final String MODE_ALBUM = "album";
 
