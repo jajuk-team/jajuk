@@ -1,11 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project name='Jajuk'>
+	<bannerLeft>
+		<name>Jajuk</name>
+		<href>http://jajuk.sf.net/</href>
+	</bannerLeft>
+	<bannerRight>
+		<name>Jajuk</name>
+		<src>./images/jajuk-title.png</src>
+	</bannerRight>
+	
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-default-skin</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</skin>
+	<publishDate format="yyyy/MM/dd" />
+	
   <title>Jajuk Project Home Page</title>
   <body>
-    <!-- footer will be placed above the (c) -->
-    <footer>
-      <a href='http://sourceforge.net'> <IMG src='http://sourceforge.net/sflogo.php?group_id=91412&amp;type=5' width='210' height='62' border='0' alt='SourceForge.net Logo' /></a>
-    </footer>
     <links>
       <item name='Download' href='http://jajuk.sourceforge.net/downloads.html' />
       <item name='Features' href='http://jajuk.sourceforge.net/features.html' />
@@ -41,5 +53,8 @@
       <item name='Code statistics' href='http://jajuk.sourceforge.net/statcvs-xml-out/index.html' />
     </menu>
    </body>
+    <!-- footer will be placed above the (c) -->
+    <footer>
+      <a href='http://sourceforge.net'> <IMG src='http://sourceforge.net/sflogo.php?group_id=91412&amp;type=5' width='210' height='62' border='0' alt='SourceForge.net Logo' /></a>
+    </footer>
 </project>
-

@@ -5,7 +5,29 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
-    <release version='1.3.1' date='2006-12-17' description='Fix'>
+    <release version='1.3.5' date='2006-12-30' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>[10] Void startup window under Linux/JDK 1.6</action>
+    	<action dev='bflorat' type='fix' issue=''>[8] M4A files support (thx Eleftherios Spyromitros)</action>
+    </release>
+    <release version='1.3.4' date='2006-12-29' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>[8] Frame resize issue under Linux + JDK 1.6</action>
+    	<action dev='bflorat' type='fix' issue=''>[7] Refresh issues when changing device URL (thx Eleftherios Spyromitros)</action>
+    	<action dev='bflorat' type='fix' issue=''>[6] Frame size/position not saved under Linux + JDK 1.6</action>
+    	<action dev='bflorat' type='fix' issue=''>[4] Property menu in physical tree doesn't work for devices (thx Eleftherios Spyromitros)</action>
+    	<action dev='bflorat' type='fix' issue=''>[5] A device url shouldn't be set to a subdirectory (thx Eleftherios Spyromitros)</action>
+    	<action dev='bflorat' type='fix' issue=''>[2] Unmounted device mounted at dialog before user decision (thx Eleftherios Spyromitros)</action>
+    	<action dev='bflorat' type='fix' issue=''>[2] Organizer pattern should include at least one slash (thx Eleftherios Spyromitros)</action>
+    	<action dev='bflorat' type='fix' issue=''>[2] Tips of the day visible after a restore defaults parameters</action>
+    	<action dev='bflorat' type='fix' issue=''>[2] In Device view, buttons not synchronized with selected device (thx Eleftherios Spyromitros)</action>
+    </release>
+    <release version='1.3.3' date='2006-12-28' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>[7] Hotkeys are now disabled by default as users reported interferences</action>
+    	<action dev='bflorat' type='fix' issue=''>[8] After renoming a directory, files could be ignored during a refresh (thx Eleftherios Spyromitros)</action>
+    </release>
+    <release version='1.3.2' date='2006-12-26' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>[5] Several fixes on icons</action>
+    </release>
+    <release version='1.3.1' date='2006-12-17' description='Fixes'>
     	<action dev='bflorat' type='fix' issue=''>[9] Only Windows: useless mplayer download at first startup</action>
     </release>
     <release version='1.3' date='2006-12-16' description='Major enhancements'>
