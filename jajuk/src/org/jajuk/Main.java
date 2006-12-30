@@ -380,7 +380,7 @@ public class Main implements ITechnicalStrings {
 							}
 							// Commit toolbars (only if it is visible to avoid
 							// commiting void screen)
-							if (getWindow() != null && getWindow().isVisible()) {
+							if (getWindow() != null && getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
 								FileOutputStream out = new FileOutputStream(FILE_TOOLBARS_CONF);
 								tbIO.writeXML(out);
@@ -703,9 +703,9 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC);
-				// M4u (=AAC)
+				// M4A (=AAC)
 				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.aac"), EXT_M4U, //$NON-NLS-1$
+						Messages.getString("Type.aac"), EXT_M4A, //$NON-NLS-1$
 						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
@@ -1104,9 +1104,7 @@ public class Main implements ITechnicalStrings {
 					jw.applyStoredSize();
 					// Display the frame
 					jw.setVisible(true);
-					// Force frame content to reorganize and display
-					jw.getContentPane().validate();
-
+				
 					// make sure none device already exist to avoid checking
 					// availability
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)

@@ -54,7 +54,7 @@ public class ShowAboutAction extends ActionBase {
 			Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
 		}
 		// make frame visible
-		if (!JajukWindow.getInstance().isVisible()) {
+		if (!JajukWindow.getInstance().isWindowVisible()) {
 			JajukWindow.getInstance().display(true);
 		}
 	}

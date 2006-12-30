@@ -157,7 +157,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmiNovelties = new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
 
 		jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
-		jcbmiVisible.setState(JajukWindow.getInstance().isVisible());
+		jcbmiVisible.setState(JajukWindow.getInstance().isWindowVisible());
 		jcbmiVisible.addActionListener(this);
 		jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25")); //$NON-NLS-1$
 
@@ -228,7 +228,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// show window if it is not visible and hide it if it is visible
-				if (!JajukWindow.getInstance().isVisible()) {
+				if (!JajukWindow.getInstance().isWindowVisible()) {
 					JajukWindow.getInstance().display(true);
 				} else {
 					JajukWindow.getInstance().display(false);

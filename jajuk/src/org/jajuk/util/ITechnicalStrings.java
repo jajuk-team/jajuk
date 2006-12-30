@@ -848,7 +848,7 @@ public interface ITechnicalStrings {
 
 	public static final String EXT_AAC = "aac";
 	
-	public static final String EXT_M4U = "m4u";
+	public static final String EXT_M4A = "m4a";
 
 	public static final String EXT_REAL = "ram";
 

@@ -183,7 +183,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 	/**
 	 * @return Returns the bVisible.
 	 */
-	public boolean isVisible() {
+	public boolean isWindowVisible() {
 		return bVisible;
 	}
 
@@ -210,7 +210,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 				if (visible) {
 					applyStoredSize();
 					setVisible(true);
-					getContentPane().validate();
 				}
 				// hide
 				else {
