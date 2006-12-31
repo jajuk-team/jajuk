@@ -37,5 +37,6 @@
 	<classpathentry kind="lib" path="lib/jdic-20060613.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-20060402.jar" sourcepath="/prog/api/swingx-20051112180732/src"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.2_jajuk.jar"/>
+	<classpathentry kind="lib" path="lib/MozillaInterfaces.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
