@@ -1104,15 +1104,15 @@ public class Main implements ITechnicalStrings {
 					jw.applyStoredSize();
 					// Display the frame
 					jw.setVisible(true);
-				
+
 					// make sure none device already exist to avoid checking
 					// availability
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)
 							&& DeviceManager.getInstance().getElementCount() == 0) {
-						//Set tips of the day to true
+						// Set tips of the day to true
 						ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, TRUE);
 						// Hide splashscreen
-						sc.dispose(); 
+						sc.dispose();
 						// First time wizard
 						FirstTimeWizard fsw = new FirstTimeWizard();
 						fsw.pack();
