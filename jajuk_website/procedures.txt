@@ -36,7 +36,7 @@ o- Update JNLP distribution using the war and the tomcat admin console
 o- Clean snapshots directory
 - Check website (links, pages...)
 - Check JNLP distribution
-- Update the pad file version: date, version, Primary_Download_URL et size
+- Update the pad file version on SF: date, version, Primary_Download_URL et size
 
 *Others*
 o- Save dist file in the releases save dir
@@ -68,7 +68,7 @@ o- Update and set date to release in changes.xml
 - Update JNLP distribution using the war and the tomcat admin console
 - Check website (links, pages...)
 - Check JWS distribution
-- Update the pad file version: date, version, Primary_Download_URL et size
+- Update the pad file version on SF: date, version, Primary_Download_URL et size
 
 *Others*
 o- Save dist file in the releases save dir

@@ -1,145 +1,127 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Jajuk Project Home Page - Jajuk tester guide</title><style type="text/css" media="all">
-          @import url("./style/maven-base.css");
-          
-			    @import url("./style/maven-theme.css");</style><link rel="stylesheet" href="./style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="http://jajuk.sourceforge.net/" id="projectLogo"><img alt="org.jajuk" src="./images/jajuk-title.png"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
-                	Last published: 19 December 2006
-                  | Doc for 1.3</div><div class="xright">
-        
-        <a href="./downloads.html">Download</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="./features.html">Features</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="./screenshots.html">Screenshots</a>
-      
-        
-          
-            <span class="separator">|</span>
-          
-        
-        <a href="http://sourceforge.net/projects/jajuk/" class="externalLink" title="External Link">Sourceforge Jajuk page</a>
-      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuOverview"><h5>Overview</h5><ul><li class="none"><a href="./index.html">-Home-</a></li><li class="none"><a href="./downloads.html">Download</a></li><li class="none"><a href="./features.html">Features</a></li><li class="none"><a href="./screenshots.html">Screenshots</a></li><li class="none"><a href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087" class="externalLink" title="External Link">Support / Help</a></li><li class="none"><a href="http://sourceforge.net/tracker/?group_id=91412" class="externalLink" title="External Link">Bug report / Wishes</a></li><li class="none"><a href="./references.html">Media coverage</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="./installation.html">Installation</a></li><li class="none"><a href="./manuals.html">Jajuk manual</a></li><li class="none"><a href="./faq.html">FAQ</a></li><li class="none"><a href="http://java.com/java/download/index.jsp?cid=jdp77505" class="externalLink" title="External Link"><img title="Get Java" style="border: 1px" src="http://java.com/en/img/everywhere/getjava_med.gif?cid=jdp77505" alt="Get Java"></img></a></li></ul></div><div id="menuProject"><h5>Project</h5><ul><li class="none"><a href="./changes-report.html">Changelog</a></li><li class="none"><a href="./roadmap.html">Roadmap</a></li><li class="none"><a href="./jobs.html">Help wanted</a></li><li class="none"><a href="./developer_guide.html">Developer guide</a></li><li class="none"><a href="./translation_howto.html">Translator guide</a></li><li class="none"><a href="./tester_guide.html">Tester guide</a></li><li class="none"><a href="./jajuk_bi_quidelines.html">Brand Identity Guidelines</a></li><li class="none"><a href="./team-list.html">Team</a></li><li class="none"><a href="./jajuk_dependencies.html">Dependencies</a></li><li class="none"><a href="./statcvs-xml-out/index.html">Code statistics</a></li></ul></div><div id="search"><h5>Search org.jajuk</h5><form action="http://www.google.com/search" method="get"><a href="http://www.google.com" class="navlink"><img height="32" width="75" alt="Google" src="http://www.google.com/logos/Logo_25wht.gif"></img></a><input name="q" maxlength="255" size="15" type="text" value="" id="q"></input><input name="btnG" type="submit" value="Go" id="btnG"></input><input name="domains" type="hidden" value="http://jajuk.sourceforge.net"></input><input name="sitesearch" type="hidden" value="http://jajuk.sourceforge.net" id="search"></input></form></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="index.html">About org.jajuk</a></li><li class="collapsed"><a href="project-info.html">Project Info</a></li><li class="collapsed"><a href="maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="./images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Jajuk_Tester_Guide"></a><h2>Jajuk Tester Guide</h2><p><u>Last change</u>: 2006/11/05
-</p><p lang="en-GB">Welcome to new Jajuk testers ! Have fun.</p><div class="subsection"><a name="How_many_time_does_it_take__"></a><h3>How many time does it take ?</h3><ul>
-
-
-
-  <li><p>5 minutes to register</p></li>
-
-
-
-  <li><p>About 5 minutes
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Jajuk Tester Guide</title>
+</head>
+<body>
+<a name="Jajuk_Tester_Guide"></a>
+<div id="bodyColumn">
+<div class="contentBox">
+<div class="section">
+<h2>Jajuk Tester Guide</h2>
+<p><u>Last change</u>: 2006/11/05
+</p>
+<p lang="en-GB">Welcome to new Jajuk testers ! Have fun.</p>
+<div class="subsection"><a name="How_many_time_does_it_take__"></a>
+<h3>How many time does it take ?</h3>
+<ul>
+  <li>
+    <p>5 minutes to register</p>
+  </li>
+  <li>
+    <p>About 5 minutes
 per test case (there are currently from 40 to 50 test cases) : please
 choose a set of test cases that have not already been tested according
-the time you have</p></li>
-
-
-
-</ul></div><div class="subsection"><a name="How_to_get_support__"></a><h3>How to get support ?</h3><ul>
-
-
-
-  <li></p>Please read the<a href="manuals.html" class="externalLink" title="External Link">
-Jajuk user manual</a></p></li>
-
-
-
-  <li><p>In case of doubt, don't hesitate to send your
-questions at jajuk-support AT lists.sourceforge.net</a>
-  </p></li>
-
-
-
-</ul></div><div class="subsection"><a name="How_to_become_Jajuk_tester__"></a><h3>How to become Jajuk tester ?</h3><p>
+the time you have</p>
+  </li>
+</ul>
+</div>
+<div class="subsection"><a name="How_to_get_support__"></a>
+<h3>How to get support ?</h3>
+<ul>
+  <li>Please read the<a href="file:///data/java/workspace/jajuk_website/manuals.html" class="externalLink" title="External Link">
+Jajuk user manual</a></li>
+  <li>
+    <p>In case of doubt, don't hesitate to send your
+questions&nbsp;at jajuk-support AT lists.sourceforge.net
+  </p>
+  </li>
+</ul>
+</div>
+<div class="subsection"><a name="How_to_become_Jajuk_tester__"></a>
+<h3>How to become Jajuk tester ?</h3>
+<p>
 
 
 
 Jajuk needs testers all the year but especially within
-the one-month qualification time frame before a major
+the&nbsp;one-month qualification time frame&nbsp;before a major
 release and few weeks after in order to help finding distribution
 issues early. Please follow these steps to subscribe to Jajuk Quality
 Center (to be
 done only once):
+</p>
 <ul>
-
-
-
   <li>
+    
     <p><a href="http://jajuk.info/testlink/firstLogin.php">Create an account</a> in Jajuk Quality Center (this will grant you a
 read-only
 access, not enough to perform tests)</p>
+
   </li>
   <li>
-    <p>Send us an e-mail at jajuk-support AT lists.sourceforge.net</a>
-containing the platform(s) you plan to use (Windows, Linux or MAC). </p>
+    
+    <p>Send us an e-mail at jajuk-support AT lists.sourceforge.net
+containing the platform(s) you plan to use (Windows, Linux or MAC).&nbsp;</p>
+
   </li>
   <li>
+    
     <p>We will
 grant you "tester" rights on selected platforms and you will be able to
-start testing</p></li>
-<li><p> Subscribe to <a href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers" class="externalLink" title="External Link">Jajuk list</a> to be aware of new release
-candidates</p>
+start&nbsp;testing</p>
   </li>
-
-
-
-  
-
-
-  
-
-
-</ul></p></div><div class="subsection"><a name="How_to_get_last_Jajuk_release_running__"></a><h3>How to get last Jajuk release running ?</h3><ul>
-
-
-
   <li>
+    <p> Subscribe to <a href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers" class="externalLink" title="External Link">Jajuk list</a> to be aware of new release
+candidates</p>
+
+  </li>
+</ul>
+</div>
+<div class="subsection"><a name="How_to_get_last_Jajuk_release_running__"></a>
+<h3>How to get last Jajuk release running ?</h3>
+<ul>
+  <li>
+    
     <p>[Linux and Mac only] If under Linux or Mac OS, make sure to
-get mplayer
+get&nbsp;mplayer
 1.0 pre8 or later and mozilla 1.7 or later running on your system
 (nothing needed for Windows).</p>
+
   </li>
-
-
-
   <li>
+    
     <p>Make sure to have a Java 5 runtime environment (JRE 1.5
 or later). If needed, <a href="http://www.java.com" class="externalLink" title="External Link">download and install JRE</a> (for free).</p>
+
   </li>
-
-
-
   <li>
-    <p>Launch <a href='http://jajuk.info:8001/jajuk-test/app/'>last Jajuk test release</a> 
+    
+    <p>Launch <a href="http://jajuk.info:8001/jajuk-test/app/">last Jajuk test release</a> 
 (this link never change, you can bookmark it). This will install and
 launch Jajuk in Java Web Start mode, next release will be upgraded
 automatically.</p>
 
-<p>
-<b>Caution: Tests for 1.3 are now finished, please now report issues against the <a href='http://jajuk.info:8001/jajuk-notest/app/'>production release</a></b>
-</p>
+
+    <p>
+    <b>Caution: Tests for 1.3 are now finished, please now report issues against the <a href="http://jajuk.info:8001/jajuk-notest/app/">production release</a></b>
+    </p>
+
   </li>
-
-
-
   <li>
+    
     <p>Check the Jajuk release in the splashscreen or in the About
 view (you would continue to use previous release if your
-client cannot connect to Java Web Start server in a short time
+client cannot connect&nbsp;to Java Web Start server in a short time
 frame).</p>
+
   </li>
-
-
-
-</ul></div><div class="subsection"><a name="How_to_test__"></a><h3>How to test ?</h3><p>
+</ul>
+</div>
+<div class="subsection"><a name="How_to_test__"></a>
+<h3>How to test ?</h3>
+<p>
 
 
 
@@ -147,86 +129,89 @@ Jajuk quality Center is based on <a href="http://testlink.org" class="externalLi
 great GPL test case management tool. TestLink manual is available from
 the
 "Documentation" tab in the testlink portal after login. Basically,
-testing is very simple :
+testing is very simple&nbsp;:
+</p>
 <ul>
-
-
-
   <li>
+    
     <p>Log in <a href="http://jajuk.info/testlink/login.php" class="externalLink" title="External Link">Jajuk Quality Center</a></p>
+
   </li>
-
-
-
   <li>
+    
     <p>Click on "Execute" tab in the TestLink Portal</p>
+
   </li>
-
-
-
   <li>
+    
     <p>Select test case in the right-side tree by expending
 categories (choose a "Not tested" test in black: "Passed" tests are in
 green, "Failed" in red and "Blocked" in blue)</p>
+
   </li>
-
-
-
   <li>
+    
     <p>Perform the test in Jajuk application</p>
+
   </li>
-
-
-
   <li>
+    
     <p>Come back to the test page, select result (Passed, Failed,
 Blocked). If test failed, detail the problem in the text area. Please
 provide any interesting trace by copy/pasting them from Jajuk
 (display last traces from Jajuk main menu -&gt; "Help" -&gt;
 "Show
 debug traces"). Then save the result using the save button. </p>
+
   </li>
-
-
-
-</ul></p></div><div class="subsection"><a name="Bug_tracker_system"></a><h3>Bug tracker system</h3><p>For Release Candidate (RC) versions
-(during qualification):</p><ul>
-
-
-
+</ul>
+</div>
+<div class="subsection"><a name="Bug_tracker_system"></a>
+<h3>Bug tracker system</h3>
+<p>For Release Candidate (RC) versions
+(during&nbsp;qualification):</p>
+<ul>
   <li>
+    
     <p>We don't use bug tracker in qualification (ie working on
 release
 candidate / RC versions), defects are simply noted in the test result
 field</p>
+
   </li>
-
-
-
   <li>
+    
     <p>Please do not report RC bugs using SourceForge bug tracker.</p>
+
   </li>
-
-
-
-</ul></div><div class="subsection"><a name="For_final___production_releases"></a><h3>For final / production releases</h3><p>
+</ul>
+</div>
+<div class="subsection"><a name="For_final___production_releases"></a>
+<h3>For final / production releases</h3>
+<p>
 
 
 
 You're welcomed to report issues on production releases using the Jajuk
 Quality Agent (In Jajuk main menu -&gt; "Help" -&gt; "Report a
 bug or feature request")
-</p></div><div class="subsection"><a name="Notes"></a><h3>Notes</h3><ul>
-
-
-
+</p>
+</div>
+<div class="subsection"><a name="Notes"></a>
+<h3>Notes</h3>
+<ul>
   <li>
+    
     <p>RC releases use the '-test' flag so Jajuk data will be
 store in &lt;HOME&gt;/.jajuk_test directory and not
 &lt;HOME&gt;/.jajuk directory used by final releases. This way,
 you can continue to use stable jajuk and test releases together.</p>
+
   </li>
-
-
-
-</ul></div></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xleft"><a href="http://sourceforge.net" class="externalLink" title="External Link"> <IMG src="http://sourceforge.net/sflogo.php?group_id=91412&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo"></IMG></a></div><div class="xright">© 2003-2006, Jajuk team</div><div class="clear"><hr></hr></div></div></body></html>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

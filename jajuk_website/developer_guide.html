@@ -4,14 +4,19 @@
 
 
 
+
+  
   
   
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 
 
+
   
 
 
+  
+  
   
   
   
@@ -20,12 +25,16 @@
 
 
 
+
+  
   
   
   <meta name="CREATED" content="20040503;23532900">
 
 
 
+
+  
   
   
   <meta name="CHANGED" content="20050522;13201400">
@@ -36,8 +45,10 @@
 
 
 
+
 <h1><a name="bodyColumn"></a><a name="Developer_guide"></a>
 Developer guide</h1>
+
 
 
 
@@ -49,11 +60,14 @@ Last change</span>: 2006/02/12</p>
 
 
 
+
 <p lang="en-GB">Welcome to new Jajuk developers ! Have fun.</p>
 
 
 
+
 <h2 lang="en-GB">Natural Language</h2>
+
 
 
 
@@ -63,7 +77,9 @@ natural language only.<a href="./specs.pdf"></a>
 
 </p>
 
+
 <h2>Jajuk Brand Identity Guidelines</h2>
+
 
 
 
@@ -73,14 +89,13 @@ List / Forum</h2>
 
 
 
+
 <p><span lang="en-GB">It is <b>mandatory</b>
-to subscribe to Jajuk
-developer mailing list ( </span><a href="mailto:jajuk-developers@lists.sourceforge.net"><span lang="en-GB">jajuk-developers@lists.sourceforge.net</span></a>
-<span lang="en-GB">) at
-</span><a href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"><span lang="en-GB">http://lists.sourceforge.net/lists/listinfo/jajuk-developers</span></a><span lang="en-GB"> as
+to<a href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"> subscribe</a> to <a href="mailto:jajuk-developers@lists.sourceforge.net">Jajuk
+developer mailing list</a> </span><span lang="en-GB">as
 this list is the project main&nbsp;communication stream. You
-may also use and monitor the public Open Discussion forum
-(</span><a href="http://sourceforge.net/forum/forum.php?forum_id=315360"><span lang="en-GB">http://sourceforge.net/forum/forum.php?forum_id=315360)</span></a></p>
+may also use and monitor the public <a href="http://sourceforge.net/forum/forum.php?forum_id=315360">Open Discussion forum</a>.</span><a href="http://sourceforge.net/forum/forum.php?forum_id=315360"><span lang="en-GB"></span></a></p>
+
 
 
 
@@ -88,11 +103,14 @@ may also use and monitor the public Open Discussion forum
 
 
 
+
 Each vote should contain following information:<br>
 
 
 
+
 <ul>
+
 
 
 
@@ -101,17 +119,22 @@ vote</li>
 
 
 
+
   <li>In the message body:</li>
 
 
 
+
+  
   
   
   <ul>
 
 
 
+
     <li>[SUBJECT]: theme and goal of the vote</li>
+
 
 
 
@@ -120,29 +143,36 @@ voting methods are:</li>
 
 
 
+
+    
     
     
     <ul>
 
 
 
-      <li>Apache Group voting system (<a href="http://httpd.apache.org/dev/guidelines.html">http://httpd.apache.org/dev/guidelines.html</a>)
-for binary decisions.</li>
+
+      <li><a href="http://httpd.apache.org/dev/guidelines.html">Apache Group voting system</a> for binary decisions.</li>
 
 
 
-      <li>Cumulative Vote (<a href="http://en.wikipedia.org/wiki/Cumulative_voting">http://en.wikipedia.org/wiki/Cumulative_voting</a>)
+
+      <li><a href="http://en.wikipedia.org/wiki/Cumulative_voting">Cumulative Vote</a>
 on 100 points for single choice between a set of elements.</li>
 
 
 
+
+    
     
     
     </ul>
 
 
 
+
     <li>[DELAY]: Give the vote duration and a given ending date.</li>
+
 
 
 
@@ -151,13 +181,17 @@ vote</li>
 
 
 
+
     <li>[CHOICES]: Clearly identifies options that can be taken.</li>
 
 
 
+
+  
   
   
   </ul>
+
 
 
 
@@ -165,7 +199,9 @@ vote</li>
 
 
 
+
 <h2 lang="en-GB">IDE</h2>
+
 
 
 
@@ -177,14 +213,11 @@ documentation
 
 
 
-<h2 lang="en-GB"><a name="CVS"></a>CVS</h2>
 
-
-
-<p><span lang="en-GB">We assume you know CVS. If you
+<h2 lang="en-GB"><a name="CVS"></a>Source Code Management</h2>
+Jajuk now uses <a href="http://subversion.tigris.org/">Subversion (SVN)</a> source control system hosted by Sourceforge. <span lang="en-GB">We assume you know SVN. If you
 are not so
-familiar with CVS, please read the CVS manual :
-</span><a href="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><span lang="en-GB">http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html.</span></a></p>
+familiar with it, please read <a href="http://svnbook.red-bean.com/en/1.1/index.html">this manual</a>.</span><a href="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><span lang="en-GB"></span></a>
 
 
 
@@ -192,31 +225,17 @@ familiar with CVS, please read the CVS manual :
 
 
 
-<p lang="en-GB">The Connexion String is
-<font face="monospace">:extssh:login@jajuk.cvs.sourceforge.net:/cvsroot/jajuk<br>
+
+<p>The Connexion String is : </p>
+<p style="font-family: monospace;"><span class="moz-txt-link-freetext">https://jajuk.svn.sourceforge.net/svnroot/jajuk<br>
+</span></p>
+<p><span class="moz-txt-link-freetext">Checkout last version from the trunk /&nbsp;<span style="font-family: monospace;">jajuk</span> directory.</span></p>
 
 
 
-</font>Under
-eclipse CVS repository location looks like (replace bflorat by your
-login):<br>
 
+<h3 lang="en-GB"><a name="CVS_rules"></a>SCM rules</h3>
 
-
-<br>
-
-
-
-<img src="images/cvs_connexion.png" name="Image1" align="bottom" border="0" height="567" width="637"><br>
-
-
-
-</p>
-
-
-
-<h3 lang="en-GB"><a name="CVS_rules"></a>CVS
-rules</h3>
 
 
 
@@ -224,7 +243,9 @@ rules</h3>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">Make sure the whole project yet
@@ -234,11 +255,14 @@ local workspace for the moment. </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">During a release process, please
@@ -246,11 +270,14 @@ follow freezes (see release process part).</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">You should work most of the time in
@@ -258,11 +285,14 @@ the HEAD branch.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">If you start to code a
@@ -273,7 +303,9 @@ ready and when no release is planned for some weeks.</p>
 
 
 
+
   </li>
+
 
 
 
@@ -282,7 +314,9 @@ of last release and into the head (see version rules bellow).</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -290,11 +324,14 @@ of last release and into the head (see version rules bellow).</li>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>Jajuk releases (from 1.0) follow this
@@ -306,7 +343,9 @@ release.</p>
 
 
 
+
   </li>
+
 
 
 
@@ -314,11 +353,14 @@ release.</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>When
@@ -334,11 +376,14 @@ AND in the head (future 1.2 release).&nbsp;</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>Major and minor releases are maintened during one minor
@@ -349,11 +394,14 @@ minor issues.</p>
 
 
 
+
   </li>
 
 
 
+
 </ul>
+
 
 
 
@@ -362,11 +410,14 @@ configuration</h2>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">In preferences / "Java/Code
@@ -376,18 +427,23 @@ file</a>. This is a template for new java sources.</p>
 
 
 
+
   </li>
+
 
 
 
   <li>
     
     
+    
     <p lang="en-GB">See default configuration: </p>
 
 
 
+
   </li>
+
 
 
 
@@ -395,7 +451,9 @@ file</a>. This is a template for new java sources.</p>
 
 
 
+
 <p lang="en-GB"><br>
+
 
 
 
@@ -403,7 +461,9 @@ file</a>. This is a template for new java sources.</p>
 
 
 
+
 </p>
+
 
 
 
@@ -412,7 +472,9 @@ arguments:</span></p>
 
 
 
+
 <ul>
+
 
 
 
@@ -420,6 +482,7 @@ arguments:</span></p>
 tells
 jajuk that it is executing inside an IDE (probably Eclipse) . This
 changes the&nbsp;resources path (images, doc...).</li>
+
 
 
 
@@ -431,8 +494,10 @@ stable release of jajuk when working on a new release) .</li>
 
 
 
+
   <li><span style="font-family: monospace;">-notaskbar</span>
 (optional) : tells jajuk to hide from task bar when reduced as tray.</li>
+
 
 
 
@@ -440,7 +505,9 @@ stable release of jajuk when working on a new release) .</li>
 
 
 
+
 <span style="font-weight: bold;">VM arguments:<br>
+
 
 
 
@@ -451,11 +518,14 @@ stable release of jajuk when working on a new release) .</li>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">Only use UTF-8 for your source. Use
@@ -463,7 +533,9 @@ preference screen to set it:</p>
 
 
 
+
   </li>
+
 
 
 
@@ -471,7 +543,9 @@ preference screen to set it:</p>
 
 
 
+
 <p><img src="images/eclipse_encoding.png" name="Graphic3" align="bottom" border="0" height="585" width="637"></p>
+
 
 
 
@@ -482,7 +556,9 @@ file/properties/info. If the file is in ISO8859-1, set UTF-8 instead.</p>
 
 
 
+
 <h2 lang="en-GB">ant scripts and i18n</h2>
+
 
 
 
@@ -492,11 +568,14 @@ the tree:</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB"><i>scripts/build.xml</i> :
@@ -506,11 +585,14 @@ not use it under Eclipse.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p><i>scripts/build-dist.xml</i> : this is the
@@ -519,7 +601,9 @@ shouldn't have to use it.<br>
 
 
 
+
     </p>
+
 
 
 
@@ -527,12 +611,15 @@ shouldn't have to use it.<br>
 
 
 
+
 </ul>
+
 
 
 
 <h2 lang="en-GB"><a name="Release_process"></a>Release
 process</h2>
+
 
 
 
@@ -542,11 +629,14 @@ weeks.</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">The release process is announced with
@@ -557,7 +647,9 @@ work.</p>
 
 
 
+
   </li>
+
 
 
 
@@ -565,11 +657,14 @@ work.</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p><span lang="en-GB">Translators can complete
@@ -579,11 +674,14 @@ guide is available here</span></a><span lang="en-GB">.</span></p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p><span lang="en-GB">Testers qualify and
@@ -596,11 +694,14 @@ Testers can base their work on this </span><a href="qualification/qualification-
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>When we estimate that the last rc is stable enough, the
@@ -610,11 +711,14 @@ and final release.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>The communication delegate send the news in Freshmeat and
@@ -622,11 +726,14 @@ other web sites after one week without critical issue.</p>
 
 
 
+
   </li>
 
 
 
+
 </ul>
+
 
 
 
@@ -635,8 +742,10 @@ conventions</h2>
 
 
 
+
 <p lang="en-GB">We use generic Eclipse-built in&nbsp;
 formatter configuration (please format you code using Eclipse formatter)</p>
+
 
 
 
@@ -644,12 +753,15 @@ formatter configuration (please format you code using Eclipse formatter)</p>
 
 
 
+
 <ul>
+
 
 
 
   <li>All application labels have to be externalized (see<a href="translation_howto.html"> translator guide</a>)
 as &lt;Class name&gt;.&lt;number from 0&gt; .</li>
+
 
 
 
@@ -662,6 +774,7 @@ opposition to English.&nbsp;</li>
 
 
 
+
   <li>Do not reuse&nbsp;existing&nbsp;label
 ids&nbsp;but always increment&nbsp;a
 new number for new strings because removed labels can still be present
@@ -669,8 +782,10 @@ in out-of-date langpacks.</li>
 
 
 
+
   <li>Make sure to cleanup useless labels to reduce translators
 work.</li>
+
 
 
 
@@ -680,11 +795,14 @@ technical strings.</li>
 
 
 
+
 </ul>
 
 
 
+
 <h3 lang="en-GB"><a name="Interfaces"></a>Interfaces</h3>
+
 
 
 
@@ -694,7 +812,9 @@ taken into account for variables names:<br>
 
 
 
+
 <br>
+
 
 
 
@@ -703,11 +823,14 @@ pm;</font></p>
 
 
 
+
 <h3 lang="en-GB"><a name="XML"></a>XML</h3>
 
 
 
+
 <ul>
+
 
 
 
@@ -716,7 +839,9 @@ it's faster to parse and much easier to code.</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -724,10 +849,13 @@ it's faster to parse and much easier to code.</li>
 
 
 
+
   <li>
     
     
+    
     <p lang="en-GB">Use single quotes, not double quotes. </p>
+
 
 
 
@@ -735,12 +863,15 @@ it's faster to parse and much easier to code.</li>
 
 
 
+
 </ul>
+
 
 
 
 <h3 lang="en-GB"><a name="Comments___Javadoc"></a>Comments
 / Javadoc&nbsp;</h3>
+
 
 
 
@@ -750,7 +881,9 @@ comments */</font> ).</p>
 
 
 
+
 <h3>Dead code</h3>
+
 
 
 
@@ -760,9 +893,11 @@ project&nbsp;if you want to keep it.
 
 
 
+
 Please use the standard Jajuk header (see Eclipse templates
 configuration before) and set your own copyright.
 <h3>Code quality</h3>
+
 
 
 
@@ -773,7 +908,9 @@ context...) and make sure to cleanup imports (Control-Alt-o).
 
 
 
+
 <ul>
+
 
 
 
@@ -782,7 +919,9 @@ AWT-Dispatcher thread to avoid freezing UI.</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -790,7 +929,9 @@ AWT-Dispatcher thread to avoid freezing UI.</li>
 
 
 
+
 <ul>
+
 
 
 
@@ -799,8 +940,10 @@ into Java Help HTML pages (<span style="font-family: monospace;">dist-files/doc/
 
 
 
+
   <li>If needed, please add new tips of the day in
 jajuk_properties file.</li>
+
 
 
 
@@ -808,7 +951,9 @@ jajuk_properties file.</li>
 
 
 
+
 <h3>Code review/fixes</h3>
+
 
 
 
@@ -819,13 +964,16 @@ each others or enhance it.
 
 
 
+
 Managers are the only way to access (list or change) items (Track,
 File, Type, Directory, Playlist, PlaylistFile, Device, Author, album
 and Style). For example, listing devices is done this way: <br>
 
 
 
+
 <pre>DeviceManager.getInstance.getDevices()</pre>
+
 
 
 
@@ -834,11 +982,14 @@ changed safely.<br>
 
 
 
+
 </p>
 
 
 
+
 <h3>Anonymizer</h3>
+
 
 
 
@@ -847,8 +998,10 @@ Example for Cover URL search:<br>
 
 
 
+
 <span style="font-family: monospace;">Log.debug("Search
 URL: {{"+sURL+"}}");</span><br>
+
 
 
 
@@ -856,11 +1009,14 @@ All strings between {{ and }} are replaced by *** in quality agent.<br>
 
 
 
+
 <br>
 
 
 
+
 <h3>Files filters</h3>
+
 
 
 
@@ -870,9 +1026,11 @@ JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),JajukFileFilter.
 
 
 
+
 Jajuk provides several predefined filters: Audio, NotAudio, Playlist,
 Directory, KnownType, AnyFile than can be used in conjunction using a
 AND or an OR between them.<br>
+
 
 
 
@@ -880,7 +1038,9 @@ AND or an OR between them.<br>
 
 
 
+
 <h3>Collection filters</h3>
+
 
 
 
@@ -890,7 +1050,9 @@ Example:<br>
 
 
 
+
 <pre>Iterator it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));</pre>
+
 
 
 
@@ -898,8 +1060,10 @@ allows to iterate only on items of given age.<br>
 
 
 
+
 New predicates&nbsp;should be centralized&nbsp;into the
 JajukPredicates class.<br>
+
 
 
 
@@ -909,7 +1073,9 @@ Rules</h2>
 
 
 
+
 <h3>Becoming a new developer</h3>
+
 
 
 
@@ -917,9 +1083,11 @@ Rules</h2>
 
 
 
+
   <li>A new developer will be added in the project only after
 having written&nbsp;significant code and having accepted
 the Team rules (see below).&nbsp;</li>
+
 
 
 
@@ -930,11 +1098,14 @@ own choice.&nbsp;</li>
 
 
 
+
 </ul>
 
 
 
+
 <h3>Team rules</h3>
+
 
 
 
@@ -943,33 +1114,42 @@ basic rules :</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>Members have to be SourceForge member.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>Members have to communicate in English.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>Members have to subscribe
@@ -982,11 +1162,14 @@ project.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p lang="en-GB">Members should give minimum planning
@@ -994,11 +1177,14 @@ and actions on the project so we can plan releases.</p>
 
 
 
+
   </li>
 
 
 
-  <li>Members have to follow CVS rules.</li>
+
+  <li>Members have to follow SCM rules.</li>
+
 
 
 
@@ -1006,7 +1192,9 @@ and actions on the project so we can plan releases.</p>
 
 
 
+
 <h3>Leaving project</h3>
+
 
 
 
@@ -1014,7 +1202,9 @@ and actions on the project so we can plan releases.</p>
 
 
 
+
   <li>Please tell us ASAP if you give up or have no more time.</li>
+
 
 
 
@@ -1023,7 +1213,9 @@ heard about them after&nbsp;3 mouths.</li>
 
 
 
+
   <li>Any member can leave project and come back later.</li>
+
 
 
 
@@ -1033,9 +1225,12 @@ Registry.</a></li>
 
 
 
+
 </ul>
 
+
 <h2>Project initial specifications (2003)</h2>
+
 
 <a href="specs.pdf">Specifications</a>
 
