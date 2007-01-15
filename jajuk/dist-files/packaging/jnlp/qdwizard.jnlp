@@ -9,7 +9,7 @@ TS: TIMESTAMP_REPLACED_BY_ANT
            <all-permissions/>
     </security> 
     <resources>
-        <jar href="qdwizard-1.8.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="qdwizard-1.9.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <component-desc/>
 </jnlp>
