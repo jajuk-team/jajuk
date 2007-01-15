@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+    <faq id="whats-Jajuk">
+      <question>
+        What is Jajuk?
+      </question>
+      <answer>
+        <p>Jajuk is an advance Jukebox used to manage large or scattered music collections for advanced users.</p>
+      </answer>
+     </faq>
+
+      <faq id="license">
+      <question>
+        What is Jajuk license ?
+      </question>
+      <answer>
+        <p>Jajuk is published under <a href='http://www.gnu.org/licenses/gpl.html'>GPL license (Free Software)</a></p>
+      </answer>
+     </faq>
+    
+    <faq id="formats">
+     <question>
+        Which formats are supported?
+      </question>
+      <answer>
+       	<p>Please find <a href='jajuk-hs/default/html/formats.html'>the full list</a></p>
+      </answer>
+    </faq>
+  </part>
+    
+	<part id="install">
+    	<title>Installation</title>
+   	    <faq id="how-install">
+    	  <question>How to install Jajuk?</question>
+      	  <answer>
+        	<p>See <a href="installation.html">Jajuk installation guide</a></p>
+      	  </answer>
+    	</faq>
+  	</part>  
+  
+   <part id="technical">
+    <title>Technical</title>
+      <faq id="perfs">
+     <question>
+        How much resources takes Jajuk ?
+      </question>
+      <answer>
+        <p><li>Please read the Performances tips in the embedded help system.</li></p>
+        <p><li>On a recent PC, Jajuk uses less tahn 5% CPU and typicaly from 40 to 70 MB of memory for a 50 GB collection</li></p>
+      </answer>
+    </faq>
+    
+    <faq id="native">
+     <question>
+        Do you plan to use native API for jajuk ?
+      </question>
+      <answer>
+       	Not for the moment and it is very unlikely.
+      </answer>
+    </faq>
+  
+    <faq id="media">
+     <question>
+        Do you plan to read video and pictures etc... with Jajuk and make it a media center ?
+      </question>
+      <answer>
+       	It is very unlikely. We want to make a jukebox with as many features as we can for advanced users. We want to manage Music and make it right. 
+       	Note however that we plan to externalize the indexer engine to be used by others project (like <a href='http://japo.sourceforge.net'>Japo</a>, a picture organizer).
+      </answer>
+    </faq>
+  </part>
+
+	<part id="troubleshooting">
+   
+    <title>Troubleshooting</title>
+  		<faq id="No sound under Linux">
+    	<question>
+        	I'm under Linux (especially Debian and Ubuntu) and I can't get sound, audio line is occupied. 
+      	</question>
+      	<answer>
+        	<p>Try stopping all audio apps, check mute mode is not enable, check nothing users /dev/dsp (fuser /dev/dsp as root). If you still have the issue, it is probably an Alsa deamon problem, please read <a href="http://forum.ubuntu-fr.org/viewtopic.php?id=12019">this doc</a>.</p>
+      	</answer>
+    	</faq>
+    	
+    <faq id="collection_corruption">
+     <question>
+        What can I do if my collection is corrupted ? 
+      </question>
+      <answer>
+        <p>See <a href='./jajuk-hs/default/html/devices.html#Collection_backup_and_restore'>the device page of the jajuk manual</a></p>
+      </answer>
+    </faq>
+    
+    <faq id="sound_deformation">
+    	<question>
+        	Sound is saturated
+      	</question>
+      	<answer>
+        	<p>Upgrade to Jajuk 1.1.5 or later as it fixes some saturation issues.</p>
+      	</answer>
+    	</faq>
+
+    <faq id="sound_pauses">
+    	<question>
+        	I experience sound skips
+      	</question>
+      	<answer>
+      		<p>Make sure to use mplayer if under Linux</p>
+      	</answer>
+    	</faq>
+
+    <faq id="oom">
+    	<question>
+        	I experience Out Of Memory problem
+      	</question>
+      	<answer>
+        	<p>By default, Jajuk can use from 35MB to 512MB of physical memory. If should be largely enough for main users. If you have really huge collection and experience out of memory problems, increase -Xmx value in jajuk launch script (contact us if you need help)</p>
+      	</answer>
+    	</faq>
+    
+	</part>
+  
+</faqs>
