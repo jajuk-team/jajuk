@@ -1,0 +1,562 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+ 
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>jajuk</artifactId>
+  <name>Jajuk</name>
+  <groupId>org.jajuk</groupId>
+  <version>1.3</version>
+ 
+  <organization>
+    <name>Jajuk team</name>
+    <url>http://jajuk.sourceforge.net/</url>
+  </organization>
+ 
+  <inceptionYear>2003</inceptionYear>
+   
+ <description>
+    Jajuk is a Java music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections.
+ </description>
+ 
+ <url>http://jajuk.sourceforge.net/</url>
+ 
+ <scm>
+    <connection>
+      scm:svn:https://jajuk.svn.sourceforge.net/svnroot/jajuk
+    </connection>
+    <url>
+      scm:svn:http://jajuk.svn.sourceforge.net/viewvc/jajuk/
+    </url>
+  </scm>
+  
+  <issueManagement>
+		<url>http://sourceforge.net/tracker/?group_id=91412</url>
+	</issueManagement>
+  
+   <mailingLists>
+        <mailingList>
+            <name>Jajuk General</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-general</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-general</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-general</archive>
+        </mailingList>
+        <mailingList>
+            <name>Jajuk Developers</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-developers</archive>
+        </mailingList>
+        <mailingList>
+            <name>Jajuk Internalionalization</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-i18n</archive>
+        </mailingList>
+    </mailingLists>
+    
+    <developers>
+	    <developer>
+	      <name>Bertrand Florat</name>
+	      <roles>
+		      <role>Conceptor/administrator</role>
+	      </roles>
+	      <id>bflorat</id>
+	      <email>bflorat@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+
+	    <developer>
+	      <name>Gerhard Dietrichsteiner</name>
+	      <id>skyreacher</id>
+	     <roles>
+			<role>German translator</role>
+	    	<role>Developer</role>
+	     </roles>
+	      <email>skyreacher@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+
+	   <developer>
+	      <name>Josep Carles Collazos</name>
+	      <id>jespo</id>
+    	  <roles>
+		      <role>Spanish translator / developer</role>
+	      </roles>
+	      <email>jespo@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
+	    <developer>
+	      <name>Bart Cremers</name>
+	      <id>bcremer</id>
+	     <roles>
+			<role>Developer, Dutch translator</role>
+	     </roles>
+	      <email>bcremers@gmail.com</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+
+	    <developer>
+	      <name>Erwan Richard</name>
+	      <id>dhalsim44</id>
+	     <roles>
+			<role>Developer</role>
+	     </roles>
+	      <email>erwan.richard@laposte.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
+	    <developer>
+	      <name>Ronak Patel</name>
+	      <id>rpatel</id>
+	     <roles>
+			<role>Developer</role>
+	     </roles>
+	      <email></email>
+	      <organization>Jajuk team</organization>
+	      <timezone>-7</timezone>
+	    </developer>
+	    
+	    <developer>
+	      <name>Nicolas Schudel</name>
+	      <id></id>
+	     <roles>
+			<role>Graphist</role>
+	     </roles>
+	      <email>https://sourceforge.net/users/nicolasschudel/</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+12</timezone>
+	    </developer>
+	    
+	  </developers>
+
+ 	<contributors>
+		<contributor>
+			<name>Jérome Fortain</name>
+			 <email>jf_sourceforge@khiplus.fr</email>
+			<roles><role>Suggestions, Bug reports, qualification</role></roles>
+		</contributor>
+		
+		
+		
+		<contributor>
+			<name>David Hadley</name>
+			 <email></email>
+			<roles><role>Bug fixes, refactoring, feature developement</role></roles>
+		</contributor>
+		<contributor>
+			<name>Sung Pil Moon</name>
+			 <email></email>
+			<roles><role>Korean translation</role></roles>
+		</contributor>
+		<contributor>
+			<name>Eleftherios Spyromitros</name>
+			 <email>l3fman@otenet.gr</email>
+			<roles><role>Qualification using the Jajuk Quality Center</role></roles>
+		</contributor>
+		<contributor>
+			<name>Omazaram</name>
+			<roles><role>Testing</role></roles>
+			<email></email>
+		</contributor>
+		<contributor>
+			<name>Mike Kelp</name>
+			<roles><role>Documentation/English labels review</role></roles>
+			<email></email>
+		</contributor>
+		<contributor>
+			<name>Jean-Yves Durand-Daubin</name>
+			<roles><role>Code on HTTP client through a proxy to get covers</role></roles>
+			<email>ddjy@voila.fr</email>
+		</contributor>
+		<contributor>
+			<name>Oscar Appelgren</name>
+			<roles><role>Swedish translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Riccardo Capecchi</name>
+			<roles><role>Italian translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Kevin Tangning</name>
+			<roles><role>Chinese translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Masiar Farahani</name>
+			<roles><role>Some code and advices</role></roles>
+		</contributor>
+		<contributor>
+			<name>Marc-Siebren Kwadijk</name>
+			<roles><role>Dutch translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Sébastien Gringoire</name>
+			<roles><role>Design, some early developments</role></roles>
+		</contributor>
+		<contributor>
+			<name>Fabrice Dutron</name>
+			<roles><role>Windows docking development</role></roles>
+		</contributor>
+		<contributor>
+			<name>Neoclust</name>
+			<roles><role>RPM Packaging</role></roles>
+		</contributor>
+		<contributor>
+			<name>Christine Thel</name>
+			<roles><role>Part of french doc translation</role></roles>
+		</contributor>
+		<contributor>
+			<name>Martial Braux</name>
+			<roles><role>Some code on Cover</role></roles>
+		</contributor>
+		<contributor>
+			<name>Romain Herault</name>
+			<roles><role>Mac integration code</role></roles>
+		</contributor>
+		<contributor>
+			<name>Dugland Bob</name>
+			<roles><role>Swing optimization tips</role></roles>
+		</contributor>
+		<contributor>
+			<name>nico-de-nantes</name>
+			<roles><role>Bug reports, RFE, news reporting</role></roles>
+			<email>nico-de-nantes@users.sourceforge.net</email>
+		</contributor>
+		<contributor>
+			<name>Nicolas Richard (kournikola)</name>
+			<roles><role>Bug reports, RFE, news reporting</role></roles>
+			<email>kournikola@users.sourceforge.net</email>
+		</contributor>
+		<contributor>
+			<name>Aurélien Pedron</name>
+			<roles><role>Bug reports, qualification</role></roles>
+		</contributor>
+		<contributor>
+			<name>darsa</name>
+			 <email>darsa@users.sourceforge.net</email>
+			<roles><role>Bug reports</role></roles>
+		</contributor>
+		<contributor>
+			<name>Alexandre Lucazeau</name>
+			 <email>mornik@users.sourceforge.net</email>
+			<roles><role>Doc translation</role></roles>
+		</contributor>
+		<contributor>
+			<name>Laurent Witkowski</name>
+			 <email>pwitkowski@club-internet.fr</email>
+			<roles><role>Tester, RFE</role></roles>
+		</contributor>
+	</contributors>
+	
+ <dependencies>
+
+    <dependency>
+	   <groupId>TableLayout</groupId>
+        <artifactId>tablelayout</artifactId>
+        <version>20050920</version> 
+		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/tablelayout-20050920.jar</systemPath>
+    </dependency>
+    
+    <dependency>
+	   <groupId>Log4j</groupId>
+        <artifactId>log4j_reduced</artifactId>
+        <version>1.2.6</version> 
+		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/log4j_reduced-1.2.6.jar</systemPath>
+    </dependency>
+   
+    <dependency>
+	   <groupId>JLayer</groupId>
+        <artifactId>jlayer</artifactId>
+        <version>1.0</version> 
+		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jlayer-1.0.jar</systemPath>
+    </dependency>
+
+   <dependency>
+	   <groupId>LiquidLAF</groupId>
+        <artifactId>liquidlnf</artifactId>
+        <version>0.2.6</version> 
+        <scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/liquidlnf-0.2.6.jar</systemPath>
+    </dependency>
+
+   <dependency>
+	   <groupId>Kunststoff</groupId>
+        <artifactId>kunststoff</artifactId>
+        <version>2.0.1</version> 
+        <scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/kunststoff-2.0.1.jar</systemPath>
+    </dependency>
+ 
+  <dependency>
+	   <groupId>JavaHelp</groupId>
+        <artifactId>jh_reduced</artifactId>
+        <version>2.0.2</version> 
+        <scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jh_reduced-2.0.2.jar</systemPath>
+    </dependency>
+
+   <dependency>
+	   <groupId>JFreechart</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>1.0.1</version> 
+        <scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jfreechart-1.0.1.jar</systemPath>
+    </dependency>
+    
+
+   <dependency>
+	   <groupId>JCommon</groupId>
+        <artifactId>jcommon</artifactId>
+        <version>1.0.0</version> 
+		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jcommon-1.0.0.jar</systemPath>
+    </dependency>
+    
+   <dependency>
+	   <groupId>Jdic</groupId>
+        <artifactId>jdic</artifactId>
+        <version>20060613</version> 
+        <scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jdic-20060613.jar</systemPath>
+    </dependency>
+
+   <dependency>
+	   <groupId>QDWizard</groupId>
+        <artifactId>qdwizard</artifactId>
+        <version>1.9</version> 
+        <scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/qdwizard-1.9.jar</systemPath>
+    </dependency>
+
+    <dependency>
+	   <groupId>Swingx</groupId>
+        <artifactId>swingx</artifactId>
+        <version>20060402</version> 
+		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/swingx-20060402.jar</systemPath>
+    </dependency>
+    
+     <dependency>
+	   <groupId>JOgg</groupId>
+        <artifactId>jogg</artifactId>
+        <version>0.0.7</version> 
+		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jogg-0.0.7.jar</systemPath>
+    </dependency>
+    
+     <dependency>
+	   <groupId>JOrbis</groupId>
+        <artifactId>jorbis</artifactId>
+        <version>0.0.13</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jorbis-0.0.13.jar</systemPath>
+    </dependency>
+    
+     <dependency>
+	   <groupId>JSpeex</groupId>
+        <artifactId>jspeex</artifactId>
+        <version>0.9.3</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jspeex-0.9.3.jar</systemPath>
+    </dependency>
+    
+     <dependency>
+	   <groupId>MP3SPI</groupId>
+        <artifactId>mp3spi</artifactId>
+        <version>1.9.4</version> 
+  		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/mp3spi-1.9.4.jar</systemPath>
+    </dependency>
+    
+     <dependency>
+	   <groupId>Tritonus</groupId>
+        <artifactId>tritonus_share</artifactId>
+        <version>release</version> 
+  		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/tritonus_share-release.jar</systemPath>
+    </dependency>
+    
+     <dependency>
+	   <groupId>VorbisSPI</groupId>
+        <artifactId>vorbisspi</artifactId>
+        <version>1.0.1</version> 
+  		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/vorbisspi-1.0.1.jar</systemPath>
+    </dependency>
+
+     <dependency>
+	   <groupId>Entagged</groupId>
+        <artifactId>entagged-audioformats</artifactId>
+        <version>0.15</version> 
+  		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/entagged-audioformats-0.15.jar</systemPath>
+    </dependency>
+
+     <dependency>
+	   <groupId>BasicPlayer</groupId>
+        <artifactId>basicplayer</artifactId>
+        <version>2.3</version> 
+   		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/basicplayer-2.3.jar</systemPath>
+   </dependency>
+    
+     <dependency>
+	   <groupId>Animation</groupId>
+        <artifactId>animation</artifactId>
+        <version>1.2.0</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/animation-1.2.0.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>HttpClient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.0</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/commons-httpclient-3.0.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>CommonsLoging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.0</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/commons-logging-1.0.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>InfonodeLAF</groupId>
+        <artifactId>ilf-gpl</artifactId>
+        <version>1.4</version> 
+   		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/ilf-gpl-1.4.jar</systemPath>
+   </dependency>
+    
+     <dependency>
+	   <groupId>LooksLAF</groupId>
+        <artifactId>looks</artifactId>
+        <version>2.0.4</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/looks-2.0.4.jar</systemPath>
+     </dependency>
+    
+    <dependency>
+	   <groupId>TinyLAF</groupId>
+        <artifactId>tinylaf_reduced</artifactId>
+        <version>1.3.01</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/tinylaf_reduced-1.3.01.jar</systemPath>
+     </dependency>
+    
+    <dependency>
+	   <groupId>SquarenessLAF</groupId>
+        <artifactId>squareness</artifactId>
+        <version>1.0</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/squareness-1.0.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>CommonsCodec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.3</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/commons-codec-1.3.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>FreeDB</groupId>
+        <artifactId>entagged-freedb</artifactId>
+        <version>0.04</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/entagged-freedb-0.04.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>CommonsCollection</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/commons-collections-3.2.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>L2fprod</groupId>
+        <artifactId>l2fprod-common-buttonbar</artifactId>
+        <version>6.9.1</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/l2fprod-common-buttonbar-6.9.1.jar</systemPath>
+     </dependency>
+    
+    <dependency>
+	   <groupId>JIntellitype</groupId>
+        <artifactId>jintellitype</artifactId>
+        <version>1.0</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/jintellitype-1.0.jar</systemPath>
+     </dependency>
+    
+     <dependency>
+	   <groupId>VLDocking</groupId>
+        <artifactId>vldocking</artifactId>
+        <version>2.1.2_jajuk</version> 
+ 		<scope>system</scope>
+		<systemPath>/data/java/workspace/jajuk/lib/vldocking-2.1.2_jajuk.jar</systemPath>
+     </dependency>
+    
+   </dependencies>
+  
+  <build>
+    <sourceDirectory>jajuk/src</sourceDirectory>
+ </build>  
+  
+   <licenses>
+   <license>
+  
+   <name>GPL</name>
+   <url>http://www.gnu.org/licenses/gpl.html</url>
+   <distribution>manual</distribution>
+  
+   </license>
+   </licenses>
+  
+  
+	<reporting>
+		<plugins>
+		 <!-- 	<plugin>
+        	 	<groupId>org.apache.maven.plugins</groupId>
+         		<artifactId>maven-pmd-plugin</artifactId>
+         		<configuration>
+            		<targetjdk>1.5</targetjdk>
+            		<sourceEncoding>utf-8</sourceEncoding>
+            		<minimumTokens>100</minimumTokens>
+         		</configuration>
+	      	</plugin>
+    	  	
+    	 	<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+        		<artifactId>changes-maven-plugin</artifactId>
+      		</plugin>
+      		
+      		<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+        		<artifactId>changelog-maven-plugin</artifactId>
+	      	</plugin>
+    	
+    	  	<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+        		<artifactId>taglist-maven-plugin</artifactId>
+      		</plugin>-->
+		</plugins>
+	</reporting>
+  
+  
+</project> 
