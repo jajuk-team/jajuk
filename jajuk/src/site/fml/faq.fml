@@ -53,15 +53,6 @@
       </answer>
     </faq>
     
-    <faq id="native">
-     <question>
-        Do you plan to use native API for jajuk ?
-      </question>
-      <answer>
-       	Not for the moment and it is very unlikely.
-      </answer>
-    </faq>
-  
     <faq id="media">
      <question>
         Do you plan to read video and pictures etc... with Jajuk and make it a media center ?

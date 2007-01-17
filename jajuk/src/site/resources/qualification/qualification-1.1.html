@@ -1,0 +1,5081 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+
+
+
+
+
+
+
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <title>Jajuk qualification tests</title>
+  <meta name="GENERATOR" content="OpenOffice.org 1.1.3 (Linux)">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <meta name="CREATED" content="20050226;13081700">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <meta name="CHANGED" content="20050522;20534500">
+</head>
+
+
+<body style="direction: ltr;" lang="fr-FR">
+
+
+
+<h1>Release notes</h1>
+
+
+
+
+<p><u><i>Last update</i></u> <i>:
+2006-04-22<br>
+
+
+
+
+<br>
+
+
+
+
+</i><span style="text-decoration: underline;">Changes</span><i>:
+</i><a href="http://jajuk.sourceforge.net/changes-report.html#1.1">http://jajuk.sourceforge.net/changes-report.html#1.1</a><span style="font-style: italic;"></span>
+</p>
+
+
+
+
+<p><span style="text-decoration: underline;">Import
+release notes</span>:<span style="font-style: italic;"></span></p>
+
+
+
+
+<ul>
+  <li>If you experience sound saturation with jajuk &lt; 1.1.5, upgrade to jajuk 1.1.5 or later as it fixes several sound issues.</li>
+  <li>When using Catalog view for the first time, all thumbnails are
+created (this can take a while) and it can lead to sound short pauses
+only during this process.</li>
+
+
+
+  <li>From
+1.1, Jajuk features automatic devices refresh. Set an appropriate
+refreshing time interval in device wizard (in device view, click on the
+device icon). By default, it's 30 sec for hard drives and no refresh
+for network drives or CDs. Note that devices created using the device
+wizard are not refreshed as well.</li>
+  <li>Reporting an issue using embedded quality agent (Help-&gt;
+report an issue) doesn't work with Thunderbird under windows. Use this
+link instead: &nbsp; <a href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086</a></li>
+
+
+
+</ul>
+
+
+
+
+
+<h1>Trakers</h1>
+
+
+
+
+<p>Bug database:
+<a href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086</a><br>
+
+
+
+
+Known
+issues:
+<a href="http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412">http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412</a><br>
+
+
+
+
+Wishes/RFE:
+<a href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089</a><br>
+
+
+
+
+Support/Help:
+<a href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087</a><br>
+
+
+
+
+Limitations:
+<a href="http://sourceforge.net/tracker/?atid=778343&amp;group_id=91412">http://sourceforge.net/tracker/?atid=778343&amp;group_id=91412</a>
+</p>
+
+
+
+
+<h1>Jajuk qualification tests</h1>
+
+
+
+
+<table border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+  <tbody>
+
+
+
+
+    <tr>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p><b>Date</b></p>
+
+
+
+
+      </td>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p>2006/01/28</p>
+
+
+
+
+      </td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p><b>Tester(s) </b> </p>
+
+
+
+
+      </td>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p>Jerome Fortain, Bart Cremers, Arne Bergmann, Bertrand Florat</p>
+
+
+
+
+      </td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p><b>Packager</b></p>
+
+
+
+
+      </td>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p>Bertrand Florat<b> </b> </p>
+
+
+
+
+      </td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p><b>Validator</b></p>
+
+
+
+
+      </td>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p>Bertrand Florat<b> </b> </p>
+
+
+
+
+      </td>
+
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p><b>Release</b></p>
+
+
+
+
+      </td>
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      <p>1.1</p>
+
+
+
+
+      </td>
+
+
+
+
+    </tr>
+
+
+
+
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+<br>
+
+
+
+<h2>Environments</h2>
+
+
+
+
+
+
+
+
+<table border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+
+
+
+
+  <tbody>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Env name</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>OS</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>JRE</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>env1</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Suse Linux 9.3 kernel 2.6</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Sun 1.5.0</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>env2</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Windows 2000 Pro SP3</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Sun 1.5.0</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+<h2>Use-case tests</h2>
+
+
+
+
+
+
+
+
+<p><i><u>White</u>: not tested, <u>green</u>:
+passed, <u>orange</u>:
+passed partially, <u>red</u>: not passed</i></p>
+
+
+
+
+
+
+
+
+<table border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+
+
+
+
+  <tbody>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>#</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Description</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Result env1</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Result env2</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>PKG</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Packaging tests : install Jajuk in several
+languages.Version overwriting tests : install Jajuk over
+previous&nbsp;release directory, then&nbsp; remove the
+directory and install it to this unexisting location. Start and close
+Jajuk at each test.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>SRT</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Tests with existing collection : start jajuk, lauch some
+tracks.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>SCR</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Tests from scratch. Remove .jajuk directory, create a
+directory device with auto-refresh, lauch some tracks and then quit
+Jajuk and start it again, lauch some tracks, quit and test again.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>BIG</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Tests on large files (entire album in a single file)</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);">
+      
+      
+      
+      
+      
+      
+      
+      <p style="background-color: rgb(255, 255, 255);"><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>FOR</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Tests on formats : lauch at least one mp3, ogg, au, aiff
+and wav file. </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>DEV</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Devices tests : create a directory device,&nbsp;refresh it,
+unmount it, mount it, remove it.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>SYN</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Device synchronization : test with a directory device
+and a player device, if possible, try to mix FS : ext3 for directory,
+FAT32 for player.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>SRC</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Instant search box : perform some searchs and launch
+tracks.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>HST</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>History : check all lauched tracks are OK. Clear
+hisstory and launch others tracks, check it again.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>COP </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Compile and test the installed jajuk sources </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>SUP</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Startup tests : change startup option and test it.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>BUP</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Backup tests : change backup options and test them.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>LNG</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Test Jajuk in English and at least with 2 others
+langpacks, check translation for untranslated fields if any.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>LNF</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Change Look and Feel, test it.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>STA</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Check stats</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>TIM</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Check elapsed / remaining time in information bar</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>DOC</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Check About and online doc in all languages.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>COM</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Command panel tests : rewind, forward, volume...</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>PLA</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Physical and logical playlists tests.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>COV</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Tests covers display and manipulation</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>VIE</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Change views size / position, close jajuk and restart,
+check position is saved. Reload default configuration.</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>RES</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Change resolution (800x600 to 1600x1400) and check
+everyhting's OK</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>ERR</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Launch corrupted tracks and check
+behavior (error message in information panel, history bar...)</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>TRA</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p>Tray tests</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#99ff99">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);" bgcolor="#ffffff">
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>CCP</td>
+
+
+
+
+
+
+
+
+      <td>Create Custom Property for each type (String, date,
+boolean...) and change some values in table or property wizard, restart
+jajuk and check values. Remove custom propery, restart and check.</td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>CTG</td>
+
+
+
+
+
+
+
+
+      <td>Change Tags (OGG and ID3), check track with jajuk and
+others players (WMP, XMMS, Winamp)</td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>UMT</td>
+
+
+
+
+
+
+
+
+      <td>Unmounted tests (Hide unmounted device=off), unmount a
+device
+and check access to its items (should ask to mount), check logicial
+items behavior. Set Hide unmounted device=true and check again.</td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+      <td>ARF</td>
+
+
+
+
+
+
+      <td>Auto-refresh tests: remove/add files and check right changes are reflected on UI</td>
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+      <td>KEY</td>
+
+
+
+
+
+
+      <td>Test keyboard controls</td>
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+      <td>CDDB</td>
+
+
+
+
+
+
+      <td>Test CDDB retaging on directories (Get tags online) in physical tree view</td>
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>RAN</td>
+
+
+
+
+
+
+
+
+      <td>Random tests, general use tests in every views.</td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+      <td style="background-color: rgb(153, 255, 153);"></td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+<h2>Non-regression tests</h2>
+
+
+
+
+
+
+
+
+<p><i><u>White</u>: not tested, <u>green</u>:
+passed, <u>orange</u>:
+passed partially, <u>red</u>: not passed</i></p>
+
+
+
+
+
+
+
+
+<table style="width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+
+
+
+
+  <tbody>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Bug number</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Comments</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td bgcolor="#cccccc">
+      
+      
+      
+      
+      
+      
+      
+      <p>Result</p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+      <td>
+      
+      
+      
+      
+      
+      
+      
+      <p><br>
+
+
+
+
+
+
+
+
+      </p>
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+<h2>Known issues</h2>
+
+
+
+
+
+
+
+
+<p>Known issues:
+<a href="http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412">http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412</a></p>
+
+
+
+
+
+
+
+
+<h2>Comments</h2>
+
+
+
+
+
+
+
+
+<p>Have fun using Jajuk ! </p>
+
+
+
+
+
+
+
+
+<h2>Details</h2>
+
+
+
+
+
+
+
+
+<pre style="margin-bottom: 0.5cm;">1.1 final: 06/01/28 - 2  bugs - score: 10 <br>o[BF] Missing items in global bestof [6]<br>o[BF] Issue on unmounted tracks on special functions [4]<br>Changes<br>o[BF] [PERF] Better display of no cover thumbs in catalog view <br><br>rc14: 06/01/28 -  7 bugs - score: 60<br>o[BF] External items in playlist message during forced refresh [10]<br>o[BF] [CHECK] In some cases during a next/previous,  2 tracks played together [10]<br>o[BF] Documentation fixes [4]<br>o[BF] CDDB retagging from physical perspective should change only selected files [10]<br>o[BF] Property Wizard autocompletion fix [6]<br>o[BF] Severe issue on retagging with same string but different cases [10]<br>o[BF] [CHECK] Random issue on next track [10]<br>Changes<br>o[GD] German langpack upgrade<br>o[BF] All logical items are now case sensitive to fix issues<br>o[BF] Removed All logical items are now case sensitive to fix issues<br>o[BF] Removed property wizard auto-completion: too complex<br>o[BF] Removed restart collection option<br><br>rc13:  06/01/26 -  4 bugs - score: 31<br>o[BF] Start at last position no more works [10]<br>o[BF] Minor Catalog view filtering issue [3]<br>o[BF] Playing an album from catalog view is shuffled [9]<br>o[BF] Fixed partial downloads and black borders in get cover online wizard [9]<br><br>rc12: 06/01/26 - 1 bugs - score: 2 <br>o[BF] Playlist editor display issues when stopping [2]<br>CHANGES<br>o[BF] [PERF] Faster compareto for tracks<br>o[BF] Remove duplicate events (volume changed)<br>o[BF] [PERF] When exiting, stop sound ASAP<br><br>rc11: 06/01/26 - 3 bugs - score: 15 <br>o[BF] Close window ASAP when exit is required from menu or tray [3]<br>o[BF] [STABLE] Play next album drop first track [10]<br>o[BF] Fixed wrong Dutch characters [2]<br><br>rc10: 06/01/25 -  6 bugs - score: 40 <br>o[BF] No waiting cursor when searching CDDB [3]<br>o[BF] French i18n: missing labels [3]<br>o[BF] Gap for remote files and cross fade [8]<br>o[BF] [STABLE] Keep selecting removed playlist file [10]<br>o[BF] Update playlist after an external change and a forced refresh [6]<br>o[BF] [STABLE] Fixed merge/collapase of multiple playlist files logical playlists [10]<br>Changes<br>o[BF] [PERF] Logical tree sorting method change about 10x faster<br><br>rc9: 06/01/24 - 10 bugs - score:  47<br>o[BF] [REGRESSION rc8] Sorting in physical tree should be case unsensitive<br>o[BF] [REGRESSION rc5] Wrong sorting in playlist repository views<br>o[BF] [REGRESSION rc7] Wrong next track<br>o[BF] [REGRESSION rc5] Tracks lost and re-registrated<br>o[BF] Stopping using control panel display 2 error messages for ogg vorbis [10]<br>o[BF] Various issues with control panel [10]<br>o[BF] Sorting method lost after a DEVICE_MOUNT event in logical tree view [8]<br>o[BF] Wrong error message when seting a custom property in property wizard and deleting first character [3]<br>o[BF] Fix on NL langpack [10]<br>o[JF] Catalog view: need to wrap lines [6]<br><br>rc8: 06/01/22 - 9 bugs - score: 45 <br>o[BF] [REGRESSION rc5] Problem with files on directories with same name and different cases<br>o[BF] [REGRESSION rc7] Severe refresh issue<br>o[BF] [REGRESSION rc5] Canceled cover optimization if unvisible: too complex and bug-proof<br>o[BF] Missing manager synchronization on tree populate [6]<br>o[BF] Filter option in catalog view not saved [7]<br>o[BF] Filtering issue on catalog view (to check)[6]<br>o[BF] Wrong ID issues fixed, track ID calculation changed so you should have the wrong track ID message only at next startup [10]<br>o[BF] Fixed (to check) issues when several views loading common images (sychronization) [8]<br>o[BC] Fixed on tray/ control panel mute synchronization [8]<br>Changes<br>o[BC] Dutch langpack upgraded<br><br>rc7: 06/01/21 - 13 bugs - score: 77<br>o[BF] [REGRESSION rc6] Fixed novelties playlist issue (please check it)<br>o[BC] Arrow keystrokes no work in tree and table views [7]<br>o[BF] At first startup, window too large [6]<br>o[BF] [STABLE] At second startup, configuration perspective forced [10]<br>o[BF] After a syncrhonization, destination device should be force-refreshed [7]<br>o[BF] Sync message issues [4]<br>o[BF] Several fixes in en and fr documentation [5]<br>o[BF] Missing part of continue button in 800x600 [3]<br>o[BF] Should display full playlist file path in playlist repository tooltips [3]<br>o[BF] Inapropriate mantatory warning when changing playlist name with auto-refresh [7]<br>o[BF] New playlists not immediately visible in some cases [7]<br>o[BF] Local covers not displayed if device refreshing [8]<br>o[BF] Catalog view command panel display problem for low resolutions [10]<br>Changes<br>o[BF] Popupmenu position changes in catalog view, please check<br>o[BF] FirstTimeWizard UI enhancencements<br>o[BF] History tab UI enhancencements in parameter view<br>o[BF] Clever startup behavior: now try to mount startup file device even if no automatic mount<br>o[BF] [PERF] Faster playlist refresh<br><br>rc6: 06/01/19 - 5 bugs - score: 30<br>o[JF] Fixed sorting issues (Dead references) [10]<br>o[JF] Warning messages color too light [1]<br>o[JF] Device test issue for network drives [5]<br>o[BF] Specified icons not used in information dialogs [4]<br>o[BF] Fixed sorting and filtering issues in catalog view [10]<br>Changes<br>o[ER] Get tags online on devices feature<br>o[BF] Documentation updated in en and fr<br>o[BF] Use Commons Collection bidimap to fix sort issues<br>o[BF][Perf] Avoid trying to create corrumpted covers at each event<br><br>rc5: 06/01/15 - 6 bugs - score: 32<br>o[BF] 2 minor fixes in Catalog View [5]<br>o[BF] Check concurrent session: error message option should be OK, no OK/Cancel [1]<br>o[BF] Typo in forced refresh message on secs [1]<br>o[BF] Fixed 3 issues in auto-refresh and cleanup [10]<br>o[BF] Window position/size not kept in some cases [5]<br>o[BF] Gain limited to 2/3 to avoid sound saturation [10]<br>Changes<br>o[GD] German langpack upgrade<br><br>rc4: 06/01/14 - 6 bugs - score: 29<br>o[BF] 2 minor fixes in Catalog View [5]<br>o[BF] Show track information with file information in playlist editor [3]<br>o[BF] Issue when creating thumbs in some cases [3]<br>o[BF] Seeking should release GUI [6]<br>o[AB] Sychronization destination missing in Device wizard [7]<br>o[BF] Better handling of errors in search box to release it [5]<br>Changes<br>o[GD] German langpack upgrade<br>o[BF] French langpack upgrade<br>o[BF] Changed JVM options to limit sound stops especialy using cross-fade<br><br>rc3: 06/01/10 - 13 bugs - score:56<br>o[BF] Logical tree view: sorting compbo and menu items not sychronized: 5<br>o[BF] Clever behavior for fade: if memory is low, force full gc instead of fade to avoid stops [10]<br>o[BF] Fixed an issue on refresh for files beginning or ending by a space [5]<br>o[BF] Yet another out of bounds issue on volume, prevent UI from starting [10]<br>o[JF] Table Selection cleared when changing item with tree/table sync [4]<br>o[JF] UI freezes when using CDDB retagging, Fix to check: I use a SwingWorker, waiting feedback<br>o[BF] Wrong size for thumbs in catalog view: 50 pixel less [5]<br>o[BF] Right clic on playlist editor should select row and then show popup [3]<br>o[JF] Should be possible to use contextual functions in playlist editor for queue playlist [6]<br>o[JF] CDDB Wizard should be resizable [2]<br>o[JF] Setting a default cover in playlist editor should update thumbs in catalog [6]<br>o[JF] Contextual menu on catalog items should be left-aligned to make it visible in all cases [2]<br>o[BF] Right clic on playlist editor should select row and then show popup [3]<br>Changes<br>o[BF] Physical tree view: disable CDDB retagging option if void directories<br>o[JF] New Properties menu item in playlist editor contextual menu<br>o[JF] Found cover size added in Catalog Online search wizard<br>o[BC] New keystrokes with arrows for sound and navigations<br>o[GD] German langpack upgrade<br><br>rc2: 06/01/08 - 2 bugs - score:15<br>o [BF] Logical tree view: code cleanup, enable sorting in all cases, store sorting method : 5<br>o [BF] Many fixes and enhancements on Catalog view online cover grabber : 10<br><br>rc1: 06/01/07<br>o Reference<br><br>Total: 95 bugs - Score: 520</pre>
+
+
+
+
+
+
+
+
+</body>
+</html>
