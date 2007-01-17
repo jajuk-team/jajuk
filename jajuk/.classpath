@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="lib" path="lib/kunststoff-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar" sourcepath="/prog/api/commons-logging-1.0.4/src"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>

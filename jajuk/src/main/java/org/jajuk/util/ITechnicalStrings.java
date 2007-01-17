@@ -236,441 +236,441 @@ public interface ITechnicalStrings {
 
 	// icons
 	public static final URL ICON_LOGO = Util
-			.getResource("org/jajuk/icons/64x64/jajuk-icon_64x64.png");
+			.getResource("icons/64x64/jajuk-icon_64x64.png");
 
 	public static final URL ICON_TRAY = Util
-			.getResource("org/jajuk/icons/22x22/jajuk-icon_22x22.png");
+			.getResource("icons/22x22/jajuk-icon_22x22.png");
 	
 	//Correctly displayed under JRE 1.6, ugly under Linux/JRE 1.5 
 	public static final URL ICON_LOGO_FRAME = Util
-			.getResource("org/jajuk/icons/16x16/jajuk-icon_16x16.png");
+			.getResource("icons/16x16/jajuk-icon_16x16.png");
 	
 	public static final URL ICON_REPEAT = Util
-			.getResource("org/jajuk/icons/16x16/repeat.png");
+			.getResource("icons/16x16/repeat.png");
 
 	public static final URL ICON_SHUFFLE = Util
-			.getResource("org/jajuk/icons/16x16/shuffle.png");
+			.getResource("icons/16x16/shuffle.png");
 
 	public static final URL ICON_CONTINUE = Util
-			.getResource("org/jajuk/icons/16x16/continue.png");
+			.getResource("icons/16x16/continue.png");
 
 	public static final URL ICON_INTRO = Util
-			.getResource("org/jajuk/icons/16x16/intro.png");
+			.getResource("icons/16x16/intro.png");
 
 	public static final URL ICON_SHUFFLE_GLOBAL = Util
-			.getResource("org/jajuk/icons/16x16/shuffle_global.png");
+			.getResource("icons/16x16/shuffle_global.png");
 
 	public static final URL ICON_BESTOF = Util
-			.getResource("org/jajuk/icons/16x16/bestof.png");
+			.getResource("icons/16x16/bestof.png");
 
 	public static final URL ICON_MUTE = Util
-			.getResource("org/jajuk/icons/16x16/mute.png");
+			.getResource("icons/16x16/mute.png");
 
 	public static final URL ICON_UNMUTE = Util
-			.getResource("org/jajuk/icons/16x16/unmute.png");
+			.getResource("icons/16x16/unmute.png");
 
 	public static final URL ICON_NOVELTIES = Util
-			.getResource("org/jajuk/icons/16x16/novelties.png");
+			.getResource("icons/16x16/novelties.png");
 
 	public static final URL ICON_PREVIOUS = Util
-			.getResource("org/jajuk/icons/16x16/previous.png");
+			.getResource("icons/16x16/previous.png");
 
 	public static final URL ICON_NEXT = Util
-			.getResource("org/jajuk/icons/16x16/next.png");
+			.getResource("icons/16x16/next.png");
 
 	public static final URL ICON_REW = Util
-			.getResource("org/jajuk/icons/16x16/player_rew.png");
+			.getResource("icons/16x16/player_rew.png");
 
 	public static final URL ICON_PLAY = Util
-			.getResource("org/jajuk/icons/16x16/player_play.png");
+			.getResource("icons/16x16/player_play.png");
 
 	public static final URL ICON_PAUSE = Util
-			.getResource("org/jajuk/icons/16x16/player_pause.png");
+			.getResource("icons/16x16/player_pause.png");
 
 	public static final URL ICON_STOP = Util
-			.getResource("org/jajuk/icons/16x16/player_stop.png");
+			.getResource("icons/16x16/player_stop.png");
 
 	public static final URL ICON_FWD = Util
-			.getResource("org/jajuk/icons/16x16/player_fwd.png");
+			.getResource("icons/16x16/player_fwd.png");
 
 	public static final URL ICON_VOLUME = Util
-			.getResource("org/jajuk/icons/16x16/volume.png");
+			.getResource("icons/16x16/volume.png");
 
 	public static final URL ICON_POSITION = Util
-			.getResource("org/jajuk/icons/16x16/position.png");
+			.getResource("icons/16x16/position.png");
 
 	public static final URL ICON_INFO = Util
-			.getResource("org/jajuk/icons/16x16/info.png");
+			.getResource("icons/16x16/info.png");
 
 	public static final URL ICON_PERSPECTIVE_PHYSICAL = Util
-			.getResource("org/jajuk/icons/40x40/perspective_physic.png");
+			.getResource("icons/40x40/perspective_physic.png");
 
 	public static final URL ICON_PERSPECTIVE_LOGICAL = Util
-			.getResource("org/jajuk/icons/40x40/perspective_logic.png");
+			.getResource("icons/40x40/perspective_logic.png");
 
 	public static final URL ICON_PERSPECTIVE_STATISTICS = Util
-			.getResource("org/jajuk/icons/40x40/perspective_stat.png");
+			.getResource("icons/40x40/perspective_stat.png");
 
 	public static final URL ICON_PERSPECTIVE_CONFIGURATION = Util
-			.getResource("org/jajuk/icons/40x40/perspective_configuration.png");
+			.getResource("icons/40x40/perspective_configuration.png");
 
 	public static final URL ICON_PERSPECTIVE_PLAYER = Util
-			.getResource("org/jajuk/icons/40x40/perspective_player.png");
+			.getResource("icons/40x40/perspective_player.png");
 
 	public static final URL ICON_PERSPECTIVE_CATALOG = Util
-			.getResource("org/jajuk/icons/40x40/perspective_catalog.png");
+			.getResource("icons/40x40/perspective_catalog.png");
 
 	public static final URL ICON_PERSPECTIVE_INFORMATION = Util
-			.getResource("org/jajuk/icons/40x40/perspective_information.png");
+			.getResource("icons/40x40/perspective_information.png");
 
 	public static final URL ICON_PERSPECTIVE_HELP = Util
-			.getResource("org/jajuk/icons/40x40/perspective_help.png");
+			.getResource("icons/40x40/perspective_help.png");
 
 	public static final URL ICON_OPEN_FILE = Util
-			.getResource("org/jajuk/icons/16x16/fileopen.png");
+			.getResource("icons/16x16/fileopen.png");
 
 	public static final URL ICON_EXIT = Util
-			.getResource("org/jajuk/icons/16x16/exit.png");
+			.getResource("icons/16x16/exit.png");
 
 	public static final URL ICON_NEW = Util
-			.getResource("org/jajuk/icons/16x16/new.png");
+			.getResource("icons/16x16/new.png");
 	
 	public static final URL ICON_SEARCH = Util
-			.getResource("org/jajuk/icons/16x16/search.png");
+			.getResource("icons/16x16/search.png");
 
 	public static final URL ICON_DELETE = Util
-			.getResource("org/jajuk/icons/16x16/delete.png");
+			.getResource("icons/16x16/delete.png");
 
 	public static final URL ICON_PROPERTIES = Util
-			.getResource("org/jajuk/icons/16x16/fileopen.png");
+			.getResource("icons/16x16/fileopen.png");
 
 	public static final URL ICON_VOID = Util
-			.getResource("org/jajuk/icons/16x16/void.png");
+			.getResource("icons/16x16/void.png");
 
 	public static final URL ICON_CONFIGURATION = Util
-			.getResource("org/jajuk/icons/16x16/configure.png");
+			.getResource("icons/16x16/configure.png");
 
 	public static final URL ICON_MOUNT = Util
-			.getResource("org/jajuk/icons/16x16/mount.png");
+			.getResource("icons/16x16/mount.png");
 
 	public static final URL ICON_UNMOUNT = Util
-			.getResource("org/jajuk/icons/16x16/unmount.png");
+			.getResource("icons/16x16/unmount.png");
 
 	public static final URL ICON_TRACES = Util
-			.getResource("org/jajuk/icons/16x16/properties.png");
+			.getResource("icons/16x16/properties.png");
 
 	public static final URL ICON_TEST = Util
-			.getResource("org/jajuk/icons/16x16/test.png");
+			.getResource("icons/16x16/test.png");
 
 	public static final URL ICON_REFRESH = Util
-			.getResource("org/jajuk/icons/16x16/refresh.png");
+			.getResource("icons/16x16/refresh.png");
 
 	public static final URL ICON_SYNCHRO = Util
-			.getResource("org/jajuk/icons/16x16/synchro.png");
+			.getResource("icons/16x16/synchro.png");
 
 	public static final URL ICON_DEVICE_NEW = Util
-			.getResource("org/jajuk/icons/64x64/new.png");
+			.getResource("icons/64x64/new.png");
 
 	public static final URL ICON_DEVICE_CD_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/cdrom_mount.png");
+			.getResource("icons/64x64/cdrom_mount.png");
 
 	public static final URL ICON_DEVICE_CD_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/cdrom_unmount.png");
+			.getResource("icons/64x64/cdrom_unmount.png");
 
 	public static final URL ICON_DEVICE_CD_AUDIO_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/cdaudio_mount.png");
+			.getResource("icons/64x64/cdaudio_mount.png");
 
 	public static final URL ICON_DEVICE_CD_AUDIO_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/cdaudio_unmount.png");
+			.getResource("icons/64x64/cdaudio_unmount.png");
 
 	public static final URL ICON_DEVICE_EXT_DD_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/ext_dd_mount.png");
+			.getResource("icons/64x64/ext_dd_mount.png");
 
 	public static final URL ICON_DEVICE_EXT_DD_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/ext_dd_unmount.png");
+			.getResource("icons/64x64/ext_dd_unmount.png");
 
 	public static final URL ICON_DEVICE_DIRECTORY_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/folder_mount.png");
+			.getResource("icons/64x64/folder_mount.png");
 
 	public static final URL ICON_DEVICE_DIRECTORY_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/folder_unmount.png");
+			.getResource("icons/64x64/folder_unmount.png");
 
 	public static final URL ICON_DEVICE_PLAYER_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/player_mount.png");
+			.getResource("icons/64x64/player_mount.png");
 
 	public static final URL ICON_DEVICE_PLAYER_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/player_unmount.png");
+			.getResource("icons/64x64/player_unmount.png");
 
 	public static final URL ICON_DEVICE_REMOTE_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/remote_mount.png");
+			.getResource("icons/64x64/remote_mount.png");
 
 	public static final URL ICON_DEVICE_REMOTE_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/remote_unmount.png");
+			.getResource("icons/64x64/remote_unmount.png");
 
 	public static final URL ICON_DEVICE_NETWORK_DRIVE_MOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/nfs_mount.png");
+			.getResource("icons/64x64/nfs_mount.png");
 
 	public static final URL ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED = Util
-			.getResource("org/jajuk/icons/64x64/nfs_unmount.png");
+			.getResource("icons/64x64/nfs_unmount.png");
 
 	public static final URL ICON_DEVICE_CD_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/cdrom_mount.png");
+			.getResource("icons/22x22/cdrom_mount.png");
 
 	public static final URL ICON_DEVICE_CD_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/cdrom_unmount.png");
+			.getResource("icons/22x22/cdrom_unmount.png");
 
 	public static final URL ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/cdaudio_mount.png");
+			.getResource("icons/22x22/cdaudio_mount.png");
 
 	public static final URL ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/cdaudio_unmount.png");
+			.getResource("icons/22x22/cdaudio_unmount.png");
 
 	public static final URL ICON_DEVICE_EXT_DD_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/ext_dd_mount.png");
+			.getResource("icons/22x22/ext_dd_mount.png");
 
 	public static final URL ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/ext_dd_unmount.png");
+			.getResource("icons/22x22/ext_dd_unmount.png");
 
 	public static final URL ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/nfs_mount.png");
+			.getResource("icons/22x22/nfs_mount.png");
 
 	public static final URL ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/nfs_unmount.png");
+			.getResource("icons/22x22/nfs_unmount.png");
 
 	public static final URL ICON_DEVICE_DIRECTORY_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/folder_mount.png");
+			.getResource("icons/22x22/folder_mount.png");
 
 	public static final URL ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/folder_unmount.png");
+			.getResource("icons/22x22/folder_unmount.png");
 
 	public static final URL ICON_DEVICE_PLAYER_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/player_mount.png");
+			.getResource("icons/22x22/player_mount.png");
 
 	public static final URL ICON_DEVICE_PLAYER_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/player_unmount.png");
+			.getResource("icons/22x22/player_unmount.png");
 
 	public static final URL ICON_DEVICE_REMOTE_MOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/remote_mount.png");
+			.getResource("icons/22x22/remote_mount.png");
 
 	public static final URL ICON_DEVICE_REMOTE_UNMOUNTED_SMALL = Util
-			.getResource("org/jajuk/icons/22x22/remote_unmount.png");
+			.getResource("icons/22x22/remote_unmount.png");
 
 	public static final URL ICON_OK = Util
-			.getResource("org/jajuk/icons/22x22/ok.png");
+			.getResource("icons/22x22/ok.png");
 
 	public static final URL ICON_OK_SMALL = Util
-			.getResource("org/jajuk/icons/16x16/ok.png");
+			.getResource("icons/16x16/ok.png");
 
 	public static final URL ICON_KO = Util
-			.getResource("org/jajuk/icons/22x22/ko.png");
+			.getResource("icons/22x22/ko.png");
 
 	public static final URL ICON_FILE = Util
-			.getResource("org/jajuk/icons/16x16/track.png");
+			.getResource("icons/16x16/track.png");
 
 	public static final URL ICON_DIRECTORY_SYNCHRO = Util
-			.getResource("org/jajuk/icons/16x16/dir_synchro.png");
+			.getResource("icons/16x16/dir_synchro.png");
 
 	public static final URL ICON_DIRECTORY_DESYNCHRO = Util
-			.getResource("org/jajuk/icons/16x16/dir_desynchro.png");
+			.getResource("icons/16x16/dir_desynchro.png");
 
 	public static final URL ICON_PLAYLIST_FILE = Util
-			.getResource("org/jajuk/icons/16x16/playlist.png");
+			.getResource("icons/16x16/playlist.png");
 
 	public static final URL ICON_STYLE = Util
-			.getResource("org/jajuk/icons/16x16/style.png");
+			.getResource("icons/16x16/style.png");
 
 	public static final URL ICON_AUTHOR = Util
-			.getResource("org/jajuk/icons/16x16/author.png");
+			.getResource("icons/16x16/author.png");
 
 	public static final URL ICON_ALBUM = Util
-			.getResource("org/jajuk/icons/16x16/album.png");
+			.getResource("icons/16x16/album.png");
 
 	public static final URL ICON_APPLY_FILTER = Util
-			.getResource("org/jajuk/icons/16x16/filter.png");
+			.getResource("icons/16x16/filter.png");
 
 	public static final URL ICON_CLEAR_FILTER = Util
-			.getResource("org/jajuk/icons/16x16/clear.png");
+			.getResource("icons/16x16/clear.png");
 
 	public static final URL ICON_ADVANCED_FILTER = Util
-			.getResource("org/jajuk/icons/16x16/complex_search.png");
+			.getResource("icons/16x16/complex_search.png");
 
 	public static final URL ICON_PLAYLIST_QUEUE = Util
-			.getResource("org/jajuk/icons/40x40/playlist_queue.png");
+			.getResource("icons/40x40/playlist_queue.png");
 
 	public static final URL ICON_PLAYLIST_QUEUE_SMALL = Util
-			.getResource("org/jajuk/icons/16x16/playlist_queue.png");
+			.getResource("icons/16x16/playlist_queue.png");
 
 	public static final URL ICON_PLAYLIST_NORMAL = Util
-			.getResource("org/jajuk/icons/40x40/playlist_normal.png");
+			.getResource("icons/40x40/playlist_normal.png");
 
 	public static final URL ICON_PLAYLIST_NEW = Util
-			.getResource("org/jajuk/icons/40x40/playlist_new.png");
+			.getResource("icons/40x40/playlist_new.png");
 	
 	public static final URL ICON_PLAYLIST_NEW_SMALL = Util
-			.getResource("org/jajuk/icons/16x16/playlist_new.png");
+			.getResource("icons/16x16/playlist_new.png");
 	
 	public static final URL ICON_PLAYLIST_BOOKMARK = Util
-			.getResource("org/jajuk/icons/40x40/playlist_bookmark.png");
+			.getResource("icons/40x40/playlist_bookmark.png");
 
 	public static final URL ICON_PLAYLIST_BOOKMARK_SMALL = Util
-			.getResource("org/jajuk/icons/16x16/playlist_bookmark.png");
+			.getResource("icons/16x16/playlist_bookmark.png");
 
 	public static final URL ICON_PLAYLIST_BESTOF = Util
-			.getResource("org/jajuk/icons/40x40/playlist_bestof.png");
+			.getResource("icons/40x40/playlist_bestof.png");
 
 	public static final URL ICON_PLAYLIST_NOVELTIES = Util
-			.getResource("org/jajuk/icons/40x40/playlist_novelties.png");
+			.getResource("icons/40x40/playlist_novelties.png");
 
 	public static final URL ICON_RUN = Util
-			.getResource("org/jajuk/icons/16x16/player_play.png");
+			.getResource("icons/16x16/player_play.png");
 
 	public static final URL ICON_ADD = Util
-			.getResource("org/jajuk/icons/16x16/add.png");
+			.getResource("icons/16x16/add.png");
 
 	public static final URL ICON_REMOVE = Util
-			.getResource("org/jajuk/icons/16x16/remove.png");
+			.getResource("icons/16x16/remove.png");
 
 	public static final URL ICON_UP = Util
-			.getResource("org/jajuk/icons/16x16/up.png");
+			.getResource("icons/16x16/up.png");
 
 	public static final URL ICON_DOWN = Util
-			.getResource("org/jajuk/icons/16x16/down.png");
+			.getResource("icons/16x16/down.png");
 
 	public static final URL ICON_ADD_SHUFFLE = Util
-			.getResource("org/jajuk/icons/16x16/add_shuffle.png");
+			.getResource("icons/16x16/add_shuffle.png");
 
 	public static final URL ICON_CLEAR = Util
-			.getResource("org/jajuk/icons/16x16/clear.png");
+			.getResource("icons/16x16/clear.png");
 
 	public static final URL ICON_SAVE = Util
-			.getResource("org/jajuk/icons/16x16/save.png");
+			.getResource("icons/16x16/save.png");
 
 	public static final URL ICON_SAVE_AS = Util
-			.getResource("org/jajuk/icons/16x16/saveas.png");
+			.getResource("icons/16x16/saveas.png");
 
 	public static final URL ICON_DEFAULT_COVER = Util
-			.getResource("org/jajuk/icons/16x16/ok.png");
+			.getResource("icons/16x16/ok.png");
 
 	public static final URL ICON_MODE_NORMAL = Util
-			.getResource("org/jajuk/icons/16x16/norm.png");
+			.getResource("icons/16x16/norm.png");
 
 	public static final URL ICON_NET_SEARCH = Util
-			.getResource("org/jajuk/icons/16x16/netsearch.png");
+			.getResource("icons/16x16/netsearch.png");
 
 	public static final URL ICON_TRACK_FIFO_PLANNED = Util
-			.getResource("org/jajuk/icons/16x16/clock.png");
+			.getResource("icons/16x16/clock.png");
 
 	public static final URL ICON_TRACK_FIFO_NORM = Util
-			.getResource("org/jajuk/icons/16x16/player_perspective.png");
+			.getResource("icons/16x16/player_perspective.png");
 
 	public static final URL ICON_TRACK_FIFO_REPEAT = Util
-			.getResource("org/jajuk/icons/16x16/repeat.png");
+			.getResource("icons/16x16/repeat.png");
 
 	public static final URL ICON_WIZARD = Util
-			.getResource("org/jajuk/icons/16x16/wizard.png");
+			.getResource("icons/16x16/wizard.png");
 
 	public static final URL ICON_TYPE_MP3 = Util
-			.getResource("org/jajuk/icons/16x16/type_mp3.png");
+			.getResource("icons/16x16/type_mp3.png");
 
 	public static final URL ICON_TYPE_OGG = Util
-			.getResource("org/jajuk/icons/16x16/type_ogg.png");
+			.getResource("icons/16x16/type_ogg.png");
 
 	public static final URL ICON_TYPE_AU = Util
-			.getResource("org/jajuk/icons/16x16/type_wav.png");
+			.getResource("icons/16x16/type_wav.png");
 
 	public static final URL ICON_TYPE_AIFF = Util
-			.getResource("org/jajuk/icons/16x16/type_wav.png");
+			.getResource("icons/16x16/type_wav.png");
 
 	public static final URL ICON_TYPE_FLAC = Util
-			.getResource("org/jajuk/icons/16x16/type_flac.png");
+			.getResource("icons/16x16/type_flac.png");
 
 	public static final URL ICON_TYPE_MPC = Util
-			.getResource("org/jajuk/icons/16x16/type_wav.png");
+			.getResource("icons/16x16/type_wav.png");
 
 	public static final URL ICON_TYPE_WMA = Util
-			.getResource("org/jajuk/icons/16x16/type_wma.png");
+			.getResource("icons/16x16/type_wma.png");
 
 	public static final URL ICON_TYPE_APE = Util
-			.getResource("org/jajuk/icons/16x16/type_ape.png");
+			.getResource("icons/16x16/type_ape.png");
 
 	public static final URL ICON_TYPE_AAC = Util
-			.getResource("org/jajuk/icons/16x16/type_aac.png");
+			.getResource("icons/16x16/type_aac.png");
 
 	public static final URL ICON_TYPE_WAV = Util
-			.getResource("org/jajuk/icons/16x16/type_wav.png");
+			.getResource("icons/16x16/type_wav.png");
 
 	public static final URL ICON_TYPE_RAM = Util
-			.getResource("org/jajuk/icons/16x16/type_ram.png");
+			.getResource("icons/16x16/type_ram.png");
 
 	public static final URL ICON_NO_EDIT = Util
-			.getResource("org/jajuk/icons/16x16/stop.png");
+			.getResource("icons/16x16/stop.png");
 
 	public static final URL ICON_EDIT = Util
-			.getResource("org/jajuk/icons/16x16/edit.png");
+			.getResource("icons/16x16/edit.png");
 
 	public static final URL ICON_UNKNOWN = Util
-			.getResource("org/jajuk/icons/16x16/presence_unknown.png");
+			.getResource("icons/16x16/presence_unknown.png");
 
 	public static final URL ICON_TIP = Util
-			.getResource("org/jajuk/icons/40x40/tip.png");
+			.getResource("icons/40x40/tip.png");
 
 	public static final URL ICON_TIP_SMALL = Util
-			.getResource("org/jajuk/icons/16x16/tip.png");
+			.getResource("icons/16x16/tip.png");
 
 	public static final URL ICON_OPEN_DIR = Util
-			.getResource("org/jajuk/icons/40x40/folder_open.png");
+			.getResource("icons/40x40/folder_open.png");
 
 	public static final URL ICON_STAR_1 = Util
-			.getResource("org/jajuk/icons/16x16/star1.png");
+			.getResource("icons/16x16/star1.png");
 
 	public static final URL ICON_STAR_2 = Util
-			.getResource("org/jajuk/icons/16x16/star2.png");
+			.getResource("icons/16x16/star2.png");
 
 	public static final URL ICON_STAR_3 = Util
-			.getResource("org/jajuk/icons/16x16/star3.png");
+			.getResource("icons/16x16/star3.png");
 
 	public static final URL ICON_STAR_4 = Util
-			.getResource("org/jajuk/icons/16x16/star4.png");
+			.getResource("icons/16x16/star4.png");
 
 	public static final URL ICON_DROP_DOWN = Util
-			.getResource("org/jajuk/icons/16x16/dropdown.png");
+			.getResource("icons/16x16/dropdown.png");
 
 	public static final URL ICON_DIGITAL_DJ = Util
-			.getResource("org/jajuk/icons/16x16/ddj.png");
+			.getResource("icons/16x16/ddj.png");
 
 	public static final URL ICON_LIST = Util
-			.getResource("org/jajuk/icons/16x16/contents.png");
+			.getResource("icons/16x16/contents.png");
 
 	public static final URL ICON_PLAY2 = Util
-			.getResource("org/jajuk/icons/16x16/play.png");
+			.getResource("icons/16x16/play.png");
 
 	public static final URL ICON_DEFAULTS = Util
-			.getResource("org/jajuk/icons/16x16/undo.png");
+			.getResource("icons/16x16/undo.png");
 
 	public static final URL ICON_DEFAULTS_BIG = Util
-			.getResource("org/jajuk/icons/22x22/undo.png");
+			.getResource("icons/22x22/undo.png");
 
 	public static final URL ICON_HELP = Util
-			.getResource("org/jajuk/icons/16x16/help.png");
+			.getResource("icons/16x16/help.png");
 
 	// images
 	public static final URL IMAGES_SPLASHSCREEN = Util
-			.getResource("org/jajuk/images/included/jajuk-splashscreen.jpg");
+			.getResource("images/included/jajuk-splashscreen.jpg");
 
 	public static final URL IMAGE_NO_COVER = Util
-			.getResource("org/jajuk/images/included/" + FILE_THUMB_NO_COVER);
+			.getResource("images/included/" + FILE_THUMB_NO_COVER);
 
 	public static final URL IMAGE_WRITE = Util
-			.getResource("org/jajuk/images/included/write.png");
+			.getResource("images/included/write.png");
 
 	public static final URL IMAGE_SEARCH = Util
-			.getResource("org/jajuk/images/included/search.png");
+			.getResource("images/included/search.png");
 
 	public static final URL IMAGE_DJ = Util
-			.getResource("org/jajuk/images/included/dj.jpg");
+			.getResource("images/included/dj.jpg");
 
 	public static final URL IMAGE_TRAY_TITLE = Util
-			.getResource("org/jajuk/images/included/tray_title.png");
+			.getResource("images/included/tray_title.png");
 
 	// XSLT Files
 	public static final URL ARTIST_XSLT = Util
