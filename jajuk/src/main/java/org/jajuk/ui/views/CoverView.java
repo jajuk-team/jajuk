@@ -487,7 +487,7 @@ public class CoverView extends ViewAdapter implements Observer,
 					dirCurrent = null;
 				} else if (EventSubject.EVENT_COVER_CHANGE.equals(subject)
 						&& isInCurrentPerspective()) {
-					// choose a random coverv
+					// choose a random cover
 					index = (int) (Math.random() * alCovers.size() - 1);
 					displayCurrentCover();
 				}

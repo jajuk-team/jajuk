@@ -22,10 +22,10 @@
  
  <scm>
     <connection>
-      scm:svn:https://jajuk.svn.sourceforge.net/svnroot/jajuk
+	    scm:svn:http://jajuk.svn.sourceforge.net/viewvc/jajuk/
     </connection>
     <url>
-      scm:svn:http://jajuk.svn.sourceforge.net/viewvc/jajuk/
+      http://jajuk.svn.sourceforge.net/viewvc/jajuk/trunk/jajuk/
     </url>
   </scm>
   
@@ -58,7 +58,7 @@
 	    <developer>
 	      <name>Bertrand Florat</name>
 	      <roles>
-		      <role>Conceptor/administrator</role>
+		      <role>admin</role>
 	      </roles>
 	      <id>bflorat</id>
 	      <email>bflorat@users.sourceforge.net</email>
@@ -128,7 +128,7 @@
 	     <roles>
 			<role>Graphist</role>
 	     </roles>
-	      <email>https://sourceforge.net/users/nicolasschudel/</email>
+	      <email>https://sf.net/users/nicolasschudel/</email>
 	      <organization>Jajuk team</organization>
 	      <timezone>+12</timezone>
 	    </developer>
@@ -141,22 +141,19 @@
 			 <email>jf_sourceforge@khiplus.fr</email>
 			<roles><role>Suggestions, Bug reports, qualification</role></roles>
 		</contributor>
-		
-		
-		
 		<contributor>
 			<name>David Hadley</name>
-			 <email></email>
+			<email></email>
 			<roles><role>Bug fixes, refactoring, feature developement</role></roles>
 		</contributor>
 		<contributor>
 			<name>Sung Pil Moon</name>
-			 <email></email>
+			<email></email>
 			<roles><role>Korean translation</role></roles>
 		</contributor>
 		<contributor>
 			<name>Eleftherios Spyromitros</name>
-			 <email>l3fman@otenet.gr</email>
+			<email>l3fman@otenet.gr</email>
 			<roles><role>Qualification using the Jajuk Quality Center</role></roles>
 		</contributor>
 		<contributor>
@@ -507,7 +504,7 @@
      <dependency>
 	   <groupId>VLDocking</groupId>
         <artifactId>vldocking</artifactId>
-        <version>2.1.2_jajuk</version> 
+        <version>2.1.3_jajuk</version> 
  		<scope>system</scope>
 		<systemPath>/data/java/workspace/jajuk/lib/vldocking-2.1.2_jajuk.jar</systemPath>
      </dependency>
@@ -520,11 +517,9 @@
   
    <licenses>
    <license>
-  
-   <name>GPL</name>
-   <url>http://www.gnu.org/licenses/gpl.html</url>
-   <distribution>manual</distribution>
-  
+     <name>GPL</name>
+  	 <url>http://jajuk.sourceforge.net/LICENSE.txt</url>
+   	<distribution>manual</distribution>
    </license>
    </licenses>
   
@@ -535,7 +530,7 @@
         		<groupId>org.codehaus.mojo</groupId>
         		<artifactId>changes-maven-plugin</artifactId>
       		</plugin>
-		 <!-- 	<plugin>
+		  	<plugin>
         	 	<groupId>org.apache.maven.plugins</groupId>
          		<artifactId>maven-pmd-plugin</artifactId>
          		<configuration>
@@ -547,18 +542,13 @@
     	  	
     	 	<plugin>
         		<groupId>org.codehaus.mojo</groupId>
-        		<artifactId>changes-maven-plugin</artifactId>
-      		</plugin>
-      		
-      		<plugin>
-        		<groupId>org.codehaus.mojo</groupId>
         		<artifactId>changelog-maven-plugin</artifactId>
 	      	</plugin>
     	
     	  	<plugin>
         		<groupId>org.codehaus.mojo</groupId>
         		<artifactId>taglist-maven-plugin</artifactId>
-      		</plugin>-->
+      		</plugin>
 		</plugins>
 	</reporting>
   

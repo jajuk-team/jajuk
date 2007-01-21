@@ -5,4 +5,4 @@
 cd `dirname $0`/bin
 
 #Launch jajuk
-java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12 -Dapple.laf.useScreenMenuBar=true -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT
+java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT

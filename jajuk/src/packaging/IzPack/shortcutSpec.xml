@@ -52,7 +52,7 @@
      startMenu='no'
      startup='no'
      target='javaw'
-     commandLine='-client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Dapple.laf.useScreenMenuBar=true -Xincgc -XX:NewRatio=12 -jar "$INSTALL_PATH/bin/jajuk.jar" -notaskbar TEST_FLAG_REPLACED_BY_ANT'
+     commandLine='-client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12 -jar "$INSTALL_PATH/bin/jajuk.jar" -notaskbar TEST_FLAG_REPLACED_BY_ANT'
      workingDirectory='$INSTALL_PATH/bin'
      description='Jajuk advanced JukeBox'
      iconIndex='0'

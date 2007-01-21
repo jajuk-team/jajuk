@@ -85,8 +85,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 	 * Constructor
 	 */
 	public JajukWindow() {
-		// mac integration (disable for the moment as users reported issues)
-		// System.setProperty( "apple.laf.useScreenMenuBar","true");
+		// mac integration
+		System.setProperty( "apple.laf.useScreenMenuBar","true");
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP, true);
 		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());

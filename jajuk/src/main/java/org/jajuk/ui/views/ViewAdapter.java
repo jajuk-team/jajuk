@@ -173,7 +173,7 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 	 * @see org.jajuk.ui.IView#getPerspective()
 	 */
 	public IPerspective getPerspective() {
-		return null;
+		return perspective;
 	}
 
 	/*

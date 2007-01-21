@@ -3,11 +3,15 @@
 <head>
 
 
+
+  
   
   
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
 
+
+  
   
   
   <title>Translator Guide</title>
@@ -17,131 +21,152 @@
 <body>
 
 
+
 <h2>Translation howto</h2>
+
 
 
 <div class="subsection"><a name="Already_translated"></a>
 <h3>Already translated</h3>
 
 
+
 <p>These languages are already translated or are being translated :</p>
+
 
 
 <ul>
 
 
+
   <li>English (default, en)</li>
+
 
 
   <li>French (fr)</li>
 
 
+
   <li>German (de)</li>
+
 
 
   <li>Spanish (sp)</li>
 
 
+
   <li>Catalan (ca)</li>
+
 
 
   <li>Swedish (sv) *</li>
 
 
+
   <li>Italian (it) *</li>
+
 
 
   <li>Dutch (nl) *</li>
 
 
+
   <li>Korean (ko) *</li>
+
 
 
 </ul>
 
 
+
 <p>(*): Partially translated, <a href="http://jajuk.info/translation_howto.html#Translation_upgrades">translation to be updated</a></p>
 
 
+
 </div>
+
 
 
 <div class="subsection"><a name="Target"></a>
 <h3>Target</h3>
 
 
-<p>Anyone can translate Jajuk, no computer science is required. Note this is a <u>voluntary work</u>.
-				For any question or comments, please&nbsp;<a href="jajuk-support@lists.sourceforge.net">contact us</a>. Current Jajuk&nbsp;version translation should take few&nbsp;hours and upgrade only&nbsp;few minutes.</p>
+
+<p>Anyone can translate Jajuk, no computer science is required. Note this is a voluntary work.
+				For any question or comments, please&nbsp;<a href="mailto:jajuk-support@lists.sourceforge.net">contact us</a>. Current Jajuk&nbsp;version translation should take few&nbsp;hours and upgrade only&nbsp;few minutes.</p>
+
 
 
 </div>
+
 
 
 <div class="subsection"><a name="Mailing_list"></a>
 <h3>Mailing list</h3>
 
 
+
 <p>Translators should subscribe on the <a href="http://lists.sourceforge.net/lists/listinfo/jajuk-i18n" class="externalLink" title="External Link">translators mailing list</a> to get information about internationalization issues and translation update needs.</p>
 
 
+
 </div>
+
 
 
 <div class="subsection"><a name="Jajuk_translation"></a>
 <h3>Jajuk translation</h3>
 
 
+
+
+
+
+
+
+
+
+
+
 <p>Jajuk
 uses a custom internationalization (i18n) system based on a
-XML/properties file. In the final distribution, langpack files are:</p>
+XML/properties file. In the final distribution, langpack files are&nbsp;<span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/i18n/jajuk_{locale}.properties where&nbsp;{locale}</span> is a <a href="http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt">ISO language code</a>. 
+            	jajuk.properties contains default resource bundle (English) and you have a property file for each language.&nbsp;Translation :</p>
 
-
-<p><span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/i18n/<br>
-
-
-
-                                          jajuk.properties<br>
-
-
-
-                                          jajuk_fr.properties<br>
-
-
-
-                                          jajuk_{locale}.properties</span></p>
-
-
-<p><span style="font-family: monospace;">{locale}</span> is a ISO language code, see <a href="http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt" class="externalLink" title="External Link">http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
-            	jajuk.properties contains default resource bundle (English) and you have a property file for each language.</p>
-
-
-<p>Translation :</p>
 
 
 <ul>
 
 
+
   <li>
+    
     
     
     <p>Get  property file of your choice as a source language. Example: take <a href="http://jajuk.svn.sourceforge.net/viewvc/jajuk/trunk/jajuk/src/main/java/org/jajuk/i18n/jajuk.properties?view=log">last release of <span style="font-family: monospace;">jajuk.properties</span></a> as English source language or any other property file in this directory.</p>
 
 
 
+
 				</li>
 
 
+
   <li>
+    
     
     
     <p>Create your text file. It should begin with :</p>
 
 
 
+
 				
     
     
+    
     <p><span style="font-family: monospace;">#Jajuk {your language} langpack. <br>
+
 
 
 
@@ -149,7 +174,9 @@ XML/properties file. In the final distribution, langpack files are:</p>
 
 
 
+
 				#Copyright 2003,2004 {your name}, this is part of Jajuk distributed under the GPL V2 license<br>
+
 
 
 
@@ -157,11 +184,14 @@ XML/properties file. In the final distribution, langpack files are:</p>
 
 
 
+
 				#$Revision: 1.7 $</span></p>
 
 
 
+
 				
+    
     
     
     <p>FROM
@@ -171,7 +201,9 @@ of your file ( do not change this line manually, it will be updated by SVN).</p>
 
 
 
+
 			</li>
+
 
 
   <li>Please write your files in Unicode UTF-8 encoding. If you don't know how to set the encoding, please <a href="mailto:jajuk-i18n@lists.sourceforge.net">ask us</a>.
@@ -183,17 +215,22 @@ you used. If you don't know which encoding you used, start Jajuk, go to
 Help perspective/About view, click on the <i>system</i> tab and your encoding is given by <i>file.encoding</i> property.</li>
 
 
+
   <li>
+    
     
     
     <p>Look at file structure: It is a simple key=value  format. Example:</p>
 
 
 
+
 				
     
     
+    
     <p><span style="font-family: monospace;">ParameterView.73=Check this if you allow others people to come read music from your box<br>
+
 
 
 
@@ -201,25 +238,32 @@ Help perspective/About view, click on the <i>system</i> tab and your encoding is
 
 
 
+
 				ParameterView.75=Set password access to your box. If no password is set, no one can read from it</span></p>
 
 
 
+
 				
+    
     
     
     <p>Simply translate each value, Previous example in French:</p>
 
 
 
+
 				
+    
     
     
     <p><span style="font-family: monospace;">ParameterView.73=Accepter que d'autres utilisateurs lise la musique situ&eacute;e sur votre machine<br>
 
 
 
+
 				ParameterView.74=Mot de passe :<br>
+
 
 
 
@@ -228,19 +272,25 @@ de passe n'est pas fix&eacute;, personne ne peut s'y connecter</span></p>
 
 
 
+
 			</li>
 
 
+
   <li>
+    
     
     
     <p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Some
@@ -249,10 +299,13 @@ to keep the nearest number of characters as possible in your
 translation to ensure correct display.</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p><a href="mailto:jajuk-i18n@lists.sourceforge.net">Send us</a> your work as a property file with your local ( ex: <span style="font-family: monospace;">jajuk_ru.properties</span> for russian ). Contact us if you have a developer profile so we will create a 
@@ -260,100 +313,134 @@ translation to ensure correct display.</p>
 
 
 
+
 			</li>
+
 
 
   <li>
     
     
+    
     <p>(Optional, for translators with developer skills) If you want to test your work (<i>ant</i> must be installed):</p>
+
 
 
   </li>
 
 
+
+  
   
   
   <ul>
 
 
+
     <li>
+      
       
       
       <p>Edit  <span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/Main.java</span> file and search for line :</p>
 
 
+
     </li>
 
 
+
+    
     
     
     <p><span style="font-family: monospace;">Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$</span></p>
 
 
+
+    
     
     
     <p>Add after this line your own local. Example :</p>
 
 
+
     <span style="font-family: monospace;">Messages.registerLocal("ru","Language_desc_ru"); //$NON-NLS-1$ //$NON-NLS-2$</span><li>
+      
       
       
       <p>Copy your properties file in the <span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/i18n</span> directory</p>
 
 
+
     </li>
 
 
+
     <li>
+      
       
       
       <p>Go in the <span style="font-family: monospace;">{jajuk installation path}</span> directory where you can find the <span style="font-family: monospace;">build.xml</span> file</p>
 
 
+
     </li>
 
 
+
     <li>
+      
       
       
       <p>Rebuild Jajuk typing <span style="font-family: monospace;">'ant'</span></p>
 
 
+
     </li>
 
 
+
     <li>
+      
       
       
       <p>Launch Jajuk and set language in the parameter view of the configuration perspective.</p>
 
 
+
     </li>
+
 
 
     <li>
       
       
+      
       <p>Check your work.</p>
+
 
 
     </li>
 
 
+
+  
   
   
   </ul>
 
 
+
 </ul>
+
 
 
 </div>
 
 
+
 <div class="subsection"><a name="Translation_upgrades"></a>
 <h3>Translation upgrades</h3>
+
 
 
 <p>As
@@ -369,28 +456,37 @@ upgrade your translation whenever you want. What you have to do when
 upgrading a translation is :</p>
 
 
+
 <ul>
 
 
+
   <li>
+    
     
     
     <p>If your source (FROM) language is NOT English, make sure it is up to date before upgrading it.</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Check your #FROM comment at the beginning of your file, it should contain SVN release version of your last upgrade.</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Perform
@@ -398,120 +494,159 @@ a 'diff' between this release and the latest in SVN repository&nbsp;using ViewVN
 Jajuk web site (<a href="http://jajuk.svn.sourceforge.net/viewvc/jajuk/trunk/jajuk/src/main/java/org/jajuk/i18n/" class="externalLink" title="External Link">SVN Web repository</a>)</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Remove old labels, modify and add new ones.</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Upgrade the #FROM comment with the translated release.</p>
 
 
+
   </li>
+
 
 
   <li>
     
     
+    
     <p>Commit your file or send it <a href="mailto:jajuk-i18n@lists.sourceforge.net">by mail</a>.</p>
+
 
 
   </li>
 
 
+
 </ul>
 
 
+
 </div>
+
 
 
 <div class="subsection"><a name="Tips"></a>
 <h3>Tips</h3>
 
 
+
 <ul>
 
 
+
   <li>
+    
     
     
     <p>Of course, do not modify keys but only values</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>If a value contains a '\ ', do not drop it, it means there is a space at line start or en</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Keep &lt;html&gt; and &lt;/html&gt; strings</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Keep all punctuation and specials characters like '[','.' and so on...</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Set date format according your locale, ex: DD/MM/YYYY in French, YYYY-MM-DD in English</p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     
     <p>Try to keep values length near from source ones so labels will not be too long and stay visible</p>
 
 
+
   </li>
+
 
 
   <li>
     
     
+    
     <p>Use a spelling corrector when possible</p>
+
 
 
   </li>
 
 
+
 </ul>
+
 
 
 </div>
 
 
+
 <div class="subsection"><a name="Documentation_translation"></a>
 <h3>Documentation translation</h3>
+
 
 
 <p>Embedded
@@ -523,7 +658,9 @@ often because documentation have to be accurate to make it useful and
 not confusing. If interested, send us a mail on <a href="mailto:jajuk-i18n@lists.sourceforge.net">i18n list.</a></p>
 
 
+
 </div>
+
 
 
 </body>

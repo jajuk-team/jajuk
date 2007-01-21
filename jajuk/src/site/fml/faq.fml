@@ -48,7 +48,7 @@
         How much resources takes Jajuk ?
       </question>
       <answer>
-        <p><li>Please read the Performances tips in the embedded help system.</li></p>
+        <p><li>Please read the <a href='jajuk-hs/default/html/perfs.html'>Performances tips</a> in the embedded help system.</li></p>
         <p><li>On a recent PC, Jajuk uses less tahn 5% CPU and typicaly from 40 to 70 MB of memory for a 50 GB collection</li></p>
       </answer>
     </faq>

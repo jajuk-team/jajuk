@@ -165,7 +165,7 @@ public class AboutView extends ViewAdapter {
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
 		ap = new AboutPanel(
-				"Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE, "<html>Copyright 2003,2006<br>Bertrand Florat & Jajuk team</html>", INFOS, Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		jpAbout.add(ap);
 		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());
