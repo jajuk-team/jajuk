@@ -584,15 +584,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						CatalogItem cover = new CatalogItem(album, (String) jcbSize
 								.getSelectedItem(), anyTrack);
 						alItemsToDisplay.add(cover);
-						hsItems.add(cover); // stores information on
-						// non-null covers
+						// stores information on non-null covers
+						hsItems.add(cover); 
 					}
 				}
-				iNbPages = alItemsToDisplay.size() / CATALOG_PAGE_SIZE + // computes
-						// the
-						// number
-						// of
-						// page
+				// computes the number of pages
+				iNbPages = alItemsToDisplay.size() / CATALOG_PAGE_SIZE + 
 						((alItemsToDisplay.size() % CATALOG_PAGE_SIZE == 0) ? 0 : 1);
 				// add one page for trailling items
 				// populate page selector
@@ -941,14 +938,23 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 		 */
 		public void mousePressed(MouseEvent e) {
-			if (CatalogView.this.item != null) {
+			//remove red border on previous item if different from this one
+			if (CatalogView.this.item != null && CatalogView.this.item != this) {
 				CatalogView.this.item.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 			}
-			CatalogView.this.item = this;
+			//add a red border on this item
 			setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+			//Right click
 			if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == this) {
-				play(false, false, false);
+				//if second click (item already selected), play
+				if (CatalogView.this.item == this){
+					play(false, false, false);
+				}
+				CatalogView.this.item = this;
+			//Left click
 			} else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == this) {
+				CatalogView.this.item = this;
+				//Show contextual menu
 				jmenu.show(jlIcon, e.getX(), e.getY());
 			}
 		}

@@ -126,8 +126,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 		// word otherwise
 		super(Main.getWindow(), alItems.size() == 1 ? (alItems.get(0)).getDesc() : Messages
 				.getString("PropertiesWizard.6"), true); // modal
-															// //$NON-NLS-1$
-		// //$NON-NLS-1$
 		this.alItems = alItems;
 		boolean bMerged = false;
 		if (alItems.size() > 1) {
@@ -155,8 +153,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 		// word otherwise
 		super(Main.getWindow(), alItems1.size() == 1 ? (alItems1.get(0)).getDesc() : Messages
 				.getString("PropertiesWizard.6"), true); // modal
-															// //$NON-NLS-1$
-		// //$NON-NLS-1$
 		this.alItems = alItems1;
 		this.alItems2 = alItems2;
 		// computes filter
@@ -330,11 +326,10 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 				}
 			}
 			// contains widgets for properties
-			// Varname | value | link | type | all album
+			// Varname | value | link | all album
 			widgets = new JComponent[alToDisplay.size()][4];
 			double p = TableLayout.PREFERRED;
-			double[] dHoriz = { iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR, p,
-					iX_SEPARATOR };
+			double[] dHoriz = { iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR, p,iX_SEPARATOR };
 			// *2n+1 rows for spaces + 2 rows for title
 			double[] dVert = new double[(2 * alToDisplay.size()) + 3];
 			dVert[0] = iY_SEPARATOR;
@@ -607,8 +602,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 					jbLink.setToolTipText(Messages.getString("PropertiesWizard.12")); //$NON-NLS-1$
 					widgets[index][2] = jbLink;
 				}
-				// Type
-				widgets[index][3] = new JLabel(meta.getHumanType());
 				index++;
 			}
 			if (dVert.length > 0) {
@@ -652,7 +645,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 				if (widgets[i][2] != null) { // link widget can be null
 					jpProperties.add(widgets[i][2], "5," + j + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				jpProperties.add(widgets[i][3], "7," + j + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
 				i++;
 			}
 			double[][] dSize = { { 0.99 }, { 20, iY_SEPARATOR, 0.99 } };

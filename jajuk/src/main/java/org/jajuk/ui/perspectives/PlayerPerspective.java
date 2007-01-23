@@ -27,6 +27,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IView;
 import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.views.LogicalPlaylistEditorView;
 import org.jajuk.ui.views.ViewFactory;
 
 /**
@@ -63,6 +64,8 @@ public class PlayerPerspective extends PerspectiveAdapter {
 		views.add(ViewFactory.createView(CoverView.class, this));
 		// second one
 		views.add(ViewFactory.createView(CoverView.class, this));
+		// Playlist editor
+		views.add(ViewFactory.createView(LogicalPlaylistEditorView.class, this));
 		return views;
 	}
 

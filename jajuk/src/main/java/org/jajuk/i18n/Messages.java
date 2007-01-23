@@ -691,6 +691,7 @@ class DetailsMessageDialog implements Runnable {
 			});
 			jp.add(Util.getCentredPanel(jbOK));
 			dialogDetail.setModal(true);
+			dialog.setAlwaysOnTop(true);
 			dialogDetail.setContentPane(jp);
 			dialogDetail.pack();
 			dialogDetail.setLocationRelativeTo(Main.getWindow());
@@ -759,6 +760,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 			optionPane.setIcon(icon);
 		}
 		JDialog dialog = optionPane.createDialog(null, sTitle);
+		dialog.setAlwaysOnTop(true);
 		// keep it modal (useful at startup)
 		dialog.setModal(true);
 		if (optionPane.getValue().equals(Messages.getString("Hide"))) { //$NON-NLS-1$

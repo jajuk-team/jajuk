@@ -6,12 +6,17 @@
 <Dockable>
 <Key dockName="org.jajuk.ui.views.AnimationView/0"/>
 </Dockable>
-<Split orientation="1" location="0.5011494252873563">
+<Split orientation="1" location="0.7">
+<Split orientation="1" location="0.5">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.CoverView/3"/>
 </Dockable>
 <Dockable>
 <Key dockName="org.jajuk.ui.views.CoverView/2"/>
+</Dockable>
+</Split>
+<Dockable>
+<Key dockName="org.jajuk.ui.views.LogicalPlaylistEditorView/1"/>
 </Dockable>
 </Split>
 </Split>

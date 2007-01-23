@@ -207,7 +207,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_TOOLBARS_CONF = FILE_JAJUK_DIR
 			+ "/toolbars.xml";
 
-	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "org/jajuk/perspectives";
+	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
 	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
 	
@@ -674,31 +674,31 @@ public interface ITechnicalStrings {
 
 	// XSLT Files
 	public static final URL ARTIST_XSLT = Util
-			.getResource("org/jajuk/xslt/artist.xsl");
+			.getResource("xslt/artist.xsl");
 
 	public static final URL ALBUM_XSLT = Util
-			.getResource("org/jajuk/xslt/album.xsl");
+			.getResource("xslt/album.xsl");
 
 	public static final URL STYLE_XSLT = Util
-			.getResource("org/jajuk/xslt/style.xsl");
+			.getResource("xslt/style.xsl");
 
 	public static final URL DIRECTORY_XSLT = Util
-			.getResource("org/jajuk/xslt/directory.xsl");
+			.getResource("xslt/directory.xsl");
 
 	public static final URL DEVICE_XSLT = Util
-			.getResource("org/jajuk/xslt/device.xsl");
+			.getResource("xslt/device.xsl");
 
 	public static final URL COLLECTION_XSLT = Util
-			.getResource("org/jajuk/xslt/collection.xsl");
+			.getResource("xslt/collection.xsl");
 
 	public static final URL STYLE_COLLECTION_XSLT = Util
-			.getResource("org/jajuk/xslt/style_collection.xsl");
+			.getResource("xslt/style_collection.xsl");
 
 	public static final URL ARTIST_COLLECTION_XSLT = Util
-			.getResource("org/jajuk/xslt/artist_collection.xsl");
+			.getResource("xslt/artist_collection.xsl");
 
 	public static final URL ALBUM_COLLECTION_XSLT = Util
-			.getResource("org/jajuk/xslt/album_collection.xsl");
+			.getResource("xslt/album_collection.xsl");
 
 	// Command line options
 	// if selected, no jajuk window at startup, only tray

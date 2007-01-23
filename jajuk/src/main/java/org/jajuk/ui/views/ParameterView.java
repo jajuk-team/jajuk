@@ -350,7 +350,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// --Startup
 		jpStart = new JajukJPanel();
 		double sizeStart[][] = {
-				{ 0.15, iXSeparator, 0.4, iXSeparator, 0.3, iXSeparator },
+				{ TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator },
 				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
 						iYSeparator, 20, iYSeparator, 20 } };
 		jpStart.setLayout(new TableLayout(sizeStart));
@@ -627,7 +627,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (!Util.isUnderWindows()) {
 			jcbHotkeys.setEnabled(false);
 		}
-
 		JPanel jpCombos = new JPanel();
 		jpCombos.setOpaque(false);
 		double sizeCombos[][] = { { 0.50, 0.45 }, { 20, iYSeparator, 20, iYSeparator, 20 } };
@@ -648,21 +647,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			scbLAF.addItem(it.next());
 		}
 		scbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
-		jlLogLevel = new JLabel(Messages.getString("ParameterView.46")); //$NON-NLS-1$
-		scbLogLevel = new SteppedComboBox();
-		scbLogLevel.addItem(Messages.getString("ParameterView.47")); //$NON-NLS-1$
-		scbLogLevel.addItem(Messages.getString("ParameterView.48")); //$NON-NLS-1$
-		scbLogLevel.addItem(Messages.getString("ParameterView.49")); //$NON-NLS-1$
-		scbLogLevel.addItem(Messages.getString("ParameterView.50")); //$NON-NLS-1$
-		scbLogLevel.addItem(Messages.getString("ParameterView.51")); //$NON-NLS-1$
-		scbLogLevel.setToolTipText(Messages.getString("ParameterView.52")); //$NON-NLS-1$
 		jpCombos.add(jlLanguage, "0,0"); //$NON-NLS-1$
 		jpCombos.add(scbLanguage, "1,0"); //$NON-NLS-1$
 		jpCombos.add(jlLAF, "0,2"); //$NON-NLS-1$
 		jpCombos.add(scbLAF, "1,2"); //$NON-NLS-1$
-		jpCombos.add(jlLogLevel, "0,4"); //$NON-NLS-1$
-		jpCombos.add(scbLogLevel, "1,4"); //$NON-NLS-1$
-
+		
 		double sizeOptions[][] = {
 				{ TableLayout.PREFERRED },
 				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
@@ -751,12 +740,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
 		jcbCollectionEncoding.addItem("UTF-8"); //$NON-NLS-1$
 		jcbCollectionEncoding.addItem("UTF-16"); //$NON-NLS-1$
-
+		jlLogLevel = new JLabel(Messages.getString("ParameterView.46")); //$NON-NLS-1$
+		scbLogLevel = new SteppedComboBox();
+		scbLogLevel.addItem(Messages.getString("ParameterView.47")); //$NON-NLS-1$
+		scbLogLevel.addItem(Messages.getString("ParameterView.48")); //$NON-NLS-1$
+		scbLogLevel.addItem(Messages.getString("ParameterView.49")); //$NON-NLS-1$
+		scbLogLevel.addItem(Messages.getString("ParameterView.50")); //$NON-NLS-1$
+		scbLogLevel.addItem(Messages.getString("ParameterView.51")); //$NON-NLS-1$
+		scbLogLevel.setToolTipText(Messages.getString("ParameterView.52")); //$NON-NLS-1$
+		
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
 				{ 20, TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
 						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator } };
+						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator } };
 		jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
 		jpAdvanced.add(jcbRegexp, "0,1");//$NON-NLS-1$
 		jpAdvanced.add(jlCollectionEncoding, "0,3");//$NON-NLS-1$
@@ -764,6 +761,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(jcbBackup, "0,5");//$NON-NLS-1$
 		jpAdvanced.add(jlBackupSize, "0,7");//$NON-NLS-1$
 		jpAdvanced.add(backupSize, "1,7");//$NON-NLS-1$        
+		jpAdvanced.add(jlLogLevel, "0,9");//$NON-NLS-1$        
+		jpAdvanced.add(scbLogLevel, "1,9");//$NON-NLS-1$
 
 		// - Network
 		jpNetwork = new JajukJPanel();
@@ -791,8 +790,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				String sText = tf.getText();
 				try {
 					int iValue = Integer.parseInt(sText);
-					if (iValue < 0 || iValue > 65535) { // port is between 0 and
-						// 65535
+					if (iValue < 0 || iValue > 65535) { 
+						// port is between 0 and 65535
 						jbOK.setEnabled(false);
 						return false;
 					}
@@ -1158,7 +1157,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		}
 		ConfigurationManager.setProperty(CONF_FADE_DURATION, Integer.toString(crossFadeDuration
 				.getValue()));
-		// startup
+		// Startup
 		if (jrbNothing.isSelected()) {
 			ConfigurationManager.setProperty(CONF_STARTUP_MODE, STARTUP_MODE_NOTHING);
 		} else if (jrbLast.isSelected()) {
