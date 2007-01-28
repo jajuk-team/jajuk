@@ -72,6 +72,7 @@ public enum EventSubject {
 	// the resume button has been pressed
     EVENT_PLAYER_RESUME, 
 	EVENT_PLAYLIST_REFRESH, 
+	//Current playlist has changed
     EVENT_PLAYLIST_SELECTION_CHANGED, 
     // a file has been lauched by the fifo
     EVENT_FILE_LAUNCHED, 

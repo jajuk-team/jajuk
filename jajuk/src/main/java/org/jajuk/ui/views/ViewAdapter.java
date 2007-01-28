@@ -88,18 +88,6 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 		bIsPopulated = isPopulated;
 	}
 
-	/**
-	 * View refresh
-	 */
-	public void refresh() {
-		if (getComponentCount() > 0) {
-			removeAll();
-		}
-		initUI();
-		this.revalidate();
-		this.repaint();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -49,6 +49,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -247,6 +248,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		Properties properties = new Properties();
 		properties.put(DETAIL_ORIGIN, AbstractPlaylistRepositoryView.this);
 		properties.put(DETAIL_SELECTION, plfi);
+		properties.put(DETAIL_TARGET, PerspectiveManager.getCurrentPerspective().getID());
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED,
 				properties));
 	}

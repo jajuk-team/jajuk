@@ -890,6 +890,9 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_NEW = "new";
 
 	public static final String DETAIL_OPTION = "option";
+	
+	public static final String DETAIL_TARGET = "target";
+	
 
 	// Look and feel
 	public static final String LNF_METAL = "Ocean";

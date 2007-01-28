@@ -22,7 +22,6 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -44,7 +43,6 @@ import org.jajuk.util.error.JajukException;
 import org.mozilla.xpcom.GREVersionRange;
 import org.mozilla.xpcom.IAppFileLocProvider;
 import org.mozilla.xpcom.Mozilla;
-import org.mozilla.xpcom.XPCOMException;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -128,7 +126,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 			String sPerspective = Main.getDefaultPerspective();
 			/*
 			 * take a look to see if a default perspective is set (About tray
-			 * for exemple)
+			 * for example)
 			 */
 			if (sPerspective == null) {
 				sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT);
@@ -147,7 +145,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
 	 */
 	public static IPerspective getCurrentPerspective() {
-		return currentPerspective;
+		return PerspectiveManager.currentPerspective;
 	}
 
 	/*
@@ -159,7 +157,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				perspective.setAsBeenSelected(true);
-				currentPerspective = perspective;
+				PerspectiveManager.currentPerspective = perspective;
 				for (IView view : perspective.getViews()) {
 					if (!view.isPopulated()) {
 						view.initUI();
@@ -220,7 +218,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 	 * 
 	 * @param sID
 	 *            perspective ID
-	 * @return pespective
+	 * @return perspective
 	 */
 	public static IPerspective getPerspective(String sID) {
 		return hmNameInstance.get(sID);

@@ -71,14 +71,8 @@ public interface IView extends ComponentListener, Dockable {
 	 */
 	public void setIsPopulated(boolean isDisplayed);
 
-	/**
-	 * View refresh
-	 */
-	public void refresh();
-
-	
-	/**
-	 * 
+	/**	 
+	 *  
 	 * @return current perspective for this view
 	 */
 	public IPerspective getPerspective();

@@ -80,6 +80,7 @@ import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistEditorTransferHandler;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
@@ -253,7 +254,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			vColNames.add(Messages.getString("Property_filename")); //$NON-NLS-1$
 			vId.add(XML_FILE);
 
-			// Hits
+			// Hitsloi anti-tabac
 			vColNames.add(Messages.getString("Property_hits")); //$NON-NLS-1$
 			vId.add(XML_TRACK_HITS);
 
@@ -300,7 +301,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 								"", null, null, font, Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
 					} else {
 						if (item.isRepeat()) {
-							// normal file, repeated
+							// normal file, repeatedloi anti-tabac
 							oValues[iRow][0] = new IconLabel(iconRepeat, "", null, null, font,
 									Messages.getString("AbstractPlaylistEditorView.19"));
 						} else {
@@ -385,7 +386,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	}
 
 	/*
-	 * (non-Javadoc)
+	 * loi anti-tabac (non-Javadoc)
 	 * 
 	 * @see org.jajuk.ui.IView#display()
 	 */
@@ -497,10 +498,16 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		jmenuFile.add(jmiFileProperties);
 		// register events
 		ObservationManager.register(this);
-		// DND
-		// force a refresh
-		update(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED, ObservationManager
-				.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED)));
+		// -- force a refresh --
+		// Begin by getting last events details
+		Properties properties = ObservationManager
+				.getDetailsLastOccurence(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED);
+		// Add current perspective than is used to filter events
+		if (properties == null) {
+			properties = new Properties();
+		}
+		properties.put(DETAIL_TARGET, PerspectiveManager.getCurrentPerspective().getID());
+		update(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED, properties));
 		update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 	}
 
@@ -576,12 +583,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					// events
 					Object origin = ObservationManager.getDetail(event, DETAIL_ORIGIN);
 					// changed of playlist
-					if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject)
-							&& event.getDetails() != null) {
-						// test mapping between editor and repository, to be
-						// refactored
-						if ((AbstractPlaylistEditorView.this instanceof PhysicalPlaylistEditorView && !(origin instanceof PhysicalPlaylistRepositoryView))
-								|| (AbstractPlaylistEditorView.this instanceof LogicalPlaylistEditorView && !(origin instanceof LogicalPlaylistRepositoryView))) {
+					if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject)) {
+						// test mapping between editor and repository
+						String sTargetedPerspective = (String) event.getDetails()
+								.get(DETAIL_TARGET);
+						if (sTargetedPerspective != null
+								&& !sTargetedPerspective.equals(getPerspective().getID())) {
 							return;
 						}
 						// clear planned
@@ -591,6 +598,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						jtable.getSelectionModel().clearSelection();
 						PlaylistFileItem plfi = (PlaylistFileItem) ObservationManager.getDetail(
 								event, DETAIL_SELECTION);
+						//plfi item is null when used in a perspective without a playlist repository view 
+						if (plfi == null) {
+							plfi = new PlaylistFileItem(
+									PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
+									ICON_PLAYLIST_QUEUE,
+									new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
+											"1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
+						}
 						AbstractPlaylistEditorView.this.iType = plfi.getType();
 						AbstractPlaylistEditorView.this.plfi = plfi;
 						// set title label

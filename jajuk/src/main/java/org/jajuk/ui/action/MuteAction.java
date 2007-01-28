@@ -20,7 +20,7 @@ public class MuteAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	MuteAction() {
-		super(Messages.getString("JajukWindow.2"), Util.getIcon(ICON_MUTE),
+		super(Messages.getString("JajukWindow.2"), Util.getIcon(ICON_UNMUTE),
 				"F8", true, true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
 		setShortDescription(Messages.getString("JajukWindow.19")); //$NON-NLS-1$
 	}
@@ -29,11 +29,11 @@ public class MuteAction extends ActionBase {
 		Player.mute();
 		if (Player.isMuted()) {
 			setName(Messages.getString("JajukWindow.1")); //$NON-NLS-1$
-			setIcon(Util.getIcon(ICON_UNMUTE));
+			setIcon(Util.getIcon(ICON_MUTE));
 			CommandJPanel.getInstance().jbMute.setSelected(true);
 		} else {
 			setName(Messages.getString("JajukWindow.2")); //$NON-NLS-1$
-			setIcon(Util.getIcon(ICON_MUTE));
+			setIcon(Util.getIcon(ICON_UNMUTE));
 			CommandJPanel.getInstance().jbMute.setSelected(false);
 		}
 	}
