@@ -52,6 +52,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.Main;
+import org.jajuk.base.AudioScrobblerManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
@@ -149,6 +150,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JCheckBox jcbDisplayUnmounted;
 
 	JCheckBox jcbSyncTableTree;
+    
+    JCheckBox jcbAudioScrobbler;
+    
+    JLabel  jlASUser;
+    
+    JTextField jtfASUser;
+    
+    JLabel jlASPassword;
+    
+    JPasswordField jpfASPassword;
 
 	JLabel jlLanguage;
 
@@ -627,6 +638,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (!Util.isUnderWindows()) {
 			jcbHotkeys.setEnabled(false);
 		}
+        
 		JPanel jpCombos = new JPanel();
 		jpCombos.setOpaque(false);
 		double sizeCombos[][] = { { 0.50, 0.45 }, { 20, iYSeparator, 20, iYSeparator, 20 } };
@@ -770,7 +782,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				{ 0.5, 0.45 },
 				{ 20, TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
 						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator } };
+						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
+                        TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
+                        TableLayout.PREFERRED, iYSeparator} };
 		jpNetwork.setLayout(new TableLayout(sizeNetwork));
 		jcbProxy = new JCheckBox(Messages.getString("ParameterView.140")); //$NON-NLS-1$
 		jcbProxy.setOpaque(false);
@@ -832,6 +846,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			}
 		};
 		jtfProxyLogin.setInputVerifier(verifier);
+        
+        jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
+        jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200")); //$NON-NLS-1$
+        jcbAudioScrobbler.setOpaque(false);
+        jcbAudioScrobbler.addActionListener(this);
+        
+        jlASUser = new JLabel(Messages.getString("ParameterView.201"));
+        jlASUser.setOpaque(false);
+        
+        jtfASUser = new JTextField();
+        jtfASUser.setToolTipText(Messages.getString("ParameterView.202"));
+        
+        jlASPassword = new JLabel(Messages.getString("ParameterView.203"));
+        jlASPassword.setOpaque(false);
+        
+        jpfASPassword = new JPasswordField();
+        jpfASPassword.setToolTipText(Messages.getString("ParameterView.204"));
+        
 		jlConnectionTO = new JLabel(Messages.getString("ParameterView.160")); //$NON-NLS-1$
 		jlConnectionTO.setToolTipText(Messages.getString("ParameterView.160")); //$NON-NLS-1$
 		connectionTO = new JSlider(0, 60);
@@ -863,6 +895,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpNetwork.add(jtfProxyPort, "1,9"); //$NON-NLS-1$
 		jpNetwork.add(jlProxyLogin, "0,11"); //$NON-NLS-1$
 		jpNetwork.add(jtfProxyLogin, "1,11"); //$NON-NLS-1$
+        jpNetwork.add(jcbAudioScrobbler, "0,13");
+        jpNetwork.add(jlASUser, "0,15");
+        jpNetwork.add(jtfASUser, "1,15");
+        jpNetwork.add(jlASPassword, "0,17");
+        jpNetwork.add(jpfASPassword, "1,17");
 
 		// - Cover
 		jpCovers = new JajukJPanel();
@@ -1083,7 +1120,22 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 						jlMaxSize.setEnabled(false);
 						jcbPreLoad.setEnabled(false);
 					}
-				} else if (e.getSource() == scbLAF) {
+				} else if (e.getSource() == jcbAudioScrobbler) {
+                    if (jcbAudioScrobbler.isSelected()) {
+                        jlASUser.setEnabled(true);
+                        jtfASUser.setEnabled(true);
+                        jlASPassword.setEnabled(true);
+                        jpfASPassword.setEnabled(true);
+                    } else {
+                        jlASUser.setEnabled(false);
+                        jtfASUser.setEnabled(false);
+                        jlASPassword.setEnabled(false);
+                        jpfASPassword.setEnabled(false);
+                    }
+                    Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+                } else if (e.getSource() == jtfASUser || e.getSource() == jpfASPassword){
+                    AudioScrobblerManager.getInstance().handshake(jtfASUser.getText(), jpfASPassword.getText());
+                } else if (e.getSource() == scbLAF) {
 					ConfigurationManager.setProperty(CONF_OPTIONS_LNF, (String) scbLAF
 							.getSelectedItem());
 					if (!LNFManager.getCurrent().equals(scbLAF.getSelectedItem())) { 
@@ -1134,6 +1186,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys
                 .isSelected()));
+        ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER, Boolean.toString(jcbAudioScrobbler
+                .isSelected()));
+        if (jcbAudioScrobbler.isSelected()){
+            Log.debug(jpfASPassword.getText());
+            ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER_USER, jtfASUser.getText());
+            ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD, jpfASPassword.getText());
+        }
         int iLogLevel = scbLogLevel.getSelectedIndex();
 		Log.setVerbosity(iLogLevel);
 		ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
@@ -1290,6 +1349,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
 		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP));
 		jcbHotkeys.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS));
+        
 		jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
 		scbLanguage.setSelectedIndex(Messages.getLocales().indexOf(
 				ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
@@ -1355,9 +1415,22 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbLoadEachTrack.setSelected(ConfigurationManager
 				.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK));
 		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled()); // this
-																									// mode
+																			// mode
 																									// requires
 		// shuffle mode
+        
+        jcbAudioScrobbler.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER));
+        if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)){
+            Log.debug(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD));
+            jtfASUser.setText(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_USER));
+            jpfASPassword.setText(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD));
+        } else {
+            jlASUser.setEnabled(false);
+            jtfASUser.setEnabled(false);
+            jlASPassword.setEnabled(false);
+            jpfASPassword.setEnabled(false);
+        }
+        
 	}
 
 	/*

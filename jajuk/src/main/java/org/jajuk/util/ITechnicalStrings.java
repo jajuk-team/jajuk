@@ -77,6 +77,9 @@ public interface ITechnicalStrings {
 	/** Autocommit delay in ms */
 	public static final int AUTO_COMMIT_DELAY = 3600000;
 
+    /** Autocommit delay in ms for audioScrobbling backup */
+    public static final int AUTO_AUDIOSCROBBLER_COMMIT_DELAY = 180000;
+    
 	/** Autorefresh thread delay in ms */
 	public static final int AUTO_REFRESH_DELAY = 30000;
 
@@ -162,7 +165,9 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR
 			+ "/conf.properties";
-
+    public static final String FILE_AUDIOSCROBBLER = FILE_JAJUK_DIR
+    		+ "/audioscrobbler_list.xml";
+   
 	public static final String FILE_HISTORY = FILE_JAJUK_DIR + "/history.xml";
 
 	public static final String FILE_LOCK = FILE_JAJUK_DIR + "/.lock";
@@ -1079,6 +1084,12 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
 
 	public static final String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
+    
+    public static final String CONF_OPTIONS_AUDIOSCROBBLER = "jajuk.network.audioscrobbler";
+    
+    public static final String CONF_OPTIONS_AUDIOSCROBBLER_USER = "jajuk.network.ASUser";
+    
+    public static final String CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD = "jajuk.network.ASPassword";
 
 	public static final String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
@@ -1420,6 +1431,8 @@ public interface ITechnicalStrings {
 	public static final String XML_DJ_NUMBER = "number";
 
 	public static final String XML_DJ_STARTUP_STYLE = "startup_style";
+    
+    public static final String XML_SUBMISSION = "submission";
 
 	/*
 	 * Reserved XML tags for property names (note that a user can choose a

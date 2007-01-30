@@ -249,7 +249,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 		if (!frt.exists()) {
 			throw new JajukException("005"); //$NON-NLS-1$
 		}
-		saxParser.parse(frt.toURL().toString(), getInstance());
+		saxParser.parse(frt.toURI().toURL().toString(), getInstance());
 		// start auto commit thread
 		tAutoCommit.start();
 	}

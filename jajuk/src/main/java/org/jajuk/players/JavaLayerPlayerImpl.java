@@ -382,4 +382,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 		return (lDuration/1000);
 	}
 
+     public int Scrobble(){
+         return 1;
+  }
 }

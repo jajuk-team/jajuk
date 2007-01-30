@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.AlbumManager;
+import org.jajuk.base.AudioScrobblerManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -410,6 +411,12 @@ public class Main implements ITechnicalStrings {
 			// Launch auto-refresh thread
 			DeviceManager.getInstance().startAutoRefreshThread();
 
+            // Launch AudioScrobblerManager if enable
+            if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)){
+                AudioScrobblerManager.getInstance().startup();
+            }
+            
+            
 			// Launch startup track if any
 			launchInitialTrack();
 

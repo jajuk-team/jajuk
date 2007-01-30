@@ -62,6 +62,8 @@ public class Player implements ITechnicalStrings {
 	/** Playing ? */
 	private static boolean bPlaying = false;
 
+
+    
 	/**
 	 * Asynchronous play for specified file with specified time interval
 	 * 
