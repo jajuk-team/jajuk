@@ -86,14 +86,11 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 	 * @throws JajukException
 	 */
 	public static void load() throws JajukException {
-		// si fichiers existent, decouverte dynamique
-		// si aucun fichier ou si nouvelle version majeure, lecture des fichiers
-		// defaut du jar
 		registerDefaultPerspectives();
 		if (Main.isUpgradeDetected()) {
 			// upgrade message
 			Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
-			// force loadinf of defaults perspectives
+			// force loading of defaults perspectives
 			for (IPerspective perspective : getPerspectives()) {
 				// Remove current conf file to force using default file from the
 				// jar
