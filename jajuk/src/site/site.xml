@@ -37,8 +37,8 @@
       <item name='Download' href='./downloads.html' />
       <item name='Features' href='./features.html' />
       <item name='Screenshots' href='./screenshots.html' />
-      <item name='Support / Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
-      <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
+      <item name='Support / Help' href='http://jajuk.info/projects/jajuk' />
+      <item name='Bug report / Wishes' href='http://jajuk.info/projects/jajuk' />
       <item name='Media coverage' href='./references.html' />
     </menu>
     <menu name='Documentation'>
@@ -47,8 +47,7 @@
       <item name='FAQ' href='./faq.html' />
     </menu>
     <menu name='Project'>
-      <item name='Changelog' href='./changes-report.html' />
-      <item name='Roadmap' href='./roadmap.html' />
+      <item name='Changelog / Roadmap' href='http://trantor/projects/jajuk/timeline?from=&daysback=&milestone=on&update=Update' />
       <item name='Help wanted' href='./jobs.html' />
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Translator guide' href='./translator_guide.html' />
