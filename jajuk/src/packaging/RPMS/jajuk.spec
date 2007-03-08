@@ -3,8 +3,8 @@ Name: jajuk
 Version: VERSION_REPLACED_BY_ANT
 Release: 1
 Group: Applications/Audio
-Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2005
 URL: http://jajuk.sourceforge.net
+License: GPL
 Source: http://jajuk.sourceforge.net
 Packager: Bertrand Florat
 BuildRoot: %_topdir/%{name}

@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Iterator;
 
 import javax.swing.ButtonGroup;
@@ -52,7 +54,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.Main;
-import org.jajuk.base.AudioScrobblerManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
@@ -62,10 +63,12 @@ import org.jajuk.base.SearchResult;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJPanel;
 import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.PathSelector;
 import org.jajuk.ui.PatternInputVerifier;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SearchBox;
@@ -73,6 +76,7 @@ import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -150,16 +154,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JCheckBox jcbDisplayUnmounted;
 
 	JCheckBox jcbSyncTableTree;
-    
-    JCheckBox jcbAudioScrobbler;
-    
-    JLabel  jlASUser;
-    
-    JTextField jtfASUser;
-    
-    JLabel jlASPassword;
-    
-    JPasswordField jpfASPassword;
+
+	JCheckBox jcbAudioScrobbler;
+
+	JLabel jlASUser;
+
+	JTextField jtfASUser;
+
+	JLabel jlASPassword;
+
+	JPasswordField jpfASPassword;
 
 	JLabel jlLanguage;
 
@@ -285,6 +289,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JTextField jtfMaxSize;
 
+	JLabel jlMPlayerArgs;
+
+	JTextField jtfMPlayerArgs;
+
+	JLabel jlJajukWorkspace;
+
+	PathSelector psJajukWorkspace;
+	
 	JajukJPanel jpOKCancel;
 
 	JButton jbOK;
@@ -361,7 +373,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// --Startup
 		jpStart = new JajukJPanel();
 		double sizeStart[][] = {
-				{ TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator },
+				{ TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator,
+						TableLayout.PREFERRED, iXSeparator },
 				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
 						iYSeparator, 20, iYSeparator, 20 } };
 		jpStart.setLayout(new TableLayout(sizeStart));
@@ -398,7 +411,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		sbSearch = new SearchBox(this);
 		sbSearch.setEnabled(false); // disabled by default, is enabled only
 		// if jrbFile is enabled
-		// set choosen track in file selection
+		// set chosen track in file selection
 		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
 		if (!"".equals(sFileId)) { //$NON-NLS-1$
 			File file = FileManager.getInstance().getFileByID(sFileId);
@@ -633,12 +646,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196")); //$NON-NLS-1$
 		jcbHotkeys.setOpaque(false);
+		jcbHotkeys.addActionListener(this);
 		jcbHotkeys.setToolTipText(Messages.getString("ParameterView.197")); //$NON-NLS-1$
 		// Disable this option if not under windows
-		if (!Util.isUnderWindows()) {
-			jcbHotkeys.setEnabled(false);
-		}
-        
+		jcbHotkeys.setEnabled(Util.isUnderWindows());
+
 		JPanel jpCombos = new JPanel();
 		jpCombos.setOpaque(false);
 		double sizeCombos[][] = { { 0.50, 0.45 }, { 20, iYSeparator, 20, iYSeparator, 20 } };
@@ -663,7 +675,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpCombos.add(scbLanguage, "1,0"); //$NON-NLS-1$
 		jpCombos.add(jlLAF, "0,2"); //$NON-NLS-1$
 		jpCombos.add(scbLAF, "1,2"); //$NON-NLS-1$
-		
+
 		double sizeOptions[][] = {
 				{ TableLayout.PREFERRED },
 				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
@@ -760,21 +772,36 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		scbLogLevel.addItem(Messages.getString("ParameterView.50")); //$NON-NLS-1$
 		scbLogLevel.addItem(Messages.getString("ParameterView.51")); //$NON-NLS-1$
 		scbLogLevel.setToolTipText(Messages.getString("ParameterView.52")); //$NON-NLS-1$
-		
+		jlMPlayerArgs = new JLabel(Messages.getString("ParameterView.205"));
+		jlMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
+		jtfMPlayerArgs = new JTextField();
+		jtfMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
+		jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
+		jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
+		//Directory selection
+		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
+				.getInstance()),Util.getHomeDirectory());
+		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
-				{ 20, TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator } };
-		jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
+				{ 20, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+						TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+						TableLayout.PREFERRED, TableLayout.PREFERRED } };
+		TableLayout layout = new TableLayout(sizeAdvanced);
+		layout.setVGap(15);
+		jpAdvanced.setLayout(layout);
 		jpAdvanced.add(jcbRegexp, "0,1");//$NON-NLS-1$
-		jpAdvanced.add(jlCollectionEncoding, "0,3");//$NON-NLS-1$
-		jpAdvanced.add(jcbCollectionEncoding, "1,3");//$NON-NLS-1$
-		jpAdvanced.add(jcbBackup, "0,5");//$NON-NLS-1$
-		jpAdvanced.add(jlBackupSize, "0,7");//$NON-NLS-1$
-		jpAdvanced.add(backupSize, "1,7");//$NON-NLS-1$        
-		jpAdvanced.add(jlLogLevel, "0,9");//$NON-NLS-1$        
-		jpAdvanced.add(scbLogLevel, "1,9");//$NON-NLS-1$
+		jpAdvanced.add(jlCollectionEncoding, "0,2");//$NON-NLS-1$
+		jpAdvanced.add(jcbCollectionEncoding, "1,2");//$NON-NLS-1$
+		jpAdvanced.add(jcbBackup, "0,3");//$NON-NLS-1$
+		jpAdvanced.add(jlBackupSize, "0,4");//$NON-NLS-1$
+		jpAdvanced.add(backupSize, "1,4");//$NON-NLS-1$        
+		jpAdvanced.add(jlLogLevel, "0,5");//$NON-NLS-1$        
+		jpAdvanced.add(scbLogLevel, "1,5");//$NON-NLS-1$
+		jpAdvanced.add(jlMPlayerArgs, "0,6");//$NON-NLS-1$        
+		jpAdvanced.add(jtfMPlayerArgs, "1,6");//$NON-NLS-1$
+		jpAdvanced.add(jlJajukWorkspace, "0,7");//$NON-NLS-1$
+		jpAdvanced.add(psJajukWorkspace, "1,7");//$NON-NLS-1$
 
 		// - Network
 		jpNetwork = new JajukJPanel();
@@ -783,8 +810,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				{ 20, TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
 						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
 						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-                        TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-                        TableLayout.PREFERRED, iYSeparator} };
+						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
+						TableLayout.PREFERRED, iYSeparator } };
 		jpNetwork.setLayout(new TableLayout(sizeNetwork));
 		jcbProxy = new JCheckBox(Messages.getString("ParameterView.140")); //$NON-NLS-1$
 		jcbProxy.setOpaque(false);
@@ -804,7 +831,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				String sText = tf.getText();
 				try {
 					int iValue = Integer.parseInt(sText);
-					if (iValue < 0 || iValue > 65535) { 
+					if (iValue < 0 || iValue > 65535) {
 						// port is between 0 and 65535
 						jbOK.setEnabled(false);
 						return false;
@@ -846,24 +873,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			}
 		};
 		jtfProxyLogin.setInputVerifier(verifier);
-        
-        jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
-        jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200")); //$NON-NLS-1$
-        jcbAudioScrobbler.setOpaque(false);
-        jcbAudioScrobbler.addActionListener(this);
-        
-        jlASUser = new JLabel(Messages.getString("ParameterView.201"));
-        jlASUser.setOpaque(false);
-        
-        jtfASUser = new JTextField();
-        jtfASUser.setToolTipText(Messages.getString("ParameterView.202"));
-        
-        jlASPassword = new JLabel(Messages.getString("ParameterView.203"));
-        jlASPassword.setOpaque(false);
-        
-        jpfASPassword = new JPasswordField();
-        jpfASPassword.setToolTipText(Messages.getString("ParameterView.204"));
-        
+
+		jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
+		jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200")); //$NON-NLS-1$
+		jcbAudioScrobbler.setOpaque(false);
+		jcbAudioScrobbler.addActionListener(this);
+
+		jlASUser = new JLabel(Messages.getString("ParameterView.201"));
+		jlASUser.setOpaque(false);
+
+		jtfASUser = new JTextField();
+		jtfASUser.setToolTipText(Messages.getString("ParameterView.202"));
+
+		jlASPassword = new JLabel(Messages.getString("ParameterView.203"));
+		jlASPassword.setOpaque(false);
+
+		jpfASPassword = new JPasswordField();
+		jpfASPassword.setToolTipText(Messages.getString("ParameterView.204"));
+
 		jlConnectionTO = new JLabel(Messages.getString("ParameterView.160")); //$NON-NLS-1$
 		jlConnectionTO.setToolTipText(Messages.getString("ParameterView.160")); //$NON-NLS-1$
 		connectionTO = new JSlider(0, 60);
@@ -895,11 +922,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpNetwork.add(jtfProxyPort, "1,9"); //$NON-NLS-1$
 		jpNetwork.add(jlProxyLogin, "0,11"); //$NON-NLS-1$
 		jpNetwork.add(jtfProxyLogin, "1,11"); //$NON-NLS-1$
-        jpNetwork.add(jcbAudioScrobbler, "0,13");
-        jpNetwork.add(jlASUser, "0,15");
-        jpNetwork.add(jtfASUser, "1,15");
-        jpNetwork.add(jlASPassword, "0,17");
-        jpNetwork.add(jpfASPassword, "1,17");
+		jpNetwork.add(jcbAudioScrobbler, "0,13");
+		jpNetwork.add(jlASUser, "0,15");
+		jpNetwork.add(jtfASUser, "1,15");
+		jpNetwork.add(jlASPassword, "0,17");
+		jpNetwork.add(jpfASPassword, "1,17");
 
 		// - Cover
 		jpCovers = new JajukJPanel();
@@ -998,9 +1025,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jtpMain.addTab(Messages.getString("ParameterView.115"), jpAdvanced); //$NON-NLS-1$
 		try {
 			// Reload stored selected index
-            jtpMain.setSelectedIndex(ConfigurationManager.getInt(CONF_OPTIONS_TAB)); 
-       } catch (Exception e) { 
-           // an error can occur if a new release brings or remove tabs
+			jtpMain.setSelectedIndex(ConfigurationManager.getInt(CONF_OPTIONS_TAB));
+		} catch (Exception e) {
+			// an error can occur if a new release brings or remove tabs
 			Log.error(e);
 			jtpMain.setSelectedIndex(0);
 		}
@@ -1121,25 +1148,26 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 						jcbPreLoad.setEnabled(false);
 					}
 				} else if (e.getSource() == jcbAudioScrobbler) {
-                    if (jcbAudioScrobbler.isSelected()) {
-                        jlASUser.setEnabled(true);
-                        jtfASUser.setEnabled(true);
-                        jlASPassword.setEnabled(true);
-                        jpfASPassword.setEnabled(true);
-                    } else {
-                        jlASUser.setEnabled(false);
-                        jtfASUser.setEnabled(false);
-                        jlASPassword.setEnabled(false);
-                        jpfASPassword.setEnabled(false);
-                    }
-                    Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-                } else if (e.getSource() == jtfASUser || e.getSource() == jpfASPassword){
-                    AudioScrobblerManager.getInstance().handshake(jtfASUser.getText(), jpfASPassword.getText());
-                } else if (e.getSource() == scbLAF) {
+					if (jcbAudioScrobbler.isSelected()) {
+						jlASUser.setEnabled(true);
+						jtfASUser.setEnabled(true);
+						jlASPassword.setEnabled(true);
+						jpfASPassword.setEnabled(true);
+					} else {
+						jlASUser.setEnabled(false);
+						jtfASUser.setEnabled(false);
+						jlASPassword.setEnabled(false);
+						jpfASPassword.setEnabled(false);
+					}
+					Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+				} else if (e.getSource() == jtfASUser || e.getSource() == jpfASPassword) {
+					AudioScrobblerManager.getInstance().handshake(jtfASUser.getText(),
+							jpfASPassword.getText());
+				} else if (e.getSource() == scbLAF) {
 					ConfigurationManager.setProperty(CONF_OPTIONS_LNF, (String) scbLAF
 							.getSelectedItem());
-					if (!LNFManager.getCurrent().equals(scbLAF.getSelectedItem())) { 
-                        // Lnf has changed
+					if (!LNFManager.getCurrent().equals(scbLAF.getSelectedItem())) {
+						// Lnf has changed
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								LNFManager.setLookAndFeel(ConfigurationManager
@@ -1155,11 +1183,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				} else if (e.getSource() == scbLanguage) {
 					String sLocal = Messages.getLocales().get(scbLanguage.getSelectedIndex());
 					String sPreviousLocal = Messages.getInstance().getLocal();
-					if (!sPreviousLocal.equals(sLocal)) { 
-                        // local has changed
+					if (!sPreviousLocal.equals(sLocal)) {
+						// local has changed
 						ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
 						Messages.showInfoMessage(Messages.getString("ParameterView.198")); //$NON-NLS-1$
 					}
+				} else if (e.getSource() == jcbHotkeys) {
+					ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, Boolean
+							.toString(jcbHotkeys.isSelected()));
+					// Hotkey flag changes is taken into account only at next
+					// startup
+					Messages.showInfoMessage(Messages.getString("ParameterView.198"));
 				}
 			}
 		}.start();
@@ -1185,15 +1219,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_OPTIONS_SHOW_POPUP, Boolean.toString(jcbShowBaloon
 				.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys
-                .isSelected()));
-        ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER, Boolean.toString(jcbAudioScrobbler
-                .isSelected()));
-        if (jcbAudioScrobbler.isSelected()){
-            Log.debug(jpfASPassword.getText());
-            ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER_USER, jtfASUser.getText());
-            ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD, jpfASPassword.getText());
-        }
-        int iLogLevel = scbLogLevel.getSelectedIndex();
+				.isSelected()));
+		ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER, Boolean
+				.toString(jcbAudioScrobbler.isSelected()));
+		if (jcbAudioScrobbler.isSelected()) {
+			Log.debug(new String(jpfASPassword.getPassword()));
+			ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER_USER, jtfASUser.getText());
+			ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD, new String(
+					jpfASPassword.getPassword()));
+		}
+		int iLogLevel = scbLogLevel.getSelectedIndex();
 		Log.setVerbosity(iLogLevel);
 		ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
 		ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_BEGIN, Integer.toString(introPosition
@@ -1263,7 +1298,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// tags
 		ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir
 				.isSelected()));
-		//Get and check reorg pattern
+		// Get and check reorg pattern
 		String sPattern = jtfRefactorPattern.getText();
 		ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, sPattern);
 		ConfigurationManager.setProperty(CONF_ANIMATION_PATTERN, jtfAnimationPattern.getText());
@@ -1272,6 +1307,26 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET, jcbCollectionEncoding
 				.getSelectedItem().toString());
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
+		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
+		//If jajuk home changes, write new path in bootstrap file
+		if (Util.getHomeDirectory() != null 
+				&& !Util.getHomeDirectory().equals(psJajukWorkspace.getUrl())){
+			try{
+				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
+				bw.write(psJajukWorkspace.getUrl());
+				bw.flush();
+				bw.close();
+				
+				//Request user to move the .jajuk directory and to restart Jajuk
+				Messages.showInfoMessage(Messages.getString("ParameterView.209")); 
+			}
+			catch(Exception e){
+				Messages.showErrorMessage("024");
+				Log.debug("Cannot write bootstrap file");
+			}
+		}
+	
 		// Network
 		ConfigurationManager.setProperty(CONF_NETWORK_USE_PROXY, Boolean.toString(jcbProxy
 				.isSelected()));
@@ -1293,7 +1348,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.toString(jcbLoadEachTrack.isSelected()));
 		ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE, jtfMinSize.getText());
 		ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE, jtfMaxSize.getText());// commit
-																						// configuration
+		// configuration
 		ConfigurationManager.commit();
 		// notify playlist editor (usefull for novelties)
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
@@ -1349,7 +1404,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
 		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP));
 		jcbHotkeys.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS));
-        
+
 		jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
 		scbLanguage.setSelectedIndex(Messages.getLocales().indexOf(
 				ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
@@ -1387,6 +1442,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getProperty(CONF_COLLECTION_CHARSET));
 		jtfRefactorPattern.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
 		jtfAnimationPattern.setText(ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN));
+		jtfMPlayerArgs.setText(ConfigurationManager.getProperty(CONF_MPLAYER_ARGS));
 		// network
 		boolean bUseProxy = ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY);
 		jcbProxy.setSelected(bUseProxy);
@@ -1414,23 +1470,22 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbPreLoad.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbLoadEachTrack.setSelected(ConfigurationManager
 				.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK));
-		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled()); // this
-																			// mode
-																									// requires
-		// shuffle mode
-        
-        jcbAudioScrobbler.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER));
-        if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)){
-            Log.debug(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD));
-            jtfASUser.setText(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_USER));
-            jpfASPassword.setText(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD));
-        } else {
-            jlASUser.setEnabled(false);
-            jtfASUser.setEnabled(false);
-            jlASPassword.setEnabled(false);
-            jpfASPassword.setEnabled(false);
-        }
-        
+		// this mode requires shuffle mode
+		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled());
+
+		jcbAudioScrobbler.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER));
+		if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)) {
+			Log.debug(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD));
+			jtfASUser.setText(ConfigurationManager.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_USER));
+			jpfASPassword.setText(ConfigurationManager
+					.getProperty(CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD));
+		} else {
+			jlASUser.setEnabled(false);
+			jtfASUser.setEnabled(false);
+			jlASPassword.setEnabled(false);
+			jpfASPassword.setEnabled(false);
+		}
+
 	}
 
 	/*

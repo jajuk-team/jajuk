@@ -6,7 +6,7 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         <vendor>Sun</vendor>
     </information>
     <resources>
-        <jar href="swingx-20060402.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="swingx-20070302_jajuk.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

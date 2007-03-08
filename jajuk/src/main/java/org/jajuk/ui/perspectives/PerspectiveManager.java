@@ -266,7 +266,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		// Information perspective
 		// Load info perspective only for windows or x86 linux
 		/*
-		 * if (Util.isUnderWindows()) { // No need to test, we are sure to find
+		 * if (Util.isUnderWindows32bits()) { // No need to test, we are sure to find
 		 * IE under windows perspective = new InfoPerspective();
 		 * perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
 		 * perspective.setID(PERSPECTIVE_NAME_INFO);

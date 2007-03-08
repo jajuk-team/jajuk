@@ -336,9 +336,9 @@
     <dependency>
 	   <groupId>Swingx</groupId>
         <artifactId>swingx</artifactId>
-        <version>20060402</version> 
+        <version>20070302_jajuk</version> 
 		<scope>system</scope>
-		<systemPath>/data/java/workspace/jajuk/lib/swingx-20060402.jar</systemPath>
+		<systemPath>/data/java/workspace/jajuk/lib/swingx-20070302_jajuk.jar</systemPath>
     </dependency>
     
      <dependency>
@@ -506,7 +506,7 @@
         <artifactId>vldocking</artifactId>
         <version>2.1.3_jajuk</version> 
  		<scope>system</scope>
-		<systemPath>/data/java/workspace/jajuk/lib/vldocking-2.1.2_jajuk.jar</systemPath>
+		<systemPath>/data/java/workspace/jajuk/lib/vldocking-2.1.3_jajuk.jar</systemPath>
      </dependency>
     
    </dependencies>

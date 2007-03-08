@@ -378,7 +378,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			if (XML_STYLE.equals(sIdentifier)) {
 				JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
 				jcb.setEditable(true);
-				AutoCompleteDecorator.decorate(jcb);
+				AutoCompleteDecorator.decorate(jcb , false);
 				col.setCellEditor(new ComboBoxCellEditor(jcb));
 			}
 			// create a combo box for authors, note that we can't add new
@@ -386,7 +386,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			if (XML_AUTHOR.equals(sIdentifier)) {
 				JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
 				jcb.setEditable(true);
-				AutoCompleteDecorator.decorate(jcb);
+				AutoCompleteDecorator.decorate(jcb , false);
 				col.setCellEditor(new ComboBoxCellEditor(jcb));
 			}
 			// create a button for playing

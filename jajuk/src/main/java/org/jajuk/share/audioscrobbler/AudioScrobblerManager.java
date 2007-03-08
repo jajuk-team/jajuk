@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.base;
+package org.jajuk.share.audioscrobbler;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,6 +35,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Player;
+import org.jajuk.base.Track;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -91,7 +98,7 @@ public class AudioScrobblerManager extends DefaultHandler implements ITechnicalS
                     Thread.sleep(AUTO_AUDIOSCROBBLER_COMMIT_DELAY);
                     if (!lTracks.isEmpty()){
                         Log.debug("Auto commit scrobbler"); 
-                        org.jajuk.base.AudioScrobblerManager.commit(FILE_AUDIOSCROBBLER);
+                        org.jajuk.share.audioscrobbler.AudioScrobblerManager.commit(FILE_AUDIOSCROBBLER);
                     }
                 } catch (Exception e) {
                     Log.error(e);

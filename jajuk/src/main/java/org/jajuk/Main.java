@@ -40,9 +40,9 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AudioScrobblerManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -64,6 +64,7 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.FirstTimeWizard;
 import org.jajuk.ui.InformationJPanel;
@@ -195,7 +196,7 @@ public class Main implements ITechnicalStrings {
 					bTestMode = true;
 				}
 			}
-
+			
 			// perform initial checkups and create needed files
 			initialCheckups();
 
@@ -1067,6 +1068,8 @@ public class Main implements ITechnicalStrings {
 					// have to be done here, not after
 					DockingPreferences.initHeavyWeightUsage();
 					DockingPreferences.setSingleHeavyWeightComponent(true);
+					//Light drag and drop for VLDocking
+					UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
 
 					// Set look and feel, needs local to be set for error
 					// messages
@@ -1109,9 +1112,14 @@ public class Main implements ITechnicalStrings {
 
 					// Apply size and location BEFORE setVisible
 					jw.applyStoredSize();
+					
 					// Display the frame
 					jw.setVisible(true);
-
+					
+					// Apply size and location again 
+					//(needed by Gnome for ie to fix the 0-sized maximized frame)
+					jw.applyStoredSize();
+					
 					// make sure none device already exist to avoid checking
 					// availability
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)

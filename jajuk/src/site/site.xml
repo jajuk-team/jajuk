@@ -47,7 +47,7 @@
       <item name='FAQ' href='./faq.html' />
     </menu>
     <menu name='Project'>
-      <item name='Changelog / Roadmap' href='http://trantor/projects/jajuk/timeline?from=&daysback=&milestone=on&update=Update' />
+      <item name='Changelog / Roadmap' href='http://jajuk.info/projects/jajuk/timeline?from=&daysback=&milestone=on&update=Update' />
       <item name='Help wanted' href='./jobs.html' />
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Translator guide' href='./translator_guide.html' />

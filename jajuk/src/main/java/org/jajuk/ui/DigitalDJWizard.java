@@ -704,7 +704,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			setCanFinish(true);
 			jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25")); //$NON-NLS-1$
 			jcbStartwith = new JComboBox(styles);
-			AutoCompleteDecorator.decorate(jcbStartwith);
+			AutoCompleteDecorator.decorate(jcbStartwith, false);
 			String startup = ((Style) data.get(KEY_STARTUP_STYLE)).getName();
 			int indexStyle = styles.indexOf(startup);
 			if (indexStyle >= 0) {

@@ -20,9 +20,8 @@
 
 package org.jajuk.ui;
 
+import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
@@ -53,7 +52,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 23 mars 2004
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, ComponentListener {
+public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -86,7 +85,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 	 */
 	public JajukWindow() {
 		// mac integration
-		System.setProperty( "apple.laf.useScreenMenuBar","true");
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP, true);
 		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
@@ -107,14 +106,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 			}
 
 			public void windowClosing(WindowEvent we) {
+				//Save windows position
+				saveSize();
+							
 				// hide window ASAP
 				setVisible(false);
 				Main.exit(0);
 			}
 		});
-		
-		//Add move/size change listener to save them
-		addComponentListener(this);
 
 		// display correct title if a track is launched at startup
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
@@ -128,17 +127,27 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 		return eventSubjectSet;
 	}
 
-	
 	/**
 	 * Save current window size and position
 	 * 
 	 */
-	private void saveSize() {
-		String sValue = (int) Math.abs(getLocationOnScreen().getX()) + "," //$NON-NLS-1$
-				+ (int) Math.abs(getLocationOnScreen().getY()) + "," //$NON-NLS-1$
-				+ (int) getSize().getWidth() + "," + (int) getSize().getHeight();
+	public void saveSize() {
+		String sValue = null;
+		//If user maximized the frame, store this information and not screen bounds 
+		//(fix for windows issue: at next startup, the screen is shifted by few pixels)
+		if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH) 
+				&& (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
+			Log.debug("Frame maximized");
+			sValue = FRAME_MAXIMIZED;
+		} else {
+			sValue = (int)getLocationOnScreen().getX() + "," //$NON-NLS-1$
+					+ (int)getLocationOnScreen().getY() + "," //$NON-NLS-1$
+					+ getBounds().width + "," 
+					+ getBounds().height;
+			Log.debug("Frame moved or resized, new bounds=" + sValue);
+		}
+		//Store the new position
 		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		Log.debug("Frame moved or resized, new bounds=" + sValue);
 	}
 
 	/**
@@ -146,21 +155,78 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 	 * 
 	 */
 	public void applyStoredSize() {
+		int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+		int iX = 0;
+		int iY = 0;
+		int iHorizSize = 0;
+		int iVertSize = 0;
+		//Forced frame position ?
+		String sForcedValue = ConfigurationManager.getProperty(CONF_FRAME_POS_FORCED);
+		if (sForcedValue != null && !sForcedValue.trim().equals("")){
+			try{
+				StringTokenizer st = new StringTokenizer(sForcedValue, ","); //$NON-NLS-1$
+				iX = Integer.parseInt(st.nextToken());
+				iY = Integer.parseInt(st.nextToken());
+				iHorizSize = Integer.parseInt(st.nextToken());
+				iVertSize = Integer.parseInt(st.nextToken());
+				setBounds(iX,iY,iHorizSize,iVertSize);
+			}
+			catch(Exception e){
+				//Wrong forced value
+				Log.error(e);
+				setBounds(60,60,iScreenWidth-120,iScreenHeight-120);
+			}
+			return;
+		}
+		//Detect strange or buggy Window Manager like XGL using this test 
+		// and apply default size for them
+		if (!Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)){
+			setBounds(60,60,iScreenWidth-120,iScreenHeight-120);
+			return;
+		}
 		// read stored position and size
 		String sPosition = ConfigurationManager.getProperty(CONF_WINDOW_POSITION);
-		StringTokenizer st = new StringTokenizer(sPosition, ","); //$NON-NLS-1$
-		int iX = Integer.parseInt(st.nextToken());
-		int iY = Integer.parseInt(st.nextToken());
-		int iXsize = Integer.parseInt(st.nextToken());
-		if (iXsize == 0) { // if zero, display max size
-			iXsize = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		//If user left jajuk maximized, reset this simple configuration
+		if (sPosition.equals(FRAME_MAXIMIZED)){
+			//Always set a size that is used when un-maximalizing the frame
+			setBounds(50, 50, iScreenWidth - 100, iScreenHeight - 100);
+			if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)){
+				setExtendedState(Frame.MAXIMIZED_BOTH);
+			}
+			return;
 		}
-		int iYsize = Integer.parseInt(st.nextToken());
-		if (iYsize == 0) {// if zero, display max size
-			iYsize = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+		StringTokenizer st = new StringTokenizer(sPosition, ","); //$NON-NLS-1$
+		iX = Integer.parseInt(st.nextToken());
+		// if X position is higher than screen width, set 0
+		if (iX > iScreenWidth) {
+			iX = 0;
+		}
+		iY = Integer.parseInt(st.nextToken());
+		// if Y position is higher than screen height, set 0
+		if (iY > iScreenHeight) {
+			iY = 0;
+		}
+		iHorizSize = Integer.parseInt(st.nextToken());
+		// if zero horiz size
+		if (iHorizSize <= 0) {
+			iHorizSize = (int) (1.5 * iScreenWidth);
+		}
+		// if zero vertical size
+		iVertSize = Integer.parseInt(st.nextToken());
+		if (iVertSize <= 0) {
+			iVertSize = (int) (1.5 * iScreenHeight);
+		}
+		// If width > to screen width (switching from a dual to a single head for ie),
+		// set max size available (minus some horiz space in case of)
+		if (iHorizSize > iScreenWidth){
+			iHorizSize = iScreenWidth - 10;
+		}
+		if (iVertSize > iScreenHeight ) {
+			iVertSize = iScreenHeight - 50;
 		}
 		setLocation(iX, iY);
-		setSize(iXsize, iYsize);
+		setSize(iHorizSize, iVertSize);
 	}
 
 	/*
@@ -222,40 +288,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer, 
 			}
 
 		});
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
-	 */
-	public void componentHidden(ComponentEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
-	 */
-	public void componentMoved(ComponentEvent e) {
-		saveSize();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
-	 */
-	public void componentResized(ComponentEvent e) {
-		saveSize();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
-	 */
-	public void componentShown(ComponentEvent e) {
 	}
 
 }

@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
@@ -53,21 +55,23 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @param sProxyPassswd
 	 * @return an HTTP client
 	 */
-	private static HttpClient getHTTPClient(String sProxyUser,
-			String sProxyPassswd, int iConTimeout, int iDataTimeout) {
+	private static HttpClient getHTTPClient(String sProxyUser, String sProxyPassswd,
+			int iConTimeout, int iDataTimeout) {
 		HttpClient client = new HttpClient();
-		client.getHttpConnectionManager().getParams().setConnectionTimeout(
-				iConTimeout); // connection to
-		client.getHttpConnectionManager().getParams()
-				.setSoTimeout(iDataTimeout); // data reception timeout
-		if (sProxyUser != null && sProxyPassswd != null) {
+		// connection  to
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(iConTimeout); 
+		// data reception timeout
+		client.getHttpConnectionManager().getParams().setSoTimeout(iDataTimeout); 
+		// Add proxy-specific configuration
+		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
 			client.getHostConfiguration().setProxy(
-					ConfigurationManager
-							.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
-					Integer.parseInt(ConfigurationManager
-							.getProperty(CONF_NETWORK_PROXY_PORT)));
-			client.getState().setProxyCredentials(new AuthScope(AuthScope.ANY),
-					new UsernamePasswordCredentials(sProxyUser, sProxyPwd));
+					ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
+					Integer.parseInt(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT)));
+			//The proxy requires authentication
+			if (sProxyUser != null && sProxyPassswd != null) {
+				client.getState().setProxyCredentials(new AuthScope(AuthScope.ANY),
+						new UsernamePasswordCredentials(sProxyUser, sProxyPwd));
+			}
 		}
 		return client;
 	}
@@ -88,13 +92,12 @@ public class DownloadManager implements ITechnicalStrings {
 	 *            proxy port if you use one of -1 if not
 	 * @return An host configuration
 	 */
-	private static HostConfiguration getHostConfiguration(String sHostname,
-			String sProxyURL, int iProxyPort) {
+	private static HostConfiguration getHostConfiguration(String sHostname, String sProxyURL,
+			int iProxyPort) {
 		HostConfiguration host = new HostConfiguration();
 		host.setHost(sHostname);
 		if (sProxyURL != null && iProxyPort > 0) {
-			host.setProxy(ConfigurationManager
-					.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
+			host.setProxy(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
 					ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT));
 		}
 		return host;
@@ -104,49 +107,44 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @param search
 	 * @return a list of urls
 	 */
-	public static ArrayList<URL> getRemoteCoversList(String search)
-			throws Exception {
+	public static ArrayList<URL> getRemoteCoversList(String search) throws Exception {
 		ArrayList<URL> alOut = new ArrayList<URL>(20); // URL list
 		// check void searches
 		if (search == null || search.trim().equals("")) { //$NON-NLS-1$
 			return alOut;
 		}
-		String sSearchUrl = "http://images.google.com/images?q=" + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String sSearchUrl = "http://images.google.com/images?q="
+				+ URLEncoder.encode(search, "ISO-8859-1")
+				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
+				+ (ConfigurationManager.getInt(CONF_COVERS_MIN_SIZE) < 50 ? "&imgsz=medium"
+						: "&imgsz=medium|large");
 		Log.debug("Search URL: {{" + sSearchUrl + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 		byte[] bRes = downloadCoverList(new URL(sSearchUrl));
 		if (bRes == null || bRes.length == 0) {
 			return alOut;
 		}
 		String sRes = new String(bRes);
-		// get urls
-		String[] strings = sRes.split("dyn.Img"); //$NON-NLS-1$
-		// If result doesn't contain any image, leave
-		if (strings.length == 1) {
-			return alOut;
-		}
-		for (int i = 1; i < strings.length; i++) {
-			String s = strings[i].split(",")[3]; //$NON-NLS-1$
-			s = s.substring(1, s.length() - 1);
-			s = s.replaceAll("%2520", "%20"); //$NON-NLS-1$ //$NON-NLS-2$
-			if (!s.matches("http://.*")) {
-				s = "http://" + s;
+		// Extract urls
+		Pattern pattern = Pattern.compile("http://[^,<>]*(.jpg|.gif|.png)");
+		// "http://[^,]*(.jpg|.gif|.png).*[0-9]* [xX] [0-9]*.*- [0-9]*");
+		Matcher matcher = pattern.matcher(sRes);
+		while (matcher.find()) {
+			// Clean up URLS
+			String sUrl = matcher.group().replaceAll("%2520", "%20");
+			URL url = new URL(sUrl);
+
+			// Remove duplicates
+			if (alOut.contains(url)) {
+				continue;
 			}
-			alOut.add(new URL(s)); //$NON-NLS-1$
-		}
-		// get sizes
-		strings = sRes.split("pixels - "); //$NON-NLS-1$
-		int iNbRemove = 0; // removes number used to compute new index
-		for (int i = 1; i < strings.length; i++) {
-			int iKPos = strings[i].indexOf('k');
-			int iSize = Integer.parseInt(strings[i].substring(0, iKPos));
-			if (iSize > ConfigurationManager.getInt(CONF_COVERS_MAX_SIZE)
-					|| iSize > MAX_COVER_SIZE
-					|| iSize < ConfigurationManager
-							.getInt(CONF_COVERS_MIN_SIZE)) {
-				alOut.remove(i - (1 + iNbRemove));
-				iNbRemove++;
+			// Ignore URLs related to Google
+			if (url.toString().toLowerCase().matches(".*google.*")) {
+				continue;
 			}
+			// Add the new url
+			alOut.add(url); //$NON-NLS-1$
 		}
+
 		return alOut;
 	}
 
@@ -162,31 +160,22 @@ public class DownloadManager implements ITechnicalStrings {
 	public static void download(URL url, File fDestination) throws Exception {
 		GetMethod get = null;
 		HttpClient client = null;
-		int iConTO = 2000 * ConfigurationManager
-				.getInt(CONF_NETWORK_CONNECTION_TO);
-		int iTraTO = 2000 * ConfigurationManager
-				.getInt(CONF_NETWORK_TRANSFERT_TO);
+		int iConTO = 2000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
+		int iTraTO = 2000 * ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
 		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client = getHTTPClient(ConfigurationManager
-					.getProperty(CONF_NETWORK_PROXY_LOGIN), DownloadManager
-					.getProxyPwd(), iConTO, iTraTO);
+			client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),
+					DownloadManager.getProxyPwd(), iConTO, iTraTO);
 		} else {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get
-				.addRequestHeader(
-						"Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Accept-Language", "en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-		get
-				.addRequestHeader(
-						"User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 		int status = client.executeMethod(get);
-		BufferedOutputStream bos = new BufferedOutputStream(
-				new FileOutputStream(fDestination));
-		BufferedInputStream bis = new BufferedInputStream(get
-				.getResponseBodyAsStream());
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
+		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
 		int i;
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
@@ -214,31 +203,23 @@ public class DownloadManager implements ITechnicalStrings {
 		}
 		GetMethod get = null;
 		HttpClient client = null;
-		int iConTO = 1000 * ConfigurationManager
-				.getInt(CONF_NETWORK_CONNECTION_TO);
-		int iTraTO = 1000 * ConfigurationManager
-				.getInt(CONF_NETWORK_TRANSFERT_TO);
+		int iConTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
+		int iTraTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
 		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client = getHTTPClient(ConfigurationManager
-					.getProperty(CONF_NETWORK_PROXY_LOGIN), DownloadManager
-					.getProxyPwd(), iConTO, iTraTO);
+			client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),
+					DownloadManager.getProxyPwd(), iConTO, iTraTO);
 		} else {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get
-				.addRequestHeader(
-						"Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Accept-Language", "en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-		get
-				.addRequestHeader(
-						"User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 		int status = client.executeMethod(get);
-		BufferedOutputStream bos = new BufferedOutputStream(
-				new FileOutputStream(new File(Util.getCachePath(url))));
-		BufferedInputStream bis = new BufferedInputStream(get
-				.getResponseBodyAsStream());
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Util
+				.getCachePath(url))));
+		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
 		int i;
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
@@ -263,25 +244,18 @@ public class DownloadManager implements ITechnicalStrings {
 		byte[] bOut = null;
 		GetMethod get = null;
 		HttpClient client = null;
-		int iConTO = 1000 * ConfigurationManager
-				.getInt(CONF_NETWORK_CONNECTION_TO);
-		int iTraTO = 1000 * ConfigurationManager
-				.getInt(CONF_NETWORK_TRANSFERT_TO);
+		int iConTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
+		int iTraTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
 		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client = getHTTPClient(ConfigurationManager
-					.getProperty(CONF_NETWORK_PROXY_LOGIN), DownloadManager
-					.getProxyPwd(), iConTO, iTraTO);
+			client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),
+					DownloadManager.getProxyPwd(), iConTO, iTraTO);
 		} else {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get
-				.addRequestHeader(
-						"Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Accept-Language", "en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-		get
-				.addRequestHeader(
-						"User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 		int status = client.executeMethod(get);
 		bOut = get.getResponseBody();
@@ -293,14 +267,17 @@ public class DownloadManager implements ITechnicalStrings {
 
 	/**
 	 * @return the required proxy pwd
+	 * <p>must be synchronized to avoid displaying several password dialogs</p>
 	 */
-	public synchronized static String getProxyPwd() {// must be synchronized
-		// to avoid displaying
-		// several password
-		// dialogs
+	public synchronized static String getProxyPwd() {
+		String sLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
+		//If user didn't specified a user, it means it's an unauthenticated proxy session, 
+		//don't ask for a password
+		if (sLogin == null || sLogin.trim().equals("")){
+			return null;
+		}
 		if (sProxyPwd == null || sProxyPwd.trim().equals("")) { //$NON-NLS-1$
-			PasswordDialog pd = new PasswordDialog(Messages
-					.getString("DownloadManager.1")); //$NON-NLS-1$
+			PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1")); //$NON-NLS-1$
 			sProxyPwd = (String) pd.getOptionPane().getValue();
 		}
 		return sProxyPwd;

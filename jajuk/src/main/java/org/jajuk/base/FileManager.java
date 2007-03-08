@@ -85,26 +85,26 @@ public class FileManager extends ItemManager implements Observer {
 		super();
 		// ---register properties---
 		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+				String.class, null));
 		// Name
-		registerProperty(new PropertyMetaInformation(XML_NAME, false, true,
-				true, true, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+				String.class, null));
 		// Directory
-		registerProperty(new PropertyMetaInformation(XML_DIRECTORY, false,
-				true, true, false, true, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_DIRECTORY, false, true, true, false, true,
+				String.class, null));
 		// Track
-		registerProperty(new PropertyMetaInformation(XML_TRACK, false, true,
-				true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TRACK, false, true, true, false, false,
+				String.class, null));
 		// Size
-		registerProperty(new PropertyMetaInformation(XML_SIZE, false, true,
-				true, false, false, Long.class, null));
+		registerProperty(new PropertyMetaInformation(XML_SIZE, false, true, true, false, false,
+				Long.class, null));
 		// Quality
-		registerProperty(new PropertyMetaInformation(XML_QUALITY, false, true,
-				true, false, false, Long.class, 0));
+		registerProperty(new PropertyMetaInformation(XML_QUALITY, false, true, true, false, false,
+				Long.class, 0));
 		// Date
-		registerProperty(new PropertyMetaInformation(XML_FILE_DATE, false,
-				false, true, false, false, Date.class, new Date()));
+		registerProperty(new PropertyMetaInformation(XML_FILE_DATE, false, false, true, false,
+				false, Date.class, new Date()));
 	}
 
 	/**
@@ -122,8 +122,8 @@ public class FileManager extends ItemManager implements Observer {
 	 * 
 	 * @param sName
 	 */
-	public File registerFile(String sId, String sName, Directory directory,
-			Track track, long lSize, long lQuality) {
+	public File registerFile(String sId, String sName, Directory directory, Track track,
+			long lSize, long lQuality) {
 		synchronized (FileManager.getInstance().getLock()) {
 			File file = null;
 			if (!hmItems.containsKey(sId)) {
@@ -131,8 +131,7 @@ public class FileManager extends ItemManager implements Observer {
 				hmItems.put(sId, file);
 				// add to directory
 				file.getDirectory().addFile(file);
-				if (directory.getDevice().isRefreshing()
-						&& Log.isDebugEnabled()) {
+				if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
 					Log.debug("registrated new file: " + file); //$NON-NLS-1$
 				}
 			} else {
@@ -141,7 +140,8 @@ public class FileManager extends ItemManager implements Observer {
 			}
 			// add this file to track
 			file.setTrack(track);
-			track.addFile(file);// make sure the file is added
+			// make sure the file is added
+			track.addFile(file);
 			return file;
 		}
 	}
@@ -155,8 +155,8 @@ public class FileManager extends ItemManager implements Observer {
 	 * @return file ID
 	 */
 	protected static String getID(String sName, Directory dir) {
-		return MD5Processor.hash(new StringBuffer(dir.getDevice().getName())
-				.append(dir.getRelativePath()).append(sName).toString());
+		return MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+				dir.getRelativePath()).append(sName).toString());
 	}
 
 	/**
@@ -166,8 +166,7 @@ public class FileManager extends ItemManager implements Observer {
 	 * @param sNewName
 	 * @return new file
 	 */
-	public File changeFileName(org.jajuk.base.File fileOld, String sNewName)
-			throws JajukException {
+	public File changeFileName(org.jajuk.base.File fileOld, String sNewName) throws JajukException {
 		synchronized (FileManager.getInstance().getLock()) {
 			// check given name is different
 
@@ -178,36 +177,30 @@ public class FileManager extends ItemManager implements Observer {
 			if (!fileOld.getIO().exists()) {
 				throw new CannotRenameException("135"); //$NON-NLS-1$
 			}
-			java.io.File fileNew = new java.io.File(fileOld.getIO()
-					.getParentFile().getAbsolutePath()
+			java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile()
+					.getAbsolutePath()
 					+ java.io.File.separator + sNewName);
 			// recalculate file ID
 			Directory dir = fileOld.getDirectory();
-			String sNewId = MD5Processor.hash(new StringBuffer(dir.getDevice()
-					.getName()).append(dir.getDevice().getUrl()).append(
-					dir.getRelativePath()).append(sNewName).toString());
+			String sNewId = MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+					dir.getDevice().getUrl()).append(dir.getRelativePath()).append(sNewName)
+					.toString());
 			// create a new file (with own fio and sAbs)
-			org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld
-					.getDirectory(), fileOld.getTrack(), fileOld.getSize(),
-					fileOld.getQuality());
-			fNew.setProperties(fileOld.getProperties()); // transfert all
-			// properties
-			// (inc id and
-			// name)
+			org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), fileOld
+					.getTrack(), fileOld.getSize(), fileOld.getQuality());
+			// transfert all properties (inc id and name)
+			fNew.setProperties(fileOld.getProperties()); 
 			fNew.setProperty(XML_ID, sNewId); // reset new id and name
 			fNew.setProperty(XML_NAME, sNewName); // reset new id and name
 			// check file name and extension
-			if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld
-					.getIO())))) { // no
-				// extension
-				// change
+			if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))) { 
+				// no extension change
 				throw new CannotRenameException("134"); //$NON-NLS-1$
 			}
 			// check if future file exists (under windows, file.exists
 			// return true even with
 			// different case so we test file name is different)
-			if (!fileNew.getName().equalsIgnoreCase(fileOld.getName())
-					&& fileNew.exists()) {
+			if (!fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()) {
 				throw new CannotRenameException("134"); //$NON-NLS-1$
 			}
 			// try to rename file on disk
@@ -228,8 +221,8 @@ public class FileManager extends ItemManager implements Observer {
 			// change directory reference
 			dir.changeFile(fileOld, fNew);
 			// Notify interested items (like history manager)
-			ObservationManager.notifySync(new Event(
-					EventSubject.EVENT_FILE_NAME_CHANGED, properties));
+			ObservationManager.notifySync(new Event(EventSubject.EVENT_FILE_NAME_CHANGED,
+					properties));
 			return fNew;
 		}
 	}
@@ -246,13 +239,12 @@ public class FileManager extends ItemManager implements Observer {
 	public File changeFileDirectory(File old, Directory newDir) {
 		synchronized (FileManager.getInstance().getLock()) {
 			// recalculate file ID
-			String sNewId = MD5Processor.hash(new StringBuffer(newDir
-					.getDevice().getName()).append(newDir.getDevice().getUrl())
-					.append(newDir.getRelativePath()).append(old.getName())
-					.toString());
+			String sNewId = MD5Processor.hash(new StringBuffer(newDir.getDevice().getName())
+					.append(newDir.getDevice().getUrl()).append(newDir.getRelativePath()).append(
+							old.getName()).toString());
 			// create a new file (with own fio and sAbs)
-			File fNew = new File(sNewId, old.getName(), newDir, old.getTrack(),
-					old.getSize(), old.getQuality());
+			File fNew = new File(sNewId, old.getName(), newDir, old.getTrack(), old.getSize(), old
+					.getQuality());
 			fNew.setProperties(old.getProperties()); // transfert all
 			// properties (inc id)
 			fNew.setProperty(XML_ID, sNewId); // reset new id and name
@@ -321,9 +313,9 @@ public class FileManager extends ItemManager implements Observer {
 			Iterator it = hmItems.values().iterator();
 			while (it.hasNext()) {
 				File file = (File) it.next();
-				if (file.getIO().equals(fToCompare)) { // we compare io files
-					// and not paths
-					// to avoid dealing with path name issues
+				// we compare io files and not paths
+				// to avoid dealing with path name issues
+				if (file.getIO().equals(fToCompare)) {
 					fOut = file;
 					break;
 				}
@@ -338,8 +330,7 @@ public class FileManager extends ItemManager implements Observer {
 	public List<File> getReadyFiles() {
 		Set<File> files = null;
 		files = FileManager.getInstance().getFiles();
-		Iterator it = new FilterIterator(files.iterator(),
-				new JajukPredicates.ReadyFilePredicate());
+		Iterator it = new FilterIterator(files.iterator(), new JajukPredicates.ReadyFilePredicate());
 		List<File> out = new ArrayList<File>(files.size() / 2);
 		while (it.hasNext()) {
 			out.add((File) it.next());
@@ -353,10 +344,8 @@ public class FileManager extends ItemManager implements Observer {
 	 * @return
 	 */
 	public File getShuffleFile() {
-		int index = (int) (new Random().nextFloat() * hmItems
-				.size());
-		ArrayList<File> files = new ArrayList<File>(FileManager.getInstance()
-				.getFiles());
+		int index = (int) (new Random().nextFloat() * hmItems.size());
+		ArrayList<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
 		if (files.size() == 0) {
 			return null;
 		}
@@ -373,8 +362,7 @@ public class FileManager extends ItemManager implements Observer {
 		List<File> alEligibleFiles = getReadyFiles();
 		Collections.shuffle(alEligibleFiles, new Random());
 		// song level, just shuffle full collection
-		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(
-				MODE_TRACK)) {
+		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
 			return alEligibleFiles;
 		}
 		// else return shuffle albums
@@ -391,8 +379,7 @@ public class FileManager extends ItemManager implements Observer {
 	public synchronized File getNoveltyFile() {
 		synchronized (FileManager.getInstance().getLock()) {
 			ArrayList alEligibleFiles = getGlobalNoveltiesPlaylist();
-			return (File) alEligibleFiles
-					.get((int) (Math.random() * alEligibleFiles.size()));
+			return (File) alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
 		}
 	}
 
@@ -419,9 +406,8 @@ public class FileManager extends ItemManager implements Observer {
 		ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
 		// take tracks matching required age
 		Set<Track> tracks = TrackManager.getInstance().getTracks();
-		Iterator it = new FilterIterator(tracks.iterator(),
-				new JajukPredicates.AgePredicate(ConfigurationManager
-						.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
+		Iterator it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
+				ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
 		while (it.hasNext()) {
 			Track track = (Track) it.next();
 			File file = track.getPlayeableFile(bHideUnmounted);
@@ -432,14 +418,12 @@ public class FileManager extends ItemManager implements Observer {
 			}
 			alEligibleFiles.add(file);
 		}
-		// sort alphabetinaly and by date, newest first
+		// sort alphabetically and by date, newest first
 		Collections.sort(alEligibleFiles, new Comparator<File>() {
 			public int compare(File file1, File file2) {
-				String sCompared1 = file1.getTrack().getAdditionDate()
-						.getTime()
+				String sCompared1 = file1.getTrack().getAdditionDate().getTime()
 						+ file1.getAbsolutePath();
-				String sCompared2 = file2.getTrack().getAdditionDate()
-						.getTime()
+				String sCompared2 = file2.getTrack().getAdditionDate().getTime()
 						+ file2.getAbsolutePath();
 				return sCompared2.compareTo(sCompared1);
 			}
@@ -456,8 +440,7 @@ public class FileManager extends ItemManager implements Observer {
 	public List<File> getShuffleNoveltiesPlaylist() {
 		ArrayList<File> alEligibleFiles = getGlobalNoveltiesPlaylist(true);
 		// song level, just shuffle full collection
-		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(
-				MODE_TRACK)) {
+		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
 			Collections.shuffle(alEligibleFiles);
 			return alEligibleFiles;
 		}
@@ -523,9 +506,8 @@ public class FileManager extends ItemManager implements Observer {
 		List<File> al = getSortedByRate();
 		ArrayList<File> alBest = new ArrayList<File>();
 		if (al.size() > 0) {
-			int sup = (int) ((BESTOF_PROPORTION) * al.size()); // find superior
-			// interval
-			// value
+			// find superior interval value
+			int sup = (int) ((BESTOF_PROPORTION) * al.size());
 			if (sup < 0) {
 				sup = al.size();
 			}
@@ -557,9 +539,8 @@ public class FileManager extends ItemManager implements Observer {
 			alBestofFiles.clear();
 			int iNbBestofFiles = Integer.parseInt(ConfigurationManager
 					.getProperty(CONF_BESTOF_SIZE));
-			// create a tempory table to remove unmounted files
-			ArrayList<File> alEligibleFiles = new ArrayList<File>(
-					iNbBestofFiles);
+			// create a temporary table to remove unmounted files
+			ArrayList<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
 			Iterator it = TrackManager.getInstance().getTracks().iterator();
 			while (it.hasNext()) {
 				Track track = (Track) it.next();
@@ -748,11 +729,11 @@ public class FileManager extends ItemManager implements Observer {
 			Iterator it = hmItems.values().iterator();
 			while (it.hasNext()) {
 				File file = (File) it.next();
-				if (ConfigurationManager
-						.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
-						&& // if search in
-						(!file.getDirectory().getDevice().isMounted() || file
-								.getDirectory().getDevice().isRefreshing())) {
+				if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) && // if
+																					// search
+																					// in
+						(!file.getDirectory().getDevice().isMounted() || file.getDirectory()
+								.getDevice().isRefreshing())) {
 					continue;
 				}
 				String sResu = file.getAny();
@@ -778,11 +759,8 @@ public class FileManager extends ItemManager implements Observer {
 	public void setRateHasChanged(boolean rateHasChanged) {
 		bRateHasChanged = rateHasChanged;
 		if (bRateHasChanged) {
-			ObservationManager
-					.notify(new Event(EventSubject.EVENT_RATE_CHANGED));// refresh
-			// to
-			// update
-			// rates
+			// refresh to update rates
+			ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
 		}
 	}
 

@@ -333,13 +333,8 @@ public class FIFO implements ITechnicalStrings {
 				alFIFO.remove(index); // remove this file from fifo
 			}
 			if (alFIFO.size() == 0) { // nothing more to play
-				if (ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) { // check
-					// if
-					// we
-					// are
-					// in
-					// continue
-					// mode
+				// check if we in continue mode
+				if (ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) { 
 					File file = null;
 					// if some tracks are planned (can be 0 if planned size=0)
 					if (alPlanned.size() != 0) {
@@ -389,22 +384,27 @@ public class FIFO implements ITechnicalStrings {
 	private void launch(int index) {
 		try {
 			Util.waiting();
-			// re-read intro mode: intro mode is only read at track launch
+			// intro workaround : intro mode is only read at track launch
 			// and can't be set during the play
 			ConfigurationManager.getBoolean(CONF_STATE_INTRO);
-			// notify to devices like commandJPanel to update ui when the play
-			// button has been pressed
+			// re-read intro mode
+			/*
+			 * notify to devices like commandJPanel to update ui when the play
+			 * button has been pressed
+			 */
 			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PLAY));
 			// set was playing state
 			ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE);
 			File fCurrent = getCurrentFile();
 			boolean bPlayOK = false;
-			// if it is the first played file of the session and we are in
-			// startup mode keep position
 			if (bFirstFile
 					&& !ConfigurationManager.getBoolean(CONF_STATE_INTRO)
 					&& ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
 							STARTUP_MODE_LAST_KEEP_POS)) {
+				/*
+				 * if it is the first played file of the session and we are in
+				 * startup mode keep position
+				 */
 				float fPos = ConfigurationManager.getFloat(CONF_STARTUP_LAST_POSITION);
 				// play it
 				bPlayOK = Player.play(fCurrent, fPos, TO_THE_END);
@@ -428,11 +428,8 @@ public class FIFO implements ITechnicalStrings {
 				ObservationManager.notify(new Event(EventSubject.EVENT_FILE_LAUNCHED, pDetails));
 				// all cases for a cover full refresh
 				if (itemLast == null // first track, display cover
+					// if we are always in the same directory, just leave to save cpu
 						|| (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) {
-					/*
-					 * if we are always in the same directory, just leave to
-					 * save cpu
-					 */
 					// clear image cache
 					Util.clearCache();
 					// request update cover
@@ -577,8 +574,8 @@ public class FIFO implements ITechnicalStrings {
 			if (index > 0) { // if we have some repeat files
 				index--;
 			} else { // we are at the first position
-				if (itemFirst.isRepeat()) { // restart last repeated item in
-					// the loop
+				if (itemFirst.isRepeat()) { 
+					// restart last repeated item in the loop
 					index = getLastRepeatedItem();
 				} else {
 					// first is not repeated, just insert previous
@@ -731,7 +728,7 @@ public class FIFO implements ITechnicalStrings {
 				}
 				if (bOK) {
 					// some tracks of other album were already in
-					// fifo, sraer them
+					// fifo
 					// add a fake album at the top the fifo because the
 					// finish will drop first element and we won't
 					// drop first track of the next album
@@ -747,7 +744,7 @@ public class FIFO implements ITechnicalStrings {
 						if (fileNext != null && !fileNext.getDirectory().equals(dir)) {
 							pushCommand(new StackItem(fileNext, ConfigurationManager
 									.getBoolean(CONF_STATE_REPEAT), false), false); // play
-							// it
+																					// it
 							return;
 						}
 					} while (fileNext != null);
@@ -834,11 +831,11 @@ public class FIFO implements ITechnicalStrings {
 			return true;
 		}
 		if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) { // is
-			// current
-			// track
-			// on
-			// this
-			// device?
+																						// current
+																						// track
+																						// on
+																						// this
+																						// device?
 			return false;
 		}
 		Iterator it = getInstance().alFIFO.iterator(); // are next tracks in
@@ -892,11 +889,11 @@ public class FIFO implements ITechnicalStrings {
 	 */
 	public synchronized void shuffle() {
 		if (alFIFO.size() > 1) {
-			// Make sure current track is kept to its position
-			// so remove it and add it again after shuffling
+			//Make sure current track is kept to its position 
+			// so remove it and add it again after shuffling 
 			alFIFO.remove(0);
 			Collections.shuffle(alFIFO, new Random());
-			alFIFO.add(0, itemLast);
+			alFIFO.add(0,itemLast);
 		}
 		alPlanned.clear(); // force recomputes planned tracks
 	}
@@ -963,10 +960,8 @@ public class FIFO implements ITechnicalStrings {
 	public synchronized void down(int index) {
 		if (index == 0 || index == alFIFO.size() - 1
 				|| index == alFIFO.size() + alPlanned.size() - 1) {
-			/*
-			 * Can't put down current track, nor last rack in fifo, nor last
-			 * planned track. This should be already made by ui behavior
-			 */
+			//Can't put down current track, nor last rack in fifo, nor last
+			//planned track. This should be already made by ui behavior
 			return;
 		}
 		if (index < alFIFO.size()) {

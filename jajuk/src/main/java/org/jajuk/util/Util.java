@@ -543,12 +543,8 @@ public class Util implements ITechnicalStrings {
 				// sort found files
 				alFiles.remove(file);
 				Collections.sort(alFiles);
-				if ((lUsedMB - file.length()) / 1048576 > iMB) { // too
-					// much
-					// backup
-					// files,
-					// delete
-					// older
+				if ((lUsedMB - file.length()) / 1048576 > iMB) {
+					// too much backup files, delete older
 					if (alFiles.size() > 0) {
 						File fileToDelete = alFiles.get(0);
 						if (fileToDelete != null) {
@@ -766,6 +762,22 @@ public class Util implements ITechnicalStrings {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @return whether we are under Windows 32 bits
+	 */
+	public static boolean isUnderWindows32bits() {
+		return isUnderWindows() 
+			&& System.getProperties().get("sun.arch.data.model").equals("32");
+	}
+	
+	/**
+	 * @return whether we are under Windows 64 bits
+	 */
+	public static boolean isUnderWindows64bits() {
+		return isUnderWindows() 
+			&& !System.getProperties().get("sun.arch.data.model").equals("32");
 	}
 
 	/**
@@ -1540,8 +1552,9 @@ public class Util implements ITechnicalStrings {
 			} catch (Exception e) {
 				return sMplayerPath;
 			}
-			return sMplayerPath;
+
 		}
+		return sMplayerPath; // can be null if none suitable file found
 	}
 
 	/**
@@ -1665,6 +1678,29 @@ public class Util implements ITechnicalStrings {
 
 	public static BasicGradientPainter getGrandiant() {
 		return grandiant;
+	}
+
+	/**
+	 * <p>Caution: this is called before environement is set, don"t use the trace API</p>
+	 * @return Jajuk workspace
+	 */
+	public static final String getHomeDirectory() {
+		File bootstrap = new File(FILE_BOOTSTRAP);
+		if (bootstrap.canRead()) {
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(bootstrap));
+				//Bootstrap file should contain a single line containing the path to jajuk workspace
+				String sPath = br.readLine();
+				br.close();
+				if (new File(sPath).canRead()){
+					return sPath;
+				}
+			} catch (Exception e) {
+				System.out.println("Cannot read bootstrap file");
+			}
+		} 
+		//Return default directory
+		return System.getProperty("user.home");
 	}
 
 }

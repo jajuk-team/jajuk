@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.base.exporters;
+package org.jajuk.exporters;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

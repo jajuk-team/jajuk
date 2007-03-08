@@ -21,13 +21,13 @@
 package org.jajuk.base;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -108,17 +108,17 @@ public class AuthorManager extends ItemManager {
 			author = new Author(sId, sName);
 			hmItems.put(sId, author);
 			// add it in styles list if new
-			boolean bNew = true;
-			for (String s : authorsList) {
-				if (s.toLowerCase().equals(sName.toLowerCase())) {
-					bNew = false;
-					break;
+			if (!authorsList.contains(sName)){
+				authorsList.add(author.getName2());
+			}
+			//Sort items ignoring case
+			Collections.sort(authorsList,new Comparator<String>() {
+			
+				public int compare(String o1, String o2) {
+					return o1.compareToIgnoreCase(o2);
 				}
-			}
-			if (bNew) {
-				authorsList.add(Util.formatStyle(author.getName2()));
-			}
-			Collections.sort(authorsList);
+			
+			});
 			return author;
 		}
 	}
@@ -174,7 +174,7 @@ public class AuthorManager extends ItemManager {
 	 */
 	public static String format(String sName) {
 		String sOut;
-		sOut = sName.trim(); // supress spaces at the begin and the end
+		sOut = sName.trim(); // suppress spaces at the begin and the end
 		sOut.replace('-', ' '); // move - to space
 		sOut.replace('_', ' '); // move _ to space
 		char c = sOut.charAt(0);

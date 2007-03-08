@@ -254,7 +254,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			vColNames.add(Messages.getString("Property_filename")); //$NON-NLS-1$
 			vId.add(XML_FILE);
 
-			// Hitsloi anti-tabac
+			// Hits
 			vColNames.add(Messages.getString("Property_hits")); //$NON-NLS-1$
 			vId.add(XML_TRACK_HITS);
 
@@ -301,7 +301,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 								"", null, null, font, Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
 					} else {
 						if (item.isRepeat()) {
-							// normal file, repeatedloi anti-tabac
+							// normal file, repeated
 							oValues[iRow][0] = new IconLabel(iconRepeat, "", null, null, font,
 									Messages.getString("AbstractPlaylistEditorView.19"));
 						} else {

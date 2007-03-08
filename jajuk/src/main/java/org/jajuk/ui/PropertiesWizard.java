@@ -472,7 +472,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 						Vector<String> styles = StyleManager.getInstance().getStylesList();
 						final JComboBox jcb = new JComboBox(styles);
 						jcb.setEditable(true);
-						AutoCompleteDecorator.decorate(jcb);
+						AutoCompleteDecorator.decorate(jcb,false);
 						jcb.setPreferredSize(dim);
 						// set current style to combo
 						int i = -1;
@@ -514,7 +514,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 						Vector<String> authors = AuthorManager.getAuthorsList();
 						final JComboBox jcb = new JComboBox(authors);
 						jcb.setEditable(true);
-						AutoCompleteDecorator.decorate(jcb);
+						AutoCompleteDecorator.decorate(jcb, false);
 						jcb.setPreferredSize(dim);
 						// set current style to combo
 						int i = -1;

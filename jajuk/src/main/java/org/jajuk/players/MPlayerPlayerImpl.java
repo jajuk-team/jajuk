@@ -22,6 +22,7 @@ package org.jajuk.players;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import org.jajuk.base.FIFO;
@@ -89,6 +90,9 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
 	/** Current reader thread */
 	private volatile ReaderThread reader;
+	
+	/** Inc rating flag */
+	private boolean bHasBeenRated = false;
 
 	/**
 	 * Position and elapsed time getter
@@ -101,8 +105,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			while (!bStop) { // stop this thread when exiting
 				try {
 					Thread.sleep(PROGRESS_STEP);
-					if (!bPaused && !bStop) { // a get_percent_pos resumes
-						// (mplayer issue)
+					if (!bPaused && !bStop) { 
+						// a get_percent_pos resumes (mplayer issue)
 						sendCommand("get_time_pos"); //$NON-NLS-1$
 					}
 				} catch (Exception e) {
@@ -133,6 +137,19 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 						//Store current position for use at next startup
 						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,
 								Float.toString(getCurrentPosition()));
+						// check if the track get rate increasing level
+						// (INC_RATE_TIME secs or intro length)
+						if (!bHasBeenRated
+								&& (lTime >= (INC_RATE_TIME * 1000) 
+										|| (length != TO_THE_END && lTime > length))) {
+							// inc rate by 1 if file is played at least
+							// INC_RATE_TIME secs
+							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
+							FileManager.getInstance().setRateHasChanged(true);
+							// alert bestof playlist something changed
+							bHasBeenRated = true;
+						}
+			
 						// Cross-Fade test
 						if (!bFading && iFadeDuration > 0 && lDuration > 0 
 								// can be null before getting length
@@ -170,7 +187,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 								// Benefit from end of file to perform a full gc
 								System.gc();
 								if (lDuration > 0){
-									//if corrumpted file, length=0 and we have not not call finished
+									//if corrupted file, length=0 and we have not not call finished
 									//as it is managed my Player
 									FIFO.getInstance().finished();
 								}
@@ -214,6 +231,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		this.bFading = false;
 		this.fCurrent = file;
 		this.bOpening = true;
+		this.bHasBeenRated = false;
 		this.bEOF = false;
 		this.iFadeDuration = 1000 * ConfigurationManager
 				.getInt(CONF_FADE_DURATION);
@@ -222,7 +240,25 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		if (Util.isUnderWindows()) {
 			sCommand = Util.getMPlayerPath();
 		}
-		String[] cmd = { sCommand, "-quiet", "-slave", file.getAbsolutePath() }; //$NON-NLS-1$ //$NON-NLS-2$
+		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
+		String[] cmd = null;
+		if (sAdditionalArgs == null 
+				|| sAdditionalArgs.trim().equals("")){
+			cmd = new String[]{ sCommand, "-quiet", "-slave", file.getAbsolutePath() }; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		else{
+			//Add any additional arguments provided by user
+			String[] sArgs = sAdditionalArgs.split(" ");
+			cmd = new String[4 + sArgs.length];
+			cmd[0] = sCommand;
+			cmd[1] = "-quiet";
+			cmd[2] = "-slave";
+			for (int i=0; i<sArgs.length; i++){
+				cmd[3+i] = sArgs[i];
+			}
+			cmd[cmd.length - 1] = file.getAbsolutePath();
+			Log.debug("Using this Mplayer command: "+ Arrays.asList(cmd));
+		}
 		proc = Runtime.getRuntime().exec(cmd);
 		if (position == null) {
 			position = new PositionThread();
@@ -258,7 +294,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 * @see org.jajuk.base.IPlayerImpl#stop()
 	 */
 	public void stop() throws Exception {
-		// Kill abrutely the mplayer process (this way, killing is synchronous,
+		// Kill abruptly the mplayer process (this way, killing is synchronous,
 		// and easier than sending a quit command)
 		Log.debug("Stop"); //$NON-NLS-1$
 		if (proc != null) {

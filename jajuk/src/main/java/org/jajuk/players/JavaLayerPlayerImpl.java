@@ -269,10 +269,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				// progress()
 				float fVolumeStep = fadingVolume
 						* ((float) 500 / iFadeDuration);
-				float fNewVolume = fVolume - (fVolumeStep / 2); // divide step
-				// by two to
-				// make fade
-				// softer
+				// divide step by two to make fade softer
+				float fNewVolume = fVolume - (fVolumeStep / 2); 
 				// decrease volume by n% of initial volume
 				if (fNewVolume < 0) {
 					fNewVolume = 0;
@@ -300,11 +298,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 					&& (lTime >= INC_RATE_TIME * 1000 || (length != TO_THE_END && lTime > length))) {
 				// inc rate by 1 if file is played at least INC_RATE_TIME secs
 				fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-				FileManager.getInstance().setRateHasChanged(true); // alert
-				// bestof
-				// playlist
-				// something
-				// changed
+				// alert bestof playlist something changed
+				FileManager.getInstance().setRateHasChanged(true); 
 				bHasBeenRated = true;
 			}
 			// Cross-Fade test
@@ -316,11 +311,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				} else {
 					bFading = true;
 					this.fadingVolume = fVolume;
-					/*
-					 * we have to launch the next file from another thread to
-					 * avoid stopping current track (perceptible during
-					 * player.open() for remote files)
-					 */
+					//we have to launch the next file from another thread to
+					 // avoid stopping current track (perceptible during
+					 // player.open() for remote files)
 					new Thread() {
 						public void run() {
 							FIFO.getInstance().finished();

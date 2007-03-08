@@ -248,6 +248,9 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
 		properties.put(CONF_NOVELTIES_MODE, MODE_TRACK);
 		properties.put(CONF_ANIMATION_PATTERN, PATTERN_DEFAULT_ANIMATION);
+		properties.put(CONF_FRAME_POS_FORCED, "");
+		properties.put(CONF_OPTIONS_HOTKEYS, FALSE);
+		properties.put(CONF_MPLAYER_ARGS, "");
 	}
 
 	/**

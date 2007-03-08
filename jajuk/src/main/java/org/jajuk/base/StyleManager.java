@@ -23,6 +23,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Properties;
@@ -113,17 +114,17 @@ public class StyleManager extends ItemManager {
 			style = new Style(sId, sName);
 			hmItems.put(sId, style);
 			// add it in styles list if new
-			boolean bNew = true;
-			for (String s : stylesList) {
-				if (s.toLowerCase().equals(sName.toLowerCase())) {
-					bNew = false;
-					break;
+			if (!stylesList.contains(sName)){
+				stylesList.add(style.getName2());
+			}
+			//Sort items ignoring case
+			Collections.sort(stylesList,new Comparator<String>() {
+			
+				public int compare(String o1, String o2) {
+					return o1.compareToIgnoreCase(o2);
 				}
-			}
-			if (bNew) {
-				stylesList.add(Util.formatStyle(style.getName2()));
-			}
-			Collections.sort(stylesList);
+			
+			});
 			return style;
 		}
 	}

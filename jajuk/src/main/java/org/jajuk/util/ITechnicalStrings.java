@@ -151,7 +151,11 @@ public interface ITechnicalStrings {
 	public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2006 The Jajuk Team";
 
 	// Files and paths
-	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")
+	/**Bootstrap file that contains jajuk configuration user directory**/
+	public static final String FILE_BOOTSTRAP = System.getProperty("user.home")
+		+ "/.jajuk_bootstrap";
+	
+	public static final String FILE_JAJUK_DIR = Util.getHomeDirectory()
 			+ (Main.bTestMode ? "/.jajuk_test" : "/.jajuk");
 
 	public static final String FILE_COLLECTION = FILE_JAJUK_DIR
@@ -224,7 +228,6 @@ public interface ITechnicalStrings {
 	public static final String PROPERTY_SEQ = "sequence";// playlist item
 
 	// sequence
-
 	public static final String AMBIENCE_PREFIX = "jajuk.ambience.";
 
 	// directory path
@@ -1185,8 +1188,14 @@ public interface ITechnicalStrings {
 	// animation pattern
 	public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
 
+	// Initial frame size/position forced value
+	public static final String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
+
 	// Hotkeys flag
-	public static final String CONF_OPTIONS_HOTKEYS = "false";
+	public static final String CONF_OPTIONS_HOTKEYS = "jajuk.options.use_hotkeys";
+
+	// MPLayer additional arguments
+	public static final String CONF_MPLAYER_ARGS = "jajuk.player.mplayer_args";
 
 	// Shuffle/novelties mode
 	public static final String MODE_ALBUM = "album";
@@ -1503,6 +1512,10 @@ public interface ITechnicalStrings {
 	public static final String ACTION_FINISH = "finish";
 
 	public static final String ACTION_Cancel = "cancel";
+	
+	//Strings
+	public static final String FRAME_MAXIMIZED = "max";
+	
 
 	
 

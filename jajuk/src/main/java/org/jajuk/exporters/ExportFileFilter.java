@@ -17,7 +17,7 @@
  *  $Revision$
  */
 
-package org.jajuk.base.exporters;
+package org.jajuk.exporters;
 
 import javax.swing.filechooser.FileFilter;
 

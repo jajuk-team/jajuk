@@ -62,8 +62,6 @@ public class Player implements ITechnicalStrings {
 	/** Playing ? */
 	private static boolean bPlaying = false;
 
-
-    
 	/**
 	 * Asynchronous play for specified file with specified time interval
 	 * 
@@ -80,8 +78,6 @@ public class Player implements ITechnicalStrings {
 		fCurrent = file;
 		try {
 			playerImpl = null;
-			// make sure to stop non-fading players
-			stop(false);
 			// Choose the player
 			Class cPlayer = file.getTrack().getType().getPlayerClass();
 			// player 1 null ?
@@ -111,6 +107,8 @@ public class Player implements ITechnicalStrings {
 				}
 				playerImpl = playerImpl2;
 			}
+			//Force stopping any playing track playing by this player
+			playerImpl.stop();
 			bPlaying = true;
 			bPaused = false;
 			boolean bWaitingLine = true;
@@ -148,7 +146,7 @@ public class Player implements ITechnicalStrings {
 					EventSubject.EVENT_PLAY_ERROR, pDetails));
 			Log.error("007", Messages.getString("Player.0") //$NON-NLS-1$ //$NON-NLS-2$
 					+ fCurrent.getAbsolutePath() + "}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			// process playing error asynchonously to avoid loop problems
+			// process playing error asynchronously to avoid loop problems
 			// when cascading errors
 			new Thread() {
 				public void run() {

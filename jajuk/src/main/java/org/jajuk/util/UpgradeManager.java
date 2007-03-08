@@ -71,6 +71,17 @@ public class UpgradeManager implements ITechnicalStrings {
 				files[i].delete();
 			}
 		}
+		// - for jajuk 1.3: wrong option name: "false" instead of "jajuk.options.use_hotkeys"
+		String sUseHotkeys = ConfigurationManager.getProperty("false");
+		if (sUseHotkeys != null){
+			if (sUseHotkeys.equalsIgnoreCase(FALSE) || sUseHotkeys.equalsIgnoreCase(TRUE)){
+				ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS,sUseHotkeys);
+				ConfigurationManager.removeProperty("false");
+			}
+			else{
+				ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
+			}
+		}
 		// TO DO AFTER AN UPGRADE
 		if (Main.isUpgradeDetected()) {
 			// - for Jajuk < 1.3: force nocover icon replacement
