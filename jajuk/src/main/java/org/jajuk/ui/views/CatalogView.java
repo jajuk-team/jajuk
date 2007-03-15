@@ -522,21 +522,66 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							return album1.compareTo(album2);
 						}
 						// get a track for each album
+						//TODO: get two tracks of album and compare Author, if !=, set Author to "Various Artist"
 						Track track1 = hmAlbumTrack.get(album1);
 						Track track2 = hmAlbumTrack.get(album2);
+						
 						// check tracks (normaly useless)
 						if (track1 == null || track2 == null) {
 							return 0;
 						}
 						switch (index) {
 						case 0: // style
-							return track1.getStyle().compareTo(track2.getStyle());
+//							Sort on Genre/Author/Year/Title
+							if (track1.getStyle() == track2.getStyle()) {
+								if (track1.getAuthor() == track2.getAuthor()) {
+									if (track1.getYear() == track2.getYear()) { 
+										return album1.compareTo(album2);
+									} else {
+										return (int) (track1.getYear() - track2.getYear());
+									}
+								} else {
+									return track1.getAuthor().compareTo(track2.getAuthor());
+								}
+							} else {
+								return track1.getStyle().compareTo(track2.getStyle());
+							}
 						case 1: // author
-							return track1.getAuthor().compareTo(track2.getAuthor());
-						case 3: // year
-							return (int) (track1.getYear() - track2.getYear());
+//							Sort on Author/Year/Title
+							if (track1.getAuthor() == track2.getAuthor()) {
+								if(track1.getYear() == track2.getYear()) {
+									return album1.compareTo(album2);
+								} else {
+									return (int) (track1.getYear() - track2.getYear());
+								}
+							} else {
+								return track1.getAuthor().compareTo(track2.getAuthor());
+							}
+						case 3: // year 
+//							Sort on: Year/Author/Title
+							if(track1.getYear() == track2.getYear()) {
+								if (track1.getAuthor() == track2.getAuthor()) {
+									return album1.compareTo(album2);
+								} else {
+									return track1.getAuthor().compareTo(track2.getAuthor());
+								}
+							}
+							else {
+								return (int) (track1.getYear() - track2.getYear());
+							}
 						}
 						return 0;
+
+						
+//						switch (index) {
+//						case 0: // style
+//							return track1.getStyle().compareTo(track2.getStyle());
+//						case 1: // author
+//							return track1.getAuthor().compareTo(track2.getAuthor());
+//						case 3: // year
+//							return (int) (track1.getYear() - track2.getYear());
+//						}
+//						return 0;
 					}
 
 				});
@@ -597,7 +642,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				// listener
 				jcbPage.removeAllItems(); // void it
 				for (int i = 0; i < iNbPages; i++) { // add the pages
-					jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1));
+					//jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1));
+					jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1) + "/" +	iNbPages);
 					// start at page 1, not 0
 				}
 				if (iNbPages > 0) {
