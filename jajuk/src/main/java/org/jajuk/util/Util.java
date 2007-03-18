@@ -574,8 +574,7 @@ public class Util implements ITechnicalStrings {
 	 * @param sFullPath
 	 * @throws Exception
 	 */
-	public static void createEmptyFile(String sFullPath) throws IOException {
-		File file = new File(sFullPath);
+	public static void createEmptyFile(File file) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(new byte[0]);
 		fos.close();
@@ -735,17 +734,18 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * @param url
 	 *            ressource URL
-	 * @return Cache PATH
+	 * @return Cache directory
 	 */
-	public static String getCachePath(URL url) {
-		return FILE_IMAGE_CACHE + '/' + Util.getOnlyFile(url.toString());
+	public static File getCachePath(URL url) {
+		return Util.getConfFileByPath(FILE_IMAGE_CACHE 
+				+ '/' + Util.getOnlyFile(url.toString()));
 	}
 
 	/**
 	 * Clear locale images cache
 	 */
 	public static void clearCache() {
-		File fCache = new File(FILE_IMAGE_CACHE);
+		File fCache = Util.getConfFileByPath(FILE_IMAGE_CACHE);
 		File[] files = fCache.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			files[i].delete();
@@ -1286,6 +1286,7 @@ public class Util implements ITechnicalStrings {
 		image.flush(); // free memory
 	}
 
+	
 	/**
 	 * @return whether we need a full gc or not
 	 */
@@ -1533,7 +1534,7 @@ public class Util implements ITechnicalStrings {
 		File file = null;
 		// Check in ~/.jajuk directory (used by .exe or .jar distribution
 		// installers)
-		if ((file = new java.io.File(FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE)).exists()) {
+		if ((file = Util.getConfFileByPath(FILE_MPLAYER_EXE)).exists()) {
 			sMplayerPath = file.getAbsolutePath();
 			return sMplayerPath;
 		} else {
@@ -1681,26 +1682,13 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * <p>Caution: this is called before environement is set, don"t use the trace API</p>
-	 * @return Jajuk workspace
+	 * 
+	 * @param sPATH Configuration file or directory path
+	 * @return the file relative to jajuk directory
 	 */
-	public static final String getHomeDirectory() {
-		File bootstrap = new File(FILE_BOOTSTRAP);
-		if (bootstrap.canRead()) {
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(bootstrap));
-				//Bootstrap file should contain a single line containing the path to jajuk workspace
-				String sPath = br.readLine();
-				br.close();
-				if (new File(sPath).canRead()){
-					return sPath;
-				}
-			} catch (Exception e) {
-				System.out.println("Cannot read bootstrap file");
-			}
-		} 
-		//Return default directory
-		return System.getProperty("user.home");
+	public static final File getConfFileByPath(String sPATH){
+		return new File(Main.workspace + '/' 
+			+ (Main.bTestMode ? ".jajuk_test" : ".jajuk")+ '/'+ sPATH );
 	}
-
+	
 }

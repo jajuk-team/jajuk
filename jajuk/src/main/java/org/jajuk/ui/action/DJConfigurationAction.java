@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.DigitalDJWizard;
+import org.jajuk.ui.wizard.DigitalDJWizard;
 import org.jajuk.util.Util;
 
 /**

@@ -84,7 +84,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 				|| iType == Cover.ABSOLUTE_DEFAULT_COVER) {
 			this.file = new File(url.getFile());
 		} else if (iType == Cover.REMOTE_COVER) {
-			this.file = new File(Util.getCachePath(url));
+			this.file = Util.getCachePath(url);
 		}
 		// if Pre-load option is enabled, download this cover
 		if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)

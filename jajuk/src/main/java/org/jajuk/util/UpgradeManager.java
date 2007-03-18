@@ -46,7 +46,7 @@ public class UpgradeManager implements ITechnicalStrings {
 	 */
 	public static void upgradeStep1() throws Exception {
 		// --For jajuk < 0.2 : remove backup file : collection~.xml
-		File file = new File(FILE_COLLECTION + "~"); //$NON-NLS-1$
+		File file = Util.getConfFileByPath(FILE_COLLECTION + "~"); //$NON-NLS-1$
 		file.delete();
 		// upgrade code; if ugrade from <1.2, set default ambiences
 		String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
@@ -63,7 +63,7 @@ public class UpgradeManager implements ITechnicalStrings {
 					.replaceAll("track", "title"));
 		}
 		// - for Jajuk < 1.3: no more use of .ser files
-		file = new File(FILE_JAJUK_DIR);
+		file = Util.getConfFileByPath("");
 		File[] files = file.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			// delete all .ser files
@@ -85,20 +85,20 @@ public class UpgradeManager implements ITechnicalStrings {
 		// TO DO AFTER AN UPGRADE
 		if (Main.isUpgradeDetected()) {
 			// - for Jajuk < 1.3: force nocover icon replacement
-			File fThumbs = new File(FILE_THUMBS
+			File fThumbs = Util.getConfFileByPath(FILE_THUMBS
 					+ "/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = new File(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = new File(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = new File(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}

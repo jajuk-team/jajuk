@@ -101,7 +101,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 					// application is closed brutally with control-C or
 					// shutdown and that exit hook have no time to perform
 					// commit)
-					org.jajuk.base.Collection.commit(FILE_COLLECTION);
+					org.jajuk.base.Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
 				} catch (Exception e) {
 					Log.error(e);
 				}
@@ -125,12 +125,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 	 * Write current collection to collection file for persistence between
 	 * sessions
 	 */
-	public static void commit(String sFileName) throws IOException {
+	public static void commit(File collectionFile) throws IOException {
 		long lTime = System.currentTimeMillis();
 		String sCharset = ConfigurationManager
 				.getProperty(CONF_COLLECTION_CHARSET);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(sFileName), sCharset), 1000000); //$NON-NLS-1$
+				new FileOutputStream(collectionFile), sCharset), 1000000); //$NON-NLS-1$
 		bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw
 				.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -236,7 +236,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 	 * Parse collection.xml file and put all collection information into memory
 	 * 
 	 */
-	public static void load(String sFile) throws Exception {
+	public static void load(File file) throws Exception {
 		lTime = System.currentTimeMillis();
 		// make sure to clean everything in memory
 		cleanup();
@@ -245,7 +245,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,
 		spf.setValidating(false);
 		spf.setNamespaceAware(false);
 		SAXParser saxParser = spf.newSAXParser();
-		File frt = new File(sFile);
+		File frt = file;
 		if (!frt.exists()) {
 			throw new JajukException("005"); //$NON-NLS-1$
 		}

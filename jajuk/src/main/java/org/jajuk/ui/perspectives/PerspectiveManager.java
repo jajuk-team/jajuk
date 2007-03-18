@@ -94,7 +94,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 			for (IPerspective perspective : getPerspectives()) {
 				// Remove current conf file to force using default file from the
 				// jar
-				File loadFile = new File(FILE_JAJUK_DIR + '/' + perspective.getClass().getName()
+				File loadFile = Util.getConfFileByPath(perspective.getClass().getName()
 						+ ".xml");
 				if (loadFile.exists()) {
 					loadFile.delete();

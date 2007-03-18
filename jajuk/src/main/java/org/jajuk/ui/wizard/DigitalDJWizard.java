@@ -1,4 +1,4 @@
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -44,6 +44,8 @@ import org.jajuk.dj.ProportionDigitalDJ;
 import org.jajuk.dj.Transition;
 import org.jajuk.dj.TransitionDigitalDJ;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.StylesSelectionDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;

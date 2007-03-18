@@ -22,10 +22,12 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -62,7 +64,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 	 */
 	public PathSelector(final JajukFileFilter filter, String sDefault) {
 		// Set layout
-		double[][] size = new double[][] { { 200, TableLayout.FILL, TableLayout.PREFERRED },
+		double[][] size = new double[][] { { 200, 10, TableLayout.FILL, TableLayout.PREFERRED },
 				{ TableLayout.PREFERRED } };
 		setLayout(new TableLayout(size));
 		setOpaque(false);
@@ -72,6 +74,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 			jtfUrl.setText(sDefault);
 		}
 		jtfUrl.setToolTipText(Messages.getString("Path"));
+		jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		button = new JButton(Util.getIcon(ICON_OPEN_FILE));
 		button.setToolTipText(Messages.getString("Path"));
 		button.addActionListener(new ActionListener() {
@@ -97,7 +100,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 		});
 		//Add items
 		add(jtfUrl,"0,0");
-		add(button,"2,0");
+		add(button,"3,0");
 	}
 	
 	/**
@@ -106,6 +109,15 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 	 */
 	public String getUrl(){
 		return jtfUrl.getText();
+	}
+	
+	/**
+	 * Set tooltip
+	 * @param s
+	 */
+	public void setToolTipText(String s){
+		jtfUrl.setToolTipText(s);
+		button.setToolTipText(s);
 	}
 
 }

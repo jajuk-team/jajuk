@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.AmbienceWizard;
+import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.Util;
 
 /**

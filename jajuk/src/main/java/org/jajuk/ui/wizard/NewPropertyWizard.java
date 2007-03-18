@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 

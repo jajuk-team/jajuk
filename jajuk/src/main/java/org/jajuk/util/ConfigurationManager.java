@@ -178,7 +178,6 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);
 		properties.put(CONF_P2P_PASSWORD, ""); //$NON-NLS-1$
 		properties.put(CONF_HISTORY, "-1"); //$NON-NLS-1$
-		properties.put(CONF_FIRST_CON, TRUE);
 		properties.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
 		properties.put(CONF_BOOKMARKS, ""); //$NON-NLS-1$
 		properties.put(CONF_SHOW_AT_STARTUP, TRUE);
@@ -282,7 +281,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 	/** Commit properties in a file */
 	public static void commit() {
 		try {
-			properties.store(new FileOutputStream(FILE_CONFIGURATION),
+			properties.store(new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION)),
 					"User configuration"); //$NON-NLS-1$
 		} catch (IOException e) {
 			Log.error("113", e); //$NON-NLS-1$
@@ -294,7 +293,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 	/** Load properties from in file */
 	public static void load() {
 		try {
-			properties.load(new FileInputStream(FILE_CONFIGURATION));
+			properties.load(new FileInputStream(Util.getConfFileByPath(FILE_CONFIGURATION)));
 		} catch (IOException e) {
 			e.printStackTrace(); // do not use log system here
 			Messages.showErrorMessage("114"); //$NON-NLS-1$

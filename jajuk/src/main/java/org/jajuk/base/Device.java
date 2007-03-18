@@ -256,7 +256,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		// closed brutally with control-C or shutdown and that exit hook have no
 		// time to perform commit)
 		try {
-			org.jajuk.base.Collection.commit(FILE_COLLECTION);
+			org.jajuk.base.Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
 		} catch (IOException e) {
 			Log.error(e);
 		}
@@ -284,7 +284,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			if (!isMounted()) {
 				return false;
 			}
-			//check target directory is not void because it could mean that the
+			// check target directory is not void because it could mean that the
 			// device is not actually system-mounted and then a refresh would
 			// clear the device, display a warning message
 			File file = new File(getUrl());
@@ -697,7 +697,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 * Mount the device
 	 * 
 	 * @param bUIRefresh
-	 *            set wheter the UI should be refreshed
+	 *            set whether the UI should be refreshed
 	 */
 	public void mount(boolean bUIRefresh) throws Exception {
 		if (bMounted) {
@@ -991,11 +991,12 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 				}
 			}
 		}
-		// clear history to remove olf files referenced in it
-		History.getInstance().clear(
-				Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY)));
+		// clear history to remove old files referenced in it
+		if (ConfigurationManager.getProperty(CONF_HISTORY) != null) {
+			History.getInstance().clear(
+					Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY)));
+		}
 		// delete old history items
-
 		l = System.currentTimeMillis() - l;
 		Log.debug("Old file references cleaned in: " //$NON-NLS-1$
 				+ ((l < 1000) ? l + " ms" : l / 1000 + " s")); //$NON-NLS-1$ //$NON-NLS-2$

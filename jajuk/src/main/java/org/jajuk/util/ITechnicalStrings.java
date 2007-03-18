@@ -21,8 +21,6 @@ package org.jajuk.util;
 
 import java.net.URL;
 
-import org.jajuk.Main;
-
 /**
  * Contains all technical/ non-translatable strings
  * 
@@ -148,33 +146,28 @@ public interface ITechnicalStrings {
 
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
-	public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2006 The Jajuk Team";
+	public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2007 The Jajuk Team";
 
 	// Files and paths
 	/**Bootstrap file that contains jajuk configuration user directory**/
 	public static final String FILE_BOOTSTRAP = System.getProperty("user.home")
 		+ "/.jajuk_bootstrap";
-	
-	public static final String FILE_JAJUK_DIR = Util.getHomeDirectory()
-			+ (Main.bTestMode ? "/.jajuk_test" : "/.jajuk");
 
-	public static final String FILE_COLLECTION = FILE_JAJUK_DIR
-			+ "/collection.xml";
+	public static final String FILE_COLLECTION = "collection.xml";
 
-	public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR
-			+ "/collection_exit.xml"; // FIle written by the exit hook
+	// File written by the exit hook
+	public static final String FILE_COLLECTION_EXIT = "collection_exit.xml"; 
 
-	public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR
-			+ "/exit_proof"; // Void file created after exit collection file
+	// Void file created after exit collection file
+	public static final String FILE_COLLECTION_EXIT_PROOF = "/exit_proof"; 
 
-	public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR
-			+ "/conf.properties";
-    public static final String FILE_AUDIOSCROBBLER = FILE_JAJUK_DIR
-    		+ "/audioscrobbler_list.xml";
+	public static final String FILE_CONFIGURATION = "conf.properties";
+    
+	public static final String FILE_AUDIOSCROBBLER = "audioscrobbler_list.xml";
    
-	public static final String FILE_HISTORY = FILE_JAJUK_DIR + "/history.xml";
+	public static final String FILE_HISTORY = "history.xml";
 
-	public static final String FILE_LOCK = FILE_JAJUK_DIR + "/.lock";
+	public static final String FILE_LOCK = ".lock";
 
 	public static final String FILE_DEFAULT_COVER = "cover";
 
@@ -188,14 +181,14 @@ public interface ITechnicalStrings {
 	public static final String FILE_LANGPACK_PART2 = ".properties";
 
 	// logs
-	public static final String FILE_LOGS = FILE_JAJUK_DIR + "/jajuk.log";
+	public static final String FILE_LOGS = "jajuk.log";
 
 	public static final URL FILE_LOG4j_CONF = Util
 			.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
-	public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR + "/cache";
+	public static final String FILE_IMAGE_CACHE = "cache";
 
-	public static final String FILE_THUMBS = FILE_JAJUK_DIR + "/thumbs";
+	public static final String FILE_THUMBS = "thumbs";
 
 	public static final String FILE_THUMB_NO_COVER = "nocover.jpg";
 
@@ -207,14 +200,13 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
 
-	public static final String FILE_DJ_DIR = FILE_JAJUK_DIR + "/djs";
+	public static final String FILE_DJ_DIR = "djs";
 
-	public static final String FILE_FIFO = FILE_JAJUK_DIR + "/fifo.lst";
+	public static final String FILE_FIFO = "fifo.lst";
 
 	public static final String FILE_MPLAYER_EXE = "mplayer.exe";
 
-	public static final String FILE_TOOLBARS_CONF = FILE_JAJUK_DIR
-			+ "/toolbars.xml";
+	public static final String FILE_TOOLBARS_CONF = "toolbars.xml";
 
 	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
@@ -1053,8 +1045,6 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_HISTORY = "jajuk.options.history";
 
-	public static final String CONF_FIRST_CON = "jajuk.first_con";
-
 	public static final String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
 
 	// contains files id separated by a colon
@@ -1178,6 +1168,9 @@ public interface ITechnicalStrings {
 
 	// wrong player not show again flag
 	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
+
+	// Cross fade alert not show again flag
+	public static final String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";
 
 	// Global random mode: song or album level ?
 	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";

@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -46,6 +46,7 @@ import javax.swing.JTextField;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;

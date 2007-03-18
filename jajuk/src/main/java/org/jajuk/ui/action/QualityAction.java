@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.QualityFeedbackWizard;
+import org.jajuk.ui.wizard.QualityFeedbackWizard;
 import org.jajuk.util.Util;
 
 /**

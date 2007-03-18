@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -56,7 +57,7 @@ public class Log implements ITechnicalStrings {
 	 */
 	private static int verbosity = INFO;
 
-	/** Self instance used for signleton pattern */
+	/** Self instance used for singleton pattern */
 	private static Log log = null;
 
 	// Root logger
@@ -76,9 +77,9 @@ public class Log implements ITechnicalStrings {
 	 */
 	private Log() {
 		try {
-			System.setProperty("jajuk.log", FILE_LOGS); // set env variable used
-			// in the log4j conf
-			// file //$NON-NLS-1$
+			// set env variable used in the log4j conf file
+			System.setProperty("jajuk.log", 
+					Util.getConfFileByPath(FILE_LOGS).getAbsolutePath()); 
 			DOMConfigurator.configure(FILE_LOG4j_CONF);
 			loggerRoot = Logger.getRootLogger();
 			logger = Logger.getLogger(Log.class.getName());
@@ -108,6 +109,11 @@ public class Log implements ITechnicalStrings {
 	 * Log a debug-level message
 	 */
 	public static void debug(String s) {
+		// Just display the message if Log is not yet enabled
+		if (log == null) {
+			System.out.println("[DEBUG] "+s);
+			return;
+		}
 		spool("[DEBUG] " + s); //$NON-NLS-1$
 		logger.debug(s);
 	}
@@ -116,6 +122,11 @@ public class Log implements ITechnicalStrings {
 	 * Log a info-level message
 	 */
 	public static void info(String s) {
+		// Just display the message if Log is not yet enabled
+		if (log == null) {
+			System.out.println("[INFO] "+s);
+			return;
+		}
 		spool("[INFO] " + s); //$NON-NLS-1$
 		logger.info(s);
 	}
@@ -124,6 +135,11 @@ public class Log implements ITechnicalStrings {
 	 * Log a warning-level message
 	 */
 	public static void warn(String s) {
+		// Just display the message if Log is not yet enabled
+		if (log == null) {
+			System.out.println("[WARN] "+s);
+			return;
+		}
 		spool("[WARN] " + s); //$NON-NLS-1$
 		logger.warn(s);
 	}
@@ -133,6 +149,11 @@ public class Log implements ITechnicalStrings {
 	 */
 	public static void warn(String s, String sInfoSup) {
 		String sOut = s + ": " + sInfoSup; //$NON-NLS-1$
+		// Just display the message if Log is not yet enabled
+		if (log == null) {
+			System.out.println("[WARN] "+sOut);
+			return;
+		}
 		spool("[WARN] " + sOut); //$NON-NLS-1$
 		logger.warn(sOut);
 	}
@@ -154,8 +175,13 @@ public class Log implements ITechnicalStrings {
 					+ sCode
 					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} else {
-			sOut = '(' + sCode
-					+ ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		// Just display the message if Log is not yet enabled
+		if (log == null) {
+			System.out.println("[WARN] "+sOut);
+			t.printStackTrace();
+			return;
 		}
 		spool("[WARN] " + sOut); //$NON-NLS-1$
 		spool(t);
@@ -173,14 +199,20 @@ public class Log implements ITechnicalStrings {
 	 *            the exception itself
 	 */
 	public static void error(String sCode, String sInfosup, Throwable t) {
+		// Just make a print stake trace if Log is not yet enabled (example:
+		// collection commit problem in initialCheckups)
+		if (log == null) {
+			System.out.println("[ERROR] "+sCode+" / "+sInfosup);
+			t.printStackTrace();
+			return;
+		}
 		String sOut;
 		if (Messages.isInitialized()) {
 			sOut = '('
 					+ sCode
 					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ": " + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} else {
-			sOut = '(' + sCode
-					+ ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		spool("[ERROR] " + sOut); //$NON-NLS-1$
 		if (t != null) {
@@ -202,6 +234,12 @@ public class Log implements ITechnicalStrings {
 		} else {
 			sOut = '(' + sCode + ") "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
+		// Just make a print stake trace if Log is not yet enabled (example:
+		// collection commit problem in initialCheckups)
+		if (log == null) {
+			System.out.println("[ERROR] "+sOut);
+			return;
+		}
 		spool("[ERROR] " + sOut); //$NON-NLS-1$
 		logger.error(sOut);
 	}
@@ -213,6 +251,12 @@ public class Log implements ITechnicalStrings {
 	 *            the exception itself
 	 */
 	public static void error(Throwable t) {
+		// Just make a print stake trace if Log is not yet enabled (example:
+		// collection commit problem in initialCheckups)
+		if (log == null) {
+			t.printStackTrace();
+			return;
+		}
 		spool(t);
 		logger.error(t.getMessage() + " / " + t.getCause(), t); //$NON-NLS-1$
 	}
@@ -250,6 +294,12 @@ public class Log implements ITechnicalStrings {
 	 * Log a fatal error message
 	 */
 	public static void fatal(String s) {
+		// Just make a print stake trace if Log is not yet enabled (example:
+		// collection commit problem in initialCheckups)
+		if (log == null) {
+			System.out.println("[FATAL] "+s);
+			return;
+		}
 		spool("[FATAL] " + s); //$NON-NLS-1$
 		logger.fatal(s);
 	}
@@ -330,8 +380,7 @@ public class Log implements ITechnicalStrings {
 		}
 		try {
 			// anonymize standard labels (with {{xxx}})
-			String sAnonymizedMessage = sMessage.replaceAll(
-					"\\{\\{.*\\}\\}", "***"); //$NON-NLS-1$ //$NON-NLS-2$
+			String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***"); //$NON-NLS-1$ //$NON-NLS-2$
 			// anonymize Basic Player logs
 			if (sAnonymizedMessage.indexOf("Player state changed: OPENING") != -1) { //$NON-NLS-1$
 				sAnonymizedMessage = sAnonymizedMessage.substring(0, 40);
@@ -348,8 +397,7 @@ public class Log implements ITechnicalStrings {
 	 * @param e
 	 */
 	private static void spool(Throwable e) {
-		spool("[ERROR] " + e.getClass() + " / " + e.getMessage()
-				+ " / " + e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		spool("[ERROR] " + e.getClass() + " / " + e.getMessage() + " / " + e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		StackTraceElement[] ste = e.getStackTrace();
 		for (int i = 0; i < ste.length; i++) {
 			spool(ste[i].toString());

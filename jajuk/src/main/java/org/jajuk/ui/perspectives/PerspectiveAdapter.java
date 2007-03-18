@@ -112,8 +112,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		if (!bAsBeenSelected) {
 			return;
 		}
-		File saveFile = new File(FILE_JAJUK_DIR + '/'
-				+ getClass().getSimpleName() + ".xml");
+		File saveFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
 		BufferedOutputStream out = new BufferedOutputStream(
 				new FileOutputStream(saveFile));
 		writeXML(out);
@@ -133,8 +132,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 			registerDockable(view);
 		}
 		// Try to read XML conf file from home directory
-		File loadFile = new File(FILE_JAJUK_DIR + '/'
-				+ getClass().getSimpleName() + ".xml");
+		File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
 		/*
 		 * If file doesn't exist (normaly only at first install), read
 		 * perspective conf from the jar
@@ -182,8 +180,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		try {
 			// Remove current conf file to force using default file from the
 			// jar
-			File loadFile = new File(FILE_JAJUK_DIR + '/'
-					+ getClass().getSimpleName() + ".xml");
+			File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
 			loadFile.delete();
 			// Remove all registered dockables
 			DockableState[] ds = getDockables();

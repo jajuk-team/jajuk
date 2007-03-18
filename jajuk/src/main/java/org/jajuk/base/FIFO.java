@@ -1130,7 +1130,7 @@ public class FIFO implements ITechnicalStrings {
 	 * Store current FIFO as a list
 	 */
 	public synchronized void commit() throws IOException {
-		java.io.File file = new java.io.File(FILE_FIFO);
+		java.io.File file = Util.getConfFileByPath(FILE_FIFO);
 		PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file,
 				false)));
 		int index = 0;

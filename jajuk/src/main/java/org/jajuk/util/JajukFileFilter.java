@@ -420,10 +420,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		if (!bFiles) { // only dirs
 			return sOut;
 		}
-		if (alTypes == null) { // if no type specified, we considere all Jajuk
-			// known files
-			sOut += TypeManager.getInstance().getTypeListString();
-		} else {
+		if (alTypes != null) {
 			Iterator it = alTypes.iterator();
 			while (it.hasNext()) {
 				Type type = (Type) it.next();

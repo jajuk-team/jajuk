@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -40,6 +40,7 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PhysicalPerspective;
 import org.jajuk.util.ITechnicalStrings;

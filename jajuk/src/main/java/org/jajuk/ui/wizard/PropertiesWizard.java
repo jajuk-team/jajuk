@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -66,6 +66,8 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;

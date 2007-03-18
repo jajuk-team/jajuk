@@ -47,7 +47,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -494,7 +493,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		boolean bToolbarInstallationOK = false; // flag
 
 		// Load stored toolbar configuration
-		if (new File(FILE_TOOLBARS_CONF).exists()) {
+		if (Util.getConfFileByPath(FILE_TOOLBARS_CONF).exists()) {
 			try {
 				// Read toolbars configuration
 				container.registerToolBar(vltbSearch);
@@ -507,7 +506,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 				// install them from XML
 				ToolBarIO tbIO = new ToolBarIO(container);
-				FileInputStream in = new FileInputStream(FILE_TOOLBARS_CONF);
+				FileInputStream in = new FileInputStream(Util.getConfFileByPath(FILE_TOOLBARS_CONF));
 				tbIO.readXML(in);
 				// Check toolbars have been actually installed as the XML
 				// toolbar conf file could be voided
@@ -738,8 +737,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 					// track (selection must change to throw an ActionEvent)
 					jcbHistory.setSelectedIndex(-1);
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");// reset
-																						// startup
-																						// //$NON-NLS-1$
+					// startup
+					// //$NON-NLS-1$
 					// position
 					// //$NON-NLS-1$
 				} else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)) {

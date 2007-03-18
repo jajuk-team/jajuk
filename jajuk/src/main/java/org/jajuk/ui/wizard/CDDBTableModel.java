@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +26,8 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CDDBWizard.CDDBTrack;
+import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.wizard.CDDBWizard.CDDBTrack;
 
 import entagged.freedb.FreedbReadResult;
 

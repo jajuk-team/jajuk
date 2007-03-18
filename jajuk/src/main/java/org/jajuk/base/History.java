@@ -40,6 +40,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -210,7 +211,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 			lDateStart = System.currentTimeMillis();
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(FILE_HISTORY), "UTF-8")); //$NON-NLS-1$
+				new FileOutputStream(Util.getConfFileByPath(FILE_HISTORY)), "UTF-8")); //$NON-NLS-1$
 		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
 		bw.write("<history jajuk_version='" + JAJUK_VERSION //$NON-NLS-1$
 				+ "' begin_date='" + Long.toString(lDateStart) + "'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -235,7 +236,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
 			SAXParser saxParser = spf.newSAXParser();
-			File frt = new File(FILE_HISTORY);
+			File frt = Util.getConfFileByPath(FILE_HISTORY);
 			saxParser.parse(frt.toURL().toString(), getInstance());
 			getInstance().clear(
 					Integer.parseInt(ConfigurationManager

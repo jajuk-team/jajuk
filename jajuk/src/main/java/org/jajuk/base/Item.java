@@ -267,7 +267,8 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 			sb.append(getPropertiesXml());
 			sb.append("/>\n"); //$NON-NLS-1$
 			return sb.toString();
-		} catch (Exception e) { // catch any error here bcause it can prevent
+		} catch (Exception e) { 
+			// catch any error here because it can prevent
 			// collection to commit
 			Log.error(e);
 			return ""; //$NON-NLS-1$

@@ -412,6 +412,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static void showHideableWarningMessage(String sMessage,
 			String sProperty) {
+		//User required to hide this message
+		if (!ConfigurationManager.getBoolean(sProperty)){
+			return;
+		}
 		HideableMessageDialog message = new HideableMessageDialog(sMessage,
 				getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty,
 				JOptionPane.WARNING_MESSAGE, null);

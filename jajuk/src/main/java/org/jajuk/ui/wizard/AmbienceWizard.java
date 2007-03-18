@@ -1,4 +1,4 @@
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -30,6 +30,7 @@ import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceDigitalDJ;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.StylesSelectionDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;

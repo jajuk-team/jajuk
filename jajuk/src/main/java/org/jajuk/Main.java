@@ -66,16 +66,16 @@ import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
 import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.FirstTimeWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.TipOfTheDay;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.FirstTimeWizard;
+import org.jajuk.ui.wizard.TipOfTheDay;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
@@ -152,14 +152,21 @@ public class Main implements ITechnicalStrings {
 	/** Is it a minor or major X.Y upgrade */
 	private static boolean bUpgraded = false;
 
-	/** Is it the first seesion ever ? */
-	private static boolean bFirstSession = false;
+	/** Is it the first session ever ? */
+	public static boolean bFirstSession = false;
 
 	/** Does this session follows a crash revover ? */
 	private static boolean bCrashRecover = false;
 
 	/** Mplayer state */
 	private static MPlayerStatus mplayerStatus;
+
+	/** Workspace PATH* */
+	public static String workspace;
+	
+	/** Lock used to trigger a first time wizard device creation and refresh **/
+	public static short[] canLaunchRefresh = new short[0];
+	
 
 	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
@@ -196,7 +203,7 @@ public class Main implements ITechnicalStrings {
 					bTestMode = true;
 				}
 			}
-			
+
 			// perform initial checkups and create needed files
 			initialCheckups();
 
@@ -229,11 +236,10 @@ public class Main implements ITechnicalStrings {
 
 			// Upgrade detection. Depends on: Configuration manager load
 			String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-			/*
-			 * See if it is a new major 'x.y' release: 1.2 != 1.3 for instance
-			 */
+			
+			// check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
 			if (!bFirstSession
-			// if first session, not conciderated as an upgrade
+					// if first session, not considerated as an upgrade
 					&& (sRelease == null || // null for jajuk releases < 1.2
 					!sRelease.substring(0, 3).equals(JAJUK_VERSION.substring(0, 3)))) {
 				bUpgraded = true;
@@ -337,6 +343,11 @@ public class Main implements ITechnicalStrings {
 
 			// Clean the collection up
 			Collection.cleanup();
+			
+			// Unlock pending First time wizard if any
+			synchronized(canLaunchRefresh){
+				canLaunchRefresh.notify();
+			}
 
 			// Display progress
 			sc.setProgress(70, Messages.getString("SplashScreen.2")); //$NON-NLS-1$
@@ -376,15 +387,17 @@ public class Main implements ITechnicalStrings {
 							// Commit collection if not refreshing ( fix for
 							// 939816 )
 							if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-								Collection.commit(FILE_COLLECTION_EXIT);
+								Collection.commit(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
 								// create a proof file
-								Util.createEmptyFile(FILE_COLLECTION_EXIT_PROOF);
+								Util.createEmptyFile(Util
+										.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
 							}
 							// Commit toolbars (only if it is visible to avoid
 							// commiting void screen)
 							if (getWindow() != null && getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
-								FileOutputStream out = new FileOutputStream(FILE_TOOLBARS_CONF);
+								FileOutputStream out = new FileOutputStream(Util
+										.getConfFileByPath(FILE_TOOLBARS_CONF));
 								tbIO.writeXML(out);
 								out.flush();
 								out.close();
@@ -412,12 +425,11 @@ public class Main implements ITechnicalStrings {
 			// Launch auto-refresh thread
 			DeviceManager.getInstance().startAutoRefreshThread();
 
-            // Launch AudioScrobblerManager if enable
-            if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)){
-                AudioScrobblerManager.getInstance().startup();
-            }
-            
-            
+			// Launch AudioScrobblerManager if enable
+			if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)) {
+				AudioScrobblerManager.getInstance().startup();
+			}
+
 			// Launch startup track if any
 			launchInitialTrack();
 
@@ -468,69 +480,99 @@ public class Main implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	private static void initialCheckups() throws Exception {
+
+		// Check for bootstrap file presence, if not present, launch the first
+		// time wizard
+		File bootstrap = new File(FILE_BOOTSTRAP);
+		if (bootstrap.canRead()) {
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(bootstrap));
+				// Bootstrap file should contain a single line containing the
+				// path to jajuk workspace
+				String sPath = br.readLine();
+				br.close();
+				if (new File(sPath).canRead()) {
+					Main.workspace = sPath;
+				}
+			} catch (Exception e) {
+				System.out.println("Cannot read bootstrap file, using ~ directory");
+				Main.workspace = System.getProperty("user.home");
+			}
+		}
+		// No bootstrap or unreadable or the path included inside is not
+		// readable, show a wizard to select it
+		if (!bootstrap.canRead() || Main.workspace == null) {
+			FirstTimeWizard fsw = new FirstTimeWizard();// First time wizard
+			fsw.pack();
+			fsw.setVisible(true);
+		}
+		// In all cases, make sure to set a workspace
+		if (workspace == null) {
+			workspace = System.getProperty("user.home");
+		}
 		// check for jajuk directory
-		File fJajukDir = new File(FILE_JAJUK_DIR);
+		File fJajukDir = Util.getConfFileByPath("");
 		if (!fJajukDir.exists()) {
 			bFirstSession = true; // first session ever
 			fJajukDir.mkdir(); // create the directory if it doesn't exist
 		}
 		// check for configuration file presence
-		File fConfig = new File(FILE_CONFIGURATION);
+		File fConfig = Util.getConfFileByPath(FILE_CONFIGURATION);
 		if (!fConfig.exists()) { // if config file doesn't exit, create
 			// it with default values
 			org.jajuk.util.ConfigurationManager.commit();
 		}
 		// check for history.xml file
-		File fHistory = new File(FILE_HISTORY);
+		File fHistory = Util.getConfFileByPath(FILE_HISTORY);
 		if (!fHistory.exists()) { // if history file doesn't exit, create
 			// it empty
 			History.commit();
 		}
 		// check for image cache presence
-		File fCache = new File(FILE_IMAGE_CACHE);
+		File fCache = Util.getConfFileByPath(FILE_IMAGE_CACHE);
 		if (!fCache.exists()) {
 			fCache.mkdir();
 		}
 		// check for thumbnails cache presence
-		File fThumbs = new File(FILE_THUMBS);
+		File fThumbs = Util.getConfFileByPath(FILE_THUMBS);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = new File(FILE_THUMBS + "/50x50"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/50x50"); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = new File(FILE_THUMBS + "/100x100"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100"); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = new File(FILE_THUMBS + "/150x150"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150"); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = new File(FILE_THUMBS + "/200x200"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200"); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
 		// check for default covers
-		fThumbs = new File(FILE_THUMBS + "/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 50);
 		}
-		fThumbs = new File(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 100);
 		}
-		fThumbs = new File(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 150);
 		}
-		fThumbs = new File(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 200);
 		}
 		// check for djs directory
-		File fdjs = new File(FILE_DJ_DIR);
+		File fdjs = Util.getConfFileByPath(FILE_DJ_DIR);
 		if (!fdjs.exists()) {
 			fdjs.mkdir();
 		}
@@ -552,7 +594,7 @@ public class Main implements ITechnicalStrings {
 					// try to download static mplayer distro if needed
 					try {
 						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
-						File fMPlayer = new File(FILE_JAJUK_DIR + "/" + FILE_MPLAYER_EXE); //$NON-NLS-1$
+						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE); //$NON-NLS-1$
 						sc.setProgress(5, Messages.getString("Main.22")); //$NON-NLS-1$
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						// make sure to delete corrupted mplayer in case of
@@ -595,19 +637,15 @@ public class Main implements ITechnicalStrings {
 			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no
 				// mplayer
 				// Show mplayer warnings
-				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no
-					// mplayer
-					// Test if user didn't already select "don't show again"
-					if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
-						if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
-							// No mplayer
-							Messages.showHideableWarningMessage(Messages.getString("Warning.0"), //$NON-NLS-1$
-									CONF_NOT_SHOW_AGAIN_PLAYER);
-						} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
-							// wrong mplayer release
-							Messages.showHideableWarningMessage(Messages.getString("Warning.1"), //$NON-NLS-1$
-									CONF_NOT_SHOW_AGAIN_PLAYER);
-						}
+				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+					if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
+						// No mplayer
+						Messages.showHideableWarningMessage(Messages.getString("Warning.0"), //$NON-NLS-1$
+								CONF_NOT_SHOW_AGAIN_PLAYER);
+					} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
+						// wrong mplayer release
+						Messages.showHideableWarningMessage(Messages.getString("Warning.1"), //$NON-NLS-1$
+								CONF_NOT_SHOW_AGAIN_PLAYER);
 					}
 				}
 				// mp3
@@ -818,25 +856,25 @@ public class Main implements ITechnicalStrings {
 	 * Load persisted collection file
 	 */
 	private static void loadCollection() {
-		if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
+		if (Main.bFirstSession) {
 			Log.info("First session, collection will be created");//$NON-NLS-1$
 			return;
 		}
-		File fCollection = new File(FILE_COLLECTION);
-		File fCollectionExit = new File(FILE_COLLECTION_EXIT);
-		File fCollectionExitProof = new File(FILE_COLLECTION_EXIT_PROOF);
+		File fCollection = Util.getConfFileByPath(FILE_COLLECTION);
+		File fCollectionExit = Util.getConfFileByPath(FILE_COLLECTION_EXIT);
+		File fCollectionExitProof = Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
 		// check if previous exit was OK
 		boolean bParsingOK = true;
 		try {
 			if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
 				fCollectionExitProof.delete(); // delete this file created just
 				// after collection exit commit
-				Collection.load(FILE_COLLECTION_EXIT);
+				Collection.load(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
 				// parsing of collection exit ok, use this collection file as
 				// final collection
 				fCollectionExit.renameTo(fCollection);
 				// backup the collection
-				Util.backupFile(new File(FILE_COLLECTION), ConfigurationManager
+				Util.backupFile(Util.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
 						.getInt(CONF_BACKUP_SIZE));
 			} else {
 				bCrashRecover = true;
@@ -852,7 +890,7 @@ public class Main implements ITechnicalStrings {
 			try {
 				// try to load "official" collection file, should be OK but not
 				// always up-to-date
-				Collection.load(FILE_COLLECTION);
+				Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
 			} catch (Exception e2) {
 				// not better? strange
 				Log.error("005", fCollection.getAbsolutePath(), e2); //$NON-NLS-1$
@@ -861,7 +899,7 @@ public class Main implements ITechnicalStrings {
 		}
 		if (!bParsingOK) { // even final collection file parsing failed
 			// (very unlikely), try to restore a backup file
-			File[] fBackups = new File(FILE_JAJUK_DIR).listFiles(new FilenameFilter() {
+			File[] fBackups = Util.getConfFileByPath("").listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
 					if (name.indexOf("backup") != -1) { //$NON-NLS-1$
 						return true;
@@ -870,7 +908,7 @@ public class Main implements ITechnicalStrings {
 				}
 			});
 			ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
-			Collections.sort(alBackupFiles); // sort alphabeticaly (newest
+			Collections.sort(alBackupFiles); // sort alphabetically (newest
 			// last)
 			Collections.reverse(alBackupFiles); // newest first now
 			Iterator it = alBackupFiles.iterator();
@@ -878,7 +916,7 @@ public class Main implements ITechnicalStrings {
 			while (!bParsingOK && it.hasNext()) {
 				File file = (File) it.next();
 				try {
-					Collection.load(file.getAbsolutePath());
+					Collection.load(file);
 					bParsingOK = true;
 					int i = Messages
 							.getChoice(
@@ -896,7 +934,7 @@ public class Main implements ITechnicalStrings {
 				Collection.cleanup();
 				DeviceManager.getInstance().cleanAllDevices();
 				try {
-					Collection.commit(FILE_COLLECTION);
+					Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
 				} catch (Exception e2) {
 					Log.error(e2);
 				}
@@ -921,7 +959,7 @@ public class Main implements ITechnicalStrings {
 					fileToPlay = FileManager.getInstance().getFileByID(
 							ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				} else {
-					// last file from begining or last file keep position
+					// last file from beginning or last file keep position
 					if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
 							&& History.getInstance().getHistory().size() > 0) {
 						// make sure user didn't exit jajuk in the stopped state
@@ -929,7 +967,7 @@ public class Main implements ITechnicalStrings {
 						fileToPlay = FileManager.getInstance().getFileByID(
 								History.getInstance().getLastFile());
 					} else {
-						// do not try to lauch anything, stay in stop state
+						// do not try to launch anything, stay in stop state
 						return;
 					}
 				}
@@ -971,7 +1009,7 @@ public class Main implements ITechnicalStrings {
 				if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
 						|| ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
 								STARTUP_MODE_LAST_KEEP_POS)) {
-					File fifo = new File(FILE_FIFO);
+					File fifo = Util.getConfFileByPath(FILE_FIFO);
 					if (!fifo.exists()) {
 						Log.debug("No fifo file"); //$NON-NLS-1$
 					} else {
@@ -1068,7 +1106,7 @@ public class Main implements ITechnicalStrings {
 					// have to be done here, not after
 					DockingPreferences.initHeavyWeightUsage();
 					DockingPreferences.setSingleHeavyWeightComponent(true);
-					//Light drag and drop for VLDocking
+					// Light drag and drop for VLDocking
 					UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
 
 					// Set look and feel, needs local to be set for error
@@ -1112,28 +1150,25 @@ public class Main implements ITechnicalStrings {
 
 					// Apply size and location BEFORE setVisible
 					jw.applyStoredSize();
-					
+
 					// Display the frame
 					jw.setVisible(true);
-					
-					// Apply size and location again 
-					//(needed by Gnome for ie to fix the 0-sized maximized frame)
+
+					// Apply size and location again
+					// (needed by Gnome for ie to fix the 0-sized maximized
+					// frame)
 					jw.applyStoredSize();
-					
+
 					// make sure none device already exist to avoid checking
 					// availability
-					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)
-							&& DeviceManager.getInstance().getElementCount() == 0) {
+					if (true) {// ConfigurationManager.getBoolean(CONF_FIRST_CON)
+						// && DeviceManager.getInstance().getElementCount() ==
+						// 0) {
 						// Set tips of the day to true
 						ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, TRUE);
 						// Hide splashscreen
 						sc.dispose();
-						// First time wizard
-						FirstTimeWizard fsw = new FirstTimeWizard();
-						fsw.pack();
-						fsw.setLocationRelativeTo(jw);
-						fsw.setVisible(true);
-						ConfigurationManager.setProperty(CONF_FIRST_CON, FALSE);
+
 					}
 
 					// Initialize and add the desktop

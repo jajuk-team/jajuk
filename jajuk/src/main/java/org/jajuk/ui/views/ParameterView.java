@@ -409,8 +409,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
 		jrbFile.addItemListener(this);
 		sbSearch = new SearchBox(this);
-		sbSearch.setEnabled(false); // disabled by default, is enabled only
-		// if jrbFile is enabled
+		// disabled by default, is enabled only if jrbFile is enabled
+		sbSearch.setEnabled(false); 
 		// set chosen track in file selection
 		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
 		if (!"".equals(sFileId)) { //$NON-NLS-1$
@@ -780,7 +780,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		//Directory selection
 		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
-				.getInstance()),Util.getHomeDirectory());
+				.getInstance()),Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
@@ -1100,8 +1100,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					applyParameters();
 				} else if (e.getSource() == jbDefault) {
 					ConfigurationManager.setDefaultProperties();
-					ConfigurationManager.setProperty(CONF_FIRST_CON, FALSE);
-					// not first connection
 					updateSelection();// update UI
 					InformationJPanel.getInstance().setMessage(
 							Messages.getString("ParameterView.110"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
@@ -1249,6 +1247,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (!sVisiblePlanned.equals("")) { //$NON-NLS-1$
 			ConfigurationManager.setProperty(CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
 		}
+		int oldDuration = ConfigurationManager.getInt(CONF_FADE_DURATION);
+		//Show an hidable message if user set cross fade under linux for sound server information
+		if (Util.isUnderLinux() && oldDuration == 0 && oldDuration  != crossFadeDuration
+				.getValue()){
+			Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"), CONF_NOT_SHOW_AGAIN_CROSS_FADE);
+		}
 		ConfigurationManager.setProperty(CONF_FADE_DURATION, Integer.toString(crossFadeDuration
 				.getValue()));
 		// Startup
@@ -1309,8 +1313,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
 		//If jajuk home changes, write new path in bootstrap file
-		if (Util.getHomeDirectory() != null 
-				&& !Util.getHomeDirectory().equals(psJajukWorkspace.getUrl())){
+		if (Main.workspace != null 
+				&& ! Main.workspace.equals(psJajukWorkspace.getUrl())){
+			//Check workspace directory
+			if ( !psJajukWorkspace.getUrl().trim().equals("")){
+				if (!new java.io.File(psJajukWorkspace.getUrl()).canRead()){
+					Messages.showErrorMessage("165");
+					return;
+				}
+			}
 			try{
 				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
 				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));

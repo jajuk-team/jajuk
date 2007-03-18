@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.FirstTimeWizard;
+import org.jajuk.ui.wizard.SimpleDeviceWizard;
 import org.jajuk.util.Util;
 
 /**
@@ -47,9 +47,9 @@ public class WizardAction extends ActionBase {
 	 * @param evt
 	 */
 	public void perform(ActionEvent evt) {
-		FirstTimeWizard fsw = new FirstTimeWizard();
-		fsw.pack();
-		fsw.setLocationRelativeTo(Main.getWindow());
-		fsw.setVisible(true);
+		SimpleDeviceWizard wizard = new SimpleDeviceWizard();
+		wizard.pack();
+		wizard.setLocationRelativeTo(Main.getWindow());
+		wizard.setVisible(true);
 	}
 }

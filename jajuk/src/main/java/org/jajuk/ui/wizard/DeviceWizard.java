@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -58,6 +58,8 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
@@ -65,7 +67,7 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
- * Device creation wizzard
+ * Device creation wizard
  * 
  * @author Bertrand Florat
  * @created 9 nov. 2003

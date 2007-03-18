@@ -147,8 +147,7 @@ public class ObservationManager implements ITechnicalStrings {
 		if (bSync) {
 			ObservationManager.notifySync(event);
 		} else { // do not launch it in a regular thread because AWT
-			// event displatcher wait
-			// thhread end to display
+			// event dispatcher waits thread end to display
 			if (!t.isAlive()) {
 				t.start();
 			}

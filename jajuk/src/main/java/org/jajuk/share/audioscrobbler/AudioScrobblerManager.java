@@ -45,6 +45,7 @@ import org.jajuk.base.Track;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -115,10 +116,10 @@ public class AudioScrobblerManager extends DefaultHandler implements ITechnicalS
 
 
     public void startup(){
-        File fAudioScrobbler = new File(FILE_AUDIOSCROBBLER);
+        File fAudioScrobbler = Util.getConfFileByPath(FILE_AUDIOSCROBBLER);
         if (fAudioScrobbler.exists()){
             try {
-                AudioScrobblerManager.load(FILE_AUDIOSCROBBLER);
+                AudioScrobblerManager.load(Util.getConfFileByPath(FILE_AUDIOSCROBBLER));
             } catch (Exception e){
                 Log.error(e);
             }
@@ -149,7 +150,7 @@ public class AudioScrobblerManager extends DefaultHandler implements ITechnicalS
                 boolean bSub = scrobbler.submit(lTracks);
                 if (bSub){
                     lTracks.clear();
-                    File fAS = new File (FILE_AUDIOSCROBBLER);
+                    File fAS = Util.getConfFileByPath(FILE_AUDIOSCROBBLER);
                     if (fAS.exists()){
                         fAS.delete();
                     }
@@ -225,12 +226,11 @@ public class AudioScrobblerManager extends DefaultHandler implements ITechnicalS
         bw.flush();
     }
 
-    public static void load(String sFile) throws Exception{
+    public static void load(File frt) throws Exception{
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setValidating(false);
         spf.setNamespaceAware(false);
         SAXParser saxParser = spf.newSAXParser();
-        File frt = new File(sFile);
         saxParser.parse(frt.toURI().toURL().toString(), getInstance());
     }
 

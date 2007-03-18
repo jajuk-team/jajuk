@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.NewPropertyWizard;
+import org.jajuk.ui.wizard.NewPropertyWizard;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 

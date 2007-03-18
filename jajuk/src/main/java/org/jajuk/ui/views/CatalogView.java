@@ -81,8 +81,8 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.OKCancelPanel;
-import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
@@ -416,7 +416,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	 * @return wether a new cover has been created
 	 */
 	private boolean refreshThumbnail(Album album) {
-		File fThumb = new File(FILE_THUMBS + '/' + (String) jcbSize.getSelectedItem() + '/'
+		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + (String) jcbSize.getSelectedItem() + '/'
 				+ album.getId() + '.' + EXT_THUMB);
 		File fCover = null;
 		if (!fThumb.exists()) {
@@ -782,7 +782,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	}
 
 	private void cleanThumbs(String size) {
-		File fThumb = new File(FILE_THUMBS + '/' + size);
+		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size);
 		if (fThumb.exists()) {
 			File[] files = fThumb.listFiles();
 			for (File file : files) {
@@ -791,7 +791,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				}
 			}
 			// Refresh default cover
-			File fDefault = new File(FILE_THUMBS + "/" + size + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$ //$NON-NLS-2$
+			File fDefault = Util.getConfFileByPath(FILE_THUMBS + "/" + size + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$ //$NON-NLS-2$
 			fDefault.delete();
 			try {
 				int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken()); //$NON-NLS-1$
@@ -854,7 +854,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			this.album = album;
 			this.size = size;
 			this.track = track;
-			this.fCover = new File(FILE_THUMBS + '/' + size + '/' + album.getId() + '.' + EXT_THUMB);
+			this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getId() + '.' + EXT_THUMB);
 
 		}
 
@@ -863,7 +863,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			refreshThumbnail(album);
 			if (!fCover.exists() || fCover.length() == 0) {
 				bNoCover = true;
-				this.fCover = new File(FILE_THUMBS + '/' + size + '/' + FILE_THUMB_NO_COVER);
+				this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + FILE_THUMB_NO_COVER);
 			}
 			double[][] dMain = { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
 					{ TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
@@ -1187,7 +1187,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				try {
 					Cover cover = new Cover(alUrls.get(index), Cover.REMOTE_COVER);
 					cover.getImage();
-					thumb = new File(FILE_IMAGE_CACHE + "/thumb." + EXT_THUMB); //$NON-NLS-1$
+					thumb = Util.getConfFileByPath(FILE_IMAGE_CACHE + "/thumb." + EXT_THUMB); //$NON-NLS-1$
 					ImageIcon image = new ImageIcon(cover.getFile().toURL());
 					image = Util.getScaledImage(image, width);
 					// !!! need to flush image because thy read image from a
@@ -1274,7 +1274,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					Directory dir = alFiles.get(0).getDirectory();
 					dir.setProperty("default_cover", sFilename); //$NON-NLS-1$
 					// create new thumbnail
-					File fThumb = new File(FILE_THUMBS + '/' + (String) jcbSize.getSelectedItem()
+					File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + (String) jcbSize.getSelectedItem()
 							+ '/' + album.getId() + '.' + EXT_THUMB);
 					Util.createThumbnail(file, fThumb, getSelectedSize());
 					// refresh icon

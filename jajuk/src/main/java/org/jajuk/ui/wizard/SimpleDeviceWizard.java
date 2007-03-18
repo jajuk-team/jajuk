@@ -15,10 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision: 2164 $
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -30,7 +30,6 @@ import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -41,21 +40,21 @@ import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.VerticalLayout;
 
 /**
- * First time Wizard
+ * Simple device creation wiard that creates a directory device given a
+ * directory
  * 
  * @author Bertrand Florat
- * @created 27 avr. 2005
+ * @created 18/03/2007
  */
-public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
-		ActionListener {
+public class SimpleDeviceWizard extends JDialog implements ITechnicalStrings, ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	JLabel jlLeftIcon;
@@ -70,15 +69,11 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 
 	JButton jbFileSelection;
 
-	JCheckBox jcbAutoCover;
-
 	JLabel jlRefreshTime;
 
 	JTextField jtfRefreshTime;
 
 	JLabel jlMins;
-
-	JCheckBox jcbHelp;
 
 	JPanel jpButtons;
 
@@ -94,10 +89,10 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 	/**
 	 * First time wizard
 	 */
-	public FirstTimeWizard() {
+	public SimpleDeviceWizard() {
 		super(Main.getWindow(), true); // make it modal
 		setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
-		int iX_SEPARATOR = 5;
+		int iX_SEPARATOR = 10;
 		int iY_SEPARATOR = 10;
 		jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
 		jpRightPanel = new JPanel();
@@ -108,23 +103,15 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 		jtfFileSelected.setForeground(Color.BLUE);
 		jtfFileSelected.setEditable(false);
 		jbFileSelection.addActionListener(this);
-		jcbAutoCover = new JCheckBox(Messages.getString("FirstTimeWizard.3")); //$NON-NLS-1$
-		// can't change auto-cover if not first connection
-		if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
-			jcbAutoCover.setSelected(true);
-		} else {
-			jcbAutoCover.setEnabled(false);
-		}
-		jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
+
 		// Refresh time
 		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
-		jtfRefreshTime = new JTextField("5");// 5 mins by default //$NON-NLS-1$ //$NON-NLS-1$
-		// //$NON-NLS-1$
+		jtfRefreshTime = new JTextField("5");// 5 mins by default
 		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
 		JPanel jpRefresh = new JPanel();
 		double sizeRefresh[][] = {
-				{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
-						TableLayout.PREFERRED }, { 20 } };
+				{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR, TableLayout.PREFERRED },
+				{ 20 } };
 		jpRefresh.setLayout(new TableLayout(sizeRefresh));
 		jpRefresh.add(jlRefreshTime, "0,0"); //$NON-NLS-1$
 		jpRefresh.add(jtfRefreshTime, "2,0"); //$NON-NLS-1$
@@ -141,10 +128,9 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 		jpButtons.add(jbCancel);
 		double sizeRight[][] = {
 				{ 0.99, iX_SEPARATOR },
-				{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR,
-						TableLayout.PREFERRED, iY_SEPARATOR, 20,
-						4 * iY_SEPARATOR, 40, iY_SEPARATOR, 40, iY_SEPARATOR,
-						40, iY_SEPARATOR, 40 } };
+				{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR, TableLayout.PREFERRED,
+						iY_SEPARATOR, 20, 4 * iY_SEPARATOR, 40, iY_SEPARATOR,
+						TableLayout.PREFERRED, iY_SEPARATOR, 40 } };
 
 		FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
 		JPanel jpFileSelection = new JPanel();
@@ -153,17 +139,13 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 		jpFileSelection.add(Box.createHorizontalStrut(10));
 		jpFileSelection.add(jlFileSelection);
 
-		jpRightPanel.setLayout(new TableLayout(sizeRight));
+		jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
 		jpRightPanel.add(jlWelcome, "0,1"); //$NON-NLS-1$
 		jpRightPanel.add(jpFileSelection, "0,3"); //$NON-NLS-1$
 		jpRightPanel.add(jtfFileSelected, "0,5"); //$NON-NLS-1$
 		jpRightPanel.add(jpRefresh, "0,7"); //$NON-NLS-1$
-		jpRightPanel.add(jcbAutoCover, "0,9"); //$NON-NLS-1$
-		jpRightPanel.add(jcbHelp, "0,11"); //$NON-NLS-1$
-		jpRightPanel.add(jpButtons, "0,13"); //$NON-NLS-1$
-		double size[][] = {
-				{ 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED },
-				{ 0.99 } };
+		jpRightPanel.add(jpButtons, "0,11"); //$NON-NLS-1$
+		double size[][] = { { 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED }, { 0.99 } };
 		jpMain = (JPanel) getContentPane();
 		jpMain.setLayout(new TableLayout(size));
 		jpMain.add(jlLeftIcon, "1,0"); //$NON-NLS-1$
@@ -183,11 +165,9 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				fDir = jfc.getSelectedFile();
-				// check device availibility
-				String sCode = DeviceManager.getInstance()
-						.checkDeviceAvailablity(fDir.getName(), 0,
-								fDir.getAbsolutePath(), fDir.getAbsolutePath(),
-								true);
+				// check device availability
+				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
+						0, fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
 				if (!sCode.equals("0")) { //$NON-NLS-1$
 					Messages.showErrorMessage(sCode);
 					jbOk.setEnabled(false);
@@ -198,36 +178,9 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 				jbOk.grabFocus();
 			}
 		} else if (e.getSource() == jbOk) {
-			/*
-			 * Set perspective to display. We differentiate first connection or
-			 * not because during first connection, perspectives are not yet
-			 * initialized, so we just tell it whish perspective to use at
-			 * startup
-			 */
-			if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
-				if (jcbHelp.isSelected()) {
-					// set parameter perspective
-					Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
-				} else {
-					// set physical perspective
-					Main.setDefaultPerspective(PERSPECTIVE_NAME_PHYSICAL);
-				}
-			} else {
-				// go to help perspective if required
-				if (jcbHelp.isSelected()) {
-					// set parameter perspective
-					PerspectiveManager
-							.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
-				}
-			}
-			// Set auto cover property
-			if (jcbAutoCover.isEnabled()) {
-				ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,
-						Boolean.toString(jcbAutoCover.isSelected()));
-			}
 			// Create a directory device
-			Device device = DeviceManager.getInstance().registerDevice(
-					fDir.getName(), 0, fDir.getAbsolutePath());
+			Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
+					fDir.getAbsolutePath());
 			device.setProperty(XML_DEVICE_MOUNT_POINT, fDir.getAbsolutePath());
 			device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
 			// Set refresh time
@@ -247,9 +200,9 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,
 				Log.error("112", device.getName(), e2); //$NON-NLS-1$
 				Messages.showErrorMessage("112", device.getName()); //$NON-NLS-1$
 			}
-			// exit
-			dispose();
 		}
-	}
 
+		// exit
+		dispose();
+	}
 }

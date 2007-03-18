@@ -198,7 +198,7 @@ public class DownloadManager implements ITechnicalStrings {
 	public static byte[] downloadCover(URL url) throws Exception {
 		byte[] bOut = null;
 		// check if file is not already downloaded or being downloaded
-		if (new File(Util.getCachePath(url)).exists()) {
+		if (Util.getCachePath(url).exists()) {
 			return bOut;
 		}
 		GetMethod get = null;
@@ -217,8 +217,8 @@ public class DownloadManager implements ITechnicalStrings {
 		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 		int status = client.executeMethod(get);
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Util
-				.getCachePath(url))));
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util
+				.getCachePath(url)));
 		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
 		int i;
 		while ((i = bis.read()) != -1) {

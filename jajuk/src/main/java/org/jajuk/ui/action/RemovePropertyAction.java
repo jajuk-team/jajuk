@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.RemovePropertyWizard;
+import org.jajuk.ui.wizard.RemovePropertyWizard;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 

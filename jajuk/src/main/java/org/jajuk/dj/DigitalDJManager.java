@@ -45,6 +45,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -139,9 +140,9 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	 */
 	public static void commit(DigitalDJ dj) {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_DJ_DIR
+			BufferedWriter bw = new BufferedWriter(new FileWriter(Util.getConfFileByPath(FILE_DJ_DIR
 					+ "/" + //$NON-NLS-1$
-					dj.getID() + "." + XML_DJ_EXTENSION)); //$NON-NLS-1$
+					dj.getID() + "." + XML_DJ_EXTENSION))); //$NON-NLS-1$
 			bw.write(dj.toXML());
 			bw.flush();
 			bw.close();
@@ -158,7 +159,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	 */
 	public void remove(DigitalDJ dj) {
 		djs.remove(dj.getID());
-		new File(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete(); //$NON-NLS-1$ //$NON-NLS-2$
+		Util.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete(); //$NON-NLS-1$ //$NON-NLS-2$
 		// reset default DJ if this DJ was default
 		if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ)
 				.equals(dj.getID())) {
@@ -212,7 +213,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	 */
 	public void loadAllDJs() {
 		try {
-			File[] files = new File(FILE_DJ_DIR).listFiles(new FileFilter() {
+			File[] files = Util.getConfFileByPath(FILE_DJ_DIR).listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					if (file.isFile()
 							&& file.getPath().endsWith('.' + XML_DJ_EXTENSION)) {

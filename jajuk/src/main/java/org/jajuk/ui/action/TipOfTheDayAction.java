@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.TipOfTheDay;
+import org.jajuk.ui.wizard.TipOfTheDay;
 import org.jajuk.util.Util;
 
 /**

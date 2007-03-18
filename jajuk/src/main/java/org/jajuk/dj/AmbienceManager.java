@@ -31,6 +31,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
@@ -85,7 +86,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
 	 */
 	public void load() {
 		// if first startup, define default ambiences
-		if (ConfigurationManager.getBoolean(CONF_FIRST_CON)) {
+		if (Main.bFirstSession) {
 			createDefaultAmbiences();
 			return;
 		}
