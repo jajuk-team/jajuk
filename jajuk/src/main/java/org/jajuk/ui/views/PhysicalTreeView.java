@@ -477,7 +477,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		top = new DefaultMutableTreeNode(Messages
 				.getString("PhysicalTreeView.47")); //$NON-NLS-1$
-		// Register on the list for subject we are interrested in
+		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 
 		// fill the tree

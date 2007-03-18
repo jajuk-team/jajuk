@@ -167,7 +167,8 @@ public interface ITechnicalStrings {
    
 	public static final String FILE_HISTORY = "history.xml";
 
-	public static final String FILE_LOCK = ".lock";
+	/** Directory containing all sessions using this workspace */
+	public static final String FILE_SESSIONS = "sessions";
 
 	public static final String FILE_DEFAULT_COVER = "cover";
 
@@ -1168,6 +1169,9 @@ public interface ITechnicalStrings {
 
 	// wrong player not show again flag
 	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
+
+	// Concurrent session not show again flag
+	public static final String CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION = "jajuk.not_show_again.concurrent_session";
 
 	// Cross fade alert not show again flag
 	public static final String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";

@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -163,10 +164,9 @@ public class Main implements ITechnicalStrings {
 
 	/** Workspace PATH* */
 	public static String workspace;
-	
-	/** Lock used to trigger a first time wizard device creation and refresh **/
+
+	/** Lock used to trigger a first time wizard device creation and refresh * */
 	public static short[] canLaunchRefresh = new short[0];
-	
 
 	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
@@ -207,6 +207,12 @@ public class Main implements ITechnicalStrings {
 			// perform initial checkups and create needed files
 			initialCheckups();
 
+			// Set a session file
+			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
+					+ InetAddress.getLocalHost().getHostName() + '_'
+					+ System.getProperty("user.name"));
+			sessionUser.mkdir();
+
 			// log startup depends on : setExecLocation, initialCheckups
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
@@ -236,10 +242,10 @@ public class Main implements ITechnicalStrings {
 
 			// Upgrade detection. Depends on: Configuration manager load
 			String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-			
+
 			// check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
 			if (!bFirstSession
-					// if first session, not considerated as an upgrade
+			// if first session, not considerated as an upgrade
 					&& (sRelease == null || // null for jajuk releases < 1.2
 					!sRelease.substring(0, 3).equals(JAJUK_VERSION.substring(0, 3)))) {
 				bUpgraded = true;
@@ -343,9 +349,9 @@ public class Main implements ITechnicalStrings {
 
 			// Clean the collection up
 			Collection.cleanup();
-			
+
 			// Unlock pending First time wizard if any
-			synchronized(canLaunchRefresh){
+			synchronized (canLaunchRefresh) {
 				canLaunchRefresh.notify();
 			}
 
@@ -373,10 +379,14 @@ public class Main implements ITechnicalStrings {
 					}
 					try {
 						if (iExitCode == 0) {
-							/*
-							 * commit only if exit is safe (to avoid commiting
-							 * empty collection) commit ambiences
-							 */
+							// Remove session flag
+							File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
+									+ InetAddress.getLocalHost().getHostName() + '_'
+									+ System.getProperty("user.name"));
+							sessionUser.delete();
+
+							// commit only if exit is safe (to avoid commiting
+							// empty collection) commit ambiences
 							AmbienceManager.getInstance().commit();
 							// commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
@@ -393,7 +403,7 @@ public class Main implements ITechnicalStrings {
 										.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
 							}
 							// Commit toolbars (only if it is visible to avoid
-							// commiting void screen)
+							// comiting void screen)
 							if (getWindow() != null && getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
 								FileOutputStream out = new FileOutputStream(Util
@@ -480,7 +490,6 @@ public class Main implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	private static void initialCheckups() throws Exception {
-
 		// Check for bootstrap file presence, if not present, launch the first
 		// time wizard
 		File bootstrap = new File(FILE_BOOTSTRAP);
@@ -776,7 +785,8 @@ public class Main implements ITechnicalStrings {
 	 * 
 	 */
 	private static void checkOtherSession() {
-		// check for a concurrent jajuk session, try to create a new server
+		// check for a concurrent jajuk session on local box, try to create a
+		// new server
 		// socket
 		try {
 			ss = new ServerSocket(PORT);
@@ -801,6 +811,18 @@ public class Main implements ITechnicalStrings {
 				}
 			}
 		}.start();
+		// Now check for remote concurrent users using the same configuration
+		// files
+		// Create concurrent session directory if needed
+		File sessions = Util.getConfFileByPath(FILE_SESSIONS);
+		if (!sessions.exists()) {
+			sessions.mkdir();
+		}
+		// Check for concurrent session
+		if (sessions.listFiles().length > 0) {
+			Messages.showHideableWarningMessage(Messages.getString("Warning.2"), //$NON-NLS-1$
+					CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
+		}
 	}
 
 	/**
@@ -1014,7 +1036,8 @@ public class Main implements ITechnicalStrings {
 						Log.debug("No fifo file"); //$NON-NLS-1$
 					} else {
 						try {
-							BufferedReader br = new BufferedReader(new FileReader(FILE_FIFO));
+							BufferedReader br = new BufferedReader(new FileReader(Util
+									.getConfFileByPath(FILE_FIFO)));
 							String s = null;
 							for (; (s = br.readLine()) != null;) {
 								org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
@@ -1158,18 +1181,6 @@ public class Main implements ITechnicalStrings {
 					// (needed by Gnome for ie to fix the 0-sized maximized
 					// frame)
 					jw.applyStoredSize();
-
-					// make sure none device already exist to avoid checking
-					// availability
-					if (true) {// ConfigurationManager.getBoolean(CONF_FIRST_CON)
-						// && DeviceManager.getInstance().getElementCount() ==
-						// 0) {
-						// Set tips of the day to true
-						ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, TRUE);
-						// Hide splashscreen
-						sc.dispose();
-
-					}
 
 					// Initialize and add the desktop
 					PerspectiveManager.init();

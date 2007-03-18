@@ -37,7 +37,6 @@
 	<classpathentry kind="lib" path="lib/MozillaInterfaces.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-1.9.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.3_jajuk.jar"/>
-	<classpathentry kind="lib" path="lib/bcprov-jdk14-126.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-20070302_jajuk.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

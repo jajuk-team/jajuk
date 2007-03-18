@@ -20,6 +20,8 @@
 
 package org.jajuk.base;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import org.jajuk.i18n.Messages;
@@ -130,6 +132,18 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 				this.oDefaultValue = oDefaultValue;
 			}
 			this.sHumanType = Messages.getString("Property_Format_Date"); //$NON-NLS-1$
+		} else if (cType.equals(URL.class)) {
+			// URL default
+			if (oDefaultValue == null) {
+				try {
+					this.oDefaultValue = Util.getConfFileByPath("").toURL();
+				} catch (MalformedURLException e) {
+					Log.error(e);
+				}
+			} else {
+				this.oDefaultValue = oDefaultValue;
+			}
+			this.sHumanType = Messages.getString("Property_Format_URL"); //$NON-NLS-1$
 		} else if (cType.equals(Class.class)) {
 			this.oDefaultValue = Object.class;
 		} else { // class not supported

@@ -413,7 +413,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static void showHideableWarningMessage(String sMessage,
 			String sProperty) {
 		//User required to hide this message
-		if (!ConfigurationManager.getBoolean(sProperty)){
+		if (ConfigurationManager.getBoolean(sProperty)){
 			return;
 		}
 		HideableMessageDialog message = new HideableMessageDialog(sMessage,
@@ -767,13 +767,13 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 		dialog.setAlwaysOnTop(true);
 		// keep it modal (useful at startup)
 		dialog.setModal(true);
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
 		if (optionPane.getValue().equals(Messages.getString("Hide"))) { //$NON-NLS-1$
 			// Not show again
 			ConfigurationManager.setProperty(sProperty, TRUE);
 		}
-		dialog.pack();
-		dialog.setLocationRelativeTo(Main.getWindow());
-		dialog.setVisible(true);
 	}
 
 	/**
