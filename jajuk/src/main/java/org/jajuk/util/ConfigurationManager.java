@@ -233,7 +233,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150x150);
 		properties.put(CONF_THUMBS_SORTER, "2"); // sort by album
 		// filter on albums
-		properties.put(CONF_THUMBS_FILTER, "2"); 
+		properties.put(CONF_THUMBS_FILTER, "0"); 
 		properties.put(CONF_TIP_OF_DAY_INDEX, "0"); //$NON-NLS-1$
 		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance()
 				.getLocal());

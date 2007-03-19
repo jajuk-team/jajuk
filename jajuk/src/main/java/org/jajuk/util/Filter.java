@@ -46,7 +46,7 @@ public class Filter {
 	 * Filter constructor
 	 * 
 	 * @param meta
-	 *            meta property
+	 *            meta property. null if the filter is on any property
 	 * @param sValue
 	 *            value
 	 * @param bHuman

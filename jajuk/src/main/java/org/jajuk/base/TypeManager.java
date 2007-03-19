@@ -19,7 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,7 +75,7 @@ public class TypeManager extends ItemManager {
 				false, true, false, false, String.class, null));
 		// Icon
 		registerProperty(new PropertyMetaInformation(XML_TYPE_ICON, false,
-				false, false, false, false, URL.class, null));
+				false, false, false, false, String.class, null));
 	}
 
 	/**

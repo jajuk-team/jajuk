@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -502,8 +503,14 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					Type type = TypeManager.getInstance().getTypeByExtension(ext);
 					//Find associated icon with this type
 					URL icon = null;
+					String sIcon;
 					if (type != null){
-						icon = (URL)type.getProperties().get(XML_TYPE_ICON);
+						sIcon = (String)type.getProperties().get(XML_TYPE_ICON);
+						try {
+							icon = new URL(sIcon);
+						} catch (MalformedURLException e) {
+							Log.error(e);
+						}
 					}
 					if (icon == null){
 						setIcon(Util.getIcon(ICON_TYPE_WAV));

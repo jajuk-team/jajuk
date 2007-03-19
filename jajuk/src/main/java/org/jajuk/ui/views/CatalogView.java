@@ -208,6 +208,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	 */
 	public CatalogView() {
 		alFilters = new ArrayList<PropertyMetaInformation>(10);
+		alFilters.add(null); //All
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
@@ -258,7 +259,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// note that a single album can contains tracks with different authors
 		// or styles, we will show it only one
 		for (PropertyMetaInformation meta : alFilters) {
-			jcbFilter.addItem(meta.getHumanName());
+			if (meta == null){ //"any" filter
+				jcbFilter.addItem(Messages.getString("AbstractTableView.8")); //$NON-NLS-1$
+			}
+			else{
+				jcbFilter.addItem(meta.getHumanName());	
+			}
 		}
 		jcbFilter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_FILTER));
 		jcbFilter.addActionListener(this);

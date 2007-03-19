@@ -113,7 +113,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Remove a custom property to all items for the given manager */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked")//$NON-NLS-1$
 	public void applyRemoveProperty(PropertyMetaInformation meta) {
 		synchronized (getLock()) {
 			Collection<Item> items = hmItems.values();
@@ -126,7 +126,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Add a custom property to all items for the given manager */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked")//$NON-NLS-1$
 	public void applyNewProperty(PropertyMetaInformation meta) {
 		synchronized (getLock()) {
 			Collection<Item> items = hmItems.values();
@@ -147,8 +147,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 		Iterator it = hmPropertiesMetaInformation.keySet().iterator();
 		while (it.hasNext()) {
 			String sProperty = (String) it.next();
-			PropertyMetaInformation meta = hmPropertiesMetaInformation
-					.get(sProperty);
+			PropertyMetaInformation meta = hmPropertiesMetaInformation.get(sProperty);
 			sb.append('\n' + meta.toXML());
 		}
 		return sb.append('\n').toString();
@@ -262,9 +261,10 @@ public abstract class ItemManager implements ITechnicalStrings {
 				Item item = (Item) it.next();
 				// check if this item still maps some tracks
 				if (!hsItems.contains(item)) {
-					//For styles, keep it even if none tracj uses it if it is a default style
-					if (this instanceof StyleManager && 
-							!StyleManager.getInstance().getStylesList().contains(item.getName())){
+					// For styles, keep it even if none tracj uses it if it is a
+					// default style
+					if (this instanceof StyleManager
+							&& !StyleManager.getInstance().getStylesList().contains(item.getName())) {
 						it.remove();
 					}
 				}
@@ -284,7 +284,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Return all registred items with filter applied */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked")//$NON-NLS-1$
 	public Collection<Item> getItems(Filter filter) {
 		synchronized (getLock()) {
 			if (filter == null) {
@@ -300,12 +300,15 @@ public abstract class ItemManager implements ITechnicalStrings {
 			}
 			ArrayList<Item> out = new ArrayList<Item>(col.size());
 			for (Item item : col) {
-				if (filter.isHuman()) {
-					comparator = item.getHumanValue(filter.getProperty()
-							.getName());
+				//If none property set, the search if global "any"
+				if (filter.getProperty() == null) {
+					comparator = item.getAny();
 				} else {
-					comparator = item.getStringValue(filter.getProperty()
-							.getName());
+					if (filter.isHuman()) {
+						comparator = item.getHumanValue(filter.getProperty().getName());
+					} else {
+						comparator = item.getStringValue(filter.getProperty().getName());
+					}
 				}
 				// perform the test
 				if (comparator.toLowerCase().matches(checked.toLowerCase())) {
@@ -342,42 +345,41 @@ public abstract class ItemManager implements ITechnicalStrings {
 	 *            files we want to deal with
 	 * @return the changed item
 	 */
-	public static Item changeItem(Item itemToChange, String sKey,
-			Object oValue, HashSet filter) throws JajukException {
+	public static Item changeItem(Item itemToChange, String sKey, Object oValue, HashSet filter)
+			throws JajukException {
 		if (Log.isDebugEnabled()) {
-			Log
-					.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		Item newItem = itemToChange;
 		if (itemToChange instanceof File) {
 			File file = (File) itemToChange;
 			if (XML_NAME.equals(sKey)) { // file name
-				newItem = FileManager.getInstance().changeFileName(
-						(File) itemToChange, (String) oValue);
+				newItem = FileManager.getInstance().changeFileName((File) itemToChange,
+						(String) oValue);
 			} else if (XML_TRACK.equals(sKey)) { // track name
-				newItem = TrackManager.getInstance().changeTrackName(
-						file.getTrack(), (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),
+						(String) oValue, filter);
 			} else if (XML_STYLE.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackStyle(
-						file.getTrack(), (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),
+						(String) oValue, filter);
 			} else if (XML_ALBUM.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackAlbum(
-						file.getTrack(), (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),
+						(String) oValue, filter);
 			} else if (XML_AUTHOR.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackAuthor(
-						file.getTrack(), (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),
+						(String) oValue, filter);
 			} else if (XML_TRACK_COMMENT.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackComment(
-						file.getTrack(), (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),
+						(String) oValue, filter);
 			} else if (XML_TRACK_ORDER.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackOrder(
-						file.getTrack(), (Long) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),
+						(Long) oValue, filter);
 			} else if (XML_TRACK_YEAR.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackYear(
-						file.getTrack(), (Long) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),
+						(Long) oValue, filter);
 			} else if (XML_TRACK_RATE.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackRate(
-						file.getTrack(), (Long) oValue);
+				newItem = TrackManager.getInstance()
+						.changeTrackRate(file.getTrack(), (Long) oValue);
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
@@ -388,9 +390,8 @@ public abstract class ItemManager implements ITechnicalStrings {
 			}
 		} else if (itemToChange instanceof PlaylistFile) {
 			if (XML_NAME.equals(sKey)) { // playlistfile name
-				newItem = PlaylistFileManager.getInstance()
-						.changePlaylistFileName((PlaylistFile) itemToChange,
-								(String) oValue);
+				newItem = PlaylistFileManager.getInstance().changePlaylistFileName(
+						(PlaylistFile) itemToChange, (String) oValue);
 			}
 		} else if (itemToChange instanceof Directory) {
 			if (XML_NAME.equals(sKey)) { // file name
@@ -401,50 +402,50 @@ public abstract class ItemManager implements ITechnicalStrings {
 			}
 		} else if (itemToChange instanceof Track) {
 			if (XML_NAME.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackName(
-						(Track) itemToChange, (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackName((Track) itemToChange,
+						(String) oValue, filter);
 			} else if (XML_STYLE.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackStyle(
-						(Track) itemToChange, (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackStyle((Track) itemToChange,
+						(String) oValue, filter);
 			} else if (XML_ALBUM.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackAlbum(
-						(Track) itemToChange, (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackAlbum((Track) itemToChange,
+						(String) oValue, filter);
 			} else if (XML_AUTHOR.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackAuthor(
-						(Track) itemToChange, (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackAuthor((Track) itemToChange,
+						(String) oValue, filter);
 			} else if (XML_TRACK_COMMENT.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackComment(
-						(Track) itemToChange, (String) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackComment((Track) itemToChange,
+						(String) oValue, filter);
 			} else if (XML_TRACK_ORDER.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackOrder(
-						(Track) itemToChange, (Long) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackOrder((Track) itemToChange,
+						(Long) oValue, filter);
 			} else if (XML_TRACK_YEAR.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackYear(
-						(Track) itemToChange, (Long) oValue, filter);
+				newItem = TrackManager.getInstance().changeTrackYear((Track) itemToChange,
+						(Long) oValue, filter);
 			} else if (XML_TRACK_RATE.equals(sKey)) {
-				newItem = TrackManager.getInstance().changeTrackRate(
-						(Track) itemToChange, (Long) oValue);
+				newItem = TrackManager.getInstance().changeTrackRate((Track) itemToChange,
+						(Long) oValue);
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
 		} else if (itemToChange instanceof Album) {
 			if (XML_NAME.equals(sKey)) {
-				newItem = AlbumManager.getInstance().changeAlbumName(
-						(Album) itemToChange, (String) oValue);
+				newItem = AlbumManager.getInstance().changeAlbumName((Album) itemToChange,
+						(String) oValue);
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
 		} else if (itemToChange instanceof Author) {
 			if (XML_NAME.equals(sKey)) {
-				newItem = AuthorManager.getInstance().changeAuthorName(
-						(Author) itemToChange, (String) oValue);
+				newItem = AuthorManager.getInstance().changeAuthorName((Author) itemToChange,
+						(String) oValue);
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
 		} else if (itemToChange instanceof Style) {
 			if (XML_NAME.equals(sKey)) {
-				newItem = StyleManager.getInstance().changeStyleName(
-						(Style) itemToChange, (String) oValue);
+				newItem = StyleManager.getInstance().changeStyleName((Style) itemToChange,
+						(String) oValue);
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
@@ -482,7 +483,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Return all registred items */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked")//$NON-NLS-1$
 	protected Set<Item> getItems() {
 		synchronized (getLock()) {
 			return hmItems.inverseBidiMap().keySet();

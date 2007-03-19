@@ -117,18 +117,8 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public LinkedHashMap<String, Object> getProperties() {
 		if (properties == null) {
-			properties = new LinkedHashMap<String, Object>(5, 1f);// use
-			// very
-			// hifh
-			// load
-			// factor
-			// as
-			// this
-			// size
-			// will
-			// not
-			// change
-			// often
+			// use  very high load factor as this size will not change often
+			properties = new LinkedHashMap<String, Object>(5, 1f);
 		}
 		return properties;
 	}

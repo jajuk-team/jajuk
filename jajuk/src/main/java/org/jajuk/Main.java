@@ -245,7 +245,7 @@ public class Main implements ITechnicalStrings {
 
 			// check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
 			if (!bFirstSession
-			// if first session, not considerated as an upgrade
+			// if first session, not taken as an upgrade
 					&& (sRelease == null || // null for jajuk releases < 1.2
 					!sRelease.substring(0, 3).equals(JAJUK_VERSION.substring(0, 3)))) {
 				bUpgraded = true;
@@ -664,7 +664,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3.toExternalForm());
 				// playlists
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.playlist"), EXT_PLAYLIST, //$NON-NLS-1$
@@ -678,7 +678,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG.toExternalForm());
 				// Wave
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
@@ -686,7 +686,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV.toExternalForm());
 				// au
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
@@ -694,7 +694,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU.toExternalForm());
 			} else { // mplayer enabled
 				// mp3
 				Type type = TypeManager.getInstance().registerType(
@@ -703,7 +703,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3.toExternalForm());
 				// playlists
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.playlist"), EXT_PLAYLIST, //$NON-NLS-1$
@@ -717,7 +717,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG.toExternalForm());
 				// Wave
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
@@ -725,7 +725,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV.toExternalForm());
 				// au
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
@@ -733,7 +733,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU.toExternalForm());
 				// flac
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.flac"), EXT_FLAC, //$NON-NLS-1$
@@ -741,7 +741,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_FLAC);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_FLAC);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_FLAC.toExternalForm());
 				// WMA
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.wma"), EXT_WMA, //$NON-NLS-1$
@@ -749,7 +749,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WMA);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WMA);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WMA.toExternalForm());
 				// AAC
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.aac"), EXT_AAC, //$NON-NLS-1$
@@ -757,7 +757,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC.toExternalForm());
 				// M4A (=AAC)
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.aac"), EXT_M4A, //$NON-NLS-1$
@@ -765,7 +765,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC.toExternalForm());
 				// Real audio
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.real"), EXT_REAL, //$NON-NLS-1$
@@ -773,7 +773,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RAM);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_RAM);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_RAM.toExternalForm());
 			}
 		} catch (Exception e1) {
 			Log.error("026", e1); //$NON-NLS-1$
