@@ -58,16 +58,16 @@ public class DownloadManager implements ITechnicalStrings {
 	private static HttpClient getHTTPClient(String sProxyUser, String sProxyPassswd,
 			int iConTimeout, int iDataTimeout) {
 		HttpClient client = new HttpClient();
-		// connection  to
-		client.getHttpConnectionManager().getParams().setConnectionTimeout(iConTimeout); 
+		// connection to
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(iConTimeout);
 		// data reception timeout
-		client.getHttpConnectionManager().getParams().setSoTimeout(iDataTimeout); 
+		client.getHttpConnectionManager().getParams().setSoTimeout(iDataTimeout);
 		// Add proxy-specific configuration
 		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
 			client.getHostConfiguration().setProxy(
 					ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
 					Integer.parseInt(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT)));
-			//The proxy requires authentication
+			// The proxy requires authentication
 			if (sProxyUser != null && sProxyPassswd != null) {
 				client.getState().setProxyCredentials(new AuthScope(AuthScope.ANY),
 						new UsernamePasswordCredentials(sProxyUser, sProxyPwd));
@@ -113,11 +113,30 @@ public class DownloadManager implements ITechnicalStrings {
 		if (search == null || search.trim().equals("")) { //$NON-NLS-1$
 			return alOut;
 		}
+		// Select cover size
+		int i = ConfigurationManager.getInt(CONF_COVERS_SIZE);
+		String size = null;
+		switch (i) {
+		case 0: // small only
+			size = "small";
+			break;
+		case 1: // small or medium
+			size = "small|medium";
+			break;
+		case 2: // medium only
+			size = "medium";
+			break;
+		case 3: // medium or large
+			size = "medium|large";
+			break;
+		case 4: // large only
+			size = "large";
+			break;
+		}
 		String sSearchUrl = "http://images.google.com/images?q="
 				+ URLEncoder.encode(search, "ISO-8859-1")
 				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
-				+ (ConfigurationManager.getInt(CONF_COVERS_MIN_SIZE) < 50 ? "&imgsz=medium"
-						: "&imgsz=medium|large");
+				+ "&imgsz=" + size;
 		Log.debug("Search URL: {{" + sSearchUrl + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 		byte[] bRes = downloadCoverList(new URL(sSearchUrl));
 		if (bRes == null || bRes.length == 0) {
@@ -267,13 +286,16 @@ public class DownloadManager implements ITechnicalStrings {
 
 	/**
 	 * @return the required proxy pwd
-	 * <p>must be synchronized to avoid displaying several password dialogs</p>
+	 *         <p>
+	 *         must be synchronized to avoid displaying several password dialogs
+	 *         </p>
 	 */
 	public synchronized static String getProxyPwd() {
 		String sLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-		//If user didn't specified a user, it means it's an unauthenticated proxy session, 
-		//don't ask for a password
-		if (sLogin == null || sLogin.trim().equals("")){
+		// If user didn't specified a user, it means it's an unauthenticated
+		// proxy session,
+		// don't ask for a password
+		if (sLogin == null || sLogin.trim().equals("")) {
 			return null;
 		}
 		if (sProxyPwd == null || sProxyPwd.trim().equals("")) { //$NON-NLS-1$

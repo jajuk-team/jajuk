@@ -212,7 +212,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		jtb.addSeparator();
 		jtb.add(jbDelete);
 		jtb.add(jbSave);
-		// TODO remove definitly ? jtb.add(jbSaveAs);
 		jtb.add(jbDefault);
 
 		double sizeControl[][] = {
@@ -416,7 +415,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 									}
 								}
 								if (this.iEventID != iLocalEventID) {
-									// a stop signal has been emmited
+									// a stop signal has been emitted
 									// from a concurrent thread
 									Log.debug("Download stopped - 1"); //$NON-NLS-1$
 									return;
@@ -425,10 +424,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						} catch (Exception e) {
 							if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException) {
 								Log.warn(e.getMessage());
-								/*
-								 * can occur in case of timeout or error during
-								 * covers list download
-								 */
+								// can occur in case of timeout or error during
+								// covers list download
 								iErrorCounter++;
 								if (iErrorCounter == STOP_TO_SEARCH) {
 									Log.warn("Too many connection fails,"
@@ -897,8 +894,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					}
 					refreshThumbs(cover);
 					ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));// add
-																							// new
-																							// cover
+					// new
+					// cover
 					// in others
 					// cover views
 					InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
@@ -1008,8 +1005,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		try {
 			for (int i = 0; i < 4; i++) {
 				Album album = dirCurrent.getFiles().iterator().next().getTrack().getAlbum();
-				File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + (50 + 50 * i) + "x" + (50 + 50 * i)
-						+ '/' + album.getId() + '.' + EXT_THUMB); //$NON-NLS-1$
+				File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + (50 + 50 * i) + "x"
+						+ (50 + 50 * i) + '/' + album.getId() + '.' + EXT_THUMB); //$NON-NLS-1$
 				Util.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
 			}
 			ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));

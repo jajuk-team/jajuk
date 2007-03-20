@@ -294,6 +294,10 @@ public class Directory extends Item implements Comparable {
 				}
 				boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
 						Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
+				//Ignore iTunes files
+				if (files[i].getName().startsWith("._")){
+					continue;
+				}
 				if (bIsMusic) {
 					String sId = FileManager.getID(files[i].getName(), this).intern();
 					// check the file is not already known in database

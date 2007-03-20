@@ -281,13 +281,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JCheckBox jcbLoadEachTrack;
 
-	JLabel jlMinSize;
+	JLabel jlCoverSize;
 
-	JTextField jtfMinSize;
-
-	JLabel jlMaxSize;
-
-	JTextField jtfMaxSize;
+	JComboBox jcbCoverSize;
 
 	JLabel jlMPlayerArgs;
 
@@ -296,7 +292,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JLabel jlJajukWorkspace;
 
 	PathSelector psJajukWorkspace;
-	
+
 	JajukJPanel jpOKCancel;
 
 	JButton jbOK;
@@ -410,7 +406,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jrbFile.addItemListener(this);
 		sbSearch = new SearchBox(this);
 		// disabled by default, is enabled only if jrbFile is enabled
-		sbSearch.setEnabled(false); 
+		sbSearch.setEnabled(false);
 		// set chosen track in file selection
 		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
 		if (!"".equals(sFileId)) { //$NON-NLS-1$
@@ -778,9 +774,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jtfMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
 		jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
 		jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
-		//Directory selection
+		// Directory selection
 		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
-				.getInstance()),Main.workspace);
+				.getInstance()), Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
@@ -949,49 +945,21 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbLoadEachTrack = new JCheckBox(Messages.getString("ParameterView.175")); //$NON-NLS-1$
 		jcbLoadEachTrack.setOpaque(false);
 		jcbLoadEachTrack.setToolTipText(Messages.getString("ParameterView.176")); //$NON-NLS-1$
-		InputVerifier iverifier = new InputVerifier() {
-			public boolean verify(JComponent input) {
-				JTextField tf = (JTextField) input;
-				String sText = tf.getText();
-				try {
-					int iValue = Integer.parseInt(sText);
-					if (iValue < 1) { // size should be > 0
-						jbOK.setEnabled(false);
-						return false;
-					}
-					if (iValue > MAX_COVER_SIZE) { // size should be > 0
-						jbOK.setEnabled(false);
-						return false;
-					}
-				} catch (Exception e) {
-					return false;
-				}
-				jbOK.setEnabled(true);
-				return true;
-			}
-
-			public boolean shouldYieldFocus(JComponent input) {
-				return verify(input);
-			}
-		};
-		jlMinSize = new JLabel(Messages.getString("ParameterView.150")); //$NON-NLS-1$
-		jlMinSize.setToolTipText(Messages.getString("ParameterView.151")); //$NON-NLS-1$
-		jtfMinSize = new JTextField();
-		jtfMinSize.setInputVerifier(iverifier);
-		jtfMinSize.setToolTipText(Messages.getString("ParameterView.151")); //$NON-NLS-1$
-		jlMaxSize = new JLabel(Messages.getString("ParameterView.152")); //$NON-NLS-1$
-		jlMaxSize.setToolTipText(Messages.getString("ParameterView.153")); //$NON-NLS-1$
-		jtfMaxSize = new JTextField();
-		jtfMaxSize.setToolTipText(Messages.getString("ParameterView.153")); //$NON-NLS-1$
-		jtfMaxSize.setInputVerifier(iverifier);
+		jlCoverSize = new JLabel(Messages.getString("ParameterView.150")); //$NON-NLS-1$
+		jlCoverSize.setToolTipText(Messages.getString("ParameterView.151")); //$NON-NLS-1$
+		jcbCoverSize = new JComboBox();
+		jcbCoverSize.setToolTipText(Messages.getString("ParameterView.151")); //$NON-NLS-1$
+		jcbCoverSize.addItem(Messages.getString("ParameterView.211"));
+		jcbCoverSize.addItem(Messages.getString("ParameterView.212"));
+		jcbCoverSize.addItem(Messages.getString("ParameterView.213"));
+		jcbCoverSize.addItem(Messages.getString("ParameterView.214"));
+		jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
 		jpCovers.add(jcbShuffleCover, "0,1"); //$NON-NLS-1$
 		jpCovers.add(jcbLoadEachTrack, "1,1"); //$NON-NLS-1$
 		jpCovers.add(jcbAutoCover, "0,3"); //$NON-NLS-1$
 		jpCovers.add(jcbPreLoad, "0,5"); //$NON-NLS-1$
-		jpCovers.add(jlMinSize, "0,7"); //$NON-NLS-1$
-		jpCovers.add(jtfMinSize, "1,7"); //$NON-NLS-1$
-		jpCovers.add(jlMaxSize, "0,9"); //$NON-NLS-1$
-		jpCovers.add(jtfMaxSize, "1,9"); //$NON-NLS-1$
+		jpCovers.add(jlCoverSize, "0,7"); //$NON-NLS-1$
+		jpCovers.add(jcbCoverSize, "1,7"); //$NON-NLS-1$
 
 		// --OK/cancel panel
 		Dimension dim = new Dimension(200, 20);
@@ -1133,16 +1101,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					}
 				} else if (e.getSource() == jcbAutoCover) {
 					if (jcbAutoCover.isSelected()) {
-						jtfMinSize.setEnabled(true);
-						jlMinSize.setEnabled(true);
-						jtfMaxSize.setEnabled(true);
-						jlMaxSize.setEnabled(true);
+						jcbCoverSize.setEnabled(true);
+						jlCoverSize.setEnabled(true);
 						jcbPreLoad.setEnabled(true);
 					} else {
-						jtfMinSize.setEnabled(false);
-						jlMinSize.setEnabled(false);
-						jtfMaxSize.setEnabled(false);
-						jlMaxSize.setEnabled(false);
+						jlCoverSize.setEnabled(false);
+						jcbCoverSize.setEnabled(false);
 						jcbPreLoad.setEnabled(false);
 					}
 				} else if (e.getSource() == jcbAudioScrobbler) {
@@ -1248,10 +1212,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			ConfigurationManager.setProperty(CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
 		}
 		int oldDuration = ConfigurationManager.getInt(CONF_FADE_DURATION);
-		//Show an hidable message if user set cross fade under linux for sound server information
-		if (Util.isUnderLinux() && oldDuration == 0 && oldDuration  != crossFadeDuration
-				.getValue()){
-			Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"), CONF_NOT_SHOW_AGAIN_CROSS_FADE);
+		// Show an hidable message if user set cross fade under linux for sound
+		// server information
+		if (Util.isUnderLinux() && oldDuration == 0 && oldDuration != crossFadeDuration.getValue()) {
+			Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
+					CONF_NOT_SHOW_AGAIN_CROSS_FADE);
 		}
 		ConfigurationManager.setProperty(CONF_FADE_DURATION, Integer.toString(crossFadeDuration
 				.getValue()));
@@ -1312,32 +1277,31 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getSelectedItem().toString());
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
-		//If jajuk home changes, write new path in bootstrap file
-		if (Main.workspace != null 
-				&& ! Main.workspace.equals(psJajukWorkspace.getUrl())){
-			//Check workspace directory
-			if ( !psJajukWorkspace.getUrl().trim().equals("")){
-				if (!new java.io.File(psJajukWorkspace.getUrl()).canRead()){
+		// If jajuk home changes, write new path in bootstrap file
+		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
+			// Check workspace directory
+			if (!psJajukWorkspace.getUrl().trim().equals("")) {
+				if (!new java.io.File(psJajukWorkspace.getUrl()).canRead()) {
 					Messages.showErrorMessage("165");
 					return;
 				}
 			}
-			try{
+			try {
 				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
 				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
 				bw.write(psJajukWorkspace.getUrl());
 				bw.flush();
 				bw.close();
-				
-				//Request user to move the .jajuk directory and to restart Jajuk
-				Messages.showInfoMessage(Messages.getString("ParameterView.209")); 
-			}
-			catch(Exception e){
+
+				// Request user to move the .jajuk directory and to restart
+				// Jajuk
+				Messages.showInfoMessage(Messages.getString("ParameterView.209"));
+			} catch (Exception e) {
 				Messages.showErrorMessage("024");
 				Log.debug("Cannot write bootstrap file");
 			}
 		}
-	
+
 		// Network
 		ConfigurationManager.setProperty(CONF_NETWORK_USE_PROXY, Boolean.toString(jcbProxy
 				.isSelected()));
@@ -1357,11 +1321,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.isSelected()));
 		ConfigurationManager.setProperty(CONF_COVERS_CHANGE_AT_EACH_TRACK, Boolean
 				.toString(jcbLoadEachTrack.isSelected()));
-		ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE, jtfMinSize.getText());
-		ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE, jtfMaxSize.getText());// commit
+		ConfigurationManager.setProperty(CONF_COVERS_SIZE, Integer.toString(jcbCoverSize
+				.getSelectedIndex()));
 		// configuration
 		ConfigurationManager.commit();
-		// notify playlist editor (usefull for novelties)
+		// notify playlist editor (useful for novelties)
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		// display a message
 		InformationJPanel.getInstance().setMessage(
@@ -1470,12 +1434,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		transfertTO.setValue(ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO));
 		// Covers
 		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
-		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
-		jlMinSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
-		jtfMinSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
-		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
-		jtfMaxSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
-		jlMaxSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
+		jlCoverSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
+		jcbCoverSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
+		jcbCoverSize.setSelectedIndex(ConfigurationManager.getInt(CONF_COVERS_SIZE));
 		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
 		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
 		jcbPreLoad.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));

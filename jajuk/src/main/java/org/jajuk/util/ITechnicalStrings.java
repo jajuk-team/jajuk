@@ -1091,9 +1091,7 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_COVERS_PRELOAD = "jajuk.covers.preload";
 
-	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
-
-	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
+	public static final String CONF_COVERS_SIZE = "jajuk.covers.size";
 
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
 

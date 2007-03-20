@@ -197,8 +197,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_COVERS_AUTO_COVER, TRUE);
 		properties.put(CONF_COVERS_SHUFFLE, FALSE);
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
-		properties.put(CONF_COVERS_MIN_SIZE, "10"); //$NON-NLS-1$
-		properties.put(CONF_COVERS_MAX_SIZE, "70"); //$NON-NLS-1$
+		properties.put(CONF_COVERS_SIZE, "3"); //medium and large
 		// medium accuracy
 		properties.put(CONF_COVERS_ACCURACY + "_0", "1");
 		// medium accuracy

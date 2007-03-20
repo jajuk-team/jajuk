@@ -207,7 +207,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	 * Manual refresh
 	 * 
 	 * @param bAsk:
-	 *            should we ask user if a deep or fast scan is required?
+	 *            Should we ask user if a deep or fast scan is required?
 	 *            default=deep
 	 */
 	private void manualRefresh(boolean bAsk) {
@@ -243,7 +243,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		cleanRemovedFiles();
 		// Actual refresh
 		refreshCommand((i == OPTION_REFRESH_DEEP), true);
-		InformationJPanel.getInstance().setMessage(sFinalMessage, InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+		Messages.showInfoMessage(sFinalMessage);
 		// notify views to refresh
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		// cleanup logical items
@@ -377,7 +377,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 			}
 			sFinalMessage = sbOut.toString();
 			Log.debug(sFinalMessage);
-			// refresh requiered if nb of files or dirs changed
+			// refresh required if nb of files or dirs changed
 			if ((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0
 					|| (DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0) {
 				return true;

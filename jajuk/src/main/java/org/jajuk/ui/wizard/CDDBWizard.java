@@ -76,9 +76,8 @@ import entagged.freedb.FreedbTrack;
  * @created 15 december 2005
  */
 
-public class CDDBWizard extends JDialog implements ITechnicalStrings,
-		ActionListener, TableColumnModelListener, TableModelListener,
-		MouseListener {
+public class CDDBWizard extends JDialog implements ITechnicalStrings, ActionListener,
+		TableColumnModelListener, TableModelListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -100,8 +99,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	HashSet filter;
 
 	/** Layout dimensions */
-	double[][] dSize = { { 0, TableLayout.FILL },
-			{ 0, 22, TableLayout.PREFERRED, 22 } };
+	double[][] dSize = { { 0, TableLayout.FILL }, { 0, 22, TableLayout.PREFERRED, 22 } };
 
 	/** Items */
 	ArrayList<CDDBTrack> alTracks;
@@ -167,8 +165,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 
 			// add all matches
 			jcbAlbum.setModel(new DefaultComboBoxModel(vAlbums));
-			int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-					.getWidth() / 2);
+			int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
 			jcbAlbum.setPopupWidth(iWidth);
 			jcbAlbum.setSelectedIndex(idx);
 			jcbAlbum.addActionListener(new ActionListener() {
@@ -193,14 +190,12 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 
 			// Show the number of matches found
 
-			jlCurrent = new JLabel(aResult.length
-					+ " " + Messages.getString("CDDBWizard.18")); //$NON-NLS-1$ //$NON-NLS-2$
+			jlCurrent = new JLabel(aResult.length + " " + Messages.getString("CDDBWizard.18")); //$NON-NLS-1$ //$NON-NLS-2$
 
 			int iXspace = 5;
 			double sizeControl[][] = {
-					{ iXspace, TableLayout.FILL, iXspace, 350, iXspace,
-							TableLayout.FILL, iXspace, TableLayout.FILL,
-							iXspace, TableLayout.FILL, iXspace }, { 22 } };
+					{ iXspace, TableLayout.FILL, iXspace, 350, iXspace, TableLayout.FILL, iXspace,
+							TableLayout.FILL, iXspace, TableLayout.FILL, iXspace }, { 22 } };
 
 			setLayout(new TableLayout(sizeControl));
 
@@ -220,7 +215,8 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	 */
 	public CDDBWizard(final ArrayList<Item> alGivenTracks) {
 		// windows title: absolute path name of the given directory
-		super(Main.getWindow(), Messages.getString("CDDBWizard.19"), true); // modal //$NON-NLS-1$
+		super(Main.getWindow(), Messages.getString("CDDBWizard.19"), true); // modal
+		// //$NON-NLS-1$
 		// //$NON-NLS-1$
 		SwingWorker sw = new SwingWorker() {
 
@@ -230,13 +226,11 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 
 					// Put an error message if no tracks were found
 					if (alGivenTracks.size() == 0) {
-						InformationJPanel.getInstance().setMessage(
-								Messages.getString("CDDBWizard.14"), 2); //$NON-NLS-1$
+						Messages.showWarningMessage(Messages.getString("CDDBWizard.14")); //$NON-NLS-1$
 						return null;
 					} else {
 						// Convert given tracks into CDDBTracks
-						alTracks = new ArrayList<CDDBTrack>(alGivenTracks
-								.size());
+						alTracks = new ArrayList<CDDBTrack>(alGivenTracks.size());
 						filter = null;
 						Iterator it = alGivenTracks.iterator();
 						while (it.hasNext()) {
@@ -248,7 +242,6 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 						}
 
 						// Put a message that show the query is running
-
 						InformationJPanel.getInstance().setMessage(
 								Messages.getString("CDDBWizard.11"), 0); //$NON-NLS-1$
 						// Perform CDDB Query
@@ -256,8 +249,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 						// Put an error message if CDDB query don't found any
 						// matches
 						if (idx < 0) {
-							InformationJPanel.getInstance().setMessage(
-									Messages.getString("CDDBWizard.12"), 2); //$NON-NLS-1$
+							Messages.showInfoMessage(Messages.getString("CDDBWizard.12")); //$NON-NLS-1$
 							return null;
 						}
 						// Put a message that show possible matches are found
@@ -281,8 +273,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 					jpMain.setLayout(new TableLayout(dSize));
 					jtable = populateTable();
 					jpNav = new NavigationPanel();
-					okc = new OKCancelPanel(CDDBWizard.this, Messages
-							.getString("Apply"), Messages //$NON-NLS-1$
+					okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages //$NON-NLS-1$
 							.getString("Close")); //$NON-NLS-1$
 
 					// Display main panel
@@ -344,8 +335,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 			Log.debug("CDDB Query return " + aResult.length + " match(es)."); //$NON-NLS-1$ //$NON-NLS-2$
 			int idx = 0;
 			for (int i = 0; i < aResult.length; i++) {
-				vAlbums
-						.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum()); //$NON-NLS-1$ //$NON-NLS-2$
+				vAlbums.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum()); //$NON-NLS-1$ //$NON-NLS-2$
 				if (aResult[i].isExactMatch()) {
 					idx = i;
 					InformationJPanel.getInstance().setMessage(
@@ -372,29 +362,25 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 					String sValue = fdbReader.getAlbum();
 
 					if (sValue != null && sValue.trim().length() > 0) {
-						track = TrackManager.getInstance().changeTrackAlbum(
-								track, sValue, filter);
+						track = TrackManager.getInstance().changeTrackAlbum(track, sValue, filter);
 					}
 					sValue = fdbReader.getArtist();
 					if (sValue != null && sValue.trim().length() > 0) {
-						track = TrackManager.getInstance().changeTrackAuthor(
-								track, sValue, filter);
+						track = TrackManager.getInstance().changeTrackAuthor(track, sValue, filter);
 					}
 					sValue = fdbReader.getTrackTitle(iRow);
 					if (sValue != null && sValue.trim().length() > 0) {
-						track = TrackManager.getInstance().changeTrackName(
-								track, sValue, filter);
+						track = TrackManager.getInstance().changeTrackName(track, sValue, filter);
 					}
 					sValue = fdbReader.getGenre();
 					if (sValue != null && sValue.trim().length() > 0) {
-						track = TrackManager.getInstance().changeTrackStyle(
-								track, sValue, filter);
+						track = TrackManager.getInstance().changeTrackStyle(track, sValue, filter);
 					}
 					try {
 						int iValue = fdbReader.getTrackNumber(iRow);
 						if (iValue > 0) {
-							track = TrackManager.getInstance()
-									.changeTrackOrder(track, iValue, filter);
+							track = TrackManager.getInstance().changeTrackOrder(track, iValue,
+									filter);
 						}
 						b = true;
 					} catch (Exception e) {
@@ -403,8 +389,8 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 					try {
 						long lValue = Long.parseLong(fdbReader.getYear());
 						if (lValue > 0 && lValue < 10000) {
-							track = TrackManager.getInstance().changeTrackYear(
-									track, lValue, filter);
+							track = TrackManager.getInstance().changeTrackYear(track, lValue,
+									filter);
 						}
 					} catch (Exception e) {
 						Log.error(e);
@@ -415,17 +401,12 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 				}
 			}
 			if (b) {
-				InformationJPanel
-						.getInstance()
-						.setMessage(
-								Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_DEVICE_REFRESH));
+				InformationJPanel.getInstance().setMessage(
+						Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			} else {
-				InformationJPanel
-						.getInstance()
-						.setMessage(
-								Messages.getString("Error.155"), InformationJPanel.ERROR); //$NON-NLS-1$
+				InformationJPanel.getInstance().setMessage(
+						Messages.getString("Error.155"), InformationJPanel.ERROR); //$NON-NLS-1$
 			}
 
 		}
