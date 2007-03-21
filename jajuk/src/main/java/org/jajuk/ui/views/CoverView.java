@@ -197,12 +197,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		jcbAccuracy.setBorder(Util.getShadowBorder());
 		jcbAccuracy.setMinimumSize(new Dimension(20, 0));
 		jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
-		jcbAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
-		jcbAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
-		jcbAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
-		jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$
-		jcbAccuracy.addItem(Messages.getString("CoverView.12")); //$NON-NLS-1$
-		jcbAccuracy.addItem(Messages.getString("CoverView.13")); //$NON-NLS-1$
+		jcbAccuracy.addItem(Util.getIcon(ICON_ACCURACY_LOW)); //$NON-NLS-1$
+		jcbAccuracy.addItem(Util.getIcon(ICON_ACCURACY_MEDIUM)); //$NON-NLS-1$
+		jcbAccuracy.addItem(Util.getIcon(ICON_ACCURACY_HIGH)); //$NON-NLS-1$
+		jcbAccuracy.addItem(Util.getIcon(ICON_AUTHOR)); //$NON-NLS-1$
+		jcbAccuracy.addItem(Util.getIcon(ICON_ALBUM)); //$NON-NLS-1$
+		jcbAccuracy.addItem(Util.getIcon(ICON_TRACK)); //$NON-NLS-1$
 		jcbAccuracy.setSelectedIndex(ConfigurationManager.getInt(CONF_COVERS_ACCURACY
 				+ "_" + getCoverID())); //$NON-NLS-1$
 		jcbAccuracy.addActionListener(this);
@@ -217,14 +217,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		double sizeControl[][] = {
 		// Toolbar
 				{ 5, TableLayout.PREFERRED, 10,
-				// size label
+						// size label
 						TableLayout.FILL, 10,
 						// nb of found covers label
 						TableLayout.FILL, 5,
 						// Accuracy combo
-						TableLayout.FILL, 5,
+						TableLayout.PREFERRED, 5,
 						// searching icon
-						25, 5 }, { 5, 25, 5 } };
+						25, 5 }, { 3, 30, 3 } };
 		TableLayout layout = new TableLayout(sizeControl);
 		jpControl.setLayout(layout);
 

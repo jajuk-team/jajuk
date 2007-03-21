@@ -465,7 +465,7 @@ public interface ITechnicalStrings {
 	public static final URL ICON_KO = Util
 			.getResource("icons/22x22/ko.png");
 
-	public static final URL ICON_FILE = Util
+	public static final URL ICON_TRACK = Util
 			.getResource("icons/16x16/track.png");
 
 	public static final URL ICON_DIRECTORY_SYNCHRO = Util
@@ -653,6 +653,15 @@ public interface ITechnicalStrings {
 
 	public static final URL ICON_HELP = Util
 			.getResource("icons/16x16/help.png");
+
+	public static final URL ICON_ACCURACY_LOW = Util
+			.getResource("icons/16x16/accuracy_low.png");
+
+	public static final URL ICON_ACCURACY_MEDIUM = Util
+			.getResource("icons/16x16/accuracy_medium.png");
+
+	public static final URL ICON_ACCURACY_HIGH = Util
+			.getResource("icons/16x16/accuracy_high.png");
 
 	// images
 	public static final URL IMAGES_SPLASHSCREEN = Util

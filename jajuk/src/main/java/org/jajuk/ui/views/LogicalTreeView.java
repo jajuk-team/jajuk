@@ -466,7 +466,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 				} else if (value instanceof AlbumNode) {
 					setIcon(Util.getIcon(ICON_ALBUM));
 				} else if (value instanceof TrackNode) {
-					setIcon(Util.getIcon(ICON_FILE));
+					setIcon(Util.getIcon(ICON_TRACK));
 					Track track = ((TrackNode) value).getTrack();
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && track.equals(current.getTrack())) {
