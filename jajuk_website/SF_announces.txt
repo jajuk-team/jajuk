@@ -1,2 +1,0 @@
-Tester:
-We are testing upcoming 1.2 Jajuk release which brings several intersting new features like the digital DJ or file organisation from tags. We need more testers to provide best possible release. We planned to publish 1.2 final next 25th but qualification will continue for some weeks after for fix releases. If interested, please visit jajuk.sourceforge.net and contact us at jajuk-developers@lists.sourceforge.net. 
