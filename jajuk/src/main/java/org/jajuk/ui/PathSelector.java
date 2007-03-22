@@ -64,7 +64,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 	 */
 	public PathSelector(final JajukFileFilter filter, String sDefault) {
 		// Set layout
-		double[][] size = new double[][] { { 200, 10, TableLayout.FILL, TableLayout.PREFERRED },
+		double[][] size = new double[][] { { 200, 10, TableLayout.PREFERRED },
 				{ TableLayout.PREFERRED } };
 		setLayout(new TableLayout(size));
 		setOpaque(false);
@@ -100,7 +100,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 		});
 		//Add items
 		add(jtfUrl,"0,0");
-		add(button,"3,0");
+		add(button,"2,0");
 	}
 	
 	/**

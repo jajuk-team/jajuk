@@ -1687,7 +1687,11 @@ public class Util implements ITechnicalStrings {
 	 * @return the file relative to jajuk directory
 	 */
 	public static final File getConfFileByPath(String sPATH){
-		return new File(Main.workspace + '/' 
+		String sRoot = System.getProperty("user.home");
+		if (Main.workspace != null && !Main.workspace.trim().equals("")){
+			sRoot = Main.workspace;
+		}
+		return new File(sRoot + '/' 
 			+ (Main.bTestMode ? ".jajuk_test" : ".jajuk")+ '/'+ sPATH );
 	}
 	

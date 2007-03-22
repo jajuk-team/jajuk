@@ -123,7 +123,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings, Actio
 		path = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()),
 				System.getProperty("user.home"));
 		path.setToolTipText(Messages.getString("FirstTimeWizard.7"));
-		JPanel jpWorkspace = new JPanel(new HorizontalLayout(iX_SEPARATOR));
+		JPanel jpWorkspace = new JPanel(new VerticalLayout(iX_SEPARATOR));
 		jpWorkspace.add(jlWorkspace);
 		jpWorkspace.add(path);
 
@@ -134,7 +134,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings, Actio
 		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
 		JPanel jpRefresh = new JPanel();
 		double sizeRefresh[][] = {
-				{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR, TableLayout.PREFERRED },
+				{ TableLayout.PREFERRED, iX_SEPARATOR, 50, iX_SEPARATOR, TableLayout.PREFERRED },
 				{ 20 } };
 		jpRefresh.setLayout(new TableLayout(sizeRefresh));
 		jpRefresh.add(jlRefreshTime, "0,0"); //$NON-NLS-1$
@@ -151,7 +151,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings, Actio
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
 		double sizeRight[][] = {
-				{ 0.99, iX_SEPARATOR },
+				{ TableLayout.PREFERRED, iX_SEPARATOR },
 				{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR, TableLayout.PREFERRED,
 						iY_SEPARATOR, 20, 4 * iY_SEPARATOR, 40, iY_SEPARATOR,
 						TableLayout.PREFERRED, iY_SEPARATOR, 40 } };

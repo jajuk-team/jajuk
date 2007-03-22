@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,13 +40,16 @@ import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.Main;
 import org.jajuk.base.Album;
@@ -60,7 +64,6 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
-import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
@@ -82,8 +85,8 @@ import ext.SwingWorker;
  * @author Bertrand Florat
  * @created 28 dec. 2003
  */
-public class CoverView extends ViewAdapter implements Observer, ComponentListener, ActionListener,
-		ITechnicalStrings {
+public class CoverView extends ViewAdapter implements Observer,
+		ComponentListener, ActionListener, ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
@@ -112,7 +115,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
 	JLabel jlSearching;
 
-	SteppedComboBox jcbAccuracy;
+	JComboBox jcbAccuracy;
 
 	/** Date last resize (used for adjustment management) */
 	private long lDateLastResize;
@@ -163,7 +166,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 	 */
 	public void initUI() {
 		// global layout
-		double size[][] = { { TableLayout.FILL }, { TableLayout.PREFERRED, 5, TableLayout.FILL, 5 } };
+		double size[][] = { { TableLayout.FILL },
+				{ TableLayout.PREFERRED, 5, TableLayout.FILL, 5 } };
 		setLayout(new TableLayout(size));
 		// Control panel
 		jpControl = new JPanel();
@@ -191,20 +195,52 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		jbDefault.setToolTipText(Messages.getString("CoverView.8")); //$NON-NLS-1$
 		jlSize = new JLabel(""); //$NON-NLS-1$
 		jlFound = new JLabel(""); //$NON-NLS-1$
-		jlSearching = new JLabel("", Util.getIcon(ICON_NET_SEARCH), JLabel.CENTER); //$NON-NLS-1$
-		jcbAccuracy = new SteppedComboBox();
-		jcbAccuracy.setPopupWidth(200);
+		jlSearching = new JLabel(
+				"", Util.getIcon(ICON_NET_SEARCH), JLabel.CENTER); //$NON-NLS-1$
+		jcbAccuracy = new JComboBox();
+		//Add tooltips on combo items
+		jcbAccuracy.setRenderer(new BasicComboBoxRenderer() {
+			private static final long serialVersionUID = -6943363556191659895L;
+
+			public Component getListCellRendererComponent(JList list, Object value,
+					int index, boolean isSelected, boolean cellHasFocus) {
+						super.getListCellRendererComponent(list, value, index, isSelected,
+								cellHasFocus);
+						switch(index){
+						case 0:
+							setToolTipText(Messages.getString("ParameterView.156"));
+							break;
+						case 1:
+							setToolTipText(Messages.getString("ParameterView.157"));
+							break;
+						case 2:
+							setToolTipText(Messages.getString("ParameterView.158"));
+							break;
+						case 3:
+							setToolTipText(Messages.getString("ParameterView.216"));
+							break;
+						case 4:
+							setToolTipText(Messages.getString("ParameterView.217"));
+							break;
+						case 5:
+							setToolTipText(Messages.getString("ParameterView.218"));
+							break;
+						}
+						return this;
+				}
+			});
 		jcbAccuracy.setBorder(Util.getShadowBorder());
 		jcbAccuracy.setMinimumSize(new Dimension(20, 0));
 		jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
+
 		jcbAccuracy.addItem(Util.getIcon(ICON_ACCURACY_LOW)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_ACCURACY_MEDIUM)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_ACCURACY_HIGH)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_AUTHOR)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_ALBUM)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_TRACK)); //$NON-NLS-1$
-		jcbAccuracy.setSelectedIndex(ConfigurationManager.getInt(CONF_COVERS_ACCURACY
-				+ "_" + getCoverID())); //$NON-NLS-1$
+		jcbAccuracy.setSelectedIndex(ConfigurationManager
+				.getInt(CONF_COVERS_ACCURACY + "_" + getCoverID())); //$NON-NLS-1$
 		jcbAccuracy.addActionListener(this);
 
 		jtb.add(jbPrevious);
@@ -217,14 +253,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		double sizeControl[][] = {
 		// Toolbar
 				{ 5, TableLayout.PREFERRED, 10,
-						// size label
+				// size label
 						TableLayout.FILL, 10,
 						// nb of found covers label
 						TableLayout.FILL, 5,
 						// Accuracy combo
 						TableLayout.PREFERRED, 5,
 						// searching icon
-						25, 5 }, { 3, 30, 3 } };
+						25, 5 }, { 3, 27, 3 } };
 		TableLayout layout = new TableLayout(sizeControl);
 		jpControl.setLayout(layout);
 
@@ -237,7 +273,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		try {
 			// instanciate default cover
 			if (coverDefault == null) {
-				coverDefault = new Cover(IMAGES_SPLASHSCREEN, Cover.DEFAULT_COVER);
+				coverDefault = new Cover(IMAGES_SPLASHSCREEN,
+						Cover.DEFAULT_COVER);
 			}
 		} catch (Exception e) {
 			Log.error(e);
@@ -257,8 +294,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					Log.error(e);
 				}
 				// Request for cover refresh
-				update(new Event(EventSubject.EVENT_COVER_REFRESH, ObservationManager
-						.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
+				update(new Event(
+						EventSubject.EVENT_COVER_REFRESH,
+						ObservationManager
+								.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
 
 			}
 		}.start();
@@ -299,7 +338,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			try {
 				searching(true);
 				if (EventSubject.EVENT_COVER_REFRESH.equals(subject)) {
-					org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
+					org.jajuk.base.File fCurrent = FIFO.getInstance()
+							.getCurrentFile();
 					if (fCurrent == null) {
 						this.dirCurrent = null;
 					} else {
@@ -318,7 +358,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					// the current track to reach other devices covers and
 					// display them together
 					Track trackCurrent = fCurrent.getTrack();
-					ArrayList<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
+					ArrayList<org.jajuk.base.File> alFiles = trackCurrent
+							.getFiles();
 					// list of files mapping the track
 					for (org.jajuk.base.File file : alFiles) {
 						Directory dirScanned = file.getDirectory();
@@ -336,11 +377,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 								continue;
 							}
 							String sExt = Util.getExtension(files[i]);
-							if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
+							if (sExt.equalsIgnoreCase("jpg")
+									|| sExt.equalsIgnoreCase("png")
 									|| sExt.equalsIgnoreCase("gif")) {
 								if (!bAbsoluteCover
-										&& Util.isAbsoluteDefaultCover(FIFO.getInstance()
-												.getCurrentFile().getDirectory(), files[i]
+										&& Util.isAbsoluteDefaultCover(FIFO
+												.getInstance().getCurrentFile()
+												.getDirectory(), files[i]
 												.getName())) {
 									// test the cover is not already used
 									Cover cover = new Cover(files[i].toURL(),
@@ -350,7 +393,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 									}
 									bAbsoluteCover = true;
 								} else { // normal local cover
-									Cover cover = new Cover(files[i].toURL(), Cover.LOCAL_COVER);
+									Cover cover = new Cover(files[i].toURL(),
+											Cover.LOCAL_COVER);
 									if (!alCovers.contains(cover)) {
 										alCovers.add(cover);
 									}
@@ -370,31 +414,35 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 								// there is not enough information in tags
 								// for a web search
 								ArrayList<URL> alUrls;
-								alUrls = DownloadManager.getRemoteCoversList(sQuery);
+								alUrls = DownloadManager
+										.getRemoteCoversList(sQuery);
 								bOnceConnected = true;
 								// user managed once to connect to the web
 								if (alUrls.size() > MAX_REMOTE_COVERS) {
 									// limit number of remote covers
-									alUrls = new ArrayList<URL>(alUrls
-											.subList(0, MAX_REMOTE_COVERS));
+									alUrls = new ArrayList<URL>(alUrls.subList(
+											0, MAX_REMOTE_COVERS));
 								}
 								Collections.reverse(alUrls);
 								// set best results to be displayed first
 								Iterator it2 = alUrls.iterator();
 								// add found covers
-								while (it2.hasNext() && this.iEventID == iLocalEventID) {
+								while (it2.hasNext()
+										&& this.iEventID == iLocalEventID) {
 									// load each cover (pre-load or post-load)
 									// and stop if a signal has been emitted
 									URL url = (URL) it2.next();
 									try {
-										Cover cover = new Cover(url, Cover.REMOTE_COVER);
+										Cover cover = new Cover(url,
+												Cover.REMOTE_COVER);
 										/*
 										 * create a cover with given url ( image
 										 * will be really downloaded when
 										 * required if no preload)
 										 */
 										if (!alCovers.contains(cover)) {
-											Log.debug("Found Cover: {{" + url.toString() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+											Log
+													.debug("Found Cover: {{" + url.toString() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
 											alCovers.add(cover);
 										}
 									} catch (Exception e) {
@@ -409,7 +457,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 												InformationJPanel
 														.getInstance()
 														.setMessage(
-																Messages.getString("Error.030"), InformationJPanel.WARNING); //$NON-NLS-1$
+																Messages
+																		.getString("Error.030"), InformationJPanel.WARNING); //$NON-NLS-1$
 											}
 										}
 									}
@@ -428,8 +477,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 								// covers list download
 								iErrorCounter++;
 								if (iErrorCounter == STOP_TO_SEARCH) {
-									Log.warn("Too many connection fails,"
-											+ " stop to search for covers online"); //$NON-NLS-1$
+									Log
+											.warn("Too many connection fails,"
+													+ " stop to search for covers online"); //$NON-NLS-1$
 									InformationJPanel.getInstance().setMessage(
 											Messages.getString("Error.030"),
 											InformationJPanel.WARNING); //$NON-NLS-1$
@@ -592,7 +642,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						}
 						return null;
 					}
-					if (alCovers.size() == 1 && (alCovers.get(0)).getType() == Cover.DEFAULT_COVER) {
+					if (alCovers.size() == 1
+							&& (alCovers.get(0)).getType() == Cover.DEFAULT_COVER) {
 						// only a default cover
 						try {
 							prepareDisplay(0);
@@ -608,7 +659,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							prepareDisplay(index);
 							return null; // OK, leave
 						} catch (Exception e) {
-							Log.debug("Removed cover: {{" + alCovers.get(index) + "}}");
+							Log.debug("Removed cover: {{" + alCovers.get(index)
+									+ "}}");
 							alCovers.remove(index);
 							// refresh number of found covers
 							if (!bGotoBetter) {
@@ -665,7 +717,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		Cover cover = alCovers.get(index); // take image at the given index
 		URL url = cover.getURL();
 		// enable delete button only for local covers
-		if (cover.getType() == Cover.LOCAL_COVER || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
+		if (cover.getType() == Cover.LOCAL_COVER
+				|| cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
 			jbDelete.setEnabled(true);
 		} else {
 			jbDelete.setEnabled(false);
@@ -679,9 +732,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			}
 			String size = cover.getSize();
 			jl = new JLabel(ii);
-			jl
-					.setBorder(new DropShadowBorder(Color.BLACK, 0, 5, 0.5f, 5, false, true, false,
-							true));
+			jl.setBorder(new DropShadowBorder(Color.BLACK, 0, 5, 0.5f, 5,
+					false, true, false, true));
 			jl.setMinimumSize(new Dimension(0, 0)); // required for info
 			// node resizing
 			jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -773,7 +825,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			} else {
 				// no? so we optimize width
 				iNewWidth = iDisplayAreaWidth;
-				iNewHeight = (int) (icon.getIconHeight() * ((float) iNewWidth / icon.getIconWidth()));
+				iNewHeight = (int) (icon.getIconHeight() * ((float) iNewWidth / icon
+						.getIconWidth()));
 			}
 		} else {
 			// Height is smaller or equal than width : try to optimize width
@@ -786,7 +839,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			} else {
 				// no? so we optimize width
 				iNewHeight = iDisplayAreaHeight;
-				iNewWidth = (int) (icon.getIconWidth() * ((float) iNewHeight / icon.getIconHeight()));
+				iNewWidth = (int) (icon.getIconWidth() * ((float) iNewHeight / icon
+						.getIconHeight()));
 			}
 		}
 
@@ -811,8 +865,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							CONF_COVERS_ACCURACY + "_" + getCoverID(), Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
 			new Thread() {
 				public void run() {
-					update(new Event(EventSubject.EVENT_COVER_REFRESH, ObservationManager
-							.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH))); // force
+					update(new Event(
+							EventSubject.EVENT_COVER_REFRESH,
+							ObservationManager
+									.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH))); // force
 					// refreshing
 				}
 			}.start();
@@ -836,7 +892,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		} else if (e.getSource() == jbDelete) { // delete a local cover
 			Cover cover = alCovers.get(index);
 			// show confirmation message if required
-			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)) {
+			if (ConfigurationManager
+					.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)) {
 				int iResu = Messages
 						.getChoice(
 								Messages.getString("Confirmation_delete_cover") + " : " + cover.getURL().getFile(), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -874,31 +931,36 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				if (index < 0) {
 					index = alCovers.size() - 1;
 				}
-				ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+				ObservationManager.notify(new Event(
+						EventSubject.EVENT_COVER_REFRESH));
 			}
 		} else if (e.getSource() == jbDefault) { // choose a default
 			// first commit this cover on the disk if it is a remote cover
 			Cover cover = alCovers.get(index);
 			String sFilename = Util.getOnlyFile(cover.getURL().toString());
 			if (cover.getType() == Cover.REMOTE_COVER) {
-				String sFilePath = dirCurrent.getFio().getPath() + "/" + sFilename; //$NON-NLS-1$
+				String sFilePath = dirCurrent.getFio().getPath()
+						+ "/" + sFilename; //$NON-NLS-1$
 				try {
 					// copy file from cache
 					File fSource = Util.getCachePath(cover.getURL());
 					File file = new File(sFilePath);
 					Util.copy(fSource, file);
-					Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+					Cover cover2 = new Cover(file.toURL(),
+							Cover.ABSOLUTE_DEFAULT_COVER);
 					if (!alCovers.contains(cover2)) {
 						alCovers.add(cover2);
 						setFoundText();
 					}
 					refreshThumbs(cover);
-					ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));// add
+					ObservationManager.notify(new Event(
+							EventSubject.EVENT_COVER_REFRESH));// add
 					// new
 					// cover
 					// in others
 					// cover views
-					InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+					InformationJPanel.getInstance().setMessage(
+							Messages.getString("CoverView.11"),
 							InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 				} catch (Exception ex) {
 					Log.error("024", ex); //$NON-NLS-1$
@@ -906,7 +968,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				}
 			} else {
 				refreshThumbs(cover);
-				InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
+				InformationJPanel.getInstance().setMessage(
+						Messages.getString("CoverView.8"),
 						InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			}
 			// then make it the default cover in this directory
@@ -918,7 +981,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			new Thread() {
 				public void run() {
 					Cover cover = alCovers.get(index);
-					JFileChooser jfchooser = new JFileChooser(dirCurrent.getFio());
+					JFileChooser jfchooser = new JFileChooser(dirCurrent
+							.getFio());
 					FileFilter filter = new FileFilter() {
 						public boolean accept(File file) {
 							String sExt = Util.getExtension(file);
@@ -933,7 +997,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						}
 					};
 					jfchooser.setFileFilter(filter);
-					jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
+					jfchooser
+							.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
 					File finalFile = new File(dirCurrent.getFio().getPath()
 							+ "/" + Util.getOnlyFile(cover.getURL().toString())); //$NON-NLS-1$
 					jfchooser.setSelectedFile(finalFile);
@@ -942,7 +1007,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						fNew = jfchooser.getSelectedFile();
 						// if user try to save as without changinng file name
-						if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
+						if (fNew.getAbsolutePath().equals(
+								cover.getFile().getAbsolutePath())) {
 							return;
 						}
 						try {
@@ -951,7 +1017,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 									.getInstance()
 									.setMessage(
 											Messages.getString("CoverView.11"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-							ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+							ObservationManager.notify(new Event(
+									EventSubject.EVENT_COVER_REFRESH));
 						} catch (Exception ex) {
 							Log.error("024", ex); //$NON-NLS-1$
 							Messages.showErrorMessage("024"); //$NON-NLS-1$
@@ -977,14 +1044,18 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						File fSource = Util.getCachePath(cover.getURL());
 						File file = new File(sFilePath);
 						Util.copy(fSource, file);
-						InformationJPanel.getInstance().setMessage(
-								Messages.getString("CoverView.11"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-						Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+						InformationJPanel
+								.getInstance()
+								.setMessage(
+										Messages.getString("CoverView.11"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+						Cover cover2 = new Cover(file.toURL(),
+								Cover.ABSOLUTE_DEFAULT_COVER);
 						if (!alCovers.contains(cover2)) {
 							alCovers.add(cover2);
 							setFoundText();
 						}
-						ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+						ObservationManager.notify(new Event(
+								EventSubject.EVENT_COVER_REFRESH));
 						// add new cover in others cover views
 					} catch (Exception ex) {
 						Log.error("024", ex); //$NON-NLS-1$
@@ -1004,12 +1075,15 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		// refresh thumbs
 		try {
 			for (int i = 0; i < 4; i++) {
-				Album album = dirCurrent.getFiles().iterator().next().getTrack().getAlbum();
-				File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + (50 + 50 * i) + "x"
-						+ (50 + 50 * i) + '/' + album.getId() + '.' + EXT_THUMB); //$NON-NLS-1$
+				Album album = dirCurrent.getFiles().iterator().next()
+						.getTrack().getAlbum();
+				File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/'
+						+ (50 + 50 * i) + "x" + (50 + 50 * i) + '/'
+						+ album.getId() + '.' + EXT_THUMB); //$NON-NLS-1$
 				Util.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
 			}
-			ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));
+			ObservationManager.notify(new Event(
+					EventSubject.EVENT_COVER_DEFAULT_CHANGED));
 		} catch (Exception ex) {
 			Log.error("024", ex); //$NON-NLS-1$
 		}
@@ -1032,7 +1106,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 	 */
 	public String createQuery(org.jajuk.base.File file) {
 		String sQuery = ""; //$NON-NLS-1$
-		int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY + "_" + getCoverID()); //$NON-NLS-1$
+		int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY
+				+ "_" + getCoverID()); //$NON-NLS-1$
 		Track track = file.getTrack();
 		Author author = track.getAuthor();
 		Album album = track.getAlbum();
