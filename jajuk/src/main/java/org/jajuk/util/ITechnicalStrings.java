@@ -1201,6 +1201,9 @@ public interface ITechnicalStrings {
 	// MPLayer additional arguments
 	public static final String CONF_MPLAYER_ARGS = "jajuk.player.mplayer_args";
 
+	// Player additional environment variables
+	public static final String CONF_ENV_VARIABLES = "jajuk.player.env_variables";
+
 	// Shuffle/novelties mode
 	public static final String MODE_ALBUM = "album";
 

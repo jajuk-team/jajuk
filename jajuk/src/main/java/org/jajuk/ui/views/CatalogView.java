@@ -971,8 +971,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			} else if (e.getSource() == jmiAlbumProperties) {
 				ArrayList<Item> alAlbums = new ArrayList<Item>();
 				alAlbums.add(album);
-				new PropertiesWizard(alAlbums, new ArrayList<Item>(TrackManager.getInstance()
-						.getAssociatedTracks(album)));
+				new PropertiesWizard(alAlbums);
 			}
 		}
 

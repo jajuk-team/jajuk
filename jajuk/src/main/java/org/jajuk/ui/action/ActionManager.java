@@ -140,6 +140,7 @@ public final class ActionManager {
 				false);
 		installAction(WIZARD, new WizardAction(), false);
 		installAction(OPTIONS, new ConfigurationRequiredAction(), false);
+		installAction(JajukAction.UNMOUNTED, new HideShowMountedDevicesAction(), false);
 
 		// JajukJMenuBar: Help Menu
 		installAction(HELP_REQUIRED, new HelpRequiredAction(), false);

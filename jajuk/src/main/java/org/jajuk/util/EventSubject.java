@@ -35,6 +35,8 @@ public enum EventSubject {
     EVENT_DEVICE_NEW, 
 	// removed device
     EVENT_DEVICE_DELETE, 
+	// parameters change
+    EVENT_PARAMETERS_CHANGE, 
 	// device properties display
     EVENT_DEVICE_PROPERTIES, 
 	// mount device

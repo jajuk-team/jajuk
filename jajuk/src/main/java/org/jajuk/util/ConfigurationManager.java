@@ -249,6 +249,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_FRAME_POS_FORCED, "");
 		properties.put(CONF_OPTIONS_HOTKEYS, FALSE);
 		properties.put(CONF_MPLAYER_ARGS, "");
+		properties.put(CONF_ENV_VARIABLES, "");
 		properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
 		properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
 		

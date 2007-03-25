@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.jajuk.base.FIFO;
@@ -90,7 +91,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
 	/** Current reader thread */
 	private volatile ReaderThread reader;
-	
+
 	/** Inc rating flag */
 	private boolean bHasBeenRated = false;
 
@@ -105,7 +106,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			while (!bStop) { // stop this thread when exiting
 				try {
 					Thread.sleep(PROGRESS_STEP);
-					if (!bPaused && !bStop) { 
+					if (!bPaused && !bStop) {
 						// a get_percent_pos resumes (mplayer issue)
 						sendCommand("get_time_pos"); //$NON-NLS-1$
 					}
@@ -126,22 +127,20 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	private class ReaderThread extends Thread {
 		public void run() {
 			try {
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						proc.getInputStream()));
+				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
 				for (; (line = in.readLine()) != null;) {
 					if (line.matches(".*ANS_TIME_POSITION.*")) { //$NON-NLS-1$
 						StringTokenizer st = new StringTokenizer(line, "="); //$NON-NLS-1$
 						st.nextToken();
 						lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
-						//Store current position for use at next startup
-						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,
-								Float.toString(getCurrentPosition()));
+						// Store current position for use at next startup
+						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float
+								.toString(getCurrentPosition()));
 						// check if the track get rate increasing level
 						// (INC_RATE_TIME secs or intro length)
 						if (!bHasBeenRated
-								&& (lTime >= (INC_RATE_TIME * 1000) 
-										|| (length != TO_THE_END && lTime > length))) {
+								&& (lTime >= (INC_RATE_TIME * 1000) || (length != TO_THE_END && lTime > length))) {
 							// inc rate by 1 if file is played at least
 							// INC_RATE_TIME secs
 							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
@@ -149,10 +148,10 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 							// alert bestof playlist something changed
 							bHasBeenRated = true;
 						}
-			
+
 						// Cross-Fade test
-						if (!bFading && iFadeDuration > 0 && lDuration > 0 
-								// can be null before getting length
+						if (!bFading && iFadeDuration > 0 && lDuration > 0
+						// can be null before getting length
 								&& lTime > (lDuration - iFadeDuration)) {
 							bFading = true;
 							// force a finished (that doesn't stop but only
@@ -160,8 +159,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 							FIFO.getInstance().finished();
 						}
 						// test end of length for intro mode
-						if (length != TO_THE_END && lDuration > 0 
-								// can be null before getting  length
+						if (length != TO_THE_END && lDuration > 0
+						// can be null before getting length
 								&& (lTime - (fPosition * lDuration)) > length) {
 							// length=-1 means there is no max length
 							FIFO.getInstance().finished();
@@ -169,7 +168,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 					} else if (line.matches("ANS_LENGTH.*")) { //$NON-NLS-1$
 						StringTokenizer st = new StringTokenizer(line, "="); //$NON-NLS-1$
 						st.nextToken();
-						lDuration = (long) (Float.parseFloat(st.nextToken())* 1000) ;
+						lDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
 					}
 					// EOF
 					else if (line.matches("Exiting.*End.*")) { //$NON-NLS-1$
@@ -177,18 +176,19 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 						bOpening = false;
 						// Launch next track
 						try {
-							// End of file: inc rate by 1 if file is fully played
-							fCurrent.getTrack().setRate(
-									fCurrent.getTrack().getRate() + 1);
+							// End of file: inc rate by 1 if file is fully
+							// played
+							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
 							// alert bestof playlist something changed
-							FileManager.getInstance().setRateHasChanged(true); 
+							FileManager.getInstance().setRateHasChanged(true);
 							// if using crossfade, ignore end of file
-							if (!bFading) { 
+							if (!bFading) {
 								// Benefit from end of file to perform a full gc
 								System.gc();
-								if (lDuration > 0){
-									//if corrupted file, length=0 and we have not not call finished
-									//as it is managed my Player
+								if (lDuration > 0) {
+									// if corrupted file, length=0 and we have
+									// not not call finished
+									// as it is managed my Player
 									FIFO.getInstance().finished();
 								}
 							} else {
@@ -222,8 +222,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
 	 *      float)
 	 */
-	public void play(org.jajuk.base.File file, float fPosition, long length,
-			float fVolume) throws Exception {
+	public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
+			throws Exception {
 		this.lTime = 0;
 		this.fVolume = fVolume;
 		this.length = length;
@@ -233,8 +233,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		this.bOpening = true;
 		this.bHasBeenRated = false;
 		this.bEOF = false;
-		this.iFadeDuration = 1000 * ConfigurationManager
-				.getInt(CONF_FADE_DURATION);
+		this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
 		// Start
 		String sCommand = "mplayer"; //$NON-NLS-1$
 		if (Util.isUnderWindows()) {
@@ -242,24 +241,35 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		}
 		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
 		String[] cmd = null;
-		if (sAdditionalArgs == null 
-				|| sAdditionalArgs.trim().equals("")){
-			cmd = new String[]{ sCommand, "-quiet", "-slave", file.getAbsolutePath() }; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		else{
-			//Add any additional arguments provided by user
+		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {
+			cmd = new String[] { sCommand, "-quiet", "-slave", file.getAbsolutePath() }; //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			// Add any additional arguments provided by user
 			String[] sArgs = sAdditionalArgs.split(" ");
 			cmd = new String[4 + sArgs.length];
 			cmd[0] = sCommand;
 			cmd[1] = "-quiet";
 			cmd[2] = "-slave";
-			for (int i=0; i<sArgs.length; i++){
-				cmd[3+i] = sArgs[i];
+			for (int i = 0; i < sArgs.length; i++) {
+				cmd[3 + i] = sArgs[i];
 			}
 			cmd[cmd.length - 1] = file.getAbsolutePath();
-			Log.debug("Using this Mplayer command: "+ Arrays.asList(cmd));
+			Log.debug("Using this Mplayer command: " + Arrays.asList(cmd));
 		}
-		proc = Runtime.getRuntime().exec(cmd);
+		ProcessBuilder pb = new ProcessBuilder(cmd);
+		//Set all environment variables format: var1=xxx var2=yyy
+		try {
+			Map<String, String> env = pb.environment();
+			StringTokenizer st = new StringTokenizer(ConfigurationManager
+					.getProperty(CONF_ENV_VARIABLES), " ");
+			while (st.hasMoreTokens()) {
+				StringTokenizer st2 = new StringTokenizer(st.nextToken(), "=");
+				env.put(st2.nextToken(), st2.nextToken());
+			}
+		} catch (Exception e) {
+			Log.error(e);
+		}
+		proc = pb.start();
 		if (position == null) {
 			position = new PositionThread();
 			position.start();
@@ -276,8 +286,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 				Log.error(e);
 			}
 		}
-		//If end of file already reached, it means that file cannot be read
-		if (bEOF){
+		// If end of file already reached, it means that file cannot be read
+		if (bEOF) {
 			throw new JajukException("007"); //$NON-NLS-1$
 		}
 		setVolume(fVolume);
@@ -322,7 +332,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		if (proc != null) {
 			PrintStream out = new PrintStream(proc.getOutputStream());
 			// Do not use println() : it doesn't work under windows
-			out.print(command + '\n'); 
+			out.print(command + '\n');
 			out.flush();
 		}
 	}
@@ -399,7 +409,9 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
 	 */
 	public long getCurrentLength() {

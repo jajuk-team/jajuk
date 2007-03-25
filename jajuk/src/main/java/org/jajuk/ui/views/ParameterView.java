@@ -30,7 +30,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.InputVerifier;
@@ -59,6 +61,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -92,7 +95,7 @@ import org.jajuk.util.log.Log;
  * @created 17 nov. 2003
  */
 public class ParameterView extends ViewAdapter implements ActionListener, ListSelectionListener,
-		ItemListener, ChangeListener {
+		ItemListener, ChangeListener, Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -289,10 +292,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JTextField jtfMPlayerArgs;
 
+	JLabel jlEnvVariables;
+
+	JTextField jtfEnvVariables;
+
 	JLabel jlJajukWorkspace;
 
 	PathSelector psJajukWorkspace;
-
+	
 	JajukJPanel jpOKCancel;
 
 	JButton jbOK;
@@ -772,6 +779,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jlMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
 		jtfMPlayerArgs = new JTextField();
 		jtfMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
+		jlEnvVariables = new JLabel(Messages.getString("ParameterView.219"));
+		jlEnvVariables.setToolTipText(Messages.getString("ParameterView.220"));
+		jtfEnvVariables = new JTextField();
+		jtfEnvVariables.setToolTipText(Messages.getString("ParameterView.220"));
 		jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
 		jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		// Directory selection
@@ -782,7 +793,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				{ 0.5, 0.45 },
 				{ 20, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
 						TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-						TableLayout.PREFERRED, TableLayout.PREFERRED } };
+						TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.PREFERRED } };
 		TableLayout layout = new TableLayout(sizeAdvanced);
 		layout.setVGap(15);
 		jpAdvanced.setLayout(layout);
@@ -796,8 +807,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(scbLogLevel, "1,5");//$NON-NLS-1$
 		jpAdvanced.add(jlMPlayerArgs, "0,6");//$NON-NLS-1$        
 		jpAdvanced.add(jtfMPlayerArgs, "1,6");//$NON-NLS-1$
-		jpAdvanced.add(jlJajukWorkspace, "0,7");//$NON-NLS-1$
-		jpAdvanced.add(psJajukWorkspace, "1,7");//$NON-NLS-1$
+		jpAdvanced.add(jlEnvVariables, "0,7");//$NON-NLS-1$        
+		jpAdvanced.add(jtfEnvVariables, "1,7");//$NON-NLS-1$
+		jpAdvanced.add(jlJajukWorkspace, "0,8");//$NON-NLS-1$
+		jpAdvanced.add(psJajukWorkspace, "1,8");//$NON-NLS-1$
 
 		// - Network
 		jpNetwork = new JajukJPanel();
@@ -1004,6 +1017,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		add(jpOKCancel, "0,1"); //$NON-NLS-1$
 		// update widgets state
 		updateSelection();
+		ObservationManager.register(this);
+	}
+	
+	public Set<EventSubject> getRegistrationKeys() {
+		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+		eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+		return eventSubjectSet;
 	}
 
 	/**
@@ -1277,6 +1297,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getSelectedItem().toString());
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
+		ConfigurationManager.setProperty(CONF_ENV_VARIABLES, jtfEnvVariables.getText());
 		// If jajuk home changes, write new path in bootstrap file
 		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
 			// Check workspace directory
@@ -1418,6 +1439,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jtfRefactorPattern.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
 		jtfAnimationPattern.setText(ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN));
 		jtfMPlayerArgs.setText(ConfigurationManager.getProperty(CONF_MPLAYER_ARGS));
+		jtfEnvVariables.setText(ConfigurationManager.getProperty(CONF_ENV_VARIABLES));
 		// network
 		boolean bUseProxy = ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY);
 		jcbProxy.setSelected(bUseProxy);
@@ -1495,6 +1517,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// when changing tab, store it for futur jajuk sessions
 		ConfigurationManager.setProperty(CONF_OPTIONS_TAB, Integer.toString(jtpMain
 				.getSelectedIndex()));
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
+	 */
+	public void update(Event event) {
+		EventSubject subject = event.getSubject();
+		if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)){
+			updateSelection();
+		}
 	}
 
 }

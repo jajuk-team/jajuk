@@ -173,10 +173,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 				.getAction(CONFIGURE_AMBIENCES));
 		jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
 		jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
+		JMenuItem jmiUnmounted = new JMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
 		configuration.add(jmiDJ);
 		configuration.add(jmiAmbience);
 		configuration.add(jmiWizard);
 		configuration.add(jmiOptions);
+		configuration.add(jmiUnmounted);
 
 		// Help menu
 		String helpText = Messages.getString("JajukJMenuBar.14"); //$NON-NLS-1$

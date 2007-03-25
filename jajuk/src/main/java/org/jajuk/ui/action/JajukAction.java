@@ -361,5 +361,9 @@ public enum JajukAction {
 	 * Used to configure the application
 	 */
 	OPTIONS,
+	/**
+	 * Used to show or hide unmounted devices
+	 */
+	UNMOUNTED,
 
 }
