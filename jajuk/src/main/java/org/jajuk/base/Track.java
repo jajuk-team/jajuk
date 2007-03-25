@@ -202,7 +202,8 @@ public class Track extends Item implements Comparable {
 	}
 
 	/**
-	 * @return best file to play for this track bHideUnmounted
+	 * @return best file to play for this track 
+	 * @param bHideUnmounted Do we return unmounted files 
 	 */
 	public File getPlayeableFile(boolean bHideUnmounted) {
 		File fileOut = null;

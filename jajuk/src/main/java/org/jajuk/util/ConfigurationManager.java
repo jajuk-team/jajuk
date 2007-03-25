@@ -252,12 +252,11 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_ENV_VARIABLES, "");
 		properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
 		properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
-		
-		
+		properties.put(CONF_CATALOG_PAGE_SIZE, "100");
 	}
 
 	/**
-	 * Set default language without properties file available (normaly only at
+	 * Set default language without properties file available (normally only at
 	 * install)
 	 * 
 	 */

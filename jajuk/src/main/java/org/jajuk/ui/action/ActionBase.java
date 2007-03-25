@@ -20,7 +20,6 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.util.HashMap;
 
 import javax.swing.AbstractAction;
@@ -47,8 +46,8 @@ import com.melloware.jintellitype.JIntellitype;
  * @author Bart Cremers
  * @since 12-dec-2005
  */
-public abstract class ActionBase extends AbstractAction implements
-		ITechnicalStrings, HotkeyListener {
+public abstract class ActionBase extends AbstractAction implements ITechnicalStrings,
+		HotkeyListener {
 
 	/**
 	 * Shared mutex for locking.
@@ -56,8 +55,7 @@ public abstract class ActionBase extends AbstractAction implements
 	protected static final byte[] MUTEX = new byte[0];
 
 	/** Maps hotkeylisteners with the event ID */
-	private static HashMap<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(
-			20);
+	private static HashMap<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(20);
 
 	/**
 	 * Is this action an hotkey ?
@@ -73,7 +71,7 @@ public abstract class ActionBase extends AbstractAction implements
 	// Instantiate a static jintellitype object
 	static {
 		if (Util.isUnderWindows()) {
-			jintellitype = new JIntellitype();
+			jintellitype = JIntellitype.getInstance();
 			// assign this class to be a IntellitypeListener
 			jintellitype.addIntellitypeListener(new IntellitypeListener() {
 
@@ -87,34 +85,25 @@ public abstract class ActionBase extends AbstractAction implements
 						// Perform right action according to intellitype command
 						switch (aCommand) {
 						case JIntellitype.APPCOMMAND_MEDIA_NEXTTRACK:
-							ActionManager.getAction(JajukAction.NEXT_TRACK)
-									.perform(null);
+							ActionManager.getAction(JajukAction.NEXT_TRACK).perform(null);
 							break;
 						case JIntellitype.APPCOMMAND_MEDIA_PLAY_PAUSE:
-							ActionManager.getAction(
-									JajukAction.PLAY_PAUSE_TRACK).perform(null);
+							ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK).perform(null);
 							break;
 						case JIntellitype.APPCOMMAND_MEDIA_PREVIOUSTRACK:
-							ActionManager.getAction(JajukAction.PREVIOUS_TRACK)
-									.perform(null);
+							ActionManager.getAction(JajukAction.PREVIOUS_TRACK).perform(null);
 							break;
 						case JIntellitype.APPCOMMAND_MEDIA_STOP:
-							ActionManager.getAction(JajukAction.STOP_TRACK)
-									.perform(null);
+							ActionManager.getAction(JajukAction.STOP_TRACK).perform(null);
 							break;
 						case JIntellitype.APPCOMMAND_VOLUME_DOWN:
-							ActionManager
-									.getAction(JajukAction.DECREASE_VOLUME)
-									.perform(null);
+							ActionManager.getAction(JajukAction.DECREASE_VOLUME).perform(null);
 							break;
 						case JIntellitype.APPCOMMAND_VOLUME_UP:
-							ActionManager
-									.getAction(JajukAction.INCREASE_VOLUME)
-									.perform(null);
+							ActionManager.getAction(JajukAction.INCREASE_VOLUME).perform(null);
 							break;
 						case JIntellitype.APPCOMMAND_VOLUME_MUTE:
-							ActionManager.getAction(JajukAction.MUTE_STATE)
-									.perform(null);
+							ActionManager.getAction(JajukAction.MUTE_STATE).perform(null);
 							break;
 						default:
 							Log.debug("Undefined INTELLITYPE message caught "
@@ -124,8 +113,7 @@ public abstract class ActionBase extends AbstractAction implements
 					} catch (Throwable e2) {
 						Log.error(e2);
 					} finally {
-						ObservationManager.notify(new Event(
-								EventSubject.EVENT_PLAYLIST_REFRESH));
+						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 					}
 				}
 
@@ -152,9 +140,8 @@ public abstract class ActionBase extends AbstractAction implements
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String pName, Icon icon, KeyStroke stroke,
-			boolean enabled, boolean bHotkey) {
-		//check hotkeys are enabled (false by default)
+	protected ActionBase(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+		// check hotkeys are enabled (false by default)
 		this.bHotkey = bHotkey && ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
 		String name = pName;
 		if (name != null) {
@@ -174,9 +161,8 @@ public abstract class ActionBase extends AbstractAction implements
 				// has not the focus. Note that all keys are nor hotkeys (given
 				// by bHotkey flag)
 				int index = hmIndexAction.size() - 1;
-				jintellitype.registerHotKey(index + 1,
-						swingToIntelliType(stroke.getModifiers()), stroke
-								.getKeyCode());
+				jintellitype.registerSwingHotKey(index + 1, stroke.getModifiers(), stroke
+						.getKeyCode());
 				// register the action with its index
 				hmIndexAction.put(index + 1, this);
 				// add the listener
@@ -189,26 +175,7 @@ public abstract class ActionBase extends AbstractAction implements
 		setEnabled(enabled);
 	}
 
-	/**
-	 * Swing modifier value to Jintellipad convertion
-	 * 
-	 * @param swingKeystrokeModifier
-	 * @return jintellipad modifier value
-	 */
-	public static int swingToIntelliType(int swingKeystrokeModifier) {
-		int mask = 0;
-		if ((swingKeystrokeModifier & InputEvent.SHIFT_MASK) == InputEvent.SHIFT_MASK) {
-			mask += JIntellitype.MOD_SHIFT;
-		}
-		if ((swingKeystrokeModifier & InputEvent.ALT_MASK) == InputEvent.ALT_MASK) {
-			mask += JIntellitype.MOD_ALT;
-		}
-		if ((swingKeystrokeModifier & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
-			mask += JIntellitype.MOD_CONTROL;
-		}
-		return mask;
-	}
-
+	
 	/**
 	 * Construct an action with the given name, icon and accelerator keystroke.
 	 * 
@@ -230,8 +197,7 @@ public abstract class ActionBase extends AbstractAction implements
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String name, Icon icon, String stroke,
-			boolean enabled, boolean bHotkey) {
+	protected ActionBase(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
 		this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
 	}
 
@@ -252,8 +218,7 @@ public abstract class ActionBase extends AbstractAction implements
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String name, KeyStroke stroke, boolean enabled,
-			boolean bHotkey) {
+	protected ActionBase(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
 		this(name, null, stroke, enabled, bHotkey);
 	}
 
@@ -277,8 +242,7 @@ public abstract class ActionBase extends AbstractAction implements
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String name, String stroke, boolean enabled,
-			boolean bHotkey) {
+	protected ActionBase(String name, String stroke, boolean enabled, boolean bHotkey) {
 		this(name, null, stroke, enabled, bHotkey);
 	}
 
@@ -297,8 +261,7 @@ public abstract class ActionBase extends AbstractAction implements
 	 *            focus (has a effect under windows only)
 	 * @see javax.swing.KeyStroke#getKeyStroke(String)
 	 */
-	protected ActionBase(Icon icon, KeyStroke stroke, boolean enabled,
-			boolean bHotkey) {
+	protected ActionBase(Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
 		this(null, icon, stroke, enabled, bHotkey);
 	}
 
@@ -320,8 +283,7 @@ public abstract class ActionBase extends AbstractAction implements
 	 *            focus (has a effect under windows only)
 	 * @see javax.swing.KeyStroke#getKeyStroke(String)
 	 */
-	protected ActionBase(Icon icon, String stroke, boolean enabled,
-			boolean bHotkey) {
+	protected ActionBase(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
 		this(null, icon, stroke, enabled, bHotkey);
 	}
 
@@ -474,8 +436,7 @@ public abstract class ActionBase extends AbstractAction implements
 		} catch (Throwable e2) {
 			Log.error(e2);
 		} finally {
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH));
+			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 
@@ -490,11 +451,11 @@ public abstract class ActionBase extends AbstractAction implements
 
 	// listen for hotkey
 	public void onHotKey(int aIdentifier) {
-		//Leave if user disabled hotkeys
-        if (!ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS)){
-		    return;
-        }
-        // check it is the right listener that caught the event
+		// Leave if user disabled hotkeys
+		if (!ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS)) {
+			return;
+		}
+		// check it is the right listener that caught the event
 		if (this.equals(hmIndexAction.get(aIdentifier))) {
 			try {
 				// Call action itself
@@ -502,8 +463,7 @@ public abstract class ActionBase extends AbstractAction implements
 			} catch (Throwable e2) {
 				Log.error(e2);
 			} finally {
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_PLAYLIST_REFRESH));
+				ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 			}
 		}
 	}

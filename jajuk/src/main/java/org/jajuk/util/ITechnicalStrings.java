@@ -110,10 +110,7 @@ public interface ITechnicalStrings {
 
 	/** Play icon columns size in pixels */
 	public static final int PLAY_COLUMN_SIZE = 20;
-
-	/** Max Number of thumbs displayed at the same time in catalog view */
-	public static final int CATALOG_PAGE_SIZE = 100;
-
+	
 	/** Proporion of best tracks */
 	public static final float BESTOF_PROPORTION = 0.05f;
 
@@ -967,7 +964,7 @@ public interface ITechnicalStrings {
 
 	// and feel name
 
-	// statup mode
+	// startup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
@@ -982,7 +979,8 @@ public interface ITechnicalStrings {
 
 	public static final String STARTUP_MODE_NOVELTIES = "novelties";
 
-	// configuration keys
+	//--- Configuration keys ---
+	
 	public static final String CONF_RELEASE = "jajuk.release";
 
 	public static final String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
@@ -995,7 +993,7 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_STATE_INTRO = "jajuk.state.mode.intro";
 
-	// whether user exited jajuk in stop state or playing state
+	/**Whether user exited jajuk in stop state or playing state*/
 	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing";
 
 	public static final String CONF_STARTUP_FILE = "jajuk.startup.file";
@@ -1030,19 +1028,19 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 
-	// number of visible planned tracks
+	/**Number of visible planned tracks*/
 	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";
 
-	// default action (play or push) when clicking on an item
+	/**Default action (play or push) when clicking on an item*/
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click";
 
-	// default action (play or push) when droping on an item
+	/**Default action (play or push) when dropping on an item*/
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop";
 
-	// synchronize table and tree views
+	/**Synchronize table and tree views*/
 	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
 
-	// show popup
+	/**Show popup*/
 	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup";
 
 	public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
@@ -1057,25 +1055,25 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
 
-	// contains files id separated by a colon
+	/**Contains files id separated by a colon*/
 	public static final String CONF_BOOKMARKS = "jajuk.bookmarks";
 
-	// show jajuk window at startup
+	/**Show jajuk window at startup*/
 	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup";
 
-	// best of size
+	/**Best of size*/
 	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size";
 
-	// gain (float)
+	/**Gain (float)*/
 	public static final String CONF_VOLUME = "jajuk.volume";
 
-	// use regular expressions ?
+	/**Use regular expressions ?*/
 	public static final String CONF_REGEXP = "jajuk.regexp";
 
-	// Collection backup size in MB
+	/**Collection backup size in MB*/
 	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size";
 
-	// collection file charset (utf-8 or utf-16)
+	/**Collection file charset (utf-8 or utf-16)*/
 	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";
 
 	public static final String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
@@ -1104,106 +1102,109 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
 
-	// Load cover at each track
+	/**Load cover at each track*/
 	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track";
 
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 
-	// Last Option selected tab
+	/**Last Option selected tab*/
 	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab";
 
-	// data buffer size in bytes
+	/**Data buffer size in bytes*/
 	public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size";
 
-	// Audio buffer size in bytes
+	/**Audio buffer size in bytes*/
 	public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size";
 
-	// Window position and size
+	/**Window position and size*/
 	public static final String CONF_WINDOW_POSITION = "jajuk.window_position";
 
-	// Physical table columns
+	/**Physical table columns*/
 	public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
 
-	// Physical table edition state
+	/**Physical table edition state*/
 	public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition";
 
-	// Logical table columns
+	/**Logical table columns*/
 	public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns";
 
-	// playlist editor columns to display
+	/**Playlist editor columns to display*/
 	public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
 
-	// Logical table edition state
+	/**Logical table edition state*/
 	public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition";
 
-	// Catalog items size
+	/**Catalog items size*/
 	public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";
 
-	// Catalog items size
+	/**Catalog items size*/
 	public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover";
 
-	// Catalog sorter
+	/**Catalog sorter**/
 	public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter";
 
-	// Catalog filter
+	/**Catalog filter**/
 	public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter";
 
-	// Display tips on startup
+	/**Display tips on startup*/
 	public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup";
 
-	// Index of current displayed tip
+	/**Index of current displayed tip*/
 	public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index";
 
-	// wikipedia language
+	/**Wikipedia language**/
 	public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang";
 
-	// cross fade duration in secs
+	/**Cross fade duration in secs*/
 	public static final String CONF_FADE_DURATION = "jajuk.fade_duration";
 
-	// logical tree sort order
+	/**Logical tree sort order*/
 	public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";
 
-	// logical tree sort order
+	/**Logical tree sort order**/
 	public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";
 
-	// default dj
+	/**Default dj */
 	public static final String CONF_DEFAULT_DJ = "jajuk.default_dj";
 
-	// default ambience
+	/**Default ambience**/
 	public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
 
-	// wrong player not show again flag
+	/*Wrong player not show again flag*/
 	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
 
-	// Concurrent session not show again flag
+	/**Concurrent session not show again flag*/
 	public static final String CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION = "jajuk.not_show_again.concurrent_session";
 
-	// Cross fade alert not show again flag
+	/**Cross fade alert not show again flag **/
 	public static final String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";
 
-	// Global random mode: song or album level ?
+	/**Global random mode: song or album level ? **/
 	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";
 
-	// Novelties random mode: song or album level ?
+	/**Novelties random mode: song or album level ?**/
 	public static final String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode";
 
-	// animation pattern
+	/**Animation pattern**/
 	public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
 
-	// Initial frame size/position forced value
+	/**Initial frame size/position forced value**/
 	public static final String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
 
-	// Hotkeys flag
+	/**Hotkeys flag **/
 	public static final String CONF_OPTIONS_HOTKEYS = "jajuk.options.use_hotkeys";
 
-	// MPLayer additional arguments
+	/**MPLayer additional arguments **/
 	public static final String CONF_MPLAYER_ARGS = "jajuk.player.mplayer_args";
 
-	// Player additional environment variables
+	/**MPlayer additional environment variables **/
 	public static final String CONF_ENV_VARIABLES = "jajuk.player.env_variables";
 
+	/**Max Number of thumbs displayed at the same time in catalog view */ 
+	public static final String CONF_CATALOG_PAGE_SIZE = "jajuk.catalog.pages_size";
+	
 	// Shuffle/novelties mode
 	public static final String MODE_ALBUM = "album";
 

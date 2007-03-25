@@ -240,8 +240,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JCheckBox jcbBackup;
 
-	JLabel jlBackupSize;
-
 	JSlider backupSize;
 
 	JLabel jlCollectionEncoding;
@@ -300,6 +298,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	PathSelector psJajukWorkspace;
 	
+	JLabel jlCatalogPages;
+
+	JSlider jsCatalogPages;
+
 	JajukJPanel jpOKCancel;
 
 	JButton jbOK;
@@ -747,8 +749,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbBackup.setOpaque(false);
 		jcbBackup.addActionListener(this);
 		jcbBackup.setToolTipText(Messages.getString("ParameterView.117")); //$NON-NLS-1$
-		jlBackupSize = new JLabel(Messages.getString("ParameterView.118")); //$NON-NLS-1$
-		jlBackupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
 		backupSize = new JSlider(0, 100);
 		backupSize.setOpaque(false);
 		backupSize.setMajorTickSpacing(10);
@@ -789,6 +789,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
 				.getInstance()), Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
+		//Catalog size
+		jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
+		jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
+		jsCatalogPages = new JSlider(0, 1000);
+		jsCatalogPages.setValue(ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE));
+		jsCatalogPages.setOpaque(false);
+		jsCatalogPages.setMajorTickSpacing(100);
+		jsCatalogPages.setMinorTickSpacing(100);
+		jsCatalogPages.setPaintTicks(true);
+		jsCatalogPages.setPaintLabels(true);
+		jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
+		
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
 				{ 20, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
@@ -801,16 +813,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(jlCollectionEncoding, "0,2");//$NON-NLS-1$
 		jpAdvanced.add(jcbCollectionEncoding, "1,2");//$NON-NLS-1$
 		jpAdvanced.add(jcbBackup, "0,3");//$NON-NLS-1$
-		jpAdvanced.add(jlBackupSize, "0,4");//$NON-NLS-1$
-		jpAdvanced.add(backupSize, "1,4");//$NON-NLS-1$        
-		jpAdvanced.add(jlLogLevel, "0,5");//$NON-NLS-1$        
-		jpAdvanced.add(scbLogLevel, "1,5");//$NON-NLS-1$
-		jpAdvanced.add(jlMPlayerArgs, "0,6");//$NON-NLS-1$        
-		jpAdvanced.add(jtfMPlayerArgs, "1,6");//$NON-NLS-1$
-		jpAdvanced.add(jlEnvVariables, "0,7");//$NON-NLS-1$        
-		jpAdvanced.add(jtfEnvVariables, "1,7");//$NON-NLS-1$
-		jpAdvanced.add(jlJajukWorkspace, "0,8");//$NON-NLS-1$
-		jpAdvanced.add(psJajukWorkspace, "1,8");//$NON-NLS-1$
+		jpAdvanced.add(backupSize, "1,3");//$NON-NLS-1$        
+		jpAdvanced.add(jlLogLevel, "0,4");//$NON-NLS-1$        
+		jpAdvanced.add(scbLogLevel, "1,4");//$NON-NLS-1$
+		jpAdvanced.add(jlMPlayerArgs, "0,5");//$NON-NLS-1$        
+		jpAdvanced.add(jtfMPlayerArgs, "1,5");//$NON-NLS-1$
+		jpAdvanced.add(jlEnvVariables, "0,6");//$NON-NLS-1$        
+		jpAdvanced.add(jtfEnvVariables, "1,6");//$NON-NLS-1$
+		jpAdvanced.add(jlJajukWorkspace, "0,7");//$NON-NLS-1$
+		jpAdvanced.add(psJajukWorkspace, "1,7");//$NON-NLS-1$
+		jpAdvanced.add(jlCatalogPages, "0,8");//$NON-NLS-1$
+		jpAdvanced.add(jsCatalogPages, "1,8");//$NON-NLS-1$
 
 		// - Network
 		jpNetwork = new JajukJPanel();
@@ -1096,11 +1109,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					// if backup option is unchecked, reset backup size
 					if (jcbBackup.isSelected()) {
 						backupSize.setEnabled(true);
-						jlBackupSize.setEnabled(true);
 						backupSize.setValue(ConfigurationManager.getInt(CONF_BACKUP_SIZE));
 					} else {
 						backupSize.setEnabled(false);
-						jlBackupSize.setEnabled(false);
 						backupSize.setValue(0); //$NON-NLS-1$
 					}
 				} else if (e.getSource() == jcbProxy) {
@@ -1295,6 +1306,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
 		ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET, jcbCollectionEncoding
 				.getSelectedItem().toString());
+		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
 		ConfigurationManager.setProperty(CONF_ENV_VARIABLES, jtfEnvVariables.getText());
@@ -1348,6 +1360,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.commit();
 		// notify playlist editor (useful for novelties)
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+		//Force a full refresh (usefull for catalog view for instance)
+		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		// display a message
 		InformationJPanel.getInstance().setMessage(
 				Messages.getString("ParameterView.109"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
@@ -1427,11 +1441,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (iBackupSize <= 0) { // backup size =0 means no backup
 			jcbBackup.setSelected(false);
 			backupSize.setEnabled(false);
-			jlBackupSize.setEnabled(false);
 		} else {
 			jcbBackup.setSelected(true);
 			backupSize.setEnabled(true);
-			jlBackupSize.setEnabled(true);
 		}
 		backupSize.setValue(iBackupSize);
 		jcbCollectionEncoding.setSelectedItem(ConfigurationManager

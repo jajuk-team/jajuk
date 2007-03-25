@@ -90,8 +90,11 @@ public class CoverView extends ViewAdapter implements Observer,
 
 	private static final long serialVersionUID = 1L;
 
-	/** Current directory used as a cache for perfs */
-	private Directory dirCurrent;
+	/** Reference Filefor cover */
+	private org.jajuk.base.File fileReference;
+
+	/** File directory used as a cache for perfs */
+	private Directory dirReference;
 
 	/** List of available covers for the current file */
 	private ArrayList<Cover> alCovers = new ArrayList<Cover>(20);
@@ -157,6 +160,15 @@ public class CoverView extends ViewAdapter implements Observer,
 	 *            ID used to store independently parameters of views
 	 */
 	public CoverView() {
+	}
+	
+	/**
+	 * Constructor
+	 * @param file Reference file
+	 * 
+	 */
+	public CoverView(org.jajuk.base.File file) {
+		this.fileReference = file;
 	}
 
 	/*
@@ -260,7 +272,7 @@ public class CoverView extends ViewAdapter implements Observer,
 						// Accuracy combo
 						TableLayout.PREFERRED, 5,
 						// searching icon
-						25, 5 }, { 3, 27, 3 } };
+						25, 5 }, { 3, 30, 3 } };
 		TableLayout layout = new TableLayout(sizeControl);
 		jpControl.setLayout(layout);
 
@@ -338,17 +350,28 @@ public class CoverView extends ViewAdapter implements Observer,
 			try {
 				searching(true);
 				if (EventSubject.EVENT_COVER_REFRESH.equals(subject)) {
-					org.jajuk.base.File fCurrent = FIFO.getInstance()
+					//Ignore this event if a reference file has been set and if this 
+					//event has already been handled 
+					if (this.fileReference != null && this.dirReference != null){
+						return;
+					}
+					org.jajuk.base.File fCurrent = this.fileReference;
+					//check if a file has been given for this cover view
+					//if not, take current cover
+					if (fCurrent == null){
+						fCurrent = FIFO.getInstance()
 							.getCurrentFile();
+					}
+					//no current cover
 					if (fCurrent == null) {
-						this.dirCurrent = null;
+						this.dirReference = null;
 					} else {
 						// store this dir
-						this.dirCurrent = fCurrent.getDirectory();
+						this.dirReference = fCurrent.getDirectory();
 					}
 					// remove all existing covers
 					alCovers.clear();
-					if (this.dirCurrent == null) {
+					if (this.dirReference == null) {
 						alCovers.add(coverDefault);
 						index = 0;
 						displayCurrentCover();
@@ -508,15 +531,23 @@ public class CoverView extends ViewAdapter implements Observer,
 					displayCurrentCover();
 				} else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
 						|| EventSubject.EVENT_ZERO.equals(subject)) {
+					//Ignore this event if a reference file has been set
+					if (this.fileReference != null){
+						return;
+					}
 					setFoundText(""); //$NON-NLS-1$ 
 					setSizeText("");//$NON-NLS-1$
 					alCovers.clear();
 					alCovers.add(coverDefault); // add the default cover
 					index = 0;
 					displayCurrentCover();
-					dirCurrent = null;
+					dirReference = null;
 				} else if (EventSubject.EVENT_COVER_CHANGE.equals(subject)
 						&& isInCurrentPerspective()) {
+					//Ignore this event if a reference file has been set
+					if (this.fileReference != null){
+						return;
+					}
 					// choose a random cover
 					index = (int) (Math.random() * alCovers.size() - 1);
 					displayCurrentCover();
@@ -922,7 +953,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			// If this was the absolute cover, remove the reference in the
 			// collection
 			if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
-				dirCurrent.removeProperty("default_cover"); //$NON-NLS-1$
+				dirReference.removeProperty("default_cover"); //$NON-NLS-1$
 			}
 			// reorganize covers
 			synchronized (bLock) {
@@ -939,7 +970,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			Cover cover = alCovers.get(index);
 			String sFilename = Util.getOnlyFile(cover.getURL().toString());
 			if (cover.getType() == Cover.REMOTE_COVER) {
-				String sFilePath = dirCurrent.getFio().getPath()
+				String sFilePath = dirReference.getFio().getPath()
 						+ "/" + sFilename; //$NON-NLS-1$
 				try {
 					// copy file from cache
@@ -973,7 +1004,7 @@ public class CoverView extends ViewAdapter implements Observer,
 						InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			}
 			// then make it the default cover in this directory
-			dirCurrent.setProperty("default_cover", sFilename); //$NON-NLS-1$
+			dirReference.setProperty("default_cover", sFilename); //$NON-NLS-1$
 
 		} else if (e.getSource() == jbSave
 				&& ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
@@ -981,7 +1012,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			new Thread() {
 				public void run() {
 					Cover cover = alCovers.get(index);
-					JFileChooser jfchooser = new JFileChooser(dirCurrent
+					JFileChooser jfchooser = new JFileChooser(dirReference
 							.getFio());
 					FileFilter filter = new FileFilter() {
 						public boolean accept(File file) {
@@ -999,7 +1030,7 @@ public class CoverView extends ViewAdapter implements Observer,
 					jfchooser.setFileFilter(filter);
 					jfchooser
 							.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
-					File finalFile = new File(dirCurrent.getFio().getPath()
+					File finalFile = new File(dirReference.getFio().getPath()
 							+ "/" + Util.getOnlyFile(cover.getURL().toString())); //$NON-NLS-1$
 					jfchooser.setSelectedFile(finalFile);
 					int returnVal = jfchooser.showSaveDialog(Main.getWindow());
@@ -1037,7 +1068,7 @@ public class CoverView extends ViewAdapter implements Observer,
 						return;
 					}
 					String sFilePath = null;
-					sFilePath = dirCurrent.getFio().getPath()
+					sFilePath = dirReference.getFio().getPath()
 							+ "/" + Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
 					try {
 						// copy file from cache
@@ -1075,7 +1106,7 @@ public class CoverView extends ViewAdapter implements Observer,
 		// refresh thumbs
 		try {
 			for (int i = 0; i < 4; i++) {
-				Album album = dirCurrent.getFiles().iterator().next()
+				Album album = dirReference.getFiles().iterator().next()
 						.getTrack().getAlbum();
 				File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/'
 						+ (50 + 50 * i) + "x" + (50 + 50 * i) + '/'
