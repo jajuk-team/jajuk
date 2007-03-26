@@ -123,6 +123,9 @@ public interface ITechnicalStrings {
 	/** Number of minutes in an hour */
 	public static final int MINUTES_IN_AN_HOUR = 60;
 
+	/** Default hostame used in case of problem*/
+	public static final String DEFAULT_HOSTNAME = "localhost";
+
 	/** Number of hours in a day */
 	public static final int HOURS_IN_A_DAY = 24;
 

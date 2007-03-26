@@ -204,7 +204,7 @@ public class Main implements ITechnicalStrings {
 
 			// Set a session file
 			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
-					+ InetAddress.getLocalHost().getHostName() + '_'
+					+ Util.getHostName() + '_'
 					+ System.getProperty("user.name"));
 			sessionUser.mkdir();
 
