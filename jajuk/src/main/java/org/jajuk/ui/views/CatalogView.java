@@ -542,7 +542,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						}
 						// get a track for each album
 						// TODO: get two tracks of album and compare Author, if
-						// !=, set Author to "Various Artist"
+						// !=, set Author to "Various Artists"
 						Track track1 = hmAlbumTrack.get(album1);
 						Track track2 = hmAlbumTrack.get(album2);
 
