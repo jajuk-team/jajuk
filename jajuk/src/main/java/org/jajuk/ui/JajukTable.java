@@ -21,6 +21,8 @@
 package org.jajuk.ui;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +30,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -67,16 +70,14 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 *            is this table sortable
 	 * @sConf: configuration variable used to store columns conf
 	 */
-	public JajukTable(TableModel model, TableColumnModel colModel,
-			boolean bSortable, String sConf) {
+	public JajukTable(TableModel model, TableColumnModel colModel, boolean bSortable, String sConf) {
 		super(model, colModel);
 		this.sConf = sConf;
 		setShowGrid(false);
 		setOpaque(false);
 		init(bSortable);
+		setfont();
 	}
-	
-	
 
 	/**
 	 * Constructor
@@ -93,6 +94,31 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		setShowGrid(false);
 		setOpaque(false);
 		init(bSortable);
+		setfont();
+	}
+
+	/**
+	 * Set font by setting a default cell renderer on the table
+	 *
+	 */
+	private void setfont(){
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true)
+				.iterator();
+		while (it.hasNext()) {
+			TableColumnExt col = (TableColumnExt) it.next();
+						col.setCellRenderer(new DefaultTableCellRenderer() {
+					private static final long serialVersionUID = 3566323371751785978L;
+
+					public Component getTableCellRendererComponent(JTable table, Object value,
+							boolean isSelected, boolean hasFocus, int row, int column) {
+						super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+						setFont(new Font(
+								"Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
+						return this;
+					}
+				});
+		}
+			
 	}
 
 	/**
@@ -109,11 +135,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	private void init(boolean bSortable) {
 		super.setSortable(bSortable);
 		super.setColumnControlVisible(true);
-		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,
-				Color.BLACK);
+		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY, Color.BLACK);
 		Highlighter hAlternate = new AlternateRowHighlighter();
-		HighlighterPipeline pipeHighlight = new HighlighterPipeline(
-				new Highlighter[] { hAlternate,highlighter });
+		HighlighterPipeline pipeHighlight = new HighlighterPipeline(new Highlighter[] { hAlternate,
+				highlighter });
 		setHighlighters(pipeHighlight);
 		setRolloverEnabled(true);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -124,12 +149,11 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 * Select columns to show colsToShow list of columns id to keep
 	 */
 	public void showColumns(ArrayList<String> colsToShow) {
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel())
-				.getColumns(false).iterator();
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-			if (!colsToShow.contains(((JajukTableModel) getModel())
-					.getIdentifier(col.getModelIndex()))) {
+			if (!colsToShow.contains(((JajukTableModel) getModel()).getIdentifier(col
+					.getModelIndex()))) {
 				col.setVisible(false);
 			}
 		}
@@ -188,12 +212,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 */
 	public void createColumnsConf() {
 		StringBuffer sb = new StringBuffer();
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel())
-				.getColumns(true).iterator();
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-			String sIdentifier = ((JajukTableModel) getModel())
-					.getIdentifier(col.getModelIndex());
+			String sIdentifier = ((JajukTableModel) getModel()).getIdentifier(col.getModelIndex());
 			if (col.isVisible()) {
 				sb.append(sIdentifier + ","); //$NON-NLS-1$
 			}

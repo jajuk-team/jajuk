@@ -217,8 +217,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				int iXspace = 5;
 				double sizeControl[][] = {
 						{ iXspace, 20, 3 * iXspace, TableLayout.FILL, iXspace, 0.3,
-								TableLayout.FILL, TableLayout.FILL, iXspace, 0.3, 2},
-						{ 5, 25, 5 } };
+								TableLayout.FILL, TableLayout.FILL, iXspace, 0.3, 2 }, { 5, 25, 5 } };
 				TableLayout layout = new TableLayout(sizeControl);
 				jpControl.setLayout(layout);
 				jpControl.add(jtbEditable, "1,1"); //$NON-NLS-1$
@@ -243,7 +242,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				jtable.showColumns(jtable.getColumnsConf());
 				applyFilter(null, null);
 				jtable.packTable(5);
-				// Register on the list for subject we are interrested in
+				// Register on the list for subject we are interested in
 				ObservationManager.register(AbstractTableView.this);
 				// refresh columns conf in case of some attributes been removed
 				// or added before view instanciation
@@ -378,7 +377,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			if (XML_STYLE.equals(sIdentifier)) {
 				JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
 				jcb.setEditable(true);
-				AutoCompleteDecorator.decorate(jcb , false);
+				AutoCompleteDecorator.decorate(jcb, false);
 				col.setCellEditor(new ComboBoxCellEditor(jcb));
 			}
 			// create a combo box for authors, note that we can't add new
@@ -386,7 +385,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			if (XML_AUTHOR.equals(sIdentifier)) {
 				JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
 				jcb.setEditable(true);
-				AutoCompleteDecorator.decorate(jcb , false);
+				AutoCompleteDecorator.decorate(jcb, false);
 				col.setCellEditor(new ComboBoxCellEditor(jcb));
 			}
 			// create a button for playing
@@ -465,8 +464,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 							+ ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
 					InformationJPanel.INFORMATIVE);
 			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); // TBI
-																						// see
-																						// later
+			// see
+			// later
 			// for a smarter
 			// event
 		} catch (NoneAccessibleFileException none) {

@@ -301,6 +301,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JLabel jlCatalogPages;
 
 	JSlider jsCatalogPages;
+	
+	JajukJPanel jpUI; 
+	
+	JLabel jlFonts;
+	
+	JSlider jsFonts;
 
 	JajukJPanel jpOKCancel;
 
@@ -789,23 +795,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
 				.getInstance()), Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
-		//Catalog size
-		jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
-		jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
-		jsCatalogPages = new JSlider(0, 1000);
-		jsCatalogPages.setValue(ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE));
-		jsCatalogPages.setOpaque(false);
-		jsCatalogPages.setMajorTickSpacing(100);
-		jsCatalogPages.setMinorTickSpacing(100);
-		jsCatalogPages.setPaintTicks(true);
-		jsCatalogPages.setPaintLabels(true);
-		jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
 		
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
 				{ 20, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
 						TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-						TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.PREFERRED } };
+						TableLayout.PREFERRED, TableLayout.PREFERRED } };
 		TableLayout layout = new TableLayout(sizeAdvanced);
 		layout.setVGap(15);
 		jpAdvanced.setLayout(layout);
@@ -822,9 +817,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(jtfEnvVariables, "1,6");//$NON-NLS-1$
 		jpAdvanced.add(jlJajukWorkspace, "0,7");//$NON-NLS-1$
 		jpAdvanced.add(psJajukWorkspace, "1,7");//$NON-NLS-1$
-		jpAdvanced.add(jlCatalogPages, "0,8");//$NON-NLS-1$
-		jpAdvanced.add(jsCatalogPages, "1,8");//$NON-NLS-1$
-
+		
 		// - Network
 		jpNetwork = new JajukJPanel();
 		double sizeNetwork[][] = {
@@ -986,7 +979,43 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpCovers.add(jcbPreLoad, "0,5"); //$NON-NLS-1$
 		jpCovers.add(jlCoverSize, "0,7"); //$NON-NLS-1$
 		jpCovers.add(jcbCoverSize, "1,7"); //$NON-NLS-1$
-
+		
+		// -- User interface --
+		jpUI = new JajukJPanel();
+		double sizeUI[][] = {
+				{ 0.5, 0.5 },
+				{ 20,TableLayout.PREFERRED,TableLayout.PREFERRED } };
+		TableLayout layoutUI = new TableLayout(sizeUI);
+		layoutUI.setHGap(10);
+		layoutUI.setVGap(15);
+		jpUI.setLayout(layoutUI);
+		//Catalog size
+		jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
+		jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
+		jsCatalogPages = new JSlider(0, 1000, ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE));
+		jsCatalogPages.setOpaque(false);
+		jsCatalogPages.setSnapToTicks(true);
+		jsCatalogPages.setMinorTickSpacing(100);
+		jsCatalogPages.setMajorTickSpacing(100);
+		jsCatalogPages.setPaintTicks(true);
+		jsCatalogPages.setPaintLabels(true);
+		jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
+		//Font selector
+		jlFonts = new JLabel(Messages.getString("ParameterView.223"));
+		jsFonts = new JSlider(6, 20, ConfigurationManager.getInt(CONF_FONTS_SIZE));
+		jsFonts.setOpaque(false);
+		jsFonts.setSnapToTicks(true);
+		jsFonts.setMajorTickSpacing(1);
+		jsFonts.setMinorTickSpacing(1);
+		jsFonts.setPaintTicks(true);
+		jsFonts.setPaintLabels(true);
+		jsFonts.setToolTipText(Messages.getString("ParameterView.224")); //$NON-NLS-1$
+		//Add items
+		jpUI.add(jlCatalogPages, "0,1");//$NON-NLS-1$
+		jpUI.add(jsCatalogPages, "1,1");//$NON-NLS-1$
+		jpUI.add(jlFonts, "0,2");//$NON-NLS-1$
+		jpUI.add(jsFonts, "1,2");//$NON-NLS-1$
+		
 		// --OK/cancel panel
 		Dimension dim = new Dimension(200, 20);
 		jpOKCancel = new JajukJPanel();
@@ -1007,8 +1036,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// add main panels
 		jtpMain = new JTabbedPane();
 		jtpMain.addTab(Messages.getString("ParameterView.33"), jpOptions); //$NON-NLS-1$
-		// TODO change label
-		jtpMain.addTab(Messages.getString("JajukJMenuBar.9"), jpModes); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.226"), jpModes); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.225"), jpUI); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.19"), jpStart); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.98"), jpTags); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.8"), jpHistory); //$NON-NLS-1$
@@ -1243,7 +1272,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			ConfigurationManager.setProperty(CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
 		}
 		int oldDuration = ConfigurationManager.getInt(CONF_FADE_DURATION);
-		// Show an hidable message if user set cross fade under linux for sound
+		// Show an hiddable message if user set cross fade under linux for sound
 		// server information
 		if (Util.isUnderLinux() && oldDuration == 0 && oldDuration != crossFadeDuration.getValue()) {
 			Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
@@ -1306,10 +1335,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
 		ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET, jcbCollectionEncoding
 				.getSelectedItem().toString());
-		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
 		ConfigurationManager.setProperty(CONF_ENV_VARIABLES, jtfEnvVariables.getText());
+		//UI
+		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
+		int oldFont = ConfigurationManager.getInt(CONF_FONTS_SIZE);
+		//Display a message if font changed
+		if (oldFont != jsFonts.getValue()){
+			Messages.showInfoMessage(Messages.getString("ParameterView.227"));
+		}
+		ConfigurationManager.setProperty(CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
+		
 		// If jajuk home changes, write new path in bootstrap file
 		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
 			// Check workspace directory
@@ -1360,7 +1397,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.commit();
 		// notify playlist editor (useful for novelties)
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-		//Force a full refresh (usefull for catalog view for instance)
+		//Force a full refresh (useful for catalog view for instance)
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		// display a message
 		InformationJPanel.getInstance().setMessage(

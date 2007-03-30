@@ -315,7 +315,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					}
 					File file = FileManager.getInstance().getFileByID(
 							(String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
-					// check show baloon option
+					// check show balloon option
 					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP)) {
 						String sOut = "";
 						if (Util.isUnderLinux()) {
@@ -332,7 +332,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						// display a "Ready to play" message
 						sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
 					} else {
-						// Display a full tootip with author...
+						// Display a full tooltip with author...
 						if (Util.isUnderLinux()) {
 							sOut = getHTMLFormatText(file);
 						} else {

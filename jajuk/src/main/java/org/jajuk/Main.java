@@ -576,42 +576,60 @@ public class Main implements ITechnicalStrings {
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/50x50"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/"+ THUMBNAIL_SIZE_50x50);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/"+ THUMBNAIL_SIZE_100x100); 
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_150x150);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200"); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_200x200);
+		if (!fThumbs.exists()) {
+			fThumbs.mkdir();
+		}
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_250x250);
+		if (!fThumbs.exists()) {
+			fThumbs.mkdir();
+		}
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/"+ THUMBNAIL_SIZE_300x300);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
 		// check for default covers
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/"+THUMBNAIL_SIZE_50x50+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 50);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/"+THUMBNAIL_SIZE_100x100+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 100);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/"+THUMBNAIL_SIZE_150x150+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 150);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/"+THUMBNAIL_SIZE_200x200+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 200);
+		}
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS
+				+ "/"+THUMBNAIL_SIZE_250x250+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		if (!fThumbs.exists()) {
+			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 250);
+		}
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS
+				+ "/"+THUMBNAIL_SIZE_300x300+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		if (!fThumbs.exists()) {
+			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 300);
 		}
 		// check for djs directory
 		File fdjs = Util.getConfFileByPath(FILE_DJ_DIR);

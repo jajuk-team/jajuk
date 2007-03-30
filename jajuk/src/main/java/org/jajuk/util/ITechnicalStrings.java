@@ -1208,7 +1208,10 @@ public interface ITechnicalStrings {
 	/**Max Number of thumbs displayed at the same time in catalog view */ 
 	public static final String CONF_CATALOG_PAGE_SIZE = "jajuk.catalog.pages_size";
 	
-	// Shuffle/novelties mode
+	/**Font size*/ 
+	public static final String CONF_FONTS_SIZE = "jajuk.fonts_size";
+		
+	/** Shuffle/novelties mode*/
 	public static final String MODE_ALBUM = "album";
 
 	public static final String MODE_TRACK = "track";
@@ -1494,6 +1497,10 @@ public interface ITechnicalStrings {
 	public static final String THUMBNAIL_SIZE_150x150 = "150x150";
 
 	public static final String THUMBNAIL_SIZE_200x200 = "200x200";
+
+	public static final String THUMBNAIL_SIZE_250x250 = "250x250";
+
+	public static final String THUMBNAIL_SIZE_300x300 = "300x300";
 
 	// Patterns
 	public static final String PATTERN_ARTIST = "%artist";

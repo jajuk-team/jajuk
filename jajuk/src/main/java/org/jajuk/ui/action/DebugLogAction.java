@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -50,7 +51,8 @@ public class DebugLogAction extends ActionBase {
 		jtaTraces.setMargin(new Insets(10, 10, 10, 10));
 		jtaTraces.setOpaque(true);
 		jtaTraces.setForeground(Color.DARK_GRAY);
-		jtaTraces.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+		jtaTraces.setFont(new Font(
+				"Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
 		JDialog dialog = new JDialog(Main.getWindow(), Messages
 				.getString("DebugLogAction.0"), true);
 		dialog.add(new JScrollPane(jtaTraces));

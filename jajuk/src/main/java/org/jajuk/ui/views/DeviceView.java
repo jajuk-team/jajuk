@@ -176,7 +176,7 @@ public class DeviceView extends ViewAdapter implements IView,
 		double size[][] = { { TableLayout.FILL }, { TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		add(jsp, "0,0"); //$NON-NLS-1$
-		// Register on the list for subject we are interrested in
+		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 	}
 
