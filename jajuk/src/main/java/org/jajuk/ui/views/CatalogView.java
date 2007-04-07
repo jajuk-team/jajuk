@@ -20,6 +20,31 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Filter;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -35,7 +60,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,31 +88,6 @@ import javax.swing.JToolBar;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.DefaultMouseWheelListener;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukButton;
-import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Filter;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 import ext.FlowScrollPanel;
 import ext.SwingWorker;
@@ -490,59 +489,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		return eventSubjectSet;
 	}
 
-	/**
-	 * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs
-	 * directory if it doesn't exist yet
-	 * 
-	 * @param album
-	 * @return whether a new cover has been created
-	 */
-	private boolean refreshThumbnail(Album album) {
-		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + sizes.get(jsSize.getValue())
-				+ '/' + album.getId() + '.' + EXT_THUMB);
-		File fCover = null;
-		if (!fThumb.exists()) {
-			// search for local covers in all directories mapping the
-			// current track to reach other
-			// devices covers and display them together
-			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
-			if (tracks.size() == 0) {
-				return false;
-			}
-			// take first track found to get associated directories as we
-			// assume all tracks for an album are in the same directory
-			Track trackCurrent = tracks.iterator().next();
-			fCover = trackCurrent.getAlbum().getCoverFile();
-			if (fCover == null) {
-				try {
-					// use void file to store the fact we didn't find a
-					// cover, too long to scan again
-					fThumb.createNewFile();
-				} catch (Exception e) {
-					Log.error(e);
-				}
-			} else {
-				try {
-					Util.createThumbnail(fCover, fThumb, getSelectedSize());
-					InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
-							+ ' ' + album.getName2(), InformationJPanel.INFORMATIVE);
-					return true;
-				} catch (Exception e) {
-					// create a void thumb to avoid trying to create again
-					// this thumb
-					try {
-						fThumb.createNewFile();
-					} catch (IOException e1) {
-						Log.error(e1);
-					}
-					Log.error(e);
-				}
-			}
-		}
-		return false; // thumb already exist
-
-	}
-
+	
 	/**
 	 * Populate the catalog
 	 */
@@ -940,7 +887,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		void populate() {
 			// create the thumbnail if it doesn't exist
-			refreshThumbnail(album);
+			Util.refreshThumbnail(album,sizes.get(jsSize.getValue()));
 			if (!fCover.exists() || fCover.length() == 0) {
 				bNoCover = true;
 				this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'

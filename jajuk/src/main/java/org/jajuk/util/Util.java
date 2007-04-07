@@ -1769,5 +1769,59 @@ public class Util implements ITechnicalStrings {
 		}
 		return sHostname;
 	}
+	
+	/**
+	 * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs
+	 * directory if it doesn't exist yet
+	 * 
+	 * @param album
+	 * @return whether a new cover has been created
+	 */
+	public static boolean refreshThumbnail(Album album,String size) {
+		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size
+				+ '/' + album.getId() + '.' + EXT_THUMB);
+		File fCover = null;
+		if (!fThumb.exists()) {
+			// search for local covers in all directories mapping the
+			// current track to reach other
+			// devices covers and display them together
+			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+			if (tracks.size() == 0) {
+				return false;
+			}
+			// take first track found to get associated directories as we
+			// assume all tracks for an album are in the same directory
+			Track trackCurrent = tracks.iterator().next();
+			fCover = trackCurrent.getAlbum().getCoverFile();
+			if (fCover == null) {
+				try {
+					// use void file to store the fact we didn't find a
+					// cover, too long to scan again
+					fThumb.createNewFile();
+				} catch (Exception e) {
+					Log.error(e);
+				}
+			} else {
+				try {
+					int iSize = Integer.parseInt(new StringTokenizer(size,"x").nextToken());
+					Util.createThumbnail(fCover, fThumb, iSize);
+					InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
+							+ ' ' + album.getName2(), InformationJPanel.INFORMATIVE);
+					return true;
+				} catch (Exception e) {
+					// create a void thumb to avoid trying to create again
+					// this thumb
+					try {
+						fThumb.createNewFile();
+					} catch (IOException e1) {
+						Log.error(e1);
+					}
+					Log.error(e);
+				}
+			}
+		}
+		return false; // thumb already exist
+	}
+
 
 }

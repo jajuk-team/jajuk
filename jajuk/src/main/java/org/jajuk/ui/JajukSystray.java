@@ -432,7 +432,16 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	public String getHTMLFormatText(File file) {
 		String sOut = "";
 		if (file != null) {
-			sOut += "<HTML>"; //$NON-NLS-1$
+			sOut += "<HTML><br>"; //$NON-NLS-1$
+			String size = "100x100";
+			Util.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), 
+					size);
+			java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' +size + '/'+ 
+					FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getId()
+					+ '.' + EXT_THUMB);
+			if (cover.canRead()){
+				sOut += "<img src='file:"+ cover.getAbsolutePath() +"'/><br>";
+			}
 			String sAuthor = file.getTrack().getAuthor().getName();
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
 				sOut += "<p>" + sAuthor + "</p>"; //$NON-NLS-1$
