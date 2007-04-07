@@ -27,7 +27,6 @@ import java.util.Set;
 
 import javax.swing.JButton;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -73,8 +72,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	 * Constructor for PerspectiveBarJPanel.
 	 */
 	private PerspectiveBarJPanel() {
-		setBackgroundPainter(new BasicGradientPainter(
-			BasicGradientPainter.AERITH));
+		setBackgroundPainter(new BasicGradientPainter(BasicGradientPainter.AERITH));
 		update();
 	}
 
@@ -93,9 +91,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 			final IPerspective perspective = (IPerspective) it.next();
 			JButton jb = new JButton(Util.getIcon(perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				jb
-						.setToolTipText(Messages
-								.getString("PerspectiveBarJPanel." + perspective.getID())); //$NON-NLS-1$
+				jb.setToolTipText(perspective.getDesc()); 
 			} catch (Exception e) { // ignore tooltip missing
 			}
 			jb.addActionListener(new ActionListener() {

@@ -27,6 +27,7 @@ import java.util.Properties;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.log.Log;
 
 /**
@@ -135,7 +136,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 	 */
 	public static void setDefaultProperties() {
 		// User preferences
-		properties.put(CONF_PERSPECTIVE_DEFAULT, PERSPECTIVE_NAME_PHYSICAL);
+		properties.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
 		properties.put(CONF_STATE_REPEAT, FALSE);
 		properties.put(CONF_STATE_SHUFFLE, FALSE);
 		properties.put(CONF_STATE_CONTINUE, TRUE);
@@ -172,7 +173,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_OPTIONS_INTRO_LENGTH, "20"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_LNF, LNF_DEFAULT);
 		properties.put(CONF_OPTIONS_SYNC_TABLE_TREE, FALSE);
-		properties.put(CONF_OPTIONS_SHOW_POPUP, TRUE);
+		properties.put(CONF_UI_SHOW_BALLOON, TRUE);
 		properties.put(CONF_P2P_SHARE, FALSE);
 		properties.put(CONF_P2P_ADD_REMOTE_PROPERTIES, FALSE);
 		properties.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);
@@ -180,7 +181,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_HISTORY, "-1"); //$NON-NLS-1$
 		properties.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
 		properties.put(CONF_BOOKMARKS, ""); //$NON-NLS-1$
-		properties.put(CONF_SHOW_AT_STARTUP, TRUE);
+		properties.put(CONF_UI_SHOW_AT_STARTUP, TRUE);
 		properties.put(CONF_BESTOF_SIZE, "20"); //$NON-NLS-1$
 		properties.put(CONF_VOLUME, "0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP, FALSE); //$NON-NLS-1$
@@ -198,14 +199,6 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_COVERS_SHUFFLE, FALSE);
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
 		properties.put(CONF_COVERS_SIZE, "3"); //medium and large
-		// medium accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_0", "1");
-		// medium accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_1", "1");
-		// Author accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_2", "3");
-		// Album accuracy
-		properties.put(CONF_COVERS_ACCURACY + "_3", "4");
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK
 				+ ',' + XML_ALBUM + ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE

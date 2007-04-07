@@ -131,7 +131,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "CDScanView.12"; //$NON-NLS-1$
+		return Messages.getString("CDScanView.12"); //$NON-NLS-1$
 	}
 
 	/*

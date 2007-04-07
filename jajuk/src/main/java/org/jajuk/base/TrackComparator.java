@@ -41,6 +41,9 @@ public class TrackComparator implements Comparator<Track> {
 	public static final int AUTHOR_ALBUM = 1;
 
 	public static final int ALBUM = 2;
+	
+	public static final int YEAR_ALBUM = 3;
+
 
 	/**
 	 * Constructor
@@ -72,7 +75,6 @@ public class TrackComparator implements Comparator<Track> {
 					track.getAuthor().getName2())// need 2 spaces to make
 					// a right sorting (ex:
 					// Rock and Rock & Roll)
-					// //$NON-NLS-1$
 					.append(track.getAlbum().getName2()) //$NON-NLS-1$
 					.append(track.getName()).toString(); //$NON-NLS-1$
 			break;
@@ -90,6 +92,12 @@ public class TrackComparator implements Comparator<Track> {
 		case ALBUM:
 			sHashCompare = new StringBuffer().append(
 					track.getAlbum().getName2()) //$NON-NLS-1$
+					.append(track.getName()).toString(); //$NON-NLS-1$
+			break;
+		// Year / album
+		case YEAR_ALBUM:
+			sHashCompare = new StringBuffer().append(
+					track.getYear()) //$NON-NLS-1$
 					.append(track.getName()).toString(); //$NON-NLS-1$
 			break;
 		}

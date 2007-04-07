@@ -365,5 +365,9 @@ public enum JajukAction {
 	 * Used to show or hide unmounted devices
 	 */
 	UNMOUNTED,
+	/**
+	 * Create a report
+	 */
+	CREATE_REPORT,
 
 }

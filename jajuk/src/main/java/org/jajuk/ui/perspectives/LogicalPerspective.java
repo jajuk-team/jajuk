@@ -20,17 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.views.LogicalPlaylistEditorView;
-import org.jajuk.ui.views.LogicalPlaylistRepositoryView;
-import org.jajuk.ui.views.LogicalTableView;
-import org.jajuk.ui.views.LogicalTreeView;
-import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Logical perspective
@@ -51,25 +41,5 @@ public class LogicalPerspective extends PerspectiveAdapter {
 		return Messages.getString("Perspective_Description_Logical"); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		views.add(ViewFactory.createView(LogicalTreeView.class, this));
-		views.add(ViewFactory.createView(LogicalTableView.class, this));
-		views
-				.add(ViewFactory.createView(LogicalPlaylistEditorView.class,
-						this));
-		views.add(ViewFactory.createView(LogicalPlaylistRepositoryView.class,
-				this));
-		views.add(ViewFactory.createView(CoverView.class, this));
-		return views;
-	}
 
 }

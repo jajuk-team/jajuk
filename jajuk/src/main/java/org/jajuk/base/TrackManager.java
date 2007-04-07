@@ -20,6 +20,13 @@
 
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -29,13 +36,6 @@ import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
 
 /**
  * Convenient class to manage Tracks
@@ -670,6 +670,20 @@ public class TrackManager extends ItemManager implements Observer {
 	 */
 	public Set<Track> getTracks() {
 		Set<Track> tracks = new LinkedHashSet<Track>();
+		synchronized (getLock()) {
+			for (Item item : getItems()) {
+				tracks.add((Track) item);
+			}
+		}
+		return tracks;
+	}
+	
+	/**
+	 * 
+	 * @return unsorted tracks list
+	 */
+	public ArrayList<Track> getTracksAsList() {
+		ArrayList<Track> tracks = new ArrayList<Track>(getItems().size());
 		synchronized (getLock()) {
 			for (Item item : getItems()) {
 				tracks.add((Track) item);

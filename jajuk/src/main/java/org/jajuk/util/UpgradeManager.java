@@ -24,14 +24,6 @@ import java.io.File;
 
 import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
-import org.jajuk.ui.perspectives.CatalogPerspective;
-import org.jajuk.ui.perspectives.ConfigurationPerspective;
-import org.jajuk.ui.perspectives.HelpPerspective;
-import org.jajuk.ui.perspectives.InfoPerspective;
-import org.jajuk.ui.perspectives.LogicalPerspective;
-import org.jajuk.ui.perspectives.PhysicalPerspective;
-import org.jajuk.ui.perspectives.PlayerPerspective;
-import org.jajuk.ui.perspectives.StatPerspective;
 
 /**
  * Maintain all behavior needed upgrades from releases to releases
@@ -114,15 +106,5 @@ public class UpgradeManager implements ITechnicalStrings {
 
 	}
 
-	/**
-	 * 
-	 * @return array of perspectives to be reseted
-	 */
-	public static Class[] getPerspectivesToReset() {
-		return new Class[] { PhysicalPerspective.class,
-				LogicalPerspective.class, CatalogPerspective.class,
-				ConfigurationPerspective.class, HelpPerspective.class,
-				InfoPerspective.class, PlayerPerspective.class,
-				StatPerspective.class };
-	}
+	
 }

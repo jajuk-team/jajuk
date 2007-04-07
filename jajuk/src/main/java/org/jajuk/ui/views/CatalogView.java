@@ -94,7 +94,7 @@ import ext.FlowScrollPanel;
 import ext.SwingWorker;
 
 /**
- * Catalog view. Displays all defaut covers by album
+ * Catalog view. Displays all default covers by album
  * <p>
  * Catalog perspectives
  * 
@@ -799,7 +799,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "CatalogView.0"; //$NON-NLS-1$
+		return Messages.getString("CatalogView.0"); //$NON-NLS-1$
 	}
 
 	/*
@@ -947,7 +947,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						+ FILE_THUMB_NO_COVER);
 			}
 			double[][] dMain = { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-					{ TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
+					{ getSelectedSize()+10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
 			setLayout(new TableLayout(dMain));
 			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			jpIcon = new JPanel();

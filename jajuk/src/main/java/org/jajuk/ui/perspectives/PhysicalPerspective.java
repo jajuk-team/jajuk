@@ -20,17 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.views.PhysicalPlaylistEditorView;
-import org.jajuk.ui.views.PhysicalPlaylistRepositoryView;
-import org.jajuk.ui.views.PhysicalTableView;
-import org.jajuk.ui.views.PhysicalTreeView;
-import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Physical perspective
@@ -49,26 +39,6 @@ public class PhysicalPerspective extends PerspectiveAdapter {
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Physical"); //$NON-NLS-1$
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		views.add(ViewFactory.createView(PhysicalTreeView.class, this));
-		views.add(ViewFactory.createView(PhysicalTableView.class, this));
-		views.add(ViewFactory
-				.createView(PhysicalPlaylistEditorView.class, this));
-		views.add(ViewFactory.createView(PhysicalPlaylistRepositoryView.class,
-				this));
-		views.add(ViewFactory.createView(CoverView.class, this));
-		return views;
 	}
 
 }

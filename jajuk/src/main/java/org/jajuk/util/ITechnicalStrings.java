@@ -303,6 +303,9 @@ public interface ITechnicalStrings {
 	public static final URL ICON_INFO = Util
 			.getResource("icons/16x16/info.png");
 
+	public static final URL ICON_PERSPECTIVE_SIMPLE = Util
+			.getResource("icons/40x40/perspective_simple.png");
+
 	public static final URL ICON_PERSPECTIVE_PHYSICAL = Util
 			.getResource("icons/40x40/perspective_physic.png");
 
@@ -486,6 +489,9 @@ public interface ITechnicalStrings {
 	public static final URL ICON_ALBUM = Util
 			.getResource("icons/16x16/album.png");
 
+	public static final URL ICON_YEAR = Util
+			.getResource("icons/16x16/clock.png");
+
 	public static final URL ICON_APPLY_FILTER = Util
 			.getResource("icons/16x16/filter.png");
 
@@ -559,7 +565,7 @@ public interface ITechnicalStrings {
 			.getResource("icons/16x16/netsearch.png");
 
 	public static final URL ICON_TRACK_FIFO_PLANNED = Util
-			.getResource("icons/16x16/clock.png");
+			.getResource("icons/16x16/planned.png");
 
 	public static final URL ICON_TRACK_FIFO_NORM = Util
 			.getResource("icons/16x16/player_perspective.png");
@@ -780,24 +786,7 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
 
 	public static final String DEVICE_SYNCHRO_MODE_UNI = "uni";
-
-	// perspectives
-	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
-
-	public static final String PERSPECTIVE_NAME_LOGICAL = "org.jajuk.ui.perspectives.LogicalPerspective";
-
-	public static final String PERSPECTIVE_NAME_CONFIGURATION = "org.jajuk.ui.perspectives.ConfigurationPerspective";
-
-	public static final String PERSPECTIVE_NAME_STATISTICS = "org.jajuk.ui.perspectives.StatPerspective";
-
-	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
-
-	public static final String PERSPECTIVE_NAME_PLAYER = "org.jajuk.ui.perspectives.PlayerPerspective";
-
-	public static final String PERSPECTIVE_NAME_CATALOG = "org.jajuk.ui.perspectives.CatalogPerspective";
-
-	public static final String PERSPECTIVE_NAME_INFO = "org.jajuk.ui.perspectives.InfoPerspective";
-
+	
 	// views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 
@@ -1044,7 +1033,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
 
 	/**Show popup*/
-	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup";
+	public static final String CONF_UI_SHOW_BALLOON = "jajuk.options.show_popup";
 
 	public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 
@@ -1062,7 +1051,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_BOOKMARKS = "jajuk.bookmarks";
 
 	/**Show jajuk window at startup*/
-	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup";
+	public static final String CONF_UI_SHOW_AT_STARTUP = "jajuk.show_at_startup";
 
 	/**Best of size*/
 	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size";

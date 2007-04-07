@@ -78,7 +78,7 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "PhysicalTableView.0"; //$NON-NLS-1$
+		return Messages.getString("PhysicalTableView.0"); //$NON-NLS-1$
 	}
 
 	/** Return singleton */

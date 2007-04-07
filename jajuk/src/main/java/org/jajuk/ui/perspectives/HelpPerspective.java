@@ -20,14 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.AboutView;
-import org.jajuk.ui.views.HelpView;
-import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Help perspective
@@ -46,21 +39,6 @@ public class HelpPerspective extends PerspectiveAdapter {
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Help"); //$NON-NLS-1$
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		views.add(ViewFactory.createView(HelpView.class, this));
-		views.add(ViewFactory.createView(AboutView.class, this));
-		return views;
 	}
 
 }

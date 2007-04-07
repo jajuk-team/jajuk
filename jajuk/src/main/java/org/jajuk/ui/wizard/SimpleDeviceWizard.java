@@ -61,8 +61,6 @@ public class SimpleDeviceWizard extends JDialog implements ITechnicalStrings, Ac
 
 	JPanel jpRightPanel;
 
-	JLabel jlWelcome;
-
 	JLabel jlFileSelection;
 
 	JTextField jtfFileSelected;
@@ -96,7 +94,6 @@ public class SimpleDeviceWizard extends JDialog implements ITechnicalStrings, Ac
 		int iY_SEPARATOR = 10;
 		jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
 		jpRightPanel = new JPanel();
-		jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
 		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
 		jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_DIR));
 		jtfFileSelected = new JTextField(""); //$NON-NLS-1$
@@ -140,7 +137,6 @@ public class SimpleDeviceWizard extends JDialog implements ITechnicalStrings, Ac
 		jpFileSelection.add(jlFileSelection);
 
 		jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
-		jpRightPanel.add(jlWelcome, "0,1"); //$NON-NLS-1$
 		jpRightPanel.add(jpFileSelection, "0,3"); //$NON-NLS-1$
 		jpRightPanel.add(jtfFileSelected, "0,5"); //$NON-NLS-1$
 		jpRightPanel.add(jpRefresh, "0,7"); //$NON-NLS-1$

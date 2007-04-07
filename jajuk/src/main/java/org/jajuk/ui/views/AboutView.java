@@ -182,7 +182,7 @@ public class AboutView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "AboutView.10"; //$NON-NLS-1$
+		return Messages.getString("AboutView.10"); //$NON-NLS-1$
 	}
 
 }

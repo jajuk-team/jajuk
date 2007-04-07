@@ -48,6 +48,8 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.PathSelector;
+import org.jajuk.ui.perspectives.HelpPerspective;
+import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
@@ -225,10 +227,10 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings, Actio
 		} else if (e.getSource() == jbOk) {
 			if (jcbHelp.isSelected()) {
 				// set parameter perspective
-				Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+				Main.setDefaultPerspective(HelpPerspective.class.getName());
 			} else {
-				// set physical perspective
-				Main.setDefaultPerspective(PERSPECTIVE_NAME_PHYSICAL);
+				// set Simple perspective
+				Main.setDefaultPerspective(SimplePerspective.class.getName());
 			}
 			// Check workspace directory
 			if (!path.getUrl().trim().equals("")) {

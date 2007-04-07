@@ -20,13 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.StatView;
-import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Statistics perspective
@@ -46,20 +40,4 @@ public class StatPerspective extends PerspectiveAdapter {
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		IView view = ViewFactory.createView(StatView.class, this);
-		views.add(view);
-		return views;
-	}
-
 }

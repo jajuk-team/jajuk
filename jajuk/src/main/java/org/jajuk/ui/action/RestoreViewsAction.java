@@ -45,7 +45,7 @@ public class RestoreViewsAction extends ActionBase {
 			public void run() {
 				IPerspective perspective = PerspectiveManager
 						.getCurrentPerspective();
-				perspective.restoreDefaults();
+				perspective.restoreDefaults();				
 			}
 		}.start();
 

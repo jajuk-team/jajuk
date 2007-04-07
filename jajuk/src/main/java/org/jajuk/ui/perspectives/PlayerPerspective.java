@@ -20,16 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.AnimationView;
-import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.views.LogicalPlaylistEditorView;
-import org.jajuk.ui.views.LogicalPlaylistRepositoryView;
-import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Player perspective, contains view usefull to be displayed duriong playing
@@ -48,28 +39,6 @@ public class PlayerPerspective extends PerspectiveAdapter {
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Player"); //$NON-NLS-1$
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		views.add(ViewFactory.createView(AnimationView.class, this));
-		// first cover
-		views.add(ViewFactory.createView(CoverView.class, this));
-		// second one
-		views.add(ViewFactory.createView(CoverView.class, this));
-		// Playlist editor
-		views.add(ViewFactory.createView(LogicalPlaylistEditorView.class, this));
-		// Playlist repository
-		views.add(ViewFactory.createView(LogicalPlaylistRepositoryView.class, this));
-		return views;
 	}
 
 }

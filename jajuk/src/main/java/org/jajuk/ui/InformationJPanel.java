@@ -54,8 +54,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 11 oct. 2003
  */
-public class InformationJPanel extends JPanel implements ITechnicalStrings,
-		Observer {
+public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer {
 	private static final long serialVersionUID = 1L;
 
 	// consts
@@ -72,12 +71,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	static private InformationJPanel ijp = null;
 
 	/** Swing Timer to refresh the component */
-	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,
-			new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					update(new Event(EventSubject.EVENT_HEART_BEAT));
-				}
-			});
+	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			update(new Event(EventSubject.EVENT_HEART_BEAT));
+		}
+	});
 
 	/**
 	 * Singleton access
@@ -125,14 +123,13 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	private InformationJPanel() {
 		// dimensions
 		// set current jpanel properties
-		double size[][] = { { 0.47, 0.13, 0.07, 0.33 }, { 20 } };
+		double size[][] = { { 0.44, 0.13, 0.10, 0.33 }, { 20 } };
 		setLayout(new TableLayout(size));
 
 		// message bar
 		jlMessage = new JLabel();
 		jlMessage.setOpaque(true);
-		setMessage(
-				Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		jlMessage.setBorder(Util.getShadowBorder());
 
 		// selection bar
@@ -199,7 +196,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	/**
 	 * @return
 	 */
-	public int getTotalStatus() {
+	public int getTotalTime() {
 		return iTotalStatus;
 	}
 
@@ -220,7 +217,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	/**
 	 * @param i
 	 */
-	public void setCurrentStatus(int i) {
+	public void setCurrentTime(int i) {
 		iCurrentStatus = i;
 		jpbCurrent.setValue(i);
 	}
@@ -273,7 +270,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	/**
 	 * @return
 	 */
-	public String getTotalStatusMessage() {
+	public String getTotalTimeMessage() {
 		return sTotalStatus;
 	}
 
@@ -283,7 +280,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	 * 
 	 * @param string
 	 */
-	public void setCurrentStatusMessage(String string) {
+	public void setCurrentTimeMessage(String string) {
 		sCurrentStatus = string;
 		jlCurrent.setText(string);
 	}
@@ -291,7 +288,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 	/**
 	 * @param string
 	 */
-	public void setTotalStatusMessage(String string) {
+	public void setTotalTimeMessage(String string) {
 		sTotalStatus = string;
 		jlTotal.setText(string);
 	}
@@ -311,16 +308,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 		if (EventSubject.EVENT_PLAY_ERROR.equals(subject)) {
 			try {
 				// reset data
-				setCurrentStatusMessage(Util.formatTimeBySec(0, false)
+				setCurrentTimeMessage(Util.formatTimeBySec(0, false)
 						+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
-				setCurrentStatus(0);
+				setCurrentTime(0);
 				// set error message
-				File fCurrent = (File) ObservationManager.getDetail(event,
-						DETAIL_CURRENT_FILE);
+				File fCurrent = (File) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE);
 				if (fCurrent != null) {
 					// display associated error code is given
-					String sReason = (String) ObservationManager.getDetail(
-							event, DETAIL_REASON);
+					String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
 					if (sReason != null) {
 						setMessage(
 								Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
@@ -338,27 +333,24 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,
 		} else {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					if (EventSubject.EVENT_HEART_BEAT.equals(subject)
-							&& !FIFO.isStopped() && !Player.isPaused()) {
-						long length = JajukTimer.getInstance()
-								.getCurrentTrackTotalTime();
-						long lTime = JajukTimer.getInstance()
-								.getCurrentTrackEllapsedTime();
-						int iPos = (int) (100 * JajukTimer.getInstance()
-								.getCurrentTrackPosition());
-						setCurrentStatus(iPos);
-						String sCurrentTotalMessage = Util.formatTimeBySec(
-								JajukTimer.getInstance().getTotalTimeToPlay(),
-								false);
-						setTotalStatusMessage(sCurrentTotalMessage);
-						setCurrentStatusMessage(Util.formatTimeBySec(lTime,
-								false)
+					if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
+							&& !Player.isPaused()) {
+						long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
+						long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
+						int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
+						setCurrentTime(iPos);
+						String sCurrentTotalMessage = Util.formatTimeBySec(JajukTimer.getInstance()
+								.getTotalTimeToPlay(), false);
+						setTotalTimeMessage(sCurrentTotalMessage + " ["
+								+ FIFO.getInstance().getFIFO().size() + "]");
+
+						setCurrentTimeMessage(Util.formatTimeBySec(lTime, false)
 								+ " / " + Util.formatTimeBySec(length, false)); //$NON-NLS-1$);
 					} else if (EventSubject.EVENT_ZERO.equals(subject)) {
-						setCurrentStatusMessage(Util.formatTimeBySec(0, false)
+						setCurrentTimeMessage(Util.formatTimeBySec(0, false)
 								+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
-						setCurrentStatus(0);
-						setTotalStatusMessage("00:00:00");//$NON-NLS-1$
+						setCurrentTime(0);
+						setTotalTimeMessage("00:00:00");//$NON-NLS-1$
 						setMessage(
 								Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 					} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {

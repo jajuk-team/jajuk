@@ -176,8 +176,8 @@ public class DeviceWizard extends JDialog implements ActionListener, ITechnicalS
 		jbUrl.setToolTipText(Messages.getString("DeviceWizard.43")); //$NON-NLS-1$
 		jbUrl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		jbUrl.addActionListener(this);
-		// we desiable focus for url and mount url buttons to facilitate
-		// naviguation
+		// we disable focus for url and mount url buttons to facilitate
+		// navigation
 		jbUrl.setFocusable(false);
 		jbUrlMountPoint = new JButton(Util.getIcon(ICON_OPEN_FILE));
 		jbUrlMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
@@ -203,7 +203,7 @@ public class DeviceWizard extends JDialog implements ActionListener, ITechnicalS
 		jlAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50")); //$NON-NLS-1$
 		jlMinutes = new JLabel(Messages.getString("DeviceWizard.54")); //$NON-NLS-1$
 		jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance()); //$NON-NLS-1$
-		// miminum delay is half a minute
+		// mininum delay is half a minute
 		jftfAutoRefresh.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
 				String prop = e.getPropertyName();

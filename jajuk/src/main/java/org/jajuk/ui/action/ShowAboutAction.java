@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukWindow;
+import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
 
@@ -49,9 +50,9 @@ public class ShowAboutAction extends ActionBase {
 	public void perform(ActionEvent evt) {
 		// set default perspective to show if UIi is not yet started
 		if (Main.isUILaunched()) {
-			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+			PerspectiveManager.setCurrentPerspective(HelpPerspective.class.getName());
 		} else {
-			Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+			Main.setDefaultPerspective(HelpPerspective.class.getName());
 		}
 		// make frame visible
 		if (!JajukWindow.getInstance().isWindowVisible()) {

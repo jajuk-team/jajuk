@@ -955,9 +955,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 	public boolean cleanRemovedFiles() {
 		boolean bChanges = false;
 		long l = System.currentTimeMillis();
-		// need to use a shallow copy to avoid concurent exceptions
+		// need to use a shallow copy to avoid concurrent exceptions
 		Set<Directory> dirs = DirectoryManager.getInstance().getDirectories();
-		// directories scleanup
+		// directories cleanup
 		for (Item item : dirs) {
 			Directory dir = (Directory) item;
 			if (!Main.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()) {
@@ -973,14 +973,16 @@ public class Device extends Item implements ITechnicalStrings, Comparable {
 		Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
 		for (org.jajuk.base.File file : files) {
 			if (!Main.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
-				if (!file.getIO().exists()) {
+				//Remove file if it doesn't exist any more or if it is a iTunes file 
+				//(useful for jajuk < 1.4) 
+				if (!file.getIO().exists() || file.getName().startsWith("._")) {
 					FileManager.getInstance().removeFile(file);
 					Log.debug("Removed: " + file); //$NON-NLS-1$
 					bChanges = true;
 				}
 			}
 		}
-		// Playlist scleanup
+		// Playlist cleanup
 		Set<PlaylistFile> plfiles = PlaylistFileManager.getInstance().getPlaylistFiles();
 		for (PlaylistFile plf : plfiles) {
 			if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {

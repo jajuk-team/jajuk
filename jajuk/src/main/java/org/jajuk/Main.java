@@ -413,7 +413,7 @@ public class Main implements ITechnicalStrings {
 												.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
 							}
 							// Commit toolbars (only if it is visible to avoid
-							// comiting void screen)
+							// commiting void screen)
 							if (getWindow() != null
 									&& getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
@@ -460,7 +460,7 @@ public class Main implements ITechnicalStrings {
 			ActionManager.getInstance();
 
 			// show window if set in the systray conf.
-			if (ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP)) {
+			if (ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)) {
 				// Display progress
 				sc.setProgress(80, Messages.getString("SplashScreen.3")); //$NON-NLS-1$
 				launchUI();
@@ -489,7 +489,7 @@ public class Main implements ITechnicalStrings {
 			exit(1);
 		} finally { // make sure to close splashscreen in all cases (ie if
 			// UI is not started)
-			if (!ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP)
+			if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)
 					&& sc != null) {
 				sc.setProgress(100);
 				sc.splashOff();
@@ -1263,9 +1263,6 @@ public class Main implements ITechnicalStrings {
 					jpFrame.setOpaque(true);
 					jpFrame.setLayout(new BorderLayout());
 
-					// Set menu bar to the frame
-					jw.setJMenuBar(JajukJMenuBar.getInstance());
-
 					// create the command bar
 					command = CommandJPanel.getInstance();
 					command.initUI();
@@ -1279,6 +1276,9 @@ public class Main implements ITechnicalStrings {
 
 					// Create the perspective manager
 					PerspectiveManager.load();
+
+					// Set menu bar to the frame
+					jw.setJMenuBar(JajukJMenuBar.getInstance());
 
 					// Create the perspective tool bar panel
 					perspectiveBar = PerspectiveBarJPanel.getInstance();

@@ -78,8 +78,7 @@ public class Log implements ITechnicalStrings {
 	private Log() {
 		try {
 			// set env variable used in the log4j conf file
-			System.setProperty("jajuk.log", 
-					Util.getConfFileByPath(FILE_LOGS).getAbsolutePath()); 
+			System.setProperty("jajuk.log", Util.getConfFileByPath(FILE_LOGS).getAbsolutePath());
 			DOMConfigurator.configure(FILE_LOG4j_CONF);
 			loggerRoot = Logger.getRootLogger();
 			logger = Logger.getLogger(Log.class.getName());
@@ -111,7 +110,7 @@ public class Log implements ITechnicalStrings {
 	public static void debug(String s) {
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
-			System.out.println("[DEBUG] "+s);
+			System.out.println("[DEBUG] " + s);
 			return;
 		}
 		spool("[DEBUG] " + s); //$NON-NLS-1$
@@ -122,7 +121,7 @@ public class Log implements ITechnicalStrings {
 	 * Log a info-level message
 	 */
 	public static void info(String s) {
-		spool("[INFO] " + s); //$NON-NLS-1$
+		spool("<font color='blue'>[INFO] " + s + "</font>");
 		logger.info(s);
 	}
 
@@ -132,10 +131,10 @@ public class Log implements ITechnicalStrings {
 	public static void warn(String s) {
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
-			System.out.println("[WARN] "+s);
+			System.out.println("[WARN] " + s);
 			return;
 		}
-		spool("[WARN] " + s); //$NON-NLS-1$
+		spool("<font color='orange'>[WARN] " + s + "</font>");
 		logger.warn(s);
 	}
 
@@ -146,10 +145,10 @@ public class Log implements ITechnicalStrings {
 		String sOut = s + ": " + sInfoSup; //$NON-NLS-1$
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
-			System.out.println("[WARN] "+sOut);
+			System.out.println("[WARN] " + sOut);
 			return;
 		}
-		spool("[WARN] " + sOut); //$NON-NLS-1$
+		spool("<font color='orange'>[INFO] " + sOut + "</font>");
 		logger.warn(sOut);
 	}
 
@@ -174,11 +173,11 @@ public class Log implements ITechnicalStrings {
 		}
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
-			System.out.println("[WARN] "+sOut);
+			System.out.println("[WARN] " + sOut);
 			t.printStackTrace();
 			return;
 		}
-		spool("[WARN] " + sOut); //$NON-NLS-1$
+		spool("<font color='orange'>[WARN] " + sOut + "</font>");
 		spool(t);
 		logger.warn(sOut, t);
 	}
@@ -197,7 +196,7 @@ public class Log implements ITechnicalStrings {
 		// Just make a print stake trace if Log is not yet enabled (example:
 		// collection commit problem in initialCheckups)
 		if (log == null) {
-			System.out.println("[ERROR] "+sCode+" / "+sInfosup);
+			System.out.println("[ERROR] " + sCode + " / " + sInfosup);
 			t.printStackTrace();
 			return;
 		}
@@ -209,7 +208,7 @@ public class Log implements ITechnicalStrings {
 		} else {
 			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
-		spool("[ERROR] " + sOut); //$NON-NLS-1$
+		spool("<font color='red'>[ERROR] " + sOut + "</font>");
 		if (t != null) {
 			spool(t);
 		}
@@ -232,10 +231,10 @@ public class Log implements ITechnicalStrings {
 		// Just make a print stake trace if Log is not yet enabled (example:
 		// collection commit problem in initialCheckups)
 		if (log == null) {
-			System.out.println("[ERROR] "+sOut);
+			System.out.println("[ERROR] " + sOut);
 			return;
 		}
-		spool("[ERROR] " + sOut); //$NON-NLS-1$
+		spool("<font color='red'>[ERROR] " + sOut + "</font>");
 		logger.error(sOut);
 	}
 
@@ -292,10 +291,10 @@ public class Log implements ITechnicalStrings {
 		// Just make a print stake trace if Log is not yet enabled (example:
 		// collection commit problem in initialCheckups)
 		if (log == null) {
-			System.out.println("[FATAL] "+s);
+			System.out.println("[FATAL] " + s);
 			return;
 		}
-		spool("[FATAL] " + s); //$NON-NLS-1$
+		spool("<font color='red'><b>[FATAL] " + s + "</b></font>");
 		logger.fatal(s);
 	}
 
@@ -387,15 +386,16 @@ public class Log implements ITechnicalStrings {
 	}
 
 	/**
-	 * Spool an excpetion with stacktrace
+	 * Spool an exception with stack traces
 	 * 
 	 * @param e
 	 */
 	private static void spool(Throwable e) {
-		spool("[ERROR] " + e.getClass() + " / " + e.getMessage() + " / " + e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		spool("[ERROR] " + e.getClass() + " / " 
+				+ e.getMessage() + " / " + e.getCause()); 
 		StackTraceElement[] ste = e.getStackTrace();
 		for (int i = 0; i < ste.length; i++) {
-			spool(ste[i].toString());
+			spool("<font color='red'>" + ste[i].toString() + "</font>");
 		}
 	}
 

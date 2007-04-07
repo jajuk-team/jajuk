@@ -20,15 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.CDScanView;
-import org.jajuk.ui.views.DeviceView;
-import org.jajuk.ui.views.ParameterView;
-import org.jajuk.ui.views.ViewFactory;
 
 /**
  * Configuration perspective
@@ -47,22 +39,6 @@ public class ConfigurationPerspective extends PerspectiveAdapter {
 	 */
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Configuration"); //$NON-NLS-1$
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		views.add(ViewFactory.createView(ParameterView.class, this));
-		views.add(ViewFactory.createView(CDScanView.class, this));
-		views.add(ViewFactory.createView(DeviceView.class, this));
-		return views;
 	}
 
 }

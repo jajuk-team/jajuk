@@ -259,7 +259,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "PhysicalPlaylistRepositoryView.6"; //$NON-NLS-1$
+		return Messages.getString("PhysicalPlaylistRepositoryView.6"); //$NON-NLS-1$
 	}
 
 	/*

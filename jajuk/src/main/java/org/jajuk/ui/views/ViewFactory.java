@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
@@ -39,7 +40,7 @@ public class ViewFactory {
 	private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
 
 	/**
-	 * No instanciation *
+	 * No instantiation *
 	 */
 	private ViewFactory() {
 	}
@@ -56,18 +57,37 @@ public class ViewFactory {
 			views = new LinkedHashSet<IView>();
 			hmClassesInstances.put(className, views);
 		}
-		int index = views.size(); // new view size is last index + 1
 		IView view;
 		try {
 			view = (IView) className.newInstance();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		view.setID(className.getName() + '/' + index);
+		// Set ID using a random number to discriminate same views (same view in
+		// the same perspective are in different perspectives)
+		// do not use sequential numbers as the serialization views order is not
+		// deterministic
+		// and it may conduct VLDocking to ignore some views if XXX/3 is parsed
+		// before XXX/2 for ie
+		view.setID(className.getName() + '/' + (int) (Integer.MAX_VALUE * Math.random()));
 		view.setPerspective(perspective);
 		// store the new view
 		views.add(view);
 		return view;
+	}
+
+	/**
+	 * 
+	 * @return All known views sorted by name
+	 */
+	public static Set<IView> getKnownViews() {
+		Set<IView> out = new TreeSet<IView>();
+		// Take one instance of each set of view instances mapped to each view
+		// classname
+		for (Set<IView> set : hmClassesInstances.values()) {
+			out.add(set.iterator().next());
+		}
+		return out;
 	}
 
 }

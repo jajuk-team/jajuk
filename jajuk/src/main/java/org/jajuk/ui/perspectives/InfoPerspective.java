@@ -20,13 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.ui.views.WikipediaView;
 
 /**
  * Information perspective, display various information about played tracks
@@ -47,17 +41,4 @@ public class InfoPerspective extends PerspectiveAdapter {
 		return Messages.getString("Perspective_Description_Info"); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getViews()
-	 */
-	public Set<IView> getViews() {
-		if (views != null) {
-			return views;
-		}
-		views = new HashSet<IView>(1);
-		views.add(ViewFactory.createView(WikipediaView.class, this));
-		return views;
-	}
 }

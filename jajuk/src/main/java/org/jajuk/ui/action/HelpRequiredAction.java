@@ -22,6 +22,7 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
 
@@ -41,6 +42,6 @@ public class HelpRequiredAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) {
-		PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+		PerspectiveManager.setCurrentPerspective(HelpPerspective.class.getName());
 	}
 }

@@ -251,8 +251,15 @@ public class CoverView extends ViewAdapter implements Observer,
 		jcbAccuracy.addItem(Util.getIcon(ICON_AUTHOR)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_ALBUM)); //$NON-NLS-1$
 		jcbAccuracy.addItem(Util.getIcon(ICON_TRACK)); //$NON-NLS-1$
-		jcbAccuracy.setSelectedIndex(ConfigurationManager
-				.getInt(CONF_COVERS_ACCURACY + "_" + getCoverID())); //$NON-NLS-1$
+		int index = 1; //medium accuracy
+		try{
+			index = ConfigurationManager
+				.getInt(CONF_COVERS_ACCURACY + "_" + getPerspective().getID());
+		}
+		catch(Exception e){
+			Log.error(e);
+		}
+		jcbAccuracy.setSelectedIndex(index); //$NON-NLS-1$
 		jcbAccuracy.addActionListener(this);
 
 		jtb.add(jbPrevious);
@@ -631,7 +638,7 @@ public class CoverView extends ViewAdapter implements Observer,
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "CoverView.3"; //$NON-NLS-1$
+		return Messages.getString("CoverView.3"); //$NON-NLS-1$
 	}
 
 	/*
@@ -893,7 +900,8 @@ public class CoverView extends ViewAdapter implements Observer,
 		if (e.getSource() == jcbAccuracy) {
 			ConfigurationManager
 					.setProperty(
-							CONF_COVERS_ACCURACY + "_" + getCoverID(), Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
+							CONF_COVERS_ACCURACY + "_" + getPerspective().getID(), 
+							Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
 			new Thread() {
 				public void run() {
 					update(new Event(
@@ -1137,8 +1145,14 @@ public class CoverView extends ViewAdapter implements Observer,
 	 */
 	public String createQuery(org.jajuk.base.File file) {
 		String sQuery = ""; //$NON-NLS-1$
-		int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY
-				+ "_" + getCoverID()); //$NON-NLS-1$
+		int iAccuracy = 0;
+		try{
+			iAccuracy = ConfigurationManager
+				.getInt(CONF_COVERS_ACCURACY + "_" + getPerspective().getID());
+		}
+		catch(Exception e){
+			Log.error(e);
+		}
 		Track track = file.getTrack();
 		Author author = track.getAuthor();
 		Album album = track.getAlbum();

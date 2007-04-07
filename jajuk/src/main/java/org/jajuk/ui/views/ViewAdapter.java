@@ -20,14 +20,13 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Component;
-import java.awt.event.ComponentEvent;
-
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
 import org.jajuk.ui.JajukJPanel;
 import org.jajuk.util.ITechnicalStrings;
+
+import java.awt.Component;
+import java.awt.event.ComponentEvent;
 
 import com.vlsolutions.swing.docking.DockKey;
 
@@ -38,7 +37,7 @@ import com.vlsolutions.swing.docking.DockKey;
  * @created 15 nov. 2003
  */
 public abstract class ViewAdapter extends JajukJPanel implements IView,
-		ITechnicalStrings {
+		ITechnicalStrings,Comparable {
 
 	/** Populated state */
 	private boolean bIsPopulated = false;
@@ -62,7 +61,7 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 		// create a new DockKey (note that ID is set in setID() method)
 		key = new DockKey();
 		// View title
-		key.setName(Messages.getString(getDesc()));
+		key.setName(getDesc());
 		key.setResizeWeight(0.5f);
  	}
 
@@ -70,7 +69,7 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 	 * toString method
 	 */
 	public String toString() {
-		return "View[name=" + getID() + " description='" + getDesc() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "View[name=" + getID() + " description='" + getDesc() + "']"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	/**
@@ -171,6 +170,14 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 	 */
 	public void setPerspective(IPerspective perspective) {
 		this.perspective = perspective;
+	}
+	
+	/**
+	 * 
+	 * @return Natural order 
+	 */
+	public int compareTo(Object other){
+		return getDesc().compareTo(((IView)other).getDesc());
 	}
 
 }

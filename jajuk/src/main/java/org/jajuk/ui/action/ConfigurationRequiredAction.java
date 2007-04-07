@@ -22,6 +22,7 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.ConfigurationPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
 
@@ -42,6 +43,6 @@ public class ConfigurationRequiredAction extends ActionBase {
 
 	public void perform(ActionEvent evt) {
 		PerspectiveManager
-				.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+				.setCurrentPerspective(ConfigurationPerspective.class.getName());
 	}
 }

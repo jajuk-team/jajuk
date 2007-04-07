@@ -7,7 +7,7 @@
 </Dockable>
 <Split orientation="0" location="0.5">
 <Dockable>
-<Key dockName="org.jajuk.ui.views.LogicalTableView/0" dockLabel="key1"/>
+<Key dockName="org.jajuk.ui.views.LogicalTableView/1" dockLabel="key1"/>
 </Dockable>
 <Split orientation="1" location="0.5">
 <Dockable>

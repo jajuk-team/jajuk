@@ -18,6 +18,37 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Track;
+import org.jajuk.base.Type;
+import org.jajuk.base.TypeManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.TransferableTreeNode;
+import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.action.RefactorAction;
+import org.jajuk.ui.wizard.CDDBWizard;
+import org.jajuk.ui.wizard.DeviceWizard;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -41,7 +72,6 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -58,40 +88,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Directory;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.TypeManager;
-import org.jajuk.exporters.ExportFileFilter;
-import org.jajuk.exporters.HTMLExporter;
-import org.jajuk.exporters.XMLExporter;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.TransferableTreeNode;
-import org.jajuk.ui.TreeTransferHandler;
-import org.jajuk.ui.action.RefactorAction;
-import org.jajuk.ui.wizard.CDDBWizard;
-import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 import ext.SwingWorker;
 
@@ -235,7 +231,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "PhysicalTreeView.0"; //$NON-NLS-1$
+		return Messages.getString("PhysicalTreeView.0"); //$NON-NLS-1$
 	}
 
 	/** Return singleton */
@@ -1017,127 +1013,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				final Directory dir = (Directory) item;
 				Util.waiting();
 				new RefactorAction(dir.getFilesRecursively());
-			}
-		} else if ((alFiles != null && e.getSource() == jmiDirExport)
-				|| (e.getSource() == jmiDevExport || (e.getSource() == jmiCollectionExport))) {
-			// Create filters.
-			ExportFileFilter xmlFilter = new ExportFileFilter(".xml");
-			ExportFileFilter htmlFilter = new ExportFileFilter(".html");
-			// ExportFileFilter pdfFilter = new ExportFileFilter(".pdf");
-
-			final JFileChooser filechooser = new JFileChooser();
-			// Add filters.
-			filechooser.addChoosableFileFilter(xmlFilter);
-			filechooser.addChoosableFileFilter(htmlFilter);
-			// filechooser.addChoosableFileFilter(pdfFilter);
-			// set a default file name
-			if (alSelected.size() == 1) {
-				Item item = alSelected.get(0);
-				filechooser.setSelectedFile(new java.io.File(item.getName()));
-			} else if (alSelected.size() > 1) {
-				// collection node selected
-				filechooser.setSelectedFile(new java.io.File("collection"));
-			}
-
-			filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
-			filechooser.setDialogTitle(Messages.getString("PhysicalTreeView.58"));
-			filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-			int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
-
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				// make it in a separated thread to avoid freezing screen for
-				// big collections
-				new Thread() {
-					public void run() {
-
-						java.io.File file = filechooser.getSelectedFile();
-						String filepath = file.getAbsolutePath();
-						String filetypename = Util.getExtension(file);
-
-						if (filetypename.equals("")) {
-							ExportFileFilter filter = (ExportFileFilter) filechooser
-									.getFileFilter();
-							filetypename = filter.getExtension();
-							filepath += "." + filetypename;
-						}
-
-						String result = ""; //$NON-NLS-1$
-
-						// If we are exporting to xml...
-						if (filetypename.equals("xml")) { //$NON-NLS-1$
-							XMLExporter xmlExporter = XMLExporter.getInstance();
-
-							// If we are exporting a directory...
-							if (e.getSource() == jmiDirExport) {
-								Directory dir = ((DirectoryNode) paths[0].getLastPathComponent())
-										.getDirectory();
-								result = xmlExporter.process(dir);
-								// Else if we are exporting a device...
-							} else if (e.getSource() == jmiDevExport) {
-								Device device = ((DeviceNode) paths[0].getLastPathComponent())
-										.getDevice();
-								result = xmlExporter.process(device);
-								// Else if we are exporting the entire
-								// collection...
-							} else if (e.getSource() == jmiCollectionExport) {
-								result = xmlExporter.processCollection(
-										XMLExporter.PHYSICAL_COLLECTION, null);
-							}
-
-							if (result != null) {
-								// Save the results.
-								if (!xmlExporter.saveToFile(result, filepath)) {
-									Log.error("Could not write out the xml to the specified file.");
-								}
-							} else {
-								Log.error("Could not create report.");
-							}
-							// Else if we are exporting to html...
-						} else if (filetypename.equals("html") || filetypename.equals("htm")) {
-							HTMLExporter htmlExporter = HTMLExporter.getInstance();
-
-							// If we are exporting a directory...
-							if (e.getSource() == jmiDirExport) {
-								Directory dir = ((DirectoryNode) paths[0].getLastPathComponent())
-										.getDirectory();
-								result = htmlExporter.process(dir);
-								// Else if we are exporting a device...
-							} else if (e.getSource() == jmiDevExport) {
-								Device device = ((DeviceNode) paths[0].getLastPathComponent())
-										.getDevice();
-								result = htmlExporter.process(device);
-								// Else if we are exporting the entire
-								// collection...
-							} else if (e.getSource() == jmiCollectionExport) {
-								result = htmlExporter.processCollection(
-										HTMLExporter.PHYSICAL_COLLECTION, null);
-							}
-
-							if (result != null) {
-								// Save the results.
-								if (!htmlExporter.saveToFile(result, filepath)) {
-									Log
-											.error("Could not write out the html to the specified file.");
-								}
-							} else {
-								Log.error("Could not create report.");
-							}
-							// Else if we are exporting to pdf...
-						} /*
-							 * else if (filetypename.equals("pdf")) { boolean
-							 * bResult = false; PDFExporter pdfExporter =
-							 * PDFExporter.getInstance(); // If we are exporting
-							 * a directory... if (e.getSource() == jmiDirExport) {
-							 * Directory dir =
-							 * ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();
-							 * bResult = pdfExporter.process(dir, filepath); }
-							 * 
-							 * if (bResult == false) { Log.error("Could not
-							 * create the pdf file."); } }
-							 */
-					}
-				}.start();
 			}
 		} else if (alFiles != null && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)) {
 			FIFO.getInstance().push(

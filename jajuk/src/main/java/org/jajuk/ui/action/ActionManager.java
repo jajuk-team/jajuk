@@ -148,6 +148,10 @@ public final class ActionManager {
 		installAction(QUALITY, new QualityAction(), false);
 		installAction(SHOW_TRACES, new DebugLogAction(), false);
 		installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
+		
+		//Export
+		installAction(JajukAction.CREATE_REPORT, new CreateReportAction(), false);
+		
 	}
 
 	/**
@@ -193,7 +197,7 @@ public final class ActionManager {
 	}
 
 	/**
-	 * Uninstalls default keystrokes from different JComponents to allow more
+	 * Uninstall default keystrokes from different JComponents to allow more
 	 * globally configured JaJuk keystrokes.
 	 */
 	public static void uninstallStrokes() {

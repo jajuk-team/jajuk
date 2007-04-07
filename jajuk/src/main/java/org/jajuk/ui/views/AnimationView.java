@@ -84,7 +84,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "AnimationView.0"; //$NON-NLS-1$
+		return Messages.getString("AnimationView.0"); //$NON-NLS-1$
 	}
 
 	/*

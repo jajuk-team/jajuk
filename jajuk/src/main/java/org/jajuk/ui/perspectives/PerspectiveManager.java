@@ -115,10 +115,10 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 	 * Begins management
 	 */
 	public static void init() {
-		// Use physical perspective as a default
-		IPerspective perspective = hmNameInstance.get(PERSPECTIVE_NAME_PHYSICAL);
+		// Use Simple perspective as a default
+		IPerspective perspective = hmNameInstance.get(SimplePerspective.class.getName());
 		// If it is a crash recover, force physical perspective to avoid
-		// being locked on a buggy perspecive like Information
+		// being locked on a buggy perspective like Information
 		if (!Main.isCrashRecover()) {
 			String sPerspective = Main.getDefaultPerspective();
 			/*
@@ -239,28 +239,29 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		reset();
 
 		IPerspective perspective = null;
+		// Simple perspective
+		perspective = new SimplePerspective();
+		perspective.setIconPath(ICON_PERSPECTIVE_SIMPLE);
+		registerPerspective(perspective);
+
 		// physical perspective
 		perspective = new PhysicalPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
-		perspective.setID(PERSPECTIVE_NAME_PHYSICAL);
 		registerPerspective(perspective);
 
 		// Logical perspective
 		perspective = new LogicalPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
-		perspective.setID(PERSPECTIVE_NAME_LOGICAL);
 		registerPerspective(perspective);
 
 		// Player perspective
 		perspective = new PlayerPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
-		perspective.setID(PERSPECTIVE_NAME_PLAYER);
 		registerPerspective(perspective);
 
 		// Catalog perspective
 		perspective = new CatalogPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_CATALOG);
-		perspective.setID(PERSPECTIVE_NAME_CATALOG);
 		registerPerspective(perspective);
 
 		// Information perspective
@@ -313,19 +314,16 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		// Configuration perspective
 		perspective = new ConfigurationPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
-		perspective.setID(PERSPECTIVE_NAME_CONFIGURATION);
 		registerPerspective(perspective);
 
 		// Stats perspective
 		perspective = new StatPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_STATISTICS);
-		perspective.setID(PERSPECTIVE_NAME_STATISTICS);
 		registerPerspective(perspective);
 
 		// Help perspective
 		perspective = new HelpPerspective();
 		perspective.setIconPath(ICON_PERSPECTIVE_HELP);
-		perspective.setID(PERSPECTIVE_NAME_HELP);
 		registerPerspective(perspective);
 	}
 

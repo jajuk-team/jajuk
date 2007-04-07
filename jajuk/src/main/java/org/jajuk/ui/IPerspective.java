@@ -38,11 +38,6 @@ public interface IPerspective {
 	public String getID();
 
 	/**
-	 * @param sid
-	 */
-	public void setID(String sid);
-
-	/**
 	 * Type description
 	 * 
 	 * @author Bertrand Florat

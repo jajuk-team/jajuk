@@ -189,7 +189,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		}
 
 		/**
-		 * Create columbs configuration
+		 * Create columns configuration
 		 * 
 		 */
 		public synchronized void prepareColumns() {
@@ -276,7 +276,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		}
 
 		/**
-		 * Fill model with data using an optionnal filter property
+		 * Fill model with data using an optional filter property
 		 */
 		public synchronized void populateModel(String sPropertyName, String sPattern) {
 			iRowNum = alItems.size() + alPlanned.size();
@@ -386,7 +386,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	}
 
 	/*
-	 * loi anti-tabac (non-Javadoc)
+	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.ui.IView#display()
 	 */
@@ -479,6 +479,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		ListSelectionModel lsm = jtable.getSelectionModel();
 		lsm.addListSelectionListener(this);
 		double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
+		// Just to check if someone will read this code: if you read this,
+		// send me an e-mail at bflorat@users.sourceforge.net
 		setLayout(new TableLayout(size));
 		add(jpControl, "0,0"); //$NON-NLS-1$
 		add(new JScrollPane(jtable), "0,1"); //$NON-NLS-1$
@@ -528,7 +530,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "AbstractPlaylistEditorView.15"; //$NON-NLS-1$
+		return Messages.getString("AbstractPlaylistEditorView.15"); //$NON-NLS-1$
 	}
 
 	private void columnChange() {
@@ -598,7 +600,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						jtable.getSelectionModel().clearSelection();
 						PlaylistFileItem plfi = (PlaylistFileItem) ObservationManager.getDetail(
 								event, DETAIL_SELECTION);
-						//plfi item is null when used in a perspective without a playlist repository view 
+						// plfi item is null when used in a perspective without
+						// a playlist repository view
 						if (plfi == null) {
 							plfi = new PlaylistFileItem(
 									PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
@@ -613,6 +616,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						switch (plfi.getType()) {
 						case PlaylistFileItem.PLAYLIST_TYPE_QUEUE:
 							jlTitle.setIcon(Util.getIcon(ICON_PLAYLIST_QUEUE_SMALL));
+							jlTitle.setText(plfi.getName() + " ["
+									+ FIFO.getInstance().getFIFO().size() + "]");
 							break;
 						case PlaylistFileItem.PLAYLIST_TYPE_BESTOF:
 							jlTitle.setIcon(Util.getIcon(ICON_BESTOF));
@@ -642,6 +647,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 							|| EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
 						if (plfi == null) { // nothing ? leave
 							return;
+						}
+						//Refresh number of tracks if we are in the queue
+						if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+							jlTitle.setText(plfi.getName() + " ["
+									+ FIFO.getInstance().getFIFO().size() + "]");
 						}
 						// when nothing is selected, set default button state
 						if (jtable.getSelectionModel().getMinSelectionIndex() == -1) {

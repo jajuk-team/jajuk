@@ -413,7 +413,7 @@ public class DeviceView extends ViewAdapter implements IView,
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "DeviceView.23"; //$NON-NLS-1$
+		return Messages.getString("DeviceView.23"); //$NON-NLS-1$
 	}
 
 	/*

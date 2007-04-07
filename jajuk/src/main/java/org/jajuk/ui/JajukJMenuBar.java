@@ -36,19 +36,25 @@ import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.ActionUtil;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.perspectives.PerspectiveAdapter;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.views.ViewFactory;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.ActionUtil;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
 
 /**
  * Jajuk menu bar
@@ -138,6 +144,26 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
 		jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
 		views.add(jmiRestoreDefaultViews);
+		views.addSeparator();
+		//Add the list of available views parsed in XML files at startup
+		JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
+		for (final IView view:ViewFactory.getKnownViews()){
+			JMenuItem jmi = new JMenuItem(view.getDesc(),Util.getIcon(ICON_LOGO_FRAME));
+			jmi.addActionListener(new ActionListener() {
+			
+				public void actionPerformed(ActionEvent e) {
+					//Simply add the new view in the current perspective
+					PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
+							.getCurrentPerspective();
+					IView newView = ViewFactory.createView(view.getClass(), current);
+					newView.initUI();
+					current.addDockable(newView);
+				}
+			
+			});
+			jmViews.add(jmi);
+		}
+		views.add(jmViews);
 
 		// Mode menu
 		String modeText = Messages.getString("JajukJMenuBar.9"); //$NON-NLS-1$

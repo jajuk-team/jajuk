@@ -26,16 +26,21 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
+import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import com.vlsolutions.swing.docking.Dockable;
+import com.vlsolutions.swing.docking.DockableResolver;
 import com.vlsolutions.swing.docking.DockableState;
+import com.vlsolutions.swing.docking.DockingContext;
 import com.vlsolutions.swing.docking.DockingDesktop;
 
 /**
@@ -44,16 +49,13 @@ import com.vlsolutions.swing.docking.DockingDesktop;
  * @author Bertrand Florat
  * @created 15 nov. 2003
  */
-public abstract class PerspectiveAdapter extends DockingDesktop implements
-		IPerspective, ITechnicalStrings {
+public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective,
+		ITechnicalStrings {
 	/** Perspective id (class) */
 	private String sID;
 
 	/** Perspective icon path */
 	private URL iconPath;
-
-	/** Views list */
-	protected Set<IView> views;
 
 	/**
 	 * As been selected flag (workaround for VLDocking issue when saving
@@ -68,6 +70,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 	 * @param sIconName
 	 */
 	public PerspectiveAdapter() {
+		this.sID = getClass().getName();
 	}
 
 	/*
@@ -113,8 +116,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 			return;
 		}
 		File saveFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
-		BufferedOutputStream out = new BufferedOutputStream(
-				new FileOutputStream(saveFile));
+		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
 		writeXML(out);
 		out.flush();
 		out.close();
@@ -126,15 +128,10 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 	 * @see org.jajuk.ui.perspectives.IPerspective#load()
 	 */
 	public void load() throws Exception {
-		// first : declare the dockables to the desktop (they will be in the
-		// "closed" dockable state).
-		for (IView view : getViews()) {
-			registerDockable(view);
-		}
 		// Try to read XML conf file from home directory
 		File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
 		/*
-		 * If file doesn't exist (normaly only at first install), read
+		 * If file doesn't exist (normally only at first install), read
 		 * perspective conf from the jar
 		 */
 		URL url = loadFile.toURL();
@@ -144,8 +141,25 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		}
 		BufferedInputStream in = new BufferedInputStream(url.openStream());
 		// then, load the workspace
+		DockingContext ctx = new DockingContext();
+		DockableResolver resolver = new DockableResolver() {
+			public Dockable resolveDockable(String keyName) {
+				Dockable view = null;
+				try {
+					String className = keyName.substring(0, keyName.indexOf('/'));
+					view = ViewFactory
+							.createView(Class.forName(className), PerspectiveAdapter.this);
+				} catch (Exception e) {
+					Log.error(e);
+				}
+				return view;
+			}
+		};
+		ctx.setDockableResolver(resolver);
+		setContext(ctx);
+		ctx.addDesktop(this);
 		try {
-			readXML(in);
+			ctx.readXML(in);
 		} catch (Exception e) {
 			// error parsing the file, we must avoid user to blocked, use
 			// default conf
@@ -154,7 +168,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
 					+ getClass().getSimpleName() + ".xml");
 			in = new BufferedInputStream(url.openStream());
-			readXML(in);
+			ctx.readXML(in);
 		} finally {
 			in.close(); // stream isn't closed
 		}
@@ -176,7 +190,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 	 */
 	public void restoreDefaults() {
 		// SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
-		// to ensure views are not unvisible
+		// to ensure views are not invisible
 		try {
 			// Remove current conf file to force using default file from the
 			// jar
@@ -198,13 +212,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 		}
 	}
 
-	/**
-	 * @param sid
-	 */
-	public void setID(String sid) {
-		this.sID = sid;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -212,6 +219,15 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements
 	 */
 	public void setAsBeenSelected(boolean b) {
 		bAsBeenSelected = b;
+	}
+
+	public Set<IView> getViews() {
+		Set<IView> views = new HashSet<IView>();
+		DockableState[] dockables = getDockables();
+		for (int i = 0; i < dockables.length; i++) {
+			views.add((IView) dockables[i].getDockable());
+		}
+		return views;
 	}
 
 }

@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -107,6 +108,9 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	/** Visible at startup? */
 	JCheckBoxMenuItem jcbmiVisible;
 
+	/** Show balloon? */
+	JCheckBoxMenuItem jcbmiShowBalloon;
+
 	/** Self instance singleton */
 	private static JajukSystray jsystray;
 
@@ -157,9 +161,14 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmiNovelties = new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
 
 		jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
-		jcbmiVisible.setState(JajukWindow.getInstance().isWindowVisible());
+		jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true));
 		jcbmiVisible.addActionListener(this);
 		jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25")); //$NON-NLS-1$
+
+		jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185")); //$NON-NLS-1$
+		jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
+		jcbmiShowBalloon.addActionListener(this);
+		jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185")); //$NON-NLS-1$
 
 		jmiPause = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK));
 		jmiStop = new JMenuItem(ActionManager.getAction(JajukAction.STOP_TRACK));
@@ -201,6 +210,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmenu.add(jmAmbience);
 		jmenu.addSeparator();
 		jmenu.add(jcbmiVisible);
+		jmenu.add(jcbmiShowBalloon);
 		jmenu.addSeparator();
 		jmenu.add(jmiPause);
 		jmenu.add(jmiStop);
@@ -265,6 +275,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
+		eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
 		return eventSubjectSet;
 	}
 
@@ -275,10 +286,17 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		// do not run this in a separate thread because Player actions would die
 		// with the thread
 		try {
-			if (e.getSource() == jcbmiVisible) {
-				ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP, Boolean
+			if (e.getSource() == jcbmiVisible || e.getSource() == jcbmiShowBalloon) {
+				ConfigurationManager.setProperty(CONF_UI_SHOW_AT_STARTUP, Boolean
 						.toString(jcbmiVisible.getState()));
+				ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean
+						.toString(jcbmiShowBalloon.getState()));
+				//Launch an event that can be trapped by the tray to synchronize the state
+				Properties details = new Properties();
+				details.put(DETAIL_ORIGIN,this);
+				ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE,details));
 			}
+			
 		} catch (Exception e2) {
 			Log.error(e2);
 		} finally {
@@ -316,7 +334,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					File file = FileManager.getInstance().getFileByID(
 							(String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
 					// check show balloon option
-					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP)) {
+					if (ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON)) {
 						String sOut = "";
 						if (Util.isUnderLinux()) {
 							sOut = getHTMLFormatText(file);
@@ -385,8 +403,11 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						jmAmbience.setText(Messages.getString("JajukWindow.37")); //$NON-NLS-1$
 					}
 					populateAmbiences();
+				} else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+					jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP,
+							true));
+					jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
 				}
-
 			}
 
 		});

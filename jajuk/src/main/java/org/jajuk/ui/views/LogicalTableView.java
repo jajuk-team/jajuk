@@ -82,7 +82,7 @@ public class LogicalTableView extends AbstractTableView {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "LogicalTableView.0"; //$NON-NLS-1$
+		return Messages.getString("LogicalTableView.0"); //$NON-NLS-1$
 	}
 
 	/** Return singleton */

@@ -376,7 +376,7 @@ public class StatView extends ViewAdapter implements Observer {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "StatView.16"; //$NON-NLS-1$
+		return Messages.getString("StatView.16"); //$NON-NLS-1$
 	}
 
 	/*

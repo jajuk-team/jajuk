@@ -32,6 +32,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -83,6 +84,7 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+
 
 /**
  * View used to set Jajuk paramers.
@@ -297,16 +299,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JLabel jlJajukWorkspace;
 
 	PathSelector psJajukWorkspace;
-	
+
 	JLabel jlCatalogPages;
 
 	JSlider jsCatalogPages;
-	
-	JajukJPanel jpUI; 
-	
+
+	JajukJPanel jpUI;
+
 	JLabel jlFonts;
-	
+
 	JSlider jsFonts;
+
+	JCheckBox jcbVisibleAtStartup;
 
 	JajukJPanel jpOKCancel;
 
@@ -650,11 +654,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181")); //$NON-NLS-1$
 		jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182")); //$NON-NLS-1$
 		jcbDefaultActionDrop.setOpaque(false);
-
-		jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185")); //$NON-NLS-1$
-		jcbShowBaloon.setOpaque(false);
-		jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185")); //$NON-NLS-1$
-
+		
 		jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196")); //$NON-NLS-1$
 		jcbHotkeys.setOpaque(false);
 		jcbHotkeys.addActionListener(this);
@@ -697,9 +697,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpOptions.add(jcbDefaultActionClick, "0,3"); //$NON-NLS-1$
 		jpOptions.add(jcbDefaultActionDrop, "0,5"); //$NON-NLS-1$
 		jpOptions.add(jcbSyncTableTree, "0,7"); //$NON-NLS-1$
-		jpOptions.add(jcbShowBaloon, "0,9"); //$NON-NLS-1$
-		jpOptions.add(jcbHotkeys, "0,11"); //$NON-NLS-1$
-		jpOptions.add(jpCombos, "0,13"); //$NON-NLS-1$
+		jpOptions.add(jcbHotkeys, "0,9"); //$NON-NLS-1$
+		jpOptions.add(jpCombos, "0,11"); //$NON-NLS-1$
 
 		// --P2P
 		jpP2P = new JajukJPanel();
@@ -984,37 +983,67 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpUI = new JajukJPanel();
 		double sizeUI[][] = {
 				{ 0.5, 0.5 },
-				{ 20,TableLayout.PREFERRED,TableLayout.PREFERRED } };
+				{ 20,TableLayout.PREFERRED,TableLayout.PREFERRED,
+					TableLayout.PREFERRED,TableLayout.PREFERRED } };
 		TableLayout layoutUI = new TableLayout(sizeUI);
 		layoutUI.setHGap(10);
 		layoutUI.setVGap(15);
 		jpUI.setLayout(layoutUI);
-		//Catalog size
+		// Catalog size
 		jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
 		jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
 		jsCatalogPages = new JSlider(0, 1000, ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE));
 		jsCatalogPages.setOpaque(false);
-		jsCatalogPages.setSnapToTicks(true);
 		jsCatalogPages.setMinorTickSpacing(100);
-		jsCatalogPages.setMajorTickSpacing(100);
+		jsCatalogPages.setMajorTickSpacing(200);
 		jsCatalogPages.setPaintTicks(true);
 		jsCatalogPages.setPaintLabels(true);
 		jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222")); //$NON-NLS-1$
-		//Font selector
+		// Font selector
 		jlFonts = new JLabel(Messages.getString("ParameterView.223"));
 		jsFonts = new JSlider(6, 20, ConfigurationManager.getInt(CONF_FONTS_SIZE));
 		jsFonts.setOpaque(false);
 		jsFonts.setSnapToTicks(true);
-		jsFonts.setMajorTickSpacing(1);
+		jsFonts.setMajorTickSpacing(2);
 		jsFonts.setMinorTickSpacing(1);
 		jsFonts.setPaintTicks(true);
 		jsFonts.setPaintLabels(true);
 		jsFonts.setToolTipText(Messages.getString("ParameterView.224")); //$NON-NLS-1$
-		//Add items
-		jpUI.add(jlCatalogPages, "0,1");//$NON-NLS-1$
-		jpUI.add(jsCatalogPages, "1,1");//$NON-NLS-1$
-		jpUI.add(jlFonts, "0,2");//$NON-NLS-1$
-		jpUI.add(jsFonts, "1,2");//$NON-NLS-1$
+		// Visible at startup
+		jcbVisibleAtStartup = new JCheckBox(Messages.getString("JajukWindow.8"));
+		jcbVisibleAtStartup.setToolTipText(Messages.getString("JajukWindow.25"));
+		jcbVisibleAtStartup.setOpaque(false);
+		//Use this common action listener for UI options that need to launch event
+		ActionListener alUI = new ActionListener() {
+		
+			public void actionPerformed(ActionEvent e) {
+				//Store configuration
+				ConfigurationManager.setProperty(CONF_UI_SHOW_AT_STARTUP, Boolean.toString(jcbVisibleAtStartup
+				.isSelected()));
+				ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean.toString(jcbShowBaloon
+				.isSelected()));
+				//Launch an event that can be trapped by the tray to synchronize the state
+				Properties details = new Properties();
+				details.put(DETAIL_ORIGIN,ParameterView.this);
+				ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE,details));
+			}
+		
+		};
+		jcbVisibleAtStartup.addActionListener(alUI);
+		
+		// Show Balloon
+		jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185")); //$NON-NLS-1$
+		jcbShowBaloon.setOpaque(false);
+		jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185")); //$NON-NLS-1$
+		jcbShowBaloon.addActionListener(alUI);
+		
+		// Add items
+		jpUI.add(jcbVisibleAtStartup, "0,1");//$NON-NLS-1$
+		jpUI.add(jcbShowBaloon, "0,2");//$NON-NLS-1$
+		jpUI.add(jlCatalogPages, "0,3");//$NON-NLS-1$
+		jpUI.add(jsCatalogPages, "1,3");//$NON-NLS-1$
+		jpUI.add(jlFonts, "0,4");//$NON-NLS-1$
+		jpUI.add(jsFonts, "1,4");//$NON-NLS-1$
 		
 		// --OK/cancel panel
 		Dimension dim = new Dimension(200, 20);
@@ -1061,7 +1090,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		updateSelection();
 		ObservationManager.register(this);
 	}
-	
+
 	public Set<EventSubject> getRegistrationKeys() {
 		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
 		eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
@@ -1081,7 +1110,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "ParameterView.87"; //$NON-NLS-1$
+		return Messages.getString("ParameterView.87"); //$NON-NLS-1$
 	}
 
 	/*
@@ -1238,8 +1267,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.toString(jcbDefaultActionDrop.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
 				.toString(jcbSyncTableTree.isSelected()));
-		ConfigurationManager.setProperty(CONF_OPTIONS_SHOW_POPUP, Boolean.toString(jcbShowBaloon
-				.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys
 				.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_AUDIOSCROBBLER, Boolean
@@ -1338,15 +1365,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
 		ConfigurationManager.setProperty(CONF_ENV_VARIABLES, jtfEnvVariables.getText());
-		//UI
-		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
+		// UI
+		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages
+				.getValue()));
 		int oldFont = ConfigurationManager.getInt(CONF_FONTS_SIZE);
-		//Display a message if font changed
-		if (oldFont != jsFonts.getValue()){
+		// Display a message if font changed
+		if (oldFont != jsFonts.getValue()) {
 			Messages.showInfoMessage(Messages.getString("ParameterView.227"));
 		}
 		ConfigurationManager.setProperty(CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
-		
+
 		// If jajuk home changes, write new path in bootstrap file
 		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
 			// Check workspace directory
@@ -1397,7 +1425,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.commit();
 		// notify playlist editor (useful for novelties)
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-		//Force a full refresh (useful for catalog view for instance)
+		// Force a full refresh (useful for catalog view for instance)
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		// display a message
 		InformationJPanel.getInstance().setMessage(
@@ -1449,7 +1477,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
 		jcbDefaultActionDrop.setSelected(ConfigurationManager
 				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
-		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP));
 		jcbHotkeys.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS));
 
 		jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
@@ -1528,7 +1555,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			jlASPassword.setEnabled(false);
 			jpfASPassword.setEnabled(false);
 		}
-
+		//UI
+		jcbVisibleAtStartup.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
+		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
 	}
 
 	/*
@@ -1563,17 +1592,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		// when changing tab, store it for futur jajuk sessions
+		// when changing tab, store it for future jajuk sessions
 		ConfigurationManager.setProperty(CONF_OPTIONS_TAB, Integer.toString(jtpMain
 				.getSelectedIndex()));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
 	 */
 	public void update(Event event) {
 		EventSubject subject = event.getSubject();
-		if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)){
+		Object origin = event.getDetails().get(DETAIL_ORIGIN);
+		//Ignore this event is thrown by this view itself (to avoid loosing already set options)
+		if (origin.equals(this)){
+			return;
+		}
+		if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
 			updateSelection();
 		}
 	}
