@@ -350,14 +350,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						// display a "Ready to play" message
 						sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
 					} else {
-						// Display a full tooltip with author...
-						if (Util.isUnderLinux()) {
-							sOut = getHTMLFormatText(file);
-						} else {
-							sOut = getBasicFormatText(file);
-						}
+						trayIcon.setToolTip(getHTMLFormatText(file));
 					}
-					trayIcon.setToolTip(sOut);
 				} else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
 						|| EventSubject.EVENT_ZERO.equals(subject)) {
 					trayIcon.setToolTip(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
