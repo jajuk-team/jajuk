@@ -64,52 +64,51 @@ public class TrackManager extends ItemManager implements Observer {
 		super();
 		// ---register properties---
 		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+				String.class, null));
 		// Name
-		registerProperty(new PropertyMetaInformation(XML_NAME, false, true,
-				true, true, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+				String.class, null));
 		// Album
-		registerProperty(new PropertyMetaInformation(XML_ALBUM, false, true,
-				true, true, true, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ALBUM, false, true, true, true, true,
+				String.class, null));
 		// Style
-		registerProperty(new PropertyMetaInformation(XML_STYLE, false, true,
-				true, true, true, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_STYLE, false, true, true, true, true,
+				String.class, null));
 		// Author
-		registerProperty(new PropertyMetaInformation(XML_AUTHOR, false, true,
-				true, true, true, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_AUTHOR, false, true, true, true, true,
+				String.class, null));
 		// Length
-		registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH, false,
-				true, true, false, false, Long.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH, false, true, true, false,
+				false, Long.class, null));
 		// Type
-		registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE, false,
-				true, true, false, false, Long.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE, false, true, true, false,
+				false, Long.class, null));
 		// Year
-		registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR, false,
-				true, true, true, true, Long.class, 0));
+		registerProperty(new PropertyMetaInformation(XML_YEAR, false, true, true, true, true,
+				Long.class, 0));
 		// Rate
-		registerProperty(new PropertyMetaInformation(XML_TRACK_RATE, false,
-				false, true, true, true, Long.class, 0));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_RATE, false, false, true, true,
+				true, Long.class, 0));
 		// Files
-		registerProperty(new PropertyMetaInformation(XML_FILES, false, false,
-				true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_FILES, false, false, true, false, false,
+				String.class, null));
 		// Hits
-		registerProperty(new PropertyMetaInformation(XML_TRACK_HITS, false,
-				false, true, false, false, Long.class, 0));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_HITS, false, false, true, false,
+				false, Long.class, 0));
 		// Addition date
-		registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED, false,
-				false, true, false, false, Date.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED, false, false, true, false,
+				false, Date.class, null));
 		// Comment
-		registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT, false,
-				false, true, true, true, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT, false, false, true, true,
+				true, String.class, null));
 		// Track order
-		registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER, false,
-				true, true, true, false, Long.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER, false, true, true, true,
+				false, Long.class, null));
 		// ---subscriptions---
 		ObservationManager.register(this);
 		// select comparator
-		comparator = new TrackComparator(ConfigurationManager
-				.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
+		comparator = new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {
@@ -129,13 +128,10 @@ public class TrackManager extends ItemManager implements Observer {
 	/**
 	 * Register an Track
 	 */
-	public synchronized Track registerTrack(String sName, Album album,
-			Style style, Author author, long length, long lYear, long lOrder,
-			Type type) {
-		String sId = getID(sName, album, style, author, length, lYear, lOrder,
-				type);
-		return registerTrack(sId, sName, album, style, author, length, lYear,
-				lOrder, type);
+	public synchronized Track registerTrack(String sName, Album album, Style style, Author author,
+			long length, Year year, long lOrder, Type type) {
+		String sId = getID(sName, album, style, author, length, year, lOrder, type);
+		return registerTrack(sId, sName, album, style, author, length, year, lOrder, type);
 	}
 
 	/**
@@ -144,13 +140,12 @@ public class TrackManager extends ItemManager implements Observer {
 	 * @param track
 	 * @return
 	 */
-	protected static String getID(String sName, Album album, Style style,
-			Author author, long length, long lYear, long lOrder, Type type) {
+	protected static String getID(String sName, Album album, Style style, Author author,
+			long length, Year year, long lOrder, Type type) {
 		StringBuffer sb = new StringBuffer(100);
-		sb.append(style.getId()).append(author.getId()).append(album.getId())
-				.append(sName).append(lYear).append(length).append(lOrder)
-				.append(type.getId());
-		// differenciate tracks by type because we can't find best file
+		sb.append(style.getId()).append(author.getId()).append(album.getId()).append(sName).append(
+				year.getValue()).append(length).append(lOrder).append(type.getId());
+		// distinguish tracks by type because we can't find best file
 		// on different quality levels by format
 		return MD5Processor.hash(sb.toString());
 	}
@@ -160,16 +155,14 @@ public class TrackManager extends ItemManager implements Observer {
 	 * 
 	 * @param sName
 	 */
-	public Track registerTrack(String sId, String sName, Album album,
-			Style style, Author author, long length, long lYear, long lOrder,
-			Type type) {
+	public Track registerTrack(String sId, String sName, Album album, Style style, Author author,
+			long length, Year year, long lOrder, Type type) {
 		synchronized (TrackManager.getInstance().getLock()) {
 			if (hmItems.containsKey(sId)) {
 				return (Track) hmItems.get(sId);
 			}
 			Track track = null;
-			track = new Track(sId, sName, album, style, author, length, lYear,
-					lOrder, type);
+			track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
 			hmItems.put(sId, track);
 			return track;
 		}
@@ -206,18 +199,13 @@ public class TrackManager extends ItemManager implements Observer {
 				tag.commit();
 			}
 			// register the new album
-			Album newAlbum = AlbumManager.getInstance()
-					.registerAlbum(sNewAlbum);
-			Track newTrack = registerTrack(track.getName(), newAlbum, track
-					.getStyle(), track.getAuthor(), track.getLength(), track
-					.getYear(), track.getOrder(), track.getType());
+			Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
+			Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track
+					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
+					.getType());
 			postChange(track, newTrack, filter);
-			AlbumManager.getInstance().cleanup(track.getAlbum()); // remove
-			// this
-			// album
-			// if no
-			// more
-			// references
+			// remove this album if no more references
+			AlbumManager.getInstance().cleanup(track.getAlbum());
 			return newTrack;
 		}
 	}
@@ -233,8 +221,8 @@ public class TrackManager extends ItemManager implements Observer {
 	 *            files we want to deal with
 	 * @return new track
 	 */
-	public Track changeTrackAuthor(Track track, String sNewAuthor,
-			HashSet filter) throws JajukException {
+	public Track changeTrackAuthor(Track track, String sNewAuthor, HashSet filter)
+			throws JajukException {
 		synchronized (TrackManager.getInstance().getLock()) {
 			// check there is actually a change
 			if (track.getAuthor().getName2().equals(sNewAuthor)) {
@@ -254,17 +242,15 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			// if current track author name is changed, notify it
 			if (FIFO.getInstance().getCurrentFile() != null
-					&& FIFO.getInstance().getCurrentFile().getTrack()
-							.getAuthor().equals(track.getAuthor())) {
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_AUTHOR_CHANGED));
+					&& FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(
+							track.getAuthor())) {
+				ObservationManager.notify(new Event(EventSubject.EVENT_AUTHOR_CHANGED));
 			}
 			// register the new item
-			Author newAuthor = AuthorManager.getInstance().registerAuthor(
-					sNewAuthor);
-			Track newTrack = registerTrack(track.getName(), track.getAlbum(),
-					track.getStyle(), newAuthor, track.getLength(), track
-							.getYear(), track.getOrder(), track.getType());
+			Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
+			Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
+					newAuthor, track.getLength(), track.getYear(), track.getOrder(), track
+							.getType());
 			postChange(track, newTrack, filter);
 			AuthorManager.getInstance().cleanup(track.getAuthor()); // remove
 			// this
@@ -308,11 +294,10 @@ public class TrackManager extends ItemManager implements Observer {
 				tag.commit();
 			}
 			// register the new item
-			Style newStyle = StyleManager.getInstance()
-					.registerStyle(sNewStyle);
-			Track newTrack = registerTrack(track.getName(), track.getAlbum(),
-					newStyle, track.getAuthor(), track.getLength(), track
-							.getYear(), track.getOrder(), track.getType());
+			Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
+			Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle, track
+					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
+					.getType());
 			postChange(track, newTrack, filter);
 			StyleManager.getInstance().cleanup(track.getStyle()); // remove
 			// this
@@ -333,15 +318,15 @@ public class TrackManager extends ItemManager implements Observer {
 	 *            item name
 	 * @param filter
 	 *            files we want to deal with
-	 * @return new track or null if wronf format
+	 * @return new track or null if wrong format
 	 */
-	public Track changeTrackYear(Track track, long lNewItem, HashSet filter)
-			throws JajukException {
+	public Track changeTrackYear(Track track, String newItem, HashSet filter) throws JajukException {
 		synchronized (TrackManager.getInstance().getLock()) {
 			// check there is actually a change
-			if (track.getYear() == lNewItem) {
+			if (track.getYear().getName().equals(newItem)) {
 				return track;
 			}
+			long lNewItem = Long.parseLong(newItem);
 			if (lNewItem < 0 || lNewItem > 10000) {
 				Messages.showErrorMessage("137"); //$NON-NLS-1$
 				throw new JajukException("137"); //$NON-NLS-1$
@@ -355,13 +340,14 @@ public class TrackManager extends ItemManager implements Observer {
 			// change tag in files
 			for (File file : alReady) {
 				Tag tag = new Tag(file.getIO());
-				tag.setYear(lNewItem);
+				tag.setYear(newItem);
 				tag.commit();
 			}
 			// Register new item
-			Track newTrack = registerTrack(track.getName(), track.getAlbum(),
-					track.getStyle(), track.getAuthor(), track.getLength(),
-					lNewItem, track.getOrder(), track.getType());
+			Year newYear = YearManager.getInstance().registerYear(newItem);
+			Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
+					track.getAuthor(), track.getLength(), newYear, track.getOrder(), track
+							.getType());
 			postChange(track, newTrack, filter);
 			return newTrack;
 		}
@@ -462,9 +448,9 @@ public class TrackManager extends ItemManager implements Observer {
 				tag.setOrder(lNewOrder);
 				tag.commit();
 			}
-			Track newTrack = registerTrack(track.getName(), track.getAlbum(),
-					track.getStyle(), track.getAuthor(), track.getLength(),
-					track.getYear(), lNewOrder, track.getType());
+			Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
+					track.getAuthor(), track.getLength(), track.getYear(), lNewOrder, track
+							.getType());
 			postChange(track, newTrack, filter);
 			return newTrack;
 		}
@@ -500,16 +486,15 @@ public class TrackManager extends ItemManager implements Observer {
 				tag.setTrackName(sNewItem);
 				tag.commit();
 			}
-			Track newTrack = registerTrack(sNewItem, track.getAlbum(), track
-					.getStyle(), track.getAuthor(), track.getLength(), track
-					.getYear(), track.getOrder(), track.getType());
+			Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track
+					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
+					.getType());
 			postChange(track, newTrack, filter);
 			return newTrack;
 		}
 	}
 
-	private void updateFilesReferences(Track oldTrack, Track newTrack,
-			HashSet filter) {
+	private void updateFilesReferences(Track oldTrack, Track newTrack, HashSet filter) {
 		synchronized (TrackManager.getInstance().getLock()) {
 			// Reset files property before adding new files
 			for (File file : oldTrack.getReadyFiles(filter)) {
@@ -552,8 +537,7 @@ public class TrackManager extends ItemManager implements Observer {
 				}
 				Iterator itFiles = track.getFiles().iterator();
 				while (itFiles.hasNext()) {
-					org.jajuk.base.File file = (org.jajuk.base.File) itFiles
-							.next();
+					org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
 					if (FileManager.getInstance().getFileByID(file.getId()) == null) {
 						itFiles.remove();// no? remove it from the track
 					}
@@ -607,10 +591,9 @@ public class TrackManager extends ItemManager implements Observer {
 			for (Object item2 : hmItems.values()) {
 				Track track = (Track) item2;
 				if ((item instanceof Album && track.getAlbum().equals(item))
-						|| (item instanceof Author && track.getAuthor().equals(
-								item))
-						|| (item instanceof Style && track.getStyle().equals(
-								item))) {
+						|| (item instanceof Author && track.getAuthor().equals(item))
+						|| (item instanceof Year && track.getYear().equals(item))
+						|| (item instanceof Style && track.getStyle().equals(item))) {
 					out.add(track);
 				}
 			}
@@ -677,7 +660,7 @@ public class TrackManager extends ItemManager implements Observer {
 		}
 		return tracks;
 	}
-	
+
 	/**
 	 * 
 	 * @return unsorted tracks list

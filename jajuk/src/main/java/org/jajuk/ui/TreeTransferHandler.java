@@ -55,8 +55,8 @@ import javax.swing.tree.TreePath;
  * @author Bertrand Florat
  * @created 13 feb. 2004
  */
-public class TreeTransferHandler implements DragGestureListener,
-		DragSourceListener, DropTargetListener, TreeWillExpandListener {
+public class TreeTransferHandler implements DragGestureListener, DragSourceListener,
+		DropTargetListener, TreeWillExpandListener {
 
 	private JTree tree;
 
@@ -93,11 +93,9 @@ public class TreeTransferHandler implements DragGestureListener,
 			dsde.getDragSourceContext().setCursor(DragSource.DefaultCopyDrop);
 		} else {
 			if (action == DnDConstants.ACTION_MOVE) {
-				dsde.getDragSourceContext().setCursor(
-						DragSource.DefaultMoveDrop);
+				dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
 			} else {
-				dsde.getDragSourceContext().setCursor(
-						DragSource.DefaultMoveNoDrop);
+				dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
 			}
 		}
 	}
@@ -108,11 +106,9 @@ public class TreeTransferHandler implements DragGestureListener,
 			dsde.getDragSourceContext().setCursor(DragSource.DefaultCopyDrop);
 		} else {
 			if (action == DnDConstants.ACTION_MOVE) {
-				dsde.getDragSourceContext().setCursor(
-						DragSource.DefaultMoveDrop);
+				dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
 			} else {
-				dsde.getDragSourceContext().setCursor(
-						DragSource.DefaultMoveNoDrop);
+				dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
 			}
 		}
 	}
@@ -123,11 +119,9 @@ public class TreeTransferHandler implements DragGestureListener,
 			dsde.getDragSourceContext().setCursor(DragSource.DefaultCopyDrop);
 		} else {
 			if (action == DnDConstants.ACTION_MOVE) {
-				dsde.getDragSourceContext().setCursor(
-						DragSource.DefaultMoveDrop);
+				dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
 			} else {
-				dsde.getDragSourceContext().setCursor(
-						DragSource.DefaultMoveNoDrop);
+				dsde.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
 			}
 		}
 	}
@@ -141,48 +135,30 @@ public class TreeTransferHandler implements DragGestureListener,
 		TreePath path = tree.getSelectionPath();
 		if (path != null) {
 			draggedNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-			draggedNodeParent = (DefaultMutableTreeNode) draggedNode
-					.getParent();
+			draggedNodeParent = (DefaultMutableTreeNode) draggedNode.getParent();
 			if (drawImage) {
-				Rectangle pathBounds = tree.getPathBounds(path); // getpathbounds
-				// of
-				// selectionpath
-				JComponent lbl = (JComponent) tree.getCellRenderer()
-						.getTreeCellRendererComponent(
-								tree,
-								draggedNode,
-								false,
-								tree.isExpanded(path),
-								((DefaultTreeModel) tree.getModel())
-										.isLeaf(path.getLastPathComponent()),
-								0, false);// returning the label
-				lbl.setBounds(pathBounds);// setting bounds to lbl
+				// get path bounds of selection path
+				Rectangle pathBounds = tree.getPathBounds(path);
+				// returning the label
+				JComponent lbl = (JComponent) tree.getCellRenderer().getTreeCellRendererComponent(
+						tree, draggedNode, false, tree.isExpanded(path),
+						((DefaultTreeModel) tree.getModel()).isLeaf(path.getLastPathComponent()),
+						0, false);
+				// setting bounds to lbl
+				lbl.setBounds(pathBounds);
+				// buffered image reference passing the label's ht and width
 				image = new BufferedImage(lbl.getWidth(), lbl.getHeight(),
-						java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE);// buffered
-				// image
-				// reference
-				// passing
-				// the
-				// label's
-				// ht
-				// and
-				// width
-				Graphics2D graphics = image.createGraphics();// creating the
-				// graphics for
-				// buffered
-				// image
-				graphics.setComposite(AlphaComposite.getInstance(
-						AlphaComposite.SRC_OVER, 0.5f)); // Sets the
-				// Composite for
-				// the
-				// Graphics2D
-				// context
+						java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE);
+				// creating the graphics for buffered image
+				Graphics2D graphics = image.createGraphics();
+				// Sets the Composite for the Graphics2D context
+				graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f)); 
 				lbl.setOpaque(false);
 				lbl.paint(graphics); // painting the graphics to label
 				graphics.dispose();
 			}
-			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop, image,
-					new Point(0, 0), (TransferableTreeNode) draggedNode, this);
+			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop, image, new Point(0, 0),
+					(TransferableTreeNode) draggedNode, this);
 		}
 	}
 
@@ -227,10 +203,8 @@ public class TreeTransferHandler implements DragGestureListener,
 
 	private final void paintImage(Point pt) {
 		tree.paintImmediately(rect2D.getBounds());
-		rect2D.setRect((int) pt.getX(), (int) pt.getY(), image.getWidth(),
-				image.getHeight());
-		tree.getGraphics().drawImage(image, (int) pt.getX(), (int) pt.getY(),
-				tree);
+		rect2D.setRect((int) pt.getX(), (int) pt.getY(), image.getWidth(), image.getHeight());
+		tree.getGraphics().drawImage(image, (int) pt.getX(), (int) pt.getY(), tree);
 	}
 
 	private final void clearImage() {
@@ -242,8 +216,7 @@ public class TreeTransferHandler implements DragGestureListener,
 	 * 
 	 * @see javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing.event.TreeExpansionEvent)
 	 */
-	public void treeWillCollapse(TreeExpansionEvent event)
-			throws ExpandVetoException {
+	public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
 	}
 
 	/*
@@ -251,8 +224,7 @@ public class TreeTransferHandler implements DragGestureListener,
 	 * 
 	 * @see javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing.event.TreeExpansionEvent)
 	 */
-	public void treeWillExpand(TreeExpansionEvent event)
-			throws ExpandVetoException {
+	public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
 	}
 
 }

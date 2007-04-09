@@ -211,18 +211,18 @@ public class Tag implements ITechnicalStrings {
 	/**
 	 * @return creation year
 	 */
-	public long getYear() {
-		long lYear = 0;
+	public String getYear() {
+		String year = "0";
 		// if the type doesn't support tags ( like wav )
 		if (tagImpl == null) {
-			return lYear;
+			return year;
 		}
 		try {
-			lYear = tagImpl.getYear(); // check it is an integer
+			year = tagImpl.getYear(); // check it is an integer
 		} catch (Exception e) {
 			Log.info("Wrong year:" + fio.getName()); //$NON-NLS-1$
 		}
-		return lYear;
+		return year;
 
 	}
 
@@ -341,9 +341,9 @@ public class Tag implements ITechnicalStrings {
 	/**
 	 * @param sYear
 	 */
-	public void setYear(long lYear) throws JajukException {
+	public void setYear(String sYear) throws JajukException {
 		try {
-			tagImpl.setYear(lYear);
+			tagImpl.setYear(sYear);
 		} catch (Exception e) {
 			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
 		}

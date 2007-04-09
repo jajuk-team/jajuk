@@ -436,15 +436,15 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			if (cover.canRead()){
 				sOut += "<img src='file:"+ cover.getAbsolutePath() +"'/><br>";
 			}
+			sOut += "<p><b>" + file.getTrack().getName() + "</b></p>";
 			String sAuthor = file.getTrack().getAuthor().getName();
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
 				sOut += "<p>" + sAuthor + "</p>"; //$NON-NLS-1$
 			}
 			String sAlbum = file.getTrack().getAlbum().getName();
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-				sOut += "<p>" + sAlbum + "</p>"; //$NON-NLS-1$
+				sOut += "<p>" + sAlbum + "</p></HTML>"; //$NON-NLS-1$
 			}
-			sOut += "<p><b>" + file.getTrack().getName() + "</b></p></HTML>"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return sOut;
 	}

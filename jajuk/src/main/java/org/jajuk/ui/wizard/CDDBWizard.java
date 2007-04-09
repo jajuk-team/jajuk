@@ -389,7 +389,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings, ActionList
 					try {
 						long lValue = Long.parseLong(fdbReader.getYear());
 						if (lValue > 0 && lValue < 10000) {
-							track = TrackManager.getInstance().changeTrackYear(track, lValue,
+							track = TrackManager.getInstance().changeTrackYear(track, fdbReader.getYear(),
 									filter);
 						}
 					} catch (Exception e) {

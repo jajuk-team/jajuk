@@ -240,9 +240,9 @@ public class Album extends Item implements Comparable {
 		}
 		// Check if this album is single year or not
 		boolean bSingleYear = true;
-		long year = firstTrack.getYear();
+		long year = firstTrack.getYear().getValue();
 		for (Track track : tracks) {
-			if (track.getYear() != year) {
+			if (track.getYear().getValue() != year) {
 				bSingleYear = false;
 				break;
 			}
@@ -278,7 +278,7 @@ public class Album extends Item implements Comparable {
 			sOut += "<br><b>" + track.getName() + " (";
 			sOut += Util.formatTimeBySec(track.getLength(), false) + ") ";
 			if (!bSingleYear
-					&& track.getYear() != 0 ) {
+					&& track.getYear().getValue() != 0 ) {
 				sOut += " - "+track.getYear()+ "   ";
 			}
 			//Show author if known and if it is not already shown at album level

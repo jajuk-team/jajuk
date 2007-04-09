@@ -55,7 +55,7 @@ public interface ITagImpl {
 	/**
 	 * @return creation year
 	 */
-	public long getYear() throws Exception;
+	public String getYear() throws Exception;
 
 	/**
 	 * @return quality
@@ -101,7 +101,7 @@ public interface ITagImpl {
 	/**
 	 * @param sYear
 	 */
-	public void setYear(long lYear) throws Exception;
+	public void setYear(String sYear) throws Exception;
 
 	/**
 	 * @param sComment

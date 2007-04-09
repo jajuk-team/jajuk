@@ -56,7 +56,7 @@ public class Track extends Item implements Comparable {
 	private final long length;
 
 	/** Track year */
-	private final long lYear;
+	private final Year year;
 
 	/** Track order */
 	private final long lOrder;
@@ -84,7 +84,7 @@ public class Track extends Item implements Comparable {
 	 * @param sAdditionDate
 	 */
 	public Track(String sId, String sName, Album album, Style style,
-			Author author, long length, long lYear, long lOrder, Type type) {
+			Author author, long length, Year year, long lOrder, Type type) {
 		super(sId, sName);
 		// album
 		this.album = album;
@@ -102,8 +102,8 @@ public class Track extends Item implements Comparable {
 		this.type = type;
 		setProperty(XML_TYPE, type.getId().intern());
 		// Year
-		this.lYear = lYear;
-		setProperty(XML_TRACK_YEAR, lYear);
+		this.year = year;
+		setProperty(XML_YEAR, year.getId().intern());
 		// Order
 		this.lOrder = lOrder;
 		setProperty(XML_TRACK_ORDER, lOrder);
@@ -119,7 +119,7 @@ public class Track extends Item implements Comparable {
 	public String toString() {
 		String sOut = "Track[ID=" + sId + " Name={{" + getName() + "}} " + album + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				style
-				+ " " + author + " Length=" + length + " Year=" + lYear + " Rate=" + getRate() + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				+ " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate() + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				type
 				+ " Hits=" + getHits() + " Addition date=" + getAdditionDate() + " Comment=" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				getComment()
@@ -272,9 +272,11 @@ public class Track extends Item implements Comparable {
 	/**
 	 * @return
 	 */
-	public long getYear() {
-		return lYear;
+	public Year getYear() {
+		return year;
 	}
+	
+	
 
 	/**
 	 * @return length in sec
@@ -539,8 +541,9 @@ public class Track extends Item implements Comparable {
 		} else if (XML_TYPE.equals(sKey)) {
 			return (TypeManager.getInstance().getTypeByID(getStringValue(sKey)))
 					.getName();
-		} else if (XML_TRACK_YEAR.equals(sKey)) {
-			return Long.toString(lYear);
+		} else if (XML_YEAR.equals(sKey)) {
+			return (YearManager.getInstance().getYearByID(getStringValue(sKey)))
+					.getName();
 		} else if (XML_FILES.equals(sKey)) {
 			StringBuffer sbOut = new StringBuffer();
 			Iterator it = alFiles.iterator();

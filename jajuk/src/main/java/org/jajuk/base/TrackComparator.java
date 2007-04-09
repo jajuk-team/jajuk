@@ -20,6 +20,8 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.Util;
+
 import java.util.Comparator;
 
 /**
@@ -97,7 +99,7 @@ public class TrackComparator implements Comparator<Track> {
 		// Year / album
 		case YEAR_ALBUM:
 			sHashCompare = new StringBuffer().append(
-					track.getYear()) //$NON-NLS-1$
+					Util.padNumber(track.getYear().getValue(),10)) //$NON-NLS-1$
 					.append(track.getName()).toString(); //$NON-NLS-1$
 			break;
 		}

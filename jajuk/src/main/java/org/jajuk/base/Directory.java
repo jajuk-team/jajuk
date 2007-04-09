@@ -322,7 +322,7 @@ public class Directory extends Item implements Comparable {
 					String sAuthorName = tag.getAuthorName();
 					String sStyle = tag.getStyleName();
 					long length = tag.getLength(); // length in sec
-					long lYear = tag.getYear();
+					String sYear = tag.getYear();
 					long lQuality = tag.getQuality();
 					String sComment = tag.getComment();
 					long lOrder = tag.getOrder();
@@ -334,11 +334,12 @@ public class Directory extends Item implements Comparable {
 					}
 					Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
 					Style style = StyleManager.getInstance().registerStyle(sStyle);
+					Year year = YearManager.getInstance().registerYear(sYear);
 					Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
 					Type type = TypeManager.getInstance().getTypeByExtension(
 							Util.getExtension(files[i]));
 					Track track = TrackManager.getInstance().registerTrack(sTrackName, album,
-							style, author, length, lYear, lOrder, type);
+							style, author, length, year, lOrder, type);
 					track.setAdditionDate(new Date());
 					org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
 							files[i].getName(), this, track, files[i].length(), lQuality);

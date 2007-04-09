@@ -123,12 +123,12 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 * 
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
-	public long getYear() throws Exception {
+	public String getYear() throws Exception {
 		String sOut = tag.getFirstYear();
 		if (sOut == null || sOut.equals("")) {//$NON-NLS-1$
-			return 0;
+			return "0";
 		}
-		return Long.parseLong(sOut);
+		return sOut;
 	}
 
 	/*
@@ -273,8 +273,8 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 * 
 	 * @see org.jajuk.tag.ITagImpl#setYear(int)
 	 */
-	public void setYear(long lYear) throws Exception {
-		tag.setYear(Long.toString(lYear));
+	public void setYear(String year) throws Exception {
+		tag.setYear(year);
 	}
 
 }

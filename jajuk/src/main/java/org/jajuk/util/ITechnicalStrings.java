@@ -1292,6 +1292,10 @@ public interface ITechnicalStrings {
 
 	public static final String XML_ID = "id";
 
+	public static final String XML_YEAR = "year";
+	
+	public static final String XML_YEARS = "years";
+
 	public static final String XML_PLAY = "play";
 
 	public static final String XML_FILE_DATE = "date";
@@ -1306,11 +1310,11 @@ public interface ITechnicalStrings {
 
 	public static final String XML_TRACK_AUTHOR = "author";
 
+	public static final String XML_TRACK_YEAR = "year";
+
 	public static final String XML_TRACK_ARTIST = "artist";
 
 	public static final String XML_TRACK_LENGTH = "length";
-
-	public static final String XML_TRACK_YEAR = "year";
 
 	public static final String XML_TRACK_TYPE = "type";
 
@@ -1456,7 +1460,7 @@ public interface ITechnicalStrings {
 			XML_TYPE_ICON, XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL,
 			XML_DEVICE_AUTO_MOUNT, XML_DEVICE_AUTO_REFRESH, XML_EXPANDED,
 			XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR, XML_STYLE,
-			XML_TRACK_LENGTH, XML_TRACK_YEAR, XML_TRACK_RATE, XML_FILES,
+			XML_TRACK_LENGTH, XML_YEAR, XML_TRACK_RATE, XML_FILES,
 			XML_TRACK_HITS, XML_TRACK_ADDED, XML_DIRECTORY_PARENT, XML_DEVICE,
 			XML_DIRECTORY, XML_TRACK, XML_SIZE, XML_QUALITY, XML_HASHCODE,
 			XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER,

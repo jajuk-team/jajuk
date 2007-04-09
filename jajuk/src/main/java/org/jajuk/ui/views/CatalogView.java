@@ -223,13 +223,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
-		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_YEAR));
+		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
 
 		alSorters = new ArrayList<PropertyMetaInformation>(10);
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
-		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_YEAR));
+		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ADDED));
 
 		hsItems = new HashSet<CatalogItem>();
@@ -614,7 +614,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 									if (track1.getYear() == track2.getYear()) {
 										return album1.compareTo(album2);
 									} else {
-										return (int) (track1.getYear() - track2.getYear());
+										return track1.getYear().compareTo(track2.getYear());
 									}
 								} else {
 									return track1.getAuthor().compareTo(track2.getAuthor());
@@ -628,7 +628,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 								if (track1.getYear() == track2.getYear()) {
 									return album1.compareTo(album2);
 								} else {
-									return (int) (track1.getYear() - track2.getYear());
+									return track1.getYear().compareTo(track2.getYear());
 								}
 							} else {
 								return track1.getAuthor().compareTo(track2.getAuthor());
@@ -642,7 +642,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 									return track1.getAuthor().compareTo(track2.getAuthor());
 								}
 							} else {
-								return (int) (track1.getYear() - track2.getYear());
+								return track1.getYear().compareTo(track2.getYear());
 							}
 						case 4: // Discovery date
 							return track1.getAdditionDate().compareTo(track2.getAdditionDate());

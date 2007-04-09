@@ -231,7 +231,7 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * 
 	 * @see org.jajuk.tag.ITagImpl#setYear(int)
 	 */
-	public void setYear(long lYear) throws Exception {
+	public void setYear(String year) throws Exception {
 	}
 
 	/*
@@ -239,8 +239,8 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * 
 	 * @see org.jajuk.tag.ITagImpl#getYear()
 	 */
-	public long getYear() throws Exception {
-		return 0l;
+	public String getYear() throws Exception {
+		return "0";
 	}
 
 	/*

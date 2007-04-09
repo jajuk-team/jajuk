@@ -223,8 +223,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			vId.add(XML_TRACK_RATE); //$NON-NLS-1$
 
 			// Year
-			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_YEAR)); //$NON-NLS-1$
-			vId.add(XML_TRACK_YEAR); //$NON-NLS-1$
+			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR)); //$NON-NLS-1$
+			vId.add(XML_YEAR); //$NON-NLS-1$
 
 			// Length
 			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));

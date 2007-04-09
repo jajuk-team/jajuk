@@ -34,6 +34,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.TransferableTreeNode;
@@ -200,9 +201,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 	JMenuItem jmiYearPlayRepeat;
 
-	JMenuItem jmiYearDelete;
-
 	JMenuItem jmiYearAddFavorite;
+
+	JMenuItem jmiYearReport;
 
 	JMenuItem jmiYearProperties;
 
@@ -262,7 +263,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 		// **Menu items**
 
-		// ComboBox fort sort
+		// ComboBox sort
 		double[][] dSizeSort = { { 5, TableLayout.PREFERRED, 5, TableLayout.FILL },
 				{ TableLayout.PREFERRED } };
 		JPanel jpsort = new JPanel();
@@ -282,49 +283,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 		// Collection menu
 		jmenuCollection = new JPopupMenu();
-		btCollection = new ButtonGroup();
-		// Style
-		jmiCollectionStyle = new JRadioButtonMenuItem(Messages.getString("Property_style")); //$NON-NLS-1$
-		jmiCollectionStyle.addActionListener(this);
-		jmiCollectionStyle.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
-		if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 0) {
-			jmiCollectionStyle.setSelected(true);
-		}
-		// Author
-		jmiCollectionAuthor = new JRadioButtonMenuItem(Messages.getString("Property_author")); //$NON-NLS-1$
-		jmiCollectionAuthor.addActionListener(this);
-		jmiCollectionAuthor.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
-		if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 1) {
-			jmiCollectionAuthor.setSelected(true);
-		}
-		// Album
-		jmiCollectionAlbum = new JRadioButtonMenuItem(Messages.getString("Property_album")); //$NON-NLS-1$
-		jmiCollectionAlbum.addActionListener(this);
-		jmiCollectionAlbum.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
-		if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 2) {
-			jmiCollectionAlbum.setSelected(true);
-		}
-		// Year
-		jmiCollectionYear = new JRadioButtonMenuItem(Messages.getString("Property_year")); //$NON-NLS-1$
-		jmiCollectionYear.addActionListener(this);
-		jmiCollectionYear.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
-		if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 3) {
-			jmiCollectionYear.setSelected(true);
-		}
-		// Export
 		jmiCollectionReport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
 		jmiCollectionReport.addActionListener(this);
-
-		btCollection.add(jmiCollectionStyle);
-		btCollection.add(jmiCollectionAuthor);
-		btCollection.add(jmiCollectionAlbum);
-		btCollection.add(jmiCollectionYear);
-		jmenuCollection.add(new JLabel(Messages.getString("Sort"))); //$NON-NLS-1$
-		jmenuCollection.add(jmiCollectionStyle);
-		jmenuCollection.add(jmiCollectionAuthor);
-		jmenuCollection.add(jmiCollectionAlbum);
-		jmenuCollection.add(jmiCollectionYear);
-		jmenuCollection.addSeparator();
 		jmenuCollection.add(jmiCollectionReport);
 
 		// Style menu
@@ -430,19 +390,20 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jmiYearPlayShuffle.addActionListener(this);
 		jmiYearPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18")); //$NON-NLS-1$
 		jmiYearPlayRepeat.addActionListener(this);
-		jmiYearDelete = new JMenuItem(Messages.getString("LogicalTreeView.19")); //$NON-NLS-1$
-		jmiYearDelete.setEnabled(false);
-		jmiYearDelete.addActionListener(this);
-		jmiYearAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); //$NON-NLS-1$        
+		jmiYearAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); //$NON-NLS-1$
 		jmiYearAddFavorite.addActionListener(this);
-		jmiYearProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); //$NON-NLS-1$
+		jmiYearProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); //$NON-NLS-1$
 		jmiYearProperties.addActionListener(this);
+		Action actionReportYear = ActionManager.getAction(JajukAction.CREATE_REPORT);
+		actionReportYear.putValue(DETAIL_ORIGIN, "Year");
+		actionReportYear.putValue(DETAIL_SELECTION, alSelected);
+		jmiYearReport = new JMenuItem(actionReportYear);
 		jmenuYear.add(jmiYearPlay);
 		jmenuYear.add(jmiYearPush);
 		jmenuYear.add(jmiYearPlayShuffle);
 		jmenuYear.add(jmiYearPlayRepeat);
-		jmenuYear.add(jmiYearDelete);
 		jmenuYear.add(jmiYearAddFavorite);
+		jmenuYear.add(jmiYearReport);
 		jmenuYear.add(jmiYearProperties);
 
 		// Track menu
@@ -520,13 +481,11 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 			public void treeNodesChanged(TreeModelEvent e) {
 				DefaultMutableTreeNode node;
 				node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-
 				try {
 					int index = e.getChildIndices()[0];
 					node = (DefaultMutableTreeNode) (node.getChildAt(index));
 				} catch (NullPointerException exc) {
 				}
-
 			}
 
 			public void treeNodesInserted(TreeModelEvent e) {
@@ -537,7 +496,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 			public void treeStructureChanged(TreeModelEvent e) {
 			}
-
 		});
 
 		// Tree selection listener to detect a selection
@@ -620,17 +578,17 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						}
 					}
 				} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
-					// right clic on a selected node set right clic behavior
+					// right click on a selected node set right click behavior
 					// identical to konqueror tree:
 					// if none or 1 node is selected, a right click on
-					// another
-					// node select it. if more than 1, we keep selection and
+					// another node select it. if more than 1, we keep selection
+					// and
 					// display a popup for them
 					if (jtree.getSelectionCount() < 2) {
 						jtree.getSelectionModel().setSelectionPath(path);
 					}
 					paths = jtree.getSelectionModel().getSelectionPaths();
-					getInstance().alTracks = new ArrayList<Track>(100);
+					alTracks = new ArrayList<Track>(100);
 					// test mix between types ( not allowed )
 					String sClass = paths[0].getLastPathComponent().getClass().toString();
 					for (int i = 0; i < paths.length; i++) {
@@ -641,16 +599,14 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					// get all components recursively
 					for (int i = 0; i < paths.length; i++) {
 						Object o = paths[i].getLastPathComponent();
-						Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration(); // return
-						// all
-						// childs
-						// nodes recursively
+						// return all child nodes recursively
+						Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
 						while (e2.hasMoreElements()) {
 							DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
 							if (node instanceof TrackNode) {
 								Track track = ((TrackNode) node).getTrack();
 								if (track.getPlayeableFile(false) != null) {
-									getInstance().alTracks.add(((TrackNode) node).getTrack());
+									alTracks.add(((TrackNode) node).getTrack());
 								}
 							}
 						}
@@ -664,6 +620,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						jmenuAuthor.show(jtree, e.getX(), e.getY());
 					} else if (paths[0].getLastPathComponent() instanceof StyleNode) {
 						jmenuStyle.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof YearNode) {
+						jmenuYear.show(jtree, e.getX(), e.getY());
 					} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
 						jmenuCollection.show(jtree, e.getX(), e.getY());
 					}
@@ -876,10 +834,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		for (Track track : tracks) {
 			if (!track.shouldBeHidden()) {
 				YearNode yearNode = null;
-				String year = Long.toString(track.getYear());
 				AlbumNode albumNode = null;
 				Album album = track.getAlbum();
-
+				Year year = track.getYear();
 				// create Year
 				Enumeration e = top.children();
 				boolean b = false;
@@ -922,7 +879,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				}
 			}
 		}
-
 	}
 
 	/** Fill the tree */
@@ -1027,7 +983,14 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
 					}
 					new PropertiesWizard(alSelected, alTracks);
-				} else if (e.getSource() == jmiTrackProperties) {
+				} else if (e.getSource() == jmiYearProperties) {
+					ArrayList<Item> alTracks = new ArrayList<Item>(10);
+					for (Item item : alSelected) {
+						Year year = (Year) item;
+						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(year));
+					}
+					new PropertiesWizard(alSelected, alTracks);
+				}else if (e.getSource() == jmiTrackProperties) {
 					new PropertiesWizard(alSelected);
 					// Sorting
 				} else if (e.getSource() == jmiAlbumCDDBWizard) {
@@ -1038,45 +1001,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					}
 					Util.waiting();
 					new CDDBWizard(alTracks);
-				} else if (e.getActionCommand().equals(
-						EventSubject.EVENT_LOGICAL_TREE_SORT.toString())) {
+				} else if (e.getSource() == jcbSort) {
 					Util.waiting();
-					iSortOrder = 0;
-					if (e.getSource() == jcbSort) {
-						iSortOrder = jcbSort.getSelectedIndex();
-					} else if (e.getSource() == jmiCollectionStyle) {
-						iSortOrder = 0;
-					} else if (e.getSource() == jmiCollectionAuthor) {
-						iSortOrder = 1;
-					} else if (e.getSource() == jmiCollectionAlbum) {
-						iSortOrder = 2;
-					}
-					// make sure to update combo and popup items state if
-					// used popup menu
-					jcbSort.removeActionListener(LogicalTreeView.this);
-					jcbSort.setSelectedIndex(iSortOrder);
-					jcbSort.addActionListener(LogicalTreeView.this);
-					// popup
-					jmiCollectionStyle.removeActionListener(LogicalTreeView.this);
-					jmiCollectionAuthor.removeActionListener(LogicalTreeView.this);
-					jmiCollectionAlbum.removeActionListener(LogicalTreeView.this);
-					switch (iSortOrder) {
-					case 0:
-						jmiCollectionStyle.setSelected(true);
-						break;
-					case 1:
-						jmiCollectionAuthor.setSelected(true);
-						break;
-					case 2:
-						jmiCollectionAlbum.setSelected(true);
-						break;
-					}
-					jmiCollectionStyle.addActionListener(LogicalTreeView.this);
-					jmiCollectionAuthor.addActionListener(LogicalTreeView.this);
-					jmiCollectionAlbum.addActionListener(LogicalTreeView.this);
-
 					ConfigurationManager.setProperty(CONF_LOGICAL_TREE_SORT_ORDER, Integer
-							.toString(iSortOrder));
+							.toString(jcbSort.getSelectedIndex()));
 					// refresh comparator
 					TrackManager.getInstance().setComparator(
 							new TrackComparator(ConfigurationManager
@@ -1103,31 +1031,41 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						return;
 					}
 					if ((e.getSource() == jmiTrackPlay || e.getSource() == jmiAlbumPlay
-							|| e.getSource() == jmiAuthorPlay || e.getSource() == jmiStylePlay)) {
+							|| e.getSource() == jmiAuthorPlay || e.getSource() == jmiStylePlay || e
+							.getSource() == jmiYearPlay)) {
 						FIFO.getInstance().push(
 								Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 										ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
 								false);
-					} else if ((e.getSource() == jmiTrackPush || e.getSource() == jmiAlbumPush
-							|| e.getSource() == jmiAuthorPush || e.getSource() == jmiStylePush)) {
+					} else if ((e.getSource() == jmiTrackPush 
+							|| e.getSource() == jmiAlbumPush
+							|| e.getSource() == jmiAuthorPush 
+							|| e.getSource() == jmiStylePush 
+							|| e.getSource() == jmiYearPush)) {
 						FIFO.getInstance().push(
 								Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 										ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
 								true);
 					} else if ((e.getSource() == jmiAlbumPlayShuffle
-							|| e.getSource() == jmiAuthorPlayShuffle || e.getSource() == jmiStylePlayShuffle)) {
+							|| e.getSource() == jmiAuthorPlayShuffle 
+							|| e.getSource() == jmiStylePlayShuffle)
+							|| e.getSource() == jmiYearPlayShuffle) {
 						Collections.shuffle(alFilesToPlay, new Random());
 						FIFO.getInstance().push(
 								Util.createStackItems(alFilesToPlay, ConfigurationManager
 										.getBoolean(CONF_STATE_REPEAT), true), false);
 					} else if ((e.getSource() == jmiAlbumPlayRepeat
-							|| e.getSource() == jmiAuthorPlayRepeat || e.getSource() == jmiStylePlayRepeat)) {
+							|| e.getSource() == jmiAuthorPlayRepeat
+							|| e.getSource() == jmiStylePlayRepeat 
+							|| e.getSource() == jmiYearPlayRepeat)) {
 						FIFO.getInstance().push(
 								Util.createStackItems(Util.applyPlayOption(alFilesToPlay), true,
 										true), false);
 					} else if ((e.getSource() == jmiStyleAddFavorite
 							|| e.getSource() == jmiAlbumAddFavorite
-							|| e.getSource() == jmiAuthorAddFavorite || e.getSource() == jmiTrackAddFavorite)) {
+							|| e.getSource() == jmiAuthorAddFavorite 
+							|| e.getSource() == jmiTrackAddFavorite
+							|| e.getSource() == jmiYearAddFavorite)) {
 						Bookmarks.getInstance().addFiles(alFilesToPlay);
 					} else if ((e.getSource() == jmiAlbumDelete || e.getSource() == jmiAuthorDelete
 							|| e.getSource() == jmiStyleDelete || e.getSource() == jmiTrackDelete)) {
@@ -1330,22 +1268,22 @@ class YearNode extends TransferableTreeNode {
 	 * 
 	 * @param author
 	 */
-	public YearNode(String year) {
+	public YearNode(Year year) {
 		super(year);
 	}
 
 	/**
-	 * return a string representation of this author node
+	 * return a string representation of this node
 	 */
 	public String toString() {
-		return ((String) super.getData());
+		return ((Year) super.getData()).getName();
 	}
 
 	/**
 	 * @return Returns the year.
 	 */
-	public String getYear() {
-		return (String) super.getData();
+	public Year getYear() {
+		return (Year) super.getData();
 	}
 
 }

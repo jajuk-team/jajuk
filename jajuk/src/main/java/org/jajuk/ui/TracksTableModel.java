@@ -96,8 +96,8 @@ public class TracksTableModel extends JajukTableModel {
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
 		vId.add(XML_TRACK_ORDER);
 
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_YEAR));
-		vId.add(XML_TRACK_YEAR);
+		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
+		vId.add(XML_YEAR);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
 		vId.add(XML_TRACK_HITS);

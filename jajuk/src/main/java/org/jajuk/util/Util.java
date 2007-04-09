@@ -91,6 +91,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
 import org.jajuk.dj.Ambience;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
@@ -1460,8 +1461,11 @@ public class Util implements ITechnicalStrings {
 		// computes logical selection if any
 		Set<Track> alLogicalTracks = null;
 		if (oData instanceof Style || oData instanceof Author
+				|| oData instanceof Year
 				|| oData instanceof Album || oData instanceof Track) {
-			if (oData instanceof Style || oData instanceof Author
+			if (oData instanceof Style 
+					|| oData instanceof Year
+					|| oData instanceof Author
 					|| oData instanceof Album) {
 				alLogicalTracks = TrackManager.getInstance()
 						.getAssociatedTracks(oData);
@@ -1704,7 +1708,7 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Year Value
 		if (sPattern.contains(PATTERN_YEAR)) {
-			if (track.getYear() != 0) {
+			if (track.getYear().getValue() != 0) {
 				out = out.replace(PATTERN_YEAR, track.getYear() + ""); //$NON-NLS-1$
 			} else {
 				if (bMandatory) {
@@ -1821,6 +1825,22 @@ public class Util implements ITechnicalStrings {
 			}
 		}
 		return false; // thumb already exist
+	}
+	
+	
+	
+	/**
+	 * Pad an int with zeros
+	 * @param l the number to be padded
+	 * @param size the targetted size
+	 * @return
+	 */
+	public static String padNumber(long l,int size){
+		String sOut = Long.toString(l);
+		while (sOut.length() < size){
+			sOut = '0' + sOut;
+		}
+		return sOut;
 	}
 
 

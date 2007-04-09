@@ -63,6 +63,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.base.YearManager;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
@@ -314,6 +315,8 @@ public class Main implements ITechnicalStrings {
 					TrackManager.getInstance());
 			ItemManager.registerItemManager(org.jajuk.base.Type.class,
 					TypeManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Year.class,
+					YearManager.getInstance());
 
 			// Upgrade configuration from previous releases
 			UpgradeManager.upgradeStep1();
