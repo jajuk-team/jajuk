@@ -44,6 +44,8 @@ import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import info.clearthought.layout.TableLayout;
 
@@ -51,11 +53,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
@@ -76,6 +80,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -85,9 +90,12 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import ext.FlowScrollPanel;
 import ext.SwingWorker;
@@ -186,9 +194,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 	/** Number of created thumbs, used for garbage collection */
 	public int iNbCreatedThumbs = 0;
-	
+
 	/** Utility list used by size selector */
-	private ArrayList<String> sizes = new ArrayList<String>(10);	
+	private ArrayList<String> sizes = new ArrayList<String>(10);
+
+	/** Current details dialog */
+	private JDialog details;
 
 	/** Swing Timer to refresh the component */
 	private Timer timer = new Timer(WAIT_TIME, new ActionListener() {
@@ -213,7 +224,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_YEAR));
-		
+
 		alSorters = new ArrayList<PropertyMetaInformation>(10);
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
@@ -222,7 +233,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ADDED));
 
 		hsItems = new HashSet<CatalogItem>();
-		
+
 		sizes.add(THUMBNAIL_SIZE_50x50);
 		sizes.add(THUMBNAIL_SIZE_100x100);
 		sizes.add(THUMBNAIL_SIZE_150x150);
@@ -242,7 +253,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		jpControlTop.setOpaque(false);
 		jlSorter = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
+		jlSorter.setOpaque(false);
 		jcbSorter = new SteppedComboBox();
+		jcbSorter.setOpaque(false);
 		jcbSorter.setBorder(Util.getShadowBorder());
 		jcbSorter.setEditable(false);
 		// note that a single album can contains tracks with different authors
@@ -255,13 +268,17 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbSort = new JToolBar();
 		jtbSort.setFloatable(false);
 		jtbSort.setRollover(true);
+		jtbSort.setOpaque(false);
 		jtbSort.add(jlSorter);
 		jtbSort.addSeparator();
 		jtbSort.add(jcbSorter);
 
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
+		jlFilter.setOpaque(false);
 		jlContains = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
+		jlContains.setOpaque(false);
 		jcbFilter = new SteppedComboBox();
+		jcbFilter.setOpaque(false);
 		jcbFilter.setBorder(Util.getShadowBorder());
 		jcbFilter.setEditable(false);
 		// note that a single album can contains tracks with different authors
@@ -278,6 +295,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbFilter = new JToolBar();
 		jtbFilter.setFloatable(false);
 		jtbFilter.setRollover(true);
+		jtbFilter.setOpaque(false);
 		jtbFilter.add(jlFilter);
 		jtbFilter.addSeparator();
 		jtbFilter.add(jcbFilter);
@@ -299,13 +317,17 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbPage = new JToolBar();
 		jtbPage.setFloatable(false);
 		jtbPage.setRollover(true);
+		jtbPage.setOpaque(false);
 		jbPrev = new JButton(Util.getIcon(ICON_PREVIOUS));
+		jbPrev.setOpaque(false);
 		jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
 		jbPrev.addActionListener(this);
 		jbNext = new JButton(Util.getIcon(ICON_NEXT));
+		jbNext.setOpaque(false);
 		jbNext.setToolTipText(Messages.getString("CatalogView.13"));
 		jbNext.addActionListener(this);
 		jcbPage = new SteppedComboBox();
+		jcbPage.setOpaque(false);
 		jcbPage.setBorder(Util.getShadowBorder());
 		jcbPage.setToolTipText(Messages.getString("CatalogView.14"));
 		jcbPage.addActionListener(this);
@@ -315,7 +337,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		double sizeControlTop[][] = {
 				{ 10, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-						TableLayout.PREFERRED, TableLayout.PREFERRED, 10 }, { 30 } };
+						TableLayout.PREFERRED, 200, 10 }, { 30 } };
 
 		TableLayout layoutTop = new TableLayout(sizeControlTop);
 		layoutTop.setHGap(20);
@@ -329,6 +351,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// --Bottom (less used) items
 		jcbShow = new JCheckBox(Messages.getString("CatalogView.2")); //$NON-NLS-1$
 		jcbShow.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
+		jcbShow.setOpaque(false);
 		jcbShow.addActionListener(this);
 
 		JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
@@ -345,35 +368,35 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent mwe) {
 				ChangeListener cl = jsSize.getChangeListeners()[0];
-				//Remove the concurrent change listener
+				// Remove the concurrent change listener
 				jsSize.removeChangeListener(cl);
-				//Leave user didn't release the move yet
-				if (jsSize.getValueIsAdjusting()){
+				// Leave user didn't release the move yet
+				if (jsSize.getValueIsAdjusting()) {
 					return;
 				}
 				super.mouseWheelMoved(mwe);
-				//Store size
+				// Store size
 				ConfigurationManager.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
 				// display thumbs
 				populateCatalog();
-				//Add again the change listener
+				// Add again the change listener
 				jsSize.addChangeListener(cl);
 			}
 
 		});
 		int index = sizes.indexOf(ConfigurationManager.getProperty(CONF_THUMBS_SIZE));
-		if (index < 0){
-			index = 2; //150x150 if a problem occurs
+		if (index < 0) {
+			index = 2; // 150x150 if a problem occurs
 		}
 		jsSize.setValue(index);
 		jsSize.addChangeListener(new ChangeListener() {
 
 			public void stateChanged(ChangeEvent e) {
-				//Leave user didn't release the move yet
-				if (jsSize.getValueIsAdjusting()){
+				// Leave user didn't release the move yet
+				if (jsSize.getValueIsAdjusting()) {
 					return;
 				}
-				//Store size
+				// Store size
 				ConfigurationManager.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
 				// display thumbs
 				populateCatalog();
@@ -383,16 +406,24 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbSize = new JToolBar();
 		jtbSize.setRollover(false);
 		jtbSize.setFloatable(false);
+		jtbSize.setOpaque(false);
 		jtbSize.add(jlSize);
 		jtbSize.addSeparator();
-		jtbSize.add(new JLabel(Util.getIcon(ICON_REMOVE)));
+		JLabel jlRemove = new JLabel(Util.getIcon(ICON_REMOVE));
+		jlRemove.setOpaque(false);
+		jtbSize.add(jlRemove);
 		jtbSize.add(jsSize);
-		jtbSize.add(new JLabel(Util.getIcon(ICON_ADD)));
-		
-		//create a toolbar only for the refresh button to allow rollover feature
+		JLabel jlAdd = new JLabel(Util.getIcon(ICON_ADD));
+		jlAdd.setOpaque(false);
+		jtbSize.add(jlAdd);
+
+		// create a toolbar only for the refresh button to allow rollover
+		// feature
 		JToolBar jtRefresh = new JToolBar();
 		jtRefresh.setRollover(true);
+		jtRefresh.setOpaque(false);
 		jbRefresh = new JajukButton(Util.getIcon(ICON_REFRESH));
+		jbRefresh.setOpaque(false);
 		jbRefresh.setToolTipText(Messages.getString("CatalogView.3")); //$NON-NLS-1$
 		jtRefresh.setBorder(null);
 		jtRefresh.setRollover(true);
@@ -406,6 +437,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		TableLayout layoutBottom = new TableLayout(sizeControlBottom);
 		layoutBottom.setHGap(20);
 		jpControlBottom = new JPanel();
+		jpControlBottom.setOpaque(false);
 		jpControlBottom.setLayout(layoutBottom);
 		jpControlBottom.add(jcbShow, "0,0");//$NON-NLS-1$
 		jpControlBottom.add(jtbSize, "1,0");//$NON-NLS-1$
@@ -415,6 +447,18 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jpItems = new FlowScrollPanel();
 		Dimension dim = new Dimension(getWidth(), getHeight());
 		jpItems.setPreferredSize(dim);
+		jpItems.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				super.mouseEntered(e);
+				if (CatalogView.this.details != null) {
+					CatalogView.this.details.dispose();
+				}
+			}
+
+		});
+
 		jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setOpaque(false);
@@ -460,11 +504,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// Show facts
 		showFacts();
 
+		// Add gradient
+		setBackgroundPainter(new BasicGradientPainter(BasicGradientPainter.GRAY));
+
 		// Start the timer
 		timer.start();
 
 	}
-	
+
 	/**
 	 * Show various information in the information panel
 	 * 
@@ -489,7 +536,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		return eventSubjectSet;
 	}
 
-	
 	/**
 	 * Populate the catalog
 	 */
@@ -645,8 +691,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							}
 							directories.add(dir);
 						}
-						CatalogItem cover = new CatalogItem(album, sizes.get(jsSize.getValue())
-								, anyTrack);
+						CatalogItem cover = new CatalogItem(album, sizes.get(jsSize.getValue()),
+								anyTrack);
 						alItemsToDisplay.add(cover);
 						// stores information on non-null covers
 						hsItems.add(cover);
@@ -683,7 +729,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					for (int i = page * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
 						CatalogItem item = alItemsToDisplay.get(i);
 						// populate item (construct UI) only when needed
-						item.populate(); 
+						item.populate();
 						if (!item.isNoCover() || (item.isNoCover() && jcbShow.isSelected())) {
 							jpItems.add(item);
 						}
@@ -783,8 +829,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					.toString(jcbShow.isSelected()));
 			// display thumbs
 			populateCatalog();
-		}
-		 else if (e.getSource() == jbPrev) {
+		} else if (e.getSource() == jbPrev) {
 			if (page > 0) {
 				page--;
 			} else {
@@ -887,14 +932,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		void populate() {
 			// create the thumbnail if it doesn't exist
-			Util.refreshThumbnail(album,sizes.get(jsSize.getValue()));
+			Util.refreshThumbnail(album, sizes.get(jsSize.getValue()));
 			if (!fCover.exists() || fCover.length() == 0) {
 				bNoCover = true;
 				this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
 						+ FILE_THUMB_NO_COVER);
 			}
 			double[][] dMain = { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-					{ getSelectedSize()+10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
+					{ getSelectedSize() + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
 			setLayout(new TableLayout(dMain));
 			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			jpIcon = new JPanel();
@@ -946,8 +991,56 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			add(jlAuthor, "1,2"); //$NON-NLS-1$
 			add(jlAlbum, "1,4"); //$NON-NLS-1$
 			setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-			setToolTipText("<html>" + track.getAuthor().getName2() + "<br><b>" + album.getName2()
-					+ "</b></html>");
+			jlIcon.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					super.mouseEntered(e);
+					if (CatalogView.this.details != null) {
+						CatalogView.this.details.dispose();
+					}
+					CatalogView.this.details = new JDialog();
+					JXPanel jp = new JXPanel();
+					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
+					jp.setLayout(new TableLayout(size));
+					jp.setOpaque(false);
+					jp.setBackgroundPainter(new BasicGradientPainter(BasicGradientPainter.AERITH));
+					JEditorPane text = new JEditorPane("text/html", track.getAlbum()
+							.getAdvancedDescription());
+					text.setEditable(false);
+					text.setOpaque(false);
+					text.addHyperlinkListener(new HyperlinkListener() {
+
+						public void hyperlinkUpdate(HyperlinkEvent e) {
+						}
+
+					});
+					final JScrollPane jspText = new JScrollPane(text);
+					jspText.getVerticalScrollBar().setValue(0);
+					jp.add(jspText, "0,0");
+					CatalogView.this.details.setContentPane(jp);
+					//compute dialog position (setRelativeTo is buggy, at least under Gnome)
+					int x = (int)jlIcon.getLocationOnScreen().getX() + jlIcon.getHeight() / 2;
+					int y = (int)jlIcon.getLocationOnScreen().getY() + jlIcon.getHeight() / 2;
+					int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+					int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+					if ( (x + 500) > screenWidth ){
+						x = screenWidth - 500;
+					}
+					if ( (y + 400) > screenHeight ){
+						y = screenHeight - 450;
+					}
+					CatalogView.this.details.setLocation(x, y);
+					CatalogView.this.details.setIconImage(Util.getIcon(ICON_LOGO_FRAME).getImage());
+					CatalogView.this.details.setSize(500, 400);
+					CatalogView.this.details.setVisible(true);
+					// Force scrollbar to stay on top
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							jspText.getVerticalScrollBar().setValue(0);
+						}
+					});
+				}
+			});
 			setOpaque(false);
 		}
 
@@ -1017,9 +1110,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			} else if (e.getSource() == jmiAlbumProperties) {
 				ArrayList<Item> alAlbums = new ArrayList<Item>();
 				alAlbums.add(album);
-				//Show tracks infos to allow user to change year, rate...
-				ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance().getAssociatedTracks(album));
-				new PropertiesWizard(alAlbums,alTracks);
+				// Show tracks infos to allow user to change year, rate...
+				ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
+						.getAssociatedTracks(album));
+				new PropertiesWizard(alAlbums, alTracks);
 			}
 		}
 

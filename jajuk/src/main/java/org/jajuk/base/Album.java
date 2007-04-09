@@ -19,12 +19,12 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  * An Album *
@@ -147,8 +147,7 @@ public class Album extends Item implements Comparable {
 		File fDir = null; // analyzed directory
 		// search for local covers in all directories mapping the current track
 		// to reach other devices covers and display them together
-		Set<Track> tracks = TrackManager.getInstance()
-				.getAssociatedTracks(this);
+		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
 		if (tracks.size() == 0) {
 			return null;
 		}
@@ -164,8 +163,7 @@ public class Album extends Item implements Comparable {
 		for (Directory dir : dirs) {
 			String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
 			if (sAbsolut != null && !sAbsolut.trim().equals("")) { //$NON-NLS-1$
-				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/'
-						+ sAbsolut); //$NON-NLS-1$.getAbsoluteFile();
+				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut); //$NON-NLS-1$.getAbsoluteFile();
 				if (fAbsoluteDefault.canRead()) {
 					return fAbsoluteDefault;
 				}
@@ -208,4 +206,88 @@ public class Album extends Item implements Comparable {
 		return fCover;
 	}
 
+	/**
+	 * Build a advanced HTML desciption of the album with covers, total length
+	 * etc..
+	 * 
+	 * @param album
+	 * @return the description
+	 */
+	public String getAdvancedDescription() {
+		String size = "200x200";
+		Util.refreshThumbnail(this, size);
+		java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+				+ getId() + '.' + EXT_THUMB);
+		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
+		Track firstTrack = tracks.iterator().next();
+		// Check if this album has a single author or not
+		boolean bSingleAuthor = true;
+		Author author = firstTrack.getAuthor();
+		for (Track track : tracks) {
+			if (!track.getAuthor().equals(author)) {
+				bSingleAuthor = false;
+				break;
+			}
+		}
+		// Check if this album is single style or not
+		boolean bSingleStyle = true;
+		Style style = firstTrack.getStyle();
+		for (Track track : tracks) {
+			if (!track.getStyle().equals(style)) {
+				bSingleStyle = false;
+				break;
+			}
+		}
+		// Check if this album is single year or not
+		boolean bSingleYear = true;
+		long year = firstTrack.getYear();
+		for (Track track : tracks) {
+			if (track.getYear() != year) {
+				bSingleYear = false;
+				break;
+			}
+		}
+		String sOut = "<html><TABLE><TR><TD VALIGN='TOP'> <b>" + getName2() + "</b><br><br>";
+		// display cover if available
+		if (cover.canRead()) {
+			sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
+		}
+		// Display author as global value only if it is a single author album
+		if (bSingleAuthor) {
+			sOut += "<br>" + Messages.getString("Property_author") + ": "
+					+ firstTrack.getAuthor().getName2();
+		}
+		// Display style
+		if (bSingleStyle) {
+			sOut += "<br>" + Messages.getString("Property_style") + ": "
+					+ firstTrack.getStyle().getName2();
+		}
+		// Display year
+		if (bSingleYear) {
+			sOut += "<br>" + Messages.getString("Property_year") + ": " + firstTrack.getYear();
+		}
+		// Compute total length in secs
+		long length = 0;
+		for (Track track : tracks) {
+			length += track.getLength();
+		}
+		sOut += "<br>" + Messages.getString("Property_length") + ": "
+				+ Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
+		// Show each track detail
+		for (Track track : tracks) {
+			sOut += "<br><b>" + track.getName() + " (";
+			sOut += Util.formatTimeBySec(track.getLength(), false) + ") ";
+			if (!bSingleYear
+					&& track.getYear() != 0 ) {
+				sOut += " - "+track.getYear()+ "   ";
+			}
+			//Show author if known and if it is not already shown at album level
+			if (!bSingleAuthor
+					&& !track.getAuthor().getName2().equals(Messages.getString(UNKNOWN_AUTHOR))) {
+				sOut += " - "+track.getAuthor().getName2() + "   ";
+			}
+		}
+		sOut += "</TD></TR></TABLE></html>";
+		return sOut;
+	}
 }
