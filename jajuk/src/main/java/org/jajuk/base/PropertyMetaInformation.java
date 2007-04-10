@@ -73,7 +73,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 	 * @param sName
 	 *            Property name
 	 * @param bCustom
-	 *            Is custom proprety
+	 *            Is custom property
 	 * @param bConstructor
 	 *            Is constructor property
 	 * @param bShouldBeDisplayed

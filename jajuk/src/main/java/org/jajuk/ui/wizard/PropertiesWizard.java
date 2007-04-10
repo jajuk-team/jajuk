@@ -729,7 +729,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 			ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
 			// details for errors
 			String sDetails = ""; //$NON-NLS-1$
-			// Now we have all items to considere, write tags for each
+			// Now we have all items to concidere, write tags for each
 			// property to change
 			for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
 				ArrayList<Item> alIntermediate = new ArrayList<Item>(alItemsToCheck.size());

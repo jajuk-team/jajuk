@@ -1152,6 +1152,12 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				if (bExp) { //$NON-NLS-1$
 					jtree.expandRow(i);
 				}
+			} else if (o instanceof YearNode) {
+				Year year = ((YearNode) o).getYear();
+				boolean bExp = year.getBooleanValue(XML_EXPANDED);
+				if (bExp) { //$NON-NLS-1$
+					jtree.expandRow(i);
+				}
 			}
 		}
 	}

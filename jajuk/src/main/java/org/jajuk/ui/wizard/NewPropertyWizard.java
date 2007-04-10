@@ -151,7 +151,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource().equals(this.okp.getOKButton())) {
-			// check the property is not already used internaly
+			// check the property is not already used internally
 			for (int i = 0; i < XML_RESERVED_ATTRIBUTE_NAMES.length; i++) {
 				/*
 				 * check user can't create a property that is the localized name
