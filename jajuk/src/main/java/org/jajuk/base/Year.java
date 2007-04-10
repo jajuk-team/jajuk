@@ -28,7 +28,7 @@ import org.jajuk.i18n.Messages;
  * @author Bertrand Florat
  * @created 09 april 2007
  */
-public class Year extends Item implements Comparable {
+public class Year extends LogicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 	

@@ -51,7 +51,7 @@ import org.jajuk.util.log.Log;
  * @Author Bertrand Florat
  * @created 17 oct. 2003
  */
-public class PlaylistFile extends Item implements Comparable {
+public class PlaylistFile extends PhysicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -32,7 +32,7 @@ import org.jajuk.util.Util;
  * @author Bertrand Florat
  * @created 12 oct. 2003
  */
-public class File extends Item implements Comparable, ITechnicalStrings {
+public class File extends PhysicalItem implements Comparable, ITechnicalStrings {
 	private static final long serialVersionUID = 1L;
 
 	/** Parent directory */

@@ -29,7 +29,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 12 oct. 2003
  */
-public class Type extends Item implements Comparable {
+public class Type extends PhysicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -642,6 +642,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				} else if (o instanceof AlbumNode) {
 					Album album = ((AlbumNode) o).getAlbum();
 					album.removeProperty(XML_EXPANDED);
+				} else if (o instanceof YearNode) {
+					Year year = ((YearNode) o).getYear();
+					year.removeProperty(XML_EXPANDED);
 				}
 			}
 
@@ -656,6 +659,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				} else if (o instanceof AlbumNode) {
 					Album album = ((AlbumNode) o).getAlbum();
 					album.setProperty(XML_EXPANDED, true); //$NON-NLS-1$
+				} else if (o instanceof YearNode) {
+					Year year = ((YearNode) o).getYear();
+					year.setProperty(XML_EXPANDED, true); //$NON-NLS-1$
 				}
 			}
 		});

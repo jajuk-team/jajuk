@@ -32,7 +32,7 @@ import org.jajuk.i18n.Messages;
  * @Playlist Bertrand Florat
  * @created 17 oct. 2003
  */
-public class Playlist extends Item implements Comparable {
+public class Playlist extends LogicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 

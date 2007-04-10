@@ -20,6 +20,34 @@
 
 package org.jajuk.ui.wizard;
 
+import org.jajuk.Main;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.OKCancelPanel;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -49,34 +77,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
-import org.jajuk.Main;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.OKCancelPanel;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXDatePicker;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  * ItemManager properties wizard for any jajuk item
@@ -261,6 +261,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 		String sKey = meta.getName();
 		return sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK) || sKey.equals(XML_DEVICE)
 				|| sKey.equals(XML_TRACK) || sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR)
+				|| sKey.equals(XML_YEAR)
 				|| sKey.equals(XML_STYLE) || sKey.equals(XML_DIRECTORY) || sKey.equals(XML_FILE)
 				|| sKey.equals(XML_PLAYLIST) || sKey.equals(XML_PLAYLIST_FILE)
 				|| sKey.equals(XML_FILES) || sKey.equals(XML_PLAYLIST_FILES)

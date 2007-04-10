@@ -39,7 +39,7 @@ import org.jajuk.util.Util;
  * @Author Bertrand Florat
  * @created 17 oct. 2003
  */
-public class Track extends Item implements Comparable {
+public class Track extends LogicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 

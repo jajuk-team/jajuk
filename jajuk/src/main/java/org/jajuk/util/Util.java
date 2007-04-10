@@ -676,19 +676,10 @@ public class Util implements ITechnicalStrings {
 				.matches(".*" + FILE_DEFAULT_COVER + ".*") //$NON-NLS-1$ //$NON-NLS-2$
 				|| sFileName.toLowerCase().matches(
 						".*" + FILE_DEFAULT_COVER_2 + ".*") //$NON-NLS-1$ //$NON-NLS-2$
-				|| sFileName.toLowerCase().matches(
-						".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*"); // just
-		// for
-		// //$NON-NLS-1$
-		// //$NON-NLS-2$
-		// previous
-		// compatibility,
-		// now it is
-		// a
-		// directory
-		// property
-		// //$NON-NLS-1$
-		// //$NON-NLS-2$
+		// just for previous compatibility, now it is a directory property
+						|| sFileName.toLowerCase().matches(
+						".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*"); 
+		
 	}
 
 	/**
@@ -1460,9 +1451,11 @@ public class Util implements ITechnicalStrings {
 				100);
 		// computes logical selection if any
 		Set<Track> alLogicalTracks = null;
-		if (oData instanceof Style || oData instanceof Author
+		if (oData instanceof Style 
+				|| oData instanceof Author
 				|| oData instanceof Year
-				|| oData instanceof Album || oData instanceof Track) {
+				|| oData instanceof Album 
+				|| oData instanceof Track) {
 			if (oData instanceof Style 
 					|| oData instanceof Year
 					|| oData instanceof Author

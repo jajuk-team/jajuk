@@ -34,7 +34,7 @@ import java.util.Set;
  * @Author Bertrand Florat
  * @created 17 oct. 2003
  */
-public class Album extends Item implements Comparable {
+public class Album extends LogicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 

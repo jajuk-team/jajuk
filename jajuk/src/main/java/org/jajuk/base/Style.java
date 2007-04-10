@@ -31,7 +31,7 @@ import org.jajuk.i18n.Messages;
  * @author Bertrand Florat
  * @created 17 oct. 2003
  */
-public class Style extends Item implements Comparable {
+public class Style extends LogicalItem implements Comparable {
 
 	private static final long serialVersionUID = 1L;
 

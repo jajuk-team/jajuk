@@ -52,7 +52,7 @@ import org.xml.sax.Attributes;
  * @Author Bertrand Florat
  * @created 17 oct. 2003
  */
-public class Device extends Item implements ITechnicalStrings, Comparable {
+public class Device extends PhysicalItem implements ITechnicalStrings, Comparable {
 
 	private static final long serialVersionUID = 1L;
 
