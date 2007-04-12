@@ -62,6 +62,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -113,6 +114,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	static final int SORT_BY_ALBUM = 2;
 
 	static final int SORT_BY_YEAR = 3;
+
+	static final int SORT_BY_DISCOVERY = 4;
 
 	/** Track selection */
 	ArrayList<Track> alTracks;
@@ -219,8 +222,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 	JMenuItem jmiTrackProperties;
 
-	private int iSortOrder = SORT_BY_STYLE;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -258,9 +259,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void initUI() {
-		// init sort order
-		iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
-
 		// **Menu items**
 
 		// ComboBox sort
@@ -271,11 +269,12 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jlSort = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
 		jlSort.setOpaque(false);
 		jcbSort = new JComboBox();
-		jcbSort.addItem(Messages.getString("Property_style")); //$NON-NLS-1$
-		jcbSort.addItem(Messages.getString("Property_author")); //$NON-NLS-1$
+		jcbSort.addItem(Messages.getString("Property_style"));
+		jcbSort.addItem(Messages.getString("Property_author"));
 		jcbSort.addItem(Messages.getString("Property_album"));
 		jcbSort.addItem(Messages.getString("Property_year"));
-		jcbSort.setSelectedIndex(iSortOrder);
+		jcbSort.addItem(Messages.getString("LogicalTreeView.35"));
+		jcbSort.setSelectedIndex(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
 		jcbSort.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
 		jcbSort.addActionListener(this);
 		jpsort.add(jlSort, "1,0"); //$NON-NLS-1$
@@ -430,20 +429,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 		// populate the tree
-		switch (iSortOrder) {
-		case SORT_BY_STYLE:
-			populateTreeByStyle();
-			break;
-		case SORT_BY_AUTHOR:
-			populateTreeByAuthor();
-			break;
-		case SORT_BY_ALBUM:
-			populateTreeByAlbum();
-			break;
-		case SORT_BY_YEAR:
-			populateTreeByYear();
-			break;
-		}
+		populateTree();
 		// create tree
 		createTree();
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
@@ -470,6 +456,12 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 								"Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
 						setForeground(new Color(200, 70, 10));
 					}
+					// Discovery date filter
+				} else if (value instanceof DiscoveryDateNode) {
+					setIcon(Util.getIcon(ICON_DISCOVERY_DATE));
+					// collection node
+				} else {
+					setIcon(Util.getIcon(ICON_LIST));
 				}
 				return this;
 			}
@@ -529,8 +521,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 							Track track = ((TrackNode) node).getTrack();
 							if (hsSelectedTracks.contains(track)) {
 								// don't count the same track several time if
-								// user
-								// select directory and then tracks inside
+								// user select directory and then tracks inside
 								continue;
 							}
 							items++;
@@ -582,8 +573,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					// identical to konqueror tree:
 					// if none or 1 node is selected, a right click on
 					// another node select it. if more than 1, we keep selection
-					// and
-					// display a popup for them
+					// and display a popup for them
 					if (jtree.getSelectionCount() < 2) {
 						jtree.getSelectionModel().setSelectionPath(path);
 					}
@@ -680,7 +670,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	/** Fill the tree */
 
 	public void populateTree() {
-		switch (iSortOrder) {
+		switch (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER)) {
 		case SORT_BY_STYLE:
 			populateTreeByStyle();
 			break;
@@ -693,9 +683,13 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		case SORT_BY_YEAR:
 			populateTreeByYear();
 			break;
+		case SORT_BY_DISCOVERY:
+			populateTreeByDiscovery();
+			break;
 		}
 	}
 
+	/** Fill the tree by style */
 	public void populateTreeByStyle() {
 		// delete previous tree
 		top.removeAllChildren();
@@ -773,7 +767,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		}
 	}
 
-	/** Fill the tree */
+	/** Fill the tree by author */
 	public void populateTreeByAuthor() {
 		// delete previous tree
 		top.removeAllChildren();
@@ -831,7 +825,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 	}
 
-	/** Fill the tree */
+	/** Fill the tree by year */
 	public void populateTreeByYear() {
 		// delete previous tree
 		top.removeAllChildren();
@@ -895,31 +889,81 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		Collections.sort(tracks, TrackManager.getInstance().getComparator());
 		for (Track track : tracks) {
 			if (!track.shouldBeHidden()) {
-				AlbumNode albumNode = null;
-				Album album = track.getAlbum();
-
-				// create album
-				Enumeration e = top.children();
-				boolean b = false;
-				while (e.hasMoreElements()) { // check if the album doesn't
-					// already exist
-					AlbumNode an = (AlbumNode) e.nextElement();
-					if (an.getAlbum().equals(album)) {
-						b = true;
-						albumNode = an;
-						break;
-					}
-				}
-				if (!b) {
-					albumNode = new AlbumNode(album);
-					top.add(albumNode);
-				}
-				// create track
-				if (albumNode != null) {
-					albumNode.add(new TrackNode(track));
-				}
+				addTrackAndAlbum(top, track);
 			}
 		}
+	}
+
+	/** Fill the tree by discovery */
+	public void populateTreeByDiscovery() {
+		// delete previous tree
+		top.removeAllChildren();
+		ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+		Collections.sort(tracks, TrackManager.getInstance().getComparator());
+		// Create separator nodes
+		DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(Messages
+				.getString("LogicalTreeView.36"));
+		DefaultMutableTreeNode nodeMontly = new DiscoveryDateNode(Messages
+				.getString("LogicalTreeView.37"));
+		DefaultMutableTreeNode nodeSixMontly = new DiscoveryDateNode(Messages
+				.getString("LogicalTreeView.38"));
+		DefaultMutableTreeNode nodeOlder = new DiscoveryDateNode(Messages
+				.getString("LogicalTreeView.39"));
+		// Add separator nodes
+		top.add(nodeWeekly);
+		top.add(nodeMontly);
+		top.add(nodeSixMontly);
+		top.add(nodeOlder);
+		Date today = new Date();
+		// Sort tracks into these categories
+		for (Track track : tracks) {
+			if (track.shouldBeHidden()) {
+				continue;
+			}
+			AlbumNode albumNode = null;
+			Album album = track.getAlbum();
+
+			// less than one week ?
+			long diff = today.getTime() - track.getAdditionDate().getTime();
+			if (diff < 604800000l) {
+				addTrackAndAlbum(nodeWeekly, track);
+			} else if (diff < 2419200000l) {
+				addTrackAndAlbum(nodeMontly, track);
+			} else if (diff < 14515200000l) {
+				addTrackAndAlbum(nodeSixMontly, track);
+			} else {
+				addTrackAndAlbum(nodeOlder, track);
+			}
+		}
+	}
+
+	/**
+	 * Utility method used by populateByDiscovery method
+	 * 
+	 * @param node
+	 * @param track
+	 */
+	private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
+		boolean bAlbumExists = false;
+		AlbumNode currentAlbum = null;
+		Enumeration e = node.children();
+		while (e.hasMoreElements()) {
+			AlbumNode an = (AlbumNode) e.nextElement();
+			if (an.getAlbum().equals(track.getAlbum())) {
+				bAlbumExists = true;
+				currentAlbum = an;
+				break;
+			}
+		}
+		if (!bAlbumExists) {
+			currentAlbum = new AlbumNode(track.getAlbum());
+			node.add(currentAlbum);
+		}
+		// create track
+		if (currentAlbum != null) {
+			currentAlbum.add(new TrackNode(track));
+		}
+
 	}
 
 	/**
@@ -996,7 +1040,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(year));
 					}
 					new PropertiesWizard(alSelected, alTracks);
-				}else if (e.getSource() == jmiTrackProperties) {
+				} else if (e.getSource() == jmiTrackProperties) {
 					new PropertiesWizard(alSelected);
 					// Sorting
 				} else if (e.getSource() == jmiAlbumCDDBWizard) {
@@ -1043,18 +1087,15 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 								Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 										ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
 								false);
-					} else if ((e.getSource() == jmiTrackPush 
-							|| e.getSource() == jmiAlbumPush
-							|| e.getSource() == jmiAuthorPush 
-							|| e.getSource() == jmiStylePush 
-							|| e.getSource() == jmiYearPush)) {
+					} else if ((e.getSource() == jmiTrackPush || e.getSource() == jmiAlbumPush
+							|| e.getSource() == jmiAuthorPush || e.getSource() == jmiStylePush || e
+							.getSource() == jmiYearPush)) {
 						FIFO.getInstance().push(
 								Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 										ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
 								true);
 					} else if ((e.getSource() == jmiAlbumPlayShuffle
-							|| e.getSource() == jmiAuthorPlayShuffle 
-							|| e.getSource() == jmiStylePlayShuffle)
+							|| e.getSource() == jmiAuthorPlayShuffle || e.getSource() == jmiStylePlayShuffle)
 							|| e.getSource() == jmiYearPlayShuffle) {
 						Collections.shuffle(alFilesToPlay, new Random());
 						FIFO.getInstance().push(
@@ -1062,16 +1103,14 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 										.getBoolean(CONF_STATE_REPEAT), true), false);
 					} else if ((e.getSource() == jmiAlbumPlayRepeat
 							|| e.getSource() == jmiAuthorPlayRepeat
-							|| e.getSource() == jmiStylePlayRepeat 
-							|| e.getSource() == jmiYearPlayRepeat)) {
+							|| e.getSource() == jmiStylePlayRepeat || e.getSource() == jmiYearPlayRepeat)) {
 						FIFO.getInstance().push(
 								Util.createStackItems(Util.applyPlayOption(alFilesToPlay), true,
 										true), false);
 					} else if ((e.getSource() == jmiStyleAddFavorite
 							|| e.getSource() == jmiAlbumAddFavorite
-							|| e.getSource() == jmiAuthorAddFavorite 
-							|| e.getSource() == jmiTrackAddFavorite
-							|| e.getSource() == jmiYearAddFavorite)) {
+							|| e.getSource() == jmiAuthorAddFavorite
+							|| e.getSource() == jmiTrackAddFavorite || e.getSource() == jmiYearAddFavorite)) {
 						Bookmarks.getInstance().addFiles(alFilesToPlay);
 					} else if ((e.getSource() == jmiAlbumDelete || e.getSource() == jmiAuthorDelete
 							|| e.getSource() == jmiStyleDelete || e.getSource() == jmiTrackDelete)) {
@@ -1168,26 +1207,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	public ArrayList getTrackSelection() {
 		return alTracks;
 	}
-
-	/**
-	 * 
-	 * @return Logical tree sort order.
-	 *         <p>
-	 *         0: Style
-	 *         </p>
-	 *         <p>
-	 *         1: author
-	 *         </p>
-	 *         <p>
-	 *         2: Album
-	 *         <p>
-	 *         3: Year
-	 *         </p>
-	 */
-	public int getSortOrder() {
-		return iSortOrder;
-	}
-
 }
 
 /**
@@ -1366,4 +1385,24 @@ class TrackNode extends TransferableTreeNode {
 	public Track getTrack() {
 		return (Track) super.getData();
 	}
+}
+
+/**
+ * 
+ * Discovery date filter tree node
+ * 
+ * @author Bertrand Florat
+ * @created 11 avr. 07
+ */
+class DiscoveryDateNode extends DefaultMutableTreeNode {
+
+	/**
+	 * @param string
+	 */
+	public DiscoveryDateNode(String string) {
+		super(string);
+	}
+
+	private static final long serialVersionUID = 7123195836014138019L;
+
 }

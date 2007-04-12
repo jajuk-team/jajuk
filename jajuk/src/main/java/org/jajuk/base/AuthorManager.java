@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
@@ -226,6 +227,31 @@ public class AuthorManager extends ItemManager {
 			}
 		}
 		return authorSet;
+	}
+	
+	/**
+	 * Get authors associated with this item
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public Set<Author> getAssociatedAuthors(Item item) {
+		synchronized (AuthorManager.getInstance().getLock()) {
+			Set<Author> out = new TreeSet<Author>();
+			for (Object item2 : hmItems.values()) {
+				Author author = (Author) item2;
+				if (item instanceof Track && ((Track) item).getAuthor().equals(author)){
+					out.add(author);
+				}
+				else{
+					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+					for (Track track: tracks){
+						out.add(track.getAuthor());
+					}
+				}
+			}
+			return out;
+		}
 	}
 
 }

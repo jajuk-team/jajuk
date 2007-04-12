@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Convenient class to manage years
@@ -121,6 +122,31 @@ public class YearManager extends ItemManager {
 			}
 		}
 		return yearSet;
+	}
+	
+	/**
+	 * Get years associated with this item
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public Set<Year> getAssociatedYears(Item item) {
+		synchronized (YearManager.getInstance().getLock()) {
+			Set<Year> out = new TreeSet<Year>();
+			for (Object item2 : hmItems.values()) {
+				Year year = (Year) item2;
+				if (item instanceof Track && ((Track) item).getYear().equals(year)){
+					out.add(year);
+				}
+				else{
+					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+					for (Track track: tracks){
+						out.add(track.getYear());
+					}
+				}
+			}
+			return out;
+		}
 	}
 
 }

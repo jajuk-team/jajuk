@@ -5,7 +5,9 @@
  */
 package org.jajuk.ui.action;
 
+import org.jajuk.base.AuthorManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.reporting.HTMLExporter;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
@@ -16,16 +18,20 @@ import java.awt.event.ActionEvent;
  * @author Ronak Patel
  * @created Aug 20, 2006
  */
-public class CreateReportAction extends ActionBase {
+public class ReportAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;
 
-	CreateReportAction() {
+	ReportAction() {
 		super(Messages.getString("LogicalTreeView.33"), true); //$NON-NLS-1$
 		setShortDescription(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
 	}
 
 	public void perform(final ActionEvent e) throws JajukException {
+		
+		HTMLExporter htmlExporter = HTMLExporter.getInstance();
+		String result = htmlExporter.process(AuthorManager.getInstance().getAuthors().iterator().next());
+		
 	/*	final ArrayList<Track> alSelected = (ArrayList<Track>)getValue(DETAIL_SELECTION);
 		final String type = (String)getValue(DETAIL_ORIGIN);
 		final int iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);

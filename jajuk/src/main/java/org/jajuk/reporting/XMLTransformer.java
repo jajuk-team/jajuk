@@ -18,7 +18,7 @@
  *  $Revision: 2315 $
  */
 
-package org.jajuk.util;
+package org.jajuk.reporting;
 
 import java.io.File;
 import java.io.StringReader;

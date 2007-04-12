@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.util.EventSubject;
@@ -243,5 +244,30 @@ public class StyleManager extends ItemManager {
 			}
 		}
 		return styleSet;
+	}
+	
+	/**
+	 * Get styles associated with this item
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public Set<Style> getAssociatedStyles(Item item) {
+		synchronized (StyleManager.getInstance().getLock()) {
+			Set<Style> out = new TreeSet<Style>();
+			for (Object item2 : hmItems.values()) {
+				Style style = (Style) item2;
+				if (item instanceof Track && ((Track) item).getStyle().equals(style)){
+					out.add(style);
+				}
+				else{
+					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+					for (Track track: tracks){
+						out.add(track.getStyle());
+					}
+				}
+			}
+			return out;
+		}
 	}
 }

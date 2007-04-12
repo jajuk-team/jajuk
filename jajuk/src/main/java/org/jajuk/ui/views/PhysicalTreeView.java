@@ -546,6 +546,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					} else {
 						setIcon(Util.getIcon(ICON_DIRECTORY_DESYNCHRO));
 					}
+				// collection node
+				} else {
+					setIcon(Util.getIcon(ICON_LIST));
 				}
 				return this;
 			}

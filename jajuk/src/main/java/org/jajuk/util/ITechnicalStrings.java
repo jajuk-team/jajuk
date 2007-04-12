@@ -494,6 +494,9 @@ public interface ITechnicalStrings {
 
 	public static final URL ICON_APPLY_FILTER = Util
 			.getResource("icons/16x16/filter.png");
+	
+	public static final URL ICON_DISCOVERY_DATE = Util
+			.getResource("icons/16x16/filter.png");
 
 	public static final URL ICON_CLEAR_FILTER = Util
 			.getResource("icons/16x16/clear.png");

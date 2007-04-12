@@ -150,7 +150,7 @@ public final class ActionManager {
 		installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
 		
 		//Export
-		installAction(JajukAction.CREATE_REPORT, new CreateReportAction(), false);
+		installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
 		
 	}
 

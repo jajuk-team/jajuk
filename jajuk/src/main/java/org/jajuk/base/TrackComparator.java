@@ -43,9 +43,10 @@ public class TrackComparator implements Comparator<Track> {
 	public static final int AUTHOR_ALBUM = 1;
 
 	public static final int ALBUM = 2;
-	
+
 	public static final int YEAR_ALBUM = 3;
 
+	public static final int DISCOVERY_ALBUM = 4;
 
 	/**
 	 * Constructor
@@ -72,8 +73,7 @@ public class TrackComparator implements Comparator<Track> {
 		switch (iSortingMethod) {
 		// Style/author/album
 		case STYLE_AUTHOR_ALBUM:
-			sHashCompare = new StringBuffer().append(
-					track.getStyle().getName2()).append(
+			sHashCompare = new StringBuffer().append(track.getStyle().getName2()).append(
 					track.getAuthor().getName2())// need 2 spaces to make
 					// a right sorting (ex:
 					// Rock and Rock & Roll)
@@ -82,25 +82,27 @@ public class TrackComparator implements Comparator<Track> {
 			break;
 		// Author/album
 		case AUTHOR_ALBUM:
-			sHashCompare = new StringBuffer().append(
-					track.getAuthor().getName2())// need 2 spaces to make
-					// a right sorting (ex:
-					// Rock and Rock & Roll)
-					// //$NON-NLS-1$
-					.append(track.getAlbum().getName2()) //$NON-NLS-1$
+			// need 2 spaces to make a right sorting (ex: Rock and Rock & Roll)
+			sHashCompare = new StringBuffer().append(track.getAuthor().getName2()).append(
+					track.getAlbum().getName2()) //$NON-NLS-1$
 					.append(track.getName()).toString(); //$NON-NLS-1$
 			break;
 		// Album
 		case ALBUM:
-			sHashCompare = new StringBuffer().append(
-					track.getAlbum().getName2()) //$NON-NLS-1$
+			sHashCompare = new StringBuffer().append(track.getAlbum().getName2()) //$NON-NLS-1$
 					.append(track.getName()).toString(); //$NON-NLS-1$
 			break;
 		// Year / album
 		case YEAR_ALBUM:
-			sHashCompare = new StringBuffer().append(
-					Util.padNumber(track.getYear().getValue(),10)) //$NON-NLS-1$
+			sHashCompare = new StringBuffer()
+					.append(Util.padNumber(track.getYear().getValue(), 10)) //$NON-NLS-1$
 					.append(track.getName()).toString(); //$NON-NLS-1$
+			break;
+		// discovery date / album
+		case DISCOVERY_ALBUM:
+			sHashCompare = new StringBuffer().append(
+					Util.getAdditionDateFormat().format(track.getAdditionDate())).append(
+					track.getAlbum().getName2()).append(track.getName()).toString(); //$NON-NLS-1$
 			break;
 		}
 		return sHashCompare;

@@ -21,11 +21,12 @@
 
 package org.jajuk.base;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Convenient class to manage Albums
@@ -44,14 +45,14 @@ public class AlbumManager extends ItemManager {
 		super();
 		// register properties
 		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+				String.class, null));
 		// Name
-		registerProperty(new PropertyMetaInformation(XML_NAME, false, true,
-				true, true, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+				String.class, null));
 		// Expand
-		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false,
-				false, false, false, true, Boolean.class, false));
+		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false,
+				true, Boolean.class, false));
 	}
 
 	/**
@@ -110,8 +111,7 @@ public class AlbumManager extends ItemManager {
 	 * @param sNewName
 	 * @return new album
 	 */
-	public Album changeAlbumName(Album old, String sNewName)
-			throws JajukException {
+	public Album changeAlbumName(Album old, String sNewName) throws JajukException {
 		// check there is actually a change
 		if (old.getName2().equals(sNewName)) {
 			return old;
@@ -122,8 +122,7 @@ public class AlbumManager extends ItemManager {
 		// update tracks
 		for (Track track : TrackManager.getInstance().getTracks()) {
 			if (track.getAlbum().equals(old)) {
-				TrackManager.getInstance().changeTrackAlbum(track, sNewName,
-						null);
+				TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
 			}
 		}
 		return newItem;
@@ -187,6 +186,31 @@ public class AlbumManager extends ItemManager {
 			}
 		}
 		return albumSet;
+	}
+
+	/**
+	 * Get albums associated with this item
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public Set<Album> getAssociatedAlbums(Item item) {
+		synchronized (AlbumManager.getInstance().getLock()) {
+			Set<Album> out = new TreeSet<Album>();
+			for (Object item2 : hmItems.values()) {
+				Album album = (Album) item2;
+				if (item instanceof Track && ((Track) item).getAlbum().equals(album)){
+					out.add(album);
+				}
+				else{
+					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+					for (Track track: tracks){
+						out.add(track.getAlbum());
+					}
+				}
+			}
+			return out;
+		}
 	}
 
 }
