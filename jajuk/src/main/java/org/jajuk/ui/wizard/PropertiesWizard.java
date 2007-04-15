@@ -116,6 +116,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 	/** Second property panel */
 	PropertiesPanel panel2;
 
+	
 	/**
 	 * Constructor for normal wizard with only one wizard panel and n items to
 	 * display

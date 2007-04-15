@@ -207,7 +207,7 @@ public class Album extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * Build a advanced HTML desciption of the album with covers, total length
+	 * Build a advanced HTML description of the album with covers, total length
 	 * etc..
 	 * 
 	 * @param album
@@ -216,8 +216,8 @@ public class Album extends LogicalItem implements Comparable {
 	public String getAdvancedDescription() {
 		String size = "200x200";
 		Util.refreshThumbnail(this, size);
-		java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
-				+ getId() + '.' + EXT_THUMB);
+		java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getId() + '.'
+				+ EXT_THUMB);
 		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
 		Track firstTrack = tracks.iterator().next();
 		// Check if this album has a single author or not
@@ -253,18 +253,23 @@ public class Album extends LogicalItem implements Comparable {
 			sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
 		}
 		// Display author as global value only if it is a single author album
+		// We use file://<item type>?<item id> as HTML hyperlink format
 		if (bSingleAuthor) {
-			sOut += "<br>" + Messages.getString("Property_author") + ": "
-					+ firstTrack.getAuthor().getName2();
+			sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://"
+					+ XML_AUTHOR + '?' + firstTrack.getAuthor().getId() + "'>"
+					+ firstTrack.getAuthor().getName2() + "</a>";
 		}
 		// Display style
 		if (bSingleStyle) {
-			sOut += "<br>" + Messages.getString("Property_style") + ": "
-					+ firstTrack.getStyle().getName2();
+			sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
+					+ XML_STYLE + '?' + firstTrack.getStyle().getId() + "'>"
+					+ firstTrack.getStyle().getName2() + "</a>";
 		}
 		// Display year
 		if (bSingleYear) {
-			sOut += "<br>" + Messages.getString("Property_year") + ": " + firstTrack.getYear();
+			sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + XML_YEAR
+					+ '?' + firstTrack.getYear().getId() + "'>" + firstTrack.getYear().getName()
+					+ "</a>";
 		}
 		// Compute total length in secs
 		long length = 0;
@@ -275,16 +280,21 @@ public class Album extends LogicalItem implements Comparable {
 				+ Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
 		// Show each track detail
 		for (Track track : tracks) {
-			sOut += "<br><b>" + track.getName() + " (";
-			sOut += Util.formatTimeBySec(track.getLength(), false) + ") ";
-			if (!bSingleYear
-					&& track.getYear().getValue() != 0 ) {
-				sOut += " - "+track.getYear()+ "   ";
+			sOut += "<br>";
+			if (track.getOrder() > 0) {
+				sOut += Util.padNumber(track.getOrder(),2) +": ";
 			}
-			//Show author if known and if it is not already shown at album level
+			sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getId() + "'>"
+					+ track.getName() + "</a>" + " (";
+			sOut += Util.formatTimeBySec(track.getLength(), false) + ") </b>";
+			if (!bSingleYear && track.getYear().getValue() != 0) {
+				sOut += " - " + track.getYear().getValue() + "   ";
+			}
+			// Show author if known and if it is not already shown at album
+			// level
 			if (!bSingleAuthor
 					&& !track.getAuthor().getName2().equals(Messages.getString(UNKNOWN_AUTHOR))) {
-				sOut += " - "+track.getAuthor().getName2() + "   ";
+				sOut += " - " + track.getAuthor().getName2() + "   ";
 			}
 		}
 		sOut += "</TD></TR></TABLE></html>";

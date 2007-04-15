@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -30,8 +31,10 @@ import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.YearManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
@@ -61,9 +64,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -96,6 +99,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.event.HyperlinkEvent.EventType;
 
 import ext.FlowScrollPanel;
 import ext.SwingWorker;
@@ -880,7 +884,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		return 50 + (50 * jsSize.getValue());
 	}
 
-	class CatalogItem extends JPanel implements ITechnicalStrings, ActionListener, MouseListener {
+	class CatalogItem extends JPanel implements ITechnicalStrings, ActionListener {
 
 		private static final long serialVersionUID = 1L;
 
@@ -959,7 +963,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			}
 			jlIcon.setIcon(ii);
 			jpIcon.setOpaque(false);
-			addMouseListener(this);
 			jpIcon.add(jlIcon, "1,0"); //$NON-NLS-1$
 			int iRows = 9 + 3 * (jsSize.getValue());
 			Font customFont = new Font("verdana", Font.BOLD, ConfigurationManager
@@ -992,6 +995,33 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			add(jlAlbum, "1,4"); //$NON-NLS-1$
 			setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 			jlIcon.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// remove red border on previous item if different from this
+					// one
+					if (CatalogView.this.item != null 
+							&& CatalogView.this.item != CatalogItem.this) {
+						CatalogView.this.item
+								.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+					}
+					// add a red border on this item
+					setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+					// Right click
+					if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == CatalogItem.this.jlIcon) {
+						// if second click (item already selected), play
+						if (CatalogView.this.item == CatalogItem.this) {
+							play(false, false, false);
+						}
+						CatalogView.this.item = CatalogItem.this;
+						// Left click
+					} else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == CatalogItem.this.jlIcon) {
+						CatalogView.this.item = CatalogItem.this;
+						// Show contextual menu
+						jmenu.show(jlIcon, e.getX(), e.getY());
+					}
+				}
+
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					super.mouseEntered(e);
@@ -1003,34 +1033,81 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
 					jp.setLayout(new TableLayout(size));
 					jp.setOpaque(false);
-					jp.setBackgroundPainter(new BasicGradientPainter(BasicGradientPainter.AERITH));
-					JEditorPane text = new JEditorPane("text/html", track.getAlbum()
+					final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
 							.getAdvancedDescription());
 					text.setEditable(false);
-					text.setOpaque(false);
+					// Set background to white. We tried to set a gradiant but
+					// it seems that JEditorPane
+					// cannot be opaque
+					text.setBackground(Color.WHITE);
 					text.addHyperlinkListener(new HyperlinkListener() {
-
 						public void hyperlinkUpdate(HyperlinkEvent e) {
+							if (e.getEventType() == EventType.ACTIVATED) {
+								URL url = e.getURL();
+								if (XML_AUTHOR.equals(url.getHost())) {
+									ArrayList<Item> items = new ArrayList<Item>(1);
+									items.add(AuthorManager.getInstance().getItemByID(
+											url.getQuery()));
+									new PropertiesWizard(items);
+								} else if (XML_STYLE.equals(url.getHost())) {
+									ArrayList<Item> items = new ArrayList<Item>(1);
+									items.add(StyleManager.getInstance()
+											.getItemByID(url.getQuery()));
+									new PropertiesWizard(items);
+								} else if (XML_YEAR.equals(url.getHost())) {
+									ArrayList<Item> items = new ArrayList<Item>(1);
+									items
+											.add(YearManager.getInstance().getItemByID(
+													url.getQuery()));
+									new PropertiesWizard(items);
+								} else if (XML_TRACK.equals(url.getHost())) {
+									ArrayList<Item> items = new ArrayList<Item>(1);
+									Track track = (Track) TrackManager.getInstance().getItemByID(
+											url.getQuery());
+									items.add(track);
+									ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(
+											1);
+									toPlay.add(track.getPlayeableFile(true));
+									FIFO.getInstance().push(
+											Util.createStackItems(Util.applyPlayOption(toPlay),
+													ConfigurationManager
+															.getBoolean(CONF_STATE_REPEAT), true),
+											false);
+								}
+							}
+							// change cursor on entering or leaving hyperlinks
+							// This doesn't work under JRE 1.5 (at least under
+							// Linux), Sun issue ?
+							else if (e.getEventType() == EventType.ENTERED) {
+								text.setCursor(Util.LINK_CURSOR);
+							} else if (e.getEventType() == EventType.EXITED) {
+								text.setCursor(Util.DEFAULT_CURSOR);
+							}
 						}
-
 					});
 					final JScrollPane jspText = new JScrollPane(text);
 					jspText.getVerticalScrollBar().setValue(0);
 					jp.add(jspText, "0,0");
 					CatalogView.this.details.setContentPane(jp);
-					//compute dialog position (setRelativeTo is buggy, at least under Gnome)
-					int x = (int)jlIcon.getLocationOnScreen().getX() + jlIcon.getHeight() / 2;
-					int y = (int)jlIcon.getLocationOnScreen().getY() + jlIcon.getHeight() / 2;
-					int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-					int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-					if ( (x + 500) > screenWidth ){
-						x = screenWidth - 500;
+					// compute dialog position (setRelativeTo is buggy, at least
+					// under Gnome)
+					int x = (int) jlIcon.getLocationOnScreen().getX() + jlIcon.getWidth() - 50;
+					int y = (int) jlIcon.getLocationOnScreen().getY() + 50;
+					int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+					int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize()
+							.getHeight();
+					if ((x + 500) > screenWidth) {
+						x = screenWidth - 700;
 					}
-					if ( (y + 400) > screenHeight ){
-						y = screenHeight - 450;
+					if ((y + 400) > screenHeight) {
+						y = screenHeight - 750;
+					}
+					if ( y < 300) {
+						y = 350;
 					}
 					CatalogView.this.details.setLocation(x, y);
-					CatalogView.this.details.setIconImage(Util.getIcon(ICON_LOGO_FRAME).getImage());
+					((java.awt.Frame) CatalogView.this.details.getOwner()).setIconImage(Util
+							.getIcon(ICON_LOGO_FRAME).getImage());
 					CatalogView.this.details.setSize(500, 400);
 					CatalogView.this.details.setVisible(true);
 					// Force scrollbar to stay on top
@@ -1115,65 +1192,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						.getAssociatedTracks(album));
 				new PropertiesWizard(alAlbums, alTracks);
 			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-		 */
-		public void mouseClicked(MouseEvent arg0) {
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-		 */
-		public void mousePressed(MouseEvent e) {
-			// remove red border on previous item if different from this one
-			if (CatalogView.this.item != null && CatalogView.this.item != this) {
-				CatalogView.this.item.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-			}
-			// add a red border on this item
-			setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
-			// Right click
-			if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == this) {
-				// if second click (item already selected), play
-				if (CatalogView.this.item == this) {
-					play(false, false, false);
-				}
-				CatalogView.this.item = this;
-				// Left click
-			} else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == this) {
-				CatalogView.this.item = this;
-				// Show contextual menu
-				jmenu.show(jlIcon, e.getX(), e.getY());
-			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-		 */
-		public void mouseReleased(MouseEvent arg0) {
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-		 */
-		public void mouseEntered(MouseEvent arg0) {
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-		 */
-		public void mouseExited(MouseEvent arg0) {
 		}
 
 		public File getCoverFile() {

@@ -1250,7 +1250,10 @@ public class Main implements ITechnicalStrings {
 					// messages
 					LNFManager.setLookAndFeel(ConfigurationManager
 							.getProperty(CONF_OPTIONS_LNF));
-
+					
+					//Set default properties
+					UIManager.put("JEditorPane.honorDisplayProperties",Boolean.TRUE);
+					
 					// Prepare toolbars
 					DockingUISettings.getInstance().installUI();
 					tbcontainer = ToolBarContainer.createDefaultContainer(true,

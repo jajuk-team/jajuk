@@ -119,6 +119,8 @@ public class Util implements ITechnicalStrings {
 	/* Cursors */
 	public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
 
+	public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
+
 	public static final Cursor DEFAULT_CURSOR = new Cursor(
 			Cursor.DEFAULT_CURSOR);
 
