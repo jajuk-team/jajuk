@@ -302,9 +302,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jmiStyleAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); //$NON-NLS-1$
 		jmiStyleAddFavorite.addActionListener(this);
 		Action actionReportStyle = ActionManager.getAction(JajukAction.CREATE_REPORT);
-		actionReportStyle.putValue(DETAIL_ORIGIN, "style");
-		actionReportStyle.putValue(DETAIL_SELECTION, alSelected);
 		jmiStyleReport = new JMenuItem(actionReportStyle);
+		//Add custom data to this component in order to allow the ReportAction to be able to get it
+		jmiStyleReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
+		jmiStyleReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiStyleProperties = new JMenuItem(Messages.getString("LogicalTreeView.7")); //$NON-NLS-1$
 		jmiStyleProperties.addActionListener(this);
 		jmenuStyle.add(jmiStylePlay);
@@ -332,9 +333,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jmiAuthorAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); //$NON-NLS-1$       
 		jmiAuthorAddFavorite.addActionListener(this);
 		Action actionReportAuthor = ActionManager.getAction(JajukAction.CREATE_REPORT);
-		actionReportAuthor.putValue(DETAIL_ORIGIN, "author");
-		actionReportAuthor.putValue(DETAIL_SELECTION, alSelected);
 		jmiAuthorReport = new JMenuItem(actionReportAuthor);
+		//Add custom data to this component in order to allow the ReportAction to be able to get it
+		jmiAuthorReport.putClientProperty(DETAIL_ORIGIN, XML_AUTHOR);
+		jmiAuthorReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiAuthorProperties = new JMenuItem(Messages.getString("LogicalTreeView.14")); //$NON-NLS-1$
 		jmiAuthorProperties.addActionListener(this);
 		jmenuAuthor.add(jmiAuthorPlay);
@@ -362,9 +364,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jmiAlbumAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); //$NON-NLS-1$        
 		jmiAlbumAddFavorite.addActionListener(this);
 		Action actionReportAlbum = ActionManager.getAction(JajukAction.CREATE_REPORT);
-		actionReportAlbum.putValue(DETAIL_ORIGIN, "Album");
-		actionReportAlbum.putValue(DETAIL_SELECTION, alSelected);
 		jmiAlbumReport = new JMenuItem(actionReportAlbum);
+		//Add custom data to this component in order to allow the ReportAction to be able to get it
+		jmiAlbumReport.putClientProperty(DETAIL_ORIGIN, XML_ALBUM);
+		jmiAlbumReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34")); //$NON-NLS-1$
 		jmiAlbumCDDBWizard.addActionListener(this);
 		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); //$NON-NLS-1$
@@ -394,9 +397,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jmiYearProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); //$NON-NLS-1$
 		jmiYearProperties.addActionListener(this);
 		Action actionReportYear = ActionManager.getAction(JajukAction.CREATE_REPORT);
-		actionReportYear.putValue(DETAIL_ORIGIN, "Year");
-		actionReportYear.putValue(DETAIL_SELECTION, alSelected);
 		jmiYearReport = new JMenuItem(actionReportYear);
+		//Add custom data to this component in order to allow the ReportAction to be able to get it
+		jmiYearReport.putClientProperty(DETAIL_ORIGIN, XML_YEAR);
+		jmiYearReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmenuYear.add(jmiYearPlay);
 		jmenuYear.add(jmiYearPush);
 		jmenuYear.add(jmiYearPlayShuffle);
@@ -747,8 +751,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					continue;
 				}
 				b = false;
-				while (e.hasMoreElements()) { // check if the album doesn't
-					// already exist
+				while (e.hasMoreElements()) { 
 					AlbumNode an = (AlbumNode) e.nextElement();
 					if (an.getAlbum().equals(album)) {
 						b = true;

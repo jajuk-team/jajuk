@@ -6,11 +6,15 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.reporting.HTMLExporter;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
 
 /**
  * Report collection as a file
@@ -28,13 +32,13 @@ public class ReportAction extends ActionBase {
 	}
 
 	public void perform(final ActionEvent e) throws JajukException {
-		
+		System.out.println(((JComponent)e.getSource()).getClientProperty(DETAIL_ORIGIN));
 		HTMLExporter htmlExporter = HTMLExporter.getInstance();
 		String result = htmlExporter.process(AuthorManager.getInstance().getAuthors().iterator().next());
 		
-	/*	final ArrayList<Track> alSelected = (ArrayList<Track>)getValue(DETAIL_SELECTION);
+		final ArrayList<Track> alSelected = (ArrayList<Track>)getValue(DETAIL_SELECTION);
 		final String type = (String)getValue(DETAIL_ORIGIN);
-		final int iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
+	/*	final int iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
 		// Create filters.
 		ExportFileFilter xmlFilter = new ExportFileFilter(".xml");
 		ExportFileFilter htmlFilter = new ExportFileFilter(".html");
