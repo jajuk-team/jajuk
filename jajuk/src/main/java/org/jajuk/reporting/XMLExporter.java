@@ -32,6 +32,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -61,30 +62,34 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 	private final static String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>"; //$NON-NLS-1$
 
-	/** Keep an instance of the class. */
-	private static XMLExporter self = null;
-
-	/**
-	 * This methods returns an instance of XMLExporter.
-	 * 
-	 * @return Returns an instance of XMLExporter.
-	 */
-	public static XMLExporter getInstance() {
-		if (self == null) {
-			self = new XMLExporter();
-		}
-		return self;
-	}
-
-	/**
-	 * Default private constructor.
-	 * 
-	 */
-	private XMLExporter() {
-		super();
-	}
-
 	/** PUBLIC METHODS */
+
+	/**
+	 * This method will create a tagging of the specified item
+	 * 
+	 * @param item
+	 *            The item to report (can be an album, a year, an author ,a
+	 *            style, a directory or a device)
+	 * @return Returns a string containing the report, or null if an error
+	 *         occurred.
+	 */
+	public String process(Item item) {
+		if (item instanceof Album) {
+			return process((Album) item);
+		} else if (item instanceof Author) {
+			return process((Author) item);
+		} else if (item instanceof Style) {
+			return process((Style) item);
+		} else if (item instanceof Year) {
+			return process((Year) item);
+		} else if (item instanceof Directory) {
+			return process((Directory) item);
+		} else if (item instanceof Device) {
+			return process((Device) item);
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * This method will create a tagging of the specified album and its tracks.
@@ -107,6 +112,26 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 			content = sb.toString();
 		}
 
+		return content;
+	}
+
+	/**
+	 * This method will create a reporting of the specified year and its albums
+	 * and associated tracks.
+	 * 
+	 * @param year
+	 *            The year to report.
+	 * @return Returns a string containing the report, or null if an error
+	 *         occurred.
+	 */
+	public String process(Year year) {
+		String content = null;
+		if (year != null) {
+			StringBuffer sb = new StringBuffer();
+			sb.append(XML_HEADER + NEWLINE);
+			sb.append(tagYear(year, 0));
+			content = sb.toString();
+		}
 		return content;
 	}
 
@@ -177,8 +202,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 			sb.append(addTabs(1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
 
 			// Tag directory children data.
-			ListIterator itr1 = new ArrayList<Directory>(directory.getDirectories())
-					.listIterator();
+			ListIterator itr1 = new ArrayList<Directory>(directory
+					.getDirectories()).listIterator();
 			while (itr1.hasNext()) {
 				Directory d = (Directory) itr1.next();
 
@@ -233,9 +258,9 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 					+ Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device
 							.getMountPoint())) + NEWLINE);
 
-			ListIterator itr = new ArrayList<Directory>(DirectoryManager.getInstance()
-					.getDirectoryForIO(device.getFio()).getDirectories())
-					.listIterator();
+			ListIterator itr = new ArrayList<Directory>(DirectoryManager
+					.getInstance().getDirectoryForIO(device.getFio())
+					.getDirectories()).listIterator();
 			// Tag children directories of device.
 			while (itr.hasNext()) {
 				Directory directory = (Directory) itr.next();
@@ -272,7 +297,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	 * @return Returns a string containing the tagging of the collection, null
 	 *         if no tagging was created.
 	 */
-	public String processCollection(int COLLECTION_TYPE, ArrayList<Item> collection) {
+	public String processCollection(int COLLECTION_TYPE,
+			ArrayList<Item> collection) {
 		String content = null;
 
 		// If we are tagging the physical collection...
@@ -335,7 +361,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 				StringBuffer sb = new StringBuffer();
 				sb.append(XML_HEADER + NEWLINE);
 				sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
-				for (Item item:collection){
+				for (Item item : collection) {
 					Style style = (Style) item;
 					sb.append(tagStyle(style, 1));
 				}
@@ -350,7 +376,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 				sb.append(XML_HEADER + NEWLINE);
 
 				sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
-				for (Item item:collection){
+				for (Item item : collection) {
 					Author author = (Author) item;
 					sb.append(tagAuthor(author, 1));
 				}
@@ -363,7 +389,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 				StringBuffer sb = new StringBuffer();
 				sb.append(XML_HEADER + NEWLINE);
 				sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
-				for (Item item:collection){
+				for (Item item : collection) {
 					Album album = (Album) item;
 					sb.append(tagAlbum(album, 1));
 				}
@@ -488,9 +514,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		String sGenreName = ""; //$NON-NLS-1$
 		String sAuthorName = ""; //$NON-NLS-1$
 
-		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
-		
-		if ( tracks.size() > 0){
+		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(
+				album);
+
+		if (tracks.size() > 0) {
 			sGenreName = Util.formatXML(tracks.iterator().next().getStyle()
 					.getName2());
 			sAuthorName = Util.formatXML(tracks.iterator().next().getAuthor()
@@ -501,12 +528,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAlbumName)
 				+ NEWLINE);
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_ARTIST, sAuthorName)
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_AUTHOR, sAuthorName)
 				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_GENRE, sGenreName)
 				+ NEWLINE);
 
-		for (Track track: tracks) {
+		for (Track track : tracks) {
 			sb.append(tagTrack(track, level + 1));
 		}
 		sb.append(addTabs(level) + Tag.closeTag(XML_ALBUM) + NEWLINE);
@@ -515,15 +542,28 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 	private String tagAuthor(Author author, int level) {
 		StringBuffer sb = new StringBuffer();
-		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(author);
 		String sAuthorName = Util.formatXML(author.getName2());
-		sb.append(addTabs(level) + Tag.openTag(XML_ARTIST) + NEWLINE);
+		sb.append(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName)
 				+ NEWLINE);
-		for (Album album:AlbumManager.getInstance().getAssociatedAlbums(author) ){
+		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(
+				author)) {
 			sb.append(tagAlbum(album, level + 1));
 		}
-		sb.append(addTabs(level) + Tag.closeTag(XML_ARTIST) + NEWLINE);
+		sb.append(addTabs(level) + Tag.closeTag(XML_AUTHOR) + NEWLINE);
+		return sb.toString();
+	}
+
+	private String tagYear(Year year, int level) {
+		StringBuffer sb = new StringBuffer();
+		String sYearName = Util.formatXML(year.getName());
+		sb.append(addTabs(level) + Tag.openTag(XML_YEAR) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sYearName)
+				+ NEWLINE);
+		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(year)) {
+			sb.append(tagAlbum(album, level + 1));
+		}
+		sb.append(addTabs(level) + Tag.closeTag(XML_YEAR) + NEWLINE);
 		return sb.toString();
 	}
 
@@ -537,10 +577,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName)
 				+ NEWLINE);
 
-		for (Album album:AlbumManager.getInstance().getAssociatedAlbums(style) ){
+		for (Album album : AlbumManager.getInstance()
+				.getAssociatedAlbums(style)) {
 			sb.append(tagAlbum(album, level + 1));
 		}
-		for (Author author:AuthorManager.getInstance().getAssociatedAuthors(style) ){
+		for (Author author : AuthorManager.getInstance().getAssociatedAuthors(
+				style)) {
 			sb.append(tagAuthor(author, level + 1));
 		}
 		sb.append(addTabs(level) + Tag.closeTag(XML_STYLE) + NEWLINE);

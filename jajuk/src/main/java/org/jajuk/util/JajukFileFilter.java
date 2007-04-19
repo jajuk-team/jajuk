@@ -358,6 +358,50 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			return self;
 		}
 	}
+	
+	/**
+	 * 
+	 * Report filter (.html or XML file)
+	 * 
+	 * @author Bertrand Florat
+	 * @created 19 april 2007
+	 */
+	public static class ReportFilter implements java.io.FileFilter {
+		/** Self instance */
+		private static ReportFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			if (f.isDirectory()) {
+				return false;
+			}
+			// check extension is known
+			if ("html".equals(Util.getExtension(f).toLowerCase())
+					||"xml".equals(Util.getExtension(f).toLowerCase())){
+				return true;
+			}
+			return false;
+		}
+
+		/** No instanciation */
+		private ReportFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static ReportFilter getInstance() {
+			if (self == null) {
+				self = new ReportFilter();
+			}
+			return self;
+		}
+	}
 
 	/**
 	 * Filter constructor

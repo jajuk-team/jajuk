@@ -46,29 +46,8 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 
 	public static final int LOGICAL_ALBUM_COLLECTION = 3;
 
-	/** Keep an instance of the class. */
-	private static HTMLExporter self = null;
 
-	/**
-	 * This methods returns an instance of HTMLExporter.
-	 * 
-	 * @return Returns an instance of HTMLExporter.
-	 */
-	public static HTMLExporter getInstance() {
-		if (self == null) {
-			self = new HTMLExporter();
-		}
-		return self;
-	}
-
-	/**
-	 * Default private constructor.
-	 * 
-	 */
-	private HTMLExporter() {
-		super();
-	}
-
+	
 	/** PUBLIC METHODS */
 
 	/**
@@ -85,7 +64,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 
 		if (album != null) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the directory;
 			String xml = xmlExporter.process(album);
 
@@ -110,7 +89,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 		String content = null;
 		if (author != null) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the directory.
 			String xml = xmlExporter.process(author);
 			if (xml != null) {
@@ -124,7 +103,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 		String content = null;
 		if (style != null) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the directory.
 			String xml = xmlExporter.process(style);
 
@@ -149,7 +128,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 
 		if (directory != null) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the directory.
 			String xml = xmlExporter.process(directory);
 
@@ -175,7 +154,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 
 		if (device != null) {
 			// Get an instance of the XMLExporter
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the device.
 			String xml = xmlExporter.process(device);
 
@@ -206,7 +185,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 		// If we are exporting the physical collection...
 		if (COLLECTION_TYPE == HTMLExporter.PHYSICAL_COLLECTION) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the collection.
 			String xml = xmlExporter.processCollection(XMLExporter.PHYSICAL_COLLECTION, null);
 
@@ -216,7 +195,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 			// Else if we are exporting the logical genre collection...
 		} else if (COLLECTION_TYPE == HTMLExporter.LOGICAL_GENRE_COLLECTION) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the collection.
 			String xml = xmlExporter.processCollection(XMLExporter.LOGICAL_GENRE_COLLECTION,
 					collection);
@@ -227,7 +206,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 			// Else if we are exporting the logical artist collection...
 		} else if (COLLECTION_TYPE == HTMLExporter.LOGICAL_ARTIST_COLLECTION) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the collection.
 			String xml = xmlExporter.processCollection(XMLExporter.LOGICAL_ARTIST_COLLECTION,
 					collection);
@@ -238,7 +217,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 			// Else if we are exporting the logical album collection...
 		} else if (COLLECTION_TYPE == HTMLExporter.LOGICAL_ALBUM_COLLECTION) {
 			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = XMLExporter.getInstance();
+			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
 			// Create an xml tagging of the collection.
 			String xml = xmlExporter.processCollection(XMLExporter.LOGICAL_ALBUM_COLLECTION,
 					collection);

@@ -6,15 +6,26 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.i18n.Messages;
+import org.jajuk.reporting.ExporterFactory;
 import org.jajuk.reporting.HTMLExporter;
+import org.jajuk.reporting.XMLExporter;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.views.LogicalTreeView;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+import org.jajuk.util.JajukFileFilter.ReportFilter;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 
 /**
  * Report collection as a file
@@ -32,114 +43,83 @@ public class ReportAction extends ActionBase {
 	}
 
 	public void perform(final ActionEvent e) throws JajukException {
-		System.out.println(((JComponent)e.getSource()).getClientProperty(DETAIL_ORIGIN));
-		HTMLExporter htmlExporter = HTMLExporter.getInstance();
-		String result = htmlExporter.process(AuthorManager.getInstance().getAuthors().iterator().next());
-		
+		// Get required data from the tree (selected node and node type) and
+		// check
+		// selection contains at least one element
 		final ArrayList<Track> alSelected = (ArrayList<Track>)getValue(DETAIL_SELECTION);
-		final String type = (String)getValue(DETAIL_ORIGIN);
-	/*	final int iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
-		// Create filters.
-		ExportFileFilter xmlFilter = new ExportFileFilter(".xml");
-		ExportFileFilter htmlFilter = new ExportFileFilter(".html");
-		// ExportFileFilter pdfFilter = new
-		
-		// ExportFileFilter(".pdf");
-
-		final JFileChooser filechooser = new JFileChooser();
-		// Add filters.
-		filechooser.addChoosableFileFilter(xmlFilter);
-		filechooser.addChoosableFileFilter(htmlFilter);
-		// filechooser.addChoosableFileFilter(pdfFilter);
-
-		filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
-		filechooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
-		filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		// set a default file name
-		if (alSelected.size() == 1) {
-			Item item = alSelected.get(0);
-			filechooser.setSelectedFile(new java.io.File(item.getName()));
-		} else if (alSelected.size() > 1) {
-			// collection node selected
-			filechooser.setSelectedFile(new java.io.File("collection"));
+		// we manage only one item (can be a node or the entire collection)
+		if (alSelected.size() != 1) {
+			return;
 		}
-		filechooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		// First item
+		final Item selected = alSelected.get(0);
+		final String type = (String)getValue(DETAIL_ORIGIN);
+		// Display a save as dialog
+		
+		
+		/*
+		 * HTMLExporter htmlExporter = HTMLExporter.getInstance(); String result =
+		 * htmlExporter.process(AuthorManager.getInstance().getAuthors().iterator().next()); //
+		 * Create filters. ExportFileFilter xmlFilter = new
+		 * ExportFileFilter(".xml"); ExportFileFilter htmlFilter = new
+		 * ExportFileFilter(".html"); // ExportFileFilter pdfFilter = new //
+		 * ExportFileFilter(".pdf");
+		 */
 
-		int returnVal = filechooser.showSaveDialog(null);
-
+		final JajukFileChooser chooser = new JajukFileChooser(new JajukFileFilter(ReportFilter.getInstance()));
+		chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
+		chooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		// set a default file name
+		if (XML_COLLECTION.equals(type)) {
+			// collection node selected, use file name 'collection"
+			chooser.setSelectedFile(new java.io.File("collection"));
+		} else if (alSelected.size() > 1) {
+			// use the node name
+			Item item = alSelected.get(0);
+			chooser.setSelectedFile(new java.io.File(item.getName()));
+		}
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		// display the dialog
+		int returnVal = chooser.showSaveDialog(null);
+/*
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			// make it in a separated thread to avoid freezing
 			// screen for big collections
 			new Thread() {
 				public void run() {
-
-					java.io.File file = filechooser.getSelectedFile();
-
+					java.io.File file = chooser.getSelectedFile();
 					String filepath = file.getAbsolutePath();
 					String filetypename = Util.getExtension(file);
-
-					if (filetypename.equals("")) {
-						ExportFileFilter filter = (ExportFileFilter) filechooser.getFileFilter();
-						filetypename = filter.getExtension();
-						filepath += "." + filetypename;
-					}
-
-					String result = null; //$NON-NLS-1$                		
-
-					// If we are exporting to xml...
-					if (filetypename.equals("xml")) { //$NON-NLS-1$
-						XMLExporter xmlExporter = XMLExporter.getInstance();
-
-						// If we are exporting a album...
-						if ("album".equals(type)) {
-							PopulatedAlbum album = 
-							result = xmlExporter.process(album);
-							// Else if we are exporting an author in
-							// any
-							// other view...
-						} else if (e.getSource() == jmiAuthorExport) {
-							PopulatedAuthor author = LogicalTreeUtilities
-									.getPopulatedAuthorFromTree((DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent());
-							result = xmlExporter.process(author);
-							// Else if we are exporting a style...
-						} else if (e.getSource() == jmiStyleExport) {
-							PopulatedStyle style = LogicalTreeUtilities
-									.getPopulatedStyleFromTree((DefaultMutableTreeNode) paths[0]
-											.getLastPathComponent());
-							result = xmlExporter.process(style);
-							// Else if we are exporting a
-							// collection...
-						} else if (e.getSource() == jmiCollectionExport) {
+					int iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
+						XMLExporter xmlExporter = ExporterFactory.createExporter(filetypename);
+						// Process the reporting string
+						String result = null;
+						if (XML_COLLECTION.equals(type)) {
 							// If we are exporting the styles...
-							if (iSortOrder == 0) {
-								DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-										.getLastPathComponent();
-								ArrayList collection = LogicalTreeUtilities
-										.getStyleCollectionFromTree(node);
+							if (iSortOrder == TrackComparator.STYLE_AUTHOR_ALBUM) {
 								result = xmlExporter.processCollection(
 										XMLExporter.LOGICAL_GENRE_COLLECTION, collection);
 								// Else if we are exporting the
 								// authors...
-							} else if (iSortOrder == 1) {
-								DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-										.getLastPathComponent();
-								ArrayList collection = LogicalTreeUtilities
-										.getAuthorCollectionFromTree(node);
+							} else if (iSortOrder == TrackComparator.STYLE_AUTHOR_ALBUM) {
 								result = xmlExporter.processCollection(
 										XMLExporter.LOGICAL_ARTIST_COLLECTION, collection);
 								// Else if we are exporting the
 								// albums...
-							} else if (iSortOrder == 2) {
-								DefaultMutableTreeNode node = (DefaultMutableTreeNode) paths[0]
-										.getLastPathComponent();
-								ArrayList collection = LogicalTreeUtilities
-										.getAlbumCollectionFromTree(node);
+							} else if (iSortOrder == TrackComparator.ALBUM) {
 								result = xmlExporter.processCollection(
 										XMLExporter.LOGICAL_ALBUM_COLLECTION, collection);
-							}
+						} else if (iSortOrder == TrackComparator.YEAR_ALBUM) {
+							// @TODO
+					} else if (iSortOrder == TrackComparator.DISCOVERY_ALBUM) {
+							// @TODO
+					}
+	
+							// single item reporting
+						} else {
+							result = xmlExporter.process(selected);
 						}
-
 						if (result != null) {
 							// Save the results.
 							if (!xmlExporter.saveToFile(result, filepath)) {
@@ -216,5 +196,7 @@ public class ReportAction extends ActionBase {
 				}
 			}.start();
 		}*/
+	
+	
 	}
 }

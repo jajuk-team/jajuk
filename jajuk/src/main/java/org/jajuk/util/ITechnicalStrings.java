@@ -1267,8 +1267,6 @@ public interface ITechnicalStrings {
 
 	public static final String XML_AUTHOR = "author";
 
-	public static final String XML_ARTIST = "artist";
-
 	public static final String XML_ALBUMS = "albums";
 
 	public static final String XML_ALBUM = "album";

@@ -34,13 +34,7 @@ import org.jajuk.util.log.Log;
  */
 public abstract class Exporter {
 
-	/**
-	 * Default Exporter Constructor
-	 * 
-	 */
-	public Exporter() {
-	}
-
+	
 	/**
 	 * This method will export the String sContent to the specified sPath.
 	 * 
