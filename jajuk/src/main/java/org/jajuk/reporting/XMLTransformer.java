@@ -42,7 +42,8 @@ import org.jajuk.util.log.Log;
  */
 public class XMLTransformer {
 	/**
-	 * This method will convert an XML String into an HTML String.
+	 * This method will convert an XML String into an HTML String using 
+	 * an xslt transformation
 	 * 
 	 * @param xml
 	 *            The XML String to convert.
