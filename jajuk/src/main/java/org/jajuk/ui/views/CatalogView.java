@@ -643,13 +643,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 								if (track1.getAuthor() == track2.getAuthor()) {
 									return album1.compareTo(album2);
 								} else {
-									return track1.getAuthor().compareTo(track2.getAuthor());
+									return track2.getAuthor().compareTo(track1.getAuthor());
 								}
 							} else {
-								return track1.getYear().compareTo(track2.getYear());
+								return track2.getYear().compareTo(track1.getYear());
 							}
 						case 4: // Discovery date
-							return track1.getAdditionDate().compareTo(track2.getAdditionDate());
+							return track2.getAdditionDate().compareTo(track1.getAdditionDate());
 						}
 						return 0;
 					}
