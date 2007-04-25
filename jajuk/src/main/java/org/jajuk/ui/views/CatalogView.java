@@ -366,7 +366,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jsSize.setSnapToTicks(true);
 		jsSize.setPaintTicks(true);
 		jsSize.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-		jsSize.setToolTipText(Messages.getString("CatalogView.4")); //$NON-NLS-1$)
 		jsSize.addMouseWheelListener(new DefaultMouseWheelListener(jsSize) {
 
 			@Override
@@ -393,6 +392,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			index = 2; // 150x150 if a problem occurs
 		}
 		jsSize.setValue(index);
+		// compute size string for slider tooltip
+		String sizeToDisplay = "" + (50 + 50 * index) + "x" + "" + (50 + 50 * index);
+		jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + sizeToDisplay); //$NON-NLS-1$)
 		jsSize.addChangeListener(new ChangeListener() {
 
 			public void stateChanged(ChangeEvent e) {
@@ -404,6 +406,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				ConfigurationManager.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
 				// display thumbs
 				populateCatalog();
+				// Adjust tooltips
+				// compute size string for slider tooltip
+				String size = "" + (50 + 50 * jsSize.getValue()) + "x" + ""
+						+ (50 + 50 * jsSize.getValue());
+				jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + size); //$NON-NLS-1$)
 			}
 
 		});
@@ -1019,12 +1026,22 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						CatalogView.this.item = CatalogItem.this;
 						// Show contextual menu
 						jmenu.show(jlIcon, e.getX(), e.getY());
+						// Hide any details frame
+						if (CatalogView.this.details != null) {
+							CatalogView.this.details.dispose();
+						}
 					}
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					super.mouseEntered(e);
+					// don't show details if the contextual popup menu is
+					// visible
+					if (jmenu.isVisible()) {
+						return;
+					}
+					// Hide any older details frame
 					if (CatalogView.this.details != null) {
 						CatalogView.this.details.dispose();
 					}
@@ -1089,21 +1106,29 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					jspText.getVerticalScrollBar().setValue(0);
 					jp.add(jspText, "0,0");
 					CatalogView.this.details.setContentPane(jp);
-					// compute dialog position (setRelativeTo is buggy, at least
-					// under Gnome)
-					int x = (int) jlIcon.getLocationOnScreen().getX() + jlIcon.getWidth() - 50;
-					int y = (int) jlIcon.getLocationOnScreen().getY() + 50;
+					// compute dialog position ( note that setRelativeTo is
+					// buggy and that we need more advanced positioning)
+					int x = (int) jlIcon.getLocationOnScreen().getX()
+							+ (int) (0.6 * jlIcon.getWidth());
+					// set position at 60 % of the picture
+					int y = (int) jlIcon.getLocationOnScreen().getY()
+							+ (int) (0.6 * jlIcon.getHeight());
 					int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 					int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize()
 							.getHeight();
+					// Adjust position if details are located outside the screen
+					// in x-axis
 					if ((x + 500) > screenWidth) {
-						x = screenWidth - 700;
+						x = screenWidth - 510;
 					}
 					if ((y + 400) > screenHeight) {
-						y = screenHeight - 750;
-					}
-					if ( y < 300) {
-						y = 350;
+						x = (int) jlIcon.getLocationOnScreen().getX()
+								+ (int) (0.6 * jlIcon.getWidth());
+						if ((x + 500) > screenWidth) {
+							x = screenWidth - 510;
+						}
+						y = (int) jlIcon.getLocationOnScreen().getY()
+								+ (int) (0.4 * jlIcon.getHeight()) - 400;
 					}
 					CatalogView.this.details.setLocation(x, y);
 					((java.awt.Frame) CatalogView.this.details.getOwner()).setIconImage(Util
