@@ -276,6 +276,7 @@ public class LogicalTreeView extends AbstractTreeView implements
 
 		// Collection menu
 		jmenuCollection = new JPopupMenu();
+		jmiCollectionReport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, XML_COLLECTION);
