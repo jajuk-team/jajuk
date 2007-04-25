@@ -257,7 +257,7 @@ public class CoverView extends ViewAdapter implements Observer,
 				.getInt(CONF_COVERS_ACCURACY + "_" + getPerspective().getID());
 		}
 		catch(Exception e){
-			Log.error(e);
+			//Will reach this point at first launch 
 		}
 		jcbAccuracy.setSelectedIndex(index); //$NON-NLS-1$
 		jcbAccuracy.addActionListener(this);

@@ -692,32 +692,29 @@ public interface ITechnicalStrings {
 			.getResource("images/included/tray_title.png");
 
 	// XSLT Files
-	public static final URL ARTIST_XSLT = Util
+	public static final URL XSLT_ARTIST = Util
 			.getResource("xslt/artist.xsl");
 
-	public static final URL ALBUM_XSLT = Util
+	public static final URL XSLT_ALBUM = Util
 			.getResource("xslt/album.xsl");
 
-	public static final URL STYLE_XSLT = Util
+	public static final URL XSLT_STYLE = Util
 			.getResource("xslt/style.xsl");
 
-	public static final URL DIRECTORY_XSLT = Util
+	public static final URL XSLT_YEAR = Util
+			.getResource("xslt/style.xsl");
+
+	public static final URL XSLT_DIRECTORY = Util
 			.getResource("xslt/directory.xsl");
 
-	public static final URL DEVICE_XSLT = Util
+	public static final URL XSLT_DEVICE = Util
 			.getResource("xslt/device.xsl");
 
-	public static final URL COLLECTION_XSLT = Util
-			.getResource("xslt/collection.xsl");
+	public static final URL XSLT_COLLECTION_PHYSICAL = Util
+			.getResource("xslt/physical_collection.xsl");
 
-	public static final URL STYLE_COLLECTION_XSLT = Util
-			.getResource("xslt/style_collection.xsl");
-
-	public static final URL ARTIST_COLLECTION_XSLT = Util
-			.getResource("xslt/artist_collection.xsl");
-
-	public static final URL ALBUM_COLLECTION_XSLT = Util
-			.getResource("xslt/album_collection.xsl");
+	public static final URL XSLT_LOGICAL_COLLECTION = Util
+			.getResource("xslt/logical_collection.xsl");
 
 	// Command line options
 	// if selected, no jajuk window at startup, only tray
