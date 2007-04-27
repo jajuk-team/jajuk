@@ -21,16 +21,23 @@
 package org.jajuk.util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.filechooser.FileFilter;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.i18n.Messages;
 
 /**
- * Music oriented file filter ( mp3, ogg.. )
+ * Advanced file filter
+ * 
+ * @see https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters for direction to
+ *      use
+ *      <p>
+ *      Exemple: new
+ *      JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),
+ *      JajukFileFilter.AudioFilter.getInstance());
+ *      </p>
  * 
  * @author Bertrand Florat
  * @created 22 oct. 2003
@@ -38,17 +45,12 @@ import org.jajuk.base.TypeManager;
 
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		ITechnicalStrings {
-	/** Display directories flag* */
-	private boolean bDirectories = true;
-
+	
 	/** Display files flag* */
 	private boolean bFiles = true;
 
-	/** Accepted types* */
-	private ArrayList<Type> alTypes;
-
 	/** Filters */
-	private java.io.FileFilter[] filters;
+	private JajukFileFilter[] filters;
 
 	/** And or OR applied to multi filters ? */
 	private boolean bAND = true;
@@ -63,7 +65,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class DirectoryFilter implements java.io.FileFilter {
+	public static class DirectoryFilter extends JajukFileFilter {
 
 		/** Self instance */
 		private static DirectoryFilter self = null;
@@ -91,6 +93,14 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return Messages.getString("Item_Directory");
+		}
 	}
 
 	/**
@@ -103,7 +113,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class AnyFileFilter implements java.io.FileFilter {
+	public static class AnyFileFilter extends JajukFileFilter {
 		/** Self instance */
 		private static AnyFileFilter self = null;
 
@@ -130,6 +140,14 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "*.*";
+		}
 	}
 
 	/**
@@ -139,7 +157,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class KnownTypeFilter implements java.io.FileFilter {
+	public static class KnownTypeFilter extends JajukFileFilter {
 		/** Self instance */
 		private static KnownTypeFilter self = null;
 
@@ -170,6 +188,15 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return TypeManager.getInstance().getTypeListString();
+		}
+		
 	}
 
 	/**
@@ -179,7 +206,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class AudioFilter implements java.io.FileFilter {
+	public static class AudioFilter extends JajukFileFilter {
 		/** Self instance */
 		private static AudioFilter self = null;
 
@@ -216,6 +243,22 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			String sOut = "";
+			for (Type type : TypeManager.getInstance().getAllMusicTypes()) {
+				sOut += type.getExtension() + ',';
+			}
+			// Remove last coma
+			sOut = sOut.substring(0, sOut.length() - 1);
+			return sOut;
+		}
 	}
 
 	/**
@@ -225,7 +268,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class ImageFilter implements java.io.FileFilter {
+	public static class ImageFilter extends JajukFileFilter {
 		/** Self instance */
 		private static ImageFilter self = null;
 
@@ -262,6 +305,14 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "gif,png,jpg";
+		}
 	}
 
 	/**
@@ -271,7 +322,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class NotAudioFilter implements java.io.FileFilter {
+	public static class NotAudioFilter extends JajukFileFilter {
 		/** Self instance */
 		private static NotAudioFilter self = null;
 
@@ -309,6 +360,15 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			//No need to translate, is is used internal only
+			return "Not audio"; 
+		}
 	}
 
 	/**
@@ -318,7 +378,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 25 may 2006
 	 */
-	public static class PlaylistFilter implements java.io.FileFilter {
+	public static class PlaylistFilter extends JajukFileFilter {
 		/** Self instance */
 		private static PlaylistFilter self = null;
 
@@ -357,8 +417,16 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return EXT_PLAYLIST;
+		}
 	}
-	
+
 	/**
 	 * 
 	 * Report filter (.html or XML file)
@@ -366,7 +434,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * @author Bertrand Florat
 	 * @created 19 april 2007
 	 */
-	public static class ReportFilter implements java.io.FileFilter {
+	public static class ReportFilter extends JajukFileFilter {
 		/** Self instance */
 		private static ReportFilter self = null;
 
@@ -381,7 +449,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			// check extension is known
 			if ("html".equals(Util.getExtension(f).toLowerCase())
-					||"xml".equals(Util.getExtension(f).toLowerCase())){
+					|| "xml".equals(Util.getExtension(f).toLowerCase())) {
 				return true;
 			}
 			return false;
@@ -401,6 +469,14 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 			}
 			return self;
 		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "html,xml";
+		}
 	}
 
 	/**
@@ -414,7 +490,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 *            JajukFilter(JajukFileFilter.AudioFilter.getInstance());
 	 *            </p>
 	 */
-	public JajukFileFilter(java.io.FileFilter... filters) {
+	public JajukFileFilter(JajukFileFilter... filters) {
 		this(true, filters);
 	}
 
@@ -431,7 +507,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 *            JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),JajukFileFilter.AudioFilter.getInstance());
 	 *            </p>
 	 */
-	public JajukFileFilter(boolean bAND, java.io.FileFilter... filters) {
+	public JajukFileFilter(boolean bAND, JajukFileFilter... filters) {
 		this.bAND = bAND;
 		this.filters = filters;
 	}
@@ -461,17 +537,16 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 
 	public String getDescription() {
 		String sOut = ""; //$NON-NLS-1$
-		if (!bFiles) { // only dirs
+		//	if only dirs, no description
+		if (!bFiles) { 
 			return sOut;
 		}
-		if (alTypes != null) {
-			Iterator it = alTypes.iterator();
-			while (it.hasNext()) {
-				Type type = (Type) it.next();
-				sOut += type.getExtension() + ',';
-			}
-			sOut = sOut.substring(0, sOut.length() - 1);
+		//Add description of each filter separated by a coma
+		for (int i=0; i<filters.length; i++){
+			sOut += filters[i].getDescription() + ',';
 		}
+		//Remove last coma
+		sOut = sOut.substring(0, sOut.length() - 1);
 		return sOut;
 	}
 }

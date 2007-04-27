@@ -185,7 +185,7 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @return
 	 */
-	public ArrayList getAllMusicTypes() {
+	public ArrayList<Type> getAllMusicTypes() {
 		synchronized (TrackManager.getInstance().getLock()) {
 			ArrayList<Type> alResu = new ArrayList<Type>(5);
 			Iterator it = hmSupportedTypes.values().iterator();
