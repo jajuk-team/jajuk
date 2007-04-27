@@ -39,6 +39,8 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.action.RefactorAction;
 import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.ui.wizard.DeviceWizard;
@@ -70,6 +72,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JMenuItem;
@@ -114,7 +117,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	/** Collection export */
 	JPopupMenu jmenuCollection;
 
-	JMenuItem jmiCollectionExport;
+	JMenuItem jmiCollectionReport;
 
 	JPopupMenu jmenuFile;
 
@@ -268,9 +271,15 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// Collection menu
 		jmenuCollection = new JPopupMenu();
 		// Export
-		jmiCollectionExport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
-		jmiCollectionExport.addActionListener(this);
-		jmenuCollection.add(jmiCollectionExport);
+		jmiCollectionReport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
+		// Add custom data to this component in order to allow the ReportAction
+		// to be able to get it
+		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, XSLT_COLLECTION_PHYSICAL);
+		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, alSelected);
+		Action actionReportCollection = ActionManager
+				.getAction(JajukAction.CREATE_REPORT);
+		jmiCollectionReport.setAction(actionReportCollection);
+		jmenuCollection.add(jmiCollectionReport);
 
 		// File menu
 		jmenuFile = new JPopupMenu();
@@ -592,24 +601,21 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				int items = 0;
 				long lSize = 0;
 				// get all components recursively
-				alSelected = new ArrayList<Item>(paths.length);
+				alSelected.clear();
 				for (int i = 0; i < paths.length; i++) {
 					Object o = paths[i].getLastPathComponent();
 					if (o instanceof TransferableTreeNode) {
 						alSelected.add((Item) ((TransferableTreeNode) o).getData());
 					} else {// root node
-						alSelected = new ArrayList<Item>(FileManager.getInstance().getFiles());
-						items = alSelected.size();
+						items = FileManager.getInstance().getElementCount();
 						hsSelectedFiles.addAll(alSelected);
 						for (Item item : alSelected) {
 							lSize += ((File) item).getSize();
 						}
 						break;
 					}
-					Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration(); // return
-																							// all
-																							// childs
-					// nodes recursively
+					// return all childs nodes recursively
+					Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration(); 
 					while (e2.hasMoreElements()) {
 						DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
 						if (node instanceof FileNode) {
@@ -1057,7 +1063,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 			Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
 			device.synchronize(true);
 		} else if (e.getSource() == jmiDevTest) {
-			new Thread() { // test asynchronously in case of delay (samba
+			new Thread() { 
+				// test asynchronously in case of delay (samba
 				// pbm for ie)
 				public void run() {
 					Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();

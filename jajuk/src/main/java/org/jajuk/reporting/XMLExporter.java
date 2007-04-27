@@ -48,14 +48,6 @@ import java.util.Set;
  * @created Aug 20, 2006
  */
 public class XMLExporter extends Exporter implements ITechnicalStrings {
-	/** Public Constants */
-	public static int PHYSICAL_COLLECTION = 0;
-
-	public static int LOGICAL_GENRE_COLLECTION = 1;
-
-	public static int LOGICAL_ARTIST_COLLECTION = 2;
-
-	public static int LOGICAL_ALBUM_COLLECTION = 3;
 
 	/** Private Constants */
 	private final static String NEWLINE = "\n"; //$NON-NLS-1$
@@ -202,8 +194,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 			sb.append(addTabs(1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
 
 			// Tag directory children data.
-			ListIterator itr1 = new ArrayList<Directory>(directory
-					.getDirectories()).listIterator();
+			ListIterator itr1 = new ArrayList<Directory>(directory.getDirectories()).listIterator();
 			while (itr1.hasNext()) {
 				Directory d = (Directory) itr1.next();
 
@@ -245,30 +236,25 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 			sb.append(Tag.openTag(XML_DEVICE) + NEWLINE);
 
-			sb.append(addTabs(1)
-					+ Tag.tagData(XML_NAME, Util.formatXML(device.getName()))
+			sb.append(addTabs(1) + Tag.tagData(XML_NAME, Util.formatXML(device.getName()))
 					+ NEWLINE);
-			sb.append(addTabs(1)
-					+ Tag.tagData(XML_TYPE, Util.formatXML(device
-							.getDeviceTypeS())) + NEWLINE);
-			sb.append(addTabs(1)
-					+ Tag.tagData(XML_URL, Util.formatXML(device.getUrl()))
+			sb.append(addTabs(1) + Tag.tagData(XML_TYPE, Util.formatXML(device.getDeviceTypeS()))
 					+ NEWLINE);
+			sb.append(addTabs(1) + Tag.tagData(XML_URL, Util.formatXML(device.getUrl())) + NEWLINE);
 			sb.append(addTabs(1)
-					+ Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device
-							.getMountPoint())) + NEWLINE);
+					+ Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device.getMountPoint()))
+					+ NEWLINE);
 
-			ListIterator itr = new ArrayList<Directory>(DirectoryManager
-					.getInstance().getDirectoryForIO(device.getFio())
-					.getDirectories()).listIterator();
+			ListIterator itr = new ArrayList<Directory>(DirectoryManager.getInstance()
+					.getDirectoryForIO(device.getFio()).getDirectories()).listIterator();
 			// Tag children directories of device.
 			while (itr.hasNext()) {
 				Directory directory = (Directory) itr.next();
 				sb.append(exportDirectoryHelper(1, directory));
 			}
 
-			Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(
-					device.getFio()).getFiles().iterator();
+			Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio())
+					.getFiles().iterator();
 			// Tag children files of device.
 			while (itr2.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itr2.next();
@@ -284,79 +270,48 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	/**
-	 * This method will take a constant specifying what type of collection to
-	 * export.
-	 * 
-	 * @param COLLECTION_TYPE
-	 *            This XMLExporter constant specifies what type of collection
-	 *            we're exporting.
-	 * @param collection
-	 *            An ArrayList of the collection to export. Should be null if
-	 *            exporting the physical collection. Just specify the
-	 *            COLLECTION_TYPE.
-	 * @return Returns a string containing the tagging of the collection, null
-	 *         if no tagging was created.
+	 * @see Exporter.processColllection
 	 */
-	public String processCollection(int COLLECTION_TYPE,
-			ArrayList<Item> collection) {
+	public String processCollection(int type, ArrayList<Item> collection) {
 		String content = null;
-
 		// If we are tagging the physical collection...
-		if (COLLECTION_TYPE == XMLExporter.PHYSICAL_COLLECTION) {
+		if (type == XMLExporter.PHYSICAL_COLLECTION) {
 			StringBuffer sb = new StringBuffer();
-
 			sb.append(XML_HEADER + NEWLINE);
-
 			sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
-
-			Iterator<Device> itr0 = DeviceManager.getInstance().getDevices()
-					.iterator();
 			// Tag each device.
-			while (itr0.hasNext()) {
-				Device device = itr0.next();
-
+			for (Device device : DeviceManager.getInstance().getDevices()) {
 				sb.append(addTabs(1) + Tag.openTag(XML_DEVICE) + NEWLINE);
-
+				sb.append(addTabs(2) + Tag.tagData(XML_NAME, Util.formatXML(device.getName()))
+						+ NEWLINE);
 				sb.append(addTabs(2)
-						+ Tag.tagData(XML_NAME, Util
-								.formatXML(device.getName())) + NEWLINE);
-				sb.append(addTabs(2)
-						+ Tag.tagData(XML_TYPE, Util.formatXML(device
-								.getDeviceTypeS())) + NEWLINE);
-				sb.append(addTabs(2)
-						+ Tag.tagData(XML_URL, Util.formatXML(device.getUrl()))
+						+ Tag.tagData(XML_TYPE, Util.formatXML(device.getDeviceTypeS())) + NEWLINE);
+				sb.append(addTabs(2) + Tag.tagData(XML_URL, Util.formatXML(device.getUrl()))
 						+ NEWLINE);
 				sb.append(addTabs(2)
 						+ Tag.tagData(XML_DEVICE_MOUNT_POINT, Util
 								.formatXML(device.getMountPoint())) + NEWLINE);
 
-				ListIterator itr1 = new ArrayList<Directory>(DirectoryManager
-						.getInstance().getDirectoryForIO(device.getFio())
-						.getDirectories()).listIterator();
+				ListIterator itr1 = new ArrayList<Directory>(DirectoryManager.getInstance()
+						.getDirectoryForIO(device.getFio()).getDirectories()).listIterator();
 				// Tag children directories of device.
 				while (itr1.hasNext()) {
 					Directory directory = (Directory) itr1.next();
 					sb.append(exportDirectoryHelper(2, directory));
 				}
-
-				Iterator itr2 = DirectoryManager.getInstance()
-						.getDirectoryForIO(device.getFio()).getFiles()
-						.iterator();
+				Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio())
+						.getFiles().iterator();
 				// Tag children files of device.
 				while (itr2.hasNext()) {
-					org.jajuk.base.File file = (org.jajuk.base.File) itr2
-							.next();
+					org.jajuk.base.File file = (org.jajuk.base.File) itr2.next();
 					sb.append(tagFile(file, 2));
 				}
-
 				sb.append(addTabs(1) + Tag.closeTag(XML_DEVICE) + NEWLINE);
 			}
-
 			sb.append(Tag.closeTag(XML_COLLECTION) + NEWLINE);
-
 			content = sb.toString();
 			// Else if we are exporting the genre collection...
-		} else if (COLLECTION_TYPE == XMLExporter.LOGICAL_GENRE_COLLECTION) {
+		} else if (type == LOGICAL_COLLECTION) {
 			if (collection != null) {
 				StringBuffer sb = new StringBuffer();
 				sb.append(XML_HEADER + NEWLINE);
@@ -368,36 +323,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 				sb.append(Tag.closeTag(XML_COLLECTION) + NEWLINE);
 				content = sb.toString();
 			}
-			// Else if we are exporting the author collection...
-		} else if (COLLECTION_TYPE == XMLExporter.LOGICAL_ARTIST_COLLECTION) {
-			if (collection != null) {
-				StringBuffer sb = new StringBuffer();
-
-				sb.append(XML_HEADER + NEWLINE);
-
-				sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
-				for (Item item : collection) {
-					Author author = (Author) item;
-					sb.append(tagAuthor(author, 1));
-				}
-				sb.append(Tag.closeTag(XML_COLLECTION) + NEWLINE);
-				content = sb.toString();
-			}
-			// Else if we are exporting the album collection...
-		} else if (COLLECTION_TYPE == XMLExporter.LOGICAL_ALBUM_COLLECTION) {
-			if (collection != null) {
-				StringBuffer sb = new StringBuffer();
-				sb.append(XML_HEADER + NEWLINE);
-				sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
-				for (Item item : collection) {
-					Album album = (Album) item;
-					sb.append(tagAlbum(album, 1));
-				}
-				sb.append(Tag.closeTag(XML_COLLECTION) + NEWLINE);
-				content = sb.toString();
-			}
 		}
-
 		return content;
 	}
 
@@ -405,21 +331,15 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 	private String exportDirectoryHelper(int level, Directory directory) {
 		StringBuffer sb = new StringBuffer();
-
 		// Get the children
-		ArrayList children = new ArrayList<Directory>(directory
-				.getDirectories());
+		ArrayList children = new ArrayList<Directory>(directory.getDirectories());
 		ListIterator itr1 = children.listIterator();
-
 		sb.append(addTabs(level) + Tag.openTag(XML_DIRECTORY) + NEWLINE);
-
 		String sName = Util.formatXML(directory.getName());
 		String sPath = Util.formatXML(directory.getAbsolutePath());
-
 		// Tag directory data.
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sName) + NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
-
 		// Tag children directories
 		while (itr1.hasNext()) {
 			Directory d = (Directory) itr1.next();
@@ -447,12 +367,9 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		String sPath = Util.formatXML(file.getAbsolutePath());
 		long lSize = file.getSize();
 		String sTrackName = Util.formatXML(file.getTrack().getName());
-		String sTrackGenre = Util.formatXML(file.getTrack().getStyle()
-				.getName2());
-		String sTrackAuthor = Util.formatXML(file.getTrack().getAuthor()
-				.getName2());
-		String sTrackAlbum = Util.formatXML(file.getTrack().getAlbum()
-				.getName2());
+		String sTrackGenre = Util.formatXML(file.getTrack().getStyle().getName2());
+		String sTrackAuthor = Util.formatXML(file.getTrack().getAuthor().getName2());
+		String sTrackAlbum = Util.formatXML(file.getTrack().getAlbum().getName2());
 		long lTrackLength = file.getTrack().getLength();
 		long lTrackRate = file.getTrack().getRate();
 		String sTrackComment = Util.formatXML(file.getTrack().getComment());
@@ -485,22 +402,14 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 		sb.append(addTabs(level) + Tag.openTag(XML_TRACK) + NEWLINE);
 
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_NAME, sTrackName)
-				+ NEWLINE);
-		sb.append(addTabs(level + 1)
-				+ Tag.tagData(XML_TRACK_GENRE, sTrackGenre) + NEWLINE);
-		sb.append(addTabs(level + 1)
-				+ Tag.tagData(XML_TRACK_ARTIST, sTrackAuthor) + NEWLINE);
-		sb.append(addTabs(level + 1)
-				+ Tag.tagData(XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
-		sb.append(addTabs(level + 1)
-				+ Tag.tagData(XML_TRACK_LENGTH, lTrackLength) + NEWLINE);
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_RATE, lTrackRate)
-				+ NEWLINE);
-		sb.append(addTabs(level + 1)
-				+ Tag.tagData(XML_TRACK_COMMENT, sTrackComment) + NEWLINE);
-		sb.append(addTabs(level + 1)
-				+ Tag.tagData(XML_TRACK_ORDER, lTrackOrder) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_NAME, sTrackName) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_GENRE, sTrackGenre) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_ARTIST, sTrackAuthor) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_LENGTH, lTrackLength) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_RATE, lTrackRate) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_COMMENT, sTrackComment) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_ORDER, lTrackOrder) + NEWLINE);
 
 		sb.append(addTabs(level) + Tag.closeTag(XML_TRACK) + NEWLINE);
 
@@ -514,24 +423,18 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		String sGenreName = ""; //$NON-NLS-1$
 		String sAuthorName = ""; //$NON-NLS-1$
 
-		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(
-				album);
+		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
 
 		if (tracks.size() > 0) {
-			sGenreName = Util.formatXML(tracks.iterator().next().getStyle()
-					.getName2());
-			sAuthorName = Util.formatXML(tracks.iterator().next().getAuthor()
-					.getName2());
+			sGenreName = Util.formatXML(tracks.iterator().next().getStyle().getName2());
+			sAuthorName = Util.formatXML(tracks.iterator().next().getAuthor().getName2());
 		}
 
 		sb.append(addTabs(level) + Tag.openTag(XML_ALBUM) + NEWLINE);
 
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAlbumName)
-				+ NEWLINE);
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_AUTHOR, sAuthorName)
-				+ NEWLINE);
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_GENRE, sGenreName)
-				+ NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAlbumName) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_AUTHOR, sAuthorName) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_GENRE, sGenreName) + NEWLINE);
 
 		for (Track track : tracks) {
 			sb.append(tagTrack(track, level + 1));
@@ -544,10 +447,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		StringBuffer sb = new StringBuffer();
 		String sAuthorName = Util.formatXML(author.getName2());
 		sb.append(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName)
-				+ NEWLINE);
-		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(
-				author)) {
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName) + NEWLINE);
+		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(author)) {
 			sb.append(tagAlbum(album, level + 1));
 		}
 		sb.append(addTabs(level) + Tag.closeTag(XML_AUTHOR) + NEWLINE);
@@ -558,8 +459,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		StringBuffer sb = new StringBuffer();
 		String sYearName = Util.formatXML(year.getName());
 		sb.append(addTabs(level) + Tag.openTag(XML_YEAR) + NEWLINE);
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sYearName)
-				+ NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sYearName) + NEWLINE);
 		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(year)) {
 			sb.append(tagAlbum(album, level + 1));
 		}
@@ -574,15 +474,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 		sb.append(addTabs(level) + Tag.openTag(XML_STYLE) + NEWLINE);
 
-		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName)
-				+ NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName) + NEWLINE);
 
-		for (Album album : AlbumManager.getInstance()
-				.getAssociatedAlbums(style)) {
+		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(style)) {
 			sb.append(tagAlbum(album, level + 1));
 		}
-		for (Author author : AuthorManager.getInstance().getAssociatedAuthors(
-				style)) {
+		for (Author author : AuthorManager.getInstance().getAssociatedAuthors(style)) {
 			sb.append(tagAuthor(author, level + 1));
 		}
 		sb.append(addTabs(level) + Tag.closeTag(XML_STYLE) + NEWLINE);

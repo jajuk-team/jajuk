@@ -54,7 +54,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	TreePath[] paths;
 
 	/** Items selection */
-	ArrayList<Item> alSelected;
+	ArrayList<Item> alSelected = new ArrayList<Item>(100);
 
 	/** Top tree node */
 	DefaultMutableTreeNode top;

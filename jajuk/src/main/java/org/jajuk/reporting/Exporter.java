@@ -23,7 +23,9 @@ package org.jajuk.reporting;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import org.jajuk.base.Item;
 import org.jajuk.util.log.Log;
 
 /**
@@ -33,6 +35,12 @@ import org.jajuk.util.log.Log;
  * @created Aug 20, 2006
  */
 public abstract class Exporter {
+	
+	/** Public Constants */
+	public static final int PHYSICAL_COLLECTION = 0;
+
+	public static final int LOGICAL_COLLECTION = 1;
+
 
 	
 	/**
@@ -63,5 +71,35 @@ public abstract class Exporter {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * This method will take a constant specifying what type of collection to
+	 * export.
+	 * 
+	 * @param type
+	 *            This XMLExporter constant specifies what type of collection
+	 *            we're exporting.
+	 * @param collection
+	 *            An ArrayList of the collection to export. Should be null if
+	 *            exporting the physical collection. Just specify the
+	 *            COLLECTION_TYPE.
+	 * @return Returns a string containing the tagging of the collection, null
+	 *         if no tagging was created.
+	 */
+	abstract public String processCollection(int type, ArrayList<Item> collection) ;
+	
+	/**
+	 * This methods will create an html String of items
+	 * 
+	 * @param collection
+	 *            An ArrayList of the items to export
+	 * @return Returns a string containing the html markup, or null if an error
+	 *         occurred.
+	 */
+	public String processCollection(ArrayList<Item> collection) {
+		// -1 means it is a partial report, not a full physical or
+		// logical collection report
+		return processCollection(-1, collection);
 	}
 }

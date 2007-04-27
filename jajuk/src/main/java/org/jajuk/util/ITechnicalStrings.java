@@ -692,8 +692,8 @@ public interface ITechnicalStrings {
 			.getResource("images/included/tray_title.png");
 
 	// XSLT Files
-	public static final URL XSLT_ARTIST = Util
-			.getResource("xslt/artist.xsl");
+	public static final URL XSLT_AUTHOR = Util
+			.getResource("xslt/author.xsl");
 
 	public static final URL XSLT_ALBUM = Util
 			.getResource("xslt/album.xsl");
@@ -713,7 +713,7 @@ public interface ITechnicalStrings {
 	public static final URL XSLT_COLLECTION_PHYSICAL = Util
 			.getResource("xslt/physical_collection.xsl");
 
-	public static final URL XSLT_LOGICAL_COLLECTION = Util
+	public static final URL XSLT_COLLECTION_LOGICAL = Util
 			.getResource("xslt/logical_collection.xsl");
 
 	// Command line options

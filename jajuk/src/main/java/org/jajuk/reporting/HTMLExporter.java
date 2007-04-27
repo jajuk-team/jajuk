@@ -26,6 +26,7 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
 import org.jajuk.base.Style;
+import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
 
 import java.util.ArrayList;
@@ -37,63 +38,52 @@ import java.util.ArrayList;
  * @created Aug 22, 2006
  */
 public class HTMLExporter extends Exporter implements ITechnicalStrings {
-	/** Public Constants */
-	public static final int PHYSICAL_COLLECTION = 0;
-
-	public static final int LOGICAL_COLLECTION = 1;
 
 	/** PUBLIC METHODS */
 
-	
 	/**
-	 * This methods will create an html String of items
-	 * 
-	 * @param collection
-	 *            An ArrayList of the items to export
-	 * @return Returns a string containing the html markup, or null if an error
-	 *         occurred.
+	 * @see Exporter.processColllection
 	 */
-	public String processCollection(ArrayList<Item> collection) {
-		return processCollection(-1,collection);
-	}
-	
-	/**
-	 * This methods will create an html String of a collection and all its
-	 * children devices, directories, and files.
-	 * 
-	 * @param COLLECTION_TYPE
-	 *            The type of collection to export.
-	 * @param collection
-	 *            An ArrayList of the collection to export. Should be null if
-	 *            exporting the physical collection. Just specify the
-	 *            COLLECTION_TYPE.
-	 * @return Returns a string containing the html markup, or null if an error
-	 *         occurred.
-	 */
-	public String processCollection(int COLLECTION_TYPE, ArrayList<Item> collection) {
+	public String processCollection(int type, ArrayList<Item> collection) {
 		String content = null;
-		return content;
-
-	/*	// If we are exporting the physical collection...
-		if (COLLECTION_TYPE == HTMLExporter.PHYSICAL_COLLECTION) {
-			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
+		// Get an instance of the XMLExporter.
+		XMLExporter xmlExporter = (XMLExporter) ExporterFactory.createExporter("xml");
+		// If we are exporting the physical collection...
+		if (type == PHYSICAL_COLLECTION) {
 			// Create an xml tagging of the collection.
-			String xml = xmlExporter.processCollection(XMLExporter.PHYSICAL_COLLECTION, null);
+			String xml = xmlExporter.processCollection(PHYSICAL_COLLECTION, null);
 			if (xml != null) {
-				content = XMLTransformer.xmlToHTML(xml, COLLECTION_XSLT);
+				// content = XMLTransformer.xmlToHTML(xml, COLLECTION_XSLT);
 			}
 			// Else if we are exporting the logical genre collection...
-		} else if (COLLECTION_TYPE == HTMLExporter.LOGICAL_COLLECTION) {
-			// Get an instance of the XMLExporter.
-			XMLExporter xmlExporter = (XMLExporter)ExporterFactory.createExporter("xml");
+		} else if (type == LOGICAL_COLLECTION) {
 			// Create an xml tagging of the collection.
-			String xml = xmlExporter.processCollection(XMLExporter.LOGICAL_GENRE_COLLECTION,
-					collection);
+			String xml = xmlExporter.processCollection(LOGICAL_COLLECTION, null);
 			if (xml != null) {
-				content = XMLTransformer.xmlToHTML(xml, XSLT_LOGICALSTYLE_COLLECTION);
+				content = XMLTransformer.xmlToHTML(xml, XSLT_COLLECTION_LOGICAL);
 			}
-			return content;
-		}*/
+		}
+		// Partial report on a given item
+		else {
+			// Create an xml tagging of this item
+			String xml = xmlExporter.processCollection(type, collection);
+			if (xml != null) {
+				Item first = collection.get(0);
+				if (first instanceof Style) {
+					content = XMLTransformer.xmlToHTML(xml, XSLT_STYLE);
+				} else if (first instanceof Author) {
+					content = XMLTransformer.xmlToHTML(xml, XSLT_AUTHOR);
+				} else if (first instanceof Year) {
+					content = XMLTransformer.xmlToHTML(xml, XSLT_YEAR);
+				} else if (first instanceof Album) {
+					content = XMLTransformer.xmlToHTML(xml, XSLT_ALBUM);
+				} else if (first instanceof Device) {
+					content = XMLTransformer.xmlToHTML(xml, XSLT_DEVICE);
+				} else if (first instanceof Directory) {
+					content = XMLTransformer.xmlToHTML(xml, XSLT_DIRECTORY);
+				}
+			}
+		}
+		return content;
 	}
 }
