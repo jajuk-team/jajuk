@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,13 +19,6 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.HashMap;
-
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -33,6 +26,13 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.IntellitypeListener;
@@ -42,9 +42,6 @@ import com.melloware.jintellitype.JIntellitype;
  * Common super class for Swing actions. This class provides useful construction
  * options to create actions, just leaving open the necessity of implementing
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
- * 
- * @author Bart Cremers
- * @since 12-dec-2005
  */
 public abstract class ActionBase extends AbstractAction implements ITechnicalStrings,
 		HotkeyListener {

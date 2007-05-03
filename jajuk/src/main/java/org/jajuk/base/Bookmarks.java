@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,21 +20,19 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+
 /**
  * Manages bookmarks
  * 
- * @author Bertrand Florat
- * @created 21 feb. 2004
  */
 public class Bookmarks implements ITechnicalStrings {
 

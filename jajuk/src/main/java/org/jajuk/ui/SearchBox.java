@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,6 +19,11 @@
  */
 
 package org.jajuk.ui;
+
+import org.jajuk.base.FileManager;
+import org.jajuk.base.SearchResult;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.log.Log;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -42,16 +47,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.base.FileManager;
-import org.jajuk.base.SearchResult;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.log.Log;
-
 /**
  * Search combo box. Editable combo with search features
- * 
- * @author Bertrand Florat
- * @created 15 janv. 2004
  */
 public class SearchBox extends JTextField implements KeyListener {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -37,6 +37,37 @@ import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.action.JajukAction.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.History;
+import org.jajuk.base.HistoryItem;
+import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Player;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.StackItem;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.dj.DigitalDJ;
+import org.jajuk.dj.DigitalDJManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionBase;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.ActionUtil;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.border.DropShadowBorder;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
@@ -72,36 +103,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.History;
-import org.jajuk.base.HistoryItem;
-import org.jajuk.base.JajukTimer;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Player;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.StackItem;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.dj.DigitalDJ;
-import org.jajuk.dj.DigitalDJManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.action.ActionBase;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.ActionUtil;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.border.DropShadowBorder;
-
 import com.vlsolutions.swing.toolbars.ToolBarConstraints;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarIO;
@@ -116,9 +117,6 @@ import ext.SwingWorker;
  * <p>
  * Singleton
  * </p>
- * 
- * @author Bertrand Florat
- * @created 3 oct. 2003
  */
 public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionListener,
 		ListSelectionListener, ChangeListener, Observer, MouseWheelListener {

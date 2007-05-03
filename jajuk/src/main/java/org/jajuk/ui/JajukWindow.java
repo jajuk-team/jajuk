@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,17 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -44,13 +33,21 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  * Jajuk main window
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 23 mars 2004
  */
 public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 

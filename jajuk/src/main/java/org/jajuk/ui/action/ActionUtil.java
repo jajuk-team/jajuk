@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,9 +27,6 @@ import javax.swing.KeyStroke;
 
 /**
  * Utility class for swing actions.
- * 
- * @author Bart Cremers
- * @since 12-dec-2005
  */
 public final class ActionUtil {
 

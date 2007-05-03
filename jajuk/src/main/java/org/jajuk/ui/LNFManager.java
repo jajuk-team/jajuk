@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,12 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
+
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -27,16 +33,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComboBoxUI;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.log.Log;
-
 /**
  * Manages Look and Feel
- * 
- * @author Bertrand Florat
  */
 public class LNFManager implements ITechnicalStrings {
 

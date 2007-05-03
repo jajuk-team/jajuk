@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.util;
 
@@ -23,9 +23,6 @@ import java.net.URL;
 
 /**
  * Contains all technical/ non-translatable strings
- * 
- * @author Bertrand Florat
- * @created 5 oct. 2003
  */
 public interface ITechnicalStrings {
 

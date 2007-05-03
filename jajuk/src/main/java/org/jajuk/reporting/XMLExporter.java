@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Ronak Patel
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -43,9 +43,6 @@ import java.util.Set;
 
 /**
  * This class exports music contents to XML.
- * 
- * @author Ronak Patel
- * @created Aug 20, 2006
  */
 public class XMLExporter extends Exporter implements ITechnicalStrings {
 

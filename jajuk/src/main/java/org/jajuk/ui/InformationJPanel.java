@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,6 +19,19 @@
  */
 package org.jajuk.ui;
 
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Player;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -35,24 +48,8 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.JajukTimer;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Player;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 /**
  * Status / information panel ( static view )
- * 
- * @author Bertrand Florat
- * @created 11 oct. 2003
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer {
 	private static final long serialVersionUID = 1L;

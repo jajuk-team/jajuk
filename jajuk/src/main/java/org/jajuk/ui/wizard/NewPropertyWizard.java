@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.wizard;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXDatePicker;
 
 import info.clearthought.layout.TableLayout;
 
@@ -38,21 +47,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.JXDatePicker;
-
 /**
  * 
  * New property wizard
- * 
- * @author Bertrand Florat
- * @created 20 juin 2005
  */
 public class NewPropertyWizard extends CustomPropertyWizard implements
 		KeyListener {

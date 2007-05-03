@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,8 @@
 
 package org.jajuk.tag;
 
+import org.jajuk.util.Util;
+
 import java.io.File;
 import java.util.Map;
 
@@ -28,13 +30,8 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
-import org.jajuk.util.Util;
-
 /**
  * Tager implementationfor formats without tags and read by BasicPlayer API
- * 
- * @author Bertrand Florat
- * @created 27 avr. 2004
  */
 public class NoTagsTagImpl implements ITagImpl {
 	/** Analysed file */

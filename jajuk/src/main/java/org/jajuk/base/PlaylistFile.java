@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,18 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
@@ -43,13 +31,22 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 /**
  * A playlist file
  * <p>
  * Physical item
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class PlaylistFile extends PhysicalItem implements Comparable {
 

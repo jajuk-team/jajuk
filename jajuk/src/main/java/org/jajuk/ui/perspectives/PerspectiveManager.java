@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,18 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.ui.perspectives;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.Event;
@@ -44,15 +35,20 @@ import org.mozilla.xpcom.GREVersionRange;
 import org.mozilla.xpcom.IAppFileLocProvider;
 import org.mozilla.xpcom.Mozilla;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
 
 /**
  * Perspectives Manager
- * 
- * @author Bertrand Florat
- * @version 1.0
- * @created 14 nov. 03
  */
 public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider {
 	/** Current perspective */

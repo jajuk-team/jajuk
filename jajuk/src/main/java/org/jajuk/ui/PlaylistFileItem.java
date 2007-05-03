@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,10 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -31,15 +35,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
-
 /**
  * A physical playlist icon + text
- * 
- * @author Bertrand Florat
- * @created 31 dec. 2004
  */
 public class PlaylistFileItem extends JPanel {
 	private static final long serialVersionUID = 1L;

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Erwan Richard
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,12 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.ui.wizard;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
@@ -29,12 +26,10 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.wizard.CDDBWizard.CDDBTrack;
 
-import entagged.freedb.FreedbReadResult;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-/**
- * @author Erwan Richard
- * @created 15 december 2005
- */
+import entagged.freedb.FreedbReadResult;
 
 public class CDDBTableModel extends JajukTableModel {
 

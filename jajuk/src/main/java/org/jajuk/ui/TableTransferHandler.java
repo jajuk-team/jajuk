@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,20 +20,17 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.base.FileManager;
+import org.jajuk.util.ITechnicalStrings;
+
 import java.awt.datatransfer.Transferable;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
-import org.jajuk.base.FileManager;
-import org.jajuk.util.ITechnicalStrings;
-
 /**
  * DND handler for table
- * 
- * @author Bertrand Florat
- * @created 13 feb. 2004
  */
 
 public class TableTransferHandler extends TransferHandler implements

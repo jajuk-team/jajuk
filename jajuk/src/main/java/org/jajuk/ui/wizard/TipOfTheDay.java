@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 Bart Cremers
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,6 +19,11 @@
  */
 package org.jajuk.ui.wizard;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -36,14 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-
-/**
- * @author Bart Cremers(Real Software)
- */
 public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;

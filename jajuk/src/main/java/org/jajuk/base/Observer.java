@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,15 +20,12 @@
 
 package org.jajuk.base;
 
-import java.util.Set;
-
 import org.jajuk.util.EventSubject;
+
+import java.util.Set;
 
 /**
  * GoF Observer pattern Observer
- * 
- * @author Bertrand Florat
- * @created 12 dec. 2003
  */
 public interface Observer {
 

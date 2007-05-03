@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,16 @@
 
 package org.jajuk.base;
 
+import org.apache.commons.collections.iterators.FilterIterator;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,21 +44,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.collections.iterators.FilterIterator;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 /**
  * Convenient class to manage files
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class FileManager extends ItemManager implements Observer {
 	/**

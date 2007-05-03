@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,14 @@
 
 package org.jajuk.base;
 
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,19 +37,8 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 /**
  * Convenient class to manage devices
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class DeviceManager extends ItemManager {
 	/** Supported device types names */

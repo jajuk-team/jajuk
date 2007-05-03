@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,28 +15,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
-package org.jajuk.ui.perspectives;
+package org.jajuk.ui;
 
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
+import javax.swing.JDialog;
 
 /**
- * Logical perspective
+ *  Custom JDialog
  */
-public class LogicalPerspective extends PerspectiveAdapter {
+public class JajukJDialog extends JDialog implements ITechnicalStrings{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3280008357821054703L;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("Perspective_Description_Logical"); //$NON-NLS-1$
+	public JajukJDialog(){
+		//Show jajuk logo as default icon (it is useful for 1.6 as we
+		//can't use the 1.6 JDialog.setIcon for now as long as we support 1.5)
+		((java.awt.Frame) getOwner()).setIconImage(Util
+							.getIcon(ICON_LOGO_FRAME).getImage());
 	}
-
-
+	
+	
 }

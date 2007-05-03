@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,18 +15,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.util;
 
-import java.io.File;
-
-import javax.swing.filechooser.FileFilter;
-
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
+
+import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
 
 /**
  * Advanced file filter
@@ -38,9 +38,6 @@ import org.jajuk.i18n.Messages;
  *      JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),
  *      JajukFileFilter.AudioFilter.getInstance());
  *      </p>
- * 
- * @author Bertrand Florat
- * @created 22 oct. 2003
  */
 
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
@@ -61,9 +58,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * <p>
 	 * Singleton
 	 * </p>
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class DirectoryFilter extends JajukFileFilter {
 
@@ -109,9 +103,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	 * <p>
 	 * Singleton
 	 * </p>
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class AnyFileFilter extends JajukFileFilter {
 		/** Self instance */
@@ -153,9 +144,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	/**
 	 * 
 	 * Known type filter
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class KnownTypeFilter extends JajukFileFilter {
 		/** Self instance */
@@ -202,9 +190,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	/**
 	 * 
 	 * Audio filter
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class AudioFilter extends JajukFileFilter {
 		/** Self instance */
@@ -264,9 +249,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	/**
 	 * 
 	 * Image filter
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class ImageFilter extends JajukFileFilter {
 		/** Self instance */
@@ -318,9 +300,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	/**
 	 * 
 	 * Not Audio file filter (must be a file)
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class NotAudioFilter extends JajukFileFilter {
 		/** Self instance */
@@ -374,9 +353,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	/**
 	 * 
 	 * Playlist filter
-	 * 
-	 * @author Bertrand Florat
-	 * @created 25 may 2006
 	 */
 	public static class PlaylistFilter extends JajukFileFilter {
 		/** Self instance */
@@ -429,10 +405,103 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 
 	/**
 	 * 
-	 * Report filter (.html or XML file)
+	 * HTMLfilter
+	 */
+	public static class HTMLFilter extends JajukFileFilter {
+		/** Self instance */
+		private static HTMLFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			if (f.isDirectory()) {
+				return false;
+			}
+			// check extension is known
+			if ("html".equals(Util.getExtension(f).toLowerCase())) {
+				return true;
+			}
+			return false;
+		}
+
+		/** No instanciation */
+		private HTMLFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static HTMLFilter getInstance() {
+			if (self == null) {
+				self = new HTMLFilter();
+			}
+			return self;
+		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "html";
+		}
+	}
+	
+		/**
 	 * 
-	 * @author Bertrand Florat
-	 * @created 19 april 2007
+	 * XMLfilter
+	 */
+	public static class XMLFilter extends JajukFileFilter {
+		/** Self instance */
+		private static XMLFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			if (f.isDirectory()) {
+				return false;
+			}
+			// check extension is known
+			if ("xml".equals(Util.getExtension(f).toLowerCase())) {
+				return true;
+			}
+			return false;
+		}
+
+		/** No instanciation */
+		private XMLFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static XMLFilter getInstance() {
+			if (self == null) {
+				self = new XMLFilter();
+			}
+			return self;
+		}
+		
+		/* (non-Javadoc)
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "xml";
+		}
+	}
+	
+	/**
+	 * 
+	 * Report filter (.html or XML file)
 	 */
 	public static class ReportFilter extends JajukFileFilter {
 		/** Self instance */

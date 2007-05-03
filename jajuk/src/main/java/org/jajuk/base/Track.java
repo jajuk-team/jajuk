@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,6 +19,11 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IconLabel;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,18 +31,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IconLabel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
-
 /**
  * A track
  * <p>
  * Logical item
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class Track extends LogicalItem implements Comparable {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,9 +26,6 @@ import java.util.TreeSet;
 
 /**
  * Convenient class to manage years
- * 
- * @author Bertrand Florat
- * @created 09/04/2007
  */
 public class YearManager extends ItemManager {
 	/** Self instance */

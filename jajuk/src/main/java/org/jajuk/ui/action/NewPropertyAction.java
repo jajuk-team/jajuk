@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,17 +19,14 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.NewPropertyWizard;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
-/**
- * @author Bertrand Florat
- */
+import java.awt.event.ActionEvent;
+
 public class NewPropertyAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;

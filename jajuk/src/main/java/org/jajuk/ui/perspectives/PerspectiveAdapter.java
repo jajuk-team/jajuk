@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.perspectives;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IView;
+import org.jajuk.ui.views.ViewFactory;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 import java.awt.Container;
 import java.io.BufferedInputStream;
@@ -29,14 +37,6 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import com.vlsolutions.swing.docking.Dockable;
 import com.vlsolutions.swing.docking.DockableResolver;
 import com.vlsolutions.swing.docking.DockableState;
@@ -45,9 +45,6 @@ import com.vlsolutions.swing.docking.DockingDesktop;
 
 /**
  * Perspective adapter, provide default implementation for perspectives
- * 
- * @author Bertrand Florat
- * @created 15 nov. 2003
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective,
 		ITechnicalStrings {

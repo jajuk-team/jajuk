@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 bertrand florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.wizard;
@@ -37,6 +37,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -70,7 +71,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -80,12 +80,8 @@ import javax.swing.SwingUtilities;
 
 /**
  * ItemManager properties wizard for any jajuk item
- * 
- * @author Bertrand Florat
- * @created 6 juin 2005
- * @TODO Use sets instead of lists
  */
-public class PropertiesWizard extends JDialog implements ITechnicalStrings, ActionListener {
+public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -127,8 +123,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 	public PropertiesWizard(ArrayList<Item> alItems) {
 		// windows title: name of the element of only one item, or "selection"
 		// word otherwise
-		super(Main.getWindow(), alItems.size() == 1 ? (alItems.get(0)).getDesc() : Messages
-				.getString("PropertiesWizard.6"), true); // modal
+		setTitle(alItems.size() == 1 ? (alItems.get(0)).getDesc() : Messages
+				.getString("PropertiesWizard.6"));
 		this.alItems = alItems;
 		boolean bMerged = false;
 		if (alItems.size() > 1) {
@@ -154,8 +150,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 	public PropertiesWizard(ArrayList<Item> alItems1, ArrayList<Item> alItems2) {
 		// windows title: name of the element of only one item, or "selection"
 		// word otherwise
-		super(Main.getWindow(), alItems1.size() == 1 ? (alItems1.get(0)).getDesc() : Messages
-				.getString("PropertiesWizard.6"), true); // modal
+		setTitle(alItems1.size() == 1 ? (alItems1.get(0)).getDesc() : Messages
+				.getString("PropertiesWizard.6")); 
 		this.alItems = alItems1;
 		this.alItems2 = alItems2;
 		// computes filter
@@ -273,9 +269,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings, Acti
 	/**
 	 * 
 	 * A properties panel
-	 * 
-	 * @author Bertrand Florat
-	 * 
 	 */
 	class PropertiesPanel extends JPanel implements ActionListener {
 

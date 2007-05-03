@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,8 +31,6 @@ import java.util.TreeSet;
 /**
  * Convenient class to manage Albums
  * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class AlbumManager extends ItemManager {
 	/** Self instance */

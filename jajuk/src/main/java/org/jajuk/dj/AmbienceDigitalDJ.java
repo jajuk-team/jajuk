@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,19 +20,16 @@
 
 package org.jajuk.dj;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ambience DJ
- * 
- * @author Bertrand Florat
- * @created 19 march 2006
  */
 public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 

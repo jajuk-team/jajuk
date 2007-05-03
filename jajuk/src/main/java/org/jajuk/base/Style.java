@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,17 +19,14 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
-
 import org.jajuk.i18n.Messages;
+
+import java.util.ArrayList;
 
 /**
  * A music style ( jazz, rock...)
  * <p>
  * Logical item
- * 
- * @author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class Style extends LogicalItem implements Comparable {
 

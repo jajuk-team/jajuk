@@ -1,4 +1,49 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2007 The Jajuk Team
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $$Revision$$
+ */
 package org.jajuk.ui.wizard;
+
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceDigitalDJ;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.dj.DigitalDJ;
+import org.jajuk.dj.DigitalDJManager;
+import org.jajuk.dj.Proportion;
+import org.jajuk.dj.ProportionDigitalDJ;
+import org.jajuk.dj.Transition;
+import org.jajuk.dj.TransitionDigitalDJ;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.StylesSelectionDialog;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.qdwizard.ClearPoint;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -29,37 +74,8 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceDigitalDJ;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.dj.DigitalDJ;
-import org.jajuk.dj.DigitalDJManager;
-import org.jajuk.dj.Proportion;
-import org.jajuk.dj.ProportionDigitalDJ;
-import org.jajuk.dj.Transition;
-import org.jajuk.dj.TransitionDigitalDJ;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.DefaultMouseWheelListener;
-import org.jajuk.ui.StylesSelectionDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import org.qdwizard.ClearPoint;
-import org.qdwizard.Screen;
-import org.qdwizard.Wizard;
-
 /**
  * DJ creation wizard
- * 
- * @author Bertrand Florat
- * @created 4 mars 2006
  */
 public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 
@@ -102,9 +118,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * DJ type choice
-	 * 
-	 * @author Bertrand Florat
-	 * @created 4 march 2006
 	 */
 	public static class TypeSelectionPanel extends Screen implements
 			ActionListener {
@@ -186,9 +199,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * DJ removal
-	 * 
-	 * @author Bertrand Florat
-	 * @created 26 march 2006
 	 */
 	public static class RemovePanel extends Screen implements ActionListener {
 		private static final long serialVersionUID = 1L;
@@ -265,9 +275,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * DJ Selection for change
-	 * 
-	 * @author Bertrand Florat
-	 * @created 26 march 2006
 	 */
 	public static class ChangePanel extends Screen implements ActionListener {
 		private static final long serialVersionUID = 1L;
@@ -357,9 +364,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * Action type (new or alter)
-	 * 
-	 * @author Bertrand Florat
-	 * @created 4 march 2006
 	 */
 	public static class ActionSelectionPanel extends Screen implements
 			ClearPoint, ActionListener {
@@ -443,9 +447,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * General options panel
-	 * 
-	 * @author Bertrand Florat
-	 * @created 4 march 2006
 	 */
 	public static class GeneralOptionsPanel extends Screen implements
 			ActionListener, CaretListener, ChangeListener {
@@ -629,9 +630,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * Transitions panel
-	 * 
-	 * @author Bertrand Florat
-	 * @created 4 march 2006
 	 */
 	public static class TransitionsPanel extends Screen {
 
@@ -958,9 +956,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * Proportion panel
-	 * 
-	 * @author Bertrand Florat
-	 * @created 17 march 2006
 	 */
 	public static class ProportionsPanel extends Screen {
 
@@ -1232,9 +1227,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	/**
 	 * 
 	 * Ambience based
-	 * 
-	 * @author Bertrand Florat
-	 * @created 18 march 2006
 	 */
 	public static class AmbiencePanel extends Screen implements ActionListener {
 

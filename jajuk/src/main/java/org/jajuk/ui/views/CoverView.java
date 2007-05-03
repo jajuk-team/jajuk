@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
+import org.jajuk.base.Cover;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.perspectives.PlayerPerspective;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 import info.clearthought.layout.TableLayout;
 
@@ -51,39 +75,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Cover;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Track;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukButton;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.perspectives.PlayerPerspective;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-
 import ext.SwingWorker;
 
 /**
  * Cover view. Displays an image for the current album
  * <p>
  * Physical and logical perspectives
- * 
- * @author Bertrand Florat
- * @created 28 dec. 2003
  */
 public class CoverView extends ViewAdapter implements Observer,
 		ComponentListener, ActionListener, ITechnicalStrings {

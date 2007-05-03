@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Jajuk Project
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,13 +20,13 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.log.Log;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 import java.util.Iterator;
-
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
 	private Hashtable<EventSubject, ArrayList<Observer>> hEventComponents = new Hashtable<EventSubject, ArrayList<Observer>>(

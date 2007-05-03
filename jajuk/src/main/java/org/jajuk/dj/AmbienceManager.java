@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,17 +20,6 @@
 
 package org.jajuk.dj;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
@@ -42,11 +31,19 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 /**
  * Ambience manager
- * 
- * @author Bertrand Florat
- * @created 19 march 2006
  */
 public class AmbienceManager implements ITechnicalStrings, Observer {
 

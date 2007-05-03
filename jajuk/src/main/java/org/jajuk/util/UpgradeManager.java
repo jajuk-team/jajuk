@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 bflorat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,21 +15,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.util;
 
-import java.io.File;
-
 import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
 
+import java.io.File;
+
 /**
  * Maintain all behavior needed upgrades from releases to releases
- * 
- * @author Bertrand Florat
- * @created 21 oct. 06
  */
 public class UpgradeManager implements ITechnicalStrings {
 	/**

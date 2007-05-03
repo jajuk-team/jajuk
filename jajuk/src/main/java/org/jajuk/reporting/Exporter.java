@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Ronak Patel
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,19 +20,16 @@
 
 package org.jajuk.reporting;
 
+import org.jajuk.base.Item;
+import org.jajuk.util.log.Log;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.jajuk.base.Item;
-import org.jajuk.util.log.Log;
-
 /**
  * The base abstract class for exporting music contents to different formats.
- * 
- * @author Ronak Patel
- * @created Aug 20, 2006
  */
 public abstract class Exporter {
 	

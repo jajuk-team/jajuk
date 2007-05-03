@@ -1,4 +1,27 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2007 The Jajuk Team
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
+
 package org.jajuk.share.audioscrobbler;
+
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.log.Log;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -12,9 +35,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.log.Log;
-
 /**
  * Scrobbler is a client for <a href="http://www.audioscrobbler.com">Audio
  * Scrobbler</a>. Currently it speaks version 1.1 of the protocol.
@@ -25,7 +45,7 @@ import org.jajuk.util.log.Log;
  * Currently this class has no support for <a
  * href="http://www.musicbrainz.org/">Musicbrainz</a> IDs.
  * 
- * @author Stephen Crane (influenced by scrobbler.py) jscrane@gmail.com
+ * @author Original author: Stephen Crane (influenced by scrobbler.py) jscrane@gmail.com
  */
 public class Scrobbler {
 	private static final String url = "http://post.audioscrobbler.com";

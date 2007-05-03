@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Ronak Patel
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,8 @@
 
 package org.jajuk.reporting;
 
+import org.jajuk.util.log.Log;
+
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -32,13 +34,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.jajuk.util.log.Log;
-
 /**
  * This class will take a XML file and either convert it to HTML or PDF.
- * 
- * @author Ronak Patel
- * @created Aug 22, 2006
  */
 public class XMLTransformer {
 	/**

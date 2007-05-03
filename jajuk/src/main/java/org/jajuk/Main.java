@@ -1,5 +1,5 @@
 /*
- * Jajuk Copyright (C) 2003 Bertrand Florat
+ * Jajuk Copyright (C) 2003 The Jajuk Team
  * 
  * This program is free software; you can redistribute 
  * it and/or modify it under the terms of the GNU General Public License
@@ -17,32 +17,6 @@
  * $Revision$
  */
 package org.jajuk;
-
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -89,6 +63,32 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import com.vlsolutions.swing.docking.DockingPreferences;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
@@ -98,9 +98,6 @@ import ext.JSplash;
 
 /**
  * Jajuk launching class
- * 
- * @author Bertrand Florat
- * @created 3 oct. 2003
  */
 public class Main implements ITechnicalStrings {
 

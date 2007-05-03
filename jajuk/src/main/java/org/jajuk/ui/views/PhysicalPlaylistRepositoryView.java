@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,15 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
-
-import java.awt.event.ActionListener;
-import java.util.Iterator;
-
-import javax.swing.JOptionPane;
 
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
@@ -33,15 +28,17 @@ import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+
+import javax.swing.JOptionPane;
+
 /**
  * Shows playlist files
  * <p>
  * Physical perspective *
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 29 dec. 2003
  */
 public class PhysicalPlaylistRepositoryView extends
 		AbstractPlaylistRepositoryView implements Observer, ActionListener {

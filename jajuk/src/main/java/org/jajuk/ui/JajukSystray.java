@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,22 +19,6 @@
  */
 
 package org.jajuk.ui;
-
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -55,13 +39,26 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.event.ChangeListener;
+
 import ext.SliderMenuItem;
 
 /**
  * Jajuk systray
- * 
- * @author Administrateur
- * @created 22 sept. 2004
  */
 public class JajukSystray extends CommandJPanel implements ChangeListener {
 	private static final long serialVersionUID = 1L;

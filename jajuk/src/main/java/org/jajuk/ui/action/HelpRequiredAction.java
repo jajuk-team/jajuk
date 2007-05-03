@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,18 +19,15 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
 
+import java.awt.event.ActionEvent;
+
 /**
  * Action for displaying the online help
- * 
- * @author Bart Cremers
- * @since 4-jan-2006
  */
 public class HelpRequiredAction extends ActionBase {
 

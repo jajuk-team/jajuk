@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 bflorat
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,9 +25,6 @@ import org.jdesktop.swingx.JXPanel;
 
 /**
  *  a customized JXPanel that supports gradiant
- *
- * @author     Bertrand Florat
- * @created    23 nov. 06
  */
 public class JajukJPanel extends JXPanel {
 

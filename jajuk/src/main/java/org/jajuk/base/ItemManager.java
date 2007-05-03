@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,13 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-
 import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Filter;
@@ -34,11 +27,15 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+
 /**
  * Managers parent class
- * 
- * @author Bertrand Florat
- * @created 20 juin 2005
  */
 public abstract class ItemManager implements ITechnicalStrings {
 

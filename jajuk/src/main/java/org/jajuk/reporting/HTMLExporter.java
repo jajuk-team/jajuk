@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Ronak Patel
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,9 +33,6 @@ import java.util.ArrayList;
 
 /**
  * This class exports music contents to HTML.
- * 
- * @author Ronak Patel
- * @created Aug 22, 2006
  */
 public class HTMLExporter extends Exporter implements ITechnicalStrings {
 

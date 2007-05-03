@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
 
 import info.clearthought.layout.TableLayout;
 
@@ -31,16 +41,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-
 import ext.SwingWorker;
 
 /**
@@ -49,9 +49,6 @@ import ext.SwingWorker;
  * Configuration perspective *
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 29 dec. 2003
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
 

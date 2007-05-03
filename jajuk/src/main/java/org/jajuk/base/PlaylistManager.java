@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,11 @@
 
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -27,16 +32,8 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 /**
  * Convenient class to manage playlists
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class PlaylistManager extends ItemManager {
 	/** Self instance */

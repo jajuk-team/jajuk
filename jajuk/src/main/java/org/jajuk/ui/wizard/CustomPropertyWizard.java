@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,21 +15,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.wizard;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import org.jajuk.Main;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.DeviceManager;
@@ -41,20 +31,22 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PhysicalPerspective;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
-/**
- * Type description
- * 
- * @author Administrateur
- * @created 21 juin 2005
- */
-public abstract class CustomPropertyWizard extends JDialog implements ActionListener, ItemListener,
-		ITechnicalStrings {
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public abstract class CustomPropertyWizard 
+	extends JajukJDialog implements ActionListener, ItemListener {
 	JPanel jpMain;
 
 	JLabel jlItemChoice;
@@ -71,7 +63,7 @@ public abstract class CustomPropertyWizard extends JDialog implements ActionList
 	 * @param sTitle
 	 */
 	CustomPropertyWizard(String sTitle) {
-		super(Main.getWindow(), sTitle, true);
+		setTitle(sTitle);
 	}
 
 	/**

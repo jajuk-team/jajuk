@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
+import org.jfree.ui.about.AboutPanel;
+import org.jfree.ui.about.Contributor;
+import org.jfree.ui.about.ContributorsPanel;
+import org.jfree.ui.about.Licences;
+import org.jfree.ui.about.SystemPropertiesPanel;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -36,24 +45,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
-import org.jfree.ui.about.AboutPanel;
-import org.jfree.ui.about.Contributor;
-import org.jfree.ui.about.ContributorsPanel;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.SystemPropertiesPanel;
-
 /**
  * View used to show the Jajuk about and contributors.
  * <p>
  * Help perspective *
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 22 dec. 2003
  */
 public class AboutView extends ViewAdapter {
 

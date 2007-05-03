@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,20 +20,17 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.base.Item;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
-import org.jajuk.base.Item;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-
 /**
  * Jajuk table model, adds identifier to model
- * 
- * @author Administrateur
- * @created 22 juin 2005
  */
 public abstract class JajukTableModel extends DefaultTableModel implements
 		ITechnicalStrings {

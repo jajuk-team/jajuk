@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,12 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.util.Properties;
-
-import javax.sound.sampled.LineUnavailableException;
-
-import javazoom.jlgui.basicplayer.BasicPlayer;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.ui.InformationJPanel;
@@ -33,11 +27,14 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
+import java.util.Properties;
+
+import javax.sound.sampled.LineUnavailableException;
+
+import javazoom.jlgui.basicplayer.BasicPlayer;
+
 /**
  * abstract class for music player, independent from real implementation
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
 public class Player implements ITechnicalStrings {
 

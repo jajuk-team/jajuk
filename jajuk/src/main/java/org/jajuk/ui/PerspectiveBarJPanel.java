@@ -1,7 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
- *
+ *  Copyright (C) 2003 The Jajuk Team
+ *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2
@@ -19,6 +19,12 @@
  */
 package org.jajuk.ui;
 
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -27,19 +33,10 @@ import java.util.Set;
 
 import javax.swing.JButton;
 
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
-
 import com.l2fprod.common.swing.JButtonBar;
 
 /**
  * Menu bar used to choose the current perspective.
- * 
- * @author Bertrand Florat
- * @created 6 oct. 2003
  */
 public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 

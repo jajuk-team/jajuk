@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,12 +20,6 @@
 
 package org.jajuk.base;
 
-import java.awt.MediaTracker;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -33,11 +27,14 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import java.awt.MediaTracker;
+import java.io.File;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+
 /**
  * A cover, encapsulates URL, files and manages cover priority to display
- * 
- * @author Bertrand Florat
- * @created 22 août 2004
  */
 public class Cover implements Comparable<Cover>, ITechnicalStrings {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -18,6 +18,14 @@
  *  $Revision$
  */
 package org.jajuk.i18n;
+
+import org.jajuk.Main;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,22 +48,11 @@ import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.Main;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 /**
  * Utility class to get strings from localized property files
  * <p>
  * Singleton
  * </p>
- * 
- * @author Bertrand Florat
- * @created 5 oct. 2003
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/** Local ( language) to be used, default is english */
@@ -571,9 +568,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
 /**
  * Confirmation Dialog
- * 
- * @author Bertrand Florat
- * @created 28 nov. 2004
  */
 class ConfirmDialog implements Runnable {
 
@@ -622,9 +616,6 @@ class ConfirmDialog implements Runnable {
 
 /**
  * Message Dialog
- * 
- * @author Bertrand Florat
- * @created 28 nov. 2004
  */
 class DetailsMessageDialog implements Runnable {
 
@@ -706,9 +697,6 @@ class DetailsMessageDialog implements Runnable {
 
 /**
  * Hideable message dialog (has a "not show again" button)
- * 
- * @author Bertrand Florat
- * @created 29 sept 2006
  */
 class HideableMessageDialog implements Runnable, ITechnicalStrings {
 

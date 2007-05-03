@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,21 @@
 
 package org.jajuk.dj;
 
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
@@ -36,29 +51,11 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 /**
  * Manages Digital DJs
  * <p>
  * Singleton
  * </p>
- * 
- * @author Bertrand Florat
- * @created 01/03/2006
  */
 public class DigitalDJManager implements ITechnicalStrings, Observer {
 
@@ -241,9 +238,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 }
 
 /**
- * This class is responsable from creating different factories
- * 
- * @author Bertrand Florat
+ * This class is responsible for creating different factories
  */
 abstract class DigitalDJFactory extends DefaultHandler implements
 		ITechnicalStrings {
@@ -354,8 +349,6 @@ abstract class DigitalDJFactory extends DefaultHandler implements
 /**
  * Proportion dj factory
  * 
- * @author Bertrand florat
- * 
  */
 class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
 
@@ -411,9 +404,6 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
 
 /**
  * Ambience dj factory
- * 
- * @author Bertrand florat
- * 
  */
 class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
 
@@ -453,8 +443,6 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
 
 /**
  * Transition dj factory
- * 
- * @author Bertrand florat
  * 
  */
 class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {

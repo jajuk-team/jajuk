@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,9 +15,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.util;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.SimplePerspective;
+import org.jajuk.util.log.Log;
 
 import java.awt.Toolkit;
 import java.io.FileInputStream;
@@ -25,19 +30,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.SimplePerspective;
-import org.jajuk.util.log.Log;
-
 /**
  * Manage all the configuration and user preferences of jajuk.
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @version 1.0
- * @created 14 nov. 2003
  */
 public class ConfigurationManager implements ITechnicalStrings {
 

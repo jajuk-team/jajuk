@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,18 +20,15 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.MD5Processor;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.jajuk.util.MD5Processor;
-
 /**
  * Convenient class to manage directories
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class DirectoryManager extends ItemManager {
 	/** Self instance */

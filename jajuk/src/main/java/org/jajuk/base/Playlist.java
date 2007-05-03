@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,18 +19,15 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.jajuk.i18n.Messages;
 
 /**
  * A playlist
  * <p>
  * Logical item
- * 
- * @Playlist Bertrand Florat
- * @created 17 oct. 2003
  */
 public class Playlist extends LogicalItem implements Comparable {
 

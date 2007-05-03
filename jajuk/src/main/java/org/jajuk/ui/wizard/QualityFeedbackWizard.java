@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.wizard;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukJDialog;
+import org.jajuk.ui.OKCancelPanel;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.jdic.desktop.Desktop;
+import org.jdesktop.jdic.desktop.Message;
 
 import info.clearthought.layout.TableLayout;
 
@@ -37,30 +46,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.OKCancelPanel;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.desktop.Desktop;
-import org.jdesktop.jdic.desktop.Message;
-
 /**
  * 
  * Quality Feedback agent
- * 
- * @author Bertrand Florat
- * @created 20 juin 2005
  */
-public class QualityFeedbackWizard extends JDialog implements KeyListener,
+public class QualityFeedbackWizard extends JajukJDialog implements KeyListener,
 		ActionListener, ITechnicalStrings {
 	private static final long serialVersionUID = 1L;
 
@@ -90,7 +86,7 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,
 	 * Constructor
 	 */
 	public QualityFeedbackWizard() {
-		super(Main.getWindow(), Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
+		setTitle(Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
 		getContentPane().setPreferredSize(new Dimension(800, 600));
 		// Notice
 		jtaNotice = new JTextArea(Messages.getString("QualityFeedbackWizard.7")); //$NON-NLS-1$

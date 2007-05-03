@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,11 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2118 $$
+ *  $$Revision: 2321 $$
  */
 package org.jajuk.ui.action;
-
-import java.awt.event.ActionEvent;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
@@ -28,11 +26,10 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 
+import java.awt.event.ActionEvent;
+
 /**
  * Fast access to hide/show unmounted devices option
- * 
- * @author Bertrand Florat
- * @version 25/03/2007
  */
 public class HideShowMountedDevicesAction extends ActionBase{
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,6 +19,11 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,18 +31,10 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 /**
  * A physical directory
  * <p>
  * Physical item
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class Directory extends PhysicalItem implements Comparable {
 

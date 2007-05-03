@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,11 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,16 +36,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-
 /**
  * Convenient class to manage styles
- * 
- * @author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class StyleManager extends ItemManager {
 	/** Self instance */

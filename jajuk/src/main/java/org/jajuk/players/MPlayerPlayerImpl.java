@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,13 +19,6 @@
  */
 package org.jajuk.players;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.ConfigurationManager;
@@ -34,11 +27,15 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 /**
  * Jajuk player implementation based on Mplayer
- * 
- * @author Bertrand Florat
- * @created 16 sept. 2006
  */
 public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 

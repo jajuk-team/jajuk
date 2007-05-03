@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Administrateur
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,19 +20,16 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.i18n.Messages;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.jajuk.i18n.Messages;
-
 /**
  * Ok Cancel generic panel
- * 
- * @author Bertrand Florat
- * @created 20 juin 2005
  */
 public class OKCancelPanel extends JPanel {
 

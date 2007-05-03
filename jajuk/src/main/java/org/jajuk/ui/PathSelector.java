@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 bflorat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,12 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -33,18 +39,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-
 /**
- * This is a compount widgets that contains an editable textfield given a PATH
+ * This is a widgets that contains an editable textfield given a PATH
  * and a PATH selection button opening up a file selector
- * 
- * @author Bertrand Florat
- * @created 5 march 07
  */
 public class PathSelector extends JPanel implements ITechnicalStrings {
 

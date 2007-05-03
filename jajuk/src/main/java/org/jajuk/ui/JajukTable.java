@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,17 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
+import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.decorator.HighlighterPipeline;
+import org.jdesktop.swingx.decorator.RolloverHighlighter;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -34,26 +45,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
-import org.jdesktop.swingx.decorator.HighlighterPipeline;
-import org.jdesktop.swingx.decorator.RolloverHighlighter;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
-
 /**
  * JTable with followinf features:
  * <p>
  * Sortable
  * <p>
  * Tooltips on each cell
- * 
- * @author Bertrand Florat
- * @created 21 feb. 2004
  */
 public class JajukTable extends JXTable implements ITechnicalStrings {
 

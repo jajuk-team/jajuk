@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,12 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.i18n.Messages;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -32,25 +38,15 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.i18n.Messages;
-
 /**
  * Allow a user to select a list of styles
- * 
- * @author Bertrand Florat
- * @created 9 march 2006
  */
-public class StylesSelectionDialog extends JDialog implements ActionListener {
+public class StylesSelectionDialog extends JajukJDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 

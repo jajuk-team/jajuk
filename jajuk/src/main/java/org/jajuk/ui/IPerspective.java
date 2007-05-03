@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,9 +25,6 @@ import java.util.Set;
 
 /**
  * Representation of a perspective
- * 
- * @author Bertrand Florat
- * @created 15 nov. 2003
  */
 
 public interface IPerspective {
@@ -37,12 +34,6 @@ public interface IPerspective {
 	 */
 	public String getID();
 
-	/**
-	 * Type description
-	 * 
-	 * @author Bertrand Florat
-	 * @created 15 nov. 2003
-	 */
 	public abstract String getDesc();
 
 	/**

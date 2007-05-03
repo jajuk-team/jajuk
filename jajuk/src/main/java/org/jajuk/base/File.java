@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -28,9 +28,6 @@ import org.jajuk.util.Util;
  * A music file to be played
  * <p>
  * Physical item
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
 public class File extends PhysicalItem implements Comparable, ITechnicalStrings {
 	private static final long serialVersionUID = 1L;

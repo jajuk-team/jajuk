@@ -1,7 +1,21 @@
 /*
- * Author: Bart Cremers (Real Software)
- * Date: 4-jan-2006
- * Time: 08:20:46
+ *  Jajuk
+ *  Copyright (C) 2005 The Jajuk Team
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $$Revision: 2321 $$
  */
 package org.jajuk.ui.action;
 
@@ -12,7 +26,8 @@ import org.jajuk.reporting.ExporterFactory;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
-import org.jajuk.util.JajukFileFilter.ReportFilter;
+import org.jajuk.util.JajukFileFilter.HTMLFilter;
+import org.jajuk.util.JajukFileFilter.XMLFilter;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
@@ -23,9 +38,6 @@ import javax.swing.JFileChooser;
 
 /**
  * Report collection as a file
- * 
- * @author Ronak Patel
- * @created Aug 20, 2006
  */
 public class ReportAction extends ActionBase {
 
@@ -47,14 +59,19 @@ public class ReportAction extends ActionBase {
 		// First item
 		final String type = (String)source.getClientProperty(DETAIL_ORIGIN);
 		// Display a save as dialog
-		final JajukFileChooser chooser = new JajukFileChooser(new JajukFileFilter(ReportFilter
+		final JajukFileChooser chooser = new JajukFileChooser();
+		//Accept XML files
+		chooser.addChoosableFileFilter(new JajukFileFilter(XMLFilter
+				.getInstance()));
+		//Accept HTML files
+		chooser.addChoosableFileFilter(new JajukFileFilter(HTMLFilter
 				.getInstance()));
 		chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
 		chooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// set a default file name
-		if (XSLT_COLLECTION_LOGICAL.equals(type) || XSLT_COLLECTION_PHYSICAL.equals(type)) {
+		if (XSLT_COLLECTION_LOGICAL.equals(type) 
+				|| XSLT_COLLECTION_PHYSICAL.equals(type)) {
 			// collection node selected, use file name 'collection"
 			chooser.setSelectedFile(new java.io.File("collection"));
 		} 

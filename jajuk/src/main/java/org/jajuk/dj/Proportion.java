@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,15 +20,12 @@
 
 package org.jajuk.dj;
 
-import java.util.HashSet;
-
 import org.jajuk.base.Style;
+
+import java.util.HashSet;
 
 /**
  * Represent a style proportion (used by digital DJs)
- * 
- * @author Bertrand Florat
- * @created 27/02/2006
  */
 public class Proportion {
 	/** styles */

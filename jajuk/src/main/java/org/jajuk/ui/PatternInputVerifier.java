@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 bflorat
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,22 +20,19 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
+
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ITechnicalStrings;
-
 /**
  * Input verifier used for predefined patterns. Pattern should contain at least
  * one / as this pattern verifier is used for organizer and organizer need to
  * create at least one directory to avoid mess on disk
- * 
- * @author Bertrand Florat
- * @created 11 oct. 06
  */
 public class PatternInputVerifier extends InputVerifier implements ITechnicalStrings {
 

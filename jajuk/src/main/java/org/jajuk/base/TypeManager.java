@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,21 +19,18 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.util.log.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.jajuk.util.log.Log;
-
 /**
  * Manages types ( mp3, ogg...) supported by jajuk
  * <p>
  * static class
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
 public class TypeManager extends ItemManager {
 	/** extenssions->types */

@@ -1,4 +1,40 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2007 The Jajuk Team
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $$Revision$$
+ */
 package org.jajuk.ui.wizard;
+
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceDigitalDJ;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.StylesSelectionDialog;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -21,46 +57,17 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceDigitalDJ;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.StylesSelectionDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.qdwizard.Screen;
-import org.qdwizard.Wizard;
-
 /**
  * Ambiences management wizard
- * 
- * @author Bertrand Florat
- * @created 17/05/2006
  */
 public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 
 	/** Ambiences* */
 	static ArrayList<Ambience> ambiences;
 
-	/**
-	 * 
-	 * Ambience screen
-	 * 
-	 * @author Bertrand Florat
-	 * @created 18 march 2006
-	 */
+	
 	public static class AmbiencePanel extends Screen implements ActionListener {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		/** All dynamic widgets */

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.List;
-
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.StyleManager;
@@ -33,10 +30,9 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
-/**
- * @author Bertrand florat
- * @since 14-may-2006
- */
+import java.awt.event.ActionEvent;
+import java.util.List;
+
 public class DJAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;

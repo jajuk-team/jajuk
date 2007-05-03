@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,14 +19,6 @@
  */
 package org.jajuk.players;
 
-import java.io.File;
-import java.util.Map;
-
-import javazoom.jlgui.basicplayer.BasicController;
-import javazoom.jlgui.basicplayer.BasicPlayer;
-import javazoom.jlgui.basicplayer.BasicPlayerEvent;
-import javazoom.jlgui.basicplayer.BasicPlayerListener;
-
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Type;
@@ -37,11 +29,16 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import java.io.File;
+import java.util.Map;
+
+import javazoom.jlgui.basicplayer.BasicController;
+import javazoom.jlgui.basicplayer.BasicPlayer;
+import javazoom.jlgui.basicplayer.BasicPlayerEvent;
+import javazoom.jlgui.basicplayer.BasicPlayerListener;
+
 /**
  * Jajuk player implementation based on javazoom BasicPlayer
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 		BasicPlayerListener {

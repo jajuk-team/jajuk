@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,22 +20,19 @@
 
 package org.jajuk.dj;
 
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Style;
+import org.jajuk.util.ITechnicalStrings;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.util.ITechnicalStrings;
-
 /**
- * Type description
- * 
- * @author Bertrand Florat
- * @created 1 mars 2006
+ * A proportion (10% JAZZ, 20% ROCK...) digital DJ
  */
 public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 

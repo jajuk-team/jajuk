@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PlaylistManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -38,23 +55,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.PlaylistManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.PlaylistFileItem;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import ext.SwingWorker;
 
 /**
@@ -63,9 +63,6 @@ import ext.SwingWorker;
  * Physical perspective *
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 29 dec. 2003
  */
 abstract public class AbstractPlaylistRepositoryView extends ViewAdapter implements Observer,
 		ActionListener {

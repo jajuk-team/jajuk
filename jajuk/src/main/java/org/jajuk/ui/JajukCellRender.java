@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,9 +27,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Cell renderer to support cells color and icons
- * 
- * @author Bertrand Florat
- * @created 12 nov. 2004
  */
 public class JajukCellRender extends DefaultTableCellRenderer {
 

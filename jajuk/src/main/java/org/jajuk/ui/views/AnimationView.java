@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,21 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.Event;
@@ -45,6 +34,17 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
 import com.jgoodies.animation.Animation;
 import com.jgoodies.animation.Animations;
 import com.jgoodies.animation.Animator;
@@ -53,9 +53,6 @@ import com.jgoodies.animation.components.BasicTextLabel;
 
 /**
  * Animation-based view
- * 
- * @author Bertrand Florat
- * @created 13 août 2004
  */
 public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 		Observer, ComponentListener {

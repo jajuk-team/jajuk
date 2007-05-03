@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,10 +19,7 @@
  */
 package org.jajuk.reporting;
 
-/**
- * @author Bertrand Florat
- * 
- */
+
 public class ExporterFactory {
 
 	/**

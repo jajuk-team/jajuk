@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,15 +20,15 @@
 
 package org.jajuk.base;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * Generic property handler, mother class for all items
@@ -37,9 +37,6 @@ import org.xml.sax.Attributes;
  * case, we take default value given in meta infos, this can decrease collection
  * file size
  * </p>
- * 
- * @author Bertrand Florat
- * @created 17 oct. 2003
  */
 abstract public class Item implements Serializable, ITechnicalStrings {
 

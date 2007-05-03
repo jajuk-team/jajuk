@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Erwan Richard
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,9 +15,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.ui.wizard;
+
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukJDialog;
+import org.jajuk.ui.JajukTable;
+import org.jajuk.ui.OKCancelPanel;
+import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
@@ -45,23 +63,6 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukTable;
-import org.jajuk.ui.OKCancelPanel;
-import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import com.sun.java.help.impl.SwingWorker;
 
 import entagged.freedb.Freedb;
@@ -71,12 +72,7 @@ import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
 import entagged.freedb.FreedbTrack;
 
-/**
- * @author Erwan Richard
- * @created 15 december 2005
- */
-
-public class CDDBWizard extends JDialog implements ITechnicalStrings, ActionListener,
+public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, ActionListener,
 		TableColumnModelListener, TableModelListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
@@ -215,9 +211,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings, ActionList
 	 */
 	public CDDBWizard(final ArrayList<Item> alGivenTracks) {
 		// windows title: absolute path name of the given directory
-		super(Main.getWindow(), Messages.getString("CDDBWizard.19"), true); // modal
-		// //$NON-NLS-1$
-		// //$NON-NLS-1$
+		setTitle(Messages.getString("CDDBWizard.19"));
 		SwingWorker sw = new SwingWorker() {
 
 			@Override

@@ -21,6 +21,10 @@
  */
 package ext;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -30,10 +34,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  * A simple, yet nice splash screen implementation for java applications.
@@ -50,7 +50,7 @@ import org.jajuk.util.Util;
  * @author Gregory Kotsaftis
  * @since 1.0
  *        <p>
- *        Adapted to Jajuk by Bertrand Florat
+ *        Adapted to Jajuk by The Jajuk Team
  */
 public final class JSplash extends JFrame implements ITechnicalStrings {
 

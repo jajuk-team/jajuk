@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,19 +20,16 @@
 
 package org.jajuk.dj;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.util.ITechnicalStrings;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Digital DJ
- * 
- * @author Bertrand Florat
- * @created 27/02/2006
  */
 public abstract class DigitalDJ implements ITechnicalStrings, Comparable {
 

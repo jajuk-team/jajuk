@@ -1,22 +1,52 @@
 /*
- * Jajuk Copyright (C) 2003 Bertrand Florat
- * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA. 
- * $Revision$
+ *  Jajuk
+ *  Copyright (C) 2005 The Jajuk Team
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StyleManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukCellRender;
+import org.jajuk.ui.JajukTable;
+import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.JajukToggleButton;
+import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
 
 import info.clearthought.layout.TableLayout;
 
@@ -48,42 +78,11 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StyleManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukCellRender;
-import org.jajuk.ui.JajukTable;
-import org.jajuk.ui.JajukTableModel;
-import org.jajuk.ui.JajukToggleButton;
-import org.jajuk.ui.TableTransferHandler;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
-
 import ext.SwingWorker;
 
 /**
  * Abstract table view : common implementation for both physical and logical
  * table views
- * 
- * @author Bertrand Florat
- * @created 13 dec. 2003
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
 		MouseListener, ItemListener, TableColumnModelListener, TableModelListener,

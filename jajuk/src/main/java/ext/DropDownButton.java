@@ -1,5 +1,9 @@
 package ext;
 
+import org.jajuk.ui.JajukButton;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +18,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-
-import org.jajuk.ui.JajukButton;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  * Copyright santhosh kumar

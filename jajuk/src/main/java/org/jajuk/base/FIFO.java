@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,6 +19,16 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.Main;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,16 +42,6 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 /**
  * Manages playing sequences
  * <p>
@@ -49,9 +49,6 @@ import org.jajuk.util.log.Log;
  * dispatcher thread is frozen when JVM execute a static syncrhonized method,
  * even ouside AWT dispatcher thread
  * </p>
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
 public class FIFO implements ITechnicalStrings {
 

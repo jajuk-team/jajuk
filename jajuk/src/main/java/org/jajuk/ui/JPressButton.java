@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bart Cremers
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,9 +33,6 @@ import javax.swing.plaf.ButtonUI;
 /**
  * A specialized button, firing successive <code>ActionEvent</code>'s as long
  * as the button remains pressed.
- * 
- * @author Bart Cremers
- * @version 18-dec-2005
  */
 public class JPressButton extends JajukButton {
 

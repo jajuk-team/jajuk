@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,12 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Properties;
-import java.util.Set;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
@@ -33,11 +27,14 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Properties;
+import java.util.Set;
+
 /**
  * Convenient class to manage playlists files
- * 
- * @Author Bertrand Florat
- * @created 17 oct. 2003
  */
 public class PlaylistFileManager extends ItemManager implements Observer {
 	/** Self instance */

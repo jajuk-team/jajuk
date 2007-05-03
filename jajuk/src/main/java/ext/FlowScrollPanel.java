@@ -5,6 +5,8 @@
 
 package ext;
 
+import org.jdesktop.swingx.JXPanel;
+
 import java.awt.AWTError;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,8 +20,6 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
-
-import org.jdesktop.swingx.JXPanel;
 
 public class FlowScrollPanel extends JXPanel implements Scrollable {
 	private static final long serialVersionUID = 1L;

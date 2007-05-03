@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2005 the Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,13 +20,13 @@
 
 package org.jajuk.tag;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 import entagged.audioformats.AudioFile;
 import entagged.audioformats.AudioFileIO;
@@ -34,9 +34,6 @@ import entagged.audioformats.Tag;
 
 /**
  * jlGui MP3 tager implementation
- * 
- * @author Bertrand Florat
- * @created 26 avr. 2004
  */
 public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,20 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
-
-import info.clearthought.layout.TableLayout;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeMap;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -63,15 +53,22 @@ import org.jfree.text.TextBlockAnchor;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
 
+import info.clearthought.layout.TableLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
+
 /**
  * Statistics view
  * <p>
  * Help perspective
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 24 dec. 2003
  */
 public class StatView extends ViewAdapter implements Observer {
 

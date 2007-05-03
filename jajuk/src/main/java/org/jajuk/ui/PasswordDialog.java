@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,6 +20,9 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -27,20 +30,13 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-
 /**
- * Type description
- * 
- * @author Bertrand Florat
- * @created 2 nov. 2005
+ * A password dialog
  */
-public class PasswordDialog extends JDialog implements ActionListener {
+public class PasswordDialog extends JajukJDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	JPasswordField pf;
@@ -48,7 +44,6 @@ public class PasswordDialog extends JDialog implements ActionListener {
 	JOptionPane optionPane;
 
 	public PasswordDialog(String sMessage) {
-		super(Main.getWindow(), true);
 		setTitle(sMessage); //$NON-NLS-1$
 		pf = new JPasswordField(20);
 		// Create the JOptionPane.
@@ -61,8 +56,8 @@ public class PasswordDialog extends JDialog implements ActionListener {
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
 					String sPwd = new String(pf.getPassword());
 					if (sPwd.trim().equals("")) { //$NON-NLS-1$
-						sPwd = "NOP";// set a string to password to avoid //$NON-NLS-1$
-						// reasking //$NON-NLS-1$
+						// set a string to password to avoid asking again
+						sPwd = "NOP";
 					}
 					optionPane.setValue(sPwd);
 					dispose();

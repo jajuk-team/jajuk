@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,17 +20,14 @@
 
 package org.jajuk.dj;
 
-import java.util.HashSet;
-
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.util.log.Log;
 
+import java.util.HashSet;
+
 /**
  * An ambience is a set of styles
- * 
- * @author Bertrand Florat
- * @created 18 march 2006
  */
 public class Ambience implements Comparable<Ambience> {
 

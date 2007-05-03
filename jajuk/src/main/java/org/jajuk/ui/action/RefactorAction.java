@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 Administrateur
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,15 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.action;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JOptionPane;
 
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
@@ -40,6 +35,11 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.JOptionPane;
 
 public class RefactorAction implements ITechnicalStrings {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 bflorat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,24 +15,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IView;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IView;
-
 /**
  * View Factory, creates view item and manages their ID
- * 
- * @author Bertrand Florat
- * @created 22 oct. 06
  */
 public class ViewFactory {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,15 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
-
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
@@ -42,11 +33,17 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
+
 /**
  * Table model used for logical table view
- * 
- * @author Bertrand Florat
- * @created 29 feb. 2004
  */
 public class TracksTableModel extends JajukTableModel {
 

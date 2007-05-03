@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 dhalsim
+ *  Copyright (C) 2007 The Jajuk Team
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2
@@ -25,10 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *  Type description
- *
- * @author     Erwan Richard
- * @created    4 mars 07
+ *  A submission
  */
 public class Submission
 {

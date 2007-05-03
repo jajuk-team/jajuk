@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
@@ -39,6 +39,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
@@ -108,9 +109,6 @@ import ext.SwingWorker;
  * Catalog view. Displays all default covers by album
  * <p>
  * Catalog perspectives
- * 
- * @author Bertrand Florat
- * @created 01/12/2005
  */
 public class CatalogView extends ViewAdapter implements Observer, ComponentListener, ActionListener {
 
@@ -203,7 +201,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	private ArrayList<String> sizes = new ArrayList<String>(10);
 
 	/** Current details dialog */
-	private JDialog details;
+	private JajukJDialog details;
 
 	/** Swing Timer to refresh the component */
 	private Timer timer = new Timer(WAIT_TIME, new ActionListener() {
@@ -1045,7 +1043,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					if (CatalogView.this.details != null) {
 						CatalogView.this.details.dispose();
 					}
-					CatalogView.this.details = new JDialog();
+					CatalogView.this.details = new JajukJDialog();
 					JXPanel jp = new JXPanel();
 					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
 					jp.setLayout(new TableLayout(size));
@@ -1131,8 +1129,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 								+ (int) (0.4 * jlIcon.getHeight()) - 400;
 					}
 					CatalogView.this.details.setLocation(x, y);
-					((java.awt.Frame) CatalogView.this.details.getOwner()).setIconImage(Util
-							.getIcon(ICON_LOGO_FRAME).getImage());
 					CatalogView.this.details.setSize(500, 400);
 					CatalogView.this.details.setVisible(true);
 					// Force scrollbar to stay on top

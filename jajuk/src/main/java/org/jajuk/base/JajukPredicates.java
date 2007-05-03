@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 bflorat
+ *  Copyright (C) 2006 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,28 +20,22 @@
 
 package org.jajuk.base;
 
-import java.util.Date;
-
 import org.apache.commons.collections.Predicate;
 import org.jajuk.util.ITechnicalStrings;
+
+import java.util.Date;
 
 /**
  * List of Predicates (filter criteria)
  * <p>
  * Returns predicates used to decorate iterators
  * </p>
- * 
- * @author Bertrand Florat
- * @created 15 oct. 06
  */
 public class JajukPredicates {
 
 	/**
 	 * 
 	 * Age-filtering predicate Applied on tracks only
-	 * 
-	 * @author Bertrand Florat
-	 * @created 15 oct. 06
 	 */
 	public static class AgePredicate implements Predicate {
 
@@ -74,10 +68,7 @@ public class JajukPredicates {
 
 	/**
 	 * 
-	 * Ready (mounted) filering predicate Applied on files only
-	 * 
-	 * @author Bertrand Florat
-	 * @created 15 oct. 06
+	 * Ready (mounted) filtering predicate Applied on files only
 	 */
 	public static class ReadyFilePredicate implements Predicate {
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2164 $
+ *  $$Revision: 2321 $$
  */
 
 package org.jajuk.ui.wizard;
+
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.JajukJDialog;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.VerticalLayout;
 
 import info.clearthought.layout.TableLayout;
 
@@ -30,31 +41,16 @@ import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.jajuk.Main;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
-
 /**
  * Simple device creation wiard that creates a directory device given a
  * directory
- * 
- * @author Bertrand Florat
- * @created 18/03/2007
  */
-public class SimpleDeviceWizard extends JDialog implements ITechnicalStrings, ActionListener {
+public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	JLabel jlLeftIcon;
@@ -88,7 +84,6 @@ public class SimpleDeviceWizard extends JDialog implements ITechnicalStrings, Ac
 	 * First time wizard
 	 */
 	public SimpleDeviceWizard() {
-		super(Main.getWindow(), true); // make it modal
 		setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
 		int iX_SEPARATOR = 10;
 		int iY_SEPARATOR = 10;

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 bflorat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -22,9 +22,6 @@ package org.jajuk.base;
 
 /**
  *  A physical Item (file, directory, device...)
- *
- * @author     Bertrand Florat
- * @created    10 avr. 07
  */
 public abstract class PhysicalItem extends Item {
 

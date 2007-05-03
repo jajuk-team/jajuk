@@ -1,9 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
- *  
- *  Methods updateAllUIs(), updateComponentTreeUI() and updateComponentTreeUIO() thanks BigLee in this forum:
- *  http://forum.java.sun.com/thread.jspa?threadID=596251&messageID=3160062
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -18,9 +15,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.util;
+
+import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.dj.Ambience;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -77,42 +101,12 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Item;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.dj.Ambience;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * General use utilities methods
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
 public class Util implements ITechnicalStrings {
 

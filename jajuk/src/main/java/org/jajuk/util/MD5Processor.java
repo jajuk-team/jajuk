@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 package org.jajuk.util;
 
@@ -25,9 +25,6 @@ import java.math.BigInteger;
  * This classes provides some hashing code. It contains mainly an implementation
  * of MD5 algorithm and some other trivial hashing methods. The implementation
  * follows RFC 1321 and passes all RFC 1321 tests.
- * 
- * @Author Bertrand Florat
- * @created 26 oct. 2003
  */
 
 public class MD5Processor {

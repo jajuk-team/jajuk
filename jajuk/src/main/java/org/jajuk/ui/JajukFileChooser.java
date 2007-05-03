@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,20 +19,18 @@
  */
 package org.jajuk.ui;
 
-import javax.swing.JFileChooser;
-
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
+
+import javax.swing.JFileChooser;
 
 /**
  * Music-oriented file chooser
  * <p>
  * decorator
- * 
- * @author Bertrand Florat
- * @created 12 oct. 2003
  */
-public class JajukFileChooser extends JFileChooser {
+public class JajukFileChooser extends JFileChooser implements ITechnicalStrings{
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,9 +43,7 @@ public class JajukFileChooser extends JFileChooser {
 	 *            filter to use
 	 */
 	public JajukFileChooser(JajukFileFilter jfilter) {
-		setDialogTitle(Messages.getString("JajukFileChooser.0"));// default //$NON-NLS-1$
-		// title
-		// //$NON-NLS-1$
+		setDialogTitle(Messages.getString("JajukFileChooser.0"));
 		this.filter = jfilter;
 		setFileFilter(jfilter);
 		setMultiSelectionEnabled(true);
@@ -58,7 +54,7 @@ public class JajukFileChooser extends JFileChooser {
 	 * 
 	 */
 	public JajukFileChooser() {
-		this(new JajukFileFilter());
+		this(null);
 	}
 
 }

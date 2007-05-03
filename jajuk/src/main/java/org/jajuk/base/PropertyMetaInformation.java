@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,20 +20,17 @@
 
 package org.jajuk.base;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
+
 /**
  * A Jajuk property meta information
- * 
- * @author Bertrand Florat
- * @created 14 août 2005
  */
 public class PropertyMetaInformation implements ITechnicalStrings {
 

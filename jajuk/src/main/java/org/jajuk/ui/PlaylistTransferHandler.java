@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -47,9 +47,6 @@ import javax.swing.JTable;
 
 /**
  * DND handler for playlists
- * 
- * @author Bertrand Florat
- * @created 13 feb. 2004
  */
 public class PlaylistTransferHandler implements DropTargetListener, ITechnicalStrings {
 

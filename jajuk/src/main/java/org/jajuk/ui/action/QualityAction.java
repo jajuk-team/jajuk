@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,18 +19,15 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.QualityFeedbackWizard;
 import org.jajuk.util.Util;
 
+import java.awt.event.ActionEvent;
+
 /**
  * Action for displaying the tip of the day.
- * 
- * @author Bart Cremers
- * @version 12-dec-2005
  */
 public class QualityAction extends ActionBase {
 

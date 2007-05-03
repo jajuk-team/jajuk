@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,22 +20,19 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
+
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.log.Log;
-
 /**
  * This is a mediator managing relationships between subjets and observers
  * <p>
  * All notification methods are synchronized to assure event order
- * 
- * @author Bertrand Florat
- * @created 12 dec. 2003
  */
 public class ObservationManager implements ITechnicalStrings {
 

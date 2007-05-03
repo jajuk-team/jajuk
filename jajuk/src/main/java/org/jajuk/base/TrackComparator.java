@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,9 +27,6 @@ import java.util.Comparator;
 /**
  * 
  * Mutli-method track comparator
- * 
- * @author Bertrand Florat
- * @created 8 janv. 2006
  */
 public class TrackComparator implements Comparator<Track> {
 	/**

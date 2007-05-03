@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -24,10 +24,7 @@ import org.jajuk.base.Style;
 import org.jajuk.util.Util;
 
 /**
- * Represent a transition from one style to another (used by digital DJs)
- * 
- * @author Bertrand Florat
- * @created 27/02/2006
+ * Represents a transition from one style to another (used by digital DJs)
  */
 public class Transition {
 	/** From styles */

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 dhalsim
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,20 +20,6 @@
 
 package org.jajuk.share.audioscrobbler;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -50,11 +36,22 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 /**
  *  Type description
- *
- * @author     Erwan Richard
- * @created    25 janv. 07
  */
 public class AudioScrobblerManager extends DefaultHandler implements ITechnicalStrings, Observer{
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 Bertrand Florat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,9 +25,6 @@ import java.util.Iterator;
 
 /**
  * This class is a convenient timer class, mainly for UI
- * 
- * @author Bertrand Florat
- * @created 3 nov. 2004
  *          <p>
  *          Singleton
  *          </p>

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 Bertrand Florat
+ *  Copyright (C) 2004 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,15 +27,6 @@ import javax.swing.ImageIcon;
 
 /**
  * Encapsulates a label with a text and an icon, used for tables
- * 
- * @author Bertrand Florat
- * @created 12 nov. 2004
- */
-/**
- * Type description
- * 
- * @author Bertrand Florat
- * @created 22 févr. 2006
  */
 public class IconLabel implements Comparable {
 

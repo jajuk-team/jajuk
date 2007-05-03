@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 bflorat
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,20 +20,17 @@
 
 package org.jajuk.ui;
 
+import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
-
 import com.vlsolutions.swing.toolbars.BackgroundPainter;
 
 /**
- *  Type description
- *
- * @author     Bertrand Florat
- * @created    27 févr. 07
+ *  Custom background painter
  */
 public class JajukBackgroundPainter extends BasicGradientPainter implements BackgroundPainter {
 

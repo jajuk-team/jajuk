@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -21,9 +21,6 @@ package org.jajuk.ui.action;
 
 /**
  * This enum contains a constant for all actions present in Jajuk. <p/>
- * 
- * @author Bart Cremers
- * @version 12-dec-2005
  */
 public enum JajukAction {
 

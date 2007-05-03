@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,15 +20,12 @@
 
 package org.jajuk.base;
 
-import java.util.Properties;
-
 import org.jajuk.util.EventSubject;
+
+import java.util.Properties;
 
 /**
  * Jajuk event (Observer pattern)
- * 
- * @author bflorat
- * @created 4 mars 2005
  */
 public class Event {
 

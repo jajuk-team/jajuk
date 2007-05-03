@@ -1,19 +1,21 @@
 /*
- * Jajuk Copyright (C) 2003 Bertrand Florat
- * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA. 
- * $Revision$
+ *  Jajuk
+ *  Copyright (C) 2005 The Jajuk Team
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
@@ -96,9 +98,6 @@ import ext.SwingWorker;
 
 /**
  * Logical tree view
- * 
- * @author Bertrand Florat
- * @created 28 nov. 2003
  */
 public class LogicalTreeView extends AbstractTreeView implements ActionListener, Observer {
 
@@ -1218,9 +1217,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 /**
  * Style node
- * 
- * @author Bertrand Florat
- * @created 29 nov. 2003
  */
 class StyleNode extends TransferableTreeNode {
 
@@ -1252,9 +1248,6 @@ class StyleNode extends TransferableTreeNode {
 
 /**
  * Author node
- * 
- * @author Bertrand Florat
- * @created 29 nov. 2003
  */
 class AuthorNode extends TransferableTreeNode {
 
@@ -1290,9 +1283,6 @@ class AuthorNode extends TransferableTreeNode {
 
 /**
  * Year node
- * 
- * @author Bertrand Florat
- * @created 29 nov. 2003
  */
 class YearNode extends TransferableTreeNode {
 
@@ -1328,9 +1318,6 @@ class YearNode extends TransferableTreeNode {
 
 /**
  * Album node
- * 
- * @author Bertrand Florat
- * @created 29 nov. 2003
  */
 class AlbumNode extends TransferableTreeNode {
 
@@ -1362,9 +1349,6 @@ class AlbumNode extends TransferableTreeNode {
 
 /**
  * Track node
- * 
- * @author Bertrand Florat
- * @created 29 nov. 2003
  */
 class TrackNode extends TransferableTreeNode {
 
@@ -1397,9 +1381,6 @@ class TrackNode extends TransferableTreeNode {
 /**
  * 
  * Discovery date filter tree node
- * 
- * @author Bertrand Florat
- * @created 11 avr. 07
  */
 class DiscoveryDateNode extends DefaultMutableTreeNode {
 

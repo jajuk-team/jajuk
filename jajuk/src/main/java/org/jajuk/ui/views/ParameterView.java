@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,10 +15,39 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $$Revision$$
  */
 
 package org.jajuk.ui.views;
+
+import org.jajuk.Main;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
+import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukJPanel;
+import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.PathSelector;
+import org.jajuk.ui.PatternInputVerifier;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.SearchBox;
+import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
@@ -56,35 +85,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.Main;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
-import org.jajuk.ui.DefaultMouseWheelListener;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukJPanel;
-import org.jajuk.ui.LNFManager;
-import org.jajuk.ui.PathSelector;
-import org.jajuk.ui.PatternInputVerifier;
-import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.SearchBox;
-import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 
 /**
  * View used to set Jajuk paramers.
@@ -92,9 +92,6 @@ import org.jajuk.util.log.Log;
  * Configuration perspective *
  * <p>
  * Singleton
- * 
- * @author Bertrand Florat
- * @created 17 nov. 2003
  */
 public class ParameterView extends ViewAdapter implements ActionListener, ListSelectionListener,
 		ItemListener, ChangeListener, Observer {

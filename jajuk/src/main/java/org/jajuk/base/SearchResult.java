@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -22,9 +22,6 @@ package org.jajuk.base;
 
 /**
  * A search result, contains a file and a search description
- * 
- * @author Bertrand Florat
- * @created 16 janv. 2004
  */
 public class SearchResult implements Comparable {
 
