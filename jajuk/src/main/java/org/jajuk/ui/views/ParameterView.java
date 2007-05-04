@@ -73,7 +73,6 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
@@ -84,7 +83,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 
 /**
  * View used to set Jajuk paramers.
@@ -334,6 +332,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void initUI() {
+		double p = TableLayout.PREFERRED;
 		int iXSeparator = 5;
 		int iYSeparator = 5;
 
@@ -384,11 +383,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// --Startup
 		jpStart = new JajukJPanel();
-		double sizeStart[][] = {
-				{ TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator,
-						TableLayout.PREFERRED, iXSeparator },
-				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
-						iYSeparator, 20, iYSeparator, 20 } };
+		double sizeStart[][] = { { p, p }, { 20, p, p, p, p, p, p, p, p } };
+		TableLayout layoutStartup = new TableLayout(sizeStart);
+		layoutStartup.setVGap(iYSeparator);
+		layoutStartup.setHGap(iXSeparator);
+
 		jpStart.setLayout(new TableLayout(sizeStart));
 		jlStart = new JLabel(Messages.getString("ParameterView.9")); //$NON-NLS-1$
 		bgStart = new ButtonGroup();
@@ -442,15 +441,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		bgStart.add(jrbBestof);
 		bgStart.add(jrbNovelties);
 		bgStart.add(jrbFile);
-		jpStart.add(jlStart, "0,3"); //$NON-NLS-1$
-		jpStart.add(jrbNothing, "2,1"); //$NON-NLS-1$
-		jpStart.add(jrbLast, "2,3"); //$NON-NLS-1$
-		jpStart.add(jrbLastKeepPos, "2,5"); //$NON-NLS-1$
-		jpStart.add(jrbShuffle, "2,7"); //$NON-NLS-1$
-		jpStart.add(jrbBestof, "2,9"); //$NON-NLS-1$
-		jpStart.add(jrbNovelties, "2,11"); //$NON-NLS-1$
-		jpStart.add(jrbFile, "2,13"); //$NON-NLS-1$
-		jpStart.add(sbSearch, "4,13"); //$NON-NLS-1$
+		jpStart.add(jlStart, "0,1,1,1"); //$NON-NLS-1$
+		jpStart.add(jrbNothing, "0,2,1,2"); //$NON-NLS-1$
+		jpStart.add(jrbLast, "0,3,1,3"); //$NON-NLS-1$
+		jpStart.add(jrbLastKeepPos, "0,4,1,4"); //$NON-NLS-1$
+		jpStart.add(jrbShuffle, "0,5,1,5"); //$NON-NLS-1$
+		jpStart.add(jrbBestof, "0,6,1,6"); //$NON-NLS-1$
+		jpStart.add(jrbNovelties, "0,7,1,7"); //$NON-NLS-1$
+		jpStart.add(jrbFile, "0,8"); //$NON-NLS-1$
+		jpStart.add(sbSearch, "1,8"); //$NON-NLS-1$
 
 		// --Confirmations
 		jpConfirmations = new JajukJPanel();
@@ -651,7 +650,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181")); //$NON-NLS-1$
 		jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182")); //$NON-NLS-1$
 		jcbDefaultActionDrop.setOpaque(false);
-		
+
 		jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196")); //$NON-NLS-1$
 		jcbHotkeys.setOpaque(false);
 		jcbHotkeys.addActionListener(this);
@@ -659,10 +658,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// Disable this option if not under windows
 		jcbHotkeys.setEnabled(Util.isUnderWindows());
 
-		JPanel jpCombos = new JPanel();
-		jpCombos.setOpaque(false);
-		double sizeCombos[][] = { { 0.50, 0.45 }, { 20, iYSeparator, 20, iYSeparator, 20 } };
-		jpCombos.setLayout(new TableLayout(sizeCombos));
 		jlLanguage = new JLabel(Messages.getString("ParameterView.38")); //$NON-NLS-1$
 		scbLanguage = new SteppedComboBox();
 		Iterator itDescs = Messages.getDescs().iterator();
@@ -671,31 +666,21 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			scbLanguage.addItem(Messages.getString(sDesc));
 		}
 		scbLanguage.setToolTipText(Messages.getString("ParameterView.42")); //$NON-NLS-1$
-		jlLAF = new JLabel(Messages.getString("ParameterView.43")); //$NON-NLS-1$
-		jlLAF.setToolTipText(Messages.getString("ParameterView.44")); //$NON-NLS-1$
-		scbLAF = new SteppedComboBox();
-		Iterator it = LNFManager.getSupportedLNF().iterator();
-		while (it.hasNext()) {
-			scbLAF.addItem(it.next());
-		}
-		scbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
-		jpCombos.add(jlLanguage, "0,0"); //$NON-NLS-1$
-		jpCombos.add(scbLanguage, "1,0"); //$NON-NLS-1$
-		jpCombos.add(jlLAF, "0,2"); //$NON-NLS-1$
-		jpCombos.add(scbLAF, "1,2"); //$NON-NLS-1$
-
 		double sizeOptions[][] = {
-				{ TableLayout.PREFERRED },
+				{ TableLayout.PREFERRED, TableLayout.PREFERRED },
 				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
 						iYSeparator, 20, iYSeparator, TableLayout.PREFERRED, iYSeparator } };
-		jpOptions.setLayout(new TableLayout(sizeOptions));
+		TableLayout layoutOption = new TableLayout(sizeOptions);
+		layoutOption.setHGap(20);
+		jpOptions.setLayout(layoutOption);
 
-		jpOptions.add(jcbDisplayUnmounted, "0,1"); //$NON-NLS-1$
-		jpOptions.add(jcbDefaultActionClick, "0,3"); //$NON-NLS-1$
-		jpOptions.add(jcbDefaultActionDrop, "0,5"); //$NON-NLS-1$
-		jpOptions.add(jcbSyncTableTree, "0,7"); //$NON-NLS-1$
-		jpOptions.add(jcbHotkeys, "0,9"); //$NON-NLS-1$
-		jpOptions.add(jpCombos, "0,11"); //$NON-NLS-1$
+		jpOptions.add(jcbDisplayUnmounted, "0,1,1,1"); //$NON-NLS-1$
+		jpOptions.add(jcbDefaultActionClick, "0,3,1,3"); //$NON-NLS-1$
+		jpOptions.add(jcbDefaultActionDrop, "0,5,1,5"); //$NON-NLS-1$
+		jpOptions.add(jcbSyncTableTree, "0,7,1,7"); //$NON-NLS-1$
+		jpOptions.add(jcbHotkeys, "0,9,1,9"); //$NON-NLS-1$
+		jpOptions.add(jlLanguage, "0,11"); //$NON-NLS-1$
+		jpOptions.add(scbLanguage, "1,11"); //$NON-NLS-1$
 
 		// --P2P
 		jpP2P = new JajukJPanel();
@@ -791,7 +776,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
 				.getInstance()), Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
-		
+
 		double sizeAdvanced[][] = {
 				{ 0.5, 0.45 },
 				{ 20, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
@@ -813,7 +798,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(jtfEnvVariables, "1,6");//$NON-NLS-1$
 		jpAdvanced.add(jlJajukWorkspace, "0,7");//$NON-NLS-1$
 		jpAdvanced.add(psJajukWorkspace, "1,7");//$NON-NLS-1$
-		
+
 		// - Network
 		jpNetwork = new JajukJPanel();
 		double sizeNetwork[][] = {
@@ -975,13 +960,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpCovers.add(jcbPreLoad, "0,5"); //$NON-NLS-1$
 		jpCovers.add(jlCoverSize, "0,7"); //$NON-NLS-1$
 		jpCovers.add(jcbCoverSize, "1,7"); //$NON-NLS-1$
-		
+
 		// -- User interface --
 		jpUI = new JajukJPanel();
-		double sizeUI[][] = {
-				{ 0.5, 0.5 },
-				{ 20,TableLayout.PREFERRED,TableLayout.PREFERRED,
-					TableLayout.PREFERRED,TableLayout.PREFERRED } };
+		double sizeUI[][] = { { p, p }, { 20, p, p, p, p, p } };
 		TableLayout layoutUI = new TableLayout(sizeUI);
 		layoutUI.setHGap(10);
 		layoutUI.setVGap(15);
@@ -1010,38 +992,51 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbVisibleAtStartup = new JCheckBox(Messages.getString("JajukWindow.8"));
 		jcbVisibleAtStartup.setToolTipText(Messages.getString("JajukWindow.25"));
 		jcbVisibleAtStartup.setOpaque(false);
-		//Use this common action listener for UI options that need to launch event
+		// Use this common action listener for UI options that need to launch
+		// event
 		ActionListener alUI = new ActionListener() {
-		
+
 			public void actionPerformed(ActionEvent e) {
-				//Store configuration
-				ConfigurationManager.setProperty(CONF_UI_SHOW_AT_STARTUP, Boolean.toString(jcbVisibleAtStartup
-				.isSelected()));
-				ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean.toString(jcbShowBaloon
-				.isSelected()));
-				//Launch an event that can be trapped by the tray to synchronize the state
+				// Store configuration
+				ConfigurationManager.setProperty(CONF_UI_SHOW_AT_STARTUP, Boolean
+						.toString(jcbVisibleAtStartup.isSelected()));
+				ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean
+						.toString(jcbShowBaloon.isSelected()));
+				// Launch an event that can be trapped by the tray to
+				// synchronize the state
 				Properties details = new Properties();
-				details.put(DETAIL_ORIGIN,ParameterView.this);
-				ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE,details));
+				details.put(DETAIL_ORIGIN, ParameterView.this);
+				ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE, details));
 			}
-		
+
 		};
 		jcbVisibleAtStartup.addActionListener(alUI);
-		
 		// Show Balloon
 		jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185")); //$NON-NLS-1$
 		jcbShowBaloon.setOpaque(false);
 		jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185")); //$NON-NLS-1$
 		jcbShowBaloon.addActionListener(alUI);
-		
+		// LaF
+		jlLAF = new JLabel(Messages.getString("ParameterView.43")); //$NON-NLS-1$
+		jlLAF.setToolTipText(Messages.getString("ParameterView.44")); //$NON-NLS-1$
+		scbLAF = new SteppedComboBox();
+		Iterator it = LNFManager.getSupportedLNF().iterator();
+		while (it.hasNext()) {
+			scbLAF.addItem(it.next());
+		}
+		scbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
+
 		// Add items
-		jpUI.add(jcbVisibleAtStartup, "0,1");//$NON-NLS-1$
-		jpUI.add(jcbShowBaloon, "0,2");//$NON-NLS-1$
-		jpUI.add(jlCatalogPages, "0,3");//$NON-NLS-1$
-		jpUI.add(jsCatalogPages, "1,3");//$NON-NLS-1$
-		jpUI.add(jlFonts, "0,4");//$NON-NLS-1$
-		jpUI.add(jsFonts, "1,4");//$NON-NLS-1$
-		
+		jpUI.add(jlLAF, "0,1");//$NON-NLS-1$
+		jpUI.add(scbLAF, "1,1");//$NON-NLS-1$
+		jpUI.add(jcbVisibleAtStartup, "0,2");//$NON-NLS-1$
+		jpUI.add(jcbVisibleAtStartup, "0,2");//$NON-NLS-1$
+		jpUI.add(jcbShowBaloon, "0,3");//$NON-NLS-1$
+		jpUI.add(jlCatalogPages, "0,4");//$NON-NLS-1$
+		jpUI.add(jsCatalogPages, "1,4");//$NON-NLS-1$
+		jpUI.add(jlFonts, "0,5");//$NON-NLS-1$
+		jpUI.add(jsFonts, "1,5");//$NON-NLS-1$
+
 		// --OK/cancel panel
 		Dimension dim = new Dimension(200, 20);
 		jpOKCancel = new JajukJPanel();
@@ -1552,7 +1547,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			jlASPassword.setEnabled(false);
 			jpfASPassword.setEnabled(false);
 		}
-		//UI
+		// UI
 		jcbVisibleAtStartup.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
 		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
 	}
@@ -1602,8 +1597,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	public void update(Event event) {
 		EventSubject subject = event.getSubject();
 		Object origin = event.getDetails().get(DETAIL_ORIGIN);
-		//Ignore this event is thrown by this view itself (to avoid loosing already set options)
-		if (origin.equals(this)){
+		// Ignore this event is thrown by this view itself (to avoid loosing
+		// already set options)
+		if (origin.equals(this)) {
 			return;
 		}
 		if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
