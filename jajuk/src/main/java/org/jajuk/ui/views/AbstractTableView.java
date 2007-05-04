@@ -42,9 +42,7 @@ import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
-import ext.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.border.DropShadowBorder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -78,6 +76,7 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
 
 /**
@@ -194,7 +193,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
 				// properties combo box, fill with colums names expect ID
 				jcbProperty = new JComboBox();
-				jcbProperty.setBorder(new DropShadowBorder());
 				// "any" criteria
 				jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //$NON-NLS-1$
 				for (int i = 1; i < model.getColumnCount(); i++) {

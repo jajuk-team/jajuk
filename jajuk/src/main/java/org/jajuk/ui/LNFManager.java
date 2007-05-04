@@ -41,8 +41,7 @@ public class LNFManager implements ITechnicalStrings {
 	/**
 	 * Contains look and feel displayed name and associated class name
 	 */
-	private static HashMap<String, String> hmNameClass = new HashMap<String, String>(
-			5);
+	private static HashMap<String, String> hmNameClass = new HashMap<String, String>(5);
 
 	/**
 	 * Current Look and feel
@@ -119,13 +118,13 @@ public class LNFManager implements ITechnicalStrings {
 	public static ComboBoxUI getSteppedComboBoxClass() {
 		try {
 			if (getCurrent().equals(LNF_LIQUID)) {
-				return (ComboBoxUI) Class.forName(LNF_LIQUID_CBUI)
-						.newInstance();
+				return (ComboBoxUI) Class.forName(LNF_LIQUID_CBUI).newInstance();
 			} else if (getCurrent().equals(LNF_KUNSTSTOFF)) {
-				return (ComboBoxUI) Class.forName(LNF_KUNSTSTOFF_CBUI)
-						.newInstance();
+				return (ComboBoxUI) Class.forName(LNF_KUNSTSTOFF_CBUI).newInstance();
 			} else if (getCurrent().equals(LNF_METAL)) {
 				return (ComboBoxUI) Class.forName(LNF_METAL_CBUI).newInstance();
+			} else if (getCurrent().equals(LNF_SUBSTANCE)) {
+				return (ComboBoxUI) Class.forName(LNF_SUBSTANCE_CBUI).newInstance();
 			} else { // default
 				return (ComboBoxUI) Class.forName(LNF_METAL_CBUI).newInstance();
 			}

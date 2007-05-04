@@ -279,7 +279,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 		// History
 		VLToolBar vltbHistory = new VLToolBar("history"); //$NON-NLS-1$
-		vltbHistory.setBorder(Util.getShadowBorder());
 		jcbHistory = new SteppedComboBox();
 		vltbHistory.add(jcbHistory);
 		// we use a combo box model to make sure we get good performances after

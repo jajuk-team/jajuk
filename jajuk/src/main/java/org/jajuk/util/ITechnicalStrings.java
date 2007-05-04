@@ -952,6 +952,8 @@ public interface ITechnicalStrings {
 	public static final String LNF_SUBSTANCE = "Substance";
 
 	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
+	
+	public static final String LNF_SUBSTANCE_CBUI = "org.jajuk.ui.laf.SubstanceComboBoxUI";
 
 	public static final String LNF_DEFAULT = LNF_KUNSTSTOFF;// default look
 
