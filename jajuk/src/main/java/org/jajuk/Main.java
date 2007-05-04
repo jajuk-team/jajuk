@@ -270,6 +270,8 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_SQUARENESS, LNF_SQUARENESS_CLASS);
 			LNFManager.register(LNF_TINY, LNF_TINY_CLASS);
 			LNFManager.register(LNF_LOOKS, LNF_LOOKS_CLASS);
+			LNFManager.register(LNF_SUBSTANCE, LNF_SUBSTANCE_CLASS);
+			
 
 			// Launch splashscreen. Depends on: log.setVerbosity,
 			// configurationManager.load (for local)

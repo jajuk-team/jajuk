@@ -949,6 +949,10 @@ public interface ITechnicalStrings {
 
 	public static final String LNF_LOOKS_CLASS = "com.jgoodies.looks.windows.WindowsLookAndFeel";
 
+	public static final String LNF_SUBSTANCE = "Substance";
+
+	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
+
 	public static final String LNF_DEFAULT = LNF_KUNSTSTOFF;// default look
 
 	// and feel name
