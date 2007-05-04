@@ -40,7 +40,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import ext.AutoCompleteDecorator;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -704,7 +704,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			setCanFinish(true);
 			jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25")); //$NON-NLS-1$
 			jcbStartwith = new JComboBox(styles);
-			AutoCompleteDecorator.decorate(jcbStartwith, false);
+			AutoCompleteDecorator.decorate(jcbStartwith);
 			String startup = ((Style) data.get(KEY_STARTUP_STYLE)).getName();
 			int indexStyle = styles.indexOf(startup);
 			if (indexStyle >= 0) {

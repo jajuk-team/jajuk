@@ -23,7 +23,6 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -69,7 +68,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	 * Constructor for PerspectiveBarJPanel.
 	 */
 	private PerspectiveBarJPanel() {
-		setBackgroundPainter(new BasicGradientPainter(BasicGradientPainter.AERITH));
+		setBackgroundPainter(Util.aerithGrandient);
 		update();
 	}
 

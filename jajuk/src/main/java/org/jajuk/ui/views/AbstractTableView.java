@@ -42,7 +42,7 @@ import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import ext.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 import org.jdesktop.swingx.border.DropShadowBorder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
@@ -376,7 +376,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			if (XML_STYLE.equals(sIdentifier)) {
 				JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
 				jcb.setEditable(true);
-				AutoCompleteDecorator.decorate(jcb, false);
+				AutoCompleteDecorator.decorate(jcb);
 				col.setCellEditor(new ComboBoxCellEditor(jcb));
 			}
 			// create a combo box for authors, note that we can't add new
@@ -384,7 +384,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			if (XML_AUTHOR.equals(sIdentifier)) {
 				JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
 				jcb.setEditable(true);
-				AutoCompleteDecorator.decorate(jcb, false);
+				AutoCompleteDecorator.decorate(jcb);
 				col.setCellEditor(new ComboBoxCellEditor(jcb));
 			}
 			// create a button for playing

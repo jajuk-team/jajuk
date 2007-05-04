@@ -49,7 +49,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
 
 import info.clearthought.layout.TableLayout;
 
@@ -514,7 +513,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		showFacts();
 
 		// Add gradient
-		setBackgroundPainter(new BasicGradientPainter(BasicGradientPainter.GRAY));
+		setBackgroundPainter(Util.grayGrandient);
 
 		// Start the timer
 		timer.start();

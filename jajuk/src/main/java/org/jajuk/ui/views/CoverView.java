@@ -767,7 +767,7 @@ public class CoverView extends ViewAdapter implements Observer,
 			}
 			String size = cover.getSize();
 			jl = new JLabel(ii);
-			jl.setBorder(new DropShadowBorder(Color.BLACK, 0, 5, 0.5f, 5,
+			jl.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5,
 					false, true, false, true));
 			jl.setMinimumSize(new Dimension(0, 0)); // required for info
 			// node resizing

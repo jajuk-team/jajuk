@@ -20,29 +20,36 @@
 
 package org.jajuk.ui;
 
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
+import org.jdesktop.swingx.painter.MattePainter;
 
+import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 import javax.swing.JComponent;
 
 import com.vlsolutions.swing.toolbars.BackgroundPainter;
 
 /**
- *  Custom background painter
+ * Custom background painter
  */
-public class JajukBackgroundPainter extends BasicGradientPainter implements BackgroundPainter {
+public class JajukBackgroundPainter extends MattePainter implements BackgroundPainter {
 
-	/* (non-Javadoc)
-	 * @see com.vlsolutions.swing.toolbars.BackgroundPainter#paintBackground(javax.swing.JComponent, java.awt.Graphics)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.vlsolutions.swing.toolbars.BackgroundPainter#paintBackground(javax.swing.JComponent,
+	 *      java.awt.Graphics)
 	 */
 	public void paintBackground(JComponent component, Graphics g) {
-		super.paintBackground((Graphics2D)g, component);
+		super.paint((Graphics2D) g, component, component.getWidth(), component.getHeight());
 	}
-	
-	public JajukBackgroundPainter(){
-		super(BasicGradientPainter.GRAY);
+
+	public JajukBackgroundPainter() {
+		super(new GradientPaint(new Point(0,0),new Color(226, 226, 226),
+                new Point(0,20),  new Color(250, 248, 248)));
 	}
 
 }

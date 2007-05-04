@@ -44,7 +44,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.gradient.BasicGradientPainter;
+import org.jdesktop.swingx.painter.MattePainter;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -52,10 +52,12 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
@@ -146,12 +148,18 @@ public class Util implements ITechnicalStrings {
 
 	/** downdown shadow border */
 	private static DropShadowBorder shadowBorder = new DropShadowBorder(
-			Color.BLACK, 0, 5, .5f, 12, false, true, true, true);
+			Color.BLACK, 5, .5f, 12, false, true, true, true);
 
 	/** Generic gradiant* */
-	private static BasicGradientPainter grandiant = new BasicGradientPainter(
-			BasicGradientPainter.GRAY);
+	public static MattePainter grayGrandient = new MattePainter(
+			new GradientPaint(new Point(0,0),new Color(226, 226, 226),
+                new Point(0,1000),  new Color(250, 248, 248)));
+	
+	public static MattePainter aerithGrandient = new MattePainter(
+			new GradientPaint(new Point(0,0),Color.WHITE,
+                new Point(0,1000),  new Color(64, 110, 161)));
 
+		
 	/**
 	 * Genres
 	 */
@@ -1713,10 +1721,6 @@ public class Util implements ITechnicalStrings {
 
 	public static DropShadowBorder getShadowBorder() {
 		return shadowBorder;
-	}
-
-	public static BasicGradientPainter getGrandiant() {
-		return grandiant;
 	}
 
 	/**

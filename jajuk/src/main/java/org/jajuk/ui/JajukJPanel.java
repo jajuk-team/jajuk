@@ -24,7 +24,7 @@ import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- *  a customized JXPanel that supports gradiant
+ *  a customized JXPanel that supports gradient
  */
 public class JajukJPanel extends JXPanel {
 
@@ -35,7 +35,7 @@ public class JajukJPanel extends JXPanel {
 	 */
 	public JajukJPanel() {
 		setOpaque(false);
-		setBackgroundPainter(Util.getGrandiant());
+		setBackgroundPainter(Util.grayGrandient);
 	}
 
 	
