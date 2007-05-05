@@ -314,8 +314,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				.getAction(JajukAction.INTRO_MODE_STATUS_CHANGED));
 		jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
 		jtbModes.add(jbRepeat);
+		jtbModes.addSeparator();
 		jtbModes.add(jbRandom);
+		jtbModes.addSeparator();
 		jtbModes.add(jbContinue);
+		jtbModes.addSeparator();
 		jtbModes.add(jbIntro);
 		// we use a strut as empty borders are now always applied on toolbars
 		vltbModes.add(Box.createVerticalStrut(30));

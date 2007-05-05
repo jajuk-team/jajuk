@@ -41,10 +41,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -91,11 +91,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
 	JLabel jlSelection;
 
-	JPanel jpTotal;
-
 	JLabel jlTotal;
-
-	JPanel jpCurrent;
 
 	JProgressBar jpbCurrent;
 
@@ -124,43 +120,51 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		setLayout(new TableLayout(size));
 
 		// message bar
+		JToolBar jtbMessage = new JToolBar();
+		jtbMessage.setFloatable(false);
+		//We use toolbar to display vertical separator lines
 		jlMessage = new JLabel();
 		jlMessage.setOpaque(true);
 		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-		jlMessage.setBorder(Util.getShadowBorder());
-
+		jtbMessage.add(jlMessage);
+		jtbMessage.add(Box.createHorizontalGlue());
+		jtbMessage.addSeparator();
+		
 		// selection bar
+		JToolBar jtbSelection = new JToolBar();
+		jtbSelection.setFloatable(false);
 		jlSelection = new JLabel();
-		jlSelection.setBorder(Util.getShadowBorder());
-
+		jtbSelection.add(jlSelection);
+		jtbSelection.add(Box.createHorizontalGlue());
+		jtbSelection.addSeparator();
+		
 		// total progress bar
-		jpTotal = new JPanel();
-		jpTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
-		jpTotal.setLayout(new BoxLayout(jpTotal, BoxLayout.X_AXIS));
-		jpTotal.setBorder(Util.getShadowBorder());
+		JToolBar jtbTotal = new JToolBar();
+		jtbTotal.setFloatable(false);
 		jlTotal = new JLabel();
-		jpTotal.add(jlTotal);
-		jpTotal.add(Box.createHorizontalStrut(3));
-
+		jlTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
+		jtbTotal.add(jlTotal);
+		jtbTotal.add(Box.createHorizontalGlue());
+		jtbTotal.addSeparator();
+		
 		// current progress bar
-		jpCurrent = new JPanel();
-		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
-		jpCurrent.setLayout(new BoxLayout(jpCurrent, BoxLayout.X_AXIS));
-		jpCurrent.setBorder(Util.getShadowBorder());
+		JToolBar jtbProgress = new JToolBar();
+		jtbProgress.setFloatable(false);
+		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
 		jpbCurrent = new JProgressBar(0, 100);
 		jpbCurrent.setStringPainted(true);
 		jlCurrent = new JLabel();
-		jpCurrent.add(jlCurrent);
-		jpCurrent.add(Box.createHorizontalStrut(6));
-		jpCurrent.add(jpbCurrent);
+		jtbProgress.add(jlCurrent);
+		jtbProgress.add(Box.createHorizontalStrut(6));
+		jtbProgress.add(jpbCurrent);
 
 		// add widgets
-		add(jlMessage, "0,0"); //$NON-NLS-1$
-		add(jlSelection, "1,0"); //$NON-NLS-1$
-		add(jpTotal, "2,0"); //$NON-NLS-1$
-		add(jpCurrent, "3,0"); //$NON-NLS-1$
+		add(jtbMessage, "0,0"); //$NON-NLS-1$
+		add(jtbSelection, "1,0"); //$NON-NLS-1$
+		add(jtbTotal, "2,0"); //$NON-NLS-1$
+		add(jtbProgress, "3,0"); //$NON-NLS-1$
 
-		// check if some track has been lauched before the view has been
+		// check if some track has been launched before the view has been
 		// displayed
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
 				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
