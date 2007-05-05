@@ -36,8 +36,8 @@
 	<classpathentry kind="lib" path="lib/qdwizard-1.9.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking_2.1.4.jar" sourcepath="/prog/api/vldocking_2.1.4/src"/>
-	<classpathentry kind="lib" path="lib/substance-4.0dev.jar"/>
+	<classpathentry kind="lib" path="lib/substance-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Swingx"/>
+	<classpathentry kind="lib" path="lib/swingx-2007_05_01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
