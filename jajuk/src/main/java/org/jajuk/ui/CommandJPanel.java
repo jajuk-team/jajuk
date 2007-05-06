@@ -264,9 +264,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ToolBarContainer container = Main.getToolbarContainer();
 		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
 		topPanel.setOpaque(false); // Don't forget to make the toolbar opaque !
-		topPanel.setPainter( // set a custom background painter
-				new JajukBackgroundPainter());
-
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search"); //$NON-NLS-1$
 		double[][] sizeSearch = new double[][] {

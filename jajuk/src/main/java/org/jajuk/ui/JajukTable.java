@@ -27,11 +27,11 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
-import org.jdesktop.swingx.decorator.RolloverHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.SubstanceTheme;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
@@ -96,26 +96,26 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 
 	/**
 	 * Set font by setting a default cell renderer on the table
-	 *
+	 * 
 	 */
-	private void setfont(){
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true)
-				.iterator();
+	private void setfont() {
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-						col.setCellRenderer(new DefaultTableCellRenderer() {
-					private static final long serialVersionUID = 3566323371751785978L;
+			col.setCellRenderer(new DefaultTableCellRenderer() {
+				private static final long serialVersionUID = 3566323371751785978L;
 
-					public Component getTableCellRendererComponent(JTable table, Object value,
-							boolean isSelected, boolean hasFocus, int row, int column) {
-						super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-						setFont(new Font(
-								"Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
-						return this;
-					}
-				});
+				public Component getTableCellRendererComponent(JTable table, Object value,
+						boolean isSelected, boolean hasFocus, int row, int column) {
+					super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+							column);
+					setFont(new Font(
+							"Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
+					return this;
+				}
+			});
 		}
-			
+
 	}
 
 	/**
@@ -132,11 +132,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	private void init(boolean bSortable) {
 		super.setSortable(bSortable);
 		super.setColumnControlVisible(true);
-		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY, Color.BLACK);
-		Highlighter hAlternate = new AlternateRowHighlighter();
-		HighlighterPipeline pipeHighlight = new HighlighterPipeline(new Highlighter[] { hAlternate,
-				highlighter });
-		setHighlighters(pipeHighlight);
 		setRolloverEnabled(true);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		packAll();

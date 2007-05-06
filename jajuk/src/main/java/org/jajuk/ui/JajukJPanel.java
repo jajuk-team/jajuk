@@ -20,7 +20,6 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXPanel;
 
 /**
@@ -35,7 +34,6 @@ public class JajukJPanel extends JXPanel {
 	 */
 	public JajukJPanel() {
 		setOpaque(false);
-		setBackgroundPainter(Util.grayGrandient);
 	}
 
 	

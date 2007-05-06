@@ -182,11 +182,11 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 		} else if (e.getClickCount() == 1) {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
 			TableTransferHandler.iSelectedRow = iSelectedRow;
-			// right clic on a selected node set ?
+			// right click on a selected node set ?
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				// o if none or 1 node is selected, a right click on another
+				// - if none or 1 node is selected, a right click on another
 				// node, select it
-				// o if more than 1, we keep selection and display a popup for them
+				// - if more than 1, we keep selection and display a popup for them
 				if (jtable.getSelectedRowCount() < 2) {
 					jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
 				}

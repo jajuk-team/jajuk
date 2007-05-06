@@ -37,7 +37,9 @@ import javax.swing.text.PlainDocument;
  */
 public class AutoCompleteDocument extends PlainDocument {
     
-    /** Flag to indicate if adaptor.setSelectedItem has been called.
+    private static final long serialVersionUID = -4353609211147483101L;
+
+	/** Flag to indicate if adaptor.setSelectedItem has been called.
      * Subsequent calls to remove/insertString should be ignored
      * as they are likely have been caused by the adapted Component that
      * is trying to set the text for the selected component.*/
@@ -104,8 +106,9 @@ public class AutoCompleteDocument extends PlainDocument {
         }
     }
     
-    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        // return immediately when selecting an item
+    public void insertString(int pOffs, String str, AttributeSet a) throws BadLocationException {
+        int offs = pOffs;
+    	// return immediately when selecting an item
         if (selecting) return;
         // insert the string into the document
         super.insertString(offs, str, a);

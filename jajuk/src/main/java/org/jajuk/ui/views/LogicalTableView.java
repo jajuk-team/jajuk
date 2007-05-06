@@ -197,7 +197,7 @@ public class LogicalTableView extends AbstractTableView {
 			// Store real row index
 			TableTransferHandler.iSelectedRow = iSelectedRow;
 			if (e.getButton() == MouseEvent.BUTTON3) {
-				// right clic on a selected node set if none or 1 node is
+				// right click on a selected node set if none or 1 node is
 				// selected, a right click on another node
 				// select it if more than 1, we keep selection and display a
 				// popup for them

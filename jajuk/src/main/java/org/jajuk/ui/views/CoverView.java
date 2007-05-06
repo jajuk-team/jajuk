@@ -238,7 +238,6 @@ public class CoverView extends ViewAdapter implements Observer,
 						return this;
 				}
 			});
-		jcbAccuracy.setBorder(Util.getShadowBorder());
 		jcbAccuracy.setMinimumSize(new Dimension(20, 0));
 		jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
 

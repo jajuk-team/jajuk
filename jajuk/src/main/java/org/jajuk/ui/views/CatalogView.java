@@ -251,13 +251,24 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	public void initUI() {
 		// --Top (most used) control items
 		jpControlTop = new JPanel();
+		//Hide album popups when entering this area
+		jpControlTop.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				super.mouseEntered(e);
+				if (CatalogView.this.details != null) {
+					CatalogView.this.details.dispose();
+				}
+			}
+
+		});
 		jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		jpControlTop.setOpaque(false);
 		jlSorter = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
 		jlSorter.setOpaque(false);
 		jcbSorter = new SteppedComboBox();
 		jcbSorter.setOpaque(false);
-		jcbSorter.setBorder(Util.getShadowBorder());
 		jcbSorter.setEditable(false);
 		// note that a single album can contains tracks with different authors
 		// or styles, we will show it only one
@@ -280,7 +291,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jlContains.setOpaque(false);
 		jcbFilter = new SteppedComboBox();
 		jcbFilter.setOpaque(false);
-		jcbFilter.setBorder(Util.getShadowBorder());
 		jcbFilter.setEditable(false);
 		// note that a single album can contains tracks with different authors
 		// or styles, we will show it only one
@@ -305,9 +315,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		jtfValue.setFont(new Font(
 				"dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE) + 6)); //$NON-NLS-1$
-		Color mediumGray = new Color(172, 172, 172);
-		jtfValue.setForeground(mediumGray);
-
+		
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				bNeedSearch = true;
@@ -329,7 +337,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jbNext.addActionListener(this);
 		jcbPage = new SteppedComboBox();
 		jcbPage.setOpaque(false);
-		jcbPage.setBorder(Util.getShadowBorder());
 		jcbPage.setToolTipText(Messages.getString("CatalogView.14"));
 		jcbPage.addActionListener(this);
 		jtbPage.add(jbPrev);
@@ -445,6 +452,18 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		TableLayout layoutBottom = new TableLayout(sizeControlBottom);
 		layoutBottom.setHGap(20);
 		jpControlBottom = new JPanel();
+		//Hide album popups when entering this area
+		jpControlBottom.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				super.mouseEntered(e);
+				if (CatalogView.this.details != null) {
+					CatalogView.this.details.dispose();
+				}
+			}
+
+		});
 		jpControlBottom.setOpaque(false);
 		jpControlBottom.setLayout(layoutBottom);
 		jpControlBottom.add(jcbShow, "0,0");//$NON-NLS-1$
@@ -511,9 +530,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		// Show facts
 		showFacts();
-
-		// Add gradient
-		setBackgroundPainter(Util.grayGrandient);
 
 		// Start the timer
 		timer.start();

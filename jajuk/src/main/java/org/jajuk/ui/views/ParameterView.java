@@ -35,19 +35,18 @@ import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJPanel;
-import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PathSelector;
 import org.jajuk.ui.PatternInputVerifier;
-import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
 
 import info.clearthought.layout.TableLayout;
 
@@ -61,8 +60,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.ButtonGroup;
 import javax.swing.InputVerifier;
@@ -78,7 +79,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -333,16 +333,19 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 */
 	public void initUI() {
 		double p = TableLayout.PREFERRED;
-		int iXSeparator = 5;
-		int iYSeparator = 5;
+		int iXSeparator = 15;
+		int iYSeparator = 15;
 
 		// --History
 		jpHistory = new JajukJPanel();
 
 		double sizeHistory[][] = {
-				{ iXSeparator, TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED },
-				{ 20, 20, 10 * iYSeparator, 25, 10 * iYSeparator, 25 } };
-		jpHistory.setLayout(new TableLayout(sizeHistory));
+				{ p,p },
+				{ p,p } };
+		TableLayout layoutHistory = new TableLayout(sizeHistory);
+		layoutHistory.setHGap(iXSeparator);
+		layoutHistory.setVGap(iYSeparator);
+		jpHistory.setLayout(layoutHistory);
 		jlHistory = new JLabel(Messages.getString("ParameterView.0")); //$NON-NLS-1$
 		jtfHistory = new JTextField();
 		jtfHistory.setInputVerifier(new InputVerifier() {
@@ -376,14 +379,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				Messages.getString("ParameterView.186"), Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
 		jbResetRatings.setToolTipText(Messages.getString("ParameterView.187")); //$NON-NLS-1$
 		jbResetRatings.addActionListener(this);
-		jpHistory.add(jlHistory, "1,1"); //$NON-NLS-1$
-		jpHistory.add(jtfHistory, "3,1"); //$NON-NLS-1$
-		jpHistory.add(jbClearHistory, "3,3"); //$NON-NLS-1$
-		jpHistory.add(jbResetRatings, "3,5"); //$NON-NLS-1$
+		jpHistory.add(jlHistory, "0,0"); //$NON-NLS-1$
+		jpHistory.add(jtfHistory, "1,0"); //$NON-NLS-1$
+		jpHistory.add(jbClearHistory, "0,1"); //$NON-NLS-1$
+		jpHistory.add(jbResetRatings, "1,1"); //$NON-NLS-1$
 
 		// --Startup
 		jpStart = new JajukJPanel();
-		double sizeStart[][] = { { p, p }, { 20, p, p, p, p, p, p, p, p } };
+		double sizeStart[][] = { { p, p }, { p, p, p, p, p, p, p, p } };
 		TableLayout layoutStartup = new TableLayout(sizeStart);
 		layoutStartup.setVGap(iYSeparator);
 		layoutStartup.setHGap(iXSeparator);
@@ -441,23 +444,26 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		bgStart.add(jrbBestof);
 		bgStart.add(jrbNovelties);
 		bgStart.add(jrbFile);
-		jpStart.add(jlStart, "0,1,1,1"); //$NON-NLS-1$
-		jpStart.add(jrbNothing, "0,2,1,2"); //$NON-NLS-1$
-		jpStart.add(jrbLast, "0,3,1,3"); //$NON-NLS-1$
-		jpStart.add(jrbLastKeepPos, "0,4,1,4"); //$NON-NLS-1$
-		jpStart.add(jrbShuffle, "0,5,1,5"); //$NON-NLS-1$
-		jpStart.add(jrbBestof, "0,6,1,6"); //$NON-NLS-1$
-		jpStart.add(jrbNovelties, "0,7,1,7"); //$NON-NLS-1$
-		jpStart.add(jrbFile, "0,8"); //$NON-NLS-1$
-		jpStart.add(sbSearch, "1,8"); //$NON-NLS-1$
+		jpStart.add(jlStart, "0,0,1,0"); //$NON-NLS-1$
+		jpStart.add(jrbNothing, "0,1,1,1"); //$NON-NLS-1$
+		jpStart.add(jrbLast, "0,2,1,2"); //$NON-NLS-1$
+		jpStart.add(jrbLastKeepPos, "0,3,1,3"); //$NON-NLS-1$
+		jpStart.add(jrbShuffle, "0,4,1,4"); //$NON-NLS-1$
+		jpStart.add(jrbBestof, "0,5,1,5"); //$NON-NLS-1$
+		jpStart.add(jrbNovelties, "0,6,1,6"); //$NON-NLS-1$
+		jpStart.add(jrbFile, "0,7"); //$NON-NLS-1$
+		jpStart.add(sbSearch, "1,7"); //$NON-NLS-1$
 
 		// --Confirmations
 		jpConfirmations = new JajukJPanel();
 		double sizeConfirmations[][] = {
-				{ 0.99 },
-				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
-						iYSeparator, 20, iYSeparator, 20, iYSeparator } };
-		jpConfirmations.setLayout(new TableLayout(sizeConfirmations));
+				{ p },
+				{ p,p,p,p,p,p,p} };
+		
+		TableLayout layoutConfirmation = new TableLayout(sizeConfirmations);
+		layoutConfirmation.setVGap(iYSeparator);
+		layoutConfirmation.setHGap(iXSeparator);
+		jpConfirmations.setLayout(layoutConfirmation);
 
 		jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27")); //$NON-NLS-1$
 		jcbBeforeDelete.setOpaque(false);
@@ -490,13 +496,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbBeforeRefactorFiles.setToolTipText(Messages.getString("ParameterView.194")); //$NON-NLS-1$
 		jcbBeforeRefactorFiles.setOpaque(false);
 
-		jpConfirmations.add(jcbBeforeDelete, "0,1"); //$NON-NLS-1$
-		jpConfirmations.add(jcbBeforeExit, "0,3"); //$NON-NLS-1$
-		jpConfirmations.add(jcbBeforeRemoveDevice, "0,5"); //$NON-NLS-1$
-		jpConfirmations.add(jcbBeforeDeleteCover, "0,7"); //$NON-NLS-1$
-		jpConfirmations.add(jcbBeforeClearingHistory, "0,9"); //$NON-NLS-1$
-		jpConfirmations.add(jcbBeforeResetingRatings, "0,11"); //$NON-NLS-1$
-		jpConfirmations.add(jcbBeforeRefactorFiles, "0,13"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeDelete, "0,0"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeExit, "0,1"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeRemoveDevice, "0,2"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeDeleteCover, "0,3"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeClearingHistory, "0,4"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeResetingRatings, "0,5"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeRefactorFiles, "0,6"); //$NON-NLS-1$
 
 		// -Modes
 		jpModes = new JajukJPanel();
@@ -615,23 +621,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// add panels
 		double sizeIntro[][] = {
-				{ 0.50, 0.45 },
-				{ 20, TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator } };
-		jpModes.setLayout(new TableLayout(sizeIntro));
-		jpModes.add(jlIntroPosition, "0,1"); //$NON-NLS-1$
-		jpModes.add(introPosition, "1,1"); //$NON-NLS-1$
-		jpModes.add(jlIntroLength, "0,3"); //$NON-NLS-1$
-		jpModes.add(introLength, "1,3"); //$NON-NLS-1$
-		jpModes.add(jlCrossFadeDuration, "0,5"); //$NON-NLS-1$
-		jpModes.add(crossFadeDuration, "1,5"); //$NON-NLS-1$
-		jpModes.add(jlBestofSize, "0,7"); //$NON-NLS-1$
-		jpModes.add(jtfBestofSize, "1,7"); //$NON-NLS-1$
-		jpModes.add(jlNoveltiesAge, "0,9"); //$NON-NLS-1$
-		jpModes.add(jtfNoveltiesAge, "1,9"); //$NON-NLS-1$
-		jpModes.add(jlVisiblePlanned, "0,11"); //$NON-NLS-1$
-		jpModes.add(jtfVisiblePlanned, "1,11"); //$NON-NLS-1$
+				{ p,p },
+				{ p,p,p,p,p,p} };
+		TableLayout layoutModes = new TableLayout(sizeIntro);
+		layoutModes.setVGap(iYSeparator);
+		layoutModes.setHGap(iXSeparator);
+		jpModes.setLayout(layoutModes);
+		jpModes.add(jlIntroPosition, "0,0"); //$NON-NLS-1$
+		jpModes.add(introPosition, "1,0"); //$NON-NLS-1$
+		jpModes.add(jlIntroLength, "0,1"); //$NON-NLS-1$
+		jpModes.add(introLength, "1,1"); //$NON-NLS-1$
+		jpModes.add(jlCrossFadeDuration, "0,2"); //$NON-NLS-1$
+		jpModes.add(crossFadeDuration, "1,2"); //$NON-NLS-1$
+		jpModes.add(jlBestofSize, "0,3"); //$NON-NLS-1$
+		jpModes.add(jtfBestofSize, "1,3"); //$NON-NLS-1$
+		jpModes.add(jlNoveltiesAge, "0,4"); //$NON-NLS-1$
+		jpModes.add(jtfNoveltiesAge, "1,4"); //$NON-NLS-1$
+		jpModes.add(jlVisiblePlanned, "0,5"); //$NON-NLS-1$
+		jpModes.add(jtfVisiblePlanned, "1,5"); //$NON-NLS-1$
 
 		// --Options
 		jpOptions = new JajukJPanel();
@@ -667,20 +674,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		}
 		scbLanguage.setToolTipText(Messages.getString("ParameterView.42")); //$NON-NLS-1$
 		double sizeOptions[][] = {
-				{ TableLayout.PREFERRED, TableLayout.PREFERRED },
-				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
-						iYSeparator, 20, iYSeparator, TableLayout.PREFERRED, iYSeparator } };
+				{ p,p},
+				{ p,p,p,p,p,p} };
 		TableLayout layoutOption = new TableLayout(sizeOptions);
-		layoutOption.setHGap(20);
+		layoutOption.setHGap(iXSeparator);
+		layoutOption.setVGap(iYSeparator);
 		jpOptions.setLayout(layoutOption);
 
-		jpOptions.add(jcbDisplayUnmounted, "0,1,1,1"); //$NON-NLS-1$
-		jpOptions.add(jcbDefaultActionClick, "0,3,1,3"); //$NON-NLS-1$
-		jpOptions.add(jcbDefaultActionDrop, "0,5,1,5"); //$NON-NLS-1$
-		jpOptions.add(jcbSyncTableTree, "0,7,1,7"); //$NON-NLS-1$
-		jpOptions.add(jcbHotkeys, "0,9,1,9"); //$NON-NLS-1$
-		jpOptions.add(jlLanguage, "0,11"); //$NON-NLS-1$
-		jpOptions.add(scbLanguage, "1,11"); //$NON-NLS-1$
+		jpOptions.add(jcbDisplayUnmounted, "0,0,1,0"); //$NON-NLS-1$
+		jpOptions.add(jcbDefaultActionClick, "0,1,1,1"); //$NON-NLS-1$
+		jpOptions.add(jcbDefaultActionDrop, "0,2,1,2"); //$NON-NLS-1$
+		jpOptions.add(jcbSyncTableTree, "0,3,1,3"); //$NON-NLS-1$
+		jpOptions.add(jcbHotkeys, "0,4,1,4"); //$NON-NLS-1$
+		jpOptions.add(jlLanguage, "0,5"); //$NON-NLS-1$
+		jpOptions.add(scbLanguage, "1,5"); //$NON-NLS-1$
 
 		// --P2P
 		jpP2P = new JajukJPanel();
@@ -709,9 +716,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// --Tags
 		jpTags = new JajukJPanel();
-		double sizeTags[][] = { { 0.5, 0.45 },
-				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator } };
-		jpTags.setLayout(new TableLayout(sizeTags));
+		double sizeTags[][] = { { p,p },
+				{ p,p,p} };
+		TableLayout layoutTags = new TableLayout(sizeTags);
+		layoutTags.setHGap(iXSeparator);
+		layoutTags.setVGap(iYSeparator);
+		jpTags.setLayout(layoutOption);
 		jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101")); //$NON-NLS-1$
 		jcbUseParentDir.setOpaque(false);
 		jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
@@ -724,11 +734,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jlAnimationPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
 		jtfAnimationPattern = new JTextField();
 		jtfAnimationPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
-		jpTags.add(jcbUseParentDir, "0,1"); //$NON-NLS-1$
-		jpTags.add(jlRefactorPattern, "0,3"); //$NON-NLS-1$
-		jpTags.add(jtfRefactorPattern, "1,3"); //$NON-NLS-1$
-		jpTags.add(jlAnimationPattern, "0,5"); //$NON-NLS-1$
-		jpTags.add(jtfAnimationPattern, "1,5"); //$NON-NLS-1$
+		jpTags.add(jcbUseParentDir, "0,0"); //$NON-NLS-1$
+		jpTags.add(jlRefactorPattern, "0,1"); //$NON-NLS-1$
+		jpTags.add(jtfRefactorPattern, "1,1"); //$NON-NLS-1$
+		jpTags.add(jlAnimationPattern, "0,2"); //$NON-NLS-1$
+		jpTags.add(jtfAnimationPattern, "1,2"); //$NON-NLS-1$
 
 		// --Advanced
 		jpAdvanced = new JajukJPanel();
@@ -778,37 +788,35 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 
 		double sizeAdvanced[][] = {
-				{ 0.5, 0.45 },
-				{ 20, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-						TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-						TableLayout.PREFERRED, TableLayout.PREFERRED } };
-		TableLayout layout = new TableLayout(sizeAdvanced);
-		layout.setVGap(15);
-		jpAdvanced.setLayout(layout);
-		jpAdvanced.add(jcbRegexp, "0,1");//$NON-NLS-1$
+				{ p,p},
+				{ p,p,p,p,p,p,p } };
+		TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
+		layoutAdvanced.setHGap(iXSeparator);
+		layoutAdvanced.setVGap(iYSeparator);
+		jpAdvanced.setLayout(layoutAdvanced);
+		jpAdvanced.add(jcbRegexp, "0,0");//$NON-NLS-1$
+		jpAdvanced.add(jcbBackup, "0,1");//$NON-NLS-1$
+		jpAdvanced.add(backupSize, "1,1");//$NON-NLS-1$        
 		jpAdvanced.add(jlCollectionEncoding, "0,2");//$NON-NLS-1$
 		jpAdvanced.add(jcbCollectionEncoding, "1,2");//$NON-NLS-1$
-		jpAdvanced.add(jcbBackup, "0,3");//$NON-NLS-1$
-		jpAdvanced.add(backupSize, "1,3");//$NON-NLS-1$        
-		jpAdvanced.add(jlLogLevel, "0,4");//$NON-NLS-1$        
-		jpAdvanced.add(scbLogLevel, "1,4");//$NON-NLS-1$
-		jpAdvanced.add(jlMPlayerArgs, "0,5");//$NON-NLS-1$        
-		jpAdvanced.add(jtfMPlayerArgs, "1,5");//$NON-NLS-1$
-		jpAdvanced.add(jlEnvVariables, "0,6");//$NON-NLS-1$        
-		jpAdvanced.add(jtfEnvVariables, "1,6");//$NON-NLS-1$
-		jpAdvanced.add(jlJajukWorkspace, "0,7");//$NON-NLS-1$
-		jpAdvanced.add(psJajukWorkspace, "1,7");//$NON-NLS-1$
+		jpAdvanced.add(jlLogLevel, "0,3");//$NON-NLS-1$        
+		jpAdvanced.add(scbLogLevel, "1,3");//$NON-NLS-1$
+		jpAdvanced.add(jlMPlayerArgs, "0,4");//$NON-NLS-1$        
+		jpAdvanced.add(jtfMPlayerArgs, "1,4");//$NON-NLS-1$
+		jpAdvanced.add(jlEnvVariables, "0,5");//$NON-NLS-1$        
+		jpAdvanced.add(jtfEnvVariables, "1,5");//$NON-NLS-1$
+		jpAdvanced.add(jlJajukWorkspace, "0,6");//$NON-NLS-1$
+		jpAdvanced.add(psJajukWorkspace, "1,6");//$NON-NLS-1$
 
 		// - Network
 		jpNetwork = new JajukJPanel();
 		double sizeNetwork[][] = {
-				{ 0.5, 0.45 },
-				{ 20, TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator, TableLayout.PREFERRED, iYSeparator,
-						TableLayout.PREFERRED, iYSeparator } };
-		jpNetwork.setLayout(new TableLayout(sizeNetwork));
+				{ p,p },
+				{ p,p,p,p,p,p,p,p,p } };
+		TableLayout layoutNetwork = new TableLayout(sizeNetwork);
+		layoutNetwork.setHGap(iXSeparator);
+		layoutNetwork.setVGap(iYSeparator);
+		jpNetwork.setLayout(layoutNetwork);
 		jcbProxy = new JCheckBox(Messages.getString("ParameterView.140")); //$NON-NLS-1$
 		jcbProxy.setOpaque(false);
 		jcbProxy.setToolTipText(Messages.getString("ParameterView.141")); //$NON-NLS-1$
@@ -907,29 +915,29 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		transfertTO.setPaintLabels(true);
 		transfertTO.setToolTipText(Messages.getString("ParameterView.163")); //$NON-NLS-1$)
 		transfertTO.addMouseWheelListener(new DefaultMouseWheelListener(transfertTO));
-		jpNetwork.add(jlConnectionTO, "0,1"); //$NON-NLS-1$
-		jpNetwork.add(connectionTO, "1,1"); //$NON-NLS-1$
-		jpNetwork.add(jlTransfertTO, "0,3"); //$NON-NLS-1$
-		jpNetwork.add(transfertTO, "1,3"); //$NON-NLS-1$
-		jpNetwork.add(jcbProxy, "0,5"); //$NON-NLS-1$
-		jpNetwork.add(jlProxyHostname, "0,7"); //$NON-NLS-1$
-		jpNetwork.add(jtfProxyHostname, "1,7"); //$NON-NLS-1$
-		jpNetwork.add(jlProxyPort, "0,9"); //$NON-NLS-1$
-		jpNetwork.add(jtfProxyPort, "1,9"); //$NON-NLS-1$
-		jpNetwork.add(jlProxyLogin, "0,11"); //$NON-NLS-1$
-		jpNetwork.add(jtfProxyLogin, "1,11"); //$NON-NLS-1$
-		jpNetwork.add(jcbAudioScrobbler, "0,13");
-		jpNetwork.add(jlASUser, "0,15");
-		jpNetwork.add(jtfASUser, "1,15");
-		jpNetwork.add(jlASPassword, "0,17");
-		jpNetwork.add(jpfASPassword, "1,17");
+		//Add items
+		jpNetwork.add(jlConnectionTO, "0,0"); //$NON-NLS-1$
+		jpNetwork.add(connectionTO, "1,0"); //$NON-NLS-1$
+		jpNetwork.add(jlTransfertTO, "0,1"); //$NON-NLS-1$
+		jpNetwork.add(transfertTO, "1,1"); //$NON-NLS-1$
+		jpNetwork.add(jcbProxy, "0,2"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyHostname, "0,3"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyHostname, "1,3"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyPort, "0,4"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyPort, "1,4"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyLogin, "0,5"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyLogin, "1,5"); //$NON-NLS-1$
+		jpNetwork.add(jcbAudioScrobbler, "0,6");
+		jpNetwork.add(jlASUser, "0,7");
+		jpNetwork.add(jtfASUser, "1,7");
+		jpNetwork.add(jlASPassword, "0,8");
+		jpNetwork.add(jpfASPassword, "1,8");
 
 		// - Cover
 		jpCovers = new JajukJPanel();
 		double sizeCover[][] = {
-				{ 0.5, 0.45 },
-				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
-						iYSeparator } };
+				{ p,p},
+				{ p,p,p,p } };
 		jpCovers.setLayout(new TableLayout(sizeCover));
 		jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
 		jcbAutoCover.setOpaque(false);
@@ -954,19 +962,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbCoverSize.addItem(Messages.getString("ParameterView.213"));
 		jcbCoverSize.addItem(Messages.getString("ParameterView.214"));
 		jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
-		jpCovers.add(jcbShuffleCover, "0,1"); //$NON-NLS-1$
-		jpCovers.add(jcbLoadEachTrack, "1,1"); //$NON-NLS-1$
-		jpCovers.add(jcbAutoCover, "0,3"); //$NON-NLS-1$
-		jpCovers.add(jcbPreLoad, "0,5"); //$NON-NLS-1$
-		jpCovers.add(jlCoverSize, "0,7"); //$NON-NLS-1$
-		jpCovers.add(jcbCoverSize, "1,7"); //$NON-NLS-1$
+		//Add items
+		jpCovers.add(jcbShuffleCover, "0,0"); //$NON-NLS-1$
+		jpCovers.add(jcbLoadEachTrack, "1,0"); //$NON-NLS-1$
+		jpCovers.add(jcbAutoCover, "0,1"); //$NON-NLS-1$
+		jpCovers.add(jcbPreLoad, "0,2"); //$NON-NLS-1$
+		jpCovers.add(jlCoverSize, "0,3"); //$NON-NLS-1$
+		jpCovers.add(jcbCoverSize, "1,3"); //$NON-NLS-1$
 
 		// -- User interface --
 		jpUI = new JajukJPanel();
-		double sizeUI[][] = { { p, p }, { 20, p, p, p, p, p } };
+		double sizeUI[][] = { { p, p }, { p, p, p, p, p } };
 		TableLayout layoutUI = new TableLayout(sizeUI);
-		layoutUI.setHGap(10);
-		layoutUI.setVGap(15);
+		layoutUI.setHGap(iXSeparator);
+		layoutUI.setVGap(iYSeparator);
 		jpUI.setLayout(layoutUI);
 		// Catalog size
 		jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
@@ -1020,23 +1029,25 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jlLAF = new JLabel(Messages.getString("ParameterView.43")); //$NON-NLS-1$
 		jlLAF.setToolTipText(Messages.getString("ParameterView.44")); //$NON-NLS-1$
 		scbLAF = new SteppedComboBox();
-		Iterator it = LNFManager.getSupportedLNF().iterator();
-		while (it.hasNext()) {
-			scbLAF.addItem(it.next());
+		Map<String, ThemeInfo> map = SubstanceLookAndFeel.getAllThemes();
+		// Use a tree set to sort themes alphabeticaly
+		TreeSet<String> themes = new TreeSet<String>(map.keySet());
+		// Add each theme to the combo box
+		for (String theme : themes) {
+			scbLAF.addItem(theme);
 		}
 		scbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
 
 		// Add items
-		jpUI.add(jlLAF, "0,1");//$NON-NLS-1$
-		jpUI.add(scbLAF, "1,1");//$NON-NLS-1$
-		jpUI.add(jcbVisibleAtStartup, "0,2");//$NON-NLS-1$
-		jpUI.add(jcbVisibleAtStartup, "0,2");//$NON-NLS-1$
-		jpUI.add(jcbShowBaloon, "0,3");//$NON-NLS-1$
-		jpUI.add(jlCatalogPages, "0,4");//$NON-NLS-1$
-		jpUI.add(jsCatalogPages, "1,4");//$NON-NLS-1$
-		jpUI.add(jlFonts, "0,5");//$NON-NLS-1$
-		jpUI.add(jsFonts, "1,5");//$NON-NLS-1$
-
+		jpUI.add(jcbVisibleAtStartup, "0,0");//$NON-NLS-1$
+		jpUI.add(jcbShowBaloon, "0,1");//$NON-NLS-1$
+		jpUI.add(jlCatalogPages, "0,2");//$NON-NLS-1$
+		jpUI.add(jsCatalogPages, "1,2");//$NON-NLS-1$
+		jpUI.add(jlFonts, "0,3");//$NON-NLS-1$
+		jpUI.add(jsFonts, "1,3");//$NON-NLS-1$
+		jpUI.add(jlLAF, "0,4");//$NON-NLS-1$
+		jpUI.add(scbLAF, "1,4");//$NON-NLS-1$
+		
 		// --OK/cancel panel
 		Dimension dim = new Dimension(200, 20);
 		jpOKCancel = new JajukJPanel();
@@ -1055,7 +1066,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		double size[][] = { { 0.99 }, { 0.9, 0.10 } };
 		setLayout(new TableLayout(size));
 		// add main panels
-		jtpMain = new JTabbedPane();
+		jtpMain = new JTabbedPane(JTabbedPane.LEFT);
 		jtpMain.addTab(Messages.getString("ParameterView.33"), jpOptions); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.226"), jpModes); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.225"), jpUI); //$NON-NLS-1$
@@ -1207,21 +1218,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					AudioScrobblerManager.getInstance().handshake(jtfASUser.getText(),
 							jpfASPassword.getText());
 				} else if (e.getSource() == scbLAF) {
+					String oldTheme = ConfigurationManager.getProperty(CONF_OPTIONS_LNF);
 					ConfigurationManager.setProperty(CONF_OPTIONS_LNF, (String) scbLAF
 							.getSelectedItem());
-					if (!LNFManager.getCurrent().equals(scbLAF.getSelectedItem())) {
-						// Lnf has changed
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								LNFManager.setLookAndFeel(ConfigurationManager
-										.getProperty(CONF_OPTIONS_LNF));
-								SwingUtilities.updateComponentTreeUI(Main.getWindow());
-								// force the perspective panel to refresh
-								PerspectiveBarJPanel.getInstance().setActivated(
-										PerspectiveManager.getCurrentPerspective());
-
-							}
-						});
+					if (!oldTheme.equals(scbLAF.getSelectedItem())) {
+						Util.setLookAndFeel((String) scbLAF.getSelectedItem());
+						// refresh all components
+						Util.updateAllUIs();
 					}
 				} else if (e.getSource() == scbLanguage) {
 					String sLocal = Messages.getLocales().get(scbLanguage.getSelectedIndex());

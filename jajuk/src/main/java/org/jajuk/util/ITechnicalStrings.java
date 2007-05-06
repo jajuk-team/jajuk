@@ -888,77 +888,7 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_OPTION = "option";
 	
 	public static final String DETAIL_TARGET = "target";
-	
-
-	// Look and feel
-	public static final String LNF_METAL = "Ocean";
-
-	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
-
-	public static final String LNF_METAL_CBUI = "org.jajuk.ui.laf.MetalComboBoxUI";
-
-	public static final String LNF_GTK = "Gtk";
-
-	public static final String LNF_GTK_CLASS = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-
-	public static final String LNF_GTK_CBUI = "";
-
-	public static final String LNF_WINDOWS = "Windows";
-
-	public static final String LNF_WINDOWS_CLASS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-
-	public static final String LNF_WINDOWS_CBUI = "";
-
-	public static final String LNF_KUNSTSTOFF = "Kunststoff";
-
-	public static final String LNF_KUNSTSTOFF_CLASS = "com.incors.plaf.kunststoff.KunststoffLookAndFeel";
-
-	public static final String LNF_KUNSTSTOFF_CBUI = "org.jajuk.ui.laf.KunststoffComboBoxUI";
-
-	public static final String LNF_LIQUID = "Liquid";
-
-	public static final String LNF_LIQUID_CLASS = "com.birosoft.liquid.LiquidLookAndFeel";
-
-	public static final String LNF_LIQUID_CBUI = "org.jajuk.ui.laf.LiquidComboBoxUI";
-
-	public static final String LNF_PLASTIC = "Plastic";
-
-	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
-
-	public static final String LNF_PLASTICXP = "Plastic XP";
-
-	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
-
-	public static final String LNF_PLASTIC3D = "Plastic 3D";
-
-	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.looks.plastic.Plastic3DLookAndFeel";
-
-	public static final String LNF_INFONODE = "Infonode";
-
-	public static final String LNF_INFONODE_CLASS = "net.infonode.gui.laf.InfoNodeLookAndFeel";
-
-	public static final String LNF_SQUARENESS = "Squareness";
-
-	public static final String LNF_SQUARENESS_CLASS = "net.beeger.squareness.SquarenessLookAndFeel";
-
-	public static final String LNF_TINY = "Tiny";
-
-	public static final String LNF_TINY_CLASS = "de.muntjak.tinylookandfeel.TinyLookAndFeel";
-
-	public static final String LNF_LOOKS = "Looks";
-
-	public static final String LNF_LOOKS_CLASS = "com.jgoodies.looks.windows.WindowsLookAndFeel";
-
-	public static final String LNF_SUBSTANCE = "Substance";
-
-	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
-	
-	public static final String LNF_SUBSTANCE_CBUI = "org.jajuk.ui.laf.SubstanceComboBoxUI";
-
-	public static final String LNF_DEFAULT = LNF_KUNSTSTOFF;// default look
-
-	// and feel name
-
+		
 	// startup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 
@@ -1023,6 +953,12 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 
+	//Look and Feel
+	/** Substance Look and feel class **/
+	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
+	/** Default substance theme **/
+	public static final String LNF_DEFAULT_THEME = "Ebony";
+	
 	/**Number of visible planned tracks*/
 	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";
 

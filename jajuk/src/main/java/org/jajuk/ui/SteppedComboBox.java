@@ -25,6 +25,8 @@ import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.plaf.ComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 
 /**
  * Stepped combo box allowing to display a long text in the history bar
@@ -68,7 +70,13 @@ public class SteppedComboBox extends JComboBox {
 
 	protected void init() {
 		try {
-			ComboBoxUI cbui = LNFManager.getSteppedComboBoxClass();
+			ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
+				protected ComboPopup createPopup() {
+					BasicComboPopup popup = new org.jajuk.ui.JajukBasicComboPopup(comboBox);
+					popup.getAccessibleContext().setAccessibleParent(comboBox);
+					return popup;
+				}
+			};
 			if (cbui != null) {
 				setUI(cbui);
 				popupWidth = 0;

@@ -68,7 +68,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 
 	TrayIcon trayIcon;
 
-	JPopupMenu jmenu;
+	public JPopupMenu jmenu;
 
 	JMenuItem jmiExit;
 
@@ -172,21 +172,16 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmiPrevious = new JMenuItem(ActionManager.getAction(JajukAction.PREVIOUS_TRACK));
 		jmiNext = new JMenuItem(ActionManager.getAction(JajukAction.NEXT_TRACK));
 
-		jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
-		String sTitle = Messages.getString("JajukWindow.34"); //$NON-NLS-1$
-		jsPosition = new SliderMenuItem(0, 100, 0, sTitle);
+		jsPosition = new SliderMenuItem(0, 100, 0);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
 		jsPosition.addMouseWheelListener(this);
 		jsPosition.addChangeListener(this);
 
-		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
-		sTitle = Messages.getString("JajukWindow.33"); //$NON-NLS-1$
 		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
 		if (iVolume > 100) { // can occur in some undefined cases
 			iVolume = 100;
 		}
-		jsVolume = new SliderMenuItem(0, 100, iVolume, sTitle);
-		jsVolume.setToolTipText(sTitle); //$NON-NLS-1$
+		jsVolume = new SliderMenuItem(0, 100, iVolume);
 		jsVolume.addMouseWheelListener(this);
 		jsVolume.addChangeListener(this);
 
@@ -198,6 +193,16 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						+ ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64") : defaultAmbience //$NON-NLS-1$
 										.getName()));
 		populateAmbiences();
+		//Volume menu
+		JMenu jmVolume = new JMenu(Messages.getString("JajukWindow.33"));
+		jmVolume.setIcon(Util.getIcon(ICON_VOLUME));
+		jmVolume.add(jsVolume);
+		
+		//Position menu
+		JMenu jmPosition = new JMenu(Messages.getString("JajukWindow.34"));
+		jmPosition.setIcon(Util.getIcon(ICON_POSITION));
+		jmPosition.add(jsPosition);
+				
 		// Add a title. Important: do not add a JLabel, it present action event
 		// to occur under windows
 		JMenuItem jmiTitle = new JMenuItem("Jajuk"); //$NON-NLS-1$
@@ -223,12 +228,10 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmenu.add(jmiHelp);
 		jmenu.addSeparator();
 		jmenu.add(jmiMute);
-		jmenu.addSeparator();
-		jmenu.add(jsPosition);
-		jmenu.add(jsVolume);
+		jmenu.add(jmVolume);
+		jmenu.add(jmPosition);
 		jmenu.addSeparator();
 		jmenu.add(jmiExit);
-		jmenu.add(new JMenuItem(" ")); // used to close the tray //$NON-NLS-1$
 		trayIcon = new TrayIcon(Util.getIcon(ICON_TRAY),
 				Messages.getString("JajukWindow.18"), jmenu); //$NON-NLS-1$);
 		trayIcon.setIconAutoSize(true);
@@ -425,6 +428,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		if (file != null) {
 			sOut += "<HTML><br>"; //$NON-NLS-1$
 			String size = "100x100";
+			int maxSize = 30;
 			Util.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), 
 					size);
 			java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' +size + '/'+ 
@@ -433,12 +437,13 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			if (cover.canRead()){
 				sOut += "<img src='file:"+ cover.getAbsolutePath() +"'/><br>";
 			}
-			sOut += "<p><b>" + file.getTrack().getName() + "</b></p>";
-			String sAuthor = file.getTrack().getAuthor().getName();
+			sOut += "<p><b>" + Util.getLimitedString(file.getTrack().getName(),maxSize) 
+				+ "</b></p>";
+			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(),maxSize);
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
 				sOut += "<p>" + sAuthor + "</p>"; //$NON-NLS-1$
 			}
-			String sAlbum = file.getTrack().getAlbum().getName();
+			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(),maxSize);
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
 				sOut += "<p>" + sAlbum + "</p></HTML>"; //$NON-NLS-1$
 			}
@@ -455,17 +460,18 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	 */
 	public String getBasicFormatText(File file) {
 		String sOut = "";
+		int maxSize = 30;
 		if (file != null) {
 			sOut = ""; //$NON-NLS-1$
-			String sAuthor = file.getTrack().getAuthor().getName();
+			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(),maxSize);
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
 				sOut += sAuthor + " / "; //$NON-NLS-1$
 			}
-			String sAlbum = file.getTrack().getAlbum().getName();
+			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(),maxSize);
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
 				sOut += sAlbum + " / "; //$NON-NLS-1$
 			}
-			sOut += file.getTrack().getName();
+			sOut += Util.getLimitedString(file.getTrack().getName(),maxSize);
 		}
 		return sOut;
 	}

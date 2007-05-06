@@ -167,7 +167,6 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_OPTIONS_TAB, "0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_BEGIN, "0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH, "20"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_LNF, LNF_DEFAULT);
 		properties.put(CONF_OPTIONS_SYNC_TABLE_TREE, FALSE);
 		properties.put(CONF_UI_SHOW_BALLOON, TRUE);
 		properties.put(CONF_P2P_SHARE, FALSE);

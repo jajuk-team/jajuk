@@ -34,7 +34,6 @@ import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -232,20 +231,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				InformationJPanel.this.sMessage = sMessage;
-				switch (iMessageType) {
-				case INFORMATIVE:
-					jlMessage.setForeground(Color.BLUE);
-					break;
-				case ERROR:
-					jlMessage.setForeground(Color.RED);
-					break;
-				case WARNING:
-					jlMessage.setForeground(new Color(255, 80, 0));
-					break;
-				default:
-					jlMessage.setForeground(Color.BLUE);
-					break;
-				}
 				jlMessage.setText(sMessage);
 				jlMessage.setToolTipText(sMessage);
 			}

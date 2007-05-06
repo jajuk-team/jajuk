@@ -47,7 +47,6 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.JajukWindow;
-import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -84,6 +83,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -179,9 +180,8 @@ public class Main implements ITechnicalStrings {
 		try {
 			// check JVM version
 			if (!JVM.current().isOrLater(JVM.JDK1_5)) {
-				System.out
-						.println("Java Runtime Environment 1.5 minimum required." //$NON-NLS-1$
-								+ " You use a JVM " + JVM.current()); //$NON-NLS-1$
+				System.out.println("Java Runtime Environment 1.5 minimum required." //$NON-NLS-1$
+						+ " You use a JVM " + JVM.current()); //$NON-NLS-1$
 				System.exit(2); // error code 2 : wrong JVM
 			}
 			// set command line options
@@ -201,9 +201,8 @@ public class Main implements ITechnicalStrings {
 			initialCheckups();
 
 			// Set a session file
-			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
-					+ Util.getHostName() + '_'
-					+ System.getProperty("user.name"));
+			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/' + Util.getHostName()
+					+ '_' + System.getProperty("user.name"));
 			sessionUser.mkdir();
 
 			// log startup depends on : setExecLocation, initialCheckups
@@ -240,8 +239,7 @@ public class Main implements ITechnicalStrings {
 			if (!bFirstSession
 			// if first session, not taken as an upgrade
 					&& (sRelease == null || // null for jajuk releases < 1.2
-					!sRelease.substring(0, 3).equals(
-							JAJUK_VERSION.substring(0, 3)))) {
+					!sRelease.substring(0, 3).equals(JAJUK_VERSION.substring(0, 3)))) {
 				bUpgraded = true;
 			}
 			// Now set current release in the conf
@@ -255,23 +253,8 @@ public class Main implements ITechnicalStrings {
 						.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 			}
 			// Set locale. setSystemLocal
-			Messages.getInstance().setLocal(
-					ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-
-			// Registers supported look and feels
-			LNFManager.register(LNF_METAL, LNF_METAL_CLASS);
-			LNFManager.register(LNF_WINDOWS, LNF_WINDOWS_CLASS);
-			LNFManager.register(LNF_KUNSTSTOFF, LNF_KUNSTSTOFF_CLASS);
-			LNFManager.register(LNF_LIQUID, LNF_LIQUID_CLASS);
-			LNFManager.register(LNF_PLASTIC, LNF_PLASTIC_CLASS);
-			LNFManager.register(LNF_PLASTICXP, LNF_PLASTICXP_CLASS);
-			LNFManager.register(LNF_PLASTIC3D, LNF_PLASTIC3D_CLASS);
-			LNFManager.register(LNF_INFONODE, LNF_INFONODE_CLASS);
-			LNFManager.register(LNF_SQUARENESS, LNF_SQUARENESS_CLASS);
-			LNFManager.register(LNF_TINY, LNF_TINY_CLASS);
-			LNFManager.register(LNF_LOOKS, LNF_LOOKS_CLASS);
-			LNFManager.register(LNF_SUBSTANCE, LNF_SUBSTANCE_CLASS);
-			
+			Messages.getInstance()
+					.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 
 			// Launch splashscreen. Depends on: log.setVerbosity,
 			// configurationManager.load (for local)
@@ -279,10 +262,10 @@ public class Main implements ITechnicalStrings {
 				public void run() {
 					// Set look and feel, needs local to be set for error
 					// messages
-					LNFManager.setLookAndFeel(ConfigurationManager
-							.getProperty(CONF_OPTIONS_LNF));
-					sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false,
-							JAJUK_COPYRIGHT, JAJUK_VERSION + " " //$NON-NLS-1$
+					// Set window look and feel
+					Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+					sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT,
+							JAJUK_VERSION + " " //$NON-NLS-1$
 									+ JAJUK_VERSION_DATE, new Font("Dialog", //$NON-NLS-1$
 									Font.TRUETYPE_FONT, 12), null); //$NON-NLS-1$
 					sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
@@ -294,28 +277,22 @@ public class Main implements ITechnicalStrings {
 			sc.setProgress(0, Messages.getString("SplashScreen.0")); //$NON-NLS-1$
 
 			// Registers ItemManager managers
-			ItemManager.registerItemManager(org.jajuk.base.Album.class,
-					AlbumManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Author.class,
-					AuthorManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Device.class,
-					DeviceManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.File.class,
-					FileManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Directory.class,
-					DirectoryManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.PlaylistFile.class,
-					PlaylistFileManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Playlist.class,
-					PlaylistManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Style.class,
-					StyleManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Track.class,
-					TrackManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Type.class,
-					TypeManager.getInstance());
-			ItemManager.registerItemManager(org.jajuk.base.Year.class,
-					YearManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager
+					.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager
+					.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager
+					.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.PlaylistFile.class, PlaylistFileManager
+					.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager
+					.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
+			ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
 
 			// Upgrade configuration from previous releases
 			UpgradeManager.upgradeStep1();
@@ -336,12 +313,11 @@ public class Main implements ITechnicalStrings {
 					Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
 			DeviceManager.getInstance().registerDeviceType(
 					Messages.getString("Device_type.network_drive"));//$NON-NLS-1$
-			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.extdd"));//$NON-NLS-1$
-			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.player"));//$NON-NLS-1$
-			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.remote"));//$NON-NLS-1$
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
+			DeviceManager.getInstance()
+					.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
+			DeviceManager.getInstance()
+					.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
 
 			// registers supported audio supports and default properties
 			registerTypes();
@@ -385,12 +361,9 @@ public class Main implements ITechnicalStrings {
 					try {
 						if (iExitCode == 0) {
 							// Remove session flag
-							File sessionUser = Util
-									.getConfFileByPath(FILE_SESSIONS
-											+ '/'
-											+ InetAddress.getLocalHost()
-													.getHostName() + '_'
-											+ System.getProperty("user.name"));
+							File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
+									+ InetAddress.getLocalHost().getHostName() + '_'
+									+ System.getProperty("user.name"));
 							sessionUser.delete();
 
 							// commit only if exit is safe (to avoid commiting
@@ -404,24 +377,18 @@ public class Main implements ITechnicalStrings {
 							PerspectiveManager.commit();
 							// Commit collection if not refreshing ( fix for
 							// 939816 )
-							if (!DeviceManager.getInstance()
-									.isAnyDeviceRefreshing()) {
-								Collection
-										.commit(Util
-												.getConfFileByPath(FILE_COLLECTION_EXIT));
+							if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+								Collection.commit(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
 								// create a proof file
-								Util
-										.createEmptyFile(Util
-												.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
+								Util.createEmptyFile(Util
+										.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
 							}
 							// Commit toolbars (only if it is visible to avoid
 							// commiting void screen)
-							if (getWindow() != null
-									&& getWindow().isWindowVisible()) {
+							if (getWindow() != null && getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
-								FileOutputStream out = new FileOutputStream(
-										Util
-												.getConfFileByPath(FILE_TOOLBARS_CONF));
+								FileOutputStream out = new FileOutputStream(Util
+										.getConfFileByPath(FILE_TOOLBARS_CONF));
 								tbIO.writeXML(out);
 								out.flush();
 								out.close();
@@ -491,8 +458,7 @@ public class Main implements ITechnicalStrings {
 			exit(1);
 		} finally { // make sure to close splashscreen in all cases (ie if
 			// UI is not started)
-			if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)
-					&& sc != null) {
+			if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP) && sc != null) {
 				sc.setProgress(100);
 				sc.splashOff();
 			}
@@ -508,11 +474,10 @@ public class Main implements ITechnicalStrings {
 		// Check for bootstrap file presence
 		File bootstrap = new File(FILE_BOOTSTRAP);
 		File fJajukDir = Util.getConfFileByPath("");
-		
+
 		if (bootstrap.canRead()) {
 			try {
-				BufferedReader br = new BufferedReader(
-						new FileReader(bootstrap));
+				BufferedReader br = new BufferedReader(new FileReader(bootstrap));
 				// Bootstrap file should contain a single line containing the
 				// path to jajuk workspace
 				String sPath = br.readLine();
@@ -521,20 +486,20 @@ public class Main implements ITechnicalStrings {
 					Main.workspace = sPath;
 				}
 			} catch (Exception e) {
-				System.out
-						.println("Cannot read bootstrap file, using ~ directory");
+				System.out.println("Cannot read bootstrap file, using ~ directory");
 				Main.workspace = System.getProperty("user.home");
 			}
 		}
 		// No bootstrap or unreadable or the path included inside is not
 		// readable, show a wizard to select it
 		if ((!bootstrap.canRead() || Main.workspace == null)
-			//don't launch the first time wizard if a previous release .jajuk dir exists
-				//(upgrade)
-				&& !fJajukDir.canRead()){ 
-			//First time session ever
+		// don't launch the first time wizard if a previous release .jajuk dir
+				// exists
+				// (upgrade)
+				&& !fJajukDir.canRead()) {
+			// First time session ever
 			bFirstSession = true;
-			//display the first time wizard
+			// display the first time wizard
 			SwingUtilities.invokeAndWait(new Runnable() {
 
 				public void run() {
@@ -578,11 +543,11 @@ public class Main implements ITechnicalStrings {
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/"+ THUMBNAIL_SIZE_50x50);
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_50x50);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/"+ THUMBNAIL_SIZE_100x100); 
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_100x100);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
@@ -598,38 +563,38 @@ public class Main implements ITechnicalStrings {
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/"+ THUMBNAIL_SIZE_300x300);
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300);
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
 		// check for default covers
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/"+THUMBNAIL_SIZE_50x50+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/" + THUMBNAIL_SIZE_50x50 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 50);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/"+THUMBNAIL_SIZE_100x100+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/" + THUMBNAIL_SIZE_100x100 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 100);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/"+THUMBNAIL_SIZE_150x150+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/" + THUMBNAIL_SIZE_150x150 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 150);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/"+THUMBNAIL_SIZE_200x200+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/" + THUMBNAIL_SIZE_200x200 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 200);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/"+THUMBNAIL_SIZE_250x250+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/" + THUMBNAIL_SIZE_250x250 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 250);
 		}
 		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/"+THUMBNAIL_SIZE_300x300+"/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+				+ "/" + THUMBNAIL_SIZE_300x300 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
 		if (!fThumbs.exists()) {
 			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 300);
 		}
@@ -656,11 +621,9 @@ public class Main implements ITechnicalStrings {
 					// try to download static mplayer distro if needed
 					try {
 						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
-						File fMPlayer = Util
-								.getConfFileByPath(FILE_MPLAYER_EXE); //$NON-NLS-1$
+						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE); //$NON-NLS-1$
 						sc.setProgress(5, Messages.getString("Main.22")); //$NON-NLS-1$
-						DownloadManager
-								.download(new URL(URL_MPLAYER), fMPlayer);
+						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						// make sure to delete corrupted mplayer in case of
 						// download problem
 						if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
@@ -683,8 +646,8 @@ public class Main implements ITechnicalStrings {
 					// check Mplayer release : 1.0pre8 min
 					proc = Runtime.getRuntime().exec(
 							new String[] { "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					BufferedReader in = new BufferedReader(
-							new InputStreamReader(proc.getInputStream()));
+					BufferedReader in = new BufferedReader(new InputStreamReader(proc
+							.getInputStream()));
 					String line = null;
 					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
 					for (; (line = in.readLine()) != null;) {
@@ -704,25 +667,21 @@ public class Main implements ITechnicalStrings {
 				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
 					if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
 						// No mplayer
-						Messages.showHideableWarningMessage(Messages
-								.getString("Warning.0"), //$NON-NLS-1$
+						Messages.showHideableWarningMessage(Messages.getString("Warning.0"), //$NON-NLS-1$
 								CONF_NOT_SHOW_AGAIN_PLAYER);
 					} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
 						// wrong mplayer release
-						Messages.showHideableWarningMessage(Messages
-								.getString("Warning.1"), //$NON-NLS-1$
+						Messages.showHideableWarningMessage(Messages.getString("Warning.1"), //$NON-NLS-1$
 								CONF_NOT_SHOW_AGAIN_PLAYER);
 					}
 				}
 				// mp3
 				Type type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.mp3"), EXT_MP3, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER),
-						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_MP3);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3.toExternalForm());
 				// playlists
 				type = TypeManager.getInstance().registerType(
@@ -733,44 +692,35 @@ public class Main implements ITechnicalStrings {
 				// Ogg vorbis
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.ogg"), EXT_OGG, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER),
-						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_OGG);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG.toExternalForm());
 				// Wave
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER),
-						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_WAVE);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV.toExternalForm());
 				// au
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER),
-						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
-				type
-						.setProperty(XML_TYPE_TECH_DESC,
-								TYPE_PROPERTY_TECH_DESC_AU);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU.toExternalForm());
 			} else { // mplayer enabled
 				// mp3
 				Type type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.mp3"), EXT_MP3, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_MP3);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3.toExternalForm());
 				// playlists
 				type = TypeManager.getInstance().registerType(
@@ -781,55 +731,42 @@ public class Main implements ITechnicalStrings {
 				// Ogg vorbis
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.ogg"), EXT_OGG, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_OGG);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG.toExternalForm());
 				// Wave
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_WAVE);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV.toExternalForm());
 				// au
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type
-						.setProperty(XML_TYPE_TECH_DESC,
-								TYPE_PROPERTY_TECH_DESC_AU);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU.toExternalForm());
 				// flac
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.flac"), EXT_FLAC, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_FLAC);
-				type
-						.setProperty(XML_TYPE_ICON, ICON_TYPE_FLAC
-								.toExternalForm());
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_FLAC);
+				type.setProperty(XML_TYPE_ICON, ICON_TYPE_FLAC.toExternalForm());
 				// WMA
 				type = TypeManager.getInstance().registerType(
 						Messages.getString("Type.wma"), EXT_WMA, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER),
-						Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_WMA);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WMA);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WMA.toExternalForm());
 				// AAC
 				type = TypeManager.getInstance().registerType(
@@ -837,8 +774,7 @@ public class Main implements ITechnicalStrings {
 						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_AAC);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC.toExternalForm());
 				// M4A (=AAC)
 				type = TypeManager.getInstance().registerType(
@@ -846,8 +782,7 @@ public class Main implements ITechnicalStrings {
 						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_AAC);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC.toExternalForm());
 				// Real audio
 				type = TypeManager.getInstance().registerType(
@@ -855,8 +790,7 @@ public class Main implements ITechnicalStrings {
 						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_TECH_DESC,
-						TYPE_PROPERTY_TECH_DESC_RAM);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RAM);
 				type.setProperty(XML_TYPE_ICON, ICON_TYPE_RAM.toExternalForm());
 			}
 		} catch (Exception e1) {
@@ -909,13 +843,13 @@ public class Main implements ITechnicalStrings {
 		} catch (UnknownHostException e) {
 			sHostname = "";
 		}
-		//display a warning if sessions directory contains some others users
-		// We ignore presence of ourself session id that can be caused by a crash
+		// display a warning if sessions directory contains some others users
+		// We ignore presence of ourself session id that can be caused by a
+		// crash
 		if (files.length > 0
 				&& !(files.length == 1 && files[0].getName().equals(
-						sHostname+ '_' + System.getProperty("user.name")))) {
-			Messages.showHideableWarningMessage(
-					Messages.getString("Warning.2"), //$NON-NLS-1$
+						sHostname + '_' + System.getProperty("user.name")))) {
+			Messages.showHideableWarningMessage(Messages.getString("Warning.2"), //$NON-NLS-1$
 					CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
 		}
 	}
@@ -938,11 +872,9 @@ public class Main implements ITechnicalStrings {
 			Log.error(e);
 		}
 		// check if a confirmation is needed
-		if (Boolean.valueOf(
-				ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT))
+		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT))
 				.booleanValue()) {
-			int iResu = Messages.getChoice(Messages
-					.getString("Confirmation_exit"), //$NON-NLS-1$
+			int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"), //$NON-NLS-1$
 					JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
 				return;
@@ -960,8 +892,7 @@ public class Main implements ITechnicalStrings {
 		 * alert playlists editors ( queue playlist ) something changed for him
 		 * hide window
 		 */
-		ObservationManager
-				.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		if (jw != null)
 			jw.display(false);
 		// hide systray
@@ -982,8 +913,7 @@ public class Main implements ITechnicalStrings {
 		}
 		File fCollection = Util.getConfFileByPath(FILE_COLLECTION);
 		File fCollectionExit = Util.getConfFileByPath(FILE_COLLECTION_EXIT);
-		File fCollectionExitProof = Util
-				.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
+		File fCollectionExitProof = Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
 		// check if previous exit was OK
 		boolean bParsingOK = true;
 		try {
@@ -995,8 +925,8 @@ public class Main implements ITechnicalStrings {
 				// final collection
 				fCollectionExit.renameTo(fCollection);
 				// backup the collection
-				Util.backupFile(Util.getConfFileByPath(FILE_COLLECTION),
-						ConfigurationManager.getInt(CONF_BACKUP_SIZE));
+				Util.backupFile(Util.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
+						.getInt(CONF_BACKUP_SIZE));
 			} else {
 				bCrashRecover = true;
 				throw new JajukException("005"); //$NON-NLS-1$
@@ -1020,17 +950,15 @@ public class Main implements ITechnicalStrings {
 		}
 		if (!bParsingOK) { // even final collection file parsing failed
 			// (very unlikely), try to restore a backup file
-			File[] fBackups = Util.getConfFileByPath("").listFiles(
-					new FilenameFilter() {
-						public boolean accept(File dir, String name) {
-							if (name.indexOf("backup") != -1) { //$NON-NLS-1$
-								return true;
-							}
-							return false;
-						}
-					});
-			ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays
-					.asList(fBackups));
+			File[] fBackups = Util.getConfFileByPath("").listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					if (name.indexOf("backup") != -1) { //$NON-NLS-1$
+						return true;
+					}
+					return false;
+				}
+			});
+			ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
 			Collections.sort(alBackupFiles); // sort alphabetically (newest
 			// last)
 			Collections.reverse(alBackupFiles); // newest first now
@@ -1071,21 +999,16 @@ public class Main implements ITechnicalStrings {
 	private static void launchInitialTrack() {
 		List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
 		org.jajuk.base.File fileToPlay = null;
-		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
-				STARTUP_MODE_NOTHING)) {
-			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
-					STARTUP_MODE_LAST)
-					|| ConfigurationManager.getProperty(CONF_STARTUP_MODE)
-							.equals(STARTUP_MODE_LAST_KEEP_POS)
+		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)) {
+			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
+					|| ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
+							STARTUP_MODE_LAST_KEEP_POS)
 					|| ConfigurationManager.getProperty(CONF_STARTUP_MODE)
 							.equals(STARTUP_MODE_FILE)) {
 
-				if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
-						STARTUP_MODE_FILE)) {
-					fileToPlay = FileManager.getInstance()
-							.getFileByID(
-									ConfigurationManager
-											.getProperty(CONF_STARTUP_FILE));
+				if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
+					fileToPlay = FileManager.getInstance().getFileByID(
+							ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				} else {
 					// last file from beginning or last file keep position
 					if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
@@ -1119,8 +1042,8 @@ public class Main implements ITechnicalStrings {
 							Properties pDetail = new Properties();
 							pDetail.put(DETAIL_CURRENT_FILE, fileToPlay);
 							pDetail.put(DETAIL_REASON, "010");//$NON-NLS-1$
-							ObservationManager.notify(new Event(
-									EventSubject.EVENT_PLAY_ERROR, pDetail));
+							ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,
+									pDetail));
 							FIFO.setFirstFile(false); // no more first file
 						}
 					}
@@ -1134,22 +1057,19 @@ public class Main implements ITechnicalStrings {
 				}
 				// For last tracks playing, add all ready files from last
 				// session stored FIFO
-				if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
-						STARTUP_MODE_LAST)
-						|| ConfigurationManager.getProperty(CONF_STARTUP_MODE)
-								.equals(STARTUP_MODE_LAST_KEEP_POS)) {
+				if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
+						|| ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
+								STARTUP_MODE_LAST_KEEP_POS)) {
 					File fifo = Util.getConfFileByPath(FILE_FIFO);
 					if (!fifo.exists()) {
 						Log.debug("No fifo file"); //$NON-NLS-1$
 					} else {
 						try {
-							BufferedReader br = new BufferedReader(
-									new FileReader(Util
-											.getConfFileByPath(FILE_FIFO)));
+							BufferedReader br = new BufferedReader(new FileReader(Util
+									.getConfFileByPath(FILE_FIFO)));
 							String s = null;
 							for (; (s = br.readLine()) != null;) {
-								org.jajuk.base.File file = FileManager
-										.getInstance().getFileByID(s);
+								org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
 								if (file != null && file.isReady()) {
 									alToPlay.add(file);
 								}
@@ -1160,23 +1080,21 @@ public class Main implements ITechnicalStrings {
 						}
 					}
 				}
-			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE)
-					.equals(STARTUP_MODE_SHUFFLE)) {
+			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
+					STARTUP_MODE_SHUFFLE)) {
 				alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE)
-					.equals(STARTUP_MODE_BESTOF)) {
+			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
+					STARTUP_MODE_BESTOF)) {
 				alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE)
-					.equals(STARTUP_MODE_NOVELTIES)) {
-				alToPlay = FileManager.getInstance()
-						.getGlobalNoveltiesPlaylist();
+			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
+					STARTUP_MODE_NOVELTIES)) {
+				alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
 				if (alToPlay != null && alToPlay.size() > 0) {
 					// shuffle the selection
 					Collections.shuffle(alToPlay, new Random());
 				} else {
 					// Alert user that no novelties have been found
-					InformationJPanel.getInstance().setMessage(
-							Messages.getString("Error.127"), //$NON-NLS-1$
+					InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"), //$NON-NLS-1$
 							InformationJPanel.ERROR);
 				}
 			}
@@ -1204,8 +1122,7 @@ public class Main implements ITechnicalStrings {
 					// we can't use regular Messages.showErrorMessage
 					// because main window is not yet displayed
 					String sError = Messages.getErrorMessage("112") + " : " + device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
-					InformationJPanel.getInstance().setMessage(sError,
-							InformationJPanel.ERROR); //$NON-NLS-1$
+					InformationJPanel.getInstance().setMessage(sError, InformationJPanel.ERROR); //$NON-NLS-1$
 					continue;
 				}
 			}
@@ -1242,18 +1159,15 @@ public class Main implements ITechnicalStrings {
 					DockingPreferences.initHeavyWeightUsage();
 					DockingPreferences.setSingleHeavyWeightComponent(true);
 					// Light drag and drop for VLDocking
-					UIManager.put("DragControler.paintBackgroundUnderDragRect",
-							Boolean.FALSE);
+					UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
 
-					// Set look and feel, needs local to be set for error
-					// messages
-					LNFManager.setLookAndFeel(ConfigurationManager
-							.getProperty(CONF_OPTIONS_LNF));
-					
+					// Set windows decoration to look and feel
+					JFrame.setDefaultLookAndFeelDecorated(true);
+					JDialog.setDefaultLookAndFeelDecorated(true);
+
 					// Prepare toolbars
 					DockingUISettings.getInstance().installUI();
-					tbcontainer = ToolBarContainer.createDefaultContainer(true,
-							true, true, true);
+					tbcontainer = ToolBarContainer.createDefaultContainer(true, true, true, true);
 					tbcontainer.setOpaque(false);
 
 					// starts ui
@@ -1293,7 +1207,7 @@ public class Main implements ITechnicalStrings {
 					jw.setVisible(true);
 
 					// Apply size and location again
-					// (needed by Gnome for ie to fix the 0-sized maximized
+					// (required by Gnome for ie to fix the 0-sized maximized
 					// frame)
 					jw.applyStoredSize();
 
@@ -1308,8 +1222,7 @@ public class Main implements ITechnicalStrings {
 					UpgradeManager.upgradeStep2();
 
 					// Display tip of the day if required
-					if (ConfigurationManager
-							.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
+					if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
 						TipOfTheDay tipsView = new TipOfTheDay();
 						tipsView.setLocationRelativeTo(jw);
 						tipsView.setVisible(true);
@@ -1338,8 +1251,6 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (Util.isUnderLinux() || Util.isUnderWindows()) {
-					LNFManager.setLookAndFeel(ConfigurationManager
-							.getProperty(CONF_OPTIONS_LNF));
 					jsystray = JajukSystray.getInstance();
 				}
 			}

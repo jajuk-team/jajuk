@@ -834,7 +834,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						return;
 					}
 				}
-				// right clic on a selected node set
+				// right click on a selected node set
 				jmenuFile.show(jtable, e.getX(), e.getY());
 			}
 		}

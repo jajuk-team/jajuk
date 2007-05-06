@@ -68,7 +68,8 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	 * Constructor for PerspectiveBarJPanel.
 	 */
 	private PerspectiveBarJPanel() {
-		setBackgroundPainter(Util.aerithGrandient);
+		setOpaque(false);
+		//setBackgroundPainter(Util.aerithGrandient);
 		update();
 	}
 

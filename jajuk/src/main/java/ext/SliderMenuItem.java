@@ -12,9 +12,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JSlider;
 import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 /**
  * Menu item slidebar
@@ -23,10 +20,7 @@ public class SliderMenuItem extends JSlider implements MenuElement {
 
 	private static final long serialVersionUID = 1L;
 
-	public SliderMenuItem(int iMin, int iMax, int iValue, String sTitle) {
-		setBorder(new CompoundBorder(new TitledBorder(sTitle), new EmptyBorder(
-				10, 10, 10, 10)));
-
+	public SliderMenuItem(int iMin, int iMax, int iValue) {
 		setMajorTickSpacing(8);
 		setMinorTickSpacing(6);
 		setMinimum(iMin);
