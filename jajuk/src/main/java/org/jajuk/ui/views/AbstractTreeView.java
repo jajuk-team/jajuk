@@ -61,6 +61,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+		
 		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,
 				Color.ORANGE);
 		Highlighter hAlternate = new AlternateRowHighlighter();

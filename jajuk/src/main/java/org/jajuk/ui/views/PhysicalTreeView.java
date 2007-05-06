@@ -651,9 +651,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				// No CDDB on directories without files
 				if (alSelected.size() > 0 && alSelected.get(0) instanceof Directory) {
 					boolean bShowCDDB = false;
-					for (Item item : alSelected) { // if at least one
-						// selected dir contains
-						// a file, show option
+					for (Item item : alSelected) {
+						//check it is a directory (can be a file if user selects n files + n directories)
+						if (!(item instanceof Directory)){
+							continue;
+						}
+						// if at least one selected dir contains a file, show option
 						Directory dir = (Directory) item;
 						if (dir.getFiles().size() > 0) {
 							bShowCDDB = true;
@@ -663,7 +666,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				}
 			}
 		});
-		// Listen for double clic
+		// Listen for double click
 		MouseListener ml = new MouseAdapter() {
 			public void mousePressed(final MouseEvent e) {
 				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -683,9 +686,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 						} catch (JajukException je) {
 							Log.error(je);
 						}
-					} else if (o instanceof PlaylistFileNode) { // double clic
-						// on a playlist
-						// file
+					} 
+					// double click  on a playlist file
+					else if (o instanceof PlaylistFileNode) { 
 						PlaylistFile plf = ((PlaylistFileNode) o).getPlaylistFile();
 						ArrayList<File> alFiles = new ArrayList<File>(10);
 						try {
@@ -695,9 +698,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							Messages.showErrorMessage(je.getCode(), plf.getName()); //$NON-NLS-1$
 							return;
 						}
-						if (alFiles.size() == 0) { // check playlist file
-							// contains accessible
-							// tracks
+						// check playlist file contains accessible tracks
+						if (alFiles.size() == 0) { 
 							Messages.showErrorMessage("018"); //$NON-NLS-1$
 							return;
 						} else {
@@ -707,8 +709,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 											true), false);
 						}
 					}
-				} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
-					// right clic on a selected node set Right clic behavior
+				} else if (e.getClickCount() == 1 
+						&& e.getButton() == MouseEvent.BUTTON3) {
+					// right click on a selected node set Right click behavior
 					// identical to konqueror tree:
 					// if none or 1 node is selected, a right click on another
 					// node select it if more than 1, we keep selection and
