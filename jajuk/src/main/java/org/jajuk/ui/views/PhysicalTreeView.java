@@ -52,6 +52,7 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -89,7 +90,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
@@ -225,9 +225,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	 * Used to differentiate user action tree collapse from code tree colapse*
 	 */
 	private boolean bAutoCollapse = false;
-
-	// Concurrency locker
-	private volatile short[] lock = new short[0];
 
 	/*
 	 * (non-Javadoc)
@@ -462,7 +459,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// create tree
 		createTree();
 
-		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
+		jtree.setCellRenderer(new SubstanceDefaultTreeCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
 			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
@@ -492,8 +489,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					}
 					File current = FIFO.getInstance().getCurrentFile();
 					if (current != null && file.equals(current)) {
-						setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-						setForeground(new Color(200, 70, 10));
+						setBackground(Color.ORANGE);
+						setForeground(Color.BLACK);
+					}
+					else{
+						//Make sure others nodes take default color
+						setBackground(null);
 					}
 				} else if (value instanceof PlaylistFileNode) {
 					setBorder(null);

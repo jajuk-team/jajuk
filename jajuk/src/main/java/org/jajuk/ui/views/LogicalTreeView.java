@@ -495,132 +495,144 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		// Tree selection listener to detect a selection
 		jtree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
-				TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
-				if (tpSelected == null) {
-					return;
-				}
-				HashSet<Track> hsSelectedTracks = new HashSet<Track>(100);
-				int items = 0;
-				// get all components recursively
-				alSelected.clear();
-				for (int i = 0; i < tpSelected.length; i++) {
-					Object o = tpSelected[i].getLastPathComponent();
-					if (o instanceof TransferableTreeNode) {
-						alSelected.add((Item) ((TransferableTreeNode) o).getData());
-					} else { // collection node
-						items = TrackManager.getInstance().getElementCount();
-						for (Item item : alSelected) {
-							hsSelectedTracks.add((Track) item);
-						}
-						break;
+				// Avoid concurrency with the mouse listener
+				synchronized (lock) {
+					TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+					if (tpSelected == null) {
+						return;
 					}
-					// return all child nodes recursively
-					Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
-					while (e2.hasMoreElements()) {
-						DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
-						if (node instanceof TrackNode) {
-							Track track = ((TrackNode) node).getTrack();
-							if (hsSelectedTracks.contains(track)) {
-								// don't count the same track several time if
-								// user select directory and then tracks inside
-								continue;
-							}
-							items++;
-							hsSelectedTracks.add(track);
-						}
-					}
-				}
-				StringBuffer sbOut = new StringBuffer().append(items).append(
-						Messages.getString("LogicalTreeView.31")); //$NON-NLS-1$
-				InformationJPanel.getInstance().setSelection(sbOut.toString());
-				if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
-					// if table is synchronized with tree, notify the
-					// selection change
-					Properties properties = new Properties();
-					properties.put(DETAIL_SELECTION, hsSelectedTracks);
-					ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
-							properties));
-				}
-				// disable reporting if multiple selection
-				jmiCollectionReport.setEnabled(alSelected.size() == 1);
-				jmiAlbumReport.setEnabled(alSelected.size() == 1);
-				jmiAuthorReport.setEnabled(alSelected.size() == 1);
-				jmiStyleReport.setEnabled(alSelected.size() == 1);
-				jmiYearReport.setEnabled(alSelected.size() == 1);
-			}
-		});
-		// Listen for double click
-		MouseListener ml = new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-				if (path == null) {
-					return;
-				}
-				if (e.getClickCount() == 2) {
-					Object o = path.getLastPathComponent();
-					if (o instanceof TrackNode) {
-						Track track = ((TrackNode) o).getTrack();
-						File file = track.getPlayeableFile(false);
-						if (file != null) {
-							try {
-								FIFO.getInstance().push(
-										new StackItem(file, ConfigurationManager
-												.getBoolean(CONF_STATE_REPEAT), true),
-										ConfigurationManager
-												.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
-							} catch (JajukException je) {
-								Log.error(je);
-							}
-						} else {
-							Messages.showErrorMessage("010", track.getName()); //$NON-NLS-1$
-						}
-					}
-				} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
-					// right click on a selected node set right click behavior
-					// identical to konqueror tree:
-					// if none or 1 node is selected, a right click on
-					// another node select it. if more than 1, we keep selection
-					// and display a popup for them
-					if (jtree.getSelectionCount() < 2) {
-						jtree.getSelectionModel().setSelectionPath(path);
-					}
-					paths = jtree.getSelectionModel().getSelectionPaths();
-					alTracks = new ArrayList<Track>(100);
-					// test mix between types ( not allowed )
-					String sClass = paths[0].getLastPathComponent().getClass().toString();
-					for (int i = 0; i < paths.length; i++) {
-						if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)) {
-							return;
-						}
-					}
+					HashSet<Track> hsSelectedTracks = new HashSet<Track>(100);
+					int items = 0;
 					// get all components recursively
-					for (int i = 0; i < paths.length; i++) {
-						Object o = paths[i].getLastPathComponent();
+					alSelected.clear();
+					for (int i = 0; i < tpSelected.length; i++) {
+						Object o = tpSelected[i].getLastPathComponent();
+						if (o instanceof TransferableTreeNode) {
+							alSelected.add((Item) ((TransferableTreeNode) o).getData());
+						} else { // collection node
+							items = TrackManager.getInstance().getElementCount();
+							for (Item item : alSelected) {
+								hsSelectedTracks.add((Track) item);
+							}
+							break;
+						}
 						// return all child nodes recursively
 						Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
 						while (e2.hasMoreElements()) {
 							DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
 							if (node instanceof TrackNode) {
 								Track track = ((TrackNode) node).getTrack();
-								if (track.getPlayeableFile(false) != null) {
-									alTracks.add(((TrackNode) node).getTrack());
+								if (hsSelectedTracks.contains(track)) {
+									// don't count the same track several time
+									// if
+									// user select directory and then tracks
+									// inside
+									continue;
 								}
+								items++;
+								hsSelectedTracks.add(track);
 							}
 						}
 					}
-					// display menus according node type
-					if (paths[0].getLastPathComponent() instanceof TrackNode) {
-						jmenuTrack.show(jtree, e.getX(), e.getY());
-					} else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
-						jmenuAlbum.show(jtree, e.getX(), e.getY());
-					} else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
-						jmenuAuthor.show(jtree, e.getX(), e.getY());
-					} else if (paths[0].getLastPathComponent() instanceof StyleNode) {
-						jmenuStyle.show(jtree, e.getX(), e.getY());
-					} else if (paths[0].getLastPathComponent() instanceof YearNode) {
-						jmenuYear.show(jtree, e.getX(), e.getY());
-					} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
-						jmenuCollection.show(jtree, e.getX(), e.getY());
+					StringBuffer sbOut = new StringBuffer().append(items).append(
+							Messages.getString("LogicalTreeView.31")); //$NON-NLS-1$
+					InformationJPanel.getInstance().setSelection(sbOut.toString());
+					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+						// if table is synchronized with tree, notify the
+						// selection change
+						Properties properties = new Properties();
+						properties.put(DETAIL_SELECTION, hsSelectedTracks);
+						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
+								properties));
+					}
+					// disable reporting if multiple selection
+					jmiCollectionReport.setEnabled(alSelected.size() == 1);
+					jmiAlbumReport.setEnabled(alSelected.size() == 1);
+					jmiAuthorReport.setEnabled(alSelected.size() == 1);
+					jmiStyleReport.setEnabled(alSelected.size() == 1);
+					jmiYearReport.setEnabled(alSelected.size() == 1);
+				}
+			}
+		});
+		// Listen for double click
+		MouseListener ml = new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				// Avoid concurrency with the selection listener
+				synchronized (lock) {
+					TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+					if (path == null) {
+						return;
+					}
+					if (e.getClickCount() == 2) {
+						Object o = path.getLastPathComponent();
+						if (o instanceof TrackNode) {
+							Track track = ((TrackNode) o).getTrack();
+							File file = track.getPlayeableFile(false);
+							if (file != null) {
+								try {
+									FIFO.getInstance().push(
+											new StackItem(file, ConfigurationManager
+													.getBoolean(CONF_STATE_REPEAT), true),
+											ConfigurationManager
+													.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+								} catch (JajukException je) {
+									Log.error(je);
+								}
+							} else {
+								Messages.showErrorMessage("010", track.getName()); //$NON-NLS-1$
+							}
+						}
+					} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
+						// right click on a selected node set right click
+						// behavior
+						// identical to konqueror tree:
+						// if none or 1 node is selected, a right click on
+						// another node select it. if more than 1, we keep
+						// selection
+						// and display a popup for them
+						if (jtree.getSelectionCount() < 2) {
+							jtree.getSelectionModel().setSelectionPath(path);
+						}
+						paths = jtree.getSelectionModel().getSelectionPaths();
+						alTracks = new ArrayList<Track>(100);
+						// test mix between types ( not allowed )
+						String sClass = paths[0].getLastPathComponent().getClass().toString();
+						for (int i = 0; i < paths.length; i++) {
+							if (!paths[i].getLastPathComponent().getClass().toString().equals(
+									sClass)) {
+								return;
+							}
+						}
+						// get all components recursively
+						for (int i = 0; i < paths.length; i++) {
+							Object o = paths[i].getLastPathComponent();
+							// return all child nodes recursively
+							Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
+							while (e2.hasMoreElements()) {
+								DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
+										.nextElement();
+								if (node instanceof TrackNode) {
+									Track track = ((TrackNode) node).getTrack();
+									if (track.getPlayeableFile(false) != null) {
+										alTracks.add(((TrackNode) node).getTrack());
+									}
+								}
+							}
+						}
+						// display menus according node type
+						if (paths[0].getLastPathComponent() instanceof TrackNode) {
+							jmenuTrack.show(jtree, e.getX(), e.getY());
+						} else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
+							jmenuAlbum.show(jtree, e.getX(), e.getY());
+						} else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
+							jmenuAuthor.show(jtree, e.getX(), e.getY());
+						} else if (paths[0].getLastPathComponent() instanceof StyleNode) {
+							jmenuStyle.show(jtree, e.getX(), e.getY());
+						} else if (paths[0].getLastPathComponent() instanceof YearNode) {
+							jmenuYear.show(jtree, e.getX(), e.getY());
+						} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+							jmenuCollection.show(jtree, e.getX(), e.getY());
+						}
 					}
 				}
 			}

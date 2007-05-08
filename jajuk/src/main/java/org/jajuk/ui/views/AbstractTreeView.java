@@ -22,12 +22,7 @@ package org.jajuk.ui.views;
 
 import org.jajuk.base.Item;
 import org.jdesktop.swingx.JXTree;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
-import org.jdesktop.swingx.decorator.HighlighterPipeline;
-import org.jdesktop.swingx.decorator.RolloverHighlighter;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
@@ -49,6 +44,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
 	/** Current selection */
 	TreePath[] paths;
+	
+	/** Concurrency locker **/
+	volatile short[] lock = new short[0];
 
 	/** Items selection */
 	ArrayList<Item> alSelected = new ArrayList<Item>(100);
@@ -61,14 +59,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		
-		Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,
-				Color.ORANGE);
-		Highlighter hAlternate = new AlternateRowHighlighter();
-		HighlighterPipeline pipeHighlight = new HighlighterPipeline(
-				new Highlighter[] { highlighter,hAlternate });
-		jtree.setHighlighters(pipeHighlight);
-		jtree.setRolloverEnabled(true);
 		return jtree;
 	}
 
