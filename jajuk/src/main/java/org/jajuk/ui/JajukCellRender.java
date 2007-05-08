@@ -20,36 +20,36 @@
 
 package org.jajuk.ui;
 
-import java.awt.Component;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
+import java.awt.Component;
+import java.awt.Font;
+
+import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Cell renderer to support cells color and icons
  */
-public class JajukCellRender extends DefaultTableCellRenderer {
+public class JajukCellRender extends SubstanceDefaultTableCellRenderer implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 154545454L;
 
-	public Component getTableCellRendererComponent(JTable table, Object oValue,
-			boolean selected, boolean focused, int row, int column) {
-		setEnabled(table == null || table.isEnabled()); 
-		if (oValue instanceof IconLabel) {
-			IconLabel iconLabel = (IconLabel) oValue;
-			setIcon(iconLabel.getIcon());
-			if (iconLabel.getText() != null) {
-				setText(iconLabel.getText());
-			}
-			setBackground(iconLabel.getBackground());
-			setForeground(iconLabel.getForeground());
-			super.getTableCellRendererComponent(table, oValue, selected,
-					focused, row, column); 
-			if (iconLabel.getFont() != null) {
-				setFont(iconLabel.getFont());
-			}
+	public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
+			boolean focused, int row, int column) {
+		Component c = super.getTableCellRendererComponent(table, oValue, selected, focused, row,
+				column);
+		if (oValue instanceof IconLabel){
+			((JLabel)c).setIcon(((IconLabel)oValue));
+			((JLabel)c).setToolTipText(((IconLabel)oValue).getTooltip());
+			((JLabel)c).setFont(((IconLabel)oValue).getFont());
+			((JLabel)c).setText(((IconLabel)oValue).getText());
 		}
-		return this;
+		c.setEnabled(table == null || table.isEnabled());
+		c.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
+		return c;
 	}
 
 }

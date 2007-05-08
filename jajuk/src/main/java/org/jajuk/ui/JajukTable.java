@@ -24,16 +24,9 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
-import org.jdesktop.swingx.decorator.HighlighterPipeline;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.SubstanceTheme;
 
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,14 +34,13 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 /**
- * JTable with followinf features:
+ * JXTable with following features:
  * <p>
- * Sortable
+ * Remembers columns visibility
  * <p>
  * Tooltips on each cell
  */
@@ -67,55 +59,15 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 *            is this table sortable
 	 * @sConf: configuration variable used to store columns conf
 	 */
-	public JajukTable(TableModel model, TableColumnModel colModel, boolean bSortable, String sConf) {
-		super(model, colModel);
-		this.sConf = sConf;
-		setShowGrid(false);
-		setOpaque(false);
-		init(bSortable);
-		setfont();
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param model :
-	 *            model to use
-	 * @param bSortable :
-	 *            is this table sortable
-	 * @sConf: configuration variable used to store columns conf
-	 */
 	public JajukTable(TableModel model, boolean bSortable, String sConf) {
 		super(model);
 		this.sConf = sConf;
 		setShowGrid(false);
-		setOpaque(false);
 		init(bSortable);
-		setfont();
-	}
-
-	/**
-	 * Set font by setting a default cell renderer on the table
-	 * 
-	 */
-	private void setfont() {
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
-		while (it.hasNext()) {
-			TableColumnExt col = (TableColumnExt) it.next();
-			col.setCellRenderer(new DefaultTableCellRenderer() {
-				private static final long serialVersionUID = 3566323371751785978L;
-
-				public Component getTableCellRendererComponent(JTable table, Object value,
-						boolean isSelected, boolean hasFocus, int row, int column) {
-					super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
-							column);
-					setFont(new Font(
-							"Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
-					return this;
-				}
-			});
+		//Force to use Jajuk cell render for all columns
+		for (TableColumn col : getColumns()){
+			col.setCellRenderer(new JajukCellRender());
 		}
-
 	}
 
 	/**
@@ -132,7 +84,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	private void init(boolean bSortable) {
 		super.setSortable(bSortable);
 		super.setColumnControlVisible(true);
-		setRolloverEnabled(true);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		packAll();
 	}

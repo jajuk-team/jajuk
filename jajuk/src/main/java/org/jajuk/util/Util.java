@@ -1109,7 +1109,6 @@ public class Util implements ITechnicalStrings {
 			UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
 			UIManager.put(SubstanceLookAndFeel.ENABLE_INVERTED_THEMES, Boolean.TRUE);
 			UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES, Boolean.TRUE);
-			
 			// Check the theme is known, if not take the default theme
 			Map<String, ThemeInfo> themes = SubstanceLookAndFeel.getAllThemes();
 			if (themes.get(theme) == null) {

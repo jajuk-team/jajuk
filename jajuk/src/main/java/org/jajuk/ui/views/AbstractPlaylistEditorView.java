@@ -476,8 +476,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		ListSelectionModel lsm = jtable.getSelectionModel();
 		lsm.addListSelectionListener(this);
 		double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
-		// Just to check if someone will read this code: if you read this,
-		// send me an e-mail at bflorat@users.sourceforge.net
 		setLayout(new TableLayout(size));
 		add(jpControl, "0,0"); //$NON-NLS-1$
 		add(new JScrollPane(jtable), "0,1"); //$NON-NLS-1$
@@ -556,15 +554,16 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 
 	private void setRenderers() {
 		// set right cell renderer for play and rate icons
+		//Play icon
 		TableColumn col = jtable.getColumnModel().getColumn(0);
 		col.setCellRenderer(new JajukCellRender());
-		col = jtable.getColumnModel().getColumn(5); // rate
+		col.setMinWidth(PLAY_COLUMN_SIZE);
+		col.setMaxWidth(PLAY_COLUMN_SIZE);
+		// rate
+		col = jtable.getColumnModel().getColumn(5); 
 		col.setCellRenderer(new JajukCellRender());
 		col.setMinWidth(RATE_COLUMN_SIZE);
 		col.setMaxWidth(RATE_COLUMN_SIZE);
-		col = jtable.getColumnModel().getColumn(0); // icon
-		col.setMinWidth(PLAY_COLUMN_SIZE);
-		col.setMaxWidth(PLAY_COLUMN_SIZE);
 	}
 
 	/*

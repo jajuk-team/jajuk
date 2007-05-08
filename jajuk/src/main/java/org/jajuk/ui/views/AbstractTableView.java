@@ -22,15 +22,16 @@ package org.jajuk.ui.views;
 
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.JajukToggleButton;
@@ -43,6 +44,8 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ConditionalHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -191,7 +194,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11")); //$NON-NLS-1$
 				jtbEditable.addActionListener(AbstractTableView.this);
 				jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
-				// properties combo box, fill with colums names expect ID
+				// properties combo box, fill with columns names expect ID
 				jcbProperty = new JComboBox();
 				// "any" criteria
 				jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //$NON-NLS-1$
@@ -235,6 +238,37 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				add(new JScrollPane(jtable), "0,1"); //$NON-NLS-1$
 				jtable.setDragEnabled(true);
 				jtable.setTransferHandler(new TableTransferHandler(jtable));
+				jtable
+						.addHighlighter(new ConditionalHighlighter(Color.ORANGE, Color.BLACK, -1,
+								-1) {
+
+							@Override
+							protected boolean test(ComponentAdapter adapter) {
+								Item item = ((JajukTableModel) jtable.getModel())
+										.getItemAt(adapter.row);
+								//Perfs and safety
+								if (FIFO.getInstance().getCurrentItem() == null){
+									return false;
+								}
+								Item itemCurrent = FIFO.getInstance().getCurrentItem().getFile();
+								//in physical table view
+								if (item instanceof File){
+									File checked = null;
+									checked = (File)item;
+									return (itemCurrent.equals(checked));
+								}
+								//In logical table view
+								else{
+									for (File checked: ((Track)item).getFiles()){
+										if (itemCurrent.equals(checked)){
+											return true;
+										}
+									}
+									return false;
+								}
+							}
+
+						});
 				jtable.addMouseListener(AbstractTableView.this);
 				jtable.showColumns(jtable.getColumnsConf());
 				applyFilter(null, null);
@@ -387,11 +421,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			}
 			// create a button for playing
 			else if (XML_PLAY.equals(sIdentifier)) {
-				col.setCellRenderer(new JajukCellRender());
 				col.setMinWidth(PLAY_COLUMN_SIZE);
 				col.setMaxWidth(PLAY_COLUMN_SIZE);
 			} else if (XML_TRACK_RATE.equals(sIdentifier)) {
-				col.setCellRenderer(new JajukCellRender());
 				col.setMinWidth(RATE_COLUMN_SIZE);
 				col.setMaxWidth(RATE_COLUMN_SIZE);
 			}
@@ -460,11 +492,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 					Messages.getString("PropertiesWizard.8") + ": "
 							+ ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
 					InformationJPanel.INFORMATIVE);
-			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH)); // TBI
-			// see
-			// later
-			// for a smarter
-			// event
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		} catch (NoneAccessibleFileException none) {
 			Messages.showErrorMessage(none.getCode());
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());

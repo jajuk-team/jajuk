@@ -28,10 +28,9 @@ import javax.swing.ImageIcon;
 /**
  * Encapsulates a label with a text and an icon, used for tables
  */
-public class IconLabel implements Comparable {
+public class IconLabel extends ImageIcon implements Comparable {
 
-	/** Icon */
-	private ImageIcon icon;
+	private static final long serialVersionUID = 3794262035337113611L;
 
 	/** Text */
 	private String sText;
@@ -62,7 +61,7 @@ public class IconLabel implements Comparable {
 	 */
 	public IconLabel(ImageIcon icon, String sText, Color cBackground,
 			Color cForeground, Font font, String sTooltip) {
-		this.icon = icon;
+		super(icon.getImage());
 		this.sText = sText;
 		this.cBackground = cBackground;
 		this.cForeground = cForeground;
@@ -71,7 +70,7 @@ public class IconLabel implements Comparable {
 	}
 
 	public IconLabel(ImageIcon icon, String sText) {
-		this.icon = icon;
+		super(icon.getImage());
 		this.sText = sText;
 	}
 
@@ -82,13 +81,7 @@ public class IconLabel implements Comparable {
 		return sText;
 	}
 
-	/**
-	 * @return Returns the icon.
-	 */
-	public ImageIcon getIcon() {
-		return icon;
-	}
-
+	
 	/**
 	 * @return Returns the cBackground.
 	 */
