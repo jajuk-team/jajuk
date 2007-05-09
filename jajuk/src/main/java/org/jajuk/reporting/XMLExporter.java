@@ -94,10 +94,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		// Make sure we have an album.
 		if (album != null) {
 			StringBuffer sb = new StringBuffer();
-
-			sb.append(XML_HEADER + NEWLINE);
 			sb.append(tagAlbum(album, 0));
-
 			content = sb.toString();
 		}
 
@@ -270,7 +267,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	 * @see Exporter.processColllection
 	 */
 	public String processCollection(int type, ArrayList<Item> collection) {
-		String content = null;
+		String content = "";
 		// If we are tagging the physical collection...
 		if (type == XMLExporter.PHYSICAL_COLLECTION) {
 			StringBuffer sb = new StringBuffer();
@@ -319,6 +316,11 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 				}
 				sb.append(Tag.closeTag(XML_COLLECTION) + NEWLINE);
 				content = sb.toString();
+			}
+		}
+		else{
+			for (Item item:collection){
+				content += process(item);
 			}
 		}
 		return content;
