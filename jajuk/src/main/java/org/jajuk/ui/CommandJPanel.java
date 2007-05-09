@@ -263,7 +263,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	public void initUI() {
 		ToolBarContainer container = Main.getToolbarContainer();
 		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
-		topPanel.setOpaque(false); // Don't forget to make the toolbar opaque !
+		topPanel.setOpaque(true);
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search"); //$NON-NLS-1$
 		double[][] sizeSearch = new double[][] {
@@ -449,6 +449,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ddbDDJ.setText(""); //$NON-NLS-1$
 
 		jtbSpecial.add(ambiencesCombo);
+		jtbSpecial.addSeparator();
 		ddbDDJ.addToToolBar(jtbSpecial);
 		ddbNovelties.addToToolBar(jtbSpecial);
 		ddbGlobalRandom.addToToolBar(jtbSpecial);
@@ -488,6 +489,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		vltbPlay.add(jtbPlay);
 
 		boolean bToolbarInstallationOK = false; // flag
+		
+		
 
 		// Load stored toolbar configuration
 		if (Util.getConfFileByPath(FILE_TOOLBARS_CONF).exists()) {

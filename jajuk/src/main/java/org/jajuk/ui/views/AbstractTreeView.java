@@ -20,6 +20,20 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.Track;
+import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ConditionalHighlighter;
+import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.decorator.HighlighterPipeline;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.color.ColorScheme;
+import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -28,13 +42,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
-import org.jajuk.base.Item;
-import org.jdesktop.swingx.JXTree;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.color.ColorScheme;
-import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
 
 /**
  * An abstract physical or logical tree view. Contains common methods
@@ -64,16 +71,56 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		// Add alternate rows highlither
+		// Add alternate rows highliter
+		Highlighter alternate = null;
 		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
 		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
-			jtree.addHighlighter(new AlternateRowHighlighter(colors
+			alternate = new AlternateRowHighlighter(colors
 					.getMidColor(), colors.getDarkColor(), colors
-					.getForegroundColor()));
+					.getForegroundColor());
 		} else {
-			jtree.addHighlighter(new AlternateRowHighlighter(Color.WHITE,
-					colors.getUltraLightColor(), colors.getForegroundColor()));
+			alternate = new AlternateRowHighlighter(Color.WHITE,
+					colors.getUltraLightColor(), colors.getForegroundColor());
 		}
+		Highlighter playing = new ConditionalHighlighter(Color.ORANGE,Color.BLACK,0,-1) {
+			
+			protected boolean needsHighlight(ComponentAdapter adapter){
+				// Perfs and safety
+				if (FIFO.getInstance().getCurrentItem() == null) {
+					return false;
+				}
+				// Compare current played track and the tested element
+				DefaultMutableTreeNode item = (DefaultMutableTreeNode) adapter
+						.getValue();
+				Item itemCurrent = FIFO.getInstance().getCurrentItem()
+						.getFile();
+				// in physical table view
+				if (item instanceof FileNode) {
+					File checked = null;
+					checked = ((FileNode) item).getFile();
+					return (itemCurrent.equals(checked));
+				}
+				// In logical table view
+				else if (item instanceof TrackNode) {
+					Track track = ((TrackNode) item).getTrack();
+					for (File checked : track.getFiles()) {
+						if (itemCurrent.equals(checked)) {
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			
+			
+			@Override
+			protected boolean test(ComponentAdapter adapter) {
+				return true;
+			}
+		
+		};
+		HighlighterPipeline pipe = new HighlighterPipeline(new Highlighter[]{alternate,playing});
+		jtree.setHighlighters(pipe);
 		return jtree;
 	}
 

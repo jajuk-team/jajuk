@@ -54,7 +54,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
@@ -502,9 +501,6 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						leaf, row, hasFocus);
 				setFont(new Font(
 						"Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
-				// Make sure others nodes take default color
-				setBackground(null);
-				setForeground(null);
 				if (value instanceof FileNode) {
 					setBorder(null);
 					File file = ((FileNode) value).getFile();
@@ -527,11 +523,6 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						setIcon(Util.getIcon(ICON_TYPE_WAV));
 					} else {
 						setIcon(Util.getIcon(icon));
-					}
-					File current = FIFO.getInstance().getCurrentFile();
-					if (current != null && file.equals(current)) {
-						setBackground(Color.ORANGE);
-						setForeground(Color.BLACK);
 					}
 				} else if (value instanceof PlaylistFileNode) {
 					setBorder(null);

@@ -643,7 +643,7 @@ public class Main implements ITechnicalStrings {
 				try {
 					proc = Runtime.getRuntime().exec("mplayer"); //$NON-NLS-1$
 					proc.waitFor();
-					// check Mplayer release : 1.0pre8 min
+					// check MPlayer release : 1.0pre8 min
 					proc = Runtime.getRuntime().exec(
 							new String[] { "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					BufferedReader in = new BufferedReader(new InputStreamReader(proc
