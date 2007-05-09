@@ -1036,7 +1036,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		for (String theme : themes) {
 			scbLAF.addItem(theme);
 		}
-		scbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
+		scbLAF.setToolTipText(Messages.getString("ParameterView.44")); //$NON-NLS-1$
 
 		// Add items
 		jpUI.add(jcbVisibleAtStartup, "0,0");//$NON-NLS-1$

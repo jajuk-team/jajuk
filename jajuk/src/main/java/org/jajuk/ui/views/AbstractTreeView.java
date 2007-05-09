@@ -20,9 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Item;
-import org.jdesktop.swingx.JXTree;
-
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
@@ -30,6 +28,13 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
+import org.jajuk.base.Item;
+import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.color.ColorScheme;
+import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
 
 /**
  * An abstract physical or logical tree view. Contains common methods
@@ -44,8 +49,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
 	/** Current selection */
 	TreePath[] paths;
-	
-	/** Concurrency locker **/
+
+	/** Concurrency locker * */
 	volatile short[] lock = new short[0];
 
 	/** Items selection */
@@ -59,6 +64,16 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+		// Add alternate rows highlither
+		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
+		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
+			jtree.addHighlighter(new AlternateRowHighlighter(colors
+					.getMidColor(), colors.getDarkColor(), colors
+					.getForegroundColor()));
+		} else {
+			jtree.addHighlighter(new AlternateRowHighlighter(Color.WHITE,
+					colors.getUltraLightColor(), colors.getForegroundColor()));
+		}
 		return jtree;
 	}
 

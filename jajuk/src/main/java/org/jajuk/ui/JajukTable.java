@@ -24,9 +24,14 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.color.ColorScheme;
+import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,9 +69,18 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		this.sConf = sConf;
 		setShowGrid(false);
 		init(bSortable);
-		//Force to use Jajuk cell render for all columns
-		for (TableColumn col : getColumns()){
+		// Force to use Jajuk cell render for all columns
+		for (TableColumn col : getColumns()) {
 			col.setCellRenderer(new JajukCellRender());
+		}
+		// Add alternate rows highlither
+		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
+		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
+			addHighlighter(new AlternateRowHighlighter(colors.getMidColor(),
+					colors.getDarkColor(), colors.getForegroundColor()));
+		} else {
+			addHighlighter(new AlternateRowHighlighter(Color.WHITE, colors
+					.getUltraLightColor(), colors.getForegroundColor()));
 		}
 	}
 
@@ -92,11 +106,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 * Select columns to show colsToShow list of columns id to keep
 	 */
 	public void showColumns(ArrayList<String> colsToShow) {
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel())
+				.getColumns(false).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-			if (!colsToShow.contains(((JajukTableModel) getModel()).getIdentifier(col
-					.getModelIndex()))) {
+			if (!colsToShow.contains(((JajukTableModel) getModel())
+					.getIdentifier(col.getModelIndex()))) {
 				col.setVisible(false);
 			}
 		}
@@ -155,10 +170,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 */
 	public void createColumnsConf() {
 		StringBuffer sb = new StringBuffer();
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel())
+				.getColumns(true).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-			String sIdentifier = ((JajukTableModel) getModel()).getIdentifier(col.getModelIndex());
+			String sIdentifier = ((JajukTableModel) getModel())
+					.getIdentifier(col.getModelIndex());
 			if (col.isVisible()) {
 				sb.append(sIdentifier + ","); //$NON-NLS-1$
 			}
