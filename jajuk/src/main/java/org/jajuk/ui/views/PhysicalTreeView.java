@@ -164,7 +164,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 
 	JMenuItem jmiDirCDDBQuery;
 
-	JMenuItem jmiDirExport;
+	JMenuItem jmiDirReport;
 
 	JMenuItem jmiDirRefactor;
 
@@ -196,7 +196,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 
 	JMenuItem jmiDevConfiguration;
 
-	JMenuItem jmiDevExport;
+	JMenuItem jmiDevReport;
 
 	JPopupMenu jmenuPlaylistFile;
 
@@ -357,8 +357,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDirCDDBQuery = new JMenuItem(Messages
 				.getString("PhysicalTreeView.57")); //$NON-NLS-1$
 		jmiDirCDDBQuery.addActionListener(this);
-		jmiDirExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
-		jmiDirExport.addActionListener(this);
+		jmiDirReport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
+		jmiDirReport.addActionListener(this);
 		jmiDirRefactor = new JMenuItem(Messages
 				.getString(("PhysicalTreeView.62"))); //$NON-NLS-1$
 		jmiDirRefactor.addActionListener(this);
@@ -375,7 +375,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmenuDir.add(jmiDirDelete);
 		jmenuDir.add(jmiDirAddFavorites);
 		jmenuDir.add(jmiDirCDDBQuery);
-		jmenuDir.add(jmiDirExport);
+		jmenuDir.add(jmiDirReport);
 		jmenuDir.add(jmiDirRefactor);
 		jmenuDir.add(jmiDirProperties);
 
@@ -415,8 +415,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDevConfiguration = new JMenuItem(Messages
 				.getString("PhysicalTreeView.55")); //$NON-NLS-1$
 		jmiDevConfiguration.addActionListener(this);
-		jmiDevExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
-		jmiDevExport.addActionListener(this);
+		jmiDevReport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
+		jmiDevReport.addActionListener(this);
 		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevPlay);
 		jmenuDev.add(jmiDevPush);
@@ -429,7 +429,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmenuDev.add(jmiDevTest);
 		jmenuDev.add(jmiDevCreatePlaylist);
 		jmenuDev.add(jmiDevCDDBQuery);
-		jmenuDev.add(jmiDevExport);
+		jmenuDev.add(jmiDevReport);
 		jmenuDev.add(jmiDevProperties);
 
 		// Playlist file menu

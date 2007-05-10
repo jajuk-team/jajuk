@@ -59,7 +59,7 @@ public class ReportAction extends ActionBase {
 		// First item
 		final String type = (String) source.getClientProperty(DETAIL_ORIGIN);
 		// Display a save as dialog
-		final JajukFileChooser chooser = new JajukFileChooser() ;
+		final JajukFileChooser chooser = new JajukFileChooser();
 		// Accept XML files
 		chooser.addChoosableFileFilter(new JajukFileFilter(XMLFilter
 				.getInstance()));
@@ -90,9 +90,9 @@ public class ReportAction extends ActionBase {
 			// screen for big collections
 			new Thread() {
 				public void run() {
-					java.io.File file = chooser.getSelectedFile();
-					String filepath = file.getAbsolutePath();
-					String filetypename = chooser.getFileFilter().getDescription();
+					String filepath = chooser.getSelectedFile().getAbsolutePath();
+					String filetypename = chooser.getFileFilter()
+							.getDescription();
 					// Create an exporter according to file extension
 					Exporter exporter = ExporterFactory
 							.createExporter(filetypename);
@@ -100,22 +100,33 @@ public class ReportAction extends ActionBase {
 					String result = null;
 					// Full logical collection report
 					if (XSLT_COLLECTION_LOGICAL.equals(type)) {
-						exporter.processCollection(Exporter.LOGICAL_COLLECTION,
-								alSelected);
+						result = exporter
+								.processCollection(Exporter.LOGICAL_COLLECTION);
 					}
 					// Full physical collection report
 					else if (XSLT_COLLECTION_PHYSICAL.equals(type)) {
-						exporter.processCollection(Exporter.LOGICAL_COLLECTION,
-								alSelected);
+						result = exporter
+								.processCollection(Exporter.LOGICAL_COLLECTION);
 					}
 					// Normal report on an item or a set of items
 					else {
-						exporter.processCollection(alSelected);
+						result = exporter.process(alSelected);
 					}
 					if (result != null) {
-						// Save the results.
-						if (!exporter.saveToFile(result, filepath +'.'+ filetypename)) {
+						// Save the results
+						String filename = filepath;
+						// Append extension only if needed.
+						// (if user selected an existing item, the extension
+						// musn't be appended twice)
+						if (!filepath.endsWith(filetypename)) {
+							filename = filepath + '.' + filetypename;
+						}
+						if (!exporter.saveToFile(result, filename)) {
 							Messages.showErrorMessage("024");
+						} else {
+							// Sucess
+							Messages.showInfoMessage(Messages
+									.getString("ReportAction.0"));
 						}
 					} else {
 						Messages.showErrorMessage("167");

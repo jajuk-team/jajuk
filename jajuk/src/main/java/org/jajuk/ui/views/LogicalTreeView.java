@@ -583,12 +583,6 @@ public class LogicalTreeView extends AbstractTreeView implements
 										EventSubject.EVENT_SYNC_TREE_TABLE,
 										properties));
 					}
-					// disable reporting if multiple selection
-					jmiCollectionReport.setEnabled(alSelected.size() == 1);
-					jmiAlbumReport.setEnabled(alSelected.size() == 1);
-					jmiAuthorReport.setEnabled(alSelected.size() == 1);
-					jmiStyleReport.setEnabled(alSelected.size() == 1);
-					jmiYearReport.setEnabled(alSelected.size() == 1);
 				}
 			}
 		});
