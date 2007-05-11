@@ -24,13 +24,14 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * Music-oriented file chooser
  * <p>
  * decorator
  */
-public class JajukFileChooser extends JFileChooser implements ITechnicalStrings{
+public class JajukFileChooser extends JFileChooser implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +48,11 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings{
 		this.filter = jfilter;
 		setFileFilter(jfilter);
 		setMultiSelectionEnabled(true);
+		// Use default directory to store documents (My Documents under Windows
+		// for ie)
+		setCurrentDirectory(FileSystemView.getFileSystemView()
+				.getDefaultDirectory()); //$NON-NLS-1$ 
+
 	}
 
 	/**

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 
 import org.jajuk.base.Item;
 import org.jajuk.i18n.Messages;
@@ -66,8 +67,6 @@ public class ReportAction extends ActionBase {
 		// Accept HTML files
 		chooser.addChoosableFileFilter(new JajukFileFilter(HTMLFilter
 				.getInstance()));
-		chooser.setCurrentDirectory(new java.io.File(System
-				.getProperty("user.home"))); //$NON-NLS-1$ 
 		chooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// set a default file name
