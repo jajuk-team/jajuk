@@ -196,6 +196,9 @@ public class Player implements ITechnicalStrings {
 	 */
 	public static void mute() {
 		try {
+			Player.bMute = !Player.bMute;
+			// notify UI
+			ObservationManager.notify(new Event(EventSubject.EVENT_MUTE_STATE));
 			if (playerImpl == null) { // none current player, leave
 				return;
 			}
@@ -211,9 +214,7 @@ public class Player implements ITechnicalStrings {
 					playerImpl2.setVolume(0.0f);
 				}
 			}
-			Player.bMute = !Player.bMute;
-			// notify UI
-			ObservationManager.notify(new Event(EventSubject.EVENT_MUTE_STATE));
+			
 		} catch (Exception e) {
 			Log.error(e);
 		}

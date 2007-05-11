@@ -21,6 +21,7 @@
 package org.jajuk.reporting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Set;
@@ -369,6 +370,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	private String tagFile(org.jajuk.base.File file, int level) {
 		StringBuffer sb = new StringBuffer();
 
+		String sFileID = Util.formatXML(file.getId());
+		
 		String sName = Util.formatXML(file.getName());
 		String sPath = Util.formatXML(file.getAbsolutePath());
 		long lSize = file.getSize();
@@ -385,7 +388,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		long lTrackOrder = file.getTrack().getOrder();
 
 		sb.append(addTabs(level) + Tag.openTag(XML_FILE) + NEWLINE);
-
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_ID, sFileID)
+				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sName) + NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_SIZE, lSize) + NEWLINE);
@@ -399,7 +403,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 	private String tagTrack(Track track, int level) {
 		StringBuffer sb = new StringBuffer();
-
+		String sTrackID = Util.formatXML(track.getId());
 		String sTrackName = Util.formatXML(track.getName());
 		String sTrackGenre = Util.formatXML(track.getStyle().getName2());
 		String sTrackAuthor = Util.formatXML(track.getAuthor().getName2());
@@ -410,7 +414,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		long lTrackOrder = track.getOrder();
 
 		sb.append(addTabs(level) + Tag.openTag(XML_TRACK) + NEWLINE);
-
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_ID, sTrackID)
+				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_TRACK_NAME, sTrackName)
 				+ NEWLINE);
 		sb.append(addTabs(level + 1)
@@ -436,6 +441,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	private String tagAlbum(Album album, int level) {
 		StringBuffer sb = new StringBuffer();
 
+		String sAlbumID = Util.formatXML(album.getId());
 		String sAlbumName = Util.formatXML(album.getName2());
 		String sGenreName = ""; //$NON-NLS-1$
 		String sAuthorName = ""; //$NON-NLS-1$
@@ -452,6 +458,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 		sb.append(addTabs(level) + Tag.openTag(XML_ALBUM) + NEWLINE);
 
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_ID, sAlbumID)
+				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAlbumName)
 				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_AUTHOR, sAuthorName)
@@ -467,9 +475,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private String tagAuthor(Author author, int level) {
+		String sAuthorID = Util.formatXML(author.getId());
 		StringBuffer sb = new StringBuffer();
 		String sAuthorName = Util.formatXML(author.getName2());
 		sb.append(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_ID, sAuthorID)
+				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName)
 				+ NEWLINE);
 		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(
@@ -481,9 +492,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private String tagYear(Year year, int level) {
+		String sYearID = Util.formatXML(year.getId());
 		StringBuffer sb = new StringBuffer();
 		String sYearName = Util.formatXML(year.getName());
 		sb.append(addTabs(level) + Tag.openTag(XML_YEAR) + NEWLINE);
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_ID, sYearID)
+				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sYearName)
 				+ NEWLINE);
 		for (Album album : AlbumManager.getInstance().getAssociatedAlbums(year)) {
@@ -495,11 +509,11 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
 	private String tagStyle(Style style, int level) {
 		StringBuffer sb = new StringBuffer();
-
+		String sStyleID = Util.formatXML(style.getId());
 		String sStyleName = Util.formatXML(style.getName2());
-
 		sb.append(addTabs(level) + Tag.openTag(XML_STYLE) + NEWLINE);
-
+		sb.append(addTabs(level + 1) + Tag.tagData(XML_ID, sStyleID)
+				+ NEWLINE);
 		sb.append(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName)
 				+ NEWLINE);
 
