@@ -46,7 +46,7 @@
 </head>
 <body>
 	<h1>Jajuk Music Report</h1>
-	<p><i>Protect the environment, please do not print</i></p>
+	<p><i>Please consider the environment and do not print unless absolutely necessary</i></p>
 	<xsl:apply-templates select="device" />
 </body>
 </html>
@@ -94,7 +94,7 @@
 					</tr>
 					<tr>
 						<td class="track">Track Artist</td>
-						<td><xsl:value-of select="track/artist" /></td>
+						<td><xsl:value-of select="track/author" /></td>
 					</tr>
 					<tr>
 						<td class="track">Track Album</td>
@@ -159,7 +159,7 @@
 						</tr>
 						<tr>
 							<td class="track">Track Artist</td>
-							<td><xsl:value-of select="track/artist" /></td>
+							<td><xsl:value-of select="track/author" /></td>
 						</tr>
 						<tr>
 							<td class="track">Track Album</td>

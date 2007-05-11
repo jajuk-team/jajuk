@@ -23,7 +23,7 @@
 			padding: 3px;
 		}
 		
-		.artist {
+		.author {
 			background-color: #c3d9ff;
 			font-weight: bold;
 			padding: 3px;
@@ -45,7 +45,7 @@
 </head>
 <body>
 	<h1>Jajuk Music Report</h1>
-	<p><i>Protect the environment, please do not print</i></p>
+	<p><i>Please consider the environment and do not print unless absolutely necessary</i></p>
 	<xsl:apply-templates select="style" />
 </body>
 </html>
@@ -59,11 +59,11 @@
 	</tr>
 	</table>
 	<ul>
-	<xsl:for-each select="artist">
+	<xsl:for-each select="author">
 	<li>
 	<table>
 	<tr>
-		<td class="artist">Artist</td>
+		<td class="author">Artist</td>
 		<td><b><xsl:value-of select="name" /></b></td>
 	</tr>
 	</table>
@@ -77,7 +77,7 @@
 			</tr>
 			<tr>
 				<td class="album">Artist</td>
-				<td> <xsl:value-of select="artist" /></td>
+				<td> <xsl:value-of select="author" /></td>
 			</tr>
 			<tr>
 				<td class="album">Genre</td>
@@ -98,7 +98,7 @@
 						</tr>
 						<tr>
 							<td class="track">Track Artist</td>
-							<td><xsl:value-of select="artist" /></td>
+							<td><xsl:value-of select="author" /></td>
 						</tr>
 						<tr>
 							<td class="track">Track Album</td>

@@ -46,7 +46,7 @@
 </head>
 <body>
 	<h1>Jajuk Music Report</h1>
-	<p><i>Please considere the environment, do not print out this page</i></p>
+	<p><i>Please consider the environment and do not print unless absolutely necessary</i></p>
 	<xsl:apply-templates select="styles" />
 	<xsl:apply-templates select="artists" />
 	<xsl:apply-templates select="years" />
