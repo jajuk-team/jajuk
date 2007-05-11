@@ -50,11 +50,15 @@ public class GlobalRandomAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {
+		new Thread(){
+			public void run(){
 		Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
 		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
 				.getGlobalShufflePlaylist(), ambience);
 		FIFO.getInstance().push(
 				Util.createStackItems(alToPlay, ConfigurationManager
 						.getBoolean(CONF_STATE_REPEAT), false), false);
+			}
+		}.start();
 	}
 }

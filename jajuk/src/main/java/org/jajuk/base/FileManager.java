@@ -362,8 +362,35 @@ public class FileManager extends ItemManager implements Observer {
 		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
 			return alEligibleFiles;
 		}
+		// (not shuffle) Album / album
+		else if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+			long l = System.currentTimeMillis();
+			final ArrayList<Album> albums = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
+			Collections.shuffle(albums,new Random());
+			//We need an index (bennch: 45* faster)
+			final HashMap<Album, Integer> index = new HashMap<Album, Integer>();
+			for (Album album:albums){
+				index.put(album,albums.indexOf(album));
+			}
+			Collections.sort(alEligibleFiles,new Comparator<File>() {
+			
+				public int compare(File f1, File f2) {
+					if (f1.getTrack().getAlbum() .equals(f2.getTrack().getAlbum())){
+						int comp = (int)(f1.getTrack().getOrder() - f2.getTrack().getOrder()); 
+						if (comp == 0){
+							//If no track number is given, try to sort by filename than can contain the track
+							return f1.getName().compareTo(f2.getName());
+						}
+						return comp;  
+					}
+					return index.get(f1.getTrack().getAlbum()) - index.get(f2.getTrack().getAlbum());
+				}
+			
+			});
+			System.out.println(System.currentTimeMillis() - l);
+			return alEligibleFiles; 
 		// else return shuffle albums
-		else {
+		}else {
 			return getShuffledFilesByAlbum(alEligibleFiles);
 		}
 	}

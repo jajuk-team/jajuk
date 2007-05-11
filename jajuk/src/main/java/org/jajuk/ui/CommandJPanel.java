@@ -150,7 +150,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	JRadioButtonMenuItem jmiShuffleModeAlbum;
 
-	JPopupMenu popupGlobalRandom;
+	JRadioButtonMenuItem jmiShuffleModeAlbum2;
+
+JPopupMenu popupGlobalRandom;
 
 	JajukButton jbBestof;
 
@@ -389,20 +391,29 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		};
 		ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
 		popupGlobalRandom = new JPopupMenu();
+		//Global shuffle
 		jmiShuffleModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20")); //$NON-NLS-1$
 		jmiShuffleModeSong.addActionListener(this);
+		//album / album
 		jmiShuffleModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.21")); //$NON-NLS-1$
 		jmiShuffleModeAlbum.addActionListener(this);
+		//Shuffle album / album
+		jmiShuffleModeAlbum2 = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22")); //$NON-NLS-1$
+		jmiShuffleModeAlbum2.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
 			jmiShuffleModeSong.setSelected(true);
+		} else if(ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+			jmiShuffleModeAlbum2.setSelected(true);
 		} else {
 			jmiShuffleModeAlbum.setSelected(true);
 		}
 		ButtonGroup bgGlobalRandom = new ButtonGroup();
 		bgGlobalRandom.add(jmiShuffleModeSong);
 		bgGlobalRandom.add(jmiShuffleModeAlbum);
+		bgGlobalRandom.add(jmiShuffleModeAlbum2);
 		popupGlobalRandom.add(jmiShuffleModeSong);
 		popupGlobalRandom.add(jmiShuffleModeAlbum);
+		popupGlobalRandom.add(jmiShuffleModeAlbum2);
 		ddbGlobalRandom.setText("");// no text visible //$NON-NLS-1$
 
 		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
@@ -610,6 +621,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
 			} else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
+			} else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
+				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
 			}
 		} catch (Exception e) {
 			Log.error(e);
