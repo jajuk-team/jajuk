@@ -208,6 +208,8 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
+	public static final String FILE_JAJUK_DOWNLOADED_FILES_SUFFIX = "_jajuk";
+
 	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
 	
 	// About
@@ -1143,6 +1145,8 @@ public interface ITechnicalStrings {
 	public static final String MODE_ALBUM = "album";
 
 	public static final String MODE_TRACK = "track";
+
+	public static final String MODE_ALBUM2 = "album2";
 
 	// Accuracy levels
 	public static final String ACCURACY_LOW = "low";

@@ -733,7 +733,7 @@ public class Util implements ITechnicalStrings {
 
 	/**
 	 * @param url
-	 *            ressource URL
+	 *            resource URL
 	 * @return Cache directory
 	 */
 	public static File getCachePath(URL url) {

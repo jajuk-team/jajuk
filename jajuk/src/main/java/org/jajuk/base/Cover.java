@@ -106,12 +106,12 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 		} else if (cOther.getType() == ABSOLUTE_DEFAULT_COVER) {
 			return -1;
 		}
-		// Default cover is the less prioritory
+		// Default cover is the less priority
 		if (getType() == DEFAULT_COVER) {
 			if (cOther.getType() == DEFAULT_COVER) {
-				return 0; // i'm a default cover and ther other too
+				return 0; // i'm a default cover and the other too
 			} else {
-				return -1; // i'm a defautl cover and the other not
+				return -1; // i'm a default cover and the other not
 			}
 		}
 		// local covers are prioritary upon remote ones :
