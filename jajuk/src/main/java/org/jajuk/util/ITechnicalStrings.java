@@ -1201,8 +1201,6 @@ public interface ITechnicalStrings {
 
 	public static final String XML_STYLE = "style";
 
-	public static final String XML_GENRE = "genre";
-
 	public static final String XML_AUTHORS = "authors";
 
 	public static final String XML_AUTHOR = "author";

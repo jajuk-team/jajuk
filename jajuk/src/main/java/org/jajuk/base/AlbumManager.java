@@ -195,16 +195,16 @@ public class AlbumManager extends ItemManager {
 	public Set<Album> getAssociatedAlbums(Item item) {
 		synchronized (AlbumManager.getInstance().getLock()) {
 			Set<Album> out = new TreeSet<Album>();
-			for (Object item2 : hmItems.values()) {
-				Album album = (Album) item2;
-				if (item instanceof Track && ((Track) item).getAlbum().equals(album)){
-					out.add(album);
+			//If item is a track, return albums containing this track
+			if (item instanceof Track) {
+				//we can return as a track has only one album
+				if (item != null){
+					out.add(((Track)item).getAlbum());
 				}
-				else{
-					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-					for (Track track: tracks){
-						out.add(track.getAlbum());
-					}
+			} else {
+				Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+				for (Track track : tracks) {
+					out.add(track.getAlbum());
 				}
 			}
 			return out;

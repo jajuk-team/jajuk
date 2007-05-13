@@ -24,8 +24,10 @@ import org.jajuk.base.Item;
 import org.jajuk.util.log.Log;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -55,8 +57,8 @@ public abstract class Exporter {
 		boolean result = false;
 
 		try {
-			FileWriter fw = new FileWriter(sPath);
-			BufferedWriter bw = new BufferedWriter(fw);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(new File(sPath)), "UTF-8")); //$NON-NLS-1$
 			// Writer the contents to the file.
 			bw.write(sContent);
 			// Close the BufferedWriter

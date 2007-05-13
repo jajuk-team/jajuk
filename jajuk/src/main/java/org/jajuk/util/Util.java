@@ -678,7 +678,7 @@ public class Util implements ITechnicalStrings {
 	 * Tell whether a file is an absolute default cover or not
 	 * 
 	 * @param directory
-	 *            Jajuk Directory in which we analyse the given file name
+	 *            Jajuk Directory in which we analyze the given file name
 	 * @param sFileName
 	 * @return whether the given filename is an absolute default cover
 	 */

@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Convenient class to manage Tracks
@@ -576,15 +575,14 @@ public class TrackManager extends ItemManager implements Observer {
 	}
 
 	/**
-	 * Get tracks associated with this item
+	 * Get ordered tracks associated with this item
 	 * 
 	 * @param item
 	 * @return
 	 */
 	public Set<Track> getAssociatedTracks(Item item) {
 		synchronized (TrackManager.getInstance().getLock()) {
-			Set<Track> out = new TreeSet<Track>(new TrackComparator(
-					TrackComparator.STYLE_AUTHOR_ALBUM));
+			Set<Track> out = new LinkedHashSet<Track>();
 			for (Object item2 : hmItems.values()) {
 				Track track = (Track) item2;
 				if ((item instanceof Album && track.getAlbum().equals(item))
@@ -597,7 +595,7 @@ public class TrackManager extends ItemManager implements Observer {
 			return out;
 		}
 	}
-
+	
 	public boolean isChangePbm() {
 		synchronized (TrackManager.getInstance().getLock()) {
 			return bChangePbm;
@@ -646,7 +644,7 @@ public class TrackManager extends ItemManager implements Observer {
 
 	/**
 	 * 
-	 * @return tracks list
+	 * @return ordered tracks list
 	 */
 	public Set<Track> getTracks() {
 		Set<Track> tracks = new LinkedHashSet<Track>();
