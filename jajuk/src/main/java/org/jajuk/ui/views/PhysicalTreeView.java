@@ -97,8 +97,8 @@ import ext.SwingWorker;
 /**
  * Physical tree view
  */
-public class PhysicalTreeView extends AbstractTreeView implements
-		ActionListener, org.jajuk.base.Observer {
+public class PhysicalTreeView extends AbstractTreeView implements ActionListener,
+		org.jajuk.base.Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -269,15 +269,12 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		// Collection menu
 		jmenuCollection = new JPopupMenu();
 		// Export
-		jmiCollectionReport = new JMenuItem(Messages
-				.getString("LogicalTreeView.33")); //$NON-NLS-1$
+		jmiCollectionReport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
-		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN,
-				XSLT_COLLECTION_PHYSICAL);
+		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, XSLT_COLLECTION_PHYSICAL);
 		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, alSelected);
-		Action actionReportCollection = ActionManager
-				.getAction(JajukAction.CREATE_REPORT);
+		Action actionReportCollection = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmiCollectionReport.setAction(actionReportCollection);
 		jmenuCollection.add(jmiCollectionReport);
 
@@ -299,11 +296,9 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.7")); //$NON-NLS-1$
 		jmiFileDelete.setEnabled(false);
 		jmiFileDelete.addActionListener(this);
-		jmiFileProperties = new JMenuItem(Messages
-				.getString("PhysicalTreeView.9")); //$NON-NLS-1$
+		jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.9")); //$NON-NLS-1$
 		jmiFileProperties.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages
-				.getString("PhysicalTreeView.56")); //$NON-NLS-1$
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
@@ -320,20 +315,15 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDirPlay.addActionListener(this);
 		jmiDirPush = new JMenuItem(Messages.getString("PhysicalTreeView.11")); //$NON-NLS-1$
 		jmiDirPush.addActionListener(this);
-		jmiDirPlayShuffle = new JMenuItem(Messages
-				.getString("PhysicalTreeView.12")); //$NON-NLS-1$
+		jmiDirPlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.12")); //$NON-NLS-1$
 		jmiDirPlayShuffle.addActionListener(this);
-		jmiDirPlayRepeat = new JMenuItem(Messages
-				.getString("PhysicalTreeView.13")); //$NON-NLS-1$
+		jmiDirPlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.13")); //$NON-NLS-1$
 		jmiDirPlayRepeat.addActionListener(this);
-		jmiDirDesynchro = new JMenuItem(Messages
-				.getString("PhysicalTreeView.14")); //$NON-NLS-1$
+		jmiDirDesynchro = new JMenuItem(Messages.getString("PhysicalTreeView.14")); //$NON-NLS-1$
 		jmiDirDesynchro.addActionListener(this);
-		jmiDirResynchro = new JMenuItem(Messages
-				.getString("PhysicalTreeView.15")); //$NON-NLS-1$
+		jmiDirResynchro = new JMenuItem(Messages.getString("PhysicalTreeView.15")); //$NON-NLS-1$
 		jmiDirResynchro.addActionListener(this);
-		jmiDirCreatePlaylist = new JMenuItem(Messages
-				.getString("PhysicalTreeView.16")); //$NON-NLS-1$
+		jmiDirCreatePlaylist = new JMenuItem(Messages.getString("PhysicalTreeView.16")); //$NON-NLS-1$
 		jmiDirCreatePlaylist.setEnabled(false);
 		jmiDirCreatePlaylist.addActionListener(this);
 		jmiDirCopy = new JMenuItem(Messages.getString("PhysicalTreeView.17")); //$NON-NLS-1$
@@ -348,26 +338,21 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDirDelete = new JMenuItem(Messages.getString("PhysicalTreeView.21")); //$NON-NLS-1$
 		jmiDirDelete.setEnabled(false);
 		jmiDirDelete.addActionListener(this);
-		jmiDirProperties = new JMenuItem(Messages
-				.getString("PhysicalTreeView.23")); //$NON-NLS-1$
+		jmiDirProperties = new JMenuItem(Messages.getString("PhysicalTreeView.23")); //$NON-NLS-1$
 		jmiDirProperties.addActionListener(this);
-		jmiDirAddFavorites = new JMenuItem(Messages
-				.getString("PhysicalTreeView.56")); //$NON-NLS-1$
+		jmiDirAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
 		jmiDirAddFavorites.addActionListener(this);
-		jmiDirCDDBQuery = new JMenuItem(Messages
-				.getString("PhysicalTreeView.57")); //$NON-NLS-1$
+		jmiDirCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57")); //$NON-NLS-1$
 		jmiDirCDDBQuery.addActionListener(this);
-		
+
 		Action actionReportDir = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmiDirReport = new JMenuItem(actionReportDir);
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDirReport.putClientProperty(DETAIL_ORIGIN, XML_DIRECTORY);
 		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelected);
-		
-		
-		jmiDirRefactor = new JMenuItem(Messages
-				.getString(("PhysicalTreeView.62"))); //$NON-NLS-1$
+
+		jmiDirRefactor = new JMenuItem(Messages.getString(("PhysicalTreeView.62"))); //$NON-NLS-1$
 		jmiDirRefactor.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
 		jmenuDir.add(jmiDirPush);
@@ -392,11 +377,9 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDevPlay.addActionListener(this);
 		jmiDevPush = new JMenuItem(Messages.getString("PhysicalTreeView.25")); //$NON-NLS-1$
 		jmiDevPush.addActionListener(this);
-		jmiDevPlayShuffle = new JMenuItem(Messages
-				.getString("PhysicalTreeView.26")); //$NON-NLS-1$
+		jmiDevPlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.26")); //$NON-NLS-1$
 		jmiDevPlayShuffle.addActionListener(this);
-		jmiDevPlayRepeat = new JMenuItem(Messages
-				.getString("PhysicalTreeView.27")); //$NON-NLS-1$
+		jmiDevPlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.27")); //$NON-NLS-1$
 		jmiDevPlayRepeat.addActionListener(this);
 		jmiDevMount = new JMenuItem(Messages.getString("PhysicalTreeView.28")); //$NON-NLS-1$
 		jmiDevMount.addActionListener(this);
@@ -404,23 +387,18 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDevUnmount.addActionListener(this);
 		jmiDevRefresh = new JMenuItem(Messages.getString("PhysicalTreeView.30")); //$NON-NLS-1$
 		jmiDevRefresh.addActionListener(this);
-		jmiDevSynchronize = new JMenuItem(Messages
-				.getString("PhysicalTreeView.31")); //$NON-NLS-1$
+		jmiDevSynchronize = new JMenuItem(Messages.getString("PhysicalTreeView.31")); //$NON-NLS-1$
 		jmiDevSynchronize.addActionListener(this);
 		jmiDevTest = new JMenuItem(Messages.getString("PhysicalTreeView.32")); //$NON-NLS-1$
 		jmiDevTest.addActionListener(this);
-		jmiDevCreatePlaylist = new JMenuItem(Messages
-				.getString("PhysicalTreeView.33")); //$NON-NLS-1$
+		jmiDevCreatePlaylist = new JMenuItem(Messages.getString("PhysicalTreeView.33")); //$NON-NLS-1$
 		jmiDevCreatePlaylist.setEnabled(false);
 		jmiDevCreatePlaylist.addActionListener(this);
-		jmiDevProperties = new JMenuItem(Messages
-				.getString("PhysicalTreeView.35")); //$NON-NLS-1$
+		jmiDevProperties = new JMenuItem(Messages.getString("PhysicalTreeView.35")); //$NON-NLS-1$
 		jmiDevProperties.addActionListener(this);
-		jmiDevCDDBQuery = new JMenuItem(Messages
-				.getString("PhysicalTreeView.57")); //$NON-NLS-1$
+		jmiDevCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57")); //$NON-NLS-1$
 		jmiDevCDDBQuery.addActionListener(this);
-		jmiDevConfiguration = new JMenuItem(Messages
-				.getString("PhysicalTreeView.55")); //$NON-NLS-1$
+		jmiDevConfiguration = new JMenuItem(Messages.getString("PhysicalTreeView.55")); //$NON-NLS-1$
 		jmiDevConfiguration.addActionListener(this);
 		Action actionReportDevice = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmiDevReport = new JMenuItem(actionReportDevice);
@@ -428,7 +406,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		// to be able to get it
 		jmiDevReport.putClientProperty(DETAIL_ORIGIN, XML_DEVICE);
 		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelected);
-		
+
 		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevPlay);
 		jmenuDev.add(jmiDevPush);
@@ -447,38 +425,28 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		// Playlist file menu
 		// File menu
 		jmenuPlaylistFile = new JPopupMenu();
-		jmiPlaylistFilePlay = new JMenuItem(Messages
-				.getString("PhysicalTreeView.36")); //$NON-NLS-1$
+		jmiPlaylistFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.36")); //$NON-NLS-1$
 		jmiPlaylistFilePlay.addActionListener(this);
-		jmiPlaylistFilePush = new JMenuItem(Messages
-				.getString("PhysicalTreeView.37")); //$NON-NLS-1$
+		jmiPlaylistFilePush = new JMenuItem(Messages.getString("PhysicalTreeView.37")); //$NON-NLS-1$
 		jmiPlaylistFilePush.addActionListener(this);
-		jmiPlaylistFilePlayShuffle = new JMenuItem(Messages
-				.getString("PhysicalTreeView.38")); //$NON-NLS-1$
+		jmiPlaylistFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.38")); //$NON-NLS-1$
 		jmiPlaylistFilePlayShuffle.addActionListener(this);
-		jmiPlaylistFilePlayRepeat = new JMenuItem(Messages
-				.getString("PhysicalTreeView.39")); //$NON-NLS-1$
+		jmiPlaylistFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.39")); //$NON-NLS-1$
 		jmiPlaylistFilePlayRepeat.addActionListener(this);
-		jmiPlaylistFileCopy = new JMenuItem(Messages
-				.getString("PhysicalTreeView.40")); //$NON-NLS-1$
+		jmiPlaylistFileCopy = new JMenuItem(Messages.getString("PhysicalTreeView.40")); //$NON-NLS-1$
 		jmiPlaylistFileCopy.setEnabled(false);
 		jmiPlaylistFileCopy.addActionListener(this);
-		jmiPlaylistFileCut = new JMenuItem(Messages
-				.getString("PhysicalTreeView.41")); //$NON-NLS-1$
+		jmiPlaylistFileCut = new JMenuItem(Messages.getString("PhysicalTreeView.41")); //$NON-NLS-1$
 		jmiPlaylistFileCut.setEnabled(false);
 		jmiPlaylistFileCut.addActionListener(this);
-		jmiPlaylistFilePaste = new JMenuItem(Messages
-				.getString("PhysicalTreeView.42")); //$NON-NLS-1$
+		jmiPlaylistFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.42")); //$NON-NLS-1$
 		jmiPlaylistFilePaste.setEnabled(false);
 		jmiPlaylistFilePaste.addActionListener(this);
-		jmiPlaylistFileDelete = new JMenuItem(Messages
-				.getString("PhysicalTreeView.44")); //$NON-NLS-1$
+		jmiPlaylistFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.44")); //$NON-NLS-1$
 		jmiPlaylistFileDelete.addActionListener(this);
-		jmiPlaylistAddFavorites = new JMenuItem(Messages
-				.getString("PhysicalTreeView.56")); //$NON-NLS-1$
+		jmiPlaylistAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
 		jmiPlaylistAddFavorites.addActionListener(this);
-		jmiPlaylistFileProperties = new JMenuItem(Messages
-				.getString("PhysicalTreeView.46")); //$NON-NLS-1$
+		jmiPlaylistFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.46")); //$NON-NLS-1$
 		jmiPlaylistFileProperties.addActionListener(this);
 		jmenuPlaylistFile.add(jmiPlaylistFilePlay);
 		jmenuPlaylistFile.add(jmiPlaylistFilePush);
@@ -492,8 +460,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmenuPlaylistFile.add(jmiPlaylistFileProperties);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		top = new DefaultMutableTreeNode(Messages
-				.getString("PhysicalTreeView.47")); //$NON-NLS-1$
+		top = new DefaultMutableTreeNode(Messages.getString("PhysicalTreeView.47")); //$NON-NLS-1$
 		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 
@@ -506,25 +473,20 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jtree.setCellRenderer(new SubstanceDefaultTreeCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
-			public Component getTreeCellRendererComponent(JTree tree,
-					Object value, boolean sel, boolean expanded, boolean leaf,
-					int row, boolean hasFocus) {
-				super.getTreeCellRendererComponent(tree, value, sel, expanded,
-						leaf, row, hasFocus);
-				setFont(new Font(
-						"Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
+			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
+					boolean expanded, boolean leaf, int row, boolean hasFocus) {
+				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+				setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
 				if (value instanceof FileNode) {
 					setBorder(null);
 					File file = ((FileNode) value).getFile();
 					String ext = Util.getExtension(file.getIO());
-					Type type = TypeManager.getInstance().getTypeByExtension(
-							ext);
+					Type type = TypeManager.getInstance().getTypeByExtension(ext);
 					// Find associated icon with this type
 					URL icon = null;
 					String sIcon;
 					if (type != null) {
-						sIcon = (String) type.getProperties()
-								.get(XML_TYPE_ICON);
+						sIcon = (String) type.getProperties().get(XML_TYPE_ICON);
 						try {
 							icon = new URL(sIcon);
 						} catch (MalformedURLException e) {
@@ -545,63 +507,51 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					switch ((int) device.getDeviceType()) {
 					case 0:
 						if (device.isMounted()) {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
 						} else {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
 						}
 						break;
 					case 1:
 						if (device.isMounted()) {
 							setIcon(Util.getIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
 						} else {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
 						}
 						break;
 					case 2:
 						if (device.isMounted()) {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL));
 						} else {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
 						}
 						break;
 					case 3:
 						if (device.isMounted()) {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
 						} else {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
 						}
 						break;
 					case 4:
 						if (device.isMounted()) {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
 						} else {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
 						}
 						break;
 					case 5:
 						if (device.isMounted()) {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
 						} else {
-							setIcon(Util
-									.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
+							setIcon(Util.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
 						}
 						break;
 					}
 				} else if (value instanceof DirectoryNode) {
 					setBorder(null);
 					Directory dir = ((DirectoryNode) value).getDirectory();
-					boolean bSynchro = dir
-							.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED);
+					boolean bSynchro = dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED);
 					if (bSynchro) { // means this device is not synchronized
 						setIcon(Util.getIcon(ICON_DIRECTORY_SYNCHRO));
 					} else {
@@ -620,8 +570,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 
 			public void treeNodesChanged(TreeModelEvent e) {
 				DefaultMutableTreeNode node;
-				node = (DefaultMutableTreeNode) (e.getTreePath()
-						.getLastPathComponent());
+				node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
 
 				try {
 					int index = e.getChildIndices()[0];
@@ -661,8 +610,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 					for (int i = 0; i < paths.length; i++) {
 						Object o = paths[i].getLastPathComponent();
 						if (o instanceof TransferableTreeNode) {
-							alSelected.add((Item) ((TransferableTreeNode) o)
-									.getData());
+							alSelected.add((Item) ((TransferableTreeNode) o).getData());
 						} else {// root node
 							items = FileManager.getInstance().getElementCount();
 							hsSelectedFiles.addAll(alSelected);
@@ -672,11 +620,9 @@ public class PhysicalTreeView extends AbstractTreeView implements
 							break;
 						}
 						// return all childs nodes recursively
-						Enumeration e2 = ((DefaultMutableTreeNode) o)
-								.depthFirstEnumeration();
+						Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
 						while (e2.hasMoreElements()) {
-							DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
-									.nextElement();
+							DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
 							if (node instanceof FileNode) {
 								File file = ((FileNode) node).getFile();
 								if (hsSelectedFiles.contains(file)) {
@@ -692,33 +638,25 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						}
 					}
 					lSize /= 1048576; // set size in MB
-					StringBuffer sbOut = new StringBuffer().append(items)
-							.append(Messages.getString("PhysicalTreeView.52")); //$NON-NLS-1$
+					StringBuffer sbOut = new StringBuffer().append(items).append(
+							Messages.getString("PhysicalTreeView.52")); //$NON-NLS-1$
 					if (lSize > 1024) { // more than 1024 MB -> in GB
-						sbOut.append(lSize / 1024).append('.').append(
-								lSize % 1024).append(
+						sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
 								Messages.getString("PhysicalTreeView.53")); //$NON-NLS-1$
 					} else {
-						sbOut.append(lSize).append(
-								Messages.getString("PhysicalTreeView.54")); //$NON-NLS-1$
+						sbOut.append(lSize).append(Messages.getString("PhysicalTreeView.54")); //$NON-NLS-1$
 					}
-					InformationJPanel.getInstance().setSelection(
-							sbOut.toString());
-					if (ConfigurationManager
-							.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+					InformationJPanel.getInstance().setSelection(sbOut.toString());
+					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
 						// if table is synchronized with tree, notify the
-						// selection
-						// change
+						// selection change
 						Properties properties = new Properties();
 						properties.put(DETAIL_SELECTION, hsSelectedFiles);
-						ObservationManager
-								.notify(new Event(
-										EventSubject.EVENT_SYNC_TREE_TABLE,
-										properties));
+						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
+								properties));
 					}
 					// No CDDB on directories without files
-					if (alSelected.size() > 0
-							&& alSelected.get(0) instanceof Directory) {
+					if (alSelected.size() > 0 && alSelected.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
 							// check it is a directory (can be a file if user
@@ -727,8 +665,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 								continue;
 							}
 							// if at least one selected dir contains a file,
-							// show
-							// option
+							// show option
 							Directory dir = (Directory) item;
 							if (dir.getFiles().size() > 0) {
 								bShowCDDB = true;
@@ -744,8 +681,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			public void mousePressed(final MouseEvent e) {
 				// Avoid concurrency with the selection listener
 				synchronized (lock) {
-					TreePath path = jtree
-							.getPathForLocation(e.getX(), e.getY());
+					TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
 					if (path == null) {
 						return;
 					}
@@ -754,31 +690,24 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						if (o instanceof FileNode) {
 							File file = ((FileNode) o).getFile();
 							try {
-								FIFO
-										.getInstance()
-										.push(
-												new StackItem(
-														file,
-														ConfigurationManager
-																.getBoolean(CONF_STATE_REPEAT),
-														true),
-												ConfigurationManager
-														.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+								FIFO.getInstance().push(
+										new StackItem(file, ConfigurationManager
+												.getBoolean(CONF_STATE_REPEAT), true),
+										ConfigurationManager
+												.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
 							} catch (JajukException je) {
 								Log.error(je);
 							}
 						}
 						// double click on a playlist file
 						else if (o instanceof PlaylistFileNode) {
-							PlaylistFile plf = ((PlaylistFileNode) o)
-									.getPlaylistFile();
+							PlaylistFile plf = ((PlaylistFileNode) o).getPlaylistFile();
 							ArrayList<File> alToPlay = null;
 							try {
 								alToPlay = plf.getFiles();
 							} catch (JajukException je) {
 								Log.error(je.getCode(), plf.getName(), null); //$NON-NLS-1$
-								Messages.showErrorMessage(je.getCode(), plf
-										.getName()); //$NON-NLS-1$
+								Messages.showErrorMessage(je.getCode(), plf.getName()); //$NON-NLS-1$
 								return;
 							}
 							// check playlist file contains accessible tracks
@@ -786,21 +715,14 @@ public class PhysicalTreeView extends AbstractTreeView implements
 								Messages.showErrorMessage("018"); //$NON-NLS-1$
 								return;
 							} else {
-								FIFO
-										.getInstance()
-										.push(
-												Util
-														.createStackItems(
-																Util
-																		.applyPlayOption(alToPlay),
-																ConfigurationManager
-																		.getBoolean(CONF_STATE_REPEAT),
-																true), false);
+								FIFO.getInstance().push(
+										Util.createStackItems(Util.applyPlayOption(alToPlay),
+												ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+												true), false);
 							}
 						}
 
-					} else if (e.getClickCount() == 1
-							&& e.getButton() == MouseEvent.BUTTON3) {
+					} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
 						// right click on a selected node set Right click
 						// behavior
 						// identical to konqueror tree:
@@ -817,16 +739,15 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						// test mix between types ( not allowed )
 						Class c = paths[0].getLastPathComponent().getClass();
 						for (int i = 0; i < paths.length; i++) {
-							if (!paths[i].getLastPathComponent().getClass()
-									.equals(c)) {
+							if (!paths[i].getLastPathComponent().getClass().equals(c)) {
 								return;
 							}
 						}
 						// Test that all items are mounted or hide menu item
 						// device:mono selection for the moment
 						if (c.equals(DeviceNode.class)) {
-							Device device = ((DeviceNode) (paths[0]
-									.getLastPathComponent())).getDevice();
+							Device device = ((DeviceNode) (paths[0].getLastPathComponent()))
+									.getDevice();
 							if (device.isMounted()) {
 								jmiDevMount.setEnabled(false);
 								jmiDevUnmount.setEnabled(true);
@@ -834,8 +755,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 								jmiDevMount.setEnabled(true);
 								jmiDevUnmount.setEnabled(false);
 							}
-							final Directory dir = DirectoryManager
-									.getInstance().registerDirectory(device);
+							final Directory dir = DirectoryManager.getInstance().registerDirectory(
+									device);
 							boolean bShowCDDB = false;
 							if (dir.getFiles().size() > 0) {
 								bShowCDDB = true;
@@ -844,8 +765,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						}
 						if (c.equals(DirectoryNode.class)) {
 							for (int i = 0; i < paths.length; i++) {
-								Directory dir = ((DirectoryNode) (paths[i]
-										.getLastPathComponent()))
+								Directory dir = ((DirectoryNode) (paths[i].getLastPathComponent()))
 										.getDirectory();
 								if (!dir.getDevice().isMounted()) {
 									continue;
@@ -854,8 +774,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						}
 						if (c.equals(FileNode.class)) {
 							for (int i = 0; i < paths.length; i++) {
-								File file = ((FileNode) (paths[i]
-										.getLastPathComponent())).getFile();
+								File file = ((FileNode) (paths[i].getLastPathComponent()))
+										.getFile();
 								if (!file.isReady()) {
 									continue;
 								}
@@ -865,8 +785,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						if (c.equals(PlaylistFileNode.class)) {
 							for (int i = 0; i < paths.length; i++) {
 								PlaylistFile plf = ((PlaylistFileNode) (paths[i]
-										.getLastPathComponent()))
-										.getPlaylistFile();
+										.getLastPathComponent())).getPlaylistFile();
 								if (!plf.isReady()) {
 									jmiPlaylistFileDelete.setEnabled(false);
 									continue;
@@ -878,16 +797,14 @@ public class PhysicalTreeView extends AbstractTreeView implements
 						for (int i = 0; i < paths.length; i++) {
 							Object o = paths[i].getLastPathComponent();
 							// return all childs nodes recursively
-							Enumeration e2 = ((DefaultMutableTreeNode) o)
-									.depthFirstEnumeration();
+							Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
 							while (e2.hasMoreElements()) {
 								DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
 										.nextElement();
 								if (node instanceof FileNode) {
 									alFiles.add(((FileNode) node).getFile());
 								} else if (node instanceof DirectoryNode) {
-									Directory dir = ((DirectoryNode) node)
-											.getDirectory();
+									Directory dir = ((DirectoryNode) node).getDirectory();
 									alDirs.add(dir);
 								}
 							}
@@ -904,11 +821,10 @@ public class PhysicalTreeView extends AbstractTreeView implements
 							if (paths.length > 1) {
 								return;
 							}
-							Device device = ((DeviceNode) paths[0]
-									.getLastPathComponent()).getDevice();
+							Device device = ((DeviceNode) paths[0].getLastPathComponent())
+									.getDevice();
 							// if the device is not synchronized
-							if (device.getValue(XML_DEVICE_SYNCHRO_SOURCE)
-									.equals("")) {
+							if (device.getValue(XML_DEVICE_SYNCHRO_SOURCE).equals("")) {
 								jmiDevSynchronize.setEnabled(false);
 							} else {
 								jmiDevSynchronize.setEnabled(true);
@@ -961,8 +877,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 	public synchronized void populateTree() {
 		top.removeAllChildren();
 		// add devices
-		Iterator<Device> it1 = DeviceManager.getInstance().getDevices()
-				.iterator();
+		Iterator<Device> it1 = DeviceManager.getInstance().getDevices().iterator();
 		while (it1.hasNext()) {
 			Device device = it1.next();
 			DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
@@ -970,8 +885,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		}
 		// add directories
 		ArrayList<Directory> directories = null;
-		directories = new ArrayList<Directory>(DirectoryManager.getInstance()
-				.getDirectories());
+		directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
 		Iterator it2 = directories.iterator();
 		while (it2.hasNext()) {
 			Directory directory = (Directory) it2.next();
@@ -982,21 +896,19 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			if (directory.getParentDirectory() != null) {
 				// parent directory is a device
 				if (directory.getParentDirectory().getName().equals("")) {
-					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory
-							.getDevice());
+					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
 					if (deviceNode != null) {
 						deviceNode.add(new DirectoryNode(directory));
 					}
 				} else { // parent directory not root
-					DirectoryNode parentDirectoryNode = DirectoryNode
-							.getDirectoryNode(directory.getParentDirectory());
+					DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory
+							.getParentDirectory());
 					if (parentDirectoryNode != null) { // paranoia check
 						parentDirectoryNode.add(new DirectoryNode(directory));
 					}
 				}
 			} else { // add file at the device root
-				DeviceNode deviceNode = DeviceNode.getDeviceNode(directory
-						.getDevice());
+				DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
 				Iterator it = directory.getFiles().iterator();
 				while (it.hasNext()) {
 					deviceNode.add(new FileNode((File) it.next()));
@@ -1004,30 +916,27 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				// add playlist files
 				it = directory.getPlaylistFiles().iterator();
 				while (it.hasNext()) {
-					deviceNode.add(new PlaylistFileNode((PlaylistFile) it
-							.next()));
+					deviceNode.add(new PlaylistFileNode((PlaylistFile) it.next()));
 				}
 			}
 		}
 		// add files
-		ArrayList<File> files = new ArrayList<File>(FileManager.getInstance()
-				.getFiles());
+		ArrayList<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
 		Iterator it3 = files.iterator();
 		while (it3.hasNext()) {
 			File file = (File) it3.next();
 			if (file.shouldBeHidden()) { // should be hidden by option
 				continue;
 			}
-			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file
-					.getDirectory());
+			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
 			if (directoryNode != null) {
 				directoryNode.add(new FileNode(file));
 			}
 		}
 
 		// add playlist files
-		ArrayList<PlaylistFile> playlists = new ArrayList<PlaylistFile>(
-				PlaylistFileManager.getInstance().getPlaylistFiles());
+		ArrayList<PlaylistFile> playlists = new ArrayList<PlaylistFile>(PlaylistFileManager
+				.getInstance().getPlaylistFiles());
 		Iterator it4 = playlists.iterator();
 		while (it4.hasNext()) {
 			PlaylistFile playlistFile = (PlaylistFile) it4.next();
@@ -1035,8 +944,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			if (playlistFile.shouldBeHidden()) {
 				continue;
 			}
-			DirectoryNode directoryNode = DirectoryNode
-					.getDirectoryNode(playlistFile.getDirectory());
+			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile
+					.getDirectory());
 			if (directoryNode != null) {
 				directoryNode.add(new PlaylistFileNode(playlistFile));
 			}
@@ -1063,15 +972,12 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			Bookmarks.getInstance().addFiles(alFiles);
 		} else if (e.getSource() == jmiFilePush) {
 			FIFO.getInstance().push(
-					Util.createStackItems(Util.applyPlayOption(alFiles),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-							true), true);
-		} else if (alFiles != null
-				&& (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)) {
+					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
+							.getBoolean(CONF_STATE_REPEAT), true), true);
+		} else if (alFiles != null && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)) {
 			FIFO.getInstance().push(
-					Util.createStackItems(Util.applyPlayOption(alFiles),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-							true), false);
+					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
+							.getBoolean(CONF_STATE_REPEAT), true), false);
 		} else if (alFiles != null && e.getSource() == jmiDirAddFavorites) {
 			Bookmarks.getInstance().addFiles(alFiles);
 		} else if (alFiles != null && (e.getSource() == jmiDirCDDBQuery)) {
@@ -1085,10 +991,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				new CDDBWizard(alCDDBTracks);
 			}
 		} else if (alFiles != null && e.getSource() == jmiDevCDDBQuery) {
-			Device device = ((DeviceNode) (paths[0].getLastPathComponent()))
-					.getDevice();
-			final Directory dir = DirectoryManager.getInstance()
-					.registerDirectory(device);
+			Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
+			final Directory dir = DirectoryManager.getInstance().registerDirectory(device);
 			Util.waiting();
 			ArrayList<Item> alCDDBTracks = new ArrayList<Item>(100);
 			for (File file : dir.getFiles()) {
@@ -1098,8 +1002,8 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		} else if ((alFiles != null && e.getSource() == jmiDirRefactor)) {
 			Util.waiting();
 			for (Item item : alSelected) {
-				//check if user made a global cancel
-				if (RefactorAction.bStopAll){
+				// check if user made a global cancel
+				if (RefactorAction.bStopAll) {
 					RefactorAction.bStopAll = false;
 					return;
 				}
@@ -1107,12 +1011,10 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				Util.waiting();
 				new RefactorAction(dir.getFilesRecursively());
 			}
-		} else if (alFiles != null
-				&& (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)) {
+		} else if (alFiles != null && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)) {
 			FIFO.getInstance().push(
-					Util.createStackItems(Util.applyPlayOption(alFiles),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-							true), true);
+					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
+							.getBoolean(CONF_STATE_REPEAT), true), true);
 		} else if (alFiles != null
 				&& (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)) {
 			Collections.shuffle(alFiles, new Random());
@@ -1122,12 +1024,10 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		} else if (alFiles != null
 				&& (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)) {
 			FIFO.getInstance().push(
-					Util.createStackItems(Util.applyPlayOption(alFiles), true,
-							true), false);
+					Util.createStackItems(Util.applyPlayOption(alFiles), true, true), false);
 		} else if (e.getSource() == jmiDevMount) {
 			for (int i = 0; i < paths.length; i++) {
-				Device device = ((DeviceNode) (paths[i].getLastPathComponent()))
-						.getDevice();
+				Device device = ((DeviceNode) (paths[i].getLastPathComponent())).getDevice();
 				try {
 					device.mount();
 				} catch (Exception ex) {
@@ -1136,8 +1036,7 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			}
 		} else if (e.getSource() == jmiDevUnmount) {
 			for (int i = 0; i < paths.length; i++) {
-				Device device = ((DeviceNode) (paths[i].getLastPathComponent()))
-						.getDevice();
+				Device device = ((DeviceNode) (paths[i].getLastPathComponent())).getDevice();
 				try {
 					device.unmount();
 				} catch (Exception ex) {
@@ -1145,29 +1044,24 @@ public class PhysicalTreeView extends AbstractTreeView implements
 				}
 			}
 		} else if (e.getSource() == jmiDevRefresh) {
-			Device device = ((DeviceNode) (paths[0].getLastPathComponent()))
-					.getDevice();
+			Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
 			device.refresh(true, true); // ask user if he wants to make deep or
 			// fast scan
 		} else if (e.getSource() == jmiDevSynchronize) {
-			Device device = ((DeviceNode) (paths[0].getLastPathComponent()))
-					.getDevice();
+			Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
 			device.synchronize(true);
 		} else if (e.getSource() == jmiDevTest) {
 			new Thread() {
 				// test asynchronously in case of delay (samba
 				// pbm for ie)
 				public void run() {
-					Device device = ((DeviceNode) (paths[0]
-							.getLastPathComponent())).getDevice();
+					Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
 					if (device.test()) {
-						Messages
-								.showInfoMessage(
-										Messages.getString("DeviceView.21"), Util.getIcon(ICON_OK)); //$NON-NLS-1$
+						Messages.showInfoMessage(
+								Messages.getString("DeviceView.21"), Util.getIcon(ICON_OK)); //$NON-NLS-1$
 					} else {
-						Messages
-								.showInfoMessage(
-										Messages.getString("DeviceView.22"), Util.getIcon(ICON_KO)); //$NON-NLS-1$
+						Messages.showInfoMessage(
+								Messages.getString("DeviceView.22"), Util.getIcon(ICON_KO)); //$NON-NLS-1$
 					}
 				}
 			}.start();
@@ -1189,12 +1083,11 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			}
 			jtree.revalidate();
 			jtree.repaint();
-		} else if (e.getSource() == jmiPlaylistFilePlay
-				|| e.getSource() == jmiPlaylistFilePush
+		} else if (e.getSource() == jmiPlaylistFilePlay || e.getSource() == jmiPlaylistFilePush
 				|| e.getSource() == jmiPlaylistFilePlayShuffle
 				|| e.getSource() == jmiPlaylistFilePlayRepeat) {
-			PlaylistFile plf = ((PlaylistFileNode) paths[0]
-					.getLastPathComponent()).getPlaylistFile();
+			PlaylistFile plf = ((PlaylistFileNode) paths[0].getLastPathComponent())
+					.getPlaylistFile();
 			ArrayList<File> alToPlay = new ArrayList<File>(10);
 			try {
 				alToPlay = plf.getFiles();
@@ -1210,29 +1103,23 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			} else { // specific actions
 				if (e.getSource() == jmiPlaylistFilePlay) {
 					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alToPlay),
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), false);
+							Util.createStackItems(Util.applyPlayOption(alToPlay),
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
+							false);
 				} else if (e.getSource() == jmiPlaylistFilePush) {
-					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alToPlay),
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), true);
+					FIFO.getInstance()
+							.push(
+									Util.createStackItems(Util.applyPlayOption(alToPlay),
+											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+											true), true);
 				} else if (e.getSource() == jmiPlaylistFilePlayShuffle) {
 					Collections.shuffle(alToPlay, new Random());
 					FIFO.getInstance().push(
-							Util.createStackItems(alToPlay,
-									ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT),
-									true), false);
+							Util.createStackItems(alToPlay, ConfigurationManager
+									.getBoolean(CONF_STATE_REPEAT), true), false);
 				} else if (e.getSource() == jmiPlaylistFilePlayRepeat) {
 					FIFO.getInstance().push(
-							Util.createStackItems(Util
-									.applyPlayOption(alToPlay), true, true),
+							Util.createStackItems(Util.applyPlayOption(alToPlay), true, true),
 							false);
 				} else if (e.getSource() == jmiPlaylistAddFavorites) {
 					Bookmarks.getInstance().addFiles(alToPlay);
@@ -1241,22 +1128,19 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		} else if (e.getSource() == jmiPlaylistFileDelete) {
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 				// file delete confirmation
-				PlaylistFile plf = ((PlaylistFileNode) paths[0]
-						.getLastPathComponent()).getPlaylistFile();
+				PlaylistFile plf = ((PlaylistFileNode) paths[0].getLastPathComponent())
+						.getPlaylistFile();
 				String sFileToDelete = plf.getAbsolutePath(); //$NON-NLS-1$
 				String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
-				int i = Messages.getChoice(sMessage,
-						JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+				int i = Messages.getChoice(sMessage, JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 				if (i == JOptionPane.OK_OPTION) {
 					PlaylistFileManager.getInstance().removePlaylistFile(plf);
 					// requires device refresh
-					ObservationManager.notify(new Event(
-							EventSubject.EVENT_DEVICE_REFRESH));
+					ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 				}
 			}
 		} else if (e.getSource() == jmiDevConfiguration) {
-			Device device = ((DeviceNode) paths[0].getLastPathComponent())
-					.getDevice();
+			Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
 			DeviceWizard dw = new DeviceWizard();
 			dw.updateWidgets(device);
 			dw.pack();
@@ -1282,14 +1166,13 @@ public class PhysicalTreeView extends AbstractTreeView implements
 			}
 			new PropertiesWizard(alSelected, alTracks);
 		} else if (e.getSource() == jmiDevProperties) {
-			Device device = ((DeviceNode) paths[0].getLastPathComponent())
-					.getDevice();
+			Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
 			ArrayList<Item> alItems = new ArrayList<Item>(1);
 			alItems.add(device);
 			new PropertiesWizard(alItems);
 		} else if (e.getSource() == jmiPlaylistFileProperties) {
-			PlaylistFile plf = ((PlaylistFileNode) paths[0]
-					.getLastPathComponent()).getPlaylistFile();
+			PlaylistFile plf = ((PlaylistFileNode) paths[0].getLastPathComponent())
+					.getPlaylistFile();
 			ArrayList<Item> alItems = new ArrayList<Item>(1);
 			alItems.add(plf);
 			new PropertiesWizard(alItems);

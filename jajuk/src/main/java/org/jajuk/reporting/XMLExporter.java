@@ -327,10 +327,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		sb.append(Tag.openTag(XML_DEVICE) + NEWLINE);
 
 		sb.append(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
-		sb.append(addTabs(1) + Tag.tagData(XML_NAME, device.getName()) + NEWLINE);
-		sb.append(addTabs(1) + Tag.tagData(XML_TYPE, device.getDeviceTypeS()) + NEWLINE);
-		sb.append(addTabs(1) + Tag.tagData(XML_URL, device.getUrl()) + NEWLINE);
-		sb.append(addTabs(1) + Tag.tagData(XML_DEVICE_MOUNT_POINT, device.getMountPoint())
+		sb.append(addTabs(1) + Tag.tagData(XML_NAME, Util.formatXML(device.getName())) + NEWLINE);
+		sb.append(addTabs(1) + Tag.tagData(XML_TYPE, Util.formatXML(device.getDeviceTypeS())) + NEWLINE);
+		sb.append(addTabs(1) + Tag.tagData(XML_URL, Util.formatXML(device.getUrl())) + NEWLINE);
+		sb.append(addTabs(1) + Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device.getMountPoint()))
 				+ NEWLINE);
 
 		ListIterator itr = new ArrayList<Directory>(DirectoryManager.getInstance()
@@ -493,6 +493,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		sb.append('\t' + Tag.tagData("ReportAction.length", Messages.getString("Property_length")));
 		sb.append('\t' + Tag.tagData("ReportAction.year", Messages.getString("Property_year")));
 		sb.append('\t' + Tag.tagData("ReportAction.rate", Messages.getString("Property_rate")));
+		sb.append('\t' + Tag.tagData("ReportAction.url", Messages.getString("Property_url")));
+		sb.append('\t' + Tag.tagData("ReportAction.type", Messages.getString("Property_type")));
 		sb.append('\t' + Tag
 				.tagData("ReportAction.comment", Messages.getString("Property_comment")));
 		sb.append(Tag.closeTag("i18n"));
