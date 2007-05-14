@@ -12,7 +12,7 @@
 	<xsl:template match='/'>
 		<html>
 			<head>
-				<title><xsl:value-of select='collection/ReportAction.1' /></title>
+				<title><xsl:value-of select='/collection/i18n/ReportAction.1' /></title>
 				<style type='text/css'>
 					.style { background-color: #f9f7ed; font-weight:
 					bold; padding: 3px; }
@@ -28,24 +28,24 @@
 				</style>
 			</head>
 			<body>
-				<h1><xsl:value-of select='collection/ReportAction.1' /></h1>
+				<h1><xsl:value-of select='/collection/i18n/ReportAction.1' /></h1>
 				<p>
 					<CAPTION>
-						<xsl:value-of select='collection/ReportAction.2' />
+						<xsl:value-of select='/collection/i18n/ReportAction.2' />
 					</CAPTION>
 				</p>
 				<p>
 					<ul>
-						<li><a href='#1'><xsl:value-of select='/collection/ReportAction.3'/></a></li>
-						<li><a href='#2'><xsl:value-of select='/collection/ReportAction.4'/></a></li>
+						<li><a href='#1'><xsl:value-of select='/collection/i18n/ReportAction.3'/></a></li>
+						<li><a href='#2'><xsl:value-of select='/collection/i18n/ReportAction.4'/></a></li>
 					</ul>
 				</p>
 				<p>
-					<h2 id='1'><xsl:value-of select='collection/ReportAction.3'/></h2>
+					<h2 id='1'><xsl:value-of select='/collection/i18n/ReportAction.3'/></h2>
 					<xsl:apply-templates select='collection' />
 				</p>
 				<p>
-					<h2 id='2'><xsl:value-of select='collection/ReportAction.4'/></h2>
+					<h2 id='2'><xsl:value-of select='/collection/i18n/ReportAction.4'/></h2>
 					<xsl:apply-templates select='collection/album' />
 				</p>
 			</body>
@@ -55,10 +55,10 @@
 	<xsl:template match='collection'>
 		<table border='0' cellspacing='5'>
 			<TR>
-				<TH><xsl:value-of select='ReportAction.name'/></TH>
-				<TH><xsl:value-of select='ReportAction.author'/></TH>
-				<TH><xsl:value-of select='ReportAction.year'/></TH>
-				<TH><xsl:value-of select='ReportAction.style'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.name'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.author'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.year'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.style'/></TH>
 			</TR>
 			<xsl:for-each select='album'>
 				<tr>
@@ -95,14 +95,14 @@
 		</p>
 		<table border='0' cellspacing='5'>
 			<TR>
-				<TH><xsl:value-of select='/collection/ReportAction.order'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.track'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.album'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.author'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.style'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.length'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.rate'/></TH>
-				<TH><xsl:value-of select='/collection/ReportAction.comment'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.order'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.track'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.album'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.author'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.style'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.length'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.rate'/></TH>
+				<TH><xsl:value-of select='/collection/i18n/ReportAction.comment'/></TH>
 			</TR>
 
 			<xsl:for-each select='track'>

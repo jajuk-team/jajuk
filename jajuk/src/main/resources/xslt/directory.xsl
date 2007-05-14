@@ -1,123 +1,173 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 
 <!-- 
-	Description: This XSLT transforms a xml file containing the tagging of a directory and it's
-				children directories and files into an html file.
-	Artist: Ronak Patel
+	Description: This XSLT transforms a xml file containing the tagging of a directory into an html file.
+	Author: The Jajuk Team
 	Created: August 23, 2006
- -->
+-->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
+	version='1.0'>
 
-<xsl:template match="/">
-<html>
-<head>
-	<title>Jajuk Music Report</title>
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-		}
-		
-		.device {
-			background-color: #f9f7ed;
-			font-weight: bold;
-			padding: 3px;
-		}
+	<xsl:template match='/'>
+		<html>
+			<head>
+				<title>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.1' />
+				</title>
+				<style type='text/css'>
+					.style { background-color: #f9f7ed; font-weight:
+					bold; padding: 3px; }
 
-		.directory {
-			background-color: #c3d9ff;
-			font-weight: bold;
-			padding: 3px;
-		}
-		
-		.file {
-			background-color: #cdeb8b;
-			font-weight: bold;
-			padding: 3px;
-		}
-		
-		.track {
-			font-weight: bold;
-			background-color: #eeeeee;
-			padding: 3px;			
-			width: 120px;
-		}
-	</style>
-</head>
-<body>
-	<h1>Jajuk Music Report</h1>
-	<p><i>Please consider the environment and do not print unless absolutely necessary</i></p>
-	<xsl:apply-templates select="directory" />
-</body>
-</html>
-</xsl:template>
+					.author { background-color: #c3d9ff; font-weight:
+					bold; padding: 3px; }
 
-<xsl:template match="directory">
-	<ul>
-		<li>
-			<table>
-			<tr>
-				<td class="directory">Directory Name</td>
-				<td> <b><xsl:value-of select="name" /></b></td>
-			</tr>
-			<tr>
-				<td class="directory">Directory Path</td>
-				<td> <xsl:value-of select="path" /></td>
-			</tr>
-			</table>
-			<xsl:apply-templates select="directory" />
-			<ul>
-				<xsl:for-each select="file">
-					<li>
-						<table>
-						<tr>
-							<td class="file">File Name</td>
-							<td><b><xsl:value-of select="name" /></b></td>
-						</tr>
-						<tr>
-							<td class="file">File Path</td>
-							<td><xsl:value-of select="path" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Name</td>
-							<td><xsl:value-of select="track/name" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Genre</td>
-							<td><xsl:value-of select="track/genre" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Artist</td>
-							<td><xsl:value-of select="track/author" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Album</td>
-							<td><xsl:value-of select="track/album" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Length</td>
-							<td><xsl:value-of select="track/length" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Rate</td>
-							<td><xsl:value-of select="track/rate" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Comment</td>
-							<td><xsl:value-of select="track/comment" /></td>
-						</tr>
-						<tr>
-							<td class="track">Track Order</td>
-							<td><xsl:value-of select="track/order" /></td>
-						</tr>
-						</table>
-						<br />
-					</li>
-				</xsl:for-each>
-				<br />
-			</ul>
-		</li>
-	</ul>
-</xsl:template>
+					.album { background-color: #cdeb8b; font-weight:
+					bold; padding: 3px; }
 
+					.track { font-weight: bold; background-color:
+					#eeeeee; padding: 3px; width: 120px; }
+				</style>
+			</head>
+			<body>
+				<h1>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.1' />
+				</h1>
+				<p>
+					<CAPTION>
+						<xsl:value-of
+							select='/collection/i18n/ReportAction.2' />
+					</CAPTION>
+				</p>
+				<p>
+					<ul>
+						<li>
+							<a href='#1'>
+								<xsl:value-of
+									select='/collection/i18n/ReportAction.10' />
+							</a>
+						</li>
+						<li>
+							<a href='#2'>
+								<xsl:value-of
+									select='/collection/i18n/ReportAction.11' />
+							</a>
+						</li>
+					</ul>
+				</p>
+				<p>
+					<h2 id='1'>
+						<xsl:value-of
+							select='/collection/i18n/ReportAction.10' />
+					</h2>
+					<xsl:apply-templates select='collection' />
+				</p>
+				<p>
+					<h2 id='2'>
+						<xsl:value-of
+							select='/collection/i18n/ReportAction.11' />
+					</h2>
+					<xsl:apply-templates select='collection/directory' />
+				</p>
+			</body>
+		</html>
+	</xsl:template>
+
+	<xsl:template match='collection'>
+		<table border='0' cellspacing='5'>
+			<xsl:for-each select='directory'>
+				<tr>
+					<xsl:variable name='id' select='id' />
+					<td>
+						<a href='#{id}'>
+							<xsl:value-of select='path' />
+						</a>
+					</td>
+				</tr>
+			</xsl:for-each>
+		</table>
+	</xsl:template>
+
+
+	<xsl:template match='collection/directory'>
+		<hr />
+		<xsl:variable name='id' select='id' />
+		<h2 id='{id}'>
+			<xsl:value-of select='path' />
+		</h2>
+		<table border='0' cellspacing='5'>
+			<TR>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.12' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.order' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.13' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.style' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.author' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.album' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.length' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.rate' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.comment' />
+				</TH>
+			</TR>
+
+			<xsl:for-each select='file'>
+				<tr>
+					<td>
+						<xsl:value-of select='name' />
+					</td>
+					<td>
+						<xsl:value-of select='track/order' />
+					</td>
+					<td class='track'>
+						<xsl:value-of select='track/name' />
+					</td>
+					<td class='style'>
+						<xsl:value-of select='track/style' />
+					</td>
+					<td class='author'>
+						<xsl:value-of select='track/author' />
+					</td>
+					<td class='album'>
+						<xsl:value-of select='track/album' />
+					</td>
+					<td>
+						<xsl:value-of select='track/length' />
+					</td>
+					<td>
+						<xsl:value-of select='track/rate' />
+					</td>
+					<td>
+						<xsl:value-of select='track/comment' />
+					</td>
+				</tr>
+			</xsl:for-each>
+		</table>
+	</xsl:template>
 </xsl:stylesheet>
