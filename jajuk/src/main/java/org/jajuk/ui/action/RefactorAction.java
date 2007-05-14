@@ -46,6 +46,8 @@ public class RefactorAction implements ITechnicalStrings {
 	ArrayList<File> alFiles;
 
 	String filename;
+	
+	public static boolean bStopAll = false;
 
 	static String sFS = java.io.File.separator;
 
@@ -62,6 +64,10 @@ public class RefactorAction implements ITechnicalStrings {
 					.getChoice(
 							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
+				//Cancel
+				if (iResu == JOptionPane.CANCEL_OPTION){
+					bStopAll = true;
+				}
 				Util.stopWaiting();
 				return;
 			}
