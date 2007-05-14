@@ -231,6 +231,8 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_ALBUM = "unknown_album";
 
 	public static final String UNKNOWN_STYLE = "unknown_style";
+	
+	public static final String UNKNOWN_YEAR = "unknown_year";
 
 	public static final String UNKNOWN = "unknown";
 
@@ -1245,13 +1247,9 @@ public interface ITechnicalStrings {
 
 	public static final String XML_TRACK_STYLE = "style";
 
-	public static final String XML_TRACK_GENRE = "genre";
-
 	public static final String XML_TRACK_AUTHOR = "author";
 
 	public static final String XML_TRACK_YEAR = "year";
-
-	public static final String XML_TRACK_ARTIST = "artist";
 
 	public static final String XML_TRACK_LENGTH = "length";
 

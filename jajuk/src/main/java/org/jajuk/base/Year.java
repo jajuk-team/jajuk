@@ -104,5 +104,17 @@ public class Year extends LogicalItem implements Comparable {
 	public String getDesc() {
 		return Messages.getString("Property_year") + " : " + getName();
 	}
+	
+	/**
+	 * 
+	 * @return a human-readable year format
+	 */
+	public String getName2(){
+		String s = getName();
+		if ("0".equals(s)){
+			return Messages.getString(UNKNOWN_STYLE);
+		}
+		return s;
+	}
 
 }

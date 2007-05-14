@@ -357,8 +357,15 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDirCDDBQuery = new JMenuItem(Messages
 				.getString("PhysicalTreeView.57")); //$NON-NLS-1$
 		jmiDirCDDBQuery.addActionListener(this);
-		jmiDirReport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
-		jmiDirReport.addActionListener(this);
+		
+		Action actionReportDir = ActionManager.getAction(JajukAction.CREATE_REPORT);
+		jmiDirReport = new JMenuItem(actionReportDir);
+		// Add custom data to this component in order to allow the ReportAction
+		// to be able to get it
+		jmiDirReport.putClientProperty(DETAIL_ORIGIN, XML_DIRECTORY);
+		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelected);
+		
+		
 		jmiDirRefactor = new JMenuItem(Messages
 				.getString(("PhysicalTreeView.62"))); //$NON-NLS-1$
 		jmiDirRefactor.addActionListener(this);
@@ -415,8 +422,13 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		jmiDevConfiguration = new JMenuItem(Messages
 				.getString("PhysicalTreeView.55")); //$NON-NLS-1$
 		jmiDevConfiguration.addActionListener(this);
-		jmiDevReport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
-		jmiDevReport.addActionListener(this);
+		Action actionReportDevice = ActionManager.getAction(JajukAction.CREATE_REPORT);
+		jmiDevReport = new JMenuItem(actionReportDevice);
+		// Add custom data to this component in order to allow the ReportAction
+		// to be able to get it
+		jmiDevReport.putClientProperty(DETAIL_ORIGIN, XML_DEVICE);
+		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelected);
+		
 		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevPlay);
 		jmenuDev.add(jmiDevPush);
@@ -1086,6 +1098,11 @@ public class PhysicalTreeView extends AbstractTreeView implements
 		} else if ((alFiles != null && e.getSource() == jmiDirRefactor)) {
 			Util.waiting();
 			for (Item item : alSelected) {
+				//check if user made a global cancel
+				if (RefactorAction.bStopAll){
+					RefactorAction.bStopAll = false;
+					return;
+				}
 				final Directory dir = (Directory) item;
 				Util.waiting();
 				new RefactorAction(dir.getFilesRecursively());
