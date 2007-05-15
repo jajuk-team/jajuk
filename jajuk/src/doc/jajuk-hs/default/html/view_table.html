@@ -1,513 +1,272 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
 
 
-
-
-
-  
-  
-  
-  
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
-
-
-
-
-  
-
-
-  
-  
-  
-  
-  
-  
-  
-  <title>The Physical/Logical Table view</title>
-  <meta name="GENERATOR" content="OpenOffice.org 2.0-pre (Linux)">
-
-
-
-
-
-  
-  
-  
-  
-  <meta name="CREATED" content="20050308;19375000">
-
-
-
-
-
-  
-  
-  
-  
-  <meta name="CHANGEDBY" content="bflorat">
-
-
-
-
-
-  
-  
-  
-  
-  <meta name="CHANGED" content="20051009;17413500">
-
-
-
-
-
-  
-  
-  
-  
-  <style>
-<!--
-H1 { color: #000000 }
-P { color: #000000 }
-H2 { color: #000000 }
--->
-  </style>
-</head>
-
-
-<body style="direction: ltr; color: rgb(0, 0, 0);" lang="en-US">
-
-
-
-
-
-<h1>The Physical/Logical Table view</h1>
-
-
-
-
-
-<p>These views show all files/tracks from your collection in a
-table
-and is used to perform contextual operations and filtering. For the
-moment, columns (track name, directory...) are static but in Jajuk
-future releases, you should be able to add new custom ones. Physical
-Table view displays all files from your collection (so you can get
-several time the same file if located in several devices or
-directories) when the Logical Tracks Table view only deals with tracks and
-related information. Note that a single track can actually map
-several files but will only be displayed once in this view.</p>
-
-
-
-
-
-<p><u>Notes</u>: </p>
-
-
-
-
-
-<ul>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Rate is related to the
-track, not to a single file. It is computed this way: +1 when a track
-is added in queue and +2 when it is played. </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p>As usual, you can limit to files from mounted devices
-using the "show only mounted devices" option in Parameter view/ Option
-tab. </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-</ul>
-
-
-
-
-
-<h2>Drag and Drop</h2>
-
-
-
-
-
-<p>At any time, you can drag a single file or track from the
-table to
-any Playlist in the Playlist repository view or to the current
-Playlist Editor.</p>
-
-
-
-
-
-<h2>Contextual menu</h2>
-
-
-
-
-
-<p>File/track contextual menu features:</p>
-
-
-
-
-
-<ul>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play: Stop current
-track/file and play it </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Push: Don't stop
-current track but simply add the selection in the queue (see Queue
-playlist) </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play shuffle: Stop
-current track and play selection randomly (note that this mode is
-automatically used when playing a track if you set Shuffle mode in
-command view) </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play repeat: Stop
-current track and play selection in a loop (note that this mode is
-automatically used when playing a track if you set Repeat mode in
-command view) </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play directory (only
-Physical Files Table): stop current track and play all files found in the
-selection directory </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play album (only
-Logical Tracks Table): stop current track and play all tracks of the selection
-album </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play artist (only
-Logical Tracks Table): stop current track and play all tracks of the selection
-artist </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Properties : Show item
-properties.<br>
-
-    </p>
-
-  </li>
-
-</ul>
-
-<h2>Editing table items</h2>
-
-Table view owns two modes:<br>
-
-<ul>
-
-  <li>
-    
-    <p>Read only (default): double clicking on a row launches the track and it is not allowed to change values.</p>
-
-  </li>
-
-  <li>
-    
-    <p>Read/write: double clicking on an editable value allows to change it. To launch a track, use the first column icon (play).</p>
-
-  </li>
-
-</ul>
-
-Use this button&nbsp;<img style="border: 0px solid ; width: 16px; height: 16px;" alt="" src="../icons/16x16/edit.png" name="Image1"> located in the filtering panel to switch from one mode to the other.<br>
-
-
-
-
-
-
-
-
-
-<h2><a name="filtering"></a>Filtering panel</h2>
-
-
-
-
-
-<p>To filter tracks/files following some criteria, select the
-criteria using the combo box (track name, artist and so on), then
-type the filter value in the text field and type [enter] (note that
-filtering occurs also automatically when typing stops). If filter
-value is void, all tracks/files will be displayed. "Any"
-criteria means that search is done on all available criteria.</p>
-
-
-
-
-
-<p>o Filter type combo box: select the criteria you want to
-filter
-on. </p>
-
-
-
-
-
-<p>o Filter value text field: type value you want to filter on. </p>
-
-
-
-
-
-<h2><a name="show_col"></a>Selecting columns
-to show</h2>
-
-
-
-
-
-<p>To select columns you want to show, click on the column
-selector
-button:<br>
-
-
-
-
-
-<font color="#000000"><font color="#000000"><img style="border: 1px solid ; width: 360px; height: 252px;" alt="" src="../images/cols01.jpg" name="Image1"></font></font><br>
-
-
-
-
-
-<i>Fig.
-01: columns selector button</i><br>
-
-
-
-
-
-<br>
-
-
-
-
-
-And select columns to display
-by checking columns:<br>
-
-
-
-
-
-<font color="#000000"><font color="#000000"><img style="border: 1px solid ; width: 344px; height: 356px;" alt="" src="../images/cols02.jpg" name="Image1"></font></font><br>
-
-
-
-
-
-<i>Fig.
-02: column selection</i></p>
-
-
-
-
-
-<p>Others features:</p>
-
-
-
-
-
-<ul>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p><i>Horizontal Scroll</i>: resize columns a way
-that they are all fully displayed.</p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-  <li>
-    
-    
-    
-    
-    <p><i>Pack All Columns</i>: optimizes columns
-size to remove blanks. </p>
-
-
-
-
-
-  </li>
-
-
-
-
-
-</ul>
-
-
-
-
-
-</body>
-</html>
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>view table</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
+><BODY
+CLASS="book"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="AEN1"
+></A
+><DIV
+CLASS="ARTICLE"
+><H1
+><A
+NAME="view_table"
+></A
+>view table</H1
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN8"
+>The Physical/Logical Table view</A
+></H2
+><P
+>&#13;These views show all files/tracks from your collection in a table and is used to perform contextual operations and filtering. For the moment, columns (track name, directory...) are static but in Jajuk future releases, you should be able to add new custom ones. Physical Table view displays all files from your collection (so you can get several time the same file if located in several devices or directories) when the Logical Tracks Table view only deals with tracks and related information. Note that a single track can actually map several files but will only be displayed once in this view.
+</P
+><P
+>&#13;Notes: 
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Rate is related to the track, not to a single file. It is computed this way: +1 when a track is added in queue and +2 when it is played.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;As usual, you can limit to files from mounted devices using the "show only mounted devices" option in Parameter view/ Option tab.
+</P
+></LI
+></UL
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN17"
+>Drag and Drop</A
+></H3
+><P
+>&#13;At any time, you can drag a single file or track from the table to any Playlist in the Playlist repository view or to the current Playlist Editor.
+</P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN20"
+>Contextual menu</A
+></H3
+><P
+>&#13;File/track contextual menu features:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play: Stop current track/file and play it
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Push: Don't stop current track but simply add the selection in the queue (see Queue playlist)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play shuffle: Stop current track and play selection randomly (note that this mode is automatically used when playing a track if you set Shuffle mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play repeat: Stop current track and play selection in a loop (note that this mode is automatically used when playing a track if you set Repeat mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play directory (only Physical Files Table): stop current track and play all files found in the selection directory
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play album (only Logical Tracks Table): stop current track and play all tracks of the selection album
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play artist (only Logical Tracks Table): stop current track and play all tracks of the selection artist
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Properties : Show item properties.
+</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN40"
+>Editing table items</A
+></H3
+><P
+>&#13;Table view owns two modes:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Read only (default): double clicking on a row launches the track and it is not allowed to change values.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Read/write: double clicking on an editable value allows to change it. To launch a track, use the first column icon (play).
+</P
+></LI
+></UL
+><P
+>&#13;Use this button <DIV
+CLASS="mediaobject"
+><P
+><IMG
+SRC="http://wiki.jajuk.info/images/d/d2/Edit.png"></P
+></DIV
+>
+ located in the filtering panel to switch from one mode to the other.
+</P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN54"
+>Filtering panel</A
+></H3
+><P
+>&#13;To filter tracks/files following some criteria, select the criteria using the combo box (track name, artist and so on), then type the filter value in the text field and type [enter] (note that filtering occurs also automatically when typing stops). If filter value is void, all tracks/files will be displayed. "Any" criteria means that search is done on all available criteria.
+</P
+><P
+>&#13;o Filter type combo box: select the criteria you want to filter on.
+</P
+><P
+>&#13;o Filter value text field: type value you want to filter on.
+</P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN59"
+>Selecting columns to show</A
+></H3
+><P
+>&#13;To select columns you want to show, click on the column selector button:<DIV
+CLASS="mediaobject"
+><P
+><IMG
+SRC="http://wiki.jajuk.info/images/a/a4/Cols01.jpg"></P
+></DIV
+>
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Fig. 01: columns selector button</I
+></SPAN
+> And select columns to display by checking columns:<DIV
+CLASS="mediaobject"
+><P
+><IMG
+SRC="http://wiki.jajuk.info/images/0/0b/Cols02.jpg"></P
+></DIV
+>
+<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Fig. 02: column selection</I
+></SPAN
+>
+</P
+><P
+>&#13;Others features:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Horizontal Scroll</I
+></SPAN
+>: resize columns a way that they are all fully displayed.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;<SPAN
+CLASS="emphasis"
+><I
+CLASS="emphasis"
+>Pack All Columns</I
+></SPAN
+>: optimizes columns size to remove blanks. 
+</P
+></LI
+></UL
+><P
+>&#13;<PRE
+CLASS="programlisting"
+>Category:English Manual (Category:English Manual)</PRE
+>
+</P
+></DIV
+></DIV
+></DIV
+></DIV
+></BODY
+></HTML
+>

@@ -1,998 +1,471 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
 
 
-
-
-  
-  
-  
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
-
-
-
-  
-
-
-  
-  
-  
-  
-  
-  <title>The Physical Files Tree view</title>
-  <meta name="GENERATOR" content="OpenOffice.org 2.0-pre (Linux)">
-
-
-
-
-  
-  
-  
-  <meta name="CREATED" content="20050308;19374500">
-
-
-
-
-  
-  
-  
-  <meta name="CHANGEDBY" content="bflorat">
-
-
-
-
-  
-  
-  
-  <meta name="CHANGED" content="20051009;17405600">
-</head>
-
-
-<body style="direction: ltr;" lang="en-US">
-
-
-
-
-<h1>The Physical Files Tree view</h1>
-
-
-
-
-<p>This view can be found in the Physical perspective. It allows
-you
-selecting or browsing your devices upon a physical point of view. In
-this view, you will find:</p>
-
-
-
-
-<ul>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Devices as you created
-them in the Device view. Devices contain directories. </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Directories </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Audio files that Jajuk
-supports </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p>Playlist files </p>
-
-
-
-
-  </li>
-
-
-
-
-</ul>
-
-
-
-
-<p><u>Notes</u>: </p>
-
-
-
-
-<ul>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Cover files are not
-visible in the tree. </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p>Tree configuration (nodes expands/collapses) is saved for
-next Jajuk session. </p>
-
-
-
-
-  </li>
-
-
-
-
-</ul>
-
-
-
-
-<p>You can select any item in the tree, all contextual menu
-action
-will be applied recursively. For example, if you selected both your
-"ROCK" main directory and your "POP" main
-directory, then you right click and select "Play shuffle",
-Jajuk will play randomly all your ROCK and POP tracks.</p>
-
-
-
-
-<h2>Dragging and dropping items</h2>
-
-
-
-
-<p>At any time, you can drag a selection and drop it over the
-playlist you want to add selection to (in <a href="../html/view_playlist_repository.html">Playlist
-Repository view</a>) or over the Playlist Editor View of current
-Playlist. If current playlist is the queue Playlist (default), a drag
-on the selection and drop over the <a href="../html/view_playlist_editor.html">Playlist
-Editor View</a> will result into an immediate play of your
-selection.
-Play or Push default behavior during a drag and drop can be set in
-the <a href="../html/view_parameter.html">Parameter
-view</a> / Mode tab.</p>
-
-
-
-
-<h2>Devices contextual menu</h2>
-
-
-
-
-<p>Device contextual menu features:</p>
-
-
-
-
-<ul>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Configure: Open Device wizard to configure device.</p>
-  </li>
-  <li>
-    <p style="margin-bottom: 0cm;">Play: Stop current
-track and play selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Push: Don't stop
-current track but simply add the selection into the queue (see Queue
-playlist) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play shuffle: Stop
-current track and play selection randomly (note that this mode is
-automatically used when playing a track if you set Shuffle mode in
-command view) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play repeat: Stop
-current track and play selection in a loop (note that this mode is
-automatically used when playing a track if you set Repeat mode in
-command view) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Mount: perform a mount
-(see Using devices) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Unmount: perform an
-unmount (see Using devices) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Force Refresh: Perform a&nbsp;device forced refresh to read tags again (see Using devices) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Synchronize: Perform a
-synchronization (see Using devices). It is enabled only if the device
-is configured to be synchronized with another one. </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Test: check (or "ping")
-the device to check if it is really available. </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Create Playlists (not
-yet implemented). Create playlists files.</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p>Get tags online: Search tags online (CDDB) for tracks
-found
-at device root.</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>Create a report: Create an HTML or XML report<br>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Properties : Show item
-properties. </p>
-
-
-
-
-  </li>
-
-
-
-
-</ul>
-
-
-
-
-<h2>Directory contextual menu</h2>
-
-
-
-
-<p>Directory contextual menu features:</p>
-
-
-
-
-<ul>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play: Stop current
-track and play selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Push: Don't stop
-current track but simply add the selection into the queue (see Queue
-playlist) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play shuffle: Stop
-current track and play selection randomly (note that this mode is
-automatically used when playing a track if you set Shuffle mode in
-command view) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play repeat: Stop
-current track and play selection in a loop (note that this mode is
-automatically used when playing a track if you set Repeat mode in
-command view) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Desynchronize: flag
-this selection so it will not taken into account at next
-synchronization (see Using Devices) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Resynchronize: reset
-desynchronize flag (see Using Devices) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Create Playlists (not
-yet implemented). Create playlists files. </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Copy (not yet
-implemented): copy selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Cut (not yet
-implemented): cut selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Paste (not yet
-implemented): paste selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Rename (not yet
-implemented): rename selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Delete (not yet
-implemented): delete selection</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p>Add to favorites: Add recursively items to Bestof playlist</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Get tags online: Search
-tags online (CDDB) for tracks found in this directory</p>
-
-  </li>
-
-  <li>
-    
-    <p>Organize files: organize files according tags (see <a href="./reorg.html">File organizer page</a>)</p>
-  </li>
-  <li>Create a report: Create an HTML or XML report</li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Properties : show item
-properties. </p>
-
-
-
-
-  </li>
-
-
-
-
-</ul>
-
-
-
-
-<h2>Audio file contextual menu</h2>
-
-
-
-
-<p>Audio file contextual menu features:</p>
-
-
-
-
-<ul>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play: Stop current
-track and play selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Push: Don't stop
-current track but simply add the selection into the queue (see Queue
-playlist) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Copy (not yet
-implemented): copy selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Cut (not yet
-implemented): cut selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Paste (not yet
-implemented): paste selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Delete (not yet
-implemented): delete selection</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p>Add to favorites: Add recursively items to Bestof playlist</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Properties (not yet
-implemented) : show item properties. </p>
-
-
-
-
-  </li>
-
-
-
-
-</ul>
-
-
-
-
-<h2>Playlist file contextual menu</h2>
-
-
-
-
-<p>Playlist file contextual menu features:</p>
-
-
-
-
-<ul>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play: Stop current
-track and play selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Push: Don't stop
-current track but simply add the selection into the queue (see Queue
-playlist) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play shuffle: Stop
-current track and play playlist randomly (note that this mode is
-automatically used when playing a track if you used Shuffle mode in
-command view) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Play repeat: Stop
-current track and play playlist in a loop (note that this mode is
-automatically used when playing a track if you used Repeat mode in
-command view) </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Copy(not yet
-implemented): copy selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Cut(not yet
-implemented): cut selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Paste(not yet
-implemented): paste selection </p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Delete: Delete
-selection</p>
-
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p>Add to favorites: Add recursively items to Bestof playlist</p>
-
-
-
-  </li>
-
-
-
-
-  <li>
-    
-    
-    
-    <p style="margin-bottom: 0cm;">Properties : show item
-properties. </p>
-
-
-
-
-  </li>
-
-
-
-
-</ul>
-
-
-
-
-</body>
-</html>
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>view physical tree</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
+><BODY
+CLASS="book"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="AEN1"
+></A
+><DIV
+CLASS="ARTICLE"
+><H1
+><A
+NAME="view_physical_tree"
+></A
+>view physical tree</H1
+><DIV
+CLASS="section"
+><H2
+CLASS="section"
+><A
+NAME="AEN8"
+>The Physical Files Tree view</A
+></H2
+><P
+>&#13;This view can be found in the Physical perspective. It allows you selecting or browsing your devices upon a physical point of view. In this view, you will find:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Devices as you created them in the Device view. Devices contain directories.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Directories
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Audio files that Jajuk supports
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Playlist files
+</P
+></LI
+></UL
+><P
+>&#13;Notes: 
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Cover files are not visible in the tree.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Tree configuration (nodes expands/collapses) is saved for next Jajuk session.
+</P
+></LI
+></UL
+><P
+>&#13;You can select any item in the tree, all contextual menu action will be applied recursively. For example, if you selected both your "ROCK" main directory and your "POP" main directory, then you right click and select "Play shuffle", Jajuk will play randomly all your ROCK and POP tracks.
+</P
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN27"
+>Dragging and dropping items</A
+></H3
+><P
+>&#13;At any time, you can drag a selection and drop it over the playlist you want to add selection to (in [../html/view_playlist_repository.html Playlist Repository view]) or over the Playlist Editor View of current Playlist. If current playlist is the queue Playlist (default), a drag on the selection and drop over the [../html/view_playlist_editor.html Playlist Editor View] will result into an immediate play of your selection. Play or Push default behavior during a drag and drop can be set in the [../html/view_parameter.html Parameter view] / Mode tab.
+</P
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN30"
+>Devices contextual menu</A
+></H3
+><P
+>&#13;Device contextual menu features:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Configure: Open Device wizard to configure device.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play: Stop current track and play selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Push: Don't stop current track but simply add the selection into the queue (see Queue playlist)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play shuffle: Stop current track and play selection randomly (note that this mode is automatically used when playing a track if you set Shuffle mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play repeat: Stop current track and play selection in a loop (note that this mode is automatically used when playing a track if you set Repeat mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Mount: perform a mount (see Using devices)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Unmount: perform an unmount (see Using devices)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Force Refresh: Perform a device forced refresh to read tags again (see Using devices)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Synchronize: Perform a synchronization (see Using devices). It is enabled only if the device is configured to be synchronized with another one.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Test: check (or "ping") the device to check if it is really available.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Create Playlists (not yet implemented). Create playlists files.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Get tags online: Search tags online (CDDB) for tracks found at device root.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Create a report: Create an HTML or XML report
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Properties : Show item properties.
+</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN62"
+>Directory contextual menu</A
+></H3
+><P
+>&#13;Directory contextual menu features:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play: Stop current track and play selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Push: Don't stop current track but simply add the selection into the queue (see Queue playlist)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play shuffle: Stop current track and play selection randomly (note that this mode is automatically used when playing a track if you set Shuffle mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play repeat: Stop current track and play selection in a loop (note that this mode is automatically used when playing a track if you set Repeat mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Desynchronize: flag this selection so it will not taken into account at next synchronization (see Using Devices)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Resynchronize: reset desynchronize flag (see Using Devices)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Create Playlists (not yet implemented). Create playlists files.
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Copy (not yet implemented): copy selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Cut (not yet implemented): cut selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Paste (not yet implemented): paste selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Rename (not yet implemented): rename selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Delete (not yet implemented): delete selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Add to favorites: Add recursively items to Bestof playlist
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Get tags online: Search tags online (CDDB) for tracks found in this directory
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Organize files: organize files according tags (see [./reorg.html File organizer page])
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Create a report: Create an HTML or XML report
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Properties : show item properties.
+</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN100"
+>Audio file contextual menu</A
+></H3
+><P
+>&#13;Audio file contextual menu features:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play: Stop current track and play selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Push: Don't stop current track but simply add the selection into the queue (see Queue playlist)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Copy (not yet implemented): copy selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Cut (not yet implemented): cut selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Paste (not yet implemented): paste selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Delete (not yet implemented): delete selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Add to favorites: Add recursively items to Bestof playlist
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Properties (not yet implemented) : show item properties.
+</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="section"
+><HR><H3
+CLASS="section"
+><A
+NAME="AEN120"
+>Playlist file contextual menu</A
+></H3
+><P
+>&#13;Playlist file contextual menu features:
+</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play: Stop current track and play selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Push: Don't stop current track but simply add the selection into the queue (see Queue playlist)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play shuffle: Stop current track and play playlist randomly (note that this mode is automatically used when playing a track if you used Shuffle mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Play repeat: Stop current track and play playlist in a loop (note that this mode is automatically used when playing a track if you used Repeat mode in command view)
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Copy(not yet implemented): copy selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Cut(not yet implemented): cut selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Paste(not yet implemented): paste selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Delete: Delete selection
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Add to favorites: Add recursively items to Bestof playlist
+</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>&#13;Properties : show item properties.
+</P
+></LI
+></UL
+><P
+>&#13;<PRE
+CLASS="programlisting"
+>Category:English Manual (Category:English Manual)</PRE
+>
+</P
+></DIV
+></DIV
+></DIV
+></DIV
+></BODY
+></HT
