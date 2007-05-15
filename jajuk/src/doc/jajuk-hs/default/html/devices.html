@@ -105,7 +105,7 @@ NAME="AEN29"
 >Creating and configurating devices</A
 ></H3
 ><P
->&#13;Devices can be created either using [view_devices.html the Device view] in the Configuration perspective or using the quick start devices wizard (Top menu -&#62; Configuration -&#62; Devices wizard).
+>&#13;Devices can be created either using the Device view in the Configuration perspective or using the quick start devices wizard (Top menu -&#62; Configuration -&#62; Devices wizard).
 </P
 ></DIV
 ><DIV
@@ -120,10 +120,10 @@ NAME="AEN32"
 >&#13;Jajuk uses an automatic indexing system: music files are not scanned and their tags not read again at each startup but Jajuk builds a collection at refreshing (stored on the disk as {home directory}/.jajuk/collection.xml). It allows Jajuk to start and be aware of all tracks from a multi 100GB+ of music collection in only few seconds. It is also used to perform searches and filtering on the entire collection in real time.
 </P
 ><P
->&#13;Jajuk only knows files from refreshed devices: if you copy a file on your disk, Jajuk will be aware of it only after the next device refresh. Device refreshing is automatic and scanning frequency can be set in [view_devices.html the Device view]. Default frequency for hard disk devices (directory devices) are 30 sec (0.5 mins) and scanning often takes less than few secs so if you remove or add some files in this device, the change will be reflected into the application after about 30 seconds. Note that frequency used for network drives are much longer (default: 5 mins) because scanning them takes a longer time (1 min or more for huge drives) and consumes network bandwidth.
+>&#13;Jajuk only knows files from refreshed devices: if you copy a file on your disk, Jajuk will be aware of it only after the next device refresh. Device refreshing is automatic and scanning frequency can be set in The Device view. Default frequency for hard disk devices (directory devices) are 30 sec (0.5 mins) and scanning often takes less than few secs so if you remove or add some files in this device, the change will be reflected into the application after about 30 seconds. Note that frequency used for network drives are much longer (default: 5 mins) because scanning them takes a longer time (1 min or more for huge drives) and consumes network bandwidth.
 </P
 ><P
->&#13;Jajuk doesn't read tags for known files. You can force it to read them with the "Force refresh" function in Physical Files Tree view on devices nodes or from [view_devices.html the Device view] if you changed tags using another application.
+>&#13;Jajuk doesn't read tags for known files. You can force it to read them with the "Force refresh" function in Physical Files Tree view on devices nodes or from the Device view if you changed tags using another application.
 </P
 ></DIV
 ><DIV
@@ -138,7 +138,7 @@ NAME="AEN37"
 >&#13;Mounting a device means to make it available and unmounting it means to disconnect it. You can configure devices in the Device view so they will be automatically mounted at startup. Some device can naturally be auto-mounted: a directory from your internal hard disk for example. On the other hand, we highly discourage to auto-mount some others like CD or USB keys because they are likely to be unavailable at next startup. When a mount is required on a device, Jajuk will check it is physically available (for a CD for instance) and try to access it if required. Note that under Unix, it can eventually perform a "mount" command. If you try to play a track located in an unmounted device, Jajuk will ask you if you want it to mount this device. In all cases, you will get an error message if the device cannot be mounted.
 </P
 ><P
->&#13;You can mount or unmount a device from the physical perspective with "Mount or Unmount" commands from contextual menu on selected device or from [view_devices.html the Device view] in the Configuration perspective.
+>&#13;You can mount or unmount a device from the physical perspective with "Mount or Unmount" commands from contextual menu on selected device or from the Device view in the Configuration perspective.
 </P
 ></DIV
 ><DIV
@@ -153,7 +153,7 @@ NAME="AEN41"
 >&#13;When creating a device (see device view documentation for more information), you can tell Jajuk to make it synchronized with another device. This allows you to copy by a single click all the new files from source device to the other. Note that you can perform partial synchronization by desynchronizing some directories in the Physical perspective / Physical Files Tree with contextual menu on directories (watch the selection box in the Information view at the bottom to know recursive size of a selection). You can also perform bidirectional synchronizations (all new files from a device are copied to the other) and not only unidirectional.
 </P
 ><P
->&#13;You can synchronize two devices from the physical perspective with "Synchronize" command from contextual menu on selected device or from [view_devices.html the Device view] in the Configuration perspective.
+>&#13;You can synchronize two devices from the physical perspective with "Synchronize" command from contextual menu on selected device or from the Device view in the Configuration perspective.
 </P
 ></DIV
 ><DIV
@@ -171,10 +171,10 @@ NAME="AEN45"
 >&#13;Restore: if you just made a manipulation error and still in jajuk, close the it and overwrite collection_exit.xml file with collection.xml. If you want to overwrite with an older release, overwrite collection_exit.xmlwith collection-{date}.xml file. Then restart jajuk.
 </P
 ><P
->&#13;It can be a good idea to include your {home directory}/.jajuk directory in a periodic backup.<PRE
-CLASS="programlisting"
->Category:English Manual (Category:English Manual)</PRE
->
+>&#13;It can be a good idea to include your {home directory}/.jajuk directory in a periodic backup.
+</P
+><P
+>&#13;Category:English Manual (Category:English Manual)
 </P
 ></DIV
 ></DIV
