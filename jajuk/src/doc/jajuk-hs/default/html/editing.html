@@ -1,236 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+editing</title>
+</head>
+<body>
+<h1>
+editing</h1>
+<h1>
+Editing tags and properties</h1>
+<p>
+You can set values from :</p>
+<ul>
+<li>
+<div lang="en-US">
+Logical Tracks Table view for tracks and Physical Files Table view for files. If you don't see the property column, check it in the table column selector by clicking on the top-right icon of the table (see</div>
+[../html/view_table.html#show_col <div lang="en-US">
+Table view / Select columns to show)</div>
+]<div lang="en-US">
+.</div>
+<div lang="en-US">
+</div>
+</li>
+<li>
+The Property Wizard for any item (see below).</li>
+</ul>
+<h2>
+The Property Wizard</h2>
+<p>
+The Property Wizard can be used to display and edit all properties for a single item or a multiple-selection. It is accessible from:</p>
+<ul>
+<li>
+The table views (right click on the element(s) -&gt; <i>
+Properties</i>
+)</li>
+<li>
+The tree views (right click on the element(s) -&gt; <i>
+Properties</i>
+)</li>
+<li>
+The playlist repository view (right click on a playlist -&gt; <i>
+Properties</i>
+).</li>
+</ul>
+<p>
+Notes:</p>
+<ul>
+<li>
+For music files, genres, artists and albums we show both item(s) (left side) and associated track(s) (right side) properties for convenience.</li>
+<li>
+Custom properties names are in blue to distinct them.</li>
+<li>
+In case of multiple selection, the property wizard only display common properties that can be changed. A blank field means that items have different values, change it and apply to update all items together.</li>
+</ul>
+<p>
+Property wizard contains these columns:</p>
+<ul>
+<li>
+<i>
+Property name</i>
+ (custom properties in blue).</li>
+<li>
+<i>
+Property value</i>
+ (editable or not according with situation and rules).</li>
+<li>
+<i>
+Link</i>
+</li>
+<li>
+<i>
+Type</i>
+</li>
+</ul>
+<p>
+When all properties are set, click on <i>
+Apply</i>
+ to update properties and commit them in music files if tag properties.</p>
+<h2>
+Tags</h2>
+<p>
+Some properties are stored in collection and in the music files itself (as ID3 tags for instance) at the same time. These properties are: genre, artist, album, track name, year, comment and track #.</p>
+<p>
+If you change tags via another application, use "Perform a deep tag scan" option and launch a device refresh to take them into account in jajuk (see[view_parameter.html#force_tags Parameter view / Tags tab]).</p>
+<p>
+Note that tags are stored in Unicode (UTF-16LE) in files. This encoding is compatible with all players (Windows Media Player or Winamp for instance) and allows Asian people to correctly edit tags using Jajuk.</p>
+<h2>
+Get tags online</h2>
+<p>
+Jajuk enables to change all tracks for an album using CDDB music online databases (like freedb). To use it, select "Get tag online" function on a directory node in Physical Files Tree view in contextual menu.</p>
+<pre>
 
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->editing</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
-><BODY
-CLASS="book"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="BOOK"
-><A
-NAME="AEN1"
-></A
-><DIV
-CLASS="ARTICLE"
-><H1
-><A
-NAME="editing"
-></A
->editing</H1
-><DIV
-CLASS="section"
-><H2
-CLASS="section"
-><A
-NAME="AEN8"
->Editing tags and properties</A
-></H2
-><P
->&#13;You can set values from :
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Logical Tracks Table view for tracks and Physical Files Table view for files. If you don't see the property column, check it in the table column selector by clicking on the top-right icon of the table (see[../html/view_table.html#show_col Table view / Select columns to show)].
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;The Property Wizard for any item (see below).
-</P
-></LI
-></UL
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN16"
->The Property Wizard</A
-></H3
-><P
->&#13;The Property Wizard can be used to display and edit all properties for a single item or a multiple-selection. It is accessible from:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;The table views (right click on the element(s) -&#62; <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Properties</I
-></SPAN
->)
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;The tree views (right click on the element(s) -&#62; <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Properties</I
-></SPAN
->)
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;The playlist repository view (right click on a playlist -&#62; <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Properties</I
-></SPAN
->).
-</P
-></LI
-></UL
-><P
->&#13;Notes:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;For music files, genres, artists and albums we show both item(s) (left side) and associated track(s) (right side) properties for convenience.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Custom properties names are in blue to distinct them.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;In case of multiple selection, the property wizard only display common properties that can be changed. A blank field means that items have different values, change it and apply to update all items together.
-</P
-></LI
-></UL
-><P
->&#13;Property wizard contains these columns:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Property name</I
-></SPAN
-> (custom properties in blue).
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Property value</I
-></SPAN
-> (editable or not according with situation and rules).
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Link</I
-></SPAN
->: If value is itself an item, click on the button to display associated property wizard. 
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Type</I
-></SPAN
->: Property type. 
-</P
-></LI
-></UL
-><P
->&#13;When all properties are set, click on <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Apply</I
-></SPAN
-> to update properties and commit them in music files if tag properties.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN53"
->Tags</A
-></H3
-><P
->&#13;Some properties are stored in collection and in the music files itself (as ID3 tags for instance) at the same time. These properties are: genre, artist, album, track name, year, comment and track #.
-</P
-><P
->&#13;If you change tags via another application, use "Perform a deep tag scan" option and launch a device refresh to take them into account in jajuk (see[view_parameter.html#force_tags Parameter view / Tags tab]).
-</P
-><P
->&#13;Note that tags are stored in Unicode (UTF-16LE) in files. This encoding is compatible with all players (Windows Media Player or Winamp for instance) and allows Asian people to correctly edit tags using Jajuk.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN58"
->Get tags online</A
-></H3
-><P
->&#13;Jajuk enables to change all tracks for an album using CDDB music online databases (like freedb). To use it, select "Get tag online" function on a directory node in Physical Files Tree view in contextual menu.<PRE
-CLASS="programlisting"
->Category:English Manual (Category:English Manual)</PRE
->
-</P
-></DIV
-></DIV
-></DIV
-></DIV
-></BODY
-></HTML
->
+</pre>
+</body>
+</html>

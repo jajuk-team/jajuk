@@ -1,229 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+using custom properties</title>
+</head>
+<body>
+<h1>
+using custom properties</h1>
+<h1>
+Using Custom Properties</h1>
+<p>
+Jajuk offers a way to add custom attributes on almost any item (files, playlists, artists, albums...). Imagine you're not happy with the integrated rating system: just create a custom 'my rate' number attribute on tracks. Other case: you want to store physical location of your CDs; create a String custom attribute on devices. You want to store the date you listened tracks: create a date-based custom property and so forth...</p>
+<p>
+Notes</p>
+<ul>
+<li>
+Custom properties data is only stored in jajuk internal database and NOT in music files as tags (ID3 for ie) so this information will not accessible from others players or jukeboxes.</li>
+<li>
+<div lang="en-US">
+If you use this feature intensively, consider making backup of your collection files (see</div>
+[../html/devices.html#backup <div lang="en-US">
+Using devices / backup and restore</div>
+]<div lang="en-US">
+).</div>
+</li>
+</ul>
+<h2>
+How to create a new custom property ?</h2>
+<p>
+In frame top menu, select <i>
+Properties</i>
+ / <i>
+Create custom property</i>
+. The new property wizard features:</p>
+<ul>
+<li>
+<i>
+Item</i>
+</li>
+<li>
+<i>
+Custom property name</i>
+</li>
+<li>
+<i>
+Type</i>
+</li>
+<li>
+<i>
+Default value</i>
+ (optional): A given default value. Depending on property type, you will be able to set it in the text field, using the date picker or checking the check box. If no default value is given, jajuk use these values: Numbers: 0, Float: 0.0, Strings: "", Dates: &lt;current day&gt;, Boolean: false.</li>
+</ul>
+<p>
+Then, click on <i>
+OK </i>
+to create the custom property.</p>
+<h2>
+How to remove a custom property ?</h2>
+<p>
+In frame top menu, select <i>
+Properties</i>
+ / Remove <i>
+custom property</i>
+. The remove property wizard features:</p>
+<ul>
+<li>
+<i>
+Item</i>
+</li>
+<li>
+<i>
+Custom property name</i>
+</li>
+</ul>
+<p>
+Then, click on <i>
+OK </i>
+to remove the custom property. Note that all values will be lost for this attribute. In case of manipulation error, see[../html/devices.html#backup Using devices / backup and restore].</p>
+<h2>
+How to set values ?</h2>
+<p>
+Values for custom properties can be set the same way than standard ones. See :[../html/editing.html Editing tags and properties]<pre>
+page.
+</pre>
+</p>
+<pre>
 
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->using custom properties</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
-><BODY
-CLASS="book"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="BOOK"
-><A
-NAME="AEN1"
-></A
-><DIV
-CLASS="ARTICLE"
-><H1
-><A
-NAME="using_custom_properties"
-></A
->using custom properties</H1
-><DIV
-CLASS="section"
-><H2
-CLASS="section"
-><A
-NAME="AEN8"
->Using Custom Properties</A
-></H2
-><P
->&#13;Jajuk offers a way to add custom attributes on almost any item (files, playlists, artists, albums...). Imagine you're not happy with the integrated rating system: just create a custom 'my rate' number attribute on tracks. Other case: you want to store physical location of your CDs; create a String custom attribute on devices. You want to store the date you listened tracks: create a date-based custom property and so forth...
-</P
-><P
->&#13;Notes: 
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Custom properties data is only stored in jajuk internal database and NOT in music files as tags (ID3 for ie) so this information will not accessible from others players or jukeboxes.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;If you use this feature intensively, consider making backup of your collection files (see[../html/devices.html#backup Using devices / backup and restore]).
-</P
-></LI
-></UL
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN17"
->How to create a new custom property ?</A
-></H3
-><P
->&#13;In frame top menu, select <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Properties</I
-></SPAN
-> / <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Create custom property</I
-></SPAN
->. The new property wizard features:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Item</I
-></SPAN
->: Choose the item type you want to add custom property on. It can be physical (Device, Directory, File, Playlist File) or logical (Genre, Artist, Album, Track, Playlist). 
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Custom property name</I
-></SPAN
->: The property name. Note that some names are reserved like "name, id...". You will get an error message if you try to use them.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Type</I
-></SPAN
->: Property type. Jajuk supports: Numbers, Float, Strings, Dates or Booleans (true/false).
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Default value</I
-></SPAN
-> (optional): A given default value. Depending on property type, you will be able to set it in the text field, using the date picker or checking the check box. If no default value is given, jajuk use these values: Numbers: 0, Float: 0.0, Strings: "", Dates: &#60;current day&#62;, Boolean: false.
-</P
-></LI
-></UL
-><P
->&#13;Then, click on <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->OK </I
-></SPAN
->to create the custom property.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN37"
->How to remove a custom property ?</A
-></H3
-><P
->&#13;In frame top menu, select <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Properties</I
-></SPAN
-> / Remove <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->custom property</I
-></SPAN
->. The remove property wizard features:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Item</I
-></SPAN
->: Choose the item type for which you want to remove custom property.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;<SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->Custom property name</I
-></SPAN
->: The property name. 
-</P
-></LI
-></UL
-><P
->&#13;Then, click on <SPAN
-CLASS="emphasis"
-><I
-CLASS="emphasis"
->OK </I
-></SPAN
->to remove the custom property. Note that all values will be lost for this attribute. In case of manipulation error, see[../html/devices.html#backup Using devices / backup and restore].
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN51"
->How to set values ?</A
-></H3
-><P
->&#13;Values for custom properties can be set the same way than standard ones. See :[../html/editing.html Editing tags and properties]<PRE
-CLASS="programlisting"
->page.</PRE
-><PRE
-CLASS="programlisting"
->Category:English Manual (Category:English Manual)</PRE
->
-</P
-></DIV
-></DIV
-></DIV
-></DIV
-></BODY
-></HTML
->
+</pre>
+</body>
+</html>

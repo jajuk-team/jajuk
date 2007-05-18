@@ -1,242 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+view playlist editor</title>
+</head>
+<body>
+<h1>
+view playlist editor</h1>
+<h1>
+The Playlist Editor view</h1>
+<p>
+This view can be used to watch queue states or to change tracks order, to add new tracks or remove others. It works on the playlist selected in the[../html/view_playlist_repository.html Playlist Repository view].</p>
+<h2>
+Different types of items</h2>
+<p>
+In the playlist editor, you will find several types of items:</p>
+<p>
+<a href="../images/5/56/Playlist.png" title="Image:playlist.png" class="internal">
+<img src='../images/5/56/Playlist.png' alt="Image:playlist.png"/>
+</a>
+ Regular tracks in the playlist.</p>
+<p>
+<a href="../images/d/d9/Player_perspective.png" title="Image:player_perspective.png" class="internal">
+<img src='../images/d/d9/Player_perspective.png' alt="Image:player_perspective.png"/>
+</a>
+ In the Queue playlist only: user selection to be played.</p>
+<p>
+<a href="../images/3/35/Clock.png" title="Image:clock.png" class="internal">
+<img src='../images/3/35/Clock.png' alt="Image:clock.png"/>
+</a>
+ Planned tracks (only in Queue playlist): shows next tracks to be played when selection is done and if you use the continue mode (see[../html/pm.html Playing music page]). It is useful to know which are next tracks when there are no more than one or few files in the queue.</p>
+<p>
+<a href="../images/7/71/Repeat.png" title="Image:repeat.png" class="internal">
+<img src='../images/7/71/Repeat.png' alt="Image:repeat.png"/>
+</a>
+ Repeated tracks (only in Queue playlist): shows tracks that are played in a loop. Note that you can have a regular selection after a repeated one but never the opposite.</p>
+<h2>
+The Control Panel</h2>
+<p>
+<a href="../images/1/13/Player_play.png" title="Image:player_play.png" class="internal">
+<img src='../images/1/13/Player_play.png' alt="Image:player_play.png"/>
+</a>
+ Play selected playlist (all playlists except Queue)</p>
+<p>
+<a href="../images/2/21/Save.png" title="Image:save.png" class="internal">
+<img src='../images/2/21/Save.png' alt="Image:save.png"/>
+</a>
+ Save the playlist (all playlists). If it is a smart playlist, Jajuk will ask you to provide a path and filename to store the playlist.</p>
+<p>
+<a href="../images/f/f4/Remove.png" title="Image:remove.png" class="internal">
+<img src='../images/f/f4/Remove.png' alt="Image:remove.png"/>
+</a>
+ Remove a file from this playlist. Next tracks go up in the list.</p>
+<p>
+<a href="../images/0/0f/Add_shuffle.png" title="Image:add_shuffle.png" class="internal">
+<img src='../images/0/0f/Add_shuffle.png' alt="Image:add_shuffle.png"/>
+</a>
+ Add a shuffle track. Same behavior than the regular adds.</p>
+<p>
+<a href="../images/d/da/Up.png" title="Image:up.png" class="internal">
+<img src='../images/d/da/Up.png' alt="Image:up.png"/>
+</a>
+ Up: decrease file playing index</p>
+<p>
+<a href="../images/f/f9/Down.png" title="Image:down.png" class="internal">
+<img src='../images/f/f9/Down.png' alt="Image:down.png"/>
+</a>
+ Down: increase file playing index</p>
+<p>
+<a href="../images/6/62/Clear.png" title="Image:clear.png" class="internal">
+<img src='../images/6/62/Clear.png' alt="Image:clear.png"/>
+</a>
+ Clear playlist. Under Queue playlist, it means to stop the player and void the queue.</p>
+<p>
+Notes:</p>
+<ul>
+<li>
+You can also add new files in the playlist by drag and drop from tree or table views.</li>
+<li>
+You can select columns you want to display or hide by clicking on top/right icon of the table.</li>
+</ul>
+<h2>
+Contextual menu</h2>
+<p>
+You can get contextual menu on table item(s) for all playlists expect Queue. Select one or more items (using SHIFT or ALT) and right click. You will get following contextual menu:</p>
+<ul>
+<li>
+Play: play selected item(s).</li>
+<li>
+Push: push selected item(s).</li>
+<li>
+Add to favorites: Add this track to the Bestof smart playlist.</li>
+<li>
+Properties: show the track properties.</li>
+</ul>
+<pre>
 
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->view playlist editor</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
-><BODY
-CLASS="book"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="BOOK"
-><A
-NAME="AEN1"
-></A
-><DIV
-CLASS="ARTICLE"
-><H1
-><A
-NAME="view_playlist_editor"
-></A
->view playlist editor</H1
-><DIV
-CLASS="section"
-><H2
-CLASS="section"
-><A
-NAME="AEN8"
->The Playlist Editor view</A
-></H2
-><P
->&#13;This view can be used to watch queue states or to change tracks order, to add new tracks or remove others. It works on the playlist selected in the[../html/view_playlist_repository.html Playlist Repository view].
-</P
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN11"
->Different types of items</A
-></H3
-><P
->&#13;In the playlist editor, you will find several types of items:
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/5/56/Playlist.png"></P
-></DIV
->
- Regular tracks in the playlist.
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/d/d9/Player_perspective.png"></P
-></DIV
->
- In the Queue playlist only: user selection to be played.
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/3/35/Clock.png"></P
-></DIV
->
- Planned tracks (only in Queue playlist): shows next tracks to be played when selection is done and if you use the continue mode (see[../html/pm.html Playing music page]). It is useful to know which are next tracks when there are no more than one or few files in the queue.
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/7/71/Repeat.png"></P
-></DIV
->
- Repeated tracks (only in Queue playlist): shows tracks that are played in a loop. Note that you can have a regular selection after a repeated one but never the opposite.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN38"
->The Control Panel</A
-></H3
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/1/13/Player_play.png"></P
-></DIV
->
- Play selected playlist (all playlists except Queue)
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/2/21/Save.png"></P
-></DIV
->
- Save the playlist (all playlists). If it is a smart playlist, Jajuk will ask you to provide a path and filename to store the playlist.
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/f/f4/Remove.png"></P
-></DIV
->
- Remove a file from this playlist. Next tracks go up in the list.
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/0/0f/Add_shuffle.png"></P
-></DIV
->
- Add a shuffle track. Same behavior than the regular adds.
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/d/da/Up.png"></P
-></DIV
->
- Up: decrease file playing index
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/f/f9/Down.png"></P
-></DIV
->
- Down: increase file playing index
-</P
-><P
->&#13;<DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/6/62/Clear.png"></P
-></DIV
->
- Clear playlist. Under Queue playlist, it means to stop the player and void the queue.
-</P
-><P
->&#13;Notes:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;You can also add new files in the playlist by drag and drop from tree or table views.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;You can select columns you want to display or hide by clicking on top/right icon of the table.
-</P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN88"
->Contextual menu</A
-></H3
-><P
->&#13;You can get contextual menu on table item(s) for all playlists expect Queue. Select one or more items (using SHIFT or ALT) and right click. You will get following contextual menu:
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Play: play selected item(s).
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Push: push selected item(s).
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Add to favorites: Add this track to the Bestof smart playlist.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Properties: show the track properties.
-</P
-></LI
-></UL
-><P
->&#13;<PRE
-CLASS="programlisting"
->Category:English Manual (Category:English Manual)</PRE
->
-</P
-></DIV
-></DIV
-></DIV
-></DIV
-></BODY
-></HTML
->
+</pre>
+</body>
+</html>

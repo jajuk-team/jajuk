@@ -1,367 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+using djs</title>
+</head>
+<body>
+<h1>
+using djs</h1>
+<h1>
+Using Digital DJs and ambiences</h1>
+<h2>
+What's a digital DJ ?</h2>
+<p>
+A digital DJ is just like a real one: it generates music playlists according to rules (kind of public, atmosphere, transitions...). Listening the collection using the shuffle mode is nice but not smart enough to produce a really good party time. Using DJs will allow you to delegate all the programing stuff to your favorite jukebox !</p>
+<h2>
+What's an ambience ?</h2>
+<p>
+DJs can use the concept of ambience. An ambience is simply a set of music genres. For example, "Techno" ambience can group Euro-Techno, House, Trance and Goa styles together. Jajuk comes with preselected ambiences out of the box but you can create new ones or add/remove styles from them.</p>
+<h2>
+Types of DJs</h2>
+<p>
+Three kinds of DJs are currently available: transition, proportion or ambience-based DJs. All DJs have commons attributes.</p>
+<h3>
+Common attributes</h3>
+<ul>
+<li>
+DJ name</li>
+<li>
+Rating level (from 1 to 4 stars): specify quality we expect from played tracks (using integrated rating system). 1 means no filter, 4 means only best ones.</li>
+<li>
+Cross-fade duration (seconds) between two tracks.</li>
+<li>
+Unicity: can a track be played several times in a party ?</li>
+</ul>
+<h3>
+Transitions-based DJ</h3>
+<p>
+A transition-based DJ generated the playlist using transition rules. For instance, ask the DJ to play two [Rock or Acoustic] genre tracks, then to play three [Jazz or Acid] tracks...</p>
+<h3>
+Proportions-based DJ</h3>
+<p>
+Using a proportion-based DJ, you can specify how many tracks set of styles you want to listen. For example, you can select 30% of [Rock or Acoustic] and 40% of [Blues or Folk]. If total is bellow 100%, the DJ will fill the playlist with shuffle tracks from your collection.</p>
+<h3>
+Ambience-based DJ</h3>
+<p>
+This DJ is very basic, indeed: it simply plays shuffle tracks of a given ambience.</p>
+<h2>
+How to use DJs ?</h2>
+<p>
+The entry point for DJ feature is the DJ button located in the Command view. <a href="../images/3/3b/Dj01.jpg" title="Image:dj01.jpg" class="internal">
+<img src='../images/3/3b/Dj01.jpg' alt="Image:dj01.jpg"/>
+</a>
+</p>
+<ul>
+<li>
+A single click on the DJ icon requires selected DJ to generate and launch a new playlist. Note that this feature is available from the tray as well.</li>
+<li>
+You can select the default DJ by clicking on the drop down button and checking a DJ if you have some. Note that the selected DJ name is also displayed as tooltip on the DJ button.</li>
+</ul>
+<h2>
+The DJ Wizard</h2>
+<p>
+To manage DJs (create, delete, modify), open the DJ Wizard using "Manage DJs" item in the drop down listof the DJ smart function button or from the Configuration-&gt;Manage DJsmenu. </p>
+<h3>
+Creating a DJ</h3>
+<ul>
+<li>
+Select "Create a DJ" in the first screen.</li>
+<li>
+Select the DJ mode: transition, proportion or ambience-based DJ.</li>
+<li>
+Fill up general options.</li>
+<li>
+Fill up DJ mode specific options.</li>
+</ul>
+<h3>
+Selecting styles for transition or proportion DJs</h3>
+<p>
+Transition and proportion DJs require to select styles using Genres Selection Window (appears when clicking on genres buttons). You can select one or more genres by using shift or control keys. If you want to select automatically all genres for a preselected ambience, select the ambience using the combo box at the top of the window (Caution: according to genres you already selected in previous transitions or proportions, only remaining ones are still available).</p>
+<h2>
+The Ambience Wizard</h2>
+<p>
+The ambience wizard is available from the Configuration -&gt; Manage Ambiencesmenu. It allows to create, remove or modify ambiences.</p>
+<ul>
+<li>
+Use the "Create" button to add a new ambience. Fill up ambience name and select associated genres using the Genres Selection Window. Note that it is very easy to clone an existing ambience: simply select source ambience from the existing ambiences combo box at the top of the window.</li>
+<li>
+Use the "Delete" button to remove an ambience.</li>
+<li>
+Change ambiences genres by clicking of genres buttons.</li>
+</ul>
+<h2>
+How to use ambiences ?</h2>
+<p>
+Select an ambience using the drop-down button at the DJ button's right. Then, all generated playlists using the Global Shuffle, Novelties or Bestof functions (using the three buttons at the left or DJ button in Command view or in the tray) will be filtered using this ambience. Select the "Any" ambience to remove any filter.</p>
+<h2>
+Tips</h2>
+<ul>
+<li>
+Tag correctly your tracks with genre attribute if you want to make this feature fully useful. For example, you can use CDDB retag function to assist yourself. See [editing.html Editing tags and attributes].</li>
+<li>
+Don't use set Rating level to a value too high if your collection is young, otherwise, you will get very few tracks in you playlist.</li>
+<li>
+For proportion DJs: don't set proportion with ambiences mapping too few tracks or you will get very few tracks as well.</li>
+</ul>
+<pre>
 
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
-<HTML
-><HEAD
-><TITLE
->using djs</TITLE
-><META
-NAME="GENERATOR"
-CONTENT="Modular DocBook HTML Stylesheet Version 1.79"></HEAD
-><BODY
-CLASS="book"
-BGCOLOR="#FFFFFF"
-TEXT="#000000"
-LINK="#0000FF"
-VLINK="#840084"
-ALINK="#0000FF"
-><DIV
-CLASS="BOOK"
-><A
-NAME="AEN1"
-></A
-><DIV
-CLASS="ARTICLE"
-><H1
-><A
-NAME="using_djs"
-></A
->using djs</H1
-><DIV
-CLASS="section"
-><H2
-CLASS="section"
-><A
-NAME="AEN8"
->Using Digital DJs and ambiences</A
-></H2
-><DIV
-CLASS="section"
-><H3
-CLASS="section"
-><A
-NAME="AEN10"
->What's a digital DJ ?</A
-></H3
-><P
->&#13;A digital DJ is just like a real one: it generates music playlists according to rules (kind of public, atmosphere, transitions...). Listening the collection using the shuffle mode is nice but not smart enough to produce a really good party time. Using DJs will allow you to delegate all the programing stuff to your favorite jukebox !
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN13"
->What's an ambience ?</A
-></H3
-><P
->&#13;DJs can use the concept of ambience. An ambience is simply a set of music genres. For example, "Techno" ambience can group Euro-Techno, House, Trance and Goa styles together. Jajuk comes with preselected ambiences out of the box but you can create new ones or add/remove styles from them.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN16"
->Types of DJs</A
-></H3
-><P
->&#13;Three kinds of DJs are currently available: transition, proportion or ambience-based DJs. All DJs have commons attributes.
-</P
-><DIV
-CLASS="section"
-><HR><H4
-CLASS="section"
-><A
-NAME="AEN19"
->Common attributes</A
-></H4
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;DJ name
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Rating level (from 1 to 4 stars): specify quality we expect from played tracks (using integrated rating system). 1 means no filter, 4 means only best ones.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Cross-fade duration (seconds) between two tracks.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Unicity: can a track be played several times in a party ?
-</P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="section"
-><HR><H4
-CLASS="section"
-><A
-NAME="AEN30"
->Transitions-based DJ</A
-></H4
-><P
->&#13;A transition-based DJ generated the playlist using transition rules. For instance, ask the DJ to play two [Rock or Acoustic] genre tracks, then to play three [Jazz or Acid] tracks...
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H4
-CLASS="section"
-><A
-NAME="AEN33"
->Proportions-based DJ</A
-></H4
-><P
->&#13;Using a proportion-based DJ, you can specify how many tracks set of styles you want to listen. For example, you can select 30% of [Rock or Acoustic] and 40% of [Blues or Folk]. If total is bellow 100%, the DJ will fill the playlist with shuffle tracks from your collection.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H4
-CLASS="section"
-><A
-NAME="AEN36"
->Ambience-based DJ</A
-></H4
-><P
->&#13;This DJ is very basic, indeed: it simply plays shuffle tracks of a given ambience.
-</P
-></DIV
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN39"
->How to use DJs ?</A
-></H3
-><P
->&#13;The entry point for DJ feature is the DJ button located in the Command view. <DIV
-CLASS="mediaobject"
-><P
-><IMG
-SRC="http://wiki.jajuk.info/images/3/3b/Dj01.jpg"></P
-></DIV
->
-
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;A single click on the DJ icon requires selected DJ to generate and launch a new playlist. Note that this feature is available from the tray as well.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;You can select the default DJ by clicking on the drop down button and checking a DJ if you have some. Note that the selected DJ name is also displayed as tooltip on the DJ button.
-</P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN52"
->The DJ Wizard</A
-></H3
-><P
->&#13;To manage DJs (create, delete, modify), open the DJ Wizard using "Manage DJs" item in the drop down listof the DJ smart function button or from the Configuration-&#62;Manage DJsmenu. 
-</P
-><DIV
-CLASS="section"
-><HR><H4
-CLASS="section"
-><A
-NAME="AEN55"
->Creating a DJ<A
-NAME="AEN57"
-HREF="#FTN.AEN57"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
-></A
-></H4
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Select "Create a DJ" in the first screen.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Select the DJ mode: transition, proportion or ambience-based DJ.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Fill up general options.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Fill up DJ mode specific options.
-</P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="section"
-><HR><H4
-CLASS="section"
-><A
-NAME="AEN68"
->Selecting styles for transition or proportion DJs</A
-></H4
-><P
->&#13;Transition and proportion DJs require to select styles using Genres Selection Window (appears when clicking on genres buttons). You can select one or more genres by using shift or control keys. If you want to select automatically all genres for a preselected ambience, select the ambience using the combo box at the top of the window (Caution: according to genres you already selected in previous transitions or proportions, only remaining ones are still available).
-</P
-></DIV
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN71"
->The Ambience Wizard</A
-></H3
-><P
->&#13;The ambience wizard is available from the Configuration -&#62; Manage Ambiencesmenu. It allows to create, remove or modify ambiences.
-</P
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Use the "Create" button to add a new ambience. Fill up ambience name and select associated genres using the Genres Selection Window. Note that it is very easy to clone an existing ambience: simply select source ambience from the existing ambiences combo box at the top of the window.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Use the "Delete" button to remove an ambience.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Change ambiences genres by clicking of genres buttons.
-</P
-></LI
-></UL
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN81"
->How to use ambiences ?</A
-></H3
-><P
->&#13;Select an ambience using the drop-down button at the DJ button's right. Then, all generated playlists using the Global Shuffle, Novelties or Bestof functions (using the three buttons at the left or DJ button in Command view or in the tray) will be filtered using this ambience. Select the "Any" ambience to remove any filter.
-</P
-></DIV
-><DIV
-CLASS="section"
-><HR><H3
-CLASS="section"
-><A
-NAME="AEN84"
->Tips</A
-></H3
-><P
-></P
-><UL
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Tag correctly your tracks with genre attribute if you want to make this feature fully useful. For example, you can use CDDB retag function to assist yourself. See [editing.html Editing tags and attributes].
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;Don't use set Rating level to a value too high if your collection is young, otherwise, you will get very few tracks in you playlist.
-</P
-></LI
-><LI
-STYLE="list-style-type: opencircle"
-><P
->&#13;For proportion DJs: don't set proportion with ambiences mapping too few tracks or you will get very few tracks as well.
-</P
-></LI
-></UL
-><P
->&#13;<PRE
-CLASS="programlisting"
->Category:English Manual (Category:English Manual)</PRE
->
-</P
-></DIV
-></DIV
-></DIV
-></DIV
-><H3
-CLASS="FOOTNOTES"
->Notes</H3
-><TABLE
-BORDER="0"
-CLASS="FOOTNOTES"
-WIDTH="100%"
-><TR
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="5%"
-><A
-NAME="FTN.AEN57"
-HREF="#AEN57"
-><SPAN
-CLASS="footnote"
->[1]</SPAN
-></A
-></TD
-><TD
-ALIGN="LEFT"
-VALIGN="TOP"
-WIDTH="95%"
-><P
->&#13;</P
-></TD
-></TR
-></TABLE
-></BODY
-></HTML
->
+</pre>
+</body>
+</html>
