@@ -9,5 +9,223 @@ la vue parametrage</title>
 <body>
 <h1>
 la vue parametrage</h1>
+<h1>
+La vue Paramétrage</h1>
+<p>
+Cette vue contient l'intégralité de la configuration de Jajuk. Notez que vous devez presser le bouton "OK" pour appliquer les changements. Vous <div lang="fr-FR">
+pouvez</div>
+ <div lang="fr-FR">
+réinitialiser</div>
+ aux <div lang="fr-FR">
+valeurs</div>
+ par défaut en pressant "Par défaut".</p>
+<h2>
+L'onglet Options</h2>
+<p>
+Cet onglet contient les options générales:</p>
+<ul>
+<li>
+<div lang="fr-FR">
+"Affiche seulement les supports montés" [défaut=faux]: Si sélectionné, Jajuk ignorera tous les éléments situés sur des supports non <div lang="fr-FR">
+montés. Cela</div>
+ peut <div lang="fr-FR">
+être</div>
+ <div lang="fr-FR">
+utile</div>
+ si vous ne désirez pas voir les morceaux situés sur des supports inaccessibles (CD par exemple).</div>
+</li>
+<li>
+"Le double clic pousse les morceaux" [défaut=faux]: Si sélectionné, lors d'un double clic sur un morceau, il sera poussé dans la file et pas joué immédiatement.</li>
+<li>
+"Le glisser-déposer pousse les morceaux" [défaut=vrai]: Si sélectionné, lors d'un glisser-déposer d'un morceau vers la file, il sera poussé et pas joué immédiatement.</li>
+<li>
+"Synchroniser les vues arbre et table" [défaut=faux]: Si sélectionné, la vue table n'affichera que les morceaux situés dans la partie sélectionnée de l'arbre.</li>
+<li>
+"Afficher une bulle au démarrage d'un morceau" [défaut=vrai]: Affiche ou pas une bulle avec le nom du morceau au dessus du tray en bas à droite.</li>
+<li>
+"Utiliser les Hotkeys" [défaut=faux] [Seulement Windows]: Utilise ou pas les hotkeys (voir la [./keys.html liste des racourcis clavier]) comme F8 qui fonctionnent même en dehors de Jajuk.</li>
+<li>
+"Langage" [défaut=votre langue si elle est supportée par Jajuk ou anglais autrement]: Langue de l'application. Nécessite un redémarrage pour être pris en compte.</li>
+<li>
+"Thème" [défaut=Plastic XP]: Thème de l'interface graphique.</li>
+<li>
+<div lang="fr-FR">
+"Niveau de trace" [défaut=Erreur en mode normal et Debug en mode debug (-debug)]: Fixe le niveau de trace du fichier {répertoire personnel}/.jajuk/jajuk.log. Veuillez fixer "Debug" avant de nous envoyer un Bug.</div>
+</li>
+</ul>
+<h2>
+L'onglet Modes</h2>
+<p>
+Cet onglet contient les options du lecteur:</p>
+<ul>
+<li>
+"Position de début (%)" [défaut=0]: Utilisé pour par le mode introduction, pourcentage du morceau.</li>
+<li>
+"Durée de l'intro (sec)" [défaut=20]: Utilisé pour par le mode introduction, durée de l'introduction.</li>
+<li>
+<div lang="fr-FR">
+"Taille playliste bestof" [défaut=20]: Taille de la playliste "bestof" (voir</div>
+[up.html <div lang="fr-FR">
+la page Utiliser les Playlistes</div>
+]<div lang="fr-FR">
+)</div>
+</li>
+<li>
+"Durée limite des nouveautés (jours)" [défaut=30]: Après cette durée, les morceaux ne sont plus considérés comme des nouveautés.</li>
+<li>
+<div lang="fr-FR">
+"Nombre de morceaux planifiés visibles" [<div lang="fr-FR">
+défaut</div>
+<div lang="fr-FR">
+(voir</div>
+[up.html <div lang="fr-FR">
+la page Utiliser les Playlistes</div>
+]).</div>
+</li>
+<li>
+<div lang="fr-FR">
+"Durée du fondu enchaîné" [défaut=0]: Durée du fondu enchaîné entre deux morceaux en secondes. Zéro: pas de fondu enchaîné.</div>
+</li>
+</ul>
+<p>
+</p>
+<h2>
+Onglet Démarrage</h2>
+<p>
+Cet onglet permet de définir le comportement au démarrage de Jajuk [défaut=Dernier à la dernière position]:</p>
+<ul>
+<li>
+"Rien": Ne joue rien.</li>
+<li>
+"Dernier du début": rejoue entièrement le dernier morceau.</li>
+<li>
+"Dernier à la dernière position": rejoue le dernier morceau à la position d'arrêt de la session précédente.</li>
+<li>
+"Aléatoire": un morceau aléatoire parmi toute la collection.</li>
+<li>
+"Morceau bestof": un morceau parmi vos préférés.</li>
+<li>
+"Nouveauté": une nouveauté.</li>
+<li>
+<div lang="fr-FR">
+"Fichier": choisissez un fichier en effectuant une recherche.</div>
+</li>
+</ul>
+<h2>
+Onglet tags</h2>
+<p>
+Cet onglet permet de configurer le comportement des tags:</p>
+<ul>
+<li>
+<div lang="fr-FR">
+"Utiliser le <div lang="fr-FR">
+répertoire</div>
+ comme album" [défaut=vrai]: si le tag album n'est pas disponible, prend le nom du <div lang="fr-FR">
+répertoire</div>
+ comme nom d'album.</div>
+</li>
+<li>
+<div lang="fr-FR">
+</div>
+"Canevas de l'organisateur de collection": fixe le format des repertoires et fichiers créés lors de la [./reorg.html réorganisation de fichiers].</li>
+<li>
+<div lang="fr-FR">
+"Format d'affichage de la vue Animation": fixe le format d'affichage de la vue animation (propose les mêmes variables que l'organisateur) .</div>
+</li>
+</ul>
+<h2>
+Onglet Historique</h2>
+<p>
+Cet onglet permet de configurer la barre d'historique (dans la[view_command.html vue Commande]). Note: le fichier historique est {votre <div lang="fr-FR">
+répertoire</div>
+ <div lang="fr-FR">
+personnel</div>
+}/.jajuk/history.xml.</p>
+<ul>
+<li>
+"Durée de l'historique" [défaut=-1]: Nombre de jours d'historique que vous désirez conserver. -1: infini, 0:pas d'historique.</li>
+<li>
+Bouton "Effacer l'historique": Efface l'historique.</li>
+</ul>
+<h2>
+Onglet P2P</h2>
+<p>
+Pas encore implémenté.</p>
+<h2>
+Onglet Pochettes</h2>
+<p>
+Cet onglet configure les pochettes (voir[view_cover.html la vue Pochettes]).</p>
+<ul>
+<li>
+"Pochettes aléatoires" [défaut=faux]: Affiche des pochettes au hasard lors de la lecture d'un nouvel album.</li>
+<li>
+"Changer de pochette à chaque morceau" [défaut=faux, disponible que si l'option "Pochettes aléatoires" est sélectionnée"]: Permet d'afficher un pochette différente à chaque morceau.</li>
+<li>
+"Chercher les pochettes en ligne [défaut=vrai]: cherche les pochettes sur le Web.</li>
+<li>
+<div lang="fr-FR">
+"<div lang="fr-FR">
+Pré charger</div>
+ les pochettes" [défaut=faux, disponible que si l'option "chercher les pochettes en ligne" est <div lang="fr-FR">
+sélectionnée</div>
+]: Charge toutes les pochettes distante trouvée et pas à la demande. Cela permet de naviguer ensuite plus vite entre les pochettes.</div>
+</li>
+<li>
+"Taille minimale de la pochette (Ko)" [défaut=5, disponible que si l'option "chercher les pochettes en ligne" est sélectionnée]: Taille minimale d'une pochette.</li>
+<li>
+"Taille maximale de la pochette (Ko)" [défaut=100, disponible que si l'option "chercher les pochettes en ligne" est sélectionnée]: Taille maximale d'une pochette.</li>
+</ul>
+<h2>
+Onglet Confirmation</h2>
+<p>
+Cet onglet permet de configurer les confirmations.</p>
+<ul>
+<li>
+"Avant d'effacer physiquement un fichier" [défaut=vrai]: Demande avant d'effacer physiquement et définitivement un fichier.</li>
+<li>
+"Avant de quitter Jajuk" [défaut=faux]: demande au moment de sortir de Jajuk.</li>
+<li>
+<div lang="fr-FR">
+"Avant de supprimer un support" [défaut=vrai]: demande avant de supprimer un support. Aucun fichier ne sera effacé de votre disque mais le support sera supprimé de la base de donnée de Jajuk.</div>
+</li>
+<li>
+"Avant de supprimer physiquement une pochette" [défaut=vrai]: Demande avant d'effacer physiquement et définitivement une pochette (fichier image).</li>
+</ul>
+<h2>
+Onglet Réseau</h2>
+<p>
+Cet onglet permet de configurer les options réseau:</p>
+<ul>
+<li>
+"Timeout de la connexion en secondes" [défaut=5]: Timeout en secondes lors de l'établissement d'une connexion vers un serveur.</li>
+<li>
+"Timeout du transfert en secondes" [défaut=20]: Timeout en secondes lors du transfert d'un fichier.</li>
+<li>
+"Utiliser un proxy HTTP" [défaut=faux]: Utiliser un proxy HTTP, utile si vous vous trouvez dans un réseau d'entreprise par exemple.</li>
+<li>
+"Adresse du Proxy" [défaut="proxy", disponible que si l'option "Utiliser un proxy HTTP" est sélectionnée]: Nom d'hôte du proxy ou son adresse IP.</li>
+<li>
+"Port du Proxy" [défaut="3128", disponible que si l'option "Utiliser un proxy HTTP" est sélectionnée]: port du Proxy.</li>
+<li>
+"Utilisateur du Proxy" [pas de défaut]: Nom de l'utilisateur du proxy (le mot de passe sera demandé au début de chaque session).</li>
+</ul>
+<h2>
+Onglet Avancé</h2>
+<p>
+Cet onglet permet de configurer les éléments avancés de Jajuk:</p>
+<ul>
+<li>
+"Utiliser les filtres regexp" [défaut=faux]: Utiliser les expressions régulières comme ".*toto.* dans le champs valeur de la [view_table.html vue table].</li>
+</ul>
+<ul>
+<li>
+"Encodage de la collection" [défaut=UTF-8]: encodage de la collection. L'UTF-16 est optimisé pour les langages asiatiques et UTF-8 est optimisé pour les languages européens.</li>
+<li>
+"Sauvegarde de la collection" [défaut=vrai]: si sélectionné, le fichier collection sera sauvegardé (un par jour).</li>
+<li>
+"Taille de la sauvegarde (Mo)" [défaut=20, disponible que si l'option "Sauvegarde de la collection" est sélectionnée]: Taille maximale des sauvegardes.</li>
+</ul>
+<p>
+</p>
 </body>
 </html>

@@ -9,75 +9,11 @@ formats supportes</title>
 <body>
 <h1>
 formats supportes</h1>
-<h1>
-Performances</h1>
-<p>
-Consultez cette page si vous avez des problèmes de performance ou si vous désirez consommer moins de mémoire, de disque, de puissance ou de bande passante en utilisant Jajuk.</p>
-<h2>
-Utilisation processeur</h2>
-<ul>
+<ol>
 <li>
-Sur un PC/P4 1.8Ghz, Jajuk utilise environ 9% de CPU pour les mp3 et 3% pour les Ogg Vorbis. Sur un Centrino 1.8 Ghz: 0% CPU.</li>
-</ul>
-<h2>
-Utilisation de la mémoire</h2>
-<p>
-Une JVM tourne dans une zone de mémoire réservée. La JVM prend tout l'espace donné dans le Xms au démarrage et demande plus de mémoire au système d'exploitation lorsque nécessaire. Pour une grosse collection et toutes les options couverture démarrées, Jajuk utilise environ de mémoire 65Mo au maximum mais 40Mo sont suffisant la plupart du temps.</p>
-<h2>
-Utilisation de la bande passante (réseau)</h2>
-<ul>
-<li>
-Si votre connexion internet est limitée, attention aux options de recherche de couverture en ligne (voir chapitre suivant).</li>
-<li>
-Si vous utilisez un lecteur réseau comme support, attention à la fréquence de rafraîchissement (défaut: 5 minutes) car Jajuk scannera tous les répertoires avec cette fréquence, ce qui consomme de la bande passante. augmentez cette durée si la collection bouge peu.</li>
-</ul>
-<h2>
-Performance des pochettes</h2>
-<p>
-Ces options sont accessibles dans la vue Paramétrage/ onglet Pochettes.</p>
-<ul>
-<li>
-L'option "Chercher les pochettes en ligne" (défaut=oui) utilise de la bande passante, surtout si vous utilisez l'option "Précharger les pochettes". Évitez cette option si vous disposez d'une faible bande passante.</li>
-<li>
-L'option "Précharger les pochettes" (défaut=non) est très consommatrice en bande passante. N'utilisez cette option que si vous disposez d'une ligne à haut débit comme le xDSL ou le câble.</li>
-<li>
-Vous pouvez réduire la taille des couvertures ramenées en fixant une valeur maximale inférieure aux pochettes grâce à l'option "Taille maximale des pochettes".</li>
-<li>
-Vous pouvez augmenter ou réduire les limites de durée (time out) en téléchargeant une couverture dans la vue Paramétrage / onglet Réseau.</li>
-</ul>
-<h2>
-Performance des tags</h2>
-<p>
-Lors du premier rafraichissement d'un support ou lors d'un rafraîchissement forcé, tous les tags sont relus, ce qui est beaucoup plus long. N'utilisez la fonction "Forcer le rafraîchissement" d'un support seulement si vous voulez mettre à jour des tags modifiés via une autre application.</p>
-<h2>
-<font size="5">
-Performance de la collection</font>
-</h2>
-<p>
-Ces options sont accessibles dans la vue Paramétrage / onglet Avancé.</p>
-<ul>
-<li>
-Si votre collection utilise principalement des caractères non-européens (comme les langages asiatiques), choisissez l'encodage UTF-16 : ceci réduira la taille de la collection et accéléra l'analyse de la collection au démarrage. N'utilisez pas cette l'UTF-16 si vous utilisez un langage européen sinon votre collection grossirait.</li>
-</ul>
-<h2>
-<font size="5">
-Performance de la vue Animation</font>
-</h2>
-<p>
-La vue Animation utilise Java 2D. L'utilisation CPU peut être significative, surtout aux résolutions élevées comme 200x1024 et plus. Sur un P4 1.8Ghz avec une résolution de 1024x768, l'augmentation induite est de l'ordre de 2 à 3% mais atteint 10 ou plus avec une résolution de 1400x1200.</p>
-<h2>
-Choix de la JVM et personnalisation</h2>
-<p>
-Nous recommandons le JRE de Sun Microsystems.</p>
-<ul>
-<li>
-Si vous avez une très grosse collection (comme &gt; 200Go), vous pouvez augmenter le paramètre -Xms.</li>
-<li>
-Vous pouvez fixer un paramètre -Xmx pour limiter l'utilisation de mémoire à cette valeur (par exemple: -Xmx100M), mais ceci peut conduire à des comportements imprévus ou des erreurs de dépassement de mémoire.</li>
-<li>
-Utilisez -Xloggc:&lt;nom du fichier&gt; pour tracer l'utilisation de la mémoire si nécessaire.</li>
-</ul>
-<p>
-</p>
+REDIRECT <a href="performances_generales.html">
+Performances generales</a>
+</li>
+</ol>
 </body>
 </html>
