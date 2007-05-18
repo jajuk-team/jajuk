@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+modifier les tags et attributs</title>
+</head>
+<body>
+<h1>
+modifier les tags et attributs</h1>
+<h1>
+Modifier les tags et attributs</h1>
+<p>
+Il est possible de fixer des valeurs à partir:</p>
+<ul>
+<li>
+De la vue table logique pour les morceaux et table physique pour les fichiers. Si vous ne voyez pas la colonne de l'attribut à modifier, cochez la dans le sélecteur de colonnes qui apparaît en cliquant sur l'îcone en haut à droite du tableau (voir [view_table.html#show_col Vue table / Sélection des colonnes)].</li>
+<li>
+De l'assistant d'attributs pour tout élément (voir le paragraphe suivant).</li>
+</ul>
+<h2>
+L'assistant d'attributs</h2>
+<p>
+L'assistant d'attributs peut être utilisé pour afficher les modifier tous les attributs et tags d'un élément simple ou d'une sélection d'éléments. Il est accessible à partir:</p>
+<ul>
+<li>
+Des vues table physique et logique (clic droit sur un ou plusieurs éléments -&gt; <div style="font-style: italic;">
+Attributs</div>
+)</li>
+<li>
+Des vues arbre physique et logiques (clic droit sur un ou plusieurs éléments -&gt; <div style="font-style: italic;">
+Attributs</div>
+)<div style="font-style: italic;">
+</div>
+</li>
+<li>
+De la vue référentiel de playlistes (clic droit sur une playliste -&gt; <div style="font-style: italic;">
+Attributs</div>
+).</li>
+</ul>
+<p>
+Notes:</p>
+<ul>
+<li>
+Dans le cas des fichiers, styles, auteurs et albums sont affichés à la fois les attributs propres (coté gauche) et les attributs des morceaux associés (coté droit) pour faciliter les modifications de tags.</li>
+<li>
+Le nom des attributs personnels sont en bleu pour les différentier.</li>
+<li>
+Dans le cas de selection multiples, l'assistant d'attributs n'affiche que les attributs pouvant être modifiés en communs et un champs vide signifie que les éléments selectionnés contiennent des valeurs différentes: saisissez une valeur et valider pour mettre à jour tous les éléments.</li>
+</ul>
+<p>
+L'assistant d'attributs contient les colonnes suivantes:</p>
+<ul>
+<li>
+<div style="font-style: italic;">
+Nom de l'attribut</div>
+ (attributs personnels en bleu).<div style="font-style: italic;">
+</div>
+</li>
+<li>
+<div style="font-style: italic;">
+Valeur de l'attribut</div>
+ (modifiable ou non).</li>
+<li>
+<div style="font-style: italic;">
+Lien</div>
+<div style="font-style: italic;">
+</div>
+</li>
+<li>
+<div style="font-style: italic;">
+Type</div>
+<div style="font-style: italic;">
+</div>
+</li>
+</ul>
+<p>
+Lorsque tous les attributs sont fixés, cliquez sur Appliquer pour mettre à jour les attributs et éventuellement écrire les tags dans les fichiers musicaux.</p>
+<h2>
+Les tags ou meta-informations</h2>
+<p>
+Certains attributs sont à la fois stockés dans la collection de jajuk et dans les fichiers musicaux eux-mêmes (via des tags ID3 par exemple). Ces attributs sont: style, auteur, album, morceau, année, commentaire et ordre de lecture.</p>
+<p>
+Si vous modifiez les tags via une autre application, utiliser l'option "Forcer la relecture des tags" et lancez un rafraichissement du support pour prendre en compte les modifications dans jajuk (voir [view_parameter.html#force_tags Vue Parametrages / onglet tags]).</p>
+<p>
+Notez que les tags sont stockés au format Unicode (UTF-16LE) dans les fichiers musicaux. Ce format est compatible avec tous les lecteurs (Windows Media Player ou Winamp par exemple) et permet de stocker les caractères asiatiques.</p>
+<h2>
+La recherche de tag en ligne</h2>
+<p>
+Jajuk permet de modifier les tags de tous les morceaux d'un album en utilisant les base de donnée de musique en ligne CDDB (freedb). Pour cela, selectionnez dans la vue Arbre Physique un répertoire puis lancer "Obtenir les tags en ligne" via le menu contextuel.</p>
+<p>
+</p>
+</body>
+</html>

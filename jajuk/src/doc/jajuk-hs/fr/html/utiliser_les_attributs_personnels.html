@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+utiliser les attributs personnels</title>
+</head>
+<body>
+<h1>
+utiliser les attributs personnels</h1>
+<h1>
+Utiliser les attributs personnels</h1>
+<p>
+Jajuk permet d'ajouter des attributs personnels à pratiquement tous les éléments de l'interface (fichiers, playlistes, auteurs, albums...). Imaginez que vous n'êtes pas satisfaits du système de notation: créez alors votre propre attribut <b>
+mesnotes</b>
+ de type entier à appliquer aux morceaux. Autre cas: vous désirez enregistrer l'endroit ou se trouve vos CDs: créez un attribut de type chaîne de caractère appliqués aux supports. Vous désirez stocker la date à laquelle vous avez écouté un morceau: créez un attribut "<i>
+madate</i>
+" de type date etc...</p>
+<p>
+Notes</p>
+<ul>
+<li>
+Ces informations ne sont stockées que dans la base de donnée interne de Jajuk et NON dans les tags (ID3 par exemple) des fichiers musicaux. Par conséquent, elles ne sont accessibles qu'à partir de Jajuk et non à partir d'autres lecteurs ou jukebox.</li>
+<li>
+Si vous utilisez intensivement cette fonctionnalité, pensez à sauvegarder régulièrement votre collection (voir [devices.html#backup Utiliser les supports / sauvegardes et restaurations]).</li>
+</ul>
+<h2>
+Comment créer un nouvel attribut ?</h2>
+<p>
+Dans le menu du haut de la fenêtre, sélectionnez <i>
+Attributs / Créer un attribut</i>
+. L'assistant de création d'attribut contient:</p>
+<ul>
+<li>
+<i>
+Elément</i>
+</li>
+<li>
+<i>
+Nom de l'attribut</i>
+</li>
+<li>
+<i>
+Type</i>
+</li>
+<li>
+<i>
+Valeur par défaut</i>
+ (optionnel): Une valeur par défaut. en fonction du type de l'attribut, vous pourrez la fixer dans une zone de texte, via un calendrier ou via une case à cocher. Si aucune valeur par défaut n'est donnée, jajuk utilise les valeurs suivantes: Entier: 0, Flottants: 0.0, Chaînes: "", Dates: &lt;jour courant&gt;, Booléen: faux.</li>
+<li>
+<i>
+Format </i>
+(optionnel): Seulement pour les dates pour le moment, sélectionnez un format de date prédéfini.</li>
+</ul>
+<p>
+Cliquez sur <i>
+OK </i>
+pour créer l'attribut.</p>
+<h2>
+Comment supprimer un attribut ?</h2>
+<p>
+Dans le menu du haut de la fenêtre, sélectionnez <i>
+Attributs / Supprimer un attribut</i>
+. L'assistant de suppression d'attribut contient:</p>
+<ul>
+<li>
+<i>
+Elément</i>
+</li>
+<li>
+<i>
+Nom de l'attribut</i>
+</li>
+</ul>
+<p>
+cliquez alors sur <i>
+OK </i>
+pour supprimer l'attribut. Notez que toutes les données pour cet attribut seront perdues. En cas de mauvaise manipulation, lisez [devices.html#backup Utiliser les supports / sauvegardes et restaurations].</p>
+<h2>
+Comment fixer les valeurs ?</h2>
+<p>
+On fixe les valeurs des attributs personnels de la même façon que pour les attributs standards, voir: [editing.html Modifier les tags et attributs].</p>
+<p>
+</p>
+</body>
+</html>
