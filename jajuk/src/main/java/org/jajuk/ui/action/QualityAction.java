@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.QualityFeedbackWizard;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -35,7 +35,7 @@ public class QualityAction extends ActionBase {
 
 	QualityAction() {
 		super(
-				Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
+				Messages.getString("JajukJMenuBar.19"), IconLoader.ICON_EDIT, true); 
 	}
 
 	/**

@@ -26,6 +26,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
@@ -38,9 +39,9 @@ public class FinishAlbumAction extends ActionBase {
 
 	FinishAlbumAction() {
 		super(
-				Messages.getString("JajukWindow.16"), Util.getIcon(ICON_MODE_NORMAL), //$NON-NLS-1$
+				Messages.getString("JajukWindow.16"), IconLoader.ICON_FINISH_ALBUM, 
 				FIFO.getInstance().getCurrentItem() != null);
-		setShortDescription(Messages.getString("JajukWindow.32")); //$NON-NLS-1$
+		setShortDescription(Messages.getString("JajukWindow.32")); 
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

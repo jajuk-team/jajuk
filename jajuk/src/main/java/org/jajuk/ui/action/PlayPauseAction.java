@@ -24,7 +24,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -34,8 +34,8 @@ public class PlayPauseAction extends ActionBase {
 
 	PlayPauseAction() {
 		super(
-				Messages.getString("JajukWindow.10"), Util.getIcon(ICON_PAUSE), "ctrl P", false, true); //$NON-NLS-1$ //$NON-NLS-2$
-		setShortDescription(Messages.getString("JajukWindow.26")); //$NON-NLS-1$
+				Messages.getString("JajukWindow.10"), IconLoader.ICON_PAUSE, "ctrl P", false, true);  
+		setShortDescription(Messages.getString("JajukWindow.26")); 
 	}
 
 	public void perform(ActionEvent evt) {
@@ -43,8 +43,8 @@ public class PlayPauseAction extends ActionBase {
 			Player.resume();
 			ObservationManager.notify(new Event(
 					EventSubject.EVENT_PLAYER_RESUME)); // notify of this event
-			setIcon(Util.getIcon(ICON_PAUSE));
-			setName(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+			setIcon(IconLoader.ICON_PAUSE);
+			setName(Messages.getString("JajukWindow.10")); 
 		} else { // player is not paused, pause it
 			Player.pause();
 			ObservationManager
@@ -52,8 +52,8 @@ public class PlayPauseAction extends ActionBase {
 			// of
 			// this
 			// event
-			setIcon(Util.getIcon(ICON_PLAY));
-			setName(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
+			setIcon(IconLoader.ICON_PLAY);
+			setName(Messages.getString("JajukWindow.12")); 
 		}
 	}
 }

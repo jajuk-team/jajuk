@@ -81,8 +81,8 @@ public class HistoryItem {
 		StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor()
 				.getName2());
 		String sDate = History.getInstance().getDateFormatter().format(
-				new Date(getDate())); //$NON-NLS-1$
+				new Date(getDate())); 
 		return sbAuthor
-				.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString();   
 	}
 }

@@ -32,7 +32,7 @@ class ObserverRegistry {
 	private Hashtable<EventSubject, ArrayList<Observer>> hEventComponents = new Hashtable<EventSubject, ArrayList<Observer>>(
 			10);
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	synchronized void notifySync(Event event) {
 		EventSubject subject = event.getSubject();
 		ArrayList<Observer> alComponents = hEventComponents.get(subject);
@@ -57,8 +57,8 @@ class ObserverRegistry {
 			// Concurrent exceptions can occur for unknown reasons
 			catch (ConcurrentModificationException ce) {
 				ce.printStackTrace();
-				Log.debug("Concurrent exception for subject: " + subject //$NON-NLS-1$
-						+ " on observer: " + obs);//$NON-NLS-1$ //$NON-NLS-2$ 
+				Log.debug("Concurrent exception for subject: " + subject 
+						+ " on observer: " + obs);  
 			}
 		}
 	}

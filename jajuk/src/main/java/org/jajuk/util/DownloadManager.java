@@ -107,7 +107,7 @@ public class DownloadManager implements ITechnicalStrings {
 	public static ArrayList<URL> getRemoteCoversList(String search) throws Exception {
 		ArrayList<URL> alOut = new ArrayList<URL>(20); // URL list
 		// check void searches
-		if (search == null || search.trim().equals("")) { //$NON-NLS-1$
+		if (search == null || search.trim().equals("")) { 
 			return alOut;
 		}
 		// Select cover size
@@ -134,7 +134,7 @@ public class DownloadManager implements ITechnicalStrings {
 				+ URLEncoder.encode(search, "ISO-8859-1")
 				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
 				+ "&imgsz=" + size;
-		Log.debug("Search URL: {{" + sSearchUrl + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Search URL: {{" + sSearchUrl + "}}");  
 		byte[] bRes = downloadCoverList(new URL(sSearchUrl));
 		if (bRes == null || bRes.length == 0) {
 			return alOut;
@@ -158,7 +158,7 @@ public class DownloadManager implements ITechnicalStrings {
 				continue;
 			}
 			// Add the new url
-			alOut.add(url); //$NON-NLS-1$
+			alOut.add(url); 
 		}
 
 		return alOut;
@@ -185,10 +185,10 @@ public class DownloadManager implements ITechnicalStrings {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("Accept-Language", "en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");  
+		get.addRequestHeader("Accept-Language", "en-us");  
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");  
+		get.addRequestHeader("Connection", "Keep-Alive");  
 		int status = client.executeMethod(get);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
 		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
@@ -228,10 +228,10 @@ public class DownloadManager implements ITechnicalStrings {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("Accept-Language", "en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");  
+		get.addRequestHeader("Accept-Language", "en-us");  
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");  
+		get.addRequestHeader("Connection", "Keep-Alive");  
 		int status = client.executeMethod(get);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util
 				.getCachePath(url)));
@@ -269,10 +269,10 @@ public class DownloadManager implements ITechnicalStrings {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("Accept-Language", "en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
-		get.addRequestHeader("Connection", "Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");  
+		get.addRequestHeader("Accept-Language", "en-us");  
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");  
+		get.addRequestHeader("Connection", "Keep-Alive");  
 		int status = client.executeMethod(get);
 		bOut = get.getResponseBody();
 		if (get.isRequestSent()) {
@@ -295,8 +295,8 @@ public class DownloadManager implements ITechnicalStrings {
 		if (sLogin == null || sLogin.trim().equals("")) {
 			return null;
 		}
-		if (sProxyPwd == null || sProxyPwd.trim().equals("")) { //$NON-NLS-1$
-			PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1")); //$NON-NLS-1$
+		if (sProxyPwd == null || sProxyPwd.trim().equals("")) { 
+			PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1")); 
 			sProxyPwd = (String) pd.getOptionPane().getValue();
 		}
 		return sProxyPwd;

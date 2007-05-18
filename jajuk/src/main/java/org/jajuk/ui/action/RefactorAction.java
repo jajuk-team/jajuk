@@ -54,15 +54,15 @@ public class RefactorAction implements ITechnicalStrings {
 	public RefactorAction(ArrayList<File> al) {
 		alFiles = al;
 		Iterator it = alFiles.iterator();
-		String sFiles = ""; //$NON-NLS-1$
+		String sFiles = ""; 
 		while (it.hasNext()) {
 			File f = (File) it.next();
-			sFiles += f.getName() + "\n"; //$NON-NLS-1$
+			sFiles += f.getName() + "\n"; 
 		}
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
 			int iResu = Messages
 					.getChoice(
-							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE);  
 			if (iResu != JOptionPane.YES_OPTION) {
 				//Cancel
 				if (iResu == JOptionPane.CANCEL_OPTION){
@@ -84,7 +84,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 	public void refactor() {
 		Iterator it = alFiles.iterator();
-		String sErrors = ""; //$NON-NLS-1$
+		String sErrors = ""; 
 		while (it.hasNext()) {
 			File fCurrent = (File) it.next();
 			Track tCurrent = fCurrent.getTrack();
@@ -96,8 +96,8 @@ public class RefactorAction implements ITechnicalStrings {
 				continue;
 			}
 
-			filename += "." + tCurrent.getType().getExtension(); //$NON-NLS-1$
-			filename = filename.replace("/", sFS); //$NON-NLS-1$
+			filename += "." + tCurrent.getType().getExtension(); 
+			filename = filename.replace("/", sFS); 
 
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
@@ -117,28 +117,28 @@ public class RefactorAction implements ITechnicalStrings {
 			boolean bState = false;
 
 			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
-				sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-						+ Messages.getString("Error.160") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
+				sErrors += fCurrent.getAbsolutePath() + " (" 
+						+ Messages.getString("Error.160") + ")\n";  
 			} else {
 				if (fNew.getParentFile().canWrite()) {
 					bState = fOld.renameTo(fNew);
 					if (!bState) {
-						sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-								+ Messages.getString("Error.154") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
+						sErrors += fCurrent.getAbsolutePath() + " (" 
+								+ Messages.getString("Error.154") + ")\n";  
 					}
-					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() //$NON-NLS-1$
-							+ "}} Success ? " + bState); //$NON-NLS-1$
+					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() 
+							+ "}} Success ? " + bState); 
 
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.161") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
+					sErrors += fCurrent.getAbsolutePath() + " (" 
+							+ Messages.getString("Error.161") + ")\n";  
 				}
 			}
 
 			// Register and scans new directories
-			String sFirstDir = ""; //$NON-NLS-1$
-			String sTest[] = sPathname.split(sRoot.replace("\\", "\\\\")); //$NON-NLS-1$ //$NON-NLS-2$
-			sFirstDir = sTest[1].split("\\" + sFS)[1]; //$NON-NLS-1$
+			String sFirstDir = ""; 
+			String sTest[] = sPathname.split(sRoot.replace("\\", "\\\\"));  
+			sFirstDir = sTest[1].split("\\" + sFS)[1]; 
 
 			Directory dir = DirectoryManager.getInstance()
 					.registerDirectory(
@@ -167,14 +167,14 @@ public class RefactorAction implements ITechnicalStrings {
 			fCurrent.getDevice().cleanRemovedFiles();
 
 			InformationJPanel.getInstance().setMessage(
-					Messages.getString("RefactorWizard.0") + sPathname, 0); //$NON-NLS-1$
+					Messages.getString("RefactorWizard.0") + sPathname, 0); 
 		}
 
-		if (!sErrors.equals("")) { //$NON-NLS-1$
-			Messages.showDetailedErrorMessage("147", "", sErrors); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!sErrors.equals("")) { 
+			Messages.showDetailedErrorMessage("147", "", sErrors);  
 		} else {
 			InformationJPanel.getInstance().setMessage(
-					Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+					Messages.getString("Success"), InformationJPanel.INFORMATIVE); 
 		}
 
 	}
@@ -184,7 +184,7 @@ public class RefactorAction implements ITechnicalStrings {
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(
 				JajukFileFilter.DirectoryFilter.getInstance()));
-		String[] sPaths = sPathname.split("\\" + sFS); //$NON-NLS-1$
+		String[] sPaths = sPathname.split("\\" + sFS); 
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];

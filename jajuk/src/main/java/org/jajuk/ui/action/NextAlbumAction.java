@@ -36,7 +36,7 @@ public class NextAlbumAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	NextAlbumAction() {
-		super("next album", "shift F10", false, true); //$NON-NLS-1$ //$NON-NLS-2$
+		super("next album", "shift F10", false, true);  
 	}
 
 	public void perform(ActionEvent evt) {

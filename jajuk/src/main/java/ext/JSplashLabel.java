@@ -59,11 +59,6 @@ public final class JSplashLabel extends JLabel {
 	private Font m_font = null;
 
 	/**
-	 * Colour to use when drawing the text.
-	 */
-	private Color m_color = null;
-
-	/**
 	 * Constructor.
 	 * <p>
 	 * 
@@ -81,15 +76,13 @@ public final class JSplashLabel extends JLabel {
 
 		ImageIcon icon = new ImageIcon(url);
 		if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-			System.err.println("Cannot load splash screen: " + url); //$NON-NLS-1$
-			setText("Cannot load splash screen: " + url); //$NON-NLS-1$
+			System.err.println("Cannot load splash screen: " + url);
+			setText("Cannot load splash screen: " + url);
 		} else {
 			setIcon(icon);
 			m_copyright = copyright;
 			m_text = s;
 			m_font = f;
-			m_color = c;
-
 			if (m_font != null) {
 				setFont(m_font);
 			}
@@ -107,15 +100,12 @@ public final class JSplashLabel extends JLabel {
 		super.paint(g);
 
 		if (m_text != null) {
-			if (m_color != null) {
-				g.setColor(m_color);
-			}
+			g.setColor(Color.BLACK);
 			// Draw copyright notice
 			FontMetrics fm = g.getFontMetrics();
 			int width = fm.stringWidth(m_copyright) + 50;
 			int height = fm.getHeight();
-			g.drawString(m_copyright, getWidth() - width,
-					(getHeight() - height) - 20);
+			g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 20);
 
 			// Draw release
 			g.drawString(m_text, getWidth() - width, (getHeight() - height));

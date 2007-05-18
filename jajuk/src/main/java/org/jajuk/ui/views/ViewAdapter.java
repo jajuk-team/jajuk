@@ -22,18 +22,19 @@ package org.jajuk.ui.views;
 
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
-import org.jajuk.ui.JajukJPanel;
 import org.jajuk.util.ITechnicalStrings;
 
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
+
+import javax.swing.JPanel;
 
 import com.vlsolutions.swing.docking.DockKey;
 
 /**
  * Default implementation for views
  */
-public abstract class ViewAdapter extends JajukJPanel implements IView,
+public abstract class ViewAdapter extends JPanel implements IView,
 		ITechnicalStrings,Comparable {
 
 	/** Populated state */
@@ -66,7 +67,7 @@ public abstract class ViewAdapter extends JajukJPanel implements IView,
 	 * toString method
 	 */
 	public String toString() {
-		return "View[name=" + getID() + " description='" + getDesc() + "']"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "View[name=" + getID() + " description='" + getDesc() + "']";   
 	}
 
 	/**

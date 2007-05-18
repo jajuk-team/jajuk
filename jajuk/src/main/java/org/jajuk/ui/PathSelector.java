@@ -23,8 +23,8 @@ package org.jajuk.ui;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
 
 import info.clearthought.layout.TableLayout;
 
@@ -72,25 +72,29 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 		}
 		jtfUrl.setToolTipText(Messages.getString("Path"));
 		jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		button = new JButton(Util.getIcon(ICON_OPEN_FILE));
+		button = new JButton(IconLoader.ICON_OPEN_FILE);
 		button.setToolTipText(Messages.getString("Path"));
 		button.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-						JajukFileFilter.DirectoryFilter.getInstance()));
-				jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
+				JajukFileChooser jfc = new JajukFileChooser(filter);
+				jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
 				jfc.setMultiSelectionEnabled(false);
 				String sUrl = jtfUrl.getText();
 				if (!sUrl.equals("")) {
-					// if url is already set, use it as current directory
+					// if URL is already set, use it as current directory
 					jfc.setCurrentDirectory(new File(sUrl));
 				}
 				int returnVal = jfc.showOpenDialog(Main.getWindow());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					java.io.File file = jfc.getSelectedFile();
-					jtfUrl.setText(file.getAbsolutePath());
+					String newPath = file.getAbsolutePath();
+					//Call specific operation if URL changed
+					if (!jtfUrl.getText().equals(newPath)){
+						performOnURLChange();
+					}
+					jtfUrl.setText(newPath);
+					
 				}
 			}
 
@@ -107,6 +111,22 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 	public String getUrl(){
 		return jtfUrl.getText();
 	}
+	
+	public void setEnabled(boolean b){
+		jtfUrl.setEnabled(b);
+		button.setEnabled(b);								
+	
+	
+	}
+	
+	/**
+	 * This method can be extended to perform specific actions when selected changes URL 
+	 *
+	 */
+	public void performOnURLChange(){
+		
+	}
+	
 	
 	/**
 	 * Set tooltip

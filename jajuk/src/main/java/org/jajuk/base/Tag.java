@@ -69,7 +69,7 @@ public class Tag implements ITechnicalStrings {
 		} catch (Exception e) {
 			bCorrupted = true;
 			if (!bIgnoreErrors)
-				throw new JajukException("103", fio.getName(), e); //$NON-NLS-1$
+				throw new JajukException("103", fio.getName(), e); 
 		}
 	}
 
@@ -82,15 +82,15 @@ public class Tag implements ITechnicalStrings {
 		if (tagImpl == null) { // if the type doesn't support tags ( like wav )
 			return sTrackName;
 		}
-		String sTemp = "".intern(); //$NON-NLS-1$
+		String sTemp = "".intern(); 
 		try {
 			sTemp = tagImpl.getTrackName().trim().intern();
-			if (!"".equals(sTemp)) { //$NON-NLS-1$
+			if (!"".equals(sTemp)) { 
 				sTrackName = Util.formatTag(sTemp).intern(); // remove the
 				// extension
 			}
 		} catch (Exception e) {
-			Log.info("Wrong track name:{{" + fio.getName() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.info("Wrong track name:{{" + fio.getName() + "}}");  
 		}
 		return sTrackName;
 	}
@@ -100,22 +100,22 @@ public class Tag implements ITechnicalStrings {
 	 */
 	public String getAlbumName() {
 		if (tagImpl == null) { // if the type doesn't support tags ( like wav )
-			return UNKNOWN_ALBUM; //$NON-NLS-1$
+			return UNKNOWN_ALBUM; 
 		}
 		String sAlbumlName = null;
-		String sTemp = "".intern(); //$NON-NLS-1$
+		String sTemp = "".intern(); 
 		try {
 			sTemp = tagImpl.getAlbumName().trim().intern();
 			if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)) {
 				// it is done to avoid duplicates unknown styles if
 				// the tag is the real string "unknown" in the
 				// current language
-				sAlbumlName = UNKNOWN_ALBUM; //$NON-NLS-1$
-			} else if (!"".equals(sTemp)) { //$NON-NLS-1$
+				sAlbumlName = UNKNOWN_ALBUM; 
+			} else if (!"".equals(sTemp)) { 
 				sAlbumlName = sTemp;
 			}
 		} catch (Exception e) {
-			Log.info("Wrong album name:{{" + fio.getName() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.info("Wrong album name:{{" + fio.getName() + "}}");  
 		}
 		if (sAlbumlName == null) { // album tag cannot be found
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR))
@@ -135,24 +135,24 @@ public class Tag implements ITechnicalStrings {
 	 * @return author name
 	 */
 	public String getAuthorName() {
-		String sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
+		String sAuthorName = UNKNOWN_AUTHOR; 
 		// if the type doesn't support tags ( like wav )
 		if (tagImpl == null) {
 			return sAuthorName;
 		}
-		String sTemp = "".intern(); //$NON-NLS-1$
+		String sTemp = "".intern(); 
 		try {
 			sTemp = tagImpl.getAuthorName().trim().intern();
 			if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)) {
 				// it is done to avoid duplicates unknown styles if
 				// the tag is the real string "unknown" in the
 				// current language
-				sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
-			} else if (!"".equals(sTemp)) { //$NON-NLS-1$
+				sAuthorName = UNKNOWN_AUTHOR; 
+			} else if (!"".equals(sTemp)) { 
 				sAuthorName = Util.formatTag(sTemp).intern();
 			}
 		} catch (Exception e) {
-			Log.info("Wrong author name:{{" + fio.getName() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.info("Wrong author name:{{" + fio.getName() + "}}");  
 		}
 		return sAuthorName;
 
@@ -162,27 +162,27 @@ public class Tag implements ITechnicalStrings {
 	 * @return style name
 	 */
 	public String getStyleName() {
-		String style = UNKNOWN_STYLE; //$NON-NLS-1$
+		String style = UNKNOWN_STYLE; 
 		// if the type doesn't support tags ( like wav )
 		if (tagImpl == null) {
 			return style;
 		}
-		String sTemp = "".intern(); //$NON-NLS-1$
+		String sTemp = "".intern(); 
 		try {
 			sTemp = tagImpl.getStyleName().trim().intern();
 			if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)) {
 				// it is done to avoid duplicates unknown styles if
 				// the tag is the real string "unknown" in the
 				// current language
-				style = UNKNOWN_STYLE; //$NON-NLS-1$
-			} else if (!"".equals(sTemp)) { //$NON-NLS-1$
-				if (sTemp.equals("unknown")) { //$NON-NLS-1$
+				style = UNKNOWN_STYLE; 
+			} else if (!"".equals(sTemp)) { 
+				if (sTemp.equals("unknown")) { 
 					sTemp = style;
 				}
 				style = Util.formatTag(sTemp).intern();
 			}
 		} catch (Exception e) {
-			Log.info("Wrong style name:" + fio.getName()); //$NON-NLS-1$
+			Log.info("Wrong style name:" + fio.getName()); 
 		}
 		return style;
 
@@ -200,7 +200,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			length = tagImpl.getLength();
 		} catch (Exception e) {
-			Log.info("Wrong length:" + fio.getName()); //$NON-NLS-1$
+			Log.info("Wrong length:" + fio.getName()); 
 		}
 		return length;
 	}
@@ -217,7 +217,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			year = tagImpl.getYear(); // check it is an integer
 		} catch (Exception e) {
-			Log.info("Wrong year:" + fio.getName()); //$NON-NLS-1$
+			Log.info("Wrong year:" + fio.getName()); 
 		}
 		return year;
 
@@ -235,7 +235,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			lQuality = tagImpl.getQuality();
 		} catch (Exception e) {
-			Log.info("Wrong quality:" + fio.getName()); //$NON-NLS-1$
+			Log.info("Wrong quality:" + fio.getName()); 
 		}
 		return lQuality;
 	}
@@ -244,19 +244,19 @@ public class Tag implements ITechnicalStrings {
 	 * @return comment
 	 */
 	public String getComment() {
-		String sComment = "".intern(); //$NON-NLS-1$
+		String sComment = "".intern(); 
 		// if the type doesn't support tags ( like wav )
 		if (tagImpl == null) {
 			return sComment;
 		}
-		String sTemp = "".intern(); //$NON-NLS-1$
+		String sTemp = "".intern(); 
 		try {
 			sTemp = tagImpl.getComment().intern();
-			if (sTemp != null && !sTemp.equals("")) { //$NON-NLS-1$
+			if (sTemp != null && !sTemp.equals("")) { 
 				sComment = Util.formatTag(sTemp).intern();
 			}
 		} catch (Exception e) {
-			Log.info("Wrong comment:{{" + fio.getName() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.info("Wrong comment:{{" + fio.getName() + "}}");  
 		}
 		return sComment;
 	}
@@ -269,12 +269,12 @@ public class Tag implements ITechnicalStrings {
 		try {
 			l = tagImpl.getOrder();
 			if (l < 0) {
-				throw new Exception("Negative Order"); //$NON-NLS-1$
+				throw new Exception("Negative Order"); 
 			}
 		} catch (Exception e) {
 			// just debug, no warn because wrong order are too often and
 			// generate too much traces
-			Log.info("Wrong order:" + fio.getName()); //$NON-NLS-1$
+			Log.info("Wrong order:" + fio.getName()); 
 			l = 0;
 		}
 		return l;
@@ -287,7 +287,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setTrackName(sTrackName);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -298,7 +298,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setAlbumName(sAlbumName);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -309,7 +309,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setAuthorName(sAuthorName);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -320,7 +320,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setStyleName(style);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -331,7 +331,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setOrder(lOrder);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -342,7 +342,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setYear(sYear);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -353,7 +353,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setComment(sComment);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104", fio.getName(), e); 
 		}
 	}
 
@@ -366,12 +366,12 @@ public class Tag implements ITechnicalStrings {
 			InformationJPanel
 					.getInstance()
 					.setMessage(
-							Messages.getString("PropertiesWizard.11") + " " + fio.getName(), InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.getString("PropertiesWizard.11") + " " + fio.getName(), InformationJPanel.INFORMATIVE);  
 			if (Log.isDebugEnabled()) {
-				Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+				Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getName());  
 			}
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName() + "\n" + e.getMessage(), e); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new JajukException("104", fio.getName() + "\n" + e.getMessage(), e);  
 		}
 	}
 

@@ -39,8 +39,8 @@ import org.jajuk.ui.StylesSelectionDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
-import ext.AutoCompleteDecorator;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -74,46 +74,48 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ext.AutoCompleteDecorator;
+
 /**
  * DJ creation wizard
  */
 public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 
 	/** Wizard action */
-	private static final String KEY_ACTION = "ACTION"; //$NON-NLS-1$
+	private static final String KEY_ACTION = "ACTION"; 
 
 	/** DJ type variable name */
-	private static final String KEY_DJ_TYPE = "TYPE"; //$NON-NLS-1$
+	private static final String KEY_DJ_TYPE = "TYPE"; 
 
 	/** DJ name variable name */
-	private static final String KEY_DJ_NAME = "NAME"; //$NON-NLS-1$
+	private static final String KEY_DJ_NAME = "NAME"; 
 
 	/** Track unicity */
-	private static final String KEY_UNICITY = "UNICITY"; //$NON-NLS-1$
+	private static final String KEY_UNICITY = "UNICITY"; 
 
 	/** Ratings level */
-	private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL"; //$NON-NLS-1$
+	private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL"; 
 
 	/** Fade duration */
-	private static final String KEY_FADE_DURATION = "FADE_DURATION"; //$NON-NLS-1$
+	private static final String KEY_FADE_DURATION = "FADE_DURATION"; 
 
 	/** transitions */
-	private static final String KEY_TRANSITIONS = "TRANSITIONS"; //$NON-NLS-1$
+	private static final String KEY_TRANSITIONS = "TRANSITIONS"; 
 
 	/** proportions */
-	private static final String KEY_PROPORTIONS = "PROPORTIONS"; //$NON-NLS-1$
+	private static final String KEY_PROPORTIONS = "PROPORTIONS"; 
 
 	/** Ambience */
-	private static final String KEY_AMBIENCE = "AMBIENCE"; //$NON-NLS-1$
+	private static final String KEY_AMBIENCE = "AMBIENCE"; 
 
 	/** DJ to remove */
-	private static final String KEY_REMOVE = "REMOVE"; //$NON-NLS-1$
+	private static final String KEY_REMOVE = "REMOVE"; 
 
 	/** DJ to change */
-	private static final String KEY_CHANGE = "CHANGE"; //$NON-NLS-1$
+	private static final String KEY_CHANGE = "CHANGE"; 
 
 	/** Startup style */
-	private static final String KEY_STARTUP_STYLE = "STARTUP_STYLE"; //$NON-NLS-1$
+	private static final String KEY_STARTUP_STYLE = "STARTUP_STYLE"; 
 
 	/**
 	 * 
@@ -124,13 +126,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		private static final long serialVersionUID = 1L;
 
 		/** Transition DJ code */
-		private static final String DJ_TYPE_TRANSITION = "0"; //$NON-NLS-1$
+		private static final String DJ_TYPE_TRANSITION = "0"; 
 
 		/** Proportions DJ code */
-		private static final String DJ_TYPE_PROPORTION = "1"; //$NON-NLS-1$
+		private static final String DJ_TYPE_PROPORTION = "1"; 
 
 		/** Ambience DJ code */
-		private static final String DJ_TYPE_AMBIENCE = "2"; //$NON-NLS-1$
+		private static final String DJ_TYPE_AMBIENCE = "2"; 
 
 		ButtonGroup bgTypes;
 
@@ -152,13 +154,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			setLayout(new TableLayout(size));
 			bgTypes = new ButtonGroup();
 			jrbTransitions = new JRadioButton(Messages
-					.getString("DigitalDJWizard.1")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.1")); 
 			jrbTransitions.addActionListener(this);
 			jrbTransitions.doClick(); // default selection
-			jrbProp = new JRadioButton(Messages.getString("DigitalDJWizard.2")); //$NON-NLS-1$
+			jrbProp = new JRadioButton(Messages.getString("DigitalDJWizard.2")); 
 			jrbProp.addActionListener(this);
 			jrbAmbiance = new JRadioButton(Messages
-					.getString("DigitalDJWizard.3")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.3")); 
 			jrbAmbiance.addActionListener(this);
 			// can select ambience DJ only if at least one ambience defined
 			jrbAmbiance.setEnabled(AmbienceManager.getInstance().getAmbiences()
@@ -166,9 +168,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			bgTypes.add(jrbProp);
 			bgTypes.add(jrbTransitions);
 			bgTypes.add(jrbAmbiance);
-			add(jrbTransitions, "1,1"); //$NON-NLS-1$
-			add(jrbProp, "1,3"); //$NON-NLS-1$
-			add(jrbAmbiance, "1,5"); //$NON-NLS-1$
+			add(jrbTransitions, "1,1"); 
+			add(jrbProp, "1,3"); 
+			add(jrbAmbiance, "1,5"); 
 		}
 
 		/*
@@ -188,11 +190,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		}
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.0"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.0"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.46"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.46"); 
 		}
 	}
 
@@ -214,7 +216,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public void initUI() {
 			djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance()
 					.getDJs());
@@ -238,14 +240,14 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				jrb.addActionListener(this);
 				bgDJS.add(jrb);
 				widgets[index][0] = jrb;
-				jpDjs.add(jrb, "0," + index); //$NON-NLS-1$
+				jpDjs.add(jrb, "0," + index); 
 				index++;
 			}
 			// main panel
 			double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
 			setLayout(new TableLayout(main));
-			add(new JScrollPane(jpDjs), "0,1"); //$NON-NLS-1$
-			setProblem(Messages.getString("DigitalDJWizard.40")); //$NON-NLS-1$
+			add(new JScrollPane(jpDjs), "0,1"); 
+			setProblem(Messages.getString("DigitalDJWizard.40")); 
 			// select first ambience found
 			JRadioButton jrb = (JRadioButton) widgets[0][0];
 			jrb.doClick();
@@ -264,11 +266,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		}
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.40"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.40"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.51"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.51"); 
 		}
 	}
 
@@ -290,7 +292,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public void initUI() {
 			djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance()
 					.getDJs());
@@ -313,19 +315,19 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				jrb.addActionListener(this);
 				bgDJS.add(jrb);
 				widgets[index][0] = jrb;
-				jpDjs.add(jrb, "0," + index); //$NON-NLS-1$
+				jpDjs.add(jrb, "0," + index); 
 				index++;
 			}
 			// main panel
 			double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
 			setLayout(new TableLayout(main));
-			add(new JScrollPane(jpDjs), "0,1"); //$NON-NLS-1$
+			add(new JScrollPane(jpDjs), "0,1"); 
 			// If more than one DJ, select first
 			if (djs.size() > 0) {
 				JRadioButton jrb = (JRadioButton) widgets[0][0];
 				jrb.doClick();
 			} else {
-				setProblem(Messages.getString("DigitalDJWizard.40")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.40")); 
 			}
 		}
 
@@ -353,11 +355,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		}
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.44"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.44"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.43"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.43"); 
 		}
 	}
 
@@ -370,13 +372,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		private static final long serialVersionUID = 1L;
 
 		/** NEW code */
-		public static final String ACTION_CREATION = "0"; //$NON-NLS-1$
+		public static final String ACTION_CREATION = "0"; 
 
 		/** CHANGE code */
-		public static final String ACTION_CHANGE = "1"; //$NON-NLS-1$
+		public static final String ACTION_CHANGE = "1"; 
 
 		/** DELETE code */
-		public static final String ACTION_DELETE = "2"; //$NON-NLS-1$
+		public static final String ACTION_DELETE = "2"; 
 
 		ButtonGroup bgActions;
 
@@ -397,14 +399,14 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 							TableLayout.PREFERRED, 20 } };
 			setLayout(new TableLayout(size));
 			bgActions = new ButtonGroup();
-			jrbNew = new JRadioButton(Messages.getString("DigitalDJWizard.17")); //$NON-NLS-1$
+			jrbNew = new JRadioButton(Messages.getString("DigitalDJWizard.17")); 
 			jrbNew.addActionListener(this);
 			jrbNew.doClick();
 			jrbChange = new JRadioButton(Messages
-					.getString("DigitalDJWizard.18")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.18")); 
 			jrbChange.addActionListener(this);
 			jrbDelete = new JRadioButton(Messages
-					.getString("DigitalDJWizard.19")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.19")); 
 			jrbDelete.addActionListener(this);
 			// disabled change and remove if none dj
 			if (DigitalDJManager.getInstance().getDJs().size() == 0) {
@@ -414,9 +416,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			bgActions.add(jrbNew);
 			bgActions.add(jrbChange);
 			bgActions.add(jrbDelete);
-			add(jrbNew, "1,1"); //$NON-NLS-1$
-			add(jrbChange, "1,3"); //$NON-NLS-1$
-			add(jrbDelete, "1,5"); //$NON-NLS-1$
+			add(jrbNew, "1,1"); 
+			add(jrbChange, "1,3"); 
+			add(jrbDelete, "1,5"); 
 		}
 
 		/*
@@ -436,11 +438,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		}
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.16"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.16"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.45"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.45"); 
 		}
 	}
 
@@ -468,11 +470,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		JCheckBox jcbUnicity;
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.49"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.49"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.48"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.48"); 
 		}
 
 		/**
@@ -493,34 +495,34 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				data.put(KEY_RATINGS_LEVEL, dj.getRatingLevel());
 				data.put(KEY_UNICITY, dj.isTrackUnicity());
 			}
-			jlName = new JLabel(Messages.getString("DigitalDJWizard.6")); //$NON-NLS-1$
+			jlName = new JLabel(Messages.getString("DigitalDJWizard.6")); 
 			jtfName = new JTextField();
-			jtfName.setToolTipText(Messages.getString("DigitalDJWizard.6")); //$NON-NLS-1$
+			jtfName.setToolTipText(Messages.getString("DigitalDJWizard.6")); 
 			jtfName.addCaretListener(this);
 			jtfName.requestFocusInWindow();
-			jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8")); //$NON-NLS-1$
+			jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8")); 
 			jlRatingLevel.setToolTipText(Messages
-					.getString("DigitalDJWizard.53")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.53")); 
 			jsRatingLevel = new JSlider(1, 4, (Integer) data
 					.get(KEY_RATINGS_LEVEL));
 			jsRatingLevel.setToolTipText(Messages
-					.getString("DigitalDJWizard.53")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.53")); 
 			jsRatingLevel.setMajorTickSpacing(1);
 			jsRatingLevel.setMinorTickSpacing(1);
 			jsRatingLevel.setPaintTicks(true);
 			jsRatingLevel.setPaintLabels(true);
 			jsRatingLevel.setToolTipText(Messages
-					.getString("DigitalDJWizard.8")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.8")); 
 			jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(
 					jsRatingLevel));
 			jsRatingLevel.addChangeListener(this);
-			jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9")); //$NON-NLS-1$
+			jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9")); 
 			jlFadeDuration.setToolTipText(Messages
-					.getString("DigitalDJWizard.54")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.54")); 
 			jsFadeDuration = new JSlider(0, 30, (Integer) data
 					.get(KEY_FADE_DURATION));
 			jsFadeDuration.setToolTipText(Messages
-					.getString("DigitalDJWizard.54")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.54")); 
 			jsFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(
 					jsFadeDuration));
 			jsFadeDuration.addChangeListener(this);
@@ -529,10 +531,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			jsFadeDuration.setPaintTicks(true);
 			jsFadeDuration.setPaintLabels(true);
 			jsFadeDuration.setToolTipText(Messages
-					.getString("DigitalDJWizard.9")); //$NON-NLS-1$
+					.getString("DigitalDJWizard.9")); 
 			jcbUnicity = new JCheckBox(
-					Messages.getString("DigitalDJWizard.10"), (Boolean) data.get(KEY_UNICITY)); //$NON-NLS-1$
-			jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55")); //$NON-NLS-1$
+					Messages.getString("DigitalDJWizard.10"), (Boolean) data.get(KEY_UNICITY)); 
+			jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55")); 
 			jcbUnicity.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					data.put(KEY_UNICITY, jcbUnicity.isSelected());
@@ -546,7 +548,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				jsRatingLevel.setValue((Integer) data.get(KEY_RATINGS_LEVEL));
 				jcbUnicity.setSelected((Boolean) data.get(KEY_UNICITY));
 			} else { // new dj, dj name is required
-				setProblem(Messages.getString("DigitalDJWizard.41")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.41")); 
 			}
 			double[][] size = new double[][] {
 					{ 10, 0.5, 20, TableLayout.FILL, 10 },
@@ -554,13 +556,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 							TableLayout.PREFERRED, 20, TableLayout.PREFERRED,
 							20, TableLayout.PREFERRED, 20 } };
 			setLayout(new TableLayout(size));
-			add(jlName, "1,1"); //$NON-NLS-1$
-			add(jtfName, "3,1"); //$NON-NLS-1$
-			add(jlRatingLevel, "1,3"); //$NON-NLS-1$
-			add(jsRatingLevel, "3,3"); //$NON-NLS-1$
-			add(jlFadeDuration, "1,5"); //$NON-NLS-1$
-			add(jsFadeDuration, "3,5"); //$NON-NLS-1$
-			add(jcbUnicity, "1,7"); //$NON-NLS-1$
+			add(jlName, "1,1"); 
+			add(jtfName, "3,1"); 
+			add(jlRatingLevel, "1,3"); 
+			add(jsRatingLevel, "3,3"); 
+			add(jlFadeDuration, "1,5"); 
+			add(jsFadeDuration, "3,5"); 
+			add(jcbUnicity, "1,7"); 
 		}
 
 		/*
@@ -587,7 +589,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				String sName = jtfName.getText();
 				// string length = 0
 				if (sName.length() == 0) {
-					setProblem(Messages.getString("DigitalDJWizard.41")); //$NON-NLS-1$
+					setProblem(Messages.getString("DigitalDJWizard.41")); 
 				}
 				// display an error message if the dj already exists and not in
 				// "change" mode
@@ -602,7 +604,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 						setProblem(null);
 						return;
 					}
-					setProblem(Messages.getString("DigitalDJWizard.42")); //$NON-NLS-1$
+					setProblem(Messages.getString("DigitalDJWizard.42")); 
 				} else {
 					setProblem(null); // no more problem
 				}
@@ -648,11 +650,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		ArrayList<Transition> alTransitions;
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.52"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.52"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.20"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.20"); 
 		}
 
 		/**
@@ -677,7 +679,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public void initUI() {
 			final Vector<String> styles = StyleManager.getInstance()
 					.getStylesList();
@@ -696,13 +698,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				alTransitions.add(new Transition(
 						DEFAULT_TRANSITION_TRACK_NUMBER)); // add a void
 				// transition
-				setProblem(Messages.getString("DigitalDJWizard.26")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.26")); 
 				// set first style by default
 				data.put(KEY_STARTUP_STYLE, StyleManager.getInstance()
 						.getStyleByName(styles.get(0)));
 			}
 			setCanFinish(true);
-			jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25")); //$NON-NLS-1$
+			jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25")); 
 			jcbStartwith = new JComboBox(styles);
 			AutoCompleteDecorator.decorate(jcbStartwith);
 			String startup = ((Style) data.get(KEY_STARTUP_STYLE)).getName();
@@ -722,14 +724,14 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			jpStartwith = new JPanel();
 			double[][] dSize = { { 0.25, 10, 0.25 }, { 20 } };
 			jpStartwith.setLayout(new TableLayout(dSize));
-			jpStartwith.add(jlStartWith, "0,0"); //$NON-NLS-1$
-			jpStartwith.add(jcbStartwith, "2,0"); //$NON-NLS-1$
+			jpStartwith.add(jlStartWith, "0,0"); 
+			jpStartwith.add(jcbStartwith, "2,0"); 
 			// set layout
 			double[][] dSizeGeneral = { { 10, 0.99, 5 },
 					{ 10, TableLayout.PREFERRED, 10, TableLayout.FILL, 10 } };
 			setLayout(new TableLayout(dSizeGeneral));
-			add(jpStartwith, "1,1"); //$NON-NLS-1$
-			add(getTransitionsPanel(), "1,3"); //$NON-NLS-1$
+			add(jpStartwith, "1,1"); 
+			add(getTransitionsPanel(), "1,3"); 
 		}
 
 		/**
@@ -746,7 +748,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			// now add all known transitions
 			for (int index = 0; index < alTransitions.size(); index++) {
 				// Delete button
-				JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
+				JButton jbDelete = new JButton(IconLoader.ICON_DELETE);
 				jbDelete.addActionListener(new ActionListener() {
 					
 					public void actionPerformed(ActionEvent ae) {
@@ -761,10 +763,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 					jbDelete.setEnabled(false);
 				}
 				jbDelete.setToolTipText(Messages
-						.getString("DigitalDJWizard.21")); //$NON-NLS-1$
+						.getString("DigitalDJWizard.21")); 
 				widgets[index][0] = jbDelete;
 				// From style list
-				JButton jbFrom = new JButton(Util.getIcon(ICON_LIST));
+				JButton jbFrom = new JButton(IconLoader.ICON_LIST);
 				Transition transition = alTransitions.get(index);
 				if (transition.getFrom().getStyles().size() > 0) {
 					jbFrom.setText(transition.getFromString());
@@ -777,10 +779,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 						addStyle(row, true);
 					}
 				});
-				jbFrom.setToolTipText(Messages.getString("DigitalDJWizard.22")); //$NON-NLS-1$
+				jbFrom.setToolTipText(Messages.getString("DigitalDJWizard.22")); 
 				widgets[index][1] = jbFrom;
 				// To style list
-				JButton jbTo = new JButton(Util.getIcon(ICON_LIST));
+				JButton jbTo = new JButton(IconLoader.ICON_LIST);
 				if (transition.getTo().getStyles().size() > 0) {
 					jbTo.setText(transition.getToString());
 					jbTo.setToolTipText(transition.getToString());
@@ -792,7 +794,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 						addStyle(row, false);
 					}
 				});
-				jbTo.setToolTipText(Messages.getString("DigitalDJWizard.23")); //$NON-NLS-1$
+				jbTo.setToolTipText(Messages.getString("DigitalDJWizard.23")); 
 				widgets[index][2] = jbTo;
 				// Nb of tracks
 				JSpinner jsNb = new JSpinner(new SpinnerNumberModel(transition
@@ -807,7 +809,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 						transition.setNb(nb);
 					}
 				});
-				jsNb.setToolTipText(Messages.getString("DigitalDJWizard.24")); //$NON-NLS-1$
+				jsNb.setToolTipText(Messages.getString("DigitalDJWizard.24")); 
 				widgets[index][3] = jsNb;
 				// Set layout
 				dVert[index + 1] = 20;
@@ -821,23 +823,23 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			out.setLayout(layout);
 			// Create header
 			JLabel jlHeader2 = new JLabel(Messages
-					.getString("DigitalDJWizard.22")); //$NON-NLS-1$
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+					.getString("DigitalDJWizard.22")); 
+			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); 
 			JLabel jlHeader3 = new JLabel(Messages
-					.getString("DigitalDJWizard.23")); //$NON-NLS-1$
-			jlHeader3.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+					.getString("DigitalDJWizard.23")); 
+			jlHeader3.setFont(new Font("Dialog", Font.BOLD, 12)); 
 			JLabel jlHeader4 = new JLabel(Messages
-					.getString("DigitalDJWizard.24")); //$NON-NLS-1$
-			jlHeader4.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-			out.add(jlHeader2, "1,0"); //$NON-NLS-1$
-			out.add(jlHeader3, "2,0"); //$NON-NLS-1$
-			out.add(jlHeader4, "3,0"); //$NON-NLS-1$
+					.getString("DigitalDJWizard.24")); 
+			jlHeader4.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			out.add(jlHeader2, "1,0"); 
+			out.add(jlHeader3, "2,0"); 
+			out.add(jlHeader4, "3,0"); 
 			// Add widgets
 			for (int i = 0; i < dVert.length - 2; i++) {
-				out.add(widgets[i][0], "0," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-				out.add(widgets[i][1], "1," + (i + 1)); //$NON-NLS-1$
-				out.add(widgets[i][2], "2," + (i + 1)); //$NON-NLS-1$ //$NON-NLS-2$
-				out.add(widgets[i][3], "3," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
+				out.add(widgets[i][0], "0," + (i + 1) + ",c,c");  
+				out.add(widgets[i][1], "1," + (i + 1)); 
+				out.add(widgets[i][2], "2," + (i + 1));  
+				out.add(widgets[i][3], "3," + (i + 1) + ",c,c");  
 			}
 			return new JScrollPane(out);
 		}
@@ -875,7 +877,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				if (styles.size() == 0) {
 					return;
 				}
-				String sText = ""; //$NON-NLS-1$
+				String sText = ""; 
 				for (Style style : styles) {
 					sText += style.getName2() + ',';
 				}
@@ -891,10 +893,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				// set selected style in transition object
 				if (bFrom) {
 					transition.setFrom(new Ambience(Long.toString(System
-							.currentTimeMillis()), "", styles)); //$NON-NLS-1$
+							.currentTimeMillis()), "", styles)); 
 				} else {
 					transition.setTo(new Ambience(Long.toString(System
-							.currentTimeMillis()), "", styles)); //$NON-NLS-1$
+							.currentTimeMillis()), "", styles)); 
 				}
 				// check if the transaction is fully selected now
 				if (transition.getFrom().getStyles().size() > 0
@@ -930,8 +932,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			for (int i = 0; i < widgets.length; i++) {
 				JButton jbFrom = (JButton) widgets[i][1];
 				JButton jbTo = (JButton) widgets[i][2];
-				if (jbFrom.getText().equals("") //$NON-NLS-1$
-						|| jbTo.getText().equals("")) { //$NON-NLS-1$
+				if (jbFrom.getText().equals("") 
+						|| jbTo.getText().equals("")) { 
 					return true;
 				}
 			}
@@ -945,8 +947,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		private void refreshScreen() {
 			removeAll();
 			// refresh panel
-			add(jpStartwith, "1,1"); //$NON-NLS-1$
-			add(getTransitionsPanel(), "1,3"); //$NON-NLS-1$
+			add(jpStartwith, "1,1"); 
+			add(getTransitionsPanel(), "1,3"); 
 			revalidate();
 			repaint();
 		}
@@ -968,18 +970,18 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		ArrayList<Proportion> proportions;
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.50"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.50"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.29"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.29"); 
 		}
 
 		/**
 		 * Create panel UI
 		 */
 		
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
+		@SuppressWarnings("unchecked") 
 		public void initUI() {
 			if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
 				DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
@@ -990,7 +992,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			} else {
 				proportions = new ArrayList<Proportion>(10);
 				proportions.add(new Proportion()); // add a void item
-				setProblem(Messages.getString("DigitalDJWizard.30")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.30")); 
 			}
 			setCanFinish(true);
 
@@ -998,7 +1000,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			double[][] dSizeGeneral = { { 10, 0.99, 5 },
 					{ 10, TableLayout.PREFERRED, 10 } };
 			setLayout(new TableLayout(dSizeGeneral));
-			add(getProportionsPanel(), "1,1"); //$NON-NLS-1$
+			add(getProportionsPanel(), "1,1"); 
 		}
 
 		/**
@@ -1032,7 +1034,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			// now add all known proportions
 			for (int index = 0; index < proportions.size(); index++) {
 				// Delete button
-				JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
+				JButton jbDelete = new JButton(IconLoader.ICON_DELETE);
 				jbDelete.addActionListener(new ActionListener() {
 					
 					public void actionPerformed(ActionEvent ae) {
@@ -1047,10 +1049,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 					jbDelete.setEnabled(false);
 				}
 				jbDelete.setToolTipText(Messages
-						.getString("DigitalDJWizard.21")); //$NON-NLS-1$
+						.getString("DigitalDJWizard.21")); 
 				widgets[index][0] = jbDelete;
 				// style list
-				JButton jbStyle = new JButton(Util.getIcon(ICON_LIST));
+				JButton jbStyle = new JButton(IconLoader.ICON_LIST);
 				Proportion proportion = proportions.get(index);
 				if (proportion.getStyles() != null) {
 					jbStyle.setText(proportion.getStylesDesc());
@@ -1065,7 +1067,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				});
 				jbStyle
 						.setToolTipText(Messages
-								.getString("DigitalDJWizard.27")); //$NON-NLS-1$
+								.getString("DigitalDJWizard.27")); 
 				widgets[index][1] = jbStyle;
 				// Proportion
 				JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
@@ -1073,7 +1075,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				jsNb.addChangeListener(new ChangeListener() {
 					public void stateChanged(ChangeEvent ce) {
 						if (getTotalValue() > 100) {
-							setProblem(Messages.getString("DigitalDJWizard.59")); //$NON-NLS-1$
+							setProblem(Messages.getString("DigitalDJWizard.59")); 
 							return;
 						} else {
 							setProblem(null);
@@ -1086,7 +1088,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 						proportion.setProportion(((float) nb) / 100);
 					}
 				});
-				jsNb.setToolTipText(Messages.getString("DigitalDJWizard.28")); //$NON-NLS-1$
+				jsNb.setToolTipText(Messages.getString("DigitalDJWizard.28")); 
 				widgets[index][2] = jsNb;
 				// Set layout
 				dVert[index + 1] = 20;
@@ -1100,22 +1102,22 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			out.setLayout(layout);
 			// Create header
 			JLabel jlHeader1 = new JLabel(Messages
-					.getString("DigitalDJWizard.27")); //$NON-NLS-1$
-			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+					.getString("DigitalDJWizard.27")); 
+			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); 
 			JLabel jlHeader2 = new JLabel(Messages
-					.getString("DigitalDJWizard.28")); //$NON-NLS-1$
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-			out.add(jlHeader1, "2,0"); //$NON-NLS-1$
-			out.add(jlHeader2, "4,0"); //$NON-NLS-1$
+					.getString("DigitalDJWizard.28")); 
+			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			out.add(jlHeader1, "2,0"); 
+			out.add(jlHeader2, "4,0"); 
 			// Add widgets
 			for (int i = 0; i < dVert.length - 2; i++) {
-				out.add(widgets[i][0], "0," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-				out.add(widgets[i][1], "2," + (i + 1)); //$NON-NLS-1$
-				out.add(widgets[i][2], "4," + (i + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+				out.add(widgets[i][0], "0," + (i + 1) + ",c,c");  
+				out.add(widgets[i][1], "2," + (i + 1)); 
+				out.add(widgets[i][2], "4," + (i + 1));  
 			}
 			// Display an error message if sum of proportion is > 100%
 			if (getTotalValue() > 100) {
-				setProblem(Messages.getString("DigitalDJWizard.59")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.59")); 
 			}
 			return new JScrollPane(out);
 		}
@@ -1130,7 +1132,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				JSpinner jsp = (JSpinner) widgets[i][2];
 				// Only filled proportions are token into account
 				JButton jb = (JButton) widgets[i][1];
-				if (jb.getText() == null || jb.getText().equals("")) { //$NON-NLS-1$
+				if (jb.getText() == null || jb.getText().equals("")) { 
 					continue;
 				}
 				total += Integer.parseInt(jsp.getValue().toString());
@@ -1166,7 +1168,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				}
 				// reset styles
 				proportion.setStyle(new Ambience());
-				String sText = ""; //$NON-NLS-1$
+				String sText = ""; 
 				for (Style style : styles) {
 					proportion.addStyle(style);
 					sText += style.getName2() + ',';
@@ -1204,7 +1206,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		private boolean containsVoidItem() {
 			for (int i = 0; i < widgets.length; i++) {
 				JButton jb = (JButton) widgets[i][1];
-				if (jb.getText().equals("")) { //$NON-NLS-1$
+				if (jb.getText().equals("")) { 
 					return true;
 				}
 			}
@@ -1218,7 +1220,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		private void refreshScreen() {
 			removeAll();
 			// refresh panel
-			add(getProportionsPanel(), "1,1"); //$NON-NLS-1$
+			add(getProportionsPanel(), "1,1"); 
 			revalidate();
 			repaint();
 		}
@@ -1245,11 +1247,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		int ambienceIndex = 0;
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.47"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.47"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.31"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.31"); 
 		}
 
 		/**
@@ -1263,7 +1265,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			widgets = new JComponent[ambiences.size()][1];
 			// We need at least one ambience
 			if (AmbienceManager.getInstance().getAmbiences().size() == 0) {
-				setProblem(Messages.getString("DigitalDJWizard.38")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.38")); 
 			}
 			setCanFinish(true);
 			// Get DJ
@@ -1288,13 +1290,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 				jrb.addActionListener(this);
 				bg.add(jrb);
 				widgets[index][0] = jrb;
-				jpAmbiences.add(jrb, "0," + index); //$NON-NLS-1$
+				jpAmbiences.add(jrb, "0," + index); 
 				index++;
 			}
 			// main panel
 			double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
 			setLayout(new TableLayout(main));
-			add(new JScrollPane(jpAmbiences), "0,1"); //$NON-NLS-1$
+			add(new JScrollPane(jpAmbiences), "0,1"); 
 			// DJ change, set right ambience
 			if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
 				DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
@@ -1412,8 +1414,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 
 	public DigitalDJWizard() {
 		super(
-				Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, //$NON-NLS-1$
-				Util.getIcon(IMAGE_DJ), Main.getWindow(), new Locale(Messages
+				Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, 
+				Util.getImage(IMAGE_DJ), Main.getWindow(), new Locale(Messages
 						.getInstance().getLocal()));
 	}
 
@@ -1423,7 +1425,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 	 * @see org.jajuk.ui.wizard.Wizard#finish()
 	 */
 	
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	@Override
 	public void finish() {
 		DigitalDJ dj = null;

@@ -27,36 +27,34 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.PathSelector;
+import org.jajuk.ui.ToggleLink;
 import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXCollapsiblePane;
-import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.VerticalLayout;
 
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-import javax.swing.Action;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 /**
  * First time Wizard
@@ -76,7 +74,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 
 	JButton jbFileSelection;
 
-	PathSelector path;
+	PathSelector workspacePath;
 
 	JLabel jlRefreshTime;
 
@@ -103,96 +101,77 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 	 * First time wizard
 	 */
 	public FirstTimeWizard() {
-		setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
+		setTitle(Messages.getString("FirstTimeWizard.0"));
 		int iX_SEPARATOR = 10;
 		int iY_SEPARATOR = 10;
-		jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
+		double p = TableLayout.PREFERRED;
+		jlLeftIcon = new JLabel(Util.getImage(IMAGE_SEARCH));
 		jpRightPanel = new JPanel();
-		jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
-		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
-		jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_DIR));
-		jtfFileSelected = new JTextField(""); //$NON-NLS-1$
+		jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));
+		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
+		jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
+		jtfFileSelected = new JTextField("");
 		jtfFileSelected.setForeground(Color.BLUE);
 		jtfFileSelected.setEditable(false);
 		jbFileSelection.addActionListener(this);
 		JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
 		jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
-		path = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()),
-				System.getProperty("user.home"));
-		path.setToolTipText(Messages.getString("FirstTimeWizard.7"));
-		JPanel jpWorkspace = new JPanel(new VerticalLayout(iX_SEPARATOR));
-		jpWorkspace.add(jlWorkspace);
-		jpWorkspace.add(path);
+		workspacePath = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
+				.getInstance()), System.getProperty("user.home"));
+		workspacePath.setToolTipText(Messages.getString("FirstTimeWizard.7"));
 
-		jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
+		jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));
 		// Refresh time
-		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
+		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
 		jtfRefreshTime = new JTextField("5");// 5 mins by default
-		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
+		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
 		JPanel jpRefresh = new JPanel();
-		double sizeRefresh[][] = {
-				{ TableLayout.PREFERRED, iX_SEPARATOR, 50, iX_SEPARATOR, TableLayout.PREFERRED },
-				{ 20 } };
+
+		double sizeRefresh[][] = { { p, 10, TableLayout.FILL, 10, p }, { p } };
 		jpRefresh.setLayout(new TableLayout(sizeRefresh));
-		jpRefresh.add(jlRefreshTime, "0,0"); //$NON-NLS-1$
-		jpRefresh.add(jtfRefreshTime, "2,0"); //$NON-NLS-1$
-		jpRefresh.add(jlMins, "4,0"); //$NON-NLS-1$
+		jpRefresh.add(jlRefreshTime, "0,0");
+		jpRefresh.add(jtfRefreshTime, "2,0");
+		jpRefresh.add(jlMins, "4,0");
 		// buttons
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-		jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
+		jbOk = new JButton(Messages.getString("OK"));
 		jbOk.setEnabled(false);
 		jbOk.addActionListener(this);
-		jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
+		jbCancel = new JButton(Messages.getString("Cancel"));
 		jbCancel.addActionListener(this);
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
-		double sizeRight[][] = {
-				{ TableLayout.PREFERRED, iX_SEPARATOR },
-				{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR, TableLayout.PREFERRED,
-						iY_SEPARATOR, 20, 4 * iY_SEPARATOR, 40, iY_SEPARATOR,
-						TableLayout.PREFERRED, iY_SEPARATOR, 40 } };
-
-		FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
 		JPanel jpFileSelection = new JPanel();
-		jpFileSelection.setLayout(flSelection);
+		jpFileSelection.setLayout(new HorizontalLayout(iX_SEPARATOR));
 		jpFileSelection.add(jbFileSelection);
-		jpFileSelection.add(Box.createHorizontalStrut(10));
 		jpFileSelection.add(jlFileSelection);
 		advanced = new JXCollapsiblePane();
+		// Build the toggle link used to expand / collapse the panel
+		ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
 		advanced.setLayout(new VerticalLayout(iY_SEPARATOR));
-		JXHyperlink toggle = new JXHyperlink(advanced.getActionMap().get(
-				JXCollapsiblePane.TOGGLE_ACTION));
-		toggle.setText(Messages.getString("FirstTimeWizard.6"));
-		toggle.setFont(toggle.getFont().deriveFont(Font.BOLD));
-		toggle.setOpaque(true);
 		advanced.setCollapsed(true);
-		toggle.setFocusPainted(false);
-		// get the built-in toggle action
-		Action toggleAction = advanced.getActionMap().get(JXCollapsiblePane.TOGGLE_ACTION);
-
-		// use the collapse/expand icons from the JTree UI
-		toggleAction.putValue(JXCollapsiblePane.COLLAPSE_ICON, UIManager
-				.getIcon("Tree.expandedIcon"));
-		toggleAction.putValue(JXCollapsiblePane.EXPAND_ICON, UIManager
-				.getIcon("Tree.collapsedIcon"));
-		advanced.add(jpWorkspace);
+		advanced.add(jlWorkspace);
+		advanced.add(workspacePath);
 		advanced.add(jcbHelp);
+		advanced.setOpaque(false);
 
-		// jpRightPanel.setLayout(new TableLayout(sizeRight));
-		jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
-		jpRightPanel.add(jlWelcome, "0,1"); //$NON-NLS-1$
-		jpRightPanel.add(jpFileSelection, "0,3"); //$NON-NLS-1$
-		jpRightPanel.add(jtfFileSelected, "0,5"); //$NON-NLS-1$
-		jpRightPanel.add(jpRefresh, "0,7"); //$NON-NLS-1$
-		jpRightPanel.add(toggle, "0,9"); //$NON-NLS-1$
-		jpRightPanel.add(advanced);
-		jpRightPanel.add(jpButtons, "0,11"); //$NON-NLS-1$
-		double size[][] = { { 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED }, { 0.99 } };
+		double[][] size = new double[][] { { iX_SEPARATOR, p, iX_SEPARATOR },
+				{ iY_SEPARATOR, p, 60, p, p, p, p, p, iY_SEPARATOR } };
+		TableLayout layout = new TableLayout(size);
+		layout.setHGap(iX_SEPARATOR);
+		layout.setVGap(iY_SEPARATOR);
+
 		jpMain = (JPanel) getContentPane();
-		jpMain.setLayout(new TableLayout(size));
-		jpMain.add(jlLeftIcon, "1,0"); //$NON-NLS-1$
-		jpMain.add(jpRightPanel, "3,0"); //$NON-NLS-1$
+		jpMain.setLayout(layout);
+		jpMain.add(jlWelcome, "1,1");
+		jpMain.add(jpFileSelection, "1,2");
+		jpMain.add(jtfFileSelected, "1,3");
+		jpMain.add(jpRefresh, "1,4");
+		jpMain.add(toggle, "1,5");
+		jpMain.add(advanced, "1,6");
+		jpMain.add(jpButtons, "1,7");
+
 		getRootPane().setDefaultButton(jbOk);
 	}
 
@@ -203,7 +182,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
 					JajukFileFilter.DirectoryFilter.getInstance()));
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));//$NON-NLS-1$
+			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
 			jfc.setMultiSelectionEnabled(false);
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -211,7 +190,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 				// check device availability
 				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
 						0, fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
-				if (!sCode.equals("0")) { //$NON-NLS-1$
+				if (!sCode.equals("0")) {
 					Messages.showErrorMessage(sCode);
 					jbOk.setEnabled(false);
 					return;
@@ -229,8 +208,8 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 				Main.setDefaultPerspective(SimplePerspective.class.getName());
 			}
 			// Check workspace directory
-			if (!path.getUrl().trim().equals("")) {
-				if (!new File(path.getUrl()).canRead()) {
+			if (!workspacePath.getUrl().trim().equals("")) {
+				if (!new File(workspacePath.getUrl()).canRead()) {
 					Messages.showErrorMessage("165");
 					return;
 				}
@@ -239,11 +218,11 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 			try {
 				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
 				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-				bw.write(path.getUrl());
+				bw.write(workspacePath.getUrl());
 				bw.flush();
 				bw.close();
 				// Store the workspace PATH
-				Main.workspace = path.getUrl();
+				Main.workspace = workspacePath.getUrl();
 			} catch (Exception ex) {
 				Messages.showErrorMessage("024");
 				Log.debug("Cannot write bootstrap file");
@@ -280,8 +259,8 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 					try {
 						device.refresh(true, false);
 					} catch (Exception e2) {
-						Log.error("112", device.getName(), e2); //$NON-NLS-1$
-						Messages.showErrorMessage("112", device.getName()); //$NON-NLS-1$
+						Log.error("112", device.getName(), e2);
+						Messages.showErrorMessage("112", device.getName());
 					}
 				}
 			}.start();

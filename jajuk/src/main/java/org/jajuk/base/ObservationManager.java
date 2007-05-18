@@ -80,7 +80,7 @@ public class ObservationManager implements ITechnicalStrings {
 	public static synchronized void register(Observer observer) {
 		Set<EventSubject> eventSubjectSet = observer.getRegistrationKeys();
 		for (EventSubject subject : eventSubjectSet) {
-			Log.debug("Register: \"" + subject + "\" by: " + observer); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.debug("Register: \"" + subject + "\" by: " + observer);  
 			observerRegistry.register(subject, observer);
 		}
 	}
@@ -116,7 +116,7 @@ public class ObservationManager implements ITechnicalStrings {
 	 */
 	public static void notifySync(Event event) {
 		EventSubject subject = event.getSubject();
-		Log.debug("Notify: " + subject); //$NON-NLS-1$
+		Log.debug("Notify: " + subject); 
 		// save last event
 		hLastEventBySubject.put(subject, event.getDetails());
 		observerRegistry.notifySync(event);

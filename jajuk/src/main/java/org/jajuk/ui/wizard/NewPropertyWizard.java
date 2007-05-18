@@ -84,13 +84,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 	 * Constructor
 	 */
 	public NewPropertyWizard() {
-		super(Messages.getString("NewPropertyWizard.0")); //$NON-NLS-1$
+		super(Messages.getString("NewPropertyWizard.0")); 
 		populate();// create default UI
 		// name
 		jtfName = new JTextField();
 		jtfName.addKeyListener(this);
 		// Type, class
-		jlClass = new JLabel(Messages.getString("NewPropertyWizard.3")); //$NON-NLS-1$
+		jlClass = new JLabel(Messages.getString("NewPropertyWizard.3")); 
 		jcbClass = new JComboBox();
 		jcbClass.addItem(Messages.getString(FORMAT_STRING));
 		jcbClass.addItem(Messages.getString(FORMAT_NUMBER));
@@ -99,7 +99,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 		jcbClass.addItem(Messages.getString(FORMAT_DATE));
 		jcbClass.addItemListener(this);
 		// Default
-		jlDefault = new JLabel(Messages.getString("NewPropertyWizard.5")); //$NON-NLS-1$
+		jlDefault = new JLabel(Messages.getString("NewPropertyWizard.5")); 
 		jtfDefault = new JTextField(40);
 		jcbDefault = new JCheckBox();
 		jcbDefault.setEnabled(false);
@@ -110,9 +110,9 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 				{ TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 10,
 						TableLayout.PREFERRED }, { 20 } };
 		jpDefault.setLayout(new TableLayout(d));
-		jpDefault.add(jtfDefault, "0,0"); //$NON-NLS-1$
-		jpDefault.add(jcbDefault, "2,0"); //$NON-NLS-1$
-		jpDefault.add(jdpDefault, "4,0"); //$NON-NLS-1$
+		jpDefault.add(jtfDefault, "0,0"); 
+		jpDefault.add(jcbDefault, "2,0"); 
+		jpDefault.add(jdpDefault, "4,0"); 
 		// main
 		int iXSeparator = 10;
 		int iYSeparator = 20;
@@ -122,14 +122,14 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 				{ iYSeparator, 20, iYSeparator, 20, iYSeparator, 20,
 						iYSeparator, 20, iYSeparator } };
 		jpMain.setLayout(new TableLayout(dSize));
-		jpMain.add(jlItemChoice, "1,1"); //$NON-NLS-1$
-		jpMain.add(jcbItemChoice, "3,1"); //$NON-NLS-1$
-		jpMain.add(jlName, "1,3"); //$NON-NLS-1$
-		jpMain.add(jtfName, "3,3"); //$NON-NLS-1$
-		jpMain.add(jlClass, "1,5"); //$NON-NLS-1$
-		jpMain.add(jcbClass, "3,5"); //$NON-NLS-1$
-		jpMain.add(jlDefault, "1,7"); //$NON-NLS-1$
-		jpMain.add(jpDefault, "3,7"); //$NON-NLS-1$
+		jpMain.add(jlItemChoice, "1,1"); 
+		jpMain.add(jcbItemChoice, "3,1"); 
+		jpMain.add(jlName, "1,3"); 
+		jpMain.add(jtfName, "3,3"); 
+		jpMain.add(jlClass, "1,5"); 
+		jpMain.add(jcbClass, "3,5"); 
+		jpMain.add(jlDefault, "1,7"); 
+		jpMain.add(jpDefault, "3,7"); 
 		getContentPane().add(jpMain);
 		getContentPane().add(okp);
 		getContentPane().add(Box.createVerticalStrut(10));
@@ -157,8 +157,8 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 				 */
 				if (XML_RESERVED_ATTRIBUTE_NAMES[i].equalsIgnoreCase(jtfName
 						.getText())
-						|| jtfName.getText().matches(",")) { //$NON-NLS-1$
-					Messages.showErrorMessage("110"); //$NON-NLS-1$
+						|| jtfName.getText().matches(",")) { 
+					Messages.showErrorMessage("110"); 
 					return;
 				}
 			}
@@ -166,13 +166,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 			// check if this property is not already used
 			for (PropertyMetaInformation meta : im.getCustomProperties()) {
 				if (meta.getName().equals(jtfName.getText())) {
-					Messages.showErrorMessage("162"); //$NON-NLS-1$
+					Messages.showErrorMessage("162"); 
 					return;
 				}
 			}
 			// check format
 			if (!Util.isXMLValid(jtfName.getText())) {
-				Messages.showErrorMessage("140"); //$NON-NLS-1$
+				Messages.showErrorMessage("140"); 
 				return;
 			}
 			// OK, store it
@@ -207,7 +207,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 					Double.parseDouble(jtfDefault.getText());
 				}
 			} catch (Exception e) {
-				Messages.showErrorMessage("137"); //$NON-NLS-1$
+				Messages.showErrorMessage("137"); 
 				return;
 			}
 			// set default

@@ -62,42 +62,41 @@
 						<xsl:value-of
 							select='/collection/i18n/ReportAction.10' />
 					</h2>
-					<xsl:apply-templates select='collection' />
+					<xsl:call-template name='directories_list' />
 				</p>
 				<p>
 					<h2 id='2'>
 						<xsl:value-of
 							select='/collection/i18n/ReportAction.11' />
 					</h2>
-					<xsl:apply-templates select='collection/directory' />
+					<xsl:apply-templates select='*/directory' />
+
 				</p>
 			</body>
 		</html>
 	</xsl:template>
 
-	<xsl:template match='collection'>
-		<table border='0' cellspacing='5'>
-			<xsl:for-each select='directory'>
-				<tr>
-					<xsl:variable name='id' select='id' />
-					<td>
-						<a href='#{id}'>
-							<xsl:value-of select='path' />
-						</a>
-					</td>
-				</tr>
-			</xsl:for-each>
-		</table>
+	<xsl:template name='directories_list'>
+		<xsl:for-each select='*/directory'>
+			<xsl:variable name='id' select='id' />
+				<a href='#{id}'>
+					<xsl:value-of select='path' />
+				</a>
+				<br/>
+			<xsl:call-template name='directories_list' />
+		</xsl:for-each>
 	</xsl:template>
 
 
-	<xsl:template match='collection/directory'>
-		<hr />
+
+<xsl:template match="*/directory">
+	<hr />
 		<xsl:variable name='id' select='id' />
 		<h2 id='{id}'>
 			<xsl:value-of select='path' />
 		</h2>
-		<table border='0' cellspacing='5'>
+		<xsl:apply-templates select="directory" />
+			<table border='0' cellspacing='5'>
 			<TR>
 				<TH>
 					<xsl:value-of
@@ -169,5 +168,8 @@
 				</tr>
 			</xsl:for-each>
 		</table>
+		<br />				
 	</xsl:template>
+
+
 </xsl:stylesheet>

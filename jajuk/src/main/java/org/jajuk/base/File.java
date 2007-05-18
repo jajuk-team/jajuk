@@ -83,7 +83,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 * toString method
 	 */
 	public String toString() {
-		return "File[ID=" + sId + " Name={{" + sName + "}} Dir=" + directory + " Size=" + lSize + " Quality=" + lQuality + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
+		return "File[ID=" + sId + " Name={{" + sName + "}} Dir=" + directory + " Size=" + lSize + " Quality=" + lQuality + "]";   
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 				.append(track.getAlbum().getName2())
 				.append('/')
 				.append(track.getName())
-				.append(" [").append(directory.getName()).append('/').append(this.sName).append(']'); //$NON-NLS-1$
+				.append(" [").append(directory.getName()).append('/').append(this.sName).append(']'); 
 		return sb.toString();
 	}
 
@@ -177,14 +177,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		if (otherFile == null) {
 			return false;
 		}
-		return this.getId().equals(((File) otherFile).getId());
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((File) otherFile).hashcode);
 	}
 
 	/**
@@ -304,7 +297,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_File") + " : " + getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_File") + " : " + getName();  
 	}
 
 	/*
@@ -321,9 +314,9 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 			return getTrack().getName();
 		} else if (XML_SIZE.equals(sKey)) {
 			return (lSize / 1048576)
-					+ Messages.getString("PhysicalTreeView.54"); //$NON-NLS-1$
+					+ Messages.getString("PhysicalTreeView.54"); 
 		} else if (XML_QUALITY.equals(sKey)) {
-			return getQuality() + Messages.getString("FIFO.13"); //$NON-NLS-1$
+			return getQuality() + Messages.getString("FIFO.13"); 
 		} else if (XML_ALBUM.equals(sKey)) {
 			return getTrack().getAlbum().getName2();
 		} else if (XML_STYLE.equals(sKey)) {

@@ -100,9 +100,9 @@ public class SearchBox extends JTextField implements KeyListener {
 		this.lsl = lsl;
 		timer.start();
 		addKeyListener(this);
-		setToolTipText(Messages.getString("SearchBox.0")); //$NON-NLS-1$
+		setToolTipText(Messages.getString("SearchBox.0")); 
 		setBorder(BorderFactory.createEtchedBorder());
-		setFont(new Font("dialog", Font.BOLD, 18)); //$NON-NLS-1$
+		setFont(new Font("dialog", Font.BOLD, 18)); 
 		Color mediumGray = new Color(172, 172, 172);
 		setForeground(mediumGray);
 		setBorder(BorderFactory.createLineBorder(Color.BLUE));

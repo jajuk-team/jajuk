@@ -51,7 +51,7 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 	@Override
 	public List<File> generatePlaylist() {
 		if (ambience == null) { // can be null if ambience has been removed
-			Messages.showErrorMessage("159"); //$NON-NLS-1$
+			Messages.showErrorMessage("159"); 
 			return new ArrayList<File>();
 		}
 		List<File> out = new ArrayList<File>(100);
@@ -98,9 +98,9 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 	public String toXML() {
 		StringBuffer sb = new StringBuffer(2000);
 		sb.append(toXMLGeneralParameters());
-		sb.append("\t<" + XML_DJ_AMBIENCE + " " + XML_DJ_VALUE + "='"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		sb.append(ambience.getID() + "'/>\n"); //$NON-NLS-1$
-		sb.append("</" + XML_DJ_DJ + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("\t<" + XML_DJ_AMBIENCE + " " + XML_DJ_VALUE + "='");   
+		sb.append(ambience.getID() + "'/>\n"); 
+		sb.append("</" + XML_DJ_DJ + ">\n");  
 		return sb.toString();
 	}
 

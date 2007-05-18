@@ -47,15 +47,15 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
 		String sText = tf.getText().toLowerCase();
 		// Check pattern contains at least one /
 		if (sText.indexOf('/') == -1) {
-			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
-					Messages.getString("Error"), //$NON-NLS-1$
+			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), 
+					Messages.getString("Error"), 
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		try {
-			String[] stPattern = sText.split("[% /-]"); //$NON-NLS-1$
+			String[] stPattern = sText.split("[% /-]"); 
 			for (String sPattern : stPattern) {
-				if (!sPattern.equals("")) { //$NON-NLS-1$
+				if (!sPattern.equals("")) { 
 					if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))
 							|| sPattern.equalsIgnoreCase(PATTERN_ARTIST.substring(1))
 							|| sPattern.equalsIgnoreCase(PATTERN_YEAR.substring(1))
@@ -64,8 +64,8 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
 							|| sPattern.equalsIgnoreCase(PATTERN_GENRE.substring(1))) {
 					} else {
 						JOptionPane.showMessageDialog(Main.getWindow(), Messages
-								.getString("Error.146"), //$NON-NLS-1$
-								Messages.getString("Error"), //$NON-NLS-1$
+								.getString("Error.146"), 
+								Messages.getString("Error"), 
 								JOptionPane.ERROR_MESSAGE);
 						return false;
 					}

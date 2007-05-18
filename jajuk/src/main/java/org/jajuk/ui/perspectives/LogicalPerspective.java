@@ -35,7 +35,7 @@ public class LogicalPerspective extends PerspectiveAdapter {
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Logical"); //$NON-NLS-1$
+		return Messages.getString("Perspective_Description_Logical"); 
 	}
 
 

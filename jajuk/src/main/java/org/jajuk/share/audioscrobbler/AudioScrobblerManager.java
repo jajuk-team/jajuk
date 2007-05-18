@@ -212,9 +212,9 @@ public class AudioScrobblerManager extends DefaultHandler implements ITechnicalS
         String sCharset = ConfigurationManager
         .getProperty(CONF_COLLECTION_CHARSET);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(sFile), sCharset), 1000000); //$NON-NLS-1$
+                new FileOutputStream(sFile), sCharset), 1000000); 
 
-        bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+        bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");  
         Iterator it = lTracks.iterator();
         while (it.hasNext()) {
             Submission sub = (Submission) it.next();

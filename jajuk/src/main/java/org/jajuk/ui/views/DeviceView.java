@@ -30,6 +30,7 @@ import org.jajuk.ui.IView;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 
 import info.clearthought.layout.TableLayout;
@@ -43,13 +44,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -121,46 +122,46 @@ public class DeviceView extends ViewAdapter implements IView,
 		jpmenu = new JPopupMenu();
 
 		jmiMount = new JMenuItem(
-				Messages.getString("DeviceView.8"), Util.getIcon(ICON_MOUNT)); //$NON-NLS-1$
+				Messages.getString("DeviceView.8"), IconLoader.ICON_MOUNT); 
 		jmiMount.addActionListener(this);
 		jmiMount.setActionCommand(EventSubject.EVENT_DEVICE_MOUNT.toString());
 		jpmenu.add(jmiMount);
 
 		jmiUnmount = new JMenuItem(
-				Messages.getString("DeviceView.9"), Util.getIcon(ICON_UNMOUNT)); //$NON-NLS-1$
+				Messages.getString("DeviceView.9"), IconLoader.ICON_UNMOUNT); 
 		jmiUnmount.addActionListener(this);
 		jmiUnmount.setActionCommand(EventSubject.EVENT_DEVICE_UNMOUNT
 				.toString());
 		jpmenu.add(jmiUnmount);
 
 		jmiTest = new JMenuItem(
-				Messages.getString("DeviceView.10"), Util.getIcon(ICON_TEST)); //$NON-NLS-1$
+				Messages.getString("DeviceView.10"), IconLoader.ICON_TEST); 
 		jmiTest.addActionListener(this);
 		jmiTest.setActionCommand(EventSubject.EVENT_DEVICE_TEST.toString());
 		jpmenu.add(jmiTest);
 
 		jmiRefresh = new JMenuItem(
-				Messages.getString("DeviceView.11"), Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
+				Messages.getString("DeviceView.11"), IconLoader.ICON_REFRESH); 
 		jmiRefresh.addActionListener(this);
 		jmiRefresh.setActionCommand(EventSubject.EVENT_DEVICE_REFRESH
 				.toString());
 		jpmenu.add(jmiRefresh);
 
 		jmiSynchronize = new JMenuItem(
-				Messages.getString("DeviceView.12"), Util.getIcon(ICON_SYNCHRO)); //$NON-NLS-1$
+				Messages.getString("DeviceView.12"), IconLoader.ICON_SYNCHRO); 
 		jmiSynchronize.addActionListener(this);
 		jmiSynchronize.setActionCommand(EventSubject.EVENT_DEVICE_SYNCHRO
 				.toString());
 		jpmenu.add(jmiSynchronize);
 
 		jmiDelete = new JMenuItem(
-				Messages.getString("DeviceView.13"), Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
+				Messages.getString("DeviceView.13"), IconLoader.ICON_DELETE); 
 		jmiDelete.addActionListener(this);
 		jmiDelete.setActionCommand(EventSubject.EVENT_DEVICE_DELETE.toString());
 		jpmenu.add(jmiDelete);
 
 		jmiProperties = new JMenuItem(
-				Messages.getString("DeviceView.14"), Util.getIcon(ICON_CONFIGURATION)); //$NON-NLS-1$
+				Messages.getString("DeviceView.14"), IconLoader.ICON_CONFIGURATION); 
 		jmiProperties.addActionListener(this);
 		jmiProperties.setActionCommand(EventSubject.EVENT_DEVICE_PROPERTIES
 				.toString());
@@ -172,7 +173,7 @@ public class DeviceView extends ViewAdapter implements IView,
 		// add components
 		double size[][] = { { TableLayout.FILL }, { TableLayout.FILL } };
 		setLayout(new TableLayout(size));
-		add(jsp, "0,0"); //$NON-NLS-1$
+		add(jsp, "0,0"); 
 		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 	}
@@ -193,9 +194,9 @@ public class DeviceView extends ViewAdapter implements IView,
 				jpDevices.removeAll();
 			}
 			// New device
-			DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW, Messages
-					.getString("DeviceView.17"), null); //$NON-NLS-1$
-			diNew.setToolTipText(Messages.getString("DeviceView.18")); //$NON-NLS-1$
+			DeviceItem diNew = new DeviceItem(IconLoader.ICON_DEVICE_NEW, Messages
+					.getString("DeviceView.17"), null); 
+			diNew.setToolTipText(Messages.getString("DeviceView.18")); 
 			jpDevices.add(diNew);
 			diNew.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -210,59 +211,59 @@ public class DeviceView extends ViewAdapter implements IView,
 					.iterator();
 			while (it.hasNext()) {
 				final Device device = it.next();
-				URL urlIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-				String sTooltip = ""; //$NON-NLS-1$
+				ImageIcon icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED;
+				String sTooltip = ""; 
 				switch ((int) device.getDeviceType()) {
 				case 0:
-					sTooltip = Messages.getString("Device_type.directory"); //$NON-NLS-1$
+					sTooltip = Messages.getString("Device_type.directory"); 
 					if (device.isMounted()) {
-						urlIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
+						icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED;
 					} else {
-						urlIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
+						icon = IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED;
 					}
 					break;
 				case 1:
-					sTooltip = Messages.getString("Device_type.file_cd"); //$NON-NLS-1$
+					sTooltip = Messages.getString("Device_type.file_cd"); 
 					if (device.isMounted()) {
-						urlIcon = ICON_DEVICE_CD_MOUNTED;
+						icon = IconLoader.ICON_DEVICE_CD_MOUNTED;
 					} else {
-						urlIcon = ICON_DEVICE_CD_UNMOUNTED;
+						icon = IconLoader.ICON_DEVICE_CD_UNMOUNTED;
 					}
 					break;
 				case 2:
-					sTooltip = Messages.getString("Device_type.network_drive"); //$NON-NLS-1$
+					sTooltip = Messages.getString("Device_type.network_drive"); 
 					if (device.isMounted()) {
-						urlIcon = ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
+						icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
 					} else {
-						urlIcon = ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED;
+						icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED;
 					}
 					break;
 				case 3:
-					sTooltip = Messages.getString("Device_type.extdd"); //$NON-NLS-1$
+					sTooltip = Messages.getString("Device_type.extdd"); 
 					if (device.isMounted()) {
-						urlIcon = ICON_DEVICE_EXT_DD_MOUNTED;
+						icon = IconLoader.ICON_DEVICE_EXT_DD_MOUNTED;
 					} else {
-						urlIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
+						icon = IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED;
 					}
 					break;
 				case 4:
-					sTooltip = Messages.getString("Device_type.player"); //$NON-NLS-1$
+					sTooltip = Messages.getString("Device_type.player"); 
 					if (device.isMounted()) {
-						urlIcon = ICON_DEVICE_PLAYER_MOUNTED;
+						icon = IconLoader.ICON_DEVICE_PLAYER_MOUNTED;
 					} else {
-						urlIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
+						icon = IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED;
 					}
 					break;
 				case 5:
-					sTooltip = Messages.getString("Device_type.remote"); //$NON-NLS-1$
+					sTooltip = Messages.getString("Device_type.remote"); 
 					if (device.isMounted()) {
-						urlIcon = ICON_DEVICE_REMOTE_MOUNTED;
+						icon = IconLoader.ICON_DEVICE_REMOTE_MOUNTED;
 					} else {
-						urlIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
+						icon = IconLoader.ICON_DEVICE_REMOTE_UNMOUNTED;
 					}
 					break;
 				}
-				DeviceItem di = new DeviceItem(urlIcon, device.getName(),
+				DeviceItem di = new DeviceItem(icon, device.getName(),
 						device);
 				di.setToolTipText(sTooltip);
 				di.addMouseListener(this);
@@ -361,14 +362,14 @@ public class DeviceView extends ViewAdapter implements IView,
 			try {
 				diSelected.getDevice().mount();
 			} catch (Exception e) {
-				Messages.showErrorMessage("011"); //$NON-NLS-1$
+				Messages.showErrorMessage("011"); 
 			}
 		} else if (ae.getActionCommand().equals(
 				EventSubject.EVENT_DEVICE_UNMOUNT.toString())) {
 			try {
 				diSelected.getDevice().unmount();
 			} catch (Exception e) {
-				Messages.showErrorMessage("012"); //$NON-NLS-1$
+				Messages.showErrorMessage("012"); 
 			}
 		} else if (ae.getActionCommand().equals(
 				EventSubject.EVENT_DEVICE_PROPERTIES.toString())) {
@@ -389,12 +390,10 @@ public class DeviceView extends ViewAdapter implements IView,
 				public void run() {
 					if (diSelected.getDevice().test()) {
 						Messages.showInfoMessage(Messages
-								.getString("DeviceView.21"), Util
-								.getIcon(ICON_OK)); //$NON-NLS-1$
+								.getString("DeviceView.21"), IconLoader.ICON_OK); 
 					} else {
 						Messages.showInfoMessage(Messages
-								.getString("DeviceView.22"), Util
-								.getIcon(ICON_KO)); //$NON-NLS-1$
+								.getString("DeviceView.22"), IconLoader.ICON_KO); 
 					}
 				}
 			}.start();
@@ -410,7 +409,7 @@ public class DeviceView extends ViewAdapter implements IView,
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("DeviceView.23"); //$NON-NLS-1$
+		return Messages.getString("DeviceView.23"); 
 	}
 
 	/*
@@ -481,11 +480,11 @@ class DeviceItem extends JPanel {
 	/**
 	 * Constructor
 	 */
-	DeviceItem(URL urlIcon, String sName, Device device) {
+	DeviceItem(ImageIcon icon, String sName, Device device) {
 		this.device = device;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		JLabel jlIcon = new JLabel(Util.getIcon(urlIcon));
+		JLabel jlIcon = new JLabel(icon);
 		add(jlIcon);
 		JLabel jlName = new JLabel(sName);
 		add(jlName);

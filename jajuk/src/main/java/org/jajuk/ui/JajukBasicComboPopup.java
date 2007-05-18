@@ -28,8 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicComboPopup;
 
-import org.jajuk.ui.SteppedComboBox;
-
 /**
  * Type description
  * 

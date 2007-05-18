@@ -22,7 +22,7 @@ package org.jajuk.ui.wizard;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -45,7 +45,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] tips = Messages.getAll("TipOfTheDay"); //$NON-NLS-1$
+	private static final String[] tips = Messages.getAll("TipOfTheDay"); 
 
 	private int iLastTip;
 
@@ -56,12 +56,12 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 	private JLabel lCounter;
 
 	public TipOfTheDay() {
-		super(Messages.getString("TipOfTheDayView.0")); //$NON-NLS-1$
+		super(Messages.getString("TipOfTheDayView.0")); 
 		setAlwaysOnTop(true);
-		setIconImage(Util.getIcon(ICON_LOGO).getImage());
+		setIconImage(IconLoader.ICON_LOGO.getImage());
 		this.iLastTip = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
 
-		cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2")); //$NON-NLS-1$
+		cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2")); 
 		cbShow.setSelected(ConfigurationManager
 				.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
 
@@ -70,8 +70,8 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 		tipArea.setLineWrap(true);
 		tipArea.setEditable(false);
 
-		lCounter = new JLabel("999/999"); //$NON-NLS-1$
-		JButton bNext = new JButton(Util.getIcon(ICON_NEXT));
+		lCounter = new JLabel("999/999"); 
+		JButton bNext = new JButton(IconLoader.ICON_NEXT);
 		bNext.setMargin(new Insets(1, 1, 1, 1));
 		bNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent) {
@@ -80,7 +80,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 			}
 		});
 
-		JButton bPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
+		JButton bPrevious = new JButton(IconLoader.ICON_PREVIOUS);
 		bPrevious.setMargin(new Insets(1, 1, 1, 1));
 		bPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent) {
@@ -92,7 +92,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 			}
 		});
 
-		JButton bClose = new JButton(Util.getIcon(ICON_OK));
+		JButton bClose = new JButton(IconLoader.ICON_OK);
 		bClose.setMaximumSize(bClose.getPreferredSize());
 		bClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent) {
@@ -103,12 +103,12 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 		JScrollPane scroll = new JScrollPane(tipArea);
 		scroll.setPreferredSize(new Dimension(200, 100));
 
-		JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), //$NON-NLS-1$
-				JLabel.LEFT); //$NON-NLS-1$
+		JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), 
+				JLabel.LEFT); 
 		Font fTitle = lTitle.getFont();
 		lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(),
 				(int) (fTitle.getSize() * 1.3)));
-		JLabel lIcon = new JLabel(Util.getIcon(ICON_TIP), JLabel.LEFT);
+		JLabel lIcon = new JLabel(IconLoader.ICON_TIP, JLabel.LEFT);
 
 		JPanel pTop = new JPanel(new BorderLayout());
 		pTop.add(lIcon, BorderLayout.WEST);
@@ -154,7 +154,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 		}
 		tipArea.setText(tips[i]);
 		lCounter.setText((new StringBuilder())
-				.append("").append(i + 1).append("/").append( //$NON-NLS-1$ //$NON-NLS-2$
+				.append("").append(i + 1).append("/").append(  
 						tips.length).toString());
 		tipArea.setCaretPosition(0);
 	}

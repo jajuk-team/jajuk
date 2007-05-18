@@ -62,7 +62,7 @@ public class Album extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Album[ID=" + getId() + " Name={{" + getName() + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
+		return "Album[ID=" + getId() + " Name={{" + getName() + "}}]";   
 	}
 
 	/**
@@ -75,14 +75,7 @@ public class Album extends LogicalItem implements Comparable {
 		if (otherAlbum == null) {
 			return false;
 		}
-		return this.getId().equals(((Album) otherAlbum).getId());
-	}
-
-	/**
-	 * Album hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Album) otherAlbum).hashcode);
 	}
 
 	/**
@@ -119,7 +112,7 @@ public class Album extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Album") + " : " + getName2(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Album") + " : " + getName2();  
 	}
 
 	/*
@@ -159,8 +152,8 @@ public class Album extends LogicalItem implements Comparable {
 		// look for absolute cover in collection
 		for (Directory dir : dirs) {
 			String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
-			if (sAbsolut != null && !sAbsolut.trim().equals("")) { //$NON-NLS-1$
-				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut); //$NON-NLS-1$.getAbsoluteFile();
+			if (sAbsolut != null && !sAbsolut.trim().equals("")) { 
+				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut); 
 				if (fAbsoluteDefault.canRead()) {
 					return fAbsoluteDefault;
 				}
@@ -176,7 +169,7 @@ public class Album extends LogicalItem implements Comparable {
 						&& files[i].length() < MAX_COVER_SIZE * 1024) {
 					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) {   
 						if (Util.isStandardCover(files[i].getAbsolutePath())) {
 							return files[i];
 						}
@@ -194,7 +187,7 @@ public class Album extends LogicalItem implements Comparable {
 						&& files[i].length() < MAX_COVER_SIZE * 1024) {
 					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) {   
 						return files[i];
 					}
 				}

@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.RemovePropertyWizard;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
@@ -31,9 +31,9 @@ public class RemovePropertyAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	RemovePropertyAction() {
-		super(Messages.getString("JajukJMenuBar.7"), Util.getIcon(ICON_DELETE), //$NON-NLS-1$
+		super(Messages.getString("JajukJMenuBar.7"), IconLoader.ICON_DELETE, 
 				true);
-		setShortDescription(Messages.getString("JajukJMenuBar.7")); //$NON-NLS-1$
+		setShortDescription(Messages.getString("JajukJMenuBar.7")); 
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

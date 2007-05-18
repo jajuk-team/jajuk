@@ -57,7 +57,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 
 	/** Default cover image */
 	private static final ImageIcon iiDefaultCover = Util
-			.getIcon(IMAGES_SPLASHSCREEN);
+			.getImage(IMAGES_SPLASHSCREEN);
 
 	/** Default URL */
 	private static URL urlDefault = null;
@@ -185,13 +185,13 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 			image = new ImageIcon(getFile().getAbsolutePath());
 			if (image.getImageLoadStatus() != MediaTracker.COMPLETE) {
 				Log
-						.debug("Image Loading status: " + image.getImageLoadStatus()); //$NON-NLS-1$
-				throw new JajukException("129", url.toString(), null); //$NON-NLS-1$
+						.debug("Image Loading status: " + image.getImageLoadStatus()); 
+				throw new JajukException("129", url.toString(), null); 
 			}
 			image.getImage().flush();
 		}
 		Log
-				.debug("Loaded {{" + url.toString() + "}} in  " + (System.currentTimeMillis() - l) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				.debug("Loaded {{" + url.toString() + "}} in  " + (System.currentTimeMillis() - l) + " ms");   
 		return image;
 	}
 
@@ -199,7 +199,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	 * toString method
 	 */
 	public String toString() {
-		return "Type=" + iType + " URL=" + url; //$NON-NLS-1$ //$NON-NLS-2$
+		return "Type=" + iType + " URL=" + url;  
 	}
 
 	/**

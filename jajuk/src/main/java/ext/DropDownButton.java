@@ -2,7 +2,7 @@ package ext;
 
 import org.jajuk.ui.JajukButton;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -28,8 +28,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 		PopupMenuListener, ActionListener, PropertyChangeListener,
 		ITechnicalStrings {
 	
-	private final JButton arrowButton = new JajukButton(Util
-			.getIcon(ICON_DROP_DOWN));
+	private final JButton arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN);
 
 	private boolean popupVisible = false;
 
@@ -41,7 +40,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 		arrowButton.setBorder(null);
 		arrowButton.setOpaque(false);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
-		addPropertyChangeListener("enabled", this); // NOI18N //$NON-NLS-1$
+		addPropertyChangeListener("enabled", this); // NOI18N 
 	}
 
 	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/

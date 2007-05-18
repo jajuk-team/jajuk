@@ -48,7 +48,7 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 			((JLabel)c).setText(((IconLabel)oValue).getText());
 		}
 		c.setEnabled(table == null || table.isEnabled());
-		c.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
+		c.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); 
 		return c;
 	}
 

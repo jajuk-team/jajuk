@@ -116,13 +116,13 @@ public class PlaylistTransferHandler implements DropTargetListener, ITechnicalSt
 					|| transferable.isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
 				String sFlavor = (Arrays.asList(transferable.getTransferDataFlavors()).get(0))
 						.getHumanPresentableName();
-				if (sFlavor.equals("Node")) { //$NON-NLS-1$
+				if (sFlavor.equals("Node")) { 
 					dtde.acceptDrop(action);
 					dtde.dropComplete(true);
 					TransferableTreeNode ttn = (TransferableTreeNode) transferable
 							.getTransferData(TransferableTreeNode.NODE_FLAVOR);
 					oData = ttn.getData();
-				} else if (sFlavor.equals("Row")) { //$NON-NLS-1$
+				} else if (sFlavor.equals("Row")) { 
 					dtde.acceptDrop(action);
 					dtde.dropComplete(true);
 					TransferableTableRow ttr = (TransferableTableRow) transferable
@@ -138,7 +138,7 @@ public class PlaylistTransferHandler implements DropTargetListener, ITechnicalSt
 			// display a warning message if none accessible file can found
 			// for these tracks
 			if (alSelectedFiles.size() == 0) {
-				Messages.showWarningMessage(Messages.getErrorMessage("018"));//$NON-NLS-1$
+				Messages.showWarningMessage(Messages.getErrorMessage("018"));
 				return;
 			}
 			// queue case

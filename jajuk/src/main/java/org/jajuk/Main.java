@@ -56,14 +56,18 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -180,23 +184,28 @@ public class Main implements ITechnicalStrings {
 		try {
 			// check JVM version
 			if (!JVM.current().isOrLater(JVM.JDK1_5)) {
-				System.out.println("Java Runtime Environment 1.5 minimum required." //$NON-NLS-1$
-						+ " You use a JVM " + JVM.current()); //$NON-NLS-1$
+				System.out.println("Java Runtime Environment 1.5 minimum required."
+						+ " You use a JVM " + JVM.current());
 				System.exit(2); // error code 2 : wrong JVM
 			}
 			// set command line options
 			for (int i = 0; i < args.length; i++) {
-				// Tells jajuk it is inside the IDE (usefull to find right
+				// Tells jajuk it is inside the IDE (useful to find right
 				// location for images and jar resources)
-				if (args[i].equals("-" + CLI_IDE)) {//$NON-NLS-1$
+				if (args[i].equals("-" + CLI_IDE)) {
 					bIdeMode = true;
 				}
 				// Tells jajuk to use a .jajuk_test repository
-				if (args[i].equals("-" + CLI_TEST)) {//$NON-NLS-1$
+				if (args[i].equals("-" + CLI_TEST)) {
 					bTestMode = true;
 				}
 			}
 
+			// Set look and feel, needs local to be set for error
+			// messages
+			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
+			UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
+			
 			// perform initial checkups and create needed files
 			initialCheckups();
 
@@ -214,16 +223,16 @@ public class Main implements ITechnicalStrings {
 
 			// Register locals, needed by ConfigurationManager to choose
 			// default language
-			Messages.getInstance().registerLocal("en", "Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("fr", "Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("de", "Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("it", "Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("sv", "Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("nl", "Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("zh", "Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("es", "Language_desc_es"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("ca", "Language_desc_ca"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("ko", "Language_desc_ko"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("en", "Language_desc_en");
+			Messages.getInstance().registerLocal("fr", "Language_desc_fr");
+			Messages.getInstance().registerLocal("de", "Language_desc_de");
+			Messages.getInstance().registerLocal("it", "Language_desc_it");
+			Messages.getInstance().registerLocal("sv", "Language_desc_sv");
+			Messages.getInstance().registerLocal("nl", "Language_desc_nl");
+			Messages.getInstance().registerLocal("zh", "Language_desc_zh");
+			Messages.getInstance().registerLocal("es", "Language_desc_es");
+			Messages.getInstance().registerLocal("ca", "Language_desc_ca");
+			Messages.getInstance().registerLocal("ko", "Language_desc_ko");
 
 			// Set default local (from system). Depends on registerLocal
 			ConfigurationManager.getInstance().setSystemLocal();
@@ -260,21 +269,20 @@ public class Main implements ITechnicalStrings {
 			// configurationManager.load (for local)
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
-					// Set look and feel, needs local to be set for error
-					// messages
-					// Set window look and feel
+
+					// Set window look and feel and watermarks
 					Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+
 					sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT,
-							JAJUK_VERSION + " " //$NON-NLS-1$
-									+ JAJUK_VERSION_DATE, new Font("Dialog", //$NON-NLS-1$
-									Font.TRUETYPE_FONT, 12), null); //$NON-NLS-1$
-					sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
+							JAJUK_VERSION + " " + JAJUK_VERSION_DATE, new Font("Dialog",
+									Font.TRUETYPE_FONT, 12), null);
+					sc.setTitle(Messages.getString("JajukWindow.3"));
 					sc.splashOn();
 				}
 			});
 
 			// Display progress
-			sc.setProgress(0, Messages.getString("SplashScreen.0")); //$NON-NLS-1$
+			sc.setProgress(0, Messages.getString("SplashScreen.0"));
 
 			// Registers ItemManager managers
 			ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
@@ -308,22 +316,22 @@ public class Main implements ITechnicalStrings {
 
 			// Register device types
 			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.directory"));//$NON-NLS-1$
+					Messages.getString("Device_type.directory"));
 			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
+					Messages.getString("Device_type.file_cd"));
 			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.network_drive"));//$NON-NLS-1$
-			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
+					Messages.getString("Device_type.network_drive"));
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
 			DeviceManager.getInstance()
-					.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
+					.registerDeviceType(Messages.getString("Device_type.player"));
 			DeviceManager.getInstance()
-					.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+					.registerDeviceType(Messages.getString("Device_type.remote"));
 
 			// registers supported audio supports and default properties
 			registerTypes();
 
 			// Display progress
-			sc.setProgress(10, Messages.getString("SplashScreen.1")); //$NON-NLS-1$
+			sc.setProgress(10, Messages.getString("SplashScreen.1"));
 
 			// Load collection
 			loadCollection();
@@ -337,7 +345,7 @@ public class Main implements ITechnicalStrings {
 			}
 
 			// Display progress
-			sc.setProgress(70, Messages.getString("SplashScreen.2")); //$NON-NLS-1$
+			sc.setProgress(70, Messages.getString("SplashScreen.2"));
 
 			// Load history
 			History.load();
@@ -351,7 +359,7 @@ public class Main implements ITechnicalStrings {
 			// start exit hook
 			Thread tHook = new Thread() {
 				public void run() {
-					Log.debug("Exit Hook begin");//$NON-NLS-1$
+					Log.debug("Exit Hook begin");
 					try {
 						Player.stop(true); // stop sound ASAP
 					} catch (Exception e) {
@@ -399,9 +407,9 @@ public class Main implements ITechnicalStrings {
 							}
 						}
 					} catch (Exception e) {
-						Log.error(e); //$NON-NLS-1$
+						Log.error(e);
 					} finally {
-						Log.debug("Exit Hook end");//$NON-NLS-1$
+						Log.debug("Exit Hook end");
 					}
 				}
 			};
@@ -431,7 +439,7 @@ public class Main implements ITechnicalStrings {
 			// show window if set in the systray conf.
 			if (ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)) {
 				// Display progress
-				sc.setProgress(80, Messages.getString("SplashScreen.3")); //$NON-NLS-1$
+				sc.setProgress(80, Messages.getString("SplashScreen.3"));
 				launchUI();
 			}
 
@@ -441,20 +449,19 @@ public class Main implements ITechnicalStrings {
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose
 			Log.error(je);
-			if (je.getCode().equals("005")) { //$NON-NLS-1$
-				Messages.getChoice(Messages.getErrorMessage("005"), //$NON-NLS-1$
-						JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+			if (je.getCode().equals("005")) {
+				Messages.getChoice(Messages.getErrorMessage("005"), JOptionPane.ERROR_MESSAGE);
 				exit(1);
 			}
 		} catch (Exception e) { // last chance to catch any error for logging
 			// purpose
 			e.printStackTrace();
-			Log.error("106", e); //$NON-NLS-1$
+			Log.error("106", e);
 			exit(1);
 		} catch (Error error) { // last chance to catch any error for logging
 			// purpose
 			error.printStackTrace();
-			Log.error("106", error); //$NON-NLS-1$
+			Log.error("106", error);
 			exit(1);
 		} finally { // make sure to close splashscreen in all cases (ie if
 			// UI is not started)
@@ -494,25 +501,29 @@ public class Main implements ITechnicalStrings {
 		// readable, show a wizard to select it
 		if ((!bootstrap.canRead() || Main.workspace == null)
 		// don't launch the first time wizard if a previous release .jajuk dir
-				// exists
-				// (upgrade)
+				// exists (upgrade)
 				&& !fJajukDir.canRead()) {
 			// First time session ever
 			bFirstSession = true;
-			// display the first time wizard
+			final FirstTimeWizard fsw = new FirstTimeWizard();
+			// display the first time wizard, keep the invokeAndWait as we have
+			// to block in the next while block
 			SwingUtilities.invokeAndWait(new Runnable() {
-
 				public void run() {
-					FirstTimeWizard fsw = new FirstTimeWizard();
 					fsw.setAlwaysOnTop(true);
-					fsw.setLocationRelativeTo(null);
+					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+					fsw.setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
 					fsw.pack();
 					fsw.setVisible(true);
 				}
 
 			});
-
+			// Wait until user closed the wizard
+			while (fsw.isVisible()) {
+				Thread.sleep(1000);
+			}
 		}
+
 		// In all cases, make sure to set a workspace
 		if (workspace == null) {
 			workspace = System.getProperty("user.home");
@@ -568,35 +579,35 @@ public class Main implements ITechnicalStrings {
 			fThumbs.mkdir();
 		}
 		// check for default covers
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/" + THUMBNAIL_SIZE_50x50 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_50x50 + "/"
+				+ FILE_THUMB_NO_COVER);
 		if (!fThumbs.exists()) {
-			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 50);
+			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 50);
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/" + THUMBNAIL_SIZE_100x100 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_100x100 + "/"
+				+ FILE_THUMB_NO_COVER);
 		if (!fThumbs.exists()) {
-			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 100);
+			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 100);
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/" + THUMBNAIL_SIZE_150x150 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_150x150 + "/"
+				+ FILE_THUMB_NO_COVER);
 		if (!fThumbs.exists()) {
-			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 150);
+			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 150);
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/" + THUMBNAIL_SIZE_200x200 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_200x200 + "/"
+				+ FILE_THUMB_NO_COVER);
 		if (!fThumbs.exists()) {
-			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 200);
+			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 200);
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/" + THUMBNAIL_SIZE_250x250 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_250x250 + "/"
+				+ FILE_THUMB_NO_COVER);
 		if (!fThumbs.exists()) {
-			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 250);
+			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 250);
 		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS
-				+ "/" + THUMBNAIL_SIZE_300x300 + "/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300 + "/"
+				+ FILE_THUMB_NO_COVER);
 		if (!fThumbs.exists()) {
-			Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER), fThumbs, 300);
+			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 300);
 		}
 		// check for djs directory
 		File fdjs = Util.getConfFileByPath(FILE_DJ_DIR);
@@ -620,15 +631,15 @@ public class Main implements ITechnicalStrings {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
-						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
-						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE); //$NON-NLS-1$
-						sc.setProgress(5, Messages.getString("Main.22")); //$NON-NLS-1$
+						Log.debug("Download Mplayer from: " + URL_MPLAYER);
+						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
+						sc.setProgress(5, Messages.getString("Main.22"));
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						// make sure to delete corrupted mplayer in case of
 						// download problem
 						if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
 							fMPlayer.delete();
-							throw new Exception("MPlayer corrupted"); //$NON-NLS-1$
+							throw new Exception("MPlayer corrupted");
 						}
 					} catch (Exception e) {
 						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -641,17 +652,17 @@ public class Main implements ITechnicalStrings {
 				Process proc = null;
 				mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 				try {
-					proc = Runtime.getRuntime().exec("mplayer"); //$NON-NLS-1$
+					proc = Runtime.getRuntime().exec("mplayer");
 					proc.waitFor();
 					// check MPlayer release : 1.0pre8 min
 					proc = Runtime.getRuntime().exec(
-							new String[] { "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							new String[] { "mplayer", "-input", "cmdlist" });
 					BufferedReader in = new BufferedReader(new InputStreamReader(proc
 							.getInputStream()));
 					String line = null;
 					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
 					for (; (line = in.readLine()) != null;) {
-						if (line.matches("get_time_pos.*")) { //$NON-NLS-1$
+						if (line.matches("get_time_pos.*")) {
 							mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 							break;
 						}
@@ -667,134 +678,132 @@ public class Main implements ITechnicalStrings {
 				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
 					if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
 						// No mplayer
-						Messages.showHideableWarningMessage(Messages.getString("Warning.0"), //$NON-NLS-1$
+						Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
 								CONF_NOT_SHOW_AGAIN_PLAYER);
 					} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
 						// wrong mplayer release
-						Messages.showHideableWarningMessage(Messages.getString("Warning.1"), //$NON-NLS-1$
+						Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
 								CONF_NOT_SHOW_AGAIN_PLAYER);
 					}
 				}
 				// mp3
-				Type type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.mp3"), EXT_MP3, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"),
+						EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP3.getUrl().toExternalForm());
 				// playlists
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.playlist"), EXT_PLAYLIST, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, false); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"),
+						EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null);
+				type.setProperty(XML_TYPE_IS_MUSIC, false);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
 				// Ogg vorbis
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.ogg"), EXT_OGG, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"),
+						EXT_OGG, Class.forName(PLAYER_IMPL_JAVALAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_OGG.getUrl().toExternalForm());
 				// Wave
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"),
+						EXT_WAV, Class.forName(PLAYER_IMPL_JAVALAYER),
+						Class.forName(TAG_IMPL_NO_TAGS));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_WAV.getUrl().toExternalForm());
 				// au
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.au"),
+						EXT_AU, Class.forName(PLAYER_IMPL_JAVALAYER),
+						Class.forName(TAG_IMPL_NO_TAGS));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AU.getUrl().toExternalForm());
 			} else { // mplayer enabled
 				// mp3
-				Type type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.mp3"), EXT_MP3, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"),
+						EXT_MP3, Class.forName(PLAYER_IMPL_MPLAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_MP3.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP3.getUrl().toExternalForm());
 				// playlists
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.playlist"), EXT_PLAYLIST, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, false); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"),
+						EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null);
+				type.setProperty(XML_TYPE_IS_MUSIC, false);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
 				// Ogg vorbis
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.ogg"), EXT_OGG, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"),
+						EXT_OGG, Class.forName(PLAYER_IMPL_MPLAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_OGG.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_OGG.getUrl().toExternalForm());
 				// Wave
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.wav"), EXT_WAV, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"),
+						EXT_WAV, Class.forName(PLAYER_IMPL_MPLAYER),
+						Class.forName(TAG_IMPL_NO_TAGS));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WAV.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_WAV.getUrl().toExternalForm());
 				// au
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.au"), EXT_AU, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager
+						.getInstance()
+						.registerType(Messages.getString("Type.au"), EXT_AU,
+								Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AU.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AU.getUrl().toExternalForm());
 				// flac
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.flac"), EXT_FLAC, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.flac"),
+						EXT_FLAC, Class.forName(PLAYER_IMPL_MPLAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_FLAC);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_FLAC.toExternalForm());
+				type
+						.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_FLAC.getUrl()
+								.toExternalForm());
 				// WMA
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.wma"), EXT_WMA, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.wma"),
+						EXT_WMA, Class.forName(PLAYER_IMPL_MPLAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WMA);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_WMA.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_WMA.getUrl().toExternalForm());
 				// AAC
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.aac"), EXT_AAC, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"),
+						EXT_AAC, Class.forName(PLAYER_IMPL_MPLAYER), null);
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AAC.getUrl().toExternalForm());
 				// M4A (=AAC)
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.aac"), EXT_M4A, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"),
+						EXT_M4A, Class.forName(PLAYER_IMPL_MPLAYER), null);
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_AAC.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AAC.getUrl().toExternalForm());
 				// Real audio
-				type = TypeManager.getInstance().registerType(
-						Messages.getString("Type.real"), EXT_REAL, //$NON-NLS-1$
-						Class.forName(PLAYER_IMPL_MPLAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(XML_TYPE_IS_MUSIC, true); //$NON-NLS-1$
-				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true); //$NON-NLS-1$
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.real"),
+						EXT_REAL, Class.forName(PLAYER_IMPL_MPLAYER), null);
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RAM);
-				type.setProperty(XML_TYPE_ICON, ICON_TYPE_RAM.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_RAM.getUrl().toExternalForm());
 			}
 		} catch (Exception e1) {
-			Log.error("026", e1); //$NON-NLS-1$
+			Log.error("026", e1);
 		}
 	}
 
@@ -813,9 +822,8 @@ public class Main implements ITechnicalStrings {
 			if (sc != null) {
 				sc.dispose();
 			}
-			Log.error("124"); //$NON-NLS-1$
-			Messages.getChoice(Messages.getErrorMessage("124"), //$NON-NLS-1$
-					JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
+			Log.error("124");
+			Messages.getChoice(Messages.getErrorMessage("124"), JOptionPane.DEFAULT_OPTION);
 			System.exit(-1);
 		}
 		// start listening
@@ -849,7 +857,7 @@ public class Main implements ITechnicalStrings {
 		if (files.length > 0
 				&& !(files.length == 1 && files[0].getName().equals(
 						sHostname + '_' + System.getProperty("user.name")))) {
-			Messages.showHideableWarningMessage(Messages.getString("Warning.2"), //$NON-NLS-1$
+			Messages.showHideableWarningMessage(Messages.getString("Warning.2"),
 					CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
 		}
 	}
@@ -874,8 +882,8 @@ public class Main implements ITechnicalStrings {
 		// check if a confirmation is needed
 		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT))
 				.booleanValue()) {
-			int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"), //$NON-NLS-1$
-					JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
+					JOptionPane.INFORMATION_MESSAGE);
 			if (iResu != JOptionPane.YES_OPTION) {
 				return;
 			}
@@ -899,7 +907,7 @@ public class Main implements ITechnicalStrings {
 		if (jsystray != null)
 			jsystray.closeSystray();
 		// display a message
-		Log.debug("Exit with code: " + iExitCode); //$NON-NLS-1$
+		Log.debug("Exit with code: " + iExitCode);
 		System.exit(iExitCode);
 	}
 
@@ -908,7 +916,7 @@ public class Main implements ITechnicalStrings {
 	 */
 	private static void loadCollection() {
 		if (Main.bFirstSession) {
-			Log.info("First session, collection will be created");//$NON-NLS-1$
+			Log.info("First session, collection will be created");
 			return;
 		}
 		File fCollection = Util.getConfFileByPath(FILE_COLLECTION);
@@ -929,12 +937,12 @@ public class Main implements ITechnicalStrings {
 						.getInt(CONF_BACKUP_SIZE));
 			} else {
 				bCrashRecover = true;
-				throw new JajukException("005"); //$NON-NLS-1$
+				throw new JajukException("005");
 			}
 		} catch (Exception e) {
-			Log.error("005", fCollectionExit.getAbsolutePath(), e); //$NON-NLS-1$
+			Log.error("005", fCollectionExit.getAbsolutePath(), e);
 			Log
-					.debug("Jajuk was not closed properly during previous session, try to load previous collection file"); //$NON-NLS-1$
+					.debug("Jajuk was not closed properly during previous session, try to load previous collection file");
 			if (fCollectionExit.exists()) {
 				fCollectionExit.delete();
 			}
@@ -944,7 +952,7 @@ public class Main implements ITechnicalStrings {
 				Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
 			} catch (Exception e2) {
 				// not better? strange
-				Log.error("005", fCollection.getAbsolutePath(), e2); //$NON-NLS-1$
+				Log.error("005", fCollection.getAbsolutePath(), e2);
 				bParsingOK = false;
 			}
 		}
@@ -952,7 +960,7 @@ public class Main implements ITechnicalStrings {
 			// (very unlikely), try to restore a backup file
 			File[] fBackups = Util.getConfFileByPath("").listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
-					if (name.indexOf("backup") != -1) { //$NON-NLS-1$
+					if (name.indexOf("backup") != -1) {
 						return true;
 					}
 					return false;
@@ -969,15 +977,14 @@ public class Main implements ITechnicalStrings {
 				try {
 					Collection.load(file);
 					bParsingOK = true;
-					int i = Messages
-							.getChoice(
-									Messages.getString("Error.133") + ":\n" + file.getAbsolutePath(), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
+							+ file.getAbsolutePath(), JOptionPane.WARNING_MESSAGE);
 					if (i == JOptionPane.CANCEL_OPTION) {
 						System.exit(-1);
 					}
 					break;
 				} catch (Exception e2) {
-					Log.error("005", file.getAbsolutePath(), e2); //$NON-NLS-1$
+					Log.error("005", file.getAbsolutePath(), e2);
 				}
 			}
 			if (!bParsingOK) { // not better? ok, commit and load a void
@@ -1031,17 +1038,17 @@ public class Main implements ITechnicalStrings {
 						// file exists but is not mounted, just notify the error
 						// without anoying dialog at each startup try to mount
 						// device
-						Log.debug("Startup file located on an unmounted device" //$NON-NLS-1$
-								+ ", try to mount it"); //$NON-NLS-1$
+						Log.debug("Startup file located on an unmounted device"
+								+ ", try to mount it");
 						try {
 							fileToPlay.getDevice().mount(true);
-							Log.debug("Mount OK"); //$NON-NLS-1$
+							Log.debug("Mount OK");
 							alToPlay.add(fileToPlay);
 						} catch (Exception e) {
-							Log.debug("Mount failed"); //$NON-NLS-1$
+							Log.debug("Mount failed");
 							Properties pDetail = new Properties();
 							pDetail.put(DETAIL_CURRENT_FILE, fileToPlay);
-							pDetail.put(DETAIL_REASON, "010");//$NON-NLS-1$
+							pDetail.put(DETAIL_REASON, "010");
 							ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,
 									pDetail));
 							FIFO.setFirstFile(false); // no more first file
@@ -1049,8 +1056,7 @@ public class Main implements ITechnicalStrings {
 					}
 				} else {
 					// file no more exists
-					Messages.getChoice(Messages.getErrorMessage("023"), //$NON-NLS-1$
-							JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
+					Messages.getChoice(Messages.getErrorMessage("023"), JOptionPane.DEFAULT_OPTION);
 					FIFO.setFirstFile(false);
 					// no more first file
 					return;
@@ -1062,7 +1068,7 @@ public class Main implements ITechnicalStrings {
 								STARTUP_MODE_LAST_KEEP_POS)) {
 					File fifo = Util.getConfFileByPath(FILE_FIFO);
 					if (!fifo.exists()) {
-						Log.debug("No fifo file"); //$NON-NLS-1$
+						Log.debug("No fifo file");
 					} else {
 						try {
 							BufferedReader br = new BufferedReader(new FileReader(Util
@@ -1094,7 +1100,7 @@ public class Main implements ITechnicalStrings {
 					Collections.shuffle(alToPlay, new Random());
 				} else {
 					// Alert user that no novelties have been found
-					InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"), //$NON-NLS-1$
+					InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"),
 							InformationJPanel.ERROR);
 				}
 			}
@@ -1117,12 +1123,12 @@ public class Main implements ITechnicalStrings {
 				try {
 					device.mount();
 				} catch (Exception e) {
-					Log.error("112", device.getName(), e); //$NON-NLS-1$
+					Log.error("112", device.getName(), e);
 					// show a confirm dialog if the device can't be mounted,
 					// we can't use regular Messages.showErrorMessage
 					// because main window is not yet displayed
-					String sError = Messages.getErrorMessage("112") + " : " + device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
-					InformationJPanel.getInstance().setMessage(sError, InformationJPanel.ERROR); //$NON-NLS-1$
+					String sError = Messages.getErrorMessage("112") + " : " + device.getName();
+					InformationJPanel.getInstance().setMessage(sError, InformationJPanel.ERROR);
 					continue;
 				}
 			}
@@ -1206,6 +1212,9 @@ public class Main implements ITechnicalStrings {
 					// Display the frame
 					jw.setVisible(true);
 
+					// Apply watermark
+					Util.setWatermark(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
+
 					// Apply size and location again
 					// (required by Gnome for ie to fix the 0-sized maximized
 					// frame)
@@ -1231,7 +1240,7 @@ public class Main implements ITechnicalStrings {
 				} catch (Exception e) { // last chance to catch any error for
 					// logging purpose
 					e.printStackTrace();
-					Log.error("106", e); //$NON-NLS-1$
+					Log.error("106", e);
 				} finally {
 					if (sc != null) {
 						// Display progress

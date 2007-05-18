@@ -56,7 +56,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/** Local ( language) to be used, default is english */
-	private String sLocal = "en"; //$NON-NLS-1$
+	private String sLocal = "en";
 
 	/** Supported Locals */
 	public ArrayList<String> alLocals = new ArrayList<String>(10);
@@ -115,7 +115,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 			// at least, returned property is the key name but we trace an
 			// error to show it
 			if (sOut == null) {
-				Log.error("105", "key: " + key, new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
+				Log.error("105", "key: " + key, new Exception());
 				sOut = key;
 			}
 		} catch (Exception e) { // system error
@@ -149,14 +149,12 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		List<String> msgs = new ArrayList<String>();
 		try {
 			for (int i = 0;; i++) {
-				String sOut = getInstance().getProperties().getProperty(
-						base + "." + i); //$NON-NLS-1$
+				String sOut = getInstance().getProperties().getProperty(base + "." + i);
 
-				if (sOut == null) { 
+				if (sOut == null) {
 					// this property is unknown for this
 					// local, try in english
-					sOut = getInstance().getPropertiesEn().getProperty(
-							base + "." + i); //$NON-NLS-1$
+					sOut = getInstance().getPropertiesEn().getProperty(base + "." + i);
 				}
 
 				// Property not found, assume we found all properties in the set
@@ -234,16 +232,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		final Properties properties = new Properties();
 		// Choose right jajuk_<lang>.properties file to load
 		StringBuffer sbFilename = new StringBuffer(FILE_LANGPACK_PART1);
-		if (!sLocal.equals("en")) { // for english, properties file is //$NON-NLS-1$
-			// simply jajuk.properties //$NON-NLS-1$
+		if (!sLocal.equals("en")) { // for english, properties file is
+			// simply jajuk.properties
 			sbFilename.append('_').append(sLocal);
 		}
 		sbFilename.append(FILE_LANGPACK_PART2);
-		URL url; 
+		URL url;
 		// property file URL, either in the jajuk.jar jar
 		// (normal execution) or found as regular file if in
 		// development debug mode
-		url = Util.getResource("org/jajuk/i18n/" + sbFilename.toString()); //$NON-NLS-1$
+		url = Util.getResource("org/jajuk/i18n/" + sbFilename.toString());
 		// parse it, actually it is a big properties file as CDATA in an XML
 		// file
 		try {
@@ -257,28 +255,27 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
 				// call for each element strings, actually will be called
 				// several time if the element is large (our case : large CDATA)
-				public void characters(char[] ch, int start, int length)
-						throws SAXException {
+				public void characters(char[] ch, int start, int length) throws SAXException {
 					sb.append(ch, start, length);
 				}
 
 				// call when closing the tag (</body> in our case )
-				public void endElement(String uri, String localName,
-						String qName) throws SAXException {
+				public void endElement(String uri, String localName, String qName)
+						throws SAXException {
 					String sWhole = sb.toString();
 					// ok, parse it ( comments start with #)
-					StringTokenizer st = new StringTokenizer(sWhole, "\n"); //$NON-NLS-1$
+					StringTokenizer st = new StringTokenizer(sWhole, "\n");
 					while (st.hasMoreTokens()) {
 						String sLine = st.nextToken();
-						if (sLine.length() > 0
-								&& !sLine.startsWith("#") && sLine.indexOf('=') != -1) { //$NON-NLS-1$
-							StringTokenizer stLine = new StringTokenizer(sLine,
-									"="); //$NON-NLS-1$
-							//get full value after thet '=', we don't use the stringtokenize to allow 
-							//using = characters in the value
-							String sValue = sLine.substring(sLine.indexOf('=')+1);
+						if (sLine.length() > 0 && !sLine.startsWith("#")
+								&& sLine.indexOf('=') != -1) {
+							StringTokenizer stLine = new StringTokenizer(sLine, "=");
+							// get full value after thet '=', we don't use the
+							// stringtokenize to allow
+							// using = characters in the value
+							String sValue = sLine.substring(sLine.indexOf('=') + 1);
 							// trim to ignore space at begin end end of lines
-							properties.put(stLine.nextToken().trim(), sValue); 
+							properties.put(stLine.nextToken().trim(), sValue);
 						}
 					}
 				}
@@ -299,10 +296,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static String getErrorMessage(String pCode) {
 		String sOut = pCode;
 		try {
-			sOut = getString("Error." + pCode); //$NON-NLS-1$
+			sOut = getString("Error." + pCode);
 		} catch (Exception e) {
-			System.out
-					.println("### Error getting error message for code: " + pCode); //$NON-NLS-1$
+			System.out.println("### Error getting error message for code: " + pCode);
 		}
 		return sOut;
 	}
@@ -315,12 +311,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static void showErrorMessage(final String sCode) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane
-						.showMessageDialog(
-								Main.getWindow(),
-								"<html><b>" + Messages.getErrorMessage(sCode) + "</b></html>",//$NON-NLS-1$ //$NON-NLS-2$
-								Messages.getErrorMessage("102"), //$NON-NLS-1$
-								JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+				JOptionPane.showMessageDialog(Main.getWindow(), "<html><b>"
+						+ Messages.getErrorMessage(sCode) + "</b></html>", Messages
+						.getErrorMessage("102"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
@@ -339,8 +332,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 *            WARNING_MESSAGE
 	 */
 	public static int getChoice(String sText, int iType) {
-		ConfirmDialog confirm = new ConfirmDialog(sText,
-				getTitleForType(iType), iType);
+		ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), iType);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
 			// use invokeLatter
@@ -366,13 +358,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	static private String getTitleForType(int iType) {
 		switch (iType) {
 		case JOptionPane.ERROR_MESSAGE:
-			return Messages.getString("Error"); //$NON-NLS-1$
+			return Messages.getString("Error");
 		case JOptionPane.WARNING_MESSAGE:
-			return Messages.getString("Warning"); //$NON-NLS-1$
+			return Messages.getString("Warning");
 		case JOptionPane.INFORMATION_MESSAGE:
-			return Messages.getString("Info"); //$NON-NLS-1$
+			return Messages.getString("Info");
 		}
-		return ""; //$NON-NLS-1$
+		return "";
 	}
 
 	/**
@@ -382,8 +374,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static void showWarningMessage(String sMessage) {
 		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
-				getTitleForType(JOptionPane.WARNING_MESSAGE),
-				JOptionPane.WARNING_MESSAGE, null, null);
+				getTitleForType(JOptionPane.WARNING_MESSAGE), JOptionPane.WARNING_MESSAGE, null,
+				null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
 			// use invokeLatter
@@ -407,10 +399,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sProperty :
 	 *            property name
 	 */
-	public static void showHideableWarningMessage(String sMessage,
-			String sProperty) {
-		//User required to hide this message
-		if (ConfigurationManager.getBoolean(sProperty)){
+	public static void showHideableWarningMessage(String sMessage, String sProperty) {
+		// User required to hide this message
+		if (ConfigurationManager.getBoolean(sProperty)) {
 			return;
 		}
 		HideableMessageDialog message = new HideableMessageDialog(sMessage,
@@ -438,8 +429,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static void showInfoMessage(final String sMessage, final Icon icon) {
 		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
-				getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-				JOptionPane.INFORMATION_MESSAGE, null, icon);
+				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
+				null, icon);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
 			// use invokeLatter
@@ -455,10 +446,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sCode
 	 * @param sInfoSup
 	 */
-	public static void showErrorMessage(final String sCode,
-			final String sInfoSup) {
-		DetailsMessageDialog message = new DetailsMessageDialog(
-				Messages.getErrorMessage(sCode) + " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, null, null); //$NON-NLS-1$
+	public static void showErrorMessage(final String sCode, final String sInfoSup) {
+		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(sCode)
+				+ " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE),
+				JOptionPane.ERROR_MESSAGE, null, null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
 			// use invokeLatter
@@ -474,10 +465,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sCode
 	 * @param sInfoSup
 	 */
-	public static void showDetailedErrorMessage(final String sCode,
-			final String sInfoSup, String sDetails) {
-		DetailsMessageDialog message = new DetailsMessageDialog(
-				Messages.getErrorMessage(sCode) + " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null); //$NON-NLS-1$
+	public static void showDetailedErrorMessage(final String sCode, final String sInfoSup,
+			String sDetails) {
+		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(sCode)
+				+ " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE),
+				JOptionPane.ERROR_MESSAGE, sDetails, null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
 			// use invokeLatter
@@ -493,10 +485,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sMessage
 	 * @param sInfoSup
 	 */
-	public static void showInfoMessage(final String sMessage,
-			final String sInfoSup) {
-		DetailsMessageDialog message = new DetailsMessageDialog(
-				sMessage + " : " + sInfoSup, getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE, null, null); //$NON-NLS-1$
+	public static void showInfoMessage(final String sMessage, final String sInfoSup) {
+		DetailsMessageDialog message = new DetailsMessageDialog(sMessage + " : " + sInfoSup,
+				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
+				null, null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
 			// use invokeLatter
@@ -513,10 +505,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static void showInfoMessage(final String sMessage) {
 		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
-				getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-				JOptionPane.INFORMATION_MESSAGE, null, null);
-		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
-			// thread, no need to
+				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
+				null, null);
+		if (SwingUtilities.isEventDispatchThread()) { 
+			// in the dispatcher thread, no need to
 			// use invokeLatter
 			message.run();
 		} else { // not in the awt dispatcher thread
@@ -557,7 +549,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public Properties getPropertiesEn() {
 		if (this.propertiesEn == null) {
 			try {
-				this.propertiesEn = parseLangpack("en"); //$NON-NLS-1$
+				this.propertiesEn = parseLangpack("en");
 			} catch (Exception e) {
 				Log.error(e);
 			}
@@ -641,8 +633,7 @@ class DetailsMessageDialog implements Runnable {
 	 * @param sTitle
 	 * @param iType
 	 */
-	DetailsMessageDialog(String sText, String sTitle, int iType,
-			String sDetails, Icon icon) {
+	DetailsMessageDialog(String sText, String sTitle, int iType, String sDetails, Icon icon) {
 		this.iType = iType;
 		this.sText = sText;
 		this.sTitle = sTitle;
@@ -659,8 +650,7 @@ class DetailsMessageDialog implements Runnable {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
 		optionPane.setMessage(sText);
 		if (sDetails != null) {
-			Object[] options = {
-					Messages.getString("OK"), Messages.getString("Details") }; //$NON-NLS-1$ //$NON-NLS-2$
+			Object[] options = { Messages.getString("OK"), Messages.getString("Details") };
 			optionPane.setOptions(options);
 		}
 		optionPane.setMessageType(iType);
@@ -668,17 +658,18 @@ class DetailsMessageDialog implements Runnable {
 			optionPane.setIcon(icon);
 		}
 		JDialog dialog = optionPane.createDialog(null, sTitle);
+		dialog.setModal(true);
+		dialog.setAlwaysOnTop(true);
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("Details"))) { // details //$NON-NLS-1$
-			// //$NON-NLS-1$
-			final JDialog dialogDetail = new JDialog(dialog, Messages
-					.getString("Details")); //$NON-NLS-1$
+		if (optionPane.getValue().equals(Messages.getString("Details"))) { // details
+			// 
+			final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
 			JPanel jp = new JPanel();
 			jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
 			JTextArea jta = new JTextArea(sDetails);
 			jta.setEditable(false);
 			jp.add(new JScrollPane(jta));
-			JButton jbOK = new JButton(Messages.getString("OK")); //$NON-NLS-1$
+			JButton jbOK = new JButton(Messages.getString("OK"));
 			jbOK.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					dialogDetail.dispose();
@@ -686,7 +677,7 @@ class DetailsMessageDialog implements Runnable {
 			});
 			jp.add(Util.getCentredPanel(jbOK));
 			dialogDetail.setModal(true);
-			dialog.setAlwaysOnTop(true);
+			dialogDetail.setAlwaysOnTop(true);
 			dialogDetail.setContentPane(jp);
 			dialogDetail.pack();
 			dialogDetail.setLocationRelativeTo(Main.getWindow());
@@ -727,8 +718,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 	 * @param iType
 	 * @param icon
 	 */
-	HideableMessageDialog(String sText, String sTitle, String sProperty,
-			int iType, Icon icon) {
+	HideableMessageDialog(String sText, String sTitle, String sProperty, int iType, Icon icon) {
 		this.iType = iType;
 		this.sText = sText;
 		this.sProperty = sProperty;
@@ -744,8 +734,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
 		optionPane.setMessage(sText);
-		Object[] options = {
-				Messages.getString("OK"), Messages.getString("Hide") }; //$NON-NLS-1$ //$NON-NLS-2$
+		Object[] options = { Messages.getString("OK"), Messages.getString("Hide") };
 		optionPane.setOptions(options);
 		optionPane.setMessageType(iType);
 		if (icon != null) {
@@ -758,7 +747,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 		dialog.pack();
 		dialog.setLocationRelativeTo(Main.getWindow());
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("Hide"))) { //$NON-NLS-1$
+		if (optionPane.getValue().equals(Messages.getString("Hide"))) {
 			// Not show again
 			ConfigurationManager.setProperty(sProperty, TRUE);
 		}

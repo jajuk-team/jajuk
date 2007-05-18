@@ -136,7 +136,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 
 	public boolean canImport(JComponent c, DataFlavor[] flavors) {
 		String sFlavor = flavors[0].getHumanPresentableName();
-		if (sFlavor.equals("Node") || sFlavor.equals("Row")) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (sFlavor.equals("Node") || sFlavor.equals("Row")) {  
 			return true;
 		}
 		return false;

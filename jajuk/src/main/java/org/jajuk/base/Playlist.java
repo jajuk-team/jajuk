@@ -63,7 +63,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		StringBuffer sbOut = new StringBuffer("Playlist[ID=" + sId + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		StringBuffer sbOut = new StringBuffer("Playlist[ID=" + sId + "]");   
 		for (int i = 0; i < alPlaylistFiles.size(); i++) {
 			sbOut.append('\n').append(alPlaylistFiles.get(i).toString());
 		}
@@ -80,14 +80,7 @@ public class Playlist extends LogicalItem implements Comparable {
 		if (otherPlaylist == null) {
 			return false;
 		}
-		return this.getId().equals(((Playlist) otherPlaylist).getId());
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Playlist) otherPlaylist).hashcode);
 	}
 
 	/**
@@ -110,7 +103,7 @@ public class Playlist extends LogicalItem implements Comparable {
 			Iterator it = alPlaylistFiles.iterator();
 			while (it.hasNext()) {
 				PlaylistFile plf = (PlaylistFile) it.next();
-				sbOut.append(plf.getAbsolutePath() + ","); //$NON-NLS-1$
+				sbOut.append(plf.getAbsolutePath() + ","); 
 			}
 			return sbOut.substring(0, sbOut.length() - 1); // remove last
 			// ','
@@ -142,11 +135,11 @@ public class Playlist extends LogicalItem implements Comparable {
 			alPlaylistFiles.add(plFile);
 			String sPlaylistFiles = plFile.getId();
 			if (this.containsProperty(XML_PLAYLIST_FILES)) {
-				sPlaylistFiles += "," + getValue(XML_PLAYLIST_FILES); // add //$NON-NLS-1$
+				sPlaylistFiles += "," + getValue(XML_PLAYLIST_FILES); // add 
 				// previous
 				// playlist
 				// files
-				// //$NON-NLS-1$
+				// 
 			}
 			setProperty(XML_PLAYLIST_FILES, sPlaylistFiles);
 		}
@@ -165,11 +158,11 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * @return
 	 */
 	public void rebuildProperty() {
-		String sPlaylistFiles = ""; //$NON-NLS-1$
+		String sPlaylistFiles = ""; 
 		if (alPlaylistFiles.size() > 0) {
 			sPlaylistFiles += alPlaylistFiles.get(0).getId();
 			for (int i = 1; i < alPlaylistFiles.size(); i++) {
-				sPlaylistFiles += "," + alPlaylistFiles.get(i).getId(); //$NON-NLS-1$
+				sPlaylistFiles += "," + alPlaylistFiles.get(i).getId(); 
 			}
 		}
 		setProperty(XML_PLAYLIST_FILES, sPlaylistFiles);
@@ -181,7 +174,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * @return playlist name
 	 */
 	public String getName() {
-		String sOut = ""; //$NON-NLS-1$
+		String sOut = ""; 
 		if (alPlaylistFiles.size() > 0) {
 			sOut = alPlaylistFiles.get(0).getName();
 		}
@@ -217,7 +210,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Playlist") + " : " + getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Playlist") + " : " + getName();  
 	}
 
 }

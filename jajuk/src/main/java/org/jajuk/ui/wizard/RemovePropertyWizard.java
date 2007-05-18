@@ -50,7 +50,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
 	 * Constructor
 	 */
 	public RemovePropertyWizard() {
-		super(Messages.getString("RemovePropertyWizard.0")); //$NON-NLS-1$
+		super(Messages.getString("RemovePropertyWizard.0")); 
 		jcbName = new JComboBox();
 		populate();// create default UI
 		jcbName.addItemListener(this);
@@ -62,10 +62,10 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
 				{ iXSeparator, 0.5, iXSeparator, 0.5, iXSeparator },
 				{ iYSeparator, 20, iYSeparator, 20, iYSeparator } };
 		jpMain.setLayout(new TableLayout(dSize));
-		jpMain.add(jlItemChoice, "1,1"); //$NON-NLS-1$
-		jpMain.add(jcbItemChoice, "3,1"); //$NON-NLS-1$
-		jpMain.add(jlName, "1,3"); //$NON-NLS-1$
-		jpMain.add(jcbName, "3,3"); //$NON-NLS-1$
+		jpMain.add(jlItemChoice, "1,1"); 
+		jpMain.add(jcbItemChoice, "3,1"); 
+		jpMain.add(jlName, "1,3"); 
+		jpMain.add(jcbName, "3,3"); 
 		getContentPane().add(jpMain);
 		getContentPane().add(okp);
 		getContentPane().add(Box.createVerticalStrut(10));

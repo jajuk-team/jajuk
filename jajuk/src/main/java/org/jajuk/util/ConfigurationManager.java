@@ -139,9 +139,9 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_STATE_INTRO, FALSE);
 		properties.put(CONF_STATE_WAS_PLAYING, TRUE);
 		// no startup file by default
-		properties.put(CONF_STARTUP_FILE, ""); 
+		properties.put(CONF_STARTUP_FILE, "");
 		properties.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);
-		properties.put(CONF_STARTUP_LAST_POSITION, "0"); //$NON-NLS-1$
+		properties.put(CONF_STARTUP_LAST_POSITION, "0");
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE, TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT, FALSE);
 		properties.put(CONF_CONFIRMATIONS_REMOVE_DEVICE, TRUE);
@@ -152,82 +152,74 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED, FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_CLICK, FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP, TRUE);
-		properties.put(CONF_OPTIONS_NOVELTIES_AGE, "30"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_VISIBLE_PLANNED, "10"); //$NON-NLS-1$
-		properties.put(CONF_BUFFER_SIZE, "16000"); //$NON-NLS-1$
-		//-1 : max available buffer set default trace level, debug in debug mode and warning in normal mode
-		properties.put(CONF_AUDIO_BUFFER_SIZE, "-1"); //$NON-NLS-1$ 
+		properties.put(CONF_OPTIONS_NOVELTIES_AGE, "30");
+		properties.put(CONF_OPTIONS_VISIBLE_PLANNED, "10");
+		properties.put(CONF_BUFFER_SIZE, "16000");
+		// -1 : max available buffer set default trace level, debug in debug
+		// mode and warning in normal mode
+		properties.put(CONF_AUDIO_BUFFER_SIZE, "-1");
 		if (Main.bIdeMode) {
 			properties.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.DEBUG));
 		} else {
-			properties.put(CONF_OPTIONS_LOG_LEVEL, Integer
-					.toString(Log.WARNING));
+			properties.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.WARNING));
 		}
-		properties.put(CONF_OPTIONS_LANGUAGE, "en"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_TAB, "0"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_INTRO_BEGIN, "0"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_INTRO_LENGTH, "20"); //$NON-NLS-1$
+		properties.put(CONF_OPTIONS_LANGUAGE, "en");
+		properties.put(CONF_OPTIONS_TAB, "0");
+		properties.put(CONF_OPTIONS_INTRO_BEGIN, "0");
+		properties.put(CONF_OPTIONS_INTRO_LENGTH, "20");
 		properties.put(CONF_OPTIONS_SYNC_TABLE_TREE, FALSE);
 		properties.put(CONF_UI_SHOW_BALLOON, TRUE);
 		properties.put(CONF_P2P_SHARE, FALSE);
 		properties.put(CONF_P2P_ADD_REMOTE_PROPERTIES, FALSE);
 		properties.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);
-		properties.put(CONF_P2P_PASSWORD, ""); //$NON-NLS-1$
-		properties.put(CONF_HISTORY, "-1"); //$NON-NLS-1$
+		properties.put(CONF_P2P_PASSWORD, "");
+		properties.put(CONF_HISTORY, "-1");
 		properties.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
-		properties.put(CONF_BOOKMARKS, ""); //$NON-NLS-1$
+		properties.put(CONF_BOOKMARKS, "");
 		properties.put(CONF_UI_SHOW_AT_STARTUP, TRUE);
-		properties.put(CONF_BESTOF_SIZE, "20"); //$NON-NLS-1$
-		properties.put(CONF_VOLUME, "0.5"); //$NON-NLS-1$
-		properties.put(CONF_REGEXP, FALSE); //$NON-NLS-1$
-		properties.put(CONF_BACKUP_SIZE, "20");//$NON-NLS-1$
-		properties.put(CONF_REFACTOR_PATTERN, PATTERN_DEFAULT_REORG);//$NON-NLS-1$        
-		properties.put(CONF_COLLECTION_CHARSET, "UTF-8");//$NON-NLS-1$
+		properties.put(CONF_BESTOF_SIZE, "20");
+		properties.put(CONF_VOLUME, "0.5");
+		properties.put(CONF_REGEXP, FALSE);
+		properties.put(CONF_BACKUP_SIZE, "20");
+		properties.put(CONF_REFACTOR_PATTERN, PATTERN_DEFAULT_REORG);
+		properties.put(CONF_COLLECTION_CHARSET, "UTF-8");
 		properties.put(CONF_NETWORK_USE_PROXY, FALSE);
 		// default proxy name, just a guess
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME, "proxy");
-		properties.put(CONF_NETWORK_PROXY_PORT, "3128"); //$NON-NLS-1$
-		properties.put(CONF_NETWORK_PROXY_LOGIN, ""); //$NON-NLS-1$
-		properties.put(CONF_NETWORK_CONNECTION_TO, "3"); //$NON-NLS-1$
-		properties.put(CONF_NETWORK_TRANSFERT_TO, "20"); //$NON-NLS-1$
+		properties.put(CONF_NETWORK_PROXY_PORT, "3128");
+		properties.put(CONF_NETWORK_PROXY_LOGIN, "");
+		properties.put(CONF_NETWORK_CONNECTION_TO, "3");
+		properties.put(CONF_NETWORK_TRANSFERT_TO, "20");
 		properties.put(CONF_COVERS_AUTO_COVER, TRUE);
 		properties.put(CONF_COVERS_SHUFFLE, FALSE);
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
-		properties.put(CONF_COVERS_SIZE, "3"); //medium and large
+		properties.put(CONF_COVERS_SIZE, "3"); // medium and large
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK, FALSE);
-		properties.put(CONF_PHYSICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK
-				+ ',' + XML_ALBUM + ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE
-				+ ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH);
-		properties.put(CONF_LOGICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME
-				+ ',' + XML_ALBUM + ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE
-				+ ',' + XML_TRACK_LENGTH + ',' + ',' + XML_TRACK_RATE);
-		properties
-				.put(
-						CONF_PLAYLIST_EDITOR_COLUMNS,
-						"0"		+ ',' + XML_TRACK_NAME + ',' + ',' + XML_TRACK_AUTHOR + ',' + //$NON-NLS-1$
-								XML_TRACK_RATE);
+		properties.put(CONF_PHYSICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK + ',' + XML_ALBUM
+				+ ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_RATE + ','
+				+ XML_TRACK_LENGTH);
+		properties.put(CONF_LOGICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME + ',' + XML_ALBUM
+				+ ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ','
+				+ XML_TRACK_RATE);
+		properties.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
+				+ XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
 		// Window position: X,Y,X_size,Y_size
-		properties.put(CONF_WINDOW_POSITION,
-				"100,100," + //$NON-NLS-1$
-						(int) (Toolkit.getDefaultToolkit().getScreenSize()
-								.getWidth() - 250)
-						+ "," + //$NON-NLS-1$
-						(int) (Toolkit.getDefaultToolkit().getScreenSize()
-								.getHeight() - 250)); 
+		properties.put(CONF_WINDOW_POSITION, "100,100,"
+				+ (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - 250) + ","
+				+ (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 250));
 		properties.put(CONF_LOGICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
 		properties.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150x150);
 		properties.put(CONF_THUMBS_SORTER, "2"); // sort by album
 		// filter on albums
-		properties.put(CONF_THUMBS_FILTER, "0"); 
-		properties.put(CONF_TIP_OF_DAY_INDEX, "0"); //$NON-NLS-1$
-		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance()
-				.getLocal());
-		properties.put(CONF_FADE_DURATION, "0"); //$NON-NLS-1$
+		properties.put(CONF_THUMBS_FILTER, "0");
+		properties.put(CONF_TIP_OF_DAY_INDEX, "0");
+		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance().getLocal());
+		properties.put(CONF_FADE_DURATION, "0");
 		// sort by style
-		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0"); 
-		properties.put(CONF_DEFAULT_DJ, "");// default dj //$NON-NLS-1$
+		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0");
+		properties.put(CONF_DEFAULT_DJ, "");// default dj
 		properties.put(CONF_DEFAULT_AMBIENCE, "");// default ambience
 		// wrong player show again boolean
 		properties.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
@@ -241,6 +233,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
 		properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
 		properties.put(CONF_CATALOG_PAGE_SIZE, "100");
+		properties.put(CONF_CATALOG_SHOW_POPUPS, TRUE);
 		properties.put(CONF_FONTS_SIZE, "12");
 	}
 
@@ -250,13 +243,13 @@ public class ConfigurationManager implements ITechnicalStrings {
 	 * 
 	 */
 	public void setSystemLocal() {
-		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
+		String sLanguage = System.getProperty("user.language");
 		if (Messages.getLocales().contains(sLanguage)) {
 			// user language exists in jajuk, take it as default
 			properties.put(CONF_OPTIONS_LANGUAGE, sLanguage);
 		} else { // user language is unknown, take english as a default,
 			// user will be able to change it later anyway
-			properties.put(CONF_OPTIONS_LANGUAGE, "en"); //$NON-NLS-1$
+			properties.put(CONF_OPTIONS_LANGUAGE, "en");
 		}
 	}
 
@@ -274,10 +267,10 @@ public class ConfigurationManager implements ITechnicalStrings {
 	public static void commit() {
 		try {
 			properties.store(new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION)),
-					"User configuration"); //$NON-NLS-1$
+					"User configuration");
 		} catch (IOException e) {
-			Log.error("113", e); //$NON-NLS-1$
-			Messages.showErrorMessage("113"); //$NON-NLS-1$
+			Log.error("113", e);
+			Messages.showErrorMessage("113");
 		}
 
 	}
@@ -288,7 +281,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 			properties.load(new FileInputStream(Util.getConfFileByPath(FILE_CONFIGURATION)));
 		} catch (IOException e) {
 			e.printStackTrace(); // do not use log system here
-			Messages.showErrorMessage("114"); //$NON-NLS-1$
+			Messages.showErrorMessage("114");
 		}
 	}
 

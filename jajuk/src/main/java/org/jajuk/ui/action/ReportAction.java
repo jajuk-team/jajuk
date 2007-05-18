@@ -19,22 +19,22 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
-
 import org.jajuk.base.Item;
 import org.jajuk.i18n.Messages;
 import org.jajuk.reporting.Exporter;
 import org.jajuk.reporting.ExporterFactory;
 import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukFileFilter.HTMLFilter;
 import org.jajuk.util.JajukFileFilter.XMLFilter;
 import org.jajuk.util.error.JajukException;
+
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 
 /**
  * Report collection as a file
@@ -44,22 +44,18 @@ public class ReportAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	ReportAction() {
-		super(Messages.getString("LogicalTreeView.33"), true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
+		super(Messages.getString("LogicalTreeView.33"), IconLoader.ICON_REPORT,true); 
+		setShortDescription(Messages.getString("LogicalTreeView.33")); 
 	}
 
 	@SuppressWarnings("unchecked")
 	public void perform(final ActionEvent e) throws JajukException {
 		JComponent source = (JComponent) e.getSource();
+		// First item
+		final String type = (String) source.getClientProperty(DETAIL_ORIGIN);
 		// Get required data from the tree (selected node and node type)
 		final ArrayList<Item> alSelected = (ArrayList<Item>) source
 				.getClientProperty(DETAIL_SELECTION);
-		// Check we have at least one item
-		if (alSelected.size() < 1) {
-			return;
-		}
-		// First item
-		final String type = (String) source.getClientProperty(DETAIL_ORIGIN);
 		// Display a save as dialog
 		final JajukFileChooser chooser = new JajukFileChooser();
 		// Accept XML files
@@ -69,9 +65,9 @@ public class ReportAction extends ActionBase {
 		chooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// set a default file name
-		if (XSLT_COLLECTION_LOGICAL.equals(type) || XSLT_COLLECTION_PHYSICAL.equals(type)) {
+		if (COLLECTION_LOGICAL.equals(type) || COLLECTION_PHYSICAL.equals(type)) {
 			// collection node selected, use file name 'collection"
-			chooser.setSelectedFile(new java.io.File("collection"));
+			chooser.setSelectedFile(new java.io.File(Messages.getString("ReportAction.17")));
 		} else {
 			// use the first node name
 			Item item = alSelected.get(0);
@@ -94,12 +90,12 @@ public class ReportAction extends ActionBase {
 					// Process the reporting string
 					String result = null;
 					// Full logical collection report
-					if (XSLT_COLLECTION_LOGICAL.equals(type)) {
+					if (COLLECTION_LOGICAL.equals(type)) {
 						result = exporter.processCollection(Exporter.LOGICAL_COLLECTION);
 					}
 					// Full physical collection report
-					else if (XSLT_COLLECTION_PHYSICAL.equals(type)) {
-						result = exporter.processCollection(Exporter.LOGICAL_COLLECTION);
+					else if (COLLECTION_PHYSICAL.equals(type)) {
+						result = exporter.processCollection(Exporter.PHYSICAL_COLLECTION);
 					}
 					// Normal report on an item or a set of items
 					else {
@@ -117,7 +113,7 @@ public class ReportAction extends ActionBase {
 						if (!exporter.saveToFile(result, filename)) {
 							Messages.showErrorMessage("024");
 						} else {
-							// Sucess
+							// Success
 							Messages.showInfoMessage(Messages.getString("ReportAction.0"));
 						}
 					} else {

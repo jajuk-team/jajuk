@@ -81,7 +81,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AnimationView.0"); //$NON-NLS-1$
+		return Messages.getString("AnimationView.0"); 
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	public void initUI() {
 		setLayout(new BorderLayout());
 		addComponentListener(this);
-		btl1 = new BasicTextLabel(" "); //$NON-NLS-1$
+		btl1 = new BasicTextLabel(" "); 
 		btl1.setOpaque(false);
 		setBackground(Color.WHITE);
 		setForeground(Color.BLACK);
@@ -129,7 +129,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 						boolean bOk = false;
 						int i = 40;
 						while (!bOk) {
-							font = new Font("dialog", Font.BOLD, i); //$NON-NLS-1$
+							font = new Font("dialog", Font.BOLD, i); 
 							FontMetrics fontMetrics = Main.getWindow()
 									.getFontMetrics(font);
 							int iFontSize = SwingUtilities.computeStringWidth(
@@ -192,7 +192,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 				setText(s);
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-			setText(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
+			setText(Messages.getString("JajukWindow.18")); 
 		}
 	}
 
@@ -213,6 +213,6 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 				// force redisplay
 			}
 		});
-		Log.debug("View resized, new width=" + iSize); //$NON-NLS-1$
+		Log.debug("View resized, new width=" + iSize); 
 	}
 }

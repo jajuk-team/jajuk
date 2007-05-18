@@ -26,6 +26,7 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionListener;
@@ -79,7 +80,7 @@ public class PhysicalPlaylistRepositoryView extends
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalPlaylistRepositoryView.6"); //$NON-NLS-1$
+		return Messages.getString("PhysicalPlaylistRepositoryView.6"); 
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class PhysicalPlaylistRepositoryView extends
 			}
 			PlaylistFileItem plfi = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_NORMAL,
-					ICON_PLAYLIST_NORMAL, plf, plf.getName());
+					IconLoader.ICON_PLAYLIST_NORMAL, plf, plf.getName());
 			alPlaylistFileItems.add(plfi);
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getAbsolutePath());
@@ -114,9 +115,9 @@ public class PhysicalPlaylistRepositoryView extends
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) { // file
 			// delete confirmation
 			String sFileToDelete = plfiSelected.getPlaylistFile()
-					.getAbsolutePath(); //$NON-NLS-1$
-			String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
-			int i = Messages.getChoice(sMessage, JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+					.getAbsolutePath(); 
+			String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;  
+			int i = Messages.getChoice(sMessage, JOptionPane.WARNING_MESSAGE); 
 			if (i == JOptionPane.OK_OPTION) {
 				PlaylistFileManager.getInstance().removePlaylistFile(
 						plfiSelected.getPlaylistFile());

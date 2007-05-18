@@ -35,13 +35,13 @@ public class UpgradeManager implements ITechnicalStrings {
 	 */
 	public static void upgradeStep1() throws Exception {
 		// --For jajuk < 0.2 : remove backup file : collection~.xml
-		File file = Util.getConfFileByPath(FILE_COLLECTION + "~"); //$NON-NLS-1$
+		File file = Util.getConfFileByPath(FILE_COLLECTION + "~"); 
 		file.delete();
 		// upgrade code; if ugrade from <1.2, set default ambiences
 		String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-		if (sRelease == null || sRelease.matches("0..*") //$NON-NLS-1$
-				|| sRelease.matches("1.0..*") //$NON-NLS-1$
-				|| sRelease.matches("1.1.*")) { //$NON-NLS-1$
+		if (sRelease == null || sRelease.matches("0..*") 
+				|| sRelease.matches("1.0..*") 
+				|| sRelease.matches("1.1.*")) { 
 			AmbienceManager.getInstance().createDefaultAmbiences();
 		}
 		// - For Jajuk < 1.3 : changed track pattern from %track to %title
@@ -75,19 +75,19 @@ public class UpgradeManager implements ITechnicalStrings {
 		if (Main.isUpgradeDetected()) {
 			// - for Jajuk < 1.3: force nocover icon replacement
 			File fThumbs = Util.getConfFileByPath(FILE_THUMBS
-					+ "/50x50/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+					+ "/50x50/" + FILE_THUMB_NO_COVER); 
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); 
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); 
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); //$NON-NLS-1$
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); 
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}

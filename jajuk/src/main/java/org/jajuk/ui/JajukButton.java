@@ -61,7 +61,7 @@ public class JajukButton extends JButton {
 	protected void init(String text, Icon icon) {
 		// Hide action text on button
 		if (icon != null) {
-			putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
+			putClientProperty("hideActionText", Boolean.TRUE); 
 		}
 		super.init(text, icon);
 	}
@@ -69,7 +69,7 @@ public class JajukButton extends JButton {
 	@Override
 	protected void configurePropertiesFromAction(Action action) {
 		if (action.getValue(Action.SMALL_ICON) != null) {
-			putClientProperty("hideActionText", Boolean.TRUE); //$NON-NLS-1$
+			putClientProperty("hideActionText", Boolean.TRUE); 
 		}
 
 		super.configurePropertiesFromAction(action);
@@ -77,10 +77,10 @@ public class JajukButton extends JButton {
 		KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
 		if (stroke != null) {
 			InputMap keyMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-			keyMap.put(stroke, "action"); //$NON-NLS-1$
+			keyMap.put(stroke, "action"); 
 
 			ActionMap actionMap = getActionMap();
-			actionMap.put("action", new ActionWrapper()); //$NON-NLS-1$
+			actionMap.put("action", new ActionWrapper()); 
 		}
 	}
 

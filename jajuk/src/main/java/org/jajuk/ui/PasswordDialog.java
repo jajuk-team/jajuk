@@ -44,18 +44,18 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
 	JOptionPane optionPane;
 
 	public PasswordDialog(String sMessage) {
-		setTitle(sMessage); //$NON-NLS-1$
+		setTitle(sMessage); 
 		pf = new JPasswordField(20);
 		// Create the JOptionPane.
 		optionPane = new JOptionPane(new Object[] {
-				Messages.getString("DownloadManager.0"), pf }, //$NON-NLS-1$
+				Messages.getString("DownloadManager.0"), pf }, 
 				JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		optionPane.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
 				String prop = e.getPropertyName();
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
 					String sPwd = new String(pf.getPassword());
-					if (sPwd.trim().equals("")) { //$NON-NLS-1$
+					if (sPwd.trim().equals("")) { 
 						// set a string to password to avoid asking again
 						sPwd = "NOP";
 					}

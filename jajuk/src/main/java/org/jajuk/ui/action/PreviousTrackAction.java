@@ -25,7 +25,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.log.Log;
 
 import java.awt.event.ActionEvent;
@@ -40,8 +40,8 @@ public class PreviousTrackAction extends ActionBase {
 
 	PreviousTrackAction() {
 		super(Messages.getString("JajukWindow.13"),
-				Util.getIcon(ICON_PREVIOUS), "F9", false, true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-		setShortDescription(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
+				IconLoader.ICON_PLAYER_PREVIOUS, "F9", false, true); 
+		setShortDescription(Messages.getString("JajukWindow.29")); 
 	}
 
 	public void perform(ActionEvent evt) {

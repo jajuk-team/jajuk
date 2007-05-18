@@ -23,7 +23,7 @@ package ext;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -106,8 +106,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 			boolean percent, String copyrightString, String versionString,
 			Font versionStringFont, Color versionStringColor) {
 		super();
-		setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
-		setIconImage(Util.getIcon(ICON_LOGO).getImage());
+		setTitle(Messages.getString("JajukWindow.17")); 
+		setIconImage(IconLoader.ICON_LOGO.getImage());
 		setUndecorated(true);
 
 		m_progressBar = progress;
@@ -139,13 +139,13 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 			}
 
 			if (m_progressBarMessages && !m_progressBarPercent) {
-				m_progress.setString(""); //$NON-NLS-1$
+				m_progress.setString(""); 
 			}
 
 			m_progress.setMaximum(100);
 			m_progress.setMinimum(0);
 			m_progress.setValue(0);
-			m_progress.setFont(new Font("Dialog", Font.BOLD, 15)); //$NON-NLS-1$
+			m_progress.setFont(new Font("Dialog", Font.BOLD, 15)); 
 		}
 
 		// add the components to the panel

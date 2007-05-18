@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
@@ -32,9 +32,8 @@ public class RestoreViewsAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	RestoreViewsAction() {
-		super(Messages.getString("JajukJMenuBar.17"), Util
-				.getIcon(ICON_REFRESH), true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("JajukJMenuBar.17")); //$NON-NLS-1$
+		super(Messages.getString("JajukJMenuBar.17"), IconLoader.ICON_REFRESH, true); 
+		setShortDescription(Messages.getString("JajukJMenuBar.17")); 
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

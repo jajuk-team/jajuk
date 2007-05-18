@@ -153,15 +153,15 @@ public class StatView extends ViewAdapter implements Observer {
 				}
 				if (iTotal > 0 && dOthers > 0) {
 					double dValue = Math.round(100 * (dOthers / iTotal));
-					pdata.setValue(Messages.getString("StatView.0"), dValue); //$NON-NLS-1$
+					pdata.setValue(Messages.getString("StatView.0"), dValue); 
 				}
 				// chart
 				jfchart = ChartFactory.createPieChart3D(Messages
-						.getString("StatView.1"), pdata, true, true, true); //$NON-NLS-1$
+						.getString("StatView.1"), pdata, true, true, true); 
 				// set the background color for the chart...
 				PiePlot plot = (PiePlot) jfchart.getPlot();
 				plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
-				plot.setNoDataMessage(Messages.getString("StatView.2")); //$NON-NLS-1$
+				plot.setNoDataMessage(Messages.getString("StatView.2")); 
 				plot.setForegroundAlpha(0.5f);
 				plot.setBackgroundAlpha(0.5f);
 				StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator(
@@ -217,15 +217,15 @@ public class StatView extends ViewAdapter implements Observer {
 			}
 			if (dOthers > 0) {
 				double dValue = Math.round((dOthers / 1073741824));
-				pdata.setValue(Messages.getString("StatView.3"), dValue); //$NON-NLS-1$
+				pdata.setValue(Messages.getString("StatView.3"), dValue); 
 			}
 			// chart
 			jfchart = ChartFactory.createPieChart3D(Messages
-					.getString("StatView.4"), pdata, true, true, true); //$NON-NLS-1$
+					.getString("StatView.4"), pdata, true, true, true); 
 			// set the background color for the chart...
 			PiePlot plot = (PiePlot) jfchart.getPlot();
 			plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
-			plot.setNoDataMessage(Messages.getString("StatView.5")); //$NON-NLS-1$
+			plot.setNoDataMessage(Messages.getString("StatView.5")); 
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
 			plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
@@ -269,10 +269,10 @@ public class StatView extends ViewAdapter implements Observer {
 				data[0][i] = (double) lSizeByMounth[i] / 1073741824;
 			}
 			cdata = DatasetUtilities.createCategoryDataset(
-					new String[] { "" }, getMountsLabels(iMounthsNumber), data); //$NON-NLS-1$
+					new String[] { "" }, getMountsLabels(iMounthsNumber), data); 
 			// chart
 			jfchart = ChartFactory.createBarChart3D(Messages
-					.getString("StatView.7"), // chart title //$NON-NLS-1$
+					.getString("StatView.7"), // chart title 
 					Messages.getString("StatView.8"), // domain axis label
 					Messages.getString("StatView.9"), // range axis label
 					cdata, // data
@@ -290,10 +290,10 @@ public class StatView extends ViewAdapter implements Observer {
 			axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
 
 			// set the background color for the chart...
-			plot.setNoDataMessage(Messages.getString("StatView.10")); //$NON-NLS-1$
+			plot.setNoDataMessage(Messages.getString("StatView.10")); 
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			// plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
+			// plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
 			cpanel = new ChartPanel(jfchart);
 		} catch (Exception e) {
 			Log.error(e);
@@ -335,11 +335,11 @@ public class StatView extends ViewAdapter implements Observer {
 				data[0][i] = iTracksByMounth[i];
 			}
 			cdata = DatasetUtilities.createCategoryDataset(
-					new String[] { "" }, getMountsLabels(iMounthsNumber), data); //$NON-NLS-1$
+					new String[] { "" }, getMountsLabels(iMounthsNumber), data); 
 
 			// chart
 			jfchart = ChartFactory.createBarChart3D(Messages
-					.getString("StatView.12"), // chart title //$NON-NLS-1$
+					.getString("StatView.12"), // chart title 
 					Messages.getString("StatView.13"), // domain axis label
 					Messages.getString("StatView.14"), // range axis label
 					cdata, // data
@@ -356,10 +356,10 @@ public class StatView extends ViewAdapter implements Observer {
 			axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
 
 			// set the background color for the chart...
-			plot.setNoDataMessage(Messages.getString("StatView.15")); //$NON-NLS-1$
+			plot.setNoDataMessage(Messages.getString("StatView.15")); 
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			// plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
+			// plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
 			cpanel = new ChartPanel(jfchart);
 		} catch (Exception e) {
 			Log.error(e);
@@ -373,7 +373,7 @@ public class StatView extends ViewAdapter implements Observer {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("StatView.16"); //$NON-NLS-1$
+		return Messages.getString("StatView.16"); 
 	}
 
 	/*
@@ -392,19 +392,19 @@ public class StatView extends ViewAdapter implements Observer {
 			ChartPanel cp1 = createStyleRepartition();
 			cp1.setOpaque(false);
 			if (cp1 != null)
-				add(cp1, "0,0"); //$NON-NLS-1$
+				add(cp1, "0,0"); 
 			ChartPanel cp2 = createCollectionSize();
 			cp2.setOpaque(false);
 			if (cp2 != null)
-				add(cp2, "0,2"); //$NON-NLS-1$
+				add(cp2, "0,2"); 
 			ChartPanel cp3 = createTrackNumber();
 			cp3.setOpaque(false);
 			if (cp3 != null)
-				add(cp3, "2,2"); //$NON-NLS-1$
+				add(cp3, "2,2"); 
 			ChartPanel cp4 = createDeviceRepartition();
 			cp4.setOpaque(false);
 			if (cp4 != null)
-				add(cp4, "2,0"); //$NON-NLS-1$
+				add(cp4, "2,0"); 
 			StatView.getInstance().revalidate();
 			StatView.getInstance().repaint();
 			Util.stopWaiting();
@@ -427,14 +427,14 @@ public class StatView extends ViewAdapter implements Observer {
 		int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
 		for (int k = 0; k < iMounthsNumber; k++) {
 			sMounths[iMounthsNumber - k] = new StringBuffer()
-					.append((iMounth / 10 == 0) ? "0" : "").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString(); //$NON-NLS-1$ //$NON-NLS-2$
+					.append((iMounth / 10 == 0) ? "0" : "").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();  
 			iMounth--;
 			if (iMounth == 0) {
 				iMounth = 12;
 				iYear--;
 			}
 		}
-		sMounths[0] = Messages.getString("StatView.24"); //$NON-NLS-1$
+		sMounths[0] = Messages.getString("StatView.24"); 
 		return sMounths;
 	}
 

@@ -24,7 +24,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -37,8 +37,8 @@ public class ShowAboutAction extends ActionBase {
 
 	ShowAboutAction() {
 		super(
-				Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
+				Messages.getString("JajukWindow.5"), IconLoader.ICON_INFO, true); 
+		setShortDescription(Messages.getString("JajukWindow.22")); 
 	}
 
 	/**

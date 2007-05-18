@@ -63,7 +63,7 @@ public class TracksTableModel extends JajukTableModel {
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel
-		vColNames.add(" "); //$NON-NLS-1$
+		vColNames.add(" "); 
 		vId.add(XML_PLAY);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
@@ -138,12 +138,12 @@ public class TracksTableModel extends JajukTableModel {
 			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
 				// do we use regular expression or not? if not, we allow user to
 				// use '*'
-				sNewPattern = sNewPattern.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
-				sNewPattern = ".*" + sNewPattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+				sNewPattern = sNewPattern.replaceAll("\\*", ".*");  
+				sNewPattern = ".*" + sNewPattern + ".*";  
 			} else if ("".equals(sNewPattern)) {
 				// in regexp mode, if none
 				// selection, display all rows
-				sNewPattern = ".*"; //$NON-NLS-1$
+				sNewPattern = ".*"; 
 			}
 			while (it.hasNext()) {
 				Track track = (Track) it.next();
@@ -190,11 +190,11 @@ public class TracksTableModel extends JajukTableModel {
 			IconLabel il = null;
 			if (track.getPlayeableFile(true) != null) {
 				il = new IconLabel(PLAY_ICON,
-						"", null, null, null, Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+						"", null, null, null, Messages.getString("LogicalTreeView.1"));  
 			} else {
 				il = new IconLabel(
 						UNMOUNT_PLAY_ICON,
-						"", null, null, null, Messages.getString("LogicalTreeView.1") + Messages.getString("AbstractTableView.10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						"", null, null, null, Messages.getString("LogicalTreeView.1") + Messages.getString("AbstractTableView.10"));   
 			}
 			// Note: if you want to add an image, use an ImageIcon class and
 			// change
@@ -241,7 +241,7 @@ public class TracksTableModel extends JajukTableModel {
 			oValues[iRow][9] = track.getOrder();
 			bCellEditable[iRow][9] = bHasATagEditor;
 			// Year
-			oValues[iRow][10] = track.getYear();
+			oValues[iRow][10] = track.getYear().getValue();
 			bCellEditable[iRow][10] = bHasATagEditor;
 			// Hits
 			oValues[iRow][11] = track.getHits();

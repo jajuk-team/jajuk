@@ -20,6 +20,35 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukTable;
+import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.JajukToggleButton;
+import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ConditionalHighlighter;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -49,41 +78,6 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukTable;
-import org.jajuk.ui.JajukTableModel;
-import org.jajuk.ui.JajukToggleButton;
-import org.jajuk.ui.TableTransferHandler;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ConditionalHighlighter;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.color.ColorScheme;
-import org.jvnet.substance.theme.SubstanceTheme;
-import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
-import org.jvnet.substance.utils.SubstanceColorUtilities;
 
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
@@ -117,7 +111,7 @@ public abstract class AbstractTableView extends ViewAdapter implements
 	JajukTableModel model;
 
 	/** Currently applied filter */
-	String sAppliedFilter = ""; //$NON-NLS-1$
+	String sAppliedFilter = ""; 
 
 	/** Currently applied criteria */
 	String sAppliedCriteria;
@@ -197,23 +191,23 @@ public abstract class AbstractTableView extends ViewAdapter implements
 				jpControl = new JPanel();
 				jpControl.setOpaque(false);
 				jpControl.setBorder(BorderFactory.createEtchedBorder());
-				jtbEditable = new JajukToggleButton(Util.getIcon(ICON_EDIT));
+				jtbEditable = new JajukToggleButton(IconLoader.ICON_EDIT);
 				jtbEditable.setToolTipText(Messages
-						.getString("AbstractTableView.11")); //$NON-NLS-1$
+						.getString("AbstractTableView.11")); 
 				jtbEditable.addActionListener(AbstractTableView.this);
-				jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
+				jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); 
 				// properties combo box, fill with columns names expect ID
 				jcbProperty = new JComboBox();
 				// "any" criteria
-				jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //$NON-NLS-1$
+				jcbProperty.addItem(Messages.getString("AbstractTableView.8")); 
 				for (int i = 1; i < model.getColumnCount(); i++) {
 					// Others columns except ID
 					jcbProperty.addItem(model.getColumnName(i));
 				}
 				jcbProperty.setToolTipText(Messages
-						.getString("AbstractTableView.1")); //$NON-NLS-1$
+						.getString("AbstractTableView.1")); 
 				jcbProperty.addItemListener(AbstractTableView.this);
-				jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
+				jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); 
 				jtfValue = new JTextField();
 				jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 				jtfValue.addKeyListener(new KeyAdapter() {
@@ -223,7 +217,7 @@ public abstract class AbstractTableView extends ViewAdapter implements
 					}
 				});
 				jtfValue.setToolTipText(Messages
-						.getString("AbstractTableView.3")); //$NON-NLS-1$
+						.getString("AbstractTableView.3")); 
 				int iXspace = 5;
 				double sizeControl[][] = {
 						{ iXspace, 20, 3 * iXspace, TableLayout.FILL, iXspace,
@@ -231,14 +225,14 @@ public abstract class AbstractTableView extends ViewAdapter implements
 								iXspace, 0.3, 2 }, { 5, 25, 5 } };
 				TableLayout layout = new TableLayout(sizeControl);
 				jpControl.setLayout(layout);
-				jpControl.add(jtbEditable, "1,1"); //$NON-NLS-1$
-				jpControl.add(jlFilter, "3,1"); //$NON-NLS-1$
-				jpControl.add(jcbProperty, "5,1"); //$NON-NLS-1$
-				jpControl.add(jlEquals, "7,1"); //$NON-NLS-1$
-				jpControl.add(jtfValue, "9,1"); //$NON-NLS-1$
+				jpControl.add(jtbEditable, "1,1"); 
+				jpControl.add(jlFilter, "3,1"); 
+				jpControl.add(jcbProperty, "5,1"); 
+				jpControl.add(jlEquals, "7,1"); 
+				jpControl.add(jtfValue, "9,1"); 
 				double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
 				setLayout(new TableLayout(size));
-				add(jpControl, "0,0"); //$NON-NLS-1$
+				add(jpControl, "0,0"); 
 				if (AbstractTableView.this instanceof PhysicalTableView) {
 					jtable = new JajukTable(model, true,
 							CONF_PHYSICAL_TABLE_COLUMNS);
@@ -249,8 +243,9 @@ public abstract class AbstractTableView extends ViewAdapter implements
 				jtable.getColumnModel().addColumnModelListener(
 						AbstractTableView.this);
 				setRenderers();
-				add(new JScrollPane(jtable), "0,1"); //$NON-NLS-1$
+				add(new JScrollPane(jtable), "0,1"); 
 				jtable.setDragEnabled(true);
+				jtable.setOpaque(false);
 				jtable.setTransferHandler(new TableTransferHandler(jtable));
 				jtable.addHighlighter(new ConditionalHighlighter(Color.ORANGE,
 						Color.BLACK, -1, -1) {
@@ -514,7 +509,7 @@ public abstract class AbstractTableView extends ViewAdapter implements
 			itemNew.getMeta(sKey);
 			InformationJPanel.getInstance().setMessage(
 					Messages.getString("PropertiesWizard.8") + ": "
-							+ ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
+							+ ItemManager.getHumanType(sKey),  
 					InformationJPanel.INFORMATIVE);
 			ObservationManager.notify(new Event(
 					EventSubject.EVENT_DEVICE_REFRESH));
@@ -523,12 +518,12 @@ public abstract class AbstractTableView extends ViewAdapter implements
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e
 					.getColumn());
 		} catch (CannotRenameException cre) {
-			Messages.showErrorMessage(cre.getCode()); //$NON-NLS-1$
+			Messages.showErrorMessage(cre.getCode()); 
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e
 					.getColumn());
 		} catch (JajukException je) {
-			Log.error("104", je); //$NON-NLS-1$
-			Messages.showErrorMessage("104", je.getMessage()); //$NON-NLS-1$
+			Log.error("104", je); 
+			Messages.showErrorMessage("104", je.getMessage()); 
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e
 					.getColumn());
 		}

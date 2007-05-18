@@ -68,7 +68,7 @@ public class Style extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Style[ID=" + sId + " Name={{" + getName() + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Style[ID=" + sId + " Name={{" + getName() + "}}]";   
 	}
 
 	/**
@@ -81,14 +81,7 @@ public class Style extends LogicalItem implements Comparable {
 		if (otherStyle == null) {
 			return false;
 		}
-		return this.getId().equals(((Style) otherStyle).getId());
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Style) otherStyle).hashcode);
 	}
 
 	/**
@@ -123,7 +116,7 @@ public class Style extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Style") + " : " + getName2(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Style") + " : " + getName2();  
 	}
 
 	/*

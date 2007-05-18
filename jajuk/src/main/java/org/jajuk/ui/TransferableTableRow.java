@@ -36,7 +36,7 @@ public class TransferableTableRow extends DefaultMutableTreeNode implements
 	private static final long serialVersionUID = 1L;
 
 	public static final DataFlavor ROW_FLAVOR = new DataFlavor(
-			DataFlavor.javaJVMLocalObjectMimeType, "Row"); //$NON-NLS-1$
+			DataFlavor.javaJVMLocalObjectMimeType, "Row"); 
 
 	private Object oData;
 

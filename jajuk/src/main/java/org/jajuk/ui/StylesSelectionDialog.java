@@ -65,14 +65,14 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 	/**
 	 * @throws HeadlessException
 	 */
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	public StylesSelectionDialog(HashSet disabledStyles)
 			throws HeadlessException {
 		super();
 		this.selectedStyles = new HashSet<Style>();
 		this.disabledStyles = disabledStyles;
 		setLocationByPlatform(true);
-		setTitle(Messages.getString("DigitalDJWizard.14")); //$NON-NLS-1$
+		setTitle(Messages.getString("DigitalDJWizard.14")); 
 		setModal(true);
 		initUI();
 		pack();
@@ -115,7 +115,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 		return selectedStyles;
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	private void initUI() {
 		list = (Vector) StyleManager.getInstance().getStylesList().clone();
 		// remove disabled items
@@ -144,8 +144,8 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 				{ TableLayout.PREFERRED, 10, TableLayout.FILL }, { 20 } };
 		jpAmbiences.setLayout(new TableLayout(layoutCombo));
 		jpAmbiences.add(
-				new JLabel(Messages.getString("DigitalDJWizard.58")), "0,0"); //$NON-NLS-1$ //$NON-NLS-2$
-		jpAmbiences.add(jcbAmbiences, "2,0"); //$NON-NLS-1$
+				new JLabel(Messages.getString("DigitalDJWizard.58")), "0,0");  
+		jpAmbiences.add(jcbAmbiences, "2,0"); 
 		jlist = new JList(list);
 		jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
 		jlist.setPreferredSize(new Dimension(600, 600));
@@ -169,9 +169,9 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 		double[][] layout = new double[][] { { 10, TableLayout.PREFERRED, 10 },
 				{ 10, 20, 5, TableLayout.PREFERRED, 5, 20, 10 } };
 		setLayout(new TableLayout(layout));
-		add(jpAmbiences, "1,1"); //$NON-NLS-1$
-		add(jsp, "1,3"); //$NON-NLS-1$
-		add(okc, "1,5"); //$NON-NLS-1$
+		add(jpAmbiences, "1,1"); 
+		add(jsp, "1,3"); 
+		add(okc, "1,5"); 
 		getRootPane().setDefaultButton(okc.getOKButton());
 	}
 

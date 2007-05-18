@@ -25,7 +25,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -34,8 +34,8 @@ public class RepeatModeAction extends ActionBase {
 
 	RepeatModeAction() {
 		super(Messages.getString("JajukJMenuBar.10"),
-				Util.getIcon(ICON_REPEAT), "ctrl T", true, false); //$NON-NLS-1$ //$NON-NLS-2$
-		setShortDescription(Messages.getString("CommandJPanel.1")); //$NON-NLS-1$
+				IconLoader.ICON_REPEAT, "ctrl T", true, false);  
+		setShortDescription(Messages.getString("CommandJPanel.1")); 
 	}
 
 	/**

@@ -26,6 +26,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.JajukJDialog;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -84,37 +85,37 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 	 * First time wizard
 	 */
 	public SimpleDeviceWizard() {
-		setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
+		setTitle(Messages.getString("FirstTimeWizard.0"));
 		int iX_SEPARATOR = 10;
 		int iY_SEPARATOR = 10;
-		jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
+		jlLeftIcon = new JLabel(Util.getImage(IMAGE_SEARCH));
 		jpRightPanel = new JPanel();
-		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
-		jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_DIR));
-		jtfFileSelected = new JTextField(""); //$NON-NLS-1$
+		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); 
+		jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
+		jtfFileSelected = new JTextField(""); 
 		jtfFileSelected.setForeground(Color.BLUE);
 		jtfFileSelected.setEditable(false);
 		jbFileSelection.addActionListener(this);
 
 		// Refresh time
-		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
+		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
 		jtfRefreshTime = new JTextField("5");// 5 mins by default
-		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
+		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
 		JPanel jpRefresh = new JPanel();
 		double sizeRefresh[][] = {
 				{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR, TableLayout.PREFERRED },
 				{ 20 } };
 		jpRefresh.setLayout(new TableLayout(sizeRefresh));
-		jpRefresh.add(jlRefreshTime, "0,0"); //$NON-NLS-1$
-		jpRefresh.add(jtfRefreshTime, "2,0"); //$NON-NLS-1$
-		jpRefresh.add(jlMins, "4,0"); //$NON-NLS-1$
+		jpRefresh.add(jlRefreshTime, "0,0"); 
+		jpRefresh.add(jtfRefreshTime, "2,0"); 
+		jpRefresh.add(jlMins, "4,0"); 
 		// buttons
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-		jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
+		jbOk = new JButton(Messages.getString("OK")); 
 		jbOk.setEnabled(false);
 		jbOk.addActionListener(this);
-		jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
+		jbCancel = new JButton(Messages.getString("Cancel")); 
 		jbCancel.addActionListener(this);
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
@@ -132,15 +133,15 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		jpFileSelection.add(jlFileSelection);
 
 		jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
-		jpRightPanel.add(jpFileSelection, "0,3"); //$NON-NLS-1$
-		jpRightPanel.add(jtfFileSelected, "0,5"); //$NON-NLS-1$
-		jpRightPanel.add(jpRefresh, "0,7"); //$NON-NLS-1$
-		jpRightPanel.add(jpButtons, "0,11"); //$NON-NLS-1$
+		jpRightPanel.add(jpFileSelection, "0,3"); 
+		jpRightPanel.add(jtfFileSelected, "0,5"); 
+		jpRightPanel.add(jpRefresh, "0,7"); 
+		jpRightPanel.add(jpButtons, "0,11"); 
 		double size[][] = { { 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED }, { 0.99 } };
 		jpMain = (JPanel) getContentPane();
 		jpMain.setLayout(new TableLayout(size));
-		jpMain.add(jlLeftIcon, "1,0"); //$NON-NLS-1$
-		jpMain.add(jpRightPanel, "3,0"); //$NON-NLS-1$
+		jpMain.add(jlLeftIcon, "1,0"); 
+		jpMain.add(jpRightPanel, "3,0"); 
 		getRootPane().setDefaultButton(jbOk);
 	}
 
@@ -151,7 +152,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
 					JajukFileFilter.DirectoryFilter.getInstance()));
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));//$NON-NLS-1$
+			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
 			jfc.setMultiSelectionEnabled(false);
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -159,7 +160,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 				// check device availability
 				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
 						0, fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
-				if (!sCode.equals("0")) { //$NON-NLS-1$
+				if (!sCode.equals("0")) { 
 					Messages.showErrorMessage(sCode);
 					jbOk.setEnabled(false);
 					return;
@@ -188,8 +189,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 			try {
 				device.refresh(true, false);
 			} catch (Exception e2) {
-				Log.error("112", device.getName(), e2); //$NON-NLS-1$
-				Messages.showErrorMessage("112", device.getName()); //$NON-NLS-1$
+				Log.error("112", device.getName(), e2); 
+				Messages.showErrorMessage("112", device.getName()); 
 			}
 		}
 

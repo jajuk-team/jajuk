@@ -32,6 +32,7 @@ import org.jajuk.ui.StylesSelectionDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -88,11 +89,11 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 		int ambienceIndex = 0;
 
 		public String getDescription() {
-			return Messages.getString("DigitalDJWizard.47"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.47"); 
 		}
 
 		public String getName() {
-			return Messages.getString("DigitalDJWizard.57"); //$NON-NLS-1$
+			return Messages.getString("DigitalDJWizard.57"); 
 		}
 
 		/**
@@ -112,22 +113,22 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 			double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
 			jpButtons = new JPanel(new TableLayout(dButtons));
 			jbNew = new JButton(
-					Messages.getString("DigitalDJWizard.32"), Util.getIcon(ICON_NEW)); //$NON-NLS-1$
+					Messages.getString("DigitalDJWizard.32"), IconLoader.ICON_NEW); 
 			jbNew.addActionListener(this);
-			jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33")); //$NON-NLS-1$
+			jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33")); 
 			jbDelete = new JButton(
-					Messages.getString("DigitalDJWizard.34"), Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
+					Messages.getString("DigitalDJWizard.34"), IconLoader.ICON_DELETE); 
 			jbDelete.addActionListener(this);
-			jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35")); //$NON-NLS-1$
+			jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35")); 
 			jbDefaults = new JButton(
-					Messages.getString("DigitalDJWizard.62"), Util.getIcon(ICON_DEFAULTS)); //$NON-NLS-1$
+					Messages.getString("DigitalDJWizard.62"), IconLoader.ICON_DEFAULTS); 
 			jbDefaults.addActionListener(this);
-			jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63")); //$NON-NLS-1$
-			jpButtons.add(jbNew, "1,0"); //$NON-NLS-1$
-			jpButtons.add(jbDelete, "3,0"); //$NON-NLS-1$
-			jpButtons.add(jbDefaults, "5,0"); //$NON-NLS-1$
-			add(getPanel(), "1,1"); //$NON-NLS-1$
-			add(jpButtons, "1,3,c,c"); //$NON-NLS-1$
+			jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63")); 
+			jpButtons.add(jbNew, "1,0"); 
+			jpButtons.add(jbDelete, "3,0"); 
+			jpButtons.add(jbDefaults, "5,0"); 
+			add(getPanel(), "1,1"); 
+			add(jpButtons, "1,3,c,c"); 
 		}
 
 		/**
@@ -160,7 +161,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 							JTextField jtf = (JTextField) widgets[i][1];
 							if (jtf.getText().equals(s)) {
 								setProblem(Messages
-										.getString("DigitalDJWizard.60")); //$NON-NLS-1$
+										.getString("DigitalDJWizard.60")); 
 								return;
 							}
 						}
@@ -168,7 +169,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 						if (s.length() == 0
 								|| ((JButton) widgets[index][2]).getText()
 										.length() == 0) {
-							setProblem(Messages.getString("DigitalDJWizard.39")); //$NON-NLS-1$
+							setProblem(Messages.getString("DigitalDJWizard.39")); 
 						} else {
 							setProblem(null);
 						}
@@ -180,7 +181,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				});
 				jtfName
 						.setToolTipText(Messages
-								.getString("DigitalDJWizard.36")); //$NON-NLS-1$
+								.getString("DigitalDJWizard.36")); 
 				widgets[index][1] = jtfName;
 				// radio button
 				final JRadioButton jrbAmbience = new JRadioButton();
@@ -198,7 +199,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				}
 				Ambience ambience = ambiences.get(index);
 				// style list
-				JButton jbStyle = new JButton(Util.getIcon(ICON_LIST));
+				JButton jbStyle = new JButton(IconLoader.ICON_LIST);
 				if (ambience.getName().length() == 0) {
 					jbStyle.setEnabled(false);
 				}
@@ -219,7 +220,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				});
 				jbStyle
 						.setToolTipText(Messages
-								.getString("DigitalDJWizard.27")); //$NON-NLS-1$
+								.getString("DigitalDJWizard.27")); 
 				widgets[index][2] = jbStyle;
 				// Set layout
 				dVert[index + 1] = 20;
@@ -233,18 +234,18 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 			out.setLayout(layout);
 			// Create header
 			JLabel jlHeader1 = new JLabel(Messages
-					.getString("DigitalDJWizard.37")); //$NON-NLS-1$
-			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
+					.getString("DigitalDJWizard.37")); 
+			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); 
 			JLabel jlHeader2 = new JLabel(Messages
-					.getString("DigitalDJWizard.27")); //$NON-NLS-1$
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-			out.add(jlHeader1, "1,0,c,c"); //$NON-NLS-1$
-			out.add(jlHeader2, "2,0,c,c"); //$NON-NLS-1$
+					.getString("DigitalDJWizard.27")); 
+			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			out.add(jlHeader1, "1,0,c,c"); 
+			out.add(jlHeader2, "2,0,c,c"); 
 			// Add widgets
 			for (int i = 0; i < dVert.length - 2; i++) {
-				out.add(widgets[i][0], "0," + (i + 1) + ",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-				out.add(widgets[i][1], "1," + (i + 1)); //$NON-NLS-1$
-				out.add(widgets[i][2], "2," + (i + 1)); //$NON-NLS-1$ //$NON-NLS-2$
+				out.add(widgets[i][0], "0," + (i + 1) + ",c,c");  
+				out.add(widgets[i][1], "1," + (i + 1)); 
+				out.add(widgets[i][2], "2," + (i + 1));  
 			}
 			JScrollPane jsp = new JScrollPane(out);
 			// select first ambiance found
@@ -273,7 +274,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				if (styles.size() == 0) {
 					return;
 				}
-				String sText = ""; //$NON-NLS-1$
+				String sText = ""; 
 				// reset old styles
 				ambience.setStyles(new HashSet<Style>(10));
 				for (Style style : styles) {
@@ -300,8 +301,8 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 		private void refreshScreen() {
 			removeAll();
 			// refresh panel
-			add(getPanel(), "1,1"); //$NON-NLS-1$
-			add(jpButtons, "1,3,c,c"); //$NON-NLS-1$
+			add(getPanel(), "1,1"); 
+			add(jpButtons, "1,3,c,c"); 
 			revalidate();
 			repaint();
 		}
@@ -314,9 +315,9 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource() == jbNew) {
 				ambiences.add(new Ambience(Long.toString(System
-						.currentTimeMillis()), "")); // create a void //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
+						.currentTimeMillis()), "")); // create a void   
 				// ambience
-				// //$NON-NLS-1$
+				// 
 				Collections.sort(ambiences);
 				// refresh screen
 				refreshScreen();
@@ -324,7 +325,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				JRadioButton jrb = (JRadioButton) widgets[ambiences.size() - 1][0];
 				jrb.setSelected(true);
 				ambienceIndex = ambiences.size() - 1;
-				setProblem(Messages.getString("DigitalDJWizard.39")); //$NON-NLS-1$
+				setProblem(Messages.getString("DigitalDJWizard.39")); 
 				jbNew.setEnabled(false);
 				jbDelete.setEnabled(true);
 				JTextField jtf = (JTextField) widgets[ambienceIndex][1];
@@ -394,8 +395,8 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 	}
 
 	public AmbienceWizard() {
-		super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, //$NON-NLS-1$
-				Util.getIcon(IMAGE_DJ), Main.getWindow(), new Locale(Messages
+		super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, 
+				Util.getImage(IMAGE_DJ), Main.getWindow(), new Locale(Messages
 						.getInstance().getLocal()), 700, 600);
 	}
 

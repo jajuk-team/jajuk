@@ -134,21 +134,21 @@ public class PlaylistManager extends ItemManager {
 		}
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	public void removePlaylist(Playlist pl) {
 		synchronized (PlaylistManager.getInstance().getLock()) {
 			// file deletion confirmation
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
-				String sFileToDelete = ""; //$NON-NLS-1$
-				String sMessage = Messages.getString("Confirmation_delete"); //$NON-NLS-1$
+				String sFileToDelete = ""; 
+				String sMessage = Messages.getString("Confirmation_delete"); 
 				for (PlaylistFile plf : pl.getPlaylistFiles()) {
 					sFileToDelete = plf.getDirectory().getFio()
 							.getAbsoluteFile().toString()
-							+ java.io.File.separatorChar + pl.getName(); //$NON-NLS-1$
-					sMessage += "\n" + sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$ 
+							+ java.io.File.separatorChar + pl.getName(); 
+					sMessage += "\n" + sFileToDelete;   
 				}
 				int i = Messages.getChoice(sMessage,
-						JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+						JOptionPane.WARNING_MESSAGE); 
 				if (i == JOptionPane.OK_OPTION) {
 					boolean bUnmountedItems = false;
 					// take a shallow copy of the array to avoid concurrency
@@ -163,8 +163,8 @@ public class PlaylistManager extends ItemManager {
 							// check that file has been really deleted
 							// (sometimes, we get no exception)
 							if (fileToDelete.exists()) {
-								Log.error("131", new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
-								Messages.showErrorMessage("131"); //$NON-NLS-1$
+								Log.error("131", new JajukException("131")); 
+								Messages.showErrorMessage("131"); 
 								continue;
 							}
 							PlaylistFileManager.getInstance().removeItem(
@@ -178,7 +178,7 @@ public class PlaylistManager extends ItemManager {
 						removeItem(pl.getId());
 					}
 					if (bUnmountedItems) {
-						Messages.showErrorMessage("138"); //$NON-NLS-1$
+						Messages.showErrorMessage("138"); 
 					}
 				}
 			}

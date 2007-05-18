@@ -24,7 +24,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -36,7 +36,7 @@ public class HideShowMountedDevicesAction extends ActionBase{
 	private static final long serialVersionUID = 1L;
 
 	HideShowMountedDevicesAction() {
-		super(Messages.getString("JajukJMenuBar.24"), Util.getIcon(ICON_UNMOUNT), true); //$NON-NLS-1$ //$NON-NLS-2$
+		super(Messages.getString("JajukJMenuBar.24"), IconLoader.ICON_UNMOUNT, true);  
 	}
 
 	public void perform(ActionEvent evt) {

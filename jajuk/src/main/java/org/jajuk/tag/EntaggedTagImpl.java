@@ -48,9 +48,9 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public String getTrackName() throws Exception {
 		String sOut = tag.getFirstTitle();
-		if (sOut == null) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-			// string //$NON-NLS-1$
+		if (sOut == null) {
+			return ""; // doing that, the item wil be the default jajuk unknown 
+			// string 
 		}
 		return sOut;
 	}
@@ -62,9 +62,9 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public String getAlbumName() throws Exception {
 		String sOut = tag.getFirstAlbum();
-		if (sOut == null) {//$NON-NLS-1$
-			return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-			// string //$NON-NLS-1$
+		if (sOut == null) {
+			return ""; // doing that, the item wil be the default jajuk unknown 
+			// string 
 		}
 		return sOut;
 	}
@@ -76,8 +76,8 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public String getAuthorName() throws Exception {
 		String sOut = tag.getFirstArtist();
-		if (sOut == null) {//$NON-NLS-1$
-			return ""; //$NON-NLS-1$
+		if (sOut == null) {
+			return ""; 
 			// doing that, the item wil be the default jajuk unknown  string 
 		}
 		return sOut;
@@ -90,17 +90,17 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public String getStyleName() throws Exception {
 		String sOut = tag.getFirstGenre();
-		if (sOut == null || sOut.equals("genre")) {//$NON-NLS-1$
+		if (sOut == null || sOut.equals("genre")) {
 			// the item wil be the default jajuk unknown string
-			return ""; //$NON-NLS-1$
+			return ""; 
 		}
 		// Sometimes, the style has this form : (nb)
-		if (sOut.matches("\\(.*\\).*")) {//$NON-NLS-1$
+		if (sOut.matches("\\(.*\\).*")) {
 			sOut = sOut.substring(1, sOut.indexOf(')'));
 			try {
 				sOut = Util.genres[Integer.parseInt(sOut)];
 			} catch (Exception e) {
-				return ""; // error, return unknown //$NON-NLS-1$
+				return ""; // error, return unknown 
 			}
 		}
 		return sOut;
@@ -122,7 +122,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public String getYear() throws Exception {
 		String sOut = tag.getFirstYear();
-		if (sOut == null || sOut.equals("")) {//$NON-NLS-1$
+		if (sOut == null || sOut.equals("")) {
 			return "0";
 		}
 		return sOut;
@@ -145,7 +145,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 	 */
 	public String getComment() throws Exception {
 		List list = tag.getComment();
-		String sOut = ""; //$NON-NLS-1$
+		String sOut = ""; 
 		if (list != null) {
 			Iterator it = list.iterator();
 			while (it.hasNext()) {
@@ -232,7 +232,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 			audioFile = AudioFileIO.read(fio);
 			tag = audioFile.getTag();
 		} catch (Throwable t) { // can throw OutOfMemory errors
-			throw new JajukException("103", fio.toString(), t); //$NON-NLS-1$
+			throw new JajukException("103", fio.toString(), t); 
 		}
 	}
 

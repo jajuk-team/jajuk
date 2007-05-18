@@ -74,32 +74,32 @@ public class TrackComparator implements Comparator<Track> {
 					track.getAuthor().getName2())// need 2 spaces to make
 					// a right sorting (ex:
 					// Rock and Rock & Roll)
-					.append(track.getAlbum().getName2()) //$NON-NLS-1$
-					.append(track.getName()).toString(); //$NON-NLS-1$
+					.append(track.getAlbum().getName2()) 
+					.append(track.getName()).toString(); 
 			break;
 		// Author/album
 		case AUTHOR_ALBUM:
 			// need 2 spaces to make a right sorting (ex: Rock and Rock & Roll)
 			sHashCompare = new StringBuffer().append(track.getAuthor().getName2()).append(
-					track.getAlbum().getName2()) //$NON-NLS-1$
-					.append(track.getName()).toString(); //$NON-NLS-1$
+					track.getAlbum().getName2()) 
+					.append(track.getName()).toString(); 
 			break;
 		// Album
 		case ALBUM:
-			sHashCompare = new StringBuffer().append(track.getAlbum().getName2()) //$NON-NLS-1$
-					.append(track.getName()).toString(); //$NON-NLS-1$
+			sHashCompare = new StringBuffer().append(track.getAlbum().getName2()) 
+					.append(track.getName()).toString(); 
 			break;
 		// Year / album
 		case YEAR_ALBUM:
 			sHashCompare = new StringBuffer()
-					.append(Util.padNumber(track.getYear().getValue(), 10)) //$NON-NLS-1$
-					.append(track.getName()).toString(); //$NON-NLS-1$
+					.append(Util.padNumber(track.getYear().getValue(), 10)) 
+					.append(track.getName()).toString(); 
 			break;
 		// discovery date / album
 		case DISCOVERY_ALBUM:
 			sHashCompare = new StringBuffer().append(
 					Util.getAdditionDateFormat().format(track.getAdditionDate())).append(
-					track.getAlbum().getName2()).append(track.getName()).toString(); //$NON-NLS-1$
+					track.getAlbum().getName2()).append(track.getName()).toString(); 
 			break;
 		}
 		return sHashCompare;

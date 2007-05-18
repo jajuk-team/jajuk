@@ -61,7 +61,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel
-		vColNames.add(" "); //$NON-NLS-1$
+		vColNames.add(" "); 
 		vId.add(XML_PLAY);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
@@ -106,7 +106,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
 		vId.add(XML_DIRECTORY);
 
-		vColNames.add(Messages.getString("Property_file_date")); //$NON-NLS-1$
+		vColNames.add(Messages.getString("Property_file_date")); 
 		vId.add(XML_FILE_DATE);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
@@ -165,11 +165,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
 				// do we use regular expression or not?
 				// if not, we allow user to use '*'
-				sNewPattern = sNewPattern.replaceAll("\\*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
-				sNewPattern = ".*" + sNewPattern + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-			} else if ("".equals(sNewPattern)) { //$NON-NLS-1$
+				sNewPattern = sNewPattern.replaceAll("\\*", ".*");  
+				sNewPattern = ".*" + sNewPattern + ".*";  
+			} else if ("".equals(sNewPattern)) { 
 				// in regexp mode, if none selection, display all rows
-				sNewPattern = ".*"; //$NON-NLS-1$
+				sNewPattern = ".*"; 
 			}
 			while (it.hasNext()) {
 				File file = (File) it.next();
@@ -216,11 +216,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			IconLabel il = null;
 			if (file.isReady()) {
 				il = new IconLabel(PLAY_ICON,
-						"", null, null, null, Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+						"", null, null, null, Messages.getString("PhysicalTreeView.1"));  
 			} else {
 				il = new IconLabel(
 						UNMOUNT_PLAY_ICON,
-						"", null, null, null, Messages.getString("PhysicalTreeView.1") + Messages.getString("AbstractTableView.10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						"", null, null, null, Messages.getString("PhysicalTreeView.1") + Messages.getString("AbstractTableView.10"));   
 			}
 			oValues[iRow][0] = il;
 			bCellEditable[iRow][0] = false;

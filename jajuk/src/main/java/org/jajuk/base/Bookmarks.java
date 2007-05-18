@@ -57,10 +57,10 @@ public class Bookmarks implements ITechnicalStrings {
 	/** Private constructor */
 	private Bookmarks() {
 		String sBookmarks = ConfigurationManager.getProperty(CONF_BOOKMARKS);
-		if (sBookmarks == null || "".equals(sBookmarks.trim())) { //$NON-NLS-1$
+		if (sBookmarks == null || "".equals(sBookmarks.trim())) { 
 			return;
 		}
-		StringTokenizer stFiles = new StringTokenizer(sBookmarks, ","); //$NON-NLS-1$
+		StringTokenizer stFiles = new StringTokenizer(sBookmarks, ","); 
 		while (stFiles.hasMoreTokens()) {
 			String sId = stFiles.nextToken();
 			File file = FileManager.getInstance().getFileByID(sId);
@@ -95,7 +95,7 @@ public class Bookmarks implements ITechnicalStrings {
 	 */
 	public void clear() {
 		alFiles.clear();
-		ConfigurationManager.setProperty(CONF_BOOKMARKS, ""); //$NON-NLS-1$
+		ConfigurationManager.setProperty(CONF_BOOKMARKS, ""); 
 	}
 
 	/**

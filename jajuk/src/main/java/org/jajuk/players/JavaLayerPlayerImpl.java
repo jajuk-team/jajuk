@@ -205,18 +205,18 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 		}
 		// leave if already seeking
 		if (player != null && getState() == BasicPlayer.SEEKING) {
-			Log.warn("Already seeking, leaving"); //$NON-NLS-1$
+			Log.warn("Already seeking, leaving"); 
 			return;
 		}
-		if (mPlayingData.containsKey("audio.type") && player != null) { //$NON-NLS-1$
+		if (mPlayingData.containsKey("audio.type") && player != null) { 
 			Type type = TypeManager.getInstance().getTypeByTechDesc(
-					(String) mPlayingData.get("audio.type")); //$NON-NLS-1$
+					(String) mPlayingData.get("audio.type")); 
 			// Seek support for MP3. and WAVE
 			if (type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
-					&& mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					&& mPlayingData.containsKey("audio.length.bytes")) {   
 				int iAudioLength = ((Integer) mPlayingData
-						.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
-				long skipBytes = Math.round(iAudioLength * posValue); //$NON-NLS-1$
+						.get("audio.length.bytes")).intValue(); 
+				long skipBytes = Math.round(iAudioLength * posValue); 
 				try {
 					player.seek(skipBytes);
 					setVolume(fVolume); // need this because a seek reset volume
@@ -225,7 +225,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 					return;
 				}
 			} else {
-				Messages.showErrorMessage("126"); //$NON-NLS-1$
+				Messages.showErrorMessage("126"); 
 				return;
 			}
 		}
@@ -280,9 +280,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				return;
 			}
 			// computes read time
-			if (mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$
+			if (mPlayingData.containsKey("audio.length.bytes")) { 
 				int byteslength = ((Integer) mPlayingData
-						.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
+						.get("audio.length.bytes")).intValue(); 
 				fPos = (byteslength != 0) ? (float) iBytesread
 						/ (float) byteslength : 0;
 				ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,
@@ -304,7 +304,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				// if memory is low, we force full gc to avoid blanck during
 				// fade
 				if (Util.needFullFC()) {
-					Log.debug("Need full gc, no cross fade"); //$NON-NLS-1$
+					Log.debug("Need full gc, no cross fade"); 
 				} else {
 					bFading = true;
 					this.fadingVolume = fVolume;
@@ -336,7 +336,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 */
 	public void stateUpdated(BasicPlayerEvent bpe) {
 		if (bpe.getCode() != 10) { // do not trace volume changes
-			Log.debug("Player state changed: " + bpe); //$NON-NLS-1$
+			Log.debug("Player state changed: " + bpe); 
 		}
 		switch (bpe.getCode()) {
 		case BasicPlayerEvent.EOM:

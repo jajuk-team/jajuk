@@ -72,9 +72,9 @@ public interface ITechnicalStrings {
 	/** Autocommit delay in ms */
 	public static final int AUTO_COMMIT_DELAY = 3600000;
 
-    /** Autocommit delay in ms for audioScrobbling backup */
-    public static final int AUTO_AUDIOSCROBBLER_COMMIT_DELAY = 180000;
-    
+	/** Autocommit delay in ms for audioScrobbling backup */
+	public static final int AUTO_AUDIOSCROBBLER_COMMIT_DELAY = 180000;
+
 	/** Autorefresh thread delay in ms */
 	public static final int AUTO_REFRESH_DELAY = 30000;
 
@@ -107,7 +107,7 @@ public interface ITechnicalStrings {
 
 	/** Play icon columns size in pixels */
 	public static final int PLAY_COLUMN_SIZE = 20;
-	
+
 	/** Proporion of best tracks */
 	public static final float BESTOF_PROPORTION = 0.05f;
 
@@ -120,15 +120,15 @@ public interface ITechnicalStrings {
 	/** Number of minutes in an hour */
 	public static final int MINUTES_IN_AN_HOUR = 60;
 
-	/** Default hostame used in case of problem*/
+	/** Default hostame used in case of problem */
 	public static final String DEFAULT_HOSTNAME = "localhost";
 
 	/** Number of hours in a day */
 	public static final int HOURS_IN_A_DAY = 24;
 
 	/** Number of milliseconds in a day */
-	public static final int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND
-			* SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR * HOURS_IN_A_DAY;
+	public static final int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE
+			* MINUTES_IN_AN_HOUR * HOURS_IN_A_DAY;
 
 	/** Mplayer windows exe size in bytes */
 	public static final long MPLAYER_EXE_SIZE = 3284992l;
@@ -146,22 +146,22 @@ public interface ITechnicalStrings {
 	public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2007 The Jajuk Team";
 
 	// Files and paths
-	/**Bootstrap file that contains jajuk configuration user directory**/
+	/** Bootstrap file that contains jajuk configuration user directory* */
 	public static final String FILE_BOOTSTRAP = System.getProperty("user.home")
-		+ "/.jajuk_bootstrap";
+			+ "/.jajuk_bootstrap";
 
 	public static final String FILE_COLLECTION = "collection.xml";
 
 	// File written by the exit hook
-	public static final String FILE_COLLECTION_EXIT = "collection_exit.xml"; 
+	public static final String FILE_COLLECTION_EXIT = "collection_exit.xml";
 
 	// Void file created after exit collection file
-	public static final String FILE_COLLECTION_EXIT_PROOF = "/exit_proof"; 
+	public static final String FILE_COLLECTION_EXIT_PROOF = "/exit_proof";
 
 	public static final String FILE_CONFIGURATION = "conf.properties";
-    
+
 	public static final String FILE_AUDIOSCROBBLER = "audioscrobbler_list.xml";
-   
+
 	public static final String FILE_HISTORY = "history.xml";
 
 	/** Directory containing all sessions using this workspace */
@@ -211,10 +211,9 @@ public interface ITechnicalStrings {
 	public static final String FILE_JAJUK_DOWNLOADED_FILES_SUFFIX = "_jajuk";
 
 	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
-	
+
 	// About
-	public static final String ABOUT = "<html>Jajuk version " + JAJUK_VERSION
-			+ "</html>";
+	public static final String ABOUT = "<html>Jajuk version " + JAJUK_VERSION + "</html>";
 
 	// Properties
 	public static final String PROPERTY_SEQ = "sequence";// playlist item
@@ -231,492 +230,43 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_ALBUM = "unknown_album";
 
 	public static final String UNKNOWN_STYLE = "unknown_style";
-	
+
 	public static final String UNKNOWN_YEAR = "unknown_year";
 
 	public static final String UNKNOWN = "unknown";
-
-	// icons
-	public static final URL ICON_LOGO = Util
-			.getResource("icons/64x64/jajuk-icon_64x64.png");
-
-	public static final URL ICON_TRAY = Util
-			.getResource("icons/22x22/jajuk-icon_22x22.png");
-	
-	//Correctly displayed under JRE 1.6, ugly under Linux/JRE 1.5 
-	public static final URL ICON_LOGO_FRAME = Util
-			.getResource("icons/16x16/jajuk-icon_16x16.png");
-	
-	public static final URL ICON_REPEAT = Util
-			.getResource("icons/16x16/repeat.png");
-
-	public static final URL ICON_SHUFFLE = Util
-			.getResource("icons/16x16/shuffle.png");
-
-	public static final URL ICON_CONTINUE = Util
-			.getResource("icons/16x16/continue.png");
-
-	public static final URL ICON_INTRO = Util
-			.getResource("icons/16x16/intro.png");
-
-	public static final URL ICON_SHUFFLE_GLOBAL = Util
-			.getResource("icons/16x16/shuffle_global.png");
-
-	public static final URL ICON_BESTOF = Util
-			.getResource("icons/16x16/bestof.png");
-
-	public static final URL ICON_MUTE = Util
-			.getResource("icons/16x16/mute.png");
-
-	public static final URL ICON_UNMUTE = Util
-			.getResource("icons/16x16/unmute.png");
-
-	public static final URL ICON_NOVELTIES = Util
-			.getResource("icons/16x16/novelties.png");
-
-	public static final URL ICON_PREVIOUS = Util
-			.getResource("icons/16x16/previous.png");
-
-	public static final URL ICON_NEXT = Util
-			.getResource("icons/16x16/next.png");
-
-	public static final URL ICON_REW = Util
-			.getResource("icons/16x16/player_rew.png");
-
-	public static final URL ICON_PLAY = Util
-			.getResource("icons/16x16/player_play.png");
-
-	public static final URL ICON_PAUSE = Util
-			.getResource("icons/16x16/player_pause.png");
-
-	public static final URL ICON_STOP = Util
-			.getResource("icons/16x16/player_stop.png");
-
-	public static final URL ICON_FWD = Util
-			.getResource("icons/16x16/player_fwd.png");
-
-	public static final URL ICON_VOLUME = Util
-			.getResource("icons/16x16/volume.png");
-
-	public static final URL ICON_POSITION = Util
-			.getResource("icons/16x16/position.png");
-
-	public static final URL ICON_INFO = Util
-			.getResource("icons/16x16/info.png");
-
-	public static final URL ICON_PERSPECTIVE_SIMPLE = Util
-			.getResource("icons/40x40/perspective_simple.png");
-
-	public static final URL ICON_PERSPECTIVE_PHYSICAL = Util
-			.getResource("icons/40x40/perspective_physic.png");
-
-	public static final URL ICON_PERSPECTIVE_LOGICAL = Util
-			.getResource("icons/40x40/perspective_logic.png");
-
-	public static final URL ICON_PERSPECTIVE_STATISTICS = Util
-			.getResource("icons/40x40/perspective_stat.png");
-
-	public static final URL ICON_PERSPECTIVE_CONFIGURATION = Util
-			.getResource("icons/40x40/perspective_configuration.png");
-
-	public static final URL ICON_PERSPECTIVE_PLAYER = Util
-			.getResource("icons/40x40/perspective_player.png");
-
-	public static final URL ICON_PERSPECTIVE_CATALOG = Util
-			.getResource("icons/40x40/perspective_catalog.png");
-
-	public static final URL ICON_PERSPECTIVE_INFORMATION = Util
-			.getResource("icons/40x40/perspective_information.png");
-
-	public static final URL ICON_PERSPECTIVE_HELP = Util
-			.getResource("icons/40x40/perspective_help.png");
-
-	public static final URL ICON_OPEN_FILE = Util
-			.getResource("icons/16x16/fileopen.png");
-
-	public static final URL ICON_EXIT = Util
-			.getResource("icons/16x16/exit.png");
-
-	public static final URL ICON_NEW = Util
-			.getResource("icons/16x16/new.png");
-	
-	public static final URL ICON_SEARCH = Util
-			.getResource("icons/16x16/search.png");
-
-	public static final URL ICON_DELETE = Util
-			.getResource("icons/16x16/delete.png");
-
-	public static final URL ICON_PROPERTIES = Util
-			.getResource("icons/16x16/fileopen.png");
-
-	public static final URL ICON_VOID = Util
-			.getResource("icons/16x16/void.png");
-
-	public static final URL ICON_CONFIGURATION = Util
-			.getResource("icons/16x16/configure.png");
-
-	public static final URL ICON_MOUNT = Util
-			.getResource("icons/16x16/mount.png");
-
-	public static final URL ICON_UNMOUNT = Util
-			.getResource("icons/16x16/unmount.png");
-
-	public static final URL ICON_TRACES = Util
-			.getResource("icons/16x16/properties.png");
-
-	public static final URL ICON_TEST = Util
-			.getResource("icons/16x16/test.png");
-
-	public static final URL ICON_REFRESH = Util
-			.getResource("icons/16x16/refresh.png");
-
-	public static final URL ICON_SYNCHRO = Util
-			.getResource("icons/16x16/synchro.png");
-
-	public static final URL ICON_DEVICE_NEW = Util
-			.getResource("icons/64x64/new.png");
-
-	public static final URL ICON_DEVICE_CD_MOUNTED = Util
-			.getResource("icons/64x64/cdrom_mount.png");
-
-	public static final URL ICON_DEVICE_CD_UNMOUNTED = Util
-			.getResource("icons/64x64/cdrom_unmount.png");
-
-	public static final URL ICON_DEVICE_CD_AUDIO_MOUNTED = Util
-			.getResource("icons/64x64/cdaudio_mount.png");
-
-	public static final URL ICON_DEVICE_CD_AUDIO_UNMOUNTED = Util
-			.getResource("icons/64x64/cdaudio_unmount.png");
-
-	public static final URL ICON_DEVICE_EXT_DD_MOUNTED = Util
-			.getResource("icons/64x64/ext_dd_mount.png");
-
-	public static final URL ICON_DEVICE_EXT_DD_UNMOUNTED = Util
-			.getResource("icons/64x64/ext_dd_unmount.png");
-
-	public static final URL ICON_DEVICE_DIRECTORY_MOUNTED = Util
-			.getResource("icons/64x64/folder_mount.png");
-
-	public static final URL ICON_DEVICE_DIRECTORY_UNMOUNTED = Util
-			.getResource("icons/64x64/folder_unmount.png");
-
-	public static final URL ICON_DEVICE_PLAYER_MOUNTED = Util
-			.getResource("icons/64x64/player_mount.png");
-
-	public static final URL ICON_DEVICE_PLAYER_UNMOUNTED = Util
-			.getResource("icons/64x64/player_unmount.png");
-
-	public static final URL ICON_DEVICE_REMOTE_MOUNTED = Util
-			.getResource("icons/64x64/remote_mount.png");
-
-	public static final URL ICON_DEVICE_REMOTE_UNMOUNTED = Util
-			.getResource("icons/64x64/remote_unmount.png");
-
-	public static final URL ICON_DEVICE_NETWORK_DRIVE_MOUNTED = Util
-			.getResource("icons/64x64/nfs_mount.png");
-
-	public static final URL ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED = Util
-			.getResource("icons/64x64/nfs_unmount.png");
-
-	public static final URL ICON_DEVICE_CD_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/cdrom_mount.png");
-
-	public static final URL ICON_DEVICE_CD_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/cdrom_unmount.png");
-
-	public static final URL ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/cdaudio_mount.png");
-
-	public static final URL ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/cdaudio_unmount.png");
-
-	public static final URL ICON_DEVICE_EXT_DD_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/ext_dd_mount.png");
-
-	public static final URL ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/ext_dd_unmount.png");
-
-	public static final URL ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/nfs_mount.png");
-
-	public static final URL ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/nfs_unmount.png");
-
-	public static final URL ICON_DEVICE_DIRECTORY_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/folder_mount.png");
-
-	public static final URL ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/folder_unmount.png");
-
-	public static final URL ICON_DEVICE_PLAYER_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/player_mount.png");
-
-	public static final URL ICON_DEVICE_PLAYER_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/player_unmount.png");
-
-	public static final URL ICON_DEVICE_REMOTE_MOUNTED_SMALL = Util
-			.getResource("icons/22x22/remote_mount.png");
-
-	public static final URL ICON_DEVICE_REMOTE_UNMOUNTED_SMALL = Util
-			.getResource("icons/22x22/remote_unmount.png");
-
-	public static final URL ICON_OK = Util
-			.getResource("icons/22x22/ok.png");
-
-	public static final URL ICON_OK_SMALL = Util
-			.getResource("icons/16x16/ok.png");
-
-	public static final URL ICON_KO = Util
-			.getResource("icons/22x22/ko.png");
-
-	public static final URL ICON_TRACK = Util
-			.getResource("icons/16x16/track.png");
-
-	public static final URL ICON_DIRECTORY_SYNCHRO = Util
-			.getResource("icons/16x16/dir_synchro.png");
-
-	public static final URL ICON_DIRECTORY_DESYNCHRO = Util
-			.getResource("icons/16x16/dir_desynchro.png");
-
-	public static final URL ICON_PLAYLIST_FILE = Util
-			.getResource("icons/16x16/playlist.png");
-
-	public static final URL ICON_STYLE = Util
-			.getResource("icons/16x16/style.png");
-
-	public static final URL ICON_AUTHOR = Util
-			.getResource("icons/16x16/author.png");
-
-	public static final URL ICON_ALBUM = Util
-			.getResource("icons/16x16/album.png");
-
-	public static final URL ICON_YEAR = Util
-			.getResource("icons/16x16/clock.png");
-
-	public static final URL ICON_APPLY_FILTER = Util
-			.getResource("icons/16x16/filter.png");
-	
-	public static final URL ICON_DISCOVERY_DATE = Util
-			.getResource("icons/16x16/filter.png");
-
-	public static final URL ICON_CLEAR_FILTER = Util
-			.getResource("icons/16x16/clear.png");
-
-	public static final URL ICON_ADVANCED_FILTER = Util
-			.getResource("icons/16x16/complex_search.png");
-
-	public static final URL ICON_PLAYLIST_QUEUE = Util
-			.getResource("icons/40x40/playlist_queue.png");
-
-	public static final URL ICON_PLAYLIST_QUEUE_SMALL = Util
-			.getResource("icons/16x16/playlist_queue.png");
-
-	public static final URL ICON_PLAYLIST_NORMAL = Util
-			.getResource("icons/40x40/playlist_normal.png");
-
-	public static final URL ICON_PLAYLIST_NEW = Util
-			.getResource("icons/40x40/playlist_new.png");
-	
-	public static final URL ICON_PLAYLIST_NEW_SMALL = Util
-			.getResource("icons/16x16/playlist_new.png");
-	
-	public static final URL ICON_PLAYLIST_BOOKMARK = Util
-			.getResource("icons/40x40/playlist_bookmark.png");
-
-	public static final URL ICON_PLAYLIST_BOOKMARK_SMALL = Util
-			.getResource("icons/16x16/playlist_bookmark.png");
-
-	public static final URL ICON_PLAYLIST_BESTOF = Util
-			.getResource("icons/40x40/playlist_bestof.png");
-
-	public static final URL ICON_PLAYLIST_NOVELTIES = Util
-			.getResource("icons/40x40/playlist_novelties.png");
-
-	public static final URL ICON_RUN = Util
-			.getResource("icons/16x16/player_play.png");
-
-	public static final URL ICON_ADD = Util
-			.getResource("icons/16x16/add.png");
-
-	public static final URL ICON_REMOVE = Util
-			.getResource("icons/16x16/remove.png");
-
-	public static final URL ICON_UP = Util
-			.getResource("icons/16x16/up.png");
-
-	public static final URL ICON_DOWN = Util
-			.getResource("icons/16x16/down.png");
-
-	public static final URL ICON_ADD_SHUFFLE = Util
-			.getResource("icons/16x16/add_shuffle.png");
-
-	public static final URL ICON_CLEAR = Util
-			.getResource("icons/16x16/clear.png");
-
-	public static final URL ICON_SAVE = Util
-			.getResource("icons/16x16/save.png");
-
-	public static final URL ICON_SAVE_AS = Util
-			.getResource("icons/16x16/saveas.png");
-
-	public static final URL ICON_DEFAULT_COVER = Util
-			.getResource("icons/16x16/ok.png");
-
-	public static final URL ICON_MODE_NORMAL = Util
-			.getResource("icons/16x16/norm.png");
-
-	public static final URL ICON_NET_SEARCH = Util
-			.getResource("icons/16x16/netsearch.png");
-
-	public static final URL ICON_TRACK_FIFO_PLANNED = Util
-			.getResource("icons/16x16/planned.png");
-
-	public static final URL ICON_TRACK_FIFO_NORM = Util
-			.getResource("icons/16x16/player_perspective.png");
-
-	public static final URL ICON_TRACK_FIFO_REPEAT = Util
-			.getResource("icons/16x16/repeat.png");
-
-	public static final URL ICON_WIZARD = Util
-			.getResource("icons/16x16/wizard.png");
-
-	public static final URL ICON_TYPE_MP3 = Util
-			.getResource("icons/16x16/type_mp3.png");
-
-	public static final URL ICON_TYPE_OGG = Util
-			.getResource("icons/16x16/type_ogg.png");
-
-	public static final URL ICON_TYPE_AU = Util
-			.getResource("icons/16x16/type_wav.png");
-
-	public static final URL ICON_TYPE_AIFF = Util
-			.getResource("icons/16x16/type_wav.png");
-
-	public static final URL ICON_TYPE_FLAC = Util
-			.getResource("icons/16x16/type_flac.png");
-
-	public static final URL ICON_TYPE_MPC = Util
-			.getResource("icons/16x16/type_wav.png");
-
-	public static final URL ICON_TYPE_WMA = Util
-			.getResource("icons/16x16/type_wma.png");
-
-	public static final URL ICON_TYPE_APE = Util
-			.getResource("icons/16x16/type_ape.png");
-
-	public static final URL ICON_TYPE_AAC = Util
-			.getResource("icons/16x16/type_aac.png");
-
-	public static final URL ICON_TYPE_WAV = Util
-			.getResource("icons/16x16/type_wav.png");
-
-	public static final URL ICON_TYPE_RAM = Util
-			.getResource("icons/16x16/type_ram.png");
-
-	public static final URL ICON_NO_EDIT = Util
-			.getResource("icons/16x16/stop.png");
-
-	public static final URL ICON_EDIT = Util
-			.getResource("icons/16x16/edit.png");
-
-	public static final URL ICON_UNKNOWN = Util
-			.getResource("icons/16x16/presence_unknown.png");
-
-	public static final URL ICON_TIP = Util
-			.getResource("icons/40x40/tip.png");
-
-	public static final URL ICON_TIP_SMALL = Util
-			.getResource("icons/16x16/tip.png");
-
-	public static final URL ICON_OPEN_DIR = Util
-			.getResource("icons/40x40/folder_open.png");
-
-	public static final URL ICON_STAR_1 = Util
-			.getResource("icons/16x16/star1.png");
-
-	public static final URL ICON_STAR_2 = Util
-			.getResource("icons/16x16/star2.png");
-
-	public static final URL ICON_STAR_3 = Util
-			.getResource("icons/16x16/star3.png");
-
-	public static final URL ICON_STAR_4 = Util
-			.getResource("icons/16x16/star4.png");
-
-	public static final URL ICON_DROP_DOWN = Util
-			.getResource("icons/16x16/dropdown.png");
-
-	public static final URL ICON_DIGITAL_DJ = Util
-			.getResource("icons/16x16/ddj.png");
-
-	public static final URL ICON_LIST = Util
-			.getResource("icons/16x16/contents.png");
-
-	public static final URL ICON_PLAY2 = Util
-			.getResource("icons/16x16/play.png");
-
-	public static final URL ICON_DEFAULTS = Util
-			.getResource("icons/16x16/undo.png");
-
-	public static final URL ICON_DEFAULTS_BIG = Util
-			.getResource("icons/22x22/undo.png");
-
-	public static final URL ICON_HELP = Util
-			.getResource("icons/16x16/help.png");
-
-	public static final URL ICON_ACCURACY_LOW = Util
-			.getResource("icons/16x16/accuracy_low.png");
-
-	public static final URL ICON_ACCURACY_MEDIUM = Util
-			.getResource("icons/16x16/accuracy_medium.png");
-
-	public static final URL ICON_ACCURACY_HIGH = Util
-			.getResource("icons/16x16/accuracy_high.png");
 
 	// images
 	public static final URL IMAGES_SPLASHSCREEN = Util
 			.getResource("images/included/jajuk-splashscreen.jpg");
 
-	public static final URL IMAGE_NO_COVER = Util
-			.getResource("images/included/" + FILE_THUMB_NO_COVER);
+	public static final URL IMAGE_WRITE = Util.getResource("images/included/write.png");
 
-	public static final URL IMAGE_WRITE = Util
-			.getResource("images/included/write.png");
+	public static final URL IMAGE_SEARCH = Util.getResource("images/included/search.png");
 
-	public static final URL IMAGE_SEARCH = Util
-			.getResource("images/included/search.png");
+	public static final URL IMAGE_DJ = Util.getResource("images/included/dj.jpg");
 
-	public static final URL IMAGE_DJ = Util
-			.getResource("images/included/dj.jpg");
-
-	public static final URL IMAGE_TRAY_TITLE = Util
-			.getResource("images/included/tray_title.png");
+	public static final URL IMAGE_TRAY_TITLE = Util.getResource("images/included/tray_title.png");
 
 	// XSLT Files
-	public static final URL XSLT_AUTHOR = Util
-			.getResource("xslt/author.xsl");
+	public static final URL XSLT_AUTHOR = Util.getResource("xslt/author.xsl");
 
-	public static final URL XSLT_ALBUM = Util
-			.getResource("xslt/album.xsl");
+	public static final URL XSLT_ALBUM = Util.getResource("xslt/album.xsl");
 
-	public static final URL XSLT_STYLE = Util
-			.getResource("xslt/style.xsl");
+	public static final URL XSLT_STYLE = Util.getResource("xslt/style.xsl");
 
-	public static final URL XSLT_YEAR = Util
-			.getResource("xslt/style.xsl");
+	public static final URL XSLT_YEAR = Util.getResource("xslt/style.xsl");
 
-	public static final URL XSLT_DIRECTORY = Util
-			.getResource("xslt/directory.xsl");
+	public static final URL XSLT_DIRECTORY = Util.getResource("xslt/directory.xsl");
 
-	public static final URL XSLT_DEVICE = Util
-			.getResource("xslt/device.xsl");
-
-	public static final URL XSLT_COLLECTION_PHYSICAL = Util
-			.getResource("xslt/physical_collection.xsl");
+	public static final URL XSLT_DEVICE = Util.getResource("xslt/device.xsl");
 
 	public static final URL XSLT_COLLECTION_LOGICAL = Util
 			.getResource("xslt/logical_collection.xsl");
-
+	
+	public static final String COLLECTION_LOGICAL = "logical";
+	
+	public static final String COLLECTION_PHYSICAL = "physical";
+		
 	// Command line options
 	// if selected, no jajuk window at startup, only tray
 	public static final String CLI_NOTASKBAR = "notaskbar";
@@ -787,7 +337,7 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
 
 	public static final String DEVICE_SYNCHRO_MODE_UNI = "uni";
-	
+
 	// views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 
@@ -847,7 +397,7 @@ public interface ITechnicalStrings {
 	public static final String EXT_APE = "ape";
 
 	public static final String EXT_AAC = "aac";
-	
+
 	public static final String EXT_M4A = "m4a";
 
 	public static final String EXT_REAL = "ram";
@@ -890,9 +440,9 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_NEW = "new";
 
 	public static final String DETAIL_OPTION = "option";
-	
+
 	public static final String DETAIL_TARGET = "target";
-		
+
 	// startup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 
@@ -908,8 +458,8 @@ public interface ITechnicalStrings {
 
 	public static final String STARTUP_MODE_NOVELTIES = "novelties";
 
-	//--- Configuration keys ---
-	
+	// --- Configuration keys ---
+
 	public static final String CONF_RELEASE = "jajuk.release";
 
 	public static final String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
@@ -922,7 +472,7 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_STATE_INTRO = "jajuk.state.mode.intro";
 
-	/**Whether user exited jajuk in stop state or playing state*/
+	/** Whether user exited jajuk in stop state or playing state */
 	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing";
 
 	public static final String CONF_STARTUP_FILE = "jajuk.startup.file";
@@ -955,27 +505,38 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_OPTIONS_LNF = "jajuk.options.lnf";
 
+	public static final String CONF_OPTIONS_WATERMARK = "jajuk.options.watermark";
+
+	public static final String CONF_OPTIONS_WATERMARK_IMAGE = "jajuk.options.watermark.image";
+
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 
-	//Look and Feel
-	/** Substance Look and feel class **/
+	// Look and Feel
+	/** Substance Look and feel class * */
 	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
-	/** Default substance theme **/
+
+	/** Default substance theme * */
 	public static final String LNF_DEFAULT_THEME = "Ebony";
-	
-	/**Number of visible planned tracks*/
+
+	/** Default substance watermark * */
+	public static final String LNF_DEFAULT_WATERMARK = "Striped";
+
+	/** Image watermark*/
+	public static final String LNF_WATERMARK_IMAGE = "Image";
+
+	/** Number of visible planned tracks */
 	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";
 
-	/**Default action (play or push) when clicking on an item*/
+	/** Default action (play or push) when clicking on an item */
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click";
 
-	/**Default action (play or push) when dropping on an item*/
+	/** Default action (play or push) when dropping on an item */
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop";
 
-	/**Synchronize table and tree views*/
+	/** Synchronize table and tree views */
 	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
 
-	/**Show popup*/
+	/** Show popup */
 	public static final String CONF_UI_SHOW_BALLOON = "jajuk.options.show_popup";
 
 	public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
@@ -990,25 +551,25 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
 
-	/**Contains files id separated by a colon*/
+	/** Contains files id separated by a colon */
 	public static final String CONF_BOOKMARKS = "jajuk.bookmarks";
 
-	/**Show jajuk window at startup*/
+	/** Show jajuk window at startup */
 	public static final String CONF_UI_SHOW_AT_STARTUP = "jajuk.show_at_startup";
 
-	/**Best of size*/
+	/** Best of size */
 	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size";
 
-	/**Gain (float)*/
+	/** Gain (float) */
 	public static final String CONF_VOLUME = "jajuk.volume";
 
-	/**Use regular expressions ?*/
+	/** Use regular expressions ? */
 	public static final String CONF_REGEXP = "jajuk.regexp";
 
-	/**Collection backup size in MB*/
+	/** Collection backup size in MB */
 	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size";
 
-	/**Collection file charset (utf-8 or utf-16)*/
+	/** Collection file charset (utf-8 or utf-16) */
 	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";
 
 	public static final String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
@@ -1020,12 +581,12 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
 
 	public static final String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
-    
-    public static final String CONF_OPTIONS_AUDIOSCROBBLER = "jajuk.network.audioscrobbler";
-    
-    public static final String CONF_OPTIONS_AUDIOSCROBBLER_USER = "jajuk.network.ASUser";
-    
-    public static final String CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD = "jajuk.network.ASPassword";
+
+	public static final String CONF_OPTIONS_AUDIOSCROBBLER = "jajuk.network.audioscrobbler";
+
+	public static final String CONF_OPTIONS_AUDIOSCROBBLER_USER = "jajuk.network.ASUser";
+
+	public static final String CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD = "jajuk.network.ASPassword";
 
 	public static final String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
@@ -1037,113 +598,116 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
 
-	/**Load cover at each track*/
+	/** Load cover at each track */
 	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track";
 
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 
-	/**Last Option selected tab*/
+	/** Last Option selected tab */
 	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab";
 
-	/**Data buffer size in bytes*/
+	/** Data buffer size in bytes */
 	public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size";
 
-	/**Audio buffer size in bytes*/
+	/** Audio buffer size in bytes */
 	public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size";
 
-	/**Window position and size*/
+	/** Window position and size */
 	public static final String CONF_WINDOW_POSITION = "jajuk.window_position";
 
-	/**Physical table columns*/
+	/** Physical table columns */
 	public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
 
-	/**Physical table edition state*/
+	/** Physical table edition state */
 	public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition";
 
-	/**Logical table columns*/
+	/** Logical table columns */
 	public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns";
 
-	/**Playlist editor columns to display*/
+	/** Playlist editor columns to display */
 	public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
 
-	/**Logical table edition state*/
+	/** Logical table edition state */
 	public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition";
 
-	/**Catalog items size*/
+	/** Catalog items size */
 	public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";
 
-	/**Catalog items size*/
+	/** Catalog items size */
 	public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover";
 
-	/**Catalog sorter**/
+	/** Catalog sorter* */
 	public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter";
 
-	/**Catalog filter**/
+	/** Catalog filter* */
 	public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter";
 
-	/**Display tips on startup*/
+	/** Display tips on startup */
 	public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup";
 
-	/**Index of current displayed tip*/
+	/** Index of current displayed tip */
 	public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index";
 
-	/**Wikipedia language**/
+	/** Wikipedia language* */
 	public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang";
 
-	/**Cross fade duration in secs*/
+	/** Cross fade duration in secs */
 	public static final String CONF_FADE_DURATION = "jajuk.fade_duration";
 
-	/**Logical tree sort order*/
+	/** Logical tree sort order */
 	public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";
 
-	/**Logical tree sort order**/
+	/** Logical tree sort order* */
 	public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";
 
-	/**Default dj */
+	/** Default dj */
 	public static final String CONF_DEFAULT_DJ = "jajuk.default_dj";
 
-	/**Default ambience**/
+	/** Default ambience* */
 	public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
 
-	/*Wrong player not show again flag*/
+	/* Wrong player not show again flag */
 	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
 
-	/**Concurrent session not show again flag*/
+	/** Concurrent session not show again flag */
 	public static final String CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION = "jajuk.not_show_again.concurrent_session";
 
-	/**Cross fade alert not show again flag **/
+	/** Cross fade alert not show again flag * */
 	public static final String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";
 
-	/**Global random mode: song or album level ? **/
+	/** Global random mode: song or album level ? * */
 	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";
 
-	/**Novelties random mode: song or album level ?**/
+	/** Novelties random mode: song or album level ?* */
 	public static final String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode";
 
-	/**Animation pattern**/
+	/** Animation pattern* */
 	public static final String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
 
-	/**Initial frame size/position forced value**/
+	/** Initial frame size/position forced value* */
 	public static final String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
 
-	/**Hotkeys flag **/
+	/** Hotkeys flag * */
 	public static final String CONF_OPTIONS_HOTKEYS = "jajuk.options.use_hotkeys";
 
-	/**MPLayer additional arguments **/
+	/** MPLayer additional arguments * */
 	public static final String CONF_MPLAYER_ARGS = "jajuk.player.mplayer_args";
 
-	/**MPlayer additional environment variables **/
+	/** MPlayer additional environment variables * */
 	public static final String CONF_ENV_VARIABLES = "jajuk.player.env_variables";
 
-	/**Max Number of thumbs displayed at the same time in catalog view */ 
+	/** Max Number of thumbs displayed at the same time in catalog view */
 	public static final String CONF_CATALOG_PAGE_SIZE = "jajuk.catalog.pages_size";
-	
-	/**Font size*/ 
+
+	/** Show Catalog popups */
+	public static final String CONF_CATALOG_SHOW_POPUPS = "jajuk.catalog.show_popups";
+
+	/** Font size */
 	public static final String CONF_FONTS_SIZE = "jajuk.fonts_size";
-		
-	/** Shuffle/novelties mode*/
+
+	/** Shuffle/novelties mode */
 	public static final String MODE_ALBUM = "album";
 
 	public static final String MODE_TRACK = "track";
@@ -1183,8 +747,7 @@ public interface ITechnicalStrings {
 	public static final String DATE_FORMAT_3 = "yyyyMMdd";
 
 	// Playlists
-	public static final String PLAYLIST_NOTE = "#Playlist generated by Jajuk "
-			+ JAJUK_VERSION;
+	public static final String PLAYLIST_NOTE = "#Playlist generated by Jajuk " + JAJUK_VERSION;
 
 	// XML tags
 	public static final String XML_COLLECTION = "collection";
@@ -1234,7 +797,7 @@ public interface ITechnicalStrings {
 	public static final String XML_ID = "id";
 
 	public static final String XML_YEAR = "year";
-	
+
 	public static final String XML_YEARS = "years";
 
 	public static final String XML_PLAY = "play";
@@ -1384,24 +947,22 @@ public interface ITechnicalStrings {
 	public static final String XML_DJ_NUMBER = "number";
 
 	public static final String XML_DJ_STARTUP_STYLE = "startup_style";
-    
-    public static final String XML_SUBMISSION = "submission";
+
+	public static final String XML_SUBMISSION = "submission";
 
 	/*
 	 * Reserved XML tags for property names (note that a user can choose a
 	 * property name equals to meta information attributes names without pbm)
 	 */
-	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME,
-			XML_ID, XML_TYPE_EXTENSION, XML_TYPE_PLAYER_IMPL,
-			XML_TYPE_TAG_IMPL, XML_TYPE_TECH_DESC, XML_TYPE_SEEK_SUPPORTED,
-			XML_TYPE_ICON, XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL,
-			XML_DEVICE_AUTO_MOUNT, XML_DEVICE_AUTO_REFRESH, XML_EXPANDED,
-			XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR, XML_STYLE,
-			XML_TRACK_LENGTH, XML_YEAR, XML_TRACK_RATE, XML_FILES,
-			XML_TRACK_HITS, XML_TRACK_ADDED, XML_DIRECTORY_PARENT, XML_DEVICE,
-			XML_DIRECTORY, XML_TRACK, XML_SIZE, XML_QUALITY, XML_HASHCODE,
-			XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER,
-			XML_DEVICE_SYNCHRO_MODE, XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE }; // contains
+	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME, XML_ID,
+			XML_TYPE_EXTENSION, XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_TECH_DESC,
+			XML_TYPE_SEEK_SUPPORTED, XML_TYPE_ICON, XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL,
+			XML_DEVICE_AUTO_MOUNT, XML_DEVICE_AUTO_REFRESH, XML_EXPANDED, XML_DEVICE_MOUNT_POINT,
+			XML_ALBUM, XML_AUTHOR, XML_STYLE, XML_TRACK_LENGTH, XML_YEAR, XML_TRACK_RATE,
+			XML_FILES, XML_TRACK_HITS, XML_TRACK_ADDED, XML_DIRECTORY_PARENT, XML_DEVICE,
+			XML_DIRECTORY, XML_TRACK, XML_SIZE, XML_QUALITY, XML_HASHCODE, XML_PLAYLIST_FILES,
+			XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER, XML_DEVICE_SYNCHRO_MODE,
+			XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE }; // contains
 
 	// variables
 	// names
@@ -1445,12 +1006,11 @@ public interface ITechnicalStrings {
 
 	public static final String PATTERN_TRACKORDER = "%n";
 
-	public static final String PATTERN_DEFAULT_REORG = PATTERN_ARTIST + "/"
-			+ PATTERN_YEAR + " - " + PATTERN_ALBUM + "/" + PATTERN_TRACKORDER
-			+ " - " + PATTERN_TRACKNAME;
+	public static final String PATTERN_DEFAULT_REORG = PATTERN_ARTIST + "/" + PATTERN_YEAR + " - "
+			+ PATTERN_ALBUM + "/" + PATTERN_TRACKORDER + " - " + PATTERN_TRACKNAME;
 
-	public static final String PATTERN_DEFAULT_ANIMATION = PATTERN_ARTIST
-			+ " / " + PATTERN_ALBUM + " / " + PATTERN_TRACKNAME;
+	public static final String PATTERN_DEFAULT_ANIMATION = PATTERN_ARTIST + " / " + PATTERN_ALBUM
+			+ " / " + PATTERN_TRACKNAME;
 
 	// Actions
 	public static final String ACTION_NEXT = "next";
@@ -1460,11 +1020,8 @@ public interface ITechnicalStrings {
 	public static final String ACTION_FINISH = "finish";
 
 	public static final String ACTION_Cancel = "cancel";
-	
-	//Strings
-	public static final String FRAME_MAXIMIZED = "max";
-	
 
-	
+	// Strings
+	public static final String FRAME_MAXIMIZED = "max";
 
 }

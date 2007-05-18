@@ -23,7 +23,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -32,8 +32,8 @@ public class IntroModeAction extends ActionBase {
 
 	IntroModeAction() {
 		super(
-				Messages.getString("JajukJMenuBar.13"), Util.getIcon(ICON_INTRO), true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
+				Messages.getString("JajukJMenuBar.13"), IconLoader.ICON_INTRO, true); 
+		setShortDescription(Messages.getString("CommandJPanel.4")); 
 	}
 
 	public void perform(ActionEvent evt) {

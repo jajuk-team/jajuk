@@ -99,7 +99,7 @@ public class DirectoryManager extends ItemManager {
 	 * @param device
 	 */
 	public Directory registerDirectory(Device device) {
-		return registerDirectory(device.getId(), "", null, device); //$NON-NLS-1$
+		return registerDirectory(device.getId(), "", null, device); 
 	}
 
 	/**
@@ -137,8 +137,8 @@ public class DirectoryManager extends ItemManager {
 			Directory directory = null;
 			directory = new Directory(sId, sName, dParent, device);
 			if (dParent != null) {
-				dParent.addDirectory(directory);// add the direcotry to parent
-				// collection
+				// add the direcotry to parent
+				dParent.addDirectory(directory);
 			}
 			hmItems.put(sId, directory);
 			return directory;

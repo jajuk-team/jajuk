@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.AmbienceWizard;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -34,7 +34,7 @@ public class AmbienceConfigurationAction extends ActionBase {
 
 	AmbienceConfigurationAction() {
 		super(
-				Messages.getString("CommandJPanel.19"), Util.getIcon(ICON_STYLE), true); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("CommandJPanel.19"), IconLoader.ICON_STYLE, true);  
 	}
 
 	public void perform(ActionEvent evt) {

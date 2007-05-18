@@ -79,11 +79,11 @@ public class Log implements ITechnicalStrings {
 			DOMConfigurator.configure(FILE_LOG4j_CONF);
 			loggerRoot = Logger.getRootLogger();
 			logger = Logger.getLogger(Log.class.getName());
-			loggerHttp = Logger.getLogger("org.apache.commons.httpclient"); //$NON-NLS-1$
+			loggerHttp = Logger.getLogger("org.apache.commons.httpclient"); 
 			alSpool = new ArrayList<String>(FEEDBACK_LINES);
 			// message for logging system start
-			Log.info("******************JAJUK******************"); //$NON-NLS-1$
-			Log.info("Version: " + JAJUK_VERSION); //$NON-NLS-1$
+			Log.info("******************JAJUK******************"); 
+			Log.info("Version: " + JAJUK_VERSION); 
 		} catch (Exception e) {
 			Log.stack(e);
 		}
@@ -110,7 +110,7 @@ public class Log implements ITechnicalStrings {
 			System.out.println("[DEBUG] " + s);
 			return;
 		}
-		spool("[DEBUG] " + s); //$NON-NLS-1$
+		spool("[DEBUG] " + s); 
 		logger.debug(s);
 	}
 
@@ -139,7 +139,7 @@ public class Log implements ITechnicalStrings {
 	 * Log a warning-level message with info sup
 	 */
 	public static void warn(String s, String sInfoSup) {
-		String sOut = s + ": " + sInfoSup; //$NON-NLS-1$
+		String sOut = s + ": " + sInfoSup; 
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
 			System.out.println("[WARN] " + sOut);
@@ -164,9 +164,9 @@ public class Log implements ITechnicalStrings {
 		if (Messages.isInitialized()) {
 			sOut = '('
 					+ sCode
-					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ":" + sInfosup);   
 		} else {
-			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);   
 		}
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
@@ -201,9 +201,9 @@ public class Log implements ITechnicalStrings {
 		if (Messages.isInitialized()) {
 			sOut = '('
 					+ sCode
-					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ": " + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ": " + sInfosup);   
 		} else {
-			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);   
 		}
 		spool("<font color='red'>[ERROR] " + sOut + "</font>");
 		if (t != null) {
@@ -221,9 +221,9 @@ public class Log implements ITechnicalStrings {
 	public static void error(String sCode) {
 		String sOut;
 		if (Messages.isInitialized()) {
-			sOut = '(' + sCode + ") " + Messages.getErrorMessage(sCode); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sOut = '(' + sCode + ") " + Messages.getErrorMessage(sCode);   
 		} else {
-			sOut = '(' + sCode + ") "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sOut = '(' + sCode + ") ";   
 		}
 		// Just make a print stake trace if Log is not yet enabled (example:
 		// collection commit problem in initialCheckups)
@@ -249,7 +249,7 @@ public class Log implements ITechnicalStrings {
 			return;
 		}
 		spool(t);
-		logger.error(t.getMessage() + " / " + t.getCause(), t); //$NON-NLS-1$
+		logger.error(t.getMessage() + " / " + t.getCause(), t); 
 	}
 
 	/**
@@ -371,14 +371,14 @@ public class Log implements ITechnicalStrings {
 		}
 		try {
 			// anonymize standard labels (with {{xxx}})
-			String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***"); //$NON-NLS-1$ //$NON-NLS-2$
+			String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***");  
 			// anonymize Basic Player logs
-			if (sAnonymizedMessage.indexOf("Player state changed: OPENING") != -1) { //$NON-NLS-1$
+			if (sAnonymizedMessage.indexOf("Player state changed: OPENING") != -1) { 
 				sAnonymizedMessage = sAnonymizedMessage.substring(0, 40);
 			}
 			alSpool.add(sAnonymizedMessage);
 		} catch (Exception e) { // make sure to avoid looping tracing
-			System.out.print("Spooling error:" + e); //$NON-NLS-1$
+			System.out.print("Spooling error:" + e); 
 		}
 	}
 

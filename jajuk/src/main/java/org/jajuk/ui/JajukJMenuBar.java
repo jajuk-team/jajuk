@@ -45,7 +45,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -123,13 +123,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 	private JajukJMenuBar() {
 		setAlignmentX(0.0f);
 		// File menu
-		file = new JMenu(Messages.getString("JajukJMenuBar.0")); //$NON-NLS-1$
+		file = new JMenu(Messages.getString("JajukJMenuBar.0")); 
 
 		jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
 		file.add(jmiFileExit);
 
 		// Properties menu
-		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
+		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); 
 		jmiNewProperty = new JMenuItem(ActionManager
 				.getAction(CUSTOM_PROPERTIES_ADD));
 		jmiRemoveProperty = new JMenuItem(ActionManager
@@ -138,14 +138,14 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		properties.add(jmiRemoveProperty);
 
 		// View menu
-		views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
+		views = new JMenu(Messages.getString("JajukJMenuBar.8")); 
 		jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
 		views.add(jmiRestoreDefaultViews);
 		views.addSeparator();
 		//Add the list of available views parsed in XML files at startup
 		JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
 		for (final IView view:ViewFactory.getKnownViews()){
-			JMenuItem jmi = new JMenuItem(view.getDesc(),Util.getIcon(ICON_LOGO_FRAME));
+			JMenuItem jmi = new JMenuItem(view.getDesc(),IconLoader.ICON_LOGO_FRAME);
 			jmi.addActionListener(new ActionListener() {
 			
 				public void actionPerformed(ActionEvent e) {
@@ -163,7 +163,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		views.add(jmViews);
 
 		// Mode menu
-		String modeText = Messages.getString("JajukJMenuBar.9"); //$NON-NLS-1$
+		String modeText = Messages.getString("JajukJMenuBar.9"); 
 		mode = new JMenu(ActionUtil.strip(modeText));
 		mode.setMnemonic(ActionUtil.getMnemonic(modeText));
 
@@ -190,7 +190,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		mode.add(jcbmiIntro);
 
 		// Configuration menu
-		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); //$NON-NLS-1$
+		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); 
 		jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
 		jmiAmbience = new JMenuItem(ActionManager
 				.getAction(CONFIGURE_AMBIENCES));
@@ -204,7 +204,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		configuration.add(jmiUnmounted);
 
 		// Help menu
-		String helpText = Messages.getString("JajukJMenuBar.14"); //$NON-NLS-1$
+		String helpText = Messages.getString("JajukJMenuBar.14"); 
 		help = new JMenu(ActionUtil.strip(helpText));
 		help.setMnemonic(ActionUtil.getMnemonic(helpText));
 		jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));

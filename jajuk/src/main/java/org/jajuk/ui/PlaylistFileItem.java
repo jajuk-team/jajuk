@@ -22,16 +22,14 @@ package org.jajuk.ui;
 
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UrlImageIcon;
 
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
-import java.net.URL;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -65,8 +63,9 @@ public class PlaylistFileItem extends JPanel {
 
 	public static final int PLAYLIST_TYPE_NOVELTIES = 5;
 
-	private static final Font font = new Font("Dialog", Font.PLAIN, 10); //$NON-NLS-1$
+	private static final Font font = new Font("Dialog", Font.PLAIN, 10); 
 
+	
 	/**
 	 * Constructor
 	 * 
@@ -75,24 +74,9 @@ public class PlaylistFileItem extends JPanel {
 	 * @param sIcon :
 	 *            icon to be shown
 	 * @param sName :
-	 *            nom of the playlist file to be displayed
+	 *            name of the playlist file to be displayed
 	 */
-	public PlaylistFileItem(int iType, URL urlIcon, PlaylistFile plf,
-			String sName) {
-		this(iType, Util.getIcon(urlIcon), plf, sName);
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param iType :
-	 *            Playlist file type : 0: normal, 1:new, 2:bookmarks, 3:bestif
-	 * @param sIcon :
-	 *            icon to be shown
-	 * @param sName :
-	 *            nom of the playlist file to be displayed
-	 */
-	public PlaylistFileItem(int iType, ImageIcon icon, PlaylistFile plf,
+	public PlaylistFileItem(int iType, UrlImageIcon icon, PlaylistFile plf,
 			String sName) {
 		this.iType = iType;
 		this.plf = plf;
@@ -103,9 +87,9 @@ public class PlaylistFileItem extends JPanel {
 		jlIcon = new JLabel(icon);
 		jlIcon.setPreferredSize(new Dimension(100, 100));
 		JLabel jlName = new JLabel(sName);
-		jlName.setFont(font); //$NON-NLS-1$
-		add(jlIcon, "0,0,c,c"); //$NON-NLS-1$
-		add(jlName, "0,1,c,c"); //$NON-NLS-1$
+		jlName.setFont(font); 
+		add(jlIcon, "0,0,c,c"); 
+		add(jlName, "0,1,c,c"); 
 		setOpaque(false);
 		new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
 	}
@@ -130,7 +114,7 @@ public class PlaylistFileItem extends JPanel {
 	 * @return playlist file item name ( playlist name or label for special ones )
 	 */
 	public String getName() {
-		String sOut = ""; //$NON-NLS-1$
+		String sOut = ""; 
 		switch (iType) {
 		case 0: // regular playlist
 			PlaylistFile plf = getPlaylistFile();
@@ -139,19 +123,19 @@ public class PlaylistFileItem extends JPanel {
 			}
 			break;
 		case 1: // new playlist
-			sOut = Messages.getString("PlaylistFileItem.2"); //$NON-NLS-1$
+			sOut = Messages.getString("PlaylistFileItem.2"); 
 			break;
 		case 2: // bookmarks
-			sOut = Messages.getString("PlaylistFileItem.3"); //$NON-NLS-1$
+			sOut = Messages.getString("PlaylistFileItem.3"); 
 			break;
 		case 3: // bestof
-			sOut = Messages.getString("PlaylistFileItem.4"); //$NON-NLS-1$
+			sOut = Messages.getString("PlaylistFileItem.4"); 
 			break;
 		case 4: // queue
-			sOut = Messages.getString("PlaylistFileItem.5"); //$NON-NLS-1$
+			sOut = Messages.getString("PlaylistFileItem.5"); 
 			break;
 		case 5: // novelties
-			sOut = Messages.getString("PlaylistFileItem.1"); //$NON-NLS-1$
+			sOut = Messages.getString("PlaylistFileItem.1"); 
 			break;
 		}
 		return sOut;

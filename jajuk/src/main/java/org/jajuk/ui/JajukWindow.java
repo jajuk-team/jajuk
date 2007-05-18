@@ -30,7 +30,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.log.Log;
 
 import java.awt.Frame;
@@ -89,8 +89,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				.getWidth());
 		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize()
 				.getHeight());
-		setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
-		setIconImage(Util.getIcon(ICON_LOGO_FRAME).getImage());
+		setTitle(Messages.getString("JajukWindow.17")); 
+		setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// register for given events
 		ObservationManager.register(this);
@@ -142,13 +142,13 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			Log.debug("Frame maximized");
 			sValue = FRAME_MAXIMIZED;
 		} else {
-			sValue = (int) getLocationOnScreen().getX() + "," //$NON-NLS-1$
-					+ (int) getLocationOnScreen().getY() + "," //$NON-NLS-1$
+			sValue = (int) getLocationOnScreen().getX() + "," 
+					+ (int) getLocationOnScreen().getY() + "," 
 					+ getBounds().width + "," + getBounds().height;
 			Log.debug("Frame moved or resized, new bounds=" + sValue);
 		}
 		// Store the new position
-		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue);   
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				.getProperty(CONF_FRAME_POS_FORCED);
 		if (sForcedValue != null && !sForcedValue.trim().equals("")) {
 			try {
-				StringTokenizer st = new StringTokenizer(sForcedValue, ","); //$NON-NLS-1$
+				StringTokenizer st = new StringTokenizer(sForcedValue, ","); 
 				iX = Integer.parseInt(st.nextToken());
 				iY = Integer.parseInt(st.nextToken());
 				iHorizSize = Integer.parseInt(st.nextToken());
@@ -202,7 +202,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			}
 			return;
 		}
-		StringTokenizer st = new StringTokenizer(sPosition, ","); //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(sPosition, ","); 
 		iX = Integer.parseInt(st.nextToken());
 		// if X position is higher than screen width, set 0
 		if (iX > iScreenWidth) {
@@ -249,7 +249,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				setTitle(file.getTrack().getName());
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-			setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
+			setTitle(Messages.getString("JajukWindow.17")); 
 		}
 	}
 

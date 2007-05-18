@@ -71,7 +71,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
     int index = 0;
 
     /** Current search */
-    String search = null; //$NON-NLS-1$
+    String search = null; 
 
     /**
      * Constructor
@@ -86,7 +86,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
      * @see org.jajuk.ui.views.IView#getDesc()
      */
     public String getDesc() {
-        return Messages.getString("WikipediaView.0"); //$NON-NLS-1$
+        return Messages.getString("WikipediaView.0"); 
     }
 
     /*
@@ -104,7 +104,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
         { { 3 * iXspace, TableLayout.PREFERRED, iXspace, 200, 3 * iXspace },
                 { 5, TableLayout.PREFERRED, 5 } };
         jpControl.setLayout(new TableLayout(sizeControl));
-        jlLanguage = new JLabel(Messages.getString("WikipediaView.1")); //$NON-NLS-1$
+        jlLanguage = new JLabel(Messages.getString("WikipediaView.1")); 
         jcbLanguage = new JComboBox();
         jcbLanguage.setBorder(Util.getShadowBorder());
         for (String sLocale : Messages.getLocales()) {
@@ -115,8 +115,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
                 ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
         jcbLanguage.setSelectedIndex(index);
         jcbLanguage.addActionListener(this);
-        jpControl.add(jlLanguage, "1,1");//$NON-NLS-1$
-        jpControl.add(jcbLanguage, "3,1");//$NON-NLS-1$
+        jpControl.add(jlLanguage, "1,1");
+        jpControl.add(jcbLanguage, "3,1");
 
         // global layout
         double size[][] = { { 2, TableLayout.FILL, 5 },
@@ -124,8 +124,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
         setLayout(new TableLayout(size));
         browser = new WebBrowser();
         // WebBrowser.setDebug(true);
-        add(jpControl, "1,0"); //$NON-NLS-1$
-        add(browser, "1,2"); //$NON-NLS-1$
+        add(jpControl, "1,0"); 
+        add(browser, "1,2"); 
 
         // Display default page at startup is none track launch
         // avoid to launch this if a track is playing
@@ -203,9 +203,9 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
             public void run() {
                 try {
                     //Thread.sleep(3000);
-                    URL url = new URL("http://" + //$NON-NLS-1$
-                            Messages.getLocales().get(index) + ".wikipedia.org/wiki/" + search); //$NON-NLS-1$
-                    Log.debug("Wikipedia search: " + url); //$NON-NLS-1$
+                    URL url = new URL("http://" + 
+                            Messages.getLocales().get(index) + ".wikipedia.org/wiki/" + search); 
+                    Log.debug("Wikipedia search: " + url); 
                     if (browser != null) {
                         browser.setURL(url);
                     }

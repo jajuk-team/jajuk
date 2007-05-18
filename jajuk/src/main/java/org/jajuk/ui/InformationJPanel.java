@@ -124,7 +124,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		//We use toolbar to display vertical separator lines
 		jlMessage = new JLabel();
 		jlMessage.setOpaque(true);
-		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); 
 		jtbMessage.add(jlMessage);
 		jtbMessage.add(Box.createHorizontalGlue());
 		jtbMessage.addSeparator();
@@ -141,7 +141,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		JToolBar jtbTotal = new JToolBar();
 		jtbTotal.setFloatable(false);
 		jlTotal = new JLabel();
-		jlTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
+		jlTotal.setToolTipText(Messages.getString("InformationJPanel.5")); 
 		jtbTotal.add(jlTotal);
 		jtbTotal.add(Box.createHorizontalGlue());
 		jtbTotal.addSeparator();
@@ -149,7 +149,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		// current progress bar
 		JToolBar jtbProgress = new JToolBar();
 		jtbProgress.setFloatable(false);
-		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
+		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7")); 
 		jpbCurrent = new JProgressBar(0, 100);
 		jpbCurrent.setStringPainted(true);
 		jlCurrent = new JLabel();
@@ -158,10 +158,10 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		jtbProgress.add(jpbCurrent);
 
 		// add widgets
-		add(jtbMessage, "0,0"); //$NON-NLS-1$
-		add(jtbSelection, "1,0"); //$NON-NLS-1$
-		add(jtbTotal, "2,0"); //$NON-NLS-1$
-		add(jtbProgress, "3,0"); //$NON-NLS-1$
+		add(jtbMessage, "0,0"); 
+		add(jtbSelection, "1,0"); 
+		add(jtbTotal, "2,0"); 
+		add(jtbProgress, "3,0"); 
 
 		// check if some track has been launched before the view has been
 		// displayed
@@ -295,7 +295,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 			try {
 				// reset data
 				setCurrentTimeMessage(Util.formatTimeBySec(0, false)
-						+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
+						+ " / " + Util.formatTimeBySec(0, false)); 
 				setCurrentTime(0);
 				// set error message
 				File fCurrent = (File) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE);
@@ -304,14 +304,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 					String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
 					if (sReason != null) {
 						setMessage(
-								Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR); 
 					} else {// default message
 						setMessage(
-								Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR); 
 					}
 				} else { // none specified file
-					setMessage(Messages.getString("Error.007"), //$NON-NLS-1$
-							InformationJPanel.ERROR);//$NON-NLS-1$
+					setMessage(Messages.getString("Error.007"), 
+							InformationJPanel.ERROR);
 				}
 			} catch (Exception e) {
 				Log.error(e);
@@ -331,20 +331,20 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 								+ FIFO.getInstance().getFIFO().size() + "]");
 
 						setCurrentTimeMessage(Util.formatTimeBySec(lTime, false)
-								+ " / " + Util.formatTimeBySec(length, false)); //$NON-NLS-1$);
+								+ " / " + Util.formatTimeBySec(length, false));
 					} else if (EventSubject.EVENT_ZERO.equals(subject)) {
 						setCurrentTimeMessage(Util.formatTimeBySec(0, false)
-								+ " / " + Util.formatTimeBySec(0, false)); //$NON-NLS-1$
+								+ " / " + Util.formatTimeBySec(0, false)); 
 						setCurrentTime(0);
-						setTotalTimeMessage("00:00:00");//$NON-NLS-1$
+						setTotalTimeMessage("00:00:00");
 						setMessage(
-								Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+								Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); 
 					} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
 						File file = FIFO.getInstance().getCurrentFile();
 						if (file != null) {
-							String sMessage = Messages.getString("FIFO.10") + " " + file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$
-									+ " / " + file.getTrack().getAlbum().getName2() + " / " //$NON-NLS-1$ //$NON-NLS-2$
-									+ file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							String sMessage = Messages.getString("FIFO.10") + " " + file.getTrack().getAuthor().getName2()  
+									+ " / " + file.getTrack().getAlbum().getName2() + " / "  
+									+ file.getTrack().getName();  
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
 					}

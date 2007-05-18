@@ -55,7 +55,7 @@ public class Year extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Year[ID=" + sId + " Value=" + sName + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Year[ID=" + sId + " Value=" + sName + "]";   
 	}
 
 	/**
@@ -68,14 +68,7 @@ public class Year extends LogicalItem implements Comparable {
 		if (other == null) {
 			return false;
 		}
-		return getValue() == ((Year)other).getValue();
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Year) other).hashcode);
 	}
 	
 	/**

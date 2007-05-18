@@ -235,16 +235,16 @@ public class AuthorManager extends ItemManager {
 	public Set<Author> getAssociatedAuthors(Item item) {
 		synchronized (AuthorManager.getInstance().getLock()) {
 			Set<Author> out = new TreeSet<Author>();
-			for (Object item2 : hmItems.values()) {
-				Author author = (Author) item2;
-				if (item instanceof Track && ((Track) item).getAuthor().equals(author)){
-					out.add(author);
+			//If item is a track, return Authors containing this track
+			if (item instanceof Track) {
+				//we can return as a track has only one Author
+				if (item != null){
+					out.add(((Track)item).getAuthor());
 				}
-				else{
-					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-					for (Track track: tracks){
-						out.add(track.getAuthor());
-					}
+			} else {
+				Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+				for (Track track : tracks) {
+					out.add(track.getAuthor());
 				}
 			}
 			return out;

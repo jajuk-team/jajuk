@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -36,8 +36,8 @@ public class RewindTrackAction extends ActionBase {
 	private static final float JUMP_SIZE = 0.1f;
 
 	RewindTrackAction() {
-		super(Util.getIcon(ICON_REW), "alt F9", false, true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
+		super(IconLoader.ICON_REW, "alt F9", false, true); 
+		setShortDescription(Messages.getString("CommandJPanel.10")); 
 
 	}
 

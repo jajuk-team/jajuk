@@ -69,7 +69,7 @@ public class Directory extends PhysicalItem implements Comparable {
 	public Directory(String sId, String sName, Directory dParent, Device device) {
 		super(sId, sName);
 		this.dParent = dParent;
-		setProperty(XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getId())); //$NON-NLS-1$
+		setProperty(XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getId()));
 		this.device = device;
 		setProperty(XML_DEVICE, device.getId());
 		this.fio = new File(device.getUrl() + getRelativePath());
@@ -88,7 +88,9 @@ public class Directory extends PhysicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Directory[ID=" + sId + " Name={{" + getRelativePath() + "}} ParentID=" + (dParent == null ? "null" : dParent.getId()) + " Device={{" + device.getName() + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+		return "Directory[ID=" + sId + " Name={{" + getRelativePath() + "}} ParentID="
+				+ (dParent == null ? "null" : dParent.getId()) + " Device={{" + device.getName()
+				+ "}}]";
 	}
 
 	/**
@@ -101,18 +103,11 @@ public class Directory extends PhysicalItem implements Comparable {
 		if (otherDirectory == null) {
 			return false;
 		}
-		return this.getId().equals(((Directory) otherDirectory).getId());
+		return (hashcode == ((Directory) otherDirectory).hashcode);
 	}
 
 	public String getAbsolutePath() {
 		return this.fio.getAbsolutePath();
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
 	}
 
 	/**
@@ -137,7 +132,7 @@ public class Directory extends PhysicalItem implements Comparable {
 	}
 
 	/**
-	 * Add a child directory in local refences
+	 * Add a child directory in local references
 	 * 
 	 * @param directory
 	 */
@@ -146,7 +141,7 @@ public class Directory extends PhysicalItem implements Comparable {
 	}
 
 	/**
-	 * Remove a file from local refences
+	 * Remove a file from local references
 	 * 
 	 * @param file
 	 */
@@ -282,17 +277,17 @@ public class Directory extends PhysicalItem implements Comparable {
 				// been modified since last refresh as user can rename a parent
 				// directory and the files are not modified
 				long lastModified = files[i].lastModified();
-				// Check file name is correct (usefull to fix name encoding
+				// Check file name is correct (useful to fix name encoding
 				// issues)
 				if (!new File(files[i].getAbsolutePath()).exists()) {
-					Log.warn("Cannot read file name (please rename it): {{" //$NON-NLS-1$
-							+ files[i].getAbsolutePath() + "}}"); //$NON-NLS-1$ //$NON-NLS-2$
+					Log.warn("Cannot read file name (please rename it): {{"
+							+ files[i].getAbsolutePath() + "}}");
 					continue;
 				}
 				boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
 						Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
-				//Ignore iTunes files
-				if (files[i].getName().startsWith("._")){
+				// Ignore iTunes files
+				if (files[i].getName().startsWith("._")) {
 					continue;
 				}
 				if (bIsMusic) {
@@ -310,8 +305,7 @@ public class Directory extends PhysicalItem implements Comparable {
 					tag = new Tag(files[i], true);
 					if (tag.isCorrupted()) {
 						device.iNbCorruptedFiles++; // stats
-						Log.error("103", "{{" + files[i].getAbsolutePath() //$NON-NLS-1$ //$NON-NLS-2$
-								+ "}}", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						Log.error("103", "{{" + files[i].getAbsolutePath() + "}}", null);
 					}
 					// if an error occurs, just notice it but keep the track
 					String sTrackName = tag.getTrackName();
@@ -374,8 +368,7 @@ public class Directory extends PhysicalItem implements Comparable {
 					}
 				}
 			} catch (Exception e) {
-				Log.error("103", files.length > 0 ? "{{" + files[i].toString() //$NON-NLS-1$ //$NON-NLS-2$
-						+ "}}" : "", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				Log.error("103", files.length > 0 ? "{{" + files[i].toString() + "}}" : "", e);
 			}
 		}
 	}
@@ -387,9 +380,9 @@ public class Directory extends PhysicalItem implements Comparable {
 	 */
 	public String getRelativePath() {
 		if (getName().equals("")) { // if this directory is a root device
-			// //$NON-NLS-1$
-			// directory //$NON-NLS-1$
-			return ""; //$NON-NLS-1$
+			// 
+			// directory
+			return "";
 		}
 		StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar)
 				.append(getName());
@@ -397,7 +390,7 @@ public class Directory extends PhysicalItem implements Comparable {
 		Directory dCurrent = this;
 		while (!bTop && dCurrent != null) {
 			dCurrent = dCurrent.getParentDirectory();
-			if (dCurrent != null && !dCurrent.getName().equals("")) { //$NON-NLS-1$ 
+			if (dCurrent != null && !dCurrent.getName().equals("")) {
 				// if it is the root directory, no parent
 				sbOut.insert(0, java.io.File.separatorChar).insert(1, dCurrent.getName());
 			} else {
@@ -473,7 +466,7 @@ public class Directory extends PhysicalItem implements Comparable {
 		} else {
 			sName = getFio().getAbsolutePath();
 		}
-		return Messages.getString("Item_Directory") + " : " + sName; //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Directory") + " : " + sName;
 	}
 
 	/*
@@ -486,7 +479,7 @@ public class Directory extends PhysicalItem implements Comparable {
 			Directory dParent = DirectoryManager.getInstance().getDirectoryByID(
 					(String) getValue(sKey));
 			if (dParent == null) {
-				return ""; // no parent directory //$NON-NLS-1$
+				return ""; // no parent directory
 			} else {
 				return dParent.getFio().getAbsolutePath();
 			}

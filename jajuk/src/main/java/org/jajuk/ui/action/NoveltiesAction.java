@@ -26,6 +26,7 @@ import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
@@ -38,8 +39,8 @@ public class NoveltiesAction extends ActionBase {
 
 	NoveltiesAction() {
 		super(
-				Messages.getString("JajukWindow.15"), Util.getIcon(ICON_NOVELTIES), true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
+				Messages.getString("JajukWindow.15"), IconLoader.ICON_NOVELTIES, true); 
+		setShortDescription(Messages.getString("JajukWindow.31")); 
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {
@@ -52,7 +53,7 @@ public class NoveltiesAction extends ActionBase {
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
 							false), false);
 		} else { // none novelty found
-			Messages.showWarningMessage(Messages.getString("Error.127")); //$NON-NLS-1$
+			Messages.showWarningMessage(Messages.getString("Error.127")); 
 		}
 	}
 }

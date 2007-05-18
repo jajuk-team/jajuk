@@ -104,23 +104,23 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 				// given, false for
 				// booleans
 			}
-			this.sHumanType = Messages.getString("Property_Format_Boolean"); //$NON-NLS-1$
+			this.sHumanType = Messages.getString("Property_Format_Boolean"); 
 		} else if (cType.equals(String.class)) {
 			if (oDefaultValue == null) {
-				this.oDefaultValue = ""; // if no default is given, "" //$NON-NLS-1$
-				// //$NON-NLS-1$
+				this.oDefaultValue = ""; // if no default is given, "" 
+				// 
 			}
-			this.sHumanType = Messages.getString("Property_Format_String"); //$NON-NLS-1$
+			this.sHumanType = Messages.getString("Property_Format_String"); 
 		} else if (cType.equals(Long.class)) {
 			if (oDefaultValue == null) {
 				this.oDefaultValue = 0l; // if no default is given, 0
 			}
-			this.sHumanType = Messages.getString("Property_Format_Number"); //$NON-NLS-1$
+			this.sHumanType = Messages.getString("Property_Format_Number"); 
 		} else if (cType.equals(Double.class)) {
 			if (oDefaultValue == null) {
 				this.oDefaultValue = 0.0d; // if no default is given, 0.0
 			}
-			this.sHumanType = Messages.getString("Property_Format_Float"); //$NON-NLS-1$
+			this.sHumanType = Messages.getString("Property_Format_Float"); 
 		} else if (cType.equals(Date.class)) {
 			// date default
 			if (oDefaultValue == null) {
@@ -128,7 +128,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 			} else {
 				this.oDefaultValue = oDefaultValue;
 			}
-			this.sHumanType = Messages.getString("Property_Format_Date"); //$NON-NLS-1$
+			this.sHumanType = Messages.getString("Property_Format_Date"); 
 		} else if (cType.equals(URL.class)) {
 			// URL default
 			if (oDefaultValue == null) {
@@ -140,11 +140,11 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 			} else {
 				this.oDefaultValue = oDefaultValue;
 			}
-			this.sHumanType = Messages.getString("Property_Format_URL"); //$NON-NLS-1$
+			this.sHumanType = Messages.getString("Property_Format_URL"); 
 		} else if (cType.equals(Class.class)) {
 			this.oDefaultValue = Object.class;
 		} else { // class not supported
-			Log.debug("Class not supported !!!"); //$NON-NLS-1$
+			Log.debug("Class not supported !!!"); 
 		}
 	}
 
@@ -183,7 +183,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 	 * @return property meta information XML description
 	 */
 	public String toXML() {
-		String sDefault = ""; //$NON-NLS-1$
+		String sDefault = ""; 
 		try {
 			if (oDefaultValue != null) {
 				sDefault = Util.format(oDefaultValue, this);
@@ -191,14 +191,14 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 		} catch (Exception e) { // should to occur at this point
 			Log.error(e);
 		}
-		return "\t\t<" + XML_PROPERTY + " " + XML_NAME + "='" + Util.formatXML(sName) + "' " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-				XML_CUSTOM + "='" + bCustom + "' " + //$NON-NLS-1$ //$NON-NLS-2$
-				XML_CONSTRUCTOR + "='" + bConstructor + "' " + //$NON-NLS-1$ //$NON-NLS-2$
-				XML_VISIBLE + "='" + bShouldBeDisplayed + "' " + //$NON-NLS-1$ //$NON-NLS-2$
-				XML_EDITABLE + "='" + bEditable + "' " + //$NON-NLS-1$ //$NON-NLS-2$
-				XML_UNIQUE + "='" + bMergeable + "' " + //$NON-NLS-1$ //$NON-NLS-2$
-				XML_TYPE + "='" + cType.getName() + "' " + //$NON-NLS-1$ //$NON-NLS-2$
-				XML_DEFAULT_VALUE + "='" + Util.formatXML(sDefault) + "'/>"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "\t\t<" + XML_PROPERTY + " " + XML_NAME + "='" + Util.formatXML(sName) + "' " +    
+				XML_CUSTOM + "='" + bCustom + "' " +  
+				XML_CONSTRUCTOR + "='" + bConstructor + "' " +  
+				XML_VISIBLE + "='" + bShouldBeDisplayed + "' " +  
+				XML_EDITABLE + "='" + bEditable + "' " +  
+				XML_UNIQUE + "='" + bMergeable + "' " +  
+				XML_TYPE + "='" + cType.getName() + "' " +  
+				XML_DEFAULT_VALUE + "='" + Util.formatXML(sDefault) + "'/>";  
 	}
 
 	public Object getDefaultValue() {
@@ -211,10 +211,10 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 	 */
 
 	public String toString() {
-		return "Name=" + sName + " Custom=" + bCustom + " Constructor=" + bConstructor //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ " Type=" + cType + " Default=" + oDefaultValue //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ " Editable=" + isEditable() + " Visible=" + isVisible() //$NON-NLS-1$ //$NON-NLS-2$
-				+ " Mergeable=" + isMergeable(); //$NON-NLS-1$
+		return "Name=" + sName + " Custom=" + bCustom + " Constructor=" + bConstructor   
+				+ " Type=" + cType + " Default=" + oDefaultValue   
+				+ " Editable=" + isEditable() + " Visible=" + isVisible()  
+				+ " Mergeable=" + isMergeable(); 
 	}
 
 	public boolean isVisible() {
@@ -238,8 +238,8 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 	}
 
 	public String getHumanName() {
-		return Messages.getInstance().contains("Property_" + getName()) ? //$NON-NLS-1$
-		Messages.getString("Property_" + getName()) : getName(); //$NON-NLS-1$
+		return Messages.getInstance().contains("Property_" + getName()) ? 
+		Messages.getString("Property_" + getName()) : getName(); 
 	}
 
 }

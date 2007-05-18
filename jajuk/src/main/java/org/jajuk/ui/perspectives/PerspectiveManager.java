@@ -29,6 +29,7 @@ import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.mozilla.xpcom.GREVersionRange;
@@ -85,7 +86,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		registerDefaultPerspectives();
 		if (Main.isUpgradeDetected()) {
 			// upgrade message
-			Messages.showInfoMessage(Messages.getString("Note.0")); //$NON-NLS-1$
+			Messages.showInfoMessage(Messages.getString("Note.0")); 
 			// force loading of defaults perspectives
 			for (IPerspective perspective : getPerspectives()) {
 				// Remove current conf file to force using default file from the
@@ -103,7 +104,7 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 				perspective.load();
 			}
 		} catch (Exception e) {
-			throw new JajukException("108", e); //$NON-NLS-1$
+			throw new JajukException("108", e); 
 		}
 	}
 
@@ -237,27 +238,27 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		IPerspective perspective = null;
 		// Simple perspective
 		perspective = new SimplePerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_SIMPLE);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_SIMPLE.getUrl());
 		registerPerspective(perspective);
 
 		// physical perspective
 		perspective = new PhysicalPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PHYSICAL.getUrl());
 		registerPerspective(perspective);
 
 		// Logical perspective
 		perspective = new LogicalPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_LOGICAL.getUrl());
 		registerPerspective(perspective);
 
 		// Player perspective
 		perspective = new PlayerPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PLAYER.getUrl());
 		registerPerspective(perspective);
 
 		// Catalog perspective
 		perspective = new CatalogPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_CATALOG);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CATALOG.getUrl());
 		registerPerspective(perspective);
 
 		// Information perspective
@@ -309,17 +310,17 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 
 		// Configuration perspective
 		perspective = new ConfigurationPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CONFIGURATION.getUrl());
 		registerPerspective(perspective);
 
 		// Stats perspective
 		perspective = new StatPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_STATISTICS);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_STATISTICS.getUrl());
 		registerPerspective(perspective);
 
 		// Help perspective
 		perspective = new HelpPerspective();
-		perspective.setIconPath(ICON_PERSPECTIVE_HELP);
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_HELP.getUrl());
 		registerPerspective(perspective);
 	}
 

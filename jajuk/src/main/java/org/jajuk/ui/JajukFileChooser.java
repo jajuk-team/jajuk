@@ -48,11 +48,12 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
 		this.filter = jfilter;
 		setFileFilter(jfilter);
 		setMultiSelectionEnabled(true);
+		setAcceptAllFileFilterUsed(false);
+		setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		// Use default directory to store documents (My Documents under Windows
 		// for ie)
 		setCurrentDirectory(FileSystemView.getFileSystemView()
-				.getDefaultDirectory()); //$NON-NLS-1$ 
-
+				.getDefaultDirectory());  
 	}
 
 	/**

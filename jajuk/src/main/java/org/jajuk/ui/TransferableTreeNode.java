@@ -36,7 +36,7 @@ public class TransferableTreeNode extends DefaultMutableTreeNode implements
 	private static final long serialVersionUID = 1L;
 
 	public static final DataFlavor NODE_FLAVOR = new DataFlavor(
-			DataFlavor.javaJVMLocalObjectMimeType, "Node"); //$NON-NLS-1$
+			DataFlavor.javaJVMLocalObjectMimeType, "Node"); 
 
 	private Object oData;
 

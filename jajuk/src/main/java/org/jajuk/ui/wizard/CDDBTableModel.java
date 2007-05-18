@@ -50,20 +50,20 @@ public class CDDBTableModel extends JajukTableModel {
 		this.alItems = alItems;
 
 		// Current Album title
-		vColNames.add(Messages.getString("CDDBWizard.3")); //$NON-NLS-1$
-		vId.add("CDDBWizard.1"); //$NON-NLS-1$
+		vColNames.add(Messages.getString("CDDBWizard.3")); 
+		vId.add("CDDBWizard.1"); 
 
 		// Filename
-		vColNames.add(Messages.getString("CDDBWizard.1")); //$NON-NLS-1$
-		vId.add("CDDBWizard.2"); //$NON-NLS-1$
+		vColNames.add(Messages.getString("CDDBWizard.1")); 
+		vId.add("CDDBWizard.2"); 
 
 		// Current Track title
-		vColNames.add(Messages.getString("CDDBWizard.2")); //$NON-NLS-1$
-		vId.add("CDDBWizard.3"); //$NON-NLS-1$
+		vColNames.add(Messages.getString("CDDBWizard.2")); 
+		vId.add("CDDBWizard.3"); 
 
 		// Proposed Track Name
-		vColNames.add(Messages.getString("CDDBWizard.4")); //$NON-NLS-1$
-		vId.add("CDDBWizard.4"); //$NON-NLS-1$
+		vColNames.add(Messages.getString("CDDBWizard.4")); 
+		vId.add("CDDBWizard.4"); 
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class CDDBTableModel extends JajukTableModel {
 			setItemAt(iRow, track);
 			ArrayList file = track.getFiles();
 			Iterator ifi = file.iterator();
-			String filename = ""; //$NON-NLS-1$
+			String filename = ""; 
 			while (ifi.hasNext()) {
 				File f = (File) ifi.next();
 				filename = f.getName();

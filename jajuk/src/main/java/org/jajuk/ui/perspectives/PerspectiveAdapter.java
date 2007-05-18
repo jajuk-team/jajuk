@@ -83,7 +83,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
 	 * toString method
 	 */
 	public String toString() {
-		return "Perspective[name=" + getID() + " description='" + getDesc() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
 	}
 
 	/*
@@ -127,10 +127,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
 	public void load() throws Exception {
 		// Try to read XML conf file from home directory
 		File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
-		/*
-		 * If file doesn't exist (normally only at first install), read
-		 * perspective conf from the jar
-		 */
+		// If file doesn't exist (normally only at first install), read
+		// perspective conf from the jar
 		URL url = loadFile.toURL();
 		if (!loadFile.exists()) {
 			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
@@ -158,7 +156,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
 		try {
 			ctx.readXML(in);
 		} catch (Exception e) {
-			// error parsing the file, we must avoid user to blocked, use
+			// error parsing the file, user can't be blocked, use
 			// default conf
 			Log.error(e);
 			Log.debug("Error parsing conf file, use defaults - " + getID());

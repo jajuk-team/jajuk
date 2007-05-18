@@ -60,7 +60,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	private java.io.File fio;
 
 	/** Device mount point* */
-	private String sMountPoint = ""; //$NON-NLS-1$
+	private String sMountPoint = ""; 
 
 	/** Mounted device flag */
 	private boolean bMounted;
@@ -104,7 +104,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	long lDateLastRefresh;
 
 	/** Refresh message */
-	private String sFinalMessage = ""; //$NON-NLS-1$
+	private String sFinalMessage = ""; 
 
 	// Refresh Options
 	private static final int OPTION_REFRESH_FAST = 0;
@@ -138,9 +138,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" +   
 				DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE))
-				+ " URL=" + sUrl + " Mount point=" + sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+				+ " URL=" + sUrl + " Mount point=" + sMountPoint + "]";    
 	}
 
 	/**
@@ -153,14 +153,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		if (otherDevice == null) {
 			return false;
 		}
-		return this.getId().equals(((Device) otherDevice).getId());
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Device) otherDevice).hashcode);
 	}
 
 	/**
@@ -212,10 +205,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		if (bAsk) {
 			Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),// fast
 					Messages.getString("PhysicalTreeView.61"),// deep
-					Messages.getString("Cancel") };// cancel //$NON-NLS-1$
+					Messages.getString("Cancel") };// cancel 
 			i = JOptionPane.showOptionDialog(null,
-					Messages.getString("PhysicalTreeView.59"), //$NON-NLS-1$
-					Messages.getString("Option"), //$NON-NLS-1$
+					Messages.getString("PhysicalTreeView.59"), 
+					Messages.getString("Option"), 
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, possibleValues,
 					possibleValues[0]);
 			if (i == OPTION_REFRESH_CANCEL) { // Cancel
@@ -228,12 +221,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				device.mount();
 			} catch (Exception e) {
 				Log.error("011", "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
+				Messages.showErrorMessage("011", getName()); 
 				return;
 			}
 		}
 		if (bAlreadyRefreshing) {
-			Messages.showErrorMessage("107"); //$NON-NLS-1$
+			Messages.showErrorMessage("107"); 
 			return;
 		}
 		// clean old files up
@@ -288,7 +281,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			if (file.exists() && (file.list() == null || file.list().length == 0)) {
 				int i = Messages
 						.getChoice(
-								Messages.getString("Confirmation_void_refresh"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getString("Confirmation_void_refresh"), JOptionPane.WARNING_MESSAGE);  
 				if (i != JOptionPane.OK_OPTION) {
 					return false;
 				}
@@ -298,11 +291,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			iNbNewFiles = 0;
 			iNbCorruptedFiles = 0;
 			if (bDeepScan && Log.isDebugEnabled()) {
-				Log.debug("Starting refresh of device : " + this); //$NON-NLS-1$    
+				Log.debug("Starting refresh of device : " + this);     
 			}
 			File fTop = new File(getStringValue(XML_URL));
 			if (!fTop.exists()) {
-				Messages.showErrorMessage("101"); //$NON-NLS-1$
+				Messages.showErrorMessage("101"); 
 				return false;
 			}
 
@@ -348,7 +341,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 							InformationJPanel
 									.getInstance()
 									.setMessage(
-											new StringBuffer(Messages.getString("Device.21")).append(this.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(), InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+											new StringBuffer(Messages.getString("Device.21")).append(this.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(), InformationJPanel.INFORMATIVE);   
 						}
 						dParent.scan(bDeepScan);
 						iDeep++;
@@ -365,12 +358,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 			// Display end of refresh message with stats
 			lTime = System.currentTimeMillis() - lTime;
-			StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
+			StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).  
+					append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).  
+					append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27"));  
 			if (iNbCorruptedFiles > 0) {
 				sbOut
-						.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
+						.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));  
 			}
 			sFinalMessage = sbOut.toString();
 			Log.debug(sFinalMessage);
@@ -405,7 +398,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				device.mount();
 			} catch (Exception e) {
 				Log.error("011", "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage("011", getName()); //$NON-NLS-1$
+				Messages.showErrorMessage("011", getName()); 
 				return;
 			}
 		}
@@ -454,8 +447,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 			// start message
 			InformationJPanel.getInstance().setMessage(
-					new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
-							append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$
+					new StringBuffer(Messages.getString("Device.31")). 
+							append(dSrc.getName()).append(',').append(this.getName()).append("]"). 
 							toString(), InformationJPanel.INFORMATIVE);
 			// in both cases (bi or uni-directional), make an unidirectional
 			// sync from source device to this one
@@ -464,9 +457,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			iNbCreatedFilesDest += synchronizeUnidirectonal(this, dSrc);
 			// end message
 			lTime = System.currentTimeMillis() - lTime;
-			String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					.append(" - ").append(iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(lVolume / 1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
+			String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s"))   
+					.append(" - ").append(iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")).  
+					append(lVolume / 1048576).append(Messages.getString("Device.36")).toString(); 
 			// perform a fast refresh
 			this.refreshCommand(false, true);
 			// if bidi sync, refresh the other device as well (new file can
@@ -581,21 +574,21 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 							iNbCreatedFiles++;
 							lVolume += fSrcFiles[i].length();
 							InformationJPanel.getInstance().setMessage(
-									new StringBuffer(Messages.getString("Device.41")). //$NON-NLS-1$
+									new StringBuffer(Messages.getString("Device.41")). 
 											append(dSrc.getName()).append(',').append(
 													dest.getName()).append(
-													Messages.getString("Device.42")) //$NON-NLS-1$
-											.append(fSrcFiles[i].getAbsolutePath()).append("]"). //$NON-NLS-1$
+													Messages.getString("Device.42")) 
+											.append(fSrcFiles[i].getAbsolutePath()).append("]"). 
 											toString(), InformationJPanel.INFORMATIVE);
 						} catch (JajukException je) {
 							Messages.showErrorMessage(je.getCode(), fSrcFiles[i].getAbsolutePath());
-							Messages.showErrorMessage("027"); //$NON-NLS-1$
+							Messages.showErrorMessage("027"); 
 							Log.error(je);
 							return iNbCreatedFiles;
 						} catch (Exception e) {
-							Messages.showErrorMessage("020", fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
-							Messages.showErrorMessage("027"); //$NON-NLS-1$
-							Log.error("020", "{{" + fSrcFiles[i].getAbsolutePath() + "}}", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							Messages.showErrorMessage("020", fSrcFiles[i].getAbsolutePath()); 
+							Messages.showErrorMessage("027"); 
+							Log.error("020", "{{" + fSrcFiles[i].getAbsolutePath() + "}}", e);   
 							return iNbCreatedFiles;
 						}
 					}
@@ -658,7 +651,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	/**
 	 * @return
 	 */
-	public ArrayList getDirectories() {
+	public ArrayList<Directory> getDirectories() {
 		return alDirectories;
 	}
 
@@ -698,10 +691,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 */
 	public void mount(boolean bUIRefresh) throws Exception {
 		if (bMounted) {
-			Messages.showErrorMessage("111"); //$NON-NLS-1$
+			Messages.showErrorMessage("111"); 
 		}
 		try {
-			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { //$NON-NLS-1$
+			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { 
 				// look to see if the device is already mounted ( the mount
 				// command cannot say that )
 				File file = new File(getMountPoint());
@@ -709,8 +702,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 					// if none file in this directory, it probably
 					// means device is not mounted, try to mount it
 
-					// run the actual mount command //$NON-NLS-1$
-					Process process = Runtime.getRuntime().exec("mount " + getMountPoint()); //$NON-NLS-1$
+					// run the actual mount command 
+					Process process = Runtime.getRuntime().exec("mount " + getMountPoint()); 
 					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
@@ -724,7 +717,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				}
 			}
 		} catch (Exception e) {
-			throw new JajukException("011", getName(), e); //$NON-NLS-1$
+			throw new JajukException("011", getName(), e); 
 		}
 		// Cannot mount void devices because of reference garbager thread
 		File file = new File(getUrl());
@@ -763,7 +756,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 		// ask fifo if it doens't use any track from this device
 		if (!FIFO.canUnmount(this)) {
-			Messages.showErrorMessage("121"); //$NON-NLS-1$
+			Messages.showErrorMessage("121"); 
 			return;
 		}
 		int iExit = 0;
@@ -773,15 +766,15 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				// we try to unmount the device if under Unix. Note that this is
 				// useless most of the time with Linux 2.6+, so it's just a try
 				// and we don't check exit code anymore
-				Process process = Runtime.getRuntime().exec("umount " + getMountPoint()); //$NON-NLS-1$
+				Process process = Runtime.getRuntime().exec("umount " + getMountPoint()); 
 				iExit = process.waitFor();
 				if (bEjection) { // jection if required
-					process = Runtime.getRuntime().exec("eject " + getMountPoint()); //$NON-NLS-1$
+					process = Runtime.getRuntime().exec("eject " + getMountPoint()); 
 					process.waitFor();
 				}
 			} catch (Exception e) {
 				Log.error("012", Integer.toString(iExit), e); // mount failed
-				Messages.showErrorMessage("012", getName()); //$NON-NLS-1$
+				Messages.showErrorMessage("012", getName()); 
 				return;
 			}
 		}
@@ -921,7 +914,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Device") + " : " + getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Device") + " : " + getName();  
 	}
 
 	/*
@@ -961,7 +954,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				if (!dir.getFio().exists()) {
 					// note that associated files are removed too
 					DirectoryManager.getInstance().removeDirectory(dir.getId());
-					Log.debug("Removed: " + dir); //$NON-NLS-1$
+					Log.debug("Removed: " + dir); 
 					bChanges = true;
 				}
 			}
@@ -974,7 +967,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				//(useful for jajuk < 1.4) 
 				if (!file.getIO().exists() || file.getName().startsWith("._")) {
 					FileManager.getInstance().removeFile(file);
-					Log.debug("Removed: " + file); //$NON-NLS-1$
+					Log.debug("Removed: " + file); 
 					bChanges = true;
 				}
 			}
@@ -985,7 +978,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
 				if (!plf.getFio().exists()) {
 					PlaylistFileManager.getInstance().removePlaylistFile(plf);
-					Log.debug("Removed: " + plf); //$NON-NLS-1$
+					Log.debug("Removed: " + plf); 
 					bChanges = true;
 				}
 			}
@@ -997,8 +990,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 		// delete old history items
 		l = System.currentTimeMillis() - l;
-		Log.debug("Old file references cleaned in: " //$NON-NLS-1$
-				+ ((l < 1000) ? l + " ms" : l / 1000 + " s")); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Old file references cleaned in: " 
+				+ ((l < 1000) ? l + " ms" : l / 1000 + " s"));  
 		return bChanges;
 	}
 
@@ -1021,29 +1014,29 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 						&& (sValue.equalsIgnoreCase(TRUE) || sValue.equalsIgnoreCase(FALSE))) {
 					switch ((int) this.getDeviceType()) {
 					case 0: // directory
-						sValue = "0.5d"; //$NON-NLS-1$
+						sValue = "0.5d"; 
 						break;
 					case 1: // file cd
-						sValue = "0d"; //$NON-NLS-1$
+						sValue = "0d"; 
 						break;
 					case 2: // network drive
-						sValue = "0d"; //$NON-NLS-1$
+						sValue = "0d"; 
 						break;
 					case 3: // ext dd
-						sValue = "3d"; //$NON-NLS-1$
+						sValue = "3d"; 
 						break;
 					case 4: // player
-						sValue = "3d"; //$NON-NLS-1$
+						sValue = "3d"; 
 						break;
 					case 5: // P2P
-						sValue = "0d"; //$NON-NLS-1$
+						sValue = "0d"; 
 						break;
 					}
 				}
 				try {
 					setProperty(sProperty, Util.parse(sValue, meta.getType()));
 				} catch (Exception e) {
-					Log.error("137", sProperty, e); //$NON-NLS-1$
+					Log.error("137", sProperty, e); 
 				}
 			}
 		}

@@ -20,8 +20,6 @@
 
 package org.jajuk.reporting;
 
-import java.util.ArrayList;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -30,6 +28,8 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
+
+import java.util.ArrayList;
 
 /**
  * This class exports music contents to HTML.
@@ -51,7 +51,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 			// Create an xml tagging of the collection.
 			String xml = xmlExporter.processCollection(PHYSICAL_COLLECTION);
 			if (xml != null) {
-				// content = XMLTransformer.xmlToHTML(xml, COLLECTION_XSLT);
+				content = XMLTransformer.xmlToHTML(xml, XSLT_DEVICE);
 			}
 			// Else if we are exporting the logical genre collection...
 		} else if (type == LOGICAL_COLLECTION) {

@@ -101,7 +101,7 @@ public class Type extends PhysicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Type[ID=" + sId + " Name=" + getName() + " ; Extension=" + sExtension + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		return "Type[ID=" + sId + " Name=" + getName() + " ; Extension=" + sExtension + "]";    
 	}
 
 	/**
@@ -114,14 +114,7 @@ public class Type extends PhysicalItem implements Comparable {
 		if (otherType == null) {
 			return false;
 		}
-		return this.getId().equals(((Type) otherType).getId());
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Type) otherType).hashcode);
 	}
 
 	/**
@@ -144,7 +137,7 @@ public class Type extends PhysicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Type") + " : " + getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Type") + " : " + getName();  
 	}
 
 	/**

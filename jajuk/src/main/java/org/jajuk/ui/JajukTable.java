@@ -126,7 +126,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	public ArrayList<String> getColumnsConf() {
 		ArrayList<String> alOut = new ArrayList<String>(10);
 		String value = ConfigurationManager.getProperty(sConf);
-		StringTokenizer st = new StringTokenizer(value, ","); //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(value, ","); 
 		while (st.hasMoreTokens()) {
 			alOut.add(st.nextToken());
 		}
@@ -145,7 +145,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		ArrayList alOut = getColumnsConf();
 		if (!alOut.contains(property)) {
 			String value = ConfigurationManager.getProperty(sConf);
-			ConfigurationManager.setProperty(sConf, value + "," + property); //$NON-NLS-1$
+			ConfigurationManager.setProperty(sConf, value + "," + property); 
 		}
 	}
 
@@ -177,7 +177,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 			String sIdentifier = ((JajukTableModel) getModel())
 					.getIdentifier(col.getModelIndex());
 			if (col.isVisible()) {
-				sb.append(sIdentifier + ","); //$NON-NLS-1$
+				sb.append(sIdentifier + ","); 
 			}
 		}
 		String value;
@@ -199,7 +199,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		StringBuffer sb = new StringBuffer();
 		Iterator it = alCol.iterator();
 		while (it.hasNext()) {
-			sb.append((String) it.next() + ","); //$NON-NLS-1$
+			sb.append((String) it.next() + ","); 
 		}
 		// remove last coma
 		if (sb.length() > 0) {

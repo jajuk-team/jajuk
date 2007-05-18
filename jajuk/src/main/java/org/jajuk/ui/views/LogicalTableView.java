@@ -81,7 +81,7 @@ public class LogicalTableView extends AbstractTableView {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("LogicalTableView.0"); //$NON-NLS-1$
+		return Messages.getString("LogicalTableView.0"); 
 	}
 
 	/** Return singleton */
@@ -98,21 +98,21 @@ public class LogicalTableView extends AbstractTableView {
 		ltv = this;
 		// Track menu
 		jmenuTrack = new JPopupMenu();
-		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTableView.7")); //$NON-NLS-1$
+		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTableView.7")); 
 		jmiTrackPlay.addActionListener(this);
-		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8")); //$NON-NLS-1$
+		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8")); 
 		jmiTrackPush.addActionListener(this);
-		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9")); //$NON-NLS-1$
+		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9")); 
 		jmiTrackPlayShuffle.addActionListener(this);
-		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10")); //$NON-NLS-1$
+		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10")); 
 		jmiTrackPlayRepeat.addActionListener(this);
-		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11")); //$NON-NLS-1$
+		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11")); 
 		jmiTrackPlayAlbum.addActionListener(this);
-		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); //$NON-NLS-1$
+		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); 
 		jmiTrackPlayAuthor.addActionListener(this);
-		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15")); //$NON-NLS-1$
+		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15")); 
 		jmiTrackAddFavorite.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
+		jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); 
 		jmiProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
 		jmenuTrack.add(jmiTrackPush);
@@ -190,7 +190,7 @@ public class LogicalTableView extends AbstractTableView {
 					Log.error(je);
 				}
 			} else {
-				Messages.showErrorMessage("010", track.getName()); //$NON-NLS-1$
+				Messages.showErrorMessage("010", track.getName()); 
 			}
 		} else if (e.getClickCount() == 1) {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
@@ -258,7 +258,7 @@ public class LogicalTableView extends AbstractTableView {
 					}
 				}
 				if (alFilesToPlay.size() == 0) {
-					Messages.showErrorMessage("018"); //$NON-NLS-1$
+					Messages.showErrorMessage("018"); 
 					return;
 				}
 				// simple play

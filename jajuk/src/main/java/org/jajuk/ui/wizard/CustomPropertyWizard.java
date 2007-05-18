@@ -73,22 +73,22 @@ public abstract class CustomPropertyWizard
 	void populate() {
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		Util.setShuffleLocation(this, 400, 400);
-		jlItemChoice = new JLabel(Messages.getString("CustomPropertyWizard.0")); //$NON-NLS-1$
-		jlName = new JLabel(Messages.getString("CustomPropertyWizard.1")); //$NON-NLS-1$
+		jlItemChoice = new JLabel(Messages.getString("CustomPropertyWizard.0")); 
+		jlName = new JLabel(Messages.getString("CustomPropertyWizard.1")); 
 		jcbItemChoice = new JComboBox();
-		jcbItemChoice.addItem(Messages.getString("Item_Track")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_File")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Style")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Author")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Album")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Device")); //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Directory")); //$NON-NLS-1$
+		jcbItemChoice.addItem(Messages.getString("Item_Track")); 
+		jcbItemChoice.addItem(Messages.getString("Item_File")); 
+		jcbItemChoice.addItem(Messages.getString("Item_Style")); 
+		jcbItemChoice.addItem(Messages.getString("Item_Author")); 
+		jcbItemChoice.addItem(Messages.getString("Item_Album")); 
+		jcbItemChoice.addItem(Messages.getString("Item_Device")); 
+		jcbItemChoice.addItem(Messages.getString("Item_Directory")); 
 		jcbItemChoice.addItem(Messages.getString("Item_Playlist")); // playlist
-																	// //$NON-NLS-1$
-		jcbItemChoice.addItem(Messages.getString("Item_Year")); //$NON-NLS-1$
+																	// 
+		jcbItemChoice.addItem(Messages.getString("Item_Year")); 
 		// file
 		// actually
-		// //$NON-NLS-1$
+		// 
 		okp = new OKCancelPanel(this);
 		okp.getOKButton().setEnabled(false);
 		// In physical perspective, default item is file, otherwise, it is track

@@ -68,7 +68,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
 	protected JTree createTree() {
 		jtree = new JXTree(top);
-		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
+		jtree.setOpaque(false);
+		jtree.putClientProperty("JTree.lineStyle", "Angled");  
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		// Add alternate rows highliter

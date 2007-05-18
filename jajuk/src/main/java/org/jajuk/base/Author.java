@@ -66,7 +66,7 @@ public class Author extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Author[ID=" + sId + " Name={{" + sName + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Author[ID=" + sId + " Name={{" + sName + "}}]";   
 	}
 
 	/**
@@ -79,14 +79,7 @@ public class Author extends LogicalItem implements Comparable {
 		if (otherAuthor == null) {
 			return false;
 		}
-		return this.getId().equals(((Author) otherAuthor).getId());
-	}
-
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Author) otherAuthor).hashcode);
 	}
 
 	/**
@@ -115,7 +108,7 @@ public class Author extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Author") + " : " + getName2(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Author") + " : " + getName2();  
 	}
 
 	/*

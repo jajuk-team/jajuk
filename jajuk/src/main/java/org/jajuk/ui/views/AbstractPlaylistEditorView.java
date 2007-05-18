@@ -47,6 +47,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -152,13 +153,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	boolean bReloading = false;
 
 	/* Cashed icons */
-	static final ImageIcon iconNormal = Util.getIcon(ICON_TRACK_FIFO_NORM);
+	static final ImageIcon iconNormal = IconLoader.ICON_TRACK_FIFO_NORM;
 
-	static final ImageIcon iconRepeat = Util.getIcon(ICON_TRACK_FIFO_REPEAT);
+	static final ImageIcon iconRepeat = IconLoader.ICON_TRACK_FIFO_REPEAT;
 
-	static final ImageIcon iconPlanned = Util.getIcon(ICON_TRACK_FIFO_PLANNED);
+	static final ImageIcon iconPlanned = IconLoader.ICON_TRACK_FIFO_PLANNED;
 
-	static final ImageIcon iconPlaylist = Util.getIcon(ICON_PLAYLIST_FILE);
+	static final ImageIcon iconPlaylist = IconLoader.ICON_PLAYLIST_FILE;
 
 	/** Model */
 	private JajukTableModel model;
@@ -194,34 +195,34 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			vId.clear();
 
 			// State icon (play/repeat/planned)
-			vColNames.add("");//$NON-NLS-1$
-			vId.add("0");//$NON-NLS-1$
+			vColNames.add("");
+			vId.add("0");
 
 			// Track name
 			// Note we display "title" and not "name" for this property for
 			// clearness
-			vColNames.add(Messages.getString("AbstractPlaylistEditorView.0")); //$NON-NLS-1$
-			vId.add(XML_TRACK_NAME); //$NON-NLS-1$
+			vColNames.add(Messages.getString("AbstractPlaylistEditorView.0")); 
+			vId.add(XML_TRACK_NAME); 
 
 			// Album
-			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ALBUM)); //$NON-NLS-1$
-			vId.add(XML_TRACK_ALBUM); //$NON-NLS-1$
+			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ALBUM)); 
+			vId.add(XML_TRACK_ALBUM); 
 
 			// Author
-			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_AUTHOR)); //$NON-NLS-1$
-			vId.add(XML_TRACK_AUTHOR); //$NON-NLS-1$
+			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_AUTHOR)); 
+			vId.add(XML_TRACK_AUTHOR); 
 
 			// Style
-			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_STYLE)); //$NON-NLS-1$
-			vId.add(XML_TRACK_STYLE); //$NON-NLS-1$
+			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_STYLE)); 
+			vId.add(XML_TRACK_STYLE); 
 
 			// Stars
-			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE)); //$NON-NLS-1$
-			vId.add(XML_TRACK_RATE); //$NON-NLS-1$
+			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE)); 
+			vId.add(XML_TRACK_RATE); 
 
 			// Year
-			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR)); //$NON-NLS-1$
-			vId.add(XML_YEAR); //$NON-NLS-1$
+			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR)); 
+			vId.add(XML_YEAR); 
 
 			// Length
 			vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
@@ -248,11 +249,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			vId.add(XML_DIRECTORY);
 
 			// File name
-			vColNames.add(Messages.getString("Property_filename")); //$NON-NLS-1$
+			vColNames.add(Messages.getString("Property_filename")); 
 			vId.add(XML_FILE);
 
 			// Hits
-			vColNames.add(Messages.getString("Property_hits")); //$NON-NLS-1$
+			vColNames.add(Messages.getString("Property_hits")); 
 			vId.add(XML_TRACK_HITS);
 
 			// custom properties now
@@ -295,7 +296,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					if (bPlanned) {
 						oValues[iRow][0] = new IconLabel(
 								iconPlanned,
-								"", null, null, font, Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
+								"", null, null, font, Messages.getString("AbstractPlaylistEditorView.20"));  
 					} else {
 						if (item.isRepeat()) {
 							// normal file, repeated
@@ -310,7 +311,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				} else {
 					oValues[iRow][0] = new IconLabel(
 							iconPlaylist,
-							"", null, null, font, Messages.getString("AbstractPlaylistEditorView.21")); //$NON-NLS-1$ //$NON-NLS-2$
+							"", null, null, font, Messages.getString("AbstractPlaylistEditorView.21"));  
 				}
 				// Track name
 				oValues[iRow][1] = bf.getTrack().getName();
@@ -399,28 +400,28 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		TableLayout layout = new TableLayout(sizeControl);
 		layout.setHGap(2);
 		jpControl.setLayout(layout);
-		jbRun = new JajukButton(Util.getIcon(ICON_RUN));
-		jbRun.setToolTipText(Messages.getString("AbstractPlaylistEditorView.2")); //$NON-NLS-1$
+		jbRun = new JajukButton(IconLoader.ICON_RUN);
+		jbRun.setToolTipText(Messages.getString("AbstractPlaylistEditorView.2")); 
 		jbRun.addActionListener(this);
-		jbSave = new JajukButton(Util.getIcon(ICON_SAVE));
-		jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3")); //$NON-NLS-1$
+		jbSave = new JajukButton(IconLoader.ICON_SAVE);
+		jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3")); 
 		jbSave.addActionListener(this);
-		jbRemove = new JajukButton(Util.getIcon(ICON_REMOVE));
-		jbRemove.setToolTipText(Messages.getString("AbstractPlaylistEditorView.5")); //$NON-NLS-1$
+		jbRemove = new JajukButton(IconLoader.ICON_REMOVE);
+		jbRemove.setToolTipText(Messages.getString("AbstractPlaylistEditorView.5")); 
 		jbRemove.addActionListener(this);
-		jbUp = new JajukButton(Util.getIcon(ICON_UP));
-		jbUp.setToolTipText(Messages.getString("AbstractPlaylistEditorView.6")); //$NON-NLS-1$
+		jbUp = new JajukButton(IconLoader.ICON_UP);
+		jbUp.setToolTipText(Messages.getString("AbstractPlaylistEditorView.6")); 
 		jbUp.addActionListener(this);
-		jbDown = new JajukButton(Util.getIcon(ICON_DOWN));
-		jbDown.setToolTipText(Messages.getString("AbstractPlaylistEditorView.7")); //$NON-NLS-1$
+		jbDown = new JajukButton(IconLoader.ICON_DOWN);
+		jbDown.setToolTipText(Messages.getString("AbstractPlaylistEditorView.7")); 
 		jbDown.addActionListener(this);
-		jbAddShuffle = new JajukButton(Util.getIcon(ICON_ADD_SHUFFLE));
-		jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10")); //$NON-NLS-1$
+		jbAddShuffle = new JajukButton(IconLoader.ICON_ADD_SHUFFLE);
+		jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10")); 
 		jbAddShuffle.addActionListener(this);
-		jbClear = new JajukButton(Util.getIcon(ICON_CLEAR));
-		jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9")); //$NON-NLS-1$
+		jbClear = new JajukButton(IconLoader.ICON_CLEAR);
+		jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9")); 
 		jbClear.addActionListener(this);
-		jlTitle = new JLabel(""); //$NON-NLS-1$
+		jlTitle = new JLabel(""); 
 		JToolBar jtb = new JToolBar();
 		jtb.setRollover(true);
 		jtb.setBorder(null);
@@ -434,8 +435,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		jtb.add(jbDown);
 		jtb.add(jbClear);
 
-		jpControl.add(jtb, "1,1"); //$NON-NLS-1$
-		jpControl.add(jlTitle, "3,1,c,c"); //$NON-NLS-1$
+		jpControl.add(jtb, "1,1"); 
+		jpControl.add(jlTitle, "3,1,c,c"); 
 		model = new PlayListEditorTableModel();
 		jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS);
 		jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
@@ -477,17 +478,17 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		lsm.addListSelectionListener(this);
 		double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
 		setLayout(new TableLayout(size));
-		add(jpControl, "0,0"); //$NON-NLS-1$
-		add(new JScrollPane(jtable), "0,1"); //$NON-NLS-1$
+		add(jpControl, "0,0"); 
+		add(new JScrollPane(jtable), "0,1"); 
 		// menu items
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.23")); //$NON-NLS-1$
+		jmiFilePlay = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.23")); 
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24")); //$NON-NLS-1$
+		jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24")); 
 		jmiFilePush.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25")); //$NON-NLS-1$
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25")); 
 		jmiFileAddFavorites.addActionListener(this);
-		jmiFileProperties = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.26")); //$NON-NLS-1$
+		jmiFileProperties = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.26")); 
 		jmiFileProperties.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
@@ -525,7 +526,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AbstractPlaylistEditorView.15"); //$NON-NLS-1$
+		return Messages.getString("AbstractPlaylistEditorView.15"); 
 	}
 
 	private void columnChange() {
@@ -601,9 +602,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						if (plfi == null) {
 							plfi = new PlaylistFileItem(
 									PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
-									ICON_PLAYLIST_QUEUE,
+									IconLoader.ICON_PLAYLIST_QUEUE,
 									new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
-											"1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
+											"1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9"));  
 						}
 						AbstractPlaylistEditorView.this.iType = plfi.getType();
 						AbstractPlaylistEditorView.this.plfi = plfi;
@@ -611,24 +612,24 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						jlTitle.setText(plfi.getName());
 						switch (plfi.getType()) {
 						case PlaylistFileItem.PLAYLIST_TYPE_QUEUE:
-							jlTitle.setIcon(Util.getIcon(ICON_PLAYLIST_QUEUE_SMALL));
+							jlTitle.setIcon(IconLoader.ICON_PLAYLIST_QUEUE_SMALL);
 							jlTitle.setText(plfi.getName() + " ["
 									+ FIFO.getInstance().getFIFO().size() + "]");
 							break;
 						case PlaylistFileItem.PLAYLIST_TYPE_BESTOF:
-							jlTitle.setIcon(Util.getIcon(ICON_BESTOF));
+							jlTitle.setIcon(IconLoader.ICON_BESTOF);
 							break;
 						case PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK:
-							jlTitle.setIcon(Util.getIcon(ICON_PLAYLIST_BOOKMARK_SMALL));
+							jlTitle.setIcon(IconLoader.ICON_PLAYLIST_BOOKMARK_SMALL);
 							break;
 						case PlaylistFileItem.PLAYLIST_TYPE_NEW:
-							jlTitle.setIcon(Util.getIcon(ICON_PLAYLIST_NEW_SMALL));
+							jlTitle.setIcon(IconLoader.ICON_PLAYLIST_NEW_SMALL);
 							break;
 						case PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES:
-							jlTitle.setIcon(Util.getIcon(ICON_NOVELTIES));
+							jlTitle.setIcon(IconLoader.ICON_NOVELTIES);
 							break;
 						default:
-							jlTitle.setIcon(Util.getIcon(ICON_PLAYLIST_FILE));
+							jlTitle.setIcon(IconLoader.ICON_PLAYLIST_FILE);
 							break;
 						}
 						jlTitle.setToolTipText(plfi.getName());
@@ -890,7 +891,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					// if logical editor, warning message
 					if (this instanceof LogicalPlaylistEditorView) {
 						StringBuffer sbOut = new StringBuffer(Messages
-								.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
+								.getString("AbstractPlaylistEditorView.17")); 
 						Playlist pl = PlaylistManager.getInstance().getPlaylistByID(
 								plfi.getPlaylistFile().getHashcode());
 						if (pl != null) {
@@ -901,7 +902,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 								sbOut.append('\n').append(plf.getAbsolutePath());
 							}
 							int i = Messages.getChoice(sbOut.toString(),
-									JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+									JOptionPane.WARNING_MESSAGE); 
 							if (i == JOptionPane.OK_OPTION) {
 								it = alPlaylistFiles.iterator();
 								while (it.hasNext()) {
@@ -916,7 +917,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 												.setMessage(
 														Messages
 																.getString("AbstractPlaylistEditorView.22"),
-														InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+														InformationJPanel.INFORMATIVE); 
 									} catch (JajukException je) {
 										Log.error(je);
 									}
@@ -929,7 +930,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 							plfi.getPlaylistFile().commit();
 							InformationJPanel.getInstance().setMessage(
 									Messages.getString("AbstractPlaylistEditorView.22"),
-									InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+									InformationJPanel.INFORMATIVE); 
 						} catch (JajukException je) {
 							Log.error(je);
 							Messages.showErrorMessage(je.getCode(), je.getMessage());

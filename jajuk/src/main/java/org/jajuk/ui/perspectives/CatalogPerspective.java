@@ -35,7 +35,7 @@ public class CatalogPerspective extends PerspectiveAdapter {
 	 * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Catalog"); //$NON-NLS-1$
+		return Messages.getString("Perspective_Description_Catalog"); 
 	}
 
 	

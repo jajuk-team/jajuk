@@ -21,7 +21,7 @@ package org.jajuk.ui;
 
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UrlImageIcon;
 import org.jdesktop.swingx.JXPanel;
 
 import java.awt.event.ActionEvent;
@@ -85,7 +85,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 		int index = 0;
 		while (it.hasNext()) {
 			final IPerspective perspective = (IPerspective) it.next();
-			JButton jb = new JButton(Util.getIcon(perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
+			JButton jb = new JButton(new UrlImageIcon(perspective.getIconPath()));  
 			try {
 				jb.setToolTipText(perspective.getDesc()); 
 			} catch (Exception e) { // ignore tooltip missing

@@ -58,7 +58,7 @@ public abstract class Exporter {
 
 		try {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(new File(sPath)), "UTF-8")); //$NON-NLS-1$
+				new FileOutputStream(new File(sPath)), "UTF-8")); 
 			// Writer the contents to the file.
 			bw.write(sContent);
 			// Close the BufferedWriter

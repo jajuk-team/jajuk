@@ -110,7 +110,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Remove a custom property to all items for the given manager */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public void applyRemoveProperty(PropertyMetaInformation meta) {
 		synchronized (getLock()) {
 			Collection<Item> items = hmItems.values();
@@ -123,7 +123,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Add a custom property to all items for the given manager */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public void applyNewProperty(PropertyMetaInformation meta) {
 		synchronized (getLock()) {
 			Collection<Item> items = hmItems.values();
@@ -140,7 +140,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	 * @return XML representation of this manager
 	 */
 	public String toXML() {
-		StringBuffer sb = new StringBuffer("\t<").append(getIdentifier() + ">"); //$NON-NLS-1$ //$NON-NLS-2$
+		StringBuffer sb = new StringBuffer("\t<").append(getIdentifier() + ">");  
 		Iterator it = hmPropertiesMetaInformation.keySet().iterator();
 		while (it.hasNext()) {
 			String sProperty = (String) it.next();
@@ -281,7 +281,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Return all registred items with filter applied */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public Collection<Item> getItems(Filter filter) {
 		synchronized (getLock()) {
 			if (filter == null) {
@@ -293,7 +293,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 			if (filter.isExact()) {
 				checked = filter.getValue();
 			} else {
-				checked = ".*" + filter.getValue() + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+				checked = ".*" + filter.getValue() + ".*";  
 			}
 			ArrayList<Item> out = new ArrayList<Item>(col.size());
 			for (Item item : col) {
@@ -345,7 +345,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	public static Item changeItem(Item itemToChange, String sKey, Object oValue, HashSet filter)
 			throws JajukException {
 		if (Log.isDebugEnabled()) {
-			Log.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange);   
 		}
 		Item newItem = itemToChange;
 		if (itemToChange instanceof File) {
@@ -480,7 +480,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	}
 
 	/** Return all registred items */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	protected Set<Item> getItems() {
 		synchronized (getLock()) {
 			return hmItems.inverseBidiMap().keySet();

@@ -46,8 +46,8 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
 	public String getTrackName() throws Exception {
-		return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-		// string //$NON-NLS-1$
+		return ""; // doing that, the item wil be the default jajuk unknown 
+		// string 
 	}
 
 	/*
@@ -56,8 +56,8 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getAlbumName()
 	 */
 	public String getAlbumName() throws Exception {
-		return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-		// string //$NON-NLS-1$
+		return ""; // doing that, the item wil be the default jajuk unknown 
+		// string 
 	}
 
 	/*
@@ -66,8 +66,8 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getAuthorName()
 	 */
 	public String getAuthorName() throws Exception {
-		return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-		// string //$NON-NLS-1$
+		return ""; // doing that, the item wil be the default jajuk unknown 
+		// string 
 	}
 
 	/*
@@ -76,8 +76,8 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getStyleName()
 	 */
 	public String getStyleName() throws Exception {
-		return ""; // doing that, the item wil be the default jajuk unknown //$NON-NLS-1$
-		// string //$NON-NLS-1$
+		return ""; // doing that, the item wil be the default jajuk unknown 
+		// string 
 	}
 
 	/*
@@ -116,8 +116,8 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getComment()
 	 */
 	public String getComment() throws Exception {
-		return ""; // by doing that, the item wil be the default jajuk //$NON-NLS-1$
-		// unknown string //$NON-NLS-1$
+		return ""; // by doing that, the item wil be the default jajuk 
+		// unknown string 
 	}
 
 	/*

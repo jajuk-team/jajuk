@@ -109,7 +109,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
 			super.setLayout(l);
 		} else
 			throw new AWTError(
-					"FlowScrollPane can have only FlowLayout, not " + l); //$NON-NLS-1$
+					"FlowScrollPane can have only FlowLayout, not " + l); 
 	}
 
 	//

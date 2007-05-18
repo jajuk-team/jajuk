@@ -26,6 +26,7 @@ import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
@@ -39,8 +40,8 @@ public class BestOfAction extends ActionBase {
 
 	BestOfAction() {
 		super(
-				Messages.getString("JajukWindow.7"), Util.getIcon(ICON_BESTOF), true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
+				Messages.getString("JajukWindow.7"), IconLoader.ICON_BESTOF, true); 
+		setShortDescription(Messages.getString("JajukWindow.24")); 
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

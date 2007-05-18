@@ -25,7 +25,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.log.Log;
 
 import java.awt.event.ActionEvent;
@@ -38,9 +38,9 @@ public class NextTrackAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	NextTrackAction() {
-		super(Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT), //$NON-NLS-1$
-				"F10", false, true); //$NON-NLS-1$ //$NON-NLS-2$
-		setShortDescription(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
+		super(Messages.getString("JajukWindow.14"), IconLoader.ICON_PLAYER_NEXT, 
+				"F10", false, true);  
+		setShortDescription(Messages.getString("JajukWindow.30")); 
 	}
 
 	public void perform(ActionEvent evt) {

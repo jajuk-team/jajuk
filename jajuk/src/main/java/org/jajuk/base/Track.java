@@ -22,6 +22,7 @@ package org.jajuk.base;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 
 import java.util.ArrayList;
@@ -80,8 +81,8 @@ public class Track extends LogicalItem implements Comparable {
 	 * @param type
 	 * @param sAdditionDate
 	 */
-	public Track(String sId, String sName, Album album, Style style,
-			Author author, long length, Year year, long lOrder, Type type) {
+	public Track(String sId, String sName, Album album, Style style, Author author, long length,
+			Year year, long lOrder, Type type) {
 		super(sId, sName);
 		// album
 		this.album = album;
@@ -114,13 +115,11 @@ public class Track extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		String sOut = "Track[ID=" + sId + " Name={{" + getName() + "}} " + album + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		String sOut = "Track[ID=" + sId + " Name={{" + getName() + "}} " + album + " " +    
 				style
-				+ " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate() + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-				type
-				+ " Hits=" + getHits() + " Addition date=" + getAdditionDate() + " Comment=" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				getComment()
-				+ " order=" + getOrder() + " Nb of files=" + alFiles.size() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				+ " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate() + " " +     
+				type + " Hits=" + getHits() + " Addition date=" + getAdditionDate() + " Comment=" +   
+				getComment() + " order=" + getOrder() + " Nb of files=" + alFiles.size() + "]";     
 		for (int i = 0; i < alFiles.size(); i++) {
 			sOut += '\n' + alFiles.get(i).toString();
 		}
@@ -199,8 +198,9 @@ public class Track extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * @return best file to play for this track 
-	 * @param bHideUnmounted Do we return unmounted files 
+	 * @return best file to play for this track
+	 * @param bHideUnmounted
+	 *            Do we return unmounted files
 	 */
 	public File getPlayeableFile(boolean bHideUnmounted) {
 		File fileOut = null;
@@ -272,8 +272,6 @@ public class Track extends LogicalItem implements Comparable {
 	public Year getYear() {
 		return year;
 	}
-	
-	
 
 	/**
 	 * @return length in sec
@@ -314,20 +312,20 @@ public class Track extends LogicalItem implements Comparable {
 		getRate();
 		switch (getStarsNumber()) {
 		case 1:
-			ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),
-					"", null, null, null, Long.toString(getRate())); //$NON-NLS-1$
+			ilRate = new IconLabel(IconLoader.ICON_STAR_1,
+					"", null, null, null, Long.toString(getRate())); 
 			break;
 		case 2:
-			ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),
-					"", null, null, null, Long.toString(getRate())); //$NON-NLS-1$
+			ilRate = new IconLabel(IconLoader.ICON_STAR_2,
+					"", null, null, null, Long.toString(getRate())); 
 			break;
 		case 3:
-			ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),
-					"", null, null, null, Long.toString(getRate())); //$NON-NLS-1$
+			ilRate = new IconLabel(IconLoader.ICON_STAR_3,
+					"", null, null, null, Long.toString(getRate())); 
 			break;
 		case 4:
-			ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),
-					"", null, null, null, Long.toString(getRate())); //$NON-NLS-1$
+			ilRate = new IconLabel(IconLoader.ICON_STAR_4,
+					"", null, null, null, Long.toString(getRate())); 
 			break;
 		default:
 			return null;
@@ -360,14 +358,7 @@ public class Track extends LogicalItem implements Comparable {
 		if (otherTrack == null) {
 			return false;
 		}
-		return this.getId().equals(((Track) otherTrack).getId());
-	}
-
-	/**
-	 * Track hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
+		return (hashcode == ((Track) otherTrack).hashcode);
 	}
 
 	/**
@@ -502,7 +493,7 @@ public class Track extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Track") + " : " + getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Track") + " : " + getName();  
 	}
 
 	/*
@@ -512,23 +503,20 @@ public class Track extends LogicalItem implements Comparable {
 	 */
 	public String getHumanValue(String sKey) {
 		if (XML_ALBUM.equals(sKey)) {
-			Album album = AlbumManager.getInstance().getAlbumByID(
-					getStringValue(sKey));
+			Album album = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));
 			if (album != null) { // can be null after a fresh change
 				return album.getName2();
 
 			}
 			return null;
 		} else if (XML_AUTHOR.equals(sKey)) {
-			Author author = AuthorManager.getInstance().getAuthorByID(
-					getStringValue(sKey));
+			Author author = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
 			if (author != null) { // can be null after a fresh change
 				return author.getName2();
 			}
 			return null;
 		} else if (XML_STYLE.equals(sKey)) {
-			Style style = StyleManager.getInstance().getStyleByID(
-					getStringValue(sKey));
+			Style style = StyleManager.getInstance().getStyleByID(getStringValue(sKey));
 			if (style != null) { // can be null after a fresh change
 				return style.getName2();
 			}
@@ -536,17 +524,15 @@ public class Track extends LogicalItem implements Comparable {
 		} else if (XML_TRACK_LENGTH.equals(sKey)) {
 			return Util.formatTimeBySec(length, false);
 		} else if (XML_TYPE.equals(sKey)) {
-			return (TypeManager.getInstance().getTypeByID(getStringValue(sKey)))
-					.getName();
+			return (TypeManager.getInstance().getTypeByID(getStringValue(sKey))).getName();
 		} else if (XML_YEAR.equals(sKey)) {
-			return (YearManager.getInstance().getYearByID(getStringValue(sKey)))
-					.getName();
+			return (YearManager.getInstance().getYearByID(getStringValue(sKey))).getName();
 		} else if (XML_FILES.equals(sKey)) {
 			StringBuffer sbOut = new StringBuffer();
 			Iterator it = alFiles.iterator();
 			while (it.hasNext()) {
 				File file = (File) it.next();
-				sbOut.append(file.getAbsolutePath() + ","); //$NON-NLS-1$
+				sbOut.append(file.getAbsolutePath() + ","); 
 			}
 			return sbOut.substring(0, sbOut.length() - 1); // remove last
 			// ','

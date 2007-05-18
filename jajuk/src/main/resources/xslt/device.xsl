@@ -77,19 +77,33 @@
 					</h2>
 					<xsl:call-template name='directories' />
 				</p>
-			<!--	<p>
+				<p>
 					<h2 id='3'>
 						<xsl:value-of
 							select='/collection/i18n/ReportAction.16' />
 					</h2>
-					<xsl:call-template name='dir_files' />
-				</p>-->
+					<xsl:apply-templates select='*/*/directory' />
+				</p>
 			</body>
 		</html>
 	</xsl:template>
 
 	<xsl:template name='list'>
 		<table border='0' cellspacing='5'>
+			<TR>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.name' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.url' />
+				</TH>
+				<TH>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.type' />
+				</TH>
+			</TR>
 			<xsl:for-each select='/collection/device'>
 				<tr>
 					<xsl:variable name='id' select='id' />
@@ -108,15 +122,37 @@
 			</xsl:for-each>
 		</table>
 	</xsl:template>
-
-
+	
+	
 	<xsl:template name='directories'>
+		<xsl:for-each select='/collection/device'>
+			<hr/>
+			<xsl:variable name='id' select='id' />
+			<h2 id='{id}'><xsl:value-of select='name' /></h2>
+			<xsl:call-template name='directoriesPerDevice' />
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template name='directoriesPerDevice'>
+		<xsl:for-each select='directory'>
+			<xsl:variable name='id' select='id' />
+				<a href='#{id}'>
+					<xsl:value-of select='path' />
+				</a>
+				<br/>
+			<xsl:call-template name='directoriesPerDevice' />
+		</xsl:for-each>
+	</xsl:template>
+
+
+	<xsl:template match="*/*/directory">
 		<hr />
 		<xsl:variable name='id' select='id' />
 		<h2 id='{id}'>
 			<xsl:value-of select='path' />
 		</h2>
-		<table border='0' cellspacing='5'>
+		<xsl:apply-templates select="directory" />
+			<table border='0' cellspacing='5'>
 			<TR>
 				<TH>
 					<xsl:value-of
@@ -188,5 +224,6 @@
 				</tr>
 			</xsl:for-each>
 		</table>
+		<br />				
 	</xsl:template>
 </xsl:stylesheet>

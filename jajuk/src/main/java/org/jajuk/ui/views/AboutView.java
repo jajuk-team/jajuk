@@ -22,7 +22,7 @@ package org.jajuk.ui.views;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jfree.ui.about.AboutPanel;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.ContributorsPanel;
@@ -75,7 +75,7 @@ public class AboutView extends ViewAdapter {
 	private JTabbedPane jtp;
 
 	/** Additional informations */
-	private static final String INFOS = "http://jajuk.sourceforge.net"; //$NON-NLS-1$
+	private static final String INFOS = "http://jajuk.sourceforge.net"; 
 
 	/** Return self instance */
 	public static synchronized AboutView getInstance() {
@@ -114,7 +114,7 @@ public class AboutView extends ViewAdapter {
 					try {
 						JDialog jd = new JDialog(Main.getWindow());
 						ImageIcon ii = new ImageIcon(new URL(
-								"http://jajuk.sourceforge.net/01/flbf.jpg")); //$NON-NLS-1$
+								"http://jajuk.sourceforge.net/01/flbf.jpg")); 
 						JPanel jp = new JPanel();
 						jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
 						JLabel jl = new JLabel(ii);
@@ -124,7 +124,7 @@ public class AboutView extends ViewAdapter {
 						jd.setLocationRelativeTo(Main.getWindow());
 						jd.setVisible(true);
 					} catch (Exception e) {
-						//No logs
+						// No logs
 					}
 				}
 			}
@@ -133,43 +133,34 @@ public class AboutView extends ViewAdapter {
 		jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
 		ArrayList<Contributor> alContribs = new ArrayList<Contributor>(10);
+		alContribs.add(new Contributor("Bertrand Florat", "bflorat@users.sourceforge.net"));  
 		alContribs.add(new Contributor(
-				"Bertrand Florat", "bflorat@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Gerhard Dietrichsteiner", "skyreacher@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Riccardo Capecchi", "ricciocri@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Oscar Appelgren", "oscariot@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Marc-Siebren Kwadijk", "marcsiebren@users.sourceforge.net"));//$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Sébastien Gringoire", "sgringoire@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Ronak Patel", "")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Josep Carles Collazos", "jespo@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor("Bart Cremers", "bcremers@gmail.com")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Erwan Richard", "erwan.richard@laposte.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor(
-				"Jérome Fortain", "jf_sourceforge@khiplus.fr")); //$NON-NLS-1$ //$NON-NLS-2$
+				"Gerhard Dietrichsteiner", "skyreacher@users.sourceforge.net"));  
+		alContribs.add(new Contributor("Riccardo Capecchi", "ricciocri@users.sourceforge.net"));  
+		alContribs.add(new Contributor("Oscar Appelgren", "oscariot@users.sourceforge.net"));  
 		alContribs
-				.add(new Contributor(
-						"Nicolas Schudel", "https://sourceforge.net/users/nicolasschudel/")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor("Sung Pil Moon", "")); //$NON-NLS-1$ //$NON-NLS-2$
+				.add(new Contributor("Marc-Siebren Kwadijk", "marcsiebren@users.sourceforge.net")); 
+		alContribs.add(new Contributor("Sébastien Gringoire", "sgringoire@users.sourceforge.net"));  
+		alContribs.add(new Contributor("Ronak Patel", ""));  
+		alContribs.add(new Contributor("Josep Carles Collazos", "jespo@users.sourceforge.net"));  
+		alContribs.add(new Contributor("Bart Cremers", "bcremers@gmail.com"));  
+		alContribs.add(new Contributor("Erwan Richard", "erwan.richard@laposte.net"));  
+		alContribs.add(new Contributor("Jérome Fortain", "jf_sourceforge@khiplus.fr"));  
+		alContribs.add(new Contributor(
+				"Nicolas Schudel", "https://sourceforge.net/users/nicolasschudel/"));  
+		alContribs.add(new Contributor("Sung Pil Moon", ""));  
 		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
 		ap = new AboutPanel(
-				"Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, IconLoader.ICON_LOGO.getImage());   
 		jpAbout.add(ap);
 		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());
 		spp = new SystemPropertiesPanel();
-		jtp.addTab(Messages.getString("AboutView.7"), jpAbout); //$NON-NLS-1$
-		jtp.addTab(Messages.getString("AboutView.8"), jpLicence); //$NON-NLS-1$
-		jtp.addTab(Messages.getString("AboutView.9"), spp); //$NON-NLS-1$
+		jtp.addTab(Messages.getString("AboutView.7"), jpAbout); 
+		jtp.addTab(Messages.getString("AboutView.8"), jpLicence); 
+		jtp.addTab(Messages.getString("AboutView.9"), spp); 
 		add(jtp);
 	}
 
@@ -179,7 +170,7 @@ public class AboutView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AboutView.10"); //$NON-NLS-1$
+		return Messages.getString("AboutView.10"); 
 	}
 
 }

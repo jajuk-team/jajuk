@@ -48,6 +48,9 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 
 	/** Name */
 	protected final String sName;
+	
+	/**Hashcode */
+	protected final int hashcode;
 
 	/**
 	 * Constructor
@@ -59,6 +62,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	Item(final String sId, final String sName) {
 		this.sId = sId.intern();
+		this.hashcode = sId.hashCode();
 		setProperty(XML_ID, sId.intern());
 		if (sName != null) {
 			this.sName = sName.intern();
@@ -81,6 +85,13 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public String getName() {
 		return sName;
+	}
+	
+	/**
+	 * Item hashcode (used by the equals method)
+	 */
+	public int hashCode() {
+		return hashcode;
 	}
 
 	/**
@@ -196,7 +207,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public boolean containsProperty(String sKey) {
 		return properties.containsKey(sKey) && properties.get(sKey) != null
-				&& !properties.get(sKey).equals(""); //$NON-NLS-1$
+				&& !properties.get(sKey).equals(""); 
 	}
 
 	/*
@@ -214,7 +225,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @see org.jajuk.base.Item#getAny()
 	 */
 	public String getAny() {
-		StringBuffer sb = new StringBuffer(100); //$NON-NLS-1$
+		StringBuffer sb = new StringBuffer(100); 
 		LinkedHashMap properties = getProperties();
 		Iterator it = properties.keySet().iterator();
 		while (it.hasNext()) {
@@ -250,15 +261,15 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public String toXml() {
 		try {
-			StringBuffer sb = new StringBuffer("\t\t<").append(getIdentifier()); //$NON-NLS-1$
+			StringBuffer sb = new StringBuffer("\t\t<").append(getIdentifier()); 
 			sb.append(getPropertiesXml());
-			sb.append("/>\n"); //$NON-NLS-1$
+			sb.append("/>\n"); 
 			return sb.toString();
 		} catch (Exception e) { 
 			// catch any error here because it can prevent
 			// collection to commit
 			Log.error(e);
-			return ""; //$NON-NLS-1$
+			return ""; 
 		}
 	}
 
@@ -274,7 +285,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	private String getPropertiesXml() {
 		LinkedHashMap properties = getProperties();
 		Iterator it = properties.keySet().iterator();
-		StringBuffer sb = new StringBuffer(); //$NON-NLS-1$
+		StringBuffer sb = new StringBuffer(); 
 		while (it.hasNext()) {
 			String sKey = (String) it.next();
 			String sValue = null;
@@ -289,7 +300,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 				sValue = Util.formatXML(sValue); // make sure to remove
 				// non-XML characters
 			}
-			sb.append(" " + Util.formatXML(sKey) + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sb.append(" " + Util.formatXML(sKey) + "='" + sValue + "'");   
 		}
 		return sb.toString();
 	}
@@ -313,7 +324,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 								.getType()));
 					}
 				} catch (Exception e) {
-					Log.error("137", sProperty, e); //$NON-NLS-1$
+					Log.error("137", sProperty, e); 
 				}
 			}
 		}
@@ -355,7 +366,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 			return Util.format(getValue(sKey), getMeta(sKey));
 		} catch (Exception e) {
 			Log.error(e);
-			return ""; //$NON-NLS-1$
+			return ""; 
 		}
 	}
 

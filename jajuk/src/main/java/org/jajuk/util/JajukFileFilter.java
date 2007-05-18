@@ -155,8 +155,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			return TypeManager.getInstance().isExtensionSupported(
 					Util.getExtension(f));
@@ -201,8 +202,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			if (TypeManager.getInstance().isExtensionSupported(
@@ -260,14 +262,15 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			String ext = Util.getExtension(f);
-			if (ext.equalsIgnoreCase("jpg") || //$NON-NLS-1$
-					ext.equalsIgnoreCase("gif") || //$NON-NLS-1$
-					ext.equalsIgnoreCase("png")) { //$NON-NLS-1$
+			if (ext.equalsIgnoreCase("jpg") || 
+					ext.equalsIgnoreCase("gif") || 
+					ext.equalsIgnoreCase("png")) { 
 				return true;
 			}
 			return false;
@@ -311,8 +314,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			if (TypeManager.getInstance().isExtensionSupported(
@@ -364,8 +368,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			if (TypeManager.getInstance().isExtensionSupported(
@@ -417,8 +422,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			if ("html".equals(Util.getExtension(f).toLowerCase())) {
@@ -465,8 +471,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			if ("xml".equals(Util.getExtension(f).toLowerCase())) {
@@ -513,8 +520,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
+			//Accept directories to allow navigation
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 			// check extension is known
 			if ("html".equals(Util.getExtension(f).toLowerCase())
@@ -605,7 +613,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,
 	}
 
 	public String getDescription() {
-		String sOut = ""; //$NON-NLS-1$
+		String sOut = ""; 
 		//	if only dirs, no description
 		if (!bFiles) { 
 			return sOut;

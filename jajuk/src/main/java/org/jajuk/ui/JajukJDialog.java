@@ -21,7 +21,7 @@
 package org.jajuk.ui;
 
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import javax.swing.JDialog;
 
@@ -35,8 +35,7 @@ public class JajukJDialog extends JDialog implements ITechnicalStrings{
 	public JajukJDialog(){
 		//Show jajuk logo as default icon (it is useful for 1.6 as we
 		//can't use the 1.6 JDialog.setIcon for now as long as we support 1.5)
-		((java.awt.Frame) getOwner()).setIconImage(Util
-							.getIcon(ICON_LOGO_FRAME).getImage());
+		((java.awt.Frame) getOwner()).setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
 	}
 	
 	

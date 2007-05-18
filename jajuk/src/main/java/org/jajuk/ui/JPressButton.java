@@ -51,7 +51,7 @@ public class JPressButton extends JajukButton {
 	 * @see #getUIClassID
 	 * @see #readObject
 	 */
-	private static final String uiClassID = "ButtonUI"; //$NON-NLS-1$
+	private static final String uiClassID = "ButtonUI"; 
 
 	/**
 	 * Creates a button with no set text or icon and a default action interval.

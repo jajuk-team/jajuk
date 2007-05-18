@@ -24,7 +24,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -32,9 +32,9 @@ public class ShuffleModeAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	ShuffleModeAction() {
-		super(Messages.getString("JajukJMenuBar.11"), Util.getIcon(ICON_SHUFFLE),
-				"ctrl H", true, false); //$NON-NLS-1$ //$NON-NLS-2$
-		setShortDescription(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
+		super(Messages.getString("JajukJMenuBar.11"), IconLoader.ICON_SHUFFLE,
+				"ctrl H", true, false);  
+		setShortDescription(Messages.getString("CommandJPanel.2")); 
 	}
 
 	/**

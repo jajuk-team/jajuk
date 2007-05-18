@@ -182,7 +182,7 @@ public class DeviceManager extends ItemManager {
 					continue;
 				}
 				if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
-					return "019"; //$NON-NLS-1$
+					return "019"; 
 				}
 				String sUrlChecked = deviceToCheck.getUrl();
 				// check it is not a sub-directory of an existing device
@@ -190,16 +190,16 @@ public class DeviceManager extends ItemManager {
 				File fChecked = new File(sUrlChecked);
 				if (fNew.equals(fChecked) || Util.isDescendant(fNew, fChecked)
 						|| Util.isAncestor(fNew, fChecked)) {
-					return "029"; //$NON-NLS-1$
+					return "029"; 
 				}
 			}
 			// check availability
 			if (iDeviceType != 2) { // not a remote device, TBI for remote
 				// make sure it's mounted if under unix
-				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) { //$NON-NLS-1$
+				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) { 
 					try {
 						// run the actual mount command
-						Process process = Runtime.getRuntime().exec("mount " + sMountPoint); //$NON-NLS-1$ 
+						Process process = Runtime.getRuntime().exec("mount " + sMountPoint);  
 						process.waitFor();
 					} catch (Exception e) {
 					}
@@ -208,10 +208,10 @@ public class DeviceManager extends ItemManager {
 				File file = new File(sUrl);
 				// check if the url exists and is readable
 				if (!file.exists() || !file.canRead()) {
-					return "143"; //$NON-NLS-1$
+					return "143"; 
 				}
 			}
-			return "0"; //$NON-NLS-1$
+			return "0"; 
 		}
 	}
 
@@ -259,19 +259,19 @@ public class DeviceManager extends ItemManager {
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
 				int iResu = Messages
 						.getChoice(
-								Messages.getString("Confirmation_remove_device"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getString("Confirmation_remove_device"), JOptionPane.WARNING_MESSAGE);  
 				if (iResu != JOptionPane.YES_OPTION) {
 					return;
 				}
 			}
 			// if device is refreshing or synchronizing, just leave
 			if (device.isSynchronizing() || device.isRefreshing()) {
-				Messages.showErrorMessage("013"); //$NON-NLS-1$
+				Messages.showErrorMessage("013"); 
 				return;
 			}
 			// check if device can be unmounted
 			if (!FIFO.canUnmount(device)) {
-				Messages.showErrorMessage("121"); //$NON-NLS-1$
+				Messages.showErrorMessage("121"); 
 				return;
 			}
 			// if it is mounted, try to unmount it
@@ -279,7 +279,7 @@ public class DeviceManager extends ItemManager {
 				try {
 					device.unmount();
 				} catch (Exception e) {
-					Messages.showErrorMessage("013"); //$NON-NLS-1$
+					Messages.showErrorMessage("013"); 
 					return;
 				}
 			}

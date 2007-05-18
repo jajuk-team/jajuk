@@ -27,6 +27,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 
@@ -77,7 +78,7 @@ public class LogicalPlaylistRepositoryView extends
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("LogicalPlaylistRepositoryView.0"); //$NON-NLS-1$
+		return Messages.getString("LogicalPlaylistRepositoryView.0"); 
 	}
 
 	/**
@@ -104,7 +105,7 @@ public class LogicalPlaylistRepositoryView extends
 			}
 			PlaylistFileItem plfi = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_NORMAL,
-					ICON_PLAYLIST_NORMAL, plf, plf.getName());
+					IconLoader.ICON_PLAYLIST_NORMAL, plf, plf.getName());
 			alPlaylistFileItems.add(plfi);
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getName());
@@ -131,7 +132,7 @@ public class LogicalPlaylistRepositoryView extends
 		if (pl != null) {
 			PlaylistFile plf = pl.getPlayeablePlaylistFile();
 			if (plf == null) {
-				throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+				throw new NoneAccessibleFileException("010"); 
 			}
 			plf.play();
 		}

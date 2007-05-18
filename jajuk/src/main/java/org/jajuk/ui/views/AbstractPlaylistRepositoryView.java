@@ -33,6 +33,7 @@ import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -122,19 +123,19 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		// Popup menus
 		jpmenu = new JPopupMenu();
 
-		jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0")); //$NON-NLS-1$
+		jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0")); 
 		jmiPlay.addActionListener(this);
 		jpmenu.add(jmiPlay);
 
-		jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3")); //$NON-NLS-1$
+		jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3")); 
 		jmiDelete.addActionListener(this);
 		jpmenu.add(jmiDelete);
 
-		jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2")); //$NON-NLS-1$
+		jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2")); 
 		jmiSaveAs.addActionListener(this);
 		jpmenu.add(jmiSaveAs);
 
-		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4")); //$NON-NLS-1$
+		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4")); 
 		jmiProperties.addActionListener(this);
 		jpmenu.add(jmiProperties);
 
@@ -150,8 +151,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 						try {
 							play(plfi);
 						} catch (JajukException je) {
-							Log.error(je.getCode(), plfiSelected.getName(), null); //$NON-NLS-1$
-							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
+							Log.error(je.getCode(), plfiSelected.getName(), null); 
+							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); 
 							selectQueue();
 							return;
 						}
@@ -160,8 +161,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					try {
 						plfi.getPlaylistFile().getFiles();
 					} catch (JajukException je) {
-						Log.error(je.getCode(), plfi.getName(), null); //$NON-NLS-1$
-						Messages.showErrorMessage(je.getCode(), plfi.getName()); //$NON-NLS-1$
+						Log.error(je.getCode(), plfi.getName(), null); 
+						Messages.showErrorMessage(je.getCode(), plfi.getName()); 
 						selectQueue();
 						return;
 					}
@@ -256,7 +257,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalPlaylistRepositoryView.6"); //$NON-NLS-1$
+		return Messages.getString("PhysicalPlaylistRepositoryView.6"); 
 	}
 
 	/*
@@ -265,7 +266,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
+		return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; 
 	}
 
 	/*
@@ -336,16 +337,16 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		JPanel jpSpecials = new JPanel();
 		jpSpecials.setOpaque(false);
 		jpSpecials.setBorder(BorderFactory.createTitledBorder(Messages
-				.getString("PhysicalPlaylistRepositoryView.8"))); //$NON-NLS-1$
+				.getString("PhysicalPlaylistRepositoryView.8"))); 
 		jpSpecials.setLayout(new BoxLayout(jpSpecials, BoxLayout.Y_AXIS));
 		// queue
 		// note we give an id : this id is only used to match current playlist
 		if (plfiQueue == null) {
 			plfiQueue = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
-					ICON_PLAYLIST_QUEUE,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE, "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10")); //$NON-NLS-1$
+					IconLoader.ICON_PLAYLIST_QUEUE,
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE, "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9"));  
+			plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10")); 
 			plfiQueue.addMouseListener(ma);
 		} else if (plfiSelected != null
 				&& plfiQueue.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
@@ -358,9 +359,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		if (plfiNew == null) {
 			plfiNew = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_NEW,
-					ICON_PLAYLIST_NEW,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW, "2", null, null), Messages.getString("PhysicalPlaylistRepositoryView.11")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12")); //$NON-NLS-1$
+					IconLoader.ICON_PLAYLIST_NEW,
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW, "2", null, null), Messages.getString("PhysicalPlaylistRepositoryView.11"));  
+			plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12")); 
 			plfiNew.addMouseListener(ma);
 		} else if (plfiSelected != null
 				&& plfiNew.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
@@ -372,9 +373,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		if (plfiBookmarks == null) {
 			plfiBookmarks = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,
-					ICON_PLAYLIST_BOOKMARK,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK, "3", null, null), Messages.getString("PhysicalPlaylistRepositoryView.13")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14")); //$NON-NLS-1$
+					IconLoader.ICON_PLAYLIST_BOOKMARK,
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK, "3", null, null), Messages.getString("PhysicalPlaylistRepositoryView.13"));  
+			plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14")); 
 			plfiBookmarks.addMouseListener(ma);
 		} else if (plfiSelected != null
 				&& plfiBookmarks.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
@@ -386,9 +387,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		if (plfiBestof == null) {
 			plfiBestof = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_BESTOF,
-					ICON_PLAYLIST_BESTOF,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF, "4", null, null), Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16")); //$NON-NLS-1$
+					IconLoader.ICON_PLAYLIST_BESTOF,
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF, "4", null, null), Messages.getString("PhysicalPlaylistRepositoryView.15"));  
+			plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16")); 
 			plfiBestof.addMouseListener(ma);
 		} else if (plfiSelected != null
 				&& plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
@@ -404,9 +405,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		if (plfiNovelties == null) {
 			plfiNovelties = new PlaylistFileItem(
 					PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,
-					ICON_PLAYLIST_NOVELTIES,
-					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES, "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.17")); //$NON-NLS-1$ //$NON-NLS-2$
-			plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18")); //$NON-NLS-1$
+					IconLoader.ICON_PLAYLIST_NOVELTIES,
+					new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES, "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.17"));  
+			plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18")); 
 			plfiNovelties.addMouseListener(ma);
 		} else if (plfiSelected != null
 				&& plfiNovelties.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
@@ -450,8 +451,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 						try {
 							play(plfiSelected);
 						} catch (JajukException je) {
-							Log.error(je.getCode(), "{{" + plfiSelected.getName() + "}}", null); //$NON-NLS-1$ //$NON-NLS-2$
-							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
+							Log.error(je.getCode(), "{{" + plfiSelected.getName() + "}}", null);  
+							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); 
 							selectQueue();
 							return;
 						}

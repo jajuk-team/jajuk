@@ -192,10 +192,10 @@ public class FIFO implements ITechnicalStrings {
 				// If current ambience is not "all", show selected ambience
 				// to alert user he selected it
 				if (AmbienceManager.getInstance().getSelectedAmbience() == null) {
-					Messages.showWarningMessage(Messages.getString("Error.018")); //$NON-NLS-1$
+					Messages.showWarningMessage(Messages.getString("Error.018")); 
 				} else {
-					Messages.showWarningMessage(Messages.getString("Error.164") //$NON-NLS-1$
-							+ " " + AmbienceManager.getInstance().getSelectedAmbience().getName()); //$NON-NLS-1$
+					Messages.showWarningMessage(Messages.getString("Error.164") 
+							+ " " + AmbienceManager.getInstance().getSelectedAmbience().getName()); 
 				}
 			}
 			// first try to mount needed devices
@@ -212,7 +212,7 @@ public class FIFO implements ITechnicalStrings {
 				if (!item.getFile().getDirectory().getDevice().isMounted()) {
 					if (!bNoMount) {
 						// not mounted, ok let them a chance to mount it:
-						final String sMessage = Messages.getString("Error.025") + " (" + item.getFile().getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						final String sMessage = Messages.getString("Error.025") + " (" + item.getFile().getDirectory().getDevice().getName() + Messages.getString("FIFO.4");   
 						int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
 						if (i == JOptionPane.YES_OPTION) {
 							try {
@@ -221,7 +221,7 @@ public class FIFO implements ITechnicalStrings {
 								it.remove();
 								Log.error(e);
 								Messages.showErrorMessage(
-										"011", item.getFile().getDirectory().getDevice().getName()); //$NON-NLS-1$
+										"011", item.getFile().getDirectory().getDevice().getName()); 
 								return;
 							}
 						} else if (i == JOptionPane.NO_OPTION) {
@@ -417,7 +417,7 @@ public class FIFO implements ITechnicalStrings {
 				}
 			}
 			if (bPlayOK) { // refresh covers if play is started
-				Log.debug("Now playing :" + fCurrent); //$NON-NLS-1$
+				Log.debug("Now playing :" + fCurrent); 
 				// Send an event that a track has been launched
 				Properties pDetails = new Properties();
 				pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
@@ -447,7 +447,7 @@ public class FIFO implements ITechnicalStrings {
 			fCurrent.getTrack().incSessionHits();// inc session hits
 			FileManager.getInstance().setRateHasChanged(true);
 		} catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
-			Log.error("122", t); //$NON-NLS-1$
+			Log.error("122", t); 
 		} finally {
 			Util.stopWaiting(); // stop the waiting cursor
 		}
@@ -876,7 +876,7 @@ public class FIFO implements ITechnicalStrings {
 	/**
 	 * @return Returns a shallow copy of the fifo
 	 */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public synchronized ArrayList<StackItem> getFIFO() {
 		return (ArrayList<StackItem>) alFIFO.clone();
 	}
@@ -1075,7 +1075,7 @@ public class FIFO implements ITechnicalStrings {
 	/**
 	 * @return Returns a shallow copy of planned files
 	 */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public synchronized ArrayList<StackItem> getPlanned() {
 		return (ArrayList<StackItem>) alPlanned.clone();
 	}
@@ -1104,7 +1104,7 @@ public class FIFO implements ITechnicalStrings {
 	 * @param device:
 	 *            Device to clean
 	 */
-	@SuppressWarnings("unchecked")//$NON-NLS-1$
+	@SuppressWarnings("unchecked")
 	public synchronized void cleanDevice(Device device) {
 		if (alFIFO.size() > 0) {
 			ArrayList<StackItem> alFIFOCopy = (ArrayList<StackItem>) alFIFO.clone();

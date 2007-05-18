@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.SimpleDeviceWizard;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -35,7 +35,7 @@ public class WizardAction extends ActionBase {
 
 	WizardAction() {
 		super(
-				Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
+				Messages.getString("JajukJMenuBar.18"), IconLoader.ICON_WIZARD, true); 
 	}
 
 	/**

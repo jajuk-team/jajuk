@@ -77,7 +77,7 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalTableView.0"); //$NON-NLS-1$
+		return Messages.getString("PhysicalTableView.0"); 
 	}
 
 	/** Return singleton */
@@ -94,19 +94,19 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 		ltv = this;
 		// File menu
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); //$NON-NLS-1$
+		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); 
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2")); //$NON-NLS-1$
+		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2")); 
 		jmiFilePush.addActionListener(this);
-		jmiFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTableView.3")); //$NON-NLS-1$
+		jmiFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTableView.3")); 
 		jmiFilePlayShuffle.addActionListener(this);
-		jmiFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4")); //$NON-NLS-1$
+		jmiFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4")); 
 		jmiFilePlayRepeat.addActionListener(this);
-		jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); //$NON-NLS-1$
+		jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); 
 		jmiFilePlayDirectory.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
+		jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); 
 		jmiProperties.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16")); //$NON-NLS-1$
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16")); 
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);

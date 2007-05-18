@@ -127,7 +127,7 @@ public class TypeManager extends ItemManager {
 			} catch (Exception e) {
 				Log
 						.error(
-								"109", "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								"109", "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e);   
 			}
 			return type;
 		}

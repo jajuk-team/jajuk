@@ -78,7 +78,7 @@ public class Event {
 	 */
 	public String toString() {
 		return subject
-				+ " " + ((pDetails == null) ? "no details" : pDetails.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+				+ " " + ((pDetails == null) ? "no details" : pDetails.toString());  
 	}
 
 	/**

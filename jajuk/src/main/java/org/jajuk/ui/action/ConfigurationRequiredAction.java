@@ -22,7 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.ConfigurationPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -35,7 +35,7 @@ public class ConfigurationRequiredAction extends ActionBase {
 
 	ConfigurationRequiredAction() {
 		super(
-				Messages.getString("JajukJMenuBar.22"), Util.getIcon(ICON_CONFIGURATION), true); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("JajukJMenuBar.22"), IconLoader.ICON_CONFIGURATION, true);  
 	}
 
 	public void perform(ActionEvent evt) {

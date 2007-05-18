@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -36,8 +36,8 @@ public class ForwardTrackAction extends ActionBase {
 	private static final float JUMP_SIZE = 0.1f;
 
 	ForwardTrackAction() {
-		super(Util.getIcon(ICON_FWD), "alt F10", false, true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
+		super(IconLoader.ICON_FWD, "alt F10", false, true); 
+		setShortDescription(Messages.getString("CommandJPanel.13")); 
 	}
 
 	public void perform(ActionEvent evt) {

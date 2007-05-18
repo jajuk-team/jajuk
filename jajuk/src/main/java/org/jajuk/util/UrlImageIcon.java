@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 The Jajuk Team
+ *  Copyright (C) 2007 The Jajuk Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -18,24 +18,29 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.util;
 
-import org.jdesktop.swingx.JXPanel;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 /**
- *  a customized JXPanel that supports gradient
+ * 
+ * This class encapsulates URL than is useful in some case
  */
-public class JajukJPanel extends JXPanel {
+public class UrlImageIcon extends ImageIcon {
 
 	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * Constructor
-	 */
-	public JajukJPanel() {
-		setOpaque(false);
+
+	private URL url;
+
+	public UrlImageIcon(URL url) {
+		super(url);
+		this.url = url;
 	}
 
-	
+	public URL getUrl() {
+		return this.url;
+	}
 
 }

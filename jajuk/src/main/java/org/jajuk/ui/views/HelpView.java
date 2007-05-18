@@ -82,7 +82,7 @@ public class HelpView extends ViewAdapter {
 			URL url = HelpSet
 					.findHelpSet(
 							cl,
-							"jajuk.hs", new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); //$NON-NLS-1$
+							"jajuk.hs", new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); 
 			hs = new HelpSet(null, url);
 			hb = hs.createHelpBroker();
 			jhelp = new JHelp(hs);
@@ -98,7 +98,7 @@ public class HelpView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("HelpView.2"); //$NON-NLS-1$
+		return Messages.getString("HelpView.2"); 
 	}
 
 }

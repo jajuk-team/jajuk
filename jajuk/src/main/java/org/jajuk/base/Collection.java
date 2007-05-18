@@ -93,7 +93,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			while (!Main.isExiting()) {
 				try {
 					Thread.sleep(AUTO_COMMIT_DELAY);
-					Log.debug("Auto commit"); //$NON-NLS-1$
+					Log.debug("Auto commit"); 
 					// commit collection at each refresh (can be useful if
 					// application is closed brutally with control-C or
 					// shutdown and that exit hook have no time to perform
@@ -126,60 +126,60 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		long lTime = System.currentTimeMillis();
 		String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-				collectionFile), sCharset), 1000000); //$NON-NLS-1$
-		bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				collectionFile), sCharset), 1000000); 
+		bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");  
+		bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");    
 		// types
-		bw.write(TypeManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(TypeManager.getInstance().toXML()); 
 		Iterator it = null;
 		it = TypeManager.getInstance().getTypes().iterator();
 		while (it.hasNext()) {
 			Type type = (Type) it.next();
 			bw.write(type.toXml());
 		}
-		bw.write("\t</" + TypeManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + TypeManager.getInstance().getIdentifier() + ">\n");  
 		// devices
-		bw.write(DeviceManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(DeviceManager.getInstance().toXML()); 
 		it = DeviceManager.getInstance().getDevices().iterator();
 		while (it.hasNext()) {
 			Device device = (Device) it.next();
 			bw.write(device.toXml());
 		}
-		bw.write("\t</" + DeviceManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + DeviceManager.getInstance().getIdentifier() + ">\n");  
 		// styles
-		bw.write(StyleManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(StyleManager.getInstance().toXML()); 
 		it = StyleManager.getInstance().getStyles().iterator();
 		while (it.hasNext()) {
 			Style style = (Style) it.next();
 			bw.write(style.toXml());
 		}
-		bw.write("\t</" + StyleManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + StyleManager.getInstance().getIdentifier() + ">\n");  
 		// authors
-		bw.write(AuthorManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(AuthorManager.getInstance().toXML()); 
 		it = AuthorManager.getInstance().getAuthors().iterator();
 		while (it.hasNext()) {
 			Author author = (Author) it.next();
 			bw.write(author.toXml());
 		}
-		bw.write("\t</" + AuthorManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + AuthorManager.getInstance().getIdentifier() + ">\n");  
 		// albums
-		bw.write(AlbumManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(AlbumManager.getInstance().toXML()); 
 		it = AlbumManager.getInstance().getAlbums().iterator();
 		while (it.hasNext()) {
 			Album album = (Album) it.next();
 			bw.write(album.toXml());
 		}
-		bw.write("\t</" + AlbumManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + AlbumManager.getInstance().getIdentifier() + ">\n");  
 		// years
-		bw.write(YearManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(YearManager.getInstance().toXML()); 
 		it = YearManager.getInstance().getYears().iterator();
 		while (it.hasNext()) {
 			Year year = (Year) it.next();
 			bw.write(year.toXml());
 		}
-		bw.write("\t</" + YearManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + YearManager.getInstance().getIdentifier() + ">\n");  
 		// tracks
-		bw.write(TrackManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(TrackManager.getInstance().toXML()); 
 		it = TrackManager.getInstance().getTracks().iterator();
 		while (it.hasNext()) {
 			Track track = (Track) it.next();
@@ -188,35 +188,35 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(track.toXml());
 			}
 		}
-		bw.write("\t</" + TrackManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + TrackManager.getInstance().getIdentifier() + ">\n");  
 		// directories
-		bw.write(DirectoryManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(DirectoryManager.getInstance().toXML()); 
 		it = DirectoryManager.getInstance().getDirectories().iterator();
 		while (it.hasNext()) {
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier() //$NON-NLS-1$
-				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier() 
+				+ ">\n");  
 		// files
-		bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(FileManager.getInstance().toXML()); 
 		it = FileManager.getInstance().getFiles().iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
 			bw.write(file.toXml());
 		}
-		bw.write("\t</" + FileManager.getInstance().getIdentifier() + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + FileManager.getInstance().getIdentifier() + ">\n");  
 		// playlist files
-		bw.write(PlaylistFileManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(PlaylistFileManager.getInstance().toXML()); 
 		it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
 		while (it.hasNext()) {
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() //$NON-NLS-1$
-				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() 
+				+ ">\n");  
 		// playlist
-		bw.write(PlaylistManager.getInstance().toXML()); //$NON-NLS-1$
+		bw.write(PlaylistManager.getInstance().toXML()); 
 		it = PlaylistManager.getInstance().getPlayLists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
@@ -225,13 +225,13 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</" + PlaylistManager.getInstance().getIdentifier() //$NON-NLS-1$
-				+ ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		bw.write("</" + XML_COLLECTION + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("\t</" + PlaylistManager.getInstance().getIdentifier() 
+				+ ">\n");  
+		bw.write("</" + XML_COLLECTION + ">\n");  
 		bw.flush();
 		bw.close();
-		Log.debug("Collection commited in " //$NON-NLS-1$
-				+ (System.currentTimeMillis() - lTime) + " ms");//$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Collection commited in " 
+				+ (System.currentTimeMillis() - lTime) + " ms"); 
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		SAXParser saxParser = spf.newSAXParser();
 		File frt = file;
 		if (!frt.exists()) {
-			throw new JajukException("005"); //$NON-NLS-1$
+			throw new JajukException("005"); 
 		}
 		saxParser.parse(frt.toURI().toURL().toString(), getInstance());
 		// start auto commit thread
@@ -282,7 +282,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
 		throw new SAXException(
-				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void error(SAXParseException spe) throws SAXException {
 		throw new SAXException(
-				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
 	}
 
 	/**
@@ -304,14 +304,14 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
 		throw new SAXException(
-				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
 	}
 
 	/**
 	 * Called at parsing start
 	 */
 	public void startDocument() {
-		Log.debug("Starting collection file parsing..."); //$NON-NLS-1$
+		Log.debug("Starting collection file parsing..."); 
 	}
 
 	/**
@@ -319,8 +319,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void endDocument() {
 		long l = (System.currentTimeMillis() - lTime);
-		Log.debug("Collection file parsing done : " + //$NON-NLS-1$
-				((l < 1000) ? l + " ms" : (l / 1000) + " s")); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Collection file parsing done : " + 
+				((l < 1000) ? l + " ms" : (l / 1000) + " s"));  
 	}
 
 	/**
@@ -369,7 +369,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE))
 						.intern();
 				Object oDefaultValue = null;
-				if (sDefaultValue != null && sDefaultValue.trim().length() > 0) { //$NON-NLS-1$
+				if (sDefaultValue != null && sDefaultValue.trim().length() > 0) { 
 					try {
 						// Date format has changed from 1.3 (only yyyyMMdd
 						// addition format is used)
@@ -402,7 +402,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong device Id, upgraded: " + device); //$NON-NLS-1$
+					Log.debug("** Wrong device Id, upgraded: " + device); 
 					hmWrongRightDeviceID.put(sId, sRightID);
 				}
 			} else if (XML_STYLE.equals(sQName)) {
@@ -416,7 +416,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong style Id, upgraded: " + style); //$NON-NLS-1$
+					Log.debug("** Wrong style Id, upgraded: " + style); 
 					hmWrongRightStyleID.put(sId, sRightID);
 				}
 			} else if (XML_YEAR.equals(sQName)) {
@@ -437,7 +437,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong author Id, upgraded: " + author); //$NON-NLS-1$
+					Log.debug("** Wrong author Id, upgraded: " + author); 
 					hmWrongRightAuthorID.put(sId, sRightID);
 				}
 			} else if (XML_ALBUM.equals(sQName)) {
@@ -451,7 +451,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong album Id, upgraded: " + album); //$NON-NLS-1$
+					Log.debug("** Wrong album Id, upgraded: " + album); 
 					hmWrongRightAlbumID.put(sId, sRightID);
 				}
 			} else if (XML_TRACK.equals(sQName)) {
@@ -508,7 +508,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") + ":" //$NON-NLS-1$ //$NON-NLS-2$
+						Log.debug(Messages.getString("Error.137") + ":"  
 								+ sTrackName);
 					}
 				}
@@ -520,8 +520,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") //$NON-NLS-1$
-								+ ":" + sTrackName); // wrong //$NON-NLS-1$
+						Log.debug(Messages.getString("Error.137") 
+								+ ":" + sTrackName); // wrong 
 					}
 				}
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and
@@ -541,13 +541,13 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				track.setAdditionDate(dAdditionDate);
 				String sComment = attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT));
 				if (sComment == null) {
-					sComment = ""; //$NON-NLS-1$
+					sComment = ""; 
 				}
 				track.setComment(sComment);
 				track.populateProperties(attributes);
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong Track Id, upgraded: " + track); //$NON-NLS-1$
+					Log.debug("** Wrong Track Id, upgraded: " + track); 
 					hmWrongRightTrackID.put(sId, sRightID);
 				}
 			} else if (XML_DIRECTORY.equals(sQName)) {
@@ -560,7 +560,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 						sParentId = hmWrongRightDirectoryID.get(sParentId);
 					}
 				}
-				if (!"-1".equals(sParentId)) { //$NON-NLS-1$
+				if (!"-1".equals(sParentId)) { 
 					dParent = DirectoryManager.getInstance().getDirectoryByID(sParentId); // Parent
 					// directory
 					// should
@@ -592,7 +592,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				directory.populateProperties(attributes);
 				// display a message if Id had a problem
 				if (!sID.equals(sRightID)) {
-					Log.debug("** Wrong directory Id, upgraded: " + directory); //$NON-NLS-1$
+					Log.debug("** Wrong directory Id, upgraded: " + directory); 
 					hmWrongRightDirectoryID.put(sID, sRightID);
 				}
 			} else if (XML_FILE.equals(sQName)) {
@@ -627,8 +627,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") //$NON-NLS-1$
-								+ ":" + sItemName); // wrong //$NON-NLS-1$
+						Log.debug(Messages.getString("Error.137") 
+								+ ":" + sItemName); // wrong 
 					}
 				}
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
@@ -639,7 +639,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				file.populateProperties(attributes);
 				// display a message if Id had a problem
 				if (!sID.equals(sRightID)) {
-					Log.debug("** Wrong file Id, upgraded: " + file); //$NON-NLS-1$
+					Log.debug("** Wrong file Id, upgraded: " + file); 
 					hmWrongRightFileID.put(sID, sRightID);
 				}
 			} else if (XML_PLAYLIST_FILE.equals(sQName)) {
@@ -667,14 +667,14 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sID.equals(sRightID)) {
-					Log.debug("** Wrong playlist file Id, upgraded: " + plf); //$NON-NLS-1$
+					Log.debug("** Wrong playlist file Id, upgraded: " + plf); 
 					hmWrongRightPlaylistFileID.put(sID, sRightID);
 				}
 			} else if (XML_PLAYLIST.equals(sQName)) {
 				String sPlaylistFiles = attributes
 						.getValue(attributes.getIndex(XML_PLAYLIST_FILES)).intern();
 				// playlist file list with ','
-				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ","); //$NON-NLS-1$
+				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ","); 
 				Playlist playlist = null;
 				if (st.hasMoreTokens()) {
 					// if none mapped file, ignore
@@ -716,12 +716,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 					Class cPlayer = null;
 					String sPlayer = attributes.getValue(attributes.getIndex(XML_TYPE_PLAYER_IMPL))
 							.intern();
-					if (sPlayer != null && !sPlayer.trim().equals("")) { //$NON-NLS-1$
+					if (sPlayer != null && !sPlayer.trim().equals("")) { 
 						cPlayer = Class.forName(sPlayer);
 					}
 					Class cTag = null;
 					String sTag = attributes.getValue(attributes.getIndex(XML_TYPE_TAG_IMPL));
-					if (sTag != null && !sTag.trim().equals("")) { //$NON-NLS-1$
+					if (sTag != null && !sTag.trim().equals("")) { 
 						cTag = Class.forName(sTag);
 					}
 					Type type = TypeManager.getInstance().registerType(sId, sTypeName, sExtension,
@@ -732,11 +732,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 			}
 		} catch (Exception re) {
-			String sAttributes = ""; //$NON-NLS-1$
+			String sAttributes = ""; 
 			for (int i = 0; i < attributes.getLength(); i++) {
-				sAttributes += "\n" + attributes.getQName(i) + "=" + attributes.getValue(i); //$NON-NLS-1$ //$NON-NLS-2$
+				sAttributes += "\n" + attributes.getQName(i) + "=" + attributes.getValue(i);  
 			}
-			Log.error("005", sAttributes, re); //$NON-NLS-1$
+			Log.error("005", sAttributes, re); 
 		}
 	}
 

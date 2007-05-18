@@ -34,7 +34,7 @@
 				<p>
 					<ul>
 						<li><a href='#1'><xsl:value-of select='/collection/i18n/ReportAction.5'/></a></li>
-						<li><a href='#2'><xsl:value-of select='/collection/ReportAction.6'/></a></li>
+						<li><a href='#2'><xsl:value-of select='/collection/i18n/ReportAction.6'/></a></li>
 					</ul>
 				</p>
 				<p>

@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.TipOfTheDay;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -34,7 +34,7 @@ public class TipOfTheDayAction extends ActionBase {
 
 	TipOfTheDayAction() {
 		super(
-				Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL), true); //$NON-NLS-1$
+				Messages.getString("JajukJMenuBar.20"), IconLoader.ICON_TIP_SMALL, true); 
 	}
 
 	/**

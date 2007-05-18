@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -33,8 +33,8 @@ public class ExitAction extends ActionBase {
 
 	ExitAction() {
 		super(
-				Messages.getString("JajukWindow.4"), Util.getIcon(ICON_EXIT), "alt X", true, false); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-		setShortDescription(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
+				Messages.getString("JajukWindow.4"), IconLoader.ICON_EXIT, "alt X", true, false);
+		setShortDescription(Messages.getString("JajukWindow.21")); 
 	}
 
 	public void perform(ActionEvent evt) {

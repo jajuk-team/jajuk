@@ -156,7 +156,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 		 */
 		NavigationPanel() {
 			// Albums List
-			jlAlbum = new JLabel(Messages.getString("CDDBWizard.5")); //$NON-NLS-1$
+			jlAlbum = new JLabel(Messages.getString("CDDBWizard.5")); 
 			jcbAlbum = new SteppedComboBox();
 
 			// add all matches
@@ -167,12 +167,12 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 			jcbAlbum.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					idx = jcbAlbum.getSelectedIndex();
-					Log.debug("Select index " + jcbAlbum.getSelectedIndex()); //$NON-NLS-1$
+					Log.debug("Select index " + jcbAlbum.getSelectedIndex()); 
 
 					// change the table model
 					model = populateModel();
 					jtable.setModel(model);
-					Log.debug(model.getRowCount() + " rows in model."); //$NON-NLS-1$
+					Log.debug(model.getRowCount() + " rows in model."); 
 					jtable.selectAll();
 
 					jtGenre.setText(fdbReader.getGenre());
@@ -180,13 +180,13 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 			});
 
 			// Genre Text label
-			jlGenre = new JLabel(Messages.getString("CDDBWizard.16")); //$NON-NLS-1$
+			jlGenre = new JLabel(Messages.getString("CDDBWizard.16")); 
 			jtGenre = new JTextField(fdbReader.getGenre());
 			jtGenre.setEditable(false);
 
 			// Show the number of matches found
 
-			jlCurrent = new JLabel(aResult.length + " " + Messages.getString("CDDBWizard.18")); //$NON-NLS-1$ //$NON-NLS-2$
+			jlCurrent = new JLabel(aResult.length + " " + Messages.getString("CDDBWizard.18"));  
 
 			int iXspace = 5;
 			double sizeControl[][] = {
@@ -195,11 +195,11 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 
 			setLayout(new TableLayout(sizeControl));
 
-			add(jlAlbum, "1,0"); //$NON-NLS-1$
-			add(jcbAlbum, "3,0"); //$NON-NLS-1$
-			add(jlGenre, "5,0"); //$NON-NLS-1$
-			add(jtGenre, "7,0"); //$NON-NLS-1$
-			add(jlCurrent, "9,0"); //$NON-NLS-1$
+			add(jlAlbum, "1,0"); 
+			add(jcbAlbum, "3,0"); 
+			add(jlGenre, "5,0"); 
+			add(jtGenre, "7,0"); 
+			add(jlCurrent, "9,0"); 
 		}
 	}
 
@@ -220,7 +220,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 
 					// Put an error message if no tracks were found
 					if (alGivenTracks.size() == 0) {
-						Messages.showWarningMessage(Messages.getString("CDDBWizard.14")); //$NON-NLS-1$
+						Messages.showWarningMessage(Messages.getString("CDDBWizard.14")); 
 						return null;
 					} else {
 						// Convert given tracks into CDDBTracks
@@ -237,19 +237,19 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 
 						// Put a message that show the query is running
 						InformationJPanel.getInstance().setMessage(
-								Messages.getString("CDDBWizard.11"), 0); //$NON-NLS-1$
+								Messages.getString("CDDBWizard.11"), 0); 
 						// Perform CDDB Query
 						idx = performQuery(alTracks);
 						// Put an error message if CDDB query don't found any
 						// matches
 						if (idx < 0) {
-							Messages.showInfoMessage(Messages.getString("CDDBWizard.12")); //$NON-NLS-1$
+							Messages.showInfoMessage(Messages.getString("CDDBWizard.12")); 
 							return null;
 						}
 						// Put a message that show possible matches are found
 						else {
 							InformationJPanel.getInstance().setMessage(
-									Messages.getString("CDDBWizard.13"), 0); //$NON-NLS-1$
+									Messages.getString("CDDBWizard.13"), 0); 
 						}
 					}
 				} catch (Exception e) {
@@ -267,8 +267,8 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 					jpMain.setLayout(new TableLayout(dSize));
 					jtable = populateTable();
 					jpNav = new NavigationPanel();
-					okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages //$NON-NLS-1$
-							.getString("Close")); //$NON-NLS-1$
+					okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages 
+							.getString("Close")); 
 
 					// Display main panel
 					display();
@@ -294,7 +294,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 		try {
 			fdbReader = fdb.read(aResult[idx]);
 		} catch (FreedbException e) {
-			Log.error("CDDB error ! " + e.getLocalizedMessage()); //$NON-NLS-1$
+			Log.error("CDDB error ! " + e.getLocalizedMessage()); 
 			dispose();
 		}
 		// Repopulate model
@@ -307,9 +307,9 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 
 	public void display() {
 		// Create UI
-		jpMain.add(jpNav, "1,1"); //$NON-NLS-1$
-		jpMain.add(new JScrollPane(jtable), "1,2"); //$NON-NLS-1$
-		jpMain.add(okc, "1,3"); //$NON-NLS-1$
+		jpMain.add(jpNav, "1,1"); 
+		jpMain.add(new JScrollPane(jtable), "1,2"); 
+		jpMain.add(okc, "1,3"); 
 
 		getRootPane().setDefaultButton(okc.getOKButton());
 		getContentPane().add(jpMain);
@@ -326,14 +326,14 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 		try {
 			aResult = fdb.query(fdbAlbum);
 			vAlbums = new Vector<String>(aResult.length);
-			Log.debug("CDDB Query return " + aResult.length + " match(es)."); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.debug("CDDB Query return " + aResult.length + " match(es).");  
 			int idx = 0;
 			for (int i = 0; i < aResult.length; i++) {
-				vAlbums.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum()); //$NON-NLS-1$ //$NON-NLS-2$
+				vAlbums.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum());  
 				if (aResult[i].isExactMatch()) {
 					idx = i;
 					InformationJPanel.getInstance().setMessage(
-							Messages.getString("CDDBWizard.17"), 0); //$NON-NLS-1$
+							Messages.getString("CDDBWizard.17"), 0); 
 				}
 			}
 			return idx;
@@ -396,11 +396,11 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 			}
 			if (b) {
 				InformationJPanel.getInstance().setMessage(
-						Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+						Messages.getString("Success"), InformationJPanel.INFORMATIVE); 
 				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			} else {
 				InformationJPanel.getInstance().setMessage(
-						Messages.getString("Error.155"), InformationJPanel.ERROR); //$NON-NLS-1$
+						Messages.getString("Error.155"), InformationJPanel.ERROR); 
 			}
 
 		}

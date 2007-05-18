@@ -52,7 +52,7 @@ public class Proportion {
 	 */
 	public Proportion() {
 		this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),
-				""); //$NON-NLS-1$
+				""); 
 		this.proportion = 0.2f;
 	}
 
@@ -87,14 +87,14 @@ public class Proportion {
 	 * @return String representation of this proportion
 	 */
 	public String toString() {
-		return "" + proportion; //$NON-NLS-1$
+		return "" + proportion; 
 	}
 
 	/**
 	 * From String, return style1,style2,...
 	 */
 	public String getStylesDesc() {
-		String out = ""; //$NON-NLS-1$
+		String out = ""; 
 		for (Style s : ambience.getStyles()) {
 			out += s.getName2() + ',';
 		}

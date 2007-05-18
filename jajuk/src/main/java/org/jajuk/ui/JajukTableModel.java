@@ -22,7 +22,7 @@ package org.jajuk.ui;
 
 import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.util.Vector;
 
@@ -44,12 +44,11 @@ public abstract class JajukTableModel extends DefaultTableModel implements
 	/** Values table* */
 	public Object[][] oValues;
 
-	// Play icon in cach
-	public static final ImageIcon PLAY_ICON = Util.getIcon(ICON_PLAY2);
+	// Play icon in cache
+	public static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY2;
 
-	// Unmount Play icon in cach
-	public static final ImageIcon UNMOUNT_PLAY_ICON = Util
-			.getIcon(ICON_UNKNOWN);
+	// Unmount Play icon in cache
+	public static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
 
 	/** Objects */
 	public Item[] oItems;

@@ -48,7 +48,9 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.watermark.SubstanceImageWatermark;
 import org.jvnet.substance.watermark.SubstanceStripeWatermark;
+import org.jvnet.substance.watermark.WatermarkInfo;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -162,33 +164,28 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * Genres
 	 */
-	public static final String[] genres = {
-			"Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Trip-Hop", "Vocal", "Jazz+Funk", "Fusion", "Trance", "Classical", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Instrumental", "Acid", "House", "Game", "Sound Clip", "Gospel", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Noise", "AlternRock", "Bass", "Soul", "Punk", "Space", "Meditative", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Instrumental Pop", "Instrumental Rock", "Ethnic", "Gothic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"Darkwave", "Techno-Industrial", "Electronic", "Pop-Folk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"Eurodance", "Dream", "Southern Rock", "Comedy", "Cult", "Gangsta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Top 40", "Christian Rap", "Pop/Funk", "Jungle", "Native American", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Cabaret", "New Wave", "Psychedelic", "Rave", "Showtunes", "Trailer", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Lo-Fi", "Tribal", "Acid Punk", "Acid Jazz", "Polka", "Retro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Musical", "Rock & Roll", "Hard Rock", "Folk", "Folk-Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"National Folk", "Swing", "Fast Fusion", "Bebob", "Latin", "Revival", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Celtic", "Bluegrass", "Avantgarde", "Gothic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"Progressive Rock", "Psychedelic Rock", "Symphonic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"Slow Rock", "Big Band", "Chorus", "Easy Listening", "Acoustic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Humour", "Speech", "Chanson", "Opera", "Chamber Music", "Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Symphony", "Booty Brass", "Primus", "Porn Groove", "Satire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Slow Jam", "Club", "Tango", "Samba", "Folklore", "Ballad", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Power Ballad", "Rhytmic Soul", "Freestyle", "Duet", "Punk Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Drum Solo", "Acapella", "Euro-House", "Dance Hall", "Goa", "Drum & Bass", "Club-House", "Hardcore", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"Terror", "Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta", "Heavy Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"Black Metal", "Crossover", "Contemporary C", "Christian Rock", "Merengue", "Salsa", "Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Anime", "JPop", "SynthPop" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static final String[] genres = { "Blues", "Classic Rock", "Country", "Dance", "Disco",
+			"Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop",
+			"R&B", "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska",
+			"Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop", "Vocal",
+			"Jazz+Funk", "Fusion", "Trance", "Classical", "Instrumental", "Acid", "House", "Game",
+			"Sound Clip", "Gospel", "Noise", "AlternRock", "Bass", "Soul", "Punk", "Space",
+			"Meditative", "Instrumental Pop", "Instrumental Rock", "Ethnic", "Gothic", "Darkwave",
+			"Techno-Industrial", "Electronic", "Pop-Folk", "Eurodance", "Dream", "Southern Rock",
+			"Comedy", "Cult", "Gangsta", "Top 40", "Christian Rap", "Pop/Funk", "Jungle",
+			"Native American", "Cabaret", "New Wave", "Psychedelic", "Rave", "Showtunes",
+			"Trailer", "Lo-Fi", "Tribal", "Acid Punk", "Acid Jazz", "Polka", "Retro", "Musical",
+			"Rock & Roll", "Hard Rock", "Folk", "Folk-Rock", "National Folk", "Swing",
+			"Fast Fusion", "Bebob", "Latin", "Revival", "Celtic", "Bluegrass", "Avantgarde",
+			"Gothic Rock", "Progressive Rock", "Psychedelic Rock", "Symphonic Rock", "Slow Rock",
+			"Big Band", "Chorus", "Easy Listening", "Acoustic", "Humour", "Speech", "Chanson",
+			"Opera", "Chamber Music", "Sonata", "Symphony", "Booty Brass", "Primus", "Porn Groove",
+			"Satire", "Slow Jam", "Club", "Tango", "Samba", "Folklore", "Ballad", "Power Ballad",
+			"Rhytmic Soul", "Freestyle", "Duet", "Punk Rock", "Drum Solo", "Acapella",
+			"Euro-House", "Dance Hall", "Goa", "Drum & Bass", "Club-House", "Hardcore", "Terror",
+			"Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta",
+			"Heavy Metal", "Black Metal", "Crossover", "Contemporary C", "Christian Rock",
+			"Merengue", "Salsa", "Thrash Metal", "Anime", "JPop", "SynthPop" };
 
 	/**
 	 * No constructor
@@ -204,8 +201,8 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static String getExtension(File file) {
 		String s = file.getName();
-		StringTokenizer st = new StringTokenizer(s, "."); //$NON-NLS-1$
-		String sExt = ""; //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(s, ".");
+		String sExt = "";
 		if (st.countTokens() > 1) {
 			while (st.hasMoreTokens()) {
 				sExt = st.nextToken();
@@ -240,13 +237,13 @@ public class Util implements ITechnicalStrings {
 		try {
 			new File(path);
 		} catch (Exception e) {
-			throw new JajukException("009", e); //$NON-NLS-1$
+			throw new JajukException("009", e);
 		}
 		FileReader fileReader;
 		try {
 			fileReader = new FileReader(file);
 		} catch (FileNotFoundException e) {
-			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
+			JajukException te = new JajukException("009", path, e);
 			throw te;
 		}
 		BufferedReader input = new BufferedReader(fileReader);
@@ -259,7 +256,7 @@ public class Util implements ITechnicalStrings {
 				strColl.append(line);
 			}
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
+			JajukException te = new JajukException("009", path, e);
 			throw te;
 		}
 
@@ -267,7 +264,7 @@ public class Util implements ITechnicalStrings {
 		try {
 			input.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
+			JajukException te = new JajukException("009", path, e);
 			throw te;
 		}
 
@@ -302,7 +299,7 @@ public class Util implements ITechnicalStrings {
 			// Close the bufferedReader
 			is.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", e); //$NON-NLS-1$
+			JajukException te = new JajukException("009", e);
 			throw te;
 		}
 		return sb;
@@ -326,20 +323,20 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static String formatXML(String s) {
 		String sOut = s;
-		if (s.contains("&")) { //$NON-NLS-1$
-			sOut = sOut.replaceAll("&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (s.contains("&")) {
+			sOut = sOut.replaceAll("&", "&amp;");
 		}
-		if (s.contains("\'")) { //$NON-NLS-1$
-			sOut = sOut.replaceAll("\'", "&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (s.contains("\'")) {
+			sOut = sOut.replaceAll("\'", "&apos;");
 		}
-		if (s.contains("\"")) { //$NON-NLS-1$
-			sOut = sOut.replaceAll("\"", "&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (s.contains("\"")) {
+			sOut = sOut.replaceAll("\"", "&quot;");
 		}
-		if (s.contains("<")) { //$NON-NLS-1$
-			sOut = sOut.replaceAll("<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (s.contains("<")) {
+			sOut = sOut.replaceAll("<", "&lt;");
 		}
-		if (s.contains(">")) { //$NON-NLS-1$
-			sOut = sOut.replaceAll(">", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (s.contains(">")) {
+			sOut = sOut.replaceAll(">", "&gt;");
 		}
 		StringBuffer sbOut = new StringBuffer(sOut.length());
 		/*
@@ -375,11 +372,8 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static boolean isXMLValid(String s) {
 		// check reserved chars
-		if (s.contains("&") || //$NON-NLS-1$
-				s.contains("\'") || //$NON-NLS-1$
-				s.contains("\"") || //$NON-NLS-1$
-				s.contains("<") || //$NON-NLS-1$
-				s.contains(">")) { //$NON-NLS-1$
+		if (s.contains("&") || s.contains("\'") || s.contains("\"") || s.contains("<")
+				|| s.contains(">")) {
 			return false;
 		}
 		// check invalid chars
@@ -417,7 +411,7 @@ public class Util implements ITechnicalStrings {
 		if (i >= 0 && i < 126) {
 			return genres[i];
 		} else {
-			return Messages.getString("unknown_style"); //$NON-NLS-1$
+			return Messages.getString("unknown_style");
 		}
 	}
 
@@ -425,7 +419,7 @@ public class Util implements ITechnicalStrings {
 	public static String formatTimeBySec(long lTime, boolean bTrimZeros) {
 		long l = lTime;
 		if (l == -1) { // means we are in repeat mode
-			return "--:--"; //$NON-NLS-1$
+			return "--:--";
 		}
 		if (l < 0)
 			l = 0; // make sure to to get negative values
@@ -444,8 +438,8 @@ public class Util implements ITechnicalStrings {
 
 		StringBuffer sbResult = new StringBuffer();
 		if (lHours > 0)
-			sbResult.append(sbHours).append(":"); //$NON-NLS-1$
-		return sbResult.append(sbMins).append(":").append(sbSecs).toString(); //$NON-NLS-1$
+			sbResult.append(sbHours).append(":");
+		return sbResult.append(sbMins).append(":").append(sbSecs).toString();
 	}
 
 	/** Waiting cursor thread, stored to avoid construction */
@@ -499,12 +493,12 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * Get required icon or image with specified url
+	 * Get required image with specified url
 	 * 
 	 * @param sURL
 	 * @return the image
 	 */
-	public static ImageIcon getIcon(URL url) {
+	public static ImageIcon getImage(URL url) {
 		ImageIcon ii = null;
 		String sURL = url.toString();
 		try {
@@ -563,9 +557,9 @@ public class Util implements ITechnicalStrings {
 			}
 			// backup itself using nio, file name is
 			// collection-backup-yyyMMdd.xml
-			String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date()); //$NON-NLS-1$
-			File fileNew = new File(Util.removeExtension(file.getAbsolutePath())
-					+ "-backup-" + sExt + "." + Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
+			String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date());
+			File fileNew = new File(Util.removeExtension(file.getAbsolutePath()) + "-backup-"
+					+ sExt + "." + Util.getExtension(file));
 			FileChannel fcSrc = new FileInputStream(file).getChannel();
 			FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
 			fcDest.transferFrom(fcSrc, 0, fcSrc.size());
@@ -597,14 +591,14 @@ public class Util implements ITechnicalStrings {
 	 *            destination directory
 	 */
 	public static void copyToDir(File file, File directory) throws Exception {
-		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
-		File fileNew = new File(new StringBuffer(directory.getAbsolutePath())
-				.append("/").append(file.getName()).toString()); //$NON-NLS-1$
+		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath());
+		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(
+				file.getName()).toString());
 		if (!file.exists() || !file.canRead()) {
-			throw new JajukException("009", file.getAbsolutePath(), null); //$NON-NLS-1$
+			throw new JajukException("009", file.getAbsolutePath(), null);
 		}
 		if (!fileNew.getParentFile().canWrite()) {
-			throw new JajukException("024", file.getAbsolutePath(), null); //$NON-NLS-1$
+			throw new JajukException("024", file.getAbsolutePath(), null);
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
 		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
@@ -622,12 +616,12 @@ public class Util implements ITechnicalStrings {
 	 *            destination file
 	 */
 	public static void copy(File file, File fNew) throws Exception {
-		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + fNew.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + fNew.getAbsolutePath());
 		if (!file.exists() || !file.canRead()) {
-			throw new JajukException("009", file.getAbsolutePath(), null); //$NON-NLS-1$
+			throw new JajukException("009", file.getAbsolutePath(), null);
 		}
 		if (!fNew.getParentFile().canWrite()) {
-			throw new JajukException("024", file.getAbsolutePath(), null); //$NON-NLS-1$
+			throw new JajukException("024", file.getAbsolutePath(), null);
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
 		FileChannel fcDest = new FileOutputStream(fNew).getChannel();
@@ -645,14 +639,14 @@ public class Util implements ITechnicalStrings {
 	 *            file new name
 	 */
 	public static void copy(File file, String sNewName) throws Exception {
-		Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName);
 		File fileNew = new File(new StringBuffer(file.getParentFile().getAbsolutePath())
-				.append('/').append(sNewName).toString()); //$NON-NLS-1$
+				.append('/').append(sNewName).toString());
 		if (!file.exists() || !file.canRead()) {
-			throw new JajukException("009", file.getAbsolutePath(), null); //$NON-NLS-1$
+			throw new JajukException("009", file.getAbsolutePath(), null);
 		}
 		if (!fileNew.getParentFile().canWrite()) {
-			throw new JajukException("024", file.getAbsolutePath(), null); //$NON-NLS-1$
+			throw new JajukException("024", file.getAbsolutePath(), null);
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
 		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
@@ -666,8 +660,8 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is a standard cover or not
 	 */
 	public static boolean isStandardCover(String sFileName) {
-		return sFileName.toLowerCase().matches(".*" + FILE_DEFAULT_COVER + ".*") //$NON-NLS-1$ //$NON-NLS-2$
-				|| sFileName.toLowerCase().matches(".*" + FILE_DEFAULT_COVER_2 + ".*") //$NON-NLS-1$ //$NON-NLS-2$
+		return sFileName.toLowerCase().matches(".*" + FILE_DEFAULT_COVER + ".*")
+				|| sFileName.toLowerCase().matches(".*" + FILE_DEFAULT_COVER_2 + ".*")
 				// just for previous compatibility, now it is a directory
 				// property
 				|| sFileName.toLowerCase().matches(".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*");
@@ -683,7 +677,7 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is an absolute default cover
 	 */
 	public static boolean isAbsoluteDefaultCover(Directory directory, String sFilename) {
-		String sDefault = directory.getStringValue(XML_DIRECTORY_DEFAULT_COVER); //$NON-NLS-1$
+		String sDefault = directory.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
 		if (sDefault != null && sDefault.equals(sFilename)) {
 			return true;
 		}
@@ -709,7 +703,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static String getFileChecksum(File fio) throws JajukException {
 		try {
-			String sOut = ""; //$NON-NLS-1$
+			String sOut = "";
 			FileChannel fc = new FileInputStream(fio).getChannel();
 			ByteBuffer bb = ByteBuffer.allocate(500);
 			fc.read(bb, fio.length() / 2);
@@ -717,7 +711,7 @@ public class Util implements ITechnicalStrings {
 			sOut = new String(bb.array());
 			return MD5Processor.hash(sOut);
 		} catch (Exception e) {
-			throw new JajukException("103", e); //$NON-NLS-1$
+			throw new JajukException("103", e);
 		}
 	}
 
@@ -755,9 +749,9 @@ public class Util implements ITechnicalStrings {
 	 * @return whether we are under Windows
 	 */
 	public static boolean isUnderWindows() {
-		String sOS = (String) System.getProperties().get("os.name"); //$NON-NLS-1$;
+		String sOS = (String) System.getProperties().get("os.name");
 		// os.name can be null with JWS under MacOS
-		if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("windows") != -1) { //$NON-NLS-1$
+		if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("windows") != -1) {
 			return true;
 		}
 		return false;
@@ -781,9 +775,9 @@ public class Util implements ITechnicalStrings {
 	 * @return whether we are under Linux
 	 */
 	public static boolean isUnderLinux() {
-		String sOS = (String) System.getProperties().get("os.name"); //$NON-NLS-1$;
+		String sOS = (String) System.getProperties().get("os.name");
 		// os.name can be null with JWS under MacOS
-		if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("linux") != -1) { //$NON-NLS-1$
+		if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("linux") != -1) {
 			return true;
 		}
 		return false;
@@ -797,34 +791,28 @@ public class Util implements ITechnicalStrings {
 		long milliseconds = -1;
 		int byteslength = -1;
 		if (properties != null) {
-			if (properties.containsKey("audio.length.bytes")) //$NON-NLS-1$
-			{
-				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
+			if (properties.containsKey("audio.length.bytes")) {
+				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();
 			}
-			if (properties.containsKey("duration")) //$NON-NLS-1$
-			{
-				milliseconds = (((Long) properties.get("duration")).longValue()) / 1000; //$NON-NLS-1$
+			if (properties.containsKey("duration")) {
+				milliseconds = (((Long) properties.get("duration")).longValue()) / 1000;
 			} else {
 				// Try to compute duration
 				int bitspersample = -1;
 				int channels = -1;
 				float samplerate = -1.0f;
 				int framesize = -1;
-				if (properties.containsKey("audio.samplesize.bits")) //$NON-NLS-1$
-				{
-					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue(); //$NON-NLS-1$
+				if (properties.containsKey("audio.samplesize.bits")) {
+					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue();
 				}
-				if (properties.containsKey("audio.channels")) //$NON-NLS-1$
-				{
-					channels = ((Integer) properties.get("audio.channels")).intValue(); //$NON-NLS-1$
+				if (properties.containsKey("audio.channels")) {
+					channels = ((Integer) properties.get("audio.channels")).intValue();
 				}
-				if (properties.containsKey("audio.samplerate.hz")) //$NON-NLS-1$
-				{
-					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue(); //$NON-NLS-1$
+				if (properties.containsKey("audio.samplerate.hz")) {
+					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue();
 				}
-				if (properties.containsKey("audio.framesize.bytes")) //$NON-NLS-1$
-				{
-					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue(); //$NON-NLS-1$
+				if (properties.containsKey("audio.framesize.bytes")) {
+					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();
 				}
 				if (bitspersample > 0) {
 					milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (bitspersample / 8)));
@@ -855,9 +843,8 @@ public class Util implements ITechnicalStrings {
 			jpOut.add(jc);
 			jpOut.add(Box.createVerticalGlue());
 		}
-		jpOut.setMinimumSize(new Dimension(0, 0)); // allow resing with
-		// info
-		// node
+		jpOut.setMinimumSize(new Dimension(0, 0)); 
+		// allow resing with info node
 		return jpOut;
 	}
 
@@ -1103,6 +1090,9 @@ public class Util implements ITechnicalStrings {
 	public static void setLookAndFeel(String pTheme) {
 		try {
 			String theme = pTheme;
+			if (pTheme == null){
+				theme = LNF_DEFAULT_THEME;
+			}
 			// Set substance laf
 			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 			// hide some useless elements such locker for not editable labels
@@ -1116,10 +1106,44 @@ public class Util implements ITechnicalStrings {
 			}
 			// Set substance theme
 			SubstanceLookAndFeel.setCurrentTheme(themes.get(theme).getClassName());
-			// Set a watermark
-			SubstanceLookAndFeel.setCurrentWatermark(new SubstanceStripeWatermark());
 		} catch (Exception e) {
 			Log.error(e);
+		}
+	}
+
+	/**
+	 * Set a watermark
+	 * 
+	 * @param watermark
+	 *            name
+	 */
+	public static void setWatermark(String pWatermarkName) {
+		try {
+			String watermark = pWatermarkName;
+			if (watermark == null){
+				watermark = LNF_DEFAULT_WATERMARK;
+			}
+			// Check the watermark is known, if not take the default one
+			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
+			if (watermarks.get(pWatermarkName) == null) {
+				// the image watermark is not included in the list for unknown
+				// reasons
+				if (!watermark.equals("Image")) {
+					watermark = LNF_DEFAULT_WATERMARK;
+				}
+			}
+			// Set the watermark
+			if (watermark.equals("Image")) {
+				SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(
+						ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)));
+			} else {
+				SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(watermark).getClassName());
+			}
+		} catch (Exception e) {
+			Log.error(e);
+			// Set default watermark
+			SubstanceLookAndFeel.setCurrentWatermark(new SubstanceStripeWatermark());
+			ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK, LNF_DEFAULT_WATERMARK);
 		}
 	}
 
@@ -1130,8 +1154,7 @@ public class Util implements ITechnicalStrings {
 	 * @return
 	 */
 	public static String formatPropertyDesc(String sDesc) {
-		return "<HTML><center><b><font size=+0 color=#000000>" + //$NON-NLS-1$
-				sDesc + "</font></b><HTML>"; //$NON-NLS-1$
+		return "<HTML><center><b><font size=+0 color=#000000>" + sDesc + "</font></b><HTML>";
 	}
 
 	/**
@@ -1214,7 +1237,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static String formatStyle(String style) {
 		if (style.length() == 0) {
-			return ""; //$NON-NLS-1$
+			return "";
 		}
 		if (style.length() == 1) {
 			return style.substring(0, 1).toUpperCase();
@@ -1333,12 +1356,12 @@ public class Util implements ITechnicalStrings {
 		properties.remove("java.library.path");
 		properties.remove("java.class.path");
 		// user name is private
-		properties.remove("user.name");//$NON-NLS-1$ 
+		properties.remove("user.name");
 		properties.remove("java.ext.dirs");
 		properties.remove("sun.boot.class.path");
-		properties.remove("deployment.user.security.trusted.certs"); //$NON-NLS-1$
-		properties.remove("deployment.user.security.trusted.clientauthcerts"); //$NON-NLS-1$
-		properties.remove("jajuk.log"); //$NON-NLS-1$
+		properties.remove("deployment.user.security.trusted.certs");
+		properties.remove("deployment.user.security.trusted.clientauthcerts");
+		properties.remove("jajuk.log");
 
 		return properties;
 	}
@@ -1349,10 +1372,10 @@ public class Util implements ITechnicalStrings {
 	public static Properties getAnonymizedJajukProperties() {
 		Properties properties = (Properties) ConfigurationManager.getProperties().clone();
 		// We remove sensible data from logs
-		properties.remove("jajuk.network.proxy_login"); //$NON-NLS-1$
-		properties.remove("jajuk.network.proxy_port"); //$NON-NLS-1$
-		properties.remove("jajuk.network.proxy_hostname"); //$NON-NLS-1$
-		properties.remove("jajuk.options.p2p.password"); //$NON-NLS-1$
+		properties.remove("jajuk.network.proxy_login");
+		properties.remove("jajuk.network.proxy_port");
+		properties.remove("jajuk.network.proxy_hostname");
+		properties.remove("jajuk.options.p2p.password");
 		return properties;
 	}
 
@@ -1602,14 +1625,14 @@ public class Util implements ITechnicalStrings {
 		String sValue = null;
 		// Check Author name
 		if (sPattern.contains(PATTERN_ARTIST)) {
-			sValue = track.getAuthor().getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+			sValue = track.getAuthor().getName().replace("[/\\:]", "-");
 			sValue = sValue.trim();
-			if (!sValue.equals(UNKNOWN_AUTHOR)) { //$NON-NLS-1$
+			if (!sValue.equals(UNKNOWN_AUTHOR)) {
 				out = out.replace(PATTERN_ARTIST, AuthorManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.150") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new JajukException(file.getAbsolutePath() + " ("
+							+ Messages.getString("Error.150") + ")");
 				} else {
 					out = out.replace(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
 				}
@@ -1617,14 +1640,14 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Style name
 		if (sPattern.contains(PATTERN_GENRE)) {
-			sValue = track.getStyle().getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+			sValue = track.getStyle().getName().replace("[/\\:]", "-");
 			sValue = sValue.trim();
-			if (!sValue.equals(UNKNOWN_STYLE)) { //$NON-NLS-1$
+			if (!sValue.equals(UNKNOWN_STYLE)) {
 				out = out.replace(PATTERN_GENRE, StyleManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.153") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new JajukException(file.getAbsolutePath() + " ("
+							+ Messages.getString("Error.153") + ")");
 				} else {
 					out = out.replace(PATTERN_GENRE, Messages.getString(UNKNOWN_STYLE));
 				}
@@ -1632,14 +1655,14 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Album Name
 		if (sPattern.contains(PATTERN_ALBUM)) {
-			sValue = track.getAlbum().getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+			sValue = track.getAlbum().getName().replace("[/\\:]", "-");
 			sValue = sValue.trim();
-			if (!sValue.equals(UNKNOWN_ALBUM)) { //$NON-NLS-1$
+			if (!sValue.equals(UNKNOWN_ALBUM)) {
 				out = out.replace(PATTERN_ALBUM, AlbumManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.149") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new JajukException(file.getAbsolutePath() + " ("
+							+ Messages.getString("Error.149") + ")");
 				} else {
 					out = out.replace(PATTERN_ALBUM, Messages.getString(UNKNOWN_ALBUM));
 				}
@@ -1651,45 +1674,43 @@ public class Util implements ITechnicalStrings {
 			if (lOrder == 0) {
 				String sFilename = file.getName();
 				if (Character.isDigit(sFilename.charAt(0))) {
-					String sTo = file.getName().substring(0, 3).trim().replaceAll("[^0-9]", ""); //$NON-NLS-1$ //$NON-NLS-2$
+					String sTo = file.getName().substring(0, 3).trim().replaceAll("[^0-9]", "");
 					for (char c : sTo.toCharArray()) {
 						if (!Character.isDigit(c)) {
-							throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
-									+ Messages.getString("Error.152") //$NON-NLS-1$
-									+ ")\n"); //$NON-NLS-1$
+							throw new JajukException(file.getAbsolutePath() + " ("
+									+ Messages.getString("Error.152") + ")\n");
 						}
 					}
 					lOrder = Long.parseLong(sTo);
 				} else {
 					if (bMandatory) {
-						throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
-								+ Messages.getString("Error.152") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new JajukException(file.getAbsolutePath() + " ("
+								+ Messages.getString("Error.152") + ")");
 					} else {
 						lOrder = 0;
 					}
 				}
 			}
 			if (lOrder < 10) {
-				out = out.replace(PATTERN_TRACKORDER, "0" //$NON-NLS-1$
-						+ lOrder);
+				out = out.replace(PATTERN_TRACKORDER, "0" + lOrder);
 			} else {
-				out = out.replace(PATTERN_TRACKORDER, lOrder + ""); //$NON-NLS-1$
+				out = out.replace(PATTERN_TRACKORDER, lOrder + "");
 			}
 		}
 		// Check Track name
 		if (sPattern.contains(PATTERN_TRACKNAME)) {
-			sValue = track.getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+			sValue = track.getName().replace("[/\\:]", "-");
 			sValue = sValue.trim();
 			out = out.replace(PATTERN_TRACKNAME, sValue);
 		}
 		// Check Year Value
 		if (sPattern.contains(PATTERN_YEAR)) {
 			if (track.getYear().getValue() != 0) {
-				out = out.replace(PATTERN_YEAR, track.getYear() + ""); //$NON-NLS-1$
+				out = out.replace(PATTERN_YEAR, track.getYear().getValue() + "");
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " (" //$NON-NLS-1$
-							+ Messages.getString("Error.148") + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new JajukException(file.getAbsolutePath() + " ("
+							+ Messages.getString("Error.148") + ")");
 				} else {
 					out = out.replace(PATTERN_YEAR, "?");
 				}
@@ -1779,8 +1800,9 @@ public class Util implements ITechnicalStrings {
 				try {
 					int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
 					Util.createThumbnail(fCover, fThumb, iSize);
-					InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
-							+ ' ' + album.getName2(), InformationJPanel.INFORMATIVE);
+					InformationJPanel.getInstance().setMessage(
+							Messages.getString("CatalogView.5") + ' ' + album.getName2(),
+							InformationJPanel.INFORMATIVE);
 					return true;
 				} catch (Exception e) {
 					// create a void thumb to avoid trying to create again

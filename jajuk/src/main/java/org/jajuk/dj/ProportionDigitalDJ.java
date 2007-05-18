@@ -140,21 +140,21 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
 	public String toXML() {
 		StringBuffer sb = new StringBuffer(2000);
 		sb.append(toXMLGeneralParameters());
-		sb.append("\t<" + XML_DJ_PROPORTIONS + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("\t<" + XML_DJ_PROPORTIONS + ">\n");  
 		for (Proportion proportion : proportions) {
-			String stylesDesc = ""; //$NON-NLS-1$
+			String stylesDesc = ""; 
 			for (Style style : proportion.getStyles()) {
 				stylesDesc += style.getId() + ',';
 			}
 			// remove trailing coma
 			stylesDesc = stylesDesc.substring(0, stylesDesc.length() - 1);
 			sb
-					.append("\t\t<" + XML_DJ_PROPORTION + " " + XML_DJ_STYLES + "='" + stylesDesc + "' " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.append("\t\t<" + XML_DJ_PROPORTION + " " + XML_DJ_STYLES + "='" + stylesDesc + "' " +    
 							XML_DJ_VALUE
-							+ "='" + proportion.getProportion() + "'/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+							+ "='" + proportion.getProportion() + "'/>\n");  
 		}
-		sb.append("\t</" + XML_DJ_PROPORTIONS + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		sb.append("</" + XML_DJ_DJ + ">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("\t</" + XML_DJ_PROPORTIONS + ">\n");  
+		sb.append("</" + XML_DJ_DJ + ">\n");  
 		return sb.toString();
 	}
 

@@ -138,14 +138,14 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	public static void commit(DigitalDJ dj) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(Util.getConfFileByPath(FILE_DJ_DIR
-					+ "/" + //$NON-NLS-1$
-					dj.getID() + "." + XML_DJ_EXTENSION))); //$NON-NLS-1$
+					+ "/" + 
+					dj.getID() + "." + XML_DJ_EXTENSION))); 
 			bw.write(dj.toXML());
 			bw.flush();
 			bw.close();
 		} catch (Exception e) {
 			Log.error(
-					"145", (dj != null) ? "{{" + dj.getName() + "}}" : null, e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"145", (dj != null) ? "{{" + dj.getName() + "}}" : null, e);   
 		}
 	}
 
@@ -156,11 +156,11 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	 */
 	public void remove(DigitalDJ dj) {
 		djs.remove(dj.getID());
-		Util.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete(); //$NON-NLS-1$ //$NON-NLS-2$
+		Util.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete();  
 		// reset default DJ if this DJ was default
 		if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ)
 				.equals(dj.getID())) {
-			ConfigurationManager.setProperty(CONF_DEFAULT_DJ, ""); //$NON-NLS-1$
+			ConfigurationManager.setProperty(CONF_DEFAULT_DJ, ""); 
 		}
 		// alert command panel
 		ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
@@ -192,7 +192,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 								.equals(sID)) {
 					int i = Messages
 							.getChoice(
-									Messages.getString("DigitalDJWizard.61") + " " + dj.getName() + " ?", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+									Messages.getString("DigitalDJWizard.61") + " " + dj.getName() + " ?",   
 									JOptionPane.YES_NO_CANCEL_OPTION);
 					if (i == JOptionPane.YES_OPTION) {
 						remove(dj);
@@ -227,7 +227,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 					djs.put(dj.getID(), dj);
 				} catch (Exception e) {
 					Log.error(
-							"144", "{{" + files[i].getAbsolutePath() + "}}", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"144", "{{" + files[i].getAbsolutePath() + "}}", e);   
 				}
 			}
 		} catch (Exception e) {
@@ -323,7 +323,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements
 		// Error parsing the DJ ? delete it
 		catch (Exception e) {
 			Log.error(e);
-			Log.debug("Corrupted DJ: " + file.getAbsolutePath() + " deleted"); //$NON-NLS-1$ //$NON-NLS-2$
+			Log.debug("Corrupted DJ: " + file.getAbsolutePath() + " deleted");  
 			file.delete();
 		}
 		if (XML_DJ_PROPORTION_CLASS.equals(factoryType)) {
@@ -372,9 +372,9 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
 							.getIndex(XML_DJ_STYLES));
 					proportion = Float.parseFloat(attributes
 							.getValue(attributes.getIndex(XML_DJ_VALUE)));
-					StringTokenizer st = new StringTokenizer(styles, ","); //$NON-NLS-1$
+					StringTokenizer st = new StringTokenizer(styles, ","); 
 					Ambience ambience = new Ambience(Long.toString(System
-							.currentTimeMillis()), ""); //$NON-NLS-1$
+							.currentTimeMillis()), ""); 
 					while (st.hasMoreTokens()) {
 						ambience.addStyle(StyleManager.getInstance()
 								.getStyleByID(st.nextToken()));
@@ -461,7 +461,7 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
 							.getValue(attributes.getIndex(XML_DJ_NUMBER)));
 					String fromStyles = attributes.getValue(attributes
 							.getIndex(XML_DJ_FROM));
-					StringTokenizer st = new StringTokenizer(fromStyles, ","); //$NON-NLS-1$
+					StringTokenizer st = new StringTokenizer(fromStyles, ","); 
 					Ambience fromAmbience = new Ambience();
 					while (st.hasMoreTokens()) {
 						fromAmbience.addStyle(StyleManager.getInstance()
@@ -470,7 +470,7 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
 					String toStyles = attributes.getValue(attributes
 							.getIndex(XML_DJ_TO));
 					Ambience toAmbience = new Ambience();
-					st = new StringTokenizer(toStyles, ","); //$NON-NLS-1$
+					st = new StringTokenizer(toStyles, ","); 
 					while (st.hasMoreTokens()) {
 						toAmbience.addStyle(StyleManager.getInstance()
 								.getStyleByID(st.nextToken()));

@@ -87,7 +87,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		super(sId, sName);
 		this.dParentDirectory = dParentDirectory;
 		setProperty(XML_DIRECTORY,
-				dParentDirectory == null ? "-1" : dParentDirectory.getId().intern()); //$NON-NLS-1$
+				dParentDirectory == null ? "-1" : dParentDirectory.getId().intern()); 
 		this.iType = iType;
 	}
 
@@ -116,8 +116,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID=" + sId + " Name={{" + getName() + "}} Hashcode=" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getId() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "Playlist file[ID=" + sId + " Name={{" + getName() + "}} Hashcode=" +   
+				getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getId() + "]";  
 	}
 
 	/**
@@ -167,12 +167,6 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		setModified(true);
 	}
 
-	/**
-	 * hashcode ( used by the equals method )
-	 */
-	public int hashCode() {
-		return getId().hashCode();
-	}
 
 	/**
 	 * @return
@@ -232,7 +226,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public synchronized ArrayList<File> getFiles() throws JajukException {
 		// if normal playlist, propose to mount device if unmounted
 		if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && !isReady()) {
-			String sMessage = Messages.getString("Error.025") + " (" + getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String sMessage = Messages.getString("Error.025") + " (" + getDirectory().getDevice().getName() + Messages.getString("FIFO.4");   
 			int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
 			if (i == JOptionPane.YES_OPTION) {
 				try {
@@ -243,11 +237,11 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 							ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 				} catch (Exception e) {
 					Log.error(e);
-					Messages.showErrorMessage("011", getDirectory().getDevice().getName()); //$NON-NLS-1$
-					throw new JajukException("141", getFio().getAbsolutePath(), null); //$NON-NLS-1$
+					Messages.showErrorMessage("011", getDirectory().getDevice().getName()); 
+					throw new JajukException("141", getFio().getAbsolutePath(), null); 
 				}
 			} else {
-				throw new JajukException("141", getFio().getAbsolutePath(), null); //$NON-NLS-1$
+				throw new JajukException("141", getFio().getAbsolutePath(), null); 
 			}
 		}
 		if (iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null) {
@@ -257,10 +251,10 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				// check device is mounted
 				alFiles = load(); // populate playlist
 				if (containsExtFiles()) {
-					Messages.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
+					Messages.showWarningMessage(Messages.getErrorMessage("142")); 
 				}
 			} else { // error accessing playlist file
-				throw new JajukException("009", getFio().getAbsolutePath(), new Exception()); //$NON-NLS-1$
+				throw new JajukException("009", getFio().getAbsolutePath(), new Exception()); 
 			}
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
 			// bestof playlist
@@ -545,7 +539,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 					bw.newLine();
 				}
 			} catch (Exception e) {
-				throw new JajukException("028", getName(), e); //$NON-NLS-1$
+				throw new JajukException("028", getName(), e); 
 			} finally {
 				if (bw != null) {
 					try {
@@ -561,7 +555,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 						// refresh repository list(mandatory for logical
 						// playlist collapse/merge)
 					} catch (IOException e1) {
-						throw new JajukException("028", getName(), e1); //$NON-NLS-1$
+						throw new JajukException("028", getName(), e1); 
 					}
 				}
 			}
@@ -624,15 +618,15 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				this.bContainsExtFiles = true;
 			}
 		} catch (Exception e) {
-			Log.error("017", "{{" + getName() + "}}", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new JajukException("017", getFio().getAbsolutePath(), e); //$NON-NLS-1$
+			Log.error("017", "{{" + getName() + "}}", e);   
+			throw new JajukException("017", getFio().getAbsolutePath(), e); 
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e1) {
 					Log.error(e1);
-					throw new JajukException("017", getFio().getAbsolutePath(), e1); //$NON-NLS-1$
+					throw new JajukException("017", getFio().getAbsolutePath(), e1); 
 				}
 			}
 		}
@@ -707,7 +701,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public void play() throws JajukException {
 		alFiles = getFiles();
 		if (alFiles == null || alFiles.size() == 0) {
-			Messages.showErrorMessage("018"); //$NON-NLS-1$
+			Messages.showErrorMessage("018"); 
 		} else {
 			FIFO.getInstance().push(
 					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
@@ -768,7 +762,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		} else {
 			return;
 		}
-		jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + EXT_PLAYLIST));//$NON-NLS-1$
+		jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + EXT_PLAYLIST));
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			java.io.File file = jfchooser.getSelectedFile();
@@ -776,7 +770,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 			if (file.getAbsolutePath().endsWith(EXT_PLAYLIST)) {
 				file = new java.io.File(file.getAbsolutePath());
 			} else {
-				file = new java.io.File(file.getAbsolutePath() + "." + EXT_PLAYLIST);//$NON-NLS-1$
+				file = new java.io.File(file.getAbsolutePath() + "." + EXT_PLAYLIST);
 			}
 
 			// set new file path ( this playlist is a special playlist, just in
@@ -800,7 +794,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 */
 	protected void setParentDirectory(Directory parentDirectory) {
 		this.dParentDirectory = parentDirectory;
-		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getId()); //$NON-NLS-1$
+		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getId()); 
 	}
 
 	/**
@@ -815,7 +809,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Playlist_File") + " : " + getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return Messages.getString("Item_Playlist_File") + " : " + getName();  
 	}
 
 	/*

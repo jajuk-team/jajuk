@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.DigitalDJWizard;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -37,7 +37,7 @@ public class DJConfigurationAction extends ActionBase {
 
 	DJConfigurationAction() {
 		super(
-				Messages.getString("CommandJPanel.17"), Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("CommandJPanel.17"), IconLoader.ICON_DIGITAL_DJ_16x16, true);  
 	}
 
 	public void perform(ActionEvent evt) {

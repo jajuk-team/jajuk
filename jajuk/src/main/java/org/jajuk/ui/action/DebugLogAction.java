@@ -22,6 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -45,17 +46,17 @@ public class DebugLogAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	DebugLogAction() {
-		super(Messages.getString("JajukJMenuBar.23"), Util.getIcon(ICON_TRACES), true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
-		setShortDescription(Messages.getString("JajukJMenuBar.23")); //$NON-NLS-1$
+		super(Messages.getString("JajukJMenuBar.23"), IconLoader.ICON_TRACES, true);
+		setShortDescription(Messages.getString("JajukJMenuBar.23")); 
 	}
 
 	public void perform(ActionEvent evt) {
-		final JEditorPane text = new JEditorPane("text/html", getTraces()); //$NON-NLS-1$
+		final JEditorPane text = new JEditorPane("text/html", getTraces()); 
 		text.setEditable(false);
 		text.setMargin(new Insets(10, 10, 10, 10));
 		text.setOpaque(true);
 		text.setForeground(Color.DARK_GRAY);
-		text.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE))); //$NON-NLS-1$
+		text.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE))); 
 		JDialog dialog = new JDialog(Main.getWindow(), Messages.getString("DebugLogAction.0"), true);
 		JPanel jp = new JPanel();
 		double[][] size = new double[][] { { TableLayout.FILL }, { TableLayout.FILL, 10, 20, 5 } };

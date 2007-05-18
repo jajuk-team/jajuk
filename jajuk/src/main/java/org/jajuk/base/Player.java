@@ -123,10 +123,10 @@ public class Player implements ITechnicalStrings {
 						throw bpe;
 					}
 					bWaitingLine = true;
-					Log.debug("Line occupied, waiting"); //$NON-NLS-1$
+					Log.debug("Line occupied, waiting"); 
 					InformationJPanel.getInstance().setMessage(
-							Messages.getString("Player.0"), //$NON-NLS-1$
-							InformationJPanel.WARNING); //$NON-NLS-1$
+							Messages.getString("Player.0"), 
+							InformationJPanel.WARNING); 
 					try {
 						// wait for the line
 						FIFO.getInstance().wait(WAIT_AFTER_ERROR);
@@ -141,8 +141,8 @@ public class Player implements ITechnicalStrings {
 			pDetails.put(DETAIL_CURRENT_FILE, file);
 			ObservationManager.notifySync(new Event(
 					EventSubject.EVENT_PLAY_ERROR, pDetails));
-			Log.error("007", Messages.getString("Player.0") //$NON-NLS-1$ //$NON-NLS-2$
-					+ fCurrent.getAbsolutePath() + "}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.error("007", Messages.getString("Player.0")  
+					+ fCurrent.getAbsolutePath() + "}}", t);   
 			// process playing error asynchronously to avoid loop problems
 			// when cascading errors
 			new Thread() {
@@ -184,8 +184,8 @@ public class Player implements ITechnicalStrings {
 				bPlaying = false;
 			}
 		} catch (Exception e) {
-			Log.debug(Messages.getString("Error.008") //$NON-NLS-1$
-					+ ":" + fCurrent.getName() + " " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.debug(Messages.getString("Error.008") 
+					+ ":" + fCurrent.getName() + " " + e.getMessage());   
 		}
 	}
 
@@ -355,7 +355,7 @@ public class Player implements ITechnicalStrings {
 			fPosition = 0.99f;
 		}
 		try {
-			Log.debug("Seeking to: " + fPosition); //$NON-NLS-1$
+			Log.debug("Seeking to: " + fPosition); 
 			playerImpl.seek(fPosition);
 		} catch (Exception e) { // we can get some errors in unexpected cases
 			Log.debug(e.toString());

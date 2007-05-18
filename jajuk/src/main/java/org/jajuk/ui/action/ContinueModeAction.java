@@ -26,7 +26,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
@@ -39,9 +39,9 @@ public class ContinueModeAction extends ActionBase {
 
 	ContinueModeAction() {
 		super(
-				Messages.getString("JajukJMenuBar.12"), Util.getIcon(ICON_CONTINUE), //$NON-NLS-1$
-				true); //$NON-NLS-1$
-		setShortDescription(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
+				Messages.getString("JajukJMenuBar.12"), IconLoader.ICON_CONTINUE, 
+				true); 
+		setShortDescription(Messages.getString("CommandJPanel.3")); 
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

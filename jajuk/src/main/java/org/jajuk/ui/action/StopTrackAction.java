@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
@@ -31,8 +31,8 @@ public class StopTrackAction extends ActionBase {
 	StopTrackAction() {
 		super(
 				Messages.getString("JajukWindow.11"), 
-				Util.getIcon(ICON_STOP), "ctrl S", false, false); //$NON-NLS-1$ //$NON-NLS-2$
-		setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
+				IconLoader.ICON_STOP, "ctrl S", false, false);  
+		setShortDescription(Messages.getString("JajukWindow.27")); 
 	}
 
 	public void perform(ActionEvent evt) {
