@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+view devices</title>
+</head>
+<body>
+<h1>
+view devices</h1>
+<h1>
+The Devices view</h1>
+<p>
+This view displays devices you created and manages them. Please read the [devices.html Using Devices page] to learn about devices principles.</p>
+<p>
+Note you can also create Folder devices using the quick start devices wizard (top menu -&gt; help -&gt; Device wizard).</p>
+<h2>
+The devices repository</h2>
+<p>
+In the lower part of the Devices view, you will find devices you created. The green arrow on the bottom of a device means it is now mounted.</p>
+<p>
+<a href="../images/1/1a/New.png" title="Image:new.png" class="internal">
+<img src='../images/1/1a/New.png' alt="Image:new.png"/>
+</a>
+ This is not an actual device but a shortcut to create a new one. Please click on it to create a new Device.</p>
+<p>
+<a href="../images/f/fd/Cdrom_mount.png" title="Image:cdrom_mount.png" class="internal">
+<img src='../images/f/fd/Cdrom_mount.png' alt="Image:cdrom_mount.png"/>
+</a>
+ Data CDROM</p>
+<p>
+<a href="../images/d/d1/Folder_mount.png" title="Image:folder_mount.png" class="internal">
+<img src='../images/d/d1/Folder_mount.png' alt="Image:folder_mount.png"/>
+</a>
+ Folder from your hard disk</p>
+<p>
+<a href="../images/d/d8/Nfs_mount.png" title="Image:nfs_mount.png" class="internal">
+<img src='../images/d/d8/Nfs_mount.png' alt="Image:nfs_mount.png"/>
+</a>
+ Network drive (Netbios/Samba/NFS...). Under Windows, use drive letter path (like T:\...) and not network favorites path or UNC paths.</p>
+<p>
+<a href="../images/8/8b/Player_mount.png" title="Image:player_mount.png" class="internal">
+<img src='../images/8/8b/Player_mount.png' alt="Image:player_mount.png"/>
+</a>
+ MP3 Player</p>
+<p>
+<a href="../images/6/6c/Ext_dd_mount.png" title="Image:ext_dd_mount.png" class="internal">
+<img src='../images/6/6c/Ext_dd_mount.png' alt="Image:ext_dd_mount.png"/>
+</a>
+ External Hard Disk or storage device like USB keys (mainly on USB or Firewire)</p>
+<p>
+<a href="../images/8/85/Remote_mount.png" title="Image:remote_mount.png" class="internal">
+<img src='../images/8/85/Remote_mount.png' alt="Image:remote_mount.png"/>
+</a>
+ Remote P2P Jajuk device (not yet implemented)</p>
+<p>
+<b>
+Contextual menu on devices features </b>
+(please read the [devices.html Using Devices page] if you don't understand the actions):</p>
+<ul>
+<li>
+Mount: Mount this device</li>
+<li>
+Unmount: Unmount this device</li>
+<li>
+Test: Test if this device is available</li>
+<li>
+Force Refresh: Perform a forced refresh on this device to read tags again.</li>
+<li>
+Synchronize: (available only if this device is configured to synchronize with another device)</li>
+<li>
+Remove device: Remove this device from your collection. No data will be deleted from your hard disk. You can set a confirmation dialog (is the default) in [view_parameter.html Parameter view] / Confirmations tab.</li>
+<li>
+Configuration: Manage device configuration</li>
+</ul>
+<h2>
+Device configuration wizard</h2>
+<p>
+If you don't understand Jajuk device notions like mounting, refreshing or synchronizing, please read the [devices.html Using Devices page].</p>
+<p>
+This window appears when you create a new device or when you update some properties of an existing device. You can show device properties by double clicking on it, by using contextual menu/ Get Properties or by selecting the device and using the Properties button in the Control Pane. It features:</p>
+<ul>
+<li>
+Device type combo box (Cannot be changed after creation): choose the device type you wish to create.</li>
+<li>
+Device name (Cannot be changed after creation): Enter name of the device. For example "CD A" for a CD or "Laptop" for a directory.</li>
+<li>
+Device location (Cannot be changed after creation): full path to the device. For example "/data/music" under Unix or "d:\music" under Windows. You can use the directory selector using the button on the right.</li>
+<li>
+Unix mount point (only under Linux/Unix). This is optional and allows Jajuk trying to perform a system "mount" command if required when mounting a device. For example, if you want to mount a CD device whose Unix mount point is /mnt/cdrom and that CD is not Unix mounted, Jajuk will try to mount it by itself. Note however that this should be useless with last Linux distributions that perform auto-mount.</li>
+<li>
+"Refresh every (min)": set refreshing frequency for jajuk to scan device searching for new or removed files (0: no automatic refresh). Defaults: 0.5 min for a directory-type device (hard drive), 0 for a CD, 5 mins for network drives, 3 mins for external hard disks or players.</li>
+<li>
+"Perform an instant refresh" (default = true): Perform a device refresh immediately after creating the device. This is recommended. Note that this should take a while, especially for the first time.</li>
+<li>
+"Auto mount at startup" (checked by default for some types): Perform an auto-mount when starting Jajuk. This is recommended for directories or eventually external devices if always plugged but avoid this for CD or devices that can be unplugged or changed quite often.</li>
+<li>
+Synchronized with combo box: If you have more than one device, you will be able to synchronize them. The current device is the target device and the other one the source device.<ul>
+<li>
+"Unidirectional synchronization": all new files from the source device are copied to this device.</li>
+<li>
+"Bidirectional synchronization": all new files from one device are copied to the other.</li>
+</ul>
+</li>
+</ul>
+<p>
+Notes:</p>
+<ul>
+<li>
+<ul>
+<li>
+You can ignore recursively some directories when performing synchronization (if the two synchronized devices have not the same capacity for example) by desynchronizing directories in the Physical Files Tree / contextual menu on directories.</li>
+<li>
+Synchronization never performs deletes so if you renames some files on the source device, you will get both older and newer version in the target device after synchronization.</li>
+</ul>
+</li>
+</ul>
+<pre>
+
+</pre>
+</body>
+</html>

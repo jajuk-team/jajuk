@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+<title>
+using custom properties</title>
+</head>
+<body>
+<h1>
+using custom properties</h1>
+<h1>
+Using Custom Properties</h1>
+<p>
+Jajuk offers a way to add custom attributes on almost any item (files, playlists, artists, albums...). Imagine you're not happy with the integrated rating system: just create a custom 'my rate' number attribute on tracks. Other case: you want to store physical location of your CDs; create a String custom attribute on devices. You want to store the date you listened tracks: create a date-based custom property and so forth...</p>
+<p>
+Notes</p>
+<ul>
+<li>
+Custom properties data is only stored in jajuk internal database and NOT in music files as tags (ID3 for ie) so this information will not accessible from others players or jukeboxes.</li>
+<li>
+<div lang="en-US">
+If you use this feature intensively, consider making backup of your collection files (see</div>
+[../html/devices.html#backup <div lang="en-US">
+Using devices / backup and restore</div>
+]<div lang="en-US">
+).</div>
+</li>
+</ul>
+<h2>
+How to create a new custom property ?</h2>
+<p>
+In frame top menu, select <i>
+Properties</i>
+ / <i>
+Create custom property</i>
+. The new property wizard features:</p>
+<ul>
+<li>
+<i>
+Item</i>
+</li>
+<li>
+<i>
+Custom property name</i>
+</li>
+<li>
+<i>
+Type</i>
+</li>
+<li>
+<i>
+Default value</i>
+ (optional): A given default value. Depending on property type, you will be able to set it in the text field, using the date picker or checking the check box. If no default value is given, jajuk use these values: Numbers: 0, Float: 0.0, Strings: "", Dates: &lt;current day&gt;, Boolean: false.</li>
+</ul>
+<p>
+Then, click on <i>
+OK </i>
+to create the custom property.</p>
+<h2>
+How to remove a custom property ?</h2>
+<p>
+In frame top menu, select <i>
+Properties</i>
+ / Remove <i>
+custom property</i>
+. The remove property wizard features:</p>
+<ul>
+<li>
+<i>
+Item</i>
+</li>
+<li>
+<i>
+Custom property name</i>
+</li>
+</ul>
+<p>
+Then, click on <i>
+OK </i>
+to remove the custom property. Note that all values will be lost for this attribute. In case of manipulation error, see[../html/devices.html#backup Using devices / backup and restore].</p>
+<h2>
+How to set values ?</h2>
+<p>
+Values for custom properties can be set the same way than standard ones. See :[../html/editing.html Editing tags and properties]<pre>
+page.
+</pre>
+</p>
+<pre>
+
+</pre>
+</body>
+</html>
