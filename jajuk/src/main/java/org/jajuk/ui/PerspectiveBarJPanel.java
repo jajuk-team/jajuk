@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
 
 import com.l2fprod.common.swing.JButtonBar;
 
@@ -85,23 +87,24 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 		int index = 0;
 		while (it.hasNext()) {
 			final IPerspective perspective = (IPerspective) it.next();
-			JButton jb = new JButton(new UrlImageIcon(perspective.getIconPath()));  
+			JButton jb = new JButton(perspective.getDesc(), new UrlImageIcon(perspective
+					.getIconPath()));
 			try {
-				jb.setToolTipText(perspective.getDesc()); 
+				jb.setToolTipText(perspective.getDesc());
 			} catch (Exception e) { // ignore tooltip missing
 			}
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// no thread, it causes ugly screen repaint
-					PerspectiveManager.setCurrentPerspective(perspective
-							.getID());
+					PerspectiveManager.setCurrentPerspective(perspective.getID());
 				}
 			});
 			jtbPerspective.add(jb);
 			alButtons.add(jb);
 			index++;
 		}
-		add(jtbPerspective);
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(new JScrollPane(jtbPerspective));
 	}
 
 	/**
