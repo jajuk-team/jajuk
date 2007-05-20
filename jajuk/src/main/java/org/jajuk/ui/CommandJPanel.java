@@ -492,21 +492,19 @@ JPopupMenu popupGlobalRandom;
 		jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
 
 		jtbPlay.add(jbPrevious);
-		jtbPlay.add(jbNext);
-		jtbPlay.addSeparator();
 		jtbPlay.add(jbRew);
 		jtbPlay.add(jbPlayPause);
 		jtbPlay.add(jbStop);
 		jtbPlay.add(jbFwd);
+		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
 		jtbPlay.add(jbMute);
+		
 		// we use a strut as empty borders are now always applied on toolbars
 		vltbPlay.add(jtbPlay);
 
 		boolean bToolbarInstallationOK = false; // flag
-		
-		
-
+	
 		// Load stored toolbar configuration
 		if (Util.getConfFileByPath(FILE_TOOLBARS_CONF).exists()) {
 			try {
