@@ -292,7 +292,6 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
                     throw new Exception("Cannot execute mozilla");
                 }
             } catch (Exception e) {
-               	Log.error(e);
                 Log.debug("No mozilla available, disable InfoPerspective");
             }
         }

@@ -2,8 +2,8 @@
 <VLDocking version="2.1">
 <DockingDesktop name="">
 <DockingPanel>
-<Split orientation="1" location="0.35">
-<Split orientation="0" location="0.7">
+<Split orientation="1" location="0.37">
+<Split orientation="0" location="0.65">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.DeviceView/0"/>
 </Dockable>
