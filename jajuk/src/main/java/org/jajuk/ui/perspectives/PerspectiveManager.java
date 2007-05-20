@@ -32,9 +32,10 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-import org.mozilla.xpcom.GREVersionRange;
+import org.jajuk.util.log.Log;
+import org.jdesktop.jdic.browser.BrowserEngineManager;
+import org.jdesktop.jdic.browser.WebBrowser;
 import org.mozilla.xpcom.IAppFileLocProvider;
-import org.mozilla.xpcom.Mozilla;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -261,52 +262,40 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CATALOG.getUrl());
 		registerPerspective(perspective);
 
-		// Information perspective
-		// Load info perspective only for windows or x86 linux
-		/*
-		 * if (Util.isUnderWindows32bits()) { // No need to test, we are sure to find
-		 * IE under windows perspective = new InfoPerspective();
-		 * perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
-		 * perspective.setID(PERSPECTIVE_NAME_INFO);
-		 * registerPerspective(perspective); // force using IE under Windows to
-		 * avoid freezes
-		 * BrowserEngineManager.instance().setActiveEngine(BrowserEngineManager.IE); }
-		 * else if (Util.isUnderLinux() &&
-		 * System.getProperty("os.arch").equals("i386")) { try { //Check mozilla
-		 * executable is available in the PATH (exec() method uses PATH
-		 * natively). Don't autorize to install this perspective if mozilla is
-		 * not present as it can causes freezes Process proc =
-		 * Runtime.getRuntime().exec(new String[] { "mozilla", "--version" });
-		 * int out = proc.waitFor(); //mozilla available ? / 0 return code means
-		 * mozilla is found and is a binary / 1 return code means mozilla is
-		 * found but cannot be executed under JNLP because it is a sh script but
-		 * we don't care it cannot be executed, we just test its presence if
-		 * (out == 0 || out == 1) { // Now check browser can actually be loaded
-		 * by JDIC WebBrowser browser = new WebBrowser(); if
-		 * (browser.getBrowserEngine() == null) { Log.debug("Brower engine: " +
-		 * browser.getBrowserEngine()); throw new Exception("Cannot execute
-		 * mozilla"); } // OK, create the perspective perspective = new
-		 * InfoPerspective();
-		 * perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
-		 * perspective.setID(PERSPECTIVE_NAME_INFO);
-		 * registerPerspective(perspective); } else { throw new
-		 * Exception("Cannot execute mozilla"); } } catch (Exception e) {
-		 * Log.debug("No mozilla available, disable InfoPerspective"); } }
-		 */
-		Mozilla mozilla = Mozilla.getInstance();
-		GREVersionRange[] range = new GREVersionRange[1];
-		range[0] = new GREVersionRange("1.8.0", true, "1.9", false);
-		// work with trunk nightly version 1.9a1 ^^
-
-	/*	try {
-			File grePath = Mozilla.getGREPathWithProperties(range, null);
-			mozilla.initEmbedding(grePath, grePath, this);
-		} catch (FileNotFoundException e) {
-			// this exception is thrown if greGREPathWithProperties cannot find
-			// a GRE
-		} catch (XPCOMException e) {
-			// this exception is thrown if initEmbedding failed
-		}*/
+        // Information perspective
+        // Load info perspective only for windows 32 bits or x86 linux
+        if (Util.isUnderWindows32bits()) {
+            // No need to test, we are sure to find IE under windows
+            perspective = new InfoPerspective();
+            perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_INFORMATION.getUrl());
+            registerPerspective(perspective);
+            // force using IE under Windows to avoid freezes
+            BrowserEngineManager.instance().setActiveEngine(BrowserEngineManager.IE);
+        } else if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
+            try {
+                // Check mozilla executable is available in the PATH (exec() method uses PATH natively). Don't autorize to install this perspective if mozilla is not present as it can causes freezes
+                Process proc = Runtime.getRuntime().exec(new String[] { "mozilla", "--version" });
+                int out = proc.waitFor();
+                // mozilla available ? / 0 return code means mozilla is found and is a binary / 1 return code means mozilla is found but cannot be executed under JNLP because it is a sh script but we don't care it cannot be executed, we just test its presence
+                if (out == 0 || out == 1) {
+                    // Now check browser can actually be loaded by JDIC
+                    WebBrowser browser = new WebBrowser();
+                    if (browser.getBrowserEngine() == null) {
+                        Log.debug("Brower engine: " + browser.getBrowserEngine());
+                        throw new Exception("Cannot execute mozilla");
+                    }
+                    // OK, create the perspective
+                    perspective = new InfoPerspective();
+                    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_INFORMATION.getUrl());
+                    registerPerspective(perspective);
+                } else {
+                    throw new Exception("Cannot execute mozilla");
+                }
+            } catch (Exception e) {
+               	Log.error(e);
+                Log.debug("No mozilla available, disable InfoPerspective");
+            }
+        }
 
 		// Configuration perspective
 		perspective = new ConfigurationPerspective();
@@ -337,14 +326,19 @@ public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see org.mozilla.xpcom.IAppFileLocProvider#getFile(java.lang.String, boolean[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.mozilla.xpcom.IAppFileLocProvider#getFile(java.lang.String,
+	 *      boolean[])
 	 */
 	public File getFile(String prop, boolean[] persistent) {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mozilla.xpcom.IAppFileLocProvider#getFiles(java.lang.String)
 	 */
 	public File[] getFiles(String prop) {
