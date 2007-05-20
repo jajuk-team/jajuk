@@ -58,10 +58,15 @@ public class ReportAction extends ActionBase {
 				.getClientProperty(DETAIL_SELECTION);
 		// Display a save as dialog
 		final JajukFileChooser chooser = new JajukFileChooser();
+		JajukFileFilter filter1 = new JajukFileFilter(XMLFilter.getInstance());
+		//Allow to navigate between directories
+		filter1.setAcceptDirectories(true);
+		JajukFileFilter filter2 = new JajukFileFilter(HTMLFilter.getInstance());
+		filter2.setAcceptDirectories(true);
 		// Accept XML files
-		chooser.addChoosableFileFilter(new JajukFileFilter(XMLFilter.getInstance()));
+		chooser.addChoosableFileFilter(filter1);
 		// Accept HTML files
-		chooser.addChoosableFileFilter(new JajukFileFilter(HTMLFilter.getInstance()));
+		chooser.addChoosableFileFilter(filter2);
 		chooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// set a default file name
@@ -79,6 +84,10 @@ public class ReportAction extends ActionBase {
 		int returnVal = chooser.showSaveDialog(null);
 		// Wait for user selection
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			//Make sure user didn't select a directory
+			if (chooser.getSelectedFile().isDirectory()){
+				return;
+			}
 			// make it in a separated thread to avoid freezing
 			// screen for big collections
 			new Thread() {
