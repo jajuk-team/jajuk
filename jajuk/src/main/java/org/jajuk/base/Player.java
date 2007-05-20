@@ -70,8 +70,7 @@ public class Player implements ITechnicalStrings {
 	 *            in ms
 	 * @return true if play is OK
 	 */
-	public static boolean play(final File file, final float fPosition,
-			final long length) {
+	public static boolean play(final File file, final float fPosition, final long length) {
 		fCurrent = file;
 		try {
 			playerImpl = null;
@@ -104,7 +103,7 @@ public class Player implements ITechnicalStrings {
 				}
 				playerImpl = playerImpl2;
 			}
-			//Force stopping any playing track playing by this player
+			// Force stopping any playing track playing by this player
 			playerImpl.stop();
 			bPlaying = true;
 			bPaused = false;
@@ -114,8 +113,8 @@ public class Player implements ITechnicalStrings {
 					if (bMute) {
 						playerImpl.play(fCurrent, fPosition, length, 0.0f);
 					} else {
-						playerImpl.play(fCurrent, fPosition, length,
-								ConfigurationManager.getFloat(CONF_VOLUME));
+						playerImpl.play(fCurrent, fPosition, length, ConfigurationManager
+								.getFloat(CONF_VOLUME));
 					}
 					bWaitingLine = false;
 				} catch (Exception bpe) {
@@ -123,10 +122,9 @@ public class Player implements ITechnicalStrings {
 						throw bpe;
 					}
 					bWaitingLine = true;
-					Log.debug("Line occupied, waiting"); 
-					InformationJPanel.getInstance().setMessage(
-							Messages.getString("Player.0"), 
-							InformationJPanel.WARNING); 
+					Log.debug("Line occupied, waiting");
+					InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),
+							InformationJPanel.WARNING);
 					try {
 						// wait for the line
 						FIFO.getInstance().wait(WAIT_AFTER_ERROR);
@@ -139,10 +137,8 @@ public class Player implements ITechnicalStrings {
 		} catch (final Throwable t) {
 			Properties pDetails = new Properties();
 			pDetails.put(DETAIL_CURRENT_FILE, file);
-			ObservationManager.notifySync(new Event(
-					EventSubject.EVENT_PLAY_ERROR, pDetails));
-			Log.error("007", Messages.getString("Player.0")  
-					+ fCurrent.getAbsolutePath() + "}}", t);   
+			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
+			Log.error("007", Messages.getString("Player.0") + fCurrent.getAbsolutePath() + "}}", t);
 			// process playing error asynchronously to avoid loop problems
 			// when cascading errors
 			new Thread() {
@@ -152,7 +148,7 @@ public class Player implements ITechnicalStrings {
 						Thread.sleep(WAIT_AFTER_ERROR);
 					} catch (InterruptedException e) {
 						Log.error(e);
-					}					
+					}
 					FIFO.getInstance().finished();
 				}
 			}.start();
@@ -172,20 +168,18 @@ public class Player implements ITechnicalStrings {
 				return;
 			}
 			if (fCurrent != null) {
-				if (playerImpl1 != null
-						&& (playerImpl1.getState() != FADING_STATUS || bAll)) {
+				if (playerImpl1 != null && (playerImpl1.getState() != FADING_STATUS || bAll)) {
 					playerImpl1.stop();
 				}
-				if (playerImpl2 != null
-						&& (playerImpl2.getState() != FADING_STATUS || bAll)) {
+				if (playerImpl2 != null && (playerImpl2.getState() != FADING_STATUS || bAll)) {
 					playerImpl2.stop();
 				}
 				bPaused = false; // cancel any current pause
 				bPlaying = false;
 			}
 		} catch (Exception e) {
-			Log.debug(Messages.getString("Error.008") 
-					+ ":" + fCurrent.getName() + " " + e.getMessage());   
+			Log.debug(Messages.getString("Error.008") + ":" + fCurrent.getName() + " "
+					+ e.getMessage());
 		}
 	}
 
@@ -202,19 +196,19 @@ public class Player implements ITechnicalStrings {
 			if (playerImpl == null) { // none current player, leave
 				return;
 			}
-			if (Player.bMute) { // already muted, unmute it by setting the
-				// volume previous mute
-				playerImpl
-						.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
-			} else {
+			if (Player.bMute) {
 				if (playerImpl1 != null) {
 					playerImpl1.setVolume(0.0f);
 				}
 				if (playerImpl2 != null) {
 					playerImpl2.setVolume(0.0f);
 				}
+			} else {
+				// already muted, unmute it by setting the
+				// volume previous mute
+				playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
 			}
-			
+
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -239,8 +233,7 @@ public class Player implements ITechnicalStrings {
 					playerImpl2.setVolume(0.0f);
 				}
 			} else {
-				playerImpl
-						.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+				playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
 			}
 			Player.bMute = bMute;
 		} catch (Exception e) {
@@ -267,8 +260,7 @@ public class Player implements ITechnicalStrings {
 	public static void setVolume(float pVolume) {
 		float fVolume = pVolume;
 		try {
-			ConfigurationManager.setProperty(CONF_VOLUME, Float
-					.toString(fVolume));
+			ConfigurationManager.setProperty(CONF_VOLUME, Float.toString(fVolume));
 			if (playerImpl != null) {
 				// check, it can be over 1 for unknown reason
 				if (fVolume < 0.0f) {
@@ -277,8 +269,7 @@ public class Player implements ITechnicalStrings {
 					fVolume = 1.0f;
 				}
 				playerImpl.setVolume(fVolume);
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_VOLUME_CHANGED));
+				ObservationManager.notify(new Event(EventSubject.EVENT_VOLUME_CHANGED));
 			}
 		} catch (Exception e) {
 			Log.error(e);
@@ -355,7 +346,7 @@ public class Player implements ITechnicalStrings {
 			fPosition = 0.99f;
 		}
 		try {
-			Log.debug("Seeking to: " + fPosition); 
+			Log.debug("Seeking to: " + fPosition);
 			playerImpl.seek(fPosition);
 		} catch (Exception e) { // we can get some errors in unexpected cases
 			Log.debug(e.toString());
@@ -373,7 +364,7 @@ public class Player implements ITechnicalStrings {
 			return 0.0f;
 		}
 	}
-	
+
 	/**
 	 * @return current track length in secs
 	 */
