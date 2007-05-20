@@ -1503,8 +1503,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		scbLanguage.setSelectedIndex(Messages.getLocales().indexOf(
 				ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		scbLanguage.addActionListener(this);
-		scbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-		scbWatermarks.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
 		scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager
 				.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 		introLength.setValue(ConfigurationManager.getInt(CONF_OPTIONS_INTRO_LENGTH));
@@ -1579,13 +1577,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbVisibleAtStartup.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
 		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
 		jcbShowCatalogPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
-		scbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-		scbWatermarks.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
 		// Enable image selection if image watermark
 		jlWatermarkImage.setEnabled(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK)
 				.equals(LNF_WATERMARK_IMAGE));
 		pathWatermarkFile.setEnabled(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK)
 				.equals(LNF_WATERMARK_IMAGE));
+		scbLAF.removeActionListener(this);
+		scbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+		scbLAF.addActionListener(this);
+		scbWatermarks.removeActionListener(this);
+		scbWatermarks.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
+		scbWatermarks.addActionListener(this);
+		
 	}
 
 	/*

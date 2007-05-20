@@ -519,7 +519,7 @@ public interface ITechnicalStrings {
 	public static final String LNF_DEFAULT_THEME = "Ebony";
 
 	/** Default substance watermark * */
-	public static final String LNF_DEFAULT_WATERMARK = "Striped";
+	public static final String LNF_DEFAULT_WATERMARK = "Stripes";
 
 	/** Image watermark*/
 	public static final String LNF_WATERMARK_IMAGE = "Image";
