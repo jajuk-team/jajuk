@@ -233,6 +233,7 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("es", "Language_desc_es");
 			Messages.getInstance().registerLocal("ca", "Language_desc_ca");
 			Messages.getInstance().registerLocal("ko", "Language_desc_ko");
+			Messages.getInstance().registerLocal("el", "Language_desc_el");
 
 			// Set default local (from system). Depends on registerLocal
 			ConfigurationManager.getInstance().setSystemLocal();
