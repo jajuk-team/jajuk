@@ -19,14 +19,6 @@
  */
 package org.jajuk.i18n;
 
-import org.jajuk.Main;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
@@ -47,6 +39,14 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.jajuk.Main;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Utility class to get strings from localized property files
@@ -507,7 +507,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
 				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
 				null, null);
-		if (SwingUtilities.isEventDispatchThread()) { 
+		if (SwingUtilities.isEventDispatchThread()) {
 			// in the dispatcher thread, no need to
 			// use invokeLatter
 			message.run();
@@ -744,13 +744,13 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 		dialog.setAlwaysOnTop(true);
 		// keep it modal (useful at startup)
 		dialog.setModal(true);
-		dialog.pack();
-		dialog.setLocationRelativeTo(Main.getWindow());
-		dialog.setVisible(true);
 		if (optionPane.getValue().equals(Messages.getString("Hide"))) {
 			// Not show again
 			ConfigurationManager.setProperty(sProperty, TRUE);
 		}
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
 	}
 
 	/**

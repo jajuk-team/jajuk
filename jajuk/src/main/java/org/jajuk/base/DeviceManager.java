@@ -20,14 +20,6 @@
 
 package org.jajuk.base;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +28,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage devices
@@ -173,16 +173,20 @@ public class DeviceManager extends ItemManager {
 	public String checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
 			String sMountPoint, boolean bNew) {
 		synchronized (DeviceManager.getInstance().getLock()) {
+			// don't check if it is a CD as all CDs may use the same mount point
+			if (iDeviceType == Device.TYPE_CD) {
+				return "0";
+			}
 			// check name and path
 			Iterator it = hmItems.values().iterator();
 			while (it.hasNext()) {
 				Device deviceToCheck = (Device) it.next();
-				//If we check an existing device unchanged, just leave
-				if (!bNew && sUrl.equals(deviceToCheck.getUrl())){
+				// If we check an existing device unchanged, just leave
+				if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
 					continue;
 				}
 				if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
-					return "019"; 
+					return "019";
 				}
 				String sUrlChecked = deviceToCheck.getUrl();
 				// check it is not a sub-directory of an existing device
@@ -190,16 +194,16 @@ public class DeviceManager extends ItemManager {
 				File fChecked = new File(sUrlChecked);
 				if (fNew.equals(fChecked) || Util.isDescendant(fNew, fChecked)
 						|| Util.isAncestor(fNew, fChecked)) {
-					return "029"; 
+					return "029";
 				}
 			}
 			// check availability
 			if (iDeviceType != 2) { // not a remote device, TBI for remote
 				// make sure it's mounted if under unix
-				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) { 
+				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) {
 					try {
 						// run the actual mount command
-						Process process = Runtime.getRuntime().exec("mount " + sMountPoint);  
+						Process process = Runtime.getRuntime().exec("mount " + sMountPoint);
 						process.waitFor();
 					} catch (Exception e) {
 					}
@@ -208,10 +212,10 @@ public class DeviceManager extends ItemManager {
 				File file = new File(sUrl);
 				// check if the url exists and is readable
 				if (!file.exists() || !file.canRead()) {
-					return "143"; 
+					return "143";
 				}
 			}
-			return "0"; 
+			return "0";
 		}
 	}
 
@@ -257,21 +261,20 @@ public class DeviceManager extends ItemManager {
 		synchronized (DeviceManager.getInstance().getLock()) {
 			// show confirmation message if required
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
-				int iResu = Messages
-						.getChoice(
-								Messages.getString("Confirmation_remove_device"), JOptionPane.WARNING_MESSAGE);  
+				int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
+						JOptionPane.WARNING_MESSAGE);
 				if (iResu != JOptionPane.YES_OPTION) {
 					return;
 				}
 			}
 			// if device is refreshing or synchronizing, just leave
 			if (device.isSynchronizing() || device.isRefreshing()) {
-				Messages.showErrorMessage("013"); 
+				Messages.showErrorMessage("013");
 				return;
 			}
 			// check if device can be unmounted
 			if (!FIFO.canUnmount(device)) {
-				Messages.showErrorMessage("121"); 
+				Messages.showErrorMessage("121");
 				return;
 			}
 			// if it is mounted, try to unmount it
@@ -279,7 +282,7 @@ public class DeviceManager extends ItemManager {
 				try {
 					device.unmount();
 				} catch (Exception e) {
-					Messages.showErrorMessage("013"); 
+					Messages.showErrorMessage("013");
 					return;
 				}
 			}
@@ -330,6 +333,11 @@ public class DeviceManager extends ItemManager {
 			Iterator it = hmItems.values().iterator();
 			while (it.hasNext()) {
 				Device device = (Device) it.next();
+				// Do not auto-refresh CD as several CD may share the same mount
+				// point
+				if (device.getType() == Device.TYPE_CD) {
+					continue;
+				}
 				FileManager.getInstance().cleanDevice(device.getName());
 				DirectoryManager.getInstance().cleanDevice(device.getName());
 				PlaylistFileManager.getInstance().cleanDevice(device.getName());
@@ -353,7 +361,7 @@ public class DeviceManager extends ItemManager {
 
 	/**
 	 * Refresh of all devices with auto-refresh enabled (used in automatic mode)
-	 * Must be the sortest possible
+	 * Must be the shortest possible
 	 */
 	public void refreshAllDevices() {
 		try {
@@ -367,6 +375,11 @@ public class DeviceManager extends ItemManager {
 			boolean bNeedUIRefresh = false;
 			for (Item item : getDevices()) {
 				Device device = (Device) item;
+				// Do not auto-refresh CD as several CD may share the same mount
+				// point
+				if (device.getType() == Device.TYPE_CD) {
+					continue;
+				}
 				double frequency = 60000 * device.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
 				// check if this device needs auto-refresh
 				if (frequency == 0d

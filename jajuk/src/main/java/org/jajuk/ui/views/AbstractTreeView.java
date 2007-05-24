@@ -20,6 +20,15 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
@@ -34,15 +43,6 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.color.ColorScheme;
 import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-
 /**
  * An abstract physical or logical tree view. Contains common methods
  */
@@ -53,7 +53,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
 	/** The phyical tree */
 	JXTree jtree;
-
+	
 	/** Current selection */
 	TreePath[] paths;
 

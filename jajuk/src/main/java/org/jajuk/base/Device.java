@@ -19,6 +19,17 @@
  */
 package org.jajuk.base;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -30,17 +41,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.JOptionPane;
 
 /**
  * A device ( music files repository )
@@ -60,7 +60,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	private java.io.File fio;
 
 	/** Device mount point* */
-	private String sMountPoint = ""; 
+	private String sMountPoint = "";
 
 	/** Mounted device flag */
 	private boolean bMounted;
@@ -104,7 +104,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	long lDateLastRefresh;
 
 	/** Refresh message */
-	private String sFinalMessage = ""; 
+	private String sFinalMessage = "";
 
 	// Refresh Options
 	private static final int OPTION_REFRESH_FAST = 0;
@@ -112,6 +112,19 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	private static final int OPTION_REFRESH_DEEP = 1;
 
 	private static final int OPTION_REFRESH_CANCEL = 2;
+
+	// Device type constants
+	public static final int TYPE_DIRECTORY = 0;
+
+	public static final int TYPE_CD = 1;
+
+	public static final int TYPE_NETWORK_DRIVE = 2;
+
+	public static final int TYPE_EXT_DD = 3;
+
+	public static final int TYPE_PLAYER = 4;
+
+	public static final int TYPE_REMOTE = 5;
 
 	/**
 	 * Device constructor
@@ -138,9 +151,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" +   
-				DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE))
-				+ " URL=" + sUrl + " Mount point=" + sMountPoint + "]";    
+		return "Device[ID=" + sId + " Name=" + sName + " Type="
+				+ DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE)) + " URL="
+				+ sUrl + " Mount point=" + sMountPoint + "]";
 	}
 
 	/**
@@ -205,12 +218,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		if (bAsk) {
 			Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),// fast
 					Messages.getString("PhysicalTreeView.61"),// deep
-					Messages.getString("Cancel") };// cancel 
-			i = JOptionPane.showOptionDialog(null,
-					Messages.getString("PhysicalTreeView.59"), 
-					Messages.getString("Option"), 
-					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, possibleValues,
-					possibleValues[0]);
+					Messages.getString("Cancel") };// cancel
+			i = JOptionPane.showOptionDialog(null, Messages.getString("PhysicalTreeView.59"),
+					Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
 			if (i == OPTION_REFRESH_CANCEL) { // Cancel
 				return;
 			}
@@ -221,12 +232,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				device.mount();
 			} catch (Exception e) {
 				Log.error("011", "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage("011", getName()); 
+				Messages.showErrorMessage("011", getName());
 				return;
 			}
 		}
 		if (bAlreadyRefreshing) {
-			Messages.showErrorMessage("107"); 
+			Messages.showErrorMessage("107");
 			return;
 		}
 		// clean old files up
@@ -279,9 +290,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			// clear the device, display a warning message
 			File file = new File(getUrl());
 			if (file.exists() && (file.list() == null || file.list().length == 0)) {
-				int i = Messages
-						.getChoice(
-								Messages.getString("Confirmation_void_refresh"), JOptionPane.WARNING_MESSAGE);  
+				int i = Messages.getChoice(Messages.getString("Confirmation_void_refresh"),
+						JOptionPane.WARNING_MESSAGE);
 				if (i != JOptionPane.OK_OPTION) {
 					return false;
 				}
@@ -291,11 +301,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			iNbNewFiles = 0;
 			iNbCorruptedFiles = 0;
 			if (bDeepScan && Log.isDebugEnabled()) {
-				Log.debug("Starting refresh of device : " + this);     
+				Log.debug("Starting refresh of device : " + this);
 			}
 			File fTop = new File(getStringValue(XML_URL));
 			if (!fTop.exists()) {
-				Messages.showErrorMessage("101"); 
+				Messages.showErrorMessage("101");
 				return false;
 			}
 
@@ -310,8 +320,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 			// Create a directory for device itself and scan files to allow
 			// files at the root of the device
-			if (!getDeviceTypeS().equals(DEVICE_TYPE_REMOTE)
-					|| !getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)) {
+			if (getType() != Device.TYPE_REMOTE){
 				Directory d = DirectoryManager.getInstance().registerDirectory(this);
 				dParent = d;
 				d.scan(bDeepScan);
@@ -338,10 +347,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 						dParent = DirectoryManager.getInstance().registerDirectory(
 								fCurrent.getName(), dParent, this);
 						if (bManual) {
-							InformationJPanel
-									.getInstance()
-									.setMessage(
-											new StringBuffer(Messages.getString("Device.21")).append(this.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(), InformationJPanel.INFORMATIVE);   
+							InformationJPanel.getInstance().setMessage(
+									new StringBuffer(Messages.getString("Device.21")).append(
+											this.getName()).append(Messages.getString("Device.22"))
+											.append(dParent.getRelativePath()).append("]")
+											.toString(), InformationJPanel.INFORMATIVE);
 						}
 						dParent.scan(bDeepScan);
 						iDeep++;
@@ -358,12 +368,13 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 			// Display end of refresh message with stats
 			lTime = System.currentTimeMillis() - lTime;
-			StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).  
-					append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).  
-					append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27"));  
+			StringBuffer sbOut = new StringBuffer("[").append(getName()).append(
+					Messages.getString("Device.25")).append(
+					((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).append(" - ").append(
+					iNbNewFiles).append(Messages.getString("Device.27"));
 			if (iNbCorruptedFiles > 0) {
-				sbOut
-						.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));  
+				sbOut.append(" - ").append(iNbCorruptedFiles).append(
+						Messages.getString("Device.43"));
 			}
 			sFinalMessage = sbOut.toString();
 			Log.debug(sFinalMessage);
@@ -398,7 +409,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				device.mount();
 			} catch (Exception e) {
 				Log.error("011", "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage("011", getName()); 
+				Messages.showErrorMessage("011", getName());
 				return;
 			}
 		}
@@ -447,9 +458,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 			// start message
 			InformationJPanel.getInstance().setMessage(
-					new StringBuffer(Messages.getString("Device.31")). 
-							append(dSrc.getName()).append(',').append(this.getName()).append("]"). 
-							toString(), InformationJPanel.INFORMATIVE);
+					new StringBuffer(Messages.getString("Device.31")).append(dSrc.getName())
+							.append(',').append(this.getName()).append("]").toString(),
+					InformationJPanel.INFORMATIVE);
 			// in both cases (bi or uni-directional), make an unidirectional
 			// sync from source device to this one
 			iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc, this);
@@ -457,9 +468,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			iNbCreatedFilesDest += synchronizeUnidirectonal(this, dSrc);
 			// end message
 			lTime = System.currentTimeMillis() - lTime;
-			String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s"))   
-					.append(" - ").append(iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")).  
-					append(lVolume / 1048576).append(Messages.getString("Device.36")).toString(); 
+			String sOut = new StringBuffer(Messages.getString("Device.33")).append(
+					((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).append(" - ").append(
+					iNbCreatedFilesSrc + iNbCreatedFilesDest).append(
+					Messages.getString("Device.35")).append(lVolume / 1048576).append(
+					Messages.getString("Device.36")).toString();
 			// perform a fast refresh
 			this.refreshCommand(false, true);
 			// if bidi sync, refresh the other device as well (new file can
@@ -574,21 +587,20 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 							iNbCreatedFiles++;
 							lVolume += fSrcFiles[i].length();
 							InformationJPanel.getInstance().setMessage(
-									new StringBuffer(Messages.getString("Device.41")). 
-											append(dSrc.getName()).append(',').append(
-													dest.getName()).append(
-													Messages.getString("Device.42")) 
-											.append(fSrcFiles[i].getAbsolutePath()).append("]"). 
-											toString(), InformationJPanel.INFORMATIVE);
+									new StringBuffer(Messages.getString("Device.41")).append(
+											dSrc.getName()).append(',').append(dest.getName())
+											.append(Messages.getString("Device.42")).append(
+													fSrcFiles[i].getAbsolutePath()).append("]")
+											.toString(), InformationJPanel.INFORMATIVE);
 						} catch (JajukException je) {
 							Messages.showErrorMessage(je.getCode(), fSrcFiles[i].getAbsolutePath());
-							Messages.showErrorMessage("027"); 
+							Messages.showErrorMessage("027");
 							Log.error(je);
 							return iNbCreatedFiles;
 						} catch (Exception e) {
-							Messages.showErrorMessage("020", fSrcFiles[i].getAbsolutePath()); 
-							Messages.showErrorMessage("027"); 
-							Log.error("020", "{{" + fSrcFiles[i].getAbsolutePath() + "}}", e);   
+							Messages.showErrorMessage("020", fSrcFiles[i].getAbsolutePath());
+							Messages.showErrorMessage("027");
+							Log.error("020", "{{" + fSrcFiles[i].getAbsolutePath() + "}}", e);
 							return iNbCreatedFiles;
 						}
 					}
@@ -615,7 +627,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	/**
 	 * @return
 	 */
-	public long getDeviceType() {
+	public long getType() {
 		return getLongValue(XML_TYPE);
 	}
 
@@ -691,10 +703,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 */
 	public void mount(boolean bUIRefresh) throws Exception {
 		if (bMounted) {
-			Messages.showErrorMessage("111"); 
+			Messages.showErrorMessage("111");
 		}
 		try {
-			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) { 
+			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
 				// look to see if the device is already mounted ( the mount
 				// command cannot say that )
 				File file = new File(getMountPoint());
@@ -702,8 +714,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 					// if none file in this directory, it probably
 					// means device is not mounted, try to mount it
 
-					// run the actual mount command 
-					Process process = Runtime.getRuntime().exec("mount " + getMountPoint()); 
+					// run the actual mount command
+					Process process = Runtime.getRuntime().exec("mount " + getMountPoint());
 					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
@@ -717,7 +729,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				}
 			}
 		} catch (Exception e) {
-			throw new JajukException("011", getName(), e); 
+			throw new JajukException("011", getName(), e);
 		}
 		// Cannot mount void devices because of reference garbager thread
 		File file = new File(getUrl());
@@ -756,7 +768,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 		// ask fifo if it doens't use any track from this device
 		if (!FIFO.canUnmount(this)) {
-			Messages.showErrorMessage("121"); 
+			Messages.showErrorMessage("121");
 			return;
 		}
 		int iExit = 0;
@@ -766,15 +778,15 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				// we try to unmount the device if under Unix. Note that this is
 				// useless most of the time with Linux 2.6+, so it's just a try
 				// and we don't check exit code anymore
-				Process process = Runtime.getRuntime().exec("umount " + getMountPoint()); 
+				Process process = Runtime.getRuntime().exec("umount " + getMountPoint());
 				iExit = process.waitFor();
 				if (bEjection) { // jection if required
-					process = Runtime.getRuntime().exec("eject " + getMountPoint()); 
+					process = Runtime.getRuntime().exec("eject " + getMountPoint());
 					process.waitFor();
 				}
 			} catch (Exception e) {
 				Log.error("012", Integer.toString(iExit), e); // mount failed
-				Messages.showErrorMessage("012", getName()); 
+				Messages.showErrorMessage("012", getName());
 				return;
 			}
 		}
@@ -914,7 +926,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Device") + " : " + getName();  
+		return Messages.getString("Item_Device") + " : " + getName();
 	}
 
 	/*
@@ -954,7 +966,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				if (!dir.getFio().exists()) {
 					// note that associated files are removed too
 					DirectoryManager.getInstance().removeDirectory(dir.getId());
-					Log.debug("Removed: " + dir); 
+					Log.debug("Removed: " + dir);
 					bChanges = true;
 				}
 			}
@@ -963,11 +975,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
 		for (org.jajuk.base.File file : files) {
 			if (!Main.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
-				//Remove file if it doesn't exist any more or if it is a iTunes file 
-				//(useful for jajuk < 1.4) 
+				// Remove file if it doesn't exist any more or if it is a iTunes
+				// file
+				// (useful for jajuk < 1.4)
 				if (!file.getIO().exists() || file.getName().startsWith("._")) {
 					FileManager.getInstance().removeFile(file);
-					Log.debug("Removed: " + file); 
+					Log.debug("Removed: " + file);
 					bChanges = true;
 				}
 			}
@@ -978,7 +991,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
 				if (!plf.getFio().exists()) {
 					PlaylistFileManager.getInstance().removePlaylistFile(plf);
-					Log.debug("Removed: " + plf); 
+					Log.debug("Removed: " + plf);
 					bChanges = true;
 				}
 			}
@@ -990,8 +1003,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 		// delete old history items
 		l = System.currentTimeMillis() - l;
-		Log.debug("Old file references cleaned in: " 
-				+ ((l < 1000) ? l + " ms" : l / 1000 + " s"));  
+		Log.debug("Old file references cleaned in: " + ((l < 1000) ? l + " ms" : l / 1000 + " s"));
 		return bChanges;
 	}
 
@@ -1012,31 +1024,31 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				// no more a boolean
 				if (meta.getName().equals(XML_DEVICE_AUTO_REFRESH)
 						&& (sValue.equalsIgnoreCase(TRUE) || sValue.equalsIgnoreCase(FALSE))) {
-					switch ((int) this.getDeviceType()) {
-					case 0: // directory
-						sValue = "0.5d"; 
+					switch ((int) this.getType()) {
+					case TYPE_DIRECTORY: // directory
+						sValue = "0.5d"; //$NON-NLS-1$
 						break;
-					case 1: // file cd
-						sValue = "0d"; 
+					case TYPE_CD: // file cd
+						sValue = "0d"; //$NON-NLS-1$
 						break;
-					case 2: // network drive
-						sValue = "0d"; 
+					case TYPE_NETWORK_DRIVE: // network drive
+						sValue = "0d"; //$NON-NLS-1$
 						break;
-					case 3: // ext dd
-						sValue = "3d"; 
+					case TYPE_EXT_DD: // ext dd
+						sValue = "3d"; //$NON-NLS-1$
 						break;
-					case 4: // player
-						sValue = "3d"; 
+					case TYPE_PLAYER: // player
+						sValue = "3d"; //$NON-NLS-1$
 						break;
-					case 5: // P2P
-						sValue = "0d"; 
+					case TYPE_REMOTE: // P2P
+						sValue = "0d"; //$NON-NLS-1$
 						break;
 					}
 				}
 				try {
 					setProperty(sProperty, Util.parse(sValue, meta.getType()));
 				} catch (Exception e) {
-					Log.error("137", sProperty, e); 
+					Log.error("137", sProperty, e);
 				}
 			}
 		}

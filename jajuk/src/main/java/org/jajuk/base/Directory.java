@@ -19,17 +19,17 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * A physical directory
@@ -427,8 +427,8 @@ public class Directory extends PhysicalItem implements Comparable {
 				return comp;
 			}
 		}
-		String sAbs = getAbsolutePath();
-		String sOtherAbs = otherDirectory.getAbsolutePath();
+		String sAbs = getDevice().getName() + getAbsolutePath();
+		String sOtherAbs = otherDirectory.getDevice().getName() + otherDirectory.getAbsolutePath();
 		// should ignore case to get a B c ... and not Bac
 		// but make sure to differentiate items with different cases
 		if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)) {

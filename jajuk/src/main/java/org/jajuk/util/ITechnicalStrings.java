@@ -132,6 +132,10 @@ public interface ITechnicalStrings {
 
 	/** Mplayer windows exe size in bytes */
 	public static final long MPLAYER_EXE_SIZE = 3284992l;
+	
+public static final String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS";
+	
+	public static final String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS";
 
 	/** Wikipedia view default URL */
 	public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.sourceforge.net";
@@ -301,8 +305,6 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
 
 	public static final String DEVICE_TYPE_FILE_CD = "Device_type.file_cd";
-
-	public static final String DEVICE_TYPE_AUDIO_CD = "Device_type.audio_cd";
 
 	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
 

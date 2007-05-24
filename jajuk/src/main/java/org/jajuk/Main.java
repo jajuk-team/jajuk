@@ -18,6 +18,35 @@
  */
 package org.jajuk;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
@@ -63,36 +92,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import com.vlsolutions.swing.docking.DockingPreferences;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
@@ -632,15 +631,14 @@ public class Main implements ITechnicalStrings {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
-						Log.debug("Download Mplayer from: " + URL_MPLAYER);
+						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
 						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
-						sc.setProgress(5, Messages.getString("Main.22"));
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						// make sure to delete corrupted mplayer in case of
 						// download problem
 						if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
 							fMPlayer.delete();
-							throw new Exception("MPlayer corrupted");
+							throw new Exception("MPlayer corrupted"); //$NON-NLS-1$
 						}
 					} catch (Exception e) {
 						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -650,41 +648,41 @@ public class Main implements ITechnicalStrings {
 			// Under non-windows OS, we assume mplayer has been installed
 			// using external standard distributions
 			else {
-				Process proc = null;
-				mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
-				try {
-					proc = Runtime.getRuntime().exec("mplayer");
-					proc.waitFor();
-					// check MPlayer release : 1.0pre8 min
-					proc = Runtime.getRuntime().exec(
-							new String[] { "mplayer", "-input", "cmdlist" });
-					BufferedReader in = new BufferedReader(new InputStreamReader(proc
-							.getInputStream()));
-					String line = null;
-					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
-					for (; (line = in.readLine()) != null;) {
-						if (line.matches("get_time_pos.*")) {
-							mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
-							break;
+				// try to find a correct mplayer from the path
+				// Under OSX, it will work only if jajuk is launched from
+				// command line
+				mplayerStatus = Util.getMplayerStatus("");
+				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+					// OK, try to find MPlayer in standards OSX directories
+					if (org.jdesktop.swingx.util.OS.isMacOSX()) {
+						// if X86 OSX
+						String sArch = System.getProperty("os.arch");
+						if (sArch != null && sArch.equalsIgnoreCase("x86")) {
+							mplayerStatus = Util
+									.getMplayerStatus(FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
+						} else {
+							// POWER OSX
+							mplayerStatus = Util
+									.getMplayerStatus(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
 						}
 					}
-				} catch (IOException ioe) {
-					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 				}
 			}
 			// Choose player according to mplayer presence or not
-			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { // no
-				// mplayer
-				// Show mplayer warnings
-				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
-					if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
-						// No mplayer
-						Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
-								CONF_NOT_SHOW_AGAIN_PLAYER);
-					} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
-						// wrong mplayer release
-						Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
-								CONF_NOT_SHOW_AGAIN_PLAYER);
+			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { 
+				// No mplayer, show mplayer warnings
+				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { 
+					// Test if user didn't already select "don't show again"
+					if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
+						if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
+							// No mplayer
+							Messages.showHideableWarningMessage(Messages.getString("Warning.0"), //$NON-NLS-1$
+									CONF_NOT_SHOW_AGAIN_PLAYER);
+						} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
+							// wrong mplayer release
+							Messages.showHideableWarningMessage(Messages.getString("Warning.1"), //$NON-NLS-1$
+									CONF_NOT_SHOW_AGAIN_PLAYER);
+						}
 					}
 				}
 				// mp3

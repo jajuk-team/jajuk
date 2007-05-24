@@ -20,19 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -57,6 +44,19 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IView;
+import org.jajuk.ui.wizard.DeviceWizard;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
 
 import ext.FlowScrollPanel;
 
@@ -213,7 +213,7 @@ public class DeviceView extends ViewAdapter implements IView,
 				final Device device = it.next();
 				ImageIcon icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED;
 				String sTooltip = ""; 
-				switch ((int) device.getDeviceType()) {
+				switch ((int) device.getType()) {
 				case 0:
 					sTooltip = Messages.getString("Device_type.directory"); 
 					if (device.isMounted()) {

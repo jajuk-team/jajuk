@@ -19,39 +19,6 @@
  */
 package org.jajuk.util;
 
-import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Item;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.dj.Ambience;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukSystray;
-import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.MattePainter;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.watermark.SubstanceImageWatermark;
-import org.jvnet.substance.watermark.SubstanceStripeWatermark;
-import org.jvnet.substance.watermark.WatermarkInfo;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -76,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -109,6 +77,40 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.jajuk.Main;
+import org.jajuk.Main.MPlayerStatus;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.dj.Ambience;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukSystray;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.painter.MattePainter;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.watermark.SubstanceImageWatermark;
+import org.jvnet.substance.watermark.SubstanceStripeWatermark;
+import org.jvnet.substance.watermark.WatermarkInfo;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -1850,7 +1852,29 @@ public class Util implements ITechnicalStrings {
 			sOut = sIn.substring(0, iSize) + "...";
 		}
 		return sOut;
-
+	}
+	
+	public static MPlayerStatus getMplayerStatus(String mplayerPATH) {
+		Process proc = null;
+		MPlayerStatus mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+		try {
+			proc = Runtime.getRuntime().exec(mplayerPATH + "mplayer"); //$NON-NLS-1$
+			proc.waitFor();
+			// check MPlayer release : 1.0pre8 min
+			proc = Runtime.getRuntime().exec(new String[] { mplayerPATH + "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			String line = null;
+			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
+			for (; (line = in.readLine()) != null;) {
+				if (line.matches("get_time_pos.*")) { //$NON-NLS-1$
+					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
+					break;
+				}
+			}
+		} catch (Exception e) {
+			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+		}
+		return mplayerStatus;
 	}
 
 }

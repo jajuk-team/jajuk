@@ -20,6 +20,19 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JRootPane;
+import javax.swing.JTextField;
+
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
@@ -29,17 +42,6 @@ import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
-
-import info.clearthought.layout.TableLayout;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import ext.SwingWorker;
 
@@ -90,14 +92,12 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void initUI() {
+		float fXSeparator = 0.05f;
+		float fYSeparator = 0.15f;
 		double p = TableLayout.PREFERRED;
-		double[][] dSize = {
-				{ 10,p,p,p },
-				{ 10, p,p,p } };
-		TableLayout layout = new TableLayout(dSize);
-		layout.setHGap(20);
-		layout.setVGap(20);
-		setLayout(layout);
+		double[][] dSize = { { fXSeparator, p, fXSeparator, p, fXSeparator, p, fXSeparator },
+				{ fYSeparator, 20, fYSeparator, 20, fYSeparator, p, fYSeparator } };
+		setLayout(new TableLayout(dSize));
 		jlName = new JLabel(Messages.getString("CDScanView.0")); 
 		jlName.setToolTipText(Messages.getString("CDScanView.1")); 
 		jtfName = new JTextField(10);
@@ -106,20 +106,25 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		jlMountPoint.setToolTipText(Messages.getString("CDScanView.4")); 
 		jtfMountPoint = new JTextField(10);
 		jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5")); 
-		jbScan = new JButton(
-				Messages.getString("CDScanView.6"), IconLoader.ICON_REFRESH); 
+		jbScan = new JButton(Messages.getString("CDScanView.6"), IconLoader.ICON_REFRESH); 
 		jbScan.setToolTipText(Messages.getString("CDScanView.18")); 
 		jbScan.addActionListener(this);
 		jbUrl = new JButton(IconLoader.ICON_OPEN_FILE); 
 		jbUrl.setToolTipText(Messages.getString("CDScanView.19")); 
 		jbUrl.addActionListener(this);
-		//Add items
 		add(jlName, "1,1"); 
-		add(jtfName, "2,1"); 
-		add(jlMountPoint, "1,2"); 
-		add(jtfMountPoint, "2,2"); 
-		add(jbUrl, "3,2");
-		add(jbScan, "1,3,3,3");
+		add(jtfName, "3,1"); 
+		add(jlMountPoint, "1,3"); 
+		add(jtfMountPoint, "3,3"); 
+		add(jbUrl, "5,3"); 
+		// Use a root pane to set default button as this view as no root
+		// pane by default
+		JRootPane root = new JRootPane();
+		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+		root.add(jbScan); 
+		add(root, "1,5"); 
+		// Set default button
+		root.setDefaultButton(jbScan);
 	}
 
 	/*
@@ -128,7 +133,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("CDScanView.12"); 
+		return Messages.getString("CDScanView.12");
 	}
 
 	/*
@@ -140,23 +145,21 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		if (e.getSource() == jbScan) {
 			SwingWorker sw = new SwingWorker() {
 				public Object construct() {
-					if (!"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())) {  
+					if (!"".equals(jtfName.getText().trim())
+							&& !"".equals(jtfMountPoint.getText().trim())) {
 						Device device = null;
 						device = DeviceManager.getInstance().registerDevice(
-								jtfName.getText().trim(), 1,
-								jtfMountPoint.getText().trim());
-						device.setProperty(XML_DEVICE_MOUNT_POINT,
-								jtfMountPoint.getText().trim());
+								jtfName.getText().trim(), 1, jtfMountPoint.getText().trim());
+						device.setProperty(XML_DEVICE_MOUNT_POINT, jtfMountPoint.getText().trim());
 						try {
 							device.mount();
 							device.refresh(false); // refresh synchronously
 							device.unmount(true, true);
 						} catch (Exception ex) {
 							DeviceManager.getInstance().removeDevice(device);
-							Messages.showErrorMessage("016"); 
+							Messages.showErrorMessage("016");
 							// refresh views
-							ObservationManager.notify(new Event(
-									EventSubject.EVENT_DEVICE_REFRESH));
+							ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 						}
 					}
 					return null;
@@ -164,7 +167,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 				}
 
 				public void finished() {
-					jtfName.setText(""); 
+					jtfName.setText("");
 					jtfName.requestFocusInWindow();
 				}
 			};
