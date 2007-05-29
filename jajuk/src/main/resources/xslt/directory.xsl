@@ -10,68 +10,42 @@
 	version='1.0'>
 
 	<xsl:template match='/'>
-		<html>
-			<head>
-				<title>
-					<xsl:value-of
-						select='/collection/i18n/ReportAction.1' />
-				</title>
-				<style type='text/css'>
-					.style { background-color: #f9f7ed; font-weight:
-					bold; padding: 3px; }
-
-					.author { background-color: #c3d9ff; font-weight:
-					bold; padding: 3px; }
-
-					.album { background-color: #cdeb8b; font-weight:
-					bold; padding: 3px; }
-
-					.track { font-weight: bold; background-color:
-					#eeeeee; padding: 3px; width: 120px; }
-				</style>
+		<xsl:output method='xml' doctype-system='http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd' doctype-public='-//W3C//DTD XHTML 1.0 Strict//EN'/> 
+		<html xmlns='http://www.w3.org/1999/xhtml'>
+		<head>
+				<meta http-equiv='Content-Type'
+					content='text/html; charset=utf-8' />
+				<title>Jajuk Music Report</title>
+				<link rel='stylesheet' href='report-all.css' type='text/css' media='all'/>
+				<link rel='stylesheet' href='report-print.css' type='text/css' media='print'/>
 			</head>
 			<body>
 				<h1>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.1' />
 				</h1>
-				<p>
-					<CAPTION>
+			    			<p class='notice'>
 						<xsl:value-of
 							select='/collection/i18n/ReportAction.2' />
-					</CAPTION>
 				</p>
-				<p>
-					<ul>
-						<li>
-							<a href='#1'>
-								<xsl:value-of
-									select='/collection/i18n/ReportAction.10' />
-							</a>
-						</li>
-						<li>
-							<a href='#2'>
-								<xsl:value-of
-									select='/collection/i18n/ReportAction.11' />
-							</a>
-						</li>
-					</ul>
-				</p>
-				<p>
-					<h2 id='1'>
+				<ul class='jumpto'>
+					<li class='.jumpto li'><xsl:value-of
+								select='/collection/i18n/ReportAction.19' /></li>
+					<li class='.jumpto li'><a href='#a1'><xsl:value-of
+								select='/collection/i18n/ReportAction.10' /></a></li>
+					<li class='.jumpto li'><a href='#a2'><xsl:value-of
+								select='/collection/i18n/ReportAction.11' /></a></li>
+				</ul>
+				<h2 id='a1'>
 						<xsl:value-of
 							select='/collection/i18n/ReportAction.10' />
 					</h2>
-					<xsl:call-template name='directories_list' />
-				</p>
-				<p>
-					<h2 id='2'>
-						<xsl:value-of
-							select='/collection/i18n/ReportAction.11' />
-					</h2>
-					<xsl:apply-templates select='*/directory' />
-
-				</p>
+				<xsl:call-template name='directories_list' />
+				<h2 id='a2'>
+					<xsl:value-of
+						select='/collection/i18n/ReportAction.11' />
+				</h2>
+				<xsl:apply-templates select='*/directory' />
 			</body>
 		</html>
 	</xsl:template>
@@ -79,62 +53,62 @@
 	<xsl:template name='directories_list'>
 		<xsl:for-each select='*/directory'>
 			<xsl:variable name='id' select='id' />
-				<a href='#{id}'>
-					<xsl:value-of select='path' />
-				</a>
-				<br/>
+				<h3>
+					<a href='#a{id}'>
+						<xsl:value-of select='path' />
+					</a>
+				</h3>
 			<xsl:call-template name='directories_list' />
 		</xsl:for-each>
 	</xsl:template>
 
 
 
-<xsl:template match="*/directory">
-	<hr />
+<xsl:template match='*/directory'>
 		<xsl:variable name='id' select='id' />
-		<h2 id='{id}'>
+		<h2 id='a{id}'>
 			<xsl:value-of select='path' />
 		</h2>
-		<xsl:apply-templates select="directory" />
+		<xsl:apply-templates select='directory' />
 			<table border='0' cellspacing='5'>
-			<TR>
-				<TH>
+			<tr>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.12' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.order' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.13' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.style' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.author' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.album' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.length' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.rate' />
-				</TH>
-				<TH>
+				</th>
+				<th>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.comment' />
-				</TH>
-			</TR>
+				</th>
+			</tr>
 
 			<xsl:for-each select='file'>
 				<tr>
@@ -168,7 +142,6 @@
 				</tr>
 			</xsl:for-each>
 		</table>
-		<br />				
 	</xsl:template>
 
 

@@ -191,10 +191,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		String content = "";
 		// If we are tagging the physical collection...
 		if (type == XMLExporter.PHYSICAL_COLLECTION) {
-			//Same effect than selecting all devices
+			// Same effect than selecting all devices
 			return process(new ArrayList<Item>(DeviceManager.getInstance().getDevices()));
 		} else if (type == LOGICAL_COLLECTION) {
-			//Same effect than selecting all styles
+			// Same effect than selecting all styles
 			return process(new ArrayList<Item>(StyleManager.getInstance().getStyles()));
 		}
 		return content;
@@ -296,22 +296,24 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 				+ Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device.getMountPoint()))
 				+ NEWLINE);
 
-		ListIterator itr = new ArrayList<Directory>(DirectoryManager.getInstance()
-				.getDirectoryForIO(device.getFio()).getDirectories()).listIterator();
-		// Tag children directories of device.
-		while (itr.hasNext()) {
-			Directory directory = (Directory) itr.next();
-			sb.append(exportDirectoryHelper(1, directory));
-		}
+		Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
+		// check void devices
+		if (dir != null) {
+			ListIterator itr = new ArrayList<Directory>(dir.getDirectories()).listIterator();
+			// Tag children directories of device.
+			while (itr.hasNext()) {
+				Directory directory = (Directory) itr.next();
+				sb.append(exportDirectoryHelper(1, directory));
+			}
 
-		Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio())
-				.getFiles().iterator();
-		// Tag children files of device.
-		while (itr2.hasNext()) {
-			org.jajuk.base.File file = (org.jajuk.base.File) itr2.next();
-			sb.append(tagFile(file, 1));
+			Iterator itr2 = DirectoryManager.getInstance().getDirectoryForIO(device.getFio())
+					.getFiles().iterator();
+			// Tag children files of device.
+			while (itr2.hasNext()) {
+				org.jajuk.base.File file = (org.jajuk.base.File) itr2.next();
+				sb.append(tagFile(file, 1));
+			}
 		}
-
 		sb.append(Tag.closeTag(XML_DEVICE) + NEWLINE);
 		content = sb.toString();
 		return content;
