@@ -44,6 +44,8 @@ import java.util.StringTokenizer;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 /**
  * Jajuk main window
  * <p>
@@ -98,10 +100,12 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 
 			public void windowDeiconified(WindowEvent arg0) {
 				setFocusableWindowState(true);
+				bVisible = true;
 			}
 
 			public void windowIconified(WindowEvent arg0) {
 				setFocusableWindowState(false);
+				bVisible = false;
 			}
 
 			public void windowClosing(WindowEvent we) {
@@ -283,6 +287,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				if (visible) {
 					applyStoredSize();
 					setVisible(true);
+					toFront();
 				}
 				// hide
 				else {

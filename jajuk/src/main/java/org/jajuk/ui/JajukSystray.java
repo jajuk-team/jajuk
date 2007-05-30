@@ -146,11 +146,10 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	 * 
 	 */
 	public JajukSystray() {
-
-		jmenu = new JPopupMenu(Messages.getString("JajukWindow.3")); 
+		jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
 
 		jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
-		//force icon to be display in 16x16
+		// force icon to be display in 16x16
 		jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
 		jmiHelp = new JMenuItem(ActionManager.getAction(JajukAction.HELP_REQUIRED));
 		jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
@@ -160,15 +159,15 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
 		jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
 
-		jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); 
+		jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8"));
 		jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true));
 		jcbmiVisible.addActionListener(this);
-		jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25")); 
+		jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25"));
 
-		jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185")); 
+		jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
 		jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
 		jcbmiShowBalloon.addActionListener(this);
-		jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185")); 
+		jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
 		jmiPause = new SizedJMenuItem(ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK));
 		jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukAction.STOP_TRACK));
@@ -176,7 +175,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukAction.NEXT_TRACK));
 
 		jsPosition = new SliderMenuItem(0, 100, 0);
-		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); 
+		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
 		jsPosition.addMouseWheelListener(this);
 		jsPosition.addChangeListener(this);
 
@@ -190,26 +189,25 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 
 		// Ambiences menu
 		Ambience defaultAmbience = AmbienceManager.getInstance().getSelectedAmbience();
-		jmAmbience = new JMenu(
-				Messages.getString("JajukWindow.36") 
-						+ " " 
-						+ ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64") : defaultAmbience 
-										.getName()));
+		jmAmbience = new JMenu(Messages.getString("JajukWindow.36")
+				+ " "
+				+ ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64")
+						: defaultAmbience.getName()));
 		populateAmbiences();
-		//Volume menu
+		// Volume menu
 		JMenu jmVolume = new JMenu(Messages.getString("JajukWindow.33"));
 		jmVolume.setIcon(IconLoader.ICON_VOLUME);
 		jmVolume.add(jsVolume);
-		
-		//Position menu
+
+		// Position menu
 		JMenu jmPosition = new JMenu(Messages.getString("JajukWindow.34"));
 		jmPosition.setIcon(IconLoader.ICON_POSITION);
 		jmPosition.add(jsPosition);
-				
+
 		// Add a title. Important: do not add a JLabel, it present action event
 		// to occur under windows
-		JMenuItem jmiTitle = new JMenuItem("Jajuk"); 
-		jmiTitle.setFont(new Font("Dialog", Font.BOLD, 20)); 
+		JMenuItem jmiTitle = new JMenuItem("Jajuk");
+		jmiTitle.setFont(new Font("Dialog", Font.BOLD, 20));
 		jmenu.add(jmiTitle);
 		jmenu.addSeparator();
 		jmenu.add(jmAmbience);
@@ -235,17 +233,12 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		jmenu.add(jmPosition);
 		jmenu.addSeparator();
 		jmenu.add(jmiExit);
-		trayIcon = new TrayIcon(IconLoader.ICON_TRAY,
-				Messages.getString("JajukWindow.18"), jmenu);
+		trayIcon = new TrayIcon(IconLoader.ICON_TRAY, Messages.getString("JajukWindow.18"), jmenu);
 		trayIcon.setIconAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// show window if it is not visible and hide it if it is visible
-				if (!JajukWindow.getInstance().isWindowVisible()) {
-					JajukWindow.getInstance().display(true);
-				} else {
-					JajukWindow.getInstance().display(false);
-				}
+				JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
 			}
 		});
 		stray.addTrayIcon(trayIcon);
@@ -293,12 +286,13 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						.toString(jcbmiVisible.getState()));
 				ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean
 						.toString(jcbmiShowBalloon.getState()));
-				//Launch an event that can be trapped by the tray to synchronize the state
+				// Launch an event that can be trapped by the tray to
+				// synchronize the state
 				Properties details = new Properties();
-				details.put(DETAIL_ORIGIN,this);
-				ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE,details));
+				details.put(DETAIL_ORIGIN, this);
+				ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE, details));
 			}
-			
+
 		} catch (Exception e2) {
 			Log.error(e2);
 		} finally {
@@ -344,19 +338,19 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 							sOut = getBasicFormatText(file);
 						}
 						trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
-								TrayIcon.INFO_MESSAGE_TYPE); 		
+								TrayIcon.INFO_MESSAGE_TYPE);
 					}
 					String sOut = null;
 					// check if a file is currently playing
 					if (file == null) {
 						// display a "Ready to play" message
-						sOut = Messages.getString("JajukWindow.18"); 
+						sOut = Messages.getString("JajukWindow.18");
 					} else {
 						trayIcon.setToolTip(getHTMLFormatText(file));
 					}
 				} else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
 						|| EventSubject.EVENT_ZERO.equals(subject)) {
-					trayIcon.setToolTip(Messages.getString("JajukWindow.18")); 
+					trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
 					jmiPause.setEnabled(false);
 					jmiStop.setEnabled(false);
 					jmiNext.setEnabled(false);
@@ -392,17 +386,17 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
 					Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
 					if (ambience != null) {
-						jmAmbience.setText(Messages.getString("JajukWindow.36") 
-								+ " " 
+						jmAmbience.setText(Messages.getString("JajukWindow.36") + " "
 								+ AmbienceManager.getInstance().getSelectedAmbience().getName());
 					} else {
-						jmAmbience.setText(Messages.getString("JajukWindow.37")); 
+						jmAmbience.setText(Messages.getString("JajukWindow.37"));
 					}
 					populateAmbiences();
 				} else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
 					jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP,
 							true));
-					jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
+					jcbmiShowBalloon
+							.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
 				}
 			}
 
@@ -428,26 +422,25 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	public String getHTMLFormatText(File file) {
 		String sOut = "";
 		if (file != null) {
-			sOut += "<HTML><br>"; 
+			sOut += "<HTML><br>";
 			String size = "100x100";
 			int maxSize = 30;
-			Util.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), 
-					size);
-			java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' +size + '/'+ 
-					FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getId()
-					+ '.' + EXT_THUMB);
-			if (cover.canRead()){
-				sOut += "<img src='file:"+ cover.getAbsolutePath() +"'/><br>";
+			Util.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), size);
+			java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+					+ FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getId() + '.'
+					+ EXT_THUMB);
+			if (cover.canRead()) {
+				sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
 			}
-			sOut += "<p><b>" + Util.getLimitedString(file.getTrack().getName(),maxSize) 
-				+ "</b></p>";
-			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(),maxSize);
+			sOut += "<p><b>" + Util.getLimitedString(file.getTrack().getName(), maxSize)
+					+ "</b></p>";
+			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-				sOut += "<p>" + sAuthor + "</p>"; 
+				sOut += "<p>" + sAuthor + "</p>";
 			}
-			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(),maxSize);
+			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-				sOut += "<p>" + sAlbum + "</p></HTML>"; 
+				sOut += "<p>" + sAlbum + "</p></HTML>";
 			}
 		}
 		return sOut;
@@ -464,16 +457,16 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		String sOut = "";
 		int maxSize = 30;
 		if (file != null) {
-			sOut = ""; 
-			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(),maxSize);
+			sOut = "";
+			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-				sOut += sAuthor + " / "; 
+				sOut += sAuthor + " / ";
 			}
-			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(),maxSize);
+			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-				sOut += sAlbum + " / "; 
+				sOut += sAlbum + " / ";
 			}
-			sOut += Util.getLimitedString(file.getTrack().getName(),maxSize);
+			sOut += Util.getLimitedString(file.getTrack().getName(), maxSize);
 		}
 		return sOut;
 	}
@@ -491,22 +484,22 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 				JMenuItem all = jmAmbience.getItem(0);
 				if (jmi.equals(all)) {
 					// reset default ambience
-					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ""); 
+					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, "");
 				} else {// Selected an ambience
 					Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
 							jmi.getActionCommand());
 					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
 				}
-				jmi.setFont(new Font("Dialog", Font.BOLD, 12)); 
+				jmi.setFont(new Font("Dialog", Font.BOLD, 12));
 				ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 			}
 		};
 		// Remove all item
 		jmAmbience.removeAll();
 		// Add "all" ambience
-		JMenuItem jmiAll = new JMenuItem("<html><i>" + 
-				Messages.getString("DigitalDJWizard.64") + "</i></html>");  
-		jmiAll.setFont(new Font("Dialog", Font.BOLD, 12)); 
+		JMenuItem jmiAll = new JMenuItem("<html><i>" + Messages.getString("DigitalDJWizard.64")
+				+ "</i></html>");
+		jmiAll.setFont(new Font("Dialog", Font.BOLD, 12));
 		jmiAll.addActionListener(al);
 		jmAmbience.add(jmiAll);
 
@@ -514,8 +507,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
 			JMenuItem jmi = new JMenuItem(ambience.getName());
 			if (ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
-				jmiAll.setFont(new Font("Dialog", Font.PLAIN, 12)); 
-				jmi.setFont(new Font("Dialog", Font.BOLD, 12)); 
+				jmiAll.setFont(new Font("Dialog", Font.PLAIN, 12));
+				jmi.setFont(new Font("Dialog", Font.BOLD, 12));
 			}
 			jmi.addActionListener(al);
 			jmAmbience.add(jmi);
