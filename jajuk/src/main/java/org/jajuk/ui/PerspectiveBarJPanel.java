@@ -89,10 +89,6 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 			final IPerspective perspective = (IPerspective) it.next();
 			JButton jb = new JButton(perspective.getDesc(), new UrlImageIcon(perspective
 					.getIconPath()));
-			try {
-				jb.setToolTipText(perspective.getDesc());
-			} catch (Exception e) { // ignore tooltip missing
-			}
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// no thread, it causes ugly screen repaint
