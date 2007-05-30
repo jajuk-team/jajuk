@@ -72,19 +72,6 @@ public class Style extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * Equal method to check two styles are identical
-	 * 
-	 * @param otherStyle
-	 * @return
-	 */
-	public boolean equals(Object otherStyle) {
-		if (otherStyle == null) {
-			return false;
-		}
-		return (hashcode == ((Style) otherStyle).hashcode);
-	}
-
-	/**
 	 * Alphabetical comparator used to display ordered lists
 	 * 
 	 * @param other

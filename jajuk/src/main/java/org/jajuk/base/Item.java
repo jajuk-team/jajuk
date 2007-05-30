@@ -48,9 +48,6 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 
 	/** Name */
 	protected final String sName;
-	
-	/**Hashcode */
-	protected final int hashcode;
 
 	/**
 	 * Constructor
@@ -62,7 +59,6 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	Item(final String sId, final String sName) {
 		this.sId = sId.intern();
-		this.hashcode = sId.hashCode();
 		setProperty(XML_ID, sId.intern());
 		if (sName != null) {
 			this.sName = sName.intern();
@@ -91,7 +87,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * Item hashcode (used by the equals method)
 	 */
 	public int hashCode() {
-		return hashcode;
+		return getId().hashCode();
 	}
 
 	/**
@@ -102,21 +98,18 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	abstract public String getDesc();
 
 	/**
-	 * Equals method, two item are equals if all properties are equals
+	 * Equal method to check two albums are identical
+	 * 
+	 * @param otherAlbum
+	 * @return
 	 */
-	public boolean equals(Object other) {
-		Item paOther = (Item) other;
-		for (Object oKey : paOther.getProperties().keySet()) {
-			// if the property is known and equals
-			if (!properties.containsKey(oKey)
-					|| properties.get(oKey) == null
-					|| !properties.get(oKey).equals(
-							paOther.getValue((String) oKey))) {
-				return false;
-			}
+	public boolean equals(Object otherItem) {
+		if (otherItem == null) {
+			return false;
 		}
-		return true;
+		return getId().equals(((Item)otherItem).getId());
 	}
+
 
 	/*
 	 * (non-Javadoc)

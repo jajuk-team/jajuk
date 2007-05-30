@@ -58,19 +58,7 @@ public class Year extends LogicalItem implements Comparable {
 		return "Year[ID=" + sId + " Value=" + sName + "]";   
 	}
 
-	/**
-	 * Equal method to check two years are identical
-	 * 
-	 * @param otherYear
-	 * @return
-	 */
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		return (hashcode == ((Year) other).hashcode);
-	}
-	
+		
 	/**
 	 * 
 	 * @return year as a long

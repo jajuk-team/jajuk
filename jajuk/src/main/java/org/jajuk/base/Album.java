@@ -65,19 +65,7 @@ public class Album extends LogicalItem implements Comparable {
 		return "Album[ID=" + getId() + " Name={{" + getName() + "}}]";   
 	}
 
-	/**
-	 * Equal method to check two albums are identical
-	 * 
-	 * @param otherAlbum
-	 * @return
-	 */
-	public boolean equals(Object otherAlbum) {
-		if (otherAlbum == null) {
-			return false;
-		}
-		return (hashcode == ((Album) otherAlbum).hashcode);
-	}
-
+	
 	/**
 	 * Alphabetical comparator used to display ordered lists
 	 * 

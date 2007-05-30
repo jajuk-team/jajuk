@@ -93,19 +93,6 @@ public class Directory extends PhysicalItem implements Comparable {
 				+ "}}]";
 	}
 
-	/**
-	 * Equal method to check two directories are identical
-	 * 
-	 * @param otherDirectory
-	 * @return
-	 */
-	public boolean equals(Object otherDirectory) {
-		if (otherDirectory == null) {
-			return false;
-		}
-		return (hashcode == ((Directory) otherDirectory).hashcode);
-	}
-
 	public String getAbsolutePath() {
 		return this.fio.getAbsolutePath();
 	}

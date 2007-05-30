@@ -349,19 +349,6 @@ public class Track extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * Equal method to check two tracks are identical
-	 * 
-	 * @param otherTrack
-	 * @return
-	 */
-	public boolean equals(Object otherTrack) {
-		if (otherTrack == null) {
-			return false;
-		}
-		return (hashcode == ((Track) otherTrack).hashcode);
-	}
-
-	/**
 	 * @return
 	 */
 	public Author getAuthor() {

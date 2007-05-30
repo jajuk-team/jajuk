@@ -156,20 +156,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				+ sUrl + " Mount point=" + sMountPoint + "]";
 	}
 
-	/**
-	 * Equal method to check two devices are identical
-	 * 
-	 * @param otherDevice
-	 * @return
-	 */
-	public boolean equals(Object otherDevice) {
-		if (otherDevice == null) {
-			return false;
-		}
-		return (hashcode == ((Device) otherDevice).hashcode);
-	}
-
-	/**
+		/**
 	 * Refresh : scan asynchronously the device to find tracks
 	 * 
 	 * @param bAsynchronous :

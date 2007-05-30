@@ -70,19 +70,6 @@ public class Author extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * Equal method to check two authors are identical
-	 * 
-	 * @param otherAuthor
-	 * @return
-	 */
-	public boolean equals(Object otherAuthor) {
-		if (otherAuthor == null) {
-			return false;
-		}
-		return (hashcode == ((Author) otherAuthor).hashcode);
-	}
-
-	/**
 	 * Alphabetical comparator used to display ordered lists
 	 * 
 	 * @param other

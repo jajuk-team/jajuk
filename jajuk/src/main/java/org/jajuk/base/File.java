@@ -168,19 +168,6 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	}
 
 	/**
-	 * Equal method to check two files are identical
-	 * 
-	 * @param otherFile
-	 * @return
-	 */
-	public boolean equals(Object otherFile) {
-		if (otherFile == null) {
-			return false;
-		}
-		return (hashcode == ((File) otherFile).hashcode);
-	}
-
-	/**
 	 * Return absolute file path name
 	 * 
 	 * @return String

@@ -71,19 +71,6 @@ public class Playlist extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * Equal method to check two playlists are identical
-	 * 
-	 * @param otherPlaylist
-	 * @return
-	 */
-	public boolean equals(Object otherPlaylist) {
-		if (otherPlaylist == null) {
-			return false;
-		}
-		return (hashcode == ((Playlist) otherPlaylist).hashcode);
-	}
-
-	/**
 	 * Add a playlist file
 	 * 
 	 * @return

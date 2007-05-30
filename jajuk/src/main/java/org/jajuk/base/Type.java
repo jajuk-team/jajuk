@@ -105,19 +105,6 @@ public class Type extends PhysicalItem implements Comparable {
 	}
 
 	/**
-	 * Equal method to check two types are identical
-	 * 
-	 * @param otherType
-	 * @return
-	 */
-	public boolean equals(Object otherType) {
-		if (otherType == null) {
-			return false;
-		}
-		return (hashcode == ((Type) otherType).hashcode);
-	}
-
-	/**
 	 * @return Returns the tagImpl.
 	 */
 	public ITagImpl getTagImpl() {

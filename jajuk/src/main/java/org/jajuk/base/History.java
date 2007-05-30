@@ -242,7 +242,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 		} catch (Exception e) {
 			Log.error(new JajukException("119"));
 			try {
-				commit(); // this history looks corruped, write a void one
+				commit(); // this history looks corrupted, write a void one
 			} catch (Exception e2) {
 				Log.error(e2);
 			}
