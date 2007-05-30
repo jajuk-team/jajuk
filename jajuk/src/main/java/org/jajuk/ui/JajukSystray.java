@@ -432,15 +432,21 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			if (cover.canRead()) {
 				sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
 			}
-			sOut += "<p><b>" + Util.getLimitedString(file.getTrack().getName(), maxSize)
-					+ "</b></p>";
+			//We use gray color for font because, due to a JDIC bug under Linux, the
+			//ballon background is white even if the the look and feel is dark (like ebony)
+			// but the look and feel makes the text white is it is black initialy
+			//so text is white on white is the balloon. It must be displayed in the tooltip too
+			//and this issue doesn't affect the tray tooltip. This color is the only one to be correctly displayed 
+			//in a dark and a light background at the same time
+			sOut += "<p><font color='#484848'><b>" + Util.getLimitedString(file.getTrack().getName(), maxSize)
+					+ "</b></font></p>";
 			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-				sOut += "<p>" + sAuthor + "</p>";
+				sOut += "<p><font color='#484848'>" + sAuthor + "</font></p>";
 			}
 			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-				sOut += "<p>" + sAlbum + "</p></HTML>";
+				sOut += "<p><font color='#484848'>" + sAlbum + "</font></p></HTML>";
 			}
 		}
 		return sOut;
