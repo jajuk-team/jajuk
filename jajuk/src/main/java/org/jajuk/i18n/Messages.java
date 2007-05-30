@@ -311,8 +311,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static void showErrorMessage(final String sCode) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(), "<html><b>"
-						+ Messages.getErrorMessage(sCode) + "</b></html>", Messages
+				JOptionPane.showMessageDialog(Main.getWindow(),
+						Messages.getErrorMessage(sCode), Messages
 						.getErrorMessage("102"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
@@ -661,8 +661,8 @@ class DetailsMessageDialog implements Runnable {
 		dialog.setModal(true);
 		dialog.setAlwaysOnTop(true);
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("Details"))) { // details
-			// 
+		if (optionPane.getValue().equals(Messages.getString("Details"))) { 
+			// details
 			final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
 			JPanel jp = new JPanel();
 			jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
