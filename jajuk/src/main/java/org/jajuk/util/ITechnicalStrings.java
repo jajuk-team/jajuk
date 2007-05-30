@@ -214,6 +214,10 @@ public static final String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MP
 
 	public static final String FILE_JAJUK_DOWNLOADED_FILES_SUFFIX = "_jajuk";
 
+	public static final URL FILE_REPORTING_CSS_ALL = Util.getResource("xslt/report-all.css");
+
+	public static final URL FILE_REPORTING_CSS_PRINT = Util.getResource("xslt/report-print.css");
+
 	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
 
 	// About
