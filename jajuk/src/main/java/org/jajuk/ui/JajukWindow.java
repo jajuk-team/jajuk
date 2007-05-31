@@ -85,11 +85,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true);
-		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getWidth());
-		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getHeight());
-		setTitle(Messages.getString("JajukWindow.17")); 
+		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+		setTitle(Messages.getString("JajukWindow.17"));
 		setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// register for given events
@@ -99,6 +97,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			public void windowDeiconified(WindowEvent arg0) {
 				setFocusableWindowState(true);
 				bVisible = true;
+				toFront();
 			}
 
 			public void windowIconified(WindowEvent arg0) {
@@ -138,19 +137,17 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		// bounds
 		// (fix for windows issue: at next startup, the screen is shifted by few
 		// pixels)
-		if (Toolkit.getDefaultToolkit().isFrameStateSupported(
-				Frame.MAXIMIZED_BOTH)
+		if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)
 				&& (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 			Log.debug("Frame maximized");
 			sValue = FRAME_MAXIMIZED;
 		} else {
-			sValue = (int) getLocationOnScreen().getX() + "," 
-					+ (int) getLocationOnScreen().getY() + "," 
-					+ getBounds().width + "," + getBounds().height;
+			sValue = (int) getLocationOnScreen().getX() + "," + (int) getLocationOnScreen().getY()
+					+ "," + getBounds().width + "," + getBounds().height;
 			Log.debug("Frame moved or resized, new bounds=" + sValue);
 		}
 		// Store the new position
-		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue);   
+		ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue);
 	}
 
 	/**
@@ -158,20 +155,17 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 	 * 
 	 */
 	public void applyStoredSize() {
-		int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getWidth());
-		int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getHeight());
+		int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		int iX = 0;
 		int iY = 0;
 		int iHorizSize = 0;
 		int iVertSize = 0;
 		// Forced frame position ?
-		String sForcedValue = ConfigurationManager
-				.getProperty(CONF_FRAME_POS_FORCED);
+		String sForcedValue = ConfigurationManager.getProperty(CONF_FRAME_POS_FORCED);
 		if (sForcedValue != null && !sForcedValue.trim().equals("")) {
 			try {
-				StringTokenizer st = new StringTokenizer(sForcedValue, ","); 
+				StringTokenizer st = new StringTokenizer(sForcedValue, ",");
 				iX = Integer.parseInt(st.nextToken());
 				iY = Integer.parseInt(st.nextToken());
 				iHorizSize = Integer.parseInt(st.nextToken());
@@ -186,25 +180,22 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		}
 		// Detect strange or buggy Window Manager like XGL using this test
 		// and apply default size for them
-		if (!Toolkit.getDefaultToolkit().isFrameStateSupported(
-				Frame.MAXIMIZED_BOTH)) {
+		if (!Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 			setBounds(60, 60, iScreenWidth - 120, iScreenHeight - 120);
 			return;
 		}
 		// read stored position and size
-		String sPosition = ConfigurationManager
-				.getProperty(CONF_WINDOW_POSITION);
+		String sPosition = ConfigurationManager.getProperty(CONF_WINDOW_POSITION);
 		// If user left jajuk maximized, reset this simple configuration
 		if (sPosition.equals(FRAME_MAXIMIZED)) {
 			// Always set a size that is used when un-maximalizing the frame
 			setBounds(50, 50, iScreenWidth - 100, iScreenHeight - 100);
-			if (Toolkit.getDefaultToolkit().isFrameStateSupported(
-					Frame.MAXIMIZED_BOTH)) {
+			if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 				setExtendedState(Frame.MAXIMIZED_BOTH);
 			}
 			return;
 		}
-		StringTokenizer st = new StringTokenizer(sPosition, ","); 
+		StringTokenizer st = new StringTokenizer(sPosition, ",");
 		iX = Integer.parseInt(st.nextToken());
 		// if X position is higher than screen width, set 0
 		if (iX > iScreenWidth) {
@@ -251,7 +242,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				setTitle(file.getTrack().getName());
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-			setTitle(Messages.getString("JajukWindow.17")); 
+			setTitle(Messages.getString("JajukWindow.17"));
 		}
 	}
 
@@ -277,7 +268,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		}
 		// Show or hide the frame
 		SwingUtilities.invokeLater(new Runnable() {
-
 			public void run() {
 				// store state
 				bVisible = visible;
@@ -285,7 +275,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				if (visible) {
 					applyStoredSize();
 					setVisible(true);
-					toFront();
+					setState(Frame.NORMAL);
 				}
 				// hide
 				else {
@@ -294,8 +284,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 					setVisible(false);
 				}
 			}
-
 		});
 	}
-
 }
