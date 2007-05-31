@@ -433,7 +433,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 				sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
 			}
 			//We use gray color for font because, due to a JDIC bug under Linux, the
-			//ballon background is white even if the the look and feel is dark (like ebony)
+			//balloon background is white even if the the look and feel is dark (like ebony)
 			// but the look and feel makes the text white is it is black initialy
 			//so text is white on white is the balloon. It must be displayed in the tooltip too
 			//and this issue doesn't affect the tray tooltip. This color is the only one to be correctly displayed 

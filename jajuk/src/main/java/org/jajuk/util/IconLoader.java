@@ -62,10 +62,10 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_BESTOF = new UrlImageIcon(Util
 			.getResource("icons/32x32/bestof.png"));
 
-	public static final UrlImageIcon ICON_MUTE = new UrlImageIcon(Util
+	public static final UrlImageIcon ICON_MUTED = new UrlImageIcon(Util
 			.getResource("icons/32x32/mute.png"));
 
-	public static final UrlImageIcon ICON_UNMUTE = new UrlImageIcon(Util
+	public static final UrlImageIcon ICON_UNMUTED = new UrlImageIcon(Util
 			.getResource("icons/32x32/unmute.png"));
 
 	public static final UrlImageIcon ICON_NOVELTIES = new UrlImageIcon(Util
