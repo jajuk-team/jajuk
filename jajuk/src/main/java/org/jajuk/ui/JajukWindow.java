@@ -44,8 +44,6 @@ import java.util.StringTokenizer;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 /**
  * Jajuk main window
  * <p>
