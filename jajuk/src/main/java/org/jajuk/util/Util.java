@@ -36,11 +36,13 @@ import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -633,12 +635,12 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * Rename a file
+	 * Copy a file
 	 * 
 	 * @param file :
-	 *            file to rename
+	 *            source file
 	 * @param sNewName :
-	 *            file new name
+	 *            dest file
 	 */
 	public static void copy(File file, String sNewName) throws Exception {
 		Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName);
@@ -655,6 +657,30 @@ public class Util implements ITechnicalStrings {
 		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
 		fcSrc.close();
 		fcDest.close();
+	}
+
+	/**
+	 * Copy a URL resource to a file
+	 * We don't use nio but Buffered Reader / writer because we can only get channels
+	 * from a FileInputStream that can be or not be in a Jar (production / test) 
+	 * @param src source designed by URL
+	 * @param dest destination file full path
+	 * @throws Exception
+	 */
+	public static void copy(URL src, String dest) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
+		String sLine = null;
+		do {
+			sLine = br.readLine();
+			if (sLine != null){
+				bw.write(sLine);
+				bw.newLine();
+			}
+		} while (sLine != null);
+		br.close();
+		bw.flush();
+		bw.close();
 	}
 
 	/**
@@ -845,7 +871,7 @@ public class Util implements ITechnicalStrings {
 			jpOut.add(jc);
 			jpOut.add(Box.createVerticalGlue());
 		}
-		jpOut.setMinimumSize(new Dimension(0, 0)); 
+		jpOut.setMinimumSize(new Dimension(0, 0));
 		// allow resing with info node
 		return jpOut;
 	}
@@ -1092,7 +1118,7 @@ public class Util implements ITechnicalStrings {
 	public static void setLookAndFeel(String pTheme) {
 		try {
 			String theme = pTheme;
-			if (pTheme == null){
+			if (pTheme == null) {
 				theme = LNF_DEFAULT_THEME;
 			}
 			// Set substance laf
@@ -1122,13 +1148,14 @@ public class Util implements ITechnicalStrings {
 	public static void setWatermark(String pWatermarkName) {
 		try {
 			String watermark = pWatermarkName;
-			if (watermark == null){
+			if (watermark == null) {
 				watermark = LNF_DEFAULT_WATERMARK;
 			}
 			// Check the watermark is known, if not take the default one
 			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
 			if (watermarks.get(pWatermarkName) == null) {
-				// the image watermark is not included in the list for unknown reasons
+				// the image watermark is not included in the list for unknown
+				// reasons
 				if (!watermark.equals("Image")) {
 					watermark = LNF_DEFAULT_WATERMARK;
 				}
@@ -1853,7 +1880,7 @@ public class Util implements ITechnicalStrings {
 		}
 		return sOut;
 	}
-	
+
 	public static MPlayerStatus getMplayerStatus(String mplayerPATH) {
 		Process proc = null;
 		MPlayerStatus mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -1861,7 +1888,8 @@ public class Util implements ITechnicalStrings {
 			proc = Runtime.getRuntime().exec(mplayerPATH + "mplayer"); //$NON-NLS-1$
 			proc.waitFor();
 			// check MPlayer release : 1.0pre8 min
-			proc = Runtime.getRuntime().exec(new String[] { mplayerPATH + "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			proc = Runtime.getRuntime().exec(
+					new String[] { mplayerPATH + "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			String line = null;
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
