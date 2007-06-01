@@ -88,7 +88,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		setTitle(Messages.getString("JajukWindow.17"));
-		setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
+		setIconImage(IconLoader.ICON_LOGO.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// register for given events
 		ObservationManager.register(this);
