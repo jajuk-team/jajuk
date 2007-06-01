@@ -314,8 +314,6 @@ public static final String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MP
 
 	public static final String DEVICE_TYPE_FILE_CD = "Device_type.file_cd";
 
-	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
-
 	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 
 	// Types properties

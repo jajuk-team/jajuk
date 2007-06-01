@@ -503,11 +503,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, ITechn
 				if (bNew)
 					jftfAutoRefresh.setValue(3d);
 				break;
-			case 5: // P2P
-				jcbAutoMount.setSelected(false);
-				if (bNew)
-					jftfAutoRefresh.setValue(0d);
-				break;
 			}
 		}
 	}

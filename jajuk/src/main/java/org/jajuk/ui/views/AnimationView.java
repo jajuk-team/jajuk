@@ -99,13 +99,9 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 		add(btl1);
 
 		ObservationManager.register(this);
-		// check if a track has already been lauched
+		// check if a track has already been launched
 		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED))); // force
-		// immediate
-		// table
-		// refresh
-
+				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED))); 
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {

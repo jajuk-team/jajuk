@@ -254,14 +254,6 @@ public class DeviceView extends ViewAdapter implements IView,
 						icon = IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED;
 					}
 					break;
-				case 5:
-					sTooltip = Messages.getString("Device_type.remote"); 
-					if (device.isMounted()) {
-						icon = IconLoader.ICON_DEVICE_REMOTE_MOUNTED;
-					} else {
-						icon = IconLoader.ICON_DEVICE_REMOTE_UNMOUNTED;
-					}
-					break;
 				}
 				DeviceItem di = new DeviceItem(icon, device.getName(),
 						device);

@@ -269,7 +269,6 @@ public class Main implements ITechnicalStrings {
 			// configurationManager.load (for local)
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
-
 					// Set window look and feel and watermarks
 					Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 
@@ -324,9 +323,6 @@ public class Main implements ITechnicalStrings {
 			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
 			DeviceManager.getInstance()
 					.registerDeviceType(Messages.getString("Device_type.player"));
-			DeviceManager.getInstance()
-					.registerDeviceType(Messages.getString("Device_type.remote"));
-
 			// registers supported audio supports and default properties
 			registerTypes();
 
@@ -432,7 +428,7 @@ public class Main implements ITechnicalStrings {
 			// Launch startup track if any
 			launchInitialTrack();
 
-			// Start up action manager. TO be done before lauching ui and
+			// Start up action manager. TO be done before launching ui and
 			// tray
 			ActionManager.getInstance();
 

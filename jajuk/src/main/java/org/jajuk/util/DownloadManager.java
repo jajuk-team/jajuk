@@ -135,7 +135,7 @@ public class DownloadManager implements ITechnicalStrings {
 				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
 				+ "&imgsz=" + size;
 		Log.debug("Search URL: {{" + sSearchUrl + "}}");  
-		byte[] bRes = downloadCoverList(new URL(sSearchUrl));
+		byte[] bRes = downloadUrl(new URL(sSearchUrl));
 		if (bRes == null || bRes.length == 0) {
 			return alOut;
 		}
@@ -256,7 +256,7 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static byte[] downloadCoverList(URL url) throws Exception {
+	public static byte[] downloadUrl(URL url) throws Exception {
 		byte[] bOut = null;
 		GetMethod get = null;
 		HttpClient client = null;
