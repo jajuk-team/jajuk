@@ -10,9 +10,14 @@
 <Dockable>
 <Key dockName="org.jajuk.ui.views.CoverView/2"/>
 </Dockable>
+<Split orientation="0" location="0.5">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.LogicalPlaylistEditorView/1"/>
 </Dockable>
+<Dockable>
+<Key dockName="org.jajuk.ui.views.LyricsView/0"/>
+</Dockable>
+</Split>
 </Split>
 </Split>
 </DockingPanel>
