@@ -277,9 +277,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 					//hide and show again is a workaround for a toFront() issue under Metacity
 					//see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
 					setVisible(false);
-					setState(Frame.NORMAL);
 					toFront();
 					setVisible(true);
+					setState(Frame.NORMAL);
 				}
 				// hide
 				else {
