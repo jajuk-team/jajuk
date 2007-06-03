@@ -48,7 +48,7 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
 		String sText = tf.getText().toLowerCase();
 		// Check pattern contains at least one /
 		if (sText.indexOf('/') == -1) {
-			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), 
+			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
 					Messages.getString("Error"), 
 					JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -68,9 +68,7 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
 								.getString("Error.146"), 
 								Messages.getString("Error"), 
 								JOptionPane.ERROR_MESSAGE);
-						//Reset to last correct value
 						tf.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
-						tf.commitEdit();
 						return false;
 					}
 				}

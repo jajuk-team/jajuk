@@ -124,8 +124,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 	public static final int TYPE_PLAYER = 4;
 
-	public static final int TYPE_REMOTE = 5;
-
 	/**
 	 * Device constructor
 	 * 
@@ -156,7 +154,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				+ sUrl + " Mount point=" + sMountPoint + "]";
 	}
 
-		/**
+	/**
 	 * Refresh : scan asynchronously the device to find tracks
 	 * 
 	 * @param bAsynchronous :
@@ -307,11 +305,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 			// Create a directory for device itself and scan files to allow
 			// files at the root of the device
-			if (getType() != Device.TYPE_REMOTE){
-				Directory d = DirectoryManager.getInstance().registerDirectory(this);
-				dParent = d;
-				d.scan(bDeepScan);
-			}
+			Directory d = DirectoryManager.getInstance().registerDirectory(this);
+			dParent = d;
+			d.scan(bDeepScan);
 			// Start actual scan
 			while (iDeep >= 0 && !Main.isExiting()) {
 				// only directories
@@ -702,7 +698,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 					// means device is not mounted, try to mount it
 
 					// run the actual mount command
-					Process process = Runtime.getRuntime().exec("mount " + getMountPoint());
+					Process process = Runtime.getRuntime().exec(
+							new String[] { "mount", getMountPoint() });
 					// just make a try, do not report error
 					// if it fails (linux 2.6 doesn't
 					// require anymore to mount devices)
@@ -765,10 +762,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				// we try to unmount the device if under Unix. Note that this is
 				// useless most of the time with Linux 2.6+, so it's just a try
 				// and we don't check exit code anymore
-				Process process = Runtime.getRuntime().exec("umount " + getMountPoint());
+				Process process = Runtime.getRuntime().exec(
+						new String[] { "umount", getMountPoint() });
 				iExit = process.waitFor();
 				if (bEjection) { // jection if required
-					process = Runtime.getRuntime().exec("eject " + getMountPoint());
+					process = Runtime.getRuntime().exec(new String[] { "eject", getMountPoint() });
 					process.waitFor();
 				}
 			} catch (Exception e) {
@@ -1026,9 +1024,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 						break;
 					case TYPE_PLAYER: // player
 						sValue = "3d"; //$NON-NLS-1$
-						break;
-					case TYPE_REMOTE: // P2P
-						sValue = "0d"; //$NON-NLS-1$
 						break;
 					}
 				}

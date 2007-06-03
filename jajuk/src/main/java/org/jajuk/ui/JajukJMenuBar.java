@@ -46,6 +46,7 @@ import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -215,7 +216,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
 		help.add(jmiHelp);
 		help.add(jmiTipOfTheDay);
-		help.add(jmiQualityAgent);
+		//this works only for Linux and Windows
+		if (Util.isUnderLinux() || Util.isUnderWindows()){
+			help.add(jmiQualityAgent);
+		}
 		help.add(jmiTraces);
 		help.add(jmiAbout);
 

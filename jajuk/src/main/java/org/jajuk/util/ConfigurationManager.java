@@ -203,10 +203,22 @@ public class ConfigurationManager implements ITechnicalStrings {
 				+ XML_TRACK_RATE);
 		properties.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
 				+ XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
-		// Window position: X,Y,X_size,Y_size
-		properties.put(CONF_WINDOW_POSITION, "100,100,"
-				+ (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - 250) + ","
-				+ (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 250));
+		// Default Window position: X,Y,X_size,Y_size
+		int width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		// Limit initial screen size (reported anoying by some users on dual
+		// heads)
+		if (width > 1400) {
+			width = 1200;
+		} else {
+			width = width - 250;
+		}
+		int height = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+		if (height > 1200) {
+			height = 1000;
+		} else {
+			height = height - 250;
+		}
+		properties.put(CONF_WINDOW_POSITION, "100,100," + width + "," + height);
 		properties.put(CONF_LOGICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
@@ -235,6 +247,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_CATALOG_PAGE_SIZE, "100");
 		properties.put(CONF_CATALOG_SHOW_POPUPS, TRUE);
 		properties.put(CONF_FONTS_SIZE, "12");
+		properties.put(CONF_MPLAYER_PATH_FORCED, "");
 	}
 
 	/**

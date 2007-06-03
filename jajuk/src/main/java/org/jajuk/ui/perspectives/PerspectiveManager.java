@@ -35,7 +35,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.browser.BrowserEngineManager;
 import org.jdesktop.jdic.browser.WebBrowser;
-import org.mozilla.xpcom.IAppFileLocProvider;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -52,7 +51,7 @@ import com.vlsolutions.swing.toolbars.ToolBarPanel;
 /**
  * Perspectives Manager
  */
-public class PerspectiveManager implements ITechnicalStrings,IAppFileLocProvider {
+public class PerspectiveManager implements ITechnicalStrings {
 	/** Current perspective */
 	private static IPerspective currentPerspective = null;
 

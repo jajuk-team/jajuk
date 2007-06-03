@@ -232,10 +232,14 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		this.bEOF = false;
 		this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
 		// Start
-		String sCommand = "mplayer"; 
+		String sCommand = "mplayer"; //$NON-NLS-1$
 		if (Util.isUnderWindows()) {
-			sCommand = Util.getMPlayerPath();
+			sCommand = Util.getMPlayerWindowsPath();
 		}
+		else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()){
+			sCommand = Util.getMPlayerOSXPath();
+		}
+		Log.debug("Using command: " +sCommand);
 		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
 		String[] cmd = null;
 		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {

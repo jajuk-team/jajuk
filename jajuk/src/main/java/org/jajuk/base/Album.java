@@ -228,7 +228,7 @@ public class Album extends LogicalItem implements Comparable {
 		String sOut = "<html><TABLE><TR><TD VALIGN='TOP'> <b>" + getName2() + "</b><br><br>";
 		// display cover if available
 		if (cover.canRead()) {
-			sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
+			sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
 		}
 		// Display author as global value only if it is a single author album
 		// We use file://<item type>?<item id> as HTML hyperlink format

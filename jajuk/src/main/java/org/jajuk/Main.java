@@ -621,9 +621,9 @@ public class Main implements ITechnicalStrings {
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 			if (Util.isUnderWindows()) {
 				// try to find mplayer executable in know locations first
-				if (Util.getMPlayerPath() == null ||
+				if (Util.getMPlayerWindowsPath() == null ||
 				// if file exists, test size
-						new File(Util.getMPlayerPath()).length() != MPLAYER_EXE_SIZE) {
+						new File(Util.getMPlayerWindowsPath()).length() != MPLAYER_EXE_SIZE) {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
@@ -644,28 +644,35 @@ public class Main implements ITechnicalStrings {
 			// Under non-windows OS, we assume mplayer has been installed
 			// using external standard distributions
 			else {
-				// try to find a correct mplayer from the path
-				// Under OSX, it will work only if jajuk is launched from
-				// command line
-				mplayerStatus = Util.getMplayerStatus("");
+				// If a forced mplayer path is defined, test it
+				String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+				if (forced != null && !"".equals(forced)) {
+					//Test forced path
+					mplayerStatus = Util.getMplayerStatus(forced);
+				}
+				else{
+					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+				}
 				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
-					// OK, try to find MPlayer in standards OSX directories
-					if (org.jdesktop.swingx.util.OS.isMacOSX()) {
-						// if X86 OSX
-						String sArch = System.getProperty("os.arch");
-						if (sArch != null && sArch.equalsIgnoreCase("x86")) {
-							mplayerStatus = Util
-									.getMplayerStatus(FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
-						} else {
-							// POWER OSX
+					// try to find a correct mplayer from the path
+					// Under OSX, it will work only if jajuk is launched from
+					// command line
+					mplayerStatus = Util.getMplayerStatus("");
+					if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+						// OK, try to find MPlayer in standards OSX directories
+						if (Util.isUnderOSXpower()) {
 							mplayerStatus = Util
 									.getMplayerStatus(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
+						} else {
+							mplayerStatus = Util
+									.getMplayerStatus(FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
 						}
 					}
 				}
 			}
 			// Choose player according to mplayer presence or not
-			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { 
+			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+				Log.debug("Mplayer status=" + mplayerStatus);
 				// No mplayer, show mplayer warnings
 				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { 
 					// Test if user didn't already select "don't show again"

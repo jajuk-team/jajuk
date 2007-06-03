@@ -1602,7 +1602,7 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * @return MPLayer exe path
 	 */
-	public static String getMPlayerPath() {
+	public static String getMPlayerWindowsPath() {
 		// Use cache
 		if (sMplayerPath != null) {
 			return sMplayerPath;
@@ -1633,6 +1633,29 @@ public class Util implements ITechnicalStrings {
 		}
 		return sMplayerPath; // can be null if none suitable file found
 	}
+	
+	/**
+	 * @return MPLayer binary MAC full path
+	 */
+	public static String getMPlayerOSXPath() {
+		String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+		if (forced != null && !"".equals(forced)) {
+			return forced + "/mplayer";
+		}
+		else if (Util.isUnderOSXintel() 
+				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer").exists()){
+			return FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer";
+		}
+		else if (Util.isUnderOSXpower() 
+				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer").exists()){
+			return FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer";
+		}
+		else{
+			//Simply return mplayer from PATH, works if app is launch from CLI
+			return "mplayer";
+		}
+	}
+
 
 	/**
 	 * Apply a pattern
@@ -1885,11 +1908,15 @@ public class Util implements ITechnicalStrings {
 		Process proc = null;
 		MPlayerStatus mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 		try {
-			proc = Runtime.getRuntime().exec(mplayerPATH + "mplayer"); //$NON-NLS-1$
-			proc.waitFor();
+			String fullPath = null;
+			if ("".equals(mplayerPATH)) {
+				fullPath = "mplayer";
+			} else {
+				fullPath = mplayerPATH + "/mplayer";
+			}
+			Log.debug("Testing path: " + fullPath);
 			// check MPlayer release : 1.0pre8 min
-			proc = Runtime.getRuntime().exec(
-					new String[] { mplayerPATH + "mplayer", "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			String line = null;
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
@@ -1904,5 +1931,20 @@ public class Util implements ITechnicalStrings {
 		}
 		return mplayerStatus;
 	}
+	
+	/**
+	 * @return whether we are under OS X Intel
+	 */
+	public static boolean isUnderOSXintel() {
+		String sArch = System.getProperty("os.arch");
+		return org.jdesktop.swingx.util.OS.isMacOSX() && (sArch != null && sArch.matches(".*86"));
+	}
 
+	/**
+	 * @return whether we are under OS X Power
+	 */
+	public static boolean isUnderOSXpower() {
+		String sArch = System.getProperty("os.arch");
+		return org.jdesktop.swingx.util.OS.isMacOSX() && (sArch != null && !sArch.matches(".*86"));
+	}
 }

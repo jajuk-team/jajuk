@@ -203,7 +203,7 @@ public class DeviceManager extends ItemManager {
 				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) {
 					try {
 						// run the actual mount command
-						Process process = Runtime.getRuntime().exec("mount " + sMountPoint);
+						Process process = Runtime.getRuntime().exec(new String[]{"mount",sMountPoint});
 						process.waitFor();
 					} catch (Exception e) {
 					}
