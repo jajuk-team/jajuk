@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Ant script for packagers only-->
 
-<project default='all' name='jajuk' basedir='..'>
+<project default='all' name='jajuk' basedir='../..'>
   <!--VARIABLES-->
   
   <!--Distribution release-->
-  <property name='version' value='1.3.7'/>
+  <property name='version' value='1.4dev'/>
   
   <!--Previous release used for JNLP incremental upgrade-->
-  <property name='previous_version' value='1.3.6'/>
+  <property name='previous_version' value='1.3.8rc6'/>
  
  <!--Test flag: values: test or notest -->
-  <property name='test' value='notest'/> 	
+  <property name='test' value='test'/> 	
   
   <!--Timestamp used by Web Start -->
-  <property name='jajuktimestamp' value='2007-03-04 00:00:01'/>
+  <property name='jajuktimestamp' value='2007-06-03 00:00:01'/>
   	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
@@ -27,7 +27,7 @@
   <property name='libdir' value='lib'/>
   <property name='distfiles' value='dist-files'/>
   <property name='nativedir' value='native'/>
-  <property name='srcdir' value='src'/>
+  <property name='javadir' value='src/main/java'/>
   <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
   <property name='jarname' value='jajuk.jar'/>
@@ -40,6 +40,7 @@
  	directory to use jar files in next war (each war contains current and previous jars for incremental upgrade) -->
   <property name='jnlpdir' value='/data/java/jnlp-dist/${version}'/>
   <property name='previousjnlpdir' value='/data/java/jnlp-dist/${previous_version}'/>
+  <property name='srcdir' value='${basedir}/src'/>
   	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
@@ -70,11 +71,11 @@
   	<mkdir dir='${distdir}/bin'/>
   	<mkdir dir='${distdir}/${classdir}'/>
     <copy todir='${distdir}/src' >
-     <fileset dir='${srcdir}'/>
+     <fileset dir='${javadir}'/>
    </copy>
   	<copy todir='${distdir}' >
-     <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
-      <fileset dir='${basedir}/dist-files/doc'>
+     <fileset file='${srcdir}/doc/LICENSE.txt'/>
+      <fileset dir='${srcdir}/doc'>
       	<include name='README*.html'/>
       </fileset>
     </copy>
@@ -83,37 +84,37 @@
      <fileset file='${basedir}/*.dll'/>
     </copy>
   	<copy todir='${distdir}/src' >
-     <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
+     <fileset file='${srcdir}/packaging/MANIFEST.MF'/>
   	</copy>
   	<copy todir='${distdir}' >
-     <fileset file='${basedir}/scripts/build.xml'/>
+     <fileset file='${srcdir}/scripts/build.xml'/>
   	</copy>
   	<mkdir dir='${distdir}/dist-files'/>
-    <copy todir='${distdir}/dist-files/org/jajuk/icons' >
-     <fileset file='${basedir}/dist-files/org/jajuk/icons/**'/>
+    <copy todir='${distdir}/dist-files/icons' >
+     <fileset file='${srcdir}/main/resources/icons/**'/>
      </copy>
-    <copy todir='${distdir}/dist-files/org/jajuk/images' >
-     <fileset file='${basedir}/dist-files/org/jajuk/images/**'/>
+    <copy todir='${distdir}/dist-files/images' >
+     <fileset file='${srcdir}/main/resources/images/**'/>
      </copy>
-    <copy todir='${distdir}/dist-files/org/jajuk/perspectives' >
-     <fileset file='${basedir}/dist-files/org/jajuk/perspectives/**'/>
-     </copy>
-     <copy todir='${distdir}' >
-     	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
-     	<fileset file='${basedir}/dist-files/org/jajuk/icons/16x16/jajuk-uninstall.png'/>
+    <copy todir='${distdir}/dist-files/perspectives' >
+     <fileset file='${srcdir}/main/resources/perspectives/**'/>
      </copy>
      <copy todir='${distdir}' >
-     	<fileset file='${basedir}/scripts/jajuk.sh'/>
-     	<fileset file='${basedir}/scripts/jajuk.bat'/>
+     	<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
+     	<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png'/>
+     </copy>
+     <copy todir='${distdir}' >
+     	<fileset file='${srcdir}/scripts/jajuk.sh'/>
+     	<fileset file='${srcdir}/scripts/jajuk.bat'/>
   	</copy>
   	<!--Windows specific -->
      <copy todir='${windowsdir}' >
-      	<fileset file='${basedir}/dist-files/packaging/native_launcher/*'/>
+      	<fileset file='${srcdir}/packaging/native_launcher/*'/>
      </copy>
   	<!--Izpack specific -->
      <copy todir='${izpackdir}' >
-     	<fileset file='${distfiles}/packaging/IzPack/jajuk.izpack'/>
-     	<fileset file='${distfiles}/packaging/IzPack/shortcutSpec.xml'/>
+     	<fileset file='${srcdir}/packaging/IzPack/jajuk.izpack'/>
+     	<fileset file='${srcdir}/packaging/IzPack/shortcutSpec.xml'/>
      </copy>
 	<!--RPM specific--> 
     <!-- Create structure-->
@@ -137,10 +138,10 @@
     <!-- Copy files -->
     	<!--RPM-->
     <copy todir='${rpmbuilddir}/SPECS' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/jajuk.spec'/>
+    	<fileset file='${srcdir}/packaging/RPMS/jajuk.spec'/>
     </copy>
     <copy todir='${rpmdistdir}/usr/bin' >
-    	<fileset file='${basedir}/scripts/jajuk'/>
+    	<fileset file='${srcdir}/scripts/jajuk'/>
     </copy>
     <!--DO SOMETHING BETTER HERE -->
     <copy todir='${rpmdistdir}/usr/lib/jajuk/lib' >
@@ -154,20 +155,20 @@
    </copy>
    <!--/DO SOMETHING BETTER HERE -->
     <copy todir='${rpmdistdir}/usr/share/applications' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/Jajuk.desktop'/>
+    	<fileset file='${srcdir}/packaging/RPMS/Jajuk.desktop'/>
     </copy>
     <copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
-    	<fileset file='${basedir}/dist-files/doc/README*.html'/>
+    	<fileset file='${srcdir}/doc/README*.html'/>
     </copy>
     <copy todir='${rpmdistdir}/usr/share/pixmaps' >
-    	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
+    	<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
     </copy>
   </target>
   
  <target name='compile' description='o Compile the code' depends='mkdist,replaces'>
     <javac destdir='${distdir}/${classdir}' target='1.5' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
       <src>
-        <pathelement path='${distdir}/${srcdir}'>
+        <pathelement path='${distdir}/src'>
         </pathelement>
       </src>
       <classpath>
@@ -177,34 +178,34 @@
         </fileset>
       </classpath>
     </javac>
-    <mkdir dir='${distdir}/${classdir}/org/jajuk/icons'/>
-    <mkdir dir='${distdir}/${classdir}/org/jajuk/images'/>
-  	<mkdir dir='${distdir}/${classdir}/org/jajuk/perspectives'/>
-  	<mkdir dir='${distdir}/${classdir}/org/jajuk/docs'/>
-  	<!-- Copy files to embedde into the jar -->
-  	<copy todir='${distdir}/${classdir}/org/jajuk/icons' >
-     <fileset dir='${basedir}/dist-files/org/jajuk/icons'/>
+    <mkdir dir='${distdir}/${classdir}/icons'/>
+    <mkdir dir='${distdir}/${classdir}/images'/>
+  	<mkdir dir='${distdir}/${classdir}/perspectives'/>
+  	<mkdir dir='${distdir}/${classdir}/docs'/>
+  	<!-- Copy files to be embeded into the jar -->
+  	<copy todir='${distdir}/${classdir}/icons' >
+     <fileset dir='${srcdir}/main/resources/icons'/>
   	</copy>
-  	<copy todir='${distdir}/${classdir}/org/jajuk/images/included'>
-     <fileset file='${basedir}/dist-files/org/jajuk/images/included/*'/>
+  	<copy todir='${distdir}/${classdir}/images/included'>
+     <fileset file='${srcdir}/main/resources/images/included/*'/>
    </copy>
-  	<copy todir='${distdir}/${classdir}/org/jajuk/docs' >
-     <fileset file='${basedir}/dist-files/doc/about.html'/>
+  	<copy todir='${distdir}/${classdir}/docs' >
+     <fileset file='${srcdir}/doc/about.html'/>
   	</copy>
   	<copy todir='${distdir}/${classdir}/org/jajuk/i18n' >
-     <fileset file='${basedir}/src/org/jajuk/i18n/*.properties'/>
+     <fileset file='${javadir}/org/jajuk/i18n/*.properties'/>
   	</copy>
   	<copy todir='${distdir}/${classdir}/org/jajuk/util/log' >
-     <fileset file='${basedir}/src/org/jajuk/util/log/jajuk-log4j-conf.xml'/>
+     <fileset file='${javadir}/org/jajuk/util/log/jajuk-log4j-conf.xml'/>
   	</copy>
-  	<copy todir='${distdir}/${classdir}/org/jajuk/perspectives' >
-     <fileset file='${basedir}/dist-files/org/jajuk/perspectives/*.xml'/>
+  	<copy todir='${distdir}/${classdir}/perspectives' >
+     <fileset file='${srcdir}/main/resources//perspectives/*.xml'/>
   	</copy>
   </target>
  
   <target name='jar' description='o Create the jar' depends='compile'>
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' 
-    	manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'>
+    	manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
 	    <fileset dir='${distdir}/${classdir}'/>
 	</jar>
     <!--Sign jajuk jars (others are signed manually once) -->
@@ -222,16 +223,16 @@
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
  	 <!--Copy-->
   	<copy todir='${helpdir}' >
-     <fileset dir='${basedir}/dist-files/doc/jajuk-hs'/>
+     <fileset dir='${srcdir}/doc/jajuk-hs'/>
     </copy>
     <copy todir='${helpdir}/default' >
-     <fileset dir='${basedir}/dist-files/doc'>
+     <fileset dir='${srcdir}/doc'>
      	<include name='images/**'/>
      	<include name='icons/**'/>
      </fileset>
     </copy>
     <copy todir='${helpdir}/fr' >
-     <fileset dir='${basedir}/dist-files/doc'>
+     <fileset dir='${srcdir}/doc'>
      	<include name='images/**'/>
      	<include name='icons/**'/>
      </fileset>
@@ -274,12 +275,12 @@
       <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
   </tstamp>    
   <echo message='Build time: ${build.time}'/>
-  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${build.time}'>
+  <replace dir='${distdir}/src/org/jajuk/util' value='${build.time}'>
   	<include name='ITechnicalStrings.java'/>
   	<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
  </replace>
  <!-- Set release in code--> 
-  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${version}'>
+  <replace dir='${distdir}/src/org/jajuk/util' value='${version}'>
   	<include name='ITechnicalStrings.java'/>
   	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  </replace>
@@ -349,14 +350,10 @@
    		
     	<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
     	<copy todir='/home/bflorat' overwrite='yes'>
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/.rpmmacros'/>
+    		<fileset file='${srcdir}/packaging/RPMS/.rpmmacros'/>
     	</copy>
  		<rpm specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
-		<!-- Reset .rpmmacros -->
- 		<copy todir='/home/bflorat'  overwrite='yes'>
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/.rpmmacros'/>
-    	</copy>
-   </target>
+	  </target>
       
    <!--IzPack package creation -->
   <taskdef name='izpack' classpath='/prog/IzPack/lib/compiler.jar'
@@ -365,7 +362,7 @@
         <echo message='Makes the installer using IzPack'/>
                 <izpack input='${izpackdir}/jajuk.izpack'
         output='${izpackdir}/${distjarname}${version}.jar'
-        basedir='${basedir}'
+        basedir='${srcdir}'
         izPackDir='/prog/IzPack'/>
       </target>
       
@@ -385,24 +382,24 @@
     	<fileset file='${distdir}/bin/*.jar'/>
     </copy>
     <copy todir='${jnlpdir}/app'>
-    	<fileset file='${basedir}/dist-files/packaging/jnlp/*.jnlp'/>
+    	<fileset file='${srcdir}/packaging/jnlp/*.jnlp'/>
     </copy>
     <copy todir='${jnlpdir}/app'>
-    	<fileset file='${basedir}/dist-files/packaging/jnlp/*.gif'/>
+    	<fileset file='${srcdir}/packaging/jnlp/*.gif'/>
     </copy>
     <copy todir='${jnlpdir}/app'>
-    	<fileset file='${basedir}/dist-files/org/jajuk/images/included/jajuk-splashscreen.jpg'/>
+    	<fileset file='${srcdir}/main/resources/images/included/jajuk-splashscreen.jpg'/>
     </copy>
     <!--Copy native jars -->
     <copy todir='${jnlpdir}/app/linux'>
-    	<fileset file='${basedir}/dist-files/packaging/jnlp/linux/*.jar'/>
+    	<fileset file='${srcdir}/packaging/jnlp/linux/*.jar'/>
     </copy>
     <copy todir='${jnlpdir}/app/windows'>
-    	<fileset file='${basedir}/dist-files/packaging/jnlp/windows/*.jar'/>
+    	<fileset file='${srcdir}/packaging/jnlp/windows/*.jar'/>
 	</copy>
     <replace dir='${jnlpdir}/app' value='-${test}'>
   		<include name='launch.jnlp'/>
-  		<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+  		<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
  	</replace>
  	<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
     <move todir="${jnlpdir}">
@@ -438,9 +435,9 @@
  	 	
  	<!-- Create the war -->
  	<war destfile='${rootdir}/jajuk-${test}.war' 
- 		webxml='${basedir}/dist-files/packaging/jnlp/web.xml'>
+ 		webxml='${srcdir}/packaging/jnlp/web.xml'>
 	  <fileset dir='${jnlpdir}'/>
-  	  <lib file='${basedir}/dist-files/packaging/jnlp/jnlp-servlet.jar'/>
+  	  <lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar'/>
   	</war>
   </target>
       

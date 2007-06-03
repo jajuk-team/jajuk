@@ -28,23 +28,24 @@
         <langpack iso3='hun'/>
         <langpack iso3='pol'/>
         <langpack iso3='por'/>
+        <langpack iso3='ell'/>
     </locale>
     <native name='ShellLink.dll' type='izpack'/>
     <resources>
-         <res id='HTMLInfoPanel.info' src='./dist-files/doc/README.html'/>
-         <res id='LicencePanel.licence' src='./dist-files/legals/LICENSE.txt'/>
+         <res id='HTMLInfoPanel.info' src='doc/README.html'/>
+         <res id='LicencePanel.licence' src='doc/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
-        <res id='installer.langsel.img' src='./dist-files/org/jajuk/images/jajuk-installer.jpg' />
-    	<res id='Installer.image.0' src='./dist-files/org/jajuk/images/border2.png' />
-        <res id='Installer.image.1' src='./dist-files/org/jajuk/images/border3.png' />
-        <res id='Installer.image.2' src='./dist-files/org/jajuk/images/border4.png' />
-        <res id='Installer.image.3' src='./dist-files/org/jajuk/images/border5.png' />
-        <res id='Installer.image.4' src='./dist-files/org/jajuk/images/border6.png' />
-        <res id='Installer.image.5' src='./dist-files/org/jajuk/images/border7.png' />
-        <res id='Installer.image.6' src='./dist-files/org/jajuk/images/border8.png' />
-       <res id='ImgPacksPanel.img.0' src='./dist-files/org/jajuk/images/core.png'  />
-       <res id='ImgPacksPanel.img.1' src='./dist-files/org/jajuk/images/src.png'  />
-       <res id='TargetPanel.dir.unix' src='./dist-files/packaging/IzPack/installDirectory.unix.txt' parse='yes' type='plain' />
+        <res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
+    	<res id='Installer.image.0' src='main/resources/images/border2.png' />
+        <res id='Installer.image.1' src='main/resources/images/border3.png' />
+        <res id='Installer.image.2' src='main/resources/images/border4.png' />
+        <res id='Installer.image.3' src='main/resources/images/border5.png' />
+        <res id='Installer.image.4' src='main/resources/images/border6.png' />
+        <res id='Installer.image.5' src='main/resources/images/border7.png' />
+        <res id='Installer.image.6' src='main/resources/images/border8.png' />
+       <res id='ImgPacksPanel.img.0' src='main/resources/images/core.png'  />
+       <res id='ImgPacksPanel.img.1' src='main/resources/images/src.png'  />
+       <res id='TargetPanel.dir.unix' src='packaging/IzPack/installDirectory.unix.txt' parse='yes' type='plain' />
     </resources>
     <panels>
 	    <panel classname='HTMLInfoPanel'/>
@@ -74,16 +75,16 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
             <!-- Windows specific -->
-            <file override='true' targetdir='$INSTALL_PATH' src='./dist-files/packaging/mplayer.exe'>
+            <file override='true' targetdir='$INSTALL_PATH' src='packaging/mplayer.exe'>
             	<os family='windows'/>
            	</file>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
            	</file>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-icon.ico'>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico'>
             	<os family='windows'/>
            	</file>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-uninstall.ico'>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.ico'>
             	<os family='windows'/>
            	</file>
             <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/JIntellitype.dll'>
@@ -93,7 +94,7 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.sh'>
             	<os family='unix'/>
            	</file>
-           	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/org/jajuk/images/jajuk-uninstall.png'>
+           	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
             	<os family='windows'/>
            	</file>
            	<executable targetfile='$INSTALL_PATH/lib/linux/x86/mozembed-linux-gtk1.2' os='unix' stage='never'/>

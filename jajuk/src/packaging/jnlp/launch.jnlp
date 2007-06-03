@@ -30,7 +30,6 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         	<extension name='CommonsHttpClient' href='commons_httpclient.jnlp'/>
         	<extension name='CommonsLogging' href='commons_logging.jnlp'/>
         	<extension name='EntaggedAudioformats' href='entagged_audioformats.jnlp'/>
-        	<extension name='InfoNodeLAF' href='infonode_laf.jnlp'/>
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>
         	<extension name='JCommon' href='jcommon.jnlp'/>
         	<extension name='JavaHelp' href='java_help.jnlp'/>
@@ -38,15 +37,10 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         	<extension name='Jogg' href='jogg.jnlp'/>
         	<extension name='Jorbis' href='jorbis.jnlp'/>
         	<extension name='JSpeex' href='jspeex.jnlp'/>
-        	<extension name='Kunststoff' href='kunststoff.jnlp'/>
-        	<extension name='Liquid' href='liquid.jnlp'/>
         	<extension name='Log4j' href='log4j.jnlp'/>
-        	<extension name='Looks' href='looks.jnlp'/>
         	<extension name='Mp3spi' href='mp3spi.jnlp'/>
-        	<extension name='Squareness' href='squareness.jnlp'/>
         	<extension name='Swingx' href='swingx.jnlp'/>
         	<extension name='TableLayout' href='table_layout.jnlp'/>
-        	<extension name='Tiny' href='tiny.jnlp'/>
         	<extension name='Tritonus' href='tritonous.jnlp'/>
         	<extension name='Vorbisspi' href='vorbisspi.jnlp'/>
         	<extension name='EntaggedFreedb' href='entagged_freedb.jnlp'/>

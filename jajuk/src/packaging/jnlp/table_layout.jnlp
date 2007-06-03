@@ -6,7 +6,7 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         <vendor>Daniel Barbalace</vendor>
     </information>
     <resources>
-        <jar href="tablelayout-20050920.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="tablelayout-20070421.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

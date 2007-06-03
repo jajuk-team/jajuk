@@ -9,13 +9,13 @@ o- Set right version in README files
 o- Check new incoming updates (i18n)
 o- (opt)String externalization
 o- Search for debug System.out
-o- Search for wrong Messages class
 o- Set right version in the FROM tag in langpacks
 o- Commit all changes in jajuk project
 o- Generate packages
 o- Test it a minima under several OS
 o- Tag as version
 o- Create a maintenance branch for new major releases (x.y level)
+o Backport fixes to current branch
 
 *SF*
 o- Close bugs, known issues and RFE at SF
@@ -48,7 +48,6 @@ o- Refresh workspace
 o- Set right version (no more rc), test to '-notest', previous_release and change jajuktimestamp in build-dist script
 o- Check new incoming updates (i18n)
 o- Search for debug System.out
-o- Search for wrong Messages class
 o- Generate packages
 o- Test it a minima under several OS
 o- Commit all changes in jajuk project
