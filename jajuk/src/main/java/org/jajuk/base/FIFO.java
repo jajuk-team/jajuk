@@ -1133,8 +1133,8 @@ public class FIFO implements ITechnicalStrings {
 		int index = 0;
 		for (StackItem st : alFIFO) {
 			if (index > 0) {
-				// do not store current trask (otherwise, it
-				// will be duplicate at stratup)
+				// do not store current track (otherwise, it
+				// will be duplicate at startup)
 				writer.println(st.getFile().getId());
 			}
 			index++;
