@@ -524,10 +524,10 @@ public interface ITechnicalStrings {
 	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
 
 	/** Default substance theme * */
-	public static final String LNF_DEFAULT_THEME = "Ebony";
+	public static final String LNF_DEFAULT_THEME = "Aqua";
 
 	/** Default substance watermark * */
-	public static final String LNF_DEFAULT_WATERMARK = "Stripes";
+	public static final String LNF_DEFAULT_WATERMARK = "Magnetic Field";
 
 	/** Image watermark*/
 	public static final String LNF_WATERMARK_IMAGE = "Image";
