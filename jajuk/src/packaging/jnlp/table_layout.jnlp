@@ -1,9 +1,9 @@
 TS: TIMESTAMP_REPLACED_BY_ANT
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="$$codebase" href="tablelayout.jnlp">
+    <jnlp spec="1.0+" codebase="$$codebase" href="table_layout.jnlp">
     <information>
         <title>TableLayout</title>
-        <vendor>Daniel Barbalace</vendor>
+        <vendor>Clearthought</vendor>
     </information>
     <resources>
         <jar href="tablelayout-20070421.jar" version='VERSION_REPLACED_BY_ANT'/>

@@ -32,6 +32,7 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         	<extension name='EntaggedAudioformats' href='entagged_audioformats.jnlp'/>
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>
         	<extension name='JCommon' href='jcommon.jnlp'/>
+        	<extension name='Substance Look And Feel' href='substance.jnlp'/>
         	<extension name='JavaHelp' href='java_help.jnlp'/>
         	<extension name='JLayer' href='jlayer.jnlp'/>
         	<extension name='Jogg' href='jogg.jnlp'/>
