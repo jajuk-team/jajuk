@@ -170,7 +170,7 @@ public class Main implements ITechnicalStrings {
 
 	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
-		MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION
+		MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
 	}
 
 	/**
@@ -637,7 +637,7 @@ public class Main implements ITechnicalStrings {
 							throw new Exception("MPlayer corrupted"); //$NON-NLS-1$
 						}
 					} catch (Exception e) {
-						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
 					}
 				}
 			}
@@ -647,7 +647,7 @@ public class Main implements ITechnicalStrings {
 				// If a forced mplayer path is defined, test it
 				String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
 				if (forced != null && !"".equals(forced)) {
-					//Test forced path
+					// Test forced path
 					mplayerStatus = Util.getMplayerStatus(forced);
 				}
 				else{
@@ -685,6 +685,11 @@ public class Main implements ITechnicalStrings {
 							// wrong mplayer release
 							Messages.showHideableWarningMessage(Messages.getString("Warning.1"), //$NON-NLS-1$
 									CONF_NOT_SHOW_AGAIN_PLAYER);
+						}
+					} else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
+						// wrong mplayer release
+						Messages.showHideableWarningMessage(Messages.getString("Warning.3"), //$NON-NLS-1$
+								CONF_NOT_SHOW_AGAIN_PLAYER);
 						}
 					}
 				}
