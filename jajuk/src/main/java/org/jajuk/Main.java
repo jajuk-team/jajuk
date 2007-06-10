@@ -204,7 +204,7 @@ public class Main implements ITechnicalStrings {
 			// messages
 			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 			UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
-			
+
 			// perform initial checkups and create needed files
 			initialCheckups();
 
@@ -649,8 +649,7 @@ public class Main implements ITechnicalStrings {
 				if (forced != null && !"".equals(forced)) {
 					// Test forced path
 					mplayerStatus = Util.getMplayerStatus(forced);
-				}
-				else{
+				} else {
 					mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
 				}
 				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
@@ -674,7 +673,7 @@ public class Main implements ITechnicalStrings {
 			if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
 				Log.debug("Mplayer status=" + mplayerStatus);
 				// No mplayer, show mplayer warnings
-				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) { 
+				if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
 					// Test if user didn't already select "don't show again"
 					if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
 						if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
@@ -690,7 +689,6 @@ public class Main implements ITechnicalStrings {
 						// wrong mplayer release
 						Messages.showHideableWarningMessage(Messages.getString("Warning.3"), //$NON-NLS-1$
 								CONF_NOT_SHOW_AGAIN_PLAYER);
-						}
 					}
 				}
 				// mp3
@@ -808,6 +806,14 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RAM);
 				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_RAM.getUrl().toExternalForm());
+				// mp2
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.mp2"),
+						EXT_MP2, Class.forName(PLAYER_IMPL_MPLAYER),
+						Class.forName(TAG_IMPL_ENTAGGED));
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
+				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
 			}
 		} catch (Exception e1) {
 			Log.error("026", e1);

@@ -319,6 +319,8 @@ public interface ITechnicalStrings {
 	// Types properties
 	public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3";
 
+	public static final String TYPE_PROPERTY_TECH_DESC_MP2 = "mp2";
+	
 	public static final String TYPE_PROPERTY_TECH_DESC_OGG = "ogg";
 
 	public static final String TYPE_PROPERTY_TECH_DESC_AIFF = "aiff";
@@ -383,6 +385,8 @@ public interface ITechnicalStrings {
 
 	// extensions
 	public static final String EXT_MP3 = "mp3";
+
+	public static final String EXT_MP2 = "mp2";
 
 	public static final String EXT_PLAYLIST = "m3u";
 

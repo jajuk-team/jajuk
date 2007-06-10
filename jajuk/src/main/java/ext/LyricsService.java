@@ -19,6 +19,7 @@
 package ext;
 
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.Util;
 
 import java.net.URL;
 
@@ -82,13 +83,11 @@ public class LyricsService {
 	}
 
 	public static String getLyrics(String artist, String song) {
-		String urlString = baseURL.replace(ARTIST_WILDCARD, encodeString(artist)).replace(
-				SONG_WILDCARD, encodeString(song));
+		String urlString = baseURL.replace(ARTIST_WILDCARD, Util.encodeString(artist)).replace(
+				SONG_WILDCARD, Util.encodeString(song));
 		return getLyrics(urlString);
 	}
 
-	private static String encodeString(String s) {
-		return s.replaceAll(" +", "+");
-	}
+	
 
 }

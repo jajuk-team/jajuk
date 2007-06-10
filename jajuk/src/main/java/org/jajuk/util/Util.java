@@ -1947,4 +1947,13 @@ public class Util implements ITechnicalStrings {
 		String sArch = System.getProperty("os.arch");
 		return org.jdesktop.swingx.util.OS.isMacOSX() && (sArch != null && !sArch.matches(".*86"));
 	}
+	
+	/**
+	 * Encode URLS
+	 * @param s
+	 * @return
+	 */
+	public static String encodeString(String s) {
+		return s.replaceAll(" +", "+");
+	}
 }

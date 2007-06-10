@@ -381,6 +381,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_TYPE_MP3 = new UrlImageIcon(Util
 			.getResource("icons/16x16/type_mp3.png"));
 
+	public static final UrlImageIcon ICON_TYPE_MP2 = new UrlImageIcon(Util
+			.getResource("icons/16x16/type_mp2.png"));
+
 	public static final UrlImageIcon ICON_TYPE_OGG = new UrlImageIcon(Util
 			.getResource("icons/16x16/type_ogg.png"));
 

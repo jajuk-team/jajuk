@@ -32,9 +32,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.browser.BrowserEngineManager;
-import org.jdesktop.jdic.browser.WebBrowser;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -86,13 +83,12 @@ public class PerspectiveManager implements ITechnicalStrings {
 		registerDefaultPerspectives();
 		if (Main.isUpgradeDetected()) {
 			// upgrade message
-			Messages.showInfoMessage(Messages.getString("Note.0")); 
+			Messages.showInfoMessage(Messages.getString("Note.0"));
 			// force loading of defaults perspectives
 			for (IPerspective perspective : getPerspectives()) {
 				// Remove current conf file to force using default file from the
 				// jar
-				File loadFile = Util.getConfFileByPath(perspective.getClass().getName()
-						+ ".xml");
+				File loadFile = Util.getConfFileByPath(perspective.getClass().getName() + ".xml");
 				if (loadFile.exists()) {
 					loadFile.delete();
 				}
@@ -104,7 +100,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 				perspective.load();
 			}
 		} catch (Exception e) {
-			throw new JajukException("108", e); 
+			throw new JajukException("108", e);
 		}
 	}
 
@@ -261,39 +257,10 @@ public class PerspectiveManager implements ITechnicalStrings {
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CATALOG.getUrl());
 		registerPerspective(perspective);
 
-        // Information perspective
-        // Load info perspective only for windows 32 bits or x86 linux
-        if (Util.isUnderWindows32bits()) {
-            // No need to test, we are sure to find IE under windows
-            perspective = new InfoPerspective();
-            perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_INFORMATION.getUrl());
-            registerPerspective(perspective);
-            // force using IE under Windows to avoid freezes
-            BrowserEngineManager.instance().setActiveEngine(BrowserEngineManager.IE);
-        } else if (Util.isUnderLinux() && System.getProperty("os.arch").equals("i386")) {
-            try {
-                // Check mozilla executable is available in the PATH (exec() method uses PATH natively). Don't autorize to install this perspective if mozilla is not present as it can causes freezes
-                Process proc = Runtime.getRuntime().exec(new String[] { "mozilla", "--version" });
-                int out = proc.waitFor();
-                // mozilla available ? / 0 return code means mozilla is found and is a binary / 1 return code means mozilla is found but cannot be executed under JNLP because it is a sh script but we don't care it cannot be executed, we just test its presence
-                if (out == 0 || out == 1) {
-                    // Now check browser can actually be loaded by JDIC
-                    WebBrowser browser = new WebBrowser();
-                    if (browser.getBrowserEngine() == null) {
-                        Log.debug("Brower engine: " + browser.getBrowserEngine());
-                        throw new Exception("Cannot execute mozilla");
-                    }
-                    // OK, create the perspective
-                    perspective = new InfoPerspective();
-                    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_INFORMATION.getUrl());
-                    registerPerspective(perspective);
-                } else {
-                    throw new Exception("Cannot execute mozilla");
-                }
-            } catch (Exception e) {
-                Log.debug("No mozilla available, disable InfoPerspective");
-            }
-        }
+		// Information perspective
+		perspective = new InfoPerspective();
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_INFORMATION.getUrl());
+		registerPerspective(perspective);
 
 		// Configuration perspective
 		perspective = new ConfigurationPerspective();
@@ -322,7 +289,6 @@ public class PerspectiveManager implements ITechnicalStrings {
 		perspectives.add(perspective);
 		return perspective;
 	}
-	
 
 	/*
 	 * (non-Javadoc)
@@ -341,4 +307,5 @@ public class PerspectiveManager implements ITechnicalStrings {
 	 */
 	public File[] getFiles(String prop) {
 		return null;
-	}}
+	}
+}
