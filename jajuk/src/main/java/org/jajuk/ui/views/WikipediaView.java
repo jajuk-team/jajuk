@@ -20,6 +20,22 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
@@ -33,20 +49,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import info.clearthought.layout.TableLayout;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * Wikipedia view
@@ -94,6 +96,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
 	public void initUI() {
+		// Disable Cobra traces 
+		Logger.getLogger("").setLevel(Level.SEVERE);
 		// Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());

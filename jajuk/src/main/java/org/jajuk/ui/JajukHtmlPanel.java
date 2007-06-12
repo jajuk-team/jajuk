@@ -20,18 +20,6 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.w3c.dom.Document;
-import org.xamjwg.html.HtmlParserContext;
-import org.xamjwg.html.HtmlRendererContext;
-import org.xamjwg.html.gui.HtmlPanel;
-import org.xamjwg.html.parser.DocumentBuilderImpl;
-import org.xamjwg.html.parser.InputSourceImpl;
-import org.xamjwg.html.test.SimpleHtmlParserContext;
-import org.xamjwg.html.test.SimpleHtmlRendererContext;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +27,22 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xamjwg.html.HtmlParserContext;
+import org.xamjwg.html.HtmlRendererContext;
+import org.xamjwg.html.gui.HtmlPanel;
+import org.xamjwg.html.parser.DocumentBuilderImpl;
+import org.xamjwg.html.parser.InputSourceImpl;
+import org.xamjwg.html.test.SimpleHtmlParserContext;
+import org.xamjwg.html.test.SimpleHtmlRendererContext;
 
 /**
  * Type description
@@ -54,19 +58,28 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		// Remove scripting
 		int index = -1;
 		StringBuffer sb = new StringBuffer(sPage);
-		do{
+		do {
 			index = sb.indexOf("<script");
-			if (index > 0){
-				sb.delete(index,sb.indexOf("</script>")+9);
+			if (index > 0) {
+				sb.delete(index, sb.indexOf("</script>") + 9);
 			}
-		}
-		while (index > 0);
+		} while (index > 0);
 		sPage = sb.toString();
+
+		/*
+		 * Download images (we can't use Cobra itself as it doesn't support
+		 * proxying) index = -1; StringBuffer sb = new StringBuffer(sPage); do{
+		 * index = sb.indexOf("<img.*src="); if (index > 0){
+		 * sb.delete(index,sb.indexOf("</script>")+9); } } while (index > 0);
+		 * sPage = sb.toString();
+		 */
+
+		// Write the page itself
 		BufferedWriter bw = new BufferedWriter(new FileWriter(page));
 		bw.write(sPage);
 		bw.flush();
 		bw.close();
-		
+
 		// A Reader should be created with the correct charset,
 		// which may be obtained from the Content-Type header
 		// of an HTTP response.
@@ -82,7 +95,22 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		// A documentURI should be provided to resolve relative
 		// URIs.
 		Document document = dbi.parse(is);
-		// Now set document in panel. This is what causes the
+		org.w3c.dom.Element root = document.getDocumentElement();
+		NodeList liste = root.getElementsByTagName("img");
+        for(int i=0; i<liste.getLength(); i++){
+        	Element e = (Element)liste.item(i);
+        	//Remove local images
+        	String src = e.getAttribute("src");
+        	if (!src.startsWith("http")){
+        		e.getParentNode().removeChild(e);
+        	}
+        	//Download images
+        	File img = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
+    				+ Util.getOnlyFile(src));
+        	DownloadManager.download(new URL(src), img);
+        	e.setAttribute("src", "file://"+img.getAbsolutePath());
+        }
+    	// Now set document in panel. This is what causes the
 		// document to render.
 		setDocument(document, rcontext);
 	}
