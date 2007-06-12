@@ -317,7 +317,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				ambiences.add(new Ambience(Long.toString(System
 						.currentTimeMillis()), "")); // create a void   
 				// ambience
-				// 
 				Collections.sort(ambiences);
 				// refresh screen
 				refreshScreen();

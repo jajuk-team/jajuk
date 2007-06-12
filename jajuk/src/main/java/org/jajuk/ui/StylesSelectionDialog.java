@@ -37,6 +37,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -74,6 +77,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 		setLocationByPlatform(true);
 		setTitle(Messages.getString("DigitalDJWizard.14")); 
 		setModal(true);
+		setAlwaysOnTop(true);
 		initUI();
 		pack();
 	}
@@ -164,14 +168,17 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 				dispose();
 			}
 		});
-
+		JPanel jp = new JPanel();
 		JScrollPane jsp = new JScrollPane(jlist);
-		double[][] layout = new double[][] { { 10, TableLayout.PREFERRED, 10 },
-				{ 10, 20, 5, TableLayout.PREFERRED, 5, 20, 10 } };
-		setLayout(new TableLayout(layout));
-		add(jpAmbiences, "1,1"); 
-		add(jsp, "1,3"); 
-		add(okc, "1,5"); 
+		jp.setLayout(new BoxLayout(jp,BoxLayout.Y_AXIS));
+		jp.add(Box.createVerticalStrut(10));
+		jp.add(jpAmbiences); 
+		jp.add(Box.createVerticalStrut(10));
+		jp.add(jsp); 
+		jp.add(okc); 
+		jp.add(Box.createVerticalStrut(10));
+		jp.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+		add(jp);
 		getRootPane().setDefaultButton(okc.getOKButton());
 	}
 

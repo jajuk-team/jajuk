@@ -47,7 +47,7 @@ public class OKCancelPanel extends JPanel {
 		// buttons
 		double[][] dSize = {
 				{ TableLayout.TRAILING, TableLayout.FILL, TableLayout.TRAILING,
-						TableLayout.FILL, TableLayout.TRAILING }, { 0.99 } };
+						TableLayout.FILL, TableLayout.TRAILING }, { TableLayout.PREFERRED } };
 		setLayout(new TableLayout(dSize));
 		jbOk = new JajukButton(Messages.getString("OK")); 
 		jbOk.addActionListener(al);
