@@ -110,8 +110,10 @@ public class LyricsView extends ViewAdapter implements Observer {
 		EventSubject subject = event.getSubject();
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
 			File file = FIFO.getInstance().getCurrentFile();
-			Track track = FIFO.getInstance().getCurrentFile().getTrack();
-			setText(LyricsService.getLyrics(track.getAuthor().getName2(), track.getName()));
+			if (file != null){
+				Track track = FIFO.getInstance().getCurrentFile().getTrack();
+				setText(LyricsService.getLyrics(track.getAuthor().getName2(), track.getName()));
+			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
 			setText(Messages.getString("JajukWindow.18"));
 		}

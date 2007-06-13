@@ -311,9 +311,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static void showErrorMessage(final String sCode) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),
-						Messages.getErrorMessage(sCode), Messages
-						.getErrorMessage("102"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Main.getWindow(), Messages.getErrorMessage(sCode),
+						Messages.getErrorMessage("102"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
@@ -594,7 +593,27 @@ class ConfirmDialog implements Runnable {
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
-		iResu = JOptionPane.showConfirmDialog(null, sText, sTitle, iType);
+		JOptionPane optionPane = Util.getNarrowOptionPane(72);
+		optionPane.setMessage(sText);
+		Object[] options = { Messages.getString("yes"), Messages.getString("no"),
+				Messages.getString("Cancel") };
+		optionPane.setOptions(options);
+		optionPane.setMessageType(iType);
+		JDialog dialog = optionPane.createDialog(null, sTitle);
+		dialog.setModal(true);
+		dialog.setAlwaysOnTop(true);
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
+		if (optionPane.getValue().equals(Messages.getString("yes"))){
+			iResu = JOptionPane.YES_OPTION;
+		}
+		else if (optionPane.getValue().equals(Messages.getString("no"))){
+			iResu = JOptionPane.NO_OPTION;
+		}
+		else if (optionPane.getValue().equals(Messages.getString("Cancel"))){
+			iResu = JOptionPane.CANCEL_OPTION;
+		}
 	}
 
 	/**
@@ -661,7 +680,7 @@ class DetailsMessageDialog implements Runnable {
 		dialog.setModal(true);
 		dialog.setAlwaysOnTop(true);
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("Details"))) { 
+		if (optionPane.getValue().equals(Messages.getString("Details"))) {
 			// details
 			final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
 			JPanel jp = new JPanel();
