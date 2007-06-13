@@ -97,7 +97,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 */
 	public void initUI() {
 		// Disable Cobra traces 
-		Logger.getLogger("").setLevel(Level.SEVERE);
+		Logger.getLogger("").setLevel(Level.OFF);
 		// Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
