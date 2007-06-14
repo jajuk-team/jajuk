@@ -18,35 +18,6 @@
  */
 package org.jajuk;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
@@ -93,7 +64,35 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
-import com.vlsolutions.swing.docking.DockingPreferences;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarIO;
@@ -253,7 +252,7 @@ public class Main implements ITechnicalStrings {
 			}
 			// Now set current release in the conf
 			ConfigurationManager.setProperty(CONF_RELEASE, JAJUK_VERSION);
-			
+
 			// Set actual log verbosity. Depends on:
 			// ConfigurationManager.load
 			if (!bTestMode) {
@@ -1176,10 +1175,6 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					// Init heavyweight support (for jdic)
-					// have to be done here, not after
-					DockingPreferences.initHeavyWeightUsage();
-					DockingPreferences.setSingleHeavyWeightComponent(true);
 					// Light drag and drop for VLDocking
 					UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
 

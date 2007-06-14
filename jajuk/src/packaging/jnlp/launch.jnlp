@@ -50,6 +50,8 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         	<extension name='L2fprod buttonbar' href='l2fprod-common-buttonbar.jnlp'/>
         	<extension name='VLDocking' href='vldocking.jnlp'/>
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
+        	<extension name='JS' href='js.jnlp'/>
+        	<extension name='Cobra' href='cobra.jnlp'/>
        </resources>
        <resources os='Windows'>
            <jar       href='windows/jdic-win-20060613.jar' version='VERSION_REPLACED_BY_ANT'/> 

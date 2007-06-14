@@ -112,173 +112,6 @@
       <timezone>+12</timezone>
     </developer>
   </developers>
-  <contributors>
-    <contributor>
-      <name>Jerome Fortain</name>
-      <email>jf_sourceforge@khiplus.fr</email>
-      <roles>
-        <role>Suggestions, Bug reports, qualification</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>David Courtin</name>
-      <email></email>
-      <roles>
-        <role>Maven work and tips</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>David Hadley</name>
-      <roles>
-        <role>Bug fixes, refactoring, feature developement</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Sung Pil Moon</name>
-      <roles>
-        <role>Korean translation</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Eleftherios Spyromitros</name>
-      <email>l3fman@otenet.gr</email>
-      <roles>
-        <role>Greek translator, tester</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Omazaram</name>
-      <roles>
-        <role>Testing</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Mike Kelp</name>
-      <roles>
-        <role>Documentation/English labels review</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Jean-Yves Durand-Daubin</name>
-      <email>ddjy@voila.fr</email>
-      <roles>
-        <role>Code on HTTP client through a proxy to get covers</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Oscar Appelgren</name>
-      <roles>
-        <role>Swedish translator</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Riccardo Capecchi</name>
-      <roles>
-        <role>Italian translator</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Kevin Tangning</name>
-      <roles>
-        <role>Chinese translator</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Masiar Farahani</name>
-      <roles>
-        <role>Some code and advices</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Marc-Siebren Kwadijk</name>
-      <roles>
-        <role>Dutch translator</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>S?bastien Gringoire</name>
-      <roles>
-        <role>Design, some early developments</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Fabrice Dutron</name>
-      <roles>
-        <role>Windows docking development</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Neoclust</name>
-      <roles>
-        <role>RPM Packaging</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Christine Thel</name>
-      <roles>
-        <role>Part of french doc translation</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Martial Braux</name>
-      <roles>
-        <role>Some code on Cover</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Romain Herault</name>
-      <roles>
-        <role>Mac integration code</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Dugland Bob</name>
-      <roles>
-        <role>Swing optimization tips</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>nico-de-nantes</name>
-      <email>nico-de-nantes@users.sourceforge.net</email>
-      <roles>
-        <role>Bug reports, RFE, news reporting</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Nicolas Richard (kournikola)</name>
-      <email>kournikola@users.sourceforge.net</email>
-      <roles>
-        <role>Bug reports, RFE, news reporting</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Aur?lien Pedron</name>
-      <roles>
-        <role>Bug reports, qualification</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>darsa</name>
-      <email>darsa@users.sourceforge.net</email>
-      <roles>
-        <role>Bug reports</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Alexandre Lucazeau</name>
-      <email>mornik@users.sourceforge.net</email>
-      <roles>
-        <role>Doc translation</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Laurent Witkowski</name>
-      <email>pwitkowski@club-internet.fr</email>
-      <roles>
-        <role>Tester, RFE</role>
-      </roles>
-    </contributor>
-  </contributors>
   <licenses>
     <license>
       <name>GPL</name>
@@ -633,6 +466,20 @@
       <version>2.3</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/basicplayer-2.3.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>Cobra</groupId>
+      <artifactId>cobra</artifactId>
+      <version>0.96.5R2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/cobra-0.96.5R2.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>JS</groupId>
+      <artifactId>js</artifactId>
+      <version>0.96.5R2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/js-0.96.5R2.jar</systemPath>
     </dependency>
   </dependencies>
   <reporting>

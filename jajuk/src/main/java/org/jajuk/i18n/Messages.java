@@ -595,8 +595,13 @@ class ConfirmDialog implements Runnable {
 	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
 		optionPane.setMessage(sText);
-		Object[] options = { Messages.getString("yes"), Messages.getString("no"),
-				Messages.getString("Cancel") };
+		Object[] options = null;
+		if (iType == JOptionPane.DEFAULT_OPTION) {
+			options = new String[] { Messages.getString("Close") };
+		} else {
+			options = new String[] { Messages.getString("yes"), Messages.getString("no"),
+					Messages.getString("Cancel") };
+		}
 		optionPane.setOptions(options);
 		optionPane.setMessageType(iType);
 		JDialog dialog = optionPane.createDialog(null, sTitle);
@@ -605,13 +610,11 @@ class ConfirmDialog implements Runnable {
 		dialog.pack();
 		dialog.setLocationRelativeTo(Main.getWindow());
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("yes"))){
+		if (optionPane.getValue().equals(Messages.getString("yes"))) {
 			iResu = JOptionPane.YES_OPTION;
-		}
-		else if (optionPane.getValue().equals(Messages.getString("no"))){
+		} else if (optionPane.getValue().equals(Messages.getString("no"))) {
 			iResu = JOptionPane.NO_OPTION;
-		}
-		else if (optionPane.getValue().equals(Messages.getString("Cancel"))){
+		} else if (optionPane.getValue().equals(Messages.getString("Cancel"))) {
 			iResu = JOptionPane.CANCEL_OPTION;
 		}
 	}

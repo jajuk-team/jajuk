@@ -668,17 +668,18 @@ JPopupMenu popupGlobalRandom;
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if (e.getSource() == jsVolume) {
+	if (e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting()) {
 			// this value should be low to make sure we can reach zero
 			if (System.currentTimeMillis() - lDateLastAdjust > 20) {
 				setVolume((float) jsVolume.getValue() / 100);
 				lDateLastAdjust = System.currentTimeMillis();
 			}
-		} else if (e.getSource() == jsPosition) {
+		} else if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
 			lDateLastAdjust = System.currentTimeMillis();
 			setPosition((float) jsPosition.getValue() / 100);
 		}
 	}
+	
 
 	/**
 	 * Call a seek
