@@ -28,8 +28,6 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -96,8 +94,6 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
 	public void initUI() {
-		// Disable Cobra traces 
-		Logger.getLogger("").setLevel(Level.OFF);
 		// Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());

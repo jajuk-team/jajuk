@@ -20,12 +20,20 @@
 
 package org.jajuk.ui;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xamjwg.html.HtmlParserContext;
 import org.xamjwg.html.HtmlRendererContext;
 import org.xamjwg.html.gui.HtmlPanel;
@@ -34,20 +42,22 @@ import org.xamjwg.html.parser.InputSourceImpl;
 import org.xamjwg.html.test.SimpleHtmlParserContext;
 import org.xamjwg.html.test.SimpleHtmlRendererContext;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-
 /**
  * Type description
  */
 public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 
 	private static final long serialVersionUID = -4033441908072591661L;
+
+	/**
+	 * A HTML renderer based on Cobra
+	 */
+	public JajukHtmlPanel() {
+		super();
+		// Disable Cobra traces
+		Logger.getLogger("").setLevel(Level.OFF);
+
+	}
 
 	public void setURL(URL url) throws Exception {
 		setCursor(Util.WAIT_CURSOR);
@@ -64,10 +74,11 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 			}
 		} while (index > 0);
 		sPage = sb.toString();
-
-		// Download images (we can't use Cobra itself as it doesn't support
-		 // yet proxying)
-		
+		// cleanup useless stuff
+		sPage = sPage.replaceAll("img src=\"/", "img src=\"http://www.mediawiki.org/");
+		sPage = sPage.replaceAll("href=\"/", "href=\"http://www.mediawiki.org/");
+		sPage = sPage.replaceAll("<link.*/>", "");
+		sPage = sPage.replaceAll("@import.*;", "");
 		// Write the page itself
 		BufferedWriter bw = new BufferedWriter(new FileWriter(page));
 		bw.write(sPage);
@@ -80,7 +91,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		Reader reader = new InputStreamReader(new FileInputStream(page), "UTF-8");
 		// InputSourceImpl constructor with URI recommended
 		// so the renderer can resolve page component URLs.
-		InputSourceImpl is = new InputSourceImpl(reader, "file://"+page.getAbsolutePath());
+		InputSourceImpl is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
 
 		HtmlParserContext context = new SimpleHtmlParserContext();
 		HtmlRendererContext rcontext = new SimpleHtmlRendererContext(this);
@@ -89,24 +100,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		// A documentURI should be provided to resolve relative
 		// URIs.
 		Document document = dbi.parse(is);
-		org.w3c.dom.Element root = document.getDocumentElement();
-		NodeList liste = root.getElementsByTagName("img");
-        for(int i=0; i<liste.getLength(); i++){
-        	Element e = (Element)liste.item(i);
-        	//Remove local images
-        	String src = e.getAttribute("src");
-        	if (!src.startsWith("http")){
-        		e.getParentNode().removeChild(e);
-        	}
-        	else{
-        		//Download images
-        		File img = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
-    				+ Util.getOnlyFile(src));
-        		DownloadManager.download(new URL(src), img);
-        		e.setAttribute("src", "file://"+img.getAbsolutePath());
-        	}
-        }
-    	// Now set document in panel. This is what causes the
+		// Now set document in panel. This is what causes the
 		// document to render.
 		setDocument(document, rcontext);
 		setCursor(Util.DEFAULT_CURSOR);

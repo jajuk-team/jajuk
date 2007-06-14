@@ -20,6 +20,18 @@
 
 package org.jajuk.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -29,16 +41,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PasswordDialog;
 import org.jajuk.util.log.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Manages network downloads
  */
@@ -46,6 +48,15 @@ public class DownloadManager implements ITechnicalStrings {
 
 	/** Proxy pwd */
 	private static String sProxyPwd = null;
+
+	/**
+	 * 
+	 * @return a custom content handler of any mime type and based on HTTP
+	 *         protocol
+	 
+	public static URLStreamHandler getStreamHandler() {
+		return handler;
+	}*/
 
 	/**
 	 * @param sProxyUser
@@ -107,7 +118,7 @@ public class DownloadManager implements ITechnicalStrings {
 	public static ArrayList<URL> getRemoteCoversList(String search) throws Exception {
 		ArrayList<URL> alOut = new ArrayList<URL>(20); // URL list
 		// check void searches
-		if (search == null || search.trim().equals("")) { 
+		if (search == null || search.trim().equals("")) {
 			return alOut;
 		}
 		// Select cover size
@@ -132,9 +143,8 @@ public class DownloadManager implements ITechnicalStrings {
 		}
 		String sSearchUrl = "http://images.google.com/images?q="
 				+ URLEncoder.encode(search, "ISO-8859-1")
-				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
-				+ "&imgsz=" + size;
-		Log.debug("Search URL: {{" + sSearchUrl + "}}");  
+				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search" + "&imgsz=" + size;
+		Log.debug("Search URL: {{" + sSearchUrl + "}}");
 		byte[] bRes = downloadUrl(new URL(sSearchUrl));
 		if (bRes == null || bRes.length == 0) {
 			return alOut;
@@ -158,7 +168,7 @@ public class DownloadManager implements ITechnicalStrings {
 				continue;
 			}
 			// Add the new url
-			alOut.add(url); 
+			alOut.add(url);
 		}
 
 		return alOut;
@@ -185,10 +195,10 @@ public class DownloadManager implements ITechnicalStrings {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");  
-		get.addRequestHeader("Accept-Language", "en-us");  
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");  
-		get.addRequestHeader("Connection", "Keep-Alive");  
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
+		get.addRequestHeader("Accept-Language", "en-us");
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+		get.addRequestHeader("Connection", "Keep-Alive");
 		int status = client.executeMethod(get);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
 		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
@@ -228,10 +238,10 @@ public class DownloadManager implements ITechnicalStrings {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");  
-		get.addRequestHeader("Accept-Language", "en-us");  
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");  
-		get.addRequestHeader("Connection", "Keep-Alive");  
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
+		get.addRequestHeader("Accept-Language", "en-us");
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+		get.addRequestHeader("Connection", "Keep-Alive");
 		int status = client.executeMethod(get);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util
 				.getCachePath(url)));
@@ -269,10 +279,10 @@ public class DownloadManager implements ITechnicalStrings {
 			client = getHTTPClient(iConTO, iTraTO);
 		}
 		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");  
-		get.addRequestHeader("Accept-Language", "en-us");  
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");  
-		get.addRequestHeader("Connection", "Keep-Alive");  
+		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
+		get.addRequestHeader("Accept-Language", "en-us");
+		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+		get.addRequestHeader("Connection", "Keep-Alive");
 		int status = client.executeMethod(get);
 		bOut = get.getResponseBody();
 		if (get.isRequestSent()) {
@@ -295,11 +305,34 @@ public class DownloadManager implements ITechnicalStrings {
 		if (sLogin == null || sLogin.trim().equals("")) {
 			return null;
 		}
-		if (sProxyPwd == null || sProxyPwd.trim().equals("")) { 
-			PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1")); 
+		if (sProxyPwd == null || sProxyPwd.trim().equals("")) {
+			PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1"));
 			sProxyPwd = (String) pd.getOptionPane().getValue();
 		}
 		return sProxyPwd;
+	}
+	
+	/**
+	 * Set default proxy settings, used by cobra for ie
+	 *
+	 */
+	public synchronized static void setDefaultProxySettings(){
+		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
+			System.getProperties().put( "proxySet", "true" );
+			System.setProperty("http.proxyHost", ConfigurationManager
+					.getProperty(CONF_NETWORK_PROXY_HOSTNAME));
+			System.setProperty("http.proxyPort", ConfigurationManager
+					.getProperty(CONF_NETWORK_PROXY_PORT));
+			 Authenticator.setDefault( new Authenticator() {
+			
+				@Override
+				protected PasswordAuthentication getPasswordAuthentication() {
+					String user = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
+					char[] pwd = DownloadManager.getProxyPwd().toCharArray();
+					return new PasswordAuthentication(user,pwd);
+				}
+			} ); 
+		}
 	}
 
 }

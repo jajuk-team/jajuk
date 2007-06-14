@@ -253,7 +253,7 @@ public class Main implements ITechnicalStrings {
 			}
 			// Now set current release in the conf
 			ConfigurationManager.setProperty(CONF_RELEASE, JAJUK_VERSION);
-
+			
 			// Set actual log verbosity. Depends on:
 			// ConfigurationManager.load
 			if (!bTestMode) {
@@ -280,6 +280,9 @@ public class Main implements ITechnicalStrings {
 				}
 			});
 
+			// Apply any proxy (requieres load conf)
+			DownloadManager.setDefaultProxySettings();
+			
 			// Display progress
 			sc.setProgress(0, Messages.getString("SplashScreen.0"));
 
