@@ -20,6 +20,19 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukHtmlPanel;
+import org.jajuk.ui.perspectives.InfoPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -33,20 +46,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukHtmlPanel;
-import org.jajuk.ui.perspectives.InfoPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * Wikipedia view
@@ -63,11 +62,18 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 
 	JComboBox jcbLanguage;
 
+	JLabel jlSearchOn;
+
+	JComboBox jcbSearchOn;
+
 	/** Cobra web browser */
 	JajukHtmlPanel browser;
 
-	/** Langage index */
-	int index = 0;
+	/** Language index */
+	int indexLang = 0;
+
+	/** Item index, default:author */
+	int indexItem = 0;
 
 	/** Current search */
 	String search = null;
@@ -98,24 +104,33 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 10;
+		double p = TableLayout.PREFERRED;
 		double sizeControl[][] =
 		// Language by lang
-		{ { 3 * iXspace, TableLayout.PREFERRED, iXspace, 200, 3 * iXspace },
-				{ 5, TableLayout.PREFERRED, 5 } };
+		{
+				{ 3 * iXspace, p, iXspace, p, 3 * iXspace, p, iXspace, p, TableLayout.FILL,
+						3 * iXspace }, { 5, p, 5 } };
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
 		jcbLanguage = new JComboBox();
-		jcbLanguage.setBorder(Util.getShadowBorder());
 		for (String sLocale : Messages.getLocales()) {
 			jcbLanguage.addItem(Messages.getHumanForLocale(sLocale));
 		}
+		jlSearchOn = new JLabel(Messages.getString("WikipediaView.2"));
+		jcbSearchOn = new JComboBox();
+		jcbSearchOn.addItem(Messages.getString("Item_Author"));
+		jcbSearchOn.addItem(Messages.getString("Item_Album"));
+		jcbSearchOn.addItem(Messages.getString("Item_Track"));
 		// get stored language
-		index = Messages.getLocales().indexOf(
+		indexLang = Messages.getLocales().indexOf(
 				ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
-		jcbLanguage.setSelectedIndex(index);
+		jcbLanguage.setSelectedIndex(indexLang);
 		jcbLanguage.addActionListener(this);
+		jcbSearchOn.addActionListener(this);
 		jpControl.add(jlLanguage, "1,1");
 		jpControl.add(jcbLanguage, "3,1");
+		jpControl.add(jlSearchOn, "5,1");
+		jpControl.add(jcbSearchOn, "7,1");
 
 		// global layout
 		double size[][] = { { 2, TableLayout.FILL, 5 },
@@ -145,6 +160,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
 		eventSubjectSet.add(EventSubject.EVENT_AUTHOR_CHANGED);
+		eventSubjectSet.add(EventSubject.EVENT_ALBUM_CHANGED);
+		eventSubjectSet.add(EventSubject.EVENT_TRACK_CHANGED);
 		eventSubjectSet.add(EventSubject.EVENT_PERPECTIVE_CHANGED);
 		return eventSubjectSet;
 	}
@@ -172,37 +189,71 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			// OK, so a file should be running, display author info
 			Properties details = ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED);
-			String search = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
-			// some more checks
-			if (details != null && search != null && !search.equals(this.search)) {
-				// a file has been launch before view creation
-				this.search = search;
-				// Do not perform search if current perspective is not info for
-				// perfs
-				launchSearch(search);
-			}
+
+			//Launch search
+			launchSearch(false);
 		}
 		// Reset the page when stopping
 		else if (subject.equals(EventSubject.EVENT_ZERO)) {
 			reset();
 		}
-		// User changed author name, so we have to reload
+		// User changed current track tags, so we have to reload
 		// new author wikipedia page
-		else if (subject.equals(EventSubject.EVENT_AUTHOR_CHANGED)) {
+		else if (subject.equals(EventSubject.EVENT_AUTHOR_CHANGED)
+				|| subject.equals(EventSubject.EVENT_ALBUM_CHANGED)
+				|| subject.equals(EventSubject.EVENT_TRACK_CHANGED)) {
 			update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
 		}
 	}
 
 	/**
 	 * Perform wikipedia search
-	 * 
-	 * @param search
+	 * @param bForceReload force the page display
 	 */
-	private void launchSearch(final String search) {
+	private void launchSearch(final boolean bForceReload) {
 		new Thread() {
 			public void run() {
 				try {
-					URL url = new URL(("http://" + Messages.getLocales().get(index)
+					String search = null;
+					if (FIFO.getInstance().getCurrentFile() != null) {
+						switch (indexItem) {
+						// Author
+						case 0:
+							search = FIFO.getInstance().getCurrentFile().getTrack().getAuthor()
+									.getName2();
+							// don't display page if item is unknown
+							if (Messages.getString(UNKNOWN_AUTHOR).equals(search)) {
+								search = null;
+							}
+							break;
+						// Album
+						case 1:
+							search = FIFO.getInstance().getCurrentFile().getTrack().getAlbum()
+									.getName2();
+							// don't display page if item is unknown
+							if (Messages.getString(UNKNOWN_ALBUM).equals(search)) {
+								search = null;
+							}
+							break;
+						// Title
+						case 2:
+							search = FIFO.getInstance().getCurrentFile().getTrack().getName();
+							break;
+						}
+					}
+					// If search is still null, display an nothing found page
+					if (search == null) {
+						browser.setUnknow();
+						return;
+					}
+					//Avoid reloading an existing page
+					if (!bForceReload && search.equals(WikipediaView.this.search)) {
+						return;
+					}
+					// Store the search to avoid future identical searches
+					WikipediaView.this.search = search;
+
+					URL url = new URL(("http://" + Messages.getLocales().get(indexLang)
 							+ ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
 					Log.debug("Wikipedia search: " + url);
 					browser.setURL(url);
@@ -214,9 +265,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		}.start();
 	}
 
-	
 	/*
-	 * Reset view by making a request to jajuk SF website
+	 * Reset view
 	 */
 	private void reset() {
 		// Reset current search
@@ -226,7 +276,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			public void run() {
 				if (browser != null) {
 					try {
-						browser.setURL(new URL(WIKIPEDIA_VIEW_DEFAULT_URL));
+						browser.clearDocument();
 					} catch (Exception e) {
 						Log.error(e);
 					}
@@ -242,13 +292,16 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == jcbLanguage) {
-			index = jcbLanguage.getSelectedIndex();
+			indexLang = jcbLanguage.getSelectedIndex();
 			// update index
 			ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages.getLocales().get(
-					index));
-
-			// launch wikipedia search for this language
-			launchSearch(this.search);
+					indexLang));
+			// force launch wikipedia search for this language
+			launchSearch(true);
+		} else if (arg0.getSource() == jcbSearchOn) {
+			indexItem = jcbSearchOn.getSelectedIndex();
+			// force launch wikipedia search for this item
+			launchSearch(true);
 		}
 	}
 

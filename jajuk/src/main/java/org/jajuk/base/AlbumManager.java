@@ -21,6 +21,7 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 
@@ -123,6 +124,11 @@ public class AlbumManager extends ItemManager {
 				TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
 			}
 		}
+		// if current track album name is changed, notify it
+		if (FIFO.getInstance().getCurrentFile() != null
+				&& FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(old)) {
+			ObservationManager.notify(new Event(EventSubject.EVENT_ALBUM_CHANGED));
+		}
 		return newItem;
 	}
 
@@ -195,11 +201,11 @@ public class AlbumManager extends ItemManager {
 	public Set<Album> getAssociatedAlbums(Item item) {
 		synchronized (AlbumManager.getInstance().getLock()) {
 			Set<Album> out = new TreeSet<Album>();
-			//If item is a track, return albums containing this track
+			// If item is a track, return albums containing this track
 			if (item instanceof Track) {
-				//we can return as a track has only one album
-				if (item != null){
-					out.add(((Track)item).getAlbum());
+				// we can return as a track has only one album
+				if (item != null) {
+					out.add(((Track) item).getAlbum());
 				}
 			} else {
 				Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);

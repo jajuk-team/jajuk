@@ -24,12 +24,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -59,6 +61,9 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 
 	}
 
+	/**
+	 * Display a wikipedia url
+	 */
 	public void setURL(URL url) throws Exception {
 		setCursor(Util.WAIT_CURSOR);
 		File page = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
@@ -79,12 +84,38 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		sPage = sPage.replaceAll("href=\"/", "href=\"http://www.mediawiki.org/");
 		sPage = sPage.replaceAll("<link.*/>", "");
 		sPage = sPage.replaceAll("@import.*;", "");
-		// Write the page itself
+		//Display the page
+		showPage(sPage, page);
+		// Set current url as a tooltip
+		getRootPane().setToolTipText(url.toString());
+		// Disable waiting cursor
+		setCursor(Util.DEFAULT_CURSOR);
+	}
+
+	/**
+	 * Display a "nothing found" page
+	 * @throws Exception
+	 */
+	public void setUnknow() throws Exception {
+		File page = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
+				+ "noresult.html");
+		String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
+				+ "</h1></body></html>";
+		showPage(sPage, page);
+	}
+	
+	/**
+	 * Make the internal operations
+	 * @param sPage
+	 * @param page
+	 * @throws IOException
+	 */
+	private void showPage(String sPage,File page) throws Exception{
+				// Write the page itself
 		BufferedWriter bw = new BufferedWriter(new FileWriter(page));
 		bw.write(sPage);
 		bw.flush();
 		bw.close();
-
 		// A Reader should be created with the correct charset,
 		// which may be obtained from the Content-Type header
 		// of an HTTP response.
@@ -92,7 +123,6 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		// InputSourceImpl constructor with URI recommended
 		// so the renderer can resolve page component URLs.
 		InputSourceImpl is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
-
 		HtmlParserContext context = new SimpleHtmlParserContext();
 		HtmlRendererContext rcontext = new SimpleHtmlRendererContext(this);
 		// Note that document builder should receive both contexts.
@@ -103,6 +133,6 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		// Now set document in panel. This is what causes the
 		// document to render.
 		setDocument(document, rcontext);
-		setCursor(Util.DEFAULT_CURSOR);
 	}
+	
 }

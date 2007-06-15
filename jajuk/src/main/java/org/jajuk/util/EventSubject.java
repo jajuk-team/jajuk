@@ -139,6 +139,12 @@ public enum EventSubject {
 	// Current played track author name has been
     // changed
     EVENT_AUTHOR_CHANGED, 
+	// Current played track album name has been
+    // changed
+    EVENT_ALBUM_CHANGED, 
+	// Current played track album name has been
+    // changed
+    EVENT_TRACK_CHANGED, 
 	// Language changed
     EVENT_LANGUAGE_CHANGED,
 	//Perspective changed

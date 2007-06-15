@@ -38,6 +38,7 @@ import java.util.Set;
 
 /**
  * Convenient class to manage Tracks
+ * 
  * @TODO Refactor this error detection system (isChangePbm)
  */
 public class TrackManager extends ItemManager implements Observer {
@@ -186,13 +187,19 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
 				Tag tag = new Tag(file.getIO());
 				tag.setAlbumName(sNewAlbum);
 				tag.commit();
+			}
+			// if current track album name is changed, notify it
+			if (FIFO.getInstance().getCurrentFile() != null
+					&& FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(
+							track.getAlbum())) {
+				ObservationManager.notify(new Event(EventSubject.EVENT_ALBUM_CHANGED));
 			}
 			// register the new album
 			Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
@@ -228,7 +235,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -249,7 +256,7 @@ public class TrackManager extends ItemManager implements Observer {
 							.getType());
 			postChange(track, newTrack, filter);
 			// remove this item if no more references
-			AuthorManager.getInstance().cleanup(track.getAuthor()); 
+			AuthorManager.getInstance().cleanup(track.getAuthor());
 			return newTrack;
 		}
 	}
@@ -277,7 +284,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -292,7 +299,7 @@ public class TrackManager extends ItemManager implements Observer {
 					.getType());
 			postChange(track, newTrack, filter);
 			// remove this item if no more references
-			StyleManager.getInstance().cleanup(track.getStyle()); 
+			StyleManager.getInstance().cleanup(track.getStyle());
 			return newTrack;
 		}
 	}
@@ -316,14 +323,14 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			long lNewItem = Long.parseLong(newItem);
 			if (lNewItem < 0 || lNewItem > 10000) {
-				Messages.showErrorMessage("137"); 
-				throw new JajukException("137"); 
+				Messages.showErrorMessage("137");
+				throw new JajukException("137");
 			}
 			ArrayList<File> alReady = null;
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -363,7 +370,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -393,8 +400,8 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			// check format
 			if (lNew < 0) {
-				Messages.showErrorMessage("137"); 
-				throw new JajukException("137"); 
+				Messages.showErrorMessage("137");
+				throw new JajukException("137");
 			}
 			track.setRate(lNew);
 			return track;
@@ -421,14 +428,14 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			// check format
 			if (lNewOrder < 0) {
-				Messages.showErrorMessage("137"); 
+				Messages.showErrorMessage("137");
 				return null;
 			}
 			ArrayList<File> alReady = null;
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -466,7 +473,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010"); 
+				throw new NoneAccessibleFileException("010");
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -478,6 +485,11 @@ public class TrackManager extends ItemManager implements Observer {
 					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
 					.getType());
 			postChange(track, newTrack, filter);
+			// if current track name is changed, notify it
+			if (FIFO.getInstance().getCurrentFile() != null
+					&& FIFO.getInstance().getCurrentFile().getTrack().equals(track)) {
+				ObservationManager.notify(new Event(EventSubject.EVENT_TRACK_CHANGED));
+			}
 			return newTrack;
 		}
 	}
@@ -587,7 +599,7 @@ public class TrackManager extends ItemManager implements Observer {
 			return out;
 		}
 	}
-	
+
 	public boolean isChangePbm() {
 		synchronized (TrackManager.getInstance().getLock()) {
 			return bChangePbm;
