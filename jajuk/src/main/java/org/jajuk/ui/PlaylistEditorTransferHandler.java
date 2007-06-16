@@ -57,15 +57,14 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 	}
 
 	/**
-	 * Called when draging
+	 * Called when dragging
 	 */
 	protected Transferable createTransferable(JComponent c) {
 		// make sure to remove others selected rows (can occur during the drag)
 		jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
 		if (jtable instanceof JajukTable) {// sorting only for jajuk table
-			iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow); // selected
-																						// row
-			// in model
+			iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow);
+			// selected row in model
 		}
 		Object o = ((JajukTableModel) jtable.getModel()).getItemAt(iSelectedRow);
 		if (o == null) { // no? try to find a file for this id
@@ -107,6 +106,11 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 					TransferableTreeNode ttn = (TransferableTreeNode) t
 							.getTransferData(TransferableTreeNode.NODE_FLAVOR);
 					oData = ttn.getData();
+				} else if (flavor.getHumanPresentableName().equals(
+						TransferableAlbum.ALBUM_FLAVOR.getHumanPresentableName())) {
+					TransferableAlbum ttn = (TransferableAlbum) t
+							.getTransferData(TransferableAlbum.ALBUM_FLAVOR);
+					oData = ttn.getData();
 				}
 				ArrayList<File> alSelectedFiles = Util.getFilesFromSelection((Item) oData);
 				// queue case
@@ -136,7 +140,8 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 
 	public boolean canImport(JComponent c, DataFlavor[] flavors) {
 		String sFlavor = flavors[0].getHumanPresentableName();
-		if (sFlavor.equals("Node") || sFlavor.equals("Row")) {  
+		if (sFlavor.equals("Node") || sFlavor.equals("Row") 
+				|| sFlavor.equals("Album")) {
 			return true;
 		}
 		return false;

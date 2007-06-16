@@ -36,6 +36,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CatalogViewTransferHandler;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
@@ -58,6 +59,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -65,8 +69,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,6 +89,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -96,6 +103,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
@@ -216,6 +224,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		}
 	});
 
+	public CatalogItem getSelectedItem() {
+		return item;
+	}
+
 	/**
 	 * Constructor
 	 */
@@ -252,7 +264,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	public void initUI() {
 		// --Top (most used) control items
 		jpControlTop = new JPanel();
-		//Hide album popups when entering this area
+		// Hide album popups when entering this area
 		jpControlTop.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -266,7 +278,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		});
 		jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		jpControlTop.setOpaque(false);
-		jlSorter = new JLabel(Messages.getString("Sort")); 
+		jlSorter = new JLabel(Messages.getString("Sort"));
 		jlSorter.setOpaque(false);
 		jcbSorter = new SteppedComboBox();
 		jcbSorter.setOpaque(false);
@@ -286,9 +298,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jtbSort.addSeparator();
 		jtbSort.add(jcbSorter);
 
-		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); 
+		jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
 		jlFilter.setOpaque(false);
-		jlContains = new JLabel(Messages.getString("AbstractTableView.7")); 
+		jlContains = new JLabel(Messages.getString("AbstractTableView.7"));
 		jlContains.setOpaque(false);
 		jcbFilter = new SteppedComboBox();
 		jcbFilter.setOpaque(false);
@@ -297,7 +309,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// or styles, we will show it only one
 		for (PropertyMetaInformation meta : alFilters) {
 			if (meta == null) { // "any" filter
-				jcbFilter.addItem(Messages.getString("AbstractTableView.8")); 
+				jcbFilter.addItem(Messages.getString("AbstractTableView.8"));
 			} else {
 				jcbFilter.addItem(meta.getHumanName());
 			}
@@ -314,9 +326,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		jtfValue = new JTextField(10);
 		jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		jtfValue.setFont(new Font(
-				"dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE) + 6)); 
-		
+		jtfValue.setFont(new Font("dialog", Font.BOLD,
+				ConfigurationManager.getInt(CONF_FONTS_SIZE) + 6));
+
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				bNeedSearch = true;
@@ -358,7 +370,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jpControlTop.add(jtbPage, "5,0");
 
 		// --Bottom (less used) items
-		jcbShow = new JCheckBox(Messages.getString("CatalogView.2")); 
+		jcbShow = new JCheckBox(Messages.getString("CatalogView.2"));
 		jcbShow.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
 		jcbShow.setOpaque(false);
 		jcbShow.addActionListener(this);
@@ -399,7 +411,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jsSize.setValue(index);
 		// compute size string for slider tooltip
 		String sizeToDisplay = "" + (50 + 50 * index) + "x" + "" + (50 + 50 * index);
-		jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + sizeToDisplay); 
+		jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + sizeToDisplay);
 		jsSize.addChangeListener(new ChangeListener() {
 
 			public void stateChanged(ChangeEvent e) {
@@ -415,24 +427,22 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				// compute size string for slider tooltip
 				String size = "" + (50 + 50 * jsSize.getValue()) + "x" + ""
 						+ (50 + 50 * jsSize.getValue());
-				jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + size); 
+				jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + size);
 				jsSize.setOpaque(false);
 			}
 
 		});
-		
-		jbRefresh = new JajukButton(Messages.getString("CatalogView.19"),IconLoader.ICON_REFRESH);
-		jbRefresh.setToolTipText(Messages.getString("CatalogView.3")); 
+
+		jbRefresh = new JajukButton(Messages.getString("CatalogView.19"), IconLoader.ICON_REFRESH);
+		jbRefresh.setToolTipText(Messages.getString("CatalogView.3"));
 		jbRefresh.addActionListener(this);
 		double p = TableLayout.PREFERRED;
 
-		double sizeControlBottom[][] = {
-				{ p,p,p,TableLayout.FILL,5 },
-				{ p } };
+		double sizeControlBottom[][] = { { p, p, p, TableLayout.FILL, 5 }, { p } };
 		TableLayout layoutBottom = new TableLayout(sizeControlBottom);
 		layoutBottom.setHGap(20);
 		jpControlBottom = new JPanel();
-		//Hide album popups when entering this area
+		// Hide album popups when entering this area
 		jpControlBottom.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -476,17 +486,17 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// Menu items
 		// Album menu
 		jmenu = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); 
+		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"));
 		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); 
+		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"));
 		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17")); 
+		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"));
 		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18")); 
+		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"));
 		jmiAlbumPlayRepeat.addActionListener(this);
-		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"));         
+		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"));
 		jmiGetCovers.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); 
+		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"));
 		jmiAlbumProperties.addActionListener(this);
 		jmenu.add(jmiAlbumPlay);
 		jmenu.add(jmiAlbumPush);
@@ -499,9 +509,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		double size[][] = { { TableLayout.FILL },
 				{ TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED, 5 } };
 		setLayout(new TableLayout(size));
-		add(jpControlTop, "0,0"); 
-		add(jsp, "0,2"); 
-		add(jpControlBottom, "0,4"); 
+		add(jpControlTop, "0,0");
+		add(jsp, "0,2");
+		add(jpControlBottom, "0,4");
 
 		populateCatalog();
 
@@ -796,7 +806,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("CatalogView.0"); 
+		return Messages.getString("CatalogView.0");
 	}
 
 	/*
@@ -820,12 +830,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			ConfigurationManager.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter
 					.getSelectedIndex()));
 		} else if (e.getSource() == jbRefresh) {
-			cleanThumbs(THUMBNAIL_SIZE_50x50); 
-			cleanThumbs(THUMBNAIL_SIZE_100x100); 
-			cleanThumbs(THUMBNAIL_SIZE_150x150); 
-			cleanThumbs(THUMBNAIL_SIZE_200x200); 
-			cleanThumbs(THUMBNAIL_SIZE_250x250); 
-			cleanThumbs(THUMBNAIL_SIZE_300x300); 
+			cleanThumbs(THUMBNAIL_SIZE_50x50);
+			cleanThumbs(THUMBNAIL_SIZE_100x100);
+			cleanThumbs(THUMBNAIL_SIZE_150x150);
+			cleanThumbs(THUMBNAIL_SIZE_200x200);
+			cleanThumbs(THUMBNAIL_SIZE_250x250);
+			cleanThumbs(THUMBNAIL_SIZE_300x300);
 			// display thumbs
 			populateCatalog();
 		} else if (e.getSource() == jcbShow) {
@@ -860,16 +870,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		if (fThumb.exists()) {
 			File[] files = fThumb.listFiles();
 			for (File file : files) {
-				if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) { 
+				if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) {
 					file.delete();
 				}
 			}
 			// Refresh default cover
-			File fDefault = Util.getConfFileByPath(FILE_THUMBS
-					+ "/" + size + "/" + FILE_THUMB_NO_COVER);  
+			File fDefault = Util.getConfFileByPath(FILE_THUMBS + "/" + size + "/"
+					+ FILE_THUMB_NO_COVER);
 			fDefault.delete();
 			try {
-				int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken()); 
+				int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
 				Util.createThumbnail(IconLoader.ICON_NO_COVER, fDefault, iSize);
 			} catch (Exception e) {
 				Log.error(e);
@@ -884,7 +894,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		return 50 + (50 * jsSize.getValue());
 	}
 
-	class CatalogItem extends JPanel implements ITechnicalStrings, ActionListener {
+	public class CatalogItem extends JPanel implements ITechnicalStrings, ActionListener,
+			Transferable {
 
 		private static final long serialVersionUID = 1L;
 
@@ -914,6 +925,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		/** No covers image cache */
 		private HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
 
+		/** Draging flag used to disable simple click behavior */
+		private boolean bDragging = false;
+
 		/**
 		 * Constructor
 		 * 
@@ -931,7 +945,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			this.track = track;
 			this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getId()
 					+ '.' + EXT_THUMB);
-
 		}
 
 		void populate() {
@@ -963,7 +976,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			}
 			jlIcon.setIcon(ii);
 			jpIcon.setOpaque(false);
-			jpIcon.add(jlIcon, "1,0"); 
+			jpIcon.add(jlIcon, "1,0");
 			int iRows = 9 + 3 * (jsSize.getValue());
 			Font customFont = new Font("verdana", Font.BOLD, ConfigurationManager
 					.getInt(CONF_FONTS_SIZE));
@@ -983,41 +996,66 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			jlAlbum.setLineWrap(true);
 			jlAlbum.setWrapStyleWord(true);
 			jlAlbum.setEditable(false);
-			jlAuthor.setFont(new Font(
-					"Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE))); 
-			jlAlbum.setFont(new Font(
-					"Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE))); 
+			jlAuthor.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
+					.getInt(CONF_FONTS_SIZE)));
+			jlAlbum.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
+					.getInt(CONF_FONTS_SIZE)));
 			jlAlbum.setOpaque(false);
 			jlAlbum.setFont(customFont);
 			jlAlbum.setForeground(mediumGray);
 			jlAlbum.setBorder(null);
 
-			add(jpIcon, "1,0"); 
-			add(jlAuthor, "1,2"); 
-			add(jlAlbum, "1,4"); 
+			add(jpIcon, "1,0");
+			add(jlAuthor, "1,2");
+			add(jlAlbum, "1,4");
 			setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-			jlIcon.addMouseListener(new MouseAdapter() {
+			// Add dnd support
+			jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
 
+			jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
+			
+				public void mouseDragged(MouseEvent e) {
+					try {
+						System.out.println("here");
+						//Notify the mouse listener that we are dragging
+						bDragging = true;
+						JComponent c = (JComponent) e.getSource();
+						TransferHandler handler = c.getTransferHandler();
+						handler.exportAsDrag(c, e, TransferHandler.COPY);
+					} finally {
+						bDragging = false;
+					}
+				}
+			
+			});
+			
+			jlIcon.addMouseListener(new MouseAdapter() {
+				
 				@Override
-				public void mousePressed(MouseEvent e) {
+				public void mouseReleased(MouseEvent e) {
+					//Leave if already dragging
+					if (bDragging){
+						return;
+					}
 					// remove red border on previous item if different from this
 					// one
-					if (CatalogView.this.item != null 
-							&& CatalogView.this.item != CatalogItem.this) {
+					if (CatalogView.this.item != null && CatalogView.this.item != CatalogItem.this) {
 						CatalogView.this.item
 								.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 					}
 					// add a red border on this item
 					setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
 					// Right click
-					if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == CatalogItem.this.jlIcon) {
+					if (e.getButton() == MouseEvent.BUTTON1
+							&& e.getSource() == CatalogItem.this.jlIcon) {
 						// if second click (item already selected), play
 						if (CatalogView.this.item == CatalogItem.this) {
 							play(false, false, false);
 						}
 						CatalogView.this.item = CatalogItem.this;
 						// Left click
-					} else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == CatalogItem.this.jlIcon) {
+					} else if (e.getButton() == MouseEvent.BUTTON3
+							&& e.getSource() == CatalogItem.this.jlIcon) {
 						CatalogView.this.item = CatalogItem.this;
 						// Show contextual menu
 						jmenu.show(jlIcon, e.getX(), e.getY());
@@ -1031,11 +1069,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					super.mouseEntered(e);
-					//Leave if user unselected the option "Show catalog popups"
-					if (!ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS)){
+					// Leave if user unselected the option "Show catalog popups"
+					if (!ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS)) {
 						return;
 					}
-					// don't show details if the contextual popup menu is visible
+					// don't show details if the contextual popup menu is
+					// visible
 					if (jmenu.isVisible()) {
 						return;
 					}
@@ -1232,6 +1271,34 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		 */
 		public Album getAlbum() {
 			return album;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
+		 */
+		public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException,
+				IOException {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
+		 */
+		public DataFlavor[] getTransferDataFlavors() {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
+		 */
+		public boolean isDataFlavorSupported(DataFlavor flavor) {
+			return false;
 		}
 
 	}

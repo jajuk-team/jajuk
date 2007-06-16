@@ -15,60 +15,43 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision: 2118 $
  */
 
 package org.jajuk.ui;
 
-import org.jajuk.base.FileManager;
+import org.jajuk.ui.views.CatalogView.CatalogItem;
 import org.jajuk.util.ITechnicalStrings;
 
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 /**
  * DND handler for table
  */
 
-public class TableTransferHandler extends TransferHandler implements
-		ITechnicalStrings {
+public class CatalogViewTransferHandler extends TransferHandler implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTable jtable;
-
-	public static int iSelectedRow = 0;
+	private CatalogItem item;
 
 	/** Constructor */
-	public TableTransferHandler(JTable jtable) {
-		this.jtable = jtable;
+	public CatalogViewTransferHandler(CatalogItem item) {
+		this.item = item;
 	}
 
 	/**
 	 * Called when dragging
 	 */
 	protected Transferable createTransferable(JComponent c) {
-		// make sure to remove others selected rows (can occur during the drag)
-		jtable.getSelectionModel().setSelectionInterval(iSelectedRow,
-				iSelectedRow);
-		if (jtable instanceof JajukTable) {// sorting only for jajuk table
-			iSelectedRow = ((JajukTable) jtable)
-					.convertRowIndexToModel(iSelectedRow); // selected row
-			// in model
+		Object o = item.getAlbum();
+		if (o != null){
+			return new TransferableAlbum(o);
 		}
-		Object o = ((JajukTableModel) jtable.getModel())
-				.getItemAt(iSelectedRow);
-		if (o == null) { // no? try to find a file for this id
-			o = FileManager.getInstance().getFileByID(
-					jtable.getModel().getValueAt(iSelectedRow, 0).toString());
-		}
-		if (o != null) {
-			return new TransferableTableRow(o);
-		}
-
 		return null;
 	}
 
@@ -77,6 +60,17 @@ public class TableTransferHandler extends TransferHandler implements
 	 */
 	public int getSourceActions(JComponent c) {
 		return COPY_OR_MOVE;
+	}
+
+	/**
+	 * Called when dropping, no drop in catalog view for now
+	 */
+	public boolean importData(JComponent c, Transferable t) {
+		return false;
+	}
+
+	public boolean canImport(JComponent c, DataFlavor[] flavors) {
+		return false;
 	}
 
 }
