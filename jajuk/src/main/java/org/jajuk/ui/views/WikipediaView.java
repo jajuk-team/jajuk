@@ -329,14 +329,23 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAlbumSearch) {
 			indexItem = 0;
+			//deselect others buttons
+			jbAuthorSearch.setSelected(false);
+			jbTrackSearch.setSelected(false);
 			// force event
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAuthorSearch) {
 			indexItem = 1;
+			//deselect others buttons
+			jbAlbumSearch.setSelected(false);
+			jbTrackSearch.setSelected(false);
 			// force event
 			launchSearch(true);
 		} else if (arg0.getSource() == jbTrackSearch) {
 			indexItem = 2;
+			//deselect others buttons
+			jbAuthorSearch.setSelected(false);
+			jbAlbumSearch.setSelected(false);
 			// force event
 			launchSearch(true);
 		}
