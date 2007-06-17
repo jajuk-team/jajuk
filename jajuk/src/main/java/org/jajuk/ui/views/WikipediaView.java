@@ -26,6 +26,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukHtmlPanel;
+import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.perspectives.InfoPerspective;
@@ -33,6 +34,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -40,19 +42,16 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 
 /**
  * Wikipedia view
@@ -75,6 +74,12 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 
 	/** Cobra web browser */
 	JajukHtmlPanel browser;
+
+	JButton jbReload;
+
+	JButton jbCopy;
+
+	JButton jbLaunchInExternalBrowser;
 
 	/** Language index */
 	int indexLang = 0;
@@ -114,10 +119,10 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		double p = TableLayout.PREFERRED;
 		double sizeControl[][] =
 		// Language by lang
-		{
-				{ 3 * iXspace, p, iXspace, p, 3 * iXspace, p, iXspace, p, TableLayout.FILL,
-						3 * iXspace }, { 5, p, 5 } };
-		jpControl.setLayout(new TableLayout(sizeControl));
+		{ { 5, p, p, p, p, p, p, p, TableLayout.FILL, 3 * iXspace }, { 5, p, 5 } };
+		TableLayout layout = new TableLayout(sizeControl);
+		layout.setHGap(iXspace);
+		jpControl.setLayout(layout);
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
 		jcbLanguage = new JComboBox();
 		for (String sLocale : Messages.getLocales()) {
@@ -134,9 +139,29 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		jcbLanguage.setSelectedIndex(indexLang);
 		jcbLanguage.addActionListener(this);
 		jcbSearchOn.addActionListener(this);
-		jpControl.add(jlLanguage, "1,1");
-		jpControl.add(jcbLanguage, "3,1");
-		jpControl.add(jlSearchOn, "5,1");
+		// Buttons
+		jbReload = new JButton(IconLoader.ICON_TRACK_FIFO_PLANNED);
+		jbReload.setToolTipText(Messages.getString("WikipediaView.4"));
+		jbReload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// force event
+				launchSearch(true);
+			}
+		});
+		ActionBase aCopy = ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD);
+		//Remove text inside the button
+		aCopy.setName(null);
+		jbCopy = new JButton(aCopy);
+		ActionBase aBrowse = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
+		//Remove text inside the button
+		aBrowse.setName(null);
+		jbLaunchInExternalBrowser = new JButton(aBrowse);
+		jpControl.add(jbReload, "1,1");
+		jpControl.add(jbCopy, "2,1");
+		jpControl.add(jbLaunchInExternalBrowser, "3,1");
+		jpControl.add(jlLanguage, "4,1");
+		jpControl.add(jcbLanguage, "5,1");
+		jpControl.add(jlSearchOn, "6,1");
 		jpControl.add(jcbSearchOn, "7,1");
 
 		// global layout
@@ -144,23 +169,6 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 				{ TableLayout.PREFERRED, 5, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new JajukHtmlPanel();
-		addMouseListener(new MouseAdapter() {
-		
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3){
-					JPopupMenu menu = new JPopupMenu();
-					menu.add(new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD)));
-					menu.add(new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER)));
-					menu.show(browser, e.getX(), e.getY());
-				}
-				else{
-					super.mousePressed(e);
-				}
-					
-			}
-		
-		});
 		add(jpControl, "1,0");
 		add(browser, "1,2");
 
