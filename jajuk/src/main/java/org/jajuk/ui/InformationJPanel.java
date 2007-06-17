@@ -34,6 +34,7 @@ import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -121,6 +122,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		// message bar
 		JToolBar jtbMessage = new JToolBar();
 		jtbMessage.setFloatable(false);
+		//Set a zero minimum size to allow user to reduce window width
+		jtbMessage.setMinimumSize(new Dimension(0,0));
 		//We use toolbar to display vertical separator lines
 		jlMessage = new JLabel();
 		jlMessage.setOpaque(true);
@@ -132,6 +135,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		// selection bar
 		JToolBar jtbSelection = new JToolBar();
 		jtbSelection.setFloatable(false);
+		jtbMessage.setMinimumSize(new Dimension(0,0));
 		jlSelection = new JLabel();
 		jtbSelection.add(jlSelection);
 		jtbSelection.add(Box.createHorizontalGlue());
@@ -139,6 +143,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		
 		// total progress bar
 		JToolBar jtbTotal = new JToolBar();
+		jtbTotal.setMinimumSize(new Dimension(0,0));
 		jtbTotal.setFloatable(false);
 		jlTotal = new JLabel();
 		jlTotal.setToolTipText(Messages.getString("InformationJPanel.5")); 
@@ -148,6 +153,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		
 		// current progress bar
 		JToolBar jtbProgress = new JToolBar();
+		jtbProgress.setMinimumSize(new Dimension(0,0));
 		jtbProgress.setFloatable(false);
 		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7")); 
 		jpbCurrent = new JProgressBar(0, 100);

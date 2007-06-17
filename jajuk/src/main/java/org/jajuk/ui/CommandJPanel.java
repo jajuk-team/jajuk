@@ -85,7 +85,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -267,9 +266,11 @@ JPopupMenu popupGlobalRandom;
 	public void initUI() {
 		ToolBarContainer container = Main.getToolbarContainer();
 		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
+		container.setMinimumSize(new Dimension(0,0));
 		topPanel.setOpaque(true);
 		// Search
 		VLToolBar vltbSearch = new VLToolBar("search"); 
+		vltbSearch.setMinimumSize(new Dimension(0,0));
 		double[][] sizeSearch = new double[][] {
 				{ 3, TableLayout.PREFERRED, 3, TableLayout.PREFERRED }, { TableLayout.PREFERRED } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
@@ -321,8 +322,6 @@ JPopupMenu popupGlobalRandom;
 		jtbModes.add(jbContinue);
 		jtbModes.addSeparator();
 		jtbModes.add(jbIntro);
-		// we use a strut as empty borders are now always applied on toolbars
-		vltbModes.add(Box.createVerticalStrut(30));
 		vltbModes.add(jtbModes);
 
 		// Volume
@@ -366,6 +365,9 @@ JPopupMenu popupGlobalRandom;
 		vltbPosition.add(jpPosition);
 
 		// Special functions toolbar
+		VLToolBar vltbSpecial = new VLToolBar("smart"); 
+		vltbSpecial.setOpaque(false);
+		vltbSpecial.setCollapsible(false);
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
@@ -377,9 +379,6 @@ JPopupMenu popupGlobalRandom;
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
-		VLToolBar vltbSpecial = new VLToolBar("smart"); 
-		vltbSpecial.setOpaque(false);
-		vltbSpecial.setCollapsible(false);
 		jtbSpecial = new JToolBar();
 		jtbSpecial.setOpaque(false);
 		jtbSpecial.setBorder(null);
