@@ -481,5 +481,11 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_PUSH = new UrlImageIcon(Util
 			.getResource("icons/16x16/push.png"));
+	
+	public static final UrlImageIcon ICON_COPY = new UrlImageIcon(Util
+			.getResource("icons/16x16/editcopy.png"));
+	
+	public static final UrlImageIcon ICON_LAUNCH = new UrlImageIcon(Util
+			.getResource("icons/16x16/launch.png"));
 }
 

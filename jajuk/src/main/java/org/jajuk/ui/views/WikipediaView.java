@@ -26,17 +26,22 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukHtmlPanel;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.perspectives.InfoPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
@@ -45,7 +50,9 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 /**
  * Wikipedia view
@@ -137,6 +144,23 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 				{ TableLayout.PREFERRED, 5, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new JajukHtmlPanel();
+		addMouseListener(new MouseAdapter() {
+		
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3){
+					JPopupMenu menu = new JPopupMenu();
+					menu.add(new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD)));
+					menu.add(new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER)));
+					menu.show(browser, e.getX(), e.getY());
+				}
+				else{
+					super.mousePressed(e);
+				}
+					
+			}
+		
+		});
 		add(jpControl, "1,0");
 		add(browser, "1,2");
 
@@ -190,7 +214,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			Properties details = ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED);
 
-			//Launch search
+			// Launch search
 			launchSearch(false);
 		}
 		// Reset the page when stopping
@@ -208,7 +232,9 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 
 	/**
 	 * Perform wikipedia search
-	 * @param bForceReload force the page display
+	 * 
+	 * @param bForceReload
+	 *            force the page display
 	 */
 	private void launchSearch(final boolean bForceReload) {
 		new Thread() {
@@ -246,7 +272,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 						browser.setUnknow();
 						return;
 					}
-					//Avoid reloading an existing page
+					// Avoid reloading an existing page
 					if (!bForceReload && search.equals(WikipediaView.this.search)) {
 						return;
 					}
@@ -256,6 +282,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 					URL url = new URL(("http://" + Messages.getLocales().get(indexLang)
 							+ ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
 					Log.debug("Wikipedia search: " + url);
+					Util.copyData = url.toString();
+					Util.url = url;
 					browser.setURL(url);
 				} catch (Exception e) {
 					Log.error(e);

@@ -149,6 +149,9 @@ public final class ActionManager {
 		//Export
 		installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
 		
+		//MISC
+		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
+		installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
 	}
 
 	/**

@@ -129,6 +129,9 @@ public class Util implements ITechnicalStrings {
 	public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+	
+	/**contains clipboard data*/
+	public static String copyData;
 
 	/** Waiting flag for perfs */
 	private static boolean bWaiting = false;
@@ -150,6 +153,9 @@ public class Util implements ITechnicalStrings {
 
 	/** Icons cache */
 	private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
+
+	/** URL to be shown in external browser, used by LaunchInBrowserAction action */
+	public static URL url;
 
 	/** Mplayer exe path */
 	private static String sMplayerPath = null;

@@ -20,6 +20,18 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.w3c.dom.Document;
+import org.xamjwg.html.HtmlParserContext;
+import org.xamjwg.html.gui.HtmlPanel;
+import org.xamjwg.html.parser.DocumentBuilderImpl;
+import org.xamjwg.html.parser.InputSourceImpl;
+import org.xamjwg.html.test.SimpleHtmlParserContext;
+import org.xamjwg.html.test.SimpleHtmlRendererContext;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,19 +43,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.w3c.dom.Document;
-import org.xamjwg.html.HtmlParserContext;
-import org.xamjwg.html.HtmlRendererContext;
-import org.xamjwg.html.gui.HtmlPanel;
-import org.xamjwg.html.parser.DocumentBuilderImpl;
-import org.xamjwg.html.parser.InputSourceImpl;
-import org.xamjwg.html.test.SimpleHtmlParserContext;
-import org.xamjwg.html.test.SimpleHtmlRendererContext;
-
 /**
  * Type description
  */
@@ -51,6 +50,14 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 
 	private static final long serialVersionUID = -4033441908072591661L;
 
+	private SimpleHtmlRendererContext rcontext;
+	
+	private HtmlParserContext context;
+	
+	private DocumentBuilderImpl dbi;
+		
+		
+	
 	/**
 	 * A HTML renderer based on Cobra
 	 */
@@ -58,7 +65,9 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		super();
 		// Disable Cobra traces
 		Logger.getLogger("").setLevel(Level.OFF);
-
+		rcontext = new SimpleHtmlRendererContext(this);
+		context = new SimpleHtmlParserContext();
+		dbi = new DocumentBuilderImpl(context, rcontext);
 	}
 
 	/**
@@ -123,16 +132,16 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		// InputSourceImpl constructor with URI recommended
 		// so the renderer can resolve page component URLs.
 		InputSourceImpl is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
-		HtmlParserContext context = new SimpleHtmlParserContext();
-		HtmlRendererContext rcontext = new SimpleHtmlRendererContext(this);
-		// Note that document builder should receive both contexts.
-		DocumentBuilderImpl dbi = new DocumentBuilderImpl(context, rcontext);
 		// A documentURI should be provided to resolve relative
 		// URIs.
 		Document document = dbi.parse(is);
 		// Now set document in panel. This is what causes the
 		// document to render.
 		setDocument(document, rcontext);
+	}
+	
+	public void back(){
+		rcontext.back();
 	}
 	
 }

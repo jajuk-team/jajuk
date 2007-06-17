@@ -366,5 +366,13 @@ public enum JajukAction {
 	 * Create a report
 	 */
 	CREATE_REPORT,
+	/**
+	 * Copy to clipboard data from Util.copyData
+	 */
+	COPY_TO_CLIPBOARD,
+	/**
+	 * Launch in an external browser the url given in Util.url
+	 */
+	LAUNCH_IN_BROWSER,
 
 }
