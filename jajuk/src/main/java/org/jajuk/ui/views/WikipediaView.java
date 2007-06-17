@@ -40,6 +40,7 @@ import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -52,6 +53,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 
 /**
  * Wikipedia view
@@ -61,25 +64,22 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 
 	private static final long serialVersionUID = 1L;
 
-	// control panel
-	JPanel jpControl;
-
 	JLabel jlLanguage;
 
 	JComboBox jcbLanguage;
 
-	JLabel jlSearchOn;
-
-	JComboBox jcbSearchOn;
-
 	/** Cobra web browser */
 	JajukHtmlPanel browser;
-
-	JButton jbReload;
 
 	JButton jbCopy;
 
 	JButton jbLaunchInExternalBrowser;
+
+	JToggleButton jbAuthorSearch;
+	
+	JToggleButton jbAlbumSearch;
+
+	JToggleButton jbTrackSearch;
 
 	/** Language index */
 	int indexLang = 0;
@@ -112,64 +112,57 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
 	public void initUI() {
-		// Control panel
-		jpControl = new JPanel();
-		jpControl.setBorder(BorderFactory.createEtchedBorder());
-		int iXspace = 10;
-		double p = TableLayout.PREFERRED;
-		double sizeControl[][] =
-		// Language by lang
-		{ { 5, p, p, p, p, p, p, p, TableLayout.FILL, 3 * iXspace }, { 5, p, 5 } };
-		TableLayout layout = new TableLayout(sizeControl);
-		layout.setHGap(iXspace);
-		jpControl.setLayout(layout);
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
 		jcbLanguage = new JComboBox();
 		for (String sLocale : Messages.getLocales()) {
 			jcbLanguage.addItem(Messages.getHumanForLocale(sLocale));
 		}
-		jlSearchOn = new JLabel(Messages.getString("WikipediaView.2"));
-		jcbSearchOn = new JComboBox();
-		jcbSearchOn.addItem(Messages.getString("Item_Author"));
-		jcbSearchOn.addItem(Messages.getString("Item_Album"));
-		jcbSearchOn.addItem(Messages.getString("Item_Track"));
 		// get stored language
 		indexLang = Messages.getLocales().indexOf(
 				ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
 		jcbLanguage.setSelectedIndex(indexLang);
 		jcbLanguage.addActionListener(this);
-		jcbSearchOn.addActionListener(this);
 		// Buttons
-		jbReload = new JButton(IconLoader.ICON_TRACK_FIFO_PLANNED);
-		jbReload.setToolTipText(Messages.getString("WikipediaView.4"));
-		jbReload.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// force event
-				launchSearch(true);
-			}
-		});
 		ActionBase aCopy = ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD);
-		//Remove text inside the button
+		// Remove text inside the button
 		aCopy.setName(null);
 		jbCopy = new JButton(aCopy);
 		ActionBase aBrowse = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
-		//Remove text inside the button
+		// Remove text inside the button
 		aBrowse.setName(null);
 		jbLaunchInExternalBrowser = new JButton(aBrowse);
-		jpControl.add(jbReload, "1,1");
-		jpControl.add(jbCopy, "2,1");
-		jpControl.add(jbLaunchInExternalBrowser, "3,1");
-		jpControl.add(jlLanguage, "4,1");
-		jpControl.add(jcbLanguage, "5,1");
-		jpControl.add(jlSearchOn, "6,1");
-		jpControl.add(jcbSearchOn, "7,1");
+		jbAuthorSearch = new JToggleButton(IconLoader.ICON_AUTHOR,false);
+		jbAuthorSearch.addActionListener(this);
+		jbAlbumSearch = new JToggleButton(IconLoader.ICON_ALBUM,true);
+		jbAlbumSearch.addActionListener(this);
+		jbTrackSearch = new JToggleButton(IconLoader.ICON_TRACK,false);
+		jbTrackSearch.addActionListener(this);
 
+		JToolBar jtb = new JToolBar();
+		jtb.setFloatable(false);
+		jtb.setRollover(true);
+		jtb.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+		//Add items
+		jtb.add(jbAuthorSearch);
+		jtb.add(jbAlbumSearch);
+		jtb.add(jbTrackSearch);
+		jtb.addSeparator();
+		jtb.add(jbCopy);
+		jtb.add(jbLaunchInExternalBrowser);
+		jtb.addSeparator();
+		jtb.add(jcbLanguage);
+		
+		JPanel jpCommand = new JPanel();
+		jpCommand.setBorder(BorderFactory.createEtchedBorder());
+		jpCommand.setLayout(new FlowLayout(FlowLayout.LEFT));
+		jpCommand.add(jtb);
+		
 		// global layout
 		double size[][] = { { 2, TableLayout.FILL, 5 },
 				{ TableLayout.PREFERRED, 5, TableLayout.FILL } };
 		setLayout(new TableLayout(size));
 		browser = new JajukHtmlPanel();
-		add(jpControl, "1,0");
+		add(jpCommand, "1,0");
 		add(browser, "1,2");
 
 		// Display default page at startup is none track launch
@@ -334,9 +327,17 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 					indexLang));
 			// force launch wikipedia search for this language
 			launchSearch(true);
-		} else if (arg0.getSource() == jcbSearchOn) {
-			indexItem = jcbSearchOn.getSelectedIndex();
-			// force launch wikipedia search for this item
+		} else if (arg0.getSource() == jbAlbumSearch) {
+			indexItem = 0;
+			// force event
+			launchSearch(true);
+		} else if (arg0.getSource() == jbAuthorSearch) {
+			indexItem = 1;
+			// force event
+			launchSearch(true);
+		} else if (arg0.getSource() == jbTrackSearch) {
+			indexItem = 2;
+			// force event
 			launchSearch(true);
 		}
 	}
