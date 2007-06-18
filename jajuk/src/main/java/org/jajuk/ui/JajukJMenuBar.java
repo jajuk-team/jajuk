@@ -80,6 +80,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
 	JMenuItem jmiRestoreDefaultViews;
 
+	JMenuItem jmiRestoreDefaultViewsAllPerpsectives;
+
 	JMenu properties;
 
 	JMenuItem jmiNewProperty;
@@ -141,7 +143,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		// View menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.8")); 
 		jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
+		jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(ActionManager.getAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS));
+		
 		views.add(jmiRestoreDefaultViews);
+		views.add(jmiRestoreDefaultViewsAllPerpsectives);
 		views.addSeparator();
 		//Add the list of available views parsed in XML files at startup
 		JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
