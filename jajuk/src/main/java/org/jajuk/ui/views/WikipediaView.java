@@ -132,10 +132,13 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		aBrowse.setName(null);
 		jbLaunchInExternalBrowser = new JButton(aBrowse);
 		jbAuthorSearch = new JToggleButton(IconLoader.ICON_AUTHOR,false);
+		jbAuthorSearch.setToolTipText(Messages.getString("WikipediaView.5"));
 		jbAuthorSearch.addActionListener(this);
 		jbAlbumSearch = new JToggleButton(IconLoader.ICON_ALBUM,true);
+		jbAlbumSearch.setToolTipText(Messages.getString("WikipediaView.6"));
 		jbAlbumSearch.addActionListener(this);
 		jbTrackSearch = new JToggleButton(IconLoader.ICON_TRACK,false);
+		jbTrackSearch.setToolTipText(Messages.getString("WikipediaView.7"));
 		jbTrackSearch.addActionListener(this);
 
 		JToolBar jtb = new JToolBar();
@@ -329,6 +332,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAlbumSearch) {
 			indexItem = 0;
+			//Select item as the second click will deselect it (toggle button)
+			jbAlbumSearch.setSelected(true);
 			//deselect others buttons
 			jbAuthorSearch.setSelected(false);
 			jbTrackSearch.setSelected(false);
@@ -336,6 +341,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAuthorSearch) {
 			indexItem = 1;
+			//Select item as the second click will deselect it (toggle button)
+			jbAuthorSearch.setSelected(true);
 			//deselect others buttons
 			jbAlbumSearch.setSelected(false);
 			jbTrackSearch.setSelected(false);
@@ -343,6 +350,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			launchSearch(true);
 		} else if (arg0.getSource() == jbTrackSearch) {
 			indexItem = 2;
+			//Select item as the second click will deselect it (toggle button)
+			jbTrackSearch.setSelected(true);
 			//deselect others buttons
 			jbAuthorSearch.setSelected(false);
 			jbAlbumSearch.setSelected(false);
