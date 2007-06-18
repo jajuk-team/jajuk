@@ -134,6 +134,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	SearchBox sbSearch;
 
 	SteppedComboBox jcbHistory;
+	
+	JButton jbIncRate;
 
 	public JajukToggleButton jbRepeat;
 
@@ -282,7 +284,11 @@ JPopupMenu popupGlobalRandom;
 		// History
 		VLToolBar vltbHistory = new VLToolBar("history"); 
 		jcbHistory = new SteppedComboBox();
+		ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
+		actionIncRate.setName(null);
+		jbIncRate = new JButton(actionIncRate);
 		vltbHistory.add(jcbHistory);
+		vltbHistory.add(jbIncRate);
 		// we use a combo box model to make sure we get good performances after
 		// rebuilding the entire model like after a refresh
 		jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
@@ -741,6 +747,7 @@ JPopupMenu popupGlobalRandom;
 					ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
 					jsPosition.setEnabled(false);
+					jbIncRate.setEnabled(false);
 					jsPosition.removeMouseWheelListener(CommandJPanel.this);
 					jsPosition.removeChangeListener(CommandJPanel.this);
 					// use set value, not
@@ -760,6 +767,7 @@ JPopupMenu popupGlobalRandom;
 					jsPosition.addMouseWheelListener(CommandJPanel.this);
 					jsPosition.removeChangeListener(CommandJPanel.this);
 					jsPosition.addChangeListener(CommandJPanel.this);
+					jbIncRate.setEnabled(true);
 					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
 					ActionManager.getAction(NEXT_TRACK).setEnabled(true);
 					ActionManager.getAction(REWIND_TRACK).setEnabled(true);

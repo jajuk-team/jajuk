@@ -318,7 +318,12 @@ public enum JajukAction {
 	 * Used to fast-forward the current track.
 	 */
 	FAST_FORWARD_TRACK,
-
+	
+	/**
+	 * Used to increase current track rate
+	 */
+	INC_RATE,
+	
 	/**
 	 * Used to stop playing.
 	 */

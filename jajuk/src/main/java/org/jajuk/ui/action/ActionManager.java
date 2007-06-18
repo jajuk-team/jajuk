@@ -114,6 +114,7 @@ public final class ActionManager {
 		installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
 		installAction(STOP_TRACK, new StopTrackAction(), false);
 		installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
+		installAction(JajukAction.INC_RATE, new IncRateAction(), true);
 
 		// CommandJPanel: Volume control
 		installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);

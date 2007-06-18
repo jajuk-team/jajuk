@@ -92,6 +92,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_PAUSE = new UrlImageIcon(Util
 			.getResource("icons/32x32/player_pause.png"));
 
+	public static final UrlImageIcon ICON_INC_RATING = new UrlImageIcon(Util
+			.getResource("icons/16x16/inc_rating.png"));
+
 	public static final UrlImageIcon ICON_STOP = new UrlImageIcon(Util
 			.getResource("icons/32x32/player_stop.png"));
 
