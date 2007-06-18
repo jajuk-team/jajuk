@@ -19,12 +19,18 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.wizard.QualityFeedbackWizard;
-import org.jajuk.util.IconLoader;
-
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.Iterator;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.jdic.desktop.Desktop;
 
 /**
  * Action for displaying the tip of the day.
@@ -44,9 +50,28 @@ public class QualityAction extends ActionBase {
 	 * @param evt
 	 */
 	public void perform(ActionEvent evt) {
-		QualityFeedbackWizard qfw = new QualityFeedbackWizard();
-		qfw.pack();
-		qfw.setLocationRelativeTo(Main.getWindow());
-		qfw.setVisible(true);
+		String sBody = "";
+		sBody += "Version: " + JAJUK_VERSION + '\n';
+		sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
+		sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
+		Iterator it = Log.getSpool();
+		while (it.hasNext()) {
+			sBody += it.next().toString() + '\n';
+		}
+		// if it is a bug, copy logs into the clipboard
+		StringSelection data = new StringSelection(sBody);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(data, data);
+		try {
+			// Show Trac ticket creation page in an external browser
+			URL url = new URL("http://trac.jajuk.info/newticket");
+			Desktop.browse(url);
+			// Display a message
+			Messages.showInfoMessage(Messages.getString("QualityFeedbackWizard.20"));
+		} catch (Exception e) {
+			Messages.showErrorMessage("136");
+			Log.error(e);
+		}
+
 	}
 }
