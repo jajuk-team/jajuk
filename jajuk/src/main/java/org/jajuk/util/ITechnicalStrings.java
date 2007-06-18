@@ -278,6 +278,10 @@ public interface ITechnicalStrings {
 	public static final String COLLECTION_LOGICAL = "logical";
 	
 	public static final String COLLECTION_PHYSICAL = "physical";
+	
+	public static final String ALL = "all";
+	
+	public static final String LOCAL = "local";
 		
 	// Command line options
 	// if selected, no jajuk window at startup, only tray

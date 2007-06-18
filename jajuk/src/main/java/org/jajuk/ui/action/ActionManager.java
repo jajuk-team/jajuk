@@ -125,6 +125,7 @@ public final class ActionManager {
 
 		// JajukJMenuBar: views
 		installAction(VIEW_RESTORE_DEFAULTS, new RestoreViewsAction(), false);
+		installAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS, new RestoreAllViewsAction(), false);
 
 		// JajukJMenuBar: attributes
 		installAction(CUSTOM_PROPERTIES_ADD, new NewPropertyAction(), false);

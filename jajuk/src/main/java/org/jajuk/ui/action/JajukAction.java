@@ -113,6 +113,10 @@ public enum JajukAction {
 	 * Used when defaults settings need to be restored.
 	 */
 	VIEW_RESTORE_DEFAULTS,
+	/**
+	 * Used when defaults settings for all perspectives
+	 */
+	ALL_VIEW_RESTORE_DEFAULTS,
 
 	/**
 	 * Used when a command from the history is selected.

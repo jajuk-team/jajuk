@@ -49,6 +49,8 @@ import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.RestoreAllViewsAction;
+import org.jajuk.ui.action.RestoreViewsAction;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.ui.wizard.TipOfTheDay;
@@ -379,8 +381,10 @@ public class Main implements ITechnicalStrings {
 							org.jajuk.util.ConfigurationManager.commit();
 							// commit history
 							History.commit();
-							// commit perspectives
-							PerspectiveManager.commit();
+							// commit perspectives if no full restore engaged
+							if (!RestoreAllViewsAction.fullRestore){
+								PerspectiveManager.commit();
+							}
 							// Commit collection if not refreshing ( fix for
 							// 939816 )
 							if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
@@ -391,7 +395,7 @@ public class Main implements ITechnicalStrings {
 							}
 							// Commit toolbars (only if it is visible to avoid
 							// commiting void screen)
-							if (getWindow() != null && getWindow().isWindowVisible()) {
+							if (!RestoreAllViewsAction.fullRestore && getWindow() != null && getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
 								FileOutputStream out = new FileOutputStream(Util
 										.getConfFileByPath(FILE_TOOLBARS_CONF));
