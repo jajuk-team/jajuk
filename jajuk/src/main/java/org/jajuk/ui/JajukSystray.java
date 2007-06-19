@@ -43,6 +43,7 @@ import org.jdesktop.jdic.tray.TrayIcon;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -52,16 +53,17 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 import ext.SliderMenuItem;
 
 /**
  * Jajuk systray
  */
-public class JajukSystray extends CommandJPanel implements ChangeListener {
+public class JajukSystray extends CommandJPanel {
 	private static final long serialVersionUID = 1L;
 
 	// Systray variables
@@ -102,6 +104,8 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 	JMenu jmAmbience;
 
 	long lDateLastAdjust;
+	
+	JSlider jsPosition;
 
 	/** Visible at startup? */
 	JCheckBoxMenuItem jcbmiVisible;
@@ -141,6 +145,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 		}
 	}
 
+		
 	/**
 	 * Systray constructor
 	 * 
@@ -381,7 +386,25 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 					JajukSystray.super.update(event);
 				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
 						&& !Player.isPaused()) {
-					JajukSystray.super.update(event);
+					long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
+						int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
+						// Make sure to enable the slider
+						if (!jsPosition.isEnabled()) {
+							jsPosition.setEnabled(true);
+						}
+						// if position is adjusting, no don't disturb user
+						if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
+							return;
+						}
+						// make sure not to set to old position
+						if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
+							return;
+						}
+						// remove and re-add listener to make sure not to add it
+						// twice
+						jsPosition.removeChangeListener(JajukSystray.this);
+						jsPosition.setValue(iPos);
+						jsPosition.addChangeListener(JajukSystray.this);
 				} else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(subject)
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
 					Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
@@ -520,5 +543,47 @@ public class JajukSystray extends CommandJPanel implements ChangeListener {
 			jmAmbience.add(jmi);
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.getSource() == jsPosition) {
+			int iOld = jsPosition.getValue();
+			int iNew = iOld - (e.getUnitsToScroll() * 3);
+			jsPosition.setValue(iNew);
+		}
+		else{
+			super.mouseWheelMoved(e);
+		}
+	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	public void stateChanged(ChangeEvent e) {
+		if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
+			lDateLastAdjust = System.currentTimeMillis();
+			setPosition((float) jsPosition.getValue() / 100);
+		}
+		else{
+			super.stateChanged(e);
+		}
+	}
+
+	
+	/**
+	 * Call a seek
+	 * 
+	 * @param fPosition
+	 */
+	private void setPosition(final float fPosition) {
+		new Thread() {
+			public void run() {
+				Player.seek(fPosition);
+			}
+		}.start();
+	}
 }

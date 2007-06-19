@@ -27,8 +27,10 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -37,21 +39,26 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
+import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * Status / information panel ( static view )
  */
-public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer {
+public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
+		ChangeListener, MouseWheelListener {
 	private static final long serialVersionUID = 1L;
 
 	// consts
@@ -66,6 +73,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
 	/** Self instance */
 	static private InformationJPanel ijp = null;
+
+	/** Last slider manual move date */
+	private static long lDateLastAdjust;
 
 	/** Swing Timer to refresh the component */
 	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
@@ -93,7 +103,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
 	JLabel jlTotal;
 
-	JProgressBar jpbCurrent;
+	JLabel jlPosition;
+
+	JSlider jsPosition;
 
 	JLabel jlCurrent;
 
@@ -122,52 +134,55 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		// message bar
 		JToolBar jtbMessage = new JToolBar();
 		jtbMessage.setFloatable(false);
-		//Set a zero minimum size to allow user to reduce window width
-		jtbMessage.setMinimumSize(new Dimension(0,0));
-		//We use toolbar to display vertical separator lines
+		// Set a zero minimum size to allow user to reduce window width
+		jtbMessage.setMinimumSize(new Dimension(0, 0));
+		// We use toolbar to display vertical separator lines
 		jlMessage = new JLabel();
-		jlMessage.setOpaque(true);
-		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); 
+		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
 		jtbMessage.add(jlMessage);
 		jtbMessage.add(Box.createHorizontalGlue());
 		jtbMessage.addSeparator();
-		
+
 		// selection bar
 		JToolBar jtbSelection = new JToolBar();
 		jtbSelection.setFloatable(false);
-		jtbMessage.setMinimumSize(new Dimension(0,0));
+		jtbMessage.setMinimumSize(new Dimension(0, 0));
 		jlSelection = new JLabel();
 		jtbSelection.add(jlSelection);
 		jtbSelection.add(Box.createHorizontalGlue());
 		jtbSelection.addSeparator();
-		
+
 		// total progress bar
 		JToolBar jtbTotal = new JToolBar();
-		jtbTotal.setMinimumSize(new Dimension(0,0));
+		jtbTotal.setMinimumSize(new Dimension(0, 0));
 		jtbTotal.setFloatable(false);
 		jlTotal = new JLabel();
-		jlTotal.setToolTipText(Messages.getString("InformationJPanel.5")); 
+		jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
 		jtbTotal.add(jlTotal);
 		jtbTotal.add(Box.createHorizontalGlue());
 		jtbTotal.addSeparator();
-		
+
 		// current progress bar
 		JToolBar jtbProgress = new JToolBar();
-		jtbProgress.setMinimumSize(new Dimension(0,0));
+		jtbProgress.setMinimumSize(new Dimension(0, 0));
 		jtbProgress.setFloatable(false);
-		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7")); 
-		jpbCurrent = new JProgressBar(0, 100);
-		jpbCurrent.setStringPainted(true);
+		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7"));
+		jlPosition = new JLabel(IconLoader.ICON_POSITION);
+		jsPosition = new JSlider(0, 100, 0);
+		jsPosition.addChangeListener(this);
+		jsPosition.setEnabled(false);
+		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
+		jtbProgress.add(jlPosition);
+		jtbProgress.add(jsPosition);
 		jlCurrent = new JLabel();
 		jtbProgress.add(jlCurrent);
 		jtbProgress.add(Box.createHorizontalStrut(6));
-		jtbProgress.add(jpbCurrent);
 
 		// add widgets
-		add(jtbMessage, "0,0"); 
-		add(jtbSelection, "1,0"); 
-		add(jtbTotal, "2,0"); 
-		add(jtbProgress, "3,0"); 
+		add(jtbMessage, "0,0");
+		add(jtbSelection, "1,0");
+		add(jtbTotal, "2,0");
+		add(jtbProgress, "3,0");
 
 		// check if some track has been launched before the view has been
 		// displayed
@@ -218,14 +233,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 	 */
 	public String getSelection() {
 		return this.sSelection;
-	}
-
-	/**
-	 * @param i
-	 */
-	public void setCurrentTime(int i) {
-		iCurrentStatus = i;
-		jpbCurrent.setValue(i);
 	}
 
 	/**
@@ -300,24 +307,22 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		if (EventSubject.EVENT_PLAY_ERROR.equals(subject)) {
 			try {
 				// reset data
-				setCurrentTimeMessage(Util.formatTimeBySec(0, false)
-						+ " / " + Util.formatTimeBySec(0, false)); 
-				setCurrentTime(0);
+				setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
+						+ Util.formatTimeBySec(0, false));
 				// set error message
 				File fCurrent = (File) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE);
 				if (fCurrent != null) {
 					// display associated error code is given
 					String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
 					if (sReason != null) {
-						setMessage(
-								Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR); 
+						setMessage(Messages.getString("Error." + sReason) + ": "
+								+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
 					} else {// default message
-						setMessage(
-								Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(), InformationJPanel.ERROR); 
+						setMessage(Messages.getString("Error.007") + ": "
+								+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
 					}
 				} else { // none specified file
-					setMessage(Messages.getString("Error.007"), 
-							InformationJPanel.ERROR);
+					setMessage(Messages.getString("Error.007"), InformationJPanel.ERROR);
 				}
 			} catch (Exception e) {
 				Log.error(e);
@@ -330,30 +335,69 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
 						long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
 						int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
-						setCurrentTime(iPos);
 						String sCurrentTotalMessage = Util.formatTimeBySec(JajukTimer.getInstance()
 								.getTotalTimeToPlay(), false);
 						setTotalTimeMessage(sCurrentTotalMessage + " ["
 								+ FIFO.getInstance().getFIFO().size() + "]");
-
-						setCurrentTimeMessage(Util.formatTimeBySec(lTime, false)
-								+ " / " + Util.formatTimeBySec(length, false));
-					} else if (EventSubject.EVENT_ZERO.equals(subject)) {
-						setCurrentTimeMessage(Util.formatTimeBySec(0, false)
-								+ " / " + Util.formatTimeBySec(0, false)); 
-						setCurrentTime(0);
+						setCurrentTimeMessage(Util.formatTimeBySec(lTime, false) + " / "
+								+ Util.formatTimeBySec(length, false));
+						// Make sure to enable the slider
+						if (!jsPosition.isEnabled()) {
+							jsPosition.setEnabled(true);
+						}
+						// if position is adjusting, no dont disturb user
+						if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
+							return;
+						}
+						// make sure not to set to old position
+						if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
+							return;
+						}
+						// remove and re-add listener to make sure not to add it
+						// twice
+						jsPosition.removeChangeListener(InformationJPanel.this);
+						jsPosition.setValue(iPos);
+						jsPosition.addChangeListener(InformationJPanel.this);
+					} else if (EventSubject.EVENT_ZERO.equals(subject)
+							|| EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+						setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
+								+ Util.formatTimeBySec(0, false));
+						jsPosition.setEnabled(false);
+						jsPosition.removeMouseWheelListener(InformationJPanel.this);
+						jsPosition.removeChangeListener(InformationJPanel.this);
+						// use set value, not
+						// setPosition that would cause
+						// a seek that could fail with
+						// some formats
+						jsPosition.setValue(0);
+						// reset startup position
+						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
 						setTotalTimeMessage("00:00:00");
-						setMessage(
-								Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE); 
+						setMessage(Messages.getString("JajukWindow.18"),
+								InformationJPanel.INFORMATIVE);
 					} else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
 						File file = FIFO.getInstance().getCurrentFile();
 						if (file != null) {
-							String sMessage = Messages.getString("FIFO.10") + " " + file.getTrack().getAuthor().getName2()  
-									+ " / " + file.getTrack().getAlbum().getName2() + " / "  
-									+ file.getTrack().getName();  
+							String sMessage = Messages.getString("FIFO.10") + " "
+									+ file.getTrack().getAuthor().getName2() + " / "
+									+ file.getTrack().getAlbum().getName2() + " / "
+									+ file.getTrack().getName();
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
+					} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+						jsPosition.setEnabled(false);
+						jsPosition.removeMouseWheelListener(InformationJPanel.this);
+						jsPosition.removeChangeListener(InformationJPanel.this);
+					} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+						// remove and re-add listener to make sure not to add it
+						// twice
+						jsPosition.removeMouseWheelListener(InformationJPanel.this);
+						jsPosition.addMouseWheelListener(InformationJPanel.this);
+						jsPosition.removeChangeListener(InformationJPanel.this);
+						jsPosition.addChangeListener(InformationJPanel.this);
+						jsPosition.setEnabled(true);
 					}
+
 				}
 			});
 		}
@@ -368,5 +412,50 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
 	public int getMessageType() {
 		return iType;
+	}
+
+	/**
+	 * Call a seek
+	 * 
+	 * @param fPosition
+	 */
+	private void setPosition(final float fPosition) {
+		new Thread() {
+			public void run() {
+				Player.seek(fPosition);
+			}
+		}.start();
+	}
+
+	/**
+	 * @return Position value
+	 */
+	public int getCurrentPosition() {
+		return this.jsPosition.getValue();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	public void stateChanged(ChangeEvent e) {
+		if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
+			lDateLastAdjust = System.currentTimeMillis();
+			setPosition((float) jsPosition.getValue() / 100);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.getSource() == jsPosition) {
+			int iOld = jsPosition.getValue();
+			int iNew = iOld - (e.getUnitsToScroll() * 3);
+			jsPosition.setValue(iNew);
+		}
 	}
 }

@@ -129,12 +129,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	// Toolbar panel
 	ToolBarPanel topPanel;
-
+	
 	// widgets declaration
 	SearchBox sbSearch;
 
 	SteppedComboBox jcbHistory;
-	
+
 	JButton jbIncRate;
 
 	public JajukToggleButton jbRepeat;
@@ -155,7 +155,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	JRadioButtonMenuItem jmiShuffleModeAlbum2;
 
-JPopupMenu popupGlobalRandom;
+	JPopupMenu popupGlobalRandom;
 
 	JajukButton jbBestof;
 
@@ -195,10 +195,6 @@ JPopupMenu popupGlobalRandom;
 
 	JPanel jpPosition;
 
-	JLabel jlPosition;
-
-	JSlider jsPosition;
-
 	public JajukToggleButton jbMute;
 
 	// variables declaration
@@ -217,9 +213,6 @@ JPopupMenu popupGlobalRandom;
 	/** Forward or rewind jump size in track percentage */
 	static final float JUMP_SIZE = 0.1f;
 
-	/** Last slider manual move date */
-	private static long lDateLastAdjust;
-
 	/** Swing Timer to refresh the component */
 	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -233,7 +226,7 @@ JPopupMenu popupGlobalRandom;
 			// Selected 'Any" ambience
 			if (ambiencesCombo.getSelectedIndex() == 0) {
 				// reset default ambience
-				ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ""); 
+				ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, "");
 			} else {// Selected an ambience
 				Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
 						(String) ambiencesCombo.getSelectedItem());
@@ -268,21 +261,21 @@ JPopupMenu popupGlobalRandom;
 	public void initUI() {
 		ToolBarContainer container = Main.getToolbarContainer();
 		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
-		container.setMinimumSize(new Dimension(0,0));
-		topPanel.setOpaque(true);
+		container.setMinimumSize(new Dimension(0, 0));
 		// Search
-		VLToolBar vltbSearch = new VLToolBar("search"); 
-		vltbSearch.setMinimumSize(new Dimension(0,0));
+		VLToolBar vltbSearch = new VLToolBar("search");
+		vltbSearch.setMinimumSize(new Dimension(0, 0));
 		double[][] sizeSearch = new double[][] {
 				{ 3, TableLayout.PREFERRED, 3, TableLayout.PREFERRED }, { TableLayout.PREFERRED } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
-		jpSearch.add(new JLabel(IconLoader.ICON_SEARCH), "1,0"); 
-		jpSearch.add(sbSearch, "3,0"); 
+		jpSearch.add(new JLabel(IconLoader.ICON_SEARCH), "1,0");
+		jpSearch.add(sbSearch, "3,0");
 		vltbSearch.add(jpSearch);
 
 		// History
-		VLToolBar vltbHistory = new VLToolBar("history"); 
+		VLToolBar vltbHistory = new VLToolBar("history");
+		vltbHistory.setCollapsible(true);
 		jcbHistory = new SteppedComboBox();
 		ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
 		actionIncRate.setName(null);
@@ -297,13 +290,13 @@ JPopupMenu popupGlobalRandom;
 		jcbHistory.setPopupWidth(iWidth);
 		// size of the combo itself, keep it! as text can be very long
 		jcbHistory.setPreferredSize(new Dimension(300, 25));
-		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); 
+		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
 		jcbHistory.addActionListener(CommandJPanel.this);
 
 		// Mode toolbar
-		VLToolBar vltbModes = new VLToolBar("modes"); 
+		VLToolBar vltbModes = new VLToolBar("modes");
 		vltbModes.setOpaque(false);
-		vltbModes.setCollapsible(false);
+		vltbModes.setCollapsible(true);
 		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
 		jtbModes.setOpaque(false);
@@ -331,7 +324,8 @@ JPopupMenu popupGlobalRandom;
 		vltbModes.add(jtbModes);
 
 		// Volume
-		VLToolBar vltbVolume = new VLToolBar("volume"); 
+		VLToolBar vltbVolume = new VLToolBar("volume");
+		vltbVolume.setCollapsible(true);
 		vltbVolume.setOpaque(false);
 		jpVolume = new JPanel();
 		ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
@@ -348,40 +342,24 @@ JPopupMenu popupGlobalRandom;
 		jsVolume.setBorder(new DropShadowBorder());
 		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
-		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); 
+		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14"));
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
 		// size of the combo itself
 		vltbVolume.add(jpVolume);
 
-		// Position
-		VLToolBar vltbPosition = new VLToolBar("position"); 
-		vltbPosition.setOpaque(false);
-		jpPosition = new JPanel();
-		jpPosition.setOpaque(false);
-		jpPosition.setLayout(new BoxLayout(jpPosition, BoxLayout.X_AXIS));
-		jlPosition = new JLabel(IconLoader.ICON_POSITION);
-		jsPosition = new JSlider(0, 100, 0);
-		jsPosition.setBorder(new DropShadowBorder());
-		jpPosition.add(jlPosition);
-		jpPosition.add(jsPosition);
-		jsPosition.addChangeListener(CommandJPanel.this);
-		jsPosition.setEnabled(false);
-		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); 
-		vltbPosition.add(jpPosition);
-
 		// Special functions toolbar
-		VLToolBar vltbSpecial = new VLToolBar("smart"); 
+		VLToolBar vltbSpecial = new VLToolBar("smart");
 		vltbSpecial.setOpaque(false);
-		vltbSpecial.setCollapsible(false);
+		vltbSpecial.setCollapsible(true);
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
 		ambiencesCombo.setPopupWidth(iWidth);
-		ambiencesCombo.setFont(new Font(
-				"dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE) + 2));
+		ambiencesCombo.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
+				.getInt(CONF_FONTS_SIZE) + 2));
 		// size of the combo itself
-		//ambiencesCombo.setMaximumSize(new Dimension(100, 20));
+		// ambiencesCombo.setMaximumSize(new Dimension(100, 20));
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
@@ -400,18 +378,18 @@ JPopupMenu popupGlobalRandom;
 		};
 		ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
 		popupGlobalRandom = new JPopupMenu();
-		//Global shuffle
-		jmiShuffleModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20")); 
+		// Global shuffle
+		jmiShuffleModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20"));
 		jmiShuffleModeSong.addActionListener(this);
-		//album / album
-		jmiShuffleModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.21")); 
+		// album / album
+		jmiShuffleModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.21"));
 		jmiShuffleModeAlbum.addActionListener(this);
-		//Shuffle album / album
-		jmiShuffleModeAlbum2 = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22")); 
+		// Shuffle album / album
+		jmiShuffleModeAlbum2 = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22"));
 		jmiShuffleModeAlbum2.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
 			jmiShuffleModeSong.setSelected(true);
-		} else if(ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+		} else if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
 			jmiShuffleModeAlbum2.setSelected(true);
 		} else {
 			jmiShuffleModeAlbum.setSelected(true);
@@ -423,7 +401,7 @@ JPopupMenu popupGlobalRandom;
 		popupGlobalRandom.add(jmiShuffleModeSong);
 		popupGlobalRandom.add(jmiShuffleModeAlbum);
 		popupGlobalRandom.add(jmiShuffleModeAlbum2);
-		ddbGlobalRandom.setText("");// no text visible 
+		ddbGlobalRandom.setText("");// no text visible
 
 		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
 
@@ -437,9 +415,9 @@ JPopupMenu popupGlobalRandom;
 		};
 		ddbNovelties.setAction(ActionManager.getAction(NOVELTIES));
 		popupNovelties = new JPopupMenu();
-		jmiNoveltiesModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20")); 
+		jmiNoveltiesModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20"));
 		jmiNoveltiesModeSong.addActionListener(this);
-		jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.21")); 
+		jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.21"));
 		jmiNoveltiesModeAlbum.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
 			jmiNoveltiesModeSong.setSelected(true);
@@ -451,7 +429,7 @@ JPopupMenu popupGlobalRandom;
 		bgNovelties.add(jmiNoveltiesModeAlbum);
 		popupNovelties.add(jmiNoveltiesModeSong);
 		popupNovelties.add(jmiNoveltiesModeAlbum);
-		ddbNovelties.setText("");// no text visible 
+		ddbNovelties.setText("");// no text visible
 
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
 		popupDDJ = new JPopupMenu();
@@ -466,7 +444,7 @@ JPopupMenu popupGlobalRandom;
 		ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
 		populateDJs();
 		// no text visible
-		ddbDDJ.setText(""); 
+		ddbDDJ.setText("");
 
 		jtbSpecial.add(ambiencesCombo);
 		jtbSpecial.addSeparator();
@@ -478,9 +456,9 @@ JPopupMenu popupGlobalRandom;
 		vltbSpecial.add(jtbSpecial);
 
 		// Play toolbar
-		VLToolBar vltbPlay = new VLToolBar("player"); 
+		VLToolBar vltbPlay = new VLToolBar("player");
 		vltbPlay.setOpaque(false);
-		vltbPlay.setCollapsible(false);
+		vltbPlay.setCollapsible(true);
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setBorder(null);
 		jtbPlay.setFloatable(false);
@@ -504,12 +482,12 @@ JPopupMenu popupGlobalRandom;
 		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
 		jtbPlay.add(jbMute);
-		
+
 		// we use a strut as empty borders are now always applied on toolbars
 		vltbPlay.add(jtbPlay);
 
 		boolean bToolbarInstallationOK = false; // flag
-	
+
 		// Load stored toolbar configuration
 		if (Util.getConfFileByPath(FILE_TOOLBARS_CONF).exists()) {
 			try {
@@ -518,7 +496,6 @@ JPopupMenu popupGlobalRandom;
 				container.registerToolBar(vltbHistory);
 				container.registerToolBar(vltbModes);
 				container.registerToolBar(vltbVolume);
-				container.registerToolBar(vltbPosition);
 				container.registerToolBar(vltbPlay);
 				container.registerToolBar(vltbSpecial);
 
@@ -549,7 +526,6 @@ JPopupMenu popupGlobalRandom;
 			topPanel.add(vltbSearch, new ToolBarConstraints(0, 0));
 			topPanel.add(vltbHistory, new ToolBarConstraints(0, 1));
 			topPanel.add(vltbVolume, new ToolBarConstraints(0, 2));
-			topPanel.add(vltbPosition, new ToolBarConstraints(0, 3));
 			topPanel.add(vltbPlay, new ToolBarConstraints(1, 0));
 			topPanel.add(vltbSpecial, new ToolBarConstraints(1, 1));
 			topPanel.add(vltbModes, new ToolBarConstraints(1, 2));
@@ -616,7 +592,7 @@ JPopupMenu popupGlobalRandom;
 							// can be thrown if file is null
 						}
 					} else {
-						Messages.showErrorMessage("120");  
+						Messages.showErrorMessage("120");
 						jcbHistory.setSelectedItem(null);
 					}
 				}
@@ -673,37 +649,10 @@ JPopupMenu popupGlobalRandom;
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-	if (e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting()) {
+		if (e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting()) {
 			// this value should be low to make sure we can reach zero
-			if (System.currentTimeMillis() - lDateLastAdjust > 20) {
-				setVolume((float) jsVolume.getValue() / 100);
-				lDateLastAdjust = System.currentTimeMillis();
-			}
-		} else if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
-			lDateLastAdjust = System.currentTimeMillis();
-			setPosition((float) jsPosition.getValue() / 100);
+			setVolume((float) jsVolume.getValue() / 100);
 		}
-	}
-	
-
-	/**
-	 * Call a seek
-	 * 
-	 * @param fPosition
-	 */
-	private void setPosition(final float fPosition) {
-		new Thread() {
-			public void run() {
-				Player.seek(fPosition);
-			}
-		}.start();
-	}
-
-	/**
-	 * @return Position value
-	 */
-	public int getCurrentPosition() {
-		return this.jsPosition.getValue();
 	}
 
 	/**
@@ -713,7 +662,7 @@ JPopupMenu popupGlobalRandom;
 		return this.jsVolume.getValue();
 	}
 
-	private void setVolume(final float fVolume) {
+	public void setVolume(final float fVolume) {
 		jsVolume.removeChangeListener(CommandJPanel.this);
 		jsVolume.removeMouseWheelListener(CommandJPanel.this);
 		// if user move the volume slider, unmute
@@ -746,27 +695,13 @@ JPopupMenu popupGlobalRandom;
 					ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
 					ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
-					jsPosition.setEnabled(false);
 					jbIncRate.setEnabled(false);
-					jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					jsPosition.removeChangeListener(CommandJPanel.this);
-					// use set value, not
-					// setPosition that would cause
-					// a seek that could fail with
-					// some formats
-					jsPosition.setValue(0);
 					// Reset history so user can launch again stopped
 					// track (selection must change to throw an ActionEvent)
 					jcbHistory.setSelectedIndex(-1);
 					// reset startup position
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
 				} else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)) {
-					// remove and re-add listener to make sure not to add it
-					// twice
-					jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					jsPosition.addMouseWheelListener(CommandJPanel.this);
-					jsPosition.removeChangeListener(CommandJPanel.this);
-					jsPosition.addChangeListener(CommandJPanel.this);
 					jbIncRate.setEnabled(true);
 					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
 					ActionManager.getAction(NEXT_TRACK).setEnabled(true);
@@ -778,40 +713,14 @@ JPopupMenu popupGlobalRandom;
 					ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
 					ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
-					jsPosition.setEnabled(true);
 				} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
 					ActionManager.getAction(REWIND_TRACK).setEnabled(false);
 					ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
-					jsPosition.setEnabled(false);
-					jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					jsPosition.removeChangeListener(CommandJPanel.this);
 				} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
-					// remove and re-add listener to make sure not to add it
-					// twice
-					jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					jsPosition.addMouseWheelListener(CommandJPanel.this);
-					jsPosition.removeChangeListener(CommandJPanel.this);
-					jsPosition.addChangeListener(CommandJPanel.this);
 					ActionManager.getAction(REWIND_TRACK).setEnabled(true);
 					ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
-					jsPosition.setEnabled(true);
-				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
-						&& !Player.isPaused()) {
-					// if position is adjusting, no dont disturb user
-					if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
-						return;
-					}
-					// make sure not to set to old position
-					if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
-						return;
-					}
-					int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
-					jsPosition.removeChangeListener(CommandJPanel.this);
-					jsPosition.removeChangeListener(CommandJPanel.this);
-					jsPosition.setValue(iPos);
-					jsPosition.addChangeListener(CommandJPanel.this);
 				} else if (EventSubject.EVENT_SPECIAL_MODE.equals(subject)) {
 					if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(
 							DETAIL_SPECIAL_MODE_NORMAL)) {
@@ -842,6 +751,7 @@ JPopupMenu popupGlobalRandom;
 					// from the model by History class)
 					jcbHistory.setSelectedItem(null);
 				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
+					System.out.println("1");
 					jsVolume.removeChangeListener(CommandJPanel.this);
 					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
 					jsVolume.addChangeListener(CommandJPanel.this);
@@ -851,7 +761,7 @@ JPopupMenu popupGlobalRandom;
 					// If no more DJ, change the tooltip
 					if (DigitalDJManager.getInstance().getDJs().size() == 0) {
 						ActionBase action = ActionManager.getAction(JajukAction.DJ);
-						action.setShortDescription(Messages.getString("CommandJPanel.18"));    
+						action.setShortDescription(Messages.getString("CommandJPanel.18"));
 					}
 				} else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(event.getSubject())
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
@@ -871,23 +781,23 @@ JPopupMenu popupGlobalRandom;
 		// Selected 'Any" ambience
 		if (ambiencesCombo.getSelectedIndex() == 0) {
 			ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-			action.setShortDescription(Messages.getString("JajukWindow.31")); 
+			action.setShortDescription(Messages.getString("JajukWindow.31"));
 			action = ActionManager.getAction(JajukAction.BEST_OF);
-			action.setShortDescription(Messages.getString("JajukWindow.24")); 
+			action.setShortDescription(Messages.getString("JajukWindow.24"));
 			action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-			action.setShortDescription(Messages.getString("JajukWindow.23")); 
+			action.setShortDescription(Messages.getString("JajukWindow.23"));
 		} else {// Selected an ambience
 			Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
 					(String) ambiencesCombo.getSelectedItem());
 			ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-			action
-					.setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>" + ambience.getName() + "</b></p></html>");    
+			action.setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>"
+					+ ambience.getName() + "</b></p></html>");
 			action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-			action
-					.setShortDescription("<html>" + Messages.getString("JajukWindow.23") + "<p><b>" + ambience.getName() + "</b></p></html>");    
+			action.setShortDescription("<html>" + Messages.getString("JajukWindow.23") + "<p><b>"
+					+ ambience.getName() + "</b></p></html>");
 			action = ActionManager.getAction(JajukAction.BEST_OF);
-			action
-					.setShortDescription("<html>" + Messages.getString("JajukWindow.24") + "<p><b>" + ambience.getName() + "</b></p></html>");    
+			action.setShortDescription("<html>" + Messages.getString("JajukWindow.24") + "<p><b>"
+					+ ambience.getName() + "</b></p></html>");
 		}
 	}
 
@@ -898,19 +808,21 @@ JPopupMenu popupGlobalRandom;
 	private void populateDJs() {
 		try {
 			popupDDJ.removeAll();
-			JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS)); 
+			JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
 			popupDDJ.add(jmiNew);
 			Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
 			while (it.hasNext()) {
 				final DigitalDJ dj = (DigitalDJ) it.next();
-				JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(), IconLoader.ICON_DIGITAL_DJ_16x16);
+				JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
+						IconLoader.ICON_DIGITAL_DJ_16x16);
 				jmi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());
 						populateDJs();
 						ActionBase action = ActionManager.getAction(JajukAction.DJ);
-						action
-								.setShortDescription("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>" + dj.getName() + "</b></p></html>");    
+						action.setShortDescription("<html>"
+								+ Messages.getString("CommandJPanel.18") + "<p><b>" + dj.getName()
+								+ "</b></p></html>");
 					}
 				});
 				popupDDJ.add(jmi);
@@ -929,8 +841,8 @@ JPopupMenu popupGlobalRandom;
 	void populateAmbiences() {
 		ambiencesCombo.removeActionListener(ambienceListener);
 		ambiencesCombo.removeAllItems();
-		ambiencesCombo.addItem("<html><i>" + 
-				Messages.getString("DigitalDJWizard.64") + "</i></html>");  
+		ambiencesCombo.addItem("<html><i>" + Messages.getString("DigitalDJWizard.64")
+				+ "</i></html>");
 		// Add available ambiences
 		for (final Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
 			ambiencesCombo.addItem(ambience.getName());
@@ -943,7 +855,7 @@ JPopupMenu popupGlobalRandom;
 		if (defaultAmbience != null) {
 			ambiencesCombo.setSelectedItem(defaultAmbience.getName());
 		}
-		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66")); 
+		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
 		ambiencesCombo.addActionListener(ambienceListener);
 	}
 
@@ -960,11 +872,7 @@ JPopupMenu popupGlobalRandom;
 	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (e.getSource() == jsPosition) {
-			int iOld = jsPosition.getValue();
-			int iNew = iOld - (e.getUnitsToScroll() * 3);
-			jsPosition.setValue(iNew);
-		} else if (e.getSource() == jsVolume) {
+		if (e.getSource() == jsVolume) {
 			int iOld = jsVolume.getValue();
 			int iNew = iOld - (e.getUnitsToScroll() * 3);
 			jsVolume.setValue(iNew);

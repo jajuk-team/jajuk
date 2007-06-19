@@ -50,7 +50,6 @@ import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.RestoreAllViewsAction;
-import org.jajuk.ui.action.RestoreViewsAction;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.ui.wizard.TipOfTheDay;
