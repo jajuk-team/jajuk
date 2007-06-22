@@ -65,6 +65,8 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.util.JVM;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -282,7 +284,7 @@ public class Main implements ITechnicalStrings {
 
 			// Apply any proxy (requieres load conf)
 			DownloadManager.setDefaultProxySettings();
-			
+
 			// Display progress
 			sc.setProgress(0, Messages.getString("SplashScreen.0"));
 
@@ -381,7 +383,7 @@ public class Main implements ITechnicalStrings {
 							// commit history
 							History.commit();
 							// commit perspectives if no full restore engaged
-							if (!RestoreAllViewsAction.fullRestore){
+							if (!RestoreAllViewsAction.fullRestore) {
 								PerspectiveManager.commit();
 							}
 							// Commit collection if not refreshing ( fix for
@@ -394,7 +396,8 @@ public class Main implements ITechnicalStrings {
 							}
 							// Commit toolbars (only if it is visible to avoid
 							// commiting void screen)
-							if (!RestoreAllViewsAction.fullRestore && getWindow() != null && getWindow().isWindowVisible()) {
+							if (!RestoreAllViewsAction.fullRestore && getWindow() != null
+									&& getWindow().isWindowVisible()) {
 								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
 								FileOutputStream out = new FileOutputStream(Util
 										.getConfFileByPath(FILE_TOOLBARS_CONF));
@@ -1187,7 +1190,7 @@ public class Main implements ITechnicalStrings {
 
 					// Prepare toolbars
 					DockingUISettings.getInstance().installUI();
-					tbcontainer = ToolBarContainer.createDefaultContainer(true, true, true, true);
+					tbcontainer = ToolBarContainer.createDefaultContainer(true, false, true, false);
 					tbcontainer.setOpaque(false);
 
 					// starts ui
@@ -1196,7 +1199,7 @@ public class Main implements ITechnicalStrings {
 
 					// Creates the panel
 					jpFrame = (JPanel) jw.getContentPane();
-					jpFrame.setOpaque(true);
+					jpFrame.setOpaque(false);
 					jpFrame.setLayout(new BorderLayout());
 
 					// create the command bar
@@ -1206,8 +1209,7 @@ public class Main implements ITechnicalStrings {
 					// Create the information bar panel
 					information = InformationJPanel.getInstance();
 
-					// Add static panels
-					jpFrame.add(command, BorderLayout.NORTH);
+					// Add information panel
 					jpFrame.add(information, BorderLayout.SOUTH);
 
 					// Create the perspective manager
@@ -1238,7 +1240,16 @@ public class Main implements ITechnicalStrings {
 					PerspectiveManager.init();
 
 					// Add main container (contains toolbars + desktop)
-					jpFrame.add(tbcontainer, BorderLayout.CENTER);
+					JPanel jpCommandScreen = new JPanel();
+					// jpCommandScreen.setLayout(new
+					// BoxLayout(jpCommandScreen,BoxLayout.Y_AXIS));
+					// jpCommandScreen.setLayout(new VerticalLayout());
+					double[][] sizeCenter = new double[][] { { TableLayout.FILL },
+							{ TableLayout.FILL, 75 } };
+					jpCommandScreen.setLayout(new TableLayout(sizeCenter));
+					jpCommandScreen.add(tbcontainer, "0,0");
+					jpCommandScreen.add(command, "0,1");
+					jpFrame.add(jpCommandScreen, BorderLayout.CENTER);
 					jw.setCursor(Util.DEFAULT_CURSOR);
 
 					// Upgrade step2

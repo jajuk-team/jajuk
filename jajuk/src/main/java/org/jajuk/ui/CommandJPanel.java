@@ -38,7 +38,6 @@ import static org.jajuk.ui.action.JajukAction.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 
-import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
@@ -63,7 +62,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
@@ -71,8 +69,6 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -80,11 +76,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.FileInputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -95,6 +92,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -104,11 +102,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.vlsolutions.swing.toolbars.ToolBarConstraints;
-import com.vlsolutions.swing.toolbars.ToolBarContainer;
-import com.vlsolutions.swing.toolbars.ToolBarIO;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
-import com.vlsolutions.swing.toolbars.VLToolBar;
 
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -256,32 +250,28 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	CommandJPanel() {
 		// mute
 		jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
+		setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
 	}
 
 	public void initUI() {
-		ToolBarContainer container = Main.getToolbarContainer();
-		topPanel = container.getToolBarPanelAt(BorderLayout.NORTH);
-		container.setMinimumSize(new Dimension(0, 0));
 		// Search
-		VLToolBar vltbSearch = new VLToolBar("search");
-		vltbSearch.setMinimumSize(new Dimension(0, 0));
 		double[][] sizeSearch = new double[][] {
-				{ 3, TableLayout.PREFERRED, 3, TableLayout.PREFERRED }, { TableLayout.PREFERRED } };
+				{ 3, TableLayout.PREFERRED, 3, 100 }, { TableLayout.PREFERRED } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
 		jpSearch.add(new JLabel(IconLoader.ICON_SEARCH), "1,0");
 		jpSearch.add(sbSearch, "3,0");
-		vltbSearch.add(jpSearch);
-
+		
 		// History
-		VLToolBar vltbHistory = new VLToolBar("history");
-		vltbHistory.setCollapsible(true);
+		JToolBar jtbHistory = new JToolBar();
+		jtbHistory.setOpaque(false);
+		jtbHistory.setBorder(null);
+		jtbHistory.setFloatable(false);
+		jtbHistory.setRollover(true);
 		jcbHistory = new SteppedComboBox();
 		ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
 		actionIncRate.setName(null);
 		jbIncRate = new JButton(actionIncRate);
-		vltbHistory.add(jcbHistory);
-		vltbHistory.add(jbIncRate);
 		// we use a combo box model to make sure we get good performances after
 		// rebuilding the entire model like after a refresh
 		jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
@@ -289,14 +279,14 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// size of popup
 		jcbHistory.setPopupWidth(iWidth);
 		// size of the combo itself, keep it! as text can be very long
-		jcbHistory.setPreferredSize(new Dimension(300, 25));
+		jcbHistory.setPreferredSize(new Dimension(360, 25));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
 		jcbHistory.addActionListener(CommandJPanel.this);
-
+		jtbHistory.add(jcbHistory);
+		jtbHistory.add(Box.createHorizontalStrut(10));
+		jtbHistory.add(jbIncRate);
+		
 		// Mode toolbar
-		VLToolBar vltbModes = new VLToolBar("modes");
-		vltbModes.setOpaque(false);
-		vltbModes.setCollapsible(true);
 		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
 		jtbModes.setOpaque(false);
@@ -321,12 +311,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbModes.add(jbContinue);
 		jtbModes.addSeparator();
 		jtbModes.add(jbIntro);
-		vltbModes.add(jtbModes);
-
+		
 		// Volume
-		VLToolBar vltbVolume = new VLToolBar("volume");
-		vltbVolume.setCollapsible(true);
-		vltbVolume.setOpaque(false);
 		jpVolume = new JPanel();
 		ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
 				ActionManager.getAction(INCREASE_VOLUME));
@@ -345,13 +331,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14"));
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
-		// size of the combo itself
-		vltbVolume.add(jpVolume);
-
+		
 		// Special functions toolbar
-		VLToolBar vltbSpecial = new VLToolBar("smart");
-		vltbSpecial.setOpaque(false);
-		vltbSpecial.setCollapsible(true);
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
@@ -359,7 +340,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ambiencesCombo.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE) + 2));
 		// size of the combo itself
-		// ambiencesCombo.setMaximumSize(new Dimension(100, 20));
+		ambiencesCombo.setMaximumSize(new Dimension(100, 32));
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
@@ -453,12 +434,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ddbGlobalRandom.addToToolBar(jtbSpecial);
 		jtbSpecial.add(jbBestof);
 		jtbSpecial.add(jbNorm);
-		vltbSpecial.add(jtbSpecial);
-
+		
 		// Play toolbar
-		VLToolBar vltbPlay = new VLToolBar("player");
-		vltbPlay.setOpaque(false);
-		vltbPlay.setCollapsible(true);
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setBorder(null);
 		jtbPlay.setFloatable(false);
@@ -483,55 +460,28 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbPlay.addSeparator();
 		jtbPlay.add(jbMute);
 
-		// we use a strut as empty borders are now always applied on toolbars
-		vltbPlay.add(jtbPlay);
-
-		boolean bToolbarInstallationOK = false; // flag
-
-		// Load stored toolbar configuration
-		if (Util.getConfFileByPath(FILE_TOOLBARS_CONF).exists()) {
-			try {
-				// Read toolbars configuration
-				container.registerToolBar(vltbSearch);
-				container.registerToolBar(vltbHistory);
-				container.registerToolBar(vltbModes);
-				container.registerToolBar(vltbVolume);
-				container.registerToolBar(vltbPlay);
-				container.registerToolBar(vltbSpecial);
-
-				// install them from XML
-				ToolBarIO tbIO = new ToolBarIO(container);
-				FileInputStream in = new FileInputStream(Util.getConfFileByPath(FILE_TOOLBARS_CONF));
-				tbIO.readXML(in);
-				// Check toolbars have been actually installed as the XML
-				// toolbar conf file could be voided
-				Component[] panels = container.getComponents();
-				int installedToolbars = 0;
-				for (int i = 0; i < panels.length; i++) {
-					ToolBarPanel panel = (ToolBarPanel) panels[i];
-					installedToolbars += panel.getComponentCount();
-				}
-				if (installedToolbars != container.getRegisteredToolBars().size()) {
-					throw new Exception("Wrong number of toolbars");
-				}
-				bToolbarInstallationOK = true;
-				in.close();
-			} catch (Exception e) {
-				Log.error(e);
-				bToolbarInstallationOK = false;
-			}
-		}
-
-		if (!bToolbarInstallationOK) { // toolbars have not been installed
-			topPanel.add(vltbSearch, new ToolBarConstraints(0, 0));
-			topPanel.add(vltbHistory, new ToolBarConstraints(0, 1));
-			topPanel.add(vltbVolume, new ToolBarConstraints(0, 2));
-			topPanel.add(vltbPlay, new ToolBarConstraints(1, 0));
-			topPanel.add(vltbSpecial, new ToolBarConstraints(1, 1));
-			topPanel.add(vltbModes, new ToolBarConstraints(1, 2));
-
-		}
-
+		//Add items
+		JPanel jpCommand = new JPanel();
+		double p = TableLayout.PREFERRED;
+		double f = TableLayout.FILL;
+		double[][] size = new double[][]{{p,f,p,p,100},
+				{p,p}};
+		TableLayout layout = new TableLayout(size);
+		layout.setVGap(5);
+		layout.setHGap(15);
+		jpCommand.setLayout(layout);
+		jpCommand.add(jpSearch,"2,0,r,c");
+		jpCommand.add(jtbHistory,"3,0,4,0,l,c");
+		jpCommand.add(jtbSpecial,"0,1,l,c");
+		jpCommand.add(jtbModes,"2,1,r,c");
+		jpCommand.add(jtbPlay,"3,1,l,c");
+		jpCommand.add(jpVolume,"4,1,r,c");
+		//Use BoxLayout to force using all the available space
+		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+		JScrollPane jsp = new JScrollPane(jpCommand);
+		jsp.setBorder(null);
+		add(jsp);
+		
 		// register to player events
 		ObservationManager.register(CommandJPanel.this);
 
@@ -540,7 +490,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			// update initial state
 			update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
-			// check if some track has been lauched before the view has been
+			// check if some track has been launched before the view has been
 			// displayed
 			update(new Event(EventSubject.EVENT_HEART_BEAT));
 		}

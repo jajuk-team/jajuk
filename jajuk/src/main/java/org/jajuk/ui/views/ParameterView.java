@@ -1030,14 +1030,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		scbWatermarks.setToolTipText(Messages.getString("ParameterView.231"));
 		scbWatermarks.addActionListener(this);
 		// Watermark file selection
-		pathWatermarkFile = new PathSelector(new JajukFileFilter(JajukFileFilter.ImageFilter
-				.getInstance()), ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE) ){
-		
+		JajukFileFilter filter = new JajukFileFilter(JajukFileFilter.ImageFilter.getInstance());
+		filter.setAcceptDirectories(true);
+		pathWatermarkFile = new PathSelector(filter, ConfigurationManager
+				.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)) {
+
 			private static final long serialVersionUID = 1L;
 
-			public void performOnURLChange(){
-				ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK_IMAGE, pathWatermarkFile.getUrl());
-				Util.setWatermark((String)scbWatermarks.getSelectedItem());
+			public void performOnURLChange() {
+				ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK_IMAGE, pathWatermarkFile
+						.getUrl());
+				Util.setWatermark((String) scbWatermarks.getSelectedItem());
 			}
 		};
 
@@ -1588,7 +1591,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		scbWatermarks.removeActionListener(this);
 		scbWatermarks.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
 		scbWatermarks.addActionListener(this);
-		
+
 	}
 
 	/*

@@ -23,18 +23,17 @@ package org.jajuk.ui.views;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
 import org.jajuk.util.ITechnicalStrings;
+import org.jdesktop.swingx.JXPanel;
 
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
-
-import javax.swing.JPanel;
 
 import com.vlsolutions.swing.docking.DockKey;
 
 /**
  * Default implementation for views
  */
-public abstract class ViewAdapter extends JPanel implements IView,
+public abstract class ViewAdapter extends JXPanel implements IView,
 		ITechnicalStrings,Comparable {
 
 	/** Populated state */
@@ -61,7 +60,8 @@ public abstract class ViewAdapter extends JPanel implements IView,
 		// View title
 		key.setName(getDesc());
 		key.setResizeWeight(0.5f);
- 	}
+		setOpaque(false);
+	}
 
 	/**
 	 * toString method
