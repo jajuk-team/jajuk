@@ -58,6 +58,7 @@ import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -69,6 +70,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -88,6 +90,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -95,12 +98,14 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
 
@@ -123,7 +128,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	// Toolbar panel
 	ToolBarPanel topPanel;
-	
+
 	// widgets declaration
 	SearchBox sbSearch;
 
@@ -217,16 +222,39 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	/** Ambience combo listener */
 	class ambienceListener implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
-			// Selected 'Any" ambience
+			// Ambience Configuration
 			if (ambiencesCombo.getSelectedIndex() == 0) {
+				// display the wizard
+				AmbienceWizard ambience = new AmbienceWizard();
+				ambience.show();
+				// Reset combo to last selected item
+				ambiencesCombo.removeActionListener(ambienceListener);
+				Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
+						ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
+				if (defaultAmbience != null) {
+					for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
+						if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(
+								defaultAmbience.getName())) {
+							ambiencesCombo.setSelectedIndex(i);
+							break;
+						}
+					}
+				} else {
+					ambiencesCombo.setSelectedIndex(1);
+				}
+				ambiencesCombo.addActionListener(ambienceListener);
+			}
+			// Selected 'Any" ambience
+			else if (ambiencesCombo.getSelectedIndex() == 1) {
 				// reset default ambience
 				ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, "");
+				ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 			} else {// Selected an ambience
 				Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
-						(String) ambiencesCombo.getSelectedItem());
+						((JLabel) ambiencesCombo.getSelectedItem()).getText());
 				ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
+				ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 			}
-			ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 		}
 	}
 
@@ -250,18 +278,18 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	CommandJPanel() {
 		// mute
 		jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
-		setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 	}
 
 	public void initUI() {
 		// Search
-		double[][] sizeSearch = new double[][] {
-				{ 3, TableLayout.PREFERRED, 3, 100 }, { TableLayout.PREFERRED } };
+		double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 },
+				{ TableLayout.PREFERRED } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
 		jpSearch.add(new JLabel(IconLoader.ICON_SEARCH), "1,0");
 		jpSearch.add(sbSearch, "3,0");
-		
+
 		// History
 		JToolBar jtbHistory = new JToolBar();
 		jtbHistory.setOpaque(false);
@@ -285,7 +313,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbHistory.add(jcbHistory);
 		jtbHistory.add(Box.createHorizontalStrut(10));
 		jtbHistory.add(jbIncRate);
-		
+
 		// Mode toolbar
 		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
@@ -311,7 +339,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbModes.add(jbContinue);
 		jtbModes.addSeparator();
 		jtbModes.add(jbIntro);
-		
+
 		// Volume
 		jpVolume = new JPanel();
 		ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
@@ -331,7 +359,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14"));
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
-		
+
 		// Special functions toolbar
 		// Ambience combo
 		ambiencesCombo = new SteppedComboBox();
@@ -341,6 +369,19 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				.getInt(CONF_FONTS_SIZE) + 2));
 		// size of the combo itself
 		ambiencesCombo.setMaximumSize(new Dimension(100, 32));
+		ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
+			private static final long serialVersionUID = -6943363556191659895L;
+
+			public Component getListCellRendererComponent(JList list, Object value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				JLabel jl = (JLabel) value;
+				setIcon(jl.getIcon());
+				setText(jl.getText());
+				return this;
+			}
+		});
+		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
 		populateAmbiences();
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
@@ -434,7 +475,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ddbGlobalRandom.addToToolBar(jtbSpecial);
 		jtbSpecial.add(jbBestof);
 		jtbSpecial.add(jbNorm);
-		
+
 		// Play toolbar
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setBorder(null);
@@ -460,28 +501,27 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbPlay.addSeparator();
 		jtbPlay.add(jbMute);
 
-		//Add items
+		// Add items
 		JPanel jpCommand = new JPanel();
 		double p = TableLayout.PREFERRED;
 		double f = TableLayout.FILL;
-		double[][] size = new double[][]{{p,f,p,p,100},
-				{p,p}};
+		double[][] size = new double[][] { { p, f, p, p, 100 }, { p, p } };
 		TableLayout layout = new TableLayout(size);
 		layout.setVGap(5);
 		layout.setHGap(15);
 		jpCommand.setLayout(layout);
-		jpCommand.add(jpSearch,"2,0,r,c");
-		jpCommand.add(jtbHistory,"3,0,4,0,l,c");
-		jpCommand.add(jtbSpecial,"0,1,l,c");
-		jpCommand.add(jtbModes,"2,1,r,c");
-		jpCommand.add(jtbPlay,"3,1,l,c");
-		jpCommand.add(jpVolume,"4,1,r,c");
-		//Use BoxLayout to force using all the available space
-		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+		jpCommand.add(jpSearch, "2,0,r,c");
+		jpCommand.add(jtbHistory, "3,0,4,0,l,c");
+		jpCommand.add(jtbSpecial, "0,1,l,c");
+		jpCommand.add(jtbModes, "2,1,r,c");
+		jpCommand.add(jtbPlay, "3,1,l,c");
+		jpCommand.add(jpVolume, "4,1,r,c");
+		// Use BoxLayout to force using all the available space
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		JScrollPane jsp = new JScrollPane(jpCommand);
 		jsp.setBorder(null);
 		add(jsp);
-		
+
 		// register to player events
 		ObservationManager.register(CommandJPanel.this);
 
@@ -729,7 +769,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	 */
 	private void updateTooltips() {
 		// Selected 'Any" ambience
-		if (ambiencesCombo.getSelectedIndex() == 0) {
+		if (ambiencesCombo.getSelectedIndex() == 1) {
 			ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
 			action.setShortDescription(Messages.getString("JajukWindow.31"));
 			action = ActionManager.getAction(JajukAction.BEST_OF);
@@ -738,7 +778,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			action.setShortDescription(Messages.getString("JajukWindow.23"));
 		} else {// Selected an ambience
 			Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
-					(String) ambiencesCombo.getSelectedItem());
+					((JLabel) ambiencesCombo.getSelectedItem()).getText());
 			ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
 			action.setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>"
 					+ ambience.getName() + "</b></p></html>");
@@ -791,21 +831,29 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	void populateAmbiences() {
 		ambiencesCombo.removeActionListener(ambienceListener);
 		ambiencesCombo.removeAllItems();
-		ambiencesCombo.addItem("<html><i>" + Messages.getString("DigitalDJWizard.64")
-				+ "</i></html>");
+		ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"),
+				IconLoader.ICON_CONFIGURATION, SwingConstants.LEFT));
+		ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
+				+ "</i></html>", IconLoader.ICON_STYLE, SwingConstants.LEFT));
 		// Add available ambiences
 		for (final Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
-			ambiencesCombo.addItem(ambience.getName());
+			ambiencesCombo.addItem(new JLabel(ambience.getName(), IconLoader.ICON_STYLE,
+					SwingConstants.LEFT));
 		}
 		// Select right item
-		ambiencesCombo.setSelectedIndex(0); // Any by default
+		ambiencesCombo.setSelectedIndex(1); // Any by default
 		// or any other existing ambience
 		Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
 				ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
 		if (defaultAmbience != null) {
-			ambiencesCombo.setSelectedItem(defaultAmbience.getName());
+			for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
+				if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(
+						defaultAmbience.getName())) {
+					ambiencesCombo.setSelectedIndex(i);
+					break;
+				}
+			}
 		}
-		ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
 		ambiencesCombo.addActionListener(ambienceListener);
 	}
 
