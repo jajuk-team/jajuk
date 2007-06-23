@@ -766,13 +766,13 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 		dialog.setAlwaysOnTop(true);
 		// keep it modal (useful at startup)
 		dialog.setModal(true);
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
 		if (optionPane.getValue().equals(Messages.getString("Hide"))) {
 			// Not show again
 			ConfigurationManager.setProperty(sProperty, TRUE);
 		}
-		dialog.pack();
-		dialog.setLocationRelativeTo(Main.getWindow());
-		dialog.setVisible(true);
 	}
 
 	/**

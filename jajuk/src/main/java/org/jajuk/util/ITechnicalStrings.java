@@ -693,6 +693,9 @@ public interface ITechnicalStrings {
 	/** Cross fade alert not show again flag * */
 	public static final String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";
 
+	/** Laf change not show again flag * */
+	public static final String CONF_NOT_SHOW_AGAIN_LAF_CHANGE = "jajuk.not_show_laf_change";
+
 	/** Global random mode: song or album level ? * */
 	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";
 

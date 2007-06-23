@@ -1235,6 +1235,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 						Util.setLookAndFeel((String) scbLAF.getSelectedItem());
 						// refresh all components
 						Util.updateAllUIs();
+						Messages.showHideableWarningMessage(
+								Messages.getString("ParameterView.233"),
+								CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
 					}
 				} else if (e.getSource() == scbWatermarks) {
 					String oldWatermark = ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK);
@@ -1248,6 +1251,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 						Util.setWatermark(watermark);
 						// refresh all components
 						Util.updateAllUIs();
+						Messages.showHideableWarningMessage(
+								Messages.getString("ParameterView.233"),
+								CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
 					}
 				} else if (e.getSource() == scbLanguage) {
 					String sLocal = Messages.getLocales().get(scbLanguage.getSelectedIndex());

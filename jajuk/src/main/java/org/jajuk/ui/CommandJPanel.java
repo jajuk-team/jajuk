@@ -518,7 +518,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jpCommand.add(jpVolume, "4,1,r,c");
 		// Use BoxLayout to force using all the available space
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		JScrollPane jsp = new JScrollPane(jpCommand);
+		JScrollPane jsp = new JScrollPane(jpCommand, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setBorder(null);
 		add(jsp);
 
