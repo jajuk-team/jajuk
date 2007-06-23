@@ -40,7 +40,6 @@ import org.jajuk.ui.CatalogViewTransferHandler;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
-import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
@@ -51,6 +50,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 import info.clearthought.layout.TableLayout;
 
@@ -96,6 +96,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
@@ -209,7 +210,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	private ArrayList<String> sizes = new ArrayList<String>(10);
 
 	/** Current details dialog */
-	private JajukJDialog details;
+	private JDialog details;
 
 	/** Swing Timer to refresh the component */
 	private Timer timer = new Timer(WAIT_TIME, new ActionListener() {
@@ -1082,7 +1083,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					if (CatalogView.this.details != null) {
 						CatalogView.this.details.dispose();
 					}
-					CatalogView.this.details = new JajukJDialog();
+					JDialog dialog = new JDialog();
+					dialog.setUndecorated(true);
+					dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 					JXPanel jp = new JXPanel();
 					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
 					jp.setLayout(new TableLayout(size));
@@ -1090,10 +1093,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
 							.getAdvancedDescription());
 					text.setEditable(false);
-					// Set background to white. We tried to set a gradiant but
-					// it seems that JEditorPane
-					// cannot be opaque
-					text.setBackground(Color.WHITE);
+					text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
 					text.addHyperlinkListener(new HyperlinkListener() {
 						public void hyperlinkUpdate(HyperlinkEvent e) {
 							if (e.getEventType() == EventType.ACTIVATED) {
@@ -1142,7 +1142,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					final JScrollPane jspText = new JScrollPane(text);
 					jspText.getVerticalScrollBar().setValue(0);
 					jp.add(jspText, "0,0");
-					CatalogView.this.details.setContentPane(jp);
+					dialog.setContentPane(jp);
 					// compute dialog position ( note that setRelativeTo is
 					// buggy and that we need more advanced positioning)
 					int x = (int) jlIcon.getLocationOnScreen().getX()
@@ -1167,9 +1167,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						y = (int) jlIcon.getLocationOnScreen().getY()
 								+ (int) (0.4 * jlIcon.getHeight()) - 400;
 					}
-					CatalogView.this.details.setLocation(x, y);
-					CatalogView.this.details.setSize(500, 400);
-					CatalogView.this.details.setVisible(true);
+					dialog.setLocation(x, y);
+					dialog.setSize(500, 400);
+					dialog.setVisible(true);
+					CatalogView.this.details = dialog;
 					// Force scrollbar to stay on top
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {

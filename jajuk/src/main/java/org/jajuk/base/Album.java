@@ -21,7 +21,9 @@ package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -62,10 +64,9 @@ public class Album extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Album[ID=" + getId() + " Name={{" + getName() + "}}]";   
+		return "Album[ID=" + getId() + " Name={{" + getName() + "}}]";
 	}
 
-	
 	/**
 	 * Alphabetical comparator used to display ordered lists
 	 * 
@@ -100,7 +101,7 @@ public class Album extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Album") + " : " + getName2();  
+		return Messages.getString("Item_Album") + " : " + getName2();
 	}
 
 	/*
@@ -140,8 +141,8 @@ public class Album extends LogicalItem implements Comparable {
 		// look for absolute cover in collection
 		for (Directory dir : dirs) {
 			String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
-			if (sAbsolut != null && !sAbsolut.trim().equals("")) { 
-				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut); 
+			if (sAbsolut != null && !sAbsolut.trim().equals("")) {
+				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
 				if (fAbsoluteDefault.canRead()) {
 					return fAbsoluteDefault;
 				}
@@ -157,7 +158,8 @@ public class Album extends LogicalItem implements Comparable {
 						&& files[i].length() < MAX_COVER_SIZE * 1024) {
 					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) {   
+					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
+							|| sExt.equalsIgnoreCase("gif")) {
 						if (Util.isStandardCover(files[i].getAbsolutePath())) {
 							return files[i];
 						}
@@ -175,7 +177,8 @@ public class Album extends LogicalItem implements Comparable {
 						&& files[i].length() < MAX_COVER_SIZE * 1024) {
 					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")) {   
+					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
+							|| sExt.equalsIgnoreCase("gif")) {
 						return files[i];
 					}
 				}
@@ -225,7 +228,11 @@ public class Album extends LogicalItem implements Comparable {
 				break;
 			}
 		}
-		String sOut = "<html><TABLE><TR><TD VALIGN='TOP'> <b>" + getName2() + "</b><br><br>";
+		Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
+		Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
+		String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
+				+ Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + getName2()
+				+ "</b><br><br>";
 		// display cover if available
 		if (cover.canRead()) {
 			sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
@@ -260,7 +267,7 @@ public class Album extends LogicalItem implements Comparable {
 		for (Track track : tracks) {
 			sOut += "<br>";
 			if (track.getOrder() > 0) {
-				sOut += Util.padNumber(track.getOrder(),2) +": ";
+				sOut += Util.padNumber(track.getOrder(), 2) + ": ";
 			}
 			sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getId() + "'>"
 					+ track.getName() + "</a>" + " (";

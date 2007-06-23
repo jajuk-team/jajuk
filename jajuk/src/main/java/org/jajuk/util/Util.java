@@ -1962,4 +1962,14 @@ public class Util implements ITechnicalStrings {
 	public static String encodeString(String s) {
 		return s.replaceAll(" +", "+");
 	}
+	
+	/**
+	 * @param color java color
+	 * @return HTML RGB color ex: FF0000 
+	 */
+	public static String getHTMLColor(Color color){
+		return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
+				+ Long.toString(color.getBlue(), 16);
+		
+	}
 }
