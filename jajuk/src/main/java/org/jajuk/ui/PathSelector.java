@@ -64,7 +64,6 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 		double[][] size = new double[][] { { 200, 10, TableLayout.PREFERRED },
 				{ TableLayout.PREFERRED } };
 		setLayout(new TableLayout(size));
-		setOpaque(false);
 		// Build items
 		jtfUrl = new JTextField();
 		if (sDefault != null){

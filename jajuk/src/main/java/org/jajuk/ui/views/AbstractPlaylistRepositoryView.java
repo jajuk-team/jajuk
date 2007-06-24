@@ -117,7 +117,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 
 		// root pane
 		jpRoot = new JPanel();
-		jpRoot.setOpaque(false);
 		jpRoot.setLayout(new BoxLayout(jpRoot, BoxLayout.Y_AXIS));
 
 		// Popup menus
@@ -335,7 +334,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		alPlaylistFileItems.clear();
 		// special playlists
 		JPanel jpSpecials = new JPanel();
-		jpSpecials.setOpaque(false);
 		jpSpecials.setBorder(BorderFactory.createTitledBorder(Messages
 				.getString("PhysicalPlaylistRepositoryView.8"))); 
 		jpSpecials.setLayout(new BoxLayout(jpSpecials, BoxLayout.Y_AXIS));

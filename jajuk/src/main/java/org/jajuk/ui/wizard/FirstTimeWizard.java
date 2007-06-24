@@ -154,8 +154,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 		advanced.add(jlWorkspace);
 		advanced.add(workspacePath);
 		advanced.add(jcbHelp);
-		advanced.setOpaque(false);
-
+	
 		double[][] size = new double[][] { { iX_SEPARATOR, p, iX_SEPARATOR },
 				{ iY_SEPARATOR, p, 60, p, p, p, p, p, iY_SEPARATOR } };
 		TableLayout layout = new TableLayout(size);

@@ -26,8 +26,10 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -173,6 +175,10 @@ public class SearchBox extends JTextField implements KeyListener {
 					jlist = new JList(model);
 					PopupFactory factory = PopupFactory.getSharedInstance();
 					JScrollPane jsp = new JScrollPane(jlist);
+					int width = (int)((float)Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.7f);
+					jsp.setMinimumSize(new Dimension(width,250));
+					jsp.setPreferredSize(new Dimension(width,250));
+					jsp.setMaximumSize(new Dimension(width,250));
 					jlist.setSelectionMode(0);
 					jlist.addListSelectionListener(lsl);
 					jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -183,11 +189,11 @@ public class SearchBox extends JTextField implements KeyListener {
 					// textfield
 					Point point = new Point(0, 0);
 					// take absolute coordonates in the screen (popups works
-					// only on absolute coordonates in oposition to swing
+					// only on absolute coordonates in opposition to swing
 					// widgets)
 					SwingUtilities.convertPointToScreen(point, this);
 					popup = factory
-							.getPopup(this, jsp, (int) point.getX(), (int) point.getY() + 25);
+							.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point.getY()-250);
 					popup.show();
 				} else {
 					if (popup != null) {

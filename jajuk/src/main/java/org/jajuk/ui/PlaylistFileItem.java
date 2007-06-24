@@ -90,7 +90,6 @@ public class PlaylistFileItem extends JPanel {
 		jlName.setFont(font); 
 		add(jlIcon, "0,0,c,c"); 
 		add(jlName, "0,1,c,c"); 
-		setOpaque(false);
 		new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
 	}
 

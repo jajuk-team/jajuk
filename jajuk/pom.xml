@@ -250,11 +250,6 @@
       <version>3.2</version>
     </dependency>
      <!-- Used by org.jajuk.ui -->
-    <dependency>
-      <groupId>l2fprod</groupId>
-      <artifactId>l2fprod-common-buttonbar</artifactId>
-      <version>6.11</version>
-    </dependency>
     <!-- Used by org.jajuk.ui.action -->
     <dependency>
       <groupId>com.melloware</groupId>

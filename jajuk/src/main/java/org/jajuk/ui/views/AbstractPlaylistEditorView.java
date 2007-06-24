@@ -391,7 +391,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	public void initUI() {
 		// Control panel
 		jpControl = new JPanel();
-		jpControl.setOpaque(false);
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		// Note : we don't use toolbar because it's buggy in Metal look and feel
 		// : icon get bigger
@@ -425,8 +424,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		JToolBar jtb = new JToolBar();
 		jtb.setRollover(true);
 		jtb.setBorder(null);
-		jtb.setOpaque(false);
-
+	
 		jtb.add(jbRun);
 		jtb.add(jbSave);
 		jtb.add(jbRemove);
@@ -449,7 +447,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		jtable.getColumnModel().getColumn(0).setPreferredWidth(20);
 		jtable.getColumnModel().getColumn(0).setMaxWidth(20);
 		jtable.getTableHeader().setPreferredSize(new Dimension(0, 20));
-		jtable.addHighlighter(new ConditionalHighlighter(Color.ORANGE, Color.BLACK, -1, -1) {
+		//Background color is not actually taken into account with sustance watermarks
+		jtable.addHighlighter(new ConditionalHighlighter(Color.BLACK, Color.ORANGE, -1, -1) {
 
 			@Override
 			protected boolean test(ComponentAdapter adapter) {

@@ -42,6 +42,7 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 		Component c = super.getTableCellRendererComponent(table, oValue, selected, focused, row,
 				column);
 		if (oValue instanceof IconLabel){
+			((JLabel)c).setOpaque(false);
 			((JLabel)c).setIcon(((IconLabel)oValue));
 			((JLabel)c).setToolTipText(((IconLabel)oValue).getTooltip());
 			((JLabel)c).setFont(((IconLabel)oValue).getFont());

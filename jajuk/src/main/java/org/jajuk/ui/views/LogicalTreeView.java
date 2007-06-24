@@ -255,7 +255,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		JPanel jpsort = new JPanel();
 		jpsort.setLayout(new TableLayout(dSizeSort));
 		jlSort = new JLabel(Messages.getString("Sort")); 
-		jlSort.setOpaque(false);
 		jcbSort = new JComboBox();
 		jcbSort.addItem(Messages.getString("Property_style"));
 		jcbSort.addItem(Messages.getString("Property_author"));

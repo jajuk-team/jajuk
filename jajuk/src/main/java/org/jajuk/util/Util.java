@@ -1131,6 +1131,7 @@ public class Util implements ITechnicalStrings {
 			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 			// hide some useless elements such locker for not editable labels
 			UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
+			UIManager.put(SubstanceLookAndFeel.WATERMARK_TO_BLEED, Boolean.TRUE);
 			UIManager.put(SubstanceLookAndFeel.ENABLE_INVERTED_THEMES, Boolean.TRUE);
 			UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES, Boolean.TRUE);
 			// Check the theme is known, if not take the default theme

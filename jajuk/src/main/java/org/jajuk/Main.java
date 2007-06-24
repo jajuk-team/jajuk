@@ -69,6 +69,7 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -93,6 +94,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -1191,15 +1193,13 @@ public class Main implements ITechnicalStrings {
 					// Prepare toolbars
 					DockingUISettings.getInstance().installUI();
 					tbcontainer = ToolBarContainer.createDefaultContainer(true, false, true, false);
-					tbcontainer.setOpaque(false);
-
+					
 					// starts ui
 					jw = JajukWindow.getInstance();
 					jw.setCursor(Util.WAIT_CURSOR);
 
 					// Creates the panel
 					jpFrame = (JPanel) jw.getContentPane();
-					jpFrame.setOpaque(false);
 					jpFrame.setLayout(new BorderLayout());
 
 					// create the command bar
@@ -1245,7 +1245,7 @@ public class Main implements ITechnicalStrings {
 					// BoxLayout(jpCommandScreen,BoxLayout.Y_AXIS));
 					// jpCommandScreen.setLayout(new VerticalLayout());
 					double[][] sizeCenter = new double[][] { { TableLayout.FILL },
-							{ TableLayout.FILL, 75 } };
+							{ TableLayout.FILL, TableLayout.PREFERRED  } };
 					jpCommandScreen.setLayout(new TableLayout(sizeCenter));
 					jpCommandScreen.add(tbcontainer, "0,0");
 					jpCommandScreen.add(command, "0,1");

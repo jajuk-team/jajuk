@@ -390,19 +390,15 @@ public class StatView extends ViewAdapter implements Observer {
 				removeAll();
 			}
 			ChartPanel cp1 = createStyleRepartition();
-			cp1.setOpaque(false);
 			if (cp1 != null)
 				add(cp1, "0,0"); 
 			ChartPanel cp2 = createCollectionSize();
-			cp2.setOpaque(false);
 			if (cp2 != null)
 				add(cp2, "0,2"); 
 			ChartPanel cp3 = createTrackNumber();
-			cp3.setOpaque(false);
 			if (cp3 != null)
 				add(cp3, "2,2"); 
 			ChartPanel cp4 = createDeviceRepartition();
-			cp4.setOpaque(false);
 			if (cp4 != null)
 				add(cp4, "2,0"); 
 			StatView.getInstance().revalidate();

@@ -105,17 +105,13 @@ public class DeviceView extends ViewAdapter implements IView,
 	public void initUI() {
 		// devices
 		jpDevices = new FlowScrollPanel();
-		jpDevices.setOpaque(false);
 		Dimension dim = new Dimension(getWidth(), getHeight());
 		jpDevices.setPreferredSize(dim);
 		JScrollPane jsp = new JScrollPane(jpDevices,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jpDevices.setScroller(jsp);
-		jpDevices.setOpaque(false);
-		jsp.setOpaque(false);
-		jsp.getViewport().setOpaque(false);
-
+	
 		jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		// Popup menus
@@ -480,7 +476,6 @@ class DeviceItem extends JPanel {
 		add(jlIcon);
 		JLabel jlName = new JLabel(sName);
 		add(jlName);
-		setOpaque(false);
 	}
 
 	/**

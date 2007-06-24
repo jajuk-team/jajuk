@@ -48,12 +48,10 @@ public class JajukButton extends JButton {
 	public JajukButton(Action a) {
 		super(a);
 		setRolloverEnabled(true);
-		setOpaque(false);
 	}
 
 	public JajukButton(String text, Icon icon) {
 		super(text, icon);
-		setOpaque(false);
 	}
 	
 

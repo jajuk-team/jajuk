@@ -278,11 +278,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		});
 		jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-		jpControlTop.setOpaque(false);
 		jlSorter = new JLabel(Messages.getString("Sort"));
-		jlSorter.setOpaque(false);
 		jcbSorter = new SteppedComboBox();
-		jcbSorter.setOpaque(false);
 		jcbSorter.setEditable(false);
 		// note that a single album can contains tracks with different authors
 		// or styles, we will show it only one
@@ -294,17 +291,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbSort = new JToolBar();
 		jtbSort.setFloatable(false);
 		jtbSort.setRollover(true);
-		jtbSort.setOpaque(false);
 		jtbSort.add(jlSorter);
 		jtbSort.addSeparator();
 		jtbSort.add(jcbSorter);
 
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
-		jlFilter.setOpaque(false);
 		jlContains = new JLabel(Messages.getString("AbstractTableView.7"));
-		jlContains.setOpaque(false);
 		jcbFilter = new SteppedComboBox();
-		jcbFilter.setOpaque(false);
 		jcbFilter.setEditable(false);
 		// note that a single album can contains tracks with different authors
 		// or styles, we will show it only one
@@ -320,7 +313,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbFilter = new JToolBar();
 		jtbFilter.setFloatable(false);
 		jtbFilter.setRollover(true);
-		jtbFilter.setOpaque(false);
 		jtbFilter.add(jlFilter);
 		jtbFilter.addSeparator();
 		jtbFilter.add(jcbFilter);
@@ -340,17 +332,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		JToolBar jtbPage = new JToolBar();
 		jtbPage.setFloatable(false);
 		jtbPage.setRollover(true);
-		jtbPage.setOpaque(false);
 		jbPrev = new JButton(IconLoader.ICON_PREVIOUS);
-		jbPrev.setOpaque(false);
 		jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
 		jbPrev.addActionListener(this);
 		jbNext = new JButton(IconLoader.ICON_NEXT);
-		jbNext.setOpaque(false);
 		jbNext.setToolTipText(Messages.getString("CatalogView.13"));
 		jbNext.addActionListener(this);
 		jcbPage = new SteppedComboBox();
-		jcbPage.setOpaque(false);
 		jcbPage.setToolTipText(Messages.getString("CatalogView.14"));
 		jcbPage.addActionListener(this);
 		jtbPage.add(jbPrev);
@@ -373,12 +361,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// --Bottom (less used) items
 		jcbShow = new JCheckBox(Messages.getString("CatalogView.2"));
 		jcbShow.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
-		jcbShow.setOpaque(false);
 		jcbShow.addActionListener(this);
 
 		JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
 		jsSize = new JSlider(0, 5);
-		jsSize.setOpaque(false);
 		jsSize.setMajorTickSpacing(1);
 		jsSize.setMinorTickSpacing(1);
 		jsSize.setSnapToTicks(true);
@@ -429,7 +415,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				String size = "" + (50 + 50 * jsSize.getValue()) + "x" + ""
 						+ (50 + 50 * jsSize.getValue());
 				jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + size);
-				jsSize.setOpaque(false);
 			}
 
 		});
@@ -479,11 +464,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp.setOpaque(false);
-		jsp.getViewport().setOpaque(false);
 		jpItems.setScroller(jsp);
 		jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
-		jpItems.setOpaque(false);
 		// Menu items
 		// Album menu
 		jmenu = new JPopupMenu();
@@ -976,7 +958,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				// use old image
 			}
 			jlIcon.setIcon(ii);
-			jpIcon.setOpaque(false);
 			jpIcon.add(jlIcon, "1,0");
 			int iRows = 9 + 3 * (jsSize.getValue());
 			Font customFont = new Font("verdana", Font.BOLD, ConfigurationManager
@@ -988,7 +969,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			jlAuthor.setLineWrap(true);
 			jlAuthor.setWrapStyleWord(true);
 			jlAuthor.setEditable(false);
-			jlAuthor.setOpaque(false);
 			jlAuthor.setFont(customFont);
 			jlAuthor.setForeground(mediumGray);
 			jlAuthor.setBorder(null);
@@ -1001,7 +981,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					.getInt(CONF_FONTS_SIZE)));
 			jlAlbum.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
 					.getInt(CONF_FONTS_SIZE)));
-			jlAlbum.setOpaque(false);
 			jlAlbum.setFont(customFont);
 			jlAlbum.setForeground(mediumGray);
 			jlAlbum.setBorder(null);
@@ -1087,9 +1066,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					dialog.setUndecorated(true);
 					dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 					JXPanel jp = new JXPanel();
+					jp.setAlpha(0.6f);
 					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
 					jp.setLayout(new TableLayout(size));
-					jp.setOpaque(false);
 					final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
 							.getAdvancedDescription());
 					text.setEditable(false);
@@ -1179,7 +1158,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					});
 				}
 			});
-			setOpaque(false);
 		}
 
 		public boolean isNoCover() {

@@ -38,7 +38,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 		arrowButton.getModel().addChangeListener(this);
 		arrowButton.addActionListener(this);
 		arrowButton.setBorder(null);
-		arrowButton.setOpaque(false);
 		arrowButton.setMargin(new Insets(1, 0, 1, 0));
 		addPropertyChangeListener("enabled", this); // NOI18N 
 	}
@@ -108,7 +107,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 		JToolBar tempBar = new JToolBar();
 		tempBar.setBorder(null);
 		tempBar.setRollover(true);
-		tempBar.setOpaque(false);
 		tempBar.setAlignmentX(0.5f);
 		tempBar.setRollover(true);
 		tempBar.setFloatable(false);

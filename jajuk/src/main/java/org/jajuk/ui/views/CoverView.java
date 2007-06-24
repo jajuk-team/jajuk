@@ -182,12 +182,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		setLayout(new TableLayout(size));
 		// Control panel
 		jpControl = new JPanel();
-		jpControl.setOpaque(false);
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 1;
 		JToolBar jtb = new JToolBar();
 		jtb.setRollover(true);
-		jtb.setOpaque(false);
 		jtb.setBorder(null);
 		jbPrevious = new JajukButton(IconLoader.ICON_PREVIOUS);
 		jbPrevious.addActionListener(this);

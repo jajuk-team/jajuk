@@ -74,6 +74,9 @@ public class SteppedComboBox extends JComboBox {
 				protected ComboPopup createPopup() {
 					BasicComboPopup popup = new org.jajuk.ui.JajukBasicComboPopup(comboBox);
 					popup.getAccessibleContext().setAccessibleParent(comboBox);
+					// Non opaque to avoid being transparent so we can't read
+					// popup content over others text
+					popup.setOpaque(true);
 					return popup;
 				}
 			};

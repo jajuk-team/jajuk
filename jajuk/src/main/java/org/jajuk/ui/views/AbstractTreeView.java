@@ -68,7 +68,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
 	protected JTree createTree() {
 		jtree = new JXTree(top);
-		jtree.setOpaque(false);
 		jtree.putClientProperty("JTree.lineStyle", "Angled");  
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
@@ -83,7 +82,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
 			alternate = new AlternateRowHighlighter(Color.WHITE,
 					colors.getUltraLightColor(), colors.getForegroundColor());
 		}
-		Highlighter playing = new ConditionalHighlighter(Color.ORANGE,Color.BLACK,0,-1) {
+		//Background color is not actually taken into account with sustance watermarks
+		Highlighter playing = new ConditionalHighlighter(Color.BLACK,Color.ORANGE,0,-1) {
 			
 			protected boolean needsHighlight(ComponentAdapter adapter){
 				// Perfs and safety
@@ -120,7 +120,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 			}
 		
 		};
-		HighlighterPipeline pipe = new HighlighterPipeline(new Highlighter[]{alternate,playing});
+		HighlighterPipeline pipe = new HighlighterPipeline(new Highlighter[]{playing});
 		jtree.setHighlighters(pipe);
 		return jtree;
 	}

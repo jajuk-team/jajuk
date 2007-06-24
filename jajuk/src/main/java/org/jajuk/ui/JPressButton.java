@@ -167,8 +167,6 @@ public class JPressButton extends JajukButton {
 		
 		//Set border
 		setRolloverEnabled(true);
-		
-		setOpaque(false);
 	}
 
 	/**

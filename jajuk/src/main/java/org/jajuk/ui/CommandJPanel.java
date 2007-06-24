@@ -292,7 +292,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 		// History
 		JToolBar jtbHistory = new JToolBar();
-		jtbHistory.setOpaque(false);
 		jtbHistory.setBorder(null);
 		jtbHistory.setFloatable(false);
 		jtbHistory.setRollover(true);
@@ -317,7 +316,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// Mode toolbar
 		// we need an inner toolbar to apply size properly
 		JToolBar jtbModes = new JToolBar();
-		jtbModes.setOpaque(false);
 		jtbModes.setBorder(null);
 		// make it not floatable as this behavior is managed by vldocking
 		jtbModes.setFloatable(false);
@@ -346,7 +344,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				ActionManager.getAction(INCREASE_VOLUME));
 
 		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
-		jpVolume.setOpaque(false);
 		jlVolume = new JLabel(IconLoader.ICON_VOLUME);
 		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
 		if (iVolume > 100) { // can occur in some undefined cases
@@ -386,7 +383,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ambienceListener = new ambienceListener();
 		ambiencesCombo.addActionListener(ambienceListener);
 		jtbSpecial = new JToolBar();
-		jtbSpecial.setOpaque(false);
 		jtbSpecial.setBorder(null);
 		jtbSpecial.setRollover(true);
 		jtbSpecial.setFloatable(false);
@@ -480,7 +476,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setBorder(null);
 		jtbPlay.setFloatable(false);
-		jtbPlay.setOpaque(false);
 		// add some space to get generic size
 		jtbPlay.setRollover(true);
 		ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
@@ -505,7 +500,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		JPanel jpCommand = new JPanel();
 		double p = TableLayout.PREFERRED;
 		double f = TableLayout.FILL;
-		double[][] size = new double[][] { { p, f, p, p, 100 }, { p, p } };
+		double[][] size = new double[][] { { p, f, p, p, 100 }, { 30, 40 } };
 		TableLayout layout = new TableLayout(size);
 		layout.setVGap(5);
 		layout.setHGap(15);

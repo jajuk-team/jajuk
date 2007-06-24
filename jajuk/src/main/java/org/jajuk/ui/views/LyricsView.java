@@ -79,9 +79,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 	 */
 	public void initUI() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setOpaque(false);
 		textarea = new JTextArea();
-		textarea.setOpaque(false);
 		textarea.setLineWrap(true);
 		textarea.setWrapStyleWord(true);
 		textarea.setEditable(false);
@@ -103,8 +101,6 @@ public class LyricsView extends ViewAdapter implements Observer {
 		
 		});
 		JScrollPane jsp = new JScrollPane(textarea);
-		jsp.getViewport().setOpaque(false);
-		jsp.setOpaque(false);
 		add(jsp);
 
 		ObservationManager.register(this);

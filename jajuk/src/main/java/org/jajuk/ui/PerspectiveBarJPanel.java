@@ -24,6 +24,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.UrlImageIcon;
 import org.jdesktop.swingx.JXPanel;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -33,8 +34,7 @@ import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-
-import com.l2fprod.common.swing.JButtonBar;
+import javax.swing.JToolBar;
 
 /**
  * Menu bar used to choose the current perspective.
@@ -44,7 +44,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	private static final long serialVersionUID = 1L;
 
 	/** Perspectives tool bar* */
-	private JButtonBar jtbPerspective;
+	private JToolBar jtbPerspective;
 
 	/** Self instance */
 	static private PerspectiveBarJPanel pb;
@@ -70,7 +70,6 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	 * Constructor for PerspectiveBarJPanel.
 	 */
 	private PerspectiveBarJPanel() {
-		setOpaque(false);
 		update();
 	}
 
@@ -80,8 +79,8 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	 */
 	public void update() {
 		// Perspectives tool bar
-		jtbPerspective = new JButtonBar(JButtonBar.VERTICAL);
-		jtbPerspective.setOpaque(false);
+		jtbPerspective = new JToolBar(JToolBar.VERTICAL);
+		jtbPerspective.setOpaque(true);
 		jtbPerspective.setBorder(null);
 		Iterator it = PerspectiveManager.getPerspectives().iterator();
 		int index = 0;
@@ -89,6 +88,11 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 			final IPerspective perspective = (IPerspective) it.next();
 			JButton jb = new JButton(perspective.getDesc(), new UrlImageIcon(perspective
 					.getIconPath()));
+			jb.setVerticalTextPosition(JButton.BOTTOM);
+			jb.setHorizontalTextPosition(JButton.CENTER);
+			jb.setMinimumSize(new Dimension(100,70));
+			jb.setPreferredSize(new Dimension(100,70));
+			jb.setMaximumSize(new Dimension(100,70));
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// no thread, it causes ugly screen repaint

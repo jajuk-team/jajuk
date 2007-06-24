@@ -68,7 +68,6 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		rcontext = new SimpleHtmlRendererContext(this);
 		context = new SimpleHtmlParserContext();
 		dbi = new DocumentBuilderImpl(context, rcontext);
-		setOpaque(false);
 	}
 
 	/**

@@ -93,9 +93,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 		setLayout(new BorderLayout());
 		addComponentListener(this);
 		btl1 = new BasicTextLabel(" "); 
-		btl1.setOpaque(false);
-		setBackground(Color.WHITE);
-		setForeground(Color.BLACK);
+		//setBackground(Color.WHITE);
+		//setForeground(Color.BLACK);
 		add(btl1);
 
 		ObservationManager.register(this);

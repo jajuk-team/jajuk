@@ -150,7 +150,6 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 				Graphics2D graphics = image.createGraphics();
 				// Sets the Composite for the Graphics2D context
 				graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f)); 
-				lbl.setOpaque(false);
 				lbl.paint(graphics); // painting the graphics to label
 				graphics.dispose();
 			}

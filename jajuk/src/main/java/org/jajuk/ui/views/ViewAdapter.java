@@ -60,7 +60,7 @@ public abstract class ViewAdapter extends JXPanel implements IView,
 		// View title
 		key.setName(getDesc());
 		key.setResizeWeight(0.5f);
-		setOpaque(false);
+		setOpaque(true);
 	}
 
 	/**

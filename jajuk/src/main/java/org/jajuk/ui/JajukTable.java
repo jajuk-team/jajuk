@@ -68,7 +68,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		super(model);
 		this.sConf = sConf;
 		setShowGrid(false);
-		setOpaque(false);
 		init(bSortable);
 		// Force to use Jajuk cell render for all columns
 		for (TableColumn col : getColumns()) {
