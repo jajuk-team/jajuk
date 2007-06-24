@@ -24,14 +24,9 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.color.ColorScheme;
-import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +68,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		for (TableColumn col : getColumns()) {
 			col.setCellRenderer(new JajukCellRender());
 		}
+		/*
 		// Add alternate rows highlither
 		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
 		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
@@ -81,7 +77,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		} else {
 			addHighlighter(new AlternateRowHighlighter(Color.WHITE, colors
 					.getUltraLightColor(), colors.getForegroundColor()));
-		}
+		}*/
 	}
 
 	/**

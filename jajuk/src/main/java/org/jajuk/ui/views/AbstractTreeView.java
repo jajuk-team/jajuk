@@ -20,6 +20,16 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.Track;
+import org.jdesktop.swingx.JXTree;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ConditionalHighlighter;
+import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.decorator.HighlighterPipeline;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -28,20 +38,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.Track;
-import org.jdesktop.swingx.JXTree;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ConditionalHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
-import org.jdesktop.swingx.decorator.HighlighterPipeline;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.color.ColorScheme;
-import org.jvnet.substance.theme.SubstanceTheme.ThemeKind;
 
 /**
  * An abstract physical or logical tree view. Contains common methods
@@ -71,7 +67,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree.putClientProperty("JTree.lineStyle", "Angled");  
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		// Add alternate rows highliter
+		/*// Add alternate rows highliter
 		Highlighter alternate = null;
 		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
 		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
@@ -81,7 +77,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		} else {
 			alternate = new AlternateRowHighlighter(Color.WHITE,
 					colors.getUltraLightColor(), colors.getForegroundColor());
-		}
+		}*/
 		//Background color is not actually taken into account with sustance watermarks
 		Highlighter playing = new ConditionalHighlighter(Color.BLACK,Color.ORANGE,0,-1) {
 			
