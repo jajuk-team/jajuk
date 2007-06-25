@@ -1066,7 +1066,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					dialog.setUndecorated(true);
 					dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 					JXPanel jp = new JXPanel();
-					jp.setAlpha(0.6f);
+					jp.setAlpha(0.8f);
 					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
 					jp.setLayout(new TableLayout(size));
 					final JEditorPane text = new JEditorPane("text/html", track.getAlbum()

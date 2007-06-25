@@ -69,7 +69,6 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -94,7 +93,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -1200,6 +1198,7 @@ public class Main implements ITechnicalStrings {
 
 					// Creates the panel
 					jpFrame = (JPanel) jw.getContentPane();
+					jpFrame.setOpaque(true);
 					jpFrame.setLayout(new BorderLayout());
 
 					// create the command bar
@@ -1241,9 +1240,6 @@ public class Main implements ITechnicalStrings {
 
 					// Add main container (contains toolbars + desktop)
 					JPanel jpCommandScreen = new JPanel();
-					// jpCommandScreen.setLayout(new
-					// BoxLayout(jpCommandScreen,BoxLayout.Y_AXIS));
-					// jpCommandScreen.setLayout(new VerticalLayout());
 					double[][] sizeCenter = new double[][] { { TableLayout.FILL },
 							{ TableLayout.FILL, TableLayout.PREFERRED  } };
 					jpCommandScreen.setLayout(new TableLayout(sizeCenter));

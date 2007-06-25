@@ -103,7 +103,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("WikipediaView.0");
+		return "WikipediaView.0";
 	}
 
 	/*

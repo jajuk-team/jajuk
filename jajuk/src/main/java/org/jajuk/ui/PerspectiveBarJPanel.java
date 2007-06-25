@@ -35,6 +35,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * Menu bar used to choose the current perspective.
@@ -80,7 +81,6 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	public void update() {
 		// Perspectives tool bar
 		jtbPerspective = new JToolBar(JToolBar.VERTICAL);
-		jtbPerspective.setOpaque(true);
 		jtbPerspective.setBorder(null);
 		Iterator it = PerspectiveManager.getPerspectives().iterator();
 		int index = 0;
@@ -104,7 +104,10 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 			index++;
 		}
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		add(new JScrollPane(jtbPerspective));
+		JScrollPane jsp = new JScrollPane(jtbPerspective);
+		jsp.setBorder(null);
+		jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add(jsp);
 	}
 
 	/**
