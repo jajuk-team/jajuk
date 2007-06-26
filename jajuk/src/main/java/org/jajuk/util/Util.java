@@ -129,8 +129,8 @@ public class Util implements ITechnicalStrings {
 	public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-	
-	/**contains clipboard data*/
+
+	/** contains clipboard data */
 	public static String copyData;
 
 	/** Waiting flag for perfs */
@@ -666,11 +666,14 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * Copy a URL resource to a file
-	 * We don't use nio but Buffered Reader / writer because we can only get channels
-	 * from a FileInputStream that can be or not be in a Jar (production / test) 
-	 * @param src source designed by URL
-	 * @param dest destination file full path
+	 * Copy a URL resource to a file We don't use nio but Buffered Reader /
+	 * writer because we can only get channels from a FileInputStream that can
+	 * be or not be in a Jar (production / test)
+	 * 
+	 * @param src
+	 *            source designed by URL
+	 * @param dest
+	 *            destination file full path
 	 * @throws Exception
 	 */
 	public static void copy(URL src, String dest) throws Exception {
@@ -679,7 +682,7 @@ public class Util implements ITechnicalStrings {
 		String sLine = null;
 		do {
 			sLine = br.readLine();
-			if (sLine != null){
+			if (sLine != null) {
 				bw.write(sLine);
 				bw.newLine();
 			}
@@ -1640,7 +1643,7 @@ public class Util implements ITechnicalStrings {
 		}
 		return sMplayerPath; // can be null if none suitable file found
 	}
-	
+
 	/**
 	 * @return MPLayer binary MAC full path
 	 */
@@ -1648,21 +1651,17 @@ public class Util implements ITechnicalStrings {
 		String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
 		if (forced != null && !"".equals(forced)) {
 			return forced + "/mplayer";
-		}
-		else if (Util.isUnderOSXintel() 
-				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer").exists()){
+		} else if (Util.isUnderOSXintel()
+				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer").exists()) {
 			return FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer";
-		}
-		else if (Util.isUnderOSXpower() 
-				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer").exists()){
+		} else if (Util.isUnderOSXpower()
+				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer").exists()) {
 			return FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer";
-		}
-		else{
-			//Simply return mplayer from PATH, works if app is launch from CLI
+		} else {
+			// Simply return mplayer from PATH, works if app is launch from CLI
 			return "mplayer";
 		}
 	}
-
 
 	/**
 	 * Apply a pattern
@@ -1938,7 +1937,7 @@ public class Util implements ITechnicalStrings {
 		}
 		return mplayerStatus;
 	}
-	
+
 	/**
 	 * @return whether we are under OS X Intel
 	 */
@@ -1954,15 +1953,61 @@ public class Util implements ITechnicalStrings {
 		String sArch = System.getProperty("os.arch");
 		return org.jdesktop.swingx.util.OS.isMacOSX() && (sArch != null && !sArch.matches(".*86"));
 	}
-	
+
 	/**
 	 * Encode URLS
+	 * 
 	 * @param s
 	 * @return
 	 */
 	public static String encodeString(String s) {
 		return s.replaceAll(" +", "+");
 	}
+
+	public static int countDirectories(File root) {
+		int count = 0;
+		// index init
+		File fCurrent = root;
+		int[] indexTab = new int[100]; // directory index
+		for (int i = 0; i < 100; i++) { // init
+			indexTab[i] = -1;
+		}
+		int iDeep = 0; // deep
+		File dParent = root;
+		// Start actual scan
+		while (iDeep >= 0 && !Main.isExiting()) {
+			// only directories
+			File[] files = fCurrent.listFiles(Util.dirFilter);
+			// files is null if fCurrent is a not a directory
+			if (files == null || files.length == 0) {
+				// re-init for next time we will reach this deep
+				indexTab[iDeep] = -1;
+				iDeep--; // come up
+				fCurrent = fCurrent.getParentFile();
+				if (dParent != null) {
+					dParent = dParent.getParentFile();
+				}
+			} else {
+				if (indexTab[iDeep] < files.length - 1) {
+					// enter sub-directory
+					indexTab[iDeep]++; // inc index for next time we
+					// will reach this deep
+					fCurrent = files[indexTab[iDeep]];
+					count++;
+					iDeep++;
+				} else {
+					indexTab[iDeep] = -1;
+					iDeep--;
+					fCurrent = fCurrent.getParentFile();
+					if (dParent != null) {
+						dParent = dParent.getParentFile();
+					}
+				}
+			}
+		}
+		return count;
+	}
+	
 	
 	/**
 	 * @param color java color

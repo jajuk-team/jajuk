@@ -33,9 +33,11 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.RefreshDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -293,6 +295,18 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				Messages.showErrorMessage("101");
 				return false;
 			}
+			// Show Refresh dialog if manual
+			RefreshDialog rdialog = null;
+			int dirTotal = 0;
+			int dirCount = 0;
+			if (bManual) {
+				rdialog = new RefreshDialog();
+				rdialog.setTitle(Messages.getString("RefreshDialog.2")+" "+this.getName());
+				rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.ICON_INFO);
+				// Computes the number of directories
+				dirTotal = Util.countDirectories(fTop);
+				rdialog.setAction(Messages.getString("RefreshDialog.1"), IconLoader.ICON_REFRESH);
+			}
 
 			// index init
 			File fCurrent = fTop;
@@ -330,13 +344,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 						dParent = DirectoryManager.getInstance().registerDirectory(
 								fCurrent.getName(), dParent, this);
 						if (bManual) {
-							InformationJPanel.getInstance().setMessage(
-									new StringBuffer(Messages.getString("Device.21")).append(
-											this.getName()).append(Messages.getString("Device.22"))
-											.append(dParent.getRelativePath()).append("]")
-											.toString(), InformationJPanel.INFORMATIVE);
+							rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.22"))
+									.append(dParent.getRelativePath()).append("]").toString());
+							rdialog.setProgress((int) (100 * (float) dirCount / dirTotal));
 						}
 						dParent.scan(bDeepScan);
+						dirCount++;
 						iDeep++;
 					} else {
 						indexTab[iDeep] = -1;
@@ -347,6 +360,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 						}
 					}
 				}
+			}
+
+			if (bManual) {
+				//Close refresh dialog
+				rdialog.dispose();
 			}
 
 			// Display end of refresh message with stats
