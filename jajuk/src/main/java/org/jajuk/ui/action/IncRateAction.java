@@ -23,6 +23,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 
@@ -37,8 +38,6 @@ public class IncRateAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int RATING_INC = 10;
-
 	IncRateAction() {
 		super(
 				Messages.getString("IncRateAction.0"), IconLoader.ICON_INC_RATING, true); 
@@ -49,7 +48,7 @@ public class IncRateAction extends ActionBase {
 		File file = FIFO.getInstance().getCurrentFile();
 		if (file != null){
 			Track track = file.getTrack();
-			track.setRate(track.getRate() + RATING_INC);
+			track.setRate(track.getRate() + ConfigurationManager.getInt(CONF_INC_RATING));
 		}
 	}
 }

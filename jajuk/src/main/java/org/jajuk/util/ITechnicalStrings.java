@@ -729,6 +729,9 @@ public interface ITechnicalStrings {
 	/** Font size */
 	public static final String CONF_FONTS_SIZE = "jajuk.fonts_size";
 
+	/** Increase rate value */
+	public static final String CONF_INC_RATING = "jajuk.inc_rating.step";
+
 	/** Shuffle/novelties mode */
 	public static final String MODE_ALBUM = "album";
 

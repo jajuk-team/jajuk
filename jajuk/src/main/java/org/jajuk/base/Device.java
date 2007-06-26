@@ -101,12 +101,18 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 	/** Volume of created files during synchro */
 	long lVolume = 0;
+	
+	/** Number of directories computes from reading the filesystem */
+	private int dirTotal = 0;
 
 	/** date last refresh */
 	long lDateLastRefresh;
 
 	/** Refresh message */
 	private String sFinalMessage = "";
+	
+	//Refresh dialog
+	RefreshDialog rdialog;
 
 	// Refresh Options
 	private static final int OPTION_REFRESH_FAST = 0;
@@ -227,8 +233,19 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			Messages.showErrorMessage("107");
 			return;
 		}
-		// clean old files up
+		rdialog = new RefreshDialog();
+		rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + this.getName());
+		rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.ICON_INFO);
+		
+		// clean old files up (takes a while)
 		cleanRemovedFiles();
+		//Cleanup represents about 20% of the total workload
+		rdialog.setProgress(20);
+		// Computes the number of directories
+		rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.ICON_INFO);
+		dirTotal = Util.countDirectories(new File(getUrl()));
+		rdialog.setAction(Messages.getString("RefreshDialog.1"), IconLoader.ICON_REFRESH);
+		rdialog.setProgress(10);
 		// Actual refresh
 		refreshCommand((i == OPTION_REFRESH_DEEP), true);
 		Messages.showInfoMessage(sFinalMessage);
@@ -240,15 +257,14 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		AlbumManager.getInstance().cleanup();
 		AuthorManager.getInstance().cleanup();
 		PlaylistManager.getInstance().cleanup();
-		// commit collection at each refresh (can be useful if application is
-		// closed brutally with control-C or shutdown and that exit hook have no
-		// time to perform commit)
+		// commit collection at each refresh (can be useful if application
+		// is closed brutally with control-C or shutdown and that exit hook
+		// have no time to perform commit)
 		try {
 			org.jajuk.base.Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
 		} catch (IOException e) {
 			Log.error(e);
 		}
-
 	}
 
 	/**
@@ -267,7 +283,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			if (Main.bExiting) {
 				return false;
 			}
-			// check if this device is mounted (usefull when called by
+			// check if this device is mounted (useful when called by
 			// automatic refresh)
 			if (!isMounted()) {
 				return false;
@@ -295,19 +311,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				Messages.showErrorMessage("101");
 				return false;
 			}
-			// Show Refresh dialog if manual
-			RefreshDialog rdialog = null;
-			int dirTotal = 0;
 			int dirCount = 0;
-			if (bManual) {
-				rdialog = new RefreshDialog();
-				rdialog.setTitle(Messages.getString("RefreshDialog.2")+" "+this.getName());
-				rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.ICON_INFO);
-				// Computes the number of directories
-				dirTotal = Util.countDirectories(fTop);
-				rdialog.setAction(Messages.getString("RefreshDialog.1"), IconLoader.ICON_REFRESH);
-			}
-
 			// index init
 			File fCurrent = fTop;
 			int[] indexTab = new int[100]; // directory index
@@ -345,8 +349,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 								fCurrent.getName(), dParent, this);
 						if (bManual) {
 							rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.22"))
-									.append(dParent.getRelativePath()).append("]").toString());
-							rdialog.setProgress((int) (100 * (float) dirCount / dirTotal));
+									.append(' ').append(dParent.getRelativePath()).toString());
+							rdialog.setProgress(30+ (int) (70 * (float) dirCount / dirTotal));
 						}
 						dParent.scan(bDeepScan);
 						dirCount++;
@@ -363,7 +367,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 
 			if (bManual) {
-				//Close refresh dialog
+				// Close refresh dialog
 				rdialog.dispose();
 			}
 
@@ -701,6 +705,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * 
 	 * @param bUIRefresh
 	 *            set whether the UI should be refreshed
+	 * @throws Exception
+	 *             if device cannot be mounted
 	 */
 	public void mount(boolean bUIRefresh) throws Exception {
 		if (bMounted) {
@@ -739,9 +745,14 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			bMounted = true;
 		}
 		// notify views to refresh if needed
-		if (bUIRefresh) {
+		if (bMounted && bUIRefresh) {
 			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
 		}
+		// Still not mounted ? throw an exception
+		if (!bMounted) {
+			throw new Exception();
+		}
+
 	}
 
 	/**
@@ -979,8 +990,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		for (org.jajuk.base.File file : files) {
 			if (!Main.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
 				// Remove file if it doesn't exist any more or if it is a iTunes
-				// file
-				// (useful for jajuk < 1.4)
+				// file (useful for jajuk < 1.4)
 				if (!file.getIO().exists() || file.getName().startsWith("._")) {
 					FileManager.getInstance().removeFile(file);
 					Log.debug("Removed: " + file);

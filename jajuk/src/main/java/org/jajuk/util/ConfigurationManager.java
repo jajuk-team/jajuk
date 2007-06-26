@@ -248,6 +248,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_CATALOG_SHOW_POPUPS, TRUE);
 		properties.put(CONF_FONTS_SIZE, "12");
 		properties.put(CONF_MPLAYER_PATH_FORCED, "");
+		properties.put(CONF_INC_RATING,"5");
 	}
 
 	/**

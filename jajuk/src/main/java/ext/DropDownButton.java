@@ -28,12 +28,18 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 		PopupMenuListener, ActionListener, PropertyChangeListener,
 		ITechnicalStrings {
 	
-	private final JButton arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN);
+	private final JButton arrowButton;
 
 	private boolean popupVisible = false;
 
 	public DropDownButton(ImageIcon icon) {
 		super(icon);
+		if (icon.getIconWidth() < 20){
+			arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_16x16);
+		}
+		else{
+			arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_32x32);
+		}
 		getModel().addChangeListener(this);
 		arrowButton.getModel().addChangeListener(this);
 		arrowButton.addActionListener(this);

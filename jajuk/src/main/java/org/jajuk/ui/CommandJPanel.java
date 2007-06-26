@@ -134,7 +134,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	SteppedComboBox jcbHistory;
 
-	JButton jbIncRate;
+	DropDownButton jbIncRate;
 
 	public JajukToggleButton jbRepeat;
 
@@ -296,9 +296,34 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbHistory.setFloatable(false);
 		jtbHistory.setRollover(true);
 		jcbHistory = new SteppedComboBox();
+			// - Increase rating button
 		ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
 		actionIncRate.setName(null);
-		jbIncRate = new JButton(actionIncRate);
+		final JPopupMenu jpmIncRating = new JPopupMenu();
+		for (int i=1;i<=10;i++){
+			final int j = i;
+			JMenuItem jmi = new JMenuItem("+"+i);
+			if (ConfigurationManager.getInt(CONF_INC_RATING) == i){
+				jmi.setFont(new Font("dialog", Font.BOLD,
+				ConfigurationManager.getInt(CONF_FONTS_SIZE)));
+			}
+			//Store selected value
+			jmi.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ConfigurationManager.setProperty(CONF_INC_RATING, ""+j);
+				}
+			});
+			jpmIncRating.add(jmi);
+		}
+		jbIncRate = new DropDownButton(IconLoader.ICON_INC_RATING) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected JPopupMenu getPopupMenu() {
+				return jpmIncRating;
+			}
+		};
+		jbIncRate.setAction(actionIncRate);
 		// we use a combo box model to make sure we get good performances after
 		// rebuilding the entire model like after a refresh
 		jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
@@ -311,7 +336,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jcbHistory.addActionListener(CommandJPanel.this);
 		jtbHistory.add(jcbHistory);
 		jtbHistory.add(Box.createHorizontalStrut(10));
-		jtbHistory.add(jbIncRate);
+		jbIncRate.addToToolBar(jtbHistory);
 
 		// Mode toolbar
 		// we need an inner toolbar to apply size properly
@@ -590,6 +615,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
 			} else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
+			} else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
+				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
 			} else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
 				ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
 			}

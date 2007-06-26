@@ -446,8 +446,11 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_STAR_4 = new UrlImageIcon(Util
 			.getResource("icons/16x16/star4.png"));
 
-	public static final UrlImageIcon ICON_DROP_DOWN = new UrlImageIcon(Util
+	public static final UrlImageIcon ICON_DROP_DOWN_32x32 = new UrlImageIcon(Util
 			.getResource("icons/32x32/dropdown.png"));
+
+	public static final UrlImageIcon ICON_DROP_DOWN_16x16 = new UrlImageIcon(Util
+			.getResource("icons/16x16/dropdown.png"));
 
 	public static final UrlImageIcon ICON_DIGITAL_DJ = new UrlImageIcon(Util
 			.getResource("icons/32x32/ddj.png"));
