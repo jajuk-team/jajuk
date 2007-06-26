@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -81,7 +82,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	public void update() {
 		// Perspectives tool bar
 		jtbPerspective = new JToolBar(JToolBar.VERTICAL);
-		jtbPerspective.setBorder(null);
+		jtbPerspective.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 		Iterator it = PerspectiveManager.getPerspectives().iterator();
 		int index = 0;
 		while (it.hasNext()) {
