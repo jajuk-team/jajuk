@@ -6,7 +6,8 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         <vendor>Javazoom</vendor>
     </information>
     <resources>
-        <jar href="basicplayer-2.3.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="basicplayer-3.0.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="jmactritonusspi-1.74.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>
