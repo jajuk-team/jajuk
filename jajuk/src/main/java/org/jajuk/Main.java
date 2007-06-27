@@ -62,6 +62,7 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioRepository;
 import org.jdesktop.swingx.util.JVM;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
@@ -378,6 +379,8 @@ public class Main implements ITechnicalStrings {
 							// commit only if exit is safe (to avoid commiting
 							// empty collection) commit ambiences
 							AmbienceManager.getInstance().commit();
+							//Commit webradios
+							WebRadioRepository.getInstance().commit();
 							// commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
 							// commit history
@@ -409,6 +412,7 @@ public class Main implements ITechnicalStrings {
 							if (Util.isUnderWindows()) {
 								org.jajuk.ui.action.ActionBase.cleanup();
 							}
+							
 						}
 					} catch (Exception e) {
 						Log.error(e);
@@ -449,6 +453,9 @@ public class Main implements ITechnicalStrings {
 
 			// start the tray
 			launchTray();
+			
+			//Temp
+			WebRadioRepository.getInstance();
 
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose
@@ -827,6 +834,14 @@ public class Main implements ITechnicalStrings {
 			// APE
 			Type type = TypeManager.getInstance()
 					.registerType(Messages.getString("Type.ape"), EXT_APE,
+							Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+			type.setProperty(XML_TYPE_IS_MUSIC, true);
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
+			type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_APE.getUrl().toExternalForm());
+			// MAC
+			type = TypeManager.getInstance()
+					.registerType(Messages.getString("Type.mac"), EXT_MAC,
 							Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
 			type.setProperty(XML_TYPE_IS_MUSIC, true);
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);

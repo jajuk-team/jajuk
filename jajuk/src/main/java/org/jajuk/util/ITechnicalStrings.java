@@ -204,6 +204,8 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_DJ_DIR = "djs";
 
+	public static final String FILE_WEB_RADIOS_REPOS = "webradios.xml";
+
 	public static final String FILE_FIFO = "fifo.lst";
 
 	public static final String FILE_MPLAYER_EXE = "mplayer.exe";
@@ -223,7 +225,11 @@ public interface ITechnicalStrings {
 	public static final URL FILE_REPORTING_CSS_PRINT_PATH = Util.getResource("xslt/"+FILE_REPORTING_CSS_PRINT_FILENAME);
 
 	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
+	
+	public static final String URL_DEFAULT_WEBRADIOS_1 = "http://jajuk.svn.sourceforge.net/viewvc/*checkout*/jajuk/trunk/jajuk/src/main/resources/xml/default_webradios.xml";
 
+	public static final String URL_DEFAULT_WEBRADIOS_2 = "http://repository.jajuk.info/default_webradios.xml";
+	
 	// About
 	public static final String ABOUT = "<html>Jajuk version " + JAJUK_VERSION + "</html>";
 
@@ -411,6 +417,10 @@ public interface ITechnicalStrings {
 	public static final String EXT_WMA = "wma";
 
 	public static final String EXT_APE = "ape";
+
+	public static final String EXT_APL = "apl";
+
+	public static final String EXT_MAC = "mac";
 
 	public static final String EXT_AAC = "aac";
 
@@ -974,6 +984,10 @@ public interface ITechnicalStrings {
 	public static final String XML_DJ_STARTUP_STYLE = "startup_style";
 
 	public static final String XML_SUBMISSION = "submission";
+	
+	public static final String XML_STREAMS = "streams";
+	
+	public static final String XML_STREAM = "stream";
 
 	/*
 	 * Reserved XML tags for property names (note that a user can choose a
