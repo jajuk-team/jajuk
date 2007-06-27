@@ -456,12 +456,7 @@ public class Track extends LogicalItem implements Comparable {
 	 */
 	public boolean shouldBeHidden() {
 		if (getPlayeableFile(true) != null
-				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { // option
-			// "only
-			// display
-			// mounted
-			// devices
-			// "
+				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { 
 			return false;
 		}
 		return true;

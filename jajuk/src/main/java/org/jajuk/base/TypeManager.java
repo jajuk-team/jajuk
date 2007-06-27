@@ -92,17 +92,8 @@ public class TypeManager extends ItemManager {
 	 */
 	public Type registerType(String sName, String sExtension,
 			Class cPlayerImpl, Class cTagImpl) {
-		return registerType(getID(hmSupportedTypes.size()), sName, sExtension,
+		return registerType(sExtension, sName, sExtension,
 				cPlayerImpl, cTagImpl);
-	}
-
-	/**
-	 * @param type
-	 *            index
-	 * @return ItemManager ID
-	 */
-	protected static String getID(int index) {
-		return Integer.toString(index);
 	}
 
 	/**

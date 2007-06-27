@@ -86,7 +86,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
 	/** upgrade for playlist file IDs */
 	private HashMap<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
-
+	
 	/** Auto commit thread */
 	private static Thread tAutoCommit = new Thread() {
 		public void run() {
@@ -489,8 +489,25 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				Author author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
 				long length = Long.parseLong(attributes.getValue(attributes
 						.getIndex(XML_TRACK_LENGTH)));
-				Type type = TypeManager.getInstance().getTypeByID(
-						attributes.getValue(attributes.getIndex(XML_TYPE)));
+				//Type
+				//upgrade from < 1.4, type id from index to extension
+				HashMap<String,String> conversion = new HashMap<String, String>();
+				conversion.put("0","mp3");
+				conversion.put("1","m3u");
+				conversion.put("2","ogg");
+				conversion.put("3","wav");
+				conversion.put("4","au");
+				conversion.put("5","flac");
+				conversion.put("6","wma");
+				conversion.put("7","aac");
+				conversion.put("8","m4a");
+				conversion.put("9","ram");
+				conversion.put("10","mp2");
+				String typeID = attributes.getValue(attributes.getIndex(XML_TYPE)); 
+				if (conversion.containsKey(typeID)){
+					typeID = conversion.get(typeID);
+				}
+				Type type = TypeManager.getInstance().getTypeByID(typeID);
 				// more checkups
 				if (album == null || author == null || style == null || type == null) {
 					return;
@@ -590,10 +607,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 			} else if (XML_FILE.equals(sQName)) {
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
-				// Check file type is still registated, it can be useful for ie
+				// Check file type is still registrated, it can be useful for ie
 				// if mplayer is no more available
 				String ext = Util.getExtension(new File(sItemName));
-				if (ext == null || TypeManager.getInstance().getTypeByExtension(ext) == null) {
+				Type type = TypeManager.getInstance().getTypeByExtension(ext);
+				if (type == null) {
 					return;
 				}
 				String sTrackId = attributes.getValue(attributes.getIndex(XML_TRACK)).intern();
