@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- 
+	Description: Provides a list of default web radio streams
+	Author: The Jajuk Team, initialy fetched from Amarok Cool-Streams.xml file
+-->
+
+<streams>
+	<stream name='Bluemars [Ambient/Space-Music]' url='http://207.200.96.225:8020/listen.pls' />
+ 	<stream name='Digitally Imported - Chillout [Chill-Out]' url='http://di.fm/mp3/chillout.pls'/>
+ 	<stream name='Digitally Imported - Classic Techno [Techno]' url='http://di.fm/mp3/classictechno.pls'/>
+	<stream name='Digitally Imported - Trance [Trance]' url='http://di.fm/mp3/trance.pls'/>
+	<stream name='Electronic Culture [Minimal Techno]' url='http://www.shouted.fm/tunein/electro-dsl.m3u'/>
+	<stream name='Frequence 3 [Pop]' url='http://streams.frequence3.net/hd-mp3.m3u'/>
+	<stream name='Gaming FM [Computer-Music]' url='http://208.64.81.140:7500/listen.pls'/>
+ 	<stream name='Groove Salad [Chill-Out]' url='http://www.somafm.com/groovesalad.pls'/>
+	<stream name='Drone Zone [Ambient]' url='http://somafm.com/dronezone.pls'/>
+	<stream name='Tags Trance Trip [Trance]' url='http://somafm.com/tagstrance.pls'/>
+	<stream name='Indie Pop Rocks [Indie]' url='http://www.somafm.com/indiepop.pls'/>
+	<stream name='Kohina [Computer-Music]' url='http://la.campus.ltu.se:8000/stream.ogg.m3u'/>
+ 	<stream name='Mostly Classical [Classical]' url='http://www.sky.fm/mp3/classical.pls'/>
+	<stream name='MTH.House [House]' url='http://stream.mth-house.de:8500/listen.pls'/>
+ 	<stream name='Nectarine Demoscene Radio [Computer-Music]' url='http://nectarine.sik.fi:8002/live.mp3.m3u'/>
+ 	<stream name='Philosomatika [Psytrance]' url='http://philosomatika.com/Philosomatika.pls'/>
+ 	<stream name='Proton Radio [House/Dance]' url='http://protonradio.com/proton.m3u'/>
+ 	<stream name='Pure DJ [Trance]' url='http://www.puredj.com/etc/pls/128K.pls'/>
+ 	<stream name='Radio.BMJ.net [Trance/Livesets]' url='http://radio.bmj.net:8000/listen.pls'/>
+	<stream name='Radio Paradise [Rock/Pop/Alternative]' url='http://www.radioparadise.com/musiclinks/rp_128.m3u'/>
+ 	<stream name='Raggakings [Reggae]' url='http://www.raggakings.net/listen.m3u'/>
+ 	<stream name='Secret Agent [Downtempo/Lounge]' url='http://somafm.com/secretagent.pls'/>
+ 	<stream name='SLAY Radio [C64 Remixes]' url='http://sc.slayradio.org:8000/listen.pls'/>
+ 	<stream name='Virgin Radio [Rock/Pop]' url='http://www.smgradio.com/core/audio/mp3/live.pls?service=vrbb'/>
+ 	<stream name='X T C Radio [Techno/Trance]' url='http://stream.xtcradio.com:8069/listen.pls'/>
+</streams>
