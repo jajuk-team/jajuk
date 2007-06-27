@@ -113,10 +113,8 @@ public class TypeManager extends ItemManager {
 	public Type registerType(String sId, String sName, String sExtension,
 			Class cPlayerImpl, Class cTagImpl) {
 		synchronized (TrackManager.getInstance().getLock()) {
-			if (hmSupportedTypes.containsKey(sExtension)) { // if the type
-				// is already in
-				// memory, use
-				// it
+			if (hmSupportedTypes.containsKey(sExtension)) { 
+				// if the type is already in memory, use it
 				return hmSupportedTypes.get(sExtension);
 			}
 			Type type = null;

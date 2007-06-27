@@ -93,7 +93,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			while (!Main.isExiting()) {
 				try {
 					Thread.sleep(AUTO_COMMIT_DELAY);
-					Log.debug("Auto commit"); 
+					Log.debug("Auto commit");
 					// commit collection at each refresh (can be useful if
 					// application is closed brutally with control-C or
 					// shutdown and that exit hook have no time to perform
@@ -126,60 +126,60 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		long lTime = System.currentTimeMillis();
 		String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-				collectionFile), sCharset), 1000000); 
-		bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");  
-		bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");    
+				collectionFile), sCharset), 1000000);
+		bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
+		bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
 		// types
-		bw.write(TypeManager.getInstance().toXML()); 
+		bw.write(TypeManager.getInstance().toXML());
 		Iterator it = null;
 		it = TypeManager.getInstance().getTypes().iterator();
 		while (it.hasNext()) {
 			Type type = (Type) it.next();
 			bw.write(type.toXml());
 		}
-		bw.write("\t</" + TypeManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + TypeManager.getInstance().getIdentifier() + ">\n");
 		// devices
-		bw.write(DeviceManager.getInstance().toXML()); 
+		bw.write(DeviceManager.getInstance().toXML());
 		it = DeviceManager.getInstance().getDevices().iterator();
 		while (it.hasNext()) {
 			Device device = (Device) it.next();
 			bw.write(device.toXml());
 		}
-		bw.write("\t</" + DeviceManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + DeviceManager.getInstance().getIdentifier() + ">\n");
 		// styles
-		bw.write(StyleManager.getInstance().toXML()); 
+		bw.write(StyleManager.getInstance().toXML());
 		it = StyleManager.getInstance().getStyles().iterator();
 		while (it.hasNext()) {
 			Style style = (Style) it.next();
 			bw.write(style.toXml());
 		}
-		bw.write("\t</" + StyleManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + StyleManager.getInstance().getIdentifier() + ">\n");
 		// authors
-		bw.write(AuthorManager.getInstance().toXML()); 
+		bw.write(AuthorManager.getInstance().toXML());
 		it = AuthorManager.getInstance().getAuthors().iterator();
 		while (it.hasNext()) {
 			Author author = (Author) it.next();
 			bw.write(author.toXml());
 		}
-		bw.write("\t</" + AuthorManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + AuthorManager.getInstance().getIdentifier() + ">\n");
 		// albums
-		bw.write(AlbumManager.getInstance().toXML()); 
+		bw.write(AlbumManager.getInstance().toXML());
 		it = AlbumManager.getInstance().getAlbums().iterator();
 		while (it.hasNext()) {
 			Album album = (Album) it.next();
 			bw.write(album.toXml());
 		}
-		bw.write("\t</" + AlbumManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + AlbumManager.getInstance().getIdentifier() + ">\n");
 		// years
-		bw.write(YearManager.getInstance().toXML()); 
+		bw.write(YearManager.getInstance().toXML());
 		it = YearManager.getInstance().getYears().iterator();
 		while (it.hasNext()) {
 			Year year = (Year) it.next();
 			bw.write(year.toXml());
 		}
-		bw.write("\t</" + YearManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + YearManager.getInstance().getIdentifier() + ">\n");
 		// tracks
-		bw.write(TrackManager.getInstance().toXML()); 
+		bw.write(TrackManager.getInstance().toXML());
 		it = TrackManager.getInstance().getTracks().iterator();
 		while (it.hasNext()) {
 			Track track = (Track) it.next();
@@ -188,35 +188,33 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(track.toXml());
 			}
 		}
-		bw.write("\t</" + TrackManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + TrackManager.getInstance().getIdentifier() + ">\n");
 		// directories
-		bw.write(DirectoryManager.getInstance().toXML()); 
+		bw.write(DirectoryManager.getInstance().toXML());
 		it = DirectoryManager.getInstance().getDirectories().iterator();
 		while (it.hasNext()) {
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier() 
-				+ ">\n");  
+		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier() + ">\n");
 		// files
-		bw.write(FileManager.getInstance().toXML()); 
+		bw.write(FileManager.getInstance().toXML());
 		it = FileManager.getInstance().getFiles().iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
 			bw.write(file.toXml());
 		}
-		bw.write("\t</" + FileManager.getInstance().getIdentifier() + ">\n");  
+		bw.write("\t</" + FileManager.getInstance().getIdentifier() + ">\n");
 		// playlist files
-		bw.write(PlaylistFileManager.getInstance().toXML()); 
+		bw.write(PlaylistFileManager.getInstance().toXML());
 		it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
 		while (it.hasNext()) {
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() 
-				+ ">\n");  
+		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() + ">\n");
 		// playlist
-		bw.write(PlaylistManager.getInstance().toXML()); 
+		bw.write(PlaylistManager.getInstance().toXML());
 		it = PlaylistManager.getInstance().getPlayLists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
@@ -225,13 +223,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</" + PlaylistManager.getInstance().getIdentifier() 
-				+ ">\n");  
-		bw.write("</" + XML_COLLECTION + ">\n");  
+		bw.write("\t</" + PlaylistManager.getInstance().getIdentifier() + ">\n");
+		bw.write("</" + XML_COLLECTION + ">\n");
 		bw.flush();
 		bw.close();
-		Log.debug("Collection commited in " 
-				+ (System.currentTimeMillis() - lTime) + " ms"); 
+		Log.debug("Collection commited in " + (System.currentTimeMillis() - lTime) + " ms");
 	}
 
 	/**
@@ -249,7 +245,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		SAXParser saxParser = spf.newSAXParser();
 		File frt = file;
 		if (!frt.exists()) {
-			throw new JajukException("005"); 
+			throw new JajukException("005");
 		}
 		saxParser.parse(frt.toURI().toURL().toString(), getInstance());
 		// start auto commit thread
@@ -281,8 +277,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
-		throw new SAXException(
-				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
+		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/"
+				+ spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
 	}
 
 	/**
@@ -292,8 +288,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void error(SAXParseException spe) throws SAXException {
-		throw new SAXException(
-				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
+		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/"
+				+ spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
 	}
 
 	/**
@@ -303,15 +299,15 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
-		throw new SAXException(
-				Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
+		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/"
+				+ spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
 	}
 
 	/**
 	 * Called at parsing start
 	 */
 	public void startDocument() {
-		Log.debug("Starting collection file parsing..."); 
+		Log.debug("Starting collection file parsing...");
 	}
 
 	/**
@@ -319,8 +315,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void endDocument() {
 		long l = (System.currentTimeMillis() - lTime);
-		Log.debug("Collection file parsing done : " + 
-				((l < 1000) ? l + " ms" : (l / 1000) + " s"));  
+		Log.debug("Collection file parsing done : " + ((l < 1000) ? l + " ms" : (l / 1000) + " s"));
 	}
 
 	/**
@@ -369,7 +364,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE))
 						.intern();
 				Object oDefaultValue = null;
-				if (sDefaultValue != null && sDefaultValue.trim().length() > 0) { 
+				if (sDefaultValue != null && sDefaultValue.trim().length() > 0) {
 					try {
 						// Date format has changed from 1.3 (only yyyyMMdd
 						// addition format is used)
@@ -402,7 +397,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong device Id, upgraded: " + device); 
+					Log.debug("** Wrong device Id, upgraded: " + device);
 					hmWrongRightDeviceID.put(sId, sRightID);
 				}
 			} else if (XML_STYLE.equals(sQName)) {
@@ -416,7 +411,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong style Id, upgraded: " + style); 
+					Log.debug("** Wrong style Id, upgraded: " + style);
 					hmWrongRightStyleID.put(sId, sRightID);
 				}
 			} else if (XML_YEAR.equals(sQName)) {
@@ -437,7 +432,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong author Id, upgraded: " + author); 
+					Log.debug("** Wrong author Id, upgraded: " + author);
 					hmWrongRightAuthorID.put(sId, sRightID);
 				}
 			} else if (XML_ALBUM.equals(sQName)) {
@@ -451,7 +446,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong album Id, upgraded: " + album); 
+					Log.debug("** Wrong album Id, upgraded: " + album);
 					hmWrongRightAlbumID.put(sId, sRightID);
 				}
 			} else if (XML_TRACK.equals(sQName)) {
@@ -508,8 +503,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") + ":"  
-								+ sTrackName);
+						Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
 					}
 				}
 				// Idem for order
@@ -520,8 +514,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") 
-								+ ":" + sTrackName); // wrong 
+						Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
 					}
 				}
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and
@@ -541,13 +534,13 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				track.setAdditionDate(dAdditionDate);
 				String sComment = attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT));
 				if (sComment == null) {
-					sComment = ""; 
+					sComment = "";
 				}
 				track.setComment(sComment);
 				track.populateProperties(attributes);
 				// display a message if Id had a problem
 				if (!sId.equals(sRightID)) {
-					Log.debug("** Wrong Track Id, upgraded: " + track); 
+					Log.debug("** Wrong Track Id, upgraded: " + track);
 					hmWrongRightTrackID.put(sId, sRightID);
 				}
 			} else if (XML_DIRECTORY.equals(sQName)) {
@@ -560,7 +553,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 						sParentId = hmWrongRightDirectoryID.get(sParentId);
 					}
 				}
-				if (!"-1".equals(sParentId)) { 
+				if (!"-1".equals(sParentId)) {
 					dParent = DirectoryManager.getInstance().getDirectoryByID(sParentId); // Parent
 					// directory
 					// should
@@ -592,10 +585,17 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				directory.populateProperties(attributes);
 				// display a message if Id had a problem
 				if (!sID.equals(sRightID)) {
-					Log.debug("** Wrong directory Id, upgraded: " + directory); 
+					Log.debug("** Wrong directory Id, upgraded: " + directory);
 					hmWrongRightDirectoryID.put(sID, sRightID);
 				}
 			} else if (XML_FILE.equals(sQName)) {
+				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+				// Check file type is still registated, it can be useful for ie
+				// if mplayer is no more available
+				String ext = Util.getExtension(new File(sItemName));
+				if (ext == null || TypeManager.getInstance().getTypeByExtension(ext) == null) {
+					return;
+				}
 				String sTrackId = attributes.getValue(attributes.getIndex(XML_TRACK)).intern();
 				// UPGRADE check if track Id is right
 				if (hmWrongRightTrackID.size() > 0) {
@@ -617,7 +617,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				if (dParent == null || track == null) { // more checkups
 					return;
 				}
-				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				long lSize = Long.parseLong(attributes.getValue(attributes.getIndex(XML_SIZE)));
 				// Quality analyze, handle format problems (mainly for upgrades)
 				long lQuality = 0;
@@ -627,8 +626,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				} catch (Exception e) {
 					if (Log.isDebugEnabled()) {
 						// wrong format
-						Log.debug(Messages.getString("Error.137") 
-								+ ":" + sItemName); // wrong 
+						Log.debug(Messages.getString("Error.137") + ":" + sItemName); // wrong
 					}
 				}
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
@@ -639,7 +637,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				file.populateProperties(attributes);
 				// display a message if Id had a problem
 				if (!sID.equals(sRightID)) {
-					Log.debug("** Wrong file Id, upgraded: " + file); 
+					Log.debug("** Wrong file Id, upgraded: " + file);
 					hmWrongRightFileID.put(sID, sRightID);
 				}
 			} else if (XML_PLAYLIST_FILE.equals(sQName)) {
@@ -667,14 +665,14 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// display a message if Id had a problem
 				if (!sID.equals(sRightID)) {
-					Log.debug("** Wrong playlist file Id, upgraded: " + plf); 
+					Log.debug("** Wrong playlist file Id, upgraded: " + plf);
 					hmWrongRightPlaylistFileID.put(sID, sRightID);
 				}
 			} else if (XML_PLAYLIST.equals(sQName)) {
 				String sPlaylistFiles = attributes
 						.getValue(attributes.getIndex(XML_PLAYLIST_FILES)).intern();
 				// playlist file list with ','
-				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ","); 
+				StringTokenizer st = new StringTokenizer(sPlaylistFiles, ",");
 				Playlist playlist = null;
 				if (st.hasMoreTokens()) {
 					// if none mapped file, ignore
@@ -700,43 +698,13 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 						playlist.populateProperties(attributes);
 					}
 				}
-			} else if (XML_TYPE.equals(sQName)) {
-				String sId = attributes.getValue(attributes.getIndex(XML_ID)).intern();
-				/*
-				 * we ignore classes given in collection file and we keep
-				 * default types registrated at startup in Main class. But we
-				 * want to make possible the adding of new types from an
-				 * external source, so we accept types for sequential id >=
-				 * number of registrated types
-				 */
-				if (Integer.parseInt(sId) >= TypeManager.getInstance().getElementCount()) {
-					String sTypeName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
-					String sExtension = attributes
-							.getValue(attributes.getIndex(XML_TYPE_EXTENSION)).intern();
-					Class cPlayer = null;
-					String sPlayer = attributes.getValue(attributes.getIndex(XML_TYPE_PLAYER_IMPL))
-							.intern();
-					if (sPlayer != null && !sPlayer.trim().equals("")) { 
-						cPlayer = Class.forName(sPlayer);
-					}
-					Class cTag = null;
-					String sTag = attributes.getValue(attributes.getIndex(XML_TYPE_TAG_IMPL));
-					if (sTag != null && !sTag.trim().equals("")) { 
-						cTag = Class.forName(sTag);
-					}
-					Type type = TypeManager.getInstance().registerType(sId, sTypeName, sExtension,
-							cPlayer, cTag);
-					if (type != null) {
-						type.populateProperties(attributes);
-					}
-				}
 			}
 		} catch (Exception re) {
-			String sAttributes = ""; 
+			String sAttributes = "";
 			for (int i = 0; i < attributes.getLength(); i++) {
-				sAttributes += "\n" + attributes.getQName(i) + "=" + attributes.getValue(i);  
+				sAttributes += "\n" + attributes.getQName(i) + "=" + attributes.getValue(i);
 			}
-			Log.error("005", sAttributes, re); 
+			Log.error("005", sAttributes, re);
 		}
 	}
 
