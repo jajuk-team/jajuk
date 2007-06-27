@@ -71,7 +71,11 @@ public class LyricsService {
 
 			// Remove <br/>
 			html = html.replaceAll("<br />", "");
-
+			
+			//Replace HTML codes
+			html = html.replaceAll("&#8217;","'");
+			html = html.replaceAll("&#8211;","-");
+		
 			// Bad parsing....
 			if (html.contains("<head>"))
 				return null;
