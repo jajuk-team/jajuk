@@ -823,6 +823,15 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
 				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
 			}
+			//Types not only supported by mplayer but supported by basicplayer
+			// APE
+			Type type = TypeManager.getInstance()
+					.registerType(Messages.getString("Type.ape"), EXT_APE,
+							Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+			type.setProperty(XML_TYPE_IS_MUSIC, true);
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
+			type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_APE.getUrl().toExternalForm());
 		} catch (Exception e1) {
 			Log.error("026", e1);
 		}
@@ -1191,7 +1200,7 @@ public class Main implements ITechnicalStrings {
 					// Prepare toolbars
 					DockingUISettings.getInstance().installUI();
 					tbcontainer = ToolBarContainer.createDefaultContainer(true, false, true, false);
-					
+
 					// starts ui
 					jw = JajukWindow.getInstance();
 					jw.setCursor(Util.WAIT_CURSOR);
@@ -1241,7 +1250,7 @@ public class Main implements ITechnicalStrings {
 					// Add main container (contains toolbars + desktop)
 					JPanel jpCommandScreen = new JPanel();
 					double[][] sizeCenter = new double[][] { { TableLayout.FILL },
-							{ TableLayout.FILL, TableLayout.PREFERRED  } };
+							{ TableLayout.FILL, TableLayout.PREFERRED } };
 					jpCommandScreen.setLayout(new TableLayout(sizeCenter));
 					jpCommandScreen.add(tbcontainer, "0,0");
 					jpCommandScreen.add(command, "0,1");
