@@ -105,7 +105,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 					Thread.sleep(PROGRESS_STEP);
 					if (!bPaused && !bStop) {
 						// a get_percent_pos resumes (mplayer issue)
-						sendCommand("get_time_pos"); 
+						sendCommand("get_time_pos");
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -127,8 +127,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
 				for (; (line = in.readLine()) != null;) {
-					if (line.matches(".*ANS_TIME_POSITION.*")) { 
-						StringTokenizer st = new StringTokenizer(line, "="); 
+					if (line.matches(".*ANS_TIME_POSITION.*")) {
+						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
 						lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
 						// Store current position for use at next startup
@@ -162,13 +162,13 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 							// length=-1 means there is no max length
 							FIFO.getInstance().finished();
 						}
-					} else if (line.matches("ANS_LENGTH.*")) { 
-						StringTokenizer st = new StringTokenizer(line, "="); 
+					} else if (line.matches("ANS_LENGTH.*")) {
+						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
 						lDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
 					}
 					// EOF
-					else if (line.matches("Exiting.*End.*")) { 
+					else if (line.matches("Exiting.*End.*")) {
 						bEOF = true;
 						bOpening = false;
 						// Launch next track
@@ -197,7 +197,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 						break;
 					}
 					// Opening ?
-					else if (line.matches(".*Starting playback.*")) { 
+					else if (line.matches(".*Starting playback.*")) {
 						bOpening = false;
 					}
 				}
@@ -206,7 +206,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 				return;
 			} catch (Exception e) {
 				// A stop causes a steam close exception, so ignore it
-				if (!e.getMessage().matches(".*Stream closed")) { 
+				if (!e.getMessage().matches(".*Stream closed")) {
 					Log.error(e);
 				}
 			}
@@ -235,15 +235,15 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		String sCommand = "mplayer"; //$NON-NLS-1$
 		if (Util.isUnderWindows()) {
 			sCommand = Util.getMPlayerWindowsPath();
-		}
-		else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()){
+		} else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()) {
 			sCommand = Util.getMPlayerOSXPath();
 		}
-		Log.debug("Using command: " +sCommand);
+		Log.debug("Using command: " + sCommand);
 		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
 		String[] cmd = null;
 		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {
-			cmd = new String[] { sCommand, "-quiet", "-slave", file.getAbsolutePath() };  
+			cmd = new String[] { sCommand, "-quiet", "-slave", "-cache","1000",
+					file.getAbsolutePath() };
 		} else {
 			// Add any additional arguments provided by user
 			String[] sArgs = sAdditionalArgs.split(" ");
@@ -258,7 +258,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			Log.debug("Using this Mplayer command: " + Arrays.asList(cmd));
 		}
 		ProcessBuilder pb = new ProcessBuilder(cmd);
-		//Set all environment variables format: var1=xxx var2=yyy
+		// Set all environment variables format: var1=xxx var2=yyy
 		try {
 			Map<String, String> env = pb.environment();
 			StringTokenizer st = new StringTokenizer(ConfigurationManager
@@ -289,11 +289,11 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		}
 		// If end of file already reached, it means that file cannot be read
 		if (bEOF) {
-			throw new JajukException("007"); 
+			throw new JajukException("007");
 		}
 		setVolume(fVolume);
 		// Get track length
-		sendCommand("get_time_length"); 
+		sendCommand("get_time_length");
 		if (fPosition > 0.0f) {
 			seek(fPosition);
 		}
@@ -307,7 +307,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	public void stop() throws Exception {
 		// Kill abruptly the mplayer process (this way, killing is synchronous,
 		// and easier than sending a quit command)
-		Log.debug("Stop"); 
+		Log.debug("Stop");
 		if (proc != null) {
 			proc.destroy();
 		}
@@ -320,8 +320,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 */
 	public void setVolume(float fVolume) {
 		this.fVolume = fVolume;
-		Log.debug("Volume=" + (int) (100 * fVolume)); 
-		sendCommand("volume " + (int) (100 * fVolume) + " 2");  
+		Log.debug("Volume=" + (int) (100 * fVolume));
+		sendCommand("volume " + (int) (100 * fVolume) + " 2");
 	}
 
 	/**
@@ -369,7 +369,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 */
 	public void pause() throws Exception {
 		bPaused = true;
-		sendCommand("pause"); 
+		sendCommand("pause");
 	}
 
 	/*
@@ -379,7 +379,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 */
 	public void resume() throws Exception {
 		bPaused = false;
-		sendCommand("pause"); 
+		sendCommand("pause");
 	}
 
 	/*
@@ -394,7 +394,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			return;
 		}
 		// save current position
-		String command = "seek " + (int) (100 * posValue) + " 1";  
+		String command = "seek " + (int) (100 * posValue) + " 1";
 		sendCommand(command);
 		setVolume(fVolume); // need this because a seek reset volume
 	}
