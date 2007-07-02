@@ -501,7 +501,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
 		} catch (JajukException je) {
 			Log.error("104", je);
-			Messages.showErrorMessage("104", je.getMessage());
+			Messages.showErrorMessage(104, je.getMessage());
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
 		}
 	}

@@ -163,8 +163,8 @@ public class PlaylistManager extends ItemManager {
 							// check that file has been really deleted
 							// (sometimes, we get no exception)
 							if (fileToDelete.exists()) {
-								Log.error("131", new JajukException("131")); 
-								Messages.showErrorMessage("131"); 
+								Log.error("131", new JajukException(131)); 
+								Messages.showErrorMessage(131); 
 								continue;
 							}
 							PlaylistFileManager.getInstance().removeItem(
@@ -178,7 +178,7 @@ public class PlaylistManager extends ItemManager {
 						removeItem(pl.getId());
 					}
 					if (bUnmountedItems) {
-						Messages.showErrorMessage("138"); 
+						Messages.showErrorMessage(138); 
 					}
 				}
 			}

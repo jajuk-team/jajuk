@@ -817,7 +817,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			setCursor(Util.DEFAULT_CURSOR);
 			searching(false);
 			Log.error(e);
-			throw new JajukException("000"); 
+			throw new JajukException(0); 
 		}
 		int iDisplayAreaHeight = CoverView.this.getHeight() - 30;
 		int iDisplayAreaWidth = CoverView.this.getWidth() - 8;
@@ -922,8 +922,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					throw new Exception(""); 
 				}
 			} catch (Exception ioe) {
-				Log.error("131", ioe); 
-				Messages.showErrorMessage("131"); 
+				Log.error(131, ioe); 
+				Messages.showErrorMessage(131); 
 				return;
 			}
 			// If this was the absolute cover, remove the reference in the
@@ -967,8 +967,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
 							InformationJPanel.INFORMATIVE); 
 				} catch (Exception ex) {
-					Log.error("024", ex); 
-					Messages.showErrorMessage("024"); 
+					Log.error(24, ex); 
+					Messages.showErrorMessage(24); 
 				}
 			} else {
 				refreshThumbs(cover);
@@ -1019,8 +1019,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 											Messages.getString("CoverView.11"), InformationJPanel.INFORMATIVE); 
 							ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
 						} catch (Exception ex) {
-							Log.error("024", ex); 
-							Messages.showErrorMessage("024"); 
+							Log.error(24, ex); 
+							Messages.showErrorMessage(24); 
 						}
 					}
 				}
@@ -1058,8 +1058,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
 						// add new cover in others cover views
 					} catch (Exception ex) {
-						Log.error("024", ex); 
-						Messages.showErrorMessage("024"); 
+						Log.error(24, ex); 
+						Messages.showErrorMessage(24); 
 					}
 				}
 			}.start();
@@ -1082,7 +1082,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			}
 			ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));
 		} catch (Exception ex) {
-			Log.error("024", ex); 
+			Log.error(24, ex); 
 		}
 	}
 

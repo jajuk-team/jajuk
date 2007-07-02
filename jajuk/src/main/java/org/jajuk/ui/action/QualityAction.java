@@ -69,7 +69,7 @@ public class QualityAction extends ActionBase {
 			// Display a message
 			Messages.showInfoMessage(Messages.getString("QualityFeedbackWizard.20"));
 		} catch (Exception e) {
-			Messages.showErrorMessage("136");
+			Messages.showErrorMessage(136);
 			Log.error(e);
 		}
 

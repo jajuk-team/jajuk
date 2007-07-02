@@ -239,25 +239,40 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			sCommand = Util.getMPlayerOSXPath();
 		}
 		Log.debug("Using command: " + sCommand);
+		int cacheSize = 1000;
 		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
 		String[] cmd = null;
 		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {
-			cmd = new String[] { sCommand, "-quiet", "-slave", "-cache","1000",
+			// Use a cache for slow devices
+			cmd = new String[] { sCommand, "-quiet", "-slave", "-cache", "" + cacheSize,
 					file.getAbsolutePath() };
 		} else {
 			// Add any additional arguments provided by user
 			String[] sArgs = sAdditionalArgs.split(" ");
-			cmd = new String[4 + sArgs.length];
-			cmd[0] = sCommand;
-			cmd[1] = "-quiet";
-			cmd[2] = "-slave";
-			for (int i = 0; i < sArgs.length; i++) {
-				cmd[3 + i] = sArgs[i];
+			// If user already forced a cache value, do not overwrite it
+			if (ConfigurationManager.getProperty(CONF_MPLAYER_ARGS).matches(".*-cache.*")) {
+				cmd = new String[4 + sArgs.length];
+				cmd[0] = sCommand;
+				cmd[1] = "-quiet";
+				cmd[2] = "-slave";
+				for (int i = 0; i < sArgs.length; i++) {
+					cmd[3 + i] = sArgs[i];
+				}
+			} else {
+				cmd = new String[4 + sArgs.length];
+				cmd[0] = sCommand;
+				cmd[1] = "-quiet";
+				cmd[2] = "-slave";
+				cmd[3] = "-cache";
+				cmd[4] = "" + cacheSize;
+				for (int i = 0; i < sArgs.length; i++) {
+					cmd[5 + i] = sArgs[i];
+				}
 			}
 			cmd[cmd.length - 1] = file.getAbsolutePath();
-			Log.debug("Using this Mplayer command: " + Arrays.asList(cmd));
 		}
 		ProcessBuilder pb = new ProcessBuilder(cmd);
+		Log.debug("Using this Mplayer command: " + Arrays.asList(cmd));
 		// Set all environment variables format: var1=xxx var2=yyy
 		try {
 			Map<String, String> env = pb.environment();
@@ -289,7 +304,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		}
 		// If end of file already reached, it means that file cannot be read
 		if (bEOF) {
-			throw new JajukException("007");
+			throw new JajukException(7);
 		}
 		setVolume(fVolume);
 		// Get track length

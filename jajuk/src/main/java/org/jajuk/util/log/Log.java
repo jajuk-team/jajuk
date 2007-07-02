@@ -152,21 +152,21 @@ public class Log implements ITechnicalStrings {
 	/**
 	 * Log an warning-level message
 	 * 
-	 * @param sCode
+	 * @param code
 	 *            error code
 	 * @param sInfosup :
 	 *            error context information
 	 * @param t
 	 *            the exception itself
 	 */
-	public static void warn(String sCode, String sInfosup, Throwable t) {
+	public static void warn(int code, String sInfosup, Throwable t) {
 		String sOut;
 		if (Messages.isInitialized()) {
 			sOut = '('
-					+ sCode
-					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ":" + sInfosup);   
+					+ code
+					+ ") " + Messages.getErrorMessage(code) + ((sInfosup == null) ? "" : ":" + sInfosup);   
 		} else {
-			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);   
+			sOut = '(' + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);   
 		}
 		// Just display the message if Log is not yet enabled
 		if (log == null) {
@@ -182,28 +182,28 @@ public class Log implements ITechnicalStrings {
 	/**
 	 * Log an error-level message
 	 * 
-	 * @param sCode
+	 * @param code
 	 *            error code
 	 * @param sInfosup :
 	 *            error context information
 	 * @param t
 	 *            the exception itself
 	 */
-	public static void error(String sCode, String sInfosup, Throwable t) {
+	public static void error(int code, String sInfosup, Throwable t) {
 		// Just make a print stake trace if Log is not yet enabled (example:
 		// collection commit problem in initialCheckups)
 		if (log == null) {
-			System.out.println("[ERROR] " + sCode + " / " + sInfosup);
+			System.out.println("[ERROR] " + code + " / " + sInfosup);
 			t.printStackTrace();
 			return;
 		}
 		String sOut;
 		if (Messages.isInitialized()) {
 			sOut = '('
-					+ sCode
-					+ ") " + Messages.getErrorMessage(sCode) + ((sInfosup == null) ? "" : ": " + sInfosup);   
+					+ code
+					+ ") " + Messages.getErrorMessage(code) + ((sInfosup == null) ? "" : ": " + sInfosup);   
 		} else {
-			sOut = '(' + sCode + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);   
+			sOut = '(' + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);   
 		}
 		spool("<font color='red'>[ERROR] " + sOut + "</font>");
 		if (t != null) {
@@ -215,15 +215,15 @@ public class Log implements ITechnicalStrings {
 	/**
 	 * Log an error-level message
 	 * 
-	 * @param sCode
+	 * @param code
 	 *            error code
 	 */
-	public static void error(String sCode) {
+	public static void error(int code) {
 		String sOut;
 		if (Messages.isInitialized()) {
-			sOut = '(' + sCode + ") " + Messages.getErrorMessage(sCode);   
+			sOut = '(' + code + ") " + Messages.getErrorMessage(code);   
 		} else {
-			sOut = '(' + sCode + ") ";   
+			sOut = '(' + code + ") ";   
 		}
 		// Just make a print stake trace if Log is not yet enabled (example:
 		// collection commit problem in initialCheckups)
@@ -258,8 +258,8 @@ public class Log implements ITechnicalStrings {
 	 * @param sInfosup
 	 * @param t
 	 */
-	public static void error(String sCode, Throwable t) {
-		error(sCode, null, t);
+	public static void error(int code, Throwable t) {
+		error(code, null, t);
 	}
 
 	/**

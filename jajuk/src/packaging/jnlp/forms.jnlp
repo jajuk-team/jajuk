@@ -1,0 +1,15 @@
+TS: TIMESTAMP_REPLACED_BY_ANT
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="$$codebase" href="forms.jnlp">
+    <information>
+        <title>Forms Layout</title>
+        <vendor>JGoodies</vendor>
+    </information>
+    <resources>
+        <jar href="forms-1.1.0.jar" version='VERSION_REPLACED_BY_ANT'/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

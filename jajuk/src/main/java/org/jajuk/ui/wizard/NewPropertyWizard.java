@@ -158,7 +158,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 				if (XML_RESERVED_ATTRIBUTE_NAMES[i].equalsIgnoreCase(jtfName
 						.getText())
 						|| jtfName.getText().matches(",")) { 
-					Messages.showErrorMessage("110"); 
+					Messages.showErrorMessage(110); 
 					return;
 				}
 			}
@@ -166,13 +166,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 			// check if this property is not already used
 			for (PropertyMetaInformation meta : im.getCustomProperties()) {
 				if (meta.getName().equals(jtfName.getText())) {
-					Messages.showErrorMessage("162"); 
+					Messages.showErrorMessage(162); 
 					return;
 				}
 			}
 			// check format
 			if (!Util.isXMLValid(jtfName.getText())) {
-				Messages.showErrorMessage("140"); 
+				Messages.showErrorMessage(140); 
 				return;
 			}
 			// OK, store it
@@ -207,7 +207,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements
 					Double.parseDouble(jtfDefault.getText());
 				}
 			} catch (Exception e) {
-				Messages.showErrorMessage("137"); 
+				Messages.showErrorMessage(137); 
 				return;
 			}
 			// set default

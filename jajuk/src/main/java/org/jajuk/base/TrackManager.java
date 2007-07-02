@@ -187,7 +187,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -235,7 +235,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -284,7 +284,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -323,14 +323,14 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			long lNewItem = Long.parseLong(newItem);
 			if (lNewItem < 0 || lNewItem > 10000) {
-				Messages.showErrorMessage("137");
-				throw new JajukException("137");
+				Messages.showErrorMessage(137);
+				throw new JajukException(137);
 			}
 			ArrayList<File> alReady = null;
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -370,7 +370,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -400,8 +400,8 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			// check format
 			if (lNew < 0) {
-				Messages.showErrorMessage("137");
-				throw new JajukException("137");
+				Messages.showErrorMessage(137);
+				throw new JajukException(137);
 			}
 			track.setRate(lNew);
 			return track;
@@ -428,14 +428,14 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 			// check format
 			if (lNewOrder < 0) {
-				Messages.showErrorMessage("137");
+				Messages.showErrorMessage(137);
 				return null;
 			}
 			ArrayList<File> alReady = null;
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {
@@ -473,7 +473,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// check if files are accessible
 			alReady = track.getReadyFiles(filter);
 			if (alReady.size() == 0) {
-				throw new NoneAccessibleFileException("010");
+				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
 			for (File file : alReady) {

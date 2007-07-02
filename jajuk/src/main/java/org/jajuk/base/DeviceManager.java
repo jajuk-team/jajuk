@@ -20,6 +20,14 @@
 
 package org.jajuk.base;
 
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,14 +36,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
-
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage devices
@@ -170,12 +170,12 @@ public class DeviceManager extends ItemManager {
 	 *            is it a new device ?
 	 * @return 0:ok or error code
 	 */
-	public String checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
+	public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
 			String sMountPoint, boolean bNew) {
 		synchronized (DeviceManager.getInstance().getLock()) {
 			// don't check if it is a CD as all CDs may use the same mount point
 			if (iDeviceType == Device.TYPE_CD) {
-				return "0";
+				return 0;
 			}
 			// check name and path
 			Iterator it = hmItems.values().iterator();
@@ -186,7 +186,7 @@ public class DeviceManager extends ItemManager {
 					continue;
 				}
 				if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
-					return "019";
+					return 19;
 				}
 				String sUrlChecked = deviceToCheck.getUrl();
 				// check it is not a sub-directory of an existing device
@@ -194,7 +194,7 @@ public class DeviceManager extends ItemManager {
 				File fChecked = new File(sUrlChecked);
 				if (fNew.equals(fChecked) || Util.isDescendant(fNew, fChecked)
 						|| Util.isAncestor(fNew, fChecked)) {
-					return "029";
+					return 29;
 				}
 			}
 			// check availability
@@ -212,10 +212,10 @@ public class DeviceManager extends ItemManager {
 				File file = new File(sUrl);
 				// check if the url exists and is readable
 				if (!file.exists() || !file.canRead()) {
-					return "143";
+					return 143;
 				}
 			}
-			return "0";
+			return 0;
 		}
 	}
 
@@ -269,12 +269,12 @@ public class DeviceManager extends ItemManager {
 			}
 			// if device is refreshing or synchronizing, just leave
 			if (device.isSynchronizing() || device.isRefreshing()) {
-				Messages.showErrorMessage("013");
+				Messages.showErrorMessage(13);
 				return;
 			}
 			// check if device can be unmounted
 			if (!FIFO.canUnmount(device)) {
-				Messages.showErrorMessage("121");
+				Messages.showErrorMessage(121);
 				return;
 			}
 			// if it is mounted, try to unmount it
@@ -282,7 +282,7 @@ public class DeviceManager extends ItemManager {
 				try {
 					device.unmount();
 				} catch (Exception e) {
-					Messages.showErrorMessage("013");
+					Messages.showErrorMessage(13);
 					return;
 				}
 			}

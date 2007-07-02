@@ -51,7 +51,7 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 	@Override
 	public List<File> generatePlaylist() {
 		if (ambience == null) { // can be null if ambience has been removed
-			Messages.showErrorMessage("159"); 
+			Messages.showErrorMessage(159); 
 			return new ArrayList<File>();
 		}
 		List<File> out = new ArrayList<File>(100);

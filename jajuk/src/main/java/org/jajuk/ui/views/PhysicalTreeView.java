@@ -716,7 +716,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							}
 							// check playlist file contains accessible tracks
 							if (alToPlay == null || alToPlay.size() == 0) {
-								Messages.showErrorMessage("018");
+								Messages.showErrorMessage(18);
 								return;
 							} else {
 								FIFO.getInstance().push(
@@ -1041,7 +1041,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				try {
 					device.mount();
 				} catch (Exception ex) {
-					Messages.showErrorMessage("011");
+					Messages.showErrorMessage(011);
 				}
 			}
 		} else if (e.getSource() == jmiDevUnmount) {
@@ -1050,7 +1050,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				try {
 					device.unmount();
 				} catch (Exception ex) {
-					Messages.showErrorMessage("012");
+					Messages.showErrorMessage(012);
 				}
 			}
 		} else if (e.getSource() == jmiDevRefresh) {
@@ -1108,7 +1108,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 			}
 			if (alToPlay.size() == 0) { // check playlist file contains
 				// accessible tracks
-				Messages.showErrorMessage("018");
+				Messages.showErrorMessage(18);
 				return;
 			} else { // specific actions
 				if (e.getSource() == jmiPlaylistFilePlay) {

@@ -1219,7 +1219,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							jd.setLocationRelativeTo(null);
 							jd.setVisible(true);
 						} else {
-							Messages.showErrorMessage("166");
+							Messages.showErrorMessage(166);
 						}
 					}
 				}.start();

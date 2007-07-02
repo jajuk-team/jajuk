@@ -235,8 +235,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 							PropertiesWizard.this.panel2.save();
 						}
 					} catch (Exception ex) {
-						Messages.showErrorMessage("104", ex.getMessage()); 
-						Log.error("104", ex.getMessage(), ex); 
+						Messages.showErrorMessage(104, ex.getMessage()); 
+						Log.error(104, ex.getMessage(), ex); 
 						return;
 					} finally {
 						// -UI refresh-
@@ -444,13 +444,13 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								try {
 									jtfValue.commitEdit();
 								} catch (ParseException e) {
-									Log.error("137", meta.getName(), null); 
+									Log.error(137, meta.getName(), null); 
 									// disable field to avoid that user
 									// typing enter in error dialog
 									// generate a new key event and creates
 									// a looping error scheme
 									jtfValue.setEnabled(false);
-									Messages.showErrorMessage("137", meta.getName()); 
+									Messages.showErrorMessage(137, meta.getName()); 
 									jtfValue.setEnabled(true);
 									hmPropertyToChange.remove(meta);
 									return;
@@ -499,8 +499,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								// check that string length > 0
 								if (((String) oValue).length() < 1) {
 									jcb.setSelectedIndex(-1);
-									Log.error("137", meta.getName(), null); 
-									Messages.showErrorMessage("137", meta.getName()); 
+									Log.error(137, meta.getName(), null); 
+									Messages.showErrorMessage(137, meta.getName()); 
 									return;
 								}
 								hmPropertyToChange.put(meta, oValue);
@@ -541,8 +541,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								// check that string length > 0
 								if (((String) oValue).length() < 1) {
 									jcb.setSelectedIndex(-1);
-									Log.error("137", meta.getName(), null); 
-									Messages.showErrorMessage("137", meta.getName()); 
+									Log.error(137, meta.getName(), null); 
+									Messages.showErrorMessage(137, meta.getName()); 
 									return;
 								}
 								hmPropertyToChange.put(meta, oValue);
@@ -735,8 +735,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					// Check it is not null for non custom properties
 					if (oValue == null || (oValue.toString().trim().length() == 0)
 							&& !meta.isCustom()) {
-						Log.error("137", meta.getName(), null); 
-						Messages.showErrorMessage("137", meta.getName()); 
+						Log.error(137, meta.getName(), null); 
+						Messages.showErrorMessage(137, meta.getName()); 
 						return;
 					}
 					// Old value
@@ -831,7 +831,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					sInfo += "\n" + item.getHumanValue(XML_NAME); 
 					index++;
 				}
-				Messages.showDetailedErrorMessage("104", sInfo, sDetails); 
+				Messages.showDetailedErrorMessage(104, sInfo, sDetails); 
 			}
 
 			// display a message if user changed at least one property

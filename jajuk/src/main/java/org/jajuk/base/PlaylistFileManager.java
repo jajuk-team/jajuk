@@ -110,8 +110,8 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 				// check that file has been really deleted (sometimes, we get no
 				// exception)
 				if (fileToDelete.exists()) {
-					Log.error("131", new JajukException("131")); 
-					Messages.showErrorMessage("131"); 
+					Log.error("131", new JajukException(131)); 
+					Messages.showErrorMessage(131); 
 					return;
 				}
 			}
@@ -187,7 +187,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 			}
 			// check if this file still exists
 			if (!plfOld.getFio().exists()) {
-				throw new JajukException("135"); 
+				throw new JajukException(135); 
 			}
 			java.io.File ioNew = new java.io.File(plfOld.getFio()
 					.getParentFile().getAbsolutePath()
@@ -210,21 +210,21 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 					'.')// just one '.'
 					|| !(Util.getExtension(ioNew).equals(EXT_PLAYLIST))) { // check
 				// extension
-				Messages.showErrorMessage("134"); 
-				throw new JajukException("134"); 
+				Messages.showErrorMessage(134); 
+				throw new JajukException(134); 
 			}
 			// check if future file exists (under windows, file.exists
 			// return true even with different case so we test file name is
 			// different)
 			if (!ioNew.getName().equalsIgnoreCase(plfOld.getName())
 					&& ioNew.exists()) {
-				throw new JajukException("134"); 
+				throw new JajukException(134); 
 			}
 			// try to rename file on disk
 			try {
 				plfOld.getFio().renameTo(ioNew);
 			} catch (Exception e) {
-				throw new JajukException("134"); 
+				throw new JajukException(134); 
 			}
 			// OK, remove old file and register this new file
 			hmItems.remove(plfOld.getId());
@@ -261,7 +261,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 								plf.replaceFile(fileOld, fNew);
 							}
 						} catch (Exception e) {
-							Log.error("017", e); 
+							Log.error(17, e); 
 						}
 					}
 				}

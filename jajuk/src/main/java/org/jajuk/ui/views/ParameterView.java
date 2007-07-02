@@ -1164,7 +1164,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 						}
 						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 					} else {
-						Messages.showErrorMessage("120");
+						Messages.showErrorMessage(120);
 					}
 				} else if (e.getSource() == jcbShuffleCover) {
 					jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());
@@ -1409,7 +1409,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			// Check workspace directory
 			if (!psJajukWorkspace.getUrl().trim().equals("")) {
 				if (!new java.io.File(psJajukWorkspace.getUrl()).canRead()) {
-					Messages.showErrorMessage("165");
+					Messages.showErrorMessage(165);
 					return;
 				}
 			}
@@ -1424,7 +1424,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				// Jajuk
 				Messages.showInfoMessage(Messages.getString("ParameterView.209"));
 			} catch (Exception e) {
-				Messages.showErrorMessage("024");
+				Messages.showErrorMessage(24);
 				Log.debug("Cannot write bootstrap file");
 			}
 		}

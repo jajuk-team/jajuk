@@ -283,8 +283,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 			properties.store(new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION)),
 					"User configuration");
 		} catch (IOException e) {
-			Log.error("113", e);
-			Messages.showErrorMessage("113");
+			Log.error(113, e);
+			Messages.showErrorMessage(113);
 		}
 
 	}
@@ -295,7 +295,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 			properties.load(new FileInputStream(Util.getConfFileByPath(FILE_CONFIGURATION)));
 		} catch (IOException e) {
 			e.printStackTrace(); // do not use log system here
-			Messages.showErrorMessage("114");
+			Messages.showErrorMessage(114);
 		}
 	}
 

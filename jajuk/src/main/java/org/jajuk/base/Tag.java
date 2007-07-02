@@ -69,7 +69,7 @@ public class Tag implements ITechnicalStrings {
 		} catch (Exception e) {
 			bCorrupted = true;
 			if (!bIgnoreErrors)
-				throw new JajukException("103", fio.getName(), e); 
+				throw new JajukException(103, fio.getName(), e); 
 		}
 	}
 
@@ -287,7 +287,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setTrackName(sTrackName);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -298,7 +298,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setAlbumName(sAlbumName);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -309,7 +309,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setAuthorName(sAuthorName);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -320,7 +320,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setStyleName(style);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -331,7 +331,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setOrder(lOrder);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -342,7 +342,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setYear(sYear);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -353,7 +353,7 @@ public class Tag implements ITechnicalStrings {
 		try {
 			tagImpl.setComment(sComment);
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName(), e); 
+			throw new JajukException(104, fio.getName(), e); 
 		}
 	}
 
@@ -371,7 +371,7 @@ public class Tag implements ITechnicalStrings {
 				Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getName());  
 			}
 		} catch (Exception e) {
-			throw new JajukException("104", fio.getName() + "\n" + e.getMessage(), e);  
+			throw new JajukException(104, fio.getName() + "\n" + e.getMessage(), e);  
 		}
 	}
 

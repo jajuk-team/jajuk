@@ -240,7 +240,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 							.getProperty(CONF_HISTORY))); // delete old
 			// history items
 		} catch (Exception e) {
-			Log.error(new JajukException("119"));
+			Log.error(new JajukException(119));
 			try {
 				commit(); // this history looks corrupted, write a void one
 			} catch (Exception e2) {
@@ -283,7 +283,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
 		throw new SAXException(
-				Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
+				Messages.getErrorMessage(119) + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
 	}
 
 	/**
@@ -294,7 +294,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 	 */
 	public void error(SAXParseException spe) throws SAXException {
 		throw new SAXException(
-				Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
+				Messages.getErrorMessage(119) + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
 	}
 
 	/**
@@ -305,7 +305,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
 		throw new SAXException(
-				Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
+				Messages.getErrorMessage(119) + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());     
 	}
 
 	/**

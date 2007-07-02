@@ -557,7 +557,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 									Log.error(je);
 								}
 							} else {
-								Messages.showErrorMessage("010", track.getName()); 
+								Messages.showErrorMessage(10, track.getName()); 
 							}
 						}
 					} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
@@ -1073,7 +1073,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						}
 					}
 					if (alFilesToPlay.size() == 0) {
-						Messages.showErrorMessage("018"); 
+						Messages.showErrorMessage(18); 
 						return;
 					}
 					if ((e.getSource() == jmiTrackPlay || e.getSource() == jmiAlbumPlay

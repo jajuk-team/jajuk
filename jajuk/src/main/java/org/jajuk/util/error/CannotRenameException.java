@@ -29,20 +29,20 @@ public class CannotRenameException extends JajukException {
 	 * @param pCode
 	 *            Code of the current error.
 	 */
-	public CannotRenameException(String pCode) {
-		super(pCode);
+	public CannotRenameException(int code) {
+		super(code);
 	}
 
 	/**
 	 * JajukException constructor.
 	 * 
-	 * @param pCode
+	 * @param code
 	 *            Code of the current error.
 	 * @param pCause
 	 *            Original exception of the error.
 	 */
-	public CannotRenameException(String pCode, Throwable pCause) {
-		super(pCode, pCause);
+	public CannotRenameException(int code, Throwable pCause) {
+		super(code, pCause);
 	}
 
 }

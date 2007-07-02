@@ -225,7 +225,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 					return;
 				}
 			} else {
-				Messages.showErrorMessage("126"); 
+				Messages.showErrorMessage(126); 
 				return;
 			}
 		}

@@ -203,7 +203,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
 		} catch (Exception e) {
 			// display an error message
 			Log.error(e);
-			Messages.showErrorMessage("163");
+			Messages.showErrorMessage(163);
 		}
 	}
 

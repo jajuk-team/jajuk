@@ -294,7 +294,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 		try {
 			fdbReader = fdb.read(aResult[idx]);
 		} catch (FreedbException e) {
-			Log.error("CDDB error ! " + e.getLocalizedMessage()); 
+			Log.debug("CDDB error ! " + e.getLocalizedMessage()); 
 			dispose();
 		}
 		// Repopulate model

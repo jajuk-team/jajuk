@@ -186,7 +186,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 			if (image.getImageLoadStatus() != MediaTracker.COMPLETE) {
 				Log
 						.debug("Image Loading status: " + image.getImageLoadStatus()); 
-				throw new JajukException("129", url.toString(), null); 
+				throw new JajukException(129, url.toString(), null); 
 			}
 			image.getImage().flush();
 		}

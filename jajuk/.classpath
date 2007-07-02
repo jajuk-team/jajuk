@@ -34,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/vldocking-2.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi-1.74.jar"/>
+	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

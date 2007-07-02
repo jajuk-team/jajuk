@@ -245,7 +245,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		SAXParser saxParser = spf.newSAXParser();
 		File frt = file;
 		if (!frt.exists()) {
-			throw new JajukException("005");
+			throw new JajukException(005);
 		}
 		saxParser.parse(frt.toURI().toURL().toString(), getInstance());
 		// start auto commit thread
@@ -277,7 +277,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/"
+		throw new SAXException(Messages.getErrorMessage(5)+ " / " + spe.getSystemId() + "/"
 				+ spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
 	}
 
@@ -288,7 +288,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void error(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/"
+		throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
 				+ spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
 	}
 
@@ -299,7 +299,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/"
+		throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
 				+ spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
 	}
 
@@ -722,7 +722,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			for (int i = 0; i < attributes.getLength(); i++) {
 				sAttributes += "\n" + attributes.getQName(i) + "=" + attributes.getValue(i);
 			}
-			Log.error("005", sAttributes, re);
+			Log.error(5, sAttributes, re);
 		}
 	}
 

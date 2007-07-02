@@ -171,7 +171,7 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 
 		if (!sErrors.equals("")) { 
-			Messages.showDetailedErrorMessage("147", "", sErrors);  
+			Messages.showDetailedErrorMessage(147, "", sErrors);  
 		} else {
 			InformationJPanel.getInstance().setMessage(
 					Messages.getString("Success"), InformationJPanel.INFORMATIVE); 

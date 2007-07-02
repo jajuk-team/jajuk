@@ -53,7 +53,7 @@ public class DJAction extends ActionBase {
 
 	public void perform(ActionEvent evt) throws JajukException {
 		if (StyleManager.getInstance().getStyles().size() == 0) {
-			Messages.showErrorMessage("156"); // void collection error
+			Messages.showErrorMessage(156); // void collection error
 			// 
 		} else {
 			new Thread() {
@@ -69,7 +69,7 @@ public class DJAction extends ActionBase {
 						Util.stopWaiting();
 						if (al.size() == 0) { // DJ constraints cannot be
 							// respected
-							Messages.showErrorMessage("158"); 
+							Messages.showErrorMessage(158); 
 							return;
 						}
 						FIFO.getInstance().push(
@@ -78,7 +78,7 @@ public class DJAction extends ActionBase {
 												.getBoolean(CONF_STATE_REPEAT),
 										false), false);
 					} else {
-						Messages.showErrorMessage("157"); 
+						Messages.showErrorMessage(157); 
 					}
 				}
 			}.start();

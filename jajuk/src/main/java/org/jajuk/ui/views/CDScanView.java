@@ -157,7 +157,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 							device.unmount(true, true);
 						} catch (Exception ex) {
 							DeviceManager.getInstance().removeDevice(device);
-							Messages.showErrorMessage("016");
+							Messages.showErrorMessage(016);
 							// refresh views
 							ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 						}

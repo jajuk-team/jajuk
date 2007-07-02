@@ -66,8 +66,6 @@ import org.jajuk.webradio.WebRadioRepository;
 import org.jdesktop.swingx.util.JVM;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -97,6 +95,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarIO;
@@ -379,7 +380,7 @@ public class Main implements ITechnicalStrings {
 							// commit only if exit is safe (to avoid commiting
 							// empty collection) commit ambiences
 							AmbienceManager.getInstance().commit();
-							//Commit webradios
+							// Commit webradios
 							WebRadioRepository.getInstance().commit();
 							// commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
@@ -412,7 +413,7 @@ public class Main implements ITechnicalStrings {
 							if (Util.isUnderWindows()) {
 								org.jajuk.ui.action.ActionBase.cleanup();
 							}
-							
+
 						}
 					} catch (Exception e) {
 						Log.error(e);
@@ -453,26 +454,26 @@ public class Main implements ITechnicalStrings {
 
 			// start the tray
 			launchTray();
-			
-			//Temp
+
+			// Temp
 			WebRadioRepository.getInstance();
 
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose
 			Log.error(je);
-			if (je.getCode().equals("005")) {
-				Messages.getChoice(Messages.getErrorMessage("005"), JOptionPane.ERROR_MESSAGE);
+			if (je.getCode() == 5) {
+				Messages.getChoice(Messages.getErrorMessage(5), JOptionPane.ERROR_MESSAGE);
 				exit(1);
 			}
 		} catch (Exception e) { // last chance to catch any error for logging
 			// purpose
 			e.printStackTrace();
-			Log.error("106", e);
+			Log.error(106, e);
 			exit(1);
 		} catch (Error error) { // last chance to catch any error for logging
 			// purpose
 			error.printStackTrace();
-			Log.error("106", error);
+			Log.error(106, error);
 			exit(1);
 		} finally { // make sure to close splashscreen in all cases (ie if
 			// UI is not started)
@@ -830,7 +831,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
 				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
 			}
-			//Types not only supported by mplayer but supported by basicplayer
+			// Types not only supported by mplayer but supported by basicplayer
 			// APE
 			Type type = TypeManager.getInstance()
 					.registerType(Messages.getString("Type.ape"), EXT_APE,
@@ -840,15 +841,14 @@ public class Main implements ITechnicalStrings {
 			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
 			type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_APE.getUrl().toExternalForm());
 			// MAC
-			type = TypeManager.getInstance()
-					.registerType(Messages.getString("Type.mac"), EXT_MAC,
-							Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), EXT_MAC,
+					Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
 			type.setProperty(XML_TYPE_IS_MUSIC, true);
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
 			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
 			type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_APE.getUrl().toExternalForm());
 		} catch (Exception e1) {
-			Log.error("026", e1);
+			Log.error(26, e1);
 		}
 	}
 
@@ -867,8 +867,8 @@ public class Main implements ITechnicalStrings {
 			if (sc != null) {
 				sc.dispose();
 			}
-			Log.error("124");
-			Messages.getChoice(Messages.getErrorMessage("124"), JOptionPane.DEFAULT_OPTION);
+			Log.error(124);
+			Messages.getChoice(Messages.getErrorMessage(124), JOptionPane.DEFAULT_OPTION);
 			System.exit(-1);
 		}
 		// start listening
@@ -982,10 +982,10 @@ public class Main implements ITechnicalStrings {
 						.getInt(CONF_BACKUP_SIZE));
 			} else {
 				bCrashRecover = true;
-				throw new JajukException("005");
+				throw new JajukException(5);
 			}
 		} catch (Exception e) {
-			Log.error("005", fCollectionExit.getAbsolutePath(), e);
+			Log.error(5, fCollectionExit.getAbsolutePath(), e);
 			Log
 					.debug("Jajuk was not closed properly during previous session, try to load previous collection file");
 			if (fCollectionExit.exists()) {
@@ -997,7 +997,7 @@ public class Main implements ITechnicalStrings {
 				Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
 			} catch (Exception e2) {
 				// not better? strange
-				Log.error("005", fCollection.getAbsolutePath(), e2);
+				Log.error(5, fCollection.getAbsolutePath(), e2);
 				bParsingOK = false;
 			}
 		}
@@ -1015,10 +1015,10 @@ public class Main implements ITechnicalStrings {
 			Collections.sort(alBackupFiles); // sort alphabetically (newest
 			// last)
 			Collections.reverse(alBackupFiles); // newest first now
-			Iterator it = alBackupFiles.iterator();
+			Iterator<File> it = alBackupFiles.iterator();
 			// parse all backup files, newest first
 			while (!bParsingOK && it.hasNext()) {
-				File file = (File) it.next();
+				File file = it.next();
 				try {
 					Collection.load(file);
 					bParsingOK = true;
@@ -1029,7 +1029,7 @@ public class Main implements ITechnicalStrings {
 					}
 					break;
 				} catch (Exception e2) {
-					Log.error("005", file.getAbsolutePath(), e2);
+					Log.error(5, file.getAbsolutePath(), e2);
 				}
 			}
 			if (!bParsingOK) { // not better? ok, commit and load a void
@@ -1101,7 +1101,7 @@ public class Main implements ITechnicalStrings {
 					}
 				} else {
 					// file no more exists
-					Messages.getChoice(Messages.getErrorMessage("023"), JOptionPane.DEFAULT_OPTION);
+					Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION);
 					FIFO.setFirstFile(false);
 					// no more first file
 					return;
@@ -1168,11 +1168,11 @@ public class Main implements ITechnicalStrings {
 				try {
 					device.mount();
 				} catch (Exception e) {
-					Log.error("112", device.getName(), e);
+					Log.error(112, device.getName(), e);
 					// show a confirm dialog if the device can't be mounted,
 					// we can't use regular Messages.showErrorMessage
 					// because main window is not yet displayed
-					String sError = Messages.getErrorMessage("112") + " : " + device.getName();
+					String sError = Messages.getErrorMessage(112) + " : " + device.getName();
 					InformationJPanel.getInstance().setMessage(sError, InformationJPanel.ERROR);
 					continue;
 				}
@@ -1263,13 +1263,14 @@ public class Main implements ITechnicalStrings {
 					PerspectiveManager.init();
 
 					// Add main container (contains toolbars + desktop)
-					JPanel jpCommandScreen = new JPanel();
-					double[][] sizeCenter = new double[][] { { TableLayout.FILL },
-							{ TableLayout.FILL, TableLayout.PREFERRED } };
-					jpCommandScreen.setLayout(new TableLayout(sizeCenter));
-					jpCommandScreen.add(tbcontainer, "0,0");
-					jpCommandScreen.add(command, "0,1");
-					jpFrame.add(jpCommandScreen, BorderLayout.CENTER);
+					FormLayout layout = new FormLayout("f:d:grow", // columns
+							"f:d:grow, 0dlu, d"); // rows
+					PanelBuilder builder = new PanelBuilder(layout);
+					CellConstraints cc = new CellConstraints();
+					// Add items
+					builder.add(tbcontainer, cc.xy(1, 1));
+					builder.add(command, cc.xy(1, 3));
+					jpFrame.add(builder.getPanel(), BorderLayout.CENTER);
 					jw.setCursor(Util.DEFAULT_CURSOR);
 
 					// Upgrade step2
@@ -1285,7 +1286,7 @@ public class Main implements ITechnicalStrings {
 				} catch (Exception e) { // last chance to catch any error for
 					// logging purpose
 					e.printStackTrace();
-					Log.error("106", e);
+					Log.error(106, e);
 				} finally {
 					if (sc != null) {
 						// Display progress
@@ -1300,7 +1301,7 @@ public class Main implements ITechnicalStrings {
 
 	}
 
-	/** Lauch tray, only for linux and windows, not mac for the moment */
+	/** Launch tray, only for linux and windows, not mac for the moment */
 	private static void launchTray() throws Exception {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

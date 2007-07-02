@@ -137,15 +137,13 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	 */
 	public static void commit(DigitalDJ dj) {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(Util.getConfFileByPath(FILE_DJ_DIR
-					+ "/" + 
-					dj.getID() + "." + XML_DJ_EXTENSION))); 
+			BufferedWriter bw = new BufferedWriter(new FileWriter(Util
+					.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION)));
 			bw.write(dj.toXML());
 			bw.flush();
 			bw.close();
 		} catch (Exception e) {
-			Log.error(
-					"145", (dj != null) ? "{{" + dj.getName() + "}}" : null, e);   
+			Log.error(145, (dj != null) ? "{{" + dj.getName() + "}}" : null, e);
 		}
 	}
 
@@ -156,11 +154,10 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 	 */
 	public void remove(DigitalDJ dj) {
 		djs.remove(dj.getID());
-		Util.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete();  
+		Util.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete();
 		// reset default DJ if this DJ was default
-		if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ)
-				.equals(dj.getID())) {
-			ConfigurationManager.setProperty(CONF_DEFAULT_DJ, ""); 
+		if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID())) {
+			ConfigurationManager.setProperty(CONF_DEFAULT_DJ, "");
 		}
 		// alert command panel
 		ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
@@ -188,12 +185,9 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 			String sID = (String) properties.get(DETAIL_CONTENT);
 			for (DigitalDJ dj : djs.values()) {
 				if (dj instanceof AmbienceDigitalDJ
-						&& ((AmbienceDigitalDJ) dj).getAmbience().getID()
-								.equals(sID)) {
-					int i = Messages
-							.getChoice(
-									Messages.getString("DigitalDJWizard.61") + " " + dj.getName() + " ?",   
-									JOptionPane.YES_NO_CANCEL_OPTION);
+						&& ((AmbienceDigitalDJ) dj).getAmbience().getID().equals(sID)) {
+					int i = Messages.getChoice(Messages.getString("DigitalDJWizard.61") + " "
+							+ dj.getName() + " ?", JOptionPane.YES_NO_CANCEL_OPTION);
 					if (i == JOptionPane.YES_OPTION) {
 						remove(dj);
 					} else {
@@ -212,8 +206,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 		try {
 			File[] files = Util.getConfFileByPath(FILE_DJ_DIR).listFiles(new FileFilter() {
 				public boolean accept(File file) {
-					if (file.isFile()
-							&& file.getPath().endsWith('.' + XML_DJ_EXTENSION)) {
+					if (file.isFile() && file.getPath().endsWith('.' + XML_DJ_EXTENSION)) {
 						return true;
 					}
 					return false;
@@ -221,13 +214,11 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 			});
 			for (int i = 0; i < files.length; i++) {
 				try { // try each DJ to continue others if one fails
-					DigitalDJFactory factory = DigitalDJFactory
-							.getFactory(files[i]);
+					DigitalDJFactory factory = DigitalDJFactory.getFactory(files[i]);
 					DigitalDJ dj = factory.getDJ(files[i]);
 					djs.put(dj.getID(), dj);
 				} catch (Exception e) {
-					Log.error(
-							"144", "{{" + files[i].getAbsolutePath() + "}}", e);   
+					Log.error(144, "{{" + files[i].getAbsolutePath() + "}}", e);
 				}
 			}
 		} catch (Exception e) {
@@ -240,8 +231,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 /**
  * This class is responsible for creating different factories
  */
-abstract class DigitalDJFactory extends DefaultHandler implements
-		ITechnicalStrings {
+abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStrings {
 
 	/** Factory type (class name) */
 	private static String factoryType;
@@ -274,15 +264,15 @@ abstract class DigitalDJFactory extends DefaultHandler implements
 		 * Called when we start an element
 		 * 
 		 */
-		public void startElement(String sUri, String s, String sQName,
-				Attributes attributes) throws SAXException {
+		public void startElement(String sUri, String s, String sQName, Attributes attributes)
+				throws SAXException {
 			if (XML_DJ_DJ.equals(sQName)) {
 				id = attributes.getValue(attributes.getIndex(XML_ID));
 				name = attributes.getValue(attributes.getIndex(XML_NAME));
 				type = attributes.getValue(attributes.getIndex(XML_TYPE));
 			} else if (XML_DJ_GENERAL.equals(sQName)) {
-				bTrackUnicity = Boolean.parseBoolean(attributes
-						.getValue(attributes.getIndex(XML_DJ_UNICITY)));
+				bTrackUnicity = Boolean.parseBoolean(attributes.getValue(attributes
+						.getIndex(XML_DJ_UNICITY)));
 				iRatingLevel = Integer.parseInt(attributes.getValue(attributes
 						.getIndex(XML_DJ_RATING_LEVEL)));
 				fadeDuration = Integer.parseInt(attributes.getValue(attributes
@@ -311,11 +301,10 @@ abstract class DigitalDJFactory extends DefaultHandler implements
 				/**
 				 * Called when we start an element
 				 */
-				public void startElement(String sUri, String s, String sQName,
-						Attributes attributes) throws SAXException {
+				public void startElement(String sUri, String s, String sQName, Attributes attributes)
+						throws SAXException {
 					if (XML_DJ_DJ.equals(sQName)) {
-						factoryType = attributes.getValue(attributes
-								.getIndex(XML_TYPE));
+						factoryType = attributes.getValue(attributes.getIndex(XML_TYPE));
 					}
 				}
 			});
@@ -323,7 +312,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements
 		// Error parsing the DJ ? delete it
 		catch (Exception e) {
 			Log.error(e);
-			Log.debug("Corrupted DJ: " + file.getAbsolutePath() + " deleted");  
+			Log.debug("Corrupted DJ: " + file.getAbsolutePath() + " deleted");
 			file.delete();
 		}
 		if (XML_DJ_PROPORTION_CLASS.equals(factoryType)) {
@@ -368,16 +357,13 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
 			@Override
 			protected void othersTags(String sQname, Attributes attributes) {
 				if (XML_DJ_PROPORTION.equals(sQname)) {
-					styles = attributes.getValue(attributes
-							.getIndex(XML_DJ_STYLES));
-					proportion = Float.parseFloat(attributes
-							.getValue(attributes.getIndex(XML_DJ_VALUE)));
-					StringTokenizer st = new StringTokenizer(styles, ","); 
-					Ambience ambience = new Ambience(Long.toString(System
-							.currentTimeMillis()), ""); 
+					styles = attributes.getValue(attributes.getIndex(XML_DJ_STYLES));
+					proportion = Float.parseFloat(attributes.getValue(attributes
+							.getIndex(XML_DJ_VALUE)));
+					StringTokenizer st = new StringTokenizer(styles, ",");
+					Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()), "");
 					while (st.hasMoreTokens()) {
-						ambience.addStyle(StyleManager.getInstance()
-								.getStyleByID(st.nextToken()));
+						ambience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
 					}
 					proportions.add(new Proportion(ambience, proportion));
 				}
@@ -416,10 +402,8 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
 			@Override
 			protected void othersTags(String sQname, Attributes attributes) {
 				if (XML_DJ_AMBIENCE.equals(sQname)) {
-					String sAmbienceID = attributes.getValue(attributes
-							.getIndex(XML_DJ_VALUE));
-					ambience = AmbienceManager.getInstance().getAmbience(
-							sAmbienceID);
+					String sAmbienceID = attributes.getValue(attributes.getIndex(XML_DJ_VALUE));
+					ambience = AmbienceManager.getInstance().getAmbience(sAmbienceID);
 				}
 			}
 		};
@@ -457,30 +441,26 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
 			@Override
 			protected void othersTags(String sQname, Attributes attributes) {
 				if (XML_DJ_TRANSITION.equals(sQname)) {
-					int number = Integer.parseInt(attributes
-							.getValue(attributes.getIndex(XML_DJ_NUMBER)));
-					String fromStyles = attributes.getValue(attributes
-							.getIndex(XML_DJ_FROM));
-					StringTokenizer st = new StringTokenizer(fromStyles, ","); 
+					int number = Integer.parseInt(attributes.getValue(attributes
+							.getIndex(XML_DJ_NUMBER)));
+					String fromStyles = attributes.getValue(attributes.getIndex(XML_DJ_FROM));
+					StringTokenizer st = new StringTokenizer(fromStyles, ",");
 					Ambience fromAmbience = new Ambience();
 					while (st.hasMoreTokens()) {
-						fromAmbience.addStyle(StyleManager.getInstance()
-								.getStyleByID(st.nextToken()));
+						fromAmbience.addStyle(StyleManager.getInstance().getStyleByID(
+								st.nextToken()));
 					}
-					String toStyles = attributes.getValue(attributes
-							.getIndex(XML_DJ_TO));
+					String toStyles = attributes.getValue(attributes.getIndex(XML_DJ_TO));
 					Ambience toAmbience = new Ambience();
-					st = new StringTokenizer(toStyles, ","); 
+					st = new StringTokenizer(toStyles, ",");
 					while (st.hasMoreTokens()) {
-						toAmbience.addStyle(StyleManager.getInstance()
-								.getStyleByID(st.nextToken()));
+						toAmbience
+								.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
 					}
-					transitions.add(new Transition(fromAmbience, toAmbience,
-							number));
+					transitions.add(new Transition(fromAmbience, toAmbience, number));
 				} else if (XML_DJ_TRANSITIONS.equals(sQname)) {
 					startupStyle = StyleManager.getInstance().getStyleByID(
-							attributes.getValue(attributes
-									.getIndex(XML_DJ_STARTUP_STYLE)));
+							attributes.getValue(attributes.getIndex(XML_DJ_STARTUP_STYLE)));
 				}
 			}
 		};

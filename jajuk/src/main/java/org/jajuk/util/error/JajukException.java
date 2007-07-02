@@ -28,7 +28,7 @@ public class JajukException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	/** Error code */
-	private String code = null;
+	private int code;
 
 	/**
 	 * JajukException constructor.
@@ -36,8 +36,8 @@ public class JajukException extends Exception {
 	 * @param pCode
 	 *            Code of the current error.
 	 */
-	public JajukException(String pCode) {
-		this(pCode, null, null);
+	public JajukException(int code) {
+		this(code, null, null);
 	}
 
 	/**
@@ -48,30 +48,46 @@ public class JajukException extends Exception {
 	 * @param pCause
 	 *            Original exception of the error.
 	 */
-	public JajukException(String pCode, Throwable pCause) {
-		this(pCode, null, pCause);
+	public JajukException(int code, Throwable pCause) {
+		this(code, null, pCause);
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return this.code;
 	}
 
 	/**
 	 * JajukException constructor.
 	 * 
-	 * @param pCode
+	 * @param code
 	 *            Code of the current error.
 	 * @param pMessage
 	 *            Message.
 	 * @param pCause
 	 *            Original exception of the error.
 	 */
-	public JajukException(String pCode, String pMessage, Throwable pCause) {
+	public JajukException(int code, String pMessage, Throwable pCause) {
 		super((pMessage != null && pMessage.length() > 0) ? Messages
-				.getErrorMessage(pCode)
+				.getErrorMessage(code)
 				+ " : " + pMessage : 
-				Messages.getErrorMessage(pCode), pCause);
-		code = pCode;
+				Messages.getErrorMessage(code), pCause);
+		this.code = code;
+	}
+	
+	/**
+	 * JajukException constructor.
+	 * 
+	 * @param code
+	 *            Code of the current error.
+	 * @param pMessage
+	 *            Message.
+	 */
+	public JajukException(int code, String pMessage) {
+		super((pMessage != null && pMessage.length() > 0) ? Messages
+				.getErrorMessage(code)
+				+ " : " + pMessage : 
+				Messages.getErrorMessage(code));
+		this.code = code;
 	}
 
 }

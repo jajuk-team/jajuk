@@ -26,23 +26,23 @@ public class NoneAccessibleFileException extends JajukException {
 	/**
 	 * constructor.
 	 * 
-	 * @param pCode
+	 * @param code
 	 *            Code of the current error.
 	 */
-	public NoneAccessibleFileException(String pCode) {
-		super(pCode);
+	public NoneAccessibleFileException(int code) {
+		super(code);
 	}
 
 	/**
 	 * JajukException constructor.
 	 * 
-	 * @param pCode
+	 * @param code
 	 *            Code of the current error.
 	 * @param pCause
 	 *            Original exception of the error.
 	 */
-	public NoneAccessibleFileException(String pCode, Throwable pCause) {
-		super(pCode, pCause);
+	public NoneAccessibleFileException(int code, Throwable pCause) {
+		super(code, pCause);
 	}
 
 }

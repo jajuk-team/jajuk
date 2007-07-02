@@ -378,27 +378,27 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, ITechn
 			try {
 				jftfAutoRefresh.commitEdit();
 			} catch (ParseException e1) {
-				Messages.showErrorMessage("137"); 
+				Messages.showErrorMessage(137); 
 				this.setVisible(true);
 				return;
 			}
 			if (jtfUrl.getText().trim().equals("")) { 
-				Messages.showErrorMessage("021"); 
+				Messages.showErrorMessage(021); 
 				this.setVisible(true);
 				return;
 			}
 			if (jtfName.getText().trim().equals("")) { 
-				Messages.showErrorMessage("022"); 
+				Messages.showErrorMessage(022); 
 				this.setVisible(true);
 				return;
 			}
-			// check device availibility (test name only if new device)
-			String sCode = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
+			// check device availability (test name only if new device)
+			int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
 					jcbType.getSelectedIndex(), jtfUrl.getText(), jtfMountPoint.getText(), bNew);
-			if (!sCode.equals("0")) { 
-				Messages.showErrorMessage(sCode);
-				this.setVisible(true); // display wizzard window which has been
-				// hiden by the error window
+			if (code != 0) { 
+				Messages.showErrorMessage(code);
+				this.setVisible(true); // display wizard window which has been
+				// hidden by the error window
 				return;
 			}
 			if (bNew) {
@@ -431,8 +431,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, ITechn
 					DirectoryManager.getInstance().removeDirectory(device.getId());
 					device.refresh(true);
 				} catch (Exception e2) {
-					Log.error("112", device.getName(), e2); 
-					Messages.showErrorMessage("112", device.getName()); 
+					Log.error(112, device.getName(), e2); 
+					Messages.showErrorMessage(112, device.getName()); 
 				}
 			}
 			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));

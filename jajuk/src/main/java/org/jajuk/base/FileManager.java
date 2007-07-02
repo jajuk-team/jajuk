@@ -172,7 +172,7 @@ public class FileManager extends ItemManager implements Observer {
 			}
 			// check if this file still exists
 			if (!fileOld.getIO().exists()) {
-				throw new CannotRenameException("135"); 
+				throw new CannotRenameException(135); 
 			}
 			java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile()
 					.getAbsolutePath()
@@ -192,19 +192,19 @@ public class FileManager extends ItemManager implements Observer {
 			// check file name and extension
 			if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))) { 
 				// no extension change
-				throw new CannotRenameException("134"); 
+				throw new CannotRenameException(134); 
 			}
 			// check if future file exists (under windows, file.exists
 			// return true even with
 			// different case so we test file name is different)
 			if (!fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()) {
-				throw new CannotRenameException("134"); 
+				throw new CannotRenameException(134); 
 			}
 			// try to rename file on disk
 			try {
 				fileOld.getIO().renameTo(fileNew);
 			} catch (Exception e) {
-				throw new CannotRenameException("134"); 
+				throw new CannotRenameException(134); 
 			}
 			// OK, remove old file and register this new file
 			removeFile(fileOld);
@@ -647,7 +647,7 @@ public class FileManager extends ItemManager implements Observer {
 			int i = alSortedFiles.indexOf(file);
 			// test if this file is the very first one
 			if (i == 0) {
-				Messages.showErrorMessage("128"); 
+				Messages.showErrorMessage(128); 
 				return null;
 			}
 			// look for a correct file from index to collection begin

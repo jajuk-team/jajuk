@@ -350,14 +350,14 @@ public class DeviceView extends ViewAdapter implements IView,
 			try {
 				diSelected.getDevice().mount();
 			} catch (Exception e) {
-				Messages.showErrorMessage("011"); 
+				Messages.showErrorMessage(011); 
 			}
 		} else if (ae.getActionCommand().equals(
 				EventSubject.EVENT_DEVICE_UNMOUNT.toString())) {
 			try {
 				diSelected.getDevice().unmount();
 			} catch (Exception e) {
-				Messages.showErrorMessage("012"); 
+				Messages.showErrorMessage(012); 
 			}
 		} else if (ae.getActionCommand().equals(
 				EventSubject.EVENT_DEVICE_PROPERTIES.toString())) {

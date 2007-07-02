@@ -48,7 +48,7 @@ public class StackItem {
 	 */
 	public StackItem(File file) throws JajukException {
 		if (file == null) {
-			throw new JajukException("000"); 
+			throw new JajukException(0); 
 		}
 		this.file = file;
 	}
@@ -72,7 +72,7 @@ public class StackItem {
 	public StackItem(File file, boolean bRepeat, boolean bUserLauched)
 			throws JajukException {
 		if (file == null) {
-			throw new JajukException("000"); 
+			throw new JajukException(0); 
 		}
 		this.file = file;
 		this.bRepeat = bRepeat;

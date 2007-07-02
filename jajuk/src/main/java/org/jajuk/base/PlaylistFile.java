@@ -237,11 +237,11 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 							ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 				} catch (Exception e) {
 					Log.error(e);
-					Messages.showErrorMessage("011", getDirectory().getDevice().getName()); 
-					throw new JajukException("141", getFio().getAbsolutePath(), null); 
+					Messages.showErrorMessage(11, getDirectory().getDevice().getName()); 
+					throw new JajukException(141, getFio().getAbsolutePath(), null); 
 				}
 			} else {
-				throw new JajukException("141", getFio().getAbsolutePath(), null); 
+				throw new JajukException(141, getFio().getAbsolutePath(), null); 
 			}
 		}
 		if (iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null) {
@@ -251,10 +251,10 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				// check device is mounted
 				alFiles = load(); // populate playlist
 				if (containsExtFiles()) {
-					Messages.showWarningMessage(Messages.getErrorMessage("142")); 
+					Messages.showWarningMessage(Messages.getErrorMessage(142)); 
 				}
 			} else { // error accessing playlist file
-				throw new JajukException("009", getFio().getAbsolutePath(), new Exception()); 
+				throw new JajukException(9, getFio().getAbsolutePath(), new Exception()); 
 			}
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
 			// bestof playlist
@@ -539,7 +539,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 					bw.newLine();
 				}
 			} catch (Exception e) {
-				throw new JajukException("028", getName(), e); 
+				throw new JajukException(28, getName(), e); 
 			} finally {
 				if (bw != null) {
 					try {
@@ -555,7 +555,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 						// refresh repository list(mandatory for logical
 						// playlist collapse/merge)
 					} catch (IOException e1) {
-						throw new JajukException("028", getName(), e1); 
+						throw new JajukException(28, getName(), e1); 
 					}
 				}
 			}
@@ -618,15 +618,15 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				this.bContainsExtFiles = true;
 			}
 		} catch (Exception e) {
-			Log.error("017", "{{" + getName() + "}}", e);   
-			throw new JajukException("017", getFio().getAbsolutePath(), e); 
+			Log.error(17, "{{" + getName() + "}}", e);   
+			throw new JajukException(17, getFio().getAbsolutePath(), e); 
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e1) {
 					Log.error(e1);
-					throw new JajukException("017", getFio().getAbsolutePath(), e1); 
+					throw new JajukException(17, getFio().getAbsolutePath(), e1); 
 				}
 			}
 		}
@@ -701,7 +701,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public void play() throws JajukException {
 		alFiles = getFiles();
 		if (alFiles == null || alFiles.size() == 0) {
-			Messages.showErrorMessage("018"); 
+			Messages.showErrorMessage(18); 
 		} else {
 			FIFO.getInstance().push(
 					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager

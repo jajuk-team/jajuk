@@ -232,7 +232,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 			audioFile = AudioFileIO.read(fio);
 			tag = audioFile.getTag();
 		} catch (Throwable t) { // can throw OutOfMemory errors
-			throw new JajukException("103", fio.toString(), t); 
+			throw new JajukException(103, fio.toString(), t); 
 		}
 	}
 

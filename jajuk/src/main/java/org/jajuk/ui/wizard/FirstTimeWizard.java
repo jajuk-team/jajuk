@@ -187,10 +187,10 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				fDir = jfc.getSelectedFile();
 				// check device availability
-				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
+				int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
 						0, fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
-				if (!sCode.equals("0")) {
-					Messages.showErrorMessage(sCode);
+				if (code != 0) {
+					Messages.showErrorMessage(code);
 					jbOk.setEnabled(false);
 					return;
 				}
@@ -209,7 +209,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 			// Check workspace directory
 			if (!workspacePath.getUrl().trim().equals("")) {
 				if (!new File(workspacePath.getUrl()).canRead()) {
-					Messages.showErrorMessage("165");
+					Messages.showErrorMessage(165);
 					return;
 				}
 			}
@@ -223,7 +223,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 				// Store the workspace PATH
 				Main.workspace = workspacePath.getUrl();
 			} catch (Exception ex) {
-				Messages.showErrorMessage("024");
+				Messages.showErrorMessage(24);
 				Log.debug("Cannot write bootstrap file");
 			}
 			// We have to create a device and to launch immediate refresh but
@@ -258,8 +258,8 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 					try {
 						device.refresh(true, false);
 					} catch (Exception e2) {
-						Log.error("112", device.getName(), e2);
-						Messages.showErrorMessage("112", device.getName());
+						Log.error(112, device.getName(), e2);
+						Messages.showErrorMessage(112, device.getName());
 					}
 				}
 			}.start();

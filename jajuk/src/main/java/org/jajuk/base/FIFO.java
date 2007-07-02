@@ -221,7 +221,7 @@ public class FIFO implements ITechnicalStrings {
 								it.remove();
 								Log.error(e);
 								Messages.showErrorMessage(
-										"011", item.getFile().getDirectory().getDevice().getName()); 
+										11, item.getFile().getDirectory().getDevice().getName()); 
 								return;
 							}
 						} else if (i == JOptionPane.NO_OPTION) {
@@ -447,7 +447,7 @@ public class FIFO implements ITechnicalStrings {
 			fCurrent.getTrack().incSessionHits();// inc session hits
 			FileManager.getInstance().setRateHasChanged(true);
 		} catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
-			Log.error("122", t); 
+			Log.error(122, t); 
 		} finally {
 			Util.stopWaiting(); // stop the waiting cursor
 		}

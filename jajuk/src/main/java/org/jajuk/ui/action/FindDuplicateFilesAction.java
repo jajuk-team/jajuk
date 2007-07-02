@@ -51,7 +51,7 @@ public class FindDuplicateFilesAction extends ActionBase {
 		if (duplicateFilesList.size() < 1) {
 			Messages.showInfoMessage("FindDuplicateFilesAction.0");
 		} else {
-			Messages.showDetailedErrorMessage("FindDuplicateFilesAction.1", "",
+			Messages.showDetailedErrorMessage(168, "",
 					convertToString(duplicateFilesList));
 		}
 	}

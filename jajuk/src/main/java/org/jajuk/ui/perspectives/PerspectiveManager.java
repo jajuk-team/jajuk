@@ -100,7 +100,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 				perspective.load();
 			}
 		} catch (Exception e) {
-			throw new JajukException("108", e);
+			throw new JajukException(108, e);
 		}
 	}
 

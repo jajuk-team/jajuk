@@ -138,7 +138,7 @@ public class PlaylistTransferHandler implements DropTargetListener, ITechnicalSt
 			// display a warning message if none accessible file can found
 			// for these tracks
 			if (alSelectedFiles.size() == 0) {
-				Messages.showWarningMessage(Messages.getErrorMessage("018"));
+				Messages.showWarningMessage(Messages.getErrorMessage(18));
 				return;
 			}
 			// queue case

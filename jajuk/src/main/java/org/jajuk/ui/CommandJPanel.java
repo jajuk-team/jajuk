@@ -19,23 +19,16 @@
  */
 package org.jajuk.ui;
 
-import static org.jajuk.ui.action.JajukAction.BEST_OF;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
-import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
-import static org.jajuk.ui.action.JajukAction.INCREASE_VOLUME;
 import static org.jajuk.ui.action.JajukAction.MUTE_STATE;
 import static org.jajuk.ui.action.JajukAction.NEXT_ALBUM;
 import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
-import static org.jajuk.ui.action.JajukAction.NOVELTIES;
 import static org.jajuk.ui.action.JajukAction.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
 import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_GLOBAL;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 
 import org.jajuk.base.Event;
@@ -82,7 +75,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -95,7 +87,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -107,6 +98,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.debug.FormDebugPanel;
+import com.jgoodies.forms.debug.FormDebugUtils;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
 
 import ext.DropDownButton;
@@ -278,7 +274,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	CommandJPanel() {
 		// mute
 		jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 	}
 
 	public void initUI() {
@@ -291,26 +286,24 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jpSearch.add(sbSearch, "3,0");
 
 		// History
-		JToolBar jtbHistory = new JToolBar();
-		jtbHistory.setBorder(null);
-		jtbHistory.setFloatable(false);
-		jtbHistory.setRollover(true);
+		JPanel jpHistory = new JPanel();
+		jpHistory.setLayout(new BoxLayout(jpHistory, BoxLayout.X_AXIS));
 		jcbHistory = new SteppedComboBox();
-			// - Increase rating button
+		// - Increase rating button
 		ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
 		actionIncRate.setName(null);
 		final JPopupMenu jpmIncRating = new JPopupMenu();
-		for (int i=1;i<=10;i++){
+		for (int i = 1; i <= 10; i++) {
 			final int j = i;
-			JMenuItem jmi = new JMenuItem("+"+i);
-			if (ConfigurationManager.getInt(CONF_INC_RATING) == i){
-				jmi.setFont(new Font("dialog", Font.BOLD,
-				ConfigurationManager.getInt(CONF_FONTS_SIZE)));
+			JMenuItem jmi = new JMenuItem("+" + i);
+			if (ConfigurationManager.getInt(CONF_INC_RATING) == i) {
+				jmi.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
+						.getInt(CONF_FONTS_SIZE)));
 			}
-			//Store selected value
+			// Store selected value
 			jmi.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ConfigurationManager.setProperty(CONF_INC_RATING, ""+j);
+					ConfigurationManager.setProperty(CONF_INC_RATING, "" + j);
 				}
 			});
 			jpmIncRating.add(jmi);
@@ -331,12 +324,15 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// size of popup
 		jcbHistory.setPopupWidth(iWidth);
 		// size of the combo itself, keep it! as text can be very long
-		jcbHistory.setPreferredSize(new Dimension(360, 25));
+		jcbHistory.setPreferredSize(new Dimension(250, 25));
+		jcbHistory.setMinimumSize(new Dimension(0, 25));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
-		jcbHistory.addActionListener(CommandJPanel.this);
-		jtbHistory.add(jcbHistory);
-		jtbHistory.add(Box.createHorizontalStrut(10));
-		jbIncRate.addToToolBar(jtbHistory);
+		jpHistory.add(jcbHistory);
+		JToolBar jtbIncRate = new JToolBar();
+		jtbIncRate.setFloatable(false);
+		jpHistory.add(Box.createHorizontalStrut(10));
+		jbIncRate.addToToolBar(jtbIncRate);
+		jpHistory.add(jtbIncRate);
 
 		// Mode toolbar
 		// we need an inner toolbar to apply size properly
@@ -345,9 +341,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// make it not floatable as this behavior is managed by vldocking
 		jtbModes.setFloatable(false);
 		jtbModes.setRollover(true);
-		jbRepeat = new JajukToggleButton(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
+		jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukAction.REPEAT_MODE_STATUS_CHANGE));
 		jbRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
-		jbRandom = new JajukToggleButton(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
+		jbRandom = new JajukToggleButton(ActionManager.getAction(JajukAction.SHUFFLE_MODE_STATUS_CHANGED));
 		jbRandom.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
 		jbContinue = new JajukToggleButton(ActionManager
 				.getAction(JajukAction.CONTINUE_MODE_STATUS_CHANGED));
@@ -365,8 +361,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 		// Volume
 		jpVolume = new JPanel();
-		ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
-				ActionManager.getAction(INCREASE_VOLUME));
+		ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(JajukAction.DECREASE_VOLUME),
+				ActionManager.getAction(JajukAction.INCREASE_VOLUME));
 
 		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
 		jlVolume = new JLabel(IconLoader.ICON_VOLUME);
@@ -390,7 +386,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ambiencesCombo.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE) + 2));
 		// size of the combo itself
-		ambiencesCombo.setMaximumSize(new Dimension(100, 32));
+		// ambiencesCombo.setMaximumSize(new Dimension(100, 32));
 		ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
 			private static final long serialVersionUID = -6943363556191659895L;
 
@@ -419,7 +415,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				return popupGlobalRandom;
 			}
 		};
-		ddbGlobalRandom.setAction(ActionManager.getAction(SHUFFLE_GLOBAL));
+		ddbGlobalRandom.setAction(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
 		popupGlobalRandom = new JPopupMenu();
 		// Global shuffle
 		jmiShuffleModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20"));
@@ -446,7 +442,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		popupGlobalRandom.add(jmiShuffleModeAlbum2);
 		ddbGlobalRandom.setText("");// no text visible
 
-		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
+		jbBestof = new JajukButton(ActionManager.getAction(JajukAction.BEST_OF));
 
 		ddbNovelties = new DropDownButton(IconLoader.ICON_NOVELTIES) {
 			private static final long serialVersionUID = 1L;
@@ -456,7 +452,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				return popupNovelties;
 			}
 		};
-		ddbNovelties.setAction(ActionManager.getAction(NOVELTIES));
+		ddbNovelties.setAction(ActionManager.getAction(JajukAction.NOVELTIES));
 		popupNovelties = new JPopupMenu();
 		jmiNoveltiesModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20"));
 		jmiNoveltiesModeSong.addActionListener(this);
@@ -489,7 +485,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// no text visible
 		ddbDDJ.setText("");
 
-		jtbSpecial.add(ambiencesCombo);
 		jtbSpecial.addSeparator();
 		ddbDDJ.addToToolBar(jtbSpecial);
 		ddbNovelties.addToToolBar(jtbSpecial);
@@ -522,27 +517,30 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbPlay.add(jbMute);
 
 		// Add items
-		JPanel jpCommand = new JPanel();
-		double p = TableLayout.PREFERRED;
-		double f = TableLayout.FILL;
-		double[][] size = new double[][] { { p, f, p, p, 100 }, { 30, 40 } };
-		TableLayout layout = new TableLayout(size);
-		layout.setVGap(5);
-		layout.setHGap(15);
-		jpCommand.setLayout(layout);
-		jpCommand.add(jpSearch, "2,0,r,c");
-		jpCommand.add(jtbHistory, "3,0,4,0,l,c");
-		jpCommand.add(jtbSpecial, "0,1,l,c");
-		jpCommand.add(jtbModes, "2,1,r,c");
-		jpCommand.add(jtbPlay, "3,1,l,c");
-		jpCommand.add(jpVolume, "4,1,r,c");
-		// Use BoxLayout to force using all the available space
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		JScrollPane jsp = new JScrollPane(jpCommand, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp.setBorder(null);
-		add(jsp);
-
+		FormLayout layout = new FormLayout(
+		// --columns
+				"left:min(10dlu;p):grow, 0dlu, " + // ambience
+						"left:p, 1dlu" + // smart toolbar
+						", min(0dlu;p):grow(0.75), 1dlu," + // glue
+						" right:p, 3dlu, " + // search /modes
+						"fill:p:grow(0.25), 1dlu, " + // history / player
+						"right:min(30dlu;p):grow", // volume / part of history
+				// --rows
+				"0dlu, p, 0dlu, p, 0dlu"); // rows
+		PanelBuilder builder = new PanelBuilder(layout);
+		CellConstraints cc = new CellConstraints();
+		// Add items
+		builder.add(ambiencesCombo, cc.xy(1, 4));
+		builder.add(jtbSpecial, cc.xy(3, 4));
+		builder.add(jpSearch, cc.xy(7, 2));
+		builder.add(jpHistory, cc.xyw(9, 2, 3));
+		builder.add(jtbModes, cc.xy(7, 4));
+		builder.add(jtbPlay, cc.xy(9, 4));
+		builder.add(jpVolume, cc.xy(11, 4));
+		JPanel p = builder.getPanel();
+		FormDebugUtils.dumpAll(builder.getPanel());
+		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+		add(p);
 		// register to player events
 		ObservationManager.register(CommandJPanel.this);
 
@@ -603,7 +601,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 							// can be thrown if file is null
 						}
 					} else {
-						Messages.showErrorMessage("120");
+						Messages.showErrorMessage(120);
 						jcbHistory.setSelectedItem(null);
 					}
 				}

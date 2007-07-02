@@ -115,7 +115,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 			// at least, returned property is the key name but we trace an
 			// error to show it
 			if (sOut == null) {
-				Log.error("105", "key: " + key, new Exception());
+				Log.error(105, "key: " + key, new Exception());
 				sOut = key;
 			}
 		} catch (Exception e) { // system error
@@ -289,16 +289,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/**
 	 * Return the message display to the user corresponding to the error code.
 	 * 
-	 * @param pCode
+	 * @param code
 	 *            Error code.
 	 * @return String Message corresponding to the error code.
 	 */
-	public static String getErrorMessage(String pCode) {
-		String sOut = pCode;
+	public static String getErrorMessage(int code) {
+		String sOut = Integer.toString(code);
 		try {
-			sOut = getString("Error." + pCode);
+			sOut = getString("Error." + Util.padNumber(code,3));
 		} catch (Exception e) {
-			System.out.println("### Error getting error message for code: " + pCode);
+			System.out.println("### Error getting error message for code: " + code);
 		}
 		return sOut;
 	}
@@ -308,11 +308,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * 
 	 * @param sCode
 	 */
-	public static void showErrorMessage(final String sCode) {
+	public static void showErrorMessage(final int code) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(), Messages.getErrorMessage(sCode),
-						Messages.getErrorMessage("102"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Main.getWindow(), Messages.getErrorMessage(code),
+						Messages.getErrorMessage(102), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
@@ -442,11 +442,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/**
 	 * Show a dialog with specified error message and infosup
 	 * 
-	 * @param sCode
+	 * @param code
 	 * @param sInfoSup
 	 */
-	public static void showErrorMessage(final String sCode, final String sInfoSup) {
-		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(sCode)
+	public static void showErrorMessage(final int code, final String sInfoSup) {
+		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(code)
 				+ " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE),
 				JOptionPane.ERROR_MESSAGE, null, null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
@@ -464,9 +464,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sCode
 	 * @param sInfoSup
 	 */
-	public static void showDetailedErrorMessage(final String sCode, final String sInfoSup,
+	public static void showDetailedErrorMessage(final int code, final String sInfoSup,
 			String sDetails) {
-		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(sCode)
+		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(code)
 				+ " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE),
 				JOptionPane.ERROR_MESSAGE, sDetails, null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher

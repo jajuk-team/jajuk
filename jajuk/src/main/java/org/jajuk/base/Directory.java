@@ -292,7 +292,7 @@ public class Directory extends PhysicalItem implements Comparable {
 					tag = new Tag(files[i], true);
 					if (tag.isCorrupted()) {
 						device.iNbCorruptedFiles++; // stats
-						Log.error("103", "{{" + files[i].getAbsolutePath() + "}}", null);
+						Log.error(103, "{{" + files[i].getAbsolutePath() + "}}", null);
 					}
 					// if an error occurs, just notice it but keep the track
 					String sTrackName = tag.getTrackName();
@@ -355,7 +355,7 @@ public class Directory extends PhysicalItem implements Comparable {
 					}
 				}
 			} catch (Exception e) {
-				Log.error("103", files.length > 0 ? "{{" + files[i].toString() + "}}" : "", e);
+				Log.error(103, files.length > 0 ? "{{" + files[i].toString() + "}}" : "", e);
 			}
 		}
 	}

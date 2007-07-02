@@ -120,13 +120,13 @@ public class ReportAction extends ActionBase {
 							filename = filepath + '.' + filetypename;
 						}
 						if (!exporter.saveToFile(result, filename)) {
-							Messages.showErrorMessage("024");
+							Messages.showErrorMessage(024);
 						} else {
 							// Success
 							Messages.showInfoMessage(Messages.getString("ReportAction.0"));
 						}
 					} else {
-						Messages.showErrorMessage("167");
+						Messages.showErrorMessage(167);
 					}
 				}
 			}.start();

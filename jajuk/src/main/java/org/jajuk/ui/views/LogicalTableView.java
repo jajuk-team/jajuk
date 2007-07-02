@@ -190,7 +190,7 @@ public class LogicalTableView extends AbstractTableView {
 					Log.error(je);
 				}
 			} else {
-				Messages.showErrorMessage("010", track.getName()); 
+				Messages.showErrorMessage(10, track.getName()); 
 			}
 		} else if (e.getClickCount() == 1) {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
@@ -258,7 +258,7 @@ public class LogicalTableView extends AbstractTableView {
 					}
 				}
 				if (alFilesToPlay.size() == 0) {
-					Messages.showErrorMessage("018"); 
+					Messages.showErrorMessage(18); 
 					return;
 				}
 				// simple play

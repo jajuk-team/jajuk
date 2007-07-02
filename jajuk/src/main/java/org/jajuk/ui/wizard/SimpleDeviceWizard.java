@@ -158,10 +158,10 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				fDir = jfc.getSelectedFile();
 				// check device availability
-				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
+				int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
 						0, fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
-				if (!sCode.equals("0")) { 
-					Messages.showErrorMessage(sCode);
+				if (code != 0){ 
+					Messages.showErrorMessage(code);
 					jbOk.setEnabled(false);
 					return;
 				}
@@ -189,8 +189,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 			try {
 				device.refresh(true, false);
 			} catch (Exception e2) {
-				Log.error("112", device.getName(), e2); 
-				Messages.showErrorMessage("112", device.getName()); 
+				Log.error(112, device.getName(), e2); 
+				Messages.showErrorMessage(112, device.getName()); 
 			}
 		}
 

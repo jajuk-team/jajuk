@@ -19,6 +19,40 @@
  */
 package org.jajuk.util;
 
+import org.jajuk.Main;
+import org.jajuk.Main.MPlayerStatus;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.dj.Ambience;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukSystray;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.painter.MattePainter;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.watermark.SubstanceImageWatermark;
+import org.jvnet.substance.watermark.SubstanceStripeWatermark;
+import org.jvnet.substance.watermark.WatermarkInfo;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -79,40 +113,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
-import org.jajuk.Main;
-import org.jajuk.Main.MPlayerStatus;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Item;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.dj.Ambience;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukSystray;
-import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.MattePainter;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.watermark.SubstanceImageWatermark;
-import org.jvnet.substance.watermark.SubstanceStripeWatermark;
-import org.jvnet.substance.watermark.WatermarkInfo;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -247,13 +247,13 @@ public class Util implements ITechnicalStrings {
 		try {
 			new File(path);
 		} catch (Exception e) {
-			throw new JajukException("009", e);
+			throw new JajukException(9, e);
 		}
 		FileReader fileReader;
 		try {
 			fileReader = new FileReader(file);
 		} catch (FileNotFoundException e) {
-			JajukException te = new JajukException("009", path, e);
+			JajukException te = new JajukException(9, path, e);
 			throw te;
 		}
 		BufferedReader input = new BufferedReader(fileReader);
@@ -266,7 +266,7 @@ public class Util implements ITechnicalStrings {
 				strColl.append(line);
 			}
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e);
+			JajukException te = new JajukException(9, path, e);
 			throw te;
 		}
 
@@ -274,7 +274,7 @@ public class Util implements ITechnicalStrings {
 		try {
 			input.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e);
+			JajukException te = new JajukException(9, path, e);
 			throw te;
 		}
 
@@ -309,7 +309,7 @@ public class Util implements ITechnicalStrings {
 			// Close the bufferedReader
 			is.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", e);
+			JajukException te = new JajukException(9, e);
 			throw te;
 		}
 		return sb;
@@ -605,10 +605,10 @@ public class Util implements ITechnicalStrings {
 		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(
 				file.getName()).toString());
 		if (!file.exists() || !file.canRead()) {
-			throw new JajukException("009", file.getAbsolutePath(), null);
+			throw new JajukException(9, file.getAbsolutePath(), null);
 		}
 		if (!fileNew.getParentFile().canWrite()) {
-			throw new JajukException("024", file.getAbsolutePath(), null);
+			throw new JajukException(24, file.getAbsolutePath(), null);
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
 		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
@@ -628,10 +628,10 @@ public class Util implements ITechnicalStrings {
 	public static void copy(File file, File fNew) throws Exception {
 		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + fNew.getAbsolutePath());
 		if (!file.exists() || !file.canRead()) {
-			throw new JajukException("009", file.getAbsolutePath(), null);
+			throw new JajukException(9, file.getAbsolutePath(), null);
 		}
 		if (!fNew.getParentFile().canWrite()) {
-			throw new JajukException("024", file.getAbsolutePath(), null);
+			throw new JajukException(24, file.getAbsolutePath(), null);
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
 		FileChannel fcDest = new FileOutputStream(fNew).getChannel();
@@ -653,10 +653,10 @@ public class Util implements ITechnicalStrings {
 		File fileNew = new File(new StringBuffer(file.getParentFile().getAbsolutePath())
 				.append('/').append(sNewName).toString());
 		if (!file.exists() || !file.canRead()) {
-			throw new JajukException("009", file.getAbsolutePath(), null);
+			throw new JajukException(9, file.getAbsolutePath(), null);
 		}
 		if (!fileNew.getParentFile().canWrite()) {
-			throw new JajukException("024", file.getAbsolutePath(), null);
+			throw new JajukException(24, file.getAbsolutePath(), null);
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
 		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
@@ -748,7 +748,7 @@ public class Util implements ITechnicalStrings {
 			sOut = new String(bb.array());
 			return MD5Processor.hash(sOut);
 		} catch (Exception e) {
-			throw new JajukException("103", e);
+			throw new JajukException(103, e);
 		}
 	}
 
@@ -1688,8 +1688,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_ARTIST, AuthorManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " ("
-							+ Messages.getString("Error.150") + ")");
+					throw new JajukException(150,file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
 				}
@@ -1703,8 +1702,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_GENRE, StyleManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " ("
-							+ Messages.getString("Error.153") + ")");
+					throw new JajukException(153,file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_GENRE, Messages.getString(UNKNOWN_STYLE));
 				}
@@ -1718,8 +1716,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_ALBUM, AlbumManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " ("
-							+ Messages.getString("Error.149") + ")");
+					throw new JajukException(149,file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_ALBUM, Messages.getString(UNKNOWN_ALBUM));
 				}
@@ -1734,15 +1731,13 @@ public class Util implements ITechnicalStrings {
 					String sTo = file.getName().substring(0, 3).trim().replaceAll("[^0-9]", "");
 					for (char c : sTo.toCharArray()) {
 						if (!Character.isDigit(c)) {
-							throw new JajukException(file.getAbsolutePath() + " ("
-									+ Messages.getString("Error.152") + ")\n");
+							throw new JajukException(152,file.getAbsolutePath());
 						}
 					}
 					lOrder = Long.parseLong(sTo);
 				} else {
 					if (bMandatory) {
-						throw new JajukException(file.getAbsolutePath() + " ("
-								+ Messages.getString("Error.152") + ")");
+						throw new JajukException(152,file.getAbsolutePath());
 					} else {
 						lOrder = 0;
 					}
@@ -1766,8 +1761,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_YEAR, track.getYear().getValue() + "");
 			} else {
 				if (bMandatory) {
-					throw new JajukException(file.getAbsolutePath() + " ("
-							+ Messages.getString("Error.148") + ")");
+					throw new JajukException(148,file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_YEAR, "?");
 				}

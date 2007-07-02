@@ -34,8 +34,7 @@ import java.util.Set;
  */
 public class TypeManager extends ItemManager {
 	/** extenssions->types */
-	private HashMap<String, Type> hmSupportedTypes = new HashMap<String, Type>(
-			10);
+	private HashMap<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
 
 	/** Self instance */
 	private static TypeManager singleton;
@@ -47,32 +46,32 @@ public class TypeManager extends ItemManager {
 		super();
 		// ---register properties---
 		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+				String.class, null));
 		// Name
-		registerProperty(new PropertyMetaInformation(XML_NAME, false, true,
-				true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, false, false,
+				String.class, null));
 		// Extension
-		registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION, false,
-				true, true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION, false, true, true, false,
+				false, String.class, null));
 		// Player impl
-		registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL,
-				false, true, true, false, false, Class.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL, false, true, true,
+				false, false, Class.class, null));
 		// Tag impl
-		registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL, false,
-				true, true, false, false, Class.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL, false, true, true, false,
+				false, Class.class, null));
 		// Music
-		registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC, false,
-				false, true, false, false, Boolean.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC, false, false, true, false,
+				false, Boolean.class, null));
 		// Seek
-		registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,
-				false, false, true, false, false, Boolean.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED, false, false, true,
+				false, false, Boolean.class, null));
 		// Tech desc
-		registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC, false,
-				false, true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC, false, false, true, false,
+				false, String.class, null));
 		// Icon
-		registerProperty(new PropertyMetaInformation(XML_TYPE_ICON, false,
-				false, false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_TYPE_ICON, false, false, false, false,
+				false, String.class, null));
 	}
 
 	/**
@@ -90,10 +89,8 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @param type
 	 */
-	public Type registerType(String sName, String sExtension,
-			Class cPlayerImpl, Class cTagImpl) {
-		return registerType(sExtension, sName, sExtension,
-				cPlayerImpl, cTagImpl);
+	public Type registerType(String sName, String sExtension, Class cPlayerImpl, Class cTagImpl) {
+		return registerType(sExtension, sName, sExtension, cPlayerImpl, cTagImpl);
 	}
 
 	/**
@@ -101,10 +98,10 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @param type
 	 */
-	public Type registerType(String sId, String sName, String sExtension,
-			Class cPlayerImpl, Class cTagImpl) {
+	public Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
+			Class cTagImpl) {
 		synchronized (TrackManager.getInstance().getLock()) {
-			if (hmSupportedTypes.containsKey(sExtension)) { 
+			if (hmSupportedTypes.containsKey(sExtension)) {
 				// if the type is already in memory, use it
 				return hmSupportedTypes.get(sExtension);
 			}
@@ -114,9 +111,7 @@ public class TypeManager extends ItemManager {
 				hmItems.put(sId, type);
 				hmSupportedTypes.put(type.getExtension(), type);
 			} catch (Exception e) {
-				Log
-						.error(
-								"109", "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e);   
+				Log.error(109, "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e);
 			}
 			return type;
 		}
@@ -157,8 +152,7 @@ public class TypeManager extends ItemManager {
 			Iterator it = hmSupportedTypes.values().iterator();
 			while (it.hasNext()) {
 				Type type = (Type) it.next();
-				if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(
-						sTechDesc)) {
+				if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)) {
 					return type;
 				}
 			}
