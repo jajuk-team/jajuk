@@ -94,7 +94,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 	OKCancelPanel okc;
 
 	/** Layout dimensions */
-	double[][] dSize = { { 0, TableLayout.PREFERRED, 10 }, { 0, TableLayout.PREFERRED, 10, 20, 20 } };
+	double[][] dSize = { { 0, TableLayout.PREFERRED, 10 },
+			{ 0, TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 20 } };
 
 	/** Items */
 	ArrayList<Item> alItems;
@@ -114,7 +115,6 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 	/** Second property panel */
 	PropertiesPanel panel2;
 
-	
 	/**
 	 * Constructor for normal wizard with only one wizard panel and n items to
 	 * display
@@ -133,10 +133,10 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			bMerged = true;
 		}
 		panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? (alItems.get(0)).getDesc()
-				: Messages.getString("PropertiesWizard.6"), bMerged); 
+				: Messages.getString("PropertiesWizard.6"), bMerged);
 		jpMain = new JPanel();
 		jpMain.setLayout(new TableLayout(dSize));
-		jpMain.add(panel1, "1,1"); 
+		jpMain.add(panel1, "1,1");
 		display();
 	}
 
@@ -153,7 +153,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		// windows title: name of the element of only one item, or "selection"
 		// word otherwise
 		setTitle(alItems1.size() == 1 ? (alItems1.get(0)).getDesc() : Messages
-				.getString("PropertiesWizard.6")); 
+				.getString("PropertiesWizard.6"));
 		this.alItems = alItems1;
 		this.alItems2 = alItems2;
 		// computes filter
@@ -182,22 +182,22 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				panel1 = new PropertiesPanel(alItems1, alItems1.get(0).getDesc(), false);
 			} else {
 				panel1 = new PropertiesPanel(alItems1, Util.formatPropertyDesc(Messages
-						.getString("PropertiesWizard.6")), true); 
+						.getString("PropertiesWizard.6")), true);
 			}
 			panel1.setBorder(BorderFactory.createEtchedBorder());
-			jpProperties.add(panel1, "0,0"); 
+			jpProperties.add(panel1, "0,0");
 		}
 		if (alItems2.size() > 0) {
 			if (alItems2.size() == 1) {
 				panel2 = new PropertiesPanel(alItems2, alItems2.get(0).getDesc(), false);
 			} else {
 				panel2 = new PropertiesPanel(alItems2, Util.formatPropertyDesc(alItems2.size()
-						+ " " + Messages.getString("Property_tracks")), true);  
+						+ " " + Messages.getString("Property_tracks")), true);
 			}
 			panel2.setBorder(BorderFactory.createEtchedBorder());
-			jpProperties.add(panel2, "2,0"); 
+			jpProperties.add(panel2, "2,0");
 		}
-		jpMain.add(jpProperties, "1,1"); 
+		jpMain.add(jpProperties, "1,1");
 		display();
 	}
 
@@ -205,13 +205,13 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				// OK/Cancel buttons
-				okc = new OKCancelPanel(PropertiesWizard.this,
-						Messages.getString("Apply"), Messages.getString("Close"));  
+				okc = new OKCancelPanel(PropertiesWizard.this, Messages.getString("Apply"),
+						Messages.getString("Close"));
 				// If none editable item, save button is disabled
 				if (iEditable == 0) {
 					okc.getOKButton().setEnabled(false);
 				}
-				jpMain.add(okc, "1,3"); 
+				jpMain.add(okc, "1,3");
 				getRootPane().setDefaultButton(okc.getOKButton());
 				getContentPane().add(new JScrollPane(jpMain));
 				pack();
@@ -235,8 +235,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 							PropertiesWizard.this.panel2.save();
 						}
 					} catch (Exception ex) {
-						Messages.showErrorMessage(104, ex.getMessage()); 
-						Log.error(104, ex.getMessage(), ex); 
+						Messages.showErrorMessage(104, ex.getMessage());
+						Log.error(104, ex.getMessage(), ex);
 						return;
 					} finally {
 						// -UI refresh-
@@ -260,10 +260,10 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		String sKey = meta.getName();
 		return sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK) || sKey.equals(XML_DEVICE)
 				|| sKey.equals(XML_TRACK) || sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR)
-				|| sKey.equals(XML_YEAR)
-				|| sKey.equals(XML_STYLE) || sKey.equals(XML_DIRECTORY) || sKey.equals(XML_FILE)
-				|| sKey.equals(XML_PLAYLIST) || sKey.equals(XML_PLAYLIST_FILE)
-				|| sKey.equals(XML_FILES) || sKey.equals(XML_PLAYLIST_FILES)
+				|| sKey.equals(XML_YEAR) || sKey.equals(XML_STYLE) || sKey.equals(XML_DIRECTORY)
+				|| sKey.equals(XML_FILE) || sKey.equals(XML_PLAYLIST)
+				|| sKey.equals(XML_PLAYLIST_FILE) || sKey.equals(XML_FILES)
+				|| sKey.equals(XML_PLAYLIST_FILES)
 				// avoid confusing between music types and device types
 				|| (sKey.equals(XML_TYPE) && !(alItems.get(0) instanceof Device));
 	}
@@ -328,7 +328,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			// Varname | value | link | all album
 			widgets = new JComponent[alToDisplay.size()][4];
 			double p = TableLayout.PREFERRED;
-			double[] dHoriz = { iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR, p,iX_SEPARATOR };
+			double[] dHoriz = { iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR };
 			// *2n+1 rows for spaces + 2 rows for title
 			double[] dVert = new double[(2 * alToDisplay.size()) + 3];
 			dVert[0] = iY_SEPARATOR;
@@ -352,7 +352,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				// -Set widgets-
 				// Property name
 				String sName = meta.getHumanName();
-				JLabel jlName = new JLabel(sName + " :"); 
+				JLabel jlName = new JLabel(sName + " :");
 				// Check if property name is translated (for custom
 				// properties));
 				if (meta.isCustom()) {
@@ -444,13 +444,13 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								try {
 									jtfValue.commitEdit();
 								} catch (ParseException e) {
-									Log.error(137, meta.getName(), null); 
+									Log.error(137, meta.getName(), null);
 									// disable field to avoid that user
 									// typing enter in error dialog
 									// generate a new key event and creates
 									// a looping error scheme
 									jtfValue.setEnabled(false);
-									Messages.showErrorMessage(137, meta.getName()); 
+									Messages.showErrorMessage(137, meta.getName());
 									jtfValue.setEnabled(true);
 									hmPropertyToChange.remove(meta);
 									return;
@@ -499,8 +499,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								// check that string length > 0
 								if (((String) oValue).length() < 1) {
 									jcb.setSelectedIndex(-1);
-									Log.error(137, meta.getName(), null); 
-									Messages.showErrorMessage(137, meta.getName()); 
+									Log.error(137, meta.getName(), null);
+									Messages.showErrorMessage(137, meta.getName());
 									return;
 								}
 								hmPropertyToChange.put(meta, oValue);
@@ -541,8 +541,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								// check that string length > 0
 								if (((String) oValue).length() < 1) {
 									jcb.setSelectedIndex(-1);
-									Log.error(137, meta.getName(), null); 
-									Messages.showErrorMessage(137, meta.getName()); 
+									Log.error(137, meta.getName(), null);
+									Messages.showErrorMessage(137, meta.getName());
 									return;
 								}
 								hmPropertyToChange.put(meta, oValue);
@@ -576,14 +576,14 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					// If several items, take first value found
 					if (bAllEquals) {
 						String s = pa.getHumanValue(meta.getName());
-						if (s.indexOf(",") != -1) { 
-							String[] sTab = s.split(","); 
+						if (s.indexOf(",") != -1) {
+							String[] sTab = s.split(",");
 							StringBuffer sb = new StringBuffer();
-							sb.append("<html>"); 
+							sb.append("<html>");
 							for (int i = 0; i < sTab.length; i++) {
-								sb.append("<p>").append(sTab[i]).append("</p>");  
+								sb.append("<p>").append(sTab[i]).append("</p>");
 							}
-							sb.append("</html>"); 
+							sb.append("</html>");
 							jl.setToolTipText(sb.toString());
 						} else {
 							jl.setToolTipText(s);
@@ -597,8 +597,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				if (isLinkable(meta)) {
 					JButton jbLink = new JButton(IconLoader.ICON_PROPERTIES);
 					jbLink.addActionListener(this);
-					jbLink.setActionCommand("link"); 
-					jbLink.setToolTipText(Messages.getString("PropertiesWizard.12")); 
+					jbLink.setActionCommand("link");
+					jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));
 					widgets[index][2] = jbLink;
 				}
 				index++;
@@ -616,33 +616,33 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			jpProperties = new JPanel();
 			jpProperties.setLayout(new TableLayout(dSizeProperties));
 			// Add title
-			JLabel jlName = new JLabel(
-					"<html><b>" + Messages.getString("PropertiesWizard.1") + "</b></html>");   
-			jlName.setToolTipText(Messages.getString("PropertiesWizard.1")); 
-			JLabel jlValue = new JLabel(
-					"<html><b>" + Messages.getString("PropertiesWizard.2") + "</b></html>");   
-			jlValue.setToolTipText(Messages.getString("PropertiesWizard.2")); 
-			JLabel jlLink = new JLabel(
-					"<html><b>" + Messages.getString("PropertiesWizard.4") + "</b></html>");   
-			jlLink.setToolTipText(Messages.getString("PropertiesWizard.4")); 
-			JLabel jlType = new JLabel(
-					"<html><b>" + Messages.getString("PropertiesWizard.7") + "</b></html>");   
-			jlType.setToolTipText(Messages.getString("PropertiesWizard.7")); 
+			JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
+					+ "</b></html>");
+			jlName.setToolTipText(Messages.getString("PropertiesWizard.1"));
+			JLabel jlValue = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.2")
+					+ "</b></html>");
+			jlValue.setToolTipText(Messages.getString("PropertiesWizard.2"));
+			JLabel jlLink = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.4")
+					+ "</b></html>");
+			jlLink.setToolTipText(Messages.getString("PropertiesWizard.4"));
+			JLabel jlType = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.7")
+					+ "</b></html>");
+			jlType.setToolTipText(Messages.getString("PropertiesWizard.7"));
 
-			jpProperties.add(jlName, "1,1,c,c"); 
-			jpProperties.add(jlValue, "3,1,c,c"); 
-			jpProperties.add(jlLink, "5,1,c,c"); 
-			jpProperties.add(jlType, "7,1,c,c"); 
+			jpProperties.add(jlName, "1,1,c,c");
+			jpProperties.add(jlValue, "3,1,c,c");
+			jpProperties.add(jlLink, "5,1,c,c");
+			jpProperties.add(jlType, "7,1,c,c");
 
 			// Add widgets
 			int i = 0;
 			int j = 2;
 			for (PropertyMetaInformation meta : alToDisplay) {
 				j = (2 * i) + 3;
-				jpProperties.add(widgets[i][0], "1," + j + ",c,c");  
-				jpProperties.add(widgets[i][1], "3," + j); 
+				jpProperties.add(widgets[i][0], "1," + j + ",c,c");
+				jpProperties.add(widgets[i][1], "3," + j);
 				if (widgets[i][2] != null) { // link widget can be null
-					jpProperties.add(widgets[i][2], "5," + j + ",c,c");  
+					jpProperties.add(widgets[i][2], "5," + j + ",c,c");
 				}
 				i++;
 			}
@@ -650,8 +650,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			setLayout(new TableLayout(dSize));
 			// desc
 			jlDesc = new JLabel(Util.formatPropertyDesc(sDesc));
-			add(jlDesc, "0,0"); 
-			add(jpProperties, "0,2"); 
+			add(jlDesc, "0,0");
+			add(jpProperties, "0,2");
 		}
 
 		/*
@@ -661,7 +661,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		 */
 		public void actionPerformed(ActionEvent ae) {
 			// Link
-			if (ae.getActionCommand().equals("link")) { 
+			if (ae.getActionCommand().equals("link")) {
 				PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent) ae
 						.getSource()));
 				String sProperty = meta.getName();
@@ -674,7 +674,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				} else if (XML_PLAYLIST_FILES.equals(sProperty)) {
 					// can only be a set a files
 					String sValue = alItems.get(0).getStringValue(sProperty);
-					StringTokenizer st = new StringTokenizer(sValue, ","); 
+					StringTokenizer st = new StringTokenizer(sValue, ",");
 					ArrayList<Item> alItems = new ArrayList<Item>(3);
 					while (st.hasMoreTokens()) {
 						String sPlf = st.nextToken();
@@ -724,7 +724,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			}
 			ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
 			// details for errors
-			String sDetails = ""; 
+			String sDetails = "";
 			// Now we have all items to concidere, write tags for each
 			// property to change
 			for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
@@ -735,8 +735,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					// Check it is not null for non custom properties
 					if (oValue == null || (oValue.toString().trim().length() == 0)
 							&& !meta.isCustom()) {
-						Log.error(137, meta.getName(), null); 
-						Messages.showErrorMessage(137, meta.getName()); 
+						Log.error(137, meta.getName(), null);
+						Messages.showErrorMessage(137, meta.getName());
 						return;
 					}
 					// Old value
@@ -759,7 +759,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						// cannot rename file, for this error, we display an
 						// error and leave completely
 						catch (CannotRenameException cre) {
-							Messages.showErrorMessage(cre.getCode()); 
+							Messages.showErrorMessage(cre.getCode());
 							return;
 						}
 						// probably error writing a tag, store track reference
@@ -771,15 +771,16 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								// create details label with 3 levels deep
 								sDetails += je.getMessage();
 								if (je.getCause() != null) {
-									sDetails += "\nCaused by:" + je.getCause(); 
+									sDetails += "\nCaused by:" + je.getCause();
 									if (je.getCause().getCause() != null) {
-										sDetails += "\nCaused by:" + je.getCause().getCause(); 
+										sDetails += "\nCaused by:" + je.getCause().getCause();
 										if (je.getCause().getCause().getCause() != null) {
-											sDetails += "\nCaused by:" + je.getCause().getCause().getCause(); 
+											sDetails += "\nCaused by:"
+													+ je.getCause().getCause().getCause();
 										}
 									}
 								}
-								sDetails += "\n\n"; 
+								sDetails += "\n\n";
 							}
 							continue;
 						}
@@ -815,39 +816,36 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				 * and will no more contain unmounted files
 				 */
 				if (!isMonoFile() && TrackManager.getInstance().isChangePbm()) {
-					Messages.showWarningMessage(Messages.getString("Error.138")); 
+					Messages.showWarningMessage(Messages.getString("Error.138"));
 				}
 			}
 			// display a message for file write issues
 			if (alInError.size() > 0) {
-				String sInfo = ""; 
+				String sInfo = "";
 				int index = 0;
 				for (Item item : alInError) {
 					// limit number of errors
 					if (index == 15) {
-						sInfo += "\n..."; 
+						sInfo += "\n...";
 						break;
 					}
-					sInfo += "\n" + item.getHumanValue(XML_NAME); 
+					sInfo += "\n" + item.getHumanValue(XML_NAME);
 					index++;
 				}
-				Messages.showDetailedErrorMessage(104, sInfo, sDetails); 
+				Messages.showDetailedErrorMessage(104, sInfo, sDetails);
 			}
 
 			// display a message if user changed at least one property
 			if (alChanged.size() > 0) {
 				StringBuffer sbChanged = new StringBuffer();
-				sbChanged.append("{"); 
+				sbChanged.append("{");
 				for (PropertyMetaInformation meta : alChanged) {
 					sbChanged.append(meta.getHumanName()).append(' ');
 				}
 				sbChanged.append('}');
-				InformationJPanel
-						.getInstance()
-						.setMessage(
-								alChanged.size()
-										+ " " + Messages.getString("PropertiesWizard.10") + ": " + sbChanged.toString(),   
-								InformationJPanel.INFORMATIVE);
+				InformationJPanel.getInstance().setMessage(
+						alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
+								+ sbChanged.toString(), InformationJPanel.INFORMATIVE);
 			}
 			Util.stopWaiting();
 		}

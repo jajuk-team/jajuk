@@ -99,8 +99,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
-import com.jgoodies.forms.debug.FormDebugUtils;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -374,9 +372,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jsVolume.setBorder(new DropShadowBorder());
 		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
+		jpVolume.add(Box.createHorizontalStrut(5));
+		jpVolume.add(jbMute);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14"));
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
+		
 
 		// Special functions toolbar
 		// Ambience combo
@@ -386,7 +387,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ambiencesCombo.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE) + 2));
 		// size of the combo itself
-		// ambiencesCombo.setMaximumSize(new Dimension(100, 32));
 		ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
 			private static final long serialVersionUID = -6943363556191659895L;
 
@@ -514,19 +514,18 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbPlay.add(jbFwd);
 		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
-		jtbPlay.add(jbMute);
-
+		
 		// Add items
 		FormLayout layout = new FormLayout(
 		// --columns
-				"left:min(10dlu;p):grow, 0dlu, " + // ambience
-						"left:p, 1dlu" + // smart toolbar
-						", min(0dlu;p):grow(0.75), 1dlu," + // glue
-						" right:p, 3dlu, " + // search /modes
-						"fill:p:grow(0.25), 1dlu, " + // history / player
-						"right:min(30dlu;p):grow", // volume / part of history
+				"fill:min(10dlu;p):grow(0.5), 0dlu, " + //ambience
+						"left:p, 1dlu" + //smart toolbar
+						", min(0dlu;p):grow(0.1), 5dlu," + //glue
+						" right:p, 10dlu, " + // search /modes
+						"fill:p:grow(0.2), 1dlu, " + // history/player
+						"right:min(30dlu;p):grow(0.2),3dlu", // volume/part of history
 				// --rows
-				"0dlu, p, 0dlu, p, 0dlu"); // rows
+				"0dlu, p, 3dlu, p, 3dlu"); // rows
 		PanelBuilder builder = new PanelBuilder(layout);
 		CellConstraints cc = new CellConstraints();
 		// Add items
@@ -538,7 +537,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		builder.add(jtbPlay, cc.xy(9, 4));
 		builder.add(jpVolume, cc.xy(11, 4));
 		JPanel p = builder.getPanel();
-		FormDebugUtils.dumpAll(builder.getPanel());
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		add(p);
 		// register to player events

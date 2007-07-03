@@ -25,13 +25,13 @@ import org.jajuk.util.UrlImageIcon;
 import org.jdesktop.swingx.JXPanel;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -82,18 +82,19 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	public void update() {
 		// Perspectives tool bar
 		jtbPerspective = new JToolBar(JToolBar.VERTICAL);
-		jtbPerspective.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
-		Iterator it = PerspectiveManager.getPerspectives().iterator();
+	//	jtbPerspective.setBorder(BorderFactory.createEmptyBorder(3,3,3,0));
+		Iterator<IPerspective> it = PerspectiveManager.getPerspectives().iterator();
 		int index = 0;
 		while (it.hasNext()) {
-			final IPerspective perspective = (IPerspective) it.next();
+			final IPerspective perspective = it.next();
 			JButton jb = new JButton(perspective.getDesc(), new UrlImageIcon(perspective
 					.getIconPath()));
 			jb.setVerticalTextPosition(JButton.BOTTOM);
 			jb.setHorizontalTextPosition(JButton.CENTER);
-			jb.setMinimumSize(new Dimension(100,70));
-			jb.setPreferredSize(new Dimension(100,70));
-			jb.setMaximumSize(new Dimension(100,70));
+			jb.setMinimumSize(new Dimension(80,70));
+			jb.setPreferredSize(new Dimension(80,70));
+			jb.setMaximumSize(new Dimension(80,70));
+			jb.setFont(new Font("Dialog",Font.BOLD,10));
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// no thread, it causes ugly screen repaint
@@ -118,11 +119,11 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	 */
 	public void setActivated(IPerspective perspective) {
 		Set<IPerspective> perspectives = PerspectiveManager.getPerspectives();
-		Iterator it = alButtons.iterator();
-		Iterator it2 = perspectives.iterator();
+		Iterator<JButton> it = alButtons.iterator();
+		Iterator<IPerspective> it2 = perspectives.iterator();
 		while (it.hasNext()) {
-			final JButton jb = (JButton) it.next();
-			IPerspective perspective2 = (IPerspective) it2.next();
+			final JButton jb = it.next();
+			IPerspective perspective2 = it2.next();
 			if (perspective2.equals(perspective)) { // this perspective is
 				// selected
 				jb.setSelected(true);
