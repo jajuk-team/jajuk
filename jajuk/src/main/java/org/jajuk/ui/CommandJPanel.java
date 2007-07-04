@@ -99,6 +99,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -325,6 +326,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jcbHistory.setPreferredSize(new Dimension(250, 25));
 		jcbHistory.setMinimumSize(new Dimension(0, 25));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
+		jcbHistory.addActionListener(CommandJPanel.this);
 		jpHistory.add(jcbHistory);
 		JToolBar jtbIncRate = new JToolBar();
 		jtbIncRate.setFloatable(false);
@@ -513,8 +515,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbPlay.add(jbStop);
 		jtbPlay.add(jbFwd);
 		jtbPlay.add(jbNext);
-		jtbPlay.addSeparator();
-		
+				
 		// Add items
 		FormLayout layout = new FormLayout(
 		// --columns
@@ -522,11 +523,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 						"left:p, 1dlu" + //smart toolbar
 						", min(0dlu;p):grow(0.1), 5dlu," + //glue
 						" right:p, 10dlu, " + // search /modes
-						"fill:p:grow(0.2), 1dlu, " + // history/player
-						"right:min(30dlu;p):grow(0.2),3dlu", // volume/part of history
+						"fill:p, 5dlu, " + // history/player
+						"fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of history
 				// --rows
 				"0dlu, p, 3dlu, p, 3dlu"); // rows
-		PanelBuilder builder = new PanelBuilder(layout);
+		PanelBuilder builder = new PanelBuilder(layout);//, new FormDebugPanel() );
 		CellConstraints cc = new CellConstraints();
 		// Add items
 		builder.add(ambiencesCombo, cc.xy(1, 4));
