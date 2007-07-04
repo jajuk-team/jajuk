@@ -415,9 +415,9 @@
   		<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  	</replace>
  	 <!-- Set test or no test in jnlp file--> 
- 	<replace dir='${jnlpdir}/app' value='-${test}'>
+ 	<replace dir='${jnlpdir}/app' value='${test}'>
   		<include name='*.jnlp'/>
-  		<replacetoken>JNLP_DEPLOY_REPLACED_BY_ANT</replacetoken>
+  		<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
  	</replace>
  	
  	<!--Copy previous release jars, comment this if you have no previous release -->

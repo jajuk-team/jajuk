@@ -199,7 +199,10 @@ public class Main implements ITechnicalStrings {
 					bIdeMode = true;
 				}
 				// Tells jajuk to use a .jajuk_test repository
-				if (args[i].equals("-" + CLI_TEST)) {
+				//The information can be given from CLI using -test=[test|notest] option
+				//or using the "test" env variable
+				String test = System.getProperty("test");
+				if (args[i].equals("-" + CLI_TEST) || (test != null && test.equals("test"))) {
 					bTestMode = true;
 				}
 			}

@@ -20,7 +20,7 @@ TS: TIMESTAMP_REPLACED_BY_ANT
        </security> 
        <resources>
            <j2se version='1.5+' java-vm-args='-client -Xms35M -Xmx256M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12'/>
-           <property name='apple.laf.useScreenMenuBar' value='true'/>
+           <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
            <jar href='jajuk-help.jar' version='VERSION_REPLACED_BY_ANT'/> 
            <jar href='jajuk-help_fr.jar' version='VERSION_REPLACED_BY_ANT'/> 
