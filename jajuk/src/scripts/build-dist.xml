@@ -5,7 +5,7 @@
   <!--VARIABLES-->
   
   <!--Distribution release-->
-  <property name='version' value='1.4dev'/>
+  <property name='version' value='1.4dev_20070704_1'/>
   
   <!--Previous release used for JNLP incremental upgrade-->
   <property name='previous_version' value='null'/>
@@ -13,8 +13,8 @@
  <!--Test flag: values: test or notest -->
   <property name='test' value='test'/> 	
   
-  <!--Timestamp used by Web Start -->
-  <property name='jajuktimestamp' value='2007-06-24 00:00:01'/>
+ <!--Timestamp used by Web Start--> 
+  <property name='jajuktimestamp' value='2007-07-04 23:12:01'/>
   	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
@@ -397,9 +397,9 @@
     <copy todir='${jnlpdir}/app/windows'>
     	<fileset file='${srcdir}/packaging/jnlp/windows/*.jar'/>
 	</copy>
-    <replace dir='${jnlpdir}/app' value='-${test}'>
+    <replace dir='${jnlpdir}/app' value='${test}'>
   		<include name='launch.jnlp'/>
-  		<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
+  		<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  	</replace>
  	<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
     <move todir="${jnlpdir}">
