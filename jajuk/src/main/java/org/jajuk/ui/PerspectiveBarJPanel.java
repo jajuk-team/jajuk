@@ -82,7 +82,6 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 	public void update() {
 		// Perspectives tool bar
 		jtbPerspective = new JToolBar(JToolBar.VERTICAL);
-	//	jtbPerspective.setBorder(BorderFactory.createEmptyBorder(3,3,3,0));
 		Iterator<IPerspective> it = PerspectiveManager.getPerspectives().iterator();
 		int index = 0;
 		while (it.hasNext()) {
@@ -91,9 +90,9 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 					.getIconPath()));
 			jb.setVerticalTextPosition(JButton.BOTTOM);
 			jb.setHorizontalTextPosition(JButton.CENTER);
-			jb.setMinimumSize(new Dimension(80,70));
-			jb.setPreferredSize(new Dimension(80,70));
-			jb.setMaximumSize(new Dimension(80,70));
+			jb.setMinimumSize(new Dimension(80,65));
+			jb.setPreferredSize(new Dimension(80,65));
+			jb.setMaximumSize(new Dimension(80,65));
 			jb.setFont(new Font("Dialog",Font.BOLD,10));
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

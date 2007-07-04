@@ -519,9 +519,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// Add items
 		FormLayout layout = new FormLayout(
 		// --columns
-				"fill:min(10dlu;p):grow(0.5), 0dlu, " + //ambience
-						"left:p, 1dlu" + //smart toolbar
-						", min(0dlu;p):grow(0.1), 5dlu," + //glue
+				"3dlu,fill:min(10dlu;p):grow(0.5), 0dlu, " + //ambience
+						"left:p, 2dlu" + //smart toolbar
+						", min(0dlu;p):grow(0.04), 3dlu," + //glue
 						" right:p, 10dlu, " + // search /modes
 						"fill:p, 5dlu, " + // history/player
 						"fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of history
@@ -530,13 +530,13 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		PanelBuilder builder = new PanelBuilder(layout);//, new FormDebugPanel() );
 		CellConstraints cc = new CellConstraints();
 		// Add items
-		builder.add(ambiencesCombo, cc.xy(1, 4));
-		builder.add(jtbSpecial, cc.xy(3, 4));
-		builder.add(jpSearch, cc.xy(7, 2));
-		builder.add(jpHistory, cc.xyw(9, 2, 3));
-		builder.add(jtbModes, cc.xy(7, 4));
-		builder.add(jtbPlay, cc.xy(9, 4));
-		builder.add(jpVolume, cc.xy(11, 4));
+		builder.add(ambiencesCombo, cc.xy(2, 4));
+		builder.add(jtbSpecial, cc.xy(4, 4));
+		builder.add(jpSearch, cc.xy(8, 2));
+		builder.add(jpHistory, cc.xyw(10, 2, 3));
+		builder.add(jtbModes, cc.xy(8, 4));
+		builder.add(jtbPlay, cc.xy(10, 4));
+		builder.add(jpVolume, cc.xy(12, 4));
 		JPanel p = builder.getPanel();
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		add(p);
