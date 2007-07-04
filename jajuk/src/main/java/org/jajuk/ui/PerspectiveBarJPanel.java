@@ -90,9 +90,9 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 					.getIconPath()));
 			jb.setVerticalTextPosition(JButton.BOTTOM);
 			jb.setHorizontalTextPosition(JButton.CENTER);
-			jb.setMinimumSize(new Dimension(80,65));
-			jb.setPreferredSize(new Dimension(80,65));
-			jb.setMaximumSize(new Dimension(80,65));
+			jb.setMinimumSize(new Dimension(85,65));
+			jb.setPreferredSize(new Dimension(85,65));
+			jb.setMaximumSize(new Dimension(85,65));
 			jb.setFont(new Font("Dialog",Font.BOLD,10));
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
