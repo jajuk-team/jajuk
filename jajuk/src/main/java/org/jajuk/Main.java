@@ -63,7 +63,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioRepository;
-import org.jdesktop.swingx.util.JVM;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.BorderLayout;
@@ -103,6 +102,7 @@ import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarIO;
 
 import ext.JSplash;
+import ext.JVM;
 
 /**
  * Jajuk launching class
