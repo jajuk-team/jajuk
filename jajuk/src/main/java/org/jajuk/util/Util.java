@@ -1163,7 +1163,7 @@ public class Util implements ITechnicalStrings {
 			}
 			// Check the watermark is known, if not take the default one
 			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
-			if (watermarks.get(pWatermarkName) == null) {
+			if (watermarks.get(watermark) == null) {
 				// the image watermark is not included in the list for unknown
 				// reasons
 				if (!watermark.equals("Image")) {
