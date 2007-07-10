@@ -15,33 +15,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision: 2523 $$
  */
+
 package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.wizard.DigitalDJWizard;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.webradio.WebRadioRepository;
 
 import java.awt.event.ActionEvent;
 
-/**
- * Action for configure DJs
- */
-public class DJConfigurationAction extends ActionBase {
+public class WebRadioAction extends ActionBase {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	DJConfigurationAction() {
-		super(
-				Messages.getString("CommandJPanel.17"), IconLoader.ICON_CONFIGURATION, true);  
+	WebRadioAction() {
+		super(Messages.getString("CommandJPanel.25"), IconLoader.ICON_WEBRADIO, true);
+		String tooltipWebRadio = Messages.getString("CommandJPanel.25");
+		String defaultRadio = ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO);
+		if (WebRadioRepository.getInstance().getWebRadioByName(defaultRadio) != null) {
+			tooltipWebRadio = "<html>" + tooltipWebRadio + "<p><b>" + defaultRadio + "</b></html>";
+		}
+		setShortDescription(tooltipWebRadio);
 	}
 
-	public void perform(ActionEvent evt) {
-		DigitalDJWizard wizard = new DigitalDJWizard(); // display the DJ wizard
-		wizard.show();
+	public void perform(ActionEvent evt) throws JajukException {
 	}
+
 }

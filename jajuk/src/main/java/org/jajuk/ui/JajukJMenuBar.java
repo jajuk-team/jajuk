@@ -104,6 +104,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
 	JMenuItem jmiAmbience;
 
+	JMenuItem jmiWebradios;
+
 	JMenuItem jmiWizard;
 
 	JMenuItem jmiOptions;
@@ -198,13 +200,19 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		// Configuration menu
 		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); 
 		jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
+		//Overwrite default icon
+		jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16x16);
 		jmiAmbience = new JMenuItem(ActionManager
 				.getAction(CONFIGURE_AMBIENCES));
+		jmiWebradios = new JMenuItem(ActionManager
+				.getAction(JajukAction.CONFIGURE_WEBRADIOS));
+		jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
 		jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
 		jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 		JMenuItem jmiUnmounted = new JMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
 		configuration.add(jmiDJ);
 		configuration.add(jmiAmbience);
+		configuration.add(jmiWebradios);
 		configuration.add(jmiWizard);
 		configuration.add(jmiOptions);
 		configuration.add(jmiUnmounted);

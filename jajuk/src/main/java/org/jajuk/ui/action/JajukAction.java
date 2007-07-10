@@ -364,6 +364,10 @@ public enum JajukAction {
 	 */
 	CONFIGURE_AMBIENCES,
 	/**
+	 * Used to configure webradios.
+	 */
+	CONFIGURE_WEBRADIOS,
+	/**
 	 * Used to configure the application
 	 */
 	OPTIONS,
@@ -383,5 +387,9 @@ public enum JajukAction {
 	 * Launch in an external browser the url given in Util.url
 	 */
 	LAUNCH_IN_BROWSER,
+	/**
+	 * Launch a web radio
+	 */
+	WEB_RADIO,
 
 }

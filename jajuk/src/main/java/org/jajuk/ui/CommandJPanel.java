@@ -31,6 +31,7 @@ import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 
+import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
@@ -42,6 +43,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
+import org.jajuk.base.WebRadio;
 import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJ;
@@ -58,6 +60,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioRepository;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -69,6 +72,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
@@ -99,13 +104,14 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
 
 import ext.DropDownButton;
 import ext.SwingWorker;
+import ext.scrollablepopupmenu.XCheckedButton;
+import ext.scrollablepopupmenu.XJPopupMenu;
 
 /**
  * Command panel ( static view )
@@ -156,6 +162,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	DropDownButton ddbNovelties;
 
 	JPopupMenu popupNovelties;
+
+	DropDownButton ddbWebRadio;
+
+	XJPopupMenu popupWebRadio;
 
 	JRadioButtonMenuItem jmiNoveltiesModeSong;
 
@@ -281,7 +291,16 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				{ TableLayout.PREFERRED } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
-		jpSearch.add(new JLabel(IconLoader.ICON_SEARCH), "1,0");
+		JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
+		jlSearch.setToolTipText(Messages.getString("CommandJPanel.23"));
+		// Clear search text when cliking on the search icon
+		jlSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				sbSearch.setText("");
+			}
+		});
+		jpSearch.add(jlSearch, "1,0");
 		jpSearch.add(sbSearch, "3,0");
 
 		// History
@@ -341,9 +360,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// make it not floatable as this behavior is managed by vldocking
 		jtbModes.setFloatable(false);
 		jtbModes.setRollover(true);
-		jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukAction.REPEAT_MODE_STATUS_CHANGE));
+		jbRepeat = new JajukToggleButton(ActionManager
+				.getAction(JajukAction.REPEAT_MODE_STATUS_CHANGE));
 		jbRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
-		jbRandom = new JajukToggleButton(ActionManager.getAction(JajukAction.SHUFFLE_MODE_STATUS_CHANGED));
+		jbRandom = new JajukToggleButton(ActionManager
+				.getAction(JajukAction.SHUFFLE_MODE_STATUS_CHANGED));
 		jbRandom.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
 		jbContinue = new JajukToggleButton(ActionManager
 				.getAction(JajukAction.CONTINUE_MODE_STATUS_CHANGED));
@@ -361,8 +382,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 		// Volume
 		jpVolume = new JPanel();
-		ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(JajukAction.DECREASE_VOLUME),
-				ActionManager.getAction(JajukAction.INCREASE_VOLUME));
+		ActionUtil.installKeystrokes(jpVolume,
+				ActionManager.getAction(JajukAction.DECREASE_VOLUME), ActionManager
+						.getAction(JajukAction.INCREASE_VOLUME));
 
 		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
 		jlVolume = new JLabel(IconLoader.ICON_VOLUME);
@@ -379,7 +401,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14"));
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
-		
 
 		// Special functions toolbar
 		// Ambience combo
@@ -487,12 +508,32 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// no text visible
 		ddbDDJ.setText("");
 
-		jtbSpecial.addSeparator();
+		popupWebRadio = new XJPopupMenu(Main.getWindow());
+		ddbWebRadio = new DropDownButton(IconLoader.ICON_WEBRADIO) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected JPopupMenu getPopupMenu() {
+				return popupWebRadio;
+			}
+		};
+		ddbWebRadio.setAction(ActionManager.getAction(JajukAction.WEB_RADIO));
+		populateWebRadios();
+		// no text
+		ddbWebRadio.setText("");
+
 		ddbDDJ.addToToolBar(jtbSpecial);
 		ddbNovelties.addToToolBar(jtbSpecial);
 		ddbGlobalRandom.addToToolBar(jtbSpecial);
 		jtbSpecial.add(jbBestof);
 		jtbSpecial.add(jbNorm);
+
+		// Radio tool bar
+		JToolBar jtbWebRadio = new JToolBar();
+		jtbWebRadio.setBorder(null);
+		jtbWebRadio.setRollover(true);
+		jtbWebRadio.setFloatable(false);
+		ddbWebRadio.addToToolBar(jtbWebRadio);
 
 		// Play toolbar
 		JToolBar jtbPlay = new JToolBar();
@@ -515,21 +556,24 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbPlay.add(jbStop);
 		jtbPlay.add(jbFwd);
 		jtbPlay.add(jbNext);
-				
+
 		// Add items
 		FormLayout layout = new FormLayout(
 		// --columns
-				"3dlu,fill:min(10dlu;p):grow(0.5), 0dlu, " + //ambience
-						"left:p, 2dlu" + //smart toolbar
-						", min(0dlu;p):grow(0.04), 3dlu," + //glue
+				"3dlu,fill:min(10dlu;p):grow(0.5), 3dlu, " + // ambience
+						"left:p, 2dlu" + // smart toolbar
+						", min(0dlu;p):grow(0.04), 3dlu," + // glue
 						" right:p, 10dlu, " + // search /modes
 						"fill:p, 5dlu, " + // history/player
-						"fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of history
+						"fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of
+				// history
 				// --rows
 				"0dlu, p, 3dlu, p, 3dlu"); // rows
-		PanelBuilder builder = new PanelBuilder(layout);//, new FormDebugPanel() );
+		PanelBuilder builder = new PanelBuilder(layout);// , new
+		// FormDebugPanel() );
 		CellConstraints cc = new CellConstraints();
 		// Add items
+		builder.add(jtbWebRadio, cc.xy(2, 2));
 		builder.add(ambiencesCombo, cc.xy(2, 4));
 		builder.add(jtbSpecial, cc.xy(4, 4));
 		builder.add(jpSearch, cc.xy(8, 2));
@@ -538,7 +582,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		builder.add(jtbPlay, cc.xy(10, 4));
 		builder.add(jpVolume, cc.xy(12, 4));
 		JPanel p = builder.getPanel();
-		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(p);
 		// register to player events
 		ObservationManager.register(CommandJPanel.this);
@@ -820,15 +864,17 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			popupDDJ.removeAll();
 			JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
 			popupDDJ.add(jmiNew);
-			Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
+			Iterator<DigitalDJ> it = DigitalDJManager.getInstance().getDJs().iterator();
 			while (it.hasNext()) {
-				final DigitalDJ dj = (DigitalDJ) it.next();
+				final DigitalDJ dj = it.next();
 				JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
 						IconLoader.ICON_DIGITAL_DJ_16x16);
 				jmi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());
+						// force to reselect the item
 						populateDJs();
+						// update action tooltip with right DJ
 						ActionBase action = ActionManager.getAction(JajukAction.DJ);
 						action.setShortDescription("<html>"
 								+ Messages.getString("CommandJPanel.18") + "<p><b>" + dj.getName()
@@ -875,6 +921,39 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			}
 		}
 		ambiencesCombo.addActionListener(ambienceListener);
+	}
+
+	/**
+	 * Populate webradios
+	 * 
+	 */
+	private void populateWebRadios() {
+		try {
+			popupWebRadio.removeAll();
+			JMenuItem jmiConf = new JMenuItem(ActionManager
+					.getAction(JajukAction.CONFIGURE_WEBRADIOS));
+			popupWebRadio.add(jmiConf);
+			for (final WebRadio radio : WebRadioRepository.getInstance().getWebRadios()) {
+				XCheckedButton jmi = new XCheckedButton(radio.getName());
+				jmi.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
+						// force to reselect the item
+						populateWebRadios();
+						// update action tooltip with right item
+						ActionBase action = ActionManager.getAction(JajukAction.WEB_RADIO);
+						action.setShortDescription("<html>"
+								+ Messages.getString("CommandJPanel.25") + "<p><b>"
+								+ radio.getName() + "</b></p></html>");
+					}
+				});
+				popupWebRadio.add(jmi);
+				jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO).equals(
+						radio.getName()));
+			}
+		} catch (Exception e) {
+			Log.error(e);
+		}
 	}
 
 	/**

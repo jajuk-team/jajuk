@@ -199,8 +199,9 @@ public class Main implements ITechnicalStrings {
 					bIdeMode = true;
 				}
 				// Tells jajuk to use a .jajuk_test repository
-				//The information can be given from CLI using -test=[test|notest] option
-				//or using the "test" env variable
+				// The information can be given from CLI using
+				// -test=[test|notest] option
+				// or using the "test" env variable
 				String test = System.getProperty("test");
 				if (args[i].equals("-" + CLI_TEST) || (test != null && test.equals("test"))) {
 					bTestMode = true;
@@ -209,8 +210,13 @@ public class Main implements ITechnicalStrings {
 
 			// Set look and feel, needs local to be set for error
 			// messages
-			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
-			UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
+			try {
+				UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
+				UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
+			} catch (Exception e) {
+				//Get an exception with JRE 1.7 beta, some code is not yet implemented
+				Log.error(e);
+			}
 
 			// perform initial checkups and create needed files
 			initialCheckups();

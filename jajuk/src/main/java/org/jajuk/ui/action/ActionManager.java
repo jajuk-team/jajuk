@@ -104,7 +104,8 @@ public final class ActionManager {
 		installAction(DJ, new DJAction(), false);
 		installAction(NOVELTIES, new NoveltiesAction(), false);
 		installAction(FINISH_ALBUM, new FinishAlbumAction(), false);
-
+		installAction(JajukAction.WEB_RADIO, new WebRadioAction(), false);
+		
 		// CommandJPanel: Play Panel
 		installAction(PREVIOUS_TRACK, new PreviousTrackAction(), true);
 		installAction(NEXT_TRACK, new NextTrackAction(), true);
@@ -135,6 +136,7 @@ public final class ActionManager {
 
 		// JajukJMenuBar: configuration
 		installAction(CONFIGURE_DJS, new DJConfigurationAction(), false);
+		installAction(JajukAction.CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
 		installAction(CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(),
 				false);
 		installAction(WIZARD, new WizardAction(), false);

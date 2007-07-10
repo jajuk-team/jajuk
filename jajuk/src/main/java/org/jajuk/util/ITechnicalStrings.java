@@ -691,6 +691,9 @@ public interface ITechnicalStrings {
 	/** Default dj */
 	public static final String CONF_DEFAULT_DJ = "jajuk.default_dj";
 
+	/** Default web radio */
+	public static final String CONF_DEFAULT_WEB_RADIO = "jajuk.default_web_radio";
+
 	/** Default ambience* */
 	public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
 

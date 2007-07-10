@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.RefreshDialog;
+import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;

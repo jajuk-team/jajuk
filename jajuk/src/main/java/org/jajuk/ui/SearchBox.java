@@ -168,9 +168,9 @@ public class SearchBox extends JTextField implements KeyListener {
 					DefaultListModel model = new DefaultListModel();
 					alResults = new ArrayList<SearchResult>();
 					alResults.addAll(tsResu);
-					Iterator it = tsResu.iterator();
+					Iterator<SearchResult> it = tsResu.iterator();
 					while (it.hasNext()) {
-						model.addElement(((SearchResult) it.next()).getResu());
+						model.addElement((it.next()).getResu());
 					}
 					jlist = new JList(model);
 					PopupFactory factory = PopupFactory.getSharedInstance();

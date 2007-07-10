@@ -15,33 +15,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision: 2403 $$
  */
 package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.wizard.DigitalDJWizard;
 import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
 
 /**
- * Action for configure DJs
+ * Action for configure WebRadios
  */
-public class DJConfigurationAction extends ActionBase {
+public class WebRadioConfigurationAction extends ActionBase {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	DJConfigurationAction() {
+	WebRadioConfigurationAction() {
 		super(
-				Messages.getString("CommandJPanel.17"), IconLoader.ICON_CONFIGURATION, true);  
+				Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);  
 	}
 
 	public void perform(ActionEvent evt) {
-		DigitalDJWizard wizard = new DigitalDJWizard(); // display the DJ wizard
-		wizard.show();
+		
 	}
 }

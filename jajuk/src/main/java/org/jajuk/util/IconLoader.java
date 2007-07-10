@@ -65,6 +65,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_MUTED = new UrlImageIcon(Util
 			.getResource("icons/32x32/mute.png"));
 
+	public static final UrlImageIcon ICON_WEBRADIO = new UrlImageIcon(Util
+			.getResource("icons/32x32/webradio.png"));
+
 	public static final UrlImageIcon ICON_UNMUTED = new UrlImageIcon(Util
 			.getResource("icons/32x32/unmute.png"));
 
@@ -457,6 +460,9 @@ public class IconLoader {
 	
 	public static final UrlImageIcon ICON_DIGITAL_DJ_16x16 = new UrlImageIcon(Util
 			.getResource("icons/16x16/ddj.png"));
+
+	public static final UrlImageIcon ICON_WEBRADIO_16x16 = new UrlImageIcon(Util
+			.getResource("icons/16x16/webradio.png"));
 
 	public static final UrlImageIcon ICON_LIST = new UrlImageIcon(Util
 			.getResource("icons/16x16/contents.png"));

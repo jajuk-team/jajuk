@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 2503 $
  */
-package org.jajuk.ui;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
@@ -28,6 +28,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.util.IconLoader;
+import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Refresh dialog
@@ -40,7 +41,7 @@ public class RefreshDialog extends JFrame {
 	 */
 	private static final long serialVersionUID = -7883506101436294760L;
 
-	private JLabel jlAction;
+	private JXBusyLabel jlAction;
 
 	private JProgressBar progress;
 
@@ -50,7 +51,8 @@ public class RefreshDialog extends JFrame {
 		super();
 		setUndecorated(true);
 		setIconImage(IconLoader.ICON_LOGO.getImage());
-		jlAction = new JLabel();
+		jlAction = new JXBusyLabel();
+		jlAction.setBusy(true);
 		progress = new JProgressBar(0,100);
 		//progress.setPreferredSize(new Dimension(400,20));
 		jlRefreshing = new JLabel();
@@ -73,6 +75,7 @@ public class RefreshDialog extends JFrame {
 			public void run() {
 				jlAction.setText(action);
 				jlAction.setIcon(icon);
+				jlAction.setBusy(true);
 			}
 		});
 	}
