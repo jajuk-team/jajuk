@@ -249,6 +249,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_FONTS_SIZE, "12");
 		properties.put(CONF_MPLAYER_PATH_FORCED, "");
 		properties.put(CONF_INC_RATING,"5");
+		properties.put(CONF_OPTIONS_WATERMARK,LNF_DEFAULT_WATERMARK);
+		properties.put(CONF_OPTIONS_LNF,LNF_DEFAULT_THEME);
 	}
 
 	/**

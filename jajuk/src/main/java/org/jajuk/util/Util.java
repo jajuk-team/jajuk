@@ -1126,10 +1126,6 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void setLookAndFeel(String pTheme) {
 		try {
-			String theme = pTheme;
-			if (pTheme == null) {
-				theme = LNF_DEFAULT_THEME;
-			}
 			// Set substance laf
 			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 			// hide some useless elements such locker for not editable labels
@@ -1139,11 +1135,11 @@ public class Util implements ITechnicalStrings {
 			UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES, Boolean.TRUE);
 			// Check the theme is known, if not take the default theme
 			Map<String, ThemeInfo> themes = SubstanceLookAndFeel.getAllThemes();
-			if (themes.get(theme) == null) {
-				theme = LNF_DEFAULT_THEME;
+			if (themes.get(pTheme) == null) {
+				pTheme = LNF_DEFAULT_THEME;
 			}
 			// Set substance theme
-			SubstanceLookAndFeel.setCurrentTheme(themes.get(theme).getClassName());
+			SubstanceLookAndFeel.setCurrentTheme(themes.get(pTheme).getClassName());
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -1155,23 +1151,19 @@ public class Util implements ITechnicalStrings {
 	 * @param watermark
 	 *            name
 	 */
-	public static void setWatermark(String pWatermarkName) {
+	public static void setWatermark(String watermark) {
 		try {
-			String watermark = pWatermarkName;
-			if (watermark == null) {
-				watermark = LNF_DEFAULT_WATERMARK;
-			}
 			// Check the watermark is known, if not take the default one
 			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
 			if (watermarks.get(watermark) == null) {
 				// the image watermark is not included in the list for unknown
 				// reasons
-				if (!watermark.equals("Image")) {
+				if (!"Image".equals(watermark)) {
 					watermark = LNF_DEFAULT_WATERMARK;
 				}
 			}
 			// Set the watermark
-			if (watermark.equals("Image")) {
+			if ("Image".equals(watermark)) {
 				SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(
 						ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)));
 			} else {
