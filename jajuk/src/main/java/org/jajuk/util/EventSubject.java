@@ -132,6 +132,9 @@ public enum EventSubject {
 	// One or more ambiences have been
     // removed/added/changed
     EVENT_AMBIENCES_CHANGE, 
+	// One or more webradios have been
+    // removed/added/changed
+    EVENT_WEBRADIOS_CHANGE, 
 	// user changed current ambience
     EVENT_AMBIENCES_SELECTION_CHANGE, 
 	// An ambience has been removed

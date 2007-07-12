@@ -263,6 +263,8 @@ public interface ITechnicalStrings {
 
 	public static final URL IMAGE_DJ = Util.getResource("images/included/dj.jpg");
 
+	public static final URL IMAGE_WEBRADIO = Util.getResource("images/included/webradios.jpg");
+	
 	public static final URL IMAGE_TRAY_TITLE = Util.getResource("images/included/tray_title.png");
 
 	// XSLT Files

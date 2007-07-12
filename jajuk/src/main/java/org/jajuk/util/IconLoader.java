@@ -290,6 +290,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_STYLE = new UrlImageIcon(Util
 			.getResource("icons/16x16/style.png"));
 
+	public static final UrlImageIcon ICON_EMPTY = new UrlImageIcon(Util
+			.getResource("icons/16x16/empty.png"));
+
 	public static final UrlImageIcon ICON_AUTHOR = new UrlImageIcon(Util
 			.getResource("icons/16x16/author.png"));
 

@@ -616,6 +616,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
 		eventSubjectSet.add(EventSubject.EVENT_DJS_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIOS_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
 		return eventSubjectSet;
 	}
@@ -821,6 +822,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
 					populateAmbiences();
 					updateTooltips();
+				} else if (EventSubject.EVENT_WEBRADIOS_CHANGE.equals(event.getSubject())){
+					populateWebRadios();
 				}
 			}
 		});
@@ -929,8 +932,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	 */
 	private void populateWebRadios() {
 		try {
-			popupWebRadio.removeAll();
-			JMenuItem jmiConf = new JMenuItem(ActionManager
+			popupWebRadio = new XJPopupMenu(Main.getWindow());
+			XCheckedButton jmiConf = new XCheckedButton(ActionManager
 					.getAction(JajukAction.CONFIGURE_WEBRADIOS));
 			popupWebRadio.add(jmiConf);
 			for (final WebRadio radio : WebRadioRepository.getInstance().getWebRadios()) {
@@ -947,9 +950,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 								+ radio.getName() + "</b></p></html>");
 					}
 				});
-				popupWebRadio.add(jmi);
 				jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO).equals(
 						radio.getName()));
+				//Show the check icon
+				jmi.setDisplayCheck(true);
+				popupWebRadio.add(jmi);
 			}
 		} catch (Exception e) {
 			Log.error(e);

@@ -58,7 +58,7 @@ public class WebRadioRepository extends DefaultHandler implements ITechnicalStri
 		// check for webradio repository file
 		File fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
 		if (!fwebradios.exists()) {
-			// try to download the default directory (from jjauk SVN trunk
+			// try to download the default directory (from jajuk SVN trunk
 			// directly)
 			try {
 				DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fwebradios);
@@ -93,6 +93,14 @@ public class WebRadioRepository extends DefaultHandler implements ITechnicalStri
 			self = new WebRadioRepository();
 		}
 		return self;
+	}
+	
+	public void addWebRadio(WebRadio radio){
+		webradios.add(radio);
+	}
+	
+	public void removeWebRadio(WebRadio radio){
+		webradios.remove(radio);
 	}
 
 	/**

@@ -20,6 +20,7 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.wizard.WebRadioWizard;
 import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
@@ -35,11 +36,12 @@ public class WebRadioConfigurationAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	WebRadioConfigurationAction() {
-		super(
-				Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);  
+		super(Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);
 	}
 
 	public void perform(ActionEvent evt) {
-		
+		// display the wizard
+		WebRadioWizard wizard = new WebRadioWizard();
+		wizard.show();
 	}
 }

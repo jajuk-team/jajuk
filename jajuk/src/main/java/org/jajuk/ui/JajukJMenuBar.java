@@ -210,11 +210,11 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
 		jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 		JMenuItem jmiUnmounted = new JMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
+		configuration.add(jmiOptions);
 		configuration.add(jmiDJ);
 		configuration.add(jmiAmbience);
 		configuration.add(jmiWebradios);
 		configuration.add(jmiWizard);
-		configuration.add(jmiOptions);
 		configuration.add(jmiUnmounted);
 
 		// Help menu
