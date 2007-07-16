@@ -29,7 +29,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioRepository;
+import org.jajuk.webradio.WebRadioManager;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
@@ -39,6 +39,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -93,7 +95,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 */
 		public void initUI() {
-			radios = new ArrayList<WebRadio>(WebRadioRepository.getInstance().getWebRadios());
+			radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
 			setCanFinish(true);
 			// set layout
 			double[][] dSizeGeneral = { { 10, 0.99, 5 },
@@ -107,7 +109,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 			jbNew.setToolTipText(Messages.getString("RadioWizard.2"));
 			jbDelete = new JButton(Messages.getString("RadioWizard.3"), IconLoader.ICON_DELETE);
 			jbDelete.addActionListener(this);
-			jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
+			jbDelete.setToolTipText(Messages.getString("RadioWizard.3"));
 			jbDefaults = new JButton(Messages.getString("RadioWizard.4"), IconLoader.ICON_DEFAULTS);
 			jbDefaults.addActionListener(this);
 			jbDefaults.setToolTipText(Messages.getString("RadioWizard.4"));
@@ -125,7 +127,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 		private JScrollPane getPanel() {
 			widgets = new JComponent[radios.size()][3];
 			JPanel out = new JPanel();
-			double[] dHoriz = { 25, 120, 200 };
+			double[] dHoriz = { 25, 250, 150 };
 			double[] dVert = new double[widgets.length + 2];
 			dVert[0] = 20;
 			ButtonGroup group = new ButtonGroup();
@@ -145,23 +147,21 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 							}
 							JTextField jtf = (JTextField) widgets[i][1];
 							if (jtf.getText().equals(s)) {
-								setProblem(Messages.getString("DigitalDJWizard.60"));
+								setProblem(Messages.getString("RadioWizard.5"));
 								return;
 							}
 						}
 						// reset previous problems
 						if (s.length() == 0
-								|| ((JButton) widgets[index][2]).getText().length() == 0) {
-							setProblem(Messages.getString("RadioWizard.5"));
+								|| ((JTextField) widgets[index][2]).getText().length() == 0) {
+							setProblem(Messages.getString("RadioWizard.11"));
 						} else {
 							setProblem(null);
+							jtfName.setToolTipText(s);
 						}
-						JButton jb = (JButton) widgets[index][2];
-						WebRadio radio = radios.get(index);
-						jb.setEnabled(s.length() > 0);
 					}
 				});
-				jtfName.setToolTipText(Messages.getString("RadioWizard.6"));
+				jtfName.setToolTipText(jtfName.getText());
 				widgets[index][1] = jtfName;
 				// radio button
 				final JRadioButton jrbRadio = new JRadioButton();
@@ -178,14 +178,35 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 				}
 				WebRadio radio = radios.get(index);
 				// URL
-				JTextField jtfURL = new JTextField();
-				if (radio.getName().length() == 0) {
-					jtfURL.setEnabled(false);
-				}
-				if (radio.getUrl() != null ) {
+				final JTextField jtfURL = new JTextField();
+			//	jtfURL.setEnabled(radio.getName().length() > 0);
+				if (radio.getUrl() != null) {
 					jtfURL.setText(radio.getUrl().toString());
-					jtfURL.setToolTipText(radio.getUrl().toString());
+					jtfURL.setToolTipText(jtfURL.getText());
 				}
+				jtfURL.addCaretListener(new CaretListener() {
+					public void caretUpdate(CaretEvent arg0) {
+						int index = getWidgetIndex(widgets, (JComponent) arg0.getSource());
+						String s = jtfURL.getText();
+						// Check the URL
+						boolean bURLValid = true;
+						try {
+							new URL(s);
+						} catch (MalformedURLException e) {
+							bURLValid = false;
+							setProblem(Messages.getString("RadioWizard.10"));
+							return;
+						}
+						// reset previous problems
+						if (s.length() == 0
+								|| ((JTextField) widgets[index][1]).getText().length() == 0) {
+							setProblem(Messages.getString("RadioWizard.11"));
+						} else {
+							setProblem(null);
+							jtfURL.setToolTipText(s);
+						}
+					}
+				});
 				widgets[index][2] = jtfURL;
 				// Set layout
 				dVert[index + 1] = 20;
@@ -198,9 +219,9 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 			layout.setVGap(10);
 			out.setLayout(layout);
 			// Create header
-			JLabel jlHeader1 = new JLabel(Messages.getString("DigitalDJWizard.37"));
+			JLabel jlHeader1 = new JLabel(Messages.getString("RadioWizard.9"));
 			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12));
-			JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.27"));
+			JLabel jlHeader2 = new JLabel(Messages.getString("RadioWizard.8"));
 			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12));
 			out.add(jlHeader1, "1,0,c,c");
 			out.add(jlHeader2, "2,0,c,c");
@@ -238,23 +259,23 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 		 */
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource() == jbNew) {
-				radios.add(new WebRadio("",null)); 
+				radios.add(new WebRadio("", null));
 				// refresh screen
 				refreshScreen();
 				// select new row
 				JRadioButton jrb = (JRadioButton) widgets[radios.size() - 1][0];
 				jrb.setSelected(true);
 				radioIndex = radios.size() - 1;
-				setProblem(Messages.getString("DigitalDJWizard.39"));
+				setProblem(Messages.getString("RadioWizard.11"));
 				jbNew.setEnabled(false);
 				jbDelete.setEnabled(true);
 				JTextField jtf = (JTextField) widgets[radioIndex][1];
 				jtf.requestFocusInWindow();
 			} else if (ae.getSource() == jbDelete) {
 				WebRadio radio = radios.get(radioIndex);
-				radios.remove(radio);
-				WebRadioRepository.getInstance().removeWebRadio(radio);
-				if (WebRadioRepository.getInstance().getWebRadios().size() == 0) {
+				radios.remove(radioIndex);
+				WebRadioManager.getInstance().removeWebRadio(radio);
+				if (WebRadioManager.getInstance().getWebRadios().size() == 0) {
 					jbDelete.setEnabled(false);
 				}
 				if (radioIndex > 0) {
@@ -265,13 +286,20 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 				// refresh screen
 				refreshScreen();
 			} else if (ae.getSource() == jbDefaults) {
-				//Ask for confirmation
-				int choice = Messages.getChoice(Messages.getString("Confirmation_defaults_radios"), JOptionPane.WARNING_MESSAGE);
-				if (choice != JOptionPane.OK_OPTION){
+				// Ask for confirmation
+				int choice = Messages.getChoice(Messages.getString("Confirmation_defaults_radios"),
+						JOptionPane.WARNING_MESSAGE);
+				if (choice != JOptionPane.OK_OPTION) {
 					return;
 				}
-				/*WebRadioRepository.getInstance().createDefaultAmbiences();
-				radios = new ArrayList<WebRadio>(WebRadioRepository.getInstance().getWebRadios());*/
+				// OK ? Restore the list
+				try {
+					WebRadioManager.getInstance().restore();
+				} catch (Exception e) {
+					// show an "operation failed' message to users
+					Messages.showErrorMessage(169);
+					Log.error(e);
+				}
 				// refresh screen
 				refreshScreen();
 			}
@@ -315,9 +343,8 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 	}
 
 	public WebRadioWizard() {
-		super(Messages.getString("RadioWizard.7"), RadioPanel.class, Util
-				.getImage(IMAGE_WEBRADIO), Main.getWindow(),
-				new Locale(Messages.getInstance().getLocal()), 700, 600);
+		super(Messages.getString("RadioWizard.7"), RadioPanel.class, Util.getImage(IMAGE_WEBRADIO),
+				Main.getWindow(), new Locale(Messages.getInstance().getLocale()), 700, 600);
 	}
 
 	/*
@@ -328,11 +355,11 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 	@Override
 	public void finish() {
 		for (WebRadio radio : radios) {
-			WebRadioRepository.getInstance().addWebRadio(radio);
+			WebRadioManager.getInstance().addWebRadio(radio);
 		}
 		// commit it to avoid it is lost before the app close
 		try {
-			WebRadioRepository.getInstance().commit();
+			WebRadioManager.getInstance().commit();
 		} catch (IOException e) {
 			Log.error(e);
 		}

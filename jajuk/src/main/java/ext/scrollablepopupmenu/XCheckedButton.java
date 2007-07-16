@@ -29,7 +29,11 @@ public class XCheckedButton extends JButton {
 	private static final long serialVersionUID = 6665536733427576873L;
 
 	// Icon to be used to for the Checked Icon of the Button
-	private static ImageIcon checkedIcon;
+	private ImageIcon checkedIcon;
+	
+	/**Requires the icon to be always displayed, even when the item is unselected*/
+	private boolean iconAlwaysVisible = false;
+	
 
 	/**
 	 * These colors are required in order to simulate the JMenuItem's L&F
@@ -131,6 +135,8 @@ public class XCheckedButton extends JButton {
 	 * @param checkedFlag
 	 */
 	public void displayIcon(boolean checkedFlag) {
+		System.out.println(checkedFlag);
+		System.out.println(isDisplayCheck());
 		if (checkedFlag && isDisplayCheck()) {
 			if (checkedIcon == null) {
 				checkedIcon = IconLoader.ICON_OK;
@@ -175,7 +181,7 @@ public class XCheckedButton extends JButton {
 			fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this, this
 					.isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
 
-			XCheckedButton.this.displayIcon(b);
+			XCheckedButton.this.displayIcon(b | iconAlwaysVisible);
 
 		}
 
@@ -199,4 +205,13 @@ public class XCheckedButton extends JButton {
 		this.displayCheck = displayCheck;
 	}
 
+	public void setCheckedIcon(ImageIcon checkedIcon) {
+		this.checkedIcon = checkedIcon;
+	}
+
+	public void setIconAlwaysVisible(boolean iconAlwaysVisible) {
+		this.iconAlwaysVisible = iconAlwaysVisible;
+	}
+
+	
 }

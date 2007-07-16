@@ -1416,7 +1416,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 		super(
 				Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, 
 				Util.getImage(IMAGE_DJ), Main.getWindow(), new Locale(Messages
-						.getInstance().getLocal()));
+						.getInstance().getLocale()));
 	}
 
 	/*

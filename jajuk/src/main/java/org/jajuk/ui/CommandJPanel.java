@@ -60,7 +60,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioRepository;
+import org.jajuk.webradio.WebRadioManager;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -80,10 +80,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
@@ -822,7 +824,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
 					populateAmbiences();
 					updateTooltips();
-				} else if (EventSubject.EVENT_WEBRADIOS_CHANGE.equals(event.getSubject())){
+				} else if (EventSubject.EVENT_WEBRADIOS_CHANGE.equals(event.getSubject())) {
 					populateWebRadios();
 				}
 			}
@@ -932,11 +934,18 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	 */
 	private void populateWebRadios() {
 		try {
-			popupWebRadio = new XJPopupMenu(Main.getWindow());
-			XCheckedButton jmiConf = new XCheckedButton(ActionManager
-					.getAction(JajukAction.CONFIGURE_WEBRADIOS));
+			// Clear previous elements
+			for (int i = 0; i < popupWebRadio.getSubElements().length; i++) {
+				popupWebRadio.remove(i);
+			}
+			ActionBase actionConf = ActionManager.getAction(JajukAction.CONFIGURE_WEBRADIOS);
+			XCheckedButton jmiConf = new XCheckedButton(actionConf);
+			//Set icon so it is correctly displayed after a selection
+			jmiConf.setCheckedIcon((ImageIcon)actionConf.getValue(Action.SMALL_ICON));
+			//The icon should be always displayed
+			jmiConf.setIconAlwaysVisible(true);
 			popupWebRadio.add(jmiConf);
-			for (final WebRadio radio : WebRadioRepository.getInstance().getWebRadios()) {
+			for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
 				XCheckedButton jmi = new XCheckedButton(radio.getName());
 				jmi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -952,7 +961,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				});
 				jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO).equals(
 						radio.getName()));
-				//Show the check icon
+				// Show the check icon
 				jmi.setDisplayCheck(true);
 				popupWebRadio.add(jmi);
 			}

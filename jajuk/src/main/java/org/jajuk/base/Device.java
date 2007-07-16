@@ -353,7 +353,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 							int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
 							rdialog.setProgress(progress);
 							rdialog.setTitle(Messages.getString("RefreshDialog.2") + " "
-									+ this.getName() + '\n' + progress + " %");
+									+ this.getName() + " (" + progress + " %)");
 						}
 						dParent.scan(bDeepScan);
 						dirCount++;

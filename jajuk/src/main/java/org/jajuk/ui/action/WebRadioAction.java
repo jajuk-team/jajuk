@@ -24,7 +24,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.webradio.WebRadioRepository;
+import org.jajuk.webradio.WebRadioManager;
 
 import java.awt.event.ActionEvent;
 
@@ -36,7 +36,7 @@ public class WebRadioAction extends ActionBase {
 		super(Messages.getString("CommandJPanel.25"), IconLoader.ICON_WEBRADIO, true);
 		String tooltipWebRadio = Messages.getString("CommandJPanel.25");
 		String defaultRadio = ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO);
-		if (WebRadioRepository.getInstance().getWebRadioByName(defaultRadio) != null) {
+		if (WebRadioManager.getInstance().getWebRadioByName(defaultRadio) != null) {
 			tooltipWebRadio = "<html>" + tooltipWebRadio + "<p><b>" + defaultRadio + "</b></html>";
 		}
 		setShortDescription(tooltipWebRadio);

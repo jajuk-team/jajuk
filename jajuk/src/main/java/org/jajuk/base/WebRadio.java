@@ -45,7 +45,7 @@ public class WebRadio implements Comparable{
 	}
 
 	public boolean equals(Object other) {
-		if (other instanceof WebRadio) {
+		if (!(other instanceof WebRadio)) {
 			return false;
 		}
 		return name.equals(((WebRadio) other).getName());

@@ -374,11 +374,11 @@ public class Main implements ITechnicalStrings {
 					public void run() {
 						//Wait 10 min before checking
 						try {
-							Thread.sleep(10000);
+							Thread.sleep(600000);
 							UpgradeManager.checkForUpdate(false);
 						} catch (InterruptedException e) {
 							Log.error(e);
-						}//600000);
+						}
 					}
 				}.start();
 			}

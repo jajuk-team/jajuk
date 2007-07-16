@@ -52,9 +52,7 @@ public class RefreshDialog extends JFrame {
 		setUndecorated(true);
 		setIconImage(IconLoader.ICON_LOGO.getImage());
 		jlAction = new JXBusyLabel();
-		jlAction.setBusy(true);
 		progress = new JProgressBar(0,100);
-		//progress.setPreferredSize(new Dimension(400,20));
 		jlRefreshing = new JLabel();
 		double[][] dSize = new double[][]{
 				{5,500,5},{5,30,5,20,5,20,5}

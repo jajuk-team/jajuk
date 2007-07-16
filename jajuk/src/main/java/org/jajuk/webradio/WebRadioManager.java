@@ -21,6 +21,7 @@
 package org.jajuk.webradio;
 
 import org.jajuk.base.WebRadio;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -47,14 +48,14 @@ import javax.xml.parsers.SAXParserFactory;
  * Singleton
  * </p>
  */
-public class WebRadioRepository extends DefaultHandler implements ITechnicalStrings {
+public class WebRadioManager extends DefaultHandler implements ITechnicalStrings {
 
 	private static TreeSet<WebRadio> webradios = new TreeSet<WebRadio>();
 
 	// Self instance
-	private static WebRadioRepository self;
+	private static WebRadioManager self;
 
-	private WebRadioRepository() {
+	private WebRadioManager() {
 		// check for webradio repository file
 		File fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
 		if (!fwebradios.exists()) {
@@ -88,9 +89,9 @@ public class WebRadioRepository extends DefaultHandler implements ITechnicalStri
 		}
 	}
 
-	public static WebRadioRepository getInstance() {
+	public static WebRadioManager getInstance() {
 		if (self == null) {
-			self = new WebRadioRepository();
+			self = new WebRadioManager();
 		}
 		return self;
 	}
@@ -127,6 +128,14 @@ public class WebRadioRepository extends DefaultHandler implements ITechnicalStri
 		bw.write("</" + XML_STREAMS + ">\n");
 		bw.flush();
 		bw.close();
+	}
+	
+	/**
+	 * Copy the default radio file to the current repository file
+	 */
+	public void restore() throws Exception{
+		File repository = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+		Util.copy(new URL(URL_DEFAULT_WEBRADIOS_1),repository.getAbsolutePath());
 	}
 
 	/**
