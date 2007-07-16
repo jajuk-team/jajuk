@@ -45,7 +45,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements
 	public Object[][] oValues;
 
 	// Play icon in cache
-	public static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY2;
+	public static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY_TABLE;
 
 	// Unmount Play icon in cache
 	public static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
