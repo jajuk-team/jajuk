@@ -149,6 +149,7 @@ public final class ActionManager {
 		installAction(QUALITY, new QualityAction(), false);
 		installAction(SHOW_TRACES, new DebugLogAction(), false);
 		installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
+		installAction(JajukAction.CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
 		
 		//Export
 		installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);

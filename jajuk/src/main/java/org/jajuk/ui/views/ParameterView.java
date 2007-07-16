@@ -331,6 +331,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JButton jbDefault;
 
 	JPanel jpModes;
+	
+	JCheckBox jcbCheckUpdates;
 
 	/** Previous value for hidden option, used to check if a refresh is need */
 	boolean bHidden;
@@ -764,8 +766,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
 				.getInstance()), Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
-
-		double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p } };
+		jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
+		jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
+		jcbCheckUpdates.setSelected(ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE));
+				
+		double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p,p } };
 		TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
 		layoutAdvanced.setHGap(iXSeparator);
 		layoutAdvanced.setVGap(iYSeparator);
@@ -783,7 +788,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(jtfEnvVariables, "1,5");
 		jpAdvanced.add(jlJajukWorkspace, "0,6");
 		jpAdvanced.add(psJajukWorkspace, "1,6");
-
+		jpAdvanced.add(jcbCheckUpdates, "0,7");
+		
 		// - Network
 		jpNetwork = new JPanel();
 		double sizeNetwork[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
@@ -1257,7 +1263,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					}
 				} else if (e.getSource() == scbLanguage) {
 					String sLocal = Messages.getLocales().get(scbLanguage.getSelectedIndex());
-					String sPreviousLocal = Messages.getInstance().getLocal();
+					String sPreviousLocal = Messages.getInstance().getLocale();
 					if (!sPreviousLocal.equals(sLocal)) {
 						// local has changed
 						ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
@@ -1387,6 +1393,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET, jcbCollectionEncoding
 				.getSelectedItem().toString());
 		ConfigurationManager.setProperty(CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
+		ConfigurationManager.setProperty(CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
 		ConfigurationManager.setProperty(CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
 		ConfigurationManager.setProperty(CONF_ENV_VARIABLES, jtfEnvVariables.getText());
 		// UI

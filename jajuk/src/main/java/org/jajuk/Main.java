@@ -62,7 +62,7 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioRepository;
+import org.jajuk.webradio.WebRadioManager;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.BorderLayout;
@@ -368,6 +368,21 @@ public class Main implements ITechnicalStrings {
 			// Load djs
 			DigitalDJManager.getInstance().loadAllDJs();
 
+			//Start check for update thread if required
+			if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)){
+				new Thread() {
+					public void run() {
+						//Wait 10 min before checking
+						try {
+							Thread.sleep(10000);
+							UpgradeManager.checkForUpdate(false);
+						} catch (InterruptedException e) {
+							Log.error(e);
+						}//600000);
+					}
+				}.start();
+			}
+			
 			// start exit hook
 			Thread tHook = new Thread() {
 				public void run() {
@@ -390,7 +405,7 @@ public class Main implements ITechnicalStrings {
 							// empty collection) commit ambiences
 							AmbienceManager.getInstance().commit();
 							// Commit webradios
-							WebRadioRepository.getInstance().commit();
+							WebRadioManager.getInstance().commit();
 							// commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
 							// commit history
@@ -463,9 +478,6 @@ public class Main implements ITechnicalStrings {
 
 			// start the tray
 			launchTray();
-
-			// Temp
-			WebRadioRepository.getInstance();
 
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose

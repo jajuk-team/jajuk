@@ -119,6 +119,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 	JMenuItem jmiQualityAgent;
 
 	JMenuItem jmiTraces;
+	
+	JMenuItem jmiCheckforUpdates;
 
 	JMenuItem jmiAbout;
 
@@ -225,6 +227,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
 		jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
 		jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
+		jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
+		jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukAction.CHECK_FOR_UPDATES));
 		jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
 
 		help.add(jmiHelp);
@@ -234,6 +238,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 			help.add(jmiQualityAgent);
 		}
 		help.add(jmiTraces);
+		help.add(jmiCheckforUpdates);
 		help.add(jmiAbout);
 
 		// add menus

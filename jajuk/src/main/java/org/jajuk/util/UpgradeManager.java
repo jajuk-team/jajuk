@@ -22,8 +22,11 @@ package org.jajuk.util;
 
 import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.log.Log;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Maintain all behavior needed upgrades from releases to releases
@@ -35,21 +38,19 @@ public class UpgradeManager implements ITechnicalStrings {
 	 */
 	public static void upgradeStep1() throws Exception {
 		// --For jajuk < 0.2 : remove backup file : collection~.xml
-		File file = Util.getConfFileByPath(FILE_COLLECTION + "~"); 
+		File file = Util.getConfFileByPath(FILE_COLLECTION + "~");
 		file.delete();
 		// upgrade code; if ugrade from <1.2, set default ambiences
 		String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-		if (sRelease == null || sRelease.matches("0..*") 
-				|| sRelease.matches("1.0..*") 
-				|| sRelease.matches("1.1.*")) { 
+		if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
+				|| sRelease.matches("1.1.*")) {
 			AmbienceManager.getInstance().createDefaultAmbiences();
 		}
 		// - For Jajuk < 1.3 : changed track pattern from %track to %title
-		String sPattern = ConfigurationManager
-				.getProperty(CONF_REFACTOR_PATTERN);
+		String sPattern = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN);
 		if (sPattern.contains("track")) {
-			ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, sPattern
-					.replaceAll("track", "title"));
+			ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, sPattern.replaceAll("track",
+					"title"));
 		}
 		// - for Jajuk < 1.3: no more use of .ser files
 		file = Util.getConfFileByPath("");
@@ -60,34 +61,33 @@ public class UpgradeManager implements ITechnicalStrings {
 				files[i].delete();
 			}
 		}
-		// - for jajuk 1.3: wrong option name: "false" instead of "jajuk.options.use_hotkeys"
+		// - for jajuk 1.3: wrong option name: "false" instead of
+		// "jajuk.options.use_hotkeys"
 		String sUseHotkeys = ConfigurationManager.getProperty("false");
-		if (sUseHotkeys != null){
-			if (sUseHotkeys.equalsIgnoreCase(FALSE) || sUseHotkeys.equalsIgnoreCase(TRUE)){
-				ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS,sUseHotkeys);
+		if (sUseHotkeys != null) {
+			if (sUseHotkeys.equalsIgnoreCase(FALSE) || sUseHotkeys.equalsIgnoreCase(TRUE)) {
+				ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, sUseHotkeys);
 				ConfigurationManager.removeProperty("false");
-			}
-			else{
+			} else {
 				ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
 			}
 		}
 		// TO DO AFTER AN UPGRADE
 		if (Main.isUpgradeDetected()) {
 			// - for Jajuk < 1.3: force nocover icon replacement
-			File fThumbs = Util.getConfFileByPath(FILE_THUMBS
-					+ "/50x50/" + FILE_THUMB_NO_COVER); 
+			File fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/50x50/" + FILE_THUMB_NO_COVER);
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER); 
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER);
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER); 
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER);
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
-			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER); 
+			fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER);
 			if (fThumbs.exists()) {
 				fThumbs.delete();
 			}
@@ -103,5 +103,52 @@ public class UpgradeManager implements ITechnicalStrings {
 
 	}
 
-	
+	/**
+	 * Check for a new Jajuk release
+	 * 
+	 * @param bForced:
+	 *            force to display new release message if a new release is found
+	 * @return true if a new release has been found
+	 */
+	public static boolean checkForUpdate(boolean bForced) {
+		// Try to download current jajuk PAD file
+		String sRelease = null;
+		try {
+			String pad = new String(DownloadManager.downloadUrl(new URL(CHECK_FOR_UPDATE_URL)));
+			int beginIndex = pad.indexOf("<Program_Version>");
+			int endIndex = pad.indexOf("</Program_Version>");
+			sRelease = pad.substring(beginIndex + 17, endIndex);
+			if (bForced) {
+				if (!JAJUK_VERSION.equals(sRelease)){
+					Messages.showInfoMessage(Messages.getString("UpdateManager.0")
+							+ sRelease + Messages.getString("UpdateManager.1"));
+				}
+			} else {
+				// Display a warning message if a new release is available and
+				// if we are not in test
+				if (!JAJUK_VERSION.equals(sRelease) 
+						//Don't use this in test 
+						&& !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))
+						// mask message is this release has already been ignored
+						&& (ConfigurationManager.getProperty(CONF_IGNORED_RELEASES).indexOf(
+								sRelease) < 0)) {
+					Messages.showHideableWarningMessage(Messages.getString("UpdateManager.0")
+							+ sRelease + Messages.getString("UpdateManager.1"),
+							CONF_NOT_SHOW_AGAIN_UPDATE);
+					// If user requires ignoring, ignore only the current
+					// release
+					if (ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_UPDATE)) {
+						String ignored = ConfigurationManager.getProperty(CONF_IGNORED_RELEASES);
+						ConfigurationManager.setProperty(CONF_IGNORED_RELEASES, ignored + ","
+								+ sRelease);
+						ConfigurationManager.setProperty(CONF_NOT_SHOW_AGAIN_UPDATE, FALSE);
+					}
+				}
+				return true;
+			}
+		} catch (Exception e) {
+			Log.debug("Cannot check for updates");
+		}
+		return false;
+	}
 }

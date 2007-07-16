@@ -227,7 +227,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		// filter on albums
 		properties.put(CONF_THUMBS_FILTER, "0");
 		properties.put(CONF_TIP_OF_DAY_INDEX, "0");
-		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance().getLocal());
+		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance().getLocale());
 		properties.put(CONF_FADE_DURATION, "0");
 		// sort by style
 		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0");
@@ -251,6 +251,10 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_INC_RATING,"5");
 		properties.put(CONF_OPTIONS_WATERMARK,LNF_DEFAULT_WATERMARK);
 		properties.put(CONF_OPTIONS_LNF,LNF_DEFAULT_THEME);
+		properties.put(CONF_DEFAULT_WEB_RADIO, DEFAULT_WEBRADIO);
+		properties.put(CONF_NOT_SHOW_AGAIN_UPDATE, FALSE);
+		properties.put(CONF_CHECK_FOR_UPDATE, TRUE);
+		properties.put(CONF_IGNORED_RELEASES, "");
 	}
 
 	/**
@@ -263,7 +267,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		if (Messages.getLocales().contains(sLanguage)) {
 			// user language exists in jajuk, take it as default
 			properties.put(CONF_OPTIONS_LANGUAGE, sLanguage);
-		} else { // user language is unknown, take english as a default,
+		} else { // user language is unknown, take English as a default,
 			// user will be able to change it later anyway
 			properties.put(CONF_OPTIONS_LANGUAGE, "en");
 		}

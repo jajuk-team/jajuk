@@ -120,6 +120,9 @@ public interface ITechnicalStrings {
 	/** Number of minutes in an hour */
 	public static final int MINUTES_IN_AN_HOUR = 60;
 
+	/** Default webradio */
+	public static final String DEFAULT_WEBRADIO = "Bluemars [Ambient/Space-Music]";
+	
 	/** Default hostame used in case of problem */
 	public static final String DEFAULT_HOSTNAME = "localhost";
 
@@ -138,7 +141,10 @@ public interface ITechnicalStrings {
 	public static final String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS";
 	
 	/** Wikipedia view default URL */
-	public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.sourceforge.net";
+	public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.info";
+
+	/** Update URL = PAD file URL*/
+	public static final String CHECK_FOR_UPDATE_URL = "http://jajuk.sourceforge.net/jajuk_pad.xml";
 
 	// Jajuk version
 	public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
@@ -696,8 +702,17 @@ public interface ITechnicalStrings {
 	/** Default web radio */
 	public static final String CONF_DEFAULT_WEB_RADIO = "jajuk.default_web_radio";
 
+	/** List of ignored versions during update check */
+	public static final String CONF_IGNORED_RELEASES = "jajuk.update.ignored_releases";
+
+	/** Check for update property */
+	public static final String CONF_CHECK_FOR_UPDATE = "jajuk.update.check_for_updates";
+
 	/** Default ambience* */
 	public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
+
+	/* New release don't show again flag */
+	public static final String CONF_NOT_SHOW_AGAIN_UPDATE = "jajuk.not_show_again.update";
 
 	/* Wrong player not show again flag */
 	public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";

@@ -518,7 +518,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	/**
 	 * @return Returns the sLocal.
 	 */
-	public String getLocal() {
+	public String getLocale() {
 		return this.sLocal;
 	}
 

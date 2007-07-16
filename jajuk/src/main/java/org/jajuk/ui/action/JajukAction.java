@@ -293,6 +293,10 @@ public enum JajukAction {
 	 * Used to display a tip of the day window.
 	 */
 	TIP_OF_THE_DAY,
+	/**
+	 * Used to check for jajuk updates
+	 */
+	CHECK_FOR_UPDATES,
 
 	/**
 	 * Used to display an about dialog.
