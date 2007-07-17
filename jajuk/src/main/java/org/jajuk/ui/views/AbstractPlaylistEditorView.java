@@ -481,13 +481,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		add(new JScrollPane(jtable), "0,1"); 
 		// menu items
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.23")); 
+		jmiFilePlay = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.23"),IconLoader.ICON_PLAY_16x16); 
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24")); 
+		jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24"),IconLoader.ICON_PUSH); 
 		jmiFilePush.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25")); 
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25"),IconLoader.ICON_BOOKMARK_FOLDERS); 
 		jmiFileAddFavorites.addActionListener(this);
-		jmiFileProperties = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.26")); 
+		jmiFileProperties = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.26"),IconLoader.ICON_PROPERTIES); 
 		jmiFileProperties.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);

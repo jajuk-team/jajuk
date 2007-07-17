@@ -469,17 +469,17 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// Menu items
 		// Album menu
 		jmenu = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"));
+		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),IconLoader.ICON_PLAY_16x16);
 		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"));
+		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"),IconLoader.ICON_PUSH);
 		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"));
+		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),IconLoader.ICON_SHUFFLE);
 		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"));
+		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),IconLoader.ICON_REPEAT);
 		jmiAlbumPlayRepeat.addActionListener(this);
-		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"));
+		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),IconLoader.ICON_TEST);
 		jmiGetCovers.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"));
+		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),IconLoader.ICON_PROPERTIES);
 		jmiAlbumProperties.addActionListener(this);
 		jmenu.add(jmiAlbumPlay);
 		jmenu.add(jmiAlbumPush);

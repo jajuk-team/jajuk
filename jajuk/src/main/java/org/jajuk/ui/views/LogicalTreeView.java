@@ -280,18 +280,17 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 		// Style menu
 		jmenuStyle = new JPopupMenu();
-		jmiStylePlay = new JMenuItem(Messages.getString("LogicalTreeView.1")); 
+		jmiStylePlay = new JMenuItem(Messages.getString("LogicalTreeView.1"),IconLoader.ICON_PLAY_16x16); 
 		jmiStylePlay.addActionListener(this);
-		jmiStylePush = new JMenuItem(Messages.getString("LogicalTreeView.2")); 
+		jmiStylePush = new JMenuItem(Messages.getString("LogicalTreeView.2"),IconLoader.ICON_PUSH); 
 		jmiStylePush.addActionListener(this);
-		jmiStylePlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.3")); 
+		jmiStylePlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.3"),IconLoader.ICON_SHUFFLE); 
 		jmiStylePlayShuffle.addActionListener(this);
-		jmiStylePlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.4")); 
+		jmiStylePlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.4"),IconLoader.ICON_REPEAT); 
 		jmiStylePlayRepeat.addActionListener(this);
 		jmiStyleDelete = new JMenuItem(Messages.getString("LogicalTreeView.5")); 
-		jmiStyleDelete.setEnabled(false);
 		jmiStyleDelete.addActionListener(this);
-		jmiStyleAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); 
+		jmiStyleAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"),IconLoader.ICON_BOOKMARK_FOLDERS); 
 		jmiStyleAddFavorite.addActionListener(this);
 		Action actionReportStyle = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmiStyleReport = new JMenuItem(actionReportStyle);
@@ -299,31 +298,30 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		// to be able to get it
 		jmiStyleReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
 		jmiStyleReport.putClientProperty(DETAIL_SELECTION, alSelected);
-		jmiStyleProperties = new JMenuItem(Messages.getString("LogicalTreeView.7")); 
+		jmiStyleProperties = new JMenuItem(Messages.getString("LogicalTreeView.7"),IconLoader.ICON_PROPERTIES); 
 		jmiStyleProperties.addActionListener(this);
 		jmenuStyle.add(jmiStylePlay);
 		jmenuStyle.add(jmiStylePush);
 		jmenuStyle.add(jmiStylePlayShuffle);
 		jmenuStyle.add(jmiStylePlayRepeat);
-		jmenuStyle.add(jmiStyleDelete);
+		//@TBI jmenuStyle.add(jmiStyleDelete);
 		jmenuStyle.add(jmiStyleAddFavorite);
 		jmenuStyle.add(jmiStyleReport);
 		jmenuStyle.add(jmiStyleProperties);
 
 		// Author menu
 		jmenuAuthor = new JPopupMenu();
-		jmiAuthorPlay = new JMenuItem(Messages.getString("LogicalTreeView.8")); 
+		jmiAuthorPlay = new JMenuItem(Messages.getString("LogicalTreeView.8"),IconLoader.ICON_PLAY_16x16); 
 		jmiAuthorPlay.addActionListener(this);
-		jmiAuthorPush = new JMenuItem(Messages.getString("LogicalTreeView.9")); 
+		jmiAuthorPush = new JMenuItem(Messages.getString("LogicalTreeView.9"),IconLoader.ICON_PUSH); 
 		jmiAuthorPush.addActionListener(this);
-		jmiAuthorPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.10")); 
+		jmiAuthorPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.10"),IconLoader.ICON_SHUFFLE); 
 		jmiAuthorPlayShuffle.addActionListener(this);
-		jmiAuthorPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.11")); 
+		jmiAuthorPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.11"),IconLoader.ICON_REPEAT); 
 		jmiAuthorPlayRepeat.addActionListener(this);
 		jmiAuthorDelete = new JMenuItem(Messages.getString("LogicalTreeView.12")); 
-		jmiAuthorDelete.setEnabled(false);
 		jmiAuthorDelete.addActionListener(this);
-		jmiAuthorAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"));        
+		jmiAuthorAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"),IconLoader.ICON_BOOKMARK_FOLDERS);        
 		jmiAuthorAddFavorite.addActionListener(this);
 		Action actionReportAuthor = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmiAuthorReport = new JMenuItem(actionReportAuthor);
@@ -331,31 +329,30 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		// to be able to get it
 		jmiAuthorReport.putClientProperty(DETAIL_ORIGIN, XML_AUTHOR);
 		jmiAuthorReport.putClientProperty(DETAIL_SELECTION, alSelected);
-		jmiAuthorProperties = new JMenuItem(Messages.getString("LogicalTreeView.14")); 
+		jmiAuthorProperties = new JMenuItem(Messages.getString("LogicalTreeView.14"),IconLoader.ICON_PROPERTIES); 
 		jmiAuthorProperties.addActionListener(this);
 		jmenuAuthor.add(jmiAuthorPlay);
 		jmenuAuthor.add(jmiAuthorPush);
 		jmenuAuthor.add(jmiAuthorPlayShuffle);
 		jmenuAuthor.add(jmiAuthorPlayRepeat);
-		jmenuAuthor.add(jmiAuthorDelete);
+		//@TBI jmenuAuthor.add(jmiAuthorDelete);
 		jmenuAuthor.add(jmiAuthorAddFavorite);
 		jmenuAuthor.add(jmiAuthorReport);
 		jmenuAuthor.add(jmiAuthorProperties);
 
 		// Album menu
 		jmenuAlbum = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); 
+		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),IconLoader.ICON_PLAY_16x16); 
 		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); 
+		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"),IconLoader.ICON_PUSH); 
 		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17")); 
+		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),IconLoader.ICON_SHUFFLE); 
 		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18")); 
+		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),IconLoader.ICON_REPEAT); 
 		jmiAlbumPlayRepeat.addActionListener(this);
 		jmiAlbumDelete = new JMenuItem(Messages.getString("LogicalTreeView.19")); 
-		jmiAlbumDelete.setEnabled(false);
 		jmiAlbumDelete.addActionListener(this);
-		jmiAlbumAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"));         
+		jmiAlbumAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"),IconLoader.ICON_BOOKMARK_FOLDERS);         
 		jmiAlbumAddFavorite.addActionListener(this);
 		Action actionReportAlbum = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmiAlbumReport = new JMenuItem(actionReportAlbum);
@@ -363,15 +360,15 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		// to be able to get it
 		jmiAlbumReport.putClientProperty(DETAIL_ORIGIN, XML_ALBUM);
 		jmiAlbumReport.putClientProperty(DETAIL_SELECTION, alSelected);
-		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34")); 
+		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"),IconLoader.ICON_TEST); 
 		jmiAlbumCDDBWizard.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); 
+		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),IconLoader.ICON_PROPERTIES); 
 		jmiAlbumProperties.addActionListener(this);
 		jmenuAlbum.add(jmiAlbumPlay);
 		jmenuAlbum.add(jmiAlbumPush);
 		jmenuAlbum.add(jmiAlbumPlayShuffle);
 		jmenuAlbum.add(jmiAlbumPlayRepeat);
-		jmenuAlbum.add(jmiAlbumDelete);
+		//@TBI jmenuAlbum.add(jmiAlbumDelete);
 		jmenuAlbum.add(jmiAlbumAddFavorite);
 		jmenuAlbum.add(jmiAlbumCDDBWizard);
 		jmenuAlbum.add(jmiAlbumReport);
@@ -379,19 +376,18 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 		// Year menu
 		jmenuYear = new JPopupMenu();
-		jmiYearPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); 
+		jmiYearPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),IconLoader.ICON_PLAY_16x16); 
 		jmiYearPlay.addActionListener(this);
-		jmiYearPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); 
+		jmiYearPush = new JMenuItem(Messages.getString("LogicalTreeView.16"),IconLoader.ICON_PUSH); 
 		jmiYearPush.addActionListener(this);
-		jmiYearPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17")); 
+		jmiYearPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),IconLoader.ICON_SHUFFLE); 
 		jmiYearPlayShuffle.addActionListener(this);
-		jmiYearPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18")); 
+		jmiYearPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),IconLoader.ICON_REPEAT); 
 		jmiYearPlayRepeat.addActionListener(this);
-		jmiYearAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); 
+		jmiYearAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"),IconLoader.ICON_BOOKMARK_FOLDERS); 
 		jmiYearAddFavorite.addActionListener(this);
-		jmiYearProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); 
+		jmiYearProperties = new JMenuItem(Messages.getString("LogicalTreeView.26"),IconLoader.ICON_PROPERTIES); 
 		jmiYearProperties.addActionListener(this);
-		Action actionReportYear = ActionManager.getAction(JajukAction.CREATE_REPORT);
 		jmenuYear.add(jmiYearPlay);
 		jmenuYear.add(jmiYearPush);
 		jmenuYear.add(jmiYearPlayShuffle);
@@ -401,20 +397,19 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 		// Track menu
 		jmenuTrack = new JPopupMenu();
-		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTreeView.22")); 
+		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTreeView.22"),IconLoader.ICON_PLAY_16x16); 
 		jmiTrackPlay.addActionListener(this);
-		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTreeView.23")); 
+		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTreeView.23"),IconLoader.ICON_PUSH); 
 		jmiTrackPush.addActionListener(this);
 		jmiTrackDelete = new JMenuItem(Messages.getString("LogicalTreeView.24")); 
-		jmiTrackDelete.setEnabled(false);
 		jmiTrackDelete.addActionListener(this);
-		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32")); 
+		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTreeView.32"),IconLoader.ICON_BOOKMARK_FOLDERS); 
 		jmiTrackAddFavorite.addActionListener(this);
-		jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); 
+		jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTreeView.26"),IconLoader.ICON_PROPERTIES); 
 		jmiTrackProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
 		jmenuTrack.add(jmiTrackPush);
-		jmenuTrack.add(jmiTrackDelete);
+		//@TBI jmenuTrack.add(jmiTrackDelete);
 		jmenuTrack.add(jmiTrackAddFavorite);
 		jmenuTrack.add(jmiTrackProperties);
 
