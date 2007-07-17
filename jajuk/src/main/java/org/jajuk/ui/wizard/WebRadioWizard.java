@@ -36,12 +36,14 @@ import org.qdwizard.Wizard;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import javax.swing.ButtonGroup;
@@ -51,6 +53,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
@@ -79,6 +82,8 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 
 		JPanel jpButtons;
 
+		JScrollPane jsp;
+		
 		/** Selected radio index */
 		int radioIndex = 0;
 
@@ -130,6 +135,8 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 			double[] dHoriz = { 25, 250, 150 };
 			double[] dVert = new double[widgets.length + 2];
 			dVert[0] = 20;
+			//make sure to sort radios
+			Collections.sort(radios);
 			ButtonGroup group = new ButtonGroup();
 			// now add all web radios
 			for (int index = 0; index < radios.size(); index++) {
@@ -231,7 +238,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 				out.add(widgets[i][1], "1," + (i + 1));
 				out.add(widgets[i][2], "2," + (i + 1));
 			}
-			JScrollPane jsp = new JScrollPane(out);
+			jsp = new JScrollPane(out);
 			// select first ambiance found
 			if (radios.size() > 0) {
 				JRadioButton jrb = (JRadioButton) widgets[0][0];
@@ -263,13 +270,12 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 				// refresh screen
 				refreshScreen();
 				// select new row
-				JRadioButton jrb = (JRadioButton) widgets[radios.size() - 1][0];
+				JRadioButton jrb = (JRadioButton) widgets[0][0];
 				jrb.setSelected(true);
 				radioIndex = radios.size() - 1;
 				setProblem(Messages.getString("RadioWizard.11"));
-				jbNew.setEnabled(false);
 				jbDelete.setEnabled(true);
-				JTextField jtf = (JTextField) widgets[radioIndex][1];
+				JTextField jtf = (JTextField) widgets[0][1];
 				jtf.requestFocusInWindow();
 			} else if (ae.getSource() == jbDelete) {
 				WebRadio radio = radios.get(radioIndex);

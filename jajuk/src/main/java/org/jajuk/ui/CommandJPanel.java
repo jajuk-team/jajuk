@@ -295,7 +295,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		sbSearch = new SearchBox(CommandJPanel.this);
 		JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
 		jlSearch.setToolTipText(Messages.getString("CommandJPanel.23"));
-		// Clear search text when cliking on the search icon
+		// Clear search text when clicking on the search icon
 		jlSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -808,7 +808,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 					// from the model by History class)
 					jcbHistory.setSelectedItem(null);
 				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
-					System.out.println("1");
 					jsVolume.removeChangeListener(CommandJPanel.this);
 					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
 					jsVolume.addChangeListener(CommandJPanel.this);
@@ -933,41 +932,45 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	 * 
 	 */
 	private void populateWebRadios() {
-		try {
-			// Clear previous elements
-			for (int i = 0; i < popupWebRadio.getSubElements().length; i++) {
-				popupWebRadio.remove(i);
-			}
-			ActionBase actionConf = ActionManager.getAction(JajukAction.CONFIGURE_WEBRADIOS);
-			XCheckedButton jmiConf = new XCheckedButton(actionConf);
-			//Set icon so it is correctly displayed after a selection
-			jmiConf.setCheckedIcon((ImageIcon)actionConf.getValue(Action.SMALL_ICON));
-			//The icon should be always displayed
-			jmiConf.setIconAlwaysVisible(true);
-			popupWebRadio.add(jmiConf);
-			for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
-				XCheckedButton jmi = new XCheckedButton(radio.getName());
-				jmi.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
-						// force to reselect the item
-						populateWebRadios();
-						// update action tooltip with right item
-						ActionBase action = ActionManager.getAction(JajukAction.WEB_RADIO);
-						action.setShortDescription("<html>"
-								+ Messages.getString("CommandJPanel.25") + "<p><b>"
-								+ radio.getName() + "</b></p></html>");
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					// Clear previous elements
+					popupWebRadio = new XJPopupMenu(Main.getWindow());
+					ActionBase actionConf = ActionManager
+							.getAction(JajukAction.CONFIGURE_WEBRADIOS);
+					XCheckedButton jmiConf = new XCheckedButton(actionConf);
+					// Set icon so it is correctly displayed after a selection
+					jmiConf.setCheckedIcon((ImageIcon) actionConf.getValue(Action.SMALL_ICON));
+					// The icon should be always displayed
+					jmiConf.setIconAlwaysVisible(true);
+					popupWebRadio.add(jmiConf);
+					for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
+						XCheckedButton jmi = new XCheckedButton(radio.getName());
+						jmi.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio
+										.getName());
+								// force to reselect the item
+								populateWebRadios();
+								// update action tooltip with right item
+								ActionBase action = ActionManager.getAction(JajukAction.WEB_RADIO);
+								action.setShortDescription("<html>"
+										+ Messages.getString("CommandJPanel.25") + "<p><b>"
+										+ radio.getName() + "</b></p></html>");
+							}
+						});
+						jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO)
+								.equals(radio.getName()));
+						// Show the check icon
+						jmi.setDisplayCheck(true);
+						popupWebRadio.add(jmi);
 					}
-				});
-				jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO).equals(
-						radio.getName()));
-				// Show the check icon
-				jmi.setDisplayCheck(true);
-				popupWebRadio.add(jmi);
+				} catch (Exception e) {
+					Log.error(e);
+				}
 			}
-		} catch (Exception e) {
-			Log.error(e);
-		}
+		});
 	}
 
 	/**

@@ -1,4 +1,5 @@
 package ext.scrollablepopupmenu;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -23,15 +24,20 @@ import javax.swing.plaf.basic.BasicSeparatorUI;
 
 /**
  * This class implements a scrollable Popup Menu
- * @author balajihe
- * from http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
- *
+ * 
+ * @author balajihe from
+ *         http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
+ * 
  */
 public class XJPopupMenu extends JPopupMenu implements ActionListener {
-	private static final long	serialVersionUID	= 1;
-	private JPanel				panelMenus			= new JPanel();
-	private JScrollPane			scroll				= null;
-	private JFrame				jframe				= null;
+	private static final long serialVersionUID = 1;
+
+	private JPanel panelMenus = new JPanel();
+
+	private JScrollPane scroll = null;
+
+	private JFrame jframe = null;
+
 	public static final Icon EMPTY_IMAGE_ICON = new ImageIcon("menu_spacer.gif");
 
 	public XJPopupMenu(JFrame jframe) {
@@ -40,7 +46,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 		this.setLayout(new BorderLayout());
 		panelMenus.setLayout(new GridLayout(0, 1));
 		panelMenus.setBackground(UIManager.getColor("MenuItem.background"));
-		//		panelMenus.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		// panelMenus.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		init(jframe);
 
 	}
@@ -52,18 +58,18 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 		scroll.setBorder(null);
 		scroll.setMinimumSize(new Dimension(240, 40));
 
-		scroll.setMaximumSize(new Dimension(scroll.getMaximumSize().width, 
+		scroll.setMaximumSize(new Dimension(scroll.getMaximumSize().width,
 
-						this.getToolkit().getScreenSize().height
-		- this.getToolkit().getScreenInsets(jframe.getGraphicsConfiguration()).top
-		- this.getToolkit().getScreenInsets(jframe.getGraphicsConfiguration()).bottom - 4));
+		this.getToolkit().getScreenSize().height
+				- this.getToolkit().getScreenInsets(jframe.getGraphicsConfiguration()).top
+				- this.getToolkit().getScreenInsets(jframe.getGraphicsConfiguration()).bottom - 4));
 		super.add(scroll, BorderLayout.CENTER);
-		//		super.add(scroll);
+		// super.add(scroll);
 	}
 
 	public void show(Component invoker, int x, int y) {
 		init(jframe);
-		//        this.pack();
+		// this.pack();
 		panelMenus.validate();
 		int maxsize = scroll.getMaximumSize().height;
 		int realsize = panelMenus.getPreferredSize().height;
@@ -73,18 +79,18 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 		if (maxsize < realsize) {
 			sizescroll = scroll.getVerticalScrollBar().getPreferredSize().width;
 		}
-		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width + sizescroll + 20, 
+		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width + sizescroll + 20,
 
-				scroll.getPreferredSize().height));
+		scroll.getPreferredSize().height));
 		this.pack();
 		this.setInvoker(invoker);
 		if (sizescroll != 0) {
-			//Set popup size only if scrollbar is visible
-			this.setPopupSize(new Dimension(scroll.getPreferredSize().width + 20, 
+			// Set popup size only if scrollbar is visible
+			this.setPopupSize(new Dimension(scroll.getPreferredSize().width + 20,
 
-								scroll.getMaximumSize().height - 20));
+			scroll.getMaximumSize().height - 20));
 		}
-		//        this.setMaximumSize(scroll.getMaximumSize());
+		// this.setMaximumSize(scroll.getMaximumSize());
 		Point invokerOrigin = invoker.getLocationOnScreen();
 		this.setLocation((int) invokerOrigin.getX() + x, (int) invokerOrigin.getY() + y);
 		this.setVisible(true);
@@ -97,7 +103,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 	}
 
 	public void add(AbstractButton menuItem) {
-		//		menuItem.setMargin(new Insets(0, 20, 0 , 0));
+		// menuItem.setMargin(new Insets(0, 20, 0 , 0));
 		if (menuItem == null) {
 			return;
 		}
@@ -158,4 +164,3 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 	}
 
 }
-

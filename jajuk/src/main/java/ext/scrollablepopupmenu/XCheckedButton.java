@@ -135,8 +135,6 @@ public class XCheckedButton extends JButton {
 	 * @param checkedFlag
 	 */
 	public void displayIcon(boolean checkedFlag) {
-		System.out.println(checkedFlag);
-		System.out.println(isDisplayCheck());
 		if (checkedFlag && isDisplayCheck()) {
 			if (checkedIcon == null) {
 				checkedIcon = IconLoader.ICON_OK;

@@ -52,6 +52,10 @@ public class WebRadio implements Comparable{
 	}
 
 	public int compareTo(Object other) {
+		//make null url web radio to appear first (useful for the wizard)
+		if (getUrl() == null){
+			return -1;
+		}
 		return name.compareTo(((WebRadio) other).getName());
 	}
 
