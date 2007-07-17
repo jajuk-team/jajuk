@@ -996,7 +996,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			
 				public void mouseDragged(MouseEvent e) {
 					try {
-						System.out.println("here");
 						//Notify the mouse listener that we are dragging
 						bDragging = true;
 						JComponent c = (JComponent) e.getSource();
