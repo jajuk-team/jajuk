@@ -121,6 +121,10 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 	public void addSeparator() {
 		panelMenus.add(new XSeperator());
 	}
+	
+	public void removeAll(){
+		panelMenus.removeAll();
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		this.hidemenu();

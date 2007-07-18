@@ -348,7 +348,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 						dParent = DirectoryManager.getInstance().registerDirectory(
 								fCurrent.getName(), dParent, this);
 						if (bManual) {
-							rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.22"))
+							rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.44"))
 									.append(' ').append(dParent.getRelativePath()).toString());
 							int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
 							rdialog.setProgress(progress);

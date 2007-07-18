@@ -19,24 +19,9 @@
  */
 package org.jajuk.ui.wizard;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.WebRadio;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioManager;
-import org.qdwizard.Screen;
-import org.qdwizard.Wizard;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Font;
-import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -53,11 +38,24 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.WebRadio;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioManager;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
 
 /**
  * WebRadio management wizard
@@ -166,6 +164,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 							setProblem(null);
 							jtfName.setToolTipText(s);
 						}
+						radios.get(index).setName(s);
 					}
 				});
 				jtfName.setToolTipText(jtfName.getText());
@@ -186,7 +185,6 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 				WebRadio radio = radios.get(index);
 				// URL
 				final JTextField jtfURL = new JTextField();
-			//	jtfURL.setEnabled(radio.getName().length() > 0);
 				if (radio.getUrl() != null) {
 					jtfURL.setText(radio.getUrl().toString());
 					jtfURL.setToolTipText(jtfURL.getText());
@@ -196,11 +194,10 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 						int index = getWidgetIndex(widgets, (JComponent) arg0.getSource());
 						String s = jtfURL.getText();
 						// Check the URL
-						boolean bURLValid = true;
+						URL url = null;
 						try {
-							new URL(s);
+							url = new URL(s);
 						} catch (MalformedURLException e) {
-							bURLValid = false;
 							setProblem(Messages.getString("RadioWizard.10"));
 							return;
 						}
@@ -212,6 +209,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 							setProblem(null);
 							jtfURL.setToolTipText(s);
 						}
+						radios.get(index).setUrl(url);
 					}
 				});
 				widgets[index][2] = jtfURL;

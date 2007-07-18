@@ -20,39 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.Main;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
-import org.jajuk.ui.DefaultMouseWheelListener;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.PathSelector;
-import org.jajuk.ui.PatternInputVerifier;
-import org.jajuk.ui.SearchBox;
-import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.ui.ToggleLink;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.HorizontalLayout;
-import org.jdesktop.swingx.JXCollapsiblePane;
-import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.watermark.WatermarkInfo;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -90,6 +57,39 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import org.jajuk.Main;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
+import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.PathSelector;
+import org.jajuk.ui.PatternInputVerifier;
+import org.jajuk.ui.SearchBox;
+import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.ToggleLink;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.VerticalLayout;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.watermark.WatermarkInfo;
 
 /**
  * View used to set Jajuk parameters.
@@ -660,20 +660,23 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 			scbLanguage.addItem(Messages.getString(sDesc));
 		}
 		scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
-		double sizeOptions[][] = { { p, p }, { p, p, p, p, p, p } };
+		JPanel language = new JPanel(new HorizontalLayout(iXSeparator));
+		language.add(jlLanguage);
+		language.add(scbLanguage);
+		
+		double sizeOptions[][] = { { p }, { p, p, p, p, p, 20 } };
 		TableLayout layoutOption = new TableLayout(sizeOptions);
 		layoutOption.setHGap(iXSeparator);
 		layoutOption.setVGap(iYSeparator);
 		jpOptions.setLayout(layoutOption);
 
-		jpOptions.add(jcbDisplayUnmounted, "0,0,1,0");
-		jpOptions.add(jcbDefaultActionClick, "0,1,1,1");
-		jpOptions.add(jcbDefaultActionDrop, "0,2,1,2");
-		jpOptions.add(jcbSyncTableTree, "0,3,1,3");
-		jpOptions.add(jcbHotkeys, "0,4,1,4");
-		jpOptions.add(jlLanguage, "0,5");
-		jpOptions.add(scbLanguage, "1,5");
-
+		jpOptions.add(jcbDisplayUnmounted, "0,0");
+		jpOptions.add(jcbDefaultActionClick, "0,1");
+		jpOptions.add(jcbDefaultActionDrop, "0,2");
+		jpOptions.add(jcbSyncTableTree, "0,3");
+		jpOptions.add(jcbHotkeys, "0,4");
+		jpOptions.add(language, "0,5");
+		
 		// --P2P
 		jpP2P = new JPanel();
 		double sizeP2P[][] = { { 0.6, 0.3, 0.1 },

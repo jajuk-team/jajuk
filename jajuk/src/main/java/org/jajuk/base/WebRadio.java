@@ -63,4 +63,12 @@ public class WebRadio implements Comparable{
 		return name + " (" + url + ")";
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
 }
