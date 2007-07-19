@@ -922,17 +922,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 						parentDirectoryNode.add(new DirectoryNode(directory));
 					}
 				}
-			} else { // add file at the device root
-				DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-				Iterator it = directory.getFiles().iterator();
-				while (it.hasNext()) {
-					deviceNode.add(new FileNode((File) it.next()));
-				}
-				// add playlist files
-				it = directory.getPlaylistFiles().iterator();
-				while (it.hasNext()) {
-					deviceNode.add(new PlaylistFileNode((PlaylistFile) it.next()));
-				}
 			}
 		}
 		// add files
@@ -944,7 +933,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				continue;
 			}
 			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
-			if (directoryNode != null) {
+			if (directoryNode == null) {
+				//means this file is at root of a device
+				DeviceNode deviceNode = DeviceNode.getDeviceNode(file.getDevice());
+				deviceNode.add(new FileNode(file));
+			}
+			else{
+				//this file is in a regular directory
 				directoryNode.add(new FileNode(file));
 			}
 		}
