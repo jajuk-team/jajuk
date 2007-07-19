@@ -312,6 +312,8 @@ public interface ITechnicalStrings {
 
 	public static final String PLAYER_IMPL_MPLAYER = "org.jajuk.players.MPlayerPlayerImpl";
 
+	public static final String PLAYER_IMPL_WEBRADIOS = "org.jajuk.players.WebRadioPlayerImpl";
+
 	// tag impls
 	public static final String TAG_IMPL_JID3LIB = "org.jajuk.tag.JID3LibTagImpl";
 
@@ -361,6 +363,8 @@ public interface ITechnicalStrings {
 
 	public static final String TYPE_PROPERTY_TECH_DESC_RAM = "ram";
 
+	public static final String TYPE_PROPERTY_TECH_DESC_RADIO = "radio";
+	
 	// Devices sync mode
 	public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
 
@@ -435,6 +439,8 @@ public interface ITechnicalStrings {
 	public static final String EXT_M4A = "m4a";
 
 	public static final String EXT_REAL = "ram";
+	
+	public static final String EXT_RADIO = "radio";
 
 	// details keys
 	public static final String DETAIL_CURRENT_FILE_ID = "current file id";

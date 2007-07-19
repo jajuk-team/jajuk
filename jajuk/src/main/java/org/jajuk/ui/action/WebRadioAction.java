@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.action;
 
+import org.jajuk.base.FIFO;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
@@ -43,6 +45,8 @@ public class WebRadioAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {
+		WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
+		FIFO.getInstance().launchRadio(radio);
 	}
 
 }

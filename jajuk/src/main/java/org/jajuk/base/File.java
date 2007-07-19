@@ -19,6 +19,8 @@
  */
 package org.jajuk.base;
 
+import java.net.URL;
+
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -70,6 +72,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		setProperty(XML_QUALITY, lQuality);
 	}
 
+		
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -25,7 +25,7 @@ import java.net.URL;
 /**
  * A web Radio
  */
-public class WebRadio implements Comparable{
+public class WebRadio implements Comparable {
 
 	private String name;
 
@@ -52,8 +52,8 @@ public class WebRadio implements Comparable{
 	}
 
 	public int compareTo(Object other) {
-		//make null url web radio to appear first (useful for the wizard)
-		if (getUrl() == null){
+		// make null url web radio to appear first (useful for the wizard)
+		if (getUrl() == null) {
 			return -1;
 		}
 		return name.compareTo(((WebRadio) other).getName());
@@ -70,5 +70,12 @@ public class WebRadio implements Comparable{
 	public void setUrl(URL url) {
 		this.url = url;
 	}
+
+	/**
+	 * @return associated type, we always use mplayer for web radios
+	
+	public Type getType() {
+		return TypeManager.getInstance().getTypeByExtension(EXT_RADIO);
+	}*/
 
 }

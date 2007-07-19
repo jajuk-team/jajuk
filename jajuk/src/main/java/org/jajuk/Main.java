@@ -851,6 +851,13 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
 				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
+				//web radios
+				type = TypeManager.getInstance().registerType(Messages.getString("Type.radio"),
+						EXT_RADIO, Class.forName(PLAYER_IMPL_WEBRADIOS),
+						null);
+				type.setProperty(XML_TYPE_IS_MUSIC, true);
+				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
+				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RADIO);
 			}
 			// Types not only supported by mplayer but supported by basicplayer
 			// APE

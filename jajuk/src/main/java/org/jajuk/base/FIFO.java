@@ -174,6 +174,17 @@ public class FIFO implements ITechnicalStrings {
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
 	}
+	
+	/**
+	 * Launch a web radio
+	 * @param radio webradio to launch
+	 */
+	public void launchRadio(WebRadio radio){
+		//Stop all running items
+		stopRequest();
+		
+		
+	}
 
 	/**
 	 * Push some stack items in the fifo

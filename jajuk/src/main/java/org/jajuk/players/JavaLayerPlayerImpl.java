@@ -23,6 +23,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -375,4 +376,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
      public int Scrobble(){
          return 1;
   }
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
+	 */
+	public void play(WebRadio radio, float fVolume) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

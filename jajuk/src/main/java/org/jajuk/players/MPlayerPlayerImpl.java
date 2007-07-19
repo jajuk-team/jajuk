@@ -21,6 +21,7 @@ package org.jajuk.players;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.WebRadio;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -432,5 +433,13 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 */
 	public long getCurrentLength() {
 		return lDuration;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
+	 */
+	public void play(WebRadio radio, float fVolume) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

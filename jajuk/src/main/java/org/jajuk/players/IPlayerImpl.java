@@ -20,6 +20,7 @@
 package org.jajuk.players;
 
 import org.jajuk.base.File;
+import org.jajuk.base.WebRadio;
 
 /**
  * Minimum methods required for all Player implementations
@@ -45,6 +46,15 @@ public interface IPlayerImpl {
 	public void play(File file, float fPosition, long length, float fVolume)
 			throws Exception;
 
+	
+	/**
+	 * Play a web radio stream
+	 * @param radio
+	 * @param fVolume
+	 * @throws Exception
+	 */
+	public void play(WebRadio radio, float fVolume) throws Exception;
+	
 	/**
 	 * Stop current player
 	 * 

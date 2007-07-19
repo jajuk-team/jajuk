@@ -98,7 +98,7 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @param type
 	 */
-	public Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
+	private Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
 			Class cTagImpl) {
 		synchronized (TrackManager.getInstance().getLock()) {
 			if (hmSupportedTypes.containsKey(sExtension)) {

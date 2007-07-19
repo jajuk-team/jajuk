@@ -157,6 +157,27 @@ public class Player implements ITechnicalStrings {
 	}
 
 	/**
+	 * Play a web radio stream
+	 * 
+	 * @param radio
+	 */
+	public void play(WebRadio radio) {
+		try {
+			// Choose the player
+			Class cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
+					.getPlayerClass();
+			IPlayerImpl playerImpl = (IPlayerImpl) cPlayer.newInstance();
+			playerImpl.play(radio, ConfigurationManager
+					.getFloat(CONF_VOLUME));
+		} catch (final Throwable t) {
+			Properties pDetails = new Properties();
+			pDetails.put(DETAIL_CURRENT_FILE, radio);
+			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
+			stop(true);
+		}
+	}
+
+	/**
 	 * Stop the played track
 	 * 
 	 * @param bAll

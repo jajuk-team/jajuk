@@ -80,7 +80,7 @@ public class ObservationManager implements ITechnicalStrings {
 	public static synchronized void register(Observer observer) {
 		Set<EventSubject> eventSubjectSet = observer.getRegistrationKeys();
 		for (EventSubject subject : eventSubjectSet) {
-			Log.debug("Register: \"" + subject + "\" by: " + observer);  
+			Log.debug("Register: \"" + subject + "\" by: " + observer);
 			observerRegistry.register(subject, observer);
 		}
 	}
@@ -103,9 +103,9 @@ public class ObservationManager implements ITechnicalStrings {
 	 * @param subject
 	 */
 	public static void notify(Event event) {
-		notify(event, false); // asynchronous notification by default to avoid
-		// exception throw in
-		// the register current thread
+		// asynchronous notification by default to avoid
+		// exception throw in the register current thread
+		notify(event, false);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class ObservationManager implements ITechnicalStrings {
 	 */
 	public static void notifySync(Event event) {
 		EventSubject subject = event.getSubject();
-		Log.debug("Notify: " + subject); 
+		Log.debug("Notify: " + subject);
 		// save last event
 		hLastEventBySubject.put(subject, event.getDetails());
 		observerRegistry.notifySync(event);
@@ -148,7 +148,7 @@ public class ObservationManager implements ITechnicalStrings {
 			if (!t.isAlive()) {
 				t.start();
 			}
-			vFIFO.add(event); // add event in FIFO fo futur use
+			vFIFO.add(event); // add event in FIFO fo future use
 		}
 	}
 
@@ -163,8 +163,7 @@ public class ObservationManager implements ITechnicalStrings {
 	 * @return the detail as an object or null if the event or the detail
 	 *         doesn't exist
 	 */
-	public static Object getDetailLastOccurence(EventSubject subject,
-			String sDetailName) {
+	public static Object getDetailLastOccurence(EventSubject subject, String sDetailName) {
 		Properties pDetails = hLastEventBySubject.get(subject);
 		if (pDetails != null) {
 			return pDetails.get(sDetailName);
