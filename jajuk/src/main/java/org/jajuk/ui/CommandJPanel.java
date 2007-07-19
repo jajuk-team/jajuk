@@ -950,7 +950,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 						ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
 						// force to reselect the item
 						populateWebRadios();
-						// update action tooltip with right item
+						// update action tooltip on  main button with right item
 						ActionBase action = ActionManager.getAction(JajukAction.WEB_RADIO);
 						action.setShortDescription("<html>"
 								+ Messages.getString("CommandJPanel.25") + "<p><b>"

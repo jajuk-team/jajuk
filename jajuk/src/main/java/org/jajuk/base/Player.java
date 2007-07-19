@@ -161,15 +161,15 @@ public class Player implements ITechnicalStrings {
 	 * 
 	 * @param radio
 	 */
-	public void play(WebRadio radio) {
+	public static void play(WebRadio radio) {
 		try {
 			// Choose the player
 			Class cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
 					.getPlayerClass();
-			IPlayerImpl playerImpl = (IPlayerImpl) cPlayer.newInstance();
-			playerImpl.play(radio, ConfigurationManager
-					.getFloat(CONF_VOLUME));
+			playerImpl = (IPlayerImpl) cPlayer.newInstance();
+			playerImpl.play(radio, ConfigurationManager.getFloat(CONF_VOLUME));
 		} catch (final Throwable t) {
+			Log.error(t);
 			Properties pDetails = new Properties();
 			pDetails.put(DETAIL_CURRENT_FILE, radio);
 			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
@@ -188,16 +188,14 @@ public class Player implements ITechnicalStrings {
 			if (playerImpl == null) { // none current player, leave
 				return;
 			}
-			if (fCurrent != null) {
-				if (playerImpl1 != null && (playerImpl1.getState() != FADING_STATUS || bAll)) {
-					playerImpl1.stop();
-				}
-				if (playerImpl2 != null && (playerImpl2.getState() != FADING_STATUS || bAll)) {
-					playerImpl2.stop();
-				}
-				bPaused = false; // cancel any current pause
-				bPlaying = false;
+			if (playerImpl1 != null && (playerImpl1.getState() != FADING_STATUS || bAll)) {
+				playerImpl1.stop();
 			}
+			if (playerImpl2 != null && (playerImpl2.getState() != FADING_STATUS || bAll)) {
+				playerImpl2.stop();
+			}
+			bPaused = false; // cancel any current pause
+			bPlaying = false;
 		} catch (Exception e) {
 			Log.debug(Messages.getString("Error.008") + ":" + fCurrent.getName() + " "
 					+ e.getMessage());

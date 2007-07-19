@@ -162,7 +162,7 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		int i = 0;
 		while (bOpening && i < 500) {
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100);
 				i++;
 			} catch (InterruptedException e) {
 				Log.error(e);

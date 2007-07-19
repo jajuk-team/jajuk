@@ -182,8 +182,8 @@ public class FIFO implements ITechnicalStrings {
 	public void launchRadio(WebRadio radio){
 		//Stop all running items
 		stopRequest();
-		
-		
+		//Play the stream
+		Player.play(radio);
 	}
 
 	/**
