@@ -23,7 +23,7 @@
 	<property name='rpmdistdir' value='${rpmbuilddir}/jajuk'/>
 	<property name='windowsdir' value='${rootdir}/windows'/>
 	<property name='izpackdir' value='${rootdir}/java'/>
-	<property name='sourcesdir' value='${rootdir}/src'/>
+	<property name='sourcesdir' value='${rootdir}/sources'/>
 	<property name='libdir' value='lib'/>
 	<property name='distfiles' value='dist-files'/>
 	<property name='nativedir' value='native'/>
@@ -163,8 +163,6 @@
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
 			<fileset file='${srcdir}/doc/README*.html'/>
-		</copy>
-		<copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
 			<fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/pixmaps' >
@@ -270,10 +268,12 @@
 
 	<target name='sourcesdist' description='o Create the source distribution' depends='mkdist'>
 		<mkdir dir='${sourcesdir}'/>
-		<zip destfile='${sourcesdist}'>
-			<fileset dir='${distdir}/src'/>
-		</zip>
-	</target>
+		<mkdir dir='${sourcesdir}/jajuk-src-${version}'/>
+		<copy todir='${sourcesdir}/jajuk-src-${version}' >
+     		<fileset dir='${distdir}/src'/>
+   		</copy>
+		<zip basedir='${sourcesdir}' destfile='${sourcesdist}'/>
+  	</target>
 
 	<target name='replaces' description='o Set a the build time and release into jajuk code and packaging'
  	depends='mkdist'>
