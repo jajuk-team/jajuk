@@ -20,17 +20,6 @@
 
 package org.jajuk.webradio;
 
-import org.jajuk.base.WebRadio;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,6 +30,16 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.jajuk.base.WebRadio;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Stores webradios configurated by user
@@ -55,36 +54,46 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 	// Self instance
 	private static WebRadioManager self;
 
+	File fwebradios;
+
 	private WebRadioManager() {
 		// check for webradio repository file
-		File fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+		fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
 		if (!fwebradios.exists()) {
-			// try to download the default directory (from jajuk SVN trunk
-			// directly)
-			try {
-				DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fwebradios);
-			} catch (Exception e) {
-				Log.error(e);
-				//Fail ? try the file from jajuk.info (older)
-				Log.debug("Try download default radio stations from jajuk.info");
-				try {
-					DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fwebradios);
-				} catch (Exception e2) {
-					Log.error(e2);
-				}
-			}
+			downloadRepository();
 		}
 		// Load repository if any
 		if (fwebradios.exists()) {
+			loadRepository();
+		}
+
+	}
+
+	private void loadRepository() {
+		try {
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setValidating(false);
+			spf.setNamespaceAware(false);
+			SAXParser saxParser = spf.newSAXParser();
+			saxParser.parse(fwebradios.toURI().toURL().toString(), this);
+		} catch (Exception e) {
+			Log.error(e);
+		}
+	}
+
+	private void downloadRepository() {
+		// try to download the default directory (from jajuk SVN trunk
+		// directly)
+		try {
+			DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fwebradios);
+		} catch (Exception e) {
+			Log.error(e);
+			// Fail ? try the file from jajuk.info (older)
+			Log.debug("Try download default radio stations from jajuk.info");
 			try {
-				SAXParserFactory spf = SAXParserFactory.newInstance();
-				spf.setValidating(false);
-				spf.setNamespaceAware(false);
-				SAXParser saxParser = spf.newSAXParser();
-				File frt = fwebradios;
-				saxParser.parse(fwebradios.toURI().toURL().toString(), this);
-			} catch (Exception e) {
-				Log.error(e);
+				DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_2), fwebradios);
+			} catch (Exception e2) {
+				Log.error(e2);
 			}
 		}
 	}
@@ -95,12 +104,12 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 		}
 		return self;
 	}
-	
-	public void addWebRadio(WebRadio radio){
+
+	public void addWebRadio(WebRadio radio) {
 		webradios.add(radio);
 	}
-	
-	public void removeWebRadio(WebRadio radio){
+
+	public void removeWebRadio(WebRadio radio) {
 		webradios.remove(radio);
 	}
 
@@ -108,9 +117,9 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 	 * Write current repository for persistence between sessions
 	 */
 	public void commit() throws IOException {
-		//If none radio recorded, do not commit to allow next session 
+		// If none radio recorded, do not commit to allow next session
 		// to download the default covers again
-		if (webradios.size() == 0){
+		if (webradios.size() == 0) {
 			return;
 		}
 		File out = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
@@ -129,13 +138,27 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 		bw.flush();
 		bw.close();
 	}
-	
+
 	/**
 	 * Copy the default radio file to the current repository file
 	 */
-	public void restore() throws Exception{
-		File repository = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
-		Util.copy(new URL(URL_DEFAULT_WEBRADIOS_1),repository.getAbsolutePath());
+	public void restore() throws Exception {
+		// Clear existing radios
+		webradios.clear();
+		// Download repository
+		downloadRepository();
+		/*
+		 * //Get respo File repository =
+		 * Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS); // Temporary file for
+		 * the downloaded catalog File fTemp = new
+		 * File(Util.getConfFileByPath(FILE_IMAGE_CACHE) + "/radios.tmp");
+		 * DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fTemp);
+		 * Util.copy(fTemp, repository);
+		 */
+		// Reload repository
+		if (fwebradios.exists()) {
+			loadRepository();
+		}
 	}
 
 	/**

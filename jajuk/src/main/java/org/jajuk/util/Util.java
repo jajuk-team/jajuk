@@ -1408,6 +1408,15 @@ public class Util implements ITechnicalStrings {
 		properties.remove("jajuk.options.p2p.password");
 		return properties;
 	}
+	
+	/**
+	 * 
+	 * @param s String to test
+	 * @return whether the string is void or not
+	 */
+	public static boolean isVoid(String s){
+		return s == null || s.trim().equals("");
+	}
 
 	/**
 	 * @param parent

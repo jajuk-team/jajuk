@@ -299,6 +299,8 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 				// OK ? Restore the list
 				try {
 					WebRadioManager.getInstance().restore();
+					//Refresh current list
+					radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
 				} catch (Exception e) {
 					// show an "operation failed' message to users
 					Messages.showErrorMessage(169);

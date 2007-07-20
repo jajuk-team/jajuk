@@ -19,22 +19,21 @@
  */
 package org.jajuk.players;
 
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.WebRadio;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import org.jajuk.base.File;
+import org.jajuk.base.WebRadio;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Jajuk web radio player implementation based on Mplayer
@@ -49,7 +48,7 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
 	/** Current reader thread */
 	private volatile ReaderThread reader;
-	
+
 	/** End of file flag * */
 	private volatile boolean bEOF = false;
 
@@ -68,8 +67,7 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 					if (line.matches(".*ANS_TIME_POSITION.*")) {
 						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
-					}
-					else if (line.matches("Exiting.*End.*")) {
+					} else if (line.matches("Exiting.*End.*")) {
 						bEOF = true;
 						bOpening = false;
 					}
@@ -96,8 +94,7 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
 	 *      float)
 	 */
-	public void play(WebRadio radio, float fVolume)
-			throws Exception {
+	public void play(WebRadio radio, float fVolume) throws Exception {
 		this.fVolume = fVolume;
 		this.bOpening = true;
 		this.bEOF = false;
@@ -109,13 +106,12 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			sCommand = Util.getMPlayerOSXPath();
 		}
 		Log.debug("Using command: " + sCommand);
-		int cacheSize = 1000;
+		int cacheSize = 500;
 		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
 		String[] cmd = null;
 		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {
 			// Use a cache for slow devices
-			cmd = new String[] { sCommand, "-quiet", "-slave", "-cache", "" + cacheSize,
-					radio.getUrl().toExternalForm() };
+			cmd = new String[] { sCommand, "-quiet", "-slave", radio.getUrl().toExternalForm() };
 		} else {
 			// Add any additional arguments provided by user
 			String[] sArgs = sAdditionalArgs.split(" ");
@@ -151,6 +147,26 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 			while (st.hasMoreTokens()) {
 				StringTokenizer st2 = new StringTokenizer(st.nextToken(), "=");
 				env.put(st2.nextToken(), st2.nextToken());
+			}
+			// If needed, set proxy settings in format:
+			// http_proxy=http://username:password@proxy.example.org:8080
+			if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
+				String sLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN).trim();
+				String sHost = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME).trim();
+				int port = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
+				// Non anonymous proxy
+				if (!Util.isVoid(sLogin)) {
+					String sPwd = DownloadManager.getProxyPwd();
+					String sProxyConf = "http://" + sLogin + ':' + sPwd + '@' + sHost + ':' + port;
+					env.put("http_proxy", sProxyConf);
+					Log.debug("Using these proxy settings: " + sProxyConf);
+				}
+				// Anonymous proxy
+				else {
+					String sProxyConf = "http://" + sHost + ':' + port;
+					env.put("http_proxy", sProxyConf);
+					Log.debug("Using these proxy settings: " + sProxyConf);
+				}
 			}
 		} catch (Exception e) {
 			Log.error(e);
@@ -216,7 +232,6 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		}
 	}
 
-	
 	/**
 	 * @return current volume as a float ex: 0.2f
 	 */
@@ -224,7 +239,6 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		return fVolume;
 	}
 
-	
 	/**
 	 * @return player state, -1 if player is null.
 	 */
@@ -232,7 +246,9 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		return -1;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
 	 */
 	public long getCurrentLength() {
@@ -240,7 +256,9 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
 	 */
 	public float getCurrentPosition() {
@@ -248,7 +266,9 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#getElapsedTime()
 	 */
 	public long getElapsedTime() {
@@ -256,36 +276,45 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#pause()
 	 */
 	public void pause() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
+	 *      float)
 	 */
 	public void play(File file, float fPosition, long length, float fVolume) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#resume()
 	 */
 	public void resume() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#seek(float)
 	 */
 	public void seek(float fPosition) {
 		// TODO Auto-generated method stub
-		
-	}
 
 	}
+
+}
