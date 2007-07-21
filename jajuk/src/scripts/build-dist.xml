@@ -73,15 +73,15 @@
 		<copy todir='${distdir}/src' >
 			<fileset dir='${javadir}'/>
 		</copy>
-		<!--copy both README and LICENCE file in / -->
+		<!--copy both README and LICENCE file in / for package distribution-->
 		<copy todir='${distdir}' >
-			<fileset file='${srcdir}/doc/LICENSE.txt'/>
-			<fileset file='${basedir}/dist-files/doc/README.html'/>
+			<fileset file='${basedir}/src/doc/LICENSE.txt'/>
+			<fileset file='${basedir}/src/doc/README.html'/>
 		</copy>
-		<!--copy both README and LICENCE file as must also be in src/ -->
+		<!--copy both README and LICENCE file as must also be in src/ for source distribution-->
 		<copy todir='${distdir}/src' >
-			<fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
-			<fileset file='${basedir}/dist-files/doc/README.html'/>
+			<fileset file='${basedir}/src/doc/LICENSE.txt'/>
+			<fileset file='${basedir}/src/doc/README.html'/>
 		</copy>
 		<!--copy native dll to bin directory-->
 		<copy todir='${distdir}/bin' >
@@ -162,8 +162,8 @@
 			<fileset file='${srcdir}/packaging/RPMS/Jajuk.desktop'/>
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
-			<fileset file='${srcdir}/doc/README*.html'/>
-			<fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
+			<fileset file='${basedir}/src/doc/README.html'/>
+			<fileset file='${basedir}/src/doc/LICENSE.txt'/>
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/pixmaps' >
 			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
