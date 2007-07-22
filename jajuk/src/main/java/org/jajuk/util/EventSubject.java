@@ -81,6 +81,8 @@ public enum EventSubject {
     // heart beat for geenral use to refresh subscribers
     // every n secs
     EVENT_HEART_BEAT, 
+    // a web radio has been launched
+    EVENT_WEBRADIO_LAUNCHED, 
     // a reinit has been required
     EVENT_ZERO, 
 	// a new element has been added in the history

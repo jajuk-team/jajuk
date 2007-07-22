@@ -44,6 +44,7 @@ import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.WebRadio;
+import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJ;
@@ -682,9 +683,16 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				if (!e.getValueIsAdjusting()) {
 					SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
 					try {
+						//If user selected a file
+						if (sr.getType() == SearchResultType.FILE){
 						FIFO.getInstance().push(
 								new StackItem(sr.getFile(), ConfigurationManager
 										.getBoolean(CONF_STATE_REPEAT), true), false);
+						}
+						//User selected a web radio
+						else if (sr.getType() == SearchResultType.WEBRADIO){
+							FIFO.getInstance().launchRadio(sr.getWebradio());
+						}
 					} catch (JajukException je) {
 						Log.error(je);
 					}

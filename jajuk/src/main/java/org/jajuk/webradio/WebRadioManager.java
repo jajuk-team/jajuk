@@ -20,6 +20,18 @@
 
 package org.jajuk.webradio;
 
+import org.jajuk.base.FileManager;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.WebRadio;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,16 +42,6 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.jajuk.base.WebRadio;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Stores webradios configurated by user
@@ -147,14 +149,6 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 		webradios.clear();
 		// Download repository
 		downloadRepository();
-		/*
-		 * //Get respo File repository =
-		 * Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS); // Temporary file for
-		 * the downloaded catalog File fTemp = new
-		 * File(Util.getConfFileByPath(FILE_IMAGE_CACHE) + "/radios.tmp");
-		 * DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fTemp);
-		 * Util.copy(fTemp, repository);
-		 */
 		// Reload repository
 		if (fwebradios.exists()) {
 			loadRepository();
@@ -175,6 +169,25 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 			}
 		} catch (Exception e) {
 			Log.error(e);
+		}
+	}
+	
+	/**
+	 * Perform a search in all files names with given criteria
+	 * 
+	 * @param sCriteria
+	 * @return
+	 */
+	public TreeSet<SearchResult> search(String sCriteria) {
+		synchronized (FileManager.getInstance().getLock()) {
+			TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
+			String criteria = sCriteria.toLowerCase();
+			for (WebRadio radio:webradios){
+				if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1){
+					tsResu.add(new SearchResult(radio,radio.toString()));
+				}
+			}
+			return tsResu;
 		}
 	}
 

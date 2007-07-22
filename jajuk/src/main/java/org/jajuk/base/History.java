@@ -98,6 +98,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 		eventSubjectSet.add(EventSubject.EVENT_CLEAR_HISTORY);
 		eventSubjectSet.add(EventSubject.EVENT_FILE_NAME_CHANGED);
 		eventSubjectSet.add(EventSubject.EVENT_LANGUAGE_CHANGED);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		return eventSubjectSet;
 	}
 

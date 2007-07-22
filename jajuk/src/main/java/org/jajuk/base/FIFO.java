@@ -76,6 +76,12 @@ public class FIFO implements ITechnicalStrings {
 	/** Current playlist if not queue */
 	private PlaylistFile playlist;
 
+	/** Whether we are currently playing radio */
+	private boolean playingRadio = false;
+	
+	/** Current played radio*/
+	private WebRadio currentRadio;
+
 	/**
 	 * Singleton access
 	 * 
@@ -174,16 +180,36 @@ public class FIFO implements ITechnicalStrings {
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
 	}
-	
+
 	/**
 	 * Launch a web radio
-	 * @param radio webradio to launch
+	 * 
+	 * @param radio
+	 *            webradio to launch
 	 */
-	public void launchRadio(WebRadio radio){
-		//Stop all running items
-		stopRequest();
-		//Play the stream
-		Player.play(radio);
+	public void launchRadio(WebRadio radio) {
+		try {
+			Util.waiting();
+			// Play the stream
+			boolean bPlayOK = Player.play(radio);
+			if (bPlayOK) { // refresh covers if play is started
+				Log.debug("Now playing :" + radio.toString());
+				playingRadio = true;
+				currentRadio = radio;
+				// Send an event that a track has been launched
+				Properties pDetails = new Properties();
+				pDetails.put(DETAIL_CONTENT, radio);
+				// reset all UI
+				ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
+				ObservationManager
+						.notify(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, pDetails));
+			}
+		} catch (Throwable t) {// catch even Errors (OutOfMemory for example)
+			Log.error(122, t);
+			playingRadio = false;
+		} finally {
+			Util.stopWaiting(); // stop the waiting cursor
+		}
 	}
 
 	/**
@@ -203,18 +229,18 @@ public class FIFO implements ITechnicalStrings {
 				// If current ambience is not "all", show selected ambience
 				// to alert user he selected it
 				if (AmbienceManager.getInstance().getSelectedAmbience() == null) {
-					Messages.showWarningMessage(Messages.getString("Error.018")); 
+					Messages.showWarningMessage(Messages.getString("Error.018"));
 				} else {
-					Messages.showWarningMessage(Messages.getString("Error.164") 
-							+ " " + AmbienceManager.getInstance().getSelectedAmbience().getName()); 
+					Messages.showWarningMessage(Messages.getString("Error.164") + " "
+							+ AmbienceManager.getInstance().getSelectedAmbience().getName());
 				}
 			}
 			// first try to mount needed devices
-			Iterator it = alItems.iterator();
+			Iterator<StackItem> it = alItems.iterator();
 			StackItem item = null;
 			boolean bNoMount = false;
 			while (it.hasNext()) {
-				item = (StackItem) it.next();
+				item = it.next();
 				if (item == null) {
 					it.remove();
 					break;
@@ -223,7 +249,9 @@ public class FIFO implements ITechnicalStrings {
 				if (!item.getFile().getDirectory().getDevice().isMounted()) {
 					if (!bNoMount) {
 						// not mounted, ok let them a chance to mount it:
-						final String sMessage = Messages.getString("Error.025") + " (" + item.getFile().getDirectory().getDevice().getName() + Messages.getString("FIFO.4");   
+						final String sMessage = Messages.getString("Error.025") + " ("
+								+ item.getFile().getDirectory().getDevice().getName()
+								+ Messages.getString("FIFO.4");
 						int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
 						if (i == JOptionPane.YES_OPTION) {
 							try {
@@ -231,8 +259,8 @@ public class FIFO implements ITechnicalStrings {
 							} catch (Exception e) {
 								it.remove();
 								Log.error(e);
-								Messages.showErrorMessage(
-										11, item.getFile().getDirectory().getDevice().getName()); 
+								Messages.showErrorMessage(11, item.getFile().getDirectory()
+										.getDevice().getName());
 								return;
 							}
 						} else if (i == JOptionPane.NO_OPTION) {
@@ -247,7 +275,7 @@ public class FIFO implements ITechnicalStrings {
 				}
 			}
 			synchronized (this) {
-				// test if we have yet some files to concidere
+				// test if we have yet some files to considere
 				if (alItems.size() == 0) {
 					return;
 				}
@@ -260,8 +288,8 @@ public class FIFO implements ITechnicalStrings {
 				// add required tracks in the FIFO
 				it = alItems.iterator();
 				while (it.hasNext()) {
-					item = (StackItem) it.next();
-					// Apply contextual repeat mode but only for concecutive
+					item = it.next();
+					// Apply contextual repeat mode but only for consecutive
 					// repeat tracks : we can't have a whole between
 					// repeated tracks and first track must be repeated
 					if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
@@ -280,9 +308,9 @@ public class FIFO implements ITechnicalStrings {
 					alFIFO.add(item);
 					JajukTimer.getInstance().addTrackTime(item.getFile());
 				}
-				// lauch track if required
-				if (!bAppend || !Player.isPlaying()) { // if we have a play or
-					// nothing is playing
+				// launch track if required
+				if (!bAppend || !Player.isPlaying()) {
+					// if we have a play or nothing is playing
 					index = 0;
 					launch(index);
 				}
@@ -342,7 +370,7 @@ public class FIFO implements ITechnicalStrings {
 			}
 			if (alFIFO.size() == 0) { // nothing more to play
 				// check if we in continue mode
-				if (ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) { 
+				if (ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) {
 					File file = null;
 					// if some tracks are planned (can be 0 if planned size=0)
 					if (alPlanned.size() != 0) {
@@ -428,7 +456,7 @@ public class FIFO implements ITechnicalStrings {
 				}
 			}
 			if (bPlayOK) { // refresh covers if play is started
-				Log.debug("Now playing :" + fCurrent); 
+				Log.debug("Now playing :" + fCurrent);
 				// Send an event that a track has been launched
 				Properties pDetails = new Properties();
 				pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
@@ -436,7 +464,8 @@ public class FIFO implements ITechnicalStrings {
 				ObservationManager.notify(new Event(EventSubject.EVENT_FILE_LAUNCHED, pDetails));
 				// all cases for a cover full refresh
 				if (itemLast == null // first track, display cover
-					// if we are always in the same directory, just leave to save cpu
+						// if we are always in the same directory, just leave to
+						// save cpu
 						|| (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) {
 					// clear image cache
 					Util.clearCache();
@@ -450,6 +479,7 @@ public class FIFO implements ITechnicalStrings {
 					ObservationManager.notify(new Event(EventSubject.EVENT_COVER_CHANGE));
 				}
 			}
+			playingRadio = false;
 			// save the last played track
 			itemLast = (StackItem) getCurrentItem().clone();
 			bFirstFile = false;
@@ -458,7 +488,7 @@ public class FIFO implements ITechnicalStrings {
 			fCurrent.getTrack().incSessionHits();// inc session hits
 			FileManager.getInstance().setRateHasChanged(true);
 		} catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
-			Log.error(122, t); 
+			Log.error(122, t);
 		} finally {
 			Util.stopWaiting(); // stop the waiting cursor
 		}
@@ -582,7 +612,7 @@ public class FIFO implements ITechnicalStrings {
 			if (index > 0) { // if we have some repeat files
 				index--;
 			} else { // we are at the first position
-				if (itemFirst.isRepeat()) { 
+				if (itemFirst.isRepeat()) {
 					// restart last repeated item in the loop
 					index = getLastRepeatedItem();
 				} else {
@@ -752,7 +782,7 @@ public class FIFO implements ITechnicalStrings {
 						if (fileNext != null && !fileNext.getDirectory().equals(dir)) {
 							pushCommand(new StackItem(fileNext, ConfigurationManager
 									.getBoolean(CONF_STATE_REPEAT), false), false); // play
-																					// it
+							// it
 							return;
 						}
 					} while (fileNext != null);
@@ -839,11 +869,11 @@ public class FIFO implements ITechnicalStrings {
 			return true;
 		}
 		if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) { // is
-																						// current
-																						// track
-																						// on
-																						// this
-																						// device?
+			// current
+			// track
+			// on
+			// this
+			// device?
 			return false;
 		}
 		Iterator it = getInstance().alFIFO.iterator(); // are next tracks in
@@ -897,11 +927,11 @@ public class FIFO implements ITechnicalStrings {
 	 */
 	public synchronized void shuffle() {
 		if (alFIFO.size() > 1) {
-			//Make sure current track is kept to its position 
-			// so remove it and add it again after shuffling 
+			// Make sure current track is kept to its position
+			// so remove it and add it again after shuffling
 			alFIFO.remove(0);
 			Collections.shuffle(alFIFO, new Random());
-			alFIFO.add(0,itemLast);
+			alFIFO.add(0, itemLast);
 		}
 		alPlanned.clear(); // force recomputes planned tracks
 	}
@@ -968,8 +998,8 @@ public class FIFO implements ITechnicalStrings {
 	public synchronized void down(int index) {
 		if (index == 0 || index == alFIFO.size() - 1
 				|| index == alFIFO.size() + alPlanned.size() - 1) {
-			//Can't put down current track, nor last rack in fifo, nor last
-			//planned track. This should be already made by ui behavior
+			// Can't put down current track, nor last rack in fifo, nor last
+			// planned track. This should be already made by ui behavior
 			return;
 		}
 		if (index < alFIFO.size()) {
@@ -1152,5 +1182,13 @@ public class FIFO implements ITechnicalStrings {
 		}
 		writer.flush();
 		writer.close();
+	}
+
+	public boolean isPlayingRadio() {
+		return this.playingRadio;
+	}
+
+	public WebRadio getCurrentRadio() {
+		return this.currentRadio;
 	}
 }

@@ -45,8 +45,13 @@ public class WebRadioAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {
-		WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
-		FIFO.getInstance().launchRadio(radio);
+		new Thread() {
+			public void run() {
+				WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
+						ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
+				FIFO.getInstance().launchRadio(radio);
+			}
+		}.start();
 	}
 
 }

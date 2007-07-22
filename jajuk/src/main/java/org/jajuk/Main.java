@@ -1120,7 +1120,7 @@ public class Main implements ITechnicalStrings {
 						} catch (Exception e) {
 							Log.debug("Mount failed");
 							Properties pDetail = new Properties();
-							pDetail.put(DETAIL_CURRENT_FILE, fileToPlay);
+							pDetail.put(DETAIL_CONTENT, fileToPlay);
 							pDetail.put(DETAIL_REASON, "010");
 							ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,
 									pDetail));

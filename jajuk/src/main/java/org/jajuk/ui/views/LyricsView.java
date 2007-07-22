@@ -26,6 +26,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
@@ -119,6 +120,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		return eventSubjectSet;
 	}
 
@@ -146,6 +148,12 @@ public class LyricsView extends ViewAdapter implements Observer {
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
 			setText(Messages.getString("JajukWindow.18"));
+		}
+		else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+			WebRadio radio = (WebRadio)event.getDetails().get(DETAIL_CONTENT);
+			if (radio != null) {
+				setText(radio.getName());
+			}
 		}
 	}
 

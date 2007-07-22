@@ -26,6 +26,7 @@ import org.jajuk.base.JajukTimer;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -204,6 +205,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		return eventSubjectSet;
 	}
 
@@ -310,19 +312,40 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 				setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
 						+ Util.formatTimeBySec(0, false));
 				// set error message
-				File fCurrent = (File) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE);
-				if (fCurrent != null) {
-					// display associated error code is given
-					String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
-					if (sReason != null) {
-						setMessage(Messages.getString("Error." + sReason) + ": "
-								+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
-					} else {// default message
-						setMessage(Messages.getString("Error.007") + ": "
-								+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+				Object o = ObservationManager.getDetail(event, DETAIL_CONTENT);
+				// current item is a file
+				if (o instanceof File) {
+					File fCurrent = (File) o;
+					if (fCurrent != null) {
+						// display associated error code is given
+						String sReason = (String) ObservationManager
+								.getDetail(event, DETAIL_REASON);
+						if (sReason != null) {
+							setMessage(Messages.getString("Error." + sReason) + ": "
+									+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+						} else {// default message
+							setMessage(Messages.getString("Error.007") + ": "
+									+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+						}
+					} else { // none specified file
+						setMessage(Messages.getString("Error.007"), InformationJPanel.ERROR);
 					}
-				} else { // none specified file
-					setMessage(Messages.getString("Error.007"), InformationJPanel.ERROR);
+				} else if (o instanceof WebRadio) {
+					WebRadio radio = (WebRadio) o;
+					if (radio != null) {
+						// display associated error code is given
+						String sReason = (String) ObservationManager
+								.getDetail(event, DETAIL_REASON);
+						if (sReason != null) {
+							setMessage(Messages.getString("Error." + sReason) + ": "
+									+ radio.toString(), InformationJPanel.ERROR);
+						} else {// default message
+							setMessage(Messages.getString("Error.007") + ": " + radio.toString(),
+									InformationJPanel.ERROR);
+						}
+					} else { // none specified file
+						setMessage(Messages.getString("Error.170"), InformationJPanel.ERROR);
+					}
 				}
 			} catch (Exception e) {
 				Log.error(e);
@@ -365,10 +388,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						jsPosition.setEnabled(false);
 						jsPosition.removeMouseWheelListener(InformationJPanel.this);
 						jsPosition.removeChangeListener(InformationJPanel.this);
-						// use set value, not
-						// setPosition that would cause
-						// a seek that could fail with
-						// some formats
+						// use set value, not  setPosition that would cause
+						// a seek that could fail with some formats
 						jsPosition.setValue(0);
 						// reset startup position
 						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
@@ -382,6 +403,13 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 									+ file.getTrack().getAuthor().getName2() + " / "
 									+ file.getTrack().getAlbum().getName2() + " / "
 									+ file.getTrack().getName();
+							setMessage(sMessage, InformationJPanel.INFORMATIVE);
+						}
+					} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+						WebRadio radio = (WebRadio)event.getDetails().get(DETAIL_CONTENT);
+						if (radio != null) {
+							String sMessage = Messages.getString("FIFO.14") + " "
+									+ radio.getName();
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
 					} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {

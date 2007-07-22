@@ -12,8 +12,7 @@
 	<stream name='Digitally Imported - Trance [Trance]' url='http://di.fm/mp3/trance.pls'/>
 	<stream name='Electronic Culture [Minimal Techno]' url='http://www.shouted.fm/tunein/electro-dsl.m3u'/>
 	<stream name='Frequence 3 [Pop]' url='http://streams.frequence3.net/hd-mp3.m3u'/>
-	<stream name='Gaming FM [Computer-Music]' url='http://208.64.81.140:7500/listen.pls'/>
- 	<stream name='Groove Salad [Chill-Out]' url='http://www.somafm.com/groovesalad.pls'/>
+	<stream name='Groove Salad [Chill-Out]' url='http://www.somafm.com/groovesalad.pls'/>
 	<stream name='Drone Zone [Ambient]' url='http://somafm.com/dronezone.pls'/>
 	<stream name='Tags Trance Trip [Trance]' url='http://somafm.com/tagstrance.pls'/>
 	<stream name='Indie Pop Rocks [Indie]' url='http://www.somafm.com/indiepop.pls'/>

@@ -111,7 +111,8 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		String[] cmd = null;
 		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {
 			// Use a cache for slow devices
-			cmd = new String[] { sCommand, "-quiet", "-slave", radio.getUrl().toExternalForm() };
+			cmd = new String[] { sCommand, "-quiet", "-slave", "-cache", "" + cacheSize,
+					radio.getUrl().toExternalForm() };
 		} else {
 			// Add any additional arguments provided by user
 			String[] sArgs = sAdditionalArgs.split(" ");
@@ -174,11 +175,11 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		proc = pb.start();
 		reader = new ReaderThread();
 		reader.start();
-		// if opening, wait
+		// if opening, wait, 30 secs max
 		int i = 0;
-		while (bOpening && i < 500) {
+		while (bOpening && i < 30) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 				i++;
 			} catch (InterruptedException e) {
 				Log.error(e);

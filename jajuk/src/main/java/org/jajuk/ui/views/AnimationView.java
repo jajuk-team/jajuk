@@ -26,6 +26,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -54,8 +55,8 @@ import com.jgoodies.animation.components.BasicTextLabel;
 /**
  * Animation-based view
  */
-public class AnimationView extends ViewAdapter implements ITechnicalStrings,
-		Observer, ComponentListener {
+public class AnimationView extends ViewAdapter implements ITechnicalStrings, Observer,
+		ComponentListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,7 +82,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AnimationView.0"); 
+		return Messages.getString("AnimationView.0");
 	}
 
 	/*
@@ -92,79 +93,80 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	public void initUI() {
 		setLayout(new BorderLayout());
 		addComponentListener(this);
-		btl1 = new BasicTextLabel(" "); 
-		//setBackground(Color.WHITE);
-		//setForeground(Color.BLACK);
+		btl1 = new BasicTextLabel(" ");
+		// setBackground(Color.WHITE);
+		// setForeground(Color.BLACK);
 		add(btl1);
 
 		ObservationManager.register(this);
-		// check if a track has already been launched
-		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED))); 
+		// check if a track or a webradio has already been launched
+		if (FIFO.getInstance().isPlayingRadio()) {
+			update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+					.getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+		} else {
+			update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+		}
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {
 		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
 		return eventSubjectSet;
 	}
 
 	/** Set the text to be displayed* */
 	public void setText(final String sText) {
-		SwingUtilities.invokeLater(new Runnable() { // this is mandatory to
-					// get actual getWitdth
-					public void run() {
-						iSize = AnimationView.this.getWidth();
-						/*
-						 * current width. Must be called inside an invoke and
-						 * wait, otherwise, returns zero
-						 */
-						Font font = null;
-						boolean bOk = false;
-						int i = 40;
-						while (!bOk) {
-							font = new Font("dialog", Font.BOLD, i); 
-							FontMetrics fontMetrics = Main.getWindow()
-									.getFontMetrics(font);
-							int iFontSize = SwingUtilities.computeStringWidth(
-									fontMetrics, sText);
-							if (iFontSize <= iSize - 150) {
-								bOk = true;
-							} else {
-								i--;
-							}
-						}
-						btl1.setFont(font);
-						if (animator != null) {
-							animator.stop();
-						}
-						Animation animPause = Animations.pause(DEFAULT_PAUSE);
-						Animation anim = null;
-						// select a random animation
-						int iShuffle = (int) (Math.random() * 3);
-						switch (iShuffle) {
-						case 0:
-							anim = BasicTextAnimation.defaultScale(btl1,
-									DEFAULT_DURATION, sText, Color.darkGray);
-							break;
-						case 1:
-							anim = BasicTextAnimation.defaultSpace(btl1,
-									DEFAULT_DURATION, sText, Color.darkGray);
-							break;
-						case 2:
-							anim = BasicTextAnimation.defaultFade(btl1,
-									DEFAULT_DURATION, sText, Color.darkGray);
-							break;
-						}
-						Animation animAll = Animations.sequential(anim,
-								animPause);
-						anim = Animations.repeat(Float.POSITIVE_INFINITY,
-								animAll);
-						animator = new Animator(anim, DEFAULT_FRAME_RATE);
-						animator.start();
+		SwingUtilities.invokeLater(new Runnable() {
+			// this is mandatory to
+			// get actual getWitdth
+			public void run() {
+				iSize = AnimationView.this.getWidth();
+				// current width. Must be called inside an invoke and wait,
+				// otherwise, returns zero
+				Font font = null;
+				boolean bOk = false;
+				int i = 40;
+				while (!bOk) {
+					font = new Font("dialog", Font.BOLD, i);
+					FontMetrics fontMetrics = Main.getWindow().getFontMetrics(font);
+					int iFontSize = SwingUtilities.computeStringWidth(fontMetrics, sText);
+					if (iFontSize <= iSize - 150) {
+						bOk = true;
+					} else {
+						i--;
 					}
-				});
+				}
+				btl1.setFont(font);
+				if (animator != null) {
+					animator.stop();
+				}
+				Animation animPause = Animations.pause(DEFAULT_PAUSE);
+				Animation anim = null;
+				// select a random animation
+				int iShuffle = (int) (Math.random() * 3);
+				switch (iShuffle) {
+				case 0:
+					anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText,
+							Color.darkGray);
+					break;
+				case 1:
+					anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText,
+							Color.darkGray);
+					break;
+				case 2:
+					anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText,
+							Color.darkGray);
+					break;
+				}
+				Animation animAll = Animations.sequential(anim, animPause);
+				anim = Animations.repeat(Float.POSITIVE_INFINITY, animAll);
+				animator = new Animator(anim, DEFAULT_FRAME_RATE);
+				animator.start();
+			}
+		});
 	}
 
 	/*
@@ -173,6 +175,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(Event event) {
+		System.out.println("***" + event.getSubject());
 		EventSubject subject = event.getSubject();
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
 			File file = FIFO.getInstance().getCurrentFile();
@@ -187,7 +190,12 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 				setText(s);
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-			setText(Messages.getString("JajukWindow.18")); 
+			setText(Messages.getString("JajukWindow.18"));
+		} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+			WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
+			if (radio != null) {
+				setText(radio.getName());
+			}
 		}
 	}
 
@@ -199,15 +207,18 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,
 	public void componentResized(ComponentEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				iSize = SwingUtilities.getRootPane(AnimationView.this)
-						.getWidth(); // current width
-				update(new Event(
-						EventSubject.EVENT_FILE_LAUNCHED,
-						ObservationManager
-								.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+				iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); // current
+				// width
+				if (FIFO.getInstance().isPlayingRadio()) {
+					update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+							.getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+				} else {
+					update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+							.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+				}
 				// force redisplay
 			}
 		});
-		Log.debug("View resized, new width=" + iSize); 
+		Log.debug("View resized, new width=" + iSize);
 	}
 }

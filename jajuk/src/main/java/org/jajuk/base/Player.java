@@ -83,6 +83,8 @@ public class Player implements ITechnicalStrings {
 			}
 			// player 1 not null, test if it is fading
 			else if (playerImpl1.getState() != FADING_STATUS) {
+				// stop it
+				playerImpl1.stop();
 				// not fading but different player class, reinstanciate it
 				if (!playerImpl1.getClass().equals(cPlayer)) {
 					playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
@@ -97,14 +99,14 @@ public class Player implements ITechnicalStrings {
 			// if here, the only normal case is player 1 is fading and
 			// player 2 not null and not fading
 			else {
+				// stop it
+				playerImpl1.stop();
 				// not fading but different player class, reinstanciate it
 				if (!playerImpl2.getClass().equals(cPlayer)) {
 					playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
 				}
 				playerImpl = playerImpl2;
 			}
-			// Force stopping any playing track playing by this player
-			playerImpl.stop();
 			bPlaying = true;
 			bPaused = false;
 			boolean bWaitingLine = true;
@@ -136,7 +138,7 @@ public class Player implements ITechnicalStrings {
 			return true;
 		} catch (final Throwable t) {
 			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_CURRENT_FILE, file);
+			pDetails.put(DETAIL_CONTENT, file);
 			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
 			Log.error(7, Messages.getString("Player.0") + fCurrent.getAbsolutePath() + "}}", t);
 			// process playing error asynchronously to avoid loop problems
@@ -161,19 +163,77 @@ public class Player implements ITechnicalStrings {
 	 * 
 	 * @param radio
 	 */
-	public static void play(WebRadio radio) {
+	public static boolean play(WebRadio radio) {
 		try {
+			playerImpl = null;
 			// Choose the player
 			Class cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
 					.getPlayerClass();
-			playerImpl = (IPlayerImpl) cPlayer.newInstance();
-			playerImpl.play(radio, ConfigurationManager.getFloat(CONF_VOLUME));
+			// player 1 null ?
+			if (playerImpl1 == null) {
+				playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
+				playerImpl = playerImpl1;
+			}
+			// player 1 not null, test if it is fading
+			else if (playerImpl1.getState() != FADING_STATUS) {
+				// stop it
+				playerImpl1.stop();
+				// not fading but different player class, reinstanciate it
+				if (!playerImpl1.getClass().equals(cPlayer)) {
+					playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
+				}
+				playerImpl = playerImpl1;
+			}
+			// player 1 fading, OK, test player 2
+			else if (playerImpl2 == null) {
+				playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
+				playerImpl = playerImpl2;
+			}
+			// if here, the only normal case is player 1 is fading and
+			// player 2 not null and not fading
+			else {
+				// stop it
+				playerImpl1.stop();
+				// not fading but different player class, reinstanciate it
+				if (!playerImpl2.getClass().equals(cPlayer)) {
+					playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
+				}
+				playerImpl = playerImpl2;
+			}
+			bPlaying = true;
+			bPaused = false;
+			boolean bWaitingLine = true;
+			while (bWaitingLine) {
+				try {
+					if (bMute) {
+						playerImpl.play(radio, 0.0f);
+					} else {
+						playerImpl.play(radio, ConfigurationManager.getFloat(CONF_VOLUME));
+					}
+					bWaitingLine = false;
+				} catch (Exception bpe) {
+					if (!(bpe.getCause() instanceof LineUnavailableException)) {
+						throw bpe;
+					}
+					bWaitingLine = true;
+					Log.debug("Line occupied, waiting");
+					InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),
+							InformationJPanel.WARNING);
+					try {
+						// wait for the line
+						FIFO.getInstance().wait(WAIT_AFTER_ERROR);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			return true;
 		} catch (final Throwable t) {
-			Log.error(t);
 			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_CURRENT_FILE, radio);
+			pDetails.put(DETAIL_CONTENT, radio);
 			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
-			stop(true);
+			Log.error(7, Messages.getString("Player.0") + fCurrent.getAbsolutePath() + "}}", t);
+			return false;
 		}
 	}
 
