@@ -19,12 +19,18 @@
  */
 package org.jajuk.base;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.UrlImageIcon;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * A music file to be played
@@ -59,8 +65,8 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 * @param lSize
 	 * @param sQuality
 	 */
-	public File(String sId, String sName, Directory directory, Track track,
-			long lSize, long lQuality) {
+	public File(String sId, String sName, Directory directory, Track track, long lSize,
+			long lQuality) {
 		super(sId, sName);
 		this.directory = directory;
 		setProperty(XML_DIRECTORY, directory.getId().intern());
@@ -72,7 +78,6 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		setProperty(XML_QUALITY, lQuality);
 	}
 
-		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -86,21 +91,18 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 * toString method
 	 */
 	public String toString() {
-		return "File[ID=" + sId + " Name={{" + sName + "}} Dir=" + directory + " Size=" + lSize + " Quality=" + lQuality + "]";   
+		return "File[ID=" + sId + " Name={{" + sName + "}} Dir=" + directory + " Size=" + lSize
+				+ " Quality=" + lQuality + "]";
 	}
 
 	/**
 	 * String representation as displayed in a search result
 	 */
 	public String toStringSearch() {
-		StringBuffer sb = new StringBuffer(track.getStyle().getName2())
-				.append('/')
-				.append(track.getAuthor().getName2())
-				.append('/')
-				.append(track.getAlbum().getName2())
-				.append('/')
-				.append(track.getName())
-				.append(" [").append(directory.getName()).append('/').append(this.sName).append(']'); 
+		StringBuffer sb = new StringBuffer(track.getStyle().getName2()).append('/').append(
+				track.getAuthor().getName2()).append('/').append(track.getAlbum().getName2())
+				.append('/').append(track.getName()).append(" [").append(directory.getName())
+				.append('/').append(this.sName).append(']');
 		return sb.toString();
 	}
 
@@ -177,8 +179,8 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 */
 	public String getAbsolutePath() {
 		StringBuffer sbOut = new StringBuffer(getDevice().getUrl()).append(
-				getDirectory().getRelativePath()).append(
-				java.io.File.separatorChar).append(this.getName());
+				getDirectory().getRelativePath()).append(java.io.File.separatorChar).append(
+				this.getName());
 		return sbOut.toString();
 	}
 
@@ -287,7 +289,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_File") + " : " + getName();  
+		return Messages.getString("Item_File") + " : " + getName();
 	}
 
 	/*
@@ -297,16 +299,15 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 */
 	public String getHumanValue(String sKey) {
 		if (XML_DIRECTORY.equals(sKey)) {
-			Directory dParent = DirectoryManager.getInstance()
-					.getDirectoryByID(getStringValue(sKey));
+			Directory dParent = DirectoryManager.getInstance().getDirectoryByID(
+					getStringValue(sKey));
 			return dParent.getFio().getAbsolutePath();
 		} else if (XML_TRACK.equals(sKey)) {
 			return getTrack().getName();
 		} else if (XML_SIZE.equals(sKey)) {
-			return (lSize / 1048576)
-					+ Messages.getString("PhysicalTreeView.54"); 
+			return (lSize / 1048576) + Messages.getString("PhysicalTreeView.54");
 		} else if (XML_QUALITY.equals(sKey)) {
-			return getQuality() + Messages.getString("FIFO.13"); 
+			return getQuality() + Messages.getString("FIFO.13");
 		} else if (XML_ALBUM.equals(sKey)) {
 			return getTrack().getAlbum().getName2();
 		} else if (XML_STYLE.equals(sKey)) {
@@ -354,4 +355,32 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		fio = null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		ImageIcon icon = null;
+		String ext = Util.getExtension(getIO());
+		Type type = TypeManager.getInstance().getTypeByExtension(ext);
+		// Find associated icon with this type
+		URL iconUrl = null;
+		String sIcon;
+		if (type != null) {
+			sIcon = (String) type.getProperties().get(XML_TYPE_ICON);
+			try {
+				iconUrl = new URL(sIcon);
+			} catch (MalformedURLException e) {
+				Log.error(e);
+			}
+		}
+		if (iconUrl == null) {
+			icon = IconLoader.ICON_TYPE_WAV;
+		} else {
+			icon = new UrlImageIcon(iconUrl);
+		}
+		return icon;
+	}
 }

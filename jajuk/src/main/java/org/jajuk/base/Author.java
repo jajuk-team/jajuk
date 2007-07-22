@@ -20,6 +20,9 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.IconLoader;
+
+import javax.swing.ImageIcon;
 
 /**
  * An author *
@@ -111,4 +114,11 @@ public class Author extends LogicalItem implements Comparable {
 		return super.getHumanValue(sKey);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return IconLoader.ICON_AUTHOR;
+	}
 }

@@ -19,17 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.JOptionPane;
-
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -43,6 +32,18 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * A device ( music files repository )
@@ -1067,4 +1068,58 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		ImageIcon icon = null;
+		switch ((int) getType()) {
+		case 0:
+			if (isMounted()) {
+				icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED_SMALL;
+			} else {
+				icon = IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL;
+			}
+			break;
+		case 1:
+			if (isMounted()) {
+				icon = IconLoader.ICON_DEVICE_CD_MOUNTED_SMALL;
+			} else {
+				icon = IconLoader.ICON_DEVICE_CD_UNMOUNTED_SMALL;
+			}
+			break;
+		case 2:
+			if (isMounted()) {
+				icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL;
+			} else {
+				icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL;
+			}
+			break;
+		case 3:
+			if (isMounted()) {
+				icon = IconLoader.ICON_DEVICE_EXT_DD_MOUNTED_SMALL;
+			} else {
+				icon = IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL;
+			}
+			break;
+		case 4:
+			if (isMounted()) {
+				icon = IconLoader.ICON_DEVICE_PLAYER_MOUNTED_SMALL;
+			} else {
+				icon = IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL;
+			}
+			break;
+		case 5:
+			if (isMounted()) {
+				icon = IconLoader.ICON_DEVICE_REMOTE_MOUNTED_SMALL;
+			} else {
+				icon = IconLoader.ICON_DEVICE_REMOTE_UNMOUNTED_SMALL;
+			}
+			break;
+		}
+		return icon;
+	}
 }

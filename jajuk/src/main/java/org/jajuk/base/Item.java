@@ -30,8 +30,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import javax.swing.ImageIcon;
+
 /**
- * Generic property handler, mother class for all items
+ * Generic property handler, parent class for all items
  * <p>
  * Note that some properties can be omitted (not in properties object), in this
  * case, we take default value given in meta infos, this can decrease collection
@@ -389,4 +391,9 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 			}
 		}
 	}
+	
+	/**
+	 * @return an icon representation for this item or null if none available
+	 */
+	abstract public ImageIcon getIconRepresentation();
 }

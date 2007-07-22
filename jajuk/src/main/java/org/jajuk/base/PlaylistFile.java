@@ -25,6 +25,7 @@ import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -841,4 +843,11 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		this.fio = null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return IconLoader.ICON_PLAYLIST_FILE;
+	}
 }

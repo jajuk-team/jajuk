@@ -25,8 +25,14 @@ package org.jajuk.base;
  */
 public class SearchResult implements Comparable {
 
+	/** Result type **/
+	public enum SearchResultType {FILE,WEBRADIO}
+	
 	/** The associated file */
 	File file;
+
+	/** The associated web radio */
+	WebRadio radio;
 
 	/** Pre-calculated search string */
 	String sResu;
@@ -37,6 +43,11 @@ public class SearchResult implements Comparable {
 
 	public SearchResult(File file, String sResu) {
 		this.file = file;
+		this.sResu = sResu;
+	}
+	
+	public SearchResult(WebRadio radio, String sResu) {
+		this.radio = radio;
 		this.sResu = sResu;
 	}
 
@@ -62,6 +73,26 @@ public class SearchResult implements Comparable {
 	 */
 	public File getFile() {
 		return file;
+	}
+	
+	/**
+	 * 
+	 * @return result type: file or web radio
+	 */
+	public SearchResultType getType(){
+		if (file != null){
+			return SearchResultType.FILE;
+		}
+		else{
+			return SearchResultType.WEBRADIO;
+		}
+	}
+	
+	/**
+	 * @return Returns the webradio.
+	 */
+	public WebRadio getWebradio() {
+		return radio;
 	}
 
 	/**

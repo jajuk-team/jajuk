@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
@@ -27,6 +28,8 @@ import java.awt.Color;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
 
 /**
  * An Album *
@@ -284,5 +287,13 @@ public class Album extends LogicalItem implements Comparable {
 		}
 		sOut += "</TD></TR></TABLE></html>";
 		return sOut;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return IconLoader.ICON_ALBUM;
 	}
 }

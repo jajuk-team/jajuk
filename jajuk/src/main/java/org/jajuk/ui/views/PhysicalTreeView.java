@@ -20,6 +20,39 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.TransferableTreeNode;
+import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.action.RefactorAction;
+import org.jajuk.ui.wizard.CDDBWizard;
+import org.jajuk.ui.wizard.DeviceWizard;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
+
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
@@ -27,8 +60,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -57,42 +88,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Directory;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.TypeManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.TransferableTreeNode;
-import org.jajuk.ui.TreeTransferHandler;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.action.RefactorAction;
-import org.jajuk.ui.wizard.CDDBWizard;
-import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.UrlImageIcon;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
 
 import ext.SwingWorker;
 
@@ -489,83 +484,18 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				if (value instanceof FileNode) {
 					setBorder(null);
 					File file = ((FileNode) value).getFile();
-					String ext = Util.getExtension(file.getIO());
-					Type type = TypeManager.getInstance().getTypeByExtension(ext);
-					// Find associated icon with this type
-					URL icon = null;
-					String sIcon;
-					if (type != null) {
-						sIcon = (String) type.getProperties().get(XML_TYPE_ICON);
-						try {
-							icon = new URL(sIcon);
-						} catch (MalformedURLException e) {
-							Log.error(e);
-						}
-					}
-					if (icon == null) {
-						setIcon(IconLoader.ICON_TYPE_WAV);
-					} else {
-						setIcon(new UrlImageIcon(icon));
-					}
+					setIcon(file.getIconRepresentation());
 				} else if (value instanceof PlaylistFileNode) {
 					setBorder(null);
-					setIcon(IconLoader.ICON_PLAYLIST_FILE);
+					setIcon(((PlaylistFile)value).getIconRepresentation());
 				} else if (value instanceof DeviceNode) {
 					setBorder(BorderFactory.createEmptyBorder(2, 0, 3, 0));
 					Device device = ((DeviceNode) value).getDevice();
-					switch ((int) device.getType()) {
-					case 0:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL);
-						}
-						break;
-					case 1:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_CD_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_CD_UNMOUNTED_SMALL);
-						}
-						break;
-					case 2:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL);
-						}
-						break;
-					case 3:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_EXT_DD_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL);
-						}
-						break;
-					case 4:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_PLAYER_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL);
-						}
-						break;
-					case 5:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_REMOTE_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_REMOTE_UNMOUNTED_SMALL);
-						}
-						break;
-					}
+					setIcon(device.getIconRepresentation());
 				} else if (value instanceof DirectoryNode) {
 					setBorder(null);
 					Directory dir = ((DirectoryNode) value).getDirectory();
-					boolean bSynchro = dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED);
-					if (bSynchro) { // means this device is not synchronized
-						setIcon(IconLoader.ICON_DIRECTORY_SYNCHRO);
-					} else {
-						setIcon(IconLoader.ICON_DIRECTORY_DESYNCHRO);
-					}
+					setIcon(dir.getIconRepresentation());
 					// collection node
 				} else {
 					setIcon(IconLoader.ICON_LIST);

@@ -26,8 +26,11 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.ImageIcon;
+
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -483,6 +486,23 @@ public class Directory extends PhysicalItem implements Comparable {
 			// default
 			return super.getHumanValue(sKey);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		ImageIcon icon = null;
+		// is this device synchronized?
+		if (getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) {
+			icon = IconLoader.ICON_DIRECTORY_SYNCHRO;
+		} else {
+			icon = IconLoader.ICON_DIRECTORY_DESYNCHRO;
+		}
+		return icon;
 	}
 
 }

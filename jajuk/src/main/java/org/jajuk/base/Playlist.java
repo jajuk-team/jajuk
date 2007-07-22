@@ -24,6 +24,8 @@ import org.jajuk.i18n.Messages;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.ImageIcon;
+
 /**
  * A playlist
  * <p>
@@ -200,4 +202,14 @@ public class Playlist extends LogicalItem implements Comparable {
 		return Messages.getString("Item_Playlist") + " : " + getName();  
 	}
 
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return null;
+	}
 }

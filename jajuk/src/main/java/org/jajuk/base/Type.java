@@ -23,6 +23,8 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.log.Log;
 
+import javax.swing.ImageIcon;
+
 /**
  * Music type
  */
@@ -136,6 +138,14 @@ public class Type extends PhysicalItem implements Comparable {
 	 */
 	public int compareTo(Object other) {
 		return toString().compareTo(other.toString());
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return null;
 	}
 
 }

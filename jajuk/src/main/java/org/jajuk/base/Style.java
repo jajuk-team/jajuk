@@ -20,8 +20,11 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.IconLoader;
 
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 
 /**
  * A music style ( jazz, rock...)
@@ -132,6 +135,14 @@ public class Style extends LogicalItem implements Comparable {
 			}
 		}
 		return alTracks;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return IconLoader.ICON_STYLE;
 	}
 
 }

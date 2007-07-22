@@ -32,6 +32,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.swing.ImageIcon;
+
 /**
  * A track
  * <p>
@@ -525,6 +527,14 @@ public class Track extends LogicalItem implements Comparable {
 		} else {// default
 			return super.getHumanValue(sKey);
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return IconLoader.ICON_TRACK;
 	}
 
 }
