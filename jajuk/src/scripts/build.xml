@@ -24,7 +24,7 @@
 	<target name='compile' description='o Compile the code' depends='clean'>
 		<mkdir dir='${classdir}'>
 		</mkdir>
-		<javac destdir='${classdir}' deprecation='false' nowarn='true' debug='true' optimize='true' excludes='**/package.html'>
+		<javac destdir='${classdir}' source='1.5' deprecation='false' nowarn='true' debug='true' optimize='true' excludes='**/package.html'>
 			<src>
 				<pathelement path='${srcdir}'>
 				</pathelement>
