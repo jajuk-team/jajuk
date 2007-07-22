@@ -125,6 +125,8 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
 		if (sOut == null || sOut.equals("")) {
 			return "0";
 		}
+		//check this is a number
+		Long.parseLong(sOut);
 		return sOut;
 	}
 
