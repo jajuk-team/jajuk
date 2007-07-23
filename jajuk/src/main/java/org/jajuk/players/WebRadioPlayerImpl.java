@@ -111,7 +111,12 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		String[] cmd = null;
 		if (sAdditionalArgs == null || sAdditionalArgs.trim().equals("")) {
 			// Use a cache for slow devices
-			cmd = new String[] { sCommand, "-quiet", "-slave", "-cache", "" + cacheSize,
+			//quiet: less traces
+			//slave: slave mode (control with stdin)
+			//-af volume=-200: set volume to 0 to avoid begining the track (few ms) with the wrong volume
+			//-softvol : use soft mixer, allows to set volume only to this mplayer instance, not others programs
+			//-cache : cache size, mplayer start before cache is filled up
+			cmd = new String[] { sCommand, "-quiet", "-slave", "-af","volume=-200", "-softvol", "-cache", "" + cacheSize,
 					radio.getUrl().toExternalForm() };
 		} else {
 			// Add any additional arguments provided by user

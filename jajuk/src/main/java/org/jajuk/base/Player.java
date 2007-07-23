@@ -169,37 +169,10 @@ public class Player implements ITechnicalStrings {
 			// Choose the player
 			Class cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
 					.getPlayerClass();
-			// player 1 null ?
-			if (playerImpl1 == null) {
-				playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
-				playerImpl = playerImpl1;
-			}
-			// player 1 not null, test if it is fading
-			else if (playerImpl1.getState() != FADING_STATUS) {
-				// stop it
-				playerImpl1.stop();
-				// not fading but different player class, reinstanciate it
-				if (!playerImpl1.getClass().equals(cPlayer)) {
-					playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
-				}
-				playerImpl = playerImpl1;
-			}
-			// player 1 fading, OK, test player 2
-			else if (playerImpl2 == null) {
-				playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
-				playerImpl = playerImpl2;
-			}
-			// if here, the only normal case is player 1 is fading and
-			// player 2 not null and not fading
-			else {
-				// stop it
-				playerImpl1.stop();
-				// not fading but different player class, reinstanciate it
-				if (!playerImpl2.getClass().equals(cPlayer)) {
-					playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
-				}
-				playerImpl = playerImpl2;
-			}
+			//Stop all streams
+			stop(true);
+			playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
+			playerImpl = playerImpl1;
 			bPlaying = true;
 			bPaused = false;
 			boolean bWaitingLine = true;
@@ -245,9 +218,6 @@ public class Player implements ITechnicalStrings {
 	 */
 	public static void stop(boolean bAll) {
 		try {
-			if (playerImpl == null) { // none current player, leave
-				return;
-			}
 			if (playerImpl1 != null && (playerImpl1.getState() != FADING_STATUS || bAll)) {
 				playerImpl1.stop();
 			}
