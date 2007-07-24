@@ -36,6 +36,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.JajukToggleButton;
 import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
@@ -59,6 +60,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
@@ -337,6 +339,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 */
 	public void update(final Event event) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@SuppressWarnings("unchecked")
 			public void run() {
 				try {
 					bReloading = true; // flag reloading to avoid wrong column
@@ -346,12 +349,22 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						jtable.clearSelection();
 					}
 					if (EventSubject.EVENT_DEVICE_MOUNT.equals(subject)
-							|| EventSubject.EVENT_DEVICE_UNMOUNT.equals(subject)
-							|| EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
+							|| EventSubject.EVENT_DEVICE_UNMOUNT.equals(subject)) {
 						jtable.clearSelection();
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
-
+					} else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
+						//Consumme only events from the same perspective for table/tree synchonization
+						if (!(event.getDetails().getProperty(DETAIL_ORIGIN).equals(PerspectiveManager
+								.getCurrentPerspective().getID()))) {
+							return;
+						}
+						//Update model tree selection
+						model.treeSelection = (ArrayList<Item>)event.getDetails().get(DETAIL_SELECTION);
+						//force redisplay to apply the filter
+						jtable.clearSelection();
+						// force filter to refresh
+						applyFilter(sAppliedCriteria, sAppliedFilter);
 					} else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
 							|| EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
 						// force filter to refresh

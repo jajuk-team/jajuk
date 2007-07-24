@@ -20,9 +20,16 @@
 
 package org.jajuk.ui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
+
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
@@ -30,17 +37,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for logical table view
@@ -63,7 +60,7 @@ public class TracksTableModel extends JajukTableModel {
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel
-		vColNames.add(" "); 
+		vColNames.add(" ");
 		vId.add(XML_PLAY);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
@@ -111,19 +108,23 @@ public class TracksTableModel extends JajukTableModel {
 	/**
 	 * Fill model with data using an optionnal filter property and pattern
 	 */
+	@SuppressWarnings("unchecked")
 	public void populateModel(String sPropertyName, String sPattern) {
 		// Filter mounted files if needed and apply sync table with tree option
 		// if needed
 		boolean bShowWithTree = true;
-		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(
-				EventSubject.EVENT_SYNC_TREE_TABLE, DETAIL_SELECTION);
+		ArrayList<Track> alToShow = null;
 		// look at selection
 		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		Set<Track> alTracks = TrackManager.getInstance().getTracks();
-		ArrayList<Track> alToShow = new ArrayList<Track>(alTracks.size());
+		alToShow = new ArrayList<Track>(alTracks.size());
 		for (Track track : alTracks) {
-			bShowWithTree = !bSyncWithTreeOption
-					|| ((hs != null && hs.size() > 0 && hs.contains(track)));
+			bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
+					// tree selection = null means none election have been
+					// selected in tree so far
+					|| treeSelection == null
+					// check if the tree selection contains the current file
+					|| (treeSelection.size() > 0 && treeSelection.contains(track));
 			// show it if no sync option or if item is in the selection
 			if (!track.shouldBeHidden() && bShowWithTree) {
 				alToShow.add(track);
@@ -136,14 +137,14 @@ public class TracksTableModel extends JajukTableModel {
 			// Prepare filter pattern
 			String sNewPattern = sPattern;
 			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
-				// do we use regular expression or not? if not, we allow user to
-				// use '*'
-				sNewPattern = sNewPattern.replaceAll("\\*", ".*");  
-				sNewPattern = ".*" + sNewPattern + ".*";  
+				// do we use regular expression or not? if not, we allow
+				// user to use '*'
+				sNewPattern = sNewPattern.replaceAll("\\*", ".*");
+				sNewPattern = ".*" + sNewPattern + ".*";
 			} else if ("".equals(sNewPattern)) {
 				// in regexp mode, if none
 				// selection, display all rows
-				sNewPattern = ".*"; 
+				sNewPattern = ".*";
 			}
 			while (it.hasNext()) {
 				Track track = (Track) it.next();
@@ -151,15 +152,15 @@ public class TracksTableModel extends JajukTableModel {
 					// if name or value is null, means there is no filter
 					String sValue = track.getHumanValue(sPropertyName);
 					if (sValue == null) {
-						// try to filter on a unknown property, don't take this
-						// file
+						// try to filter on a unknown property, don't take
+						// this file
 						continue;
 					} else {
 						boolean bMatch = false;
 						try { // test using regular expressions
 							bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());
-							// test if the file property contains this property
-							// value (ignore case)
+							// test if the file property contains this
+							// property value (ignore case)
 						} catch (PatternSyntaxException pse) {
 							// wrong pattern syntax
 							bMatch = false;
@@ -189,12 +190,12 @@ public class TracksTableModel extends JajukTableModel {
 			// Play
 			IconLabel il = null;
 			if (track.getPlayeableFile(true) != null) {
-				il = new IconLabel(PLAY_ICON,
-						"", null, null, null, Messages.getString("LogicalTreeView.1"));  
+				il = new IconLabel(PLAY_ICON, "", null, null, null, Messages
+						.getString("LogicalTreeView.1"));
 			} else {
-				il = new IconLabel(
-						UNMOUNT_PLAY_ICON,
-						"", null, null, null, Messages.getString("LogicalTreeView.1") + Messages.getString("AbstractTableView.10"));   
+				il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
+						.getString("LogicalTreeView.1")
+						+ Messages.getString("AbstractTableView.10"));
 			}
 			// Note: if you want to add an image, use an ImageIcon class and
 			// change

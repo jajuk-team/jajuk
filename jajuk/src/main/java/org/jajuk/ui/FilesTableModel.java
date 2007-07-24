@@ -20,26 +20,23 @@
 
 package org.jajuk.ui;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
+
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for physical table view
@@ -61,7 +58,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel
-		vColNames.add(" "); 
+		vColNames.add(" ");
 		vId.add(XML_PLAY);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
@@ -106,7 +103,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
 		vId.add(XML_DIRECTORY);
 
-		vColNames.add(Messages.getString("Property_file_date")); 
+		vColNames.add(Messages.getString("Property_file_date"));
 		vId.add(XML_FILE_DATE);
 
 		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
@@ -130,29 +127,32 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			vColNames.add(meta.getName());
 			vId.add(meta.getName());
 		}
-
 	}
 
 	/**
 	 * Fill model with data using an optionnal filter property and pattern
 	 */
+	@SuppressWarnings("unchecked")
 	public void populateModel(String sPropertyName, String sPattern) {
-		// Filter mounted files if needed and apply sync table with tree option
-		// if needed
+		ArrayList<File> alToShow = null;
+		// Filter mounted files if needed and apply sync table with tree
+		// option if needed
 		boolean bShowWithTree = true;
-		HashSet hs = (HashSet) ObservationManager.getDetailLastOccurence(
-				EventSubject.EVENT_SYNC_TREE_TABLE, DETAIL_SELECTION);
 		// look at selection
 		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		Set<File> files = FileManager.getInstance().getFiles();
-		ArrayList<File> alToShow = new ArrayList<File>(files.size() / 2);
+		alToShow = new ArrayList<File>(files.size() / 2);
 		oItems = new Item[iRowNum];
 		Iterator it = files.iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
 			// show it if no sync option or if item is in the selection
-			bShowWithTree = !bSyncWithTreeOption || hs == null
-					|| (hs.size() > 0 && hs.contains(file));
+			bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
+					// tree selection = null means none election have been
+					// selected in tree so far
+					|| treeSelection == null
+					// check if the tree selection contains the current file
+					|| (treeSelection.size() > 0 && treeSelection.contains(file));
 			if (!file.shouldBeHidden() && bShowWithTree) {
 				alToShow.add(file);
 			}
@@ -165,11 +165,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
 				// do we use regular expression or not?
 				// if not, we allow user to use '*'
-				sNewPattern = sNewPattern.replaceAll("\\*", ".*");  
-				sNewPattern = ".*" + sNewPattern + ".*";  
-			} else if ("".equals(sNewPattern)) { 
+				sNewPattern = sNewPattern.replaceAll("\\*", ".*");
+				sNewPattern = ".*" + sNewPattern + ".*";
+			} else if ("".equals(sNewPattern)) {
 				// in regexp mode, if none selection, display all rows
-				sNewPattern = ".*"; 
+				sNewPattern = ".*";
 			}
 			while (it.hasNext()) {
 				File file = (File) it.next();
@@ -177,15 +177,15 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 					// if name or value is null, means there is no filter
 					String sValue = file.getHumanValue(sPropertyName);
 					if (sValue == null) {
-						// try to filter on a unknown property, don't take this
-						// file
+						// try to filter on a unknown property, don't take
+						// this file
 						continue;
 					} else {
 						boolean bMatch = false;
 						try { // test using regular expressions
 							bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());
-							// test if the file property contains this property
-							// value (ignore case)
+							// test if the file property contains this
+							// property value (ignore case)
 						} catch (PatternSyntaxException pse) {
 							// wrong pattern syntax
 							bMatch = false;
@@ -215,12 +215,12 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			// Play
 			IconLabel il = null;
 			if (file.isReady()) {
-				il = new IconLabel(PLAY_ICON,
-						"", null, null, null, Messages.getString("PhysicalTreeView.1"));  
+				il = new IconLabel(PLAY_ICON, "", null, null, null, Messages
+						.getString("PhysicalTreeView.1"));
 			} else {
-				il = new IconLabel(
-						UNMOUNT_PLAY_ICON,
-						"", null, null, null, Messages.getString("PhysicalTreeView.1") + Messages.getString("AbstractTableView.10"));   
+				il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
+						.getString("PhysicalTreeView.1")
+						+ Messages.getString("AbstractTableView.10"));
 			}
 			oValues[iRow][0] = il;
 			bCellEditable[iRow][0] = false;

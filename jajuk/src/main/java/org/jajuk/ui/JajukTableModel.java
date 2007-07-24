@@ -24,6 +24,7 @@ import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -32,8 +33,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Jajuk table model, adds identifier to model
  */
-public abstract class JajukTableModel extends DefaultTableModel implements
-		ITechnicalStrings {
+public abstract class JajukTableModel extends DefaultTableModel implements ITechnicalStrings {
 
 	/** Column identifiers */
 	volatile public Vector<String> vId = new Vector<String>(10);
@@ -67,6 +67,9 @@ public abstract class JajukTableModel extends DefaultTableModel implements
 
 	/** Editable flag */
 	boolean bEditable = false;
+	
+	/** Tree selection*/
+	public ArrayList<Item> treeSelection;
 
 	/**
 	 * 
