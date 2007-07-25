@@ -228,4 +228,13 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		}
 	}
 
+		/**
+	 * Select a list of rows
+	 * @param indexes list of row indexes to be selected 
+	 */
+	public void setSelectedrows(int[] indexes) {
+		for (int i = 0; i < indexes.length; i++) {
+			addRowSelectionInterval(indexes[i], indexes[i]);
+		}
+	}
 }

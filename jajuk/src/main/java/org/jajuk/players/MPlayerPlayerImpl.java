@@ -312,12 +312,12 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		if (bEOF) {
 			throw new JajukException(7);
 		}
-		setVolume(fVolume);
 		// Get track length
 		sendCommand("get_time_length");
 		if (fPosition > 0.0f) {
 			seek(fPosition);
 		}
+		setVolume(fVolume);
 	}
 
 	/*

@@ -130,33 +130,13 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	 */
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
+		// Make sure not to handle events for popup handling
+		if (e.isPopupTrigger()) {
+			return;
+		}
 		int iSelectedCol = jtable.getSelectedColumn();
 		// selected column in view Test click on play icon
 		// launch track only if only first column is selected (fixes issue with
@@ -176,32 +156,52 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 						new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
 								true),
 						ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
-				
+
 			} catch (JajukException je) {
 				Log.error(je);
 			}
 		} else if (e.getClickCount() == 1) {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
 			TableTransferHandler.iSelectedRow = iSelectedRow;
-			// right click on a selected node set ?
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				// - if none or 1 node is selected, a right click on another
-				// node, select it
-				// - if more than 1, we keep selection and display a popup for them
-				if (jtable.getSelectedRowCount() < 2) {
-					jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-				}
-				jmenuFile.show(jtable, e.getX(), e.getY());
-			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 */
+	public void mouseExited(MouseEvent e) {
+	}
+
+	public void mousePressed(MouseEvent e) {
+		handlePopup(e);
+	}
+
 	public void mouseReleased(MouseEvent e) {
+		handlePopup(e);
+	}
+
+	public void handlePopup(final MouseEvent e) {
+		if (e.isPopupTrigger()) {
+			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+			TableTransferHandler.iSelectedRow = iSelectedRow;
+			// o if none or 1 node is selected, a right click on another
+			// node, select it
+			// o if more than 1, we keep selection and display a popup for them
+			if (jtable.getSelectedRowCount() < 2) {
+				jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
+			}
+			jmenuFile.show(jtable, e.getX(), e.getY());
+		}
 	}
 
 	/*

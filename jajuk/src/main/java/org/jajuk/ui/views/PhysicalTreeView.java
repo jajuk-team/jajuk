@@ -676,7 +676,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 						// selection change
 						Properties properties = new Properties();
 						properties.put(DETAIL_SELECTION, alSelected);
-						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective()
+								.getID());
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
 								properties));
 					}
@@ -691,9 +692,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							}
 							// if at least one selected dir contains a file,
 							// show option
-							Directory dir = (Directory) item;
-							if (dir.getFiles().size() > 0) {
-								bShowCDDB = true;
+							if (item instanceof Directory) {
+								Directory dir = (Directory) item;
+								if (dir.getFiles().size() > 0) {
+									bShowCDDB = true;
+								}
 							}
 						}
 						jmiDirCDDBQuery.setEnabled(bShowCDDB);
@@ -703,7 +706,143 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		});
 		// Listen for single / double click
 		jtree.addMouseListener(new MouseAdapter() {
-			public void mousePressed(final MouseEvent e) {
+
+			public void mousePressed(MouseEvent e) {
+				handlePopup(e);
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				handlePopup(e);
+			}
+
+			public void handlePopup(final MouseEvent e) {
+				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+				if (path == null) {
+					return;
+				}
+				if (e.isPopupTrigger()) {
+					// right click on a selected node set Right click
+					// behavior
+					// identical to konqueror tree:
+					// if none or 1 node is selected, a right click on
+					// another
+					// node select it if more than 1, we keep selection and
+					// display a popup for them
+					if (jtree.getSelectionCount() < 2) {
+						jtree.getSelectionModel().setSelectionPath(path);
+					}
+					paths = jtree.getSelectionModel().getSelectionPaths();
+					alFiles.clear();
+					alDirs.clear();
+					// test mix between types ( not allowed )
+					Class c = paths[0].getLastPathComponent().getClass();
+					for (int i = 0; i < paths.length; i++) {
+						if (!paths[i].getLastPathComponent().getClass().equals(c)) {
+							return;
+						}
+					}
+					// Test that all items are mounted or hide menu item
+					// device:mono selection for the moment
+					if (c.equals(DeviceNode.class)) {
+						Device device = ((DeviceNode) (paths[0].getLastPathComponent()))
+								.getDevice();
+						if (device.isMounted()) {
+							jmiDevMount.setEnabled(false);
+							jmiDevUnmount.setEnabled(true);
+						} else {
+							jmiDevMount.setEnabled(true);
+							jmiDevUnmount.setEnabled(false);
+						}
+						final Directory dir = DirectoryManager.getInstance().registerDirectory(
+								device);
+						boolean bShowCDDB = false;
+						if (dir.getFiles().size() > 0) {
+							bShowCDDB = true;
+						}
+						jmiDevCDDBQuery.setEnabled(bShowCDDB);
+					}
+					if (c.equals(DirectoryNode.class)) {
+						for (int i = 0; i < paths.length; i++) {
+							Directory dir = ((DirectoryNode) (paths[i].getLastPathComponent()))
+									.getDirectory();
+							if (!dir.getDevice().isMounted()) {
+								continue;
+							}
+						}
+					}
+					if (c.equals(FileNode.class)) {
+						for (int i = 0; i < paths.length; i++) {
+							File file = ((FileNode) (paths[i].getLastPathComponent())).getFile();
+							if (!file.isReady()) {
+								continue;
+							}
+						}
+					}
+					jmiPlaylistFileDelete.setEnabled(true);
+					if (c.equals(PlaylistFileNode.class)) {
+						for (int i = 0; i < paths.length; i++) {
+							PlaylistFile plf = ((PlaylistFileNode) (paths[i].getLastPathComponent()))
+									.getPlaylistFile();
+							if (!plf.isReady()) {
+								jmiPlaylistFileDelete.setEnabled(false);
+								continue;
+							}
+						}
+					}
+
+					// get all components recursively
+					for (int i = 0; i < paths.length; i++) {
+						Object o = paths[i].getLastPathComponent();
+						// return all childs nodes recursively
+						Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
+						while (e2.hasMoreElements()) {
+							DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
+							if (node instanceof FileNode) {
+								alFiles.add(((FileNode) node).getFile());
+							} else if (node instanceof DirectoryNode) {
+								Directory dir = ((DirectoryNode) node).getDirectory();
+								alDirs.add(dir);
+							}
+						}
+					}
+					// display menus according node type
+					if (paths[0].getLastPathComponent() instanceof FileNode) {
+						jmenuFile.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof DirectoryNode) {
+						jmenuDir.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode) {
+						jmenuPlaylistFile.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof DeviceNode) {
+						Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
+						// if the device is not synchronized
+						if (device.getValue(XML_DEVICE_SYNCHRO_SOURCE).equals("")) {
+							jmiDevSynchronize.setEnabled(false);
+						} else {
+							jmiDevSynchronize.setEnabled(true);
+						}
+						// operations on devices are mono-target expect for
+						// reporting
+						if (paths.length > 1) {
+							// Disable all menu items except reporting
+							for (int i = 0; i < jmenuDev.getSubElements().length; i++) {
+								((JMenuItem) jmenuDev.getSubElements()[i]).setEnabled(false);
+							}
+							jmiDevReport.setEnabled(true);
+						}
+						jmenuDev.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+						// collection
+						jmenuCollection.show(jtree, e.getX(), e.getY());
+					}
+
+				}
+			}
+
+			public void mouseClicked(final MouseEvent e) {
+				// Make sure not to handle events for popup handling
+				if (e.isPopupTrigger()) {
+					return;
+				}
 				// Avoid concurrency with the selection listener
 				synchronized (lock) {
 					TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -745,124 +884,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 												ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
 												true), false);
 							}
-						}
-
-					} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
-						// right click on a selected node set Right click
-						// behavior
-						// identical to konqueror tree:
-						// if none or 1 node is selected, a right click on
-						// another
-						// node select it if more than 1, we keep selection and
-						// display a popup for them
-						if (jtree.getSelectionCount() < 2) {
-							jtree.getSelectionModel().setSelectionPath(path);
-						}
-						paths = jtree.getSelectionModel().getSelectionPaths();
-						alFiles.clear();
-						alDirs.clear();
-						// test mix between types ( not allowed )
-						Class c = paths[0].getLastPathComponent().getClass();
-						for (int i = 0; i < paths.length; i++) {
-							if (!paths[i].getLastPathComponent().getClass().equals(c)) {
-								return;
-							}
-						}
-						// Test that all items are mounted or hide menu item
-						// device:mono selection for the moment
-						if (c.equals(DeviceNode.class)) {
-							Device device = ((DeviceNode) (paths[0].getLastPathComponent()))
-									.getDevice();
-							if (device.isMounted()) {
-								jmiDevMount.setEnabled(false);
-								jmiDevUnmount.setEnabled(true);
-							} else {
-								jmiDevMount.setEnabled(true);
-								jmiDevUnmount.setEnabled(false);
-							}
-							final Directory dir = DirectoryManager.getInstance().registerDirectory(
-									device);
-							boolean bShowCDDB = false;
-							if (dir.getFiles().size() > 0) {
-								bShowCDDB = true;
-							}
-							jmiDevCDDBQuery.setEnabled(bShowCDDB);
-						}
-						if (c.equals(DirectoryNode.class)) {
-							for (int i = 0; i < paths.length; i++) {
-								Directory dir = ((DirectoryNode) (paths[i].getLastPathComponent()))
-										.getDirectory();
-								if (!dir.getDevice().isMounted()) {
-									continue;
-								}
-							}
-						}
-						if (c.equals(FileNode.class)) {
-							for (int i = 0; i < paths.length; i++) {
-								File file = ((FileNode) (paths[i].getLastPathComponent()))
-										.getFile();
-								if (!file.isReady()) {
-									continue;
-								}
-							}
-						}
-						jmiPlaylistFileDelete.setEnabled(true);
-						if (c.equals(PlaylistFileNode.class)) {
-							for (int i = 0; i < paths.length; i++) {
-								PlaylistFile plf = ((PlaylistFileNode) (paths[i]
-										.getLastPathComponent())).getPlaylistFile();
-								if (!plf.isReady()) {
-									jmiPlaylistFileDelete.setEnabled(false);
-									continue;
-								}
-							}
-						}
-
-						// get all components recursively
-						for (int i = 0; i < paths.length; i++) {
-							Object o = paths[i].getLastPathComponent();
-							// return all childs nodes recursively
-							Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
-							while (e2.hasMoreElements()) {
-								DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
-										.nextElement();
-								if (node instanceof FileNode) {
-									alFiles.add(((FileNode) node).getFile());
-								} else if (node instanceof DirectoryNode) {
-									Directory dir = ((DirectoryNode) node).getDirectory();
-									alDirs.add(dir);
-								}
-							}
-						}
-						// display menus according node type
-						if (paths[0].getLastPathComponent() instanceof FileNode) {
-							jmenuFile.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof DirectoryNode) {
-							jmenuDir.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode) {
-							jmenuPlaylistFile.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof DeviceNode) {
-							Device device = ((DeviceNode) paths[0].getLastPathComponent())
-									.getDevice();
-							// if the device is not synchronized
-							if (device.getValue(XML_DEVICE_SYNCHRO_SOURCE).equals("")) {
-								jmiDevSynchronize.setEnabled(false);
-							} else {
-								jmiDevSynchronize.setEnabled(true);
-							}
-							// operations on devices are mono-target expect for
-							// reporting
-							if (paths.length > 1) {
-								// Disable all menu items except reporting
-								for (int i = 0; i < jmenuDev.getSubElements().length; i++) {
-									((JMenuItem) jmenuDev.getSubElements()[i]).setEnabled(false);
-								}
-								jmiDevReport.setEnabled(true);
-							}
-							jmenuDev.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
-							// collection
-							jmenuCollection.show(jtree, e.getX(), e.getY());
 						}
 					}
 				}

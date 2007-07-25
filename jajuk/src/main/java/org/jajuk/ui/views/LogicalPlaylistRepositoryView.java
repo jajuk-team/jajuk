@@ -127,15 +127,20 @@ public class LogicalPlaylistRepositoryView extends
 	}
 
 	public void play(PlaylistFileItem plfi) throws JajukException {
-		Playlist pl = PlaylistManager.getInstance().getPlayList(
-				plfiSelected.getPlaylistFile());
-		if (pl != null) {
-			PlaylistFile plf = pl.getPlayeablePlaylistFile();
-			if (plf == null) {
-				throw new NoneAccessibleFileException(10); 
+		// Normal playlists, get playlist object from playlist file
+		if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL) {
+			Playlist pl = PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile());
+			if (pl != null) {
+				PlaylistFile plf = pl.getPlayeablePlaylistFile();
+				if (plf == null) {
+					throw new NoneAccessibleFileException(10); 
+				}
+				plf.play();
 			}
-			plf.play();
+		} else {
+			// smart playlist (new, bookmarks, novelties..), no playlist
+			// objects, just play it
+			plfi.getPlaylistFile().play();
 		}
 	}
-
 }

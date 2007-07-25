@@ -354,21 +354,29 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
 					} else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
-						//Consumme only events from the same perspective for table/tree synchonization
-						if (!(event.getDetails().getProperty(DETAIL_ORIGIN).equals(PerspectiveManager
-								.getCurrentPerspective().getID()))) {
+						// Consume only events from the same perspective for
+						// table/tree synchronization
+						if (!(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective()
+								.getID()))) {
 							return;
 						}
-						//Update model tree selection
-						model.treeSelection = (ArrayList<Item>)event.getDetails().get(DETAIL_SELECTION);
-						//force redisplay to apply the filter
+						// Update model tree selection
+						model.treeSelection = (ArrayList<Item>) event.getDetails().get(
+								DETAIL_SELECTION);
+						// force redisplay to apply the filter
 						jtable.clearSelection();
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
-					} else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
-							|| EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
+					} else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)){
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
+					} else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
+						//Keep current selection
+						int[] selection = jtable.getSelectedRows();
+						// force filter to refresh
+						applyFilter(sAppliedCriteria, sAppliedFilter);
+						//Re-apply selection
+						jtable.setSelectedrows(selection);
 					} else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
 						Properties properties = event.getDetails();
 						if (properties == null) {

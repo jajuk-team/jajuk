@@ -203,7 +203,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		if (comp != 0) {
 			return comp;
 		}
-		// If both files are in the same directectory, sort by track order
+		// If both files are in the same directory, sort by track order
 		int iOrder = (int) getTrack().getOrder();
 		int iOrderOther = (int) otherFile.getTrack().getOrder();
 		if (iOrder != iOrderOther) {

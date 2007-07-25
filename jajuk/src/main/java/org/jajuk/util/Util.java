@@ -1408,13 +1408,14 @@ public class Util implements ITechnicalStrings {
 		properties.remove("jajuk.options.p2p.password");
 		return properties;
 	}
-	
+
 	/**
 	 * 
-	 * @param s String to test
+	 * @param s
+	 *            String to test
 	 * @return whether the string is void or not
 	 */
-	public static boolean isVoid(String s){
+	public static boolean isVoid(String s) {
 		return s == null || s.trim().equals("");
 	}
 
@@ -1689,7 +1690,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_ARTIST, AuthorManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(150,file.getAbsolutePath());
+					throw new JajukException(150, file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
 				}
@@ -1703,7 +1704,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_GENRE, StyleManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(153,file.getAbsolutePath());
+					throw new JajukException(153, file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_GENRE, Messages.getString(UNKNOWN_STYLE));
 				}
@@ -1717,7 +1718,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_ALBUM, AlbumManager.format(sValue));
 			} else {
 				if (bMandatory) {
-					throw new JajukException(149,file.getAbsolutePath());
+					throw new JajukException(149, file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_ALBUM, Messages.getString(UNKNOWN_ALBUM));
 				}
@@ -1732,13 +1733,13 @@ public class Util implements ITechnicalStrings {
 					String sTo = file.getName().substring(0, 3).trim().replaceAll("[^0-9]", "");
 					for (char c : sTo.toCharArray()) {
 						if (!Character.isDigit(c)) {
-							throw new JajukException(152,file.getAbsolutePath());
+							throw new JajukException(152, file.getAbsolutePath());
 						}
 					}
 					lOrder = Long.parseLong(sTo);
 				} else {
 					if (bMandatory) {
-						throw new JajukException(152,file.getAbsolutePath());
+						throw new JajukException(152, file.getAbsolutePath());
 					} else {
 						lOrder = 0;
 					}
@@ -1762,7 +1763,7 @@ public class Util implements ITechnicalStrings {
 				out = out.replace(PATTERN_YEAR, track.getYear().getValue() + "");
 			} else {
 				if (bMandatory) {
-					throw new JajukException(148,file.getAbsolutePath());
+					throw new JajukException(148, file.getAbsolutePath());
 				} else {
 					out = out.replace(PATTERN_YEAR, "?");
 				}
@@ -1786,7 +1787,8 @@ public class Util implements ITechnicalStrings {
 		if (Main.workspace != null && !Main.workspace.trim().equals("")) {
 			sRoot = Main.workspace;
 		}
-		return new File(sRoot + '/' + (Main.bTestMode ? ".jajuk_test" : ".jajuk") + '/' + sPATH);
+		return new File(sRoot + '/' + (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")
+				+ '/' + sPATH);
 	}
 
 	/**
@@ -2002,15 +2004,15 @@ public class Util implements ITechnicalStrings {
 		}
 		return count;
 	}
-	
-	
+
 	/**
-	 * @param color java color
-	 * @return HTML RGB color ex: FF0000 
+	 * @param color
+	 *            java color
+	 * @return HTML RGB color ex: FF0000
 	 */
-	public static String getHTMLColor(Color color){
+	public static String getHTMLColor(Color color) {
 		return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
 				+ Long.toString(color.getBlue(), 16);
-		
+
 	}
 }

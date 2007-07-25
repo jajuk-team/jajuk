@@ -165,6 +165,11 @@ public class Player implements ITechnicalStrings {
 	 */
 	public static boolean play(WebRadio radio) {
 		try {
+			//check mplayer availability
+			if (TypeManager.getInstance().getTypeByExtension(EXT_RADIO) == null){
+				Messages.showWarningMessage(Messages.getString("Warning.4"));
+				return false;
+			}
 			playerImpl = null;
 			// Choose the player
 			Class cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)

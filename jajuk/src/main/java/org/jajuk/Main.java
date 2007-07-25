@@ -514,7 +514,6 @@ public class Main implements ITechnicalStrings {
 		// Check for bootstrap file presence
 		File bootstrap = new File(FILE_BOOTSTRAP);
 		File fJajukDir = Util.getConfFileByPath("");
-
 		if (bootstrap.canRead()) {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(bootstrap));

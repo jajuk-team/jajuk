@@ -469,17 +469,21 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// Menu items
 		// Album menu
 		jmenu = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),IconLoader.ICON_PLAY_16x16);
+		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),
+				IconLoader.ICON_PLAY_16x16);
 		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"),IconLoader.ICON_PUSH);
+		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"), IconLoader.ICON_PUSH);
 		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),IconLoader.ICON_SHUFFLE);
+		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),
+				IconLoader.ICON_SHUFFLE);
 		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),IconLoader.ICON_REPEAT);
+		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),
+				IconLoader.ICON_REPEAT);
 		jmiAlbumPlayRepeat.addActionListener(this);
-		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),IconLoader.ICON_TEST);
+		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_TEST);
 		jmiGetCovers.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),IconLoader.ICON_PROPERTIES);
+		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
+				IconLoader.ICON_PROPERTIES);
 		jmiAlbumProperties.addActionListener(this);
 		jmenu.add(jmiAlbumPlay);
 		jmenu.add(jmiAlbumPush);
@@ -993,10 +997,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
 
 			jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
-			
+
 				public void mouseDragged(MouseEvent e) {
 					try {
-						//Notify the mouse listener that we are dragging
+						// Notify the mouse listener that we are dragging
 						bDragging = true;
 						JComponent c = (JComponent) e.getSource();
 						TransferHandler handler = c.getTransferHandler();
@@ -1005,15 +1009,50 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						bDragging = false;
 					}
 				}
-			
+
 			});
-			
+
 			jlIcon.addMouseListener(new MouseAdapter() {
-				
-				@Override
+
+				public void mousePressed(MouseEvent e) {
+					handlePopup(e);
+				}
+
 				public void mouseReleased(MouseEvent e) {
-					//Leave if already dragging
-					if (bDragging){
+					// Leave if already dragging
+					if (bDragging) {
+						return;
+					}
+					handlePopup(e);
+				}
+
+				public void handlePopup(final MouseEvent e) {
+					if (e.isPopupTrigger()) {
+						// remove red border on previous item if different from
+						// this one
+						if (CatalogView.this.item != null
+								&& CatalogView.this.item != CatalogItem.this) {
+							CatalogView.this.item.setBorder(BorderFactory.createEmptyBorder(2, 2,
+									2, 2));
+						}
+						// add a red border on this item
+						setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+						if (e.getSource() == CatalogItem.this.jlIcon) {
+							CatalogView.this.item = CatalogItem.this;
+							// Show contextual menu
+							jmenu.show(jlIcon, e.getX(), e.getY());
+							// Hide any details frame
+							if (CatalogView.this.details != null) {
+								CatalogView.this.details.dispose();
+							}
+						}
+					}
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// Leave if already dragging or if right click
+					if (bDragging || e.isPopupTrigger()) {
 						return;
 					}
 					// remove red border on previous item if different from this
@@ -1024,7 +1063,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					}
 					// add a red border on this item
 					setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
-					// Right click
+					// Left click
 					if (e.getButton() == MouseEvent.BUTTON1
 							&& e.getSource() == CatalogItem.this.jlIcon) {
 						// if second click (item already selected), play
@@ -1032,16 +1071,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							play(false, false, false);
 						}
 						CatalogView.this.item = CatalogItem.this;
-						// Left click
-					} else if (e.getButton() == MouseEvent.BUTTON3
-							&& e.getSource() == CatalogItem.this.jlIcon) {
-						CatalogView.this.item = CatalogItem.this;
-						// Show contextual menu
-						jmenu.show(jlIcon, e.getX(), e.getY());
-						// Hide any details frame
-						if (CatalogView.this.details != null) {
-							CatalogView.this.details.dispose();
-						}
 					}
 				}
 
@@ -1071,7 +1100,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
 							.getAdvancedDescription());
 					text.setEditable(false);
-					text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
+					text.setBackground(SubstanceLookAndFeel.getActiveColorScheme()
+							.getUltraLightColor());
 					text.addHyperlinkListener(new HyperlinkListener() {
 						public void hyperlinkUpdate(HyperlinkEvent e) {
 							if (e.getEventType() == EventType.ACTIVATED) {

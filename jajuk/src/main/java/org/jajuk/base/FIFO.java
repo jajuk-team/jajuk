@@ -281,7 +281,7 @@ public class FIFO implements ITechnicalStrings {
 				}
 				// ok, stop current track if no append
 				if (!bAppend) {
-					Player.stop(false);
+					Player.stop(true);
 					clear();
 					JajukTimer.getInstance().reset();
 				}

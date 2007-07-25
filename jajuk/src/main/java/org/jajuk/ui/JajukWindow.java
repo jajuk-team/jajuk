@@ -83,6 +83,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 	public JajukWindow() {
 		// mac integration
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		System.setProperty("apple.awt.showGrowBox", "false");
+
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true);
 		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
@@ -274,8 +277,10 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				// show
 				if (visible) {
 					applyStoredSize();
-					//hide and show again is a workaround for a toFront() issue under Metacity
-					//see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
+					// hide and show again is a workaround for a toFront() issue
+					// under Metacity
+					// see
+					// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
 					setVisible(false);
 					toFront();
 					setVisible(true);

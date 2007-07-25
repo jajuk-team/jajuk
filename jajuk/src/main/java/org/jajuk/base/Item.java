@@ -106,7 +106,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @return
 	 */
 	public boolean equals(Object otherItem) {
-		if (otherItem == null) {
+		if (otherItem == null || !(otherItem instanceof Item)) {
 			return false;
 		}
 		return getId().equals(((Item)otherItem).getId());

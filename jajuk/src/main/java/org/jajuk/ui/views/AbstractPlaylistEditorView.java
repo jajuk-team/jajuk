@@ -764,14 +764,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
 	public void mouseEntered(MouseEvent e) {
@@ -785,19 +777,52 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	public void mouseExited(MouseEvent e) {
 	}
 
+	public void mousePressed(MouseEvent e) {
+		handlePopup(e);
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		handlePopup(e);
+	}
+
+	public void handlePopup(final MouseEvent e) {
+		if (e.isPopupTrigger()) {
+			// if no multiple previous selection, select row before
+			// displaying popup
+			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+			if (jtable.getSelectedRowCount() < 2) {
+				jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
+			}
+			// Do not show popup if selection contains a planned tracks
+			for (int i = 0; i < jtable.getSelectedRowCount(); i++) {
+				int selection = jtable.getSelectedRows()[i];
+				if (selection > alItems.size() - 1) {
+					return;
+				}
+			}
+			// right click on a selected node set
+			jmenuFile.show(jtable, e.getX(), e.getY());
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
-	public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
+		// Make sure not to handle events for popup handling
+		if (e.isPopupTrigger()) {
+			return;
+		}
 		if (e.getClickCount() == 2) {
-			// double clic, launches selected track and all after
+			// double click, launches selected track and all after
 			StackItem item = getItem(jtable.getSelectedRow());
 			if (item != null) {
 				// For the queue
 				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-					if (item.isPlanned()) { // we can't lauch a planned
+					if (item.isPlanned()) {
+						// we can't launch a planned
 						// track, leave
 						item.setPlanned(false);
 						item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
@@ -826,18 +851,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
 			if (jtable.getSelectedRowCount() < 2) {
 				jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-			}
-			// Right click: display popup if requiered
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				// Do not show popup if selection contains a planned tracks
-				for (int i = 0; i < jtable.getSelectedRowCount(); i++) {
-					int selection = jtable.getSelectedRows()[i];
-					if (selection > alItems.size() - 1) {
-						return;
-					}
-				}
-				// right click on a selected node set
-				jmenuFile.show(jtable, e.getX(), e.getY());
 			}
 		}
 	}
@@ -875,14 +888,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent e) {
-	}
-
+	
 	public void actionPerformed(ActionEvent ae) {
 		try {
 			if (ae.getSource() == jbRun) {

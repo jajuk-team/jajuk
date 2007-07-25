@@ -194,9 +194,9 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 		if (bEOF) {
 			throw new JajukException(7);
 		}
-		setVolume(fVolume);
 		// Get track length
 		sendCommand("get_time_length");
+		setVolume(fVolume);
 	}
 
 	/*

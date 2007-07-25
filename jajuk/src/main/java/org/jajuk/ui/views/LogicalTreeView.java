@@ -20,6 +20,41 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.TransferableTreeNode;
+import org.jajuk.ui.TreeRootElement;
+import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.CDDBWizard;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -60,41 +95,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackComparator;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.TransferableTreeNode;
-import org.jajuk.ui.TreeRootElement;
-import org.jajuk.ui.TreeTransferHandler;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.wizard.CDDBWizard;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
 
 import ext.SwingWorker;
 
@@ -517,8 +517,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 							items = TrackManager.getInstance().getElementCount();
 							alSelected.addAll(TrackManager.getInstance().getTracks());
 							break;
-						} else if (o instanceof TransferableTreeNode){
-							//this is a standard node exept "by date" discovery nodes
+						} else if (o instanceof TransferableTreeNode) {
+							// this is a standard node exept "by date" discovery
+							// nodes
 							alSelected.add((Item) ((TransferableTreeNode) o).getData());
 						}
 						// return all child nodes recursively
@@ -545,7 +546,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						// selection change
 						Properties properties = new Properties();
 						properties.put(DETAIL_SELECTION, alSelected);
-						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective()
+								.getID());
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
 								properties));
 					}
@@ -554,7 +556,78 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		});
 		// Listen for double click
 		MouseListener ml = new MouseAdapter() {
+
 			public void mousePressed(MouseEvent e) {
+				handlePopup(e);
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				handlePopup(e);
+			}
+
+			public void handlePopup(final MouseEvent e) {
+				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+				if (path == null) {
+					return;
+				}
+				if (e.isPopupTrigger()) {
+					// right click on a selected node set right click behavior
+					// identical to konqueror tree:
+					// if none or 1 node is selected, a right click on
+					// another
+					// node select it. if more than 1, we keep selection and
+					// display a popup for them
+					if (jtree.getSelectionCount() < 2) {
+						jtree.getSelectionModel().setSelectionPath(path);
+					}
+					paths = jtree.getSelectionModel().getSelectionPaths();
+					getInstance().alTracks = new ArrayList<Track>(100);
+					// test mix between types ( not allowed )
+					String sClass = paths[0].getLastPathComponent().getClass().toString();
+					for (int i = 0; i < paths.length; i++) {
+						if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)) {
+							return;
+						}
+					}
+					// get all components recursively
+					for (int i = 0; i < paths.length; i++) {
+						Object o = paths[i].getLastPathComponent();
+						Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration(); // return
+						// all
+						// childs
+						// nodes recursively
+						while (e2.hasMoreElements()) {
+							DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
+							if (node instanceof TrackNode) {
+								Track track = ((TrackNode) node).getTrack();
+								if (track.getPlayeableFile(false) != null) {
+									getInstance().alTracks.add(((TrackNode) node).getTrack());
+								}
+							}
+						}
+					}
+					// display menus according node type
+					if (paths[0].getLastPathComponent() instanceof TrackNode) {
+						jmenuTrack.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
+						jmenuAlbum.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
+						jmenuAuthor.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof StyleNode) {
+						jmenuStyle.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+						jmenuCollection.show(jtree, e.getX(), e.getY());
+					} else if (paths[0].getLastPathComponent() instanceof YearNode) {
+						jmenuYear.show(jtree, e.getX(), e.getY());
+					}
+				}
+			}
+
+			public void mouseClicked(MouseEvent e) {
+				// Make sure not to handle events for popup handling
+				if (e.isPopupTrigger()) {
+					return;
+				}
 				// Avoid concurrency with the selection listener
 				synchronized (lock) {
 					TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -577,64 +650,15 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 									Log.error(je);
 								}
 							} else {
-								Messages.showErrorMessage(10, track.getName());
+								Messages.showErrorMessage(10, track.getName()); //$NON-NLS-1$
 							}
-						}
-					} else if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON3) {
-						// right click on a selected node set right click
-						// behavior
-						// identical to konqueror tree:
-						// if none or 1 node is selected, a right click on
-						// another node select it. if more than 1, we keep
-						// selection
-						// and display a popup for them
-						if (jtree.getSelectionCount() < 2) {
-							jtree.getSelectionModel().setSelectionPath(path);
-						}
-						paths = jtree.getSelectionModel().getSelectionPaths();
-						alTracks = new ArrayList<Track>(100);
-						// test mix between types ( not allowed )
-						String sClass = paths[0].getLastPathComponent().getClass().toString();
-						for (int i = 0; i < paths.length; i++) {
-							if (!paths[i].getLastPathComponent().getClass().toString().equals(
-									sClass)) {
-								return;
-							}
-						}
-						// get all components recursively
-						for (int i = 0; i < paths.length; i++) {
-							Object o = paths[i].getLastPathComponent();
-							// return all child nodes recursively
-							Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
-							while (e2.hasMoreElements()) {
-								DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
-										.nextElement();
-								if (node instanceof TrackNode) {
-									Track track = ((TrackNode) node).getTrack();
-									if (track.getPlayeableFile(false) != null) {
-										alTracks.add(((TrackNode) node).getTrack());
-									}
-								}
-							}
-						}
-						// display menus according node type
-						if (paths[0].getLastPathComponent() instanceof TrackNode) {
-							jmenuTrack.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
-							jmenuAlbum.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
-							jmenuAuthor.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof StyleNode) {
-							jmenuStyle.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof YearNode) {
-							jmenuYear.show(jtree, e.getX(), e.getY());
-						} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
-							jmenuCollection.show(jtree, e.getX(), e.getY());
 						}
 					}
+
 				}
 			}
 		};
+
 		jtree.addMouseListener(ml);
 		// Expansion analyze to keep expended state
 		jtree.addTreeExpansionListener(new TreeExpansionListener() {
