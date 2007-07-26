@@ -61,6 +61,8 @@ import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
+import org.jajuk.util.Util;
+
 /**
  * Helper class used to create, store and lookup actions.
  * <p>
@@ -146,7 +148,10 @@ public final class ActionManager {
 		// JajukJMenuBar: Help Menu
 		installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
 		installAction(SHOW_ABOUT, new ShowAboutAction(), false);
-		installAction(QUALITY, new QualityAction(), false);
+		//Do not install this action under OSX because it causes a crash as jar is missing 
+		if (Util.isUnderLinux() || Util.isUnderWindows()){
+			installAction(QUALITY, new QualityAction(), false);
+		}
 		installAction(SHOW_TRACES, new DebugLogAction(), false);
 		installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
 		installAction(JajukAction.CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
@@ -156,7 +161,10 @@ public final class ActionManager {
 		
 		//MISC
 		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
-		installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
+		//Do not install this action under OSX because it causes a crash as jar is missing 
+		if (Util.isUnderLinux() || Util.isUnderWindows()){
+			installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
+		}
 	}
 
 	/**
