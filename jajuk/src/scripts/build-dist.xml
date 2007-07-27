@@ -5,13 +5,38 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
-	<property name='version' value='1.4dev_20070726_1' />
+	<property name='version' value='1.4dev_20070727' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
 	<!--Test flag: values: test or notest -->
 	<property name='test' value='test' />
+
+	<!-- ======================= -->
+	<!-- | Configuration paths | -->
+	<!-- ======================= -->
+	
+	<!-- Conf for bflorat server
+	<property name='conf_izpackdir' value='/prog/IzPack' />
+	<property name='conf_jsmoothgendir' value='/prog/jsmooth-0.9.7' />
+	<property name='conf_javahelpdir' value='/prog/api/jh/javahelp' />
+	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
+	<property name='conf_homeuser' value='/home/bflorat' />
+	<property name='uploaddir' value='${rootdir}/upload' />
+	-->
+
+	<!-- Conf for Jajuk server -->
+	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
+	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
+	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
+	<property name='conf_jnlp-dist' value='/svn-jajuk/jnlp-dist' />
+	<property name='conf_homeuser' value='/home/jbuild' />
+	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/build-1.4/' />
+	
+	<!-- ============================== -->
+	<!-- | End of configuration paths | -->
+	<!-- ============================== -->
 
 	<!--CONST-->
 	<property name='rootdir' value='/tmp/jajuk-dist' />
@@ -31,12 +56,11 @@
 	<property name='helpsetjarname' value='jajuk-help' />
 	<property name='distjarname' value='jajuk-java-installer-' />
 	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
-	<property name='uploaddir' value='${rootdir}/upload' />
 	<property name='helpdir' value='${rootdir}/help' />
 	<!-- This is the intermediate directory used to build war file, we use a persisitent 
  	directory to use jar files in next war (each war contains current and previous jars for incremental upgrade) -->
-	<property name='jnlpdir' value='/data/java/jnlp-dist/${version}' />
-	<property name='previousjnlpdir' value='/data/java/jnlp-dist/${previous_version}' />
+	<property name='jnlpdir' value='${conf_jnlp-dist}/${version}' />
+	<property name='previousjnlpdir' value='${conf_jnlp-dist}/${previous_version}' />
 	<property name='srcdir' value='${basedir}/src' />
 
 	<target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
@@ -241,11 +265,11 @@
 		</copy>
 		<!-- indexer -->
 		<!--English-->
-		<exec executable='/prog/api/jh/javahelp/bin/jhindexer' dir='${helpdir}/default'>
+		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/default'>
 			<arg line='-locale en_US html' />
 		</exec>
 		<!--French-->
-		<exec executable='/prog/api/jh/javahelp/bin/jhindexer' dir='${helpdir}/fr'>
+		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/fr'>
 			<arg line='-locale fr_FR html' />
 		</exec>
 		<!-- jar creation -->
@@ -345,17 +369,17 @@
 		<chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx' />
 
 		<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
-		<copy todir='/home/bflorat' overwrite='yes'>
+		<copy todir='${conf_homeuser}' overwrite='yes'>
 			<fileset file='${srcdir}/packaging/RPMS/.rpmmacros' />
 		</copy>
 		<rpm specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
 	</target>
 
 	<!--IzPack package creation -->
-	<taskdef name='izpack' classpath='/prog/IzPack/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
+	<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 	<target name='izpack' depends='jar,helpsetjar'>
 		<echo message='Makes the installer using IzPack' />
-		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='/prog/IzPack' />
+		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
 	</target>
 
 	<target name='jnlp' description='o Create the Java Web Start war distribution' depends='jar,helpsetjar'>
@@ -412,12 +436,13 @@
 			<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
 		</replace>
 
-		<!--Copy previous release jars, comment this if you have no previous release -->
+		<!--Copy previous release jars, comment this if you have no previous release
 		<copy todir='${jnlpdir}/app'>
 			<fileset dir="${previousjnlpdir}/app">
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
+		-->
 
 		<!-- Create the war -->
 		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
@@ -428,9 +453,9 @@
 
 
 	<!-- Windows EXE creation-->
-	<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="/prog/jsmooth-0.9.7/lib/jsmoothgen-ant.jar" />
+	<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
 	<target name='sfx' depends='izpack'>
-		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="/prog/jsmooth-0.9.7/skeletons" />
+		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
 	</target>
 
 
@@ -443,6 +468,18 @@
 			<fileset file='${windowsdir}/jajuk-${version}-win32.exe' />
 			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
 		</copy>
+
+		<!-- Generate MD5 http://ant.apache.org/manual/CoreTasks/checksum.html -->
+		<checksum file="${uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${uploaddir}/jajuk-${version}.noarch.rpm" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" fileext=".md5" />
+
+		<!-- Generate SHA http://ant.apache.org/manual/CoreTasks/checksum.html -->
+		<checksum file="${uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${uploaddir}/jajuk-${version}.noarch.rpm" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
 	</target>
 
 </project>
