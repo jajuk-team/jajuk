@@ -5,16 +5,13 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
-	<property name='version' value='1.4dev_20070725_1' />
+	<property name='version' value='1.4dev_20070726_1' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
 	<!--Test flag: values: test or notest -->
 	<property name='test' value='test' />
-
-	<!--Timestamp used by Web Start-->
-	<property name='jajuktimestamp' value='2007-07-25 23:12:01' />
 
 	<!--CONST-->
 	<property name='rootdir' value='/tmp/jajuk-dist' />
@@ -119,6 +116,7 @@
 		<copy todir='${izpackdir}'>
 			<fileset file='${srcdir}/packaging/IzPack/jajuk.izpack' />
 			<fileset file='${srcdir}/packaging/IzPack/shortcutSpec.xml' />
+			<fileset file='${srcdir}/packaging/IzPack/installDirectory.unix.txt' />
 		</copy>
 		<!--RPM specific-->
 		<!-- Create structure-->
@@ -420,12 +418,6 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
-
-		<!-- Set Timestamp in jnlp file-->
-		<replace dir='${jnlpdir}/app' value='${jajuktimestamp}'>
-			<include name='*.jnlp' />
-			<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
-		</replace>
 
 		<!-- Create the war -->
 		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>

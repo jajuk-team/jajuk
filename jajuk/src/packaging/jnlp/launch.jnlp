@@ -1,4 +1,3 @@
-TS: TIMESTAMP_REPLACED_BY_ANT
 <?xml version='1.0' encoding='UTF-8'?> 
     <!-- Jajuk JNLP File --> 
     <jnlp spec='1.0+' codebase='$$codebase' href='$$name'> 
@@ -35,21 +34,15 @@ TS: TIMESTAMP_REPLACED_BY_ANT
         	<extension name='Substance Look And Feel' href='substance.jnlp'/>
         	<extension name='JavaHelp' href='java_help.jnlp'/>
         	<extension name='JLayer' href='jlayer.jnlp'/>
-        	<extension name='Jogg' href='jogg.jnlp'/>
-        	<extension name='Jorbis' href='jorbis.jnlp'/>
-        	<extension name='JSpeex' href='jspeex.jnlp'/>
         	<extension name='Log4j' href='log4j.jnlp'/>
-        	<extension name='Mp3spi' href='mp3spi.jnlp'/>
         	<extension name='Swingx' href='swingx.jnlp'/>
         	<extension name='TableLayout' href='table_layout.jnlp'/>
         	<extension name='Tritonus' href='tritonous.jnlp'/>
-        	<extension name='Vorbisspi' href='vorbisspi.jnlp'/>
         	<extension name='EntaggedFreedb' href='entagged_freedb.jnlp'/>
         	<extension name='CommonsCollections' href='commons_collections.jnlp'/>
         	<extension name='QDWizard' href='qdwizard.jnlp'/>
         	<extension name='VLDocking' href='vldocking.jnlp'/>
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
-        	<extension name='JS' href='js.jnlp'/>
         	<extension name='Cobra' href='cobra.jnlp'/>
         	<extension name='Forms' href='forms.jnlp'/>
        </resources>

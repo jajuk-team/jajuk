@@ -43,9 +43,9 @@
         <res id='Installer.image.4' src='main/resources/images/border6.png' />
         <res id='Installer.image.5' src='main/resources/images/border7.png' />
         <res id='Installer.image.6' src='main/resources/images/border8.png' />
-       <res id='ImgPacksPanel.img.0' src='main/resources/images/core.png'  />
-       <res id='ImgPacksPanel.img.1' src='main/resources/images/src.png'  />
-       <res id='TargetPanel.dir.unix' src='packaging/IzPack/installDirectory.unix.txt' parse='yes' type='plain' />
+        <res id='ImgPacksPanel.img.0' src='main/resources/images/core.png'  />
+        <res id='ImgPacksPanel.img.1' src='main/resources/images/src.png'  />
+        <res id='TargetPanel.dir.unix' src='/tmp/jajuk-dist/java/installDirectory.unix.txt' />
     </resources>
     <panels>
 	    <panel classname='HTMLInfoPanel'/>
