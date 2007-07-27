@@ -467,7 +467,7 @@
 	<target name='jarbundler' depends='jar,helpsetjar'>
 		<echo message='jarbundler' />
 		<mkdir dir='${distdir}/jarbundler/' />
-		<jarbundler dir="${distdir}/jarbundler/" name="Jajuk" mainclass="org.jajuk.Main" jar="${distdir}/bin/${jarname}" icon="${conf_izpackdir}/bin/icons/izpack.icns" jvmversion="1.4+" version="${version}" infostring="Jajuk" stubfile="${basedir}/packaging/jarbundler/JavaApplicationStub" build="${version}" />
+		<jarbundler dir="${distdir}/jarbundler/" name="Jajuk" mainclass="org.jajuk.Main" jar="${distdir}/bin/${jarname}" icon="${conf_izpackdir}/bin/icons/izpack.icns" jvmversion="1.4+" version="${version}" infostring="Jajuk" stubfile="${basedir}/src/packaging/jarbundler/JavaApplicationStub" build="${version}" />
 	</target>
 
 	<!--jarbundler Mac OS X zip package creation -->
