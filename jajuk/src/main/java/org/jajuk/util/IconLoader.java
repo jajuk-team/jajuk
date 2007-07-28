@@ -205,6 +205,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_REFRESH = new UrlImageIcon(Util
 			.getResource("icons/16x16/refresh.png"));
 
+	public static final UrlImageIcon ICON_RESTORE_ALL_VIEWS = new UrlImageIcon(Util
+			.getResource("icons/16x16/refresh_all.png"));
+
 	public static final UrlImageIcon ICON_SYNCHRO = new UrlImageIcon(Util
 			.getResource("icons/16x16/synchro.png"));
 

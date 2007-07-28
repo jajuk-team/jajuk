@@ -162,7 +162,7 @@ public class WebRadioPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 				int port = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
 				// Non anonymous proxy
 				if (!Util.isVoid(sLogin)) {
-					String sPwd = DownloadManager.getProxyPwd();
+					String sPwd = Util.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD));
 					String sProxyConf = "http://" + sLogin + ':' + sPwd + '@' + sHost + ':' + port;
 					env.put("http_proxy", sProxyConf);
 					Log.debug("Using these proxy settings: " + sProxyConf);

@@ -42,6 +42,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.TimeOutException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -460,7 +461,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 										Log.error(e); // can occur in case of
 										// timeout or error
 										// during cover download
-										if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException) {
+										if (e instanceof TimeOutException) {
 											iErrorCounter++;
 											if (iErrorCounter == STOP_TO_SEARCH) {
 												Log
@@ -481,7 +482,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 								}
 							}
 						} catch (Exception e) {
-							if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException) {
+							if (e instanceof TimeOutException) {
 								Log.warn(e.getMessage());
 								// can occur in case of timeout or error during
 								// covers list download

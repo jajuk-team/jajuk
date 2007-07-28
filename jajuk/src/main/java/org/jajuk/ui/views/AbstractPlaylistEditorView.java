@@ -325,7 +325,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				// Year
 				oValues[iRow][6] = bf.getTrack().getYear();
 				// Length
-				oValues[iRow][7] = Util.formatTimeBySec(bf.getTrack().getLength(), false);
+				oValues[iRow][7] = Util.formatTimeBySec(bf.getTrack().getDuration(), false);
 				// Comment
 				oValues[iRow][8] = bf.getTrack().getStringValue(XML_TRACK_COMMENT);
 				// Date discovery

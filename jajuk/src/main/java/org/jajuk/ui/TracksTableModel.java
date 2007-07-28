@@ -227,7 +227,7 @@ public class TracksTableModel extends JajukTableModel {
 			bCellEditable[iRow][5] = false;
 			ilRate.setInteger(true);
 			// Length
-			oValues[iRow][6] = Util.formatTimeBySec(track.getLength(), false);
+			oValues[iRow][6] = Util.formatTimeBySec(track.getDuration(), false);
 			bCellEditable[iRow][6] = false;
 			// Comment
 			oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);

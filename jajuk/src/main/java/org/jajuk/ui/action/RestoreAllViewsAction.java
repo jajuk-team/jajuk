@@ -40,7 +40,7 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
 	public static boolean fullRestore = false;
 
 	RestoreAllViewsAction() {
-		super(Messages.getString("JajukJMenuBar.26"), IconLoader.ICON_REFRESH, true);
+		super(Messages.getString("JajukJMenuBar.26"), IconLoader.ICON_RESTORE_ALL_VIEWS, true);
 		setShortDescription(Messages.getString("JajukJMenuBar.26"));
 	}
 

@@ -50,7 +50,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ext.LyricsService;
+import ext.services.lyrics.LyricsService;
+
 
 /**
  * Lyrics view

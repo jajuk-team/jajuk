@@ -124,12 +124,12 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 		}
 
 		public int getLength() {
-			return (int) track.getLength();
+			return (int) track.getDuration();
 
 		}
 
 		public float getPreciseLength() {
-			return track.getLength();
+			return track.getDuration();
 		}
 
 	}

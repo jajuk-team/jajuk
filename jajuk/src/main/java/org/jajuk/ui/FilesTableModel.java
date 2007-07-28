@@ -247,7 +247,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			oValues[iRow][5] = ilRate;
 			bCellEditable[iRow][5] = false;
 			// Length
-			oValues[iRow][6] = Util.formatTimeBySec(file.getTrack().getLength(), false);
+			oValues[iRow][6] = Util.formatTimeBySec(file.getTrack().getDuration(), false);
 			bCellEditable[iRow][6] = false;
 			// Device
 			oValues[iRow][7] = file.getDirectory().getDevice().getName();

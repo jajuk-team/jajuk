@@ -114,7 +114,7 @@ public class UpgradeManager implements ITechnicalStrings {
 		// Try to download current jajuk PAD file
 		String sRelease = null;
 		try {
-			String pad = new String(DownloadManager.downloadUrl(new URL(CHECK_FOR_UPDATE_URL)));
+			String pad = DownloadManager.downloadHtml(new URL(CHECK_FOR_UPDATE_URL));
 			int beginIndex = pad.indexOf("<Program_Version>");
 			int endIndex = pad.indexOf("</Program_Version>");
 			sRelease = pad.substring(beginIndex + 17, endIndex);

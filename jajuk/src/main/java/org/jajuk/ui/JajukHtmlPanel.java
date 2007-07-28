@@ -77,7 +77,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		setCursor(Util.WAIT_CURSOR);
 		File page = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
 				+ Util.getOnlyFile(url.toString() + ".html"));
-		String sPage = new String(DownloadManager.downloadUrl(url));
+		String sPage = DownloadManager.downloadHtml(url);
 		// Remove scripting
 		int index = -1;
 		StringBuffer sb = new StringBuffer(sPage);

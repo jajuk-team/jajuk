@@ -326,7 +326,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		String sTrackStyle = Util.formatXML(track.getStyle().getName2());
 		String sTrackAuthor = Util.formatXML(track.getAuthor().getName2());
 		String sTrackAlbum = Util.formatXML(track.getAlbum().getName2());
-		long lTrackLength = track.getLength();
+		long lTrackLength = track.getDuration();
 		long lTrackRate = track.getRate();
 		String sTrackComment = Util.formatXML(track.getComment());
 		long lTrackOrder = track.getOrder();
