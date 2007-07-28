@@ -204,7 +204,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// register the new album
 			Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
 			Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track
-					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
+					.getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track
 					.getType());
 			postChange(track, newTrack, filter);
 			// remove this album if no more references
@@ -252,7 +252,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// register the new item
 			Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
 			Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
-					newAuthor, track.getLength(), track.getYear(), track.getOrder(), track
+					newAuthor, track.getDuration(), track.getYear(), track.getOrder(), track
 							.getType());
 			postChange(track, newTrack, filter);
 			// remove this item if no more references
@@ -295,7 +295,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// register the new item
 			Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
 			Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle, track
-					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
+					.getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track
 					.getType());
 			postChange(track, newTrack, filter);
 			// remove this item if no more references
@@ -341,7 +341,7 @@ public class TrackManager extends ItemManager implements Observer {
 			// Register new item
 			Year newYear = YearManager.getInstance().registerYear(newItem);
 			Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
-					track.getAuthor(), track.getLength(), newYear, track.getOrder(), track
+					track.getAuthor(), track.getDuration(), newYear, track.getOrder(), track
 							.getType());
 			postChange(track, newTrack, filter);
 			return newTrack;
@@ -444,7 +444,7 @@ public class TrackManager extends ItemManager implements Observer {
 				tag.commit();
 			}
 			Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
-					track.getAuthor(), track.getLength(), track.getYear(), lNewOrder, track
+					track.getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track
 							.getType());
 			postChange(track, newTrack, filter);
 			return newTrack;
@@ -482,7 +482,7 @@ public class TrackManager extends ItemManager implements Observer {
 				tag.commit();
 			}
 			Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track
-					.getAuthor(), track.getLength(), track.getYear(), track.getOrder(), track
+					.getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track
 					.getType());
 			postChange(track, newTrack, filter);
 			// if current track name is changed, notify it

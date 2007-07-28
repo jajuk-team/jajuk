@@ -315,7 +315,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		} else if (XML_AUTHOR.equals(sKey)) {
 			return getTrack().getAuthor().getName2();
 		} else if (XML_TRACK_LENGTH.equals(sKey)) {
-			return Util.formatTimeBySec(getTrack().getLength(), false);
+			return Util.formatTimeBySec(getTrack().getDuration(), false);
 		} else if (XML_TRACK_RATE.equals(sKey)) {
 			return Long.toString(getTrack().getRate());
 		} else if (XML_DEVICE.equals(sKey)) {
@@ -342,7 +342,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		sb.append(track.getStyle().getName2());
 		sb.append(track.getAuthor().getName2());
 		sb.append(track.getAlbum().getName2());
-		sb.append(track.getLength());
+		sb.append(track.getDuration());
 		sb.append(track.getRate());
 		sb.append(track.getValue(XML_TRACK_COMMENT));// custom properties now
 		sb.append(track.getValue(XML_TRACK_ORDER));// custom properties now

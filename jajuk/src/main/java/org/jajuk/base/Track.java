@@ -278,7 +278,7 @@ public class Track extends LogicalItem implements Comparable {
 	/**
 	 * @return length in sec
 	 */
-	public long getLength() {
+	public long getDuration() {
 		return length;
 	}
 

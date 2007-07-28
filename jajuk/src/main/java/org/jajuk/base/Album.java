@@ -262,7 +262,7 @@ public class Album extends LogicalItem implements Comparable {
 		// Compute total length in secs
 		long length = 0;
 		for (Track track : tracks) {
-			length += track.getLength();
+			length += track.getDuration();
 		}
 		sOut += "<br>" + Messages.getString("Property_length") + ": "
 				+ Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
@@ -274,7 +274,7 @@ public class Album extends LogicalItem implements Comparable {
 			}
 			sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getId() + "'>"
 					+ track.getName() + "</a>" + " (";
-			sOut += Util.formatTimeBySec(track.getLength(), false) + ") </b>";
+			sOut += Util.formatTimeBySec(track.getDuration(), false) + ") </b>";
 			if (!bSingleYear && track.getYear().getValue() != 0) {
 				sOut += " - " + track.getYear().getValue() + "   ";
 			}

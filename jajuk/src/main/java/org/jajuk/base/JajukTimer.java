@@ -61,7 +61,7 @@ public class JajukTimer {
 	 */
 	public void addTrackTime(File file) {
 		if (file != null) {
-			lTimeToPlay += file.getTrack().getLength();
+			lTimeToPlay += file.getTrack().getDuration();
 		}
 	}
 
@@ -90,7 +90,7 @@ public class JajukTimer {
 	 */
 	public void removeTrackTime(File file) {
 		if (file != null) {
-			lTimeToPlay -= file.getTrack().getLength();
+			lTimeToPlay -= file.getTrack().getDuration();
 		}
 	}
 
