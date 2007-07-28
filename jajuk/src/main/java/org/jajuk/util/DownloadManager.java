@@ -20,96 +20,31 @@
 
 package org.jajuk.util;
 
+import org.jajuk.util.log.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.Authenticator;
+import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.PasswordDialog;
-import org.jajuk.util.log.Log;
+import ext.services.network.NetworkUtils;
+import ext.services.network.Proxy;
 
 /**
  * Manages network downloads
  */
 public class DownloadManager implements ITechnicalStrings {
 
-	/** Proxy pwd */
-	private static String sProxyPwd = null;
-
-	/**
-	 * 
-	 * @return a custom content handler of any mime type and based on HTTP
-	 *         protocol
-	 
-	public static URLStreamHandler getStreamHandler() {
-		return handler;
-	}*/
-
-	/**
-	 * @param sProxyUser
-	 * @param sProxyPassswd
-	 * @return an HTTP client
-	 */
-	private static HttpClient getHTTPClient(String sProxyUser, String sProxyPassswd,
-			int iConTimeout, int iDataTimeout) {
-		HttpClient client = new HttpClient();
-		// connection to
-		client.getHttpConnectionManager().getParams().setConnectionTimeout(iConTimeout);
-		// data reception timeout
-		client.getHttpConnectionManager().getParams().setSoTimeout(iDataTimeout);
-		// Add proxy-specific configuration
-		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client.getHostConfiguration().setProxy(
-					ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
-					Integer.parseInt(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT)));
-			// The proxy requires authentication
-			if (sProxyUser != null && sProxyPassswd != null) {
-				client.getState().setProxyCredentials(new AuthScope(AuthScope.ANY),
-						new UsernamePasswordCredentials(sProxyUser, sProxyPwd));
-			}
-		}
-		return client;
-	}
-
-	/**
-	 * @return Get an HTTP client
-	 */
-	private static HttpClient getHTTPClient(int iConTimeout, int iDataTimeout) {
-		return getHTTPClient(null, null, iConTimeout, iDataTimeout);
-	}
-
-	/**
-	 * @param sHostname,
-	 *            the host name
-	 * @param sProxyURL
-	 *            The proxy port, null if you don't use a proxy
-	 * @param iProxyPort,
-	 *            proxy port if you use one of -1 if not
-	 * @return An host configuration
-	 */
-	private static HostConfiguration getHostConfiguration(String sHostname, String sProxyURL,
-			int iProxyPort) {
-		HostConfiguration host = new HostConfiguration();
-		host.setHost(sHostname);
-		if (sProxyURL != null && iProxyPort > 0) {
-			host.setProxy(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),
-					ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT));
-		}
-		return host;
-	}
+	private static Proxy proxy;
 
 	/**
 	 * @param search
@@ -145,11 +80,10 @@ public class DownloadManager implements ITechnicalStrings {
 				+ URLEncoder.encode(search, "ISO-8859-1")
 				+ "&ie=ISO-8859-1&hl=en&btnG=Google+Search" + "&imgsz=" + size;
 		Log.debug("Search URL: {{" + sSearchUrl + "}}");
-		byte[] bRes = downloadUrl(new URL(sSearchUrl));
-		if (bRes == null || bRes.length == 0) {
+		String sRes = downloadHtml(new URL(sSearchUrl));
+		if (sRes == null || sRes.length() == 0) {
 			return alOut;
 		}
-		String sRes = new String(bRes);
 		// Extract urls
 		Pattern pattern = Pattern.compile("http://[^,<>]*(.jpg|.gif|.png)");
 		// "http://[^,]*(.jpg|.gif|.png).*[0-9]* [xX] [0-9]*.*- [0-9]*");
@@ -184,33 +118,16 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	public static void download(URL url, File fDestination) throws Exception {
-		GetMethod get = null;
-		HttpClient client = null;
-		int iConTO = 2000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
-		int iTraTO = 2000 * ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
-		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),
-					DownloadManager.getProxyPwd(), iConTO, iTraTO);
-		} else {
-			client = getHTTPClient(iConTO, iTraTO);
-		}
-		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
-		get.addRequestHeader("Accept-Language", "en-us");
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-		get.addRequestHeader("Connection", "Keep-Alive");
-		int status = client.executeMethod(get);
+		HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
-		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
+		BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
 		int i;
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
 		}
 		bos.close();
 		bis.close();
-		if (get.isRequestSent()) {
-			get.releaseConnection();
-		}
+		connection.disconnect();
 	}
 
 	/**
@@ -221,41 +138,26 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static byte[] downloadCover(URL url) throws Exception {
-		byte[] bOut = null;
+	public static void downloadCover(URL url) throws Exception {
 		// check if file is not already downloaded or being downloaded
 		if (Util.getCachePath(url).exists()) {
-			return bOut;
+			return;
 		}
-		GetMethod get = null;
-		HttpClient client = null;
-		int iConTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
-		int iTraTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
-		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),
-					DownloadManager.getProxyPwd(), iConTO, iTraTO);
-		} else {
-			client = getHTTPClient(iConTO, iTraTO);
-		}
-		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
-		get.addRequestHeader("Accept-Language", "en-us");
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-		get.addRequestHeader("Connection", "Keep-Alive");
-		int status = client.executeMethod(get);
+		HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util
 				.getCachePath(url)));
-		BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
+		BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
 		int i;
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
 		}
 		bos.close();
 		bis.close();
-		if (get.isRequestSent()) {
-			get.releaseConnection();
-		}
-		return bOut;
+		connection.disconnect();
+	}
+
+	public static void setProxy(Proxy proxy) {
+		DownloadManager.proxy = proxy;
 	}
 
 	/**
@@ -266,72 +168,60 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static byte[] downloadUrl(URL url) throws Exception {
-		byte[] bOut = null;
-		GetMethod get = null;
-		HttpClient client = null;
-		int iConTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
-		int iTraTO = 1000 * ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
-		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),
-					DownloadManager.getProxyPwd(), iConTO, iTraTO);
-		} else {
-			client = getHTTPClient(iConTO, iTraTO);
-		}
-		get = new GetMethod(url.toString());
-		get.addRequestHeader("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
-		get.addRequestHeader("Accept-Language", "en-us");
-		get.addRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-		get.addRequestHeader("Connection", "Keep-Alive");
-		int status = client.executeMethod(get);
-		bOut = get.getResponseBody();
-		if (get.isRequestSent()) {
-			get.releaseConnection();
-		}
-		return bOut;
+	public static String downloadHtml(URL url) throws Exception {
+		return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy));
 	}
 
 	/**
-	 * @return the required proxy pwd
-	 *         <p>
-	 *         must be synchronized to avoid displaying several password dialogs
-	 *         </p>
-	 */
-	public synchronized static String getProxyPwd() {
-		String sLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-		// If user didn't specified a user, it means it's an unauthenticated
-		// proxy session,
-		// don't ask for a password
-		if (sLogin == null || sLogin.trim().equals("")) {
-			return null;
-		}
-		if (sProxyPwd == null || sProxyPwd.trim().equals("")) {
-			PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1"));
-			sProxyPwd = (String) pd.getOptionPane().getValue();
-		}
-		return sProxyPwd;
-	}
-	
-	/**
 	 * Set default proxy settings, used by cobra for ie
-	 *
+	 * 
 	 */
-	public synchronized static void setDefaultProxySettings(){
+	public synchronized static void setDefaultProxySettings() {
+		String sProxyHost = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME);
+		int iProxyPort = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
+		String sProxyLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
+		String sProxyPwd = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD);
 		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-			System.getProperties().put( "proxySet", "true" );
-			System.setProperty("http.proxyHost", ConfigurationManager
-					.getProperty(CONF_NETWORK_PROXY_HOSTNAME));
-			System.setProperty("http.proxyPort", ConfigurationManager
-					.getProperty(CONF_NETWORK_PROXY_PORT));
-			 Authenticator.setDefault( new Authenticator() {
-			
+			// Set default proxy value
+			Type proxyType = null;
+			if (!ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
+				proxyType = Type.DIRECT;
+			} else if (PROXY_TYPE_HTTP.equals(ConfigurationManager
+					.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+				proxyType = Type.HTTP;
+			} else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager
+					.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+				proxyType = Type.SOCKS;
+			}
+			try {
+				proxy = new Proxy(proxyType, sProxyHost, iProxyPort, sProxyLogin, sProxyPwd);
+			} catch (Exception e) {
+				Log.error(e);
+				return;
+			}
+		}
+		// Set system defaults proxy values, if we don't use DownloadManager
+		// methods
+		// see http://java.sun.com/j2se/1.4.2/docs/guide/net/properties.html
+		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
+			System.getProperties().put("proxySet", "true");
+			if (PROXY_TYPE_HTTP.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+				System.setProperty("http.proxyHost", sProxyHost);
+				System.setProperty("http.proxyPort", Integer.toString(iProxyPort));
+			} else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager
+					.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+				System.setProperty("socksProxyHost", sProxyHost);
+				System.setProperty("socksProxyPort ", Integer.toString(iProxyPort));
+			}
+			Authenticator.setDefault(new Authenticator() {
 				@Override
 				protected PasswordAuthentication getPasswordAuthentication() {
 					String user = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-					char[] pwd = DownloadManager.getProxyPwd().toCharArray();
-					return new PasswordAuthentication(user,pwd);
+					char[] pwd = Util.rot13(
+							ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD)).toCharArray();
+					return new PasswordAuthentication(user, pwd);
 				}
-			} ); 
+			});
 		}
 	}
 

@@ -71,10 +71,7 @@ public interface ITechnicalStrings {
 
 	/** Autocommit delay in ms */
 	public static final int AUTO_COMMIT_DELAY = 3600000;
-
-	/** Autocommit delay in ms for audioScrobbling backup */
-	public static final int AUTO_AUDIOSCROBBLER_COMMIT_DELAY = 180000;
-
+	
 	/** Autorefresh thread delay in ms */
 	public static final int AUTO_REFRESH_DELAY = 30000;
 
@@ -170,8 +167,6 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_CONFIGURATION = "conf.properties";
 
-	public static final String FILE_AUDIOSCROBBLER = "audioscrobbler_list.xml";
-
 	public static final String FILE_HISTORY = "history.xml";
 
 	/** Directory containing all sessions using this workspace */
@@ -250,6 +245,12 @@ public interface ITechnicalStrings {
 
 	// directory path
 	public static final String PATH_RELATIVE_DOCS = "docs/";
+
+	//Proxy type: http
+	public static final String PROXY_TYPE_HTTP = "http";
+
+	//Proxy type: socks
+	public static final String PROXY_TYPE_SOCKS = "socks";
 
 	// Unknown
 	public static final String UNKNOWN_AUTHOR = "unknown_author";
@@ -619,17 +620,21 @@ public interface ITechnicalStrings {
 
 	public static final String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
 
+	public static final String CONF_NETWORK_PROXY_TYPE = "jajuk.network.proxy_type";
+
 	public static final String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
 
 	public static final String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
 
 	public static final String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
+	
+	public static final String CONF_NETWORK_PROXY_PWD = "jajuk.network.proxy_pwd";
 
-	public static final String CONF_OPTIONS_AUDIOSCROBBLER = "jajuk.network.audioscrobbler";
+	public static final String CONF_AUDIOSCROBBLER_ENABLE = "jajuk.network.audioscrobbler";
 
-	public static final String CONF_OPTIONS_AUDIOSCROBBLER_USER = "jajuk.network.ASUser";
+	public static final String CONF_AUDIOSCROBBLER_USER = "jajuk.network.ASUser";
 
-	public static final String CONF_OPTIONS_AUDIOSCROBBLER_PASSWORD = "jajuk.network.ASPassword";
+	public static final String CONF_AUDIOSCROBBLER_PASSWORD = "jajuk.network.ASPassword";
 
 	public static final String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
@@ -645,8 +650,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track";
 
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
-
-	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 
 	/** Last Option selected tab */
 	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab";
@@ -734,6 +737,9 @@ public interface ITechnicalStrings {
 
 	/** Laf change not show again flag * */
 	public static final String CONF_NOT_SHOW_AGAIN_LAF_CHANGE = "jajuk.not_show_laf_change";
+
+	/** Last.FM disabled not show again flag * */
+	public static final String CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED = "jajuk.not_show_lastfm_disable";
 
 	/** Global random mode: song or album level ? * */
 	public static final String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";

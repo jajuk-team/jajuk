@@ -13,7 +13,6 @@
 	<classpathentry kind="lib" path="lib/jspeex-0.9.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-release.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-httpclient-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jh_reduced-2.0.2.jar"/>

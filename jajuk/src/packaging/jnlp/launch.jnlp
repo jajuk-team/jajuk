@@ -26,7 +26,6 @@
 			<extension name='Animation' href='animation.jnlp' />
         	<extension name='BasicPlayer' href='basic_player.jnlp'/>
         	<extension name='CommonsCodec' href='commons_codec.jnlp'/>
-        	<extension name='CommonsHttpClient' href='commons_httpclient.jnlp'/>
         	<extension name='CommonsLogging' href='commons_logging.jnlp'/>
         	<extension name='EntaggedAudioformats' href='entagged_audioformats.jnlp'/>
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>

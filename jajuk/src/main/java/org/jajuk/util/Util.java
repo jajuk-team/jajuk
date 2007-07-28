@@ -2015,4 +2015,27 @@ public class Util implements ITechnicalStrings {
 				+ Long.toString(color.getBlue(), 16);
 
 	}
+
+	/**
+	 * Rot13 encode/decode,
+	 * <p>Thx http://www.idevelopment.info/data/Programming/java/security/java_cryptography_extension/rot13.java</p>
+	 * @param in text to encode / decode in rote 13
+	 * @return encoded /decoded text
+	 */
+	public static String rot13(String in) {
+		if (Util.isVoid(in)){
+			return "";
+		}
+		int abyte = 0;
+		StringBuffer tempReturn = new StringBuffer();
+		for (int i = 0; i < in.length(); i++) {
+			abyte = in.charAt(i);
+			int cap = abyte & 32;
+			abyte &= ~cap;
+			abyte = ((abyte >= 'A') && (abyte <= 'Z') ? ((abyte - 'A' + 13) % 26 + 'A') : abyte)
+					| cap;
+			tempReturn.append((char) abyte);
+		}
+		return tempReturn.toString();
+	}
 }

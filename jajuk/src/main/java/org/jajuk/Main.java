@@ -41,7 +41,7 @@ import org.jajuk.base.YearManager;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.share.audioscrobbler.AudioScrobblerManager;
+import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
@@ -293,7 +293,7 @@ public class Main implements ITechnicalStrings {
 				}
 			});
 
-			// Apply any proxy (requieres load conf)
+			// Apply any proxy (requires load conf)
 			DownloadManager.setDefaultProxySettings();
 
 			// Display progress
@@ -364,7 +364,10 @@ public class Main implements ITechnicalStrings {
 
 			// Load ambiences
 			AmbienceManager.getInstance().load();
-
+			
+			//Start LastFM support
+			LastFmManager.getInstance();
+			
 			// Load djs
 			DigitalDJManager.getInstance().loadAllDJs();
 
@@ -456,11 +459,6 @@ public class Main implements ITechnicalStrings {
 
 			// Launch auto-refresh thread
 			DeviceManager.getInstance().startAutoRefreshThread();
-
-			// Launch AudioScrobblerManager if enable
-			if (ConfigurationManager.getBoolean(CONF_OPTIONS_AUDIOSCROBBLER)) {
-				AudioScrobblerManager.getInstance().startup();
-			}
 
 			// Launch startup track if any
 			launchInitialTrack();

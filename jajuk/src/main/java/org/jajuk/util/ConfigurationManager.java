@@ -189,7 +189,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_NETWORK_PROXY_PORT, "3128");
 		properties.put(CONF_NETWORK_PROXY_LOGIN, "");
 		properties.put(CONF_NETWORK_CONNECTION_TO, "3");
-		properties.put(CONF_NETWORK_TRANSFERT_TO, "20");
+		properties.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
 		properties.put(CONF_COVERS_AUTO_COVER, TRUE);
 		properties.put(CONF_COVERS_SHUFFLE, FALSE);
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
@@ -255,6 +255,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_NOT_SHOW_AGAIN_UPDATE, FALSE);
 		properties.put(CONF_CHECK_FOR_UPDATE, TRUE);
 		properties.put(CONF_IGNORED_RELEASES, "");
+		properties.put(CONF_AUDIOSCROBBLER_ENABLE, FALSE);
+		properties.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
 	}
 
 	/**
