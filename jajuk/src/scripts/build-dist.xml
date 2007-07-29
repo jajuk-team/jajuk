@@ -5,7 +5,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
-	<property name='version' value='1.4dev_20070728' />
+	<property name='version' value='1.4dev_20070729' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -33,7 +33,7 @@
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
 	<property name='conf_jnlp-dist' value='/svn-jajuk/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/jbuild' />
-	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/build-1.4/' />
+	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/testing/build-1.4/' />
 	<property name='conf_jarbundler' value='/svn-jajuk/tools/jarbundler-1.9' />
 
 	<!-- ============================== -->
@@ -446,7 +446,7 @@
 		</copy>
 		-->
 
-		<!-- Create the war -->
+		<!-- Create the war file -->
 		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
 			<fileset dir='${jnlpdir}' />
 			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
