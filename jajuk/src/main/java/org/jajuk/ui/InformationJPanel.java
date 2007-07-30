@@ -388,7 +388,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						jsPosition.setEnabled(false);
 						jsPosition.removeMouseWheelListener(InformationJPanel.this);
 						jsPosition.removeChangeListener(InformationJPanel.this);
-						// use set value, not  setPosition that would cause
+						// use set value, not setPosition that would cause
 						// a seek that could fail with some formats
 						jsPosition.setValue(0);
 						// reset startup position
@@ -400,16 +400,17 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						File file = FIFO.getInstance().getCurrentFile();
 						if (file != null) {
 							String sMessage = Messages.getString("FIFO.10") + " "
-									+ file.getTrack().getAuthor().getName2() + " / "
-									+ file.getTrack().getAlbum().getName2() + " / "
-									+ file.getTrack().getName();
+									+ file.getTrack().getName() + " " + Messages.getString("By")
+									+ " " + file.getTrack().getAuthor().getName2() + " "
+									+ Messages.getString("On") + " "
+									+ file.getTrack().getAlbum().getName2();
+
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
 					} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
-						WebRadio radio = (WebRadio)event.getDetails().get(DETAIL_CONTENT);
+						WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
 						if (radio != null) {
-							String sMessage = Messages.getString("FIFO.14") + " "
-									+ radio.getName();
+							String sMessage = Messages.getString("FIFO.14") + " " + radio.getName();
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
 					} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
