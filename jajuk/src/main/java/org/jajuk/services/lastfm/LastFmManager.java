@@ -21,6 +21,7 @@
 package org.jajuk.services.lastfm;
 
 import org.jajuk.base.Event;
+import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
@@ -28,14 +29,13 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.melloware.jintellitype.Main;
-
-import ext.services.network.Proxy;
-import ext.services.network.ProxyBean;
+import ext.services.lastfm.Submitter;
+import ext.services.lastfm.SubmitterException;
 
 /**
  * LastFM Manager, handle file launch events to submit informations among others
@@ -54,7 +54,8 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 		// Display an hideable message to user if audioscrobber is disable
 		// Show this message only one time by jajuk session
 		if (!ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)
-				//don't dhow this message if first jajul launch: already too many popups
+		// don't dhow this message if first jajuk launch: already too many
+				// popups
 				&& !org.jajuk.Main.bFirstSession) {
 			Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
 					CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED);
@@ -64,6 +65,8 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 	static public LastFmManager getInstance() {
 		if (self == null) {
 			self = new LastFmManager();
+			// populate configuration
+			self.configure();
 		}
 		return self;
 	}
@@ -75,8 +78,14 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 	 */
 	public Set<EventSubject> getRegistrationKeys() {
 		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_FILE_FINISHED);
 		return eventSubjectSet;
+	}
+
+	public void configure() {
+		Submitter.setPassword(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD));
+		Submitter.setUser(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER));
+		Submitter.setProxy(DownloadManager.getProxy());
 	}
 
 	/*
@@ -85,17 +94,22 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 	 * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
 	 */
 	public void update(Event event) {
-		if (EventSubject.EVENT_FILE_LAUNCHED == event.getSubject()) {
-			if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)){
-			String sLogin = ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER);
-			String sPwd = ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD);
-			String sProxyUrl = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME);
-		/*	int port = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
-			String sProxyLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-			String sProxyPwd = DownloadManager.getProxyPwd();
-			Proxy proxy = new Proxy(ProxyBean.HTTP_PROXY,sProxyUrl,port,sProxyPwd);*/
+		if (EventSubject.EVENT_FILE_FINISHED == event.getSubject()) {
+			if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
+				File file = (File) event.getDetails().get(DETAIL_CURRENT_FILE);
+				long playedTime = file.getTrack().getDuration();
+				// If we are in intro mode, computes actually listened time
+				if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)) {
+					playedTime = (playedTime
+							* ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN) / 100)
+							- ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN);
+				}
+				try {
+					Submitter.submitTrack(file.getTrack(), playedTime);
+				} catch (SubmitterException e) {
+					Log.error(e);
+				}
 			}
 		}
 	}
-
 }

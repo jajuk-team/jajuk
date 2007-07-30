@@ -153,5 +153,7 @@ public enum EventSubject {
 	// Language changed
     EVENT_LANGUAGE_CHANGED,
 	//Perspective changed
-    EVENT_PERPECTIVE_CHANGED
+    EVENT_PERPECTIVE_CHANGED,
+    //Current track is finished
+    EVENT_FILE_FINISHED,
 }

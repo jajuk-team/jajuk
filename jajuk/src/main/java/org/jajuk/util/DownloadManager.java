@@ -156,10 +156,7 @@ public class DownloadManager implements ITechnicalStrings {
 		connection.disconnect();
 	}
 
-	public static void setProxy(Proxy proxy) {
-		DownloadManager.proxy = proxy;
-	}
-
+	
 	/**
 	 * Download the cover list
 	 * 
@@ -223,6 +220,10 @@ public class DownloadManager implements ITechnicalStrings {
 				}
 			});
 		}
+	}
+
+	public static Proxy getProxy() {
+		return proxy;
 	}
 
 }

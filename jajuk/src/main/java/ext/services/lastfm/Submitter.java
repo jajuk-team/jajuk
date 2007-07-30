@@ -108,7 +108,7 @@ public class Submitter {
 			return;
 		}
 
-		Log.info("Submitting song to Last.fm");
+		Log.info("Submitting song to Last.fm: " + track.getName() + " " + secondsPlayed + " secs");
 		submitTrackToLastFm(track, startedToPlay, 1);
 	}
 

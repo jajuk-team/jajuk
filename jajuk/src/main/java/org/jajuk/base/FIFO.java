@@ -23,6 +23,7 @@ import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -41,6 +42,8 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import ext.services.lastfm.AudioScrobblerService;
 
 /**
  * Manages playing sequences
@@ -78,8 +81,8 @@ public class FIFO implements ITechnicalStrings {
 
 	/** Whether we are currently playing radio */
 	private boolean playingRadio = false;
-	
-	/** Current played radio*/
+
+	/** Current played radio */
 	private WebRadio currentRadio;
 
 	/**
@@ -345,6 +348,9 @@ public class FIFO implements ITechnicalStrings {
 			if (getCurrentItem() == null) {
 				return;
 			}
+			Properties details = new Properties();
+			details.put(DETAIL_CURRENT_FILE, getCurrentFile());
+			ObservationManager.notify(new Event(EventSubject.EVENT_FILE_FINISHED, details));
 			if (getCurrentItem().isRepeat()) {
 				// if the track was in repeat mode, don't remove it from sthe
 				// fifo, just inc index
@@ -457,6 +463,13 @@ public class FIFO implements ITechnicalStrings {
 			}
 			if (bPlayOK) { // refresh covers if play is started
 				Log.debug("Now playing :" + fCurrent);
+				/* test
+				AudioScrobblerService service = new AudioScrobblerService(DownloadManager
+						.getProxy());
+				System.out.println(service.getAlbum(fCurrent.getTrack().getAuthor().getName2(),
+						fCurrent.getTrack().getAlbum().getName2()));
+				System.out.println(service.getSimilarArtists(fCurrent.getTrack().getAuthor()));*/
+
 				// Send an event that a track has been launched
 				Properties pDetails = new Properties();
 				pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());

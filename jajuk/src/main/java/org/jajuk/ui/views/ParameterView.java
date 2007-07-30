@@ -31,6 +31,7 @@ import org.jajuk.base.SearchResult;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PathSelector;
@@ -1464,6 +1465,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.toString(jcbLoadEachTrack.isSelected()));
 		ConfigurationManager.setProperty(CONF_COVERS_SIZE, Integer.toString(jcbCoverSize
 				.getSelectedIndex()));
+		//Force LastFM manager configuration reload
+		LastFmManager.getInstance().configure();
+		
 		// configuration
 		ConfigurationManager.commit();
 		// notify playlist editor (useful for novelties)
