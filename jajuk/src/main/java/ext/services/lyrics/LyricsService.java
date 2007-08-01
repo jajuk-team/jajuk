@@ -38,7 +38,7 @@ public class LyricsService {
 		try {
 			URL url = new URL(urlString);
 			// read html return
-			String html = DownloadManager.downloadHtml(url);
+			String html = DownloadManager.downloadHtml(url,"ISO-8859-1");
 
 			if (html.contains("Suggestions : <br>")) { // More than one
 														// posibility, take the

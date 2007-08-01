@@ -69,16 +69,20 @@ public class NetworkUtils implements ITechnicalStrings {
 		connection.addRequestProperty("Connection", "Keep-Alive");
 	}
 
-	public static String readURL(URLConnection connection) throws IOException {
+	public static String readURL(URLConnection connection,String charset) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		InputStream input = connection.getInputStream();
 		byte[] array = new byte[1024];
 		int read;
 		while ((read = input.read(array)) > 0) {
-			builder.append(new String(array, 0, read, "UTF-8"));
+			builder.append(new String(array, 0, read, charset));
 		}
 		input.close();
 		return builder.toString();
+	}
+	
+	public static String readURL(URLConnection connection) throws IOException {
+		return readURL(connection, "UTF-8");
 	}
 
 	public static String readPostURL(HttpURLConnection connection, String post) throws IOException {
@@ -105,17 +109,7 @@ public class NetworkUtils implements ITechnicalStrings {
 		return builder.toString();
 	}
 
-	public static String readURL(URLConnection connection, String charset) throws IOException {
-		StringBuilder builder = new StringBuilder();
-		InputStream input = connection.getInputStream();
-		byte[] array = new byte[1024];
-		int read;
-		while ((read = input.read(array)) > 0) {
-			builder.append(new String(array, 0, read, charset));
-		}
-		input.close();
-		return builder.toString();
-	}
+
 
 	public static Image getImage(URLConnection connection) throws IOException {
 		InputStream input = connection.getInputStream();

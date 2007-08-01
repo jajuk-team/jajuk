@@ -95,6 +95,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 		textarea.setLineWrap(true);
 		textarea.setWrapStyleWord(true);
 		textarea.setEditable(false);
+		textarea.setVisible(false);
 		textarea.setMargin(new Insets(10, 10, 10, 10));
 		textarea
 				.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE)));
@@ -113,13 +114,13 @@ public class LyricsView extends ViewAdapter implements Observer {
 
 		});
 		jlAuthor = new JLabel();
-		jlAuthor.setFont(new Font(Font.DIALOG, Font.PLAIN, ConfigurationManager
+		jlAuthor.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE) + 2));
 		jlTitle = new JLabel();
-		jlTitle.setFont(new Font(Font.DIALOG, Font.PLAIN, ConfigurationManager
+		jlTitle.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE) + 4));
 		JScrollPane jsp = new JScrollPane(textarea);
-		textarea.setFont(new Font(Font.DIALOG, Font.PLAIN, ConfigurationManager
+		textarea.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE)));
 		int height = getHeight() - 200;
 		FormLayout layout = new FormLayout(
@@ -173,6 +174,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 						Track track = FIFO.getInstance().getCurrentFile().getTrack();
 						String sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
 								+ track.getAuthor().getName2() + "&songname=" + track.getName();
+						textarea.setVisible(true);
 						textarea.setToolTipText(sURL);
 						setText(LyricsService.getLyrics(track.getAuthor().getName2(), track
 								.getName()));
@@ -186,11 +188,15 @@ public class LyricsView extends ViewAdapter implements Observer {
 						}
 					}
 				} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-					setText(Messages.getString("JajukWindow.18"));
+					textarea.setVisible(false);
+					jlAuthor.setText("");
+					jlTitle.setText(Messages.getString("JajukWindow.18"));
 				} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
 					WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
 					if (radio != null) {
-						setText(radio.getName());
+						jlTitle.setText(radio.getName());
+						jlAuthor.setText("");
+						textarea.setVisible(false);
 					}
 				}
 			}

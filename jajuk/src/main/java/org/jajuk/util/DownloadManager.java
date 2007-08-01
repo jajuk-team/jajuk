@@ -165,10 +165,14 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static String downloadHtml(URL url) throws Exception {
-		return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy));
+	public static String downloadHtml(URL url,String charset) throws Exception {
+		return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy),charset);
 	}
 
+	public static String downloadHtml(URL url) throws Exception {
+		return downloadHtml(url, "UTF-8");
+	
+	}
 	/**
 	 * Set default proxy settings, used by cobra for ie
 	 * 
