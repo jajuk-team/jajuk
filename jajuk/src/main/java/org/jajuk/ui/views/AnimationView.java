@@ -175,7 +175,6 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(Event event) {
-		System.out.println("***" + event.getSubject());
 		EventSubject subject = event.getSubject();
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
 			File file = FIFO.getInstance().getCurrentFile();
