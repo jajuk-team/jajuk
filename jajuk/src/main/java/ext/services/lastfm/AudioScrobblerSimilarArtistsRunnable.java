@@ -18,26 +18,29 @@
 
 package ext.services.lastfm;
 
-import org.jajuk.base.Author;
+import org.jajuk.util.ITechnicalStrings;
 
 import java.awt.Image;
 
-public class AudioScrobblerSimilarArtistsRunnable implements Runnable {
-	
+public class AudioScrobblerSimilarArtistsRunnable implements Runnable, ITechnicalStrings {
+
 	private AudioScrobblerListener listener;
+
 	private AudioScrobblerService service;
-	private Author artist;
-	
+
+	private String artist;
+
 	private boolean interrupted;
-	
-	public AudioScrobblerSimilarArtistsRunnable(AudioScrobblerListener listener, AudioScrobblerService service, Author artist) {
+
+	public AudioScrobblerSimilarArtistsRunnable(AudioScrobblerListener listener,
+			AudioScrobblerService service, String artist) {
 		this.listener = listener;
 		this.service = service;
 		this.artist = artist;
 	}
 
 	public void run() {
-		if (!interrupted && artist != null && !artist.isUnknown()) { 
+		if (!interrupted && artist != null && !UNKNOWN_AUTHOR.equals(artist)) {
 			AudioScrobblerSimilarArtists artists = service.getSimilarArtists(artist);
 
 			if (!interrupted && artists != null) {
@@ -57,7 +60,7 @@ public class AudioScrobblerSimilarArtistsRunnable implements Runnable {
 			}
 		}
 	}
-	
+
 	protected void interrupt() {
 		interrupted = true;
 	}

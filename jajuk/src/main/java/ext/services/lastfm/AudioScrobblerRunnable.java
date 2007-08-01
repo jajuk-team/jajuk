@@ -64,7 +64,7 @@ public class AudioScrobblerRunnable implements Runnable {
 			coversThread.start();
 
 			artistsRunnable = new AudioScrobblerSimilarArtistsRunnable(listener, service, track
-					.getAuthor());
+					.getAuthor().getName2());
 			Thread artistsThread = new Thread(artistsRunnable);
 			artistsThread.start();
 

@@ -71,7 +71,7 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
 		if (retrieveArtistInfo) {
 			if (!interrupted) {
 				if (!track.getAuthor().isUnknown()) {
-					albums = service.getAlbumList(track.getAuthor());
+					albums = service.getAlbumList(track.getAuthor().getName2());
 				}
 				if (albums == null)
 					interrupted = true;
