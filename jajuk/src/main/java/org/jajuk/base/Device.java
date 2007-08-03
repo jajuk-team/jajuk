@@ -19,6 +19,18 @@
  */
 package org.jajuk.base;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -32,18 +44,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  * A device ( music files repository )
@@ -1066,6 +1066,14 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @return Associated root directory
+	 */
+	public Directory getRootDirectory(){
+		return DirectoryManager.getInstance().getDirectoryForIO(getFio());
 	}
 
 	/*

@@ -56,6 +56,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	/** Concurrency locker * */
 	volatile short[] lock = new short[0];
 
+	/** Resurvive items selection */
+	ArrayList<Item> alSelectedRecursively = new ArrayList<Item>(100);
+
 	/** Items selection */
 	ArrayList<Item> alSelected = new ArrayList<Item>(100);
 
@@ -67,17 +70,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree.putClientProperty("JTree.lineStyle", "Angled");  
 		jtree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		/*// Add alternate rows highliter
-		Highlighter alternate = null;
-		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
-		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
-			alternate = new AlternateRowHighlighter(colors
-					.getMidColor(), colors.getDarkColor(), colors
-					.getForegroundColor());
-		} else {
-			alternate = new AlternateRowHighlighter(Color.WHITE,
-					colors.getUltraLightColor(), colors.getForegroundColor());
-		}*/
 		//Background color is not actually taken into account with sustance watermarks
 		Highlighter playing = new ConditionalHighlighter(Color.BLACK,Color.ORANGE,0,-1) {
 			

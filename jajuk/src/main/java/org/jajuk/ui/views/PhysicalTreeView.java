@@ -196,6 +196,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 
 	JMenuItem jmiDevCDDBQuery;
 
+	JMenuItem jmiDevOrganize;
+
 	JMenuItem jmiDevConfiguration;
 
 	JMenuItem jmiDevReport;
@@ -276,7 +278,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_PHYSICAL);
-		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, alSelected);
+		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
 		jmenuCollection.add(jmiCollectionReport);
 
 		// File menu
@@ -363,7 +365,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDirReport.putClientProperty(DETAIL_ORIGIN, XML_DIRECTORY);
-		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelected);
+		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
 		jmiDirRefactor = new JMenuItem(Messages.getString(("PhysicalTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDirRefactor.addActionListener(this);
@@ -426,7 +428,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDevReport.putClientProperty(DETAIL_ORIGIN, XML_DEVICE);
-		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelected);
+		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
+		jmiDevOrganize = new JMenuItem(Messages.getString(("PhysicalTreeView.62")),
+				IconLoader.ICON_REORGANIZE);
+		jmiDevOrganize.addActionListener(this);
 
 		jmenuDev.add(jmiDevPlay);
 		jmenuDev.add(jmiDevPush);
@@ -438,6 +443,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmenuDev.add(jmiDevSynchronize);
 		jmenuDev.add(jmiDevTest);
 		jmenuDev.add(jmiDevCDDBQuery);
+		jmenuDev.add(jmiDevOrganize);
 		jmenuDev.add(jmiDevReport);
 		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevProperties);
@@ -632,17 +638,19 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					int items = 0;
 					long lSize = 0;
 					// get all components recursively
+					alSelectedRecursively.clear();
 					alSelected.clear();
 					for (int i = 0; i < paths.length; i++) {
 						Object o = paths[i].getLastPathComponent();
 						if (o instanceof TreeRootElement) {// root node
 							items = FileManager.getInstance().getElementCount();
-							alSelected.addAll(FileManager.getInstance().getFiles());
-							for (Item item : alSelected) {
+							alSelectedRecursively.addAll(FileManager.getInstance().getFiles());
+							for (Item item : alSelectedRecursively) {
 								lSize += ((File) item).getSize();
 							}
 							break;
 						} else {
+							alSelectedRecursively.add((Item) ((TransferableTreeNode) o).getData());
 							alSelected.add((Item) ((TransferableTreeNode) o).getData());
 						}
 						// return all childs nodes recursively
@@ -653,8 +661,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 								File file = ((FileNode) node).getFile();
 								// don't count same file twice if user
 								// select directory and then files inside
-								if (!alSelected.contains(file)) {
-									alSelected.add(file);
+								if (!alSelectedRecursively.contains(file)) {
+									alSelectedRecursively.add(file);
 								}
 								lSize += file.getSize();
 								items++;
@@ -675,14 +683,14 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 						// if table is synchronized with tree, notify the
 						// selection change
 						Properties properties = new Properties();
-						properties.put(DETAIL_SELECTION, alSelected);
+						properties.put(DETAIL_SELECTION, alSelectedRecursively);
 						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective()
 								.getID());
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
 								properties));
 					}
 					// No CDDB on directories without files
-					if (alSelected.size() > 0 && alSelected.get(0) instanceof Directory) {
+					if (alSelectedRecursively.size() > 0 && alSelected.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
 							// check it is a directory (can be a file if user
@@ -828,6 +836,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 								((JMenuItem) jmenuDev.getSubElements()[i]).setEnabled(false);
 							}
 							jmiDevReport.setEnabled(true);
+						} else {
+							// Enable all menu items
+							for (int i = 0; i < jmenuDev.getSubElements().length; i++) {
+								((JMenuItem) jmenuDev.getSubElements()[i]).setEnabled(true);
+							}
 						}
 						jmenuDev.show(jtree, e.getX(), e.getY());
 					} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
@@ -1009,7 +1022,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// properties later)
 		if ((paths.length > 1)
 				&& (e.getSource() == jmiDevProperties || e.getSource() == jmiPlaylistFileProperties)) {
-			new PropertiesWizard(alSelected);
+			new PropertiesWizard(alSelectedRecursively);
 		} else if (e.getSource() == jmiFilePlay) {
 			FIFO.getInstance().push(
 					Util.createStackItems(alFiles, ConfigurationManager
@@ -1028,7 +1041,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 			Bookmarks.getInstance().addFiles(alFiles);
 		} else if (alFiles != null && (e.getSource() == jmiDirCDDBQuery)) {
 			ArrayList<Item> alCDDBTracks = new ArrayList<Item>();
-			for (Item item : alSelected) {
+			for (Item item : alSelectedRecursively) {
 				final Directory dir = (Directory) item;
 				Util.waiting();
 				for (File file : dir.getFiles()) {
@@ -1045,13 +1058,17 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				alCDDBTracks.add(file.getTrack());
 			}
 			new CDDBWizard(alCDDBTracks);
-		} else if ((alFiles != null && e.getSource() == jmiDirRefactor)) {
+		} else if ((alFiles != null && (e.getSource() == jmiDirRefactor || e.getSource() == jmiDevOrganize))) {
 			Util.waiting();
 			for (Item item : alSelected) {
-				// check if user made a global cancel
+				// Check if user made a global cancel
 				if (RefactorAction.bStopAll) {
 					RefactorAction.bStopAll = false;
 					return;
+				}
+				// If user selected a device, take associated directory
+				if (item instanceof Device) {
+					item = ((Device) item).getRootDirectory();
 				}
 				final Directory dir = (Directory) item;
 				Util.waiting();
@@ -1193,15 +1210,15 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 			dw.setVisible(true);
 		} else if (e.getSource() == jmiFileProperties) {
 			// tracks items
-			ArrayList<Item> alTracks = new ArrayList<Item>(alSelected.size());
-			for (Item pa : alSelected) {
+			ArrayList<Item> alTracks = new ArrayList<Item>(alSelectedRecursively.size());
+			for (Item pa : alSelectedRecursively) {
 				File file = (File) pa;
 				alTracks.add(file.getTrack());
 			}
-			new PropertiesWizard(alSelected, alTracks);
+			new PropertiesWizard(alSelectedRecursively, alTracks);
 		} else if (e.getSource() == jmiDirProperties) {
-			ArrayList<Item> alTracks = new ArrayList<Item>(alSelected.size());
-			for (Item item : alSelected) {
+			ArrayList<Item> alTracks = new ArrayList<Item>(alSelectedRecursively.size());
+			for (Item item : alSelectedRecursively) {
 				Directory dir = (Directory) item;
 				for (File file : dir.getFilesRecursively()) {
 					Track track = file.getTrack();
@@ -1210,7 +1227,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					}
 				}
 			}
-			new PropertiesWizard(alSelected, alTracks);
+			new PropertiesWizard(alSelectedRecursively, alTracks);
 		} else if (e.getSource() == jmiDevProperties) {
 			Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
 			ArrayList<Item> alItems = new ArrayList<Item>(1);

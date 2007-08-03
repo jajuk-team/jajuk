@@ -52,6 +52,11 @@ public class RefactorAction implements ITechnicalStrings {
 	static String sFS = java.io.File.separator;
 
 	public RefactorAction(ArrayList<File> al) {
+		//check the directory user selected contains some files
+		if (al.size() == 0){
+			Messages.showErrorMessage(18);
+			return;
+		}
 		alFiles = al;
 		Iterator it = alFiles.iterator();
 		String sFiles = ""; 
