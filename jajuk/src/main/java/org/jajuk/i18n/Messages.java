@@ -377,7 +377,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 				null);
 		if (SwingUtilities.isEventDispatchThread()) { // in the dispatcher
 			// thread, no need to
-			// use invokeLatter
+			// use invokeLater
 			message.run();
 		} else { // not in the awt dispatcher thread
 			try {
@@ -437,6 +437,28 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		} else { // not in the awt dispatcher thread
 			SwingUtilities.invokeLater(message);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param sText text to display, lines separated by \n characters
+	 * @param limit : max number of lines to be displayed without scroller
+	 * @return formated message: either a string, or a textaera
+	 */
+	protected static Object getLimitedMessage(String sText, int limit){
+		int iNbLines = new StringTokenizer(sText,"\n").countTokens();
+		Object message = null;
+		if (iNbLines > limit){
+			JTextArea area = new JTextArea(sText);
+	        area.setRows(10);
+	        area.setColumns(50);
+	        area.setLineWrap(true);
+	        message = new JScrollPane(area);
+	    }
+		else{
+			message = sText;
+		}
+		return message;
 	}
 
 	/**
@@ -594,7 +616,6 @@ class ConfirmDialog implements Runnable {
 	 */
 	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
-		optionPane.setMessage(sText);
 		Object[] options = null;
 		if (iType == JOptionPane.DEFAULT_OPTION) {
 			options = new String[] { Messages.getString("Close") };
@@ -604,13 +625,18 @@ class ConfirmDialog implements Runnable {
 		}
 		optionPane.setOptions(options);
 		optionPane.setMessageType(iType);
+		optionPane.setMessage(Messages.getLimitedMessage(sText,20));
 		JDialog dialog = optionPane.createDialog(null, sTitle);
 		dialog.setModal(true);
 		dialog.setAlwaysOnTop(true);
 		dialog.pack();
 		dialog.setLocationRelativeTo(Main.getWindow());
 		dialog.setVisible(true);
-		if (optionPane.getValue().equals(Messages.getString("yes"))) {
+		if (optionPane.getValue() == null){
+			//User closed the dialog using the cross icon
+			iResu = JOptionPane.CANCEL_OPTION;
+		}
+		else if (optionPane.getValue().equals(Messages.getString("yes"))) {
 			iResu = JOptionPane.YES_OPTION;
 		} else if (optionPane.getValue().equals(Messages.getString("no"))) {
 			iResu = JOptionPane.NO_OPTION;
@@ -755,7 +781,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 	 */
 	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
-		optionPane.setMessage(sText);
+		optionPane.setMessage(Messages.getLimitedMessage(sText,20));
 		Object[] options = { Messages.getString("OK"), Messages.getString("Hide") };
 		optionPane.setOptions(options);
 		optionPane.setMessageType(iType);
