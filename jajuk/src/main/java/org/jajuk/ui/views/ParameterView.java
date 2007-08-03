@@ -1228,11 +1228,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					}
 					ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_ENABLE, Boolean
 							.toString(jcbAudioScrobbler.isSelected()));
-				} else if (e.getSource() == jtfASUser || e.getSource() == jpfASPassword) {
-					/*
-					 * AudioScrobblerManager.getInstance().handshake(jtfASUser.getText(),
-					 * jpfASPassword.getText());
-					 */
 				} else if (e.getSource() == scbLAF) {
 					String oldTheme = ConfigurationManager.getProperty(CONF_OPTIONS_LNF);
 					ConfigurationManager.setProperty(CONF_OPTIONS_LNF, (String) scbLAF
@@ -1302,10 +1297,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_ENABLE, Boolean
 				.toString(jcbAudioScrobbler.isSelected()));
 		if (jcbAudioScrobbler.isSelected()) {
-			Log.debug(new String(jpfASPassword.getPassword()));
 			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_USER, jtfASUser.getText());
-			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_PASSWORD, new String(jpfASPassword
-					.getPassword()));
+			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_PASSWORD, Util.rot13(new String(jpfASPassword
+					.getPassword())));
 		}
 		int iLogLevel = scbLogLevel.getSelectedIndex();
 		Log.setVerbosity(iLogLevel);
@@ -1603,7 +1597,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
 			Log.debug(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD));
 			jtfASUser.setText(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER));
-			jpfASPassword.setText(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD));
+			jpfASPassword.setText(Util.rot13(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD)));
 		} else {
 			jlASUser.setEnabled(false);
 			jtfASUser.setEnabled(false);
