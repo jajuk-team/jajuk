@@ -1,221 +1,116 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-
 <link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
-
 <title>
-
-view physical logical table</title>
-
+view table</title>
 </head>
-
 <body>
-
 <h1>
-
-view physical logical table</h1>
-
-<h1>
-
-The Physical/Logical Table view</h1>
-
+view table</h1>
 <p>
-
-These views show all files/tracks from your collection in a table and is used to perform contextual operations and filtering. For the moment, columns (track name, directory...) are static but in Jajuk future releases, you should be able to add new custom ones. Physical Table view displays all files from your collection (so you can get several time the same file if located in several devices or directories) when the Logical Tracks Table view only deals with tracks and related information. Note that a single track can actually map several files but will only be displayed once in this view.</p>
-
-<p>
-
-Notes</p>
-
-<ul>
-
-<li>
-
-Rate is related to the track, not to a single file. It is computed this way: +1 when a track is added in queue and +2 when it is played.</li>
-
-<li>
-
-As usual, you can limit to files from mounted devices using the "show only mounted devices" option in Parameter view/ Option tab.</li>
-
-</ul>
-
-<h2>
-
-Drag and Drop</h2>
-
-<p>
-
-At any time, you can drag a single file or track from the table to any Playlist in the Playlist repository view or to the current Playlist Editor.</p>
-
-<h2>
-
-Contextual menu</h2>
-
-<p>
-
-File/track contextual menu features:</p>
-
-<ul>
-
-<li>
-
-Play: Stop current track/file and play it</li>
-
-<li>
-
-Push: Don't stop current track but simply add the selection in the queue (see Queue playlist)</li>
-
-<li>
-
-Play shuffle: Stop current track and play selection randomly (note that this mode is automatically used when playing a track if you set Shuffle mode in command view)</li>
-
-<li>
-
-Play repeat: Stop current track and play selection in a loop (note that this mode is automatically used when playing a track if you set Repeat mode in command view)</li>
-
-<li>
-
-Play directory (only Physical Files Table): stop current track and play all files found in the selection directory</li>
-
-<li>
-
-Play album (only Logical Tracks Table): stop current track and play all tracks of the selection album</li>
-
-<li>
-
-Play artist (only Logical Tracks Table): stop current track and play all tracks of the selection artist</li>
-
-<li>
-
-Properties : Show item properties.</li>
-
-</ul>
-
-<h2>
-
-Editing table items</h2>
-
-<p>
-
-Table view owns two modes:</p>
-
-<ul>
-
-<li>
-
-Read only (default): double clicking on a row launches the track and it is not allowed to change values.</li>
-
-<li>
-
-Read/write: double clicking on an editable value allows to change it. To launch a track, use the first column icon (play).</li>
-
-</ul>
-
-<p>
-
-Use this button <a href="../images/d/d2/Edit.png" title="Image:edit.png" class="internal">
-
-<img src='../images/d/d2/Edit.png' alt="Image:edit.png"/>
-
-</a>
-
- located in the filtering panel to switch from one mode to the other.</p>
-
-<h2>
-
-Filtering panel</h2>
-
-<p>
-
-To filter tracks/files following some criteria, select the criteria using the combo box (track name, artist and so on), then type the filter value in the text field and type [enter] (note that filtering occurs also automatically when typing stops). If filter value is void, all tracks/files will be displayed. "Any" criteria means that search is done on all available criteria.</p>
-
-<p>
-
-o Filter type combo box: select the criteria you want to filter on.</p>
-
-<p>
-
-o Filter value text field: type value you want to filter on.</p>
-
-<h2>
-
-Selecting columns to show</h2>
-
-<p>
-
-To select columns you want to show, click on the column selector button:<font color="#000000">
-
-<font color="#000000">
-
-<a href="../images/a/a4/Cols01.jpg" title="Image:cols01.jpg" class="internal">
-
-<img src='../images/a/a4/Cols01.jpg' alt="Image:cols01.jpg"/>
-
-</a>
-
-</font>
-
-</font>
-
-<i>
-
-Fig. 01: columns selector button</i>
-
- And select columns to display by checking columns:<font color="#000000">
-
-<font color="#000000">
-
-<a href="../images/0/0b/Cols02.jpg" title="Image:cols02.jpg" class="internal">
-
-<img src='../images/0/0b/Cols02.jpg' alt="Image:cols02.jpg"/>
-
-</a>
-
-</font>
-
-</font>
-
-<i>
-
-Fig. 02: column selection</i>
-
+Go back to <a href="table_of_contents.html">
+Table of contents</a>
 </p>
-
+<h1>
+The Physical/Logical Table view</h1>
 <p>
-
-Others features:</p>
-
+These views show all files/tracks from your collection in a table and is used to perform contextual operations and filtering. For the moment, columns (track name, directory...) are static but in Jajuk future releases, you should be able to add new custom ones. Physical Table view displays all files from your collection (so you can get several time the same file if located in several devices or directories) when the Logical Tracks Table view only deals with tracks and related information. Note that a single track can actually map several files but will only be displayed once in this view.</p>
+<p>
+Notes</p>
 <ul>
-
 <li>
-
-<i>
-
-Horizontal Scroll</i>
-
-</li>
-
+Rate is related to the track, not to a single file. It is computed this way: +1 when a track is added in queue and +2 when it is played.</li>
 <li>
-
-<i>
-
-Pack All Columns</i>
-
-</li>
-
+As usual, you can limit to files from mounted devices using the "show only mounted devices" option in Parameter view/ Option tab.</li>
 </ul>
-
-<pre>
-
-
-</pre>
-
+<h2>
+Drag and Drop</h2>
+<p>
+At any time, you can drag a single file or track from the table to any Playlist in the Playlist repository view or to the current Playlist Editor.</p>
+<h2>
+Contextual menu</h2>
+<p>
+File/track contextual menu features:</p>
+<ul>
+<li>
+Play: Stop current track/file and play it</li>
+<li>
+Push: Don't stop current track but simply add the selection in the queue (see Queue playlist)</li>
+<li>
+Play shuffle: Stop current track and play selection randomly (note that this mode is automatically used when playing a track if you set Shuffle mode in command view)</li>
+<li>
+Play repeat: Stop current track and play selection in a loop (note that this mode is automatically used when playing a track if you set Repeat mode in command view)</li>
+<li>
+Play directory (only Physical Files Table): stop current track and play all files found in the selection directory</li>
+<li>
+Play album (only Logical Tracks Table): stop current track and play all tracks of the selection album</li>
+<li>
+Play artist (only Logical Tracks Table): stop current track and play all tracks of the selection artist</li>
+<li>
+Properties : Show item properties.</li>
+</ul>
+<h2>
+Editing table items</h2>
+<p>
+Table view owns two modes:</p>
+<ul>
+<li>
+Read only (default): double clicking on a row launches the track and it is not allowed to change values.</li>
+<li>
+Read/write: double clicking on an editable value allows to change it. To launch a track, use the first column icon (play).</li>
+</ul>
+<p>
+Use this button <a href="../images/d/d2/Edit.png" title="Image:edit.png" class="internal">
+<img src='../images/d/d2/Edit.png' alt="Image:edit.png"/>
+</a>
+ located in the filtering panel to switch from one mode to the other.</p>
+<h2>
+Filtering panel</h2>
+<p>
+To filter tracks/files following some criteria, select the criteria using the combo box (track name, artist and so on), then type the filter value in the text field and type [enter] (note that filtering occurs also automatically when typing stops). If filter value is void, all tracks/files will be displayed. "Any" criteria means that search is done on all available criteria.</p>
+<p>
+o Filter type combo box: select the criteria you want to filter on.</p>
+<p>
+o Filter value text field: type value you want to filter on.</p>
+<h2>
+Selecting columns to show</h2>
+<p>
+To select columns you want to show, click on the column selector button:<font color="#000000">
+<font color="#000000">
+<a href="../images/a/a4/Cols01.jpg" title="Image:cols01.jpg" class="internal">
+<img src='../images/a/a4/Cols01.jpg' alt="Image:cols01.jpg"/>
+</a>
+</font>
+</font>
+<i>
+Fig. 01: columns selector button</i>
+ And select columns to display by checking columns:<font color="#000000">
+<font color="#000000">
+<a href="../images/0/0b/Cols02.jpg" title="Image:cols02.jpg" class="internal">
+<img src='../images/0/0b/Cols02.jpg' alt="Image:cols02.jpg"/>
+</a>
+</font>
+</font>
+<i>
+Fig. 02: column selection</i>
+</p>
+<p>
+Others features:</p>
+<ul>
+<li>
+<i>
+Horizontal Scroll</i>
+</li>
+<li>
+<i>
+Pack All Columns</i>
+</li>
+</ul>
+<p>
+Go back to <a href="table_of_contents.html">
+Table of contents</a>
+</p>
 </body>
-
 </html>
-

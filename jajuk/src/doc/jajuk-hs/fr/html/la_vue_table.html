@@ -1,222 +1,112 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-
 <link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
-
 <title>
-
-la vue table physique logique</title>
-
+la vue table</title>
 </head>
-
 <body>
-
 <h1>
-
-la vue table physique logique</h1>
-
+la vue table</h1>
 <h1>
-
 La vue Table Physique/Logique</h1>
-
 <p>
-
 Cette vue affiche votre collection sous la forme d'un tableau pour effectuer des actions contextuelles et de filtrage. Pour le moment, les colonnes sont prédéfinies mais dans les version futures de Jajuk, vous pourrez ajouter vos propres colonnes. La table physique affiche tous les fichiers de votre collection (donc vous pouvez voir plusieurs fois le même fichier s'il est dupliqué dans plusieurs répertoires) alors que la table logique n'affiche que les morceaux logiques: un simple morceau peut en fait correspondre à plusieurs fichiers mais il ne sera afficher qu'une fois.</p>
-
 <p>
-
 Notes</p>
-
 <ul>
-
 <li>
-
 La note est liée au morceau, pas aux fichiers. Elle est calculée de cette façon: +1 lorsqu'un morceau est lancé, +2 lorsqu'il est effectivement joué.</li>
-
 <li>
-
 <div lang="fr-FR">
-
 Vous pouvez n'afficher que les morceaux situé sur des supports montés en utilisant l'option "N'afficher que les supports montés" dans la</div>
-
 [view_parameter.html <div style="background: transparent none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;">
-
 <div lang="fr-FR">
-
 vue Paramétrage</div>
-
 </div>
-
 ]<div lang="fr-FR">
-
 <pre>
-
 / onglet Options.
 </pre>
-
 </div>
-
 </li>
-
 </ul>
-
 <h2>
-
 Glissez-déposez</h2>
-
 <p>
-
 A tout moment, vous pouvez glissez un morceau et le déposer sur la playliste désirée (les icônes dans la vue[view_playlist_repository.html Référentiel de playlistes]) ou sur la vue[view_playlist_editor.html Éditeur de playlistes]. Si la playliste sélectionnée est la file, un glissez-déposez sur l'éditeur de playliste lancera immédiatement votre sélection. Notez que vous pouvez associer l'action de glissez-déposez à un pousser et non jouer via l'option correspondante dans la[view_parameter.html vue Paramétrage]<pre>
-
 / onglet options.
 </pre>
-
 </p>
-
 <h2>
-
 Menu contextuel</h2>
-
 <p>
-
 Le menu contextuel (clic droit) sur une sélection de lignes contient les actions suivantes:</p>
-
 <ul>
-
 <li>
-
 Jouer: stoppe le morceau courant et joue la sélection.</li>
-
 <li>
-
 Pousser: pousse la sélection.</li>
-
 <li>
-
 Jouer aléatoirement: stoppe le morceau courant et joue la sélection aléatoirement.</li>
-
 <li>
-
 Jouer en boucle: stoppe le morceau courant et joue la sélection en boucle.</li>
-
 <li>
-
 Jouer le répertoire entier (seulement dans la vue physique): stoppe le morceau courant et joue l'intégralité de son répertoire.</li>
-
 <li>
-
 Jouer l'album entier (seulement dans la vue logique): stoppe le morceau courant et joue l'intégralité des morceaux de son album.</li>
-
 <li>
-
 <div lang="fr-FR">
-
 Jouer l'auteur entier (seulement dans la vue logique)</div>
-
  <div lang="fr-FR">
-
 </div>
-
 </li>
-
 <li>
-
 Attributs: Affiche les attributs.</li>
-
 </ul>
-
 <h2>
-
 Editer les éléments du tableau</h2>
-
 <p>
-
 Le tableau possède deux modes:</p>
-
 <ul>
-
 <li>
-
 Lecture seule (défaut): un double clic sur tout élément du tableau lance le morceau et il n'est pas possible de modifier les valeurs.</li>
-
 <li>
-
 Mise à jour: un double clic sur un élément éditable permet de modifier la valeur. Pour lancer le morceau, utilisez la première colonne (icone Jouer).</li>
-
 </ul>
-
 <p>
-
 Pour basculer d'un mode à l'autre, utilisez le bouton <a href="../images/d/d2/Edit.png" title="Image:edit.png" class="internal">
-
 <img src='../images/d/d2/Edit.png' alt="Image:edit.png"/>
-
 </a>
-
  situé dans la zone de filtrage.</p>
-
 <h2>
-
 Zone de filtrage</h2>
-
 <p>
-
 Pour filtrer les morceaux suivant des critères, sélectionnez le critère dans le boite déroulante (morceau, auteur...) puis saisissez la valeur recherchez dans la zone de texte puis tapez [Entrée] (la recherche se lance également automatiquement après un arrêt de la saisie).</p>
-
 <h2>
-
 Selection des colonnes</h2>
-
 <p>
-
 Pour selectionner les colonnes à afficher, cliquez sur le selecteur de colonnes:<a href="../images/a/a4/Cols01.jpg" title="Image:cols01.jpg" class="internal">
-
 <img src='../images/a/a4/Cols01.jpg' alt="Image:cols01.jpg"/>
-
 </a>
-
 Fig. 01: Selecteur de colonnes Puis selectionnez les colonnes à afficher and cliquant dessus:<a href="../images/0/0b/Cols02.jpg" title="Image:cols02.jpg" class="internal">
-
 <img src='../images/0/0b/Cols02.jpg' alt="Image:cols02.jpg"/>
-
 </a>
-
 Fig. 02: Selection des colonnes</p>
-
 <p>
-
 Autres fonctionnalités:</p>
-
 <ul>
-
 <li>
-
 <div style="font-style: italic;">
-
 Horizontal Scroll</div>
-
 </li>
-
 <li>
-
 <div style="font-style: italic;">
-
 Pack All Columns:</div>
-
  optimise la taille des colonnes pour supprimer les blancs.</li>
-
 </ul>
-
 <p>
-
 </p>
-
 </body>
-
 </html>
-
