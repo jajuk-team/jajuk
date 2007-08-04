@@ -8,40 +8,41 @@
 <toc version="1.0">
 	<tocitem text="Jajuk Help">
 		<tocitem text="Introduction" target="top"/>
+    		<tocitem text="Table of contents" target="table_of_content"/>
 		<tocitem text="General use" expand="true">
-			<tocitem text="Perspectives and views" target="pav"/>
-			<tocitem text="Using devices" target="devices"/>
-			<tocitem text="Playing music" target="pm"/>
-			<tocitem text="Using playlists" target="up"/>
-			<tocitem text="Editing tags and properties" target="editing"/>
-			<tocitem text="Using digital DJs" target="dj"/>
-			<tocitem text="Using the tray" target="tray"/>
-			<tocitem text="Reorganize files" target="reorg"/>
-			<tocitem text="Using custom properties" target="ucp"/>
-			<tocitem text="Keyboard controls" target="keys"/>
+			<tocitem text="Perspectives and views" target="perspectives_and_views"/>
+			<tocitem text="Using devices" target="using_devices"/>
+			<tocitem text="Playing music" target="playing_music"/>
+			<tocitem text="Using playlists" target="using_playlists"/>
+			<tocitem text="Editing tags and properties" target="editing_tag_and_properties"/>
+			<tocitem text="Using digital DJs" target="using_digital_djs"/>
+			<tocitem text="Using the tray" target="using_the_tray"/>
+			<tocitem text="Reorganize files" target="files_organizer"/>
+			<tocitem text="Using custom properties" target="using_custom_properties"/>
+			<tocitem text="Keyboard controls" target="keys_shortcuts"/>
 		</tocitem>
 		<tocitem text="Views"  expand="true">
 			<tocitem text="The Command view" target="view_command"/>
 			<tocitem text="The Information view" target="view_information"/>
-			<tocitem text="The Physical Files Tree view" target="view_physical_tree"/>
-			<tocitem text="The Logical Tracks Tree view" target="view_logical_tree"/>
+			<tocitem text="The Physical Files Tree view" target="view_physical_files_tree"/>
+			<tocitem text="The Logical Tracks Tree view" target="view_logical_track_tree"/>
 			<tocitem text="The Physical/Logical Table view" target="view_table"/>
 			<tocitem text="The Playlist Repository view" target="view_playlist_repository"/>
 			<tocitem text="The Playlist Editor view" target="view_playlist_editor"/>
 			<tocitem text="The Cover view" target="view_cover"/>
-			<tocitem text="The Catalog view" target="view_catalog"/>
+			<tocitem text="The Catalog view" target="view_albums_catalog"/>
 			<tocitem text="The Animation view" target="view_animation"/>
 			<tocitem text="The Parameter view" target="view_parameter"/>
 			<tocitem text="The CD Scanner view" target="view_cd_scanner"/>
 			<tocitem text="The Device View" target="view_devices"/>
-			<tocitem text="The Wikipedia view" target="view_wiki"/>
-			<tocitem text="The Statistics view" target="view_stats"/>
+			<tocitem text="The Wikipedia view" target="view_wikipedia"/>
+			<tocitem text="The Statistics view" target="view_statistics"/>
 			<tocitem text="The Help view" target="view_help"/>
 			<tocitem text="The About view" target="view_about"/>
 		</tocitem>
 		<tocitem text="Technical"  expand="true">
-			<tocitem text="Supported formats" target="formats"/>
-			<tocitem text="Performance tips" target="perfs"/>
+			<tocitem text="Supported formats" target="supported_formats"/>
+			<tocitem text="Performance tips" target="performance_tips"/>
 		</tocitem>
 	</tocitem>
 </toc>
