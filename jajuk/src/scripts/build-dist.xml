@@ -297,9 +297,12 @@
 	<target name='sourcesdist' description='o Create the source distribution' depends='mkdist,helpsetjar'>
 		<mkdir dir='${sourcesdir}' />
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
-		<copy todir='${sourcesdir}/jajuk-src-${version}'>
-			<fileset dir='${distdir}/src' />
+		<copy todir='${sourcesdir}/jajuk-src-${version}'>			
 			<fileset dir='${distdir}/dist-files' />
+		</copy>
+		<mkdir dir='${sourcesdir}/jajuk-src-${version}/src' />
+		<copy todir='${sourcesdir}/jajuk-src-${version}/src'>
+			<fileset dir='${distdir}/src' />
 		</copy>
 		<!-- Copy Jajuk documentation in doc/ -->
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}/doc' />
