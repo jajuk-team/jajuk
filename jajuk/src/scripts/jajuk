@@ -2,7 +2,9 @@
 #Jajuk launching script for unix in RPM install, assumes javaw program is in the PATH env. variable
 
 #Go in the right environment directory
-cd /usr/lib/jajuk/bin
+#cd /usr/lib/jajuk/bin
+cd `dirname $0`/bin
 
 #Launch jajuk
-java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT
+java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT
+#java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT

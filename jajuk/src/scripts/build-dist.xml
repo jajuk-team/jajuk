@@ -5,7 +5,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
-	<property name='version' value='1.4dev_20070729' />
+	<property name='version' value='1.4dev_20070804' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -33,7 +33,7 @@
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
 	<property name='conf_jnlp-dist' value='/svn-jajuk/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/jbuild' />
-	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/testing/build-1.4/' />
+	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/testing/build-1.4' />
 	<property name='conf_jarbundler' value='/svn-jajuk/tools/jarbundler-1.9' />
 
 	<!-- ============================== -->
@@ -106,6 +106,7 @@
 			<fileset file='${basedir}/src/doc/LICENSE.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
 		</copy>
+
 		<!--copy native dll to bin directory-->
 		<copy todir='${distdir}/bin'>
 			<fileset file='${basedir}/*.dll' />
@@ -131,19 +132,23 @@
 			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png' />
 		</copy>
 		<copy todir='${distdir}'>
-			<fileset file='${srcdir}/scripts/jajuk.sh' />
+			<fileset file='${srcdir}/scripts/jajuk' />
 			<fileset file='${srcdir}/scripts/jajuk.bat' />
 		</copy>
+		<chmod file='${distdir}/jajuk' perm='ugo+rx' />
+
 		<!--Windows specific -->
 		<copy todir='${windowsdir}'>
 			<fileset file='${srcdir}/packaging/native_launcher/*' />
 		</copy>
+
 		<!--Izpack specific -->
 		<copy todir='${izpackdir}'>
 			<fileset file='${srcdir}/packaging/IzPack/jajuk.izpack' />
 			<fileset file='${srcdir}/packaging/IzPack/shortcutSpec.xml' />
 			<fileset file='${srcdir}/packaging/IzPack/installDirectory.unix.txt' />
 		</copy>
+
 		<!--RPM specific-->
 		<!-- Create structure-->
 		<mkdir dir='${rootdir}' />
@@ -289,11 +294,17 @@
 		</copy>
 	</target>
 
-	<target name='sourcesdist' description='o Create the source distribution' depends='mkdist'>
+	<target name='sourcesdist' description='o Create the source distribution' depends='mkdist,helpsetjar'>
 		<mkdir dir='${sourcesdir}' />
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
 		<copy todir='${sourcesdir}/jajuk-src-${version}'>
 			<fileset dir='${distdir}/src' />
+			<fileset dir='${distdir}/dist-files' />
+		</copy>
+		<!-- Copy Jajuk documentation in doc/ -->
+		<mkdir dir='${sourcesdir}/jajuk-src-${version}/doc' />
+		<copy todir='${sourcesdir}/jajuk-src-${version}/doc'>
+			<fileset dir='${helpdir}' />
 		</copy>
 		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
 	</target>
@@ -335,7 +346,7 @@
 		</replace>
 		<!-- Set debug value in scripts-->
 		<replace dir='${distdir}' value='-${test}'>
-			<include name='jajuk.sh' />
+			<include name='jajuk' />
 			<include name='jajuk.bat' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
@@ -481,7 +492,7 @@
 				<include name="Resources/**" />
 			</zipfileset>
 			<fileset file="${basedir}/src/doc/README.html"/>
-                        <fileset file="${basedir}/src/doc/LICENSE.txt"/>
+			<fileset file="${basedir}/src/doc/LICENSE.txt"/>
 		</zip>
 	</target>
 
