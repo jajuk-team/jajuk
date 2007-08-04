@@ -116,6 +116,9 @@ public interface ITechnicalStrings {
 
 	/** Number of minutes in an hour */
 	public static final int MINUTES_IN_AN_HOUR = 60;
+	
+	/** Number of pixels around window at initial startup */
+	public static final int FRAME_INITIAL_BORDER = 60;
 
 	/** Default webradio */
 	public static final String DEFAULT_WEBRADIO = "Bluemars [Ambient/Space-Music]";

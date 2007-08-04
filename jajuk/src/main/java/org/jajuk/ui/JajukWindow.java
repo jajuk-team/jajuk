@@ -158,6 +158,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 	 * 
 	 */
 	public void applyStoredSize() {
+		// Note that defaults sizes (for very first startup) are set in
+		// ConfigurationManager.setDefaultProperties() method ,see
+		// CONF_WINDOW_POSITION
 		int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		int iX = 0;
@@ -177,14 +180,16 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			} catch (Exception e) {
 				// Wrong forced value
 				Log.error(e);
-				setBounds(60, 60, iScreenWidth - 120, iScreenHeight - 120);
+				setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER, iScreenWidth - 2
+						* FRAME_INITIAL_BORDER, iScreenHeight - 2 * FRAME_INITIAL_BORDER);
 			}
 			return;
 		}
 		// Detect strange or buggy Window Manager like XGL using this test
 		// and apply default size for them
 		if (!Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-			setBounds(60, 60, iScreenWidth - 120, iScreenHeight - 120);
+			setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER, iScreenWidth - 2
+					* FRAME_INITIAL_BORDER, iScreenHeight - 2 * FRAME_INITIAL_BORDER);
 			return;
 		}
 		// read stored position and size
@@ -192,7 +197,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		// If user left jajuk maximized, reset this simple configuration
 		if (sPosition.equals(FRAME_MAXIMIZED)) {
 			// Always set a size that is used when un-maximalizing the frame
-			setBounds(50, 50, iScreenWidth - 100, iScreenHeight - 100);
+			setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER, iScreenWidth - 2
+					* FRAME_INITIAL_BORDER, iScreenHeight - 2 * FRAME_INITIAL_BORDER);
 			if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 				setExtendedState(Frame.MAXIMIZED_BOTH);
 			}
@@ -200,33 +206,27 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		}
 		StringTokenizer st = new StringTokenizer(sPosition, ",");
 		iX = Integer.parseInt(st.nextToken());
-		// if X position is higher than screen width, set 0
-		if (iX > iScreenWidth) {
-			iX = 0;
+		// if X position is higher than screen width, set default
+		if (iX < 0 || iX > iScreenWidth) {
+			iX = FRAME_INITIAL_BORDER;
 		}
 		iY = Integer.parseInt(st.nextToken());
-		// if Y position is higher than screen height, set 0
-		if (iY > iScreenHeight) {
-			iY = 0;
+		// if Y position is higher than screen height, set default
+		if (iY < 0 || iY > iScreenHeight) {
+			iY = FRAME_INITIAL_BORDER;
 		}
 		iHorizSize = Integer.parseInt(st.nextToken());
-		// if zero horiz size
-		if (iHorizSize <= 0) {
-			iHorizSize = (int) (1.5 * iScreenWidth);
-		}
-		// if zero vertical size
-		iVertSize = Integer.parseInt(st.nextToken());
-		if (iVertSize <= 0) {
-			iVertSize = (int) (1.5 * iScreenHeight);
-		}
-		// If width > to screen width (switching from a dual to a single head
+		// if zero horiz size or
+		//if height > to screen height (switching from a dual to a single head
 		// for ie),
-		// set max size available (minus some horiz space in case of)
-		if (iHorizSize > iScreenWidth) {
-			iHorizSize = iScreenWidth - 10;
+		// set max size available (minus some space to deal with task bars)
+		if (iHorizSize <= 0 || iHorizSize > iScreenWidth) {
+			iHorizSize = iScreenWidth - 2 * FRAME_INITIAL_BORDER;
 		}
-		if (iVertSize > iScreenHeight) {
-			iVertSize = iScreenHeight - 50;
+		//Same for width
+		iVertSize = Integer.parseInt(st.nextToken());
+		if (iVertSize <= 0 || iVertSize > iScreenHeight) {
+			iVertSize = iScreenHeight - 2 * FRAME_INITIAL_BORDER;
 		}
 		setLocation(iX, iY);
 		setSize(iHorizSize, iVertSize);

@@ -210,15 +210,16 @@ public class ConfigurationManager implements ITechnicalStrings {
 		if (width > 1400) {
 			width = 1200;
 		} else {
-			width = width - 250;
+			width = width - 2 * FRAME_INITIAL_BORDER;
 		}
 		int height = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		if (height > 1200) {
 			height = 1000;
 		} else {
-			height = height - 250;
+			height = height - 2 * FRAME_INITIAL_BORDER;
 		}
-		properties.put(CONF_WINDOW_POSITION, "100,100," + width + "," + height);
+		properties.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER
+				+ "," + width + "," + height);
 		properties.put(CONF_LOGICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_PHYSICAL_TABLE_EDITION, FALSE);
 		properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
@@ -248,9 +249,9 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_CATALOG_SHOW_POPUPS, TRUE);
 		properties.put(CONF_FONTS_SIZE, "12");
 		properties.put(CONF_MPLAYER_PATH_FORCED, "");
-		properties.put(CONF_INC_RATING,"5");
-		properties.put(CONF_OPTIONS_WATERMARK,LNF_DEFAULT_WATERMARK);
-		properties.put(CONF_OPTIONS_LNF,LNF_DEFAULT_THEME);
+		properties.put(CONF_INC_RATING, "5");
+		properties.put(CONF_OPTIONS_WATERMARK, LNF_DEFAULT_WATERMARK);
+		properties.put(CONF_OPTIONS_LNF, LNF_DEFAULT_THEME);
 		properties.put(CONF_DEFAULT_WEB_RADIO, DEFAULT_WEBRADIO);
 		properties.put(CONF_NOT_SHOW_AGAIN_UPDATE, FALSE);
 		properties.put(CONF_CHECK_FOR_UPDATE, TRUE);
