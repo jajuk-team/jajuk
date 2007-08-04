@@ -128,7 +128,7 @@
 			<fileset file='${srcdir}/main/resources/perspectives/**' />
 		</copy>
 		<copy todir='${distdir}'>
-			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
 			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png' />
 		</copy>
 		<copy todir='${distdir}'>
@@ -195,7 +195,7 @@
 			<fileset file='${basedir}/src/doc/LICENSE.txt' />
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/pixmaps'>
-			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
 		</copy>
 	</target>
 

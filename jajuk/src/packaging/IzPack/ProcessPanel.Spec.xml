@@ -9,7 +9,7 @@
 	<job name='jajuk'> 
 		<os family='unix' />
 		<executefile name='sh'>
-			<arg>$INSTALL_PATH/jajuk.sh</arg>
+			<arg>$INSTALL_PATH/jajuk</arg>
 		</executefile> 
 	</job> 
 </processing>

@@ -32,8 +32,8 @@
     </locale>
     <native name='ShellLink.dll' type='izpack'/>
     <resources>
-         <res id='HTMLInfoPanel.info' src='doc/README.html'/>
-         <res id='LicencePanel.licence' src='doc/LICENSE.txt'/>
+        <res id='HTMLInfoPanel.info' src='doc/README.html'/>
+        <res id='LicencePanel.licence' src='doc/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
         <res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
     	<res id='Installer.image.0' src='main/resources/images/border2.png' />
@@ -64,14 +64,14 @@
             <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help_fr.jar'/>
             <dir override='true' targetdir='$INSTALL_PATH/lib' src='/tmp/jajuk-dist/jajuk/lib/windows'>
             	<os family='windows'/>
-           </dir>
+            </dir>
             <dir override='true' targetdir='$INSTALL_PATH/lib' src='/tmp/jajuk-dist/jajuk/lib/unix'>
             	<os family='unix'/>
-           </dir>
+            </dir>
             <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon_64x64.png'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
             <!-- Windows specific -->
@@ -94,6 +94,9 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
             	<os family='unix'/>
            	</file>
+           	<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
+           	  	<os family='unix'/>
+           	</executable>
            	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
             	<os family='windows'/>
            	</file>
