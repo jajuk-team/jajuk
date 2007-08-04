@@ -11,7 +11,7 @@
         <mapID target="perspectives_and_views" url="html/perspectives_and_views.html" />
         <mapID target="playing_music" url="html/playing_music.html" />
         <mapID target="supported_formats" url="html/supported_formats.html" />
-        <mapID target="table_of_content" url="html/table_of_content.html" />
+        <mapID target="table_of_contents" url="html/table_of_content.html" />
         <mapID target="using_custom_properties" url="html/using_custom_properties.html" />
         <mapID target="using_devices" url="html/using_devices.html" />
         <mapID target="using_digital_djs" url="html/using_digital_djs.html" />
@@ -29,7 +29,6 @@
         <mapID target="view_logical_tracks_tree" url="html/view_logical_tracks_tree.html" />
         <mapID target="view_parameter" url="html/view_parameter.html" />
         <mapID target="view_physical_files_tree" url="html/view_physical_files_tree.html" />
-        <mapID target="view_physical_logical_table" url="html/view_physical_logical_table.html" />
         <mapID target="view_playlist_editor" url="html/view_playlist_editor.html" />
         <mapID target="view_playlist_repository" url="html/view_playlist_repository.html" />
         <mapID target="view_statistics" url="html/view_statistics.html" />
