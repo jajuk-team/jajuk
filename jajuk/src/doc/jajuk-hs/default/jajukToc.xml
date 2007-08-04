@@ -24,7 +24,7 @@
 			<tocitem text="The Command view" target="view_command"/>
 			<tocitem text="The Information view" target="view_information"/>
 			<tocitem text="The Physical Files Tree view" target="view_physical_files_tree"/>
-			<tocitem text="The Logical Tracks Tree view" target="view_logical_track_tree"/>
+			<tocitem text="The Logical Tracks Tree view" target="view_logical_tracks_tree"/>
 			<tocitem text="The Physical/Logical Table view" target="view_table"/>
 			<tocitem text="The Playlist Repository view" target="view_playlist_repository"/>
 			<tocitem text="The Playlist Editor view" target="view_playlist_editor"/>
