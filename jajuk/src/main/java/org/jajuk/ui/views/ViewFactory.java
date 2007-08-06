@@ -26,7 +26,6 @@ import org.jajuk.ui.IView;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * View Factory, creates view item and manages their ID
@@ -76,14 +75,32 @@ public class ViewFactory {
 	/**
 	 * 
 	 * @return All known views sorted by name
+	 * @TODO Refactor this, the known views should be get by reflection (from the default perspectives XML file ?) 
 	 */
-	public static Set<IView> getKnownViews() {
-		Set<IView> out = new TreeSet<IView>();
+	@SuppressWarnings("unchecked")
+	public static Set<Class> getKnownViews() {
+		Set<Class> out = new LinkedHashSet<Class>();
 		// Take one instance of each set of view instances mapped to each view
 		// classname
-		for (Set<IView> set : hmClassesInstances.values()) {
-			out.add(set.iterator().next());
-		}
+		out.add(AboutView.class);
+		out.add(AnimationView.class);
+		out.add(CatalogView.class);
+		out.add(CDScanView.class);
+		out.add(CoverView.class);
+		out.add(DeviceView.class);
+		out.add(HelpView.class);
+		out.add(LogicalTableView.class);
+		out.add(LogicalTreeView.class);
+		out.add(PlaylistEditorView.class);
+		out.add(LogicalPlaylistRepositoryView.class);
+		out.add(LyricsView.class);
+		out.add(ParameterView.class);
+		out.add(PhysicalPlaylistRepositoryView.class);
+		out.add(PhysicalTableView.class);
+		out.add(PhysicalTreeView.class);
+		out.add(StatView.class);
+		out.add(SuggestionView.class);
+		out.add(WikipediaView.class);
 		return out;
 	}
 

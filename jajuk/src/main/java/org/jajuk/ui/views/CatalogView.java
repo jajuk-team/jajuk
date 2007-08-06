@@ -80,7 +80,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -147,8 +146,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	// Bottom control panel
 	JPanel jpControlBottom;
 
-	JCheckBox jcbShow;
-
+	JCheckBox jcbShowNoCover;
+	
+	JCheckBox jcbShowPopups;
+	
 	JLabel jlSize;
 
 	JSlider jsSize;
@@ -206,6 +207,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	/** Number of created thumbs, used for garbage collection */
 	public int iNbCreatedThumbs = 0;
 
+	/** No covers image cache : size:default icon */
+	protected static HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
+
 	/** Utility list used by size selector */
 	private ArrayList<String> sizes = new ArrayList<String>(10);
 
@@ -233,6 +237,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	 * Constructor
 	 */
 	public CatalogView() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void initUI() {
 		alFilters = new ArrayList<PropertyMetaInformation>(10);
 		alFilters.add(null); // All
 		alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
@@ -255,14 +267,19 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		sizes.add(THUMBNAIL_SIZE_200x200);
 		sizes.add(THUMBNAIL_SIZE_250x250);
 		sizes.add(THUMBNAIL_SIZE_300x300);
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI() {
+		noCoversCache.put(THUMBNAIL_SIZE_50x50, Util.getResizedImage(IconLoader.ICON_NO_COVER, 50,
+				50));
+		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER, 100,
+				100));
+		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER, 150,
+				150));
+		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER, 200,
+				200));
+		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER, 250,
+				250));
+		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER, 300,
+				300));
 		// --Top (most used) control items
 		jpControlTop = new JPanel();
 		// Hide album popups when entering this area
@@ -359,9 +376,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jpControlTop.add(jtbPage, "5,0");
 
 		// --Bottom (less used) items
-		jcbShow = new JCheckBox(Messages.getString("CatalogView.2"));
-		jcbShow.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
-		jcbShow.addActionListener(this);
+		jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
+		jcbShowNoCover.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
+		jcbShowNoCover.addActionListener(this);
+
+		jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
+		jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
+		jcbShowPopups.addActionListener(this);
 
 		JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
 		jsSize = new JSlider(0, 5);
@@ -424,7 +445,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jbRefresh.addActionListener(this);
 		double p = TableLayout.PREFERRED;
 
-		double sizeControlBottom[][] = { { p, p, p, TableLayout.FILL, 5 }, { p } };
+		double sizeControlBottom[][] = { { p, p, p,p, TableLayout.FILL, 5 }, { p } };
 		TableLayout layoutBottom = new TableLayout(sizeControlBottom);
 		layoutBottom.setHGap(20);
 		jpControlBottom = new JPanel();
@@ -441,10 +462,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		});
 		jpControlBottom.setLayout(layoutBottom);
-		jpControlBottom.add(jcbShow, "0,0");
-		jpControlBottom.add(jlSize, "1,0");
-		jpControlBottom.add(jsSize, "2,0,c,c");
-		jpControlBottom.add(jbRefresh, "3,0,r,c");
+		jpControlBottom.add(jcbShowNoCover, "0,0");
+		jpControlBottom.add(jcbShowPopups, "1,0");
+		jpControlBottom.add(jlSize, "2,0");
+		jpControlBottom.add(jsSize, "3,0,c,c");
+		jpControlBottom.add(jbRefresh, "4,0,r,c");
 
 		// Covers
 		jpItems = new FlowScrollPanel();
@@ -534,6 +556,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
 		eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
 		eventSubjectSet.add(EventSubject.EVENT_COVER_DEFAULT_CHANGED);
+		eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
 		return eventSubjectSet;
 	}
 
@@ -544,7 +567,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		bPopulating = true;
 		jsSize.setEnabled(false);
 		jcbFilter.setEnabled(false);
-		jcbShow.setEnabled(false);
+		jcbShowNoCover.setEnabled(false);
 		jcbSorter.setEnabled(false);
 		jbPrev.setEnabled(false);
 		jbNext.setEnabled(false);
@@ -731,7 +754,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						CatalogItem item = alItemsToDisplay.get(i);
 						// populate item (construct UI) only when needed
 						item.populate();
-						if (!item.isNoCover() || (item.isNoCover() && jcbShow.isSelected())) {
+						if (!item.isNoCover() || (item.isNoCover() && jcbShowNoCover.isSelected())) {
 							jpItems.add(item);
 						}
 					}
@@ -747,7 +770,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				jtfValue.requestFocusInWindow();
 				jsSize.setEnabled(true);
 				jcbFilter.setEnabled(true);
-				jcbShow.setEnabled(true);
+				jcbShowNoCover.setEnabled(true);
 				jcbSorter.setEnabled(true);
 				jbPrev.setEnabled(true);
 				jbNext.setEnabled(true);
@@ -782,6 +805,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					}
 				}
 			}
+		} else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
+					jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
 		}
 		// In all cases, update the facts
 		showFacts();
@@ -825,11 +850,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			cleanThumbs(THUMBNAIL_SIZE_300x300);
 			// display thumbs
 			populateCatalog();
-		} else if (e.getSource() == jcbShow) {
+		} else if (e.getSource() == jcbShowNoCover) {
 			ConfigurationManager.setProperty(CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean
-					.toString(jcbShow.isSelected()));
+					.toString(jcbShowNoCover.isSelected()));
 			// display thumbs
 			populateCatalog();
+		} else if (e.getSource() == jcbShowPopups) {
+			ConfigurationManager.setProperty(CONF_CATALOG_SHOW_POPUPS, Boolean
+					.toString(jcbShowPopups.isSelected()));
+			// force paramter view to take this into account
+			ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
 		} else if (e.getSource() == jbPrev) {
 			if (page > 0) {
 				page--;
@@ -909,9 +939,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		JTextArea jlAlbum;
 
-		/** No covers image cache */
-		private HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
-
 		/** Draging flag used to disable simple click behavior */
 		private boolean bDragging = false;
 
@@ -939,8 +966,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			Util.refreshThumbnail(album, sizes.get(jsSize.getValue()));
 			if (!fCover.exists() || fCover.length() == 0) {
 				bNoCover = true;
-				this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
-						+ FILE_THUMB_NO_COVER);
+				this.fCover = null;
 			}
 			double[][] dMain = { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
 					{ getSelectedSize() + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
@@ -948,14 +974,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			jpIcon = new JPanel();
 			jlIcon = new JLabel();
-			jlIcon.setBorder(Util.getShadowBorder());
 			ImageIcon ii = null;
-			String sPath = fCover.getAbsolutePath();
-			if (noCoversCache.containsKey(sPath)) {
-				ii = noCoversCache.get(sPath);
+			if (bNoCover) {
+				ii = CatalogView.noCoversCache.get(size);
 			} else {
-				ii = new ImageIcon(sPath);
-				noCoversCache.put(sPath, ii);
+				ii = new ImageIcon(fCover.getAbsolutePath());
+				jlIcon.setBorder(Util.getShadowBorder());
 			}
 			if (!bNoCover) { // avoid flushing no cover thumb: it blinks
 				ii.getImage().flush(); // flush image buffer to avoid jre to
@@ -1198,9 +1222,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			// compute selection
 			ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(
 					tracks.size());
-			Iterator it = tracks.iterator();
-			while (it.hasNext()) {
-				org.jajuk.base.File file = ((Track) it.next()).getPlayeableFile(false);
+			for (Track track:tracks){
+				org.jajuk.base.File file = track.getPlayeableFile(false);
 				if (file != null) {
 					alFilesToPlay.add(file);
 				}

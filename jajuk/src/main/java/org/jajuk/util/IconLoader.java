@@ -62,6 +62,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_BESTOF = new UrlImageIcon(Util
 			.getResource("icons/32x32/bestof.png"));
 
+	public static final UrlImageIcon ICON_BESTOF_16x16 = new UrlImageIcon(Util
+			.getResource("icons/16x16/bestof.png"));
+
 	public static final UrlImageIcon ICON_MUTED = new UrlImageIcon(Util
 			.getResource("icons/32x32/mute.png"));
 
@@ -73,6 +76,9 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_NOVELTIES = new UrlImageIcon(Util
 			.getResource("icons/32x32/novelties.png"));
+	
+	public static final UrlImageIcon ICON_NOVELTIES_16x16 = new UrlImageIcon(Util
+			.getResource("icons/16x16/novelties.png"));
 
 	public static final UrlImageIcon ICON_NEXT = new UrlImageIcon(Util
 			.getResource("icons/16x16/next.png"));

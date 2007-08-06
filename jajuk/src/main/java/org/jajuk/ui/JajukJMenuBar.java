@@ -47,6 +47,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -154,19 +155,22 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		views.addSeparator();
 		//Add the list of available views parsed in XML files at startup
 		JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
-		for (final IView view:ViewFactory.getKnownViews()){
-			JMenuItem jmi = new JMenuItem(view.getDesc(),IconLoader.ICON_LOGO_FRAME);
+		for (final Class view:ViewFactory.getKnownViews()){
+			JMenuItem jmi = null;
+			try {
+				jmi = new JMenuItem(((IView)view.newInstance()).getDesc(),IconLoader.ICON_LOGO_FRAME);
+			} catch (Exception e1) {
+				Log.error(e1);
+			} 
 			jmi.addActionListener(new ActionListener() {
-			
 				public void actionPerformed(ActionEvent e) {
 					//Simply add the new view in the current perspective
 					PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
 							.getCurrentPerspective();
-					IView newView = ViewFactory.createView(view.getClass(), current);
+					IView newView = ViewFactory.createView(view, current);
 					newView.initUI();
 					current.addDockable(newView);
 				}
-			
 			});
 			jmViews.add(jmi);
 		}

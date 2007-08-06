@@ -12,7 +12,7 @@
 </Dockable>
 <Split orientation="1" location="0.4994192799070848">
 <Dockable>
-<Key dockName="org.jajuk.ui.views.PhysicalPlaylistEditorView/0"/>
+<Key dockName="org.jajuk.ui.views.PlaylistEditorView/0"/>
 </Dockable>
 <Dockable>
 <Key dockName="org.jajuk.ui.views.CoverView/0"/>

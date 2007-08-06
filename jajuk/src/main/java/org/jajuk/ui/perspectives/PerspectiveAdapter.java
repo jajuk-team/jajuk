@@ -142,6 +142,11 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
 				Dockable view = null;
 				try {
 					String className = keyName.substring(0, keyName.indexOf('/'));
+					// temp : compatibility with 1.4 truck
+					if (className.equals("org.jajuk.ui.views.PhysicalPlaylistEditorView")
+							|| className.equals("org.jajuk.ui.views.LogicalPlaylistEditorView")) {
+						className = "org.jajuk.ui.views.PlaylistEditorView";
+					}
 					view = ViewFactory
 							.createView(Class.forName(className), PerspectiveAdapter.this);
 				} catch (Exception e) {

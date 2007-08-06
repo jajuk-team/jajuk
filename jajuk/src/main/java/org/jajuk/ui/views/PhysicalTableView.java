@@ -55,9 +55,6 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 
 	private static final long serialVersionUID = 1L;
 
-	/** Self instance */
-	private static PhysicalTableView ltv;
-
 	JPopupMenu jmenuFile;
 
 	JMenuItem jmiFilePlay;
@@ -81,18 +78,9 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 		return Messages.getString("PhysicalTableView.0"); 
 	}
 
-	/** Return singleton */
-	public static synchronized PhysicalTableView getInstance() {
-		if (ltv == null) {
-			ltv = new PhysicalTableView();
-		}
-		return ltv;
-	}
-
 	/** Constructor */
 	public PhysicalTableView() {
 		super();
-		ltv = this;
 		// File menu
 		jmenuFile = new JPopupMenu();
 		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1"),IconLoader.ICON_PLAY_16x16); 

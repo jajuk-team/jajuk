@@ -48,13 +48,13 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXDatePicker;
-
-import info.clearthought.layout.TableLayout;
+import org.jdesktop.swingx.VerticalLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.NumberFormat;
@@ -78,6 +78,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+
 import ext.AutoCompleteDecorator;
 
 /**
@@ -92,10 +96,6 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 
 	/** OK/Cancel panel */
 	OKCancelPanel okc;
-
-	/** Layout dimensions */
-	double[][] dSize = { { 0, TableLayout.PREFERRED, 10 },
-			{ 0, TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 20 } };
 
 	/** Items */
 	ArrayList<Item> alItems;
@@ -132,11 +132,17 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		if (alItems.size() > 1) {
 			bMerged = true;
 		}
-		panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? (alItems.get(0)).getDesc()
-				: Messages.getString("PropertiesWizard.6"), bMerged);
-		jpMain = new JPanel();
-		jpMain.setLayout(new TableLayout(dSize));
-		jpMain.add(panel1, "1,1");
+		panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? Util.getLimitedString((alItems
+				.get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6"), bMerged);
+		CellConstraints cc = new CellConstraints();
+		PanelBuilder builder = new PanelBuilder(new FormLayout("5dlu,p:grow,5dlu",
+				"1dlu,fill:p,5dlu,p,3dlu"));
+		builder.add(panel1, cc.xy(2, 2));
+		// OK/Cancel buttons
+		okc = new OKCancelPanel(PropertiesWizard.this, Messages.getString("Apply"), Messages
+				.getString("Close"));
+		builder.add(okc, cc.xy(2, 4));
+		jpMain = builder.getPanel();
 		display();
 	}
 
@@ -171,47 +177,45 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		} else {
 			filter = null;
 		}
-		jpMain = new JPanel();
-		jpMain.setLayout(new TableLayout(dSize));
-		JPanel jpProperties = new JPanel();
-		double[][] dPanels = { { TableLayout.PREFERRED, 20, TableLayout.PREFERRED },
-				{ TableLayout.PREFERRED } };
-		jpProperties.setLayout(new TableLayout(dPanels));
 		if (alItems1.size() > 0) {
 			if (alItems1.size() == 1) {
-				panel1 = new PropertiesPanel(alItems1, alItems1.get(0).getDesc(), false);
+				panel1 = new PropertiesPanel(alItems1, Util.getLimitedString(alItems1.get(0)
+						.getDesc(), 50), false);
 			} else {
 				panel1 = new PropertiesPanel(alItems1, Util.formatPropertyDesc(Messages
 						.getString("PropertiesWizard.6")), true);
 			}
 			panel1.setBorder(BorderFactory.createEtchedBorder());
-			jpProperties.add(panel1, "0,0");
 		}
 		if (alItems2.size() > 0) {
 			if (alItems2.size() == 1) {
-				panel2 = new PropertiesPanel(alItems2, alItems2.get(0).getDesc(), false);
+				panel2 = new PropertiesPanel(alItems2, Util.getLimitedString(alItems2.get(0)
+						.getDesc(), 50), false);
 			} else {
 				panel2 = new PropertiesPanel(alItems2, Util.formatPropertyDesc(alItems2.size()
 						+ " " + Messages.getString("Property_tracks")), true);
 			}
 			panel2.setBorder(BorderFactory.createEtchedBorder());
-			jpProperties.add(panel2, "2,0");
 		}
-		jpMain.add(jpProperties, "1,1");
+		PanelBuilder builder = new PanelBuilder(new FormLayout(
+				"2dlu,p:grow(0.5),5dlu,p:grow(0.5),2dlu", "1dlu,fill:p,5dlu,p,3dlu"));
+		CellConstraints cc = new CellConstraints();
+		builder.add(panel1, cc.xy(2, 2));
+		builder.add(panel2, cc.xy(4, 2));
+		// OK/Cancel buttons
+		okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages.getString("Close"));
+		builder.add(okc, cc.xy(2, 4));
+		jpMain = builder.getPanel();
 		display();
 	}
 
 	private void display() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				// OK/Cancel buttons
-				okc = new OKCancelPanel(PropertiesWizard.this, Messages.getString("Apply"),
-						Messages.getString("Close"));
 				// If none editable item, save button is disabled
 				if (iEditable == 0) {
 					okc.getOKButton().setEnabled(false);
 				}
-				jpMain.add(okc, "1,3");
 				getRootPane().setDefaultButton(okc.getOKButton());
 				getContentPane().add(new JScrollPane(jpMain));
 				pack();
@@ -308,8 +312,6 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		 *            whether this panel contains merged values
 		 */
 		PropertiesPanel(ArrayList<Item> alItems, String sDesc, boolean bMerged) {
-			int iX_SEPARATOR = 5;
-			int iY_SEPARATOR = 10;
 			this.alItems = alItems;
 			this.bMerged = bMerged;
 			Item pa = alItems.get(0);
@@ -325,14 +327,11 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				}
 			}
 			// contains widgets for properties
-			// Varname | value | link | all album
+			// Varname | value | link
 			widgets = new JComponent[alToDisplay.size()][4];
-			double p = TableLayout.PREFERRED;
-			double[] dHoriz = { iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR, p, iX_SEPARATOR };
+			String horiz = "3dlu, p:grow(0.2), 5dlu, p:grow(0.8), 5dlu, p, 3dlu";
 			// *2n+1 rows for spaces + 2 rows for title
-			double[] dVert = new double[(2 * alToDisplay.size()) + 3];
-			dVert[0] = iY_SEPARATOR;
-			dVert[1] = 20; // title
+			String vert = "5dlu,20"; // Y space + title
 			int index = 0;
 			for (final PropertyMetaInformation meta : alToDisplay) {
 				// begin by checking if all items have the same value, otherwise
@@ -346,8 +345,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					}
 				}
 				// Set layout
-				dVert[2 * index + 2] = iY_SEPARATOR;
-				dVert[(2 * index) + 3] = 20;
+				vert += ",5dlu,20";
 				Dimension dim = new Dimension(200, 20);
 				// -Set widgets-
 				// Property name
@@ -551,14 +549,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						widgets[index][1] = jcb;
 					} else { // for all others formats (string, class)
 						final JTextField jtfValue = new JTextField();
-						jtfValue.addKeyListener(new KeyListener() {
-
-							public void keyTyped(KeyEvent arg0) {
-							}
-
-							public void keyPressed(KeyEvent arg0) {
-							}
-
+						jtfValue.addKeyListener(new KeyAdapter() {
 							public void keyReleased(KeyEvent arg0) {
 								String value = jtfValue.getText();
 								hmPropertyToChange.put(meta, value);
@@ -603,18 +594,13 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				}
 				index++;
 			}
-			if (dVert.length > 0) {
-				dVert[dVert.length - 1] = iY_SEPARATOR;// last row is a
-				// separator
-			}
+			// last row is a separator
+			vert += ",5dlu";
 
 			// Create layout
-			double[][] dSizeProperties = new double[][] { dHoriz, dVert };
-			dSizeProperties[0] = dHoriz;
-			dSizeProperties[1] = dVert;
+			PanelBuilder builder = new PanelBuilder(new FormLayout(horiz, vert));
+			CellConstraints cc = new CellConstraints();
 			// construct properties panel
-			jpProperties = new JPanel();
-			jpProperties.setLayout(new TableLayout(dSizeProperties));
 			// Add title
 			JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
 					+ "</b></html>");
@@ -625,33 +611,29 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			JLabel jlLink = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.4")
 					+ "</b></html>");
 			jlLink.setToolTipText(Messages.getString("PropertiesWizard.4"));
-			JLabel jlType = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.7")
-					+ "</b></html>");
-			jlType.setToolTipText(Messages.getString("PropertiesWizard.7"));
 
-			jpProperties.add(jlName, "1,1,c,c");
-			jpProperties.add(jlValue, "3,1,c,c");
-			jpProperties.add(jlLink, "5,1,c,c");
-			jpProperties.add(jlType, "7,1,c,c");
-
+			builder.add(jlName, cc.xy(2, 2));
+			builder.add(jlValue, cc.xy(4, 2));
+			builder.add(jlLink, cc.xy(6, 2));
 			// Add widgets
 			int i = 0;
-			int j = 2;
+			int j = 4;
 			for (PropertyMetaInformation meta : alToDisplay) {
-				j = (2 * i) + 3;
-				jpProperties.add(widgets[i][0], "1," + j + ",c,c");
-				jpProperties.add(widgets[i][1], "3," + j);
+				builder.add(widgets[i][0], cc.xy(2, j));
+				builder.add(widgets[i][1], cc.xy(4, j));
 				if (widgets[i][2] != null) { // link widget can be null
-					jpProperties.add(widgets[i][2], "5," + j + ",c,c");
+					builder.add(widgets[i][2], cc.xy(6, j));
 				}
 				i++;
+				j += 2;
 			}
-			double[][] dSize = { { 0.99 }, { 20, iY_SEPARATOR, 0.99 } };
-			setLayout(new TableLayout(dSize));
+			jpProperties = builder.getPanel();
+
+			setLayout(new VerticalLayout(10));
 			// desc
 			jlDesc = new JLabel(Util.formatPropertyDesc(sDesc));
-			add(jlDesc, "0,0");
-			add(jpProperties, "0,2");
+			add(jlDesc);
+			add(jpProperties);
 		}
 
 		/*

@@ -67,29 +67,15 @@ import java.util.TreeMap;
  * Statistics view
  * <p>
  * Help perspective
- * <p>
- * Singleton
- */
+  */
 public class StatView extends ViewAdapter implements Observer {
 
 	private static final long serialVersionUID = 1L;
-
-	/** Self instance */
-	private static StatView sv;
-
-	/** Return self instance */
-	public static synchronized StatView getInstance() {
-		if (sv == null) {
-			sv = new StatView();
-		}
-		return sv;
-	}
 
 	/**
 	 * Constructor
 	 */
 	public StatView() {
-		sv = this;
 	}
 
 	/*
@@ -187,7 +173,6 @@ public class StatView extends ViewAdapter implements Observer {
 			JFreeChart jfchart = null;
 			// data
 			pdata = new DefaultPieDataset();
-			Iterator itFiles = FileManager.getInstance().getFiles().iterator();
 			// prepare devices
 			long lTotalSize = 0;
 			double dOthers = 0;
@@ -196,8 +181,7 @@ public class StatView extends ViewAdapter implements Observer {
 					.getDevices());
 			long[] lSizes = new long[DeviceManager.getInstance()
 					.getElementCount()];
-			while (itFiles.hasNext()) {
-				File file = (File) itFiles.next();
+			for (File file:FileManager.getInstance().getFiles()){
 				lTotalSize += file.getSize();
 				lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file
 						.getSize();
@@ -401,8 +385,8 @@ public class StatView extends ViewAdapter implements Observer {
 			ChartPanel cp4 = createDeviceRepartition();
 			if (cp4 != null)
 				add(cp4, "2,0"); 
-			StatView.getInstance().revalidate();
-			StatView.getInstance().repaint();
+			revalidate();
+			repaint();
 			Util.stopWaiting();
 		}
 	}

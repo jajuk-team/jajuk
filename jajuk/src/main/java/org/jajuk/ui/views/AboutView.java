@@ -49,15 +49,10 @@ import javax.swing.JTextArea;
  * View used to show the Jajuk about and contributors.
  * <p>
  * Help perspective *
- * <p>
- * Singleton
  */
 public class AboutView extends ViewAdapter {
 
 	private static final long serialVersionUID = 1L;
-
-	/** Self instance */
-	private static AboutView av;
 
 	/** Licence panel */
 	private JPanel jpLicence;
@@ -77,19 +72,11 @@ public class AboutView extends ViewAdapter {
 	/** Additional informations */
 	private static final String INFOS = "http://jajuk.sourceforge.net"; 
 
-	/** Return self instance */
-	public static synchronized AboutView getInstance() {
-		if (av == null) {
-			av = new AboutView();
-		}
-		return av;
-	}
-
+	
 	/**
 	 * Constructor
 	 */
 	public AboutView() {
-		av = this;
 	}
 
 	/*

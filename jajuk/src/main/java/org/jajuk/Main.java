@@ -608,37 +608,6 @@ public class Main implements ITechnicalStrings {
 		if (!fThumbs.exists()) {
 			fThumbs.mkdir();
 		}
-		// check for default covers
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_50x50 + "/"
-				+ FILE_THUMB_NO_COVER);
-		if (!fThumbs.exists()) {
-			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 50);
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_100x100 + "/"
-				+ FILE_THUMB_NO_COVER);
-		if (!fThumbs.exists()) {
-			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 100);
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_150x150 + "/"
-				+ FILE_THUMB_NO_COVER);
-		if (!fThumbs.exists()) {
-			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 150);
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_200x200 + "/"
-				+ FILE_THUMB_NO_COVER);
-		if (!fThumbs.exists()) {
-			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 200);
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_250x250 + "/"
-				+ FILE_THUMB_NO_COVER);
-		if (!fThumbs.exists()) {
-			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 250);
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300 + "/"
-				+ FILE_THUMB_NO_COVER);
-		if (!fThumbs.exists()) {
-			Util.createThumbnail(IconLoader.ICON_NO_COVER, fThumbs, 300);
-		}
 		// check for djs directory
 		File fdjs = Util.getConfFileByPath(FILE_DJ_DIR);
 		if (!fdjs.exists()) {

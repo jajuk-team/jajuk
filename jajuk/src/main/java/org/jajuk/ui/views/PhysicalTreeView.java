@@ -106,9 +106,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 
 	private static final long serialVersionUID = 1L;
 
-	/** Self instance */
-	private static PhysicalTreeView ptv;
-
 	/** Files selection */
 	ArrayList<File> alFiles = new ArrayList<File>(100);
 
@@ -238,17 +235,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		return Messages.getString("PhysicalTreeView.0");
 	}
 
-	/** Return singleton */
-	public static synchronized PhysicalTreeView getInstance() {
-		if (ptv == null) {
-			ptv = new PhysicalTreeView();
-		}
-		return ptv;
-	}
-
 	/** Constructor */
 	public PhysicalTreeView() {
-		ptv = this;
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {

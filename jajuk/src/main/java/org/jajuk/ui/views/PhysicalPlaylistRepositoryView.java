@@ -38,30 +38,17 @@ import javax.swing.JOptionPane;
  * Shows playlist files
  * <p>
  * Physical perspective *
- * <p>
- * Singleton
  */
 public class PhysicalPlaylistRepositoryView extends
 		AbstractPlaylistRepositoryView implements Observer, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	/** Self instance */
-	static PhysicalPlaylistRepositoryView ppr;
-
-	/** Return self instance */
-	public static synchronized PhysicalPlaylistRepositoryView getInstance() {
-		if (ppr == null) {
-			ppr = new PhysicalPlaylistRepositoryView();
-		}
-		return ppr;
-	}
-
 	/**
 	 * Constructor
 	 */
 	public PhysicalPlaylistRepositoryView() {
-		ppr = this;
+	
 	}
 
 	/*

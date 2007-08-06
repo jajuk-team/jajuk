@@ -54,6 +54,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -71,6 +72,8 @@ public class LyricsView extends ViewAdapter implements Observer {
 
 	private JTextArea textarea;
 
+	JScrollPane jsp;
+
 	private JLabel jlTitle;
 
 	private JLabel jlAuthor;
@@ -82,6 +85,9 @@ public class LyricsView extends ViewAdapter implements Observer {
 	 */
 	public String getDesc() {
 		return Messages.getString("LyricsView.0");
+	}
+
+	public LyricsView() {
 	}
 
 	/*
@@ -117,9 +123,9 @@ public class LyricsView extends ViewAdapter implements Observer {
 		jlAuthor.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE) + 2));
 		jlTitle = new JLabel();
-		jlTitle.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
-				.getInt(CONF_FONTS_SIZE) + 4));
-		JScrollPane jsp = new JScrollPane(textarea);
+		jlTitle.setFont(new Font("Dialog", Font.PLAIN,
+				ConfigurationManager.getInt(CONF_FONTS_SIZE) + 4));
+		jsp = new JScrollPane(textarea);
 		textarea.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
 				.getInt(CONF_FONTS_SIZE)));
 		int height = getHeight() - 200;
@@ -127,7 +133,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 		// --columns
 				"3dlu,p:grow, 3dlu",
 				// --rows
-				"5dlu, p, 3dlu, p, 3dlu,"+height+":grow ,3dlu"); // rows
+				"5dlu, p, 3dlu, p, 3dlu,fill:" + height + ":grow,3dlu"); // rows
 		PanelBuilder builder = new PanelBuilder(layout);
 		CellConstraints cc = new CellConstraints();
 		// Add items
@@ -165,7 +171,6 @@ public class LyricsView extends ViewAdapter implements Observer {
 	 */
 	public void update(final Event event) {
 		SwingUtilities.invokeLater(new Runnable() {
-
 			public void run() {
 				EventSubject subject = event.getSubject();
 				if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
@@ -174,10 +179,18 @@ public class LyricsView extends ViewAdapter implements Observer {
 						Track track = FIFO.getInstance().getCurrentFile().getTrack();
 						String sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
 								+ track.getAuthor().getName2() + "&songname=" + track.getName();
-						textarea.setVisible(true);
+						jsp.setVisible(true);
 						textarea.setToolTipText(sURL);
-						setText(LyricsService.getLyrics(track.getAuthor().getName2(), track
-								.getName()));
+						textarea.setText(LyricsService.getLyrics(track.getAuthor().getName2(),
+								track.getName()));
+						// Make sure to display the begin of the text (must be
+						// done in a thread to be executed when textarea display
+						// is actually finished)
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								jsp.getVerticalScrollBar().setValue(0);
+							}
+						});
 						jlAuthor.setText(track.getAuthor().getName2());
 						jlTitle.setText(track.getName());
 						Util.copyData = sURL;
@@ -188,7 +201,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 						}
 					}
 				} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-					textarea.setVisible(false);
+					jsp.setVisible(false);
 					jlAuthor.setText("");
 					jlTitle.setText(Messages.getString("JajukWindow.18"));
 				} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
@@ -196,18 +209,12 @@ public class LyricsView extends ViewAdapter implements Observer {
 					if (radio != null) {
 						jlTitle.setText(radio.getName());
 						jlAuthor.setText("");
-						textarea.setVisible(false);
+						jsp.setVisible(false);
 					}
 				}
 			}
 
 		});
-
-	}
-
-	// update text area text
-	private void setText(String lyrics) {
-		textarea.setText(lyrics);
 	}
 
 }

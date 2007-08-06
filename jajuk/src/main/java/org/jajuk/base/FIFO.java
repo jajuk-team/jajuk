@@ -429,11 +429,8 @@ public class FIFO implements ITechnicalStrings {
 			// intro workaround : intro mode is only read at track launch
 			// and can't be set during the play
 			ConfigurationManager.getBoolean(CONF_STATE_INTRO);
-			// re-read intro mode
-			/*
-			 * notify to devices like commandJPanel to update ui when the play
-			 * button has been pressed
-			 */
+			// notify to devices like commandJPanel to update ui when the play
+			 // button has been pressed
 			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PLAY));
 			// set was playing state
 			ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE);

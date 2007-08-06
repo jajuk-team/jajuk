@@ -49,15 +49,10 @@ import ext.SwingWorker;
  * Scan CD to build the collection as fast as possible
  * <p>
  * Configuration perspective *
- * <p>
- * Singleton
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-
-	/** Self instance */
-	private static CDScanView cds;
 
 	JLabel jlName;
 
@@ -71,19 +66,10 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 
 	JButton jbUrl;
 
-	/** Return self instance */
-	public static synchronized CDScanView getInstance() {
-		if (cds == null) {
-			cds = new CDScanView();
-		}
-		return cds;
-	}
-
 	/**
 	 * Constructor
 	 */
 	public CDScanView() {
-		cds = this;
 	}
 
 	/*

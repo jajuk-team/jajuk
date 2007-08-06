@@ -25,7 +25,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.ui.views.AbstractPlaylistEditorView;
+import org.jajuk.ui.views.PlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -92,7 +92,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 		try {
 			if (canImport(c, t.getTransferDataFlavors())) {
 				JComponent comp = (JComponent) c.getParent().getParent().getParent();
-				PlaylistFileItem plfi = ((AbstractPlaylistEditorView) comp)
+				PlaylistFileItem plfi = ((PlaylistEditorView) comp)
 						.getCurrentPlaylistFileItem();
 				Object oData = null;
 				DataFlavor flavor = t.getTransferDataFlavors()[0];

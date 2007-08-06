@@ -25,7 +25,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.views.AbstractPlaylistEditorView;
+import org.jajuk.ui.views.PlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -76,11 +76,11 @@ public class PlaylistTransferHandler implements DropTargetListener, ITechnicalSt
 		PlaylistFileItem plfi = null;
 		if (c instanceof PlaylistFileItem) {
 			plfi = (PlaylistFileItem) c;
-		} else if (c instanceof AbstractPlaylistEditorView) {
-			plfi = ((AbstractPlaylistEditorView) c).getCurrentPlaylistFileItem();
+		} else if (c instanceof PlaylistEditorView) {
+			plfi = ((PlaylistEditorView) c).getCurrentPlaylistFileItem();
 		} else if (c instanceof JTable) {
 			c = c.getParent().getParent().getParent();
-			plfi = ((AbstractPlaylistEditorView) c).getCurrentPlaylistFileItem();
+			plfi = ((PlaylistEditorView) c).getCurrentPlaylistFileItem();
 		}
 		// no dnd to best of playlist
 		if (plfi != null
@@ -102,11 +102,11 @@ public class PlaylistTransferHandler implements DropTargetListener, ITechnicalSt
 			PlaylistFileItem plfi = null;
 			if (c instanceof PlaylistFileItem) {
 				plfi = (PlaylistFileItem) c;
-			} else if (c instanceof AbstractPlaylistEditorView) {
-				plfi = ((AbstractPlaylistEditorView) c).getCurrentPlaylistFileItem();
+			} else if (c instanceof PlaylistEditorView) {
+				plfi = ((PlaylistEditorView) c).getCurrentPlaylistFileItem();
 			} else if (c instanceof JTable) {
 				c = c.getParent().getParent().getParent();
-				plfi = ((AbstractPlaylistEditorView) c).getCurrentPlaylistFileItem();
+				plfi = ((PlaylistEditorView) c).getCurrentPlaylistFileItem();
 			}
 			if (plfi == null) {
 				return;

@@ -37,30 +37,13 @@ import java.util.Iterator;
  * Shows logical playlists
  * <p>
  * Logical perspective *
- * <p>
- * Singleton
  */
 public class LogicalPlaylistRepositoryView extends
 		AbstractPlaylistRepositoryView implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
-	/** Self instance */
-	static LogicalPlaylistRepositoryView lpr;
-
-	/** Return self instance */
-	public static synchronized LogicalPlaylistRepositoryView getInstance() {
-		if (lpr == null) {
-			lpr = new LogicalPlaylistRepositoryView();
-		}
-		return lpr;
-	}
-
-	/**
-	 * Constructor
-	 */
 	public LogicalPlaylistRepositoryView() {
-		lpr = this;
 	}
 
 	/*

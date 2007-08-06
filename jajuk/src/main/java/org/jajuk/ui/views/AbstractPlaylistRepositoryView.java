@@ -62,9 +62,7 @@ import ext.SwingWorker;
  * Shows playlist files
  * <p>
  * Physical perspective *
- * <p>
- * Singleton
- */
+  */
 abstract public class AbstractPlaylistRepositoryView extends ViewAdapter implements Observer,
 		ActionListener {
 

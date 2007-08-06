@@ -199,7 +199,7 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_THUMBS = "thumbs";
 
-	public static final String FILE_THUMB_NO_COVER = "nocover.jpg";
+	public static final String FILE_THUMB_NO_COVER = "nocover.png";
 
 	public static final String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
 

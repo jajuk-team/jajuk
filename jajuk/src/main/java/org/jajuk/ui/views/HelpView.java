@@ -36,15 +36,10 @@ import javax.swing.BoxLayout;
  * Help view using java help api
  * <p>
  * Help perspective *
- * <p>
- * Singleton
  */
 public class HelpView extends ViewAdapter {
 
 	private static final long serialVersionUID = 1L;
-
-	/** Self instance */
-	private static HelpView hv;
 
 	/** hepl set */
 	HelpSet hs;
@@ -55,19 +50,7 @@ public class HelpView extends ViewAdapter {
 	/** Help component */
 	JHelp jhelp;
 
-	/** Return self instance */
-	public static synchronized HelpView getInstance() {
-		if (hv == null) {
-			hv = new HelpView();
-		}
-		return hv;
-	}
-
-	/**
-	 * Constructor
-	 */
 	public HelpView() {
-		hv = this;
 	}
 
 	/*

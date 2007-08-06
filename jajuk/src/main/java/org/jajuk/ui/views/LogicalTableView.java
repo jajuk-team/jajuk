@@ -57,9 +57,6 @@ public class LogicalTableView extends AbstractTableView {
 
 	private static final long serialVersionUID = 1L;
 
-	/** Self instance */
-	private static LogicalTableView ltv;
-
 	JPopupMenu jmenuTrack;
 
 	JMenuItem jmiTrackPlay;
@@ -82,38 +79,36 @@ public class LogicalTableView extends AbstractTableView {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("LogicalTableView.0"); 
-	}
-
-	/** Return singleton */
-	public static synchronized LogicalTableView getInstance() {
-		if (ltv == null) {
-			ltv = new LogicalTableView();
-		}
-		return ltv;
+		return Messages.getString("LogicalTableView.0");
 	}
 
 	/** Constructor */
 	public LogicalTableView() {
 		super();
-		ltv = this;
 		// Track menu
 		jmenuTrack = new JPopupMenu();
-		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTableView.7"),IconLoader.ICON_PLAY_16x16); 
+		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTableView.7"),
+				IconLoader.ICON_PLAY_16x16);
 		jmiTrackPlay.addActionListener(this);
-		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8"),IconLoader.ICON_PUSH); 
+		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8"), IconLoader.ICON_PUSH);
 		jmiTrackPush.addActionListener(this);
-		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9"),IconLoader.ICON_SHUFFLE); 
+		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9"),
+				IconLoader.ICON_SHUFFLE);
 		jmiTrackPlayShuffle.addActionListener(this);
-		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10"),IconLoader.ICON_REPEAT); 
+		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10"),
+				IconLoader.ICON_REPEAT);
 		jmiTrackPlayRepeat.addActionListener(this);
-	jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11"),IconLoader.ICON_ALBUM); 
+		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11"),
+				IconLoader.ICON_ALBUM);
 		jmiTrackPlayAlbum.addActionListener(this);
-		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12"),IconLoader.ICON_AUTHOR); 
+		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12"),
+				IconLoader.ICON_AUTHOR);
 		jmiTrackPlayAuthor.addActionListener(this);
-		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15"),IconLoader.ICON_BOOKMARK_FOLDERS); 
+		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15"),
+				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiTrackAddFavorite.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14"),IconLoader.ICON_PROPERTIES); 
+		jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14"),
+				IconLoader.ICON_PROPERTIES);
 		jmiProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
 		jmenuTrack.add(jmiTrackPush);
@@ -211,7 +206,7 @@ public class LogicalTableView extends AbstractTableView {
 					Log.error(je);
 				}
 			} else {
-				Messages.showErrorMessage(10, track.getName()); 
+				Messages.showErrorMessage(10, track.getName());
 			}
 		} else if (e.getClickCount() == 1) {
 			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
@@ -219,6 +214,7 @@ public class LogicalTableView extends AbstractTableView {
 			TableTransferHandler.iSelectedRow = iSelectedRow;
 		}
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -239,19 +235,20 @@ public class LogicalTableView extends AbstractTableView {
 					ArrayList<Track> alTracks = new ArrayList<Track>(indexes.length);
 					if (e.getSource() == jmiTrackPlayAlbum) {
 						Album album = track.getAlbum();
-						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album)); 
+						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
 						// add all tracks from the same album
 					}
 					if (e.getSource() == jmiTrackPlayAuthor) {
 						Author author = track.getAuthor();
 						// add all tracks from the same author
-						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author)); 
+						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author));
 					} else {
 						alTracks.add(track);
 					}
 					Iterator it = alTracks.iterator();
-					while (it.hasNext()) { 
-						// each selected track and tracks from same album author if required
+					while (it.hasNext()) {
+						// each selected track and tracks from same album author
+						// if required
 						Track track2 = (Track) it.next();
 						File file = track2.getPlayeableFile(false);
 						if (file != null && !alFilesToPlay.contains(file)) {
@@ -260,7 +257,7 @@ public class LogicalTableView extends AbstractTableView {
 					}
 				}
 				if (alFilesToPlay.size() == 0) {
-					Messages.showErrorMessage(18); 
+					Messages.showErrorMessage(18);
 					return;
 				}
 				// simple play
@@ -304,7 +301,7 @@ public class LogicalTableView extends AbstractTableView {
 				}
 				// properties
 				else if (e.getSource() == jmiProperties) {
-					if (jtable.getSelectedRowCount() == 1) { 
+					if (jtable.getSelectedRowCount() == 1) {
 						// mono selection
 						Track track = (Track) model.getItemAt(jtable.convertRowIndexToModel(jtable
 								.getSelectedRow()));

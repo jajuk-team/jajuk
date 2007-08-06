@@ -96,16 +96,11 @@ import javax.swing.event.ListSelectionListener;
  * View used to set Jajuk parameters.
  * <p>
  * Configuration perspective *
- * <p>
- * Singleton
  */
 public class ParameterView extends ViewAdapter implements ActionListener, ListSelectionListener,
 		ItemListener, ChangeListener, Observer {
 
 	private static final long serialVersionUID = 1L;
-
-	/** Self instance */
-	private static ParameterView pv;
 
 	JTabbedPane jtpMain;
 
@@ -345,14 +340,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	/** Previous value for hidden option, used to check if a refresh is need */
 	boolean bHidden;
-
-	/** Return self instance */
-	public static synchronized ParameterView getInstance() {
-		if (pv == null) {
-			pv = new ParameterView();
-		}
-		return pv;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -1122,7 +1109,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 * 
 	 */
 	public ParameterView() {
-		pv = this;
+		
 	}
 
 	/*
@@ -1165,9 +1152,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					}
 					if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
 						// make sure none device is refreshing
-						Iterator it = TrackManager.getInstance().getTracks().iterator();
-						while (it.hasNext()) {
-							Track track = (Track) it.next();
+						for (Track track : TrackManager.getInstance().getTracks()){
 							track.setRate(0);
 						}
 						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
@@ -1178,6 +1163,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());
 				} else if (e.getSource() == jbOK) {
 					applyParameters();
+					// Notify any client than wait for parameters updates
+					Properties details = new Properties();
+					details.put(DETAIL_ORIGIN, this);
+					ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
 				} else if (e.getSource() == jbDefault) {
 					ConfigurationManager.setDefaultProperties();
 					updateSelection();// update UI
@@ -1298,8 +1287,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.toString(jcbAudioScrobbler.isSelected()));
 		if (jcbAudioScrobbler.isSelected()) {
 			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_USER, jtfASUser.getText());
-			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_PASSWORD, Util.rot13(new String(jpfASPassword
-					.getPassword())));
+			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_PASSWORD, Util.rot13(new String(
+					jpfASPassword.getPassword())));
 		}
 		int iLogLevel = scbLogLevel.getSelectedIndex();
 		Log.setVerbosity(iLogLevel);
@@ -1446,7 +1435,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getPassword())));
 		ConfigurationManager.setProperty(CONF_NETWORK_CONNECTION_TO, Integer.toString(connectionTO
 				.getValue()));
-		//Force global reload of proxy variables
+		// Force global reload of proxy variables
 		DownloadManager.setDefaultProxySettings();
 		// Covers
 		ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover
@@ -1459,9 +1448,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.toString(jcbLoadEachTrack.isSelected()));
 		ConfigurationManager.setProperty(CONF_COVERS_SIZE, Integer.toString(jcbCoverSize
 				.getSelectedIndex()));
-		//Force LastFM manager configuration reload
+		// Force LastFM manager configuration reload
 		LastFmManager.getInstance().configure();
-		
+
 		// configuration
 		ConfigurationManager.commit();
 		// notify playlist editor (useful for novelties)
@@ -1571,13 +1560,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jtfProxyPwd.setEnabled(bUseProxy);
 		jlProxyPwd.setEnabled(bUseProxy);
 		connectionTO.setValue(ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO));
-		if (!ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
+		if (!ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
 			jcbProxyNone.setSelected(true);
-		}
-		else if (PROXY_TYPE_HTTP.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))){
+		} else if (PROXY_TYPE_HTTP
+				.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))) {
 			jcbProxyHttp.setSelected(true);
-		}
-		else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))){
+		} else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager
+				.getProperty(CONF_NETWORK_PROXY_TYPE))) {
 			jcbProxySocks.setSelected(true);
 		}
 		// Covers
@@ -1597,7 +1586,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
 			Log.debug(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD));
 			jtfASUser.setText(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER));
-			jpfASPassword.setText(Util.rot13(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD)));
+			jpfASPassword.setText(Util.rot13(ConfigurationManager
+					.getProperty(CONF_AUDIOSCROBBLER_PASSWORD)));
 		} else {
 			jlASUser.setEnabled(false);
 			jtfASUser.setEnabled(false);
@@ -1666,13 +1656,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 */
 	public void update(Event event) {
 		EventSubject subject = event.getSubject();
-		Object origin = event.getDetails().get(DETAIL_ORIGIN);
-		// Ignore this event is thrown by this view itself (to avoid loosing
-		// already set options)
-		if (origin.equals(this)) {
-			return;
-		}
 		if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+			// Ignore this event is thrown by this view itself (to avoid loosing
+			// already set options)
+			if (event.getDetails() != null && event.getDetails().get(DETAIL_ORIGIN) != null
+					&& event.getDetails().get(DETAIL_ORIGIN).equals(this)) {
+				return;
+			}
 			updateSelection();
 		}
 	}

@@ -105,9 +105,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 	private static final long serialVersionUID = 1L;
 
-	/** Self instance */
-	private static LogicalTreeView ltv;
-
 	/** Track selection */
 	ArrayList<Track> alTracks;
 
@@ -220,17 +217,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		return Messages.getString("LogicalTreeView.0");
 	}
 
-	/** Return singleton */
-	public static synchronized LogicalTreeView getInstance() {
-		if (ltv == null) {
-			ltv = new LogicalTreeView();
-		}
-		return ltv;
-	}
-
 	/** Constructor */
 	public LogicalTreeView() {
-		ltv = this;
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {
@@ -581,7 +569,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						jtree.getSelectionModel().setSelectionPath(path);
 					}
 					paths = jtree.getSelectionModel().getSelectionPaths();
-					getInstance().alTracks = new ArrayList<Track>(100);
+					alTracks = new ArrayList<Track>(100);
 					// test mix between types ( not allowed )
 					String sClass = paths[0].getLastPathComponent().getClass().toString();
 					for (int i = 0; i < paths.length; i++) {
@@ -601,7 +589,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 							if (node instanceof TrackNode) {
 								Track track = ((TrackNode) node).getTrack();
 								if (track.getPlayeableFile(false) != null) {
-									getInstance().alTracks.add(((TrackNode) node).getTrack());
+									alTracks.add(((TrackNode) node).getTrack());
 								}
 							}
 						}

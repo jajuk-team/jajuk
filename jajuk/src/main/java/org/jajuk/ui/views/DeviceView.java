@@ -64,8 +64,6 @@ import ext.FlowScrollPanel;
  * Device view used to create and modify Jajuk devices
  * <p>
  * Configuration perspective
- * <p>
- * Singleton
  */
 public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings, ActionListener,
 		Observer, MouseListener {
@@ -94,7 +92,6 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	DeviceItem diSelected;
 
 	public DeviceView() {
-		dv = this;
 	}
 
 	/*
