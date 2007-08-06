@@ -1,41 +1,41 @@
 <?xml version='1.0' encoding='ISO-8859-1'  ?>
 <toc version="2.0">
 <tocitem text="Aide Jajuk">
-   	<tocitem text="Introduction" target="top"/>
+   	<tocitem text="Table des matières" target="table_des_matieres"/>
 		<tocitem text="Notions générales" expand="true">
-		<tocitem text="Vues et perspectives" target="pav"/>
-   		<tocitem text="Utiliser les supports" target="devices"/>
-		<tocitem text="Jouer de la musique" target="pm"/>
-   		<tocitem text="Utiliser les listes de lecture" target="up"/>
-  		<tocitem text="Modifier les tags et attributs" target="editing"/>
-		<tocitem text="Utiliser les DJs" target="dj"/>
-	 	<tocitem text="Utiliser le tray" target="tray"/>
-	 	<tocitem text="Reorganisation des fichiers" target="reorg"/>
-	 	<tocitem text="Utiliser les attributs personnels" target="ucp"/>
-	 	<tocitem text="Les raccourcis clavier" target="keys"/>
+		<tocitem text="Vues et perspectives" target="vues_et_perspectives"/>
+   		<tocitem text="Utiliser des supports" target="utiliser_des_supports"/>
+		<tocitem text="Lire de la musique" target="lire_de_la_musique"/>
+   		<tocitem text="Utiliser les playlistes" target="utiliser_les_playlistes"/>
+	 	<tocitem text="Utiliser les attributs personnels" target="utiliser_les_attributs_personnels"/>
+  		<tocitem text="Modifier les tags et attributs" target="modifier_les_tags_et_attributs"/>
+		<tocitem text="Utiliser des DJs et ambiances" target="utilisation_des_djs_et_des_ambiances"/>
+	 	<tocitem text="Reorganisation des fichiers" target="reorganisation_des_fichiers"/>
+	 	<tocitem text="Utiliser le tray" target="barre_des_taches"/>
+	 	<tocitem text="Les raccourcis clavier" target="raccourcis_clavier"/>
 	</tocitem>
 	<tocitem text="Vues"  expand="true">
-		<tocitem text="La vue Commande" target="view_command"/>
-		<tocitem text="La vue Information" target="view_information"/>
-		<tocitem text="La vue Arbre Physique" target="view_physical_tree"/>
-		<tocitem text="La vue Arbre Logique" target="view_logical_tree"/>
-		<tocitem text="La vue Table Physique/Logique" target="view_table"/>
-		<tocitem text="La vue Référentiel de listes de lecture" target="view_playlist_repository"/>
-		<tocitem text="La vue Editeur de listes de lecture" target="view_playlist_editor"/>
-		<tocitem text="La vue Pochettes" target="view_cover"/>
-		<tocitem text="La vue Catalogue" target="view_catalog"/>
-		<tocitem text="La vue Animation" target="view_animation"/>
-		<tocitem text="La vue Paramétrage" target="view_parameter"/>
-		<tocitem text="La vue scanner de CDs" target="view_cd_scanner"/>
-		<tocitem text="La vue Supports" target="view_devices"/>
-		<tocitem text="La vue Wikipedia" target="view_wiki"/>
-		<tocitem text="La vue Statistiques" target="view_stats"/>
-		<tocitem text="La vue Aide" target="view_help"/>
-		<tocitem text="La vue A Propos" target="view_about"/>
+		<tocitem text="La vue Commande" target="la_vue_commande"/>
+		<tocitem text="La vue Information" target="la_vue_information"/>
+		<tocitem text="La vue Arbre Physique" target="la_vue_arbre_physique"/>
+		<tocitem text="La vue Arbre Logique" target="la_vue_arbre_logique"/>
+		<tocitem text="La vue Table Physique/Logique" target="la_vue_table"/>
+		<tocitem text="La vue Référentiel de listes de lecture" target="la_vue_referentiel_de_playlistes"/>
+		<tocitem text="La vue Editeur de listes de lecture" target="la_vue_editeur_de_playlistes"/>
+		<tocitem text="La vue Pochettes" target="la_vue_pochettes"/>
+		<tocitem text="La vue Catalogue" target="la_vue_catalogue"/>
+		<tocitem text="La vue Animation" target="la_vue_animation"/>
+		<tocitem text="La vue Paramétrage" target="la_vue_parametrage"/>
+		<tocitem text="La vue scanner de CDs" target="la_vue_scanneur_de_cd"/>
+		<tocitem text="La vue Supports" target="la_vue_supports"/>
+		<tocitem text="La vue Wikipedia" target="la_vue_wikipedia"/>
+		<tocitem text="La vue Statistiques" target="la_vue_statistiques"/>
+		<tocitem text="La vue Aide" target="la_vue_aide"/>
+		<tocitem text="La vue A Propos" target="la_vue_a_propos"/>
 	</tocitem>
 	<tocitem text="Technique"  expand="true">
-		<tocitem text="Formats supportés" target="formats"/>
-		<tocitem text="Performances" target="perfs"/>
+		<tocitem text="Formats supportés" target="formats_supportes"/>
+		<tocitem text="Performances générales" target="performances_generales"/>
   	</tocitem>
 	
 </tocitem>

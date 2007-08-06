@@ -19,8 +19,8 @@
 			<tocitem text="Reorganize files" target="files_organizer"/>
 			<tocitem text="Using custom properties" target="using_custom_properties"/>
 			<tocitem text="Keyboard controls" target="keys_shortcuts"/>
-		</tocitem>
-		<tocitem text="Views"  expand="true">
+    </tocitem>
+	<tocitem text="Views"  expand="true">
 			<tocitem text="The Command view" target="view_command"/>
 			<tocitem text="The Information view" target="view_information"/>
 			<tocitem text="The Physical Files Tree view" target="view_physical_files_tree"/>
@@ -38,10 +38,10 @@
 			<tocitem text="The Statistics view" target="view_statistics"/>
 			<tocitem text="The Help view" target="view_help"/>
 			<tocitem text="The About view" target="view_about"/>
-		</tocitem>
-		<tocitem text="Technical"  expand="true">
+	</tocitem>
+	<tocitem text="Technical"  expand="true">
 			<tocitem text="Supported formats" target="supported_formats"/>
 			<tocitem text="Performance tips" target="performance_tips"/>
-		</tocitem>
+	</tocitem>
 	</tocitem>
 </toc>
