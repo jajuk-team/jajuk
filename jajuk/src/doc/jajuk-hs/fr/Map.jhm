@@ -22,7 +22,6 @@
     <mapID target="la_vue_statistiques" url="html/la_vue_statistiques.html" />
     <mapID target="la_vue_supports" url="html/la_vue_supports.html" />
     <mapID target="la_vue_table" url="html/la_vue_table.html" />
-    <mapID target="la_vue_table_physique_logique" url="html/la_vue_table_physique_logique.html" />
     <mapID target="la_vue_wikipedia" url="html/la_vue_wikipedia.html" />
     <mapID target="lire_de_la_musique" url="html/lire_de_la_musique.html" />
     <mapID target="modifier_les_tags_et_attributs" url="html/modifier_les_tags_et_attributs.html" />
