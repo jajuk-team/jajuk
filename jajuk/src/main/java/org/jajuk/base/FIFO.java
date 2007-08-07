@@ -278,7 +278,7 @@ public class FIFO implements ITechnicalStrings {
 				}
 			}
 			synchronized (this) {
-				// test if we have yet some files to considere
+				// test if we have yet some files to concidere
 				if (alItems.size() == 0) {
 					return;
 				}
@@ -646,7 +646,7 @@ public class FIFO implements ITechnicalStrings {
 		try {
 			// if playing, stop all playing players
 			if (Player.isPlaying()) {
-				Player.stop(false);
+				Player.stop(true);
 			}
 			JajukTimer.getInstance().reset();
 			JajukTimer.getInstance().addTrackTime(alFIFO);
@@ -665,7 +665,7 @@ public class FIFO implements ITechnicalStrings {
 		try {
 			// if playing, stop all playing players
 			if (Player.isPlaying()) {
-				Player.stop(false);
+				Player.stop(true);
 			}
 			// we don't support album navigation inside repeated tracks
 			if ((getItem(0)).isRepeat()) {
@@ -720,7 +720,7 @@ public class FIFO implements ITechnicalStrings {
 		try {
 			// if playing, stop current
 			if (Player.isPlaying()) {
-				Player.stop(false);
+				Player.stop(true);
 			}
 			// force a finish to current track if any
 			if (getCurrentFile() != null) { // if stopped, nothing to stop
@@ -746,16 +746,12 @@ public class FIFO implements ITechnicalStrings {
 		try {
 			// if playing, stop all playing players
 			if (Player.isPlaying()) {
-				Player.stop(false);
+				Player.stop(true);
 			}
 			// we don't support album navigation inside repeated tracks
 			if (getItem(0).isRepeat()) {
 				playNext();
 				return;
-			}
-			// if playing, stop current
-			if (Player.isPlaying()) {
-				Player.stop(false);
 			}
 			// force a finish to current track if any
 			if (getCurrentFile() != null) { // if stopped, nothing to stop
