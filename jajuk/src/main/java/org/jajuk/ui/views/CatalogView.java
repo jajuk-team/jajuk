@@ -147,9 +147,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	JPanel jpControlBottom;
 
 	JCheckBox jcbShowNoCover;
-	
+
 	JCheckBox jcbShowPopups;
-	
+
 	JLabel jlSize;
 
 	JSlider jsSize;
@@ -217,7 +217,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	private JDialog details;
 
 	/** Swing Timer to refresh the component */
-	private Timer timer = new Timer(WAIT_TIME, new ActionListener() {
+	private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (bNeedSearch && !bPopulating
 					&& (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
@@ -225,6 +225,25 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				page = 0;
 				populateCatalog();
 				bNeedSearch = false;
+			}
+		}
+	});
+
+	private long lDateLastMove = Long.MAX_VALUE;
+
+	private CatalogItem mouseOverItem = null;
+
+	/** Timer used to launch popup */
+	Timer timerPopup = new Timer(200, new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			if ((System.currentTimeMillis() - lDateLastMove >= 1000) && mouseOverItem != null
+					&& details == null) {
+				mouseOverItem.displayPopup();
+			} else if (mouseOverItem == null) {
+				if (details != null) {
+					details.dispose();
+					details = null;
+				}
 			}
 		}
 	});
@@ -270,30 +289,18 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		noCoversCache.put(THUMBNAIL_SIZE_50x50, Util.getResizedImage(IconLoader.ICON_NO_COVER, 50,
 				50));
-		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER, 100,
-				100));
-		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER, 150,
-				150));
-		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER, 200,
-				200));
-		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER, 250,
-				250));
-		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER, 300,
-				300));
+		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				100, 100));
+		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				150, 150));
+		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				200, 200));
+		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				250, 250));
+		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				300, 300));
 		// --Top (most used) control items
 		jpControlTop = new JPanel();
-		// Hide album popups when entering this area
-		jpControlTop.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				super.mouseEntered(e);
-				if (CatalogView.this.details != null) {
-					CatalogView.this.details.dispose();
-				}
-			}
-
-		});
 		jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		jlSorter = new JLabel(Messages.getString("Sort"));
 		jcbSorter = new SteppedComboBox();
@@ -445,22 +452,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jbRefresh.addActionListener(this);
 		double p = TableLayout.PREFERRED;
 
-		double sizeControlBottom[][] = { { p, p, p,p, TableLayout.FILL, 5 }, { p } };
+		double sizeControlBottom[][] = { { p, p, p, p, TableLayout.FILL, 5 }, { p } };
 		TableLayout layoutBottom = new TableLayout(sizeControlBottom);
 		layoutBottom.setHGap(20);
 		jpControlBottom = new JPanel();
-		// Hide album popups when entering this area
-		jpControlBottom.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				super.mouseEntered(e);
-				if (CatalogView.this.details != null) {
-					CatalogView.this.details.dispose();
-				}
-			}
-
-		});
 		jpControlBottom.setLayout(layoutBottom);
 		jpControlBottom.add(jcbShowNoCover, "0,0");
 		jpControlBottom.add(jcbShowPopups, "1,0");
@@ -472,18 +467,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jpItems = new FlowScrollPanel();
 		Dimension dim = new Dimension(getWidth(), getHeight());
 		jpItems.setPreferredSize(dim);
-		jpItems.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				super.mouseEntered(e);
-				if (CatalogView.this.details != null) {
-					CatalogView.this.details.dispose();
-				}
-			}
-
-		});
-
 		jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jpItems.setScroller(jsp);
@@ -514,6 +497,15 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jmenu.add(jmiGetCovers);
 		jmenu.add(jmiAlbumProperties);
 
+		// Start mouse motion test for popups
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				super.mouseMoved(e);
+				lDateLastMove = System.currentTimeMillis();
+			}
+		});
+
 		// global layout
 		double size[][] = { { TableLayout.FILL },
 				{ TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED, 5 } };
@@ -530,8 +522,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		// Show facts
 		showFacts();
 
-		// Start the timer
-		timer.start();
+		// Start the timers
+		timerSearch.start();
+		timerPopup.start();
 
 	}
 
@@ -806,7 +799,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				}
 			}
 		} else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
-					jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
+			jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
 		}
 		// In all cases, update the facts
 		showFacts();
@@ -939,7 +932,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		JTextArea jlAlbum;
 
-		/** Draging flag used to disable simple click behavior */
+		/** Dragging flag used to disable simple click behavior */
 		private boolean bDragging = false;
 
 		/**
@@ -959,6 +952,109 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			this.track = track;
 			this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getId()
 					+ '.' + EXT_THUMB);
+		}
+
+		/**
+		 * display a popup over the catalog item
+		 */
+		void displayPopup() {
+			// Leave if user unselected the option "Show catalog
+			// popups"
+			if (!ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS)) {
+				return;
+			}
+			// don't show details if the contextual popup menu
+			// is visible
+			if (jmenu.isVisible()) {
+				return;
+			}
+			JDialog dialog = new JDialog();
+			dialog.setUndecorated(true);
+			dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+			JXPanel jp = new JXPanel();
+			jp.setAlpha(0.8f);
+			double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
+			jp.setLayout(new TableLayout(size));
+			final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
+					.getAdvancedDescription());
+			text.setEditable(false);
+			text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
+			text.addHyperlinkListener(new HyperlinkListener() {
+				public void hyperlinkUpdate(HyperlinkEvent e) {
+					if (e.getEventType() == EventType.ACTIVATED) {
+						URL url = e.getURL();
+						if (XML_AUTHOR.equals(url.getHost())) {
+							ArrayList<Item> items = new ArrayList<Item>(1);
+							items.add(AuthorManager.getInstance().getItemByID(url.getQuery()));
+							new PropertiesWizard(items);
+						} else if (XML_STYLE.equals(url.getHost())) {
+							ArrayList<Item> items = new ArrayList<Item>(1);
+							items.add(StyleManager.getInstance().getItemByID(url.getQuery()));
+							new PropertiesWizard(items);
+						} else if (XML_YEAR.equals(url.getHost())) {
+							ArrayList<Item> items = new ArrayList<Item>(1);
+							items.add(YearManager.getInstance().getItemByID(url.getQuery()));
+							new PropertiesWizard(items);
+						} else if (XML_TRACK.equals(url.getHost())) {
+							ArrayList<Item> items = new ArrayList<Item>(1);
+							Track track = (Track) TrackManager.getInstance().getItemByID(
+									url.getQuery());
+							items.add(track);
+							ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(
+									1);
+							toPlay.add(track.getPlayeableFile(true));
+							FIFO.getInstance().push(
+									Util.createStackItems(Util.applyPlayOption(toPlay),
+											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+											true), false);
+						}
+					}
+					// change cursor on entering or leaving
+					// hyperlinks
+					// This doesn't work under JRE 1.5 (at least
+					// under Linux), Sun issue ?
+					else if (e.getEventType() == EventType.ENTERED) {
+						text.setCursor(Util.LINK_CURSOR);
+					} else if (e.getEventType() == EventType.EXITED) {
+						text.setCursor(Util.DEFAULT_CURSOR);
+					}
+				}
+			});
+			final JScrollPane jspText = new JScrollPane(text);
+			jspText.getVerticalScrollBar().setValue(0);
+			jp.add(jspText, "0,0");
+			dialog.setContentPane(jp);
+			// compute dialog position ( note that setRelativeTo
+			// is buggy and that we need more advanced positioning)
+			int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+			// set position at 60 % of the picture
+			int y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.6 * jlIcon.getHeight());
+			int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+			int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+			// Adjust position if details are located outside
+			// the screen
+			// in x-axis
+			if ((x + 500) > screenWidth) {
+				x = screenWidth - 510;
+			}
+			if ((y + 400) > screenHeight) {
+				x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+				if ((x + 500) > screenWidth) {
+					x = screenWidth - 510;
+				}
+				y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.4 * jlIcon.getHeight())
+						- 400;
+			}
+			dialog.setLocation(x, y);
+			dialog.setSize(500, 400);
+			dialog.setVisible(true);
+			details = dialog;
+			// Force scrollbar to stay on top
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					jspText.getVerticalScrollBar().setValue(0);
+				}
+			});
 		}
 
 		void populate() {
@@ -1042,6 +1138,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					handlePopup(e);
 				}
 
+				public void mouseEntered(MouseEvent e) {
+					System.out.println("entered");
+					mouseOverItem = CatalogItem.this;
+				}
+
+				public void mouseExited(MouseEvent e) {
+					System.out.println("exited");
+					mouseOverItem = null;
+				}
+
 				public void mouseReleased(MouseEvent e) {
 					// Leave if already dragging
 					if (bDragging) {
@@ -1066,8 +1172,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							// Show contextual menu
 							jmenu.show(jlIcon, e.getX(), e.getY());
 							// Hide any details frame
-							if (CatalogView.this.details != null) {
-								CatalogView.this.details.dispose();
+							if (details != null) {
+								details.dispose();
+								details = null;
 							}
 						}
 					}
@@ -1098,118 +1205,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					}
 				}
 
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					super.mouseEntered(e);
-					// Leave if user unselected the option "Show catalog popups"
-					if (!ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS)) {
-						return;
-					}
-					// don't show details if the contextual popup menu is
-					// visible
-					if (jmenu.isVisible()) {
-						return;
-					}
-					// Hide any older details frame
-					if (CatalogView.this.details != null) {
-						CatalogView.this.details.dispose();
-					}
-					JDialog dialog = new JDialog();
-					dialog.setUndecorated(true);
-					dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-					JXPanel jp = new JXPanel();
-					jp.setAlpha(0.8f);
-					double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
-					jp.setLayout(new TableLayout(size));
-					final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
-							.getAdvancedDescription());
-					text.setEditable(false);
-					text.setBackground(SubstanceLookAndFeel.getActiveColorScheme()
-							.getUltraLightColor());
-					text.addHyperlinkListener(new HyperlinkListener() {
-						public void hyperlinkUpdate(HyperlinkEvent e) {
-							if (e.getEventType() == EventType.ACTIVATED) {
-								URL url = e.getURL();
-								if (XML_AUTHOR.equals(url.getHost())) {
-									ArrayList<Item> items = new ArrayList<Item>(1);
-									items.add(AuthorManager.getInstance().getItemByID(
-											url.getQuery()));
-									new PropertiesWizard(items);
-								} else if (XML_STYLE.equals(url.getHost())) {
-									ArrayList<Item> items = new ArrayList<Item>(1);
-									items.add(StyleManager.getInstance()
-											.getItemByID(url.getQuery()));
-									new PropertiesWizard(items);
-								} else if (XML_YEAR.equals(url.getHost())) {
-									ArrayList<Item> items = new ArrayList<Item>(1);
-									items
-											.add(YearManager.getInstance().getItemByID(
-													url.getQuery()));
-									new PropertiesWizard(items);
-								} else if (XML_TRACK.equals(url.getHost())) {
-									ArrayList<Item> items = new ArrayList<Item>(1);
-									Track track = (Track) TrackManager.getInstance().getItemByID(
-											url.getQuery());
-									items.add(track);
-									ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(
-											1);
-									toPlay.add(track.getPlayeableFile(true));
-									FIFO.getInstance().push(
-											Util.createStackItems(Util.applyPlayOption(toPlay),
-													ConfigurationManager
-															.getBoolean(CONF_STATE_REPEAT), true),
-											false);
-								}
-							}
-							// change cursor on entering or leaving hyperlinks
-							// This doesn't work under JRE 1.5 (at least under
-							// Linux), Sun issue ?
-							else if (e.getEventType() == EventType.ENTERED) {
-								text.setCursor(Util.LINK_CURSOR);
-							} else if (e.getEventType() == EventType.EXITED) {
-								text.setCursor(Util.DEFAULT_CURSOR);
-							}
-						}
-					});
-					final JScrollPane jspText = new JScrollPane(text);
-					jspText.getVerticalScrollBar().setValue(0);
-					jp.add(jspText, "0,0");
-					dialog.setContentPane(jp);
-					// compute dialog position ( note that setRelativeTo is
-					// buggy and that we need more advanced positioning)
-					int x = (int) jlIcon.getLocationOnScreen().getX()
-							+ (int) (0.6 * jlIcon.getWidth());
-					// set position at 60 % of the picture
-					int y = (int) jlIcon.getLocationOnScreen().getY()
-							+ (int) (0.6 * jlIcon.getHeight());
-					int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-					int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize()
-							.getHeight();
-					// Adjust position if details are located outside the screen
-					// in x-axis
-					if ((x + 500) > screenWidth) {
-						x = screenWidth - 510;
-					}
-					if ((y + 400) > screenHeight) {
-						x = (int) jlIcon.getLocationOnScreen().getX()
-								+ (int) (0.6 * jlIcon.getWidth());
-						if ((x + 500) > screenWidth) {
-							x = screenWidth - 510;
-						}
-						y = (int) jlIcon.getLocationOnScreen().getY()
-								+ (int) (0.4 * jlIcon.getHeight()) - 400;
-					}
-					dialog.setLocation(x, y);
-					dialog.setSize(500, 400);
-					dialog.setVisible(true);
-					CatalogView.this.details = dialog;
-					// Force scrollbar to stay on top
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							jspText.getVerticalScrollBar().setValue(0);
-						}
-					});
-				}
 			});
 		}
 
@@ -1222,7 +1217,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			// compute selection
 			ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(
 					tracks.size());
-			for (Track track:tracks){
+			for (Track track : tracks) {
 				org.jajuk.base.File file = track.getPlayeableFile(false);
 				if (file != null) {
 					alFilesToPlay.add(file);
