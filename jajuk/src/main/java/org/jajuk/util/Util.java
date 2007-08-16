@@ -20,7 +20,6 @@
 package org.jajuk.util;
 
 import org.jajuk.Main;
-import org.jajuk.ui.IconLabel;
 import org.jajuk.Main.MPlayerStatus;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -55,8 +54,6 @@ import org.jvnet.substance.watermark.SubstanceImageWatermark;
 import org.jvnet.substance.watermark.SubstanceStripeWatermark;
 import org.jvnet.substance.watermark.WatermarkInfo;
 
-import sun.tools.jar.JarImageSource;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -72,8 +69,6 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -106,11 +101,9 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageWriter;
-import javax.imageio.spi.ImageWriterSpi;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -127,8 +120,6 @@ import javax.swing.UIManager;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.imageio.plugins.png.PNGImageWriter;
-import com.sun.imageio.plugins.png.PNGImageWriterSpi;
 
 /**
  * General use utilities methods
@@ -1375,7 +1366,7 @@ public class Util implements ITechnicalStrings {
 		out.close();
 		image.flush(); // free memory
 	}
-	
+
 	/**
 	 * @return whether we need a full gc or not
 	 */
@@ -2030,12 +2021,17 @@ public class Util implements ITechnicalStrings {
 
 	/**
 	 * Rot13 encode/decode,
-	 * <p>Thx http://www.idevelopment.info/data/Programming/java/security/java_cryptography_extension/rot13.java</p>
-	 * @param in text to encode / decode in rote 13
+	 * <p>
+	 * Thx
+	 * http://www.idevelopment.info/data/Programming/java/security/java_cryptography_extension/rot13.java
+	 * </p>
+	 * 
+	 * @param in
+	 *            text to encode / decode in rote 13
 	 * @return encoded /decoded text
 	 */
 	public static String rot13(String in) {
-		if (Util.isVoid(in)){
+		if (Util.isVoid(in)) {
 			return "";
 		}
 		int abyte = 0;
@@ -2050,7 +2046,7 @@ public class Util implements ITechnicalStrings {
 		}
 		return tempReturn.toString();
 	}
-	
+
 	/**
 	 * @return Number of stars
 	 */
@@ -2075,20 +2071,20 @@ public class Util implements ITechnicalStrings {
 		IconLabel ilRate = null;
 		switch (starsNumber) {
 		case 1:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_1,
-					"", null, null, null, Long.toString(rate)); 
+			ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null, null, Long
+					.toString(rate));
 			break;
 		case 2:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_2,
-					"", null, null, null, Long.toString(rate)); 
+			ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null, null, Long
+					.toString(rate));
 			break;
 		case 3:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_3,
-					"", null, null, null, Long.toString(rate)); 
+			ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null, null, Long
+					.toString(rate));
 			break;
 		case 4:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_4,
-					"", null, null, null, Long.toString(rate)); 
+			ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null, null, Long
+					.toString(rate));
 			break;
 		default:
 			return null;
@@ -2096,4 +2092,66 @@ public class Util implements ITechnicalStrings {
 		ilRate.setInteger(true);
 		return ilRate;
 	}
+
+	/**
+	 * Extract files from current jar to cache/internal directory
+	 * <p>Thanks several websites, especially http://www.developer.com/java/other/article.php/607931
+	 * @param entryName name of the file to extract. Example: img.png
+	 * @throws Exception
+	 */
+	public static void extractFile(String entryName) throws Exception {
+		String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().toString()
+				.substring(6);
+		// Open the jar.
+
+		JarFile jar = new JarFile(jarName);
+		System.out.println(jarName + " opened.");
+
+		try {
+			// Get the entry and its input stream.
+
+			JarEntry entry = jar.getJarEntry(entryName);
+
+			// If the entry is not null, extract it. Otherwise, print a
+			// message.
+
+			if (entry != null) {
+				// Get an input stream for the entry.
+
+				InputStream entryStream = jar.getInputStream(entry);
+
+				try {
+					// Create the output file (clobbering the file if it
+					// exists).
+
+					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_IMAGE_CACHE)+"/internal/"+entry.getName());
+
+					try {
+						// Allocate a buffer for reading the entry data.
+
+						byte[] buffer = new byte[1024];
+						int bytesRead;
+
+						// Read the entry data and write it to the output file.
+
+						while ((bytesRead = entryStream.read(buffer)) != -1) {
+							file.write(buffer, 0, bytesRead);
+						}
+
+						System.out.println(entry.getName() + " extracted.");
+					} finally {
+						file.close();
+					}
+				} finally {
+					entryStream.close();
+				}
+			} else {
+				System.out.println(entryName + " not found.");
+			} // end if
+		} finally {
+			jar.close();
+			System.out.println(jarName + " closed.");
+		}
+	}
+
 }

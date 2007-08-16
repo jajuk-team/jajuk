@@ -20,14 +20,14 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IconLabel;
-import org.jajuk.ui.views.CatalogView;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.Color;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -279,6 +279,28 @@ public class Album extends LogicalItem implements Comparable<Album> {
 					+ '?' + firstTrack.getYear().getId() + "'>" + firstTrack.getYear().getName()
 					+ "</a>";
 		}
+		// display rating (average of each track rating)
+		try {
+			long lRate = getRate();
+			long lInterval = AlbumManager.getInstance().getMaxRate() / 4;
+			int nbStars = 1;
+			if (lRate <= lInterval) {
+				nbStars = 1;
+			} else if (lRate <= 2 * lInterval) {
+				nbStars = 2;
+			} else if (lRate <= 3 * lInterval) {
+				nbStars = 3;
+			} else {
+				nbStars = 4;
+			}
+			sOut += "<br>"
+					+ Messages.getString("Property_rate")
+					+ ": <img src='"
+					+ Util.getConfFileByPath("cache/internal/star" + nbStars + "_16x16.png")
+							.toURL().toExternalForm() + "'/>";
+		} catch (MalformedURLException e) {
+			Log.error(e);
+		}
 		// Compute total length in secs
 		long length = 0;
 		for (Track track : tracks) {
@@ -286,10 +308,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 		}
 		sOut += "<br>" + Messages.getString("Property_length") + ": "
 				+ Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
-		// display rating (average of each track rating)
-		/*IconLoader.ICON_STAR_1.getImage().getGraphics().
-		sOut += "<br><img src='file:"   
-				+ IconLoader.ICON_STAR_1.getUrl() + "</TD><TD VALIGN='TOP'><br>";*/
+
 		// Show each track detail
 		for (Track track : tracks) {
 			sOut += "<br>";
@@ -322,32 +341,30 @@ public class Album extends LogicalItem implements Comparable<Album> {
 	public ImageIcon getIconRepresentation() {
 		return IconLoader.ICON_ALBUM;
 	}
-	
+
 	/**
-	 * @return album average rating 
+	 * @return album average rating
 	 */
-	public long getRate(){
+	public long getRate() {
 		float rate = 0f;
 		int nb = 0;
-		for (Track track:TrackManager.getInstance().getAssociatedTracks(this)){
+		for (Track track : TrackManager.getInstance().getAssociatedTracks(this)) {
 			rate += track.getRate();
-			nb ++;
+			nb++;
 		}
-		return Math.round(rate/nb);
+		return Math.round(rate / nb);
 	}
-	
-	
-
 
 	/**
 	 * 
-	 * @param size size using format 100x100
+	 * @param size
+	 *            size using format 100x100
 	 * @return album thumb for given size
 	 */
 	public ImageIcon getThumbnail(String size) {
 		File fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getId() + '.'
 				+ EXT_THUMB);
-		//Check if thumb already exists
+		// Check if thumb already exists
 		if (!fCover.exists() || fCover.length() == 0) {
 			return noCoversCache.get(size);
 		}

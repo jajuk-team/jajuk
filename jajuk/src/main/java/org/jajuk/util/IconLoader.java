@@ -39,7 +39,10 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_TRAY = new UrlImageIcon(Util
 			.getResource("icons/22x22/jajuk-icon_22x22.png"));
-
+	
+	public static final UrlImageIcon ICON_COVER_16x16 = new UrlImageIcon(Util
+			.getResource("icons/16x16/thumbnail_16x16.png"));
+	
 	// Correctly displayed under JRE 1.6, ugly under Linux/JRE 1.5
 	public static final UrlImageIcon ICON_LOGO_FRAME = new UrlImageIcon(Util
 			.getResource("icons/16x16/jajuk-icon_16x16.png"));

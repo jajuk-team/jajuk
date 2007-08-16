@@ -365,7 +365,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		jmiAlbumReport.putClientProperty(DETAIL_ORIGIN, XML_ALBUM);
 		jmiAlbumReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"),
-				IconLoader.ICON_TEST);
+				IconLoader.ICON_LIST);
 		jmiAlbumCDDBWizard.addActionListener(this);
 		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
 				IconLoader.ICON_PROPERTIES);
@@ -507,7 +507,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 							alSelected.addAll(TrackManager.getInstance().getTracks());
 							break;
 						} else if (o instanceof TransferableTreeNode) {
-							// this is a standard node exept "by date" discovery
+							// this is a standard node except "by date" discovery
 							// nodes
 							alSelected.add((Item) ((TransferableTreeNode) o).getData());
 						}
@@ -521,8 +521,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 								// don't count the same track several time
 								// if user select directory and then tracks
 								// inside
-								if (!alSelected.contains(track)) {
-									alSelected.add(track);
+								if (!alSelectedRecursively.contains(track)) {
+									alSelectedRecursively.add(track);
 								}
 								items++;
 							}
@@ -1070,7 +1070,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					new PropertiesWizard(alSelected);
 					// Sorting
 				} else if (e.getSource() == jmiAlbumCDDBWizard) {
-					ArrayList<Item> alTracks = new ArrayList<Item>(100);
+					ArrayList<Item> alTracks = new ArrayList<Item>(20);
 					for (Item item : alSelected) {
 						Album album = (Album) item;
 						alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));

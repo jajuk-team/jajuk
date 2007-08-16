@@ -367,17 +367,20 @@ public class Main implements ITechnicalStrings {
 			// Load ambiences
 			AmbienceManager.getInstance().load();
 
-			//Start LastFM support
+			// Start LastFM support
 			LastFmManager.getInstance();
 
 			// Load djs
 			DigitalDJManager.getInstance().loadAllDJs();
 
-			//Start check for update thread if required
+			// Various asynchronous startup actions
+			startupAsync();
+
+			// Start check for update thread if required
 			if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
 				new Thread() {
 					public void run() {
-						//Wait 10 min before checking
+						// Wait 10 min before checking
 						try {
 							Thread.sleep(600000);
 							UpgradeManager.checkForUpdate(false);
@@ -615,6 +618,33 @@ public class Main implements ITechnicalStrings {
 	}
 
 	/**
+	 * Asynchronous tasks executed at startup
+	 */
+	private static void startupAsync() {
+		new Thread() {
+			public void run() {
+				try {
+					// Extract star icons (used in HTML panels)
+					Util.getConfFileByPath("/cache/internal").mkdir();
+					for (int i = 1; i <= 4; i++) {
+						if (bTestMode) {
+							Util.copy(new File("src/main/resources/icons/16x16/star" + i
+									+ "_16x16.png"), Util.getConfFileByPath("cache/internal/star"
+									+ i + "_16x16.png"));
+						} else {
+							Util.extractFile("icons/16x16/star" + i + "_16x16.png");
+						}
+					}
+					// Refresh max album rating
+					AlbumManager.getInstance().refreshMaxRating();
+				} catch (Exception e) {
+					Log.error(e);
+				}
+			}
+		}.start();
+	}
+
+	/**
 	 * Registers supported audio supports and default properties
 	 */
 	private static void registerTypes() {
@@ -816,7 +846,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
 				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
-				//web radios
+				// web radios
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.radio"),
 						EXT_RADIO, Class.forName(PLAYER_IMPL_WEBRADIOS), null);
 				type.setProperty(XML_TYPE_IS_MUSIC, true);

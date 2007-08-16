@@ -30,6 +30,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -99,6 +100,8 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 
 	JMenuItem jmiGetCovers;
 
+	JMenuItem jmiAlbumCDDBWizard;
+
 	JMenuItem jmiAlbumProperties;
 
 	/** No cover flag */
@@ -116,9 +119,9 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 	private boolean bShowText;
 
 	static private long lDateLastMove;
-	
+
 	static private Point lastPosition;
-	
+
 	private boolean selected = false;
 
 	/** Current details dialog */
@@ -211,15 +214,16 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 		}
 		jlIcon.setIcon(ii);
 		if (bShowText) {
-			dMain = new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-				{ size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
+			dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
+					{ size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
 			setLayout(new TableLayout(dMain));
 			int iRows = 7 + 3 * (size / 50 - 1);
 			Font customFont = new Font("verdana", Font.BOLD, ConfigurationManager
 					.getInt(CONF_FONTS_SIZE));
 			Color mediumGray = new Color(172, 172, 172);
 
-			Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
+			Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator()
+					.next();
 			jlAuthor = new JTextArea(author.getName2(), 1, iRows);
 			jlAuthor.setLineWrap(true);
 			jlAuthor.setWrapStyleWord(true);
@@ -242,13 +246,13 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 			add(jlIcon, "1,0,c,c");
 			add(jlAuthor, "1,2");
 			add(jlAlbum, "1,4");
-		}
-		else{
-			dMain = new double[][]{ { TableLayout.PREFERRED },
-				{ TableLayout.PREFERRED } };
+		} else {
+			dMain = new double[][] { { TableLayout.PREFERRED }, { TableLayout.PREFERRED } };
 			setLayout(new TableLayout(dMain));
 			add(jlIcon, "0,0");
 		}
+		//Keep this border as catalog view add a border by itself and it causes a lag
+		setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		// Add dnd support
 		jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
 
@@ -265,8 +269,11 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),
 				IconLoader.ICON_REPEAT);
 		jmiAlbumPlayRepeat.addActionListener(this);
-		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_TEST);
+		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_COVER_16x16);
 		jmiGetCovers.addActionListener(this);
+		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"),
+				IconLoader.ICON_LIST);
+		jmiAlbumCDDBWizard.addActionListener(this);
 		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
 				IconLoader.ICON_PROPERTIES);
 		jmiAlbumProperties.addActionListener(this);
@@ -274,6 +281,7 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 		jmenu.add(jmiAlbumPush);
 		jmenu.add(jmiAlbumPlayShuffle);
 		jmenu.add(jmiAlbumPlayRepeat);
+		jmenu.add(jmiAlbumCDDBWizard);
 		jmenu.add(jmiGetCovers);
 		jmenu.add(jmiAlbumProperties);
 
@@ -434,6 +442,11 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 			ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
 					.getAssociatedTracks(album));
 			new PropertiesWizard(alAlbums, alTracks);
+		} else if (e.getSource() == jmiAlbumCDDBWizard) {
+			ArrayList<Item> alTracks = new ArrayList<Item>(20);
+			alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
+			Util.waiting();
+			new CDDBWizard(alTracks);
 		}
 	}
 

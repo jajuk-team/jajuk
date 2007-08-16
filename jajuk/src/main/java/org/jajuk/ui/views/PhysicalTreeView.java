@@ -345,7 +345,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiDirAddFavorites.addActionListener(this);
 		jmiDirCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57"),
-				IconLoader.ICON_TEST);
+				IconLoader.ICON_LIST);
 		jmiDirCDDBQuery.addActionListener(this);
 
 		Action actionReportDir = ActionManager.getAction(JajukAction.CREATE_REPORT);

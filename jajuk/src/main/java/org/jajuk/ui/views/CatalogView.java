@@ -165,7 +165,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 	/** Utility list used by size selector */
 	private ArrayList<String> sizes = new ArrayList<String>(10);
-	
+
 	/** Swing Timer to refresh the component */
 	private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -629,23 +629,20 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						item.populate();
 						item.jlIcon.addMouseListener(new MouseAdapter() {
 							public void mousePressed(MouseEvent e) {
-								AlbumThumb thumb = (AlbumThumb)((JLabel)e.getSource()).getParent();
-								// Left click
-								if (e.getButton() == MouseEvent.BUTTON1) {
-									// remove red border on previous item if
-									// different from this one
-									if (CatalogView.this.item != null
-											&& CatalogView.this.item != thumb) {
-										CatalogView.this.item.setBorder(BorderFactory
-												.createEmptyBorder(2, 2, 2, 2));
-										CatalogView.this.item.setSelected(false);
-									}
-									// add a red border on this item
-									thumb.setBorder(BorderFactory
-											.createMatteBorder(2, 2, 2, 2, Color.RED));
-									thumb.setSelected(true);
-									CatalogView.this.item = thumb;
+								AlbumThumb thumb = (AlbumThumb) ((JLabel) e.getSource())
+										.getParent();
+								// remove red border on previous item if
+								// different from this one
+								if (CatalogView.this.item != null && CatalogView.this.item != thumb) {
+									CatalogView.this.item.setBorder(BorderFactory
+											.createEmptyBorder(2, 2, 2, 2));
+									CatalogView.this.item.setSelected(false);
 								}
+								// add a red border on this item
+								thumb.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2,
+										Color.RED));
+								thumb.setSelected(true);
+								CatalogView.this.item = thumb;
 							}
 						});
 						if (!item.isNoCover() || (item.isNoCover() && jcbShowNoCover.isSelected())) {
@@ -750,8 +747,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			// display thumbs
 			populateCatalog();
 		} else if (e.getSource() == jcbShowPopups) {
-			ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean
-					.toString(jcbShowPopups.isSelected()));
+			ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
+					.isSelected()));
 			// force paramter view to take this into account
 			ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
 		} else if (e.getSource() == jbPrev) {
