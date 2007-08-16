@@ -412,6 +412,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * @return
 	 */
 	public void synchronize(boolean bAsynchronous) {
+		//Check a source device is defined
+		if (Util.isVoid((String)getValue(XML_DEVICE_SYNCHRO_SOURCE))){
+			Messages.showErrorMessage(171);
+			return;
+		}
 		final Device device = this;
 		if (!device.isMounted()) {
 			try {
@@ -452,9 +457,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			boolean bidi = (getValue(XML_DEVICE_SYNCHRO_MODE).equals(DEVICE_SYNCHRO_MODE_BI));
 			// check this device is synchronized
 			String sIdSrc = (String) getValue(XML_DEVICE_SYNCHRO_SOURCE);
-			if (sIdSrc == null || sIdSrc.equals(getId())) { // cannot
-				// synchro with
-				// itself
+			if (sIdSrc == null || sIdSrc.equals(getId())) { 
+				// cannot synchro with itself
 				return;
 			}
 			Device dSrc = DeviceManager.getInstance().getDeviceByID(sIdSrc);

@@ -44,7 +44,6 @@ import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
@@ -56,6 +55,7 @@ import org.jvnet.substance.watermark.WatermarkInfo;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -87,6 +87,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -220,18 +221,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JCheckBox jcbHotkeys;
 
-	JPanel jpP2P;
-
-	JCheckBox jcbShare;
-
-	JLabel jlPasswd;
-
-	JPasswordField jpfPasswd;
-
-	JCheckBox jcbAddRemoteProperties;
-
-	JCheckBox jcbHideProperties;
-
 	JPanel jpTags;
 
 	JCheckBox jcbUseParentDir;
@@ -316,7 +305,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JSlider jsCatalogPages;
 
-	JCheckBox jcbShowCatalogPopups;
+	JCheckBox jcbShowPopups;
 
 	JPanel jpUI;
 
@@ -630,7 +619,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// --Options
 		jpOptions = new JPanel();
-		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34"));
+		jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
 
 		jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183"));
@@ -672,31 +661,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpOptions.add(jcbSyncTableTree, "0,3");
 		jpOptions.add(jcbHotkeys, "0,4");
 		jpOptions.add(language, "0,5");
-
-		// --P2P
-		jpP2P = new JPanel();
-		double sizeP2P[][] = { { 0.6, 0.3, 0.1 },
-				{ 20, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator } };
-		jpP2P.setLayout(new TableLayout(sizeP2P));
-		jcbShare = new JCheckBox(Messages.getString("ParameterView.72"));
-		jcbShare.setEnabled(false); // TBI
-		jcbShare.setToolTipText(Messages.getString("ParameterView.73"));
-		jlPasswd = new JLabel(Messages.getString("ParameterView.74"));
-		jlPasswd.setEnabled(false); // TBI
-		jpfPasswd = new JPasswordField();
-		jpfPasswd.setEnabled(false); // TBI
-		jpfPasswd.setToolTipText(Messages.getString("ParameterView.75"));
-		jcbAddRemoteProperties = new JCheckBox(Messages.getString("ParameterView.76"));
-		jcbAddRemoteProperties.setEnabled(false); // TBI
-		jcbAddRemoteProperties.setToolTipText(Messages.getString("ParameterView.77"));
-		jcbHideProperties = new JCheckBox(Messages.getString("ParameterView.78"));
-		jcbHideProperties.setToolTipText(Messages.getString("ParameterView.79"));
-		jcbHideProperties.setEnabled(false); // TBI
-		jpP2P.add(jcbShare, "0,1");
-		jpP2P.add(jlPasswd, "0,3");
-		jpP2P.add(jpfPasswd, "1,3");
-		jpP2P.add(jcbAddRemoteProperties, "0,5");
-		jpP2P.add(jcbHideProperties, "0,7");
 
 		// --Tags
 		jpTags = new JPanel();
@@ -931,7 +895,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// -- User interface --
 		jpUI = new JPanel();
-		double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p } };
+		double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p,p } };
 		TableLayout layoutUI = new TableLayout(sizeUI);
 		layoutUI.setHGap(iXSeparator);
 		layoutUI.setVGap(iYSeparator);
@@ -945,7 +909,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jsCatalogPages.setPaintTicks(true);
 		jsCatalogPages.setPaintLabels(true);
 		jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
-		jcbShowCatalogPopups = new JCheckBox(Messages.getString("ParameterView.228"));
+		jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
 		JXCollapsiblePane catalogView = new JXCollapsiblePane();
 		catalogView.setLayout(new VerticalLayout(10));
 		catalogView.setCollapsed(true);
@@ -955,8 +919,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpCatalogSize.add(jlCatalogPages);
 		jpCatalogSize.add(jsCatalogPages);
 		catalogView.add(jpCatalogSize);
-		catalogView.add(jcbShowCatalogPopups);
-
+		
 		// Font selector
 		jlFonts = new JLabel(Messages.getString("ParameterView.223"));
 		jsFonts = new JSlider(6, 20, ConfigurationManager.getInt(CONF_FONTS_SIZE));
@@ -1049,8 +1012,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpUI.add(scbWatermarks, "1,4");
 		jpUI.add(jlWatermarkImage, "0,5");
 		jpUI.add(pathWatermarkFile, "1,5");
-		jpUI.add(toggle, "0,6");
-		jpUI.add(catalogView, "0,7,1,7");
+		jpUI.add(jcbShowPopups, "0,6");
+		jpUI.add(toggle, "0,7");
+		jpUI.add(catalogView, "0,8,1,8");
 
 		// --OK/cancel panel
 		Dimension dim = new Dimension(200, 20);
@@ -1071,18 +1035,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		setLayout(new TableLayout(size));
 		// add main panels
 		jtpMain = new JTabbedPane(JTabbedPane.LEFT);
-		jtpMain.addTab(Messages.getString("ParameterView.33"), new JScrollPane(jpOptions));
-		jtpMain.addTab(Messages.getString("ParameterView.226"), new JScrollPane(jpModes));
-		jtpMain.addTab(Messages.getString("ParameterView.225"), new JScrollPane(jpUI));
-		jtpMain.addTab(Messages.getString("ParameterView.19"), new JScrollPane(jpStart));
-		jtpMain.addTab(Messages.getString("ParameterView.98"), new JScrollPane(jpTags));
-		jtpMain.addTab(Messages.getString("ParameterView.8"), new JScrollPane(jpHistory));
-		// TODO jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P);
-		jtpMain.addTab(Messages.getString("ParameterView.235"), new JScrollPane(jpLastFM));
-		jtpMain.addTab(Messages.getString("ParameterView.159"), new JScrollPane(jpCovers));
-		jtpMain.addTab(Messages.getString("ParameterView.26"), new JScrollPane(jpConfirmations));
-		jtpMain.addTab(Messages.getString("ParameterView.139"), new JScrollPane(jpNetwork));
-		jtpMain.addTab(Messages.getString("ParameterView.115"), new JScrollPane(jpAdvanced));
+		//ScrollPane without border
+		class JajukJScrollPane extends JScrollPane{
+			public JajukJScrollPane(Component view) {
+				super(view);
+				setBorder(null);
+			}
+		}
+		jtpMain.addTab(Messages.getString("ParameterView.33"), new JajukJScrollPane(jpOptions));
+		jtpMain.addTab(Messages.getString("ParameterView.226"), new JajukJScrollPane(jpModes));
+		jtpMain.addTab(Messages.getString("ParameterView.225"), new JajukJScrollPane(jpUI));
+		jtpMain.addTab(Messages.getString("ParameterView.19"), new JajukJScrollPane(jpStart));
+		jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpTags));
+		jtpMain.addTab(Messages.getString("ParameterView.8"), new JajukJScrollPane(jpHistory));
+		jtpMain.addTab(Messages.getString("ParameterView.235"), new JajukJScrollPane(jpLastFM));
+		jtpMain.addTab(Messages.getString("ParameterView.159"), new JajukJScrollPane(jpCovers));
+		jtpMain.addTab(Messages.getString("ParameterView.26"), new JajukJScrollPane(jpConfirmations));
+		jtpMain.addTab(Messages.getString("ParameterView.139"), new JajukJScrollPane(jpNetwork));
+		jtpMain.addTab(Messages.getString("ParameterView.115"), new JajukJScrollPane(jpAdvanced));
 		try {
 			// Reload stored selected index
 			jtpMain.setSelectedIndex(ConfigurationManager.getInt(CONF_OPTIONS_TAB));
@@ -1299,7 +1269,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getValue()));
 		String sBestofSize = jtfBestofSize.getText();
 		if (!sBestofSize.equals("")) {
-			ConfigurationManager.setProperty(CONF_BESTOF_SIZE, sBestofSize);
+			ConfigurationManager.setProperty(CONF_BESTOF_TRACKS_SIZE, sBestofSize);
 		}
 		// force refresh of bestof files
 		FileManager.getInstance().setRateHasChanged(true);
@@ -1354,16 +1324,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (!sHistoryDuration.equals("")) {
 			ConfigurationManager.setProperty(CONF_HISTORY, sHistoryDuration);
 		}
-		// P2P
-		ConfigurationManager.setProperty(CONF_P2P_SHARE, Boolean.toString(jcbShare.isSelected()));
-		ConfigurationManager.setProperty(CONF_P2P_ADD_REMOTE_PROPERTIES, Boolean
-				.toString(jcbAddRemoteProperties.isSelected()));
-		ConfigurationManager.setProperty(CONF_P2P_HIDE_LOCAL_PROPERTIES, Boolean
-				.toString(jcbHideProperties.isSelected()));
-		String sPass = jpfPasswd.getSelectedText();
-		if (sPass != null && !sPass.equals("")) {
-			ConfigurationManager.setProperty(CONF_P2P_PASSWORD, MD5Processor.hash(sPass));
-		}
 		// tags
 		ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir
 				.isSelected()));
@@ -1383,10 +1343,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// UI
 		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages
 				.getValue()));
-		ConfigurationManager.setProperty(CONF_CATALOG_SHOW_POPUPS, Boolean
-				.toString(jcbShowCatalogPopups.isSelected()));
-		ConfigurationManager.setProperty(CONF_CATALOG_SHOW_POPUPS, Boolean
-				.toString(jcbShowCatalogPopups.isSelected()));
+		ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean
+				.toString(jcbShowPopups.isSelected()));
+		ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean
+				.toString(jcbShowPopups.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK_IMAGE, pathWatermarkFile.getUrl());
 		int oldFont = ConfigurationManager.getInt(CONF_FONTS_SIZE);
 		// Display a message if font changed
@@ -1517,16 +1477,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 		introLength.setValue(ConfigurationManager.getInt(CONF_OPTIONS_INTRO_LENGTH));
 		introPosition.setValue(ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN));
-		jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
+		jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_TRACKS_SIZE));
 		jtfNoveltiesAge.setText(ConfigurationManager.getProperty(CONF_OPTIONS_NOVELTIES_AGE));
 		jtfVisiblePlanned.setText(ConfigurationManager.getProperty(CONF_OPTIONS_VISIBLE_PLANNED));
 		crossFadeDuration.setValue(ConfigurationManager.getInt(CONF_FADE_DURATION));
-		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_P2P_SHARE));
-		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_P2P_PASSWORD));
-		jcbAddRemoteProperties.setSelected(ConfigurationManager
-				.getBoolean(CONF_P2P_ADD_REMOTE_PROPERTIES));
-		bHidden = ConfigurationManager.getBoolean(CONF_P2P_HIDE_LOCAL_PROPERTIES);
-		jcbHideProperties.setSelected(bHidden);
 		jcbUseParentDir.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_USE_PARENT_DIR));
 		// advanced
 		int iBackupSize = ConfigurationManager.getInt(CONF_BACKUP_SIZE);
@@ -1597,7 +1551,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// UI
 		jcbVisibleAtStartup.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
 		jcbShowBaloon.setSelected(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
-		jcbShowCatalogPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
+		jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
 		// Enable image selection if image watermark
 		jlWatermarkImage.setEnabled(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK)
 				.equals(LNF_WATERMARK_IMAGE));

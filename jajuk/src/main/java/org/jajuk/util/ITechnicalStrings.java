@@ -128,7 +128,13 @@ public interface ITechnicalStrings {
 
 	/** Number of hours in a day */
 	public static final int HOURS_IN_A_DAY = 24;
-
+	
+	/** Number of album bestof items */
+	public static final int NB_BESTOF_ALBUMS = 8;
+	
+	/** Number of album novelties items */
+	public static final int NB_NOVELTIES_ALBUMS = 8;
+	
 	/** Number of milliseconds in a day */
 	public static final int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE
 			* MINUTES_IN_AN_HOUR * HOURS_IN_A_DAY;
@@ -605,8 +611,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_UI_SHOW_AT_STARTUP = "jajuk.show_at_startup";
 
 	/** Best of size */
-	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size";
-
+	public static final String CONF_BESTOF_TRACKS_SIZE = "jajuk.bestof_size";
+	
 	/** Gain (float) */
 	public static final String CONF_VOLUME = "jajuk.volume";
 
@@ -772,7 +778,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_CATALOG_PAGE_SIZE = "jajuk.catalog.pages_size";
 
 	/** Show Catalog popups */
-	public static final String CONF_CATALOG_SHOW_POPUPS = "jajuk.catalog.show_popups";
+	public static final String CONF_SHOW_POPUPS = "jajuk.show_popups";
 
 	/** Font size */
 	public static final String CONF_FONTS_SIZE = "jajuk.fonts_size";

@@ -28,94 +28,35 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
-
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.IntellitypeListener;
-import com.melloware.jintellitype.JIntellitype;
 
 /**
  * Common super class for Swing actions. This class provides useful construction
  * options to create actions, just leaving open the necessity of implementing
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
-public abstract class ActionBase extends AbstractAction implements ITechnicalStrings,
-		HotkeyListener {
+public abstract class ActionBase extends AbstractAction implements ITechnicalStrings {
 
 	/**
 	 * Shared mutex for locking.
 	 */
 	protected static final byte[] MUTEX = new byte[0];
 
-	/** Maps hotkeylisteners with the event ID */
-	private static HashMap<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(20);
-
-	/**
-	 * Is this action an hotkey ?
-	 */
+	/** Is this action an hotkey ? */
 	private boolean bHotkey = false;
-
-	/**
-	 * Jintellitype object used for hotkeys and intellitype events management
-	 * under winodws only
-	 */
-	private static JIntellitype jintellitype;
 
 	// Instantiate a static jintellitype object
 	static {
 		if (Util.isUnderWindows()) {
-			jintellitype = JIntellitype.getInstance();
-			// assign this class to be a IntellitypeListener
-			jintellitype.addIntellitypeListener(new IntellitypeListener() {
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see com.melloware.jintellitype.IntellitypeListener#onIntellitype(int)
-				 */
-				public void onIntellitype(int aCommand) {
-					try {
-						// Perform right action according to intellitype command
-						switch (aCommand) {
-						case JIntellitype.APPCOMMAND_MEDIA_NEXTTRACK:
-							ActionManager.getAction(JajukAction.NEXT_TRACK).perform(null);
-							break;
-						case JIntellitype.APPCOMMAND_MEDIA_PLAY_PAUSE:
-							ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK).perform(null);
-							break;
-						case JIntellitype.APPCOMMAND_MEDIA_PREVIOUSTRACK:
-							ActionManager.getAction(JajukAction.PREVIOUS_TRACK).perform(null);
-							break;
-						case JIntellitype.APPCOMMAND_MEDIA_STOP:
-							ActionManager.getAction(JajukAction.STOP_TRACK).perform(null);
-							break;
-						case JIntellitype.APPCOMMAND_VOLUME_DOWN:
-							ActionManager.getAction(JajukAction.DECREASE_VOLUME).perform(null);
-							break;
-						case JIntellitype.APPCOMMAND_VOLUME_UP:
-							ActionManager.getAction(JajukAction.INCREASE_VOLUME).perform(null);
-							break;
-						case JIntellitype.APPCOMMAND_VOLUME_MUTE:
-							ActionManager.getAction(JajukAction.MUTE_STATE).perform(null);
-							break;
-						default:
-							Log.debug("Undefined INTELLITYPE message caught "
-									+ Integer.toString(aCommand));
-							break;
-						}
-					} catch (Throwable e2) {
-						Log.error(e2);
-					} finally {
-						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-					}
-				}
-
-			});
-
+			try {
+				Class.forName("org.jajuk.ui.WindowsHotKeyManager")
+						.getMethod("registerJIntellitype").invoke(null, null);
+			} catch (Exception e) {
+				Log.error(e);
+			}
 		}
 	}
 
@@ -154,16 +95,12 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 		}
 		if (stroke != null) {
 			if (Util.isUnderWindows() && this.bHotkey) {
-				// under windows, use hotkey that can be used even when window
-				// has not the focus. Note that all keys are nor hotkeys (given
-				// by bHotkey flag)
-				int index = hmIndexAction.size() - 1;
-				jintellitype.registerSwingHotKey(index + 1, stroke.getModifiers(), stroke
-						.getKeyCode());
-				// register the action with its index
-				hmIndexAction.put(index + 1, this);
-				// add the listener
-				jintellitype.addHotKeyListener(this);
+				try {
+					Class.forName("org.jajuk.ui.WindowsHotKeyManager").getMethod("registerHotKey")
+							.invoke(null, new Object[] { stroke, this });
+				} catch (Exception e) {
+					Log.error(e);
+				}
 			} else {
 				// else use standard swing keystroke feature
 				setAcceleratorKey(stroke);
@@ -172,7 +109,6 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 		setEnabled(enabled);
 	}
 
-	
 	/**
 	 * Construct an action with the given name, icon and accelerator keystroke.
 	 * 
@@ -446,30 +382,20 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 */
 	protected abstract void perform(ActionEvent evt) throws Exception;
 
-	// listen for hotkey
-	public void onHotKey(int aIdentifier) {
-		// Leave if user disabled hotkeys
-		if (!ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS)) {
-			return;
-		}
-		// check it is the right listener that caught the event
-		if (this.equals(hmIndexAction.get(aIdentifier))) {
-			try {
-				// Call action itself
-				perform(null);
-			} catch (Throwable e2) {
-				Log.error(e2);
-			} finally {
-				ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-			}
-		}
-	}
+	
 
 	/**
 	 * Free intellipad ressources
 	 */
 	public static void cleanup() {
-		jintellitype.cleanUp();
+		if (Util.isUnderWindows()) {
+			try {
+				Class.forName("org.jajuk.ui.WindowsHotKeyManager").getMethod("cleanup").invoke(
+						null, null);
+			} catch (Exception e) {
+				Log.error(e);
+			}
+		}
 	}
 
 	/**

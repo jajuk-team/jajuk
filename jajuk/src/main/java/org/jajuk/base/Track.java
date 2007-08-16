@@ -290,53 +290,6 @@ public class Track extends LogicalItem implements Comparable {
 	}
 
 	/**
-	 * @return Number of stars
-	 */
-	public int getStarsNumber() {
-		long lRate = getRate();
-		long lInterval = TrackManager.getInstance().getMaxRate() / 4;
-		if (lRate <= lInterval) {
-			return 1;
-		} else if (lRate <= 2 * lInterval) {
-			return 2;
-		} else if (lRate <= 3 * lInterval) {
-			return 3;
-		} else {
-			return 4;
-		}
-	}
-
-	/**
-	 * @return the stars icon
-	 */
-	public IconLabel getStars() {
-		IconLabel ilRate = null;
-		getRate();
-		switch (getStarsNumber()) {
-		case 1:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_1,
-					"", null, null, null, Long.toString(getRate())); 
-			break;
-		case 2:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_2,
-					"", null, null, null, Long.toString(getRate())); 
-			break;
-		case 3:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_3,
-					"", null, null, null, Long.toString(getRate())); 
-			break;
-		case 4:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_4,
-					"", null, null, null, Long.toString(getRate())); 
-			break;
-		default:
-			return null;
-		}
-		ilRate.setInteger(true);
-		return ilRate;
-	}
-
-	/**
 	 * @return
 	 */
 	public Date getAdditionDate() {

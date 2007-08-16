@@ -110,6 +110,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 	JMenuItem jmiWizard;
 
 	JMenuItem jmiOptions;
+	
+	public JCheckBoxMenuItem jmiUnmounted;
 
 	JMenu help;
 
@@ -198,10 +200,15 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		jcbmiIntro.setSelected(ConfigurationManager
 				.getBoolean(CONF_STATE_INTRO));
 
+		jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
+		jmiUnmounted.setSelected(ConfigurationManager
+				.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+		
 		mode.add(jcbmiRepeat);
 		mode.add(jcbmiShuffle);
 		mode.add(jcbmiContinue);
 		mode.add(jcbmiIntro);
+		mode.add(jmiUnmounted);
 
 		// Configuration menu
 		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); 
@@ -215,14 +222,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
 		jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
 		jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
-		JMenuItem jmiUnmounted = new JMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
 		configuration.add(jmiOptions);
 		configuration.add(jmiDJ);
 		configuration.add(jmiAmbience);
 		configuration.add(jmiWebradios);
 		configuration.add(jmiWizard);
-		configuration.add(jmiUnmounted);
-
+		
 		// Help menu
 		String helpText = Messages.getString("JajukJMenuBar.14"); 
 		help = new JMenu(ActionUtil.strip(helpText));

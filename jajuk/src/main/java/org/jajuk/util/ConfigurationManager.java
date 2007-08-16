@@ -177,7 +177,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
 		properties.put(CONF_BOOKMARKS, "");
 		properties.put(CONF_UI_SHOW_AT_STARTUP, TRUE);
-		properties.put(CONF_BESTOF_SIZE, "20");
+		properties.put(CONF_BESTOF_TRACKS_SIZE, "20");
 		properties.put(CONF_VOLUME, "0.5");
 		properties.put(CONF_REGEXP, FALSE);
 		properties.put(CONF_BACKUP_SIZE, "20");
@@ -246,7 +246,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
 		properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
 		properties.put(CONF_CATALOG_PAGE_SIZE, "100");
-		properties.put(CONF_CATALOG_SHOW_POPUPS, TRUE);
+		properties.put(CONF_SHOW_POPUPS, TRUE);
 		properties.put(CONF_FONTS_SIZE, "12");
 		properties.put(CONF_MPLAYER_PATH_FORCED, "");
 		properties.put(CONF_INC_RATING, "5");

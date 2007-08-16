@@ -117,11 +117,15 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
 		oItems[iRow] = item;
 	}
 
-	public Object getValueAt(int rowIndex, int columnIndex) {
+	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
+		//We need to test this as UI may request it before table is populated
+		if (oValues == null){
+			return null;
+		}
 		return oValues[rowIndex][columnIndex];
 	}
 
-	public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
+	public synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
 		oLast = oValues[rowIndex][columnIndex];
 		oValues[rowIndex][columnIndex] = oValue;
 		fireTableCellUpdated(rowIndex, columnIndex);

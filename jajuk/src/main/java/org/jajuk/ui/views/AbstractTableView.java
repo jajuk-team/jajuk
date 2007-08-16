@@ -36,7 +36,6 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.JajukToggleButton;
 import org.jajuk.ui.TableTransferHandler;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
@@ -62,7 +61,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
@@ -80,6 +78,7 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableColumn;
 
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
@@ -240,7 +239,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				jtable.setDragEnabled(true);
 				jtable.setTransferHandler(new TableTransferHandler(jtable));
 				// Background color is not actually taken into account with
-				// sustance watermarks
+				// Substance watermarks
 				jtable
 						.addHighlighter(new ConditionalHighlighter(Color.BLACK, Color.ORANGE, -1,
 								-1) {
@@ -322,6 +321,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		model.removeTableModelListener(AbstractTableView.this);
 		model.populateModel(sPropertyName, sPropertyValue);
 		model.fireTableDataChanged();
+		jtable.packAll();
 		model.addTableModelListener(AbstractTableView.this);
 	}
 
@@ -376,7 +376,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
 						//Re-apply selection
-						jtable.setSelectedrows(selection);
+						jtable.setSelectedRows(selection);
 					} else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
 						Properties properties = event.getDetails();
 						if (properties == null) {
@@ -420,10 +420,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	abstract JajukTableModel populateTable();
 
 	private void setRenderers() {
-		Iterator it = ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)
-				.iterator();
-		while (it.hasNext()) {
-			TableColumnExt col = (TableColumnExt) it.next();
+		for (TableColumn tc:((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)){
+			TableColumnExt col = (TableColumnExt) tc;
 			String sIdentifier = model.getIdentifier(col.getModelIndex());
 			// create a combo box for styles, note that we can't add new
 			// styles dynamically

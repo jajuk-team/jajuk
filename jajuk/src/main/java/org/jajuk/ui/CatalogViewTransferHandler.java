@@ -20,7 +20,6 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.ui.views.CatalogView.CatalogItem;
 import org.jajuk.util.ITechnicalStrings;
 
 import java.awt.datatransfer.DataFlavor;
@@ -37,10 +36,10 @@ public class CatalogViewTransferHandler extends TransferHandler implements ITech
 
 	private static final long serialVersionUID = 1L;
 
-	private CatalogItem item;
+	private AlbumThumb item;
 
 	/** Constructor */
-	public CatalogViewTransferHandler(CatalogItem item) {
+	public CatalogViewTransferHandler(AlbumThumb item) {
 		this.item = item;
 	}
 

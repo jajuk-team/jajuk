@@ -25,7 +25,14 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -52,6 +59,12 @@ public class AlbumManager extends ItemManager {
 		// Expand
 		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false,
 				true, Boolean.class, false));
+	}
+
+	public Set<EventSubject> getRegistrationKeys() {
+		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+		eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
+		return eventSubjectSet;
 	}
 
 	/**
@@ -215,6 +228,155 @@ public class AlbumManager extends ItemManager {
 			}
 			return out;
 		}
+	}
+
+	/**
+	 * Return top albums based on the average of each album rating
+	 * 
+	 * @param bHideUnmounted
+	 *            if true, unmounted albums are not chosen
+	 * @param iNbBestofAlbums
+	 *            nb of items to return
+	 * @return top albums, can be less items than required according to nb of available albums 
+	 */
+	public List<Album> getBestOfAlbums(boolean bHideUnmounted, int iNbBestofAlbums) {
+		// create a temporary table to remove unmounted albums
+		// We considere an album as mounted if a least one track is mounted
+		// This hashmap contains album-> album rates
+		final HashMap<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager
+				.getInstance().getElementCount());
+		// This hashmap contains album-> nb of tracks already taken into account
+		// for average
+		HashMap<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
+				.getElementCount());
+		for (Track track : TrackManager.getInstance().getTracks()) {
+			if (track.getPlayeableFile(bHideUnmounted) != null) {
+				float newRate = 0f;
+				Integer nb = cacheNb.get(track.getAlbum());
+				if (nb == null) {
+					nb = 0;
+				}
+				Float previousRate = cacheRate.get(track.getAlbum());
+				if (previousRate == null) {
+					newRate = track.getRate();
+				} else {
+					newRate = ((previousRate * nb) + track.getRate()) / (nb + 1);
+				}
+				cacheNb.put(track.getAlbum(), nb + 1);
+				cacheRate.put(track.getAlbum(), newRate);
+			}
+		}
+		// Now sort albums by rating
+		ArrayList<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
+		Collections.sort(sortedAlbums, new Comparator<Album>() {
+			public int compare(Album o1, Album o2) {
+				return (int) (cacheRate.get(o1) - cacheRate.get(o2));
+			}
+		});
+		return getTopAlbums(sortedAlbums, iNbBestofAlbums);
+	}
+	
+	/**
+	 * Return newest albums
+	 * 
+	 * @param bHideUnmounted
+	 *            if true, unmounted albums are not chosen
+	 * @param iNb
+	 *            nb of items to return
+	 * @return newest albums 
+	 */
+	public List<Album> getNewestAlbums(boolean bHideUnmounted, int iNb) {
+		// create a temporary table to remove unmounted albums
+		// We considere an album as mounted if a least one track is mounted
+		// This hashmap contains album-> discovery date
+		final HashMap<Album, Date> cache = new HashMap<Album, Date>(AlbumManager
+				.getInstance().getElementCount());
+		for (Track track : TrackManager.getInstance().getTracks()) {
+			if (track.getPlayeableFile(bHideUnmounted) != null) {
+				cache.put(track.getAlbum(), track.getAdditionDate());
+			}
+		}
+		// Now sort albums by discovery date
+		ArrayList<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
+		Collections.sort(sortedAlbums, new Comparator<Album>() {
+			public int compare(Album o1, Album o2) {
+				return cache.get(o1).compareTo(cache.get(o2));
+			}
+		});
+		return getTopAlbums(sortedAlbums, iNb);
+	}
+	
+	/**
+	 * Return rarely listen albums
+	 * 
+	 * @param bHideUnmounted
+	 *            if true, unmounted albums are not chosen
+	 * @param iNb
+	 *            nb of items to return
+	 * @return top albums, can be less items than required according to nb of available albums 
+	 */
+	public List<Album> getRarelyListenAlbums(boolean bHideUnmounted, int iNb) {
+		// create a temporary table to remove unmounted albums
+		// We considere an album as mounted if a least one track is mounted
+		// This hashmap contains album-> album hits (each track hit average)
+		final HashMap<Album, Float> cache = new HashMap<Album, Float>(AlbumManager
+				.getInstance().getElementCount());
+		// This hashmap contains album-> nb of tracks already taken into account
+		// for average
+		HashMap<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
+				.getElementCount());
+		for (Track track : TrackManager.getInstance().getTracks()) {
+			if (track.getPlayeableFile(bHideUnmounted) != null) {
+				float newHits = 0f;
+				Integer nb = cacheNb.get(track.getAlbum());
+				if (nb == null) {
+					nb = 0;
+				}
+				Float previousRate = cache.get(track.getAlbum());
+				if (previousRate == null) {
+					newHits = track.getHits();
+				} else {
+					newHits = ((previousRate * nb) + track.getHits()) / (nb + 1);
+				}
+				cacheNb.put(track.getAlbum(), nb + 1);
+				cache.put(track.getAlbum(), newHits);
+			}
+		}
+		// Now sort albums by rating
+		ArrayList<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
+		Collections.sort(sortedAlbums, new Comparator<Album>() {
+			public int compare(Album o1, Album o2) {
+				//We inverte comparaison as we want lowest scores
+				return (int) (cache.get(o2) - cache.get(o1));
+			}
+		});
+		return getTopAlbums(sortedAlbums, iNb);
+	}
+	
+	/**
+	 * Convenient method to keep top albums (used by getBestof, newest... albums)
+	 * @param sortedAlbums sorted albums according desired criteria, size >= iNb
+	 * @param iNb Number of albums to return
+	 * @return a nicely sorted / shuffled list of albums or a void list of none available albums
+	 */
+	private List<Album> getTopAlbums(List<Album> sortedAlbums,int iNb){
+		// Keep only 3 * desired size or less if not enough available albums
+		int size = 3 * iNb;
+		if (sortedAlbums.size() <= size) {
+			size = sortedAlbums.size() - 1;
+		}
+		//Leave if none album so far
+		if (sortedAlbums.size() == 0){
+			return new ArrayList<Album>();
+		}
+		List<Album> sublist = sortedAlbums.subList(sortedAlbums.size() - (1 + size),
+				sortedAlbums.size() - 1);
+		// Shuffle the result
+		Collections.shuffle(sublist);
+		// The result is a sublist of shuffled albums, if we have less
+		// albums than required, take max size possible
+		List<Album> out = sublist.subList(0, (size >= iNb) ? iNb: size);
+		return out;
 	}
 
 }

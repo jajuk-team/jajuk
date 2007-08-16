@@ -32,6 +32,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -150,7 +151,12 @@ public class PerspectiveManager implements ITechnicalStrings {
 				PerspectiveManager.currentPerspective = perspective;
 				for (IView view : perspective.getViews()) {
 					if (!view.isPopulated()) {
-						view.initUI();
+						try{
+							view.initUI();
+						}
+						catch(Exception e){
+							Log.error(e);
+						}
 						view.setIsPopulated(true);
 					}
 				}

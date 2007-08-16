@@ -77,6 +77,12 @@ public class LyricsView extends ViewAdapter implements Observer {
 	private JLabel jlTitle;
 
 	private JLabel jlAuthor;
+	
+	private String sURL;
+	
+	private Track track;
+	
+	private String lyrics;
 
 	/*
 	 * (non-Javadoc)
@@ -110,14 +116,15 @@ public class LyricsView extends ViewAdapter implements Observer {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.isPopupTrigger()) {
-					JPopupMenu menu = new JPopupMenu();
-					menu.add(new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD)));
-					menu.add(new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER)));
-					menu.show(textarea, e.getX(), e.getY());
+					handlePopup(e);
 				}
-
 			}
 
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					handlePopup(e);
+				}
+			}
 		});
 		jlAuthor = new JLabel();
 		jlAuthor.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
@@ -151,6 +158,12 @@ public class LyricsView extends ViewAdapter implements Observer {
 
 	}
 
+	public void handlePopup(final MouseEvent e) {
+		JPopupMenu menu = new JPopupMenu();
+		menu.add(new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD)));
+		menu.add(new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER)));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -161,6 +174,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
 		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_LYRICS_DOWNLOADED);
 		return eventSubjectSet;
 	}
 
@@ -170,41 +184,36 @@ public class LyricsView extends ViewAdapter implements Observer {
 	 * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
 	 */
 	public void update(final Event event) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				EventSubject subject = event.getSubject();
-				if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+		EventSubject subject = event.getSubject();
+		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+			new Thread(){
+				public void run(){
 					File file = FIFO.getInstance().getCurrentFile();
 					if (file != null) {
-						Track track = FIFO.getInstance().getCurrentFile().getTrack();
-						String sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
-								+ track.getAuthor().getName2() + "&songname=" + track.getName();
-						jsp.setVisible(true);
-						textarea.setToolTipText(sURL);
-						textarea.setText(LyricsService.getLyrics(track.getAuthor().getName2(),
-								track.getName()));
-						// Make sure to display the begin of the text (must be
-						// done in a thread to be executed when textarea display
-						// is actually finished)
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								jsp.getVerticalScrollBar().setValue(0);
-							}
-						});
-						jlAuthor.setText(track.getAuthor().getName2());
-						jlTitle.setText(track.getName());
-						Util.copyData = sURL;
-						try {
-							Util.url = new URL(sURL);
-						} catch (MalformedURLException e) {
-							Log.error(e);
+						track = FIFO.getInstance().getCurrentFile().getTrack();
+						sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
+							+ track.getAuthor().getName2() + "&songname=" + track.getName();
+						//Launch lyrics service asynchronously and out of the AWT dispatcher thread
+						lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track
+							.getName());
+						//Notify to make UI changes
+						if (lyrics != null && track != null && sURL != null){
+							ObservationManager.notify(new Event(EventSubject.EVENT_LYRICS_DOWNLOADED));
 						}
 					}
-				} else if (subject.equals(EventSubject.EVENT_ZERO)) {
+				}
+			}.start();
+		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
 					jsp.setVisible(false);
 					jlAuthor.setText("");
 					jlTitle.setText(Messages.getString("JajukWindow.18"));
-				} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+				}
+			});
+		} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
 					WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
 					if (radio != null) {
 						jlTitle.setText(radio.getName());
@@ -212,9 +221,32 @@ public class LyricsView extends ViewAdapter implements Observer {
 						jsp.setVisible(false);
 					}
 				}
-			}
+			});
+		} else if (subject.equals(EventSubject.EVENT_LYRICS_DOWNLOADED)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					jsp.setVisible(true);
+					textarea.setToolTipText(sURL);
+					textarea.setText(lyrics);
+					// Make sure to display the begin of the text (must be
+					// done in a thread to be executed when textarea display
+					// is actually finished)
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							jsp.getVerticalScrollBar().setValue(0);
+						}
+					});
+					jlAuthor.setText(track.getAuthor().getName2());
+					jlTitle.setText(track.getName());
+					Util.copyData = sURL;
+					try {
+						Util.url = new URL(sURL);
+					} catch (MalformedURLException e) {
+						Log.error(e);
+					}
+				}
+			});
 
-		});
+		}
 	}
-
 }

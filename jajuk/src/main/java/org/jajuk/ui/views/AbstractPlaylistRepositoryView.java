@@ -62,7 +62,7 @@ import ext.SwingWorker;
  * Shows playlist files
  * <p>
  * Physical perspective *
-  */
+ */
 abstract public class AbstractPlaylistRepositoryView extends ViewAdapter implements Observer,
 		ActionListener {
 
@@ -141,20 +141,21 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		ma = new MouseAdapter() {
 
 			public void mousePressed(MouseEvent e) {
-				handlePopup(e);
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				handlePopup(e);
-			}
-
-			public void handlePopup(final MouseEvent e) {
 				if (e.isPopupTrigger()) {
+					handlePopup(e);
+					// Left click
+				} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
 					PlaylistFileItem plfi = (PlaylistFileItem) e.getComponent();
 					if (plfi == plfiSelected) {
-						// right click
-						showMenu(plfi, e);
-					} else {
+						try {
+							play(plfi);
+						} catch (JajukException je) {
+							Log.error(je.getCode(), plfiSelected.getName(), null); //$NON-NLS-1$
+							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
+							selectQueue();
+							return;
+						}
+					} else { // we selected a new playlist file
 						try {
 							plfi.getPlaylistFile().getFiles();
 						} catch (JajukException je) {
@@ -163,24 +164,24 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 							selectQueue();
 							return;
 						}
+						Util.waiting();
 						selectPlaylistFileItem(plfi);
-						showMenu(plfi, e);
 					}
 				}
 			}
 
-			public void mouseClicked(final MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					handlePopup(e);
+				}
+			}
+
+			public void handlePopup(final MouseEvent e) {
 				PlaylistFileItem plfi = (PlaylistFileItem) e.getComponent();
 				if (plfi == plfiSelected) {
-					try {
-						play(plfi);
-					} catch (JajukException je) {
-						Log.error(je.getCode(), plfiSelected.getName(), null); //$NON-NLS-1$
-						Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
-						selectQueue();
-						return;
-					}
-				} else { // we selected a new playlist file
+					// right click
+					showMenu(plfi, e);
+				} else {
 					try {
 						plfi.getPlaylistFile().getFiles();
 					} catch (JajukException je) {
@@ -189,10 +190,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 						selectQueue();
 						return;
 					}
-					Util.waiting();
 					selectPlaylistFileItem(plfi);
+					showMenu(plfi, e);
 				}
 			}
+
 		};
 		// refresh
 		populatePlaylists();
@@ -203,7 +205,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jsp.getVerticalScrollBar().setUnitIncrement(60);
 		add(jsp);
-		// Register on the list for subject we are interrested in
+		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 		// set queue playlist as default in playlist editor
 		selectPlaylistFileItem(plfiQueue);

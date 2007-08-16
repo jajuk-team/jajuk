@@ -26,9 +26,9 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.CompoundHighlighter;
 import org.jdesktop.swingx.decorator.ConditionalHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
-import org.jdesktop.swingx.decorator.HighlighterPipeline;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 			}
 		
 		};
-		HighlighterPipeline pipe = new HighlighterPipeline(new Highlighter[]{playing});
+		CompoundHighlighter pipe = new CompoundHighlighter(new Highlighter[]{playing});
 		jtree.setHighlighters(pipe);
 		return jtree;
 	}

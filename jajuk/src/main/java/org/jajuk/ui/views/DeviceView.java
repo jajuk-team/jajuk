@@ -362,39 +362,36 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		handlePopup(e);
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
+		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK)  == 0){
+			boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
+			selectItem(e);
+			if (bSameDevice) {
+				// one device already selected + right click
+				DeviceWizard dw = new DeviceWizard();
+				dw.updateWidgets(diSelected.getDevice());
+				dw.pack();
+				dw.setVisible(true);
+			} else {
+				// a new device is selected
+				diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+			}
+
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		handlePopup(e);
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
+		}
 	}
 
 	public void handlePopup(final MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			selectItem(e);
-			// a new device is selected
-			diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-			jpmenu.show(e.getComponent(), e.getX(), e.getY());
-		}
-	}
-
-	public void mouseClicked(MouseEvent e) {
-		// Make sure not to handle events for popup handling
-		if (e.isPopupTrigger()) {
-			return;
-		}
-		boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
 		selectItem(e);
-		if (bSameDevice) {
-			// one device already selected + right click
-			DeviceWizard dw = new DeviceWizard();
-			dw.updateWidgets(diSelected.getDevice());
-			dw.pack();
-			dw.setVisible(true);
-		} else {
-			// a new device is selected
-			diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-		}
+		// a new device is selected
+		diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+		jpmenu.show(e.getComponent(), e.getX(), e.getY());
 	}
 
 	private void selectItem(final MouseEvent e) {
@@ -430,6 +427,12 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
 	public void mouseEntered(MouseEvent e) {
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public void mouseClicked(MouseEvent e) {
 	}
 
 }

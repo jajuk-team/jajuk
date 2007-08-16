@@ -55,19 +55,9 @@ public class RepeatModeAction extends ActionBase {
 		if (!b) { // enabled button
 			// if FIFO is not void, repeat over current item
 			StackItem item = FIFO.getInstance().getCurrentItem();
-			if (item != null && FIFO.getInstance().getIndex() == 0) { // only
-				// non-repeated
-				// items
-				// need
-				// to be
-				// set
-				// and
-				// in
-				// this
-				// case,
-				// index
-				// =0 or
-				// bug
+			if (item != null && FIFO.getInstance().getIndex() == 0) { 
+				// only non-repeated items need to be set and
+				// in this case, index = 0 or bug
 				item.setRepeat(true);
 			}
 		} else {// disable repeat mode

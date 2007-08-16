@@ -321,7 +321,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				// Style
 				oValues[iRow][4] = bf.getTrack().getStyle().getName2();
 				// Rate
-				oValues[iRow][5] = bf.getTrack().getStars();
+				oValues[iRow][5] = Util.getStars(bf.getTrack().getRate());
 				// Year
 				oValues[iRow][6] = bf.getTrack().getYear();
 				// Length
@@ -678,11 +678,10 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 							}
 							((JajukTableModel) jtable.getModel()).populateModel();
 						} catch (JajukException je) { // don't trace because
-							// it is called in a
-							// loop
+							// it is called in a loop
 						}
-						int[] rows = jtable.getSelectedRows(); // save
-						// selection
+						int[] rows = jtable.getSelectedRows(); 
+						// save selection
 						model.fireTableDataChanged();// refresh
 						bSettingSelection = true;
 						for (int i = 0; i < rows.length; i++) {
@@ -790,81 +789,74 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 	}
 
 	public void mousePressed(MouseEvent e) {
-		handlePopup(e);
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
+			// Left click
+		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+			if (e.getClickCount() == 2) {
+				// double click, launches selected track and all after
+				StackItem item = getItem(jtable.getSelectedRow());
+				if (item != null) {
+					// For the queue
+					if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+						if (item.isPlanned()) {
+							// we can't launch a planned
+							// track, leave
+							item.setPlanned(false);
+							item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+							item.setUserLaunch(true);
+							FIFO.getInstance().push(item, false);
+						} else { // non planned items
+							FIFO.getInstance().goTo(jtable.getSelectedRow());
+							// remove selection for planned tracks
+							ListSelectionModel lsm = jtable.getSelectionModel();
+							bSettingSelection = true;
+							jtable.getSelectionModel().removeSelectionInterval(
+									lsm.getMinSelectionIndex(), lsm.getMaxSelectionIndex());
+							bSettingSelection = false;
+						}
+					}
+					// For others playlists, we launch all tracks from this
+					// position
+					// to the end of playlist
+					else {
+						FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),
+								ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+					}
+				}
+			} else if (e.getClickCount() == 1) {
+				// if no multiple previous selection, select row before
+				// displaying popup
+				int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+				if (jtable.getSelectedRowCount() < 2) {
+					jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
+				}
+			}
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		handlePopup(e);
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
+		}
 	}
 
 	public void handlePopup(final MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			// if no multiple previous selection, select row before
-			// displaying popup
-			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-			if (jtable.getSelectedRowCount() < 2) {
-				jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-			}
-			// Do not show popup if selection contains a planned tracks
-			for (int i = 0; i < jtable.getSelectedRowCount(); i++) {
-				int selection = jtable.getSelectedRows()[i];
-				if (selection > alItems.size() - 1) {
-					return;
-				}
-			}
-			// right click on a selected node set
-			jmenuFile.show(jtable, e.getX(), e.getY());
+		// if no multiple previous selection, select row before
+		// displaying popup
+		int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+		if (jtable.getSelectedRowCount() < 2) {
+			jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-		// Make sure not to handle events for popup handling
-		if (e.isPopupTrigger()) {
-			return;
-		}
-		if (e.getClickCount() == 2) {
-			// double click, launches selected track and all after
-			StackItem item = getItem(jtable.getSelectedRow());
-			if (item != null) {
-				// For the queue
-				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-					if (item.isPlanned()) {
-						// we can't launch a planned
-						// track, leave
-						item.setPlanned(false);
-						item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
-						item.setUserLaunch(true);
-						FIFO.getInstance().push(item, false);
-					} else { // non planned items
-						FIFO.getInstance().goTo(jtable.getSelectedRow());
-						// remove selection for planned tracks
-						ListSelectionModel lsm = jtable.getSelectionModel();
-						bSettingSelection = true;
-						jtable.getSelectionModel().removeSelectionInterval(
-								lsm.getMinSelectionIndex(), lsm.getMaxSelectionIndex());
-						bSettingSelection = false;
-					}
-				}
-				// For others playlists, we launch all tracks from this position
-				// to the end of playlist
-				else {
-					FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),
-							ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
-				}
-			}
-		} else if (e.getClickCount() == 1) {
-			// if no multiple previous selection, select row before
-			// displaying popup
-			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-			if (jtable.getSelectedRowCount() < 2) {
-				jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
+		// Do not show popup if selection contains a planned tracks
+		for (int i = 0; i < jtable.getSelectedRowCount(); i++) {
+			int selection = jtable.getSelectedRows()[i];
+			if (selection > alItems.size() - 1) {
+				return;
 			}
 		}
+		// right click on a selected node set
+		jmenuFile.show(jtable, e.getX(), e.getY());
 	}
 
 	/**
@@ -1213,5 +1205,13 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				}
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public void mouseClicked(MouseEvent e) {
 	}
 }

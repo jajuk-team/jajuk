@@ -22,9 +22,7 @@
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/jdic-20060613.jar"/>
-	<classpathentry kind="lib" path="lib/jintellitype-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
-	<classpathentry kind="lib" path="lib/swingx-2007_05_01.jar"/>
 	<classpathentry kind="lib" path="jajuk-help.jar"/>
 	<classpathentry kind="lib" path="lib/substance-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.4.jar"/>
@@ -34,5 +32,7 @@
 	<classpathentry kind="lib" path="lib/qdwizard-1.9.jar"/>
 	<classpathentry kind="lib" path="lib/cobra-0.96.5R2.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.96.5R2.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-2007_07_22.jar"/>
+	<classpathentry kind="lib" path="lib/jintellitype-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

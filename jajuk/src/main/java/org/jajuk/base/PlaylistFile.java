@@ -88,8 +88,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public PlaylistFile(int iType, String sId, String sName, Directory dParentDirectory) {
 		super(sId, sName);
 		this.dParentDirectory = dParentDirectory;
-		setProperty(XML_DIRECTORY,
-				dParentDirectory == null ? "-1" : dParentDirectory.getId().intern()); 
+		setProperty(XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory.getId()
+				.intern());
 		this.iType = iType;
 	}
 
@@ -118,8 +118,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID=" + sId + " Name={{" + getName() + "}} Hashcode=" +   
-				getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getId() + "]";  
+		return "Playlist file[ID=" + sId + " Name={{" + getName() + "}} Hashcode="
+				+ getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getId() + "]";
 	}
 
 	/**
@@ -168,7 +168,6 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		}
 		setModified(true);
 	}
-
 
 	/**
 	 * @return
@@ -228,7 +227,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public synchronized ArrayList<File> getFiles() throws JajukException {
 		// if normal playlist, propose to mount device if unmounted
 		if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && !isReady()) {
-			String sMessage = Messages.getString("Error.025") + " (" + getDirectory().getDevice().getName() + Messages.getString("FIFO.4");   
+			String sMessage = Messages.getString("Error.025") + " ("
+					+ getDirectory().getDevice().getName() + Messages.getString("FIFO.4");
 			int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
 			if (i == JOptionPane.YES_OPTION) {
 				try {
@@ -239,11 +239,11 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 							ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 				} catch (Exception e) {
 					Log.error(e);
-					Messages.showErrorMessage(11, getDirectory().getDevice().getName()); 
-					throw new JajukException(141, getFio().getAbsolutePath(), null); 
+					Messages.showErrorMessage(11, getDirectory().getDevice().getName());
+					throw new JajukException(141, getFio().getAbsolutePath(), null);
 				}
 			} else {
-				throw new JajukException(141, getFio().getAbsolutePath(), null); 
+				throw new JajukException(141, getFio().getAbsolutePath(), null);
 			}
 		}
 		if (iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null) {
@@ -253,17 +253,19 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				// check device is mounted
 				alFiles = load(); // populate playlist
 				if (containsExtFiles()) {
-					Messages.showWarningMessage(Messages.getErrorMessage(142)); 
+					Messages.showWarningMessage(Messages.getErrorMessage(142));
 				}
 			} else { // error accessing playlist file
-				throw new JajukException(9, getFio().getAbsolutePath(), new Exception()); 
+				throw new JajukException(9, getFio().getAbsolutePath(), new Exception());
 			}
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
 			// bestof playlist
 			alFiles = new ArrayList<File>(10);
 			// even unmounted files if required
 			Iterator it = FileManager.getInstance().getBestOfFiles(
-					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator();
+					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED),
+					Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_TRACKS_SIZE)))
+					.iterator();
 			while (it.hasNext()) {
 				alFiles.add((File) it.next());
 			}
@@ -541,7 +543,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 					bw.newLine();
 				}
 			} catch (Exception e) {
-				throw new JajukException(28, getName(), e); 
+				throw new JajukException(28, getName(), e);
 			} finally {
 				if (bw != null) {
 					try {
@@ -557,7 +559,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 						// refresh repository list(mandatory for logical
 						// playlist collapse/merge)
 					} catch (IOException e1) {
-						throw new JajukException(28, getName(), e1); 
+						throw new JajukException(28, getName(), e1);
 					}
 				}
 			}
@@ -620,15 +622,15 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				this.bContainsExtFiles = true;
 			}
 		} catch (Exception e) {
-			Log.error(17, "{{" + getName() + "}}", e);   
-			throw new JajukException(17, getFio().getAbsolutePath(), e); 
+			Log.error(17, "{{" + getName() + "}}", e);
+			throw new JajukException(17, getFio().getAbsolutePath(), e);
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e1) {
 					Log.error(e1);
-					throw new JajukException(17, getFio().getAbsolutePath(), e1); 
+					throw new JajukException(17, getFio().getAbsolutePath(), e1);
 				}
 			}
 		}
@@ -703,7 +705,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public void play() throws JajukException {
 		alFiles = getFiles();
 		if (alFiles == null || alFiles.size() == 0) {
-			Messages.showErrorMessage(18); 
+			Messages.showErrorMessage(18);
 		} else {
 			FIFO.getInstance().push(
 					Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
@@ -796,7 +798,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 */
 	protected void setParentDirectory(Directory parentDirectory) {
 		this.dParentDirectory = parentDirectory;
-		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getId()); 
+		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getId());
 	}
 
 	/**
@@ -811,7 +813,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Playlist_File") + " : " + getName();  
+		return Messages.getString("Item_Playlist_File") + " : " + getName();
 	}
 
 	/*
@@ -843,7 +845,9 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		this.fio = null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.base.Item#getIconRepresentation()
 	 */
 	@Override

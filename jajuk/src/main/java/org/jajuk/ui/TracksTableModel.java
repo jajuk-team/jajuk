@@ -106,10 +106,10 @@ public class TracksTableModel extends JajukTableModel {
 	}
 
 	/**
-	 * Fill model with data using an optionnal filter property and pattern
+	 * Fill model with data using an optional filter property and pattern
 	 */
 	@SuppressWarnings("unchecked")
-	public void populateModel(String sPropertyName, String sPattern) {
+	public synchronized void populateModel(String sPropertyName, String sPattern) {
 		// Filter mounted files if needed and apply sync table with tree option
 		// if needed
 		boolean bShowWithTree = true;
@@ -120,8 +120,8 @@ public class TracksTableModel extends JajukTableModel {
 		alToShow = new ArrayList<Track>(alTracks.size());
 		for (Track track : alTracks) {
 			bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
-					// tree selection = null means none election have been
-					// selected in tree so far
+					// tree selection = null means none selection have been
+					// done so far
 					|| treeSelection == null
 					// check if the tree selection contains the current file
 					|| (treeSelection.size() > 0 && treeSelection.contains(track));
@@ -222,7 +222,7 @@ public class TracksTableModel extends JajukTableModel {
 			oValues[iRow][4] = track.getStyle().getName2();
 			bCellEditable[iRow][4] = bHasATagEditor;
 			// Rate
-			IconLabel ilRate = track.getStars();
+			IconLabel ilRate = Util.getStars(track.getRate());
 			oValues[iRow][5] = ilRate;
 			bCellEditable[iRow][5] = false;
 			ilRate.setInteger(true);

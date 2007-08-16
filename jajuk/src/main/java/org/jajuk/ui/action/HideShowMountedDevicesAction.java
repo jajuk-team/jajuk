@@ -22,6 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -43,6 +44,7 @@ public class HideShowMountedDevicesAction extends ActionBase{
 		boolean bHideUnmountedStatus = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
 		ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, 
 				Boolean.toString(!bHideUnmountedStatus));
+		JajukJMenuBar.getInstance().jmiUnmounted.setSelected(!bHideUnmountedStatus);
 		ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 	}

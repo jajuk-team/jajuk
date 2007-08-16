@@ -93,23 +93,29 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 	 * 
 	 * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
 	 */
-	public void update(Event event) {
+	public void update(final Event event) {
 		if (EventSubject.EVENT_FILE_FINISHED == event.getSubject()) {
-			if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
-				File file = (File) event.getDetails().get(DETAIL_CURRENT_FILE);
-				long playedTime = file.getTrack().getDuration();
-				// If we are in intro mode, computes actually listened time
-				if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)) {
-					playedTime = (playedTime
-							* ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN) / 100)
-							- ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN);
+			new Thread() {
+				public void run() {
+					if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
+						File file = (File) event.getDetails().get(DETAIL_CURRENT_FILE);
+						long playedTime = file.getTrack().getDuration();
+						// If we are in intro mode, computes actually listened
+						// time
+						if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)) {
+							playedTime = (playedTime
+									* ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN) / 100)
+									- ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN);
+						}
+						try {
+							Submitter.submitTrack(file.getTrack(), playedTime);
+						} catch (SubmitterException e) {
+							Log.error(e);
+						}
+					}
+
 				}
-				try {
-					Submitter.submitTrack(file.getTrack(), playedTime);
-				} catch (SubmitterException e) {
-					Log.error(e);
-				}
-			}
+			}.start();
 		}
 	}
 }

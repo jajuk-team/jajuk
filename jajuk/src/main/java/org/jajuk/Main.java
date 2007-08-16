@@ -48,6 +48,7 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.RestoreAllViewsAction;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -214,7 +215,8 @@ public class Main implements ITechnicalStrings {
 				UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 				UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
 			} catch (Exception e) {
-				//Get an exception with JRE 1.7 beta, some code is not yet implemented
+				// Get an exception with JRE 1.7 beta, some code is not yet
+				// implemented
 				Log.error(e);
 			}
 
@@ -364,15 +366,15 @@ public class Main implements ITechnicalStrings {
 
 			// Load ambiences
 			AmbienceManager.getInstance().load();
-			
+
 			//Start LastFM support
 			LastFmManager.getInstance();
-			
+
 			// Load djs
 			DigitalDJManager.getInstance().loadAllDJs();
 
 			//Start check for update thread if required
-			if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)){
+			if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
 				new Thread() {
 					public void run() {
 						//Wait 10 min before checking
@@ -385,7 +387,7 @@ public class Main implements ITechnicalStrings {
 					}
 				}.start();
 			}
-			
+
 			// start exit hook
 			Thread tHook = new Thread() {
 				public void run() {
@@ -436,11 +438,8 @@ public class Main implements ITechnicalStrings {
 								out.flush();
 								out.close();
 							}
-							/* release intellipad resources */
-							if (Util.isUnderWindows()) {
-								org.jajuk.ui.action.ActionBase.cleanup();
-							}
-
+							/* release keystrokes resources */
+							ActionBase.cleanup();
 						}
 					} catch (Exception e) {
 						Log.error(e);
@@ -819,8 +818,7 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
 				//web radios
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.radio"),
-						EXT_RADIO, Class.forName(PLAYER_IMPL_WEBRADIOS),
-						null);
+						EXT_RADIO, Class.forName(PLAYER_IMPL_WEBRADIOS), null);
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RADIO);

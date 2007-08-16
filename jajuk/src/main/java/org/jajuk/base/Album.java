@@ -20,12 +20,15 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IconLabel;
+import org.jajuk.ui.views.CatalogView;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,9 +39,27 @@ import javax.swing.ImageIcon;
  * <p>
  * Logical item
  */
-public class Album extends LogicalItem implements Comparable {
+public class Album extends LogicalItem implements Comparable<Album> {
 
 	private static final long serialVersionUID = 1L;
+
+	/** No covers image cache : size:default icon */
+	private static HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
+
+	static {
+		noCoversCache.put(THUMBNAIL_SIZE_50x50, Util.getResizedImage(IconLoader.ICON_NO_COVER, 50,
+				50));
+		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				100, 100));
+		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				150, 150));
+		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				200, 200));
+		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				250, 250));
+		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER,
+				300, 300));
+	}
 
 	/**
 	 * Album constructor
@@ -77,8 +98,7 @@ public class Album extends LogicalItem implements Comparable {
 	 *            item to be compared
 	 * @return comparaison result
 	 */
-	public int compareTo(Object o) {
-		Album otherAlbum = (Album) o;
+	public int compareTo(Album otherAlbum) {
 		// compare using name and id to differenciate unknown items
 		return (getName2() + getId()).compareToIgnoreCase(otherAlbum.getName2()
 				+ otherAlbum.getId());
@@ -266,6 +286,10 @@ public class Album extends LogicalItem implements Comparable {
 		}
 		sOut += "<br>" + Messages.getString("Property_length") + ": "
 				+ Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
+		// display rating (average of each track rating)
+		/*IconLoader.ICON_STAR_1.getImage().getGraphics().
+		sOut += "<br><img src='file:"   
+				+ IconLoader.ICON_STAR_1.getUrl() + "</TD><TD VALIGN='TOP'><br>";*/
 		// Show each track detail
 		for (Track track : tracks) {
 			sOut += "<br>";
@@ -289,11 +313,45 @@ public class Album extends LogicalItem implements Comparable {
 		return sOut;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.base.Item#getIconRepresentation()
 	 */
 	@Override
 	public ImageIcon getIconRepresentation() {
 		return IconLoader.ICON_ALBUM;
 	}
+	
+	/**
+	 * @return album average rating 
+	 */
+	public long getRate(){
+		float rate = 0f;
+		int nb = 0;
+		for (Track track:TrackManager.getInstance().getAssociatedTracks(this)){
+			rate += track.getRate();
+			nb ++;
+		}
+		return Math.round(rate/nb);
+	}
+	
+	
+
+
+	/**
+	 * 
+	 * @param size size using format 100x100
+	 * @return album thumb for given size
+	 */
+	public ImageIcon getThumbnail(String size) {
+		File fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getId() + '.'
+				+ EXT_THUMB);
+		//Check if thumb already exists
+		if (!fCover.exists() || fCover.length() == 0) {
+			return noCoversCache.get(size);
+		}
+		return new ImageIcon(fCover.getAbsolutePath());
+	}
+
 }

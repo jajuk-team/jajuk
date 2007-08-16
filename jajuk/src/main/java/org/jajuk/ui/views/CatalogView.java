@@ -20,37 +20,28 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.base.YearManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CatalogViewTransferHandler;
+import org.jajuk.ui.AlbumThumb;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Filter;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXPanel;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 import info.clearthought.layout.TableLayout;
 
@@ -58,10 +49,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -69,46 +56,29 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.event.HyperlinkEvent.EventType;
 
 import ext.FlowScrollPanel;
 import ext.SwingWorker;
@@ -160,20 +130,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 	JScrollPane jsp;
 
-	JPopupMenu jmenu;
-
-	JMenuItem jmiAlbumPlay;
-
-	JMenuItem jmiAlbumPush;
-
-	JMenuItem jmiAlbumPlayShuffle;
-
-	JMenuItem jmiAlbumPlayRepeat;
-
-	JMenuItem jmiGetCovers;
-
-	JMenuItem jmiAlbumProperties;
-
 	/** Filter properties */
 	ArrayList<PropertyMetaInformation> alFilters;
 
@@ -181,7 +137,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	ArrayList<PropertyMetaInformation> alSorters;
 
 	/** Items* */
-	HashSet<CatalogItem> hsItems;
+	HashSet<AlbumThumb> hsItems;
 
 	/** Do search panel need a search */
 	private boolean bNeedSearch = false;
@@ -196,7 +152,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	private long lDateTyped;
 
 	/** Last selected item */
-	public CatalogItem item;
+	public AlbumThumb item;
 
 	/** Page index */
 	private int page = 0;
@@ -207,15 +163,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	/** Number of created thumbs, used for garbage collection */
 	public int iNbCreatedThumbs = 0;
 
-	/** No covers image cache : size:default icon */
-	protected static HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
-
 	/** Utility list used by size selector */
 	private ArrayList<String> sizes = new ArrayList<String>(10);
-
-	/** Current details dialog */
-	private JDialog details;
-
+	
 	/** Swing Timer to refresh the component */
 	private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -229,26 +179,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		}
 	});
 
-	private long lDateLastMove = Long.MAX_VALUE;
-
-	private CatalogItem mouseOverItem = null;
-
-	/** Timer used to launch popup */
-	Timer timerPopup = new Timer(200, new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			if ((System.currentTimeMillis() - lDateLastMove >= 1000) && mouseOverItem != null
-					&& details == null) {
-				mouseOverItem.displayPopup();
-			} else if (mouseOverItem == null) {
-				if (details != null) {
-					details.dispose();
-					details = null;
-				}
-			}
-		}
-	});
-
-	public CatalogItem getSelectedItem() {
+	public AlbumThumb getSelectedItem() {
 		return item;
 	}
 
@@ -278,7 +209,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ADDED));
 
-		hsItems = new HashSet<CatalogItem>();
+		hsItems = new HashSet<AlbumThumb>();
 
 		sizes.add(THUMBNAIL_SIZE_50x50);
 		sizes.add(THUMBNAIL_SIZE_100x100);
@@ -287,18 +218,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		sizes.add(THUMBNAIL_SIZE_250x250);
 		sizes.add(THUMBNAIL_SIZE_300x300);
 
-		noCoversCache.put(THUMBNAIL_SIZE_50x50, Util.getResizedImage(IconLoader.ICON_NO_COVER, 50,
-				50));
-		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				100, 100));
-		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				150, 150));
-		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				200, 200));
-		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				250, 250));
-		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				300, 300));
 		// --Top (most used) control items
 		jpControlTop = new JPanel();
 		jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -388,7 +307,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jcbShowNoCover.addActionListener(this);
 
 		jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
-		jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
+		jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
 		jcbShowPopups.addActionListener(this);
 
 		JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
@@ -471,41 +390,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jpItems.setScroller(jsp);
 		jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
-		// Menu items
-		// Album menu
-		jmenu = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),
-				IconLoader.ICON_PLAY_16x16);
-		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"), IconLoader.ICON_PUSH);
-		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),
-				IconLoader.ICON_SHUFFLE);
-		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),
-				IconLoader.ICON_REPEAT);
-		jmiAlbumPlayRepeat.addActionListener(this);
-		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_TEST);
-		jmiGetCovers.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
-				IconLoader.ICON_PROPERTIES);
-		jmiAlbumProperties.addActionListener(this);
-		jmenu.add(jmiAlbumPlay);
-		jmenu.add(jmiAlbumPush);
-		jmenu.add(jmiAlbumPlayShuffle);
-		jmenu.add(jmiAlbumPlayRepeat);
-		jmenu.add(jmiGetCovers);
-		jmenu.add(jmiAlbumProperties);
-
-		// Start mouse motion test for popups
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				super.mouseMoved(e);
-				lDateLastMove = System.currentTimeMillis();
-			}
-		});
-
 		// global layout
 		double size[][] = { { TableLayout.FILL },
 				{ TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED, 5 } };
@@ -524,8 +408,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		// Start the timers
 		timerSearch.start();
-		timerPopup.start();
-
 	}
 
 	/**
@@ -607,7 +489,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				// sort albums
 				final int index = jcbSorter.getSelectedIndex();
 				Collections.sort(albums, new Comparator<Album>() {
-
 					public int compare(Album album1, Album album2) {
 						// for albums, perform a fast compare
 						if (index == 2) {
@@ -670,7 +551,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 				// Now process each album
 				HashSet<Directory> directories = new HashSet<Directory>(albums.size());
-				ArrayList<CatalogItem> alItemsToDisplay = new ArrayList<CatalogItem>(albums.size());
+				ArrayList<AlbumThumb> alItemsToDisplay = new ArrayList<AlbumThumb>(albums.size());
 				for (Object item : albums) {
 					Album album = (Album) item;
 					// if hide unmounted tracks is set, continue
@@ -708,8 +589,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							}
 							directories.add(dir);
 						}
-						CatalogItem cover = new CatalogItem(album, sizes.get(jsSize.getValue()),
-								anyTrack);
+						AlbumThumb cover = new AlbumThumb(album, getSelectedSize(), true);
 						alItemsToDisplay.add(cover);
 						// stores information on non-null covers
 						hsItems.add(cover);
@@ -744,9 +624,30 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						max = (page + 1) * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE);
 					}
 					for (int i = page * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-						CatalogItem item = alItemsToDisplay.get(i);
+						AlbumThumb item = alItemsToDisplay.get(i);
 						// populate item (construct UI) only when needed
 						item.populate();
+						item.jlIcon.addMouseListener(new MouseAdapter() {
+							public void mousePressed(MouseEvent e) {
+								AlbumThumb thumb = (AlbumThumb)((JLabel)e.getSource()).getParent();
+								// Left click
+								if (e.getButton() == MouseEvent.BUTTON1) {
+									// remove red border on previous item if
+									// different from this one
+									if (CatalogView.this.item != null
+											&& CatalogView.this.item != thumb) {
+										CatalogView.this.item.setBorder(BorderFactory
+												.createEmptyBorder(2, 2, 2, 2));
+										CatalogView.this.item.setSelected(false);
+									}
+									// add a red border on this item
+									thumb.setBorder(BorderFactory
+											.createMatteBorder(2, 2, 2, 2, Color.RED));
+									thumb.setSelected(true);
+									CatalogView.this.item = thumb;
+								}
+							}
+						});
 						if (!item.isNoCover() || (item.isNoCover() && jcbShowNoCover.isSelected())) {
 							jpItems.add(item);
 						}
@@ -783,13 +684,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		if (EventSubject.EVENT_DEVICE_REFRESH.equals(event.getSubject())
 				|| EventSubject.EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())) {
 			// save selected item
-			CatalogItem oldItem = CatalogView.this.item;
+			AlbumThumb oldItem = CatalogView.this.item;
 			// reset paging
 			page = 0;
 			populateCatalog();
 			// try to restore previous item
 			if (oldItem != null) {
-				for (CatalogItem item : hsItems) {
+				for (AlbumThumb item : hsItems) {
 					if (item.getAlbum().equals(oldItem.getAlbum())) {
 						CatalogView.this.item = item;
 						CatalogView.this.item.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2,
@@ -799,7 +700,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				}
 			}
 		} else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
-			jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS));
+			jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
 		}
 		// In all cases, update the facts
 		showFacts();
@@ -849,7 +750,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			// display thumbs
 			populateCatalog();
 		} else if (e.getSource() == jcbShowPopups) {
-			ConfigurationManager.setProperty(CONF_CATALOG_SHOW_POPUPS, Boolean
+			ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean
 					.toString(jcbShowPopups.isSelected()));
 			// force paramter view to take this into account
 			ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
@@ -902,431 +803,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	 */
 	private int getSelectedSize() {
 		return 50 + (50 * jsSize.getValue());
-	}
-
-	public class CatalogItem extends JPanel implements ITechnicalStrings, ActionListener,
-			Transferable {
-
-		private static final long serialVersionUID = 1L;
-
-		/** Associated album */
-		Album album;
-
-		/** Associated track */
-		Track track;
-
-		/** Size */
-		String size;
-
-		/** Associated file */
-		File fCover;
-
-		/** No cover flag */
-		boolean bNoCover = false;
-
-		JPanel jpIcon;
-
-		JLabel jlIcon;
-
-		JTextArea jlAuthor;
-
-		JTextArea jlAlbum;
-
-		/** Dragging flag used to disable simple click behavior */
-		private boolean bDragging = false;
-
-		/**
-		 * Constructor
-		 * 
-		 * @param album :
-		 *            associated album
-		 * @param size :
-		 *            size of the thumbnail
-		 * @param track:
-		 *            any track of the album used to get author.. information
-		 *            (perfs)
-		 */
-		public CatalogItem(Album album, String size, Track track) {
-			this.album = album;
-			this.size = size;
-			this.track = track;
-			this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getId()
-					+ '.' + EXT_THUMB);
-		}
-
-		/**
-		 * display a popup over the catalog item
-		 */
-		void displayPopup() {
-			// Leave if user unselected the option "Show catalog
-			// popups"
-			if (!ConfigurationManager.getBoolean(CONF_CATALOG_SHOW_POPUPS)) {
-				return;
-			}
-			// don't show details if the contextual popup menu
-			// is visible
-			if (jmenu.isVisible()) {
-				return;
-			}
-			JDialog dialog = new JDialog();
-			dialog.setUndecorated(true);
-			dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-			JXPanel jp = new JXPanel();
-			jp.setAlpha(0.8f);
-			double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
-			jp.setLayout(new TableLayout(size));
-			final JEditorPane text = new JEditorPane("text/html", track.getAlbum()
-					.getAdvancedDescription());
-			text.setEditable(false);
-			text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
-			text.addHyperlinkListener(new HyperlinkListener() {
-				public void hyperlinkUpdate(HyperlinkEvent e) {
-					if (e.getEventType() == EventType.ACTIVATED) {
-						URL url = e.getURL();
-						if (XML_AUTHOR.equals(url.getHost())) {
-							ArrayList<Item> items = new ArrayList<Item>(1);
-							items.add(AuthorManager.getInstance().getItemByID(url.getQuery()));
-							new PropertiesWizard(items);
-						} else if (XML_STYLE.equals(url.getHost())) {
-							ArrayList<Item> items = new ArrayList<Item>(1);
-							items.add(StyleManager.getInstance().getItemByID(url.getQuery()));
-							new PropertiesWizard(items);
-						} else if (XML_YEAR.equals(url.getHost())) {
-							ArrayList<Item> items = new ArrayList<Item>(1);
-							items.add(YearManager.getInstance().getItemByID(url.getQuery()));
-							new PropertiesWizard(items);
-						} else if (XML_TRACK.equals(url.getHost())) {
-							ArrayList<Item> items = new ArrayList<Item>(1);
-							Track track = (Track) TrackManager.getInstance().getItemByID(
-									url.getQuery());
-							items.add(track);
-							ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(
-									1);
-							toPlay.add(track.getPlayeableFile(true));
-							FIFO.getInstance().push(
-									Util.createStackItems(Util.applyPlayOption(toPlay),
-											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-											true), false);
-						}
-					}
-					// change cursor on entering or leaving
-					// hyperlinks
-					// This doesn't work under JRE 1.5 (at least
-					// under Linux), Sun issue ?
-					else if (e.getEventType() == EventType.ENTERED) {
-						text.setCursor(Util.LINK_CURSOR);
-					} else if (e.getEventType() == EventType.EXITED) {
-						text.setCursor(Util.DEFAULT_CURSOR);
-					}
-				}
-			});
-			final JScrollPane jspText = new JScrollPane(text);
-			jspText.getVerticalScrollBar().setValue(0);
-			jp.add(jspText, "0,0");
-			dialog.setContentPane(jp);
-			// compute dialog position ( note that setRelativeTo
-			// is buggy and that we need more advanced positioning)
-			int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
-			// set position at 60 % of the picture
-			int y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.6 * jlIcon.getHeight());
-			int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-			int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-			// Adjust position if details are located outside
-			// the screen
-			// in x-axis
-			if ((x + 500) > screenWidth) {
-				x = screenWidth - 510;
-			}
-			if ((y + 400) > screenHeight) {
-				x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
-				if ((x + 500) > screenWidth) {
-					x = screenWidth - 510;
-				}
-				y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.4 * jlIcon.getHeight())
-						- 400;
-			}
-			dialog.setLocation(x, y);
-			dialog.setSize(500, 400);
-			dialog.setVisible(true);
-			details = dialog;
-			// Force scrollbar to stay on top
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					jspText.getVerticalScrollBar().setValue(0);
-				}
-			});
-		}
-
-		void populate() {
-			// create the thumbnail if it doesn't exist
-			Util.refreshThumbnail(album, sizes.get(jsSize.getValue()));
-			if (!fCover.exists() || fCover.length() == 0) {
-				bNoCover = true;
-				this.fCover = null;
-			}
-			double[][] dMain = { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-					{ getSelectedSize() + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
-			setLayout(new TableLayout(dMain));
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			jpIcon = new JPanel();
-			jlIcon = new JLabel();
-			ImageIcon ii = null;
-			if (bNoCover) {
-				ii = CatalogView.noCoversCache.get(size);
-			} else {
-				ii = new ImageIcon(fCover.getAbsolutePath());
-				jlIcon.setBorder(Util.getShadowBorder());
-			}
-			if (!bNoCover) { // avoid flushing no cover thumb: it blinks
-				ii.getImage().flush(); // flush image buffer to avoid jre to
-				// use old image
-			}
-			jlIcon.setIcon(ii);
-			jpIcon.add(jlIcon, "1,0");
-			int iRows = 9 + 3 * (jsSize.getValue());
-			Font customFont = new Font("verdana", Font.BOLD, ConfigurationManager
-					.getInt(CONF_FONTS_SIZE));
-			Color mediumGray = new Color(172, 172, 172);
-
-			// take first track author as author
-			jlAuthor = new JTextArea(track.getAuthor().getName2(), 1, iRows);
-			jlAuthor.setLineWrap(true);
-			jlAuthor.setWrapStyleWord(true);
-			jlAuthor.setEditable(false);
-			jlAuthor.setFont(customFont);
-			jlAuthor.setForeground(mediumGray);
-			jlAuthor.setBorder(null);
-
-			jlAlbum = new JTextArea(album.getName2(), 1, iRows);
-			jlAlbum.setLineWrap(true);
-			jlAlbum.setWrapStyleWord(true);
-			jlAlbum.setEditable(false);
-			jlAuthor.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
-					.getInt(CONF_FONTS_SIZE)));
-			jlAlbum.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
-					.getInt(CONF_FONTS_SIZE)));
-			jlAlbum.setFont(customFont);
-			jlAlbum.setForeground(mediumGray);
-			jlAlbum.setBorder(null);
-
-			add(jpIcon, "1,0");
-			add(jlAuthor, "1,2");
-			add(jlAlbum, "1,4");
-			setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-			// Add dnd support
-			jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
-
-			jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
-
-				public void mouseDragged(MouseEvent e) {
-					try {
-						// Notify the mouse listener that we are dragging
-						bDragging = true;
-						JComponent c = (JComponent) e.getSource();
-						TransferHandler handler = c.getTransferHandler();
-						handler.exportAsDrag(c, e, TransferHandler.COPY);
-					} finally {
-						bDragging = false;
-					}
-				}
-
-			});
-
-			jlIcon.addMouseListener(new MouseAdapter() {
-
-				public void mousePressed(MouseEvent e) {
-					handlePopup(e);
-				}
-
-				public void mouseEntered(MouseEvent e) {
-					System.out.println("entered");
-					mouseOverItem = CatalogItem.this;
-				}
-
-				public void mouseExited(MouseEvent e) {
-					System.out.println("exited");
-					mouseOverItem = null;
-				}
-
-				public void mouseReleased(MouseEvent e) {
-					// Leave if already dragging
-					if (bDragging) {
-						return;
-					}
-					handlePopup(e);
-				}
-
-				public void handlePopup(final MouseEvent e) {
-					if (e.isPopupTrigger()) {
-						// remove red border on previous item if different from
-						// this one
-						if (CatalogView.this.item != null
-								&& CatalogView.this.item != CatalogItem.this) {
-							CatalogView.this.item.setBorder(BorderFactory.createEmptyBorder(2, 2,
-									2, 2));
-						}
-						// add a red border on this item
-						setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
-						if (e.getSource() == CatalogItem.this.jlIcon) {
-							CatalogView.this.item = CatalogItem.this;
-							// Show contextual menu
-							jmenu.show(jlIcon, e.getX(), e.getY());
-							// Hide any details frame
-							if (details != null) {
-								details.dispose();
-								details = null;
-							}
-						}
-					}
-				}
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// Leave if already dragging or if right click
-					if (bDragging || e.isPopupTrigger()) {
-						return;
-					}
-					// remove red border on previous item if different from this
-					// one
-					if (CatalogView.this.item != null && CatalogView.this.item != CatalogItem.this) {
-						CatalogView.this.item
-								.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-					}
-					// add a red border on this item
-					setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
-					// Left click
-					if (e.getButton() == MouseEvent.BUTTON1
-							&& e.getSource() == CatalogItem.this.jlIcon) {
-						// if second click (item already selected), play
-						if (CatalogView.this.item == CatalogItem.this) {
-							play(false, false, false);
-						}
-						CatalogView.this.item = CatalogItem.this;
-					}
-				}
-
-			});
-		}
-
-		public boolean isNoCover() {
-			return bNoCover;
-		}
-
-		private void play(boolean bRepeat, boolean bShuffle, boolean bPush) {
-			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
-			// compute selection
-			ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(
-					tracks.size());
-			for (Track track : tracks) {
-				org.jajuk.base.File file = track.getPlayeableFile(false);
-				if (file != null) {
-					alFilesToPlay.add(file);
-				}
-			}
-			if (bShuffle) {
-				Collections.shuffle(alFilesToPlay, new Random());
-			}
-			FIFO.getInstance().push(Util.createStackItems(alFilesToPlay, bRepeat, true), bPush);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent e) {
-			// Menu items
-			if (e.getSource() == jmiAlbumPlay) {
-				play(false, false, false);
-			} else if (e.getSource() == jmiAlbumPlayRepeat) {
-				play(true, false, false);
-			} else if (e.getSource() == jmiAlbumPlayShuffle) {
-				play(false, true, false);
-			} else if (e.getSource() == jmiAlbumPush) {
-				play(false, false, true);
-			} else if (e.getSource() == jmiGetCovers) {
-				new Thread() {
-					public void run() {
-						JDialog jd = new JDialog(Main.getWindow(), Messages
-								.getString("CatalogView.18"));
-						org.jajuk.base.File file = null;
-						Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
-						if (tracks.size() > 0) {
-							Track track = tracks.iterator().next();
-							file = track.getPlayeableFile(false);
-						}
-						CoverView cv = null;
-						if (file != null) {
-							cv = new CoverView(file);
-							cv.setID("catalog/0");
-							cv.initUI();
-							jd.add(cv);
-							jd.setAlwaysOnTop(true);
-							jd.setSize(400, 450);
-							jd.setLocationRelativeTo(null);
-							jd.setVisible(true);
-						} else {
-							Messages.showErrorMessage(166);
-						}
-					}
-				}.start();
-			} else if (e.getSource() == jmiAlbumProperties) {
-				ArrayList<Item> alAlbums = new ArrayList<Item>();
-				alAlbums.add(album);
-				// Show tracks infos to allow user to change year, rate...
-				ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
-						.getAssociatedTracks(album));
-				new PropertiesWizard(alAlbums, alTracks);
-			}
-		}
-
-		public File getCoverFile() {
-			return fCover;
-		}
-
-		public void setIcon(ImageIcon icon) {
-			jlIcon.setIcon(icon);
-			// !!! need to flush image because thy read image from a file
-			// with same name
-			// than previous image and a buffer would display the old image
-			icon.getImage().flush();
-		}
-
-		/**
-		 * @return the album
-		 */
-		public Album getAlbum() {
-			return album;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
-		 */
-		public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException,
-				IOException {
-			return null;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
-		 */
-		public DataFlavor[] getTransferDataFlavors() {
-			return null;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
-		 */
-		public boolean isDataFlavorSupported(DataFlavor flavor) {
-			return false;
-		}
-
 	}
 
 }

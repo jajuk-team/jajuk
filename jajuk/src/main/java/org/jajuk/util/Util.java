@@ -20,6 +20,7 @@
 package org.jajuk.util;
 
 import org.jajuk.Main;
+import org.jajuk.ui.IconLabel;
 import org.jajuk.Main.MPlayerStatus;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -39,6 +40,7 @@ import org.jajuk.dj.Ambience;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.PerspectiveBarJPanel;
@@ -52,6 +54,8 @@ import org.jvnet.substance.theme.ThemeInfo;
 import org.jvnet.substance.watermark.SubstanceImageWatermark;
 import org.jvnet.substance.watermark.SubstanceStripeWatermark;
 import org.jvnet.substance.watermark.WatermarkInfo;
+
+import sun.tools.jar.JarImageSource;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -68,6 +72,8 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -100,7 +106,11 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.jar.JarFile;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageWriter;
+import javax.imageio.spi.ImageWriterSpi;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -114,10 +124,11 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.keypoint.PngEncoder;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.imageio.plugins.png.PNGImageWriter;
+import com.sun.imageio.plugins.png.PNGImageWriterSpi;
 
 /**
  * General use utilities methods
@@ -1364,7 +1375,7 @@ public class Util implements ITechnicalStrings {
 		out.close();
 		image.flush(); // free memory
 	}
-
+	
 	/**
 	 * @return whether we need a full gc or not
 	 */
@@ -2038,5 +2049,51 @@ public class Util implements ITechnicalStrings {
 			tempReturn.append((char) abyte);
 		}
 		return tempReturn.toString();
+	}
+	
+	/**
+	 * @return Number of stars
+	 */
+	public static int getStarsNumber(long lRate) {
+		long lInterval = TrackManager.getInstance().getMaxRate() / 4;
+		if (lRate <= lInterval) {
+			return 1;
+		} else if (lRate <= 2 * lInterval) {
+			return 2;
+		} else if (lRate <= 3 * lInterval) {
+			return 3;
+		} else {
+			return 4;
+		}
+	}
+
+	/**
+	 * @return the stars icon
+	 */
+	public static IconLabel getStars(long rate) {
+		int starsNumber = getStarsNumber(rate);
+		IconLabel ilRate = null;
+		switch (starsNumber) {
+		case 1:
+			ilRate = new IconLabel(IconLoader.ICON_STAR_1,
+					"", null, null, null, Long.toString(rate)); 
+			break;
+		case 2:
+			ilRate = new IconLabel(IconLoader.ICON_STAR_2,
+					"", null, null, null, Long.toString(rate)); 
+			break;
+		case 3:
+			ilRate = new IconLabel(IconLoader.ICON_STAR_3,
+					"", null, null, null, Long.toString(rate)); 
+			break;
+		case 4:
+			ilRate = new IconLabel(IconLoader.ICON_STAR_4,
+					"", null, null, null, Long.toString(rate)); 
+			break;
+		default:
+			return null;
+		}
+		ilRate.setInteger(true);
+		return ilRate;
 	}
 }

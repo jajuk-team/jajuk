@@ -133,7 +133,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * Fill model with data using an optionnal filter property and pattern
 	 */
 	@SuppressWarnings("unchecked")
-	public void populateModel(String sPropertyName, String sPattern) {
+	public synchronized void populateModel(String sPropertyName, String sPattern) {
 		ArrayList<File> alToShow = null;
 		// Filter mounted files if needed and apply sync table with tree
 		// option if needed
@@ -243,7 +243,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			oValues[iRow][4] = file.getTrack().getStyle().getName2();
 			bCellEditable[iRow][4] = bHasATagEditor;
 			// Rate
-			IconLabel ilRate = file.getTrack().getStars();
+			IconLabel ilRate = Util.getStars(file.getTrack().getRate());
 			oValues[iRow][5] = ilRate;
 			bCellEditable[iRow][5] = false;
 			// Length

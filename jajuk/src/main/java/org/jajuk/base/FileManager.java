@@ -547,27 +547,25 @@ public class FileManager extends ItemManager implements Observer {
 	 * @return top files
 	 */
 	public ArrayList getBestOfFiles() {
-		return getBestOfFiles(true);
+		return getBestOfFiles(true,Integer.parseInt(ConfigurationManager
+					.getProperty(CONF_BESTOF_TRACKS_SIZE)));
 	}
 
 	/**
-	 * Return CONF_BESTOF_SIZE top files
+	 * Return bestof files
 	 * 
-	 * @param bHideUnmounted
+	 * @param bHideUnmounted if true, unmounted files are not choosen
+	 * @param iNbBestofFiles nb of items to return
 	 * @return top files
 	 */
-	public ArrayList getBestOfFiles(boolean bHideUnmounted) {
+	public ArrayList<File> getBestOfFiles(boolean bHideUnmounted,int iNbBestofFiles) {
 		// test a rate has changed for perfs
 		if (FileManager.getInstance().hasRateChanged() || alBestofFiles == null) {
 			// clear data
 			alBestofFiles.clear();
-			int iNbBestofFiles = Integer.parseInt(ConfigurationManager
-					.getProperty(CONF_BESTOF_SIZE));
 			// create a temporary table to remove unmounted files
 			ArrayList<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
-			Iterator it = TrackManager.getInstance().getTracks().iterator();
-			while (it.hasNext()) {
-				Track track = (Track) it.next();
+			for (Track track:TrackManager.getInstance().getTracks()){
 				File file = track.getPlayeableFile(bHideUnmounted);
 				if (file != null) {
 					alEligibleFiles.add(file);

@@ -156,4 +156,6 @@ public enum EventSubject {
     EVENT_PERPECTIVE_CHANGED,
     //Current track is finished
     EVENT_FILE_FINISHED,
+    //Lyrics data has been downloaded
+    EVENT_LYRICS_DOWNLOADED,
 }

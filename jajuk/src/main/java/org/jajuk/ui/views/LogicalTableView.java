@@ -146,27 +146,63 @@ public class LogicalTableView extends AbstractTableView {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		handlePopup(e);
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
+			// Left click
+		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+			int iSelectedCol = jtable.getSelectedColumn();
+			// selected column in view Test click on play icon launch track only
+			// if only first column is selected (fixes issue with
+			// Ctrl-A)
+			if (jtable.getSelectedColumnCount() == 1
+			// click on play icon
+					&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
+					// double click on any column and edition state false
+					|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) {
+				// selected row in view
+				int iSelectedRow = jtable.getSelectedRow();
+				Track track = (Track) model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
+				File file = track.getPlayeableFile(false);
+				if (file != null) {
+					try {
+						// launch it
+						FIFO.getInstance().push(
+								new StackItem(file, ConfigurationManager
+										.getBoolean(CONF_STATE_REPEAT)),
+								ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+
+					} catch (JajukException je) {
+						Log.error(je);
+					}
+				} else {
+					Messages.showErrorMessage(10, track.getName());
+				}
+			} else if (e.getClickCount() == 1) {
+				int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+				// Store real row index
+				TableTransferHandler.iSelectedRow = iSelectedRow;
+			}
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		handlePopup(e);
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
+		}
 	}
 
 	public void handlePopup(final MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-			// Store real row index
-			TableTransferHandler.iSelectedRow = iSelectedRow;
-			// right click on a selected node set if none or 1 node is
-			// selected, a right click on another node
-			// select it if more than 1, we keep selection and display a
-			// popup for them
-			if (jtable.getSelectedRowCount() < 2) {
-				jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-			}
-			jmenuTrack.show(jtable, e.getX(), e.getY());
+		int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+		// Store real row index
+		TableTransferHandler.iSelectedRow = iSelectedRow;
+		// right click on a selected node set if none or 1 node is
+		// selected, a right click on another node
+		// select it if more than 1, we keep selection and display a
+		// popup for them
+		if (jtable.getSelectedRowCount() < 2) {
+			jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
 		}
+		jmenuTrack.show(jtable, e.getX(), e.getY());
 	}
 
 	/*
@@ -175,44 +211,6 @@ public class LogicalTableView extends AbstractTableView {
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent e) {
-		// Make sure not to handle events for popup handling
-		if (e.isPopupTrigger()) {
-			return;
-		}
-		int iSelectedCol = jtable.getSelectedColumn();
-		// selected column in view Test click on play icon launch track only if
-		// only first column is selected (fixes issue with
-		// Ctrl-A)
-		if (jtable.getSelectedColumnCount() == 1
-		// click on play icon
-				&& (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
-				// double click on any column and edition state false
-				|| (e.getClickCount() == 2 && !jtbEditable.isSelected())) {
-			// selected row in view
-			int iSelectedRow = jtable.getSelectedRow();
-			Track track = (Track) model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
-			File file = track.getPlayeableFile(false);
-			if (file != null) {
-				try {
-					// launch it
-					FIFO.getInstance()
-							.push(
-									new StackItem(file, ConfigurationManager
-											.getBoolean(CONF_STATE_REPEAT)),
-									ConfigurationManager
-											.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
-
-				} catch (JajukException je) {
-					Log.error(je);
-				}
-			} else {
-				Messages.showErrorMessage(10, track.getName());
-			}
-		} else if (e.getClickCount() == 1) {
-			int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-			// Store real row index
-			TableTransferHandler.iSelectedRow = iSelectedRow;
-		}
 	}
 
 	/*

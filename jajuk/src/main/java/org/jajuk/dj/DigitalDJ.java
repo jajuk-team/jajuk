@@ -23,6 +23,7 @@ package org.jajuk.dj;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -115,7 +116,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable {
 			Iterator it = files.iterator();
 			while (it.hasNext()) {
 				File file = (File) it.next();
-				if (file.getTrack().getStarsNumber() < iRatingLevel
+				if (Util.getStarsNumber(file.getTrack().getRate()) < iRatingLevel
 						|| selectedTracks.contains(file.getTrack())) {
 					it.remove();
 				} else {

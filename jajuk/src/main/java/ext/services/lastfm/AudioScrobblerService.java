@@ -151,7 +151,6 @@ public class AudioScrobblerService {
 	
 	private String getTopTag(Document xml) {
 		Element el = (Element) xml.getElementsByTagName("toptags").item(0);
-		
 		NodeList tags = el.getElementsByTagName("tag");
 		if (tags.getLength() > 0) {
 			Element e = (Element) tags.item(0);
