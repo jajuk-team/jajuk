@@ -5,7 +5,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
-	<property name='version' value='1.4dev_20070804' />
+	<property name='version' value='1.4dev_20070816' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
