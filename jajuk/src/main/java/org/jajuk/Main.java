@@ -627,12 +627,13 @@ public class Main implements ITechnicalStrings {
 					// Extract star icons (used in HTML panels)
 					Util.getConfFileByPath("/cache/internal").mkdir();
 					for (int i = 1; i <= 4; i++) {
-						if (bTestMode) {
+						if (bIdeMode) {
 							Util.copy(new File("src/main/resources/icons/16x16/star" + i
 									+ "_16x16.png"), Util.getConfFileByPath("cache/internal/star"
 									+ i + "_16x16.png"));
 						} else {
-							Util.extractFile("icons/16x16/star" + i + "_16x16.png");
+							Util.extractFile("icons/16x16/star" + i + "_16x16.png", "star" + i
+									+ "_16x16.png");
 						}
 					}
 					// Refresh max album rating

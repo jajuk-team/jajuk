@@ -2094,63 +2094,59 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * Extract files from current jar to cache/internal directory
-	 * <p>Thanks several websites, especially http://www.developer.com/java/other/article.php/607931
-	 * @param entryName name of the file to extract. Example: img.png
+	 * Extract files from current jar to "cache/internal" directory
+	 * <p>
+	 * Thanks several websites, especially
+	 * http://www.developer.com/java/other/article.php/607931
+	 * 
+	 * @param entryName
+	 *            name of the file to extract. Example: img.png
+	 * @param file destination PATH
 	 * @throws Exception
 	 */
-	public static void extractFile(String entryName) throws Exception {
-		String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().toString()
-				.substring(6);
+	public static void extractFile(String entryName,String destName) throws Exception {
+		String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 		// Open the jar.
-
 		JarFile jar = new JarFile(jarName);
-		System.out.println(jarName + " opened.");
-
 		try {
 			// Get the entry and its input stream.
-
 			JarEntry entry = jar.getJarEntry(entryName);
-
 			// If the entry is not null, extract it. Otherwise, print a
 			// message.
-
 			if (entry != null) {
 				// Get an input stream for the entry.
-
 				InputStream entryStream = jar.getInputStream(entry);
-
 				try {
 					// Create the output file (clobbering the file if it
 					// exists).
-
-					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_IMAGE_CACHE)+"/internal/"+entry.getName());
-
+					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_IMAGE_CACHE
+							+ "/internal/" + destName));
 					try {
 						// Allocate a buffer for reading the entry data.
-
 						byte[] buffer = new byte[1024];
 						int bytesRead;
-
 						// Read the entry data and write it to the output file.
-
 						while ((bytesRead = entryStream.read(buffer)) != -1) {
 							file.write(buffer, 0, bytesRead);
 						}
-
-						System.out.println(entry.getName() + " extracted.");
+					} catch (Exception e) {
+						Log.error(e);
 					} finally {
+						file.flush();
 						file.close();
 					}
+				} catch (Exception e) {
+					Log.error(e);
 				} finally {
 					entryStream.close();
 				}
 			} else {
-				System.out.println(entryName + " not found.");
+				Log.debug(entryName + " not found.");
 			} // end if
+		} catch (Exception e) {
+			Log.error(e);
 		} finally {
 			jar.close();
-			System.out.println(jarName + " closed.");
 		}
 	}
 
