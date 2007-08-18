@@ -5,7 +5,7 @@
         <vendor>Sun</vendor>
     </information>
     <resources>
-        <jar href="swingx-2007_05_01.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="swingx-2007_07_22.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>
