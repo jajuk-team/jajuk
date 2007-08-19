@@ -29,6 +29,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 import java.util.HashSet;
@@ -83,7 +84,7 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 	}
 
 	public void configure() {
-		Submitter.setPassword(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD));
+		Submitter.setPassword(Util.rot13(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD)));
 		Submitter.setUser(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER));
 		Submitter.setProxy(DownloadManager.getProxy());
 	}
