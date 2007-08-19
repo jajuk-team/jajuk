@@ -86,14 +86,14 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 				}
 				int returnVal = jfc.showOpenDialog(Main.getWindow());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					String previousURL = jtfUrl.getText();
 					java.io.File file = jfc.getSelectedFile();
 					String newPath = file.getAbsolutePath();
+					jtfUrl.setText(newPath);
 					//Call specific operation if URL changed
-					if (!jtfUrl.getText().equals(newPath)){
+					if (!previousURL.equals(newPath)){
 						performOnURLChange();
 					}
-					jtfUrl.setText(newPath);
-					
 				}
 			}
 

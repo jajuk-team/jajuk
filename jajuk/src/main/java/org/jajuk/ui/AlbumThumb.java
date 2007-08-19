@@ -208,9 +208,9 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 		}
 		double[][] dMain = null;
 		jlIcon = new JLabel();
-		jlIcon.setBorder(new ShadowBorder());
 		ImageIcon ii = album.getThumbnail(size + "x" + size);
 		if (!bNoCover) {
+			jlIcon.setBorder(new ShadowBorder());
 			ii.getImage().flush(); // flush image buffer to avoid JRE to
 			// use old image
 		}
