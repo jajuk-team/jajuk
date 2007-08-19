@@ -54,7 +54,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -107,7 +106,6 @@ public class LyricsView extends ViewAdapter implements Observer {
 		textarea.setLineWrap(true);
 		textarea.setWrapStyleWord(true);
 		textarea.setEditable(false);
-		textarea.setVisible(false);
 		textarea.setMargin(new Insets(10, 10, 10, 10));
 		textarea
 				.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE)));
