@@ -201,7 +201,7 @@ public interface ITechnicalStrings {
 	public static final URL FILE_LOG4j_CONF = Util
 			.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
-	public static final String FILE_IMAGE_CACHE = "cache";
+	public static final String FILE_CACHE = "cache";
 
 	public static final String FILE_THUMBS = "thumbs";
 

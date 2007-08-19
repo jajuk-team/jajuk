@@ -577,7 +577,7 @@ public class Main implements ITechnicalStrings {
 			History.commit();
 		}
 		// check for image cache presence
-		File fCache = Util.getConfFileByPath(FILE_IMAGE_CACHE);
+		File fCache = Util.getConfFileByPath(FILE_CACHE);
 		if (!fCache.exists()) {
 			fCache.mkdir();
 		}

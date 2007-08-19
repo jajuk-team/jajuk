@@ -460,13 +460,6 @@ public class FIFO implements ITechnicalStrings {
 			}
 			if (bPlayOK) { // refresh covers if play is started
 				Log.debug("Now playing :" + fCurrent);
-				/* test
-				AudioScrobblerService service = new AudioScrobblerService(DownloadManager
-						.getProxy());
-				System.out.println(service.getAlbum(fCurrent.getTrack().getAuthor().getName2(),
-						fCurrent.getTrack().getAlbum().getName2()));
-				System.out.println(service.getSimilarArtists(fCurrent.getTrack().getAuthor()));*/
-
 				// Send an event that a track has been launched
 				Properties pDetails = new Properties();
 				pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());

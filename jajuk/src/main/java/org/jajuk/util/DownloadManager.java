@@ -125,9 +125,9 @@ public class DownloadManager implements ITechnicalStrings {
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
 		}
+		bos.flush();
 		bos.close();
 		bis.close();
-		connection.disconnect();
 	}
 
 	/**
@@ -136,7 +136,6 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @param url
 	 *            to download
 	 * @throws Exception
-	 * @return result as an array of bytes, null if a problem occured
 	 */
 	public static void downloadCover(URL url) throws Exception {
 		// check if file is not already downloaded or being downloaded
@@ -151,9 +150,9 @@ public class DownloadManager implements ITechnicalStrings {
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
 		}
+		bos.flush();
 		bos.close();
 		bis.close();
-		connection.disconnect();
 	}
 
 	

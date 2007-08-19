@@ -641,6 +641,11 @@ public class Util implements ITechnicalStrings {
 		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
 		fcSrc.close();
 		fcDest.close();
+		// Throw an exception if copied file is void as it can happen with full
+		// disks
+		if (fNew.length() == 0) {
+			throw new JajukException(24, file.getAbsolutePath(), null);
+		}
 	}
 
 	/**
@@ -771,14 +776,14 @@ public class Util implements ITechnicalStrings {
 	 * @return Cache directory
 	 */
 	public static File getCachePath(URL url) {
-		return Util.getConfFileByPath(FILE_IMAGE_CACHE + '/' + Util.getOnlyFile(url.toString()));
+		return Util.getConfFileByPath(FILE_CACHE + '/' + Util.getOnlyFile(url.toString()));
 	}
 
 	/**
 	 * Clear locale images cache
 	 */
 	public static void clearCache() {
-		File fCache = Util.getConfFileByPath(FILE_IMAGE_CACHE);
+		File fCache = Util.getConfFileByPath(FILE_CACHE);
 		File[] files = fCache.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			files[i].delete();
@@ -2101,10 +2106,11 @@ public class Util implements ITechnicalStrings {
 	 * 
 	 * @param entryName
 	 *            name of the file to extract. Example: img.png
-	 * @param file destination PATH
+	 * @param file
+	 *            destination PATH
 	 * @throws Exception
 	 */
-	public static void extractFile(String entryName,String destName) throws Exception {
+	public static void extractFile(String entryName, String destName) throws Exception {
 		String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 		// Open the jar.
 		JarFile jar = new JarFile(jarName);
@@ -2119,7 +2125,7 @@ public class Util implements ITechnicalStrings {
 				try {
 					// Create the output file (clobbering the file if it
 					// exists).
-					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_IMAGE_CACHE
+					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_CACHE
 							+ "/internal/" + destName));
 					try {
 						// Allocate a buffer for reading the entry data.

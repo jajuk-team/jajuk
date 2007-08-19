@@ -177,7 +177,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 			return iiDefaultCover;
 		}
 		long l = System.currentTimeMillis();
-		if (!file.exists()) {
+		if (!file.exists() || file.length() == 0) {
 			DownloadManager.downloadCover(url);
 		}
 		ImageIcon image = null;
