@@ -250,7 +250,7 @@ public class AlbumManager extends ItemManager implements Observer {
 	 */
 	public List<Album> getBestOfAlbums(boolean bHideUnmounted, int iNbBestofAlbums) {
 		// create a temporary table to remove unmounted albums
-		// We considere an album as mounted if a least one track is mounted
+		// We consider an album as mounted if a least one track is mounted
 		// This hashmap contains album-> album rates
 		final HashMap<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager
 				.getInstance().getElementCount());
@@ -296,7 +296,7 @@ public class AlbumManager extends ItemManager implements Observer {
 	 */
 	public List<Album> getNewestAlbums(boolean bHideUnmounted, int iNb) {
 		// create a temporary table to remove unmounted albums
-		// We considere an album as mounted if a least one track is mounted
+		// We consider an album as mounted if a least one track is mounted
 		// This hashmap contains album-> discovery date
 		final HashMap<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
 				.getElementCount());
@@ -327,7 +327,7 @@ public class AlbumManager extends ItemManager implements Observer {
 	 */
 	public List<Album> getRarelyListenAlbums(boolean bHideUnmounted, int iNb) {
 		// create a temporary table to remove unmounted albums
-		// We considere an album as mounted if a least one track is mounted
+		// We consider an album as mounted if a least one track is mounted
 		// This hashmap contains album-> album hits (each track hit average)
 		final HashMap<Album, Float> cache = new HashMap<Album, Float>(AlbumManager.getInstance()
 				.getElementCount());
@@ -408,7 +408,7 @@ public class AlbumManager extends ItemManager implements Observer {
 	 */
 	public void refreshMaxRating() {
 		// create a temporary table to remove unmounted albums
-		// We considere an album as mounted if a least one track is mounted
+		// We consider an album as mounted if a least one track is mounted
 		// This hashmap contains album-> album rates
 		final HashMap<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager
 				.getInstance().getElementCount());
@@ -452,6 +452,22 @@ public class AlbumManager extends ItemManager implements Observer {
 				refreshMaxRating();
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @return associated album (case insensitive) or null if no match
+	 */
+	public Album getAlbumByName(String name){
+		Album out = null;
+		for (Album album:getAlbums()){
+			if (album.getName().trim().toLowerCase().matches(name.trim().toLowerCase())){
+				out = album;
+				break;
+			}
+		}
+		return out;
 	}
 	
 	

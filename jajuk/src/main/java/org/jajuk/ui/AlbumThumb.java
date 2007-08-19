@@ -70,6 +70,8 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
 
+import com.vlsolutions.swing.docking.ShadowBorder;
+
 /**
  * Album thumb represented as album cover + (optionally) others text information
  * and some features like dnd, menu item to play, search cover, album popup
@@ -205,8 +207,8 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 			this.fCover = null;
 		}
 		double[][] dMain = null;
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		jlIcon = new JLabel();
+		jlIcon.setBorder(new ShadowBorder());
 		ImageIcon ii = album.getThumbnail(size + "x" + size);
 		if (!bNoCover) {
 			ii.getImage().flush(); // flush image buffer to avoid JRE to
@@ -333,7 +335,7 @@ public class AlbumThumb extends JPanel implements ITechnicalStrings, ActionListe
 			}
 
 			public void mouseExited(MouseEvent e) {
-				// Considere an exit only if mouse really moved to avoid
+				// Consider an exit only if mouse really moved to avoid
 				// closing popup when popup appears over the mouse cursor
 				// (then, a mouseExit event is thrown)
 				if (!e.getLocationOnScreen().equals(lastPosition)) {

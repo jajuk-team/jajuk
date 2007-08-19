@@ -75,7 +75,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 	 */
 	public void setURL(URL url) throws Exception {
 		setCursor(Util.WAIT_CURSOR);
-		File page = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
+		File page = new File(Util.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
 				+ Util.getOnlyFile(url.toString() + ".html"));
 		String sPage = DownloadManager.downloadHtml(url);
 		// Remove scripting
@@ -106,7 +106,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	public void setUnknow() throws Exception {
-		File page = new File(Util.getConfFileByPath(FILE_IMAGE_CACHE).getAbsolutePath() + '/'
+		File page = new File(Util.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
 				+ "noresult.html");
 		String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
 				+ "</h1></body></html>";
