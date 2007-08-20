@@ -18,9 +18,8 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.thumbnails;
 
-import org.jajuk.base.Album;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.Item;
@@ -51,13 +50,11 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
-import ext.services.lastfm.AudioScrobblerAlbum;
-
 /**
  * HTML popup displayed over a thumbnail, it details album informations and tracks
  * <p>It is displayed nicely from provided jlabel position</p>
  */
-public class AlbumPopup extends JDialog implements ITechnicalStrings {
+public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 
 	private static final long serialVersionUID = -8131528719972829954L;
 	
@@ -65,13 +62,13 @@ public class AlbumPopup extends JDialog implements ITechnicalStrings {
 
 	/**
 	 * 
-	 * @param album album to detail
+	 * @param description HTML text to display (HTML 3.0)
 	 * @param jlIcon album thumb jlabel
 	 */
-	public AlbumPopup(Album album,JLabel jlIcon) {
+	public ThumbnailPopup(String description,JLabel jlIcon) {
 		super();
 		initUI();
-		final JEditorPane text = new JEditorPane("text/html", album.getAdvancedDescription());
+		final JEditorPane text = new JEditorPane("text/html", description);
 		text.setEditable(false);
 		text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
 		text.addHyperlinkListener(new HyperlinkListener() {
@@ -150,98 +147,12 @@ public class AlbumPopup extends JDialog implements ITechnicalStrings {
 		});
 	}
 	
-	/**
-	 * 
-	 * @param album audio scrobber album to detail
-	 * @param jlIcon album thumb jlabel
-	 */
-	public AlbumPopup(AudioScrobblerAlbum album,JLabel jlIcon) {
-		/*super();
-		initUI();
-		final JEditorPane text = new JEditorPane("text/html", album.getAdvancedDescription());
-		text.setEditable(false);
-		text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
-		text.addHyperlinkListener(new HyperlinkListener() {
-			public void hyperlinkUpdate(HyperlinkEvent e) {
-				if (e.getEventType() == EventType.ACTIVATED) {
-					URL url = e.getURL();
-					if (XML_AUTHOR.equals(url.getHost())) {
-						ArrayList<Item> items = new ArrayList<Item>(1);
-						items.add(AuthorManager.getInstance().getItemByID(url.getQuery()));
-						new PropertiesWizard(items);
-					} else if (XML_STYLE.equals(url.getHost())) {
-						ArrayList<Item> items = new ArrayList<Item>(1);
-						items.add(StyleManager.getInstance().getItemByID(url.getQuery()));
-						new PropertiesWizard(items);
-					} else if (XML_YEAR.equals(url.getHost())) {
-						ArrayList<Item> items = new ArrayList<Item>(1);
-						items.add(YearManager.getInstance().getItemByID(url.getQuery()));
-						new PropertiesWizard(items);
-					} else if (XML_TRACK.equals(url.getHost())) {
-						ArrayList<Item> items = new ArrayList<Item>(1);
-						Track track = (Track) TrackManager.getInstance()
-								.getItemByID(url.getQuery());
-						items.add(track);
-						ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(
-								1);
-						toPlay.add(track.getPlayeableFile(true));
-						FIFO.getInstance().push(
-								Util.createStackItems(Util.applyPlayOption(toPlay),
-										ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
-								false);
-					}
-				}
-				// change cursor on entering or leaving
-				// hyperlinks
-				// This doesn't work under JRE 1.5 (at least
-				// under Linux), Sun issue ?
-				else if (e.getEventType() == EventType.ENTERED) {
-					text.setCursor(Util.LINK_CURSOR);
-				} else if (e.getEventType() == EventType.EXITED) {
-					text.setCursor(Util.DEFAULT_CURSOR);
-				}
-			}
-		});
-		final JScrollPane jspText = new JScrollPane(text);
-		jspText.getVerticalScrollBar().setValue(0);
-		jp.add(jspText, "0,0");
-		setContentPane(jp);
-		// compute dialog position ( note that setRelativeTo
-		// is buggy and that we need more advanced positioning)
-		int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
-		// set position at 60 % of the picture
-		int y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.6 * jlIcon.getHeight());
-		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-		// Adjust position if details are located outside
-		// the screen
-		// in x-axis
-		if ((x + 500) > screenWidth) {
-			x = screenWidth - 510;
-		}
-		if ((y + 400) > screenHeight) {
-			x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
-			if ((x + 500) > screenWidth) {
-				x = screenWidth - 510;
-			}
-			y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.4 * jlIcon.getHeight()) - 400;
-		}
-		setLocation(x, y);
-		setSize(500, 400);
-		setVisible(true);
-		// Force scrollbar to stay on top
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				jspText.getVerticalScrollBar().setValue(0);
-			}
-		});*/
-	}
-	
+		
 	private void initUI(){
 		setUndecorated(true);
 		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		jp = new JXPanel();
-		jp.setAlpha(0.8f);
+		jp.setAlpha(0.7f);
 		double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
 		jp.setLayout(new TableLayout(size));
 	}

@@ -40,7 +40,7 @@ public class UpgradeManager implements ITechnicalStrings {
 		// --For jajuk < 0.2 : remove backup file : collection~.xml
 		File file = Util.getConfFileByPath(FILE_COLLECTION + "~");
 		file.delete();
-		// upgrade code; if ugrade from <1.2, set default ambiences
+		// upgrade code; if upgrade from <1.2, set default ambiences
 		String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
 		if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
 				|| sRelease.matches("1.1.*")) {
@@ -119,7 +119,9 @@ public class UpgradeManager implements ITechnicalStrings {
 			int endIndex = pad.indexOf("</Program_Version>");
 			sRelease = pad.substring(beginIndex + 17, endIndex);
 			if (bForced) {
-				if (!JAJUK_VERSION.equals(sRelease)){
+				if (!JAJUK_VERSION.equals(sRelease)
+						//Don't use this in test 
+						&& !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))){
 					Messages.showInfoMessage(Messages.getString("UpdateManager.0")
 							+ sRelease + Messages.getString("UpdateManager.1"));
 				}

@@ -36,7 +36,6 @@
         	<extension name='Log4j' href='log4j.jnlp'/>
         	<extension name='Swingx' href='swingx.jnlp'/>
         	<extension name='TableLayout' href='table_layout.jnlp'/>
-        	<extension name='Tritonus' href='tritonous.jnlp'/>
         	<extension name='EntaggedFreedb' href='entagged_freedb.jnlp'/>
         	<extension name='CommonsCollections' href='commons_collections.jnlp'/>
         	<extension name='QDWizard' href='qdwizard.jnlp'/>

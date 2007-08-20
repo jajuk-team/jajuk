@@ -31,11 +31,11 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.AlbumThumb;
 import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Filter;
@@ -137,7 +137,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	ArrayList<PropertyMetaInformation> alSorters;
 
 	/** Items* */
-	HashSet<AlbumThumb> hsItems;
+	HashSet<LocalAlbumThumbnail> hsItems;
 
 	/** Do search panel need a search */
 	private boolean bNeedSearch = false;
@@ -152,7 +152,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 	private long lDateTyped;
 
 	/** Last selected item */
-	public AlbumThumb item;
+	public LocalAlbumThumbnail item;
 
 	/** Page index */
 	private int page = 0;
@@ -179,7 +179,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		}
 	});
 
-	public AlbumThumb getSelectedItem() {
+	public LocalAlbumThumbnail getSelectedItem() {
 		return item;
 	}
 
@@ -209,7 +209,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
 		alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ADDED));
 
-		hsItems = new HashSet<AlbumThumb>();
+		hsItems = new HashSet<LocalAlbumThumbnail>();
 
 		sizes.add(THUMBNAIL_SIZE_50x50);
 		sizes.add(THUMBNAIL_SIZE_100x100);
@@ -551,7 +551,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 				// Now process each album
 				HashSet<Directory> directories = new HashSet<Directory>(albums.size());
-				ArrayList<AlbumThumb> alItemsToDisplay = new ArrayList<AlbumThumb>(albums.size());
+				ArrayList<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums.size());
 				for (Object item : albums) {
 					Album album = (Album) item;
 					// if hide unmounted tracks is set, continue
@@ -589,7 +589,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							}
 							directories.add(dir);
 						}
-						AlbumThumb cover = new AlbumThumb(album, getSelectedSize(), true);
+						LocalAlbumThumbnail cover = new LocalAlbumThumbnail(album, getSelectedSize(), true);
 						alItemsToDisplay.add(cover);
 						// stores information on non-null covers
 						hsItems.add(cover);
@@ -624,12 +624,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						max = (page + 1) * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE);
 					}
 					for (int i = page * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-						AlbumThumb item = alItemsToDisplay.get(i);
+						LocalAlbumThumbnail item = alItemsToDisplay.get(i);
 						// populate item (construct UI) only when needed
 						item.populate();
 						item.jlIcon.addMouseListener(new MouseAdapter() {
 							public void mousePressed(MouseEvent e) {
-								AlbumThumb thumb = (AlbumThumb) ((JLabel) e.getSource())
+								LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())
 										.getParent();
 								// remove red border on previous item if
 								// different from this one
@@ -681,14 +681,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		if (EventSubject.EVENT_DEVICE_REFRESH.equals(event.getSubject())
 				|| EventSubject.EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())) {
 			// save selected item
-			AlbumThumb oldItem = CatalogView.this.item;
+			LocalAlbumThumbnail oldItem = CatalogView.this.item;
 			// reset paging
 			page = 0;
 			populateCatalog();
 			// try to restore previous item
 			if (oldItem != null) {
-				for (AlbumThumb item : hsItems) {
-					if (item.getAlbum().equals(oldItem.getAlbum())) {
+				for (LocalAlbumThumbnail item : hsItems) {
+					if (((Album)item.getItem()).equals(oldItem.getItem())) {
 						CatalogView.this.item = item;
 						CatalogView.this.item.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2,
 								Color.RED));

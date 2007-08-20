@@ -296,11 +296,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
-		// @TBI
-		// jmenuFile.add(jmiFileCopy);
-		// jmenuFile.add(jmiFileCut);
-		// jmenuFile.add(jmiFilePaste);
-		// jmenuFile.add(jmiFileDelete);
 		jmenuFile.add(jmiFileAddFavorites);
 		jmenuFile.add(jmiFileProperties);
 
@@ -363,12 +358,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmenuDir.add(jmiDirPlayRepeat);
 		jmenuDir.add(jmiDirDesynchro);
 		jmenuDir.add(jmiDirResynchro);
-		// @TBI
-		// jmenuDir.add(jmiDirCreatePlaylist);
-		// jmenuDir.add(jmiDirCopy);
-		// jmenuDir.add(jmiDirCut);
-		// jmenuDir.add(jmiDirPaste);
-		// jmenuDir.add(jmiDirDelete);
 		jmenuDir.add(jmiDirAddFavorites);
 		jmenuDir.add(jmiDirCDDBQuery);
 		jmenuDir.add(jmiDirReport);

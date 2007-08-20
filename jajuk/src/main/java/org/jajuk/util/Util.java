@@ -157,9 +157,6 @@ public class Util implements ITechnicalStrings {
 	/** Icons cache */
 	private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
 
-	/** URL to be shown in external browser, used by LaunchInBrowserAction action */
-	public static URL url;
-
 	/** Mplayer exe path */
 	private static String sMplayerPath = null;
 
@@ -988,6 +985,14 @@ public class Util implements ITechnicalStrings {
 	 * @return resized image
 	 */
 	public static ImageIcon getResizedImage(ImageIcon img, int iNewWidth, int iNewHeight) {
+		//Wait for full image loading
+		MediaTracker mediaTracker = new MediaTracker(new Container());
+		mediaTracker.addImage(img.getImage(), 0);
+		try {
+			mediaTracker.waitForID(0);
+		} catch (InterruptedException e) {
+			Log.error(e);
+		}
 		ImageIcon iiNew = new ImageIcon();
 		Image image = img.getImage();
 		Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight, Image.SCALE_AREA_AVERAGING);
@@ -1336,6 +1341,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void createThumbnail(ImageIcon ii, File thumb, int maxDim) throws Exception {
 		Image image = ii.getImage();
+		//Wait for full image loading
 		MediaTracker mediaTracker = new MediaTracker(new Container());
 		mediaTracker.addImage(image, 0);
 		mediaTracker.waitForID(0);

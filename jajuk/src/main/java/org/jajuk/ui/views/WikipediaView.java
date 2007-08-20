@@ -283,7 +283,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 							+ ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
 					Log.debug("Wikipedia search: " + url);
 					Util.copyData = url.toString();
-					Util.url = url;
+					jbLaunchInExternalBrowser.putClientProperty(DETAIL_CONTENT, url.toExternalForm());
 					browser.setURL(url);
 				} catch (Exception e) {
 					Log.error(e);

@@ -20,6 +20,7 @@
 
 package org.jajuk.ui;
 
+import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.util.ITechnicalStrings;
 
 import java.awt.datatransfer.DataFlavor;
@@ -36,10 +37,10 @@ public class CatalogViewTransferHandler extends TransferHandler implements ITech
 
 	private static final long serialVersionUID = 1L;
 
-	private AlbumThumb item;
+	private LocalAlbumThumbnail item;
 
 	/** Constructor */
-	public CatalogViewTransferHandler(AlbumThumb item) {
+	public CatalogViewTransferHandler(LocalAlbumThumbnail item) {
 		this.item = item;
 	}
 
@@ -47,7 +48,7 @@ public class CatalogViewTransferHandler extends TransferHandler implements ITech
 	 * Called when dragging
 	 */
 	protected Transferable createTransferable(JComponent c) {
-		Object o = item.getAlbum();
+		Object o = item.getItem();
 		if (o != null){
 			return new TransferableAlbum(o);
 		}

@@ -27,30 +27,34 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.AlbumThumb;
-import org.jajuk.ui.AudioScrobberAlbumThumb;
+import org.jajuk.ui.thumbnails.AbstractThumbnail;
+import org.jajuk.ui.thumbnails.AudioScrobberAlbumThumbnail;
+import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
-import org.jdesktop.swingx.border.MatteBorderExt;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
@@ -88,6 +92,25 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
 	private int comp = 0;
 
+	/** Currently selected thumb */
+	AbstractThumbnail selectedThumb;
+
+	class ThumbMouseListener extends MouseAdapter {
+		public void mousePressed(MouseEvent e) {
+			AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent();
+			// remove red border on previous item if
+			// different from this one
+			if (selectedThumb != null && selectedThumb != thumb) {
+				selectedThumb.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+				selectedThumb.setSelected(false);
+			}
+			// add a red border on the new thumb
+			thumb.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+			thumb.setSelected(true);
+			selectedThumb = thumb;
+		}
+	}
+
 	public SuggestionView() {
 	}
 
@@ -113,6 +136,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			protected Insets getContentBorderInsets(int tabPlacement) {
 				return new Insets(0, 0, 0, 0);
 			}
+
 			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		}
@@ -192,6 +216,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		// Use a swing worker as construct takes a lot of time
 		SwingWorker sw = new SwingWorker() {
 			JScrollPane jsp1;
+
 			JScrollPane jsp2;
 
 			@Override
@@ -202,7 +227,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 						return null;
 					}
 					// If unknown author, return a null panel
-					if (author ==null || author.equals(Messages.getString(UNKNOWN_AUTHOR))) {
+					if (author == null || author.equals(Messages.getString(UNKNOWN_AUTHOR))) {
 						return null;
 					}
 					jsp1 = getLastFMSuggestionsPanel(author, SuggestionType.OTHERS_ALBUMS);
@@ -250,8 +275,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		for (Album album : albums) {
 			// Try creating the thumbnail
 			Util.refreshThumbnail(album, "100x100");
-			AlbumThumb thumb = new AlbumThumb(album, 100, false);
+			LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
 			thumb.populate();
+			thumb.jlIcon.addMouseListener(new ThumbMouseListener());
 			out.add(thumb);
 		}
 		return jsp;
@@ -271,15 +297,19 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
 					author);
 			for (AudioScrobblerAlbum album : albums) {
-				AudioScrobberAlbumThumb thumb = new AudioScrobberAlbumThumb(album);
+				AudioScrobberAlbumThumbnail thumb = new AudioScrobberAlbumThumbnail(album);
 				thumb.populate();
-				//If we own this album, make it obvious
-				if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null){
+				// If we own this album, make it obvious
+				if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
 					TitledBorder title = new TitledBorder(Messages.getString("SuggestionView.6"));
 					title.setTitleFont(new Font("dialog", Font.BOLD, 12));
-					title.setTitleColor(SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor());
+					title.setTitleColor(SubstanceLookAndFeel.getActiveColorScheme()
+							.getForegroundColor());
 					thumb.setBorder(title);
-				}	
+				} else {
+					thumb.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
+				}
+				thumb.jlIcon.addMouseListener(new ThumbMouseListener());
 				out.add(thumb);
 			}
 		} else if (type == SuggestionType.SIMILAR_AUTHORS) {
@@ -307,7 +337,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 				refreshLastFMCollectionTabs(newAuthor);
 				previousAuthor = newAuthor;
 			}
-		} else if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE)){
+		} else if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE)) {
 			// The show/hide unmounted may have changed, refresh local
 			// collection panels
 			refreshLastFMCollectionTabs(null);

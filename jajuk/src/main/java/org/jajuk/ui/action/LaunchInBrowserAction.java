@@ -21,13 +21,14 @@ package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.desktop.Desktop;
-import org.jdesktop.jdic.desktop.DesktopException;
 
 import java.awt.event.ActionEvent;
+import java.net.URL;
+
+import javax.swing.JComponent;
 
 /**
  * 
@@ -45,8 +46,10 @@ public class LaunchInBrowserAction extends ActionBase {
 
 	public void perform(ActionEvent evt) throws JajukException {
 		try {
-			Desktop.browse(Util.url);
-		} catch (DesktopException e) {
+			JComponent source = (JComponent) evt.getSource();
+			String url = (String) source.getClientProperty(DETAIL_CONTENT);
+			Desktop.browse(new URL(url));
+		} catch (Exception e) {
 			Log.error(e);
 		}
 	}

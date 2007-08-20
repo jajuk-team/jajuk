@@ -33,14 +33,11 @@ import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -82,7 +79,11 @@ public class LyricsView extends ViewAdapter implements Observer {
 	private Track track;
 	
 	private String lyrics;
-
+	
+	private JMenuItem jmiCopyToClipboard;
+	
+	private JMenuItem jmiLaunchInBrowser;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -158,8 +159,12 @@ public class LyricsView extends ViewAdapter implements Observer {
 
 	public void handlePopup(final MouseEvent e) {
 		JPopupMenu menu = new JPopupMenu();
-		menu.add(new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD)));
-		menu.add(new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER)));
+		jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD));
+		menu.add(jmiCopyToClipboard);
+		jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+		jmiLaunchInBrowser.putClientProperty(DETAIL_CONTENT, sURL);
+		menu.add(jmiLaunchInBrowser);
+		menu.show(textarea, e.getX(), e.getY());
 	}
 
 	/*
@@ -237,11 +242,6 @@ public class LyricsView extends ViewAdapter implements Observer {
 					jlAuthor.setText(track.getAuthor().getName2());
 					jlTitle.setText(track.getName());
 					Util.copyData = sURL;
-					try {
-						Util.url = new URL(sURL);
-					} catch (MalformedURLException e) {
-						Log.error(e);
-					}
 				}
 			});
 
