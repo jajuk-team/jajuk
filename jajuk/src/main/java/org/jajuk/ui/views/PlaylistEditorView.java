@@ -35,6 +35,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
 import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
@@ -43,6 +44,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistEditorTransferHandler;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.LogicalPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.wizard.PropertiesWizard;
@@ -169,10 +171,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 	class PlayListEditorTableModel extends JajukTableModel {
 
 		private static final long serialVersionUID = 1L;
-
-		// font for planned items
-		final Font fontPlanned = new Font("serif", Font.ITALIC, 12);
-
+		
 		public PlayListEditorTableModel() {
 			super(15);
 			setEditable(false); // table not editable
@@ -288,7 +287,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				StackItem item = getItem(iRow);
 				if (item.isPlanned()) { // it is a planned file
 					bPlanned = true;
-					font = fontPlanned;
+					font = FontManager.getInstance().getFont(JajukFont.PLANNED);
 				}
 				File bf = item.getFile();
 

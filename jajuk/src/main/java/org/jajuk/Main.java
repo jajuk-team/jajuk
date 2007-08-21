@@ -43,11 +43,13 @@ import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.FontManager;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.RestoreAllViewsAction;
@@ -68,7 +70,6 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
@@ -214,6 +215,8 @@ public class Main implements ITechnicalStrings {
 			try {
 				UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 				UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
+				// Set default fonts
+				FontManager.setDefaultFont();
 			} catch (Exception e) {
 				// Get an exception with JRE 1.7 beta, some code is not yet
 				// implemented
@@ -288,8 +291,8 @@ public class Main implements ITechnicalStrings {
 					Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 
 					sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT,
-							JAJUK_VERSION + " " + JAJUK_VERSION_DATE, new Font("Dialog",
-									Font.TRUETYPE_FONT, 12), null);
+							JAJUK_VERSION + " " + JAJUK_VERSION_DATE, FontManager.getInstance()
+									.getFont(JajukFont.SPLASH), null);
 					sc.setTitle(Messages.getString("JajukWindow.3"));
 					sc.splashOn();
 				}

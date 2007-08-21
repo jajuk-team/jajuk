@@ -19,9 +19,24 @@
  */
 package org.jajuk.ui.wizard;
 
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.WebRadio;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
+import org.jajuk.ui.FontManager.JajukFont;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioManager;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
+
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -42,20 +57,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.WebRadio;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioManager;
-import org.qdwizard.Screen;
-import org.qdwizard.Wizard;
 
 /**
  * WebRadio management wizard
@@ -225,9 +226,9 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 			out.setLayout(layout);
 			// Create header
 			JLabel jlHeader1 = new JLabel(Messages.getString("RadioWizard.9"));
-			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12));
+			jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			JLabel jlHeader2 = new JLabel(Messages.getString("RadioWizard.8"));
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12));
+			jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			out.add(jlHeader1, "1,0,c,c");
 			out.add(jlHeader2, "2,0,c,c");
 			// Add widgets

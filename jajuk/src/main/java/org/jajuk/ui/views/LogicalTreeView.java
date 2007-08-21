@@ -38,10 +38,12 @@ import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeRootElement;
 import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -58,7 +60,6 @@ import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -441,7 +442,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
 					boolean expanded, boolean leaf, int row, boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-				setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE)));
+				setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 				if (value instanceof StyleNode) {
 					setIcon(IconLoader.ICON_STYLE);
 				} else if (value instanceof AuthorNode) {

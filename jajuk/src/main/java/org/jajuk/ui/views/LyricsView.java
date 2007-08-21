@@ -28,6 +28,8 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
@@ -108,8 +110,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 		textarea.setWrapStyleWord(true);
 		textarea.setEditable(false);
 		textarea.setMargin(new Insets(10, 10, 10, 10));
-		textarea
-				.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager.getInt(CONF_FONTS_SIZE)));
+		textarea.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 		textarea.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -126,14 +127,11 @@ public class LyricsView extends ViewAdapter implements Observer {
 			}
 		});
 		jlAuthor = new JLabel();
-		jlAuthor.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
-				.getInt(CONF_FONTS_SIZE) + 2));
+		jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_L));
 		jlTitle = new JLabel();
-		jlTitle.setFont(new Font("Dialog", Font.PLAIN,
-				ConfigurationManager.getInt(CONF_FONTS_SIZE) + 4));
+		jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_XL));
 		jsp = new JScrollPane(textarea);
-		textarea.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager
-				.getInt(CONF_FONTS_SIZE)));
+		textarea.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 		int height = getHeight() - 200;
 		FormLayout layout = new FormLayout(
 		// --columns

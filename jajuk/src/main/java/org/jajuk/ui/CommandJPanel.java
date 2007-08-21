@@ -50,6 +50,7 @@ import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJ;
 import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
@@ -69,7 +70,6 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -318,8 +318,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			final int j = i;
 			JMenuItem jmi = new JMenuItem("+" + i);
 			if (ConfigurationManager.getInt(CONF_INC_RATING) == i) {
-				jmi.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
-						.getInt(CONF_FONTS_SIZE)));
+				jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			}
 			// Store selected value
 			jmi.addActionListener(new ActionListener() {
@@ -410,8 +409,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		ambiencesCombo = new SteppedComboBox();
 		iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
 		ambiencesCombo.setPopupWidth(iWidth);
-		ambiencesCombo.setFont(new Font("dialog", Font.BOLD, ConfigurationManager
-				.getInt(CONF_FONTS_SIZE) + 2));
+		ambiencesCombo.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_L));
 		// size of the combo itself
 		ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
 			private static final long serialVersionUID = -6943363556191659895L;

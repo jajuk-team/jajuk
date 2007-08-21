@@ -22,12 +22,12 @@ package org.jajuk.ui;
 
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.UrlImageIcon;
 
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 
 import javax.swing.JLabel;
@@ -63,9 +63,6 @@ public class PlaylistFileItem extends JPanel {
 
 	public static final int PLAYLIST_TYPE_NOVELTIES = 5;
 
-	private static final Font font = new Font("Dialog", Font.PLAIN, 10); 
-
-	
 	/**
 	 * Constructor
 	 * 
@@ -87,7 +84,7 @@ public class PlaylistFileItem extends JPanel {
 		jlIcon = new JLabel(icon);
 		jlIcon.setPreferredSize(new Dimension(100, 100));
 		JLabel jlName = new JLabel(sName);
-		jlName.setFont(font); 
+		jlName.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_S)); 
 		add(jlIcon, "0,0,c,c"); 
 		add(jlName, "0,1,c,c"); 
 		new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);

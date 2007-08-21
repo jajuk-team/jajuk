@@ -20,12 +20,11 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.ITechnicalStrings;
 import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
 import java.awt.Component;
-import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -49,7 +48,7 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 			((JLabel)c).setText(((IconLabel)oValue).getText());
 		}
 		c.setEnabled(table == null || table.isEnabled());
-		c.setFont(new Font("Dialog", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE))); 
+		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN)); 
 		return c;
 	}
 

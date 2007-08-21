@@ -30,6 +30,7 @@ import org.jajuk.base.Player;
 import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
@@ -212,7 +213,7 @@ public class JajukSystray extends CommandJPanel {
 		// Add a title. Important: do not add a JLabel, it present action event
 		// to occur under windows
 		JMenuItem jmiTitle = new JMenuItem("Jajuk");
-		jmiTitle.setFont(new Font("Dialog", Font.BOLD, 20));
+		jmiTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_TITLE));
 		jmenu.add(jmiTitle);
 		jmenu.addSeparator();
 		jmenu.add(jmAmbience);
@@ -519,7 +520,7 @@ public class JajukSystray extends CommandJPanel {
 							jmi.getActionCommand());
 					ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
 				}
-				jmi.setFont(new Font("Dialog", Font.BOLD, 12));
+				jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 				ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
 			}
 		};
@@ -528,7 +529,7 @@ public class JajukSystray extends CommandJPanel {
 		// Add "all" ambience
 		JMenuItem jmiAll = new JMenuItem("<html><i>" + Messages.getString("DigitalDJWizard.64")
 				+ "</i></html>");
-		jmiAll.setFont(new Font("Dialog", Font.BOLD, 12));
+		jmiAll.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 		jmiAll.addActionListener(al);
 		jmAmbience.add(jmiAll);
 
@@ -536,8 +537,8 @@ public class JajukSystray extends CommandJPanel {
 		for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
 			JMenuItem jmi = new JMenuItem(ambience.getName());
 			if (ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
-				jmiAll.setFont(new Font("Dialog", Font.PLAIN, 12));
-				jmi.setFont(new Font("Dialog", Font.BOLD, 12));
+				jmiAll.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+				jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			}
 			jmi.addActionListener(al);
 			jmAmbience.add(jmi);

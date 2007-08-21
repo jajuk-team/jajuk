@@ -922,7 +922,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		
 		// Font selector
 		jlFonts = new JLabel(Messages.getString("ParameterView.223"));
-		jsFonts = new JSlider(6, 20, ConfigurationManager.getInt(CONF_FONTS_SIZE));
+		jsFonts = new JSlider(8, 16, ConfigurationManager.getInt(CONF_FONTS_SIZE));
 		jsFonts.setSnapToTicks(true);
 		jsFonts.setMajorTickSpacing(2);
 		jsFonts.setMinorTickSpacing(1);

@@ -28,7 +28,9 @@ import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceDigitalDJ;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
 import org.jajuk.ui.StylesSelectionDialog;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -39,7 +41,6 @@ import org.qdwizard.Wizard;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -235,10 +236,10 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 			// Create header
 			JLabel jlHeader1 = new JLabel(Messages
 					.getString("DigitalDJWizard.37")); 
-			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); 
-			JLabel jlHeader2 = new JLabel(Messages
+			jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+ 			JLabel jlHeader2 = new JLabel(Messages
 					.getString("DigitalDJWizard.27")); 
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
 			out.add(jlHeader1, "1,0,c,c"); 
 			out.add(jlHeader2, "2,0,c,c"); 
 			// Add widgets

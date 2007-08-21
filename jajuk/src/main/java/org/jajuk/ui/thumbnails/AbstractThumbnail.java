@@ -27,6 +27,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.views.CoverView;
@@ -38,6 +39,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -54,6 +56,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -63,6 +66,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+
+import com.vlsolutions.swing.docking.ShadowBorder;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -110,7 +115,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	private static AbstractThumbnail last;
 
 	private static AbstractThumbnail mouseOverItem = null;
-
+	
 	/** Associated file */
 	File fCover;
 
@@ -158,6 +163,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	 */
 	public AbstractThumbnail(int size) {
 		this.size = size;
+		setSelected(false);
 	}
 
 	/**
@@ -203,7 +209,10 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
 				IconLoader.ICON_PROPERTIES);
 		jmiAlbumProperties.addActionListener(this);
-		jmiOpenLastFMSite = new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+		ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
+		//Change action label
+		actionOpenLastFM.setName(Messages.getString("AbstractThumbnail.0"));
+		jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
 
 		// We add all menu items, each implementation of this class should hide
 		// (setVisible(false)) menu items that are not available in their
@@ -248,7 +257,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 					if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
 						// if second click (item already selected), play
 						if (selected) {
-							play(false, false, false);
+							launch();
 						}
 					}
 				}
@@ -298,7 +307,17 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	 */
 	public void setSelected(boolean b) {
 		selected = b;
+		// Add a shadow for selected items
+		if (b) {
+			setBorder(new ShadowBorder());
+		} else {
+			// add an empty border of the same size than the border to avoid
+			// image moves when setting borders
+			setBorder(BorderFactory.createEmptyBorder(3, 2, 5, 5));
+		}
 	}
+
+	public abstract void launch();
 
 	public void play(boolean bRepeat, boolean bShuffle, boolean bPush) {
 		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());

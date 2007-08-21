@@ -35,7 +35,9 @@ import org.jajuk.dj.Transition;
 import org.jajuk.dj.TransitionDigitalDJ;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.FontManager;
 import org.jajuk.ui.StylesSelectionDialog;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -47,7 +49,6 @@ import org.qdwizard.Wizard;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -824,13 +825,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			// Create header
 			JLabel jlHeader2 = new JLabel(Messages
 					.getString("DigitalDJWizard.22")); 
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
 			JLabel jlHeader3 = new JLabel(Messages
 					.getString("DigitalDJWizard.23")); 
-			jlHeader3.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			jlHeader3.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
 			JLabel jlHeader4 = new JLabel(Messages
 					.getString("DigitalDJWizard.24")); 
-			jlHeader4.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			jlHeader4.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
 			out.add(jlHeader2, "1,0"); 
 			out.add(jlHeader3, "2,0"); 
 			out.add(jlHeader4, "3,0"); 
@@ -1103,10 +1104,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			// Create header
 			JLabel jlHeader1 = new JLabel(Messages
 					.getString("DigitalDJWizard.27")); 
-			jlHeader1.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
 			JLabel jlHeader2 = new JLabel(Messages
 					.getString("DigitalDJWizard.28")); 
-			jlHeader2.setFont(new Font("Dialog", Font.BOLD, 12)); 
+			jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
 			out.add(jlHeader1, "2,0"); 
 			out.add(jlHeader2, "4,0"); 
 			// Add widgets

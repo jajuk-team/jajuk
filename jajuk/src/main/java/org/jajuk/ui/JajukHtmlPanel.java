@@ -96,7 +96,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		//Display the page
 		showPage(sPage, page);
 		// Set current url as a tooltip
-		getRootPane().setToolTipText(url.toString());
+		setToolTipText(url.toString());
 		// Disable waiting cursor
 		setCursor(Util.DEFAULT_CURSOR);
 	}

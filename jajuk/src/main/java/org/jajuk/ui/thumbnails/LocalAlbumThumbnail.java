@@ -30,7 +30,8 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CatalogViewTransferHandler;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.ui.FontManager;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
@@ -39,12 +40,10 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -70,8 +69,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
 	JTextArea jlAlbum;
 
-	private boolean bShowText;
-
+	private boolean bShowFullText;
+	
 	/**
 	 * Constructor
 	 * 
@@ -80,12 +79,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 	 * @param size :
 	 *            size of the thumbnail
 	 * @param bShowText:
-	 *            Display album / author name under the icon or not ?
+	 *            Display full album / author information under the icon or not ?
 	 */
 	public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
 		super(size);
 		this.album = album;
-		this.bShowText = bShowText;
+		this.bShowFullText = bShowText;
 		this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
 				+ album.getId() + '.' + EXT_THUMB);
 	}
@@ -106,13 +105,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 			// use old image
 		}
 		jlIcon.setIcon(ii);
-		if (bShowText) {
+		if (bShowFullText) {
 			dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
 					{ size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
 			setLayout(new TableLayout(dMain));
 			int iRows = 7 + 3 * (size / 50 - 1);
-			Font customFont = new Font("verdana", Font.BOLD, ConfigurationManager
-					.getInt(CONF_FONTS_SIZE));
 			Color mediumGray = new Color(172, 172, 172);
 
 			Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator()
@@ -121,7 +118,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 			jlAuthor.setLineWrap(true);
 			jlAuthor.setWrapStyleWord(true);
 			jlAuthor.setEditable(false);
-			jlAuthor.setFont(customFont);
+			jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			jlAuthor.setForeground(mediumGray);
 			jlAuthor.setBorder(null);
 
@@ -129,11 +126,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 			jlAlbum.setLineWrap(true);
 			jlAlbum.setWrapStyleWord(true);
 			jlAlbum.setEditable(false);
-			jlAuthor.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
-					.getInt(CONF_FONTS_SIZE)));
-			jlAlbum.setFont(new Font("Dialog", Font.BOLD, ConfigurationManager
-					.getInt(CONF_FONTS_SIZE)));
-			jlAlbum.setFont(customFont);
+			
+			jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+			jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			jlAlbum.setForeground(mediumGray);
 			jlAlbum.setBorder(null);
 			add(jlIcon, "1,0,c,c");
@@ -141,14 +136,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 			add(jlAlbum, "1,4");
 		} else {
 			setLayout(new VerticalLayout(2));
-			add(jlIcon);
+			add(Util.getCentredPanel(jlIcon));
 			JLabel jlTitle = new JLabel(Util.getLimitedString(album.getName2(), 15));
+			jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 			jlTitle.setToolTipText(album.getName2());
 			add(jlTitle);
 		}
-		// Keep this border as catalog view add a border by itself and it causes
-		// a lag
-		setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		// Add dnd support
 		jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
 		postPopulate();
@@ -301,6 +294,15 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 		}
 		sOut += "</TD></TR></TABLE></html>";
 		return sOut;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
+	 */
+	@Override
+	public void launch() {
+		//play the album
+		play(false, false, false);
 	}
 
 }

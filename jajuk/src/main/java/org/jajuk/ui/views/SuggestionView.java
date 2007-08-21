@@ -36,11 +36,8 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
@@ -49,14 +46,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 
 import com.sun.java.help.impl.SwingWorker;
 
@@ -97,15 +92,13 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
 	class ThumbMouseListener extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
-			AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent();
+			AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent().getParent();
 			// remove red border on previous item if
 			// different from this one
 			if (selectedThumb != null && selectedThumb != thumb) {
-				selectedThumb.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 				selectedThumb.setSelected(false);
 			}
-			// add a red border on the new thumb
-			thumb.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+			// select the new selected thumb
 			thumb.setSelected(true);
 			selectedThumb = thumb;
 		}
@@ -140,7 +133,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		}
-
 		// Now use the new TabbedPaneUI
 		tabs.setUI(new MyTabbedPaneUI());
 		// Fill tabs with empty tabs
@@ -299,16 +291,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			for (AudioScrobblerAlbum album : albums) {
 				AudioScrobberAlbumThumbnail thumb = new AudioScrobberAlbumThumbnail(album);
 				thumb.populate();
-				// If we own this album, make it obvious
-				if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
-					TitledBorder title = new TitledBorder(Messages.getString("SuggestionView.6"));
-					title.setTitleFont(new Font("dialog", Font.BOLD, 12));
-					title.setTitleColor(SubstanceLookAndFeel.getActiveColorScheme()
-							.getForegroundColor());
-					thumb.setBorder(title);
-				} else {
-					thumb.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
-				}
 				thumb.jlIcon.addMouseListener(new ThumbMouseListener());
 				out.add(thumb);
 			}

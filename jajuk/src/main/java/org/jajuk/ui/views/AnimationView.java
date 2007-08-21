@@ -130,7 +130,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
 				boolean bOk = false;
 				int i = 40;
 				while (!bOk) {
-					font = new Font("dialog", Font.BOLD, i);
+					font = new Font("verdana", Font.BOLD, i);
 					FontMetrics fontMetrics = Main.getWindow().getFontMetrics(font);
 					int iFontSize = SwingUtilities.computeStringWidth(fontMetrics, sText);
 					if (iFontSize <= iSize - 150) {

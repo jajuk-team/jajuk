@@ -19,13 +19,13 @@
  */
 package org.jajuk.ui;
 
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.UrlImageIcon;
 import org.jdesktop.swingx.JXPanel;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 			jb.setMinimumSize(new Dimension(85,65));
 			jb.setPreferredSize(new Dimension(85,65));
 			jb.setMaximumSize(new Dimension(85,65));
-			jb.setFont(new Font("Dialog",Font.BOLD,10));
+			jb.setFont(FontManager.getInstance().getFont(JajukFont.PERSPECTIVES));
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// no thread, it causes ugly screen repaint

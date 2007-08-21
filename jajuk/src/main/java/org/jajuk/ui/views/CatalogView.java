@@ -32,9 +32,11 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.FontManager;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -262,9 +264,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
 		jtfValue = new JTextField(10);
 		jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		jtfValue.setFont(new Font("dialog", Font.BOLD,
-				ConfigurationManager.getInt(CONF_FONTS_SIZE) + 6));
-
+		jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				bNeedSearch = true;
@@ -631,16 +631,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 							public void mousePressed(MouseEvent e) {
 								LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())
 										.getParent();
-								// remove red border on previous item if
-								// different from this one
+								//Unselect previous thumb
 								if (CatalogView.this.item != null && CatalogView.this.item != thumb) {
-									CatalogView.this.item.setBorder(BorderFactory
-											.createEmptyBorder(2, 2, 2, 2));
 									CatalogView.this.item.setSelected(false);
 								}
-								// add a red border on this item
-								thumb.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2,
-										Color.RED));
+								//Select new thumb
 								thumb.setSelected(true);
 								CatalogView.this.item = thumb;
 							}
@@ -690,8 +685,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 				for (LocalAlbumThumbnail item : hsItems) {
 					if (((Album)item.getItem()).equals(oldItem.getItem())) {
 						CatalogView.this.item = item;
-						CatalogView.this.item.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2,
-								Color.RED));
+						CatalogView.this.item.setSelected(true);
 						break;
 					}
 				}

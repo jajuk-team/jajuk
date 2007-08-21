@@ -24,6 +24,8 @@ import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
+import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -31,6 +33,7 @@ import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.MediaTracker;
 import java.io.File;
 import java.net.URL;
@@ -79,21 +82,37 @@ public class AudioScrobberAlbumThumbnail extends AbstractThumbnail {
 		fCover = new File(cache);
 		fThumb = Util.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis() + '.'
 				+ Util.getExtension(fCover));
-
 		ImageIcon downloadedImage = new ImageIcon(cache);
-		ImageIcon ii = Util.getResizedImage(downloadedImage, 100, 100);
-		if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
-			Log.debug("Image Loading status: " + ii.getImageLoadStatus());
+		// Wait for full image loading
+		MediaTracker mediaTracker = new MediaTracker(new Container());
+		mediaTracker.addImage(downloadedImage.getImage(), 0);
+		try {
+			mediaTracker.waitForID(0);
+		} catch (InterruptedException e) {
+			Log.error(e);
 		}
+		if (downloadedImage.getImageLoadStatus() != MediaTracker.COMPLETE) {
+			Log
+					.debug("Image " + cache + " Loading status: "
+							+ downloadedImage.getImageLoadStatus());
+		}
+		ImageIcon ii = Util.getResizedImage(downloadedImage, 100, 100);
 		// Free images memory
-		downloadedImage.getImage().flush();
-		ii.getImage().flush();
+		// downloadedImage.getImage().flush();
+		// ii.getImage().flush();
 		postPopulate();
 		jlIcon.setIcon(ii);
 		setLayout(new VerticalLayout(2));
-		add(jlIcon);
+		// Use a panel to allow text to be bigger than image under it
+		add(Util.getCentredPanel(jlIcon));
 		JLabel jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15));
 		jlTitle.setToolTipText(album.getTitle());
+		if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
+			// Album known in collection, display its name in bold
+			jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+		} else {
+			jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+		}
 		add(jlTitle);
 		jlIcon.setBorder(new ShadowBorder());
 		// disable inadequate menu items
@@ -106,7 +125,7 @@ public class AudioScrobberAlbumThumbnail extends AbstractThumbnail {
 			jmenu.remove(jmiAlbumPush);
 			jmenu.remove(jmiAlbumProperties);
 		}
-		//Set URL to open
+		// Set URL to open
 		jmiOpenLastFMSite.putClientProperty(DETAIL_CONTENT, "http://www.lastfm.fr/music/"
 				+ NetworkUtils.encodeString(album.getArtist()) + '/'
 				+ NetworkUtils.encodeString(album.getTitle()));
@@ -174,4 +193,16 @@ public class AudioScrobberAlbumThumbnail extends AbstractThumbnail {
 		sOut += "</TD></TR></TABLE></html>";
 		return sOut;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
+	 */
+	@Override
+	public void launch() {
+		// Open the last.FM page
+		jmiOpenLastFMSite.doClick();
+	}
+
 }
