@@ -157,14 +157,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 		return fCover;
 	}
 
-	public void setIcon(ImageIcon icon) {
-		jlIcon.setIcon(icon);
-		// !!! need to flush image because thy read image from a file
-		// with same name
-		// than previous image and a buffer would display the old image
-		icon.getImage().flush();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -21,6 +21,7 @@ package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.desktop.Desktop;
@@ -32,16 +33,17 @@ import javax.swing.JComponent;
 
 /**
  * 
- *  Launch the URL from Util.url in the default browser
+ * Launch the URL from Util.url in the default browser
  */
 public class LaunchInBrowserAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;
 
 	LaunchInBrowserAction() {
-		super(
-				Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, true); 
-		setShortDescription(Messages.getString("LaunchInBrowserAction.0")); 
+		//this action is available only under linux and windows for now
+		super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Util
+				.isUnderLinux() || Util.isUnderWindows()));
+		setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

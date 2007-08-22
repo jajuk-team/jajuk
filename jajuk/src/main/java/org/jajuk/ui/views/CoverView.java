@@ -249,7 +249,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		int index = 1; // medium accuracy
 		try {
 			index = ConfigurationManager.getInt(CONF_COVERS_ACCURACY + "_"
-					+  ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+					+ ((getPerspective() == null) ? "popup" : getPerspective().getID()));
 		} catch (Exception e) {
 			// Will reach this point at first launch
 		}
@@ -297,7 +297,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			public void run() {
 				try {
 					if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)) {
-						// try to open connexion, this can take about 30 sec
+						// try to open connection, this can take about 30 sec
 						// under linux if network not available
 						DownloadManager.getRemoteCoversList("");
 					}
@@ -448,11 +448,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 									URL url = (URL) it2.next();
 									try {
 										Cover cover = new Cover(url, Cover.REMOTE_COVER);
-										/*
-										 * create a cover with given url ( image
-										 * will be really downloaded when
-										 * required if no preload)
-										 */
+										// Create a cover with given url ( image
+										// will be really downloaded when
+										// required if no preload)
 										if (!alCovers.contains(cover)) {
 											Log.debug("Found Cover: {{" + url.toString() + "}}");
 											alCovers.add(cover);
@@ -881,7 +879,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				public void run() {
 					// force refresh
 					update(new Event(EventSubject.EVENT_COVER_REFRESH, ObservationManager
-							.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH))); 
+							.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
 				}
 			}.start();
 		} else if (e.getSource() == jbPrevious) { // previous : show a
@@ -956,7 +954,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 				try {
 					// copy file from cache
-					File fSource = Util.getCachePath(cover.getURL());
+					File fSource = Util.getCachePath(cover.getURL(), Long.toString(System
+							.currentTimeMillis()));
 					File file = new File(sFilePath);
 					Util.copy(fSource, file);
 					Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
@@ -1047,7 +1046,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 					try {
 						// copy file from cache
-						File fSource = Util.getCachePath(cover.getURL());
+						File fSource = Util.getCachePath(cover.getURL(), Long.toString(System
+								.currentTimeMillis()));
 						File file = new File(sFilePath);
 						Util.copy(fSource, file);
 						InformationJPanel.getInstance().setMessage(
@@ -1108,7 +1108,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		int iAccuracy = 0;
 		try {
 			iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY + "_"
-					+  ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+					+ ((getPerspective() == null) ? "popup" : getPerspective().getID()));
 		} catch (Exception e) {
 			// can append if accuracy never set
 			Log.debug("Unknown accuracy");
@@ -1168,7 +1168,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 	 * @return whether this view is in current perspective
 	 */
 	public boolean isInCurrentPerspective() {
-		if (getPerspective() == null || getPerspective().equals(PerspectiveManager.getCurrentPerspective())) {
+		if (getPerspective() == null
+				|| getPerspective().equals(PerspectiveManager.getCurrentPerspective())) {
 			return true;
 		}
 		return false;

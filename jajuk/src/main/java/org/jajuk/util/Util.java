@@ -50,6 +50,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.utils.SubstanceConstants;
 import org.jvnet.substance.watermark.SubstanceImageWatermark;
 import org.jvnet.substance.watermark.SubstanceStripeWatermark;
 import org.jvnet.substance.watermark.WatermarkInfo;
@@ -770,10 +771,19 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * @param url
 	 *            resource URL
+	 * @param id 
+	 * 			  unique identifier for the file
 	 * @return Cache directory
 	 */
-	public static File getCachePath(URL url) {
-		return Util.getConfFileByPath(FILE_CACHE + '/' + Util.getOnlyFile(url.toString()));
+	public static File getCachePath(URL url, String id) {
+		File out = null;
+		if ( id == null){
+			out = Util.getConfFileByPath(FILE_CACHE + '/' + Util.getOnlyFile(url.toString()));
+		}
+		else{
+			out = Util.getConfFileByPath(FILE_CACHE + '/' + id + '_' + Util.getOnlyFile(url.toString()));
+		}
+		return out;
 	}
 
 	/**
@@ -1179,6 +1189,7 @@ public class Util implements ITechnicalStrings {
 			if ("Image".equals(watermark)) {
 				SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(
 						ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)));
+				SubstanceLookAndFeel.setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
 			} else {
 				SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(watermark).getClassName());
 			}

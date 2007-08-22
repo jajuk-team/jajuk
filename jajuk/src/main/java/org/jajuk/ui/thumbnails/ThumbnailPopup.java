@@ -31,12 +31,15 @@ import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -51,23 +54,32 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
 /**
- * HTML popup displayed over a thumbnail, it details album informations and tracks
- * <p>It is displayed nicely from provided jlabel position</p>
+ * HTML popup displayed over a thumbnail, it details album informations and
+ * tracks
+ * <p>
+ * It is displayed nicely from provided jlabel position
+ * </p>
  */
 public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 
 	private static final long serialVersionUID = -8131528719972829954L;
-	
+
 	JXPanel jp;
 
 	/**
 	 * 
-	 * @param description HTML text to display (HTML 3.0)
-	 * @param jlIcon album thumb jlabel
+	 * @param description
+	 *            HTML text to display (HTML 3.0)
+	 * @param jlIcon
+	 *            album thumb jlabel
 	 */
-	public ThumbnailPopup(String description,JLabel jlIcon) {
-		super();
-		initUI();
+	public ThumbnailPopup(String description, JLabel jlIcon) {
+		setUndecorated(true);
+		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		jp = new JXPanel();
+		jp.setAlpha(0.7f);
+		double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
+		jp.setLayout(new TableLayout(size));
 		final JEditorPane text = new JEditorPane("text/html", description);
 		text.setEditable(false);
 		text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
@@ -87,6 +99,12 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 						ArrayList<Item> items = new ArrayList<Item>(1);
 						items.add(YearManager.getInstance().getItemByID(url.getQuery()));
 						new PropertiesWizard(items);
+					} else if (XML_URL.equals(url.getHost())) {
+						try {
+							Desktop.getDesktop().browse(new URI(url.getQuery()));
+						} catch (Exception e1) {
+							Log.error(e1);
+						}
 					} else if (XML_TRACK.equals(url.getHost())) {
 						ArrayList<Item> items = new ArrayList<Item>(1);
 						Track track = (Track) TrackManager.getInstance()
@@ -146,14 +164,5 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 			}
 		});
 	}
-	
-		
-	private void initUI(){
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-		jp = new JXPanel();
-		jp.setAlpha(0.7f);
-		double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
-		jp.setLayout(new TableLayout(size));
-	}
+
 }

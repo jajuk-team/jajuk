@@ -39,7 +39,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -90,19 +89,19 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 
 	JPopupMenu jmenu;
 
-	JMenuItem jmiAlbumPlay;
+	JMenuItem jmiPlay;
 
-	JMenuItem jmiAlbumPush;
+	JMenuItem jmiPush;
 
-	JMenuItem jmiAlbumPlayShuffle;
+	JMenuItem jmiPlayShuffle;
 
-	JMenuItem jmiAlbumPlayRepeat;
+	JMenuItem jmiPlayRepeat;
 
 	JMenuItem jmiGetCovers;
 
-	JMenuItem jmiAlbumCDDBWizard;
+	JMenuItem jmiCDDBWizard;
 
-	JMenuItem jmiAlbumProperties;
+	JMenuItem jmiProperties;
 
 	JMenuItem jmiOpenLastFMSite;
 
@@ -115,7 +114,10 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	private static AbstractThumbnail last;
 
 	private static AbstractThumbnail mouseOverItem = null;
-	
+
+	// Number of clicks on the thumb
+	private int clickNumber;
+
 	/** Associated file */
 	File fCover;
 
@@ -131,7 +133,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 						}
 						last = null;
 						// display a popup after n seconds only if item changed
-					} else if ((System.currentTimeMillis() - lDateLastMove >= 1000)
+					} else if ((System.currentTimeMillis() - lDateLastMove >= 700)
 							&& mouseOverItem != last && !bDragging) {
 						// close popup if any visible
 						if (details != null) {
@@ -170,12 +172,23 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	 * display a popup over the catalog item
 	 */
 	public void displayPopup() {
-		// don't show details if the contextual popup menu
-		// is visible
-		if (jmenu.isVisible()) {
-			return;
-		}
-		details = new ThumbnailPopup(getDescription(), jlIcon);
+		Util.waiting();
+		// Display popup out of dispatcher thread as it takes too mush time to
+		// execute and we don't risk display concurency in this popup
+		new Thread() {
+			public void run() {
+				// don't show details if the contextual popup menu
+				// is visible
+				if (jmenu.isVisible()) {
+					return;
+				}
+				String description = getDescription();
+				if (description != null) {
+					details = new ThumbnailPopup(description, jlIcon);
+					Util.stopWaiting();
+				}
+			}
+		}.start();
 	}
 
 	abstract public void populate() throws Exception;
@@ -189,42 +202,42 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	void postPopulate() {
 		// Album menu
 		jmenu = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),
+		jmiPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),
 				IconLoader.ICON_PLAY_16x16);
-		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16"), IconLoader.ICON_PUSH);
-		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),
+		jmiPlay.addActionListener(this);
+		jmiPush = new JMenuItem(Messages.getString("LogicalTreeView.16"), IconLoader.ICON_PUSH);
+		jmiPush.addActionListener(this);
+		jmiPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),
 				IconLoader.ICON_SHUFFLE);
-		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),
+		jmiPlayShuffle.addActionListener(this);
+		jmiPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),
 				IconLoader.ICON_REPEAT);
-		jmiAlbumPlayRepeat.addActionListener(this);
+		jmiPlayRepeat.addActionListener(this);
 		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),
 				IconLoader.ICON_COVER_16x16);
 		jmiGetCovers.addActionListener(this);
-		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"),
+		jmiCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"),
 				IconLoader.ICON_LIST);
-		jmiAlbumCDDBWizard.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
+		jmiCDDBWizard.addActionListener(this);
+		jmiProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
 				IconLoader.ICON_PROPERTIES);
-		jmiAlbumProperties.addActionListener(this);
+		jmiProperties.addActionListener(this);
 		ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
-		//Change action label
+		// Change action label
 		actionOpenLastFM.setName(Messages.getString("AbstractThumbnail.0"));
 		jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
 
 		// We add all menu items, each implementation of this class should hide
 		// (setVisible(false)) menu items that are not available in their
 		// context
-		jmenu.add(jmiAlbumPlay);
-		jmenu.add(jmiAlbumPush);
-		jmenu.add(jmiAlbumPlayShuffle);
-		jmenu.add(jmiAlbumPlayRepeat);
-		jmenu.add(jmiAlbumCDDBWizard);
+		jmenu.add(jmiPlay);
+		jmenu.add(jmiPush);
+		jmenu.add(jmiPlayShuffle);
+		jmenu.add(jmiPlayRepeat);
+		jmenu.add(jmiCDDBWizard);
 		jmenu.add(jmiGetCovers);
 		jmenu.add(jmiOpenLastFMSite);
-		jmenu.add(jmiAlbumProperties);
+		jmenu.add(jmiProperties);
 
 		jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
@@ -256,9 +269,13 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 					// Left click
 					if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
 						// if second click (item already selected), play
-						if (selected) {
+						// We have to check time between last two click as a
+						// single clicks is
+						// managed by both mouse listeners
+						if (selected && clickNumber > 0) {
 							launch();
 						}
+						clickNumber++;
 					}
 				}
 			}
@@ -307,6 +324,10 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	 */
 	public void setSelected(boolean b) {
 		selected = b;
+		// Reset number of clicks
+		if (!b) {
+			clickNumber = 0;
+		}
 		// Add a shadow for selected items
 		if (b) {
 			setBorder(new ShadowBorder());
@@ -352,13 +373,13 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// Menu items
-		if (e.getSource() == jmiAlbumPlay) {
+		if (e.getSource() == jmiPlay) {
 			play(false, false, false);
-		} else if (e.getSource() == jmiAlbumPlayRepeat) {
+		} else if (e.getSource() == jmiPlayRepeat) {
 			play(true, false, false);
-		} else if (e.getSource() == jmiAlbumPlayShuffle) {
+		} else if (e.getSource() == jmiPlayShuffle) {
 			play(false, true, false);
-		} else if (e.getSource() == jmiAlbumPush) {
+		} else if (e.getSource() == jmiPush) {
 			play(false, false, true);
 		} else if (e.getSource() == jmiGetCovers) {
 			// This item is enabled only for albums
@@ -385,7 +406,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 					}
 				}
 			}.start();
-		} else if (e.getSource() == jmiAlbumProperties) {
+		} else if (e.getSource() == jmiProperties) {
 			Item item = getItem();
 			ArrayList<Item> al = new ArrayList<Item>();
 			al.add(item);
@@ -398,7 +419,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 				new PropertiesWizard(al);
 			}
 
-		} else if (e.getSource() == jmiAlbumCDDBWizard) {
+		} else if (e.getSource() == jmiCDDBWizard) {
 			// This menu is enabled only for albums
 			ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
 					.getAssociatedTracks(getItem()));

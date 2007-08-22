@@ -47,7 +47,7 @@ public class AudioScrobblerArtist {
 		artist.name = XMLUtils.getChildElementContent(el, "name");
 		artist.match = XMLUtils.getChildElementContent(el, "match");
 		artist.url = XMLUtils.getChildElementContent(el, "url");
-		artist.imageUrl = XMLUtils.getChildElementContent(el, "image_small");
+		artist.imageUrl = XMLUtils.getChildElementContent(el, "image");
 		return artist;
 	}
 

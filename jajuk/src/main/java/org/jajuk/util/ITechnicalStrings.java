@@ -779,6 +779,9 @@ public interface ITechnicalStrings {
 
 	/** Show Catalog popups */
 	public static final String CONF_SHOW_POPUPS = "jajuk.show_popups";
+	
+	/** Enable Last.FM information queries */
+	public static final String CONF_LASTFM_INFO = "jajuk.lastfm_information";
 
 	/** Font size */
 	public static final String CONF_FONTS_SIZE = "jajuk.fonts_size";

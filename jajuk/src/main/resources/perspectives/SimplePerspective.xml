@@ -2,9 +2,14 @@
 <VLDocking version="2.1">
 <DockingDesktop name="">
 <DockingPanel>
+<Split orientation="0" location="0.30">
+<Dockable>
+<Key dockName="org.jajuk.ui.views.SuggestionView/0"/>
+</Dockable>
 <Dockable>
 <Key dockName="org.jajuk.ui.views.LogicalTableView/0"/>
 </Dockable>
+</Split>
 </DockingPanel>
 <TabGroups>
 </TabGroups>

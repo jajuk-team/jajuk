@@ -33,6 +33,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.Proxy.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +46,26 @@ import ext.services.network.Proxy;
 public class DownloadManager implements ITechnicalStrings {
 
 	private static Proxy proxy;
+	
+	/**Maps urls and associated files in cache*/
+	private static HashMap<URL, String> urlCache = new HashMap<URL, String>(100);
 
+	/** Flush url cache every hour **/
+	static{
+		new Thread(){
+			public void run(){
+				while (true){
+					try {
+						Thread.sleep(3600000);
+					} catch (InterruptedException e) {
+						Log.error(e);
+					}
+					urlCache.clear();
+				}
+			}
+		}.start();
+	}
+	
 	/**
 	 * @param search
 	 * @return a list of urls
@@ -125,9 +145,9 @@ public class DownloadManager implements ITechnicalStrings {
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
 		}
-		bos.flush();
 		bos.close();
 		bis.close();
+		connection.disconnect();
 	}
 
 	/**
@@ -135,27 +155,36 @@ public class DownloadManager implements ITechnicalStrings {
 	 * 
 	 * @param url
 	 *            to download
+	 * @return created file or null if a problem occured
 	 * @throws Exception
 	 */
-	public static void downloadCover(URL url) throws Exception {
+	public static File downloadCover(URL url, String pID) throws Exception {
+		String id = pID;
+		//Check if url is known in cache
+		String idCache = urlCache.get(url);
+		if (idCache != null){
+			id  = idCache;  
+		}
 		// check if file is not already downloaded or being downloaded
-		if (Util.getCachePath(url).exists()) {
-			return;
+		File file = Util.getCachePath(url, id);
+		if (file.exists()) {
+			return file;
 		}
 		HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util
-				.getCachePath(url)));
+		File out = Util.getCachePath(url, id);
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
 		BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
 		int i;
 		while ((i = bis.read()) != -1) {
 			bos.write(i);
 		}
-		bos.flush();
 		bos.close();
 		bis.close();
+		connection.disconnect();
+		urlCache.put(url, id);
+		return out;
 	}
 
-	
 	/**
 	 * Download the cover list
 	 * 
@@ -164,14 +193,15 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static String downloadHtml(URL url,String charset) throws Exception {
-		return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy),charset);
+	public static String downloadHtml(URL url, String charset) throws Exception {
+		return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), charset);
 	}
 
 	public static String downloadHtml(URL url) throws Exception {
 		return downloadHtml(url, "UTF-8");
-	
+
 	}
+
 	/**
 	 * Set default proxy settings, used by cobra for ie
 	 * 

@@ -61,6 +61,9 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 
 	/** Default URL */
 	private static URL urlDefault = null;
+	
+	/**Download id*/
+	private String id;
 
 	static {
 		urlDefault = IMAGES_SPLASHSCREEN;
@@ -77,16 +80,18 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	public Cover(URL url, int iType) throws Exception {
 		this.url = url;
 		this.iType = iType;
+		//Create an unique id for this cover
+		id = "" + (long)(System.currentTimeMillis() * Math.random());
 		if (iType == Cover.LOCAL_COVER || iType == Cover.DEFAULT_COVER
 				|| iType == Cover.ABSOLUTE_DEFAULT_COVER) {
 			this.file = new File(url.getFile());
 		} else if (iType == Cover.REMOTE_COVER) {
-			this.file = Util.getCachePath(url);
+			this.file = Util.getCachePath(url,id);
 		}
 		// if Pre-load option is enabled, download this cover
 		if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)
 				&& iType == Cover.REMOTE_COVER) {
-			DownloadManager.downloadCover(url);
+			DownloadManager.downloadCover(url,id);
 		}
 	}
 
@@ -178,7 +183,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 		}
 		long l = System.currentTimeMillis();
 		if (!file.exists() || file.length() == 0) {
-			DownloadManager.downloadCover(url);
+			this.file = DownloadManager.downloadCover(url,id);
 		}
 		ImageIcon image = null;
 		synchronized (Cover.class) {
@@ -203,7 +208,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	}
 
 	/**
-	 * Equals needed for consitency for sorting
+	 * Equals needed for consistency for sorting
 	 */
 	public boolean equals(Object o) {
 		boolean bOut = false;
@@ -236,7 +241,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	}
 
 	public File getFile() {
-		return file;
+		return this.file;
 	}
 
 }

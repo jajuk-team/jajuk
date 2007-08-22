@@ -40,7 +40,6 @@ import javax.imageio.ImageIO;
 public class NetworkUtils implements ITechnicalStrings {
 
 	public static HttpURLConnection getConnection(String urlString, Proxy proxy) throws IOException {
-		Log.debug("Opening Connection With: " + urlString);
 		URL url = new URL(urlString);
 		HttpURLConnection connection = getConnection(url, proxy);
 		setConfiguration(connection);

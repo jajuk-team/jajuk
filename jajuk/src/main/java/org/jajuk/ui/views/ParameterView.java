@@ -87,7 +87,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -317,6 +316,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	JPanel jpLastFM;
 
+	JCheckBox jcbEnableLastFMInformation;
+
 	JPanel jpOKCancel;
 
 	JButton jbOK;
@@ -326,9 +327,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	JPanel jpModes;
 
 	JCheckBox jcbCheckUpdates;
-
-	/** Previous value for hidden option, used to check if a refresh is need */
-	boolean bHidden;
 
 	/*
 	 * (non-Javadoc)
@@ -838,7 +836,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// - Last.FM
 		jpLastFM = new JPanel();
-		double sizeLastFM[][] = { { p, 200 }, { p, p, p } };
+		double sizeLastFM[][] = { { p, 200 }, { p, p, p, p } };
 		TableLayout layoutLastFM = new TableLayout(sizeLastFM);
 		layoutLastFM.setHGap(iXSeparator);
 		layoutLastFM.setVGap(iYSeparator);
@@ -852,12 +850,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jlASPassword = new JLabel(Messages.getString("ParameterView.203"));
 		jpfASPassword = new JPasswordField();
 		jpfASPassword.setToolTipText(Messages.getString("ParameterView.204"));
+		jcbEnableLastFMInformation = new JCheckBox(Messages.getString("ParameterView.240"));
+		jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
 		// Add items
-		jpLastFM.add(jcbAudioScrobbler, "0,0");
-		jpLastFM.add(jlASUser, "0,1");
-		jpLastFM.add(jtfASUser, "1,1");
-		jpLastFM.add(jlASPassword, "0,2");
-		jpLastFM.add(jpfASPassword, "1,2");
+		jpLastFM.add(jcbEnableLastFMInformation, "0,0");
+		jpLastFM.add(jcbAudioScrobbler, "0,1");
+		jpLastFM.add(jlASUser, "0,2");
+		jpLastFM.add(jtfASUser, "1,2");
+		jpLastFM.add(jlASPassword, "0,3");
+		jpLastFM.add(jpfASPassword, "1,3");
 
 		// - Cover
 		jpCovers = new JPanel();
@@ -895,7 +896,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		// -- User interface --
 		jpUI = new JPanel();
-		double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p,p } };
+		double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
 		TableLayout layoutUI = new TableLayout(sizeUI);
 		layoutUI.setHGap(iXSeparator);
 		layoutUI.setVGap(iYSeparator);
@@ -919,7 +920,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpCatalogSize.add(jlCatalogPages);
 		jpCatalogSize.add(jsCatalogPages);
 		catalogView.add(jpCatalogSize);
-		
+
 		// Font selector
 		jlFonts = new JLabel(Messages.getString("ParameterView.223"));
 		jsFonts = new JSlider(8, 16, ConfigurationManager.getInt(CONF_FONTS_SIZE));
@@ -1035,8 +1036,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		setLayout(new TableLayout(size));
 		// add main panels
 		jtpMain = new JTabbedPane(JTabbedPane.LEFT);
-		//ScrollPane without border
-		class JajukJScrollPane extends JScrollPane{
+		// ScrollPane without border
+		class JajukJScrollPane extends JScrollPane {
 			public JajukJScrollPane(Component view) {
 				super(view);
 				setBorder(null);
@@ -1050,7 +1051,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jtpMain.addTab(Messages.getString("ParameterView.8"), new JajukJScrollPane(jpHistory));
 		jtpMain.addTab(Messages.getString("ParameterView.235"), new JajukJScrollPane(jpLastFM));
 		jtpMain.addTab(Messages.getString("ParameterView.159"), new JajukJScrollPane(jpCovers));
-		jtpMain.addTab(Messages.getString("ParameterView.26"), new JajukJScrollPane(jpConfirmations));
+		jtpMain.addTab(Messages.getString("ParameterView.26"),
+				new JajukJScrollPane(jpConfirmations));
 		jtpMain.addTab(Messages.getString("ParameterView.139"), new JajukJScrollPane(jpNetwork));
 		jtpMain.addTab(Messages.getString("ParameterView.115"), new JajukJScrollPane(jpAdvanced));
 		try {
@@ -1079,7 +1081,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	 * 
 	 */
 	public ParameterView() {
-		
+
 	}
 
 	/*
@@ -1122,7 +1124,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					}
 					if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
 						// make sure none device is refreshing
-						for (Track track : TrackManager.getInstance().getTracks()){
+						for (Track track : TrackManager.getInstance().getTracks()) {
 							track.setRate(0);
 						}
 						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
@@ -1237,14 +1239,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 	private void applyParameters() {
 		// **Read all parameters**
 		// Options
-		boolean bHiddenState = jcbDisplayUnmounted.isSelected();
-		if (bHiddenState != bHidden) { // check if this option changed to
-			// launch a refresh if needed
-			bHidden = bHiddenState;
-			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-		}
 		ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
-				.toString(bHiddenState));
+				.toString(jcbDisplayUnmounted.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK, Boolean
 				.toString(jcbDefaultActionClick.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean
@@ -1255,6 +1251,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				.isSelected()));
 		ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_ENABLE, Boolean
 				.toString(jcbAudioScrobbler.isSelected()));
+		ConfigurationManager.setProperty(CONF_LASTFM_INFO, Boolean
+				.toString(jcbEnableLastFMInformation.isSelected()));
 		if (jcbAudioScrobbler.isSelected()) {
 			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_USER, jtfASUser.getText());
 			ConfigurationManager.setProperty(CONF_AUDIOSCROBBLER_PASSWORD, Util.rot13(new String(
@@ -1343,10 +1341,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// UI
 		ConfigurationManager.setProperty(CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages
 				.getValue()));
-		ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean
-				.toString(jcbShowPopups.isSelected()));
-		ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean
-				.toString(jcbShowPopups.isSelected()));
+		ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
+				.isSelected()));
+		ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
+				.isSelected()));
 		ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK_IMAGE, pathWatermarkFile.getUrl());
 		int oldFont = ConfigurationManager.getInt(CONF_FONTS_SIZE);
 		// Display a message if font changed
@@ -1462,7 +1460,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		// options
 		boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
 		jcbDisplayUnmounted.setSelected(bHidden);
-		this.bHidden = bHidden;
 		jcbDefaultActionClick.setSelected(ConfigurationManager
 				.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
 		jcbDefaultActionDrop.setSelected(ConfigurationManager
@@ -1537,6 +1534,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled());
 
 		jcbAudioScrobbler.setSelected(ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE));
+		jcbEnableLastFMInformation.setSelected(ConfigurationManager.getBoolean(CONF_LASTFM_INFO));
 		if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
 			Log.debug(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD));
 			jtfASUser.setText(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER));

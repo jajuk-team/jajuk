@@ -30,6 +30,10 @@
 <Key dockName="org.jajuk.ui.views.LyricsView/0"/>
 <RelativePosition x="0.0" y="0.0" w="0.25" h="1.0" />
 </Dockable>
+<Dockable>
+<Key dockName="org.jajuk.ui.views.SuggestionView/0"/>
+<RelativePosition x="0.0" y="0.0" w="0.25" h="1.0" />
+</Dockable>
 </Border>
 <TabGroups>
 </TabGroups>

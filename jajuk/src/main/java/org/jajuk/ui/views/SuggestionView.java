@@ -29,6 +29,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobberAlbumThumbnail;
+import org.jajuk.ui.thumbnails.AudioScrobberAuthorThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -57,6 +58,7 @@ import com.sun.java.help.impl.SwingWorker;
 
 import ext.FlowScrollPanel;
 import ext.services.lastfm.AudioScrobblerAlbum;
+import ext.services.lastfm.AudioScrobblerArtist;
 import ext.services.lastfm.AudioScrobblerService;
 
 /**
@@ -92,7 +94,8 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
 	class ThumbMouseListener extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
-			AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent().getParent();
+			AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent()
+					.getParent();
 			// remove red border on previous item if
 			// different from this one
 			if (selectedThumb != null && selectedThumb != thumb) {
@@ -194,6 +197,21 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 	}
 
 	private void refreshLastFMCollectionTabs(final String author) {
+		// if none track playing
+		if (FIFO.getInstance().getCurrentFile() == null
+		// Last.FM infos is disable
+				|| !ConfigurationManager.getBoolean(CONF_LASTFM_INFO)
+				// If unknown author
+				|| (author == null || author.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
+			// Set empty panels
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					tabs.setComponentAt(3, Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+					tabs.setComponentAt(4, Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+				}
+			});
+			return;
+		}
 		// Display a busy panel in the mean-time
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -214,14 +232,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			@Override
 			public Object construct() {
 				try {
-					// if none track playing, leave with a null panel
-					if (FIFO.getInstance().getCurrentFile() == null) {
-						return null;
-					}
-					// If unknown author, return a null panel
-					if (author == null || author.equals(Messages.getString(UNKNOWN_AUTHOR))) {
-						return null;
-					}
 					jsp1 = getLastFMSuggestionsPanel(author, SuggestionType.OTHERS_ALBUMS);
 					jsp2 = getLastFMSuggestionsPanel(author, SuggestionType.SIMILAR_AUTHORS);
 				} catch (Exception e) {
@@ -295,6 +305,16 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 				out.add(thumb);
 			}
 		} else if (type == SuggestionType.SIMILAR_AUTHORS) {
+			// store the current author
+			previousAuthor = author;
+			List<AudioScrobblerArtist> authors = AudioScrobblerService.getInstance()
+					.getSimilarArtists(author).getArtists();
+			for (AudioScrobblerArtist similarAuthor : authors) {
+				AudioScrobberAuthorThumbnail thumb = new AudioScrobberAuthorThumbnail(similarAuthor);
+				thumb.populate();
+				thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+				out.add(thumb);
+			}
 		}
 		return jsp;
 	}
@@ -322,7 +342,8 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		} else if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE)) {
 			// The show/hide unmounted may have changed, refresh local
 			// collection panels
-			refreshLastFMCollectionTabs(null);
+			refreshLastFMCollectionTabs(FIFO.getInstance().getCurrentFile().getTrack().getAuthor()
+					.getName2());
 		} else if (subject.equals(EventSubject.EVENT_PLAYER_STOP)) {
 			previousAuthor = null;
 			clearLastFMPanels();

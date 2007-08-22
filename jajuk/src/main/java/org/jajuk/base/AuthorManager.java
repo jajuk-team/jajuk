@@ -250,5 +250,20 @@ public class AuthorManager extends ItemManager {
 			return out;
 		}
 	}
+	
+	/**
+	 * @param name
+	 * @return associated author (case insensitive) or null if no match
+	 */
+	public Author getAuthorByName(String name){
+		Author out = null;
+		for (Author author:getAuthors()){
+			if (author.getName().trim().toLowerCase().matches(name.trim().toLowerCase())){
+				out = author;
+				break;
+			}
+		}
+		return out;
+	}
 
 }
