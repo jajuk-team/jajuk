@@ -50,13 +50,13 @@ public class DownloadManager implements ITechnicalStrings {
 	/**Maps urls and associated files in cache*/
 	private static HashMap<URL, String> urlCache = new HashMap<URL, String>(100);
 
-	/** Flush url cache every hour **/
+	/** Flush url cache every 2 hours **/
 	static{
 		new Thread(){
 			public void run(){
 				while (true){
 					try {
-						Thread.sleep(3600000);
+						Thread.sleep(7200000);
 					} catch (InterruptedException e) {
 						Log.error(e);
 					}
