@@ -194,6 +194,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 			update(new Event(EventSubject.EVENT_PLAY_ERROR, ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
 		}
+		//Check if a webradio has been launch before this view is visible
+		update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+				.getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
 		// register for given events
 		ObservationManager.register(this);
 		// start timer

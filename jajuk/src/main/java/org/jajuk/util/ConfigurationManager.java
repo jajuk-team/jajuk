@@ -259,6 +259,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_AUDIOSCROBBLER_ENABLE, FALSE);
 		properties.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
 		properties.put(CONF_LASTFM_INFO, TRUE);
+		properties.put(CONF_WEBRADIO_WAS_PLAYING, FALSE);
 	}
 
 	/**

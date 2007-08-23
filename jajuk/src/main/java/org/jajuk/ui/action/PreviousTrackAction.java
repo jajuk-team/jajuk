@@ -23,12 +23,15 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioManager;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 /**
  * Action class for jumping to the previous track. Installed keystroke:
@@ -39,36 +42,53 @@ public class PreviousTrackAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	PreviousTrackAction() {
-		super(Messages.getString("JajukWindow.13"),
-				IconLoader.ICON_PLAYER_PREVIOUS, "F9", false, true); 
-		setShortDescription(Messages.getString("JajukWindow.29")); 
+		super(Messages.getString("JajukWindow.13"), IconLoader.ICON_PLAYER_PREVIOUS, "F9", false,
+				true);
+		setShortDescription(Messages.getString("JajukWindow.29"));
 	}
 
 	public void perform(ActionEvent evt) {
 		// check modifiers to see if it is a movement inside track, between
 		// tracks or between albums
 		if (evt != null &&
-				//evt == null when using hotkeys
-			(evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-			ActionManager.getAction(JajukAction.PREVIOUS_ALBUM)
-					.actionPerformed(evt);
+		// evt == null when using hotkeys
+				(evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+			ActionManager.getAction(JajukAction.PREVIOUS_ALBUM).actionPerformed(evt);
 		} else {
-			synchronized (MUTEX) {
+			// if playing a radio, launch next radio station
+			if (FIFO.getInstance().isPlayingRadio()) {
+				final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
+						.getWebRadios());
+				int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
+				if (index == 0) {
+					index = radios.size() - 1;
+				} else {
+					index--;
+				}
+				final int i = index;
 				new Thread() {
 					public void run() {
-						try {
-							FIFO.getInstance().playPrevious();
-						} catch (Exception e) {
-							Log.error(e);
-						}
+						FIFO.getInstance().launchRadio(radios.get(i));
 					}
 				}.start();
+			} else {
+				synchronized (MUTEX) {
+					new Thread() {
+						public void run() {
+							try {
+								FIFO.getInstance().playPrevious();
+							} catch (Exception e) {
+								Log.error(e);
+							}
+						}
+					}.start();
 
-				// Player was paused, reset pause button when changing of track
-				if (Player.isPaused()) {
-					Player.setPaused(false);
-					ObservationManager.notify(new Event(
-							EventSubject.EVENT_PLAYER_RESUME)); 
+					// Player was paused, reset pause button when changing of
+					// track
+					if (Player.isPaused()) {
+						Player.setPaused(false);
+						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+					}
 				}
 			}
 		}

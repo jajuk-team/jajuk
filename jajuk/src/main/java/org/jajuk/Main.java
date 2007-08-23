@@ -37,6 +37,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.base.WebRadio;
 import org.jajuk.base.YearManager;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJManager;
@@ -959,6 +960,9 @@ public class Main implements ITechnicalStrings {
 				return;
 			}
 		}
+		// Store webradio state
+		ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
+				.getInstance().isPlayingRadio()));
 		// stop sound to avoid strange crash when stopping
 		Player.mute(true);
 		// set exiting flag
@@ -1088,8 +1092,21 @@ public class Main implements ITechnicalStrings {
 					fileToPlay = FileManager.getInstance().getFileByID(
 							ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				} else {
+					// If we were playing a webradio when leaving, launch it
+					if (ConfigurationManager.getBoolean(CONF_WEBRADIO_WAS_PLAYING)) {
+						final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
+								ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
+						if (radio != null) {
+							new Thread() {
+								public void run() {
+									FIFO.getInstance().launchRadio(radio);
+								}
+							}.start();
+						}
+						return;
+					}
 					// last file from beginning or last file keep position
-					if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
+					else if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
 							&& History.getInstance().getHistory().size() > 0) {
 						// make sure user didn't exit jajuk in the stopped state
 						// and that history is not void

@@ -619,6 +619,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_WEBRADIOS_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		return eventSubjectSet;
 	}
 
@@ -681,14 +682,14 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				if (!e.getValueIsAdjusting()) {
 					SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
 					try {
-						//If user selected a file
-						if (sr.getType() == SearchResultType.FILE){
-						FIFO.getInstance().push(
-								new StackItem(sr.getFile(), ConfigurationManager
-										.getBoolean(CONF_STATE_REPEAT), true), false);
+						// If user selected a file
+						if (sr.getType() == SearchResultType.FILE) {
+							FIFO.getInstance().push(
+									new StackItem(sr.getFile(), ConfigurationManager
+											.getBoolean(CONF_STATE_REPEAT), true), false);
 						}
-						//User selected a web radio
-						else if (sr.getType() == SearchResultType.WEBRADIO){
+						// User selected a web radio
+						else if (sr.getType() == SearchResultType.WEBRADIO) {
 							FIFO.getInstance().launchRadio(sr.getWebradio());
 						}
 					} catch (JajukException je) {
@@ -831,7 +832,13 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 					updateTooltips();
 				} else if (EventSubject.EVENT_WEBRADIOS_CHANGE.equals(event.getSubject())) {
 					populateWebRadios();
+				} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+					ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+					ActionManager.getAction(STOP_TRACK).setEnabled(true);
+					populateWebRadios();
 				}
+
 			}
 		});
 	}
@@ -941,7 +948,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		try {
 			// Clear previous elements
 			popupWebRadio.removeAll();
-			//Add configure radios item
+			// Add configure radios item
 			ActionBase actionConf = ActionManager.getAction(JajukAction.CONFIGURE_WEBRADIOS);
 			XCheckedButton jmiConf = new XCheckedButton(actionConf);
 			// Set icon so it is correctly displayed after a selection
@@ -953,10 +960,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				XCheckedButton jmi = new XCheckedButton(radio.getName());
 				jmi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
 						// force to reselect the item
 						populateWebRadios();
-						// update action tooltip on  main button with right item
+						// update action tooltip on main button with right item
 						ActionBase action = ActionManager.getAction(JajukAction.WEB_RADIO);
 						action.setShortDescription("<html>"
 								+ Messages.getString("CommandJPanel.25") + "<p><b>"

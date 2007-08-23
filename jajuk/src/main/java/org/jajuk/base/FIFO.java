@@ -23,7 +23,6 @@ import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -42,8 +41,6 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
-
-import ext.services.lastfm.AudioScrobblerService;
 
 /**
  * Manages playing sequences
@@ -193,12 +190,14 @@ public class FIFO implements ITechnicalStrings {
 	public void launchRadio(WebRadio radio) {
 		try {
 			Util.waiting();
+			currentRadio = radio;
 			// Play the stream
 			boolean bPlayOK = Player.play(radio);
 			if (bPlayOK) { // refresh covers if play is started
 				Log.debug("Now playing :" + radio.toString());
 				playingRadio = true;
-				currentRadio = radio;
+				//Store current radio for next startup
+				ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
 				// Send an event that a track has been launched
 				Properties pDetails = new Properties();
 				pDetails.put(DETAIL_CONTENT, radio);
