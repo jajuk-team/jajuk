@@ -27,6 +27,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.JajukTimer;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
+import org.jajuk.base.WebRadio;
 import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
@@ -41,7 +42,6 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -105,7 +105,7 @@ public class JajukSystray extends CommandJPanel {
 	JMenu jmAmbience;
 
 	long lDateLastAdjust;
-	
+
 	JSlider jsPosition;
 
 	/** Visible at startup? */
@@ -146,7 +146,6 @@ public class JajukSystray extends CommandJPanel {
 		}
 	}
 
-		
 	/**
 	 * Systray constructor
 	 * 
@@ -277,6 +276,7 @@ public class JajukSystray extends CommandJPanel {
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
 		eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		return eventSubjectSet;
 	}
 
@@ -354,7 +354,14 @@ public class JajukSystray extends CommandJPanel {
 					} else {
 						trayIcon.setToolTip(getHTMLFormatText(file));
 					}
-				} else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
+				} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+					WebRadio radio = FIFO.getInstance().getCurrentRadio();
+					if (radio != null) {
+						trayIcon.setToolTip(radio.getName());
+					}
+				}
+
+				else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
 						|| EventSubject.EVENT_ZERO.equals(subject)) {
 					trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
 					jmiPause.setEnabled(false);
@@ -388,24 +395,24 @@ public class JajukSystray extends CommandJPanel {
 				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
 						&& !Player.isPaused()) {
 					long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
-						int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
-						// Make sure to enable the slider
-						if (!jsPosition.isEnabled()) {
-							jsPosition.setEnabled(true);
-						}
-						// if position is adjusting, no don't disturb user
-						if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
-							return;
-						}
-						// make sure not to set to old position
-						if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
-							return;
-						}
-						// remove and re-add listener to make sure not to add it
-						// twice
-						jsPosition.removeChangeListener(JajukSystray.this);
-						jsPosition.setValue(iPos);
-						jsPosition.addChangeListener(JajukSystray.this);
+					int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
+					// Make sure to enable the slider
+					if (!jsPosition.isEnabled()) {
+						jsPosition.setEnabled(true);
+					}
+					// if position is adjusting, no don't disturb user
+					if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
+						return;
+					}
+					// make sure not to set to old position
+					if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
+						return;
+					}
+					// remove and re-add listener to make sure not to add it
+					// twice
+					jsPosition.removeChangeListener(JajukSystray.this);
+					jsPosition.setValue(iPos);
+					jsPosition.addChangeListener(JajukSystray.this);
 				} else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(subject)
 						|| EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
 					Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
@@ -456,14 +463,19 @@ public class JajukSystray extends CommandJPanel {
 			if (cover.canRead()) {
 				sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
 			}
-			//We use gray color for font because, due to a JDIC bug under Linux, the
-			//balloon background is white even if the the look and feel is dark (like ebony)
-			// but the look and feel makes the text white is it is black initialy
-			//so text is white on white is the balloon. It must be displayed in the tooltip too
-			//and this issue doesn't affect the tray tooltip. This color is the only one to be correctly displayed 
-			//in a dark and a light background at the same time
-			sOut += "<p><font color='#484848'><b>" + Util.getLimitedString(file.getTrack().getName(), maxSize)
-					+ "</b></font></p>";
+			// We use gray color for font because, due to a JDIC bug under
+			// Linux, the
+			// balloon background is white even if the the look and feel is dark
+			// (like ebony)
+			// but the look and feel makes the text white is it is black
+			// initialy
+			// so text is white on white is the balloon. It must be displayed in
+			// the tooltip too
+			// and this issue doesn't affect the tray tooltip. This color is the
+			// only one to be correctly displayed
+			// in a dark and a light background at the same time
+			sOut += "<p><font color='#484848'><b>"
+					+ Util.getLimitedString(file.getTrack().getName(), maxSize) + "</b></font></p>";
 			String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
 			if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
 				sOut += "<p><font color='#484848'>" + sAuthor + "</font></p>";
@@ -544,7 +556,7 @@ public class JajukSystray extends CommandJPanel {
 			jmAmbience.add(jmi);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -555,26 +567,25 @@ public class JajukSystray extends CommandJPanel {
 			int iOld = jsPosition.getValue();
 			int iNew = iOld - (e.getUnitsToScroll() * 3);
 			jsPosition.setValue(iNew);
-		}
-		else{
+		} else {
 			super.mouseWheelMoved(e);
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
 			lDateLastAdjust = System.currentTimeMillis();
 			setPosition((float) jsPosition.getValue() / 100);
-		}
-		else{
+		} else {
 			super.stateChanged(e);
 		}
 	}
 
-	
 	/**
 	 * Call a seek
 	 * 

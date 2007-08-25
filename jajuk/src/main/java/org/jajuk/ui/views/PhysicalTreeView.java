@@ -668,7 +668,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 								properties));
 					}
 					// No CDDB on directories without files
-					if (alSelectedRecursively.size() > 0 && alSelected.get(0) instanceof Directory) {
+					if (alSelectedRecursively.size() > 0 && alSelectedRecursively.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
 							// check it is a directory (can be a file if user
@@ -1183,15 +1183,15 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 			dw.setVisible(true);
 		} else if (e.getSource() == jmiFileProperties) {
 			// tracks items
-			ArrayList<Item> alTracks = new ArrayList<Item>(alSelectedRecursively.size());
-			for (Item pa : alSelectedRecursively) {
+			ArrayList<Item> alTracks = new ArrayList<Item>(alSelected.size());
+			for (Item pa : alSelected) {
 				File file = (File) pa;
 				alTracks.add(file.getTrack());
 			}
-			new PropertiesWizard(alSelectedRecursively, alTracks);
+			new PropertiesWizard(alSelected, alTracks);
 		} else if (e.getSource() == jmiDirProperties) {
-			ArrayList<Item> alTracks = new ArrayList<Item>(alSelectedRecursively.size());
-			for (Item item : alSelectedRecursively) {
+			ArrayList<Item> alTracks = new ArrayList<Item>(alSelected.size());
+			for (Item item : alSelected) {
 				Directory dir = (Directory) item;
 				for (File file : dir.getFilesRecursively()) {
 					Track track = file.getTrack();
@@ -1200,7 +1200,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					}
 				}
 			}
-			new PropertiesWizard(alSelectedRecursively, alTracks);
+			new PropertiesWizard(alSelected, alTracks);
 		} else if (e.getSource() == jmiDevProperties) {
 			Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
 			ArrayList<Item> alItems = new ArrayList<Item>(1);

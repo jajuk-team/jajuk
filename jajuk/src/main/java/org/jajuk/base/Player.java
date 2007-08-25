@@ -73,38 +73,31 @@ public class Player implements ITechnicalStrings {
 	public static boolean play(final File file, final float fPosition, final long length) {
 		fCurrent = file;
 		try {
-			playerImpl = null;
 			// Choose the player
-			Class cPlayer = file.getTrack().getType().getPlayerClass();
+			Class<IPlayerImpl> cPlayer = file.getTrack().getType().getPlayerClass();
 			// player 1 null ?
 			if (playerImpl1 == null) {
-				playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
+				playerImpl1 = cPlayer.newInstance();
 				playerImpl = playerImpl1;
 			}
 			// player 1 not null, test if it is fading
 			else if (playerImpl1.getState() != FADING_STATUS) {
 				// stop it
 				playerImpl1.stop();
-				// not fading but different player class, reinstanciate it
-				if (!playerImpl1.getClass().equals(cPlayer)) {
-					playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
-				}
+				playerImpl1 = cPlayer.newInstance();
 				playerImpl = playerImpl1;
 			}
-			// player 1 fading, OK, test player 2
+			// player 1 fading, test player 2
 			else if (playerImpl2 == null) {
-				playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
+				playerImpl2 = cPlayer.newInstance();
 				playerImpl = playerImpl2;
 			}
 			// if here, the only normal case is player 1 is fading and
 			// player 2 not null and not fading
 			else {
 				// stop it
-				playerImpl1.stop();
-				// not fading but different player class, reinstanciate it
-				if (!playerImpl2.getClass().equals(cPlayer)) {
-					playerImpl2 = (IPlayerImpl) cPlayer.newInstance();
-				}
+				playerImpl2.stop();
+				playerImpl2 = cPlayer.newInstance();
 				playerImpl = playerImpl2;
 			}
 			bPlaying = true;
@@ -165,18 +158,18 @@ public class Player implements ITechnicalStrings {
 	 */
 	public static boolean play(WebRadio radio) {
 		try {
-			//check mplayer availability
-			if (TypeManager.getInstance().getTypeByExtension(EXT_RADIO) == null){
+			// check mplayer availability
+			if (TypeManager.getInstance().getTypeByExtension(EXT_RADIO) == null) {
 				Messages.showWarningMessage(Messages.getString("Warning.4"));
 				return false;
 			}
 			playerImpl = null;
 			// Choose the player
-			Class cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
+			Class<IPlayerImpl> cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
 					.getPlayerClass();
-			//Stop all streams
+			// Stop all streams
 			stop(true);
-			playerImpl1 = (IPlayerImpl) cPlayer.newInstance();
+			playerImpl1 = cPlayer.newInstance();
 			playerImpl = playerImpl1;
 			bPlaying = true;
 			bPaused = false;
@@ -210,7 +203,7 @@ public class Player implements ITechnicalStrings {
 			Properties pDetails = new Properties();
 			pDetails.put(DETAIL_CONTENT, radio);
 			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
-			Log.error(7, Messages.getString("Player.0") + fCurrent.getAbsolutePath() + "}}", t);
+			Log.error(7, Messages.getString("Player.0") + radio.getUrl() + "}}", t);
 			return false;
 		}
 	}
@@ -232,8 +225,7 @@ public class Player implements ITechnicalStrings {
 			bPaused = false; // cancel any current pause
 			bPlaying = false;
 		} catch (Exception e) {
-			Log.debug(Messages.getString("Error.008") + ":" + fCurrent.getName() + " "
-					+ e.getMessage());
+			Log.debug(Messages.getString("Error.008") + e);
 		}
 	}
 

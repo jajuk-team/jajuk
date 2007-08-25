@@ -26,6 +26,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
+import org.jajuk.base.WebRadio;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -126,6 +127,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 	public Set<EventSubject> getRegistrationKeys() {
 		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
 		return eventSubjectSet;
 	}
@@ -247,6 +249,12 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
 			setTitle(Messages.getString("JajukWindow.17"));
 		}
+		else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+			WebRadio radio = FIFO.getInstance().getCurrentRadio();
+			if (radio != null) {
+				setTitle(radio.getName());
+			}
+		} 
 	}
 
 	/**
@@ -278,9 +286,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				if (visible) {
 					applyStoredSize();
 					// hide and show again is a workaround for a toFront() issue
-					// under Metacity
-					// see
-					// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
+					// under Metacity, see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
 					setVisible(false);
 					toFront();
 					setVisible(true);

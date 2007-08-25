@@ -960,6 +960,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 				XCheckedButton jmi = new XCheckedButton(radio.getName());
 				jmi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
 						// force to reselect the item
 						populateWebRadios();
 						// update action tooltip on main button with right item

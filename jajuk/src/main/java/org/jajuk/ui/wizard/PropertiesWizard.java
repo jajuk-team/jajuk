@@ -476,7 +476,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						int comp = 0;
 						String sCurrentStyle = pa.getHumanValue(XML_STYLE);
 						for (String s : styles) {
-							if (s.equalsIgnoreCase(sCurrentStyle)) {
+							if (s.equals(sCurrentStyle)) {
 								i = comp;
 								break;
 							}
@@ -518,7 +518,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						int comp = 0;
 						String sCurrentAuthor = pa.getHumanValue(XML_AUTHOR);
 						for (String s : authors) {
-							if (s.equalsIgnoreCase(sCurrentAuthor)) {
+							if (s.equals(sCurrentAuthor)) {
 								i = comp;
 								break;
 							}

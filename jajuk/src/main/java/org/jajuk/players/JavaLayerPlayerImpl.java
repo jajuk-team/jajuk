@@ -137,6 +137,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 * @see org.jajuk.base.IPlayerImpl#stop()
 	 */
 	public void stop() throws Exception {
+		bFading = false;
 		if (player != null) {
 			player.stop();
 		}
@@ -370,7 +371,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
 	 */
 	public long getCurrentLength() {
-		return (lDuration/1000);
+		return lDuration;
 	}
 
      public int Scrobble(){

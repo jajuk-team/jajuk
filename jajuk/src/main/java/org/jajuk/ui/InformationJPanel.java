@@ -411,6 +411,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
 					} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+						if (event.getDetails() == null){
+							return;
+						}
 						WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
 						if (radio != null) {
 							String sMessage = Messages.getString("FIFO.14") + " " + radio.getName();

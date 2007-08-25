@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.log.Log;
 
@@ -28,7 +29,7 @@ import javax.swing.ImageIcon;
 /**
  * Music type
  */
-public class Type extends PhysicalItem implements Comparable {
+public class Type extends PhysicalItem implements Comparable<Type> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,10 +37,10 @@ public class Type extends PhysicalItem implements Comparable {
 	private String sExtension;
 
 	/** Player impl */
-	private Class cTagImpl;
+	private Class<ITagImpl> cTagImpl;
 
 	/** Player class */
-	private Class cPlayerImpl;
+	private Class<IPlayerImpl> cPlayerImpl;
 
 	/**
 	 * Constructor
@@ -56,8 +57,8 @@ public class Type extends PhysicalItem implements Comparable {
 	 *            Type Tagger implementation class
 	 * @throws Exception
 	 */
-	public Type(String sId, String sName, String sExtension, Class cPlayerImpl,
-			Class cTagImpl) throws Exception {
+	public Type(String sId, String sName, String sExtension, Class<IPlayerImpl> cPlayerImpl,
+			Class<ITagImpl> cTagImpl) throws Exception {
 		super(sId, sName);
 		this.cPlayerImpl = cPlayerImpl;
 		this.sExtension = sExtension;
@@ -81,14 +82,14 @@ public class Type extends PhysicalItem implements Comparable {
 	/**
 	 * @return Player class for this type
 	 */
-	public Class getPlayerClass() throws Exception {
+	public Class<IPlayerImpl> getPlayerClass() throws Exception {
 		return cPlayerImpl;
 	}
 
 	/**
 	 * @return Tagger class for this type
 	 */
-	public Class getTaggerClass() {
+	public Class<ITagImpl> getTaggerClass() {
 		return cTagImpl;
 	}
 
@@ -115,7 +116,7 @@ public class Type extends PhysicalItem implements Comparable {
 			if (cTagImpl == null) {
 				return tagInstance;
 			}
-			tagInstance = (ITagImpl) cTagImpl.newInstance();
+			tagInstance = cTagImpl.newInstance();
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -136,7 +137,7 @@ public class Type extends PhysicalItem implements Comparable {
 	 *            item to be compared
 	 * @return comparaison result
 	 */
-	public int compareTo(Object other) {
+	public int compareTo(Type other) {
 		return toString().compareTo(other.toString());
 	}
 	

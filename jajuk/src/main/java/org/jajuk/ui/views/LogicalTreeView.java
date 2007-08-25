@@ -500,6 +500,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					int items = 0;
 					// get all components recursively
 					alSelected.clear();
+					alSelectedRecursively.clear();
 					for (int i = 0; i < tpSelected.length; i++) {
 						Object o = tpSelected[i].getLastPathComponent();
 						if (o instanceof TreeRootElement) {
@@ -536,7 +537,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						// if table is synchronized with tree, notify the
 						// selection change
 						Properties properties = new Properties();
-						properties.put(DETAIL_SELECTION, alSelected);
+						properties.put(DETAIL_SELECTION, alSelectedRecursively);
 						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective()
 								.getID());
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
