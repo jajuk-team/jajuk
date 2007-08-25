@@ -10,7 +10,7 @@
 
   <!-- maps -->
   <maps>
-     <homeID>top</homeID>
+     <homeID>table_of_contents</homeID>
      <mapref location="Map.jhm"/>
   </maps>
 
