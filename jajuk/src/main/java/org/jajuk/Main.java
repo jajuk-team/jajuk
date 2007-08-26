@@ -625,7 +625,7 @@ public class Main implements ITechnicalStrings {
 				Util.copy(new File("src/main/resources/images/included/" + FILE_BACKGROUND_IMAGE),
 						Util.getConfFileByPath("cache/internal/" + FILE_BACKGROUND_IMAGE));
 			} else {
-				Util.extractFile("images/" + FILE_BACKGROUND_IMAGE, FILE_BACKGROUND_IMAGE);
+				Util.extractFile("images/included/" + FILE_BACKGROUND_IMAGE, FILE_BACKGROUND_IMAGE);
 			}
 		}
 	}
