@@ -216,10 +216,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 			IconLabel il = null;
 			if (file.isReady()) {
 				il = new IconLabel(PLAY_ICON, "", null, null, null, Messages
-						.getString("PhysicalTreeView.1"));
+						.getString("FilesTreeView.1"));
 			} else {
 				il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-						.getString("PhysicalTreeView.1")
+						.getString("FilesTreeView.1")
 						+ Messages.getString("AbstractTableView.10"));
 			}
 			oValues[iRow][0] = il;

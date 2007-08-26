@@ -15,29 +15,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision: 2644 $$
  */
 
-package org.jajuk.ui.views;
+package org.jajuk.ui.wizard;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
+import java.awt.Dimension;
 import java.net.URL;
 import java.util.Locale;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.JHelp;
-import javax.swing.BoxLayout;
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 /**
  * Help view using java help api
  * <p>
  * Help perspective *
  */
-public class HelpView extends ViewAdapter {
+public class HelpWindow extends JDialog implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +53,17 @@ public class HelpView extends ViewAdapter {
 	/** Help component */
 	JHelp jhelp;
 
-	public HelpView() {
+	public HelpWindow() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				setTitle(Messages.getString("Help"));
+				initUI();
+				setLocationByPlatform(true);
+				setSize(new Dimension(800,600));
+				setVisible(true);
+			}
+
+		});
 	}
 
 	/*
@@ -60,8 +73,7 @@ public class HelpView extends ViewAdapter {
 	 */
 	public void initUI() {
 		try {
-			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-			ClassLoader cl = HelpView.class.getClassLoader();
+			ClassLoader cl = HelpWindow.class.getClassLoader();
 			URL url = HelpSet
 					.findHelpSet(
 							cl,

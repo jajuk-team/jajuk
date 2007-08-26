@@ -15,25 +15,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision: 2644 $$
  */
 
-package org.jajuk.ui.views;
+package org.jajuk.ui.wizard;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jfree.ui.about.AboutPanel;
-import org.jfree.ui.about.Contributor;
-import org.jfree.ui.about.ContributorsPanel;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.SystemPropertiesPanel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -44,13 +43,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 /**
  * View used to show the Jajuk about and contributors.
  * <p>
  * Help perspective *
  */
-public class AboutView extends ViewAdapter {
+public class AboutWindow extends JDialog implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
@@ -60,9 +60,6 @@ public class AboutView extends ViewAdapter {
 	/** General informations panel */
 	private AboutPanel ap;
 
-	/** Contributors panel */
-	private ContributorsPanel cp;
-
 	/** JVM properties panel */
 	private SystemPropertiesPanel spp;
 
@@ -70,13 +67,22 @@ public class AboutView extends ViewAdapter {
 	private JTabbedPane jtp;
 
 	/** Additional informations */
-	private static final String INFOS = "http://jajuk.sourceforge.net"; 
+	private static final String INFOS = "http://jajuk.info";
 
-	
 	/**
 	 * Constructor
 	 */
-	public AboutView() {
+	public AboutWindow() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				setTitle(Messages.getString("JajukJMenuBar.16"));
+				initUI();
+				setLocationByPlatform(true);
+				setSize(new Dimension(600,300));
+				setVisible(true);
+			}
+
+		});
 	}
 
 	/*
@@ -85,8 +91,7 @@ public class AboutView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void initUI() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		// licence panel
+		// license panel
 		jpLicence = new JPanel(new BorderLayout());
 		JTextArea jta = new JTextArea(Licences.getInstance().getGPL());
 		jta.setLineWrap(true);
@@ -101,7 +106,7 @@ public class AboutView extends ViewAdapter {
 					try {
 						JDialog jd = new JDialog(Main.getWindow());
 						ImageIcon ii = new ImageIcon(new URL(
-								"http://jajuk.sourceforge.net/01/flbf.jpg")); 
+								"http://jajuk.sourceforge.net/01/flbf.jpg"));
 						JPanel jp = new JPanel();
 						jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
 						JLabel jl = new JLabel(ii);
@@ -119,35 +124,17 @@ public class AboutView extends ViewAdapter {
 
 		jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
-		ArrayList<Contributor> alContribs = new ArrayList<Contributor>(10);
-		alContribs.add(new Contributor("Bertrand Florat", "bflorat@users.sourceforge.net"));  
-		alContribs.add(new Contributor(
-				"Gerhard Dietrichsteiner", "skyreacher@users.sourceforge.net"));  
-		alContribs.add(new Contributor("Riccardo Capecchi", "ricciocri@users.sourceforge.net"));  
-		alContribs.add(new Contributor("Oscar Appelgren", "oscariot@users.sourceforge.net"));  
-		alContribs
-				.add(new Contributor("Marc-Siebren Kwadijk", "marcsiebren@users.sourceforge.net")); 
-		alContribs.add(new Contributor("Sébastien Gringoire", "sgringoire@users.sourceforge.net"));  
-		alContribs.add(new Contributor("Ronak Patel", ""));  
-		alContribs.add(new Contributor("Josep Carles Collazos", "jespo@users.sourceforge.net"));  
-		alContribs.add(new Contributor("Bart Cremers", "bcremers@gmail.com"));  
-		alContribs.add(new Contributor("Erwan Richard", "erwan.richard@laposte.net"));  
-		alContribs.add(new Contributor("Jérome Fortain", "jf_sourceforge@khiplus.fr"));  
-		alContribs.add(new Contributor(
-				"Nicolas Schudel", "https://sourceforge.net/users/nicolasschudel/"));  
-		alContribs.add(new Contributor("Sung Pil Moon", ""));  
-		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
-		ap = new AboutPanel(
-				"Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, IconLoader.ICON_LOGO.getImage());   
+		ap = new AboutPanel("Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE,
+				"<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, IconLoader.ICON_LOGO
+						.getImage());
 		jpAbout.add(ap);
-		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());
 		spp = new SystemPropertiesPanel();
-		jtp.addTab(Messages.getString("AboutView.7"), jpAbout); 
-		jtp.addTab(Messages.getString("AboutView.8"), jpLicence); 
-		jtp.addTab(Messages.getString("AboutView.9"), spp); 
+		jtp.addTab(Messages.getString("AboutView.7"), jpAbout);
+		jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
+		jtp.addTab(Messages.getString("AboutView.9"), spp);
 		add(jtp);
 	}
 
@@ -157,7 +144,7 @@ public class AboutView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AboutView.10"); 
+		return Messages.getString("AboutView.10");
 	}
 
 }

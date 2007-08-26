@@ -77,7 +77,9 @@ public class NetworkUtils implements ITechnicalStrings {
 			builder.append(new String(array, 0, read, charset));
 		}
 		input.close();
-		return builder.toString();
+		String out = builder.toString();
+		Log.debug("HTML="+out);
+		return out;
 	}
 	
 	public static String readURL(URLConnection connection) throws IOException {

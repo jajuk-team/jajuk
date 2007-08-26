@@ -191,10 +191,10 @@ public class TracksTableModel extends JajukTableModel {
 			IconLabel il = null;
 			if (track.getPlayeableFile(true) != null) {
 				il = new IconLabel(PLAY_ICON, "", null, null, null, Messages
-						.getString("LogicalTreeView.1"));
+						.getString("TracksTreeView.1"));
 			} else {
 				il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-						.getString("LogicalTreeView.1")
+						.getString("TracksTreeView.1")
 						+ Messages.getString("AbstractTableView.10"));
 			}
 			// Note: if you want to add an image, use an ImageIcon class and

@@ -34,7 +34,6 @@ import java.net.URL;
 public class UpgradeManager implements ITechnicalStrings {
 	/**
 	 * Actions to migrate an existing installation Step1 just at startup
-	 * 
 	 */
 	public static void upgradeStep1() throws Exception {
 		// --For jajuk < 0.2 : remove backup file : collection~.xml
@@ -71,6 +70,27 @@ public class UpgradeManager implements ITechnicalStrings {
 			} else {
 				ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
 			}
+		}
+		//for jajuk <1.4 (or early 1.4), some perspectives have been renamed
+		File fPerspective = Util.getConfFileByPath("LogicalPerspective.xml");
+		if (fPerspective.exists()){
+			fPerspective.delete();
+		}
+		fPerspective = Util.getConfFileByPath("PhysicalPerspective.xml");
+		if (fPerspective.exists()){
+			fPerspective.delete();
+		}
+		fPerspective = Util.getConfFileByPath("SimplePerspective.xml");
+		if (fPerspective.exists()){
+			fPerspective.delete();
+		}
+		fPerspective = Util.getConfFileByPath("PlayerPerspective.xml");
+		if (fPerspective.exists()){
+			fPerspective.delete();
+		}
+		fPerspective = Util.getConfFileByPath("HelpPerspective.xml");
+		if (fPerspective.exists()){
+			fPerspective.delete();
 		}
 		// TO DO AFTER AN UPGRADE
 		if (Main.isUpgradeDetected()) {

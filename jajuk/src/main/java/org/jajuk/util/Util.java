@@ -1174,8 +1174,9 @@ public class Util implements ITechnicalStrings {
 	 * @param watermark
 	 *            name
 	 */
-	public static void setWatermark(String watermark) {
+	public static void setWatermark(String pWatermark) {
 		try {
+			String watermark = pWatermark;
 			// Check the watermark is known, if not take the default one
 			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
 			if (watermarks.get(watermark) == null) {
@@ -1867,15 +1868,7 @@ public class Util implements ITechnicalStrings {
 			// assume all tracks for an album are in the same directory
 			Track trackCurrent = tracks.iterator().next();
 			fCover = trackCurrent.getAlbum().getCoverFile();
-			if (fCover == null) {
-				try {
-					// use void file to store the fact we didn't find a
-					// cover, too long to scan again
-					fThumb.createNewFile();
-				} catch (Exception e) {
-					Log.error(e);
-				}
-			} else {
+			if (fCover != null) {
 				try {
 					int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
 					Util.createThumbnail(fCover, fThumb, iSize);

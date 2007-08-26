@@ -23,19 +23,19 @@ package org.jajuk.ui.perspectives;
 import org.jajuk.i18n.Messages;
 
 /**
- * Physical perspective
+ * Player perspective, contains view usefull to be displayed duriong playing
  */
-public class PhysicalPerspective extends PerspectiveAdapter {
+public class DisplayPerspective extends PerspectiveAdapter {
 
 	private static final long serialVersionUID = 1L;
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.jajuk.ui.IPerspective#getDesc()
+	 * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Physical"); 
+		return Messages.getString("Perspective_Description_Player"); 
 	}
 
 }

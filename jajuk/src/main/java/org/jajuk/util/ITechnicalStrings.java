@@ -236,6 +236,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_REPORTING_CSS_PRINT_FILENAME = "report-print.css";
 
 	public static final URL FILE_REPORTING_CSS_PRINT_PATH = Util.getResource("xslt/"+FILE_REPORTING_CSS_PRINT_FILENAME);
+	
+	public static final String FILE_BACKGROUND_IMAGE = "background.jpg";
 
 	public static final String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
 	
@@ -569,10 +571,10 @@ public interface ITechnicalStrings {
 	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
 
 	/** Default substance theme * */
-	public static final String LNF_DEFAULT_THEME = "Aqua";
+	public static final String LNF_DEFAULT_THEME = "Steel Blue";
 
 	/** Default substance watermark * */
-	public static final String LNF_DEFAULT_WATERMARK = "Magnetic Field";
+	public static final String LNF_DEFAULT_WATERMARK = "Image";
 
 	/** Image watermark*/
 	public static final String LNF_WATERMARK_IMAGE = "Image";

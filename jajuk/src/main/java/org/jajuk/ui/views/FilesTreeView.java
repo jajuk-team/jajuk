@@ -102,7 +102,7 @@ import ext.SwingWorker;
 /**
  * Physical tree view
  */
-public class PhysicalTreeView extends AbstractTreeView implements ActionListener,
+public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		org.jajuk.base.Observer {
 
 	private static final long serialVersionUID = 1L;
@@ -233,11 +233,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalTreeView.0");
+		return Messages.getString("FilesTreeView.0");
 	}
 
 	/** Constructor */
-	public PhysicalTreeView() {
+	public FilesTreeView() {
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {
@@ -272,27 +272,27 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 
 		// File menu
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.1"),
+		jmiFilePlay = new JMenuItem(Messages.getString("FilesTreeView.1"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTreeView.2"), IconLoader.ICON_PUSH);
+		jmiFilePush = new JMenuItem(Messages.getString("FilesTreeView.2"), IconLoader.ICON_PUSH);
 		jmiFilePush.addActionListener(this);
-		jmiFileCopy = new JMenuItem(Messages.getString("PhysicalTreeView.3"), IconLoader.ICON_COPY);
+		jmiFileCopy = new JMenuItem(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY);
 		jmiFileCopy.setEnabled(false);
 		jmiFileCopy.addActionListener(this);
-		jmiFileCut = new JMenuItem(Messages.getString("PhysicalTreeView.4"));
+		jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"));
 		jmiFileCut.setEnabled(false);
 		jmiFileCut.addActionListener(this);
-		jmiFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.5"));
+		jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
 		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
-		jmiFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.7"));
+		jmiFileDelete = new JMenuItem(Messages.getString("FilesTreeView.7"));
 		jmiFileDelete.setEnabled(false);
 		jmiFileDelete.addActionListener(this);
-		jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.9"),
+		jmiFileProperties = new JMenuItem(Messages.getString("FilesTreeView.9"),
 				IconLoader.ICON_PROPERTIES);
 		jmiFileProperties.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56"),
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("FilesTreeView.56"),
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
@@ -302,45 +302,45 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 
 		// Directory menu
 		jmenuDir = new JPopupMenu();
-		jmiDirPlay = new JMenuItem(Messages.getString("PhysicalTreeView.10"),
+		jmiDirPlay = new JMenuItem(Messages.getString("FilesTreeView.10"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiDirPlay.addActionListener(this);
-		jmiDirPush = new JMenuItem(Messages.getString("PhysicalTreeView.11"), IconLoader.ICON_PUSH);
+		jmiDirPush = new JMenuItem(Messages.getString("FilesTreeView.11"), IconLoader.ICON_PUSH);
 		jmiDirPush.addActionListener(this);
-		jmiDirPlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.12"),
+		jmiDirPlayShuffle = new JMenuItem(Messages.getString("FilesTreeView.12"),
 				IconLoader.ICON_SHUFFLE);
 		jmiDirPlayShuffle.addActionListener(this);
-		jmiDirPlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.13"),
+		jmiDirPlayRepeat = new JMenuItem(Messages.getString("FilesTreeView.13"),
 				IconLoader.ICON_REPEAT);
 		jmiDirPlayRepeat.addActionListener(this);
-		jmiDirDesynchro = new JMenuItem(Messages.getString("PhysicalTreeView.14"),
+		jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"),
 				IconLoader.ICON_DIRECTORY_DESYNCHRO);
 		jmiDirDesynchro.addActionListener(this);
-		jmiDirResynchro = new JMenuItem(Messages.getString("PhysicalTreeView.15"),
+		jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"),
 				IconLoader.ICON_DIRECTORY_SYNCHRO);
 		jmiDirResynchro.addActionListener(this);
-		jmiDirCreatePlaylist = new JMenuItem(Messages.getString("PhysicalTreeView.16"));
+		jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
 		jmiDirCreatePlaylist.setEnabled(false);
 		jmiDirCreatePlaylist.addActionListener(this);
-		jmiDirCopy = new JMenuItem(Messages.getString("PhysicalTreeView.17"));
+		jmiDirCopy = new JMenuItem(Messages.getString("FilesTreeView.17"));
 		jmiDirCopy.setEnabled(false);
 		jmiDirCopy.addActionListener(this);
-		jmiDirCut = new JMenuItem(Messages.getString("PhysicalTreeView.18"));
+		jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"));
 		jmiDirCut.setEnabled(false);
 		jmiDirCut.addActionListener(this);
-		jmiDirPaste = new JMenuItem(Messages.getString("PhysicalTreeView.19"));
+		jmiDirPaste = new JMenuItem(Messages.getString("FilesTreeView.19"));
 		jmiDirPaste.setEnabled(false);
 		jmiDirPaste.addActionListener(this);
-		jmiDirDelete = new JMenuItem(Messages.getString("PhysicalTreeView.21"));
+		jmiDirDelete = new JMenuItem(Messages.getString("FilesTreeView.21"));
 		jmiDirDelete.setEnabled(false);
 		jmiDirDelete.addActionListener(this);
-		jmiDirProperties = new JMenuItem(Messages.getString("PhysicalTreeView.23"),
+		jmiDirProperties = new JMenuItem(Messages.getString("FilesTreeView.23"),
 				IconLoader.ICON_PROPERTIES);
 		jmiDirProperties.addActionListener(this);
-		jmiDirAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56"),
+		jmiDirAddFavorites = new JMenuItem(Messages.getString("FilesTreeView.56"),
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiDirAddFavorites.addActionListener(this);
-		jmiDirCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57"),
+		jmiDirCDDBQuery = new JMenuItem(Messages.getString("FilesTreeView.57"),
 				IconLoader.ICON_LIST);
 		jmiDirCDDBQuery.addActionListener(this);
 
@@ -350,7 +350,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// to be able to get it
 		jmiDirReport.putClientProperty(DETAIL_ORIGIN, XML_DIRECTORY);
 		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
-		jmiDirRefactor = new JMenuItem(Messages.getString(("PhysicalTreeView.62")),
+		jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDirRefactor.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
@@ -367,38 +367,38 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 
 		// Device menu
 		jmenuDev = new JPopupMenu();
-		jmiDevPlay = new JMenuItem(Messages.getString("PhysicalTreeView.24"),
+		jmiDevPlay = new JMenuItem(Messages.getString("FilesTreeView.24"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiDevPlay.addActionListener(this);
-		jmiDevPush = new JMenuItem(Messages.getString("PhysicalTreeView.25"), IconLoader.ICON_PUSH);
+		jmiDevPush = new JMenuItem(Messages.getString("FilesTreeView.25"), IconLoader.ICON_PUSH);
 		jmiDevPush.addActionListener(this);
-		jmiDevPlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.26"),
+		jmiDevPlayShuffle = new JMenuItem(Messages.getString("FilesTreeView.26"),
 				IconLoader.ICON_SHUFFLE);
 		jmiDevPlayShuffle.addActionListener(this);
-		jmiDevPlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.27"),
+		jmiDevPlayRepeat = new JMenuItem(Messages.getString("FilesTreeView.27"),
 				IconLoader.ICON_REPEAT);
 		jmiDevPlayRepeat.addActionListener(this);
-		jmiDevMount = new JMenuItem(Messages.getString("PhysicalTreeView.28"),
+		jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"),
 				IconLoader.ICON_UNMOUNT);
 		jmiDevMount.addActionListener(this);
-		jmiDevUnmount = new JMenuItem(Messages.getString("PhysicalTreeView.29"),
+		jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"),
 				IconLoader.ICON_UNMOUNT);
 		jmiDevUnmount.addActionListener(this);
-		jmiDevRefresh = new JMenuItem(Messages.getString("PhysicalTreeView.30"),
+		jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"),
 				IconLoader.ICON_REFRESH);
 		jmiDevRefresh.addActionListener(this);
-		jmiDevSynchronize = new JMenuItem(Messages.getString("PhysicalTreeView.31"),
+		jmiDevSynchronize = new JMenuItem(Messages.getString("FilesTreeView.31"),
 				IconLoader.ICON_SYNCHRO);
 		jmiDevSynchronize.addActionListener(this);
-		jmiDevTest = new JMenuItem(Messages.getString("PhysicalTreeView.32"), IconLoader.ICON_TEST);
+		jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"), IconLoader.ICON_TEST);
 		jmiDevTest.addActionListener(this);
-		jmiDevProperties = new JMenuItem(Messages.getString("PhysicalTreeView.35"),
+		jmiDevProperties = new JMenuItem(Messages.getString("FilesTreeView.35"),
 				IconLoader.ICON_PROPERTIES);
 		jmiDevProperties.addActionListener(this);
-		jmiDevCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57"),
+		jmiDevCDDBQuery = new JMenuItem(Messages.getString("FilesTreeView.57"),
 				IconLoader.ICON_NET_SEARCH);
 		jmiDevCDDBQuery.addActionListener(this);
-		jmiDevConfiguration = new JMenuItem(Messages.getString("PhysicalTreeView.55"),
+		jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"),
 				IconLoader.ICON_CONFIGURATION);
 		jmiDevConfiguration.addActionListener(this);
 		Action actionReportDevice = ActionManager.getAction(JajukAction.CREATE_REPORT);
@@ -407,7 +407,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// to be able to get it
 		jmiDevReport.putClientProperty(DETAIL_ORIGIN, XML_DEVICE);
 		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
-		jmiDevOrganize = new JMenuItem(Messages.getString(("PhysicalTreeView.62")),
+		jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDevOrganize.addActionListener(this);
 
@@ -429,33 +429,33 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		// Playlist file menu
 		// File menu
 		jmenuPlaylistFile = new JPopupMenu();
-		jmiPlaylistFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.36"),
+		jmiPlaylistFilePlay = new JMenuItem(Messages.getString("FilesTreeView.36"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiPlaylistFilePlay.addActionListener(this);
-		jmiPlaylistFilePush = new JMenuItem(Messages.getString("PhysicalTreeView.37"),
+		jmiPlaylistFilePush = new JMenuItem(Messages.getString("FilesTreeView.37"),
 				IconLoader.ICON_PUSH);
 		jmiPlaylistFilePush.addActionListener(this);
-		jmiPlaylistFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.38"),
+		jmiPlaylistFilePlayShuffle = new JMenuItem(Messages.getString("FilesTreeView.38"),
 				IconLoader.ICON_SHUFFLE);
 		jmiPlaylistFilePlayShuffle.addActionListener(this);
-		jmiPlaylistFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.39"),
+		jmiPlaylistFilePlayRepeat = new JMenuItem(Messages.getString("FilesTreeView.39"),
 				IconLoader.ICON_REPEAT);
 		jmiPlaylistFilePlayRepeat.addActionListener(this);
-		jmiPlaylistFileCopy = new JMenuItem(Messages.getString("PhysicalTreeView.40"));
+		jmiPlaylistFileCopy = new JMenuItem(Messages.getString("FilesTreeView.40"));
 		jmiPlaylistFileCopy.setEnabled(false);
 		jmiPlaylistFileCopy.addActionListener(this);
-		jmiPlaylistFileCut = new JMenuItem(Messages.getString("PhysicalTreeView.41"));
+		jmiPlaylistFileCut = new JMenuItem(Messages.getString("FilesTreeView.41"));
 		jmiPlaylistFileCut.setEnabled(false);
 		jmiPlaylistFileCut.addActionListener(this);
-		jmiPlaylistFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.42"));
+		jmiPlaylistFilePaste = new JMenuItem(Messages.getString("FilesTreeView.42"));
 		jmiPlaylistFilePaste.setEnabled(false);
 		jmiPlaylistFilePaste.addActionListener(this);
-		jmiPlaylistFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.44"));
+		jmiPlaylistFileDelete = new JMenuItem(Messages.getString("FilesTreeView.44"));
 		jmiPlaylistFileDelete.addActionListener(this);
-		jmiPlaylistAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56"),
+		jmiPlaylistAddFavorites = new JMenuItem(Messages.getString("FilesTreeView.56"),
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiPlaylistAddFavorites.addActionListener(this);
-		jmiPlaylistFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.46"),
+		jmiPlaylistFileProperties = new JMenuItem(Messages.getString("FilesTreeView.46"),
 				IconLoader.ICON_PROPERTIES);
 		jmiPlaylistFileProperties.addActionListener(this);
 		jmenuPlaylistFile.add(jmiPlaylistFilePlay);
@@ -471,7 +471,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmenuPlaylistFile.add(jmiPlaylistFileProperties);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		top = new TreeRootElement(Messages.getString("PhysicalTreeView.47"));
+		top = new TreeRootElement(Messages.getString("FilesTreeView.47"));
 		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
 
@@ -649,12 +649,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					}
 					lSize /= 1048576; // set size in MB
 					StringBuffer sbOut = new StringBuffer().append(items).append(
-							Messages.getString("PhysicalTreeView.52"));
+							Messages.getString("FilesTreeView.52"));
 					if (lSize > 1024) { // more than 1024 MB -> in GB
 						sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
-								Messages.getString("PhysicalTreeView.53"));
+								Messages.getString("FilesTreeView.53"));
 					} else {
-						sbOut.append(lSize).append(Messages.getString("PhysicalTreeView.54"));
+						sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
 					}
 					InformationJPanel.getInstance().setSelection(sbOut.toString());
 					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {

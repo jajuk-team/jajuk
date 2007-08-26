@@ -20,8 +20,7 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.HelpPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.HelpWindow;
 import org.jajuk.util.IconLoader;
 
 import java.awt.event.ActionEvent;
@@ -39,6 +38,6 @@ public class HelpRequiredAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) {
-		PerspectiveManager.setCurrentPerspective(HelpPerspective.class.getName());
+		new HelpWindow();
 	}
 }

@@ -60,6 +60,7 @@ import ext.FlowScrollPanel;
 import ext.services.lastfm.AudioScrobblerAlbum;
 import ext.services.lastfm.AudioScrobblerArtist;
 import ext.services.lastfm.AudioScrobblerService;
+import ext.services.lastfm.AudioScrobblerSimilarArtists;
 
 /**
  * Show suggested albums based on current collection (bestof, novelties) and
@@ -206,8 +207,10 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			// Set empty panels
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					tabs.setComponentAt(3, Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
-					tabs.setComponentAt(4, Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+					tabs.setComponentAt(3, Util.getCentredPanel(new JLabel(Messages
+							.getString("SuggestionView.7"))));
+					tabs.setComponentAt(4, Util.getCentredPanel(new JLabel(Messages
+							.getString("SuggestionView.7"))));
 				}
 			});
 			return;
@@ -298,22 +301,28 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			previousAuthor = author;
 			List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
 					author);
-			for (AudioScrobblerAlbum album : albums) {
-				AudioScrobberAlbumThumbnail thumb = new AudioScrobberAlbumThumbnail(album);
-				thumb.populate();
-				thumb.jlIcon.addMouseListener(new ThumbMouseListener());
-				out.add(thumb);
+			if (albums != null) {
+				for (AudioScrobblerAlbum album : albums) {
+					AudioScrobberAlbumThumbnail thumb = new AudioScrobberAlbumThumbnail(album);
+					thumb.populate();
+					thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+					out.add(thumb);
+				}
 			}
 		} else if (type == SuggestionType.SIMILAR_AUTHORS) {
 			// store the current author
 			previousAuthor = author;
-			List<AudioScrobblerArtist> authors = AudioScrobblerService.getInstance()
-					.getSimilarArtists(author).getArtists();
-			for (AudioScrobblerArtist similarAuthor : authors) {
-				AudioScrobberAuthorThumbnail thumb = new AudioScrobberAuthorThumbnail(similarAuthor);
-				thumb.populate();
-				thumb.jlIcon.addMouseListener(new ThumbMouseListener());
-				out.add(thumb);
+			AudioScrobblerSimilarArtists similar = AudioScrobblerService.getInstance()
+					.getSimilarArtists(author);
+			if (similar != null) {
+				List<AudioScrobblerArtist> authors = similar.getArtists();
+				for (AudioScrobblerArtist similarAuthor : authors) {
+					AudioScrobberAuthorThumbnail thumb = new AudioScrobberAuthorThumbnail(
+							similarAuthor);
+					thumb.populate();
+					thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+					out.add(thumb);
+				}
 			}
 		}
 		return jsp;

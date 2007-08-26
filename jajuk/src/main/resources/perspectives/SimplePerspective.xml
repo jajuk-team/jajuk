@@ -7,7 +7,7 @@
 <Key dockName="org.jajuk.ui.views.SuggestionView/0"/>
 </Dockable>
 <Dockable>
-<Key dockName="org.jajuk.ui.views.LogicalTableView/0"/>
+<Key dockName="org.jajuk.ui.views.TracksTableView/0"/>
 </Dockable>
 </Split>
 </DockingPanel>

@@ -82,22 +82,20 @@ public class ViewFactory {
 		Set<Class> out = new LinkedHashSet<Class>();
 		// Take one instance of each set of view instances mapped to each view
 		// classname
-		out.add(AboutView.class);
 		out.add(AnimationView.class);
 		out.add(CatalogView.class);
 		out.add(CDScanView.class);
 		out.add(CoverView.class);
 		out.add(DeviceView.class);
-		out.add(HelpView.class);
-		out.add(LogicalTableView.class);
-		out.add(LogicalTreeView.class);
+		out.add(TracksTableView.class);
+		out.add(TracksTreeView.class);
 		out.add(PlaylistEditorView.class);
 		out.add(LogicalPlaylistRepositoryView.class);
 		out.add(LyricsView.class);
 		out.add(ParameterView.class);
 		out.add(PhysicalPlaylistRepositoryView.class);
-		out.add(PhysicalTableView.class);
-		out.add(PhysicalTreeView.class);
+		out.add(FilesTableView.class);
+		out.add(FilesTreeView.class);
 		out.add(StatView.class);
 		out.add(SuggestionView.class);
 		out.add(WikipediaView.class);

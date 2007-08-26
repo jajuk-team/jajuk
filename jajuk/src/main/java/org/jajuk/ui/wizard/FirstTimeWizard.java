@@ -28,7 +28,6 @@ import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.PathSelector;
 import org.jajuk.ui.ToggleLink;
-import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
@@ -211,8 +210,8 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 			}
 		} else if (e.getSource() == jbOk) {
 			if (jcbHelp.isSelected()) {
-				// set parameter perspective
-				Main.setDefaultPerspective(HelpPerspective.class.getName());
+				// Display help window
+				new HelpWindow();
 			} else {
 				// set Simple perspective
 				Main.setDefaultPerspective(SimplePerspective.class.getName());

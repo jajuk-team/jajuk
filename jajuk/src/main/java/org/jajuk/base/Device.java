@@ -210,10 +210,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	private void manualRefresh(boolean bAsk) {
 		int i = OPTION_REFRESH_DEEP;
 		if (bAsk) {
-			Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),// fast
-					Messages.getString("PhysicalTreeView.61"),// deep
+			Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
+					Messages.getString("FilesTreeView.61"),// deep
 					Messages.getString("Cancel") };// cancel
-			i = JOptionPane.showOptionDialog(null, Messages.getString("PhysicalTreeView.59"),
+			i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"),
 					Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
 			if (i == OPTION_REFRESH_CANCEL) { // Cancel

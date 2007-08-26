@@ -23,19 +23,20 @@ package org.jajuk.ui.perspectives;
 import org.jajuk.i18n.Messages;
 
 /**
- * Player perspective, contains view usefull to be displayed duriong playing
+ * Logical perspective
  */
-public class PlayerPerspective extends PerspectiveAdapter {
+public class TracksPerspective extends PerspectiveAdapter {
 
 	private static final long serialVersionUID = 1L;
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
+	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Player"); 
+		return Messages.getString("Perspective_Description_Logical"); 
 	}
+
 
 }

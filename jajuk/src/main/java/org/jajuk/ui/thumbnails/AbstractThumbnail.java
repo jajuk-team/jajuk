@@ -202,24 +202,24 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	void postPopulate() {
 		// Album menu
 		jmenu = new JPopupMenu();
-		jmiPlay = new JMenuItem(Messages.getString("LogicalTreeView.15"),
+		jmiPlay = new JMenuItem(Messages.getString("TracksTreeView.15"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiPlay.addActionListener(this);
-		jmiPush = new JMenuItem(Messages.getString("LogicalTreeView.16"), IconLoader.ICON_PUSH);
+		jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
 		jmiPush.addActionListener(this);
-		jmiPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17"),
+		jmiPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"),
 				IconLoader.ICON_SHUFFLE);
 		jmiPlayShuffle.addActionListener(this);
-		jmiPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18"),
+		jmiPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.18"),
 				IconLoader.ICON_REPEAT);
 		jmiPlayRepeat.addActionListener(this);
 		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),
 				IconLoader.ICON_COVER_16x16);
 		jmiGetCovers.addActionListener(this);
-		jmiCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"),
+		jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"),
 				IconLoader.ICON_LIST);
 		jmiCDDBWizard.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("LogicalTreeView.21"),
+		jmiProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
 				IconLoader.ICON_PROPERTIES);
 		jmiProperties.addActionListener(this);
 		ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
@@ -399,7 +399,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 						cv.initUI();
 						jd.add(cv);
 						jd.setSize(400, 450);
-						jd.setLocationRelativeTo(null);
+						jd.setLocationByPlatform(true);
 						jd.setVisible(true);
 					} else {
 						Messages.showErrorMessage(166);

@@ -33,8 +33,8 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.perspectives.DisplayPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
@@ -81,8 +81,6 @@ import ext.SwingWorker;
 
 /**
  * Cover view. Displays an image for the current album
- * <p>
- * Physical and logical perspectives
  */
 public class CoverView extends ViewAdapter implements Observer, ComponentListener, ActionListener,
 		ITechnicalStrings {
@@ -296,11 +294,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		new Thread() {
 			public void run() {
 				try {
-					if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)) {
-						// try to open connection, this can take about 30 sec
-						// under linux if network not available
-						DownloadManager.getRemoteCoversList("");
-					}
 					Thread.sleep(3000); // more sec in case of...
 				} catch (Exception e) {
 					Log.error(e);
@@ -503,7 +496,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					Collections.sort(alCovers); // sort the list
 					Log.debug("Local cover list: {{" + alCovers + "}}");
 					if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)
-							|| PerspectiveManager.getCurrentPerspective() instanceof PlayerPerspective) {
+							|| PerspectiveManager.getCurrentPerspective() instanceof DisplayPerspective) {
 						// in player perspective, always show shuffle covers
 						index = (int) (Math.random() * alCovers.size());
 						// choose a random cover

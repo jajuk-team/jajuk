@@ -23,9 +23,9 @@ package org.jajuk.ui.perspectives;
 import org.jajuk.i18n.Messages;
 
 /**
- * Logical perspective
+ * Physical perspective
  */
-public class LogicalPerspective extends PerspectiveAdapter {
+public class FilesPerspective extends PerspectiveAdapter {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,8 +35,7 @@ public class LogicalPerspective extends PerspectiveAdapter {
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Logical"); 
+		return Messages.getString("Perspective_Description_Physical"); 
 	}
-
 
 }

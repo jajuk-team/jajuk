@@ -619,6 +619,15 @@ public class Main implements ITechnicalStrings {
 		if (!fdjs.exists()) {
 			fdjs.mkdir();
 		}
+		// Extract default background picture if required
+		if (!Util.getConfFileByPath("cache/internal/" + FILE_BACKGROUND_IMAGE).exists()) {
+			if (bIdeMode) {
+				Util.copy(new File("src/main/resources/images/included/" + FILE_BACKGROUND_IMAGE),
+						Util.getConfFileByPath("cache/internal/" + FILE_BACKGROUND_IMAGE));
+			} else {
+				Util.extractFile("images/" + FILE_BACKGROUND_IMAGE, FILE_BACKGROUND_IMAGE);
+			}
+		}
 	}
 
 	/**

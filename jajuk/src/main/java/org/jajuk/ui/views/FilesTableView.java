@@ -51,7 +51,7 @@ import javax.swing.JPopupMenu;
 /**
  * Logical table view
  */
-public class PhysicalTableView extends AbstractTableView implements MouseListener {
+public class FilesTableView extends AbstractTableView implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -75,32 +75,32 @@ public class PhysicalTableView extends AbstractTableView implements MouseListene
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalTableView.0");
+		return Messages.getString("FilesTableView.0");
 	}
 
 	/** Constructor */
-	public PhysicalTableView() {
+	public FilesTableView() {
 		super();
 		// File menu
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1"),
+		jmiFilePlay = new JMenuItem(Messages.getString("FilesTableView.1"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2"), IconLoader.ICON_PUSH);
+		jmiFilePush = new JMenuItem(Messages.getString("FilesTableView.2"), IconLoader.ICON_PUSH);
 		jmiFilePush.addActionListener(this);
-		jmiFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTableView.3"),
+		jmiFilePlayShuffle = new JMenuItem(Messages.getString("FilesTableView.3"),
 				IconLoader.ICON_SHUFFLE);
 		jmiFilePlayShuffle.addActionListener(this);
-		jmiFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4"),
+		jmiFilePlayRepeat = new JMenuItem(Messages.getString("FilesTableView.4"),
 				IconLoader.ICON_REPEAT);
 		jmiFilePlayRepeat.addActionListener(this);
-		jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15"),
+		jmiFilePlayDirectory = new JMenuItem(Messages.getString("FilesTableView.15"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiFilePlayDirectory.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6"),
+		jmiProperties = new JMenuItem(Messages.getString("FilesTableView.6"),
 				IconLoader.ICON_PROPERTIES);
 		jmiProperties.addActionListener(this);
-		jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16"),
+		jmiFileAddFavorites = new JMenuItem(Messages.getString("FilesTableView.16"),
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);

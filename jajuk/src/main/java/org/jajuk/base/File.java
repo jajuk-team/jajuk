@@ -305,7 +305,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		} else if (XML_TRACK.equals(sKey)) {
 			return getTrack().getName();
 		} else if (XML_SIZE.equals(sKey)) {
-			return (lSize / 1048576) + Messages.getString("PhysicalTreeView.54");
+			return (lSize / 1048576) + Messages.getString("FilesTreeView.54");
 		} else if (XML_QUALITY.equals(sKey)) {
 			return getQuality() + Messages.getString("FIFO.13");
 		} else if (XML_ALBUM.equals(sKey)) {

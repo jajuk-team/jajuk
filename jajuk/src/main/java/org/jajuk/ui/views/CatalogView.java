@@ -50,7 +50,6 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -263,6 +262,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jtbFilter.add(jcbFilter);
 
 		jtfValue = new JTextField(10);
+		jtfValue.setForeground(new Color(172, 172, 172));
 		jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
 		jtfValue.addKeyListener(new KeyAdapter() {

@@ -243,24 +243,24 @@ public class PerspectiveManager implements ITechnicalStrings {
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_SIMPLE.getUrl());
 		registerPerspective(perspective);
 
-		// physical perspective
-		perspective = new PhysicalPerspective();
+		// Files perspective
+		perspective = new FilesPerspective();
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PHYSICAL.getUrl());
 		registerPerspective(perspective);
 
-		// Logical perspective
-		perspective = new LogicalPerspective();
+		// Tracks perspective
+		perspective = new TracksPerspective();
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_LOGICAL.getUrl());
 		registerPerspective(perspective);
-
-		// Player perspective
-		perspective = new PlayerPerspective();
-		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PLAYER.getUrl());
-		registerPerspective(perspective);
-
+		
 		// Catalog perspective
 		perspective = new CatalogPerspective();
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CATALOG.getUrl());
+		registerPerspective(perspective);
+		
+		// Display perspective
+		perspective = new DisplayPerspective();
+		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PLAYER.getUrl());
 		registerPerspective(perspective);
 
 		// Information perspective
@@ -276,11 +276,6 @@ public class PerspectiveManager implements ITechnicalStrings {
 		// Stats perspective
 		perspective = new StatPerspective();
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_STATISTICS.getUrl());
-		registerPerspective(perspective);
-
-		// Help perspective
-		perspective = new HelpPerspective();
-		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_HELP.getUrl());
 		registerPerspective(perspective);
 	}
 

@@ -44,8 +44,8 @@ public class ReportAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	ReportAction() {
-		super(Messages.getString("LogicalTreeView.33"), IconLoader.ICON_REPORT,true); 
-		setShortDescription(Messages.getString("LogicalTreeView.33")); 
+		super(Messages.getString("TracksTreeView.33"), IconLoader.ICON_REPORT,true); 
+		setShortDescription(Messages.getString("TracksTreeView.33")); 
 	}
 
 	@SuppressWarnings("unchecked")
@@ -67,7 +67,7 @@ public class ReportAction extends ActionBase {
 		chooser.addChoosableFileFilter(filter1);
 		// Accept HTML files
 		chooser.addChoosableFileFilter(filter2);
-		chooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
+		chooser.setDialogTitle(Messages.getString("TracksTreeView.33"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// set a default file name
 		if (COLLECTION_LOGICAL.equals(type) || COLLECTION_PHYSICAL.equals(type)) {

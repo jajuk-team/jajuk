@@ -53,7 +53,7 @@ import javax.swing.JPopupMenu;
 /**
  * Logical table view
  */
-public class LogicalTableView extends AbstractTableView {
+public class TracksTableView extends AbstractTableView {
 
 	private static final long serialVersionUID = 1L;
 
@@ -79,35 +79,35 @@ public class LogicalTableView extends AbstractTableView {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("LogicalTableView.0");
+		return Messages.getString("TracksTableView.0");
 	}
 
 	/** Constructor */
-	public LogicalTableView() {
+	public TracksTableView() {
 		super();
 		// Track menu
 		jmenuTrack = new JPopupMenu();
-		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTableView.7"),
+		jmiTrackPlay = new JMenuItem(Messages.getString("TracksTableView.7"),
 				IconLoader.ICON_PLAY_16x16);
 		jmiTrackPlay.addActionListener(this);
-		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8"), IconLoader.ICON_PUSH);
+		jmiTrackPush = new JMenuItem(Messages.getString("TracksTableView.8"), IconLoader.ICON_PUSH);
 		jmiTrackPush.addActionListener(this);
-		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9"),
+		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("TracksTableView.9"),
 				IconLoader.ICON_SHUFFLE);
 		jmiTrackPlayShuffle.addActionListener(this);
-		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10"),
+		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("TracksTableView.10"),
 				IconLoader.ICON_REPEAT);
 		jmiTrackPlayRepeat.addActionListener(this);
-		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11"),
+		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("TracksTableView.11"),
 				IconLoader.ICON_ALBUM);
 		jmiTrackPlayAlbum.addActionListener(this);
-		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12"),
+		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("TracksTableView.12"),
 				IconLoader.ICON_AUTHOR);
 		jmiTrackPlayAuthor.addActionListener(this);
-		jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15"),
+		jmiTrackAddFavorite = new JMenuItem(Messages.getString("TracksTableView.15"),
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiTrackAddFavorite.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14"),
+		jmiProperties = new JMenuItem(Messages.getString("TracksTableView.14"),
 				IconLoader.ICON_PROPERTIES);
 		jmiProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);

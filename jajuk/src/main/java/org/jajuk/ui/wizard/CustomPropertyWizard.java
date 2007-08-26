@@ -34,7 +34,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.perspectives.PhysicalPerspective;
+import org.jajuk.ui.perspectives.FilesPerspective;
 import org.jajuk.util.Util;
 
 import java.awt.event.ActionListener;
@@ -92,7 +92,7 @@ public abstract class CustomPropertyWizard
 		okp = new OKCancelPanel(this);
 		okp.getOKButton().setEnabled(false);
 		// In physical perspective, default item is file, otherwise, it is track
-		if (PerspectiveManager.getCurrentPerspective().getClass().equals(PhysicalPerspective.class)) {
+		if (PerspectiveManager.getCurrentPerspective().getClass().equals(FilesPerspective.class)) {
 			jcbItemChoice.setSelectedIndex(1);
 		} else {
 			jcbItemChoice.setSelectedIndex(0);

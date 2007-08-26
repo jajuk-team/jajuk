@@ -29,8 +29,6 @@ package org.jajuk.util;
  */
 public class IconLoader {
 
-	// icons
-
 	public static final UrlImageIcon ICON_NO_COVER = new UrlImageIcon(Util
 			.getResource("images/included/" + ITechnicalStrings.FILE_THUMB_NO_COVER));
 

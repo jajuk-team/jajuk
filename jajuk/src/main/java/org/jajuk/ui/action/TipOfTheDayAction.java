@@ -44,7 +44,7 @@ public class TipOfTheDayAction extends ActionBase {
 	 */
 	public void perform(ActionEvent evt) {
 		TipOfTheDay tipsView = new TipOfTheDay();
-		tipsView.setLocationRelativeTo(null);
+		tipsView.setLocationByPlatform(true);
 		tipsView.setVisible(true);
 	}
 }

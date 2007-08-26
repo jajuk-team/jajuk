@@ -4,11 +4,11 @@
 <DockingPanel>
 <Split orientation="1" location="0.30">
 <Dockable>
-<Key dockName="org.jajuk.ui.views.PhysicalTreeView/0"/>
+<Key dockName="org.jajuk.ui.views.FilesTreeView/0"/>
 </Dockable>
 <Split orientation="0" location="0.5049261083743842">
 <Dockable>
-<Key dockName="org.jajuk.ui.views.PhysicalTableView/0"/>
+<Key dockName="org.jajuk.ui.views.FilesTableView/0"/>
 </Dockable>
 <Split orientation="1" location="0.4994192799070848">
 <Dockable>

@@ -40,7 +40,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 /**
- * An abstract physical or logical tree view. Contains common methods
+ * An abstract files or tracks tree view. Contains common methods
  */
 public abstract class AbstractTreeView extends ViewAdapter {
 
@@ -89,7 +89,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 					checked = ((FileNode) item).getFile();
 					return (itemCurrent.equals(checked));
 				}
-				// In logical table view
+				// In tracks table view
 				else if (item instanceof TrackNode) {
 					Track track = ((TrackNode) item).getTrack();
 					for (File checked : track.getFiles()) {

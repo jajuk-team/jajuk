@@ -84,14 +84,13 @@ import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
 
 /**
- * Abstract table view : common implementation for both physical and logical
+ * Abstract table view : common implementation for both files and tracks
  * table views
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
 		MouseListener, ItemListener, TableColumnModelListener, TableModelListener,
 		ITechnicalStrings, Observer {
 
-	/** The logical table */
 	JajukTable jtable;
 
 	JPanel jpControl;
@@ -134,7 +133,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
 	/** Constructor */
 	public AbstractTableView() {
-		if (AbstractTableView.this instanceof PhysicalTableView) {
+		if (AbstractTableView.this instanceof FilesTableView) {
 			sConf = CONF_PHYSICAL_TABLE_COLUMNS;
 		} else {
 			sConf = CONF_LOGICAL_TABLE_COLUMNS;
@@ -228,7 +227,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
 				setLayout(new TableLayout(size));
 				add(jpControl, "0,0");
-				if (AbstractTableView.this instanceof PhysicalTableView) {
+				if (AbstractTableView.this instanceof FilesTableView) {
 					jtable = new JajukTable(model, true, CONF_PHYSICAL_TABLE_COLUMNS);
 				} else {
 					jtable = new JajukTable(model, true, CONF_LOGICAL_TABLE_COLUMNS);
@@ -259,7 +258,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 									checked = (File) item;
 									return (itemCurrent.equals(checked));
 								}
-								// In logical table view
+								// In tracks table view
 								else {
 									for (File checked : ((Track) item).getFiles()) {
 										if (itemCurrent.equals(checked)) {
@@ -314,7 +313,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	}
 
 	/**
-	 * Apply a filter, to be implemented by physical and logical tables, alter
+	 * Apply a filter, to be implemented by files and tracks tables, alter
 	 * the model
 	 */
 	public void applyFilter(String sPropertyName, String sPropertyValue) {

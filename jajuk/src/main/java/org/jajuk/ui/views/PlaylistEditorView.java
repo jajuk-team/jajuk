@@ -45,7 +45,7 @@ import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistEditorTransferHandler;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.FontManager.JajukFont;
-import org.jajuk.ui.perspectives.LogicalPerspective;
+import org.jajuk.ui.perspectives.TracksPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
@@ -899,7 +899,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				// normal playlist
 				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL) {
 					// if logical editor, warning message
-					if (getPerspective() instanceof LogicalPerspective) {
+					if (getPerspective() instanceof TracksPerspective) {
 						StringBuffer sbOut = new StringBuffer(Messages
 								.getString("AbstractPlaylistEditorView.17"));
 						Playlist pl = PlaylistManager.getInstance().getPlaylistByID(
