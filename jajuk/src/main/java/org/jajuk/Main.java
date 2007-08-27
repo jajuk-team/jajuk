@@ -585,6 +585,11 @@ public class Main implements ITechnicalStrings {
 		if (!fCache.exists()) {
 			fCache.mkdir();
 		}
+		// Internal pictures directory
+		fCache = Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE);
+		if (!fCache.exists()) {
+			fCache.mkdir();
+		}
 		// check for thumbnails cache presence
 		File fThumbs = Util.getConfFileByPath(FILE_THUMBS);
 		if (!fThumbs.exists()) {
@@ -620,10 +625,11 @@ public class Main implements ITechnicalStrings {
 			fdjs.mkdir();
 		}
 		// Extract default background picture if required
-		if (!Util.getConfFileByPath("cache/internal/" + FILE_BACKGROUND_IMAGE).exists()) {
+		if (!Util.getConfFileByPath(
+				FILE_CACHE + '/' + FILE_INTERNAL_CACHE + '/' + FILE_BACKGROUND_IMAGE).exists()) {
 			if (bIdeMode) {
 				Util.copy(new File("src/main/resources/images/included/" + FILE_BACKGROUND_IMAGE),
-						Util.getConfFileByPath("cache/internal/" + FILE_BACKGROUND_IMAGE));
+						Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE + '/' + FILE_BACKGROUND_IMAGE));
 			} else {
 				Util.extractFile("images/included/" + FILE_BACKGROUND_IMAGE, FILE_BACKGROUND_IMAGE);
 			}

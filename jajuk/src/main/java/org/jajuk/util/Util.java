@@ -771,17 +771,17 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * @param url
 	 *            resource URL
-	 * @param id 
-	 * 			  unique identifier for the file
+	 * @param id
+	 *            unique identifier for the file
 	 * @return Cache directory
 	 */
 	public static File getCachePath(URL url, String id) {
 		File out = null;
-		if ( id == null){
+		if (id == null) {
 			out = Util.getConfFileByPath(FILE_CACHE + '/' + Util.getOnlyFile(url.toString()));
-		}
-		else{
-			out = Util.getConfFileByPath(FILE_CACHE + '/' + id + '_' + Util.getOnlyFile(url.toString()));
+		} else {
+			out = Util.getConfFileByPath(FILE_CACHE + '/' + id + '_'
+					+ Util.getOnlyFile(url.toString()));
 		}
 		return out;
 	}
@@ -995,7 +995,7 @@ public class Util implements ITechnicalStrings {
 	 * @return resized image
 	 */
 	public static ImageIcon getResizedImage(ImageIcon img, int iNewWidth, int iNewHeight) {
-		//Wait for full image loading
+		// Wait for full image loading
 		MediaTracker mediaTracker = new MediaTracker(new Container());
 		mediaTracker.addImage(img.getImage(), 0);
 		try {
@@ -1190,7 +1190,8 @@ public class Util implements ITechnicalStrings {
 			if ("Image".equals(watermark)) {
 				SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(
 						ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)));
-				SubstanceLookAndFeel.setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
+				SubstanceLookAndFeel
+						.setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
 			} else {
 				SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(watermark).getClassName());
 			}
@@ -1353,7 +1354,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void createThumbnail(ImageIcon ii, File thumb, int maxDim) throws Exception {
 		Image image = ii.getImage();
-		//Wait for full image loading
+		// Wait for full image loading
 		MediaTracker mediaTracker = new MediaTracker(new Container());
 		mediaTracker.addImage(image, 0);
 		mediaTracker.waitForID(0);
@@ -2121,9 +2122,17 @@ public class Util implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	public static void extractFile(String entryName, String destName) throws Exception {
-		String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-		// Open the jar.
-		JarFile jar = new JarFile(jarName);
+		JarFile jar = null;
+		try {
+			String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation()
+					.toExternalForm();
+			Log.debug("Extract image for jar: " + jarName);
+			// Open the jar.
+			jar = new JarFile(jarName);
+		} catch (Exception e) {
+			Log.error(e);
+			return;
+		}
 		try {
 			// Get the entry and its input stream.
 			JarEntry entry = jar.getJarEntry(entryName);
@@ -2165,5 +2174,5 @@ public class Util implements ITechnicalStrings {
 			jar.close();
 		}
 	}
-	
+
 }

@@ -202,6 +202,8 @@ public interface ITechnicalStrings {
 			.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
 	public static final String FILE_CACHE = "cache";
+	
+	public static final String FILE_INTERNAL_CACHE = "internal";
 
 	public static final String FILE_THUMBS = "thumbs";
 
