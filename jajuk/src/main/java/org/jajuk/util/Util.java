@@ -19,42 +19,6 @@
  */
 package org.jajuk.util;
 
-import org.jajuk.Main;
-import org.jajuk.Main.MPlayerStatus;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Item;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.dj.Ambience;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IconLabel;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukSystray;
-import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.MattePainter;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.utils.SubstanceConstants;
-import org.jvnet.substance.watermark.SubstanceImageWatermark;
-import org.jvnet.substance.watermark.SubstanceStripeWatermark;
-import org.jvnet.substance.watermark.WatermarkInfo;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -117,6 +81,42 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.jajuk.Main;
+import org.jajuk.Main.MPlayerStatus;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.dj.Ambience;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.IconLabel;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukSystray;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.painter.MattePainter;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.utils.SubstanceConstants;
+import org.jvnet.substance.watermark.SubstanceImageWatermark;
+import org.jvnet.substance.watermark.SubstanceStripeWatermark;
+import org.jvnet.substance.watermark.WatermarkInfo;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -2123,12 +2123,11 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void extractFile(String entryName, String destName) throws Exception {
 		JarFile jar = null;
+		// Open the jar.
 		try {
-			String jarName = Main.class.getProtectionDomain().getCodeSource().getLocation()
-					.toExternalForm();
-			Log.debug("Extract image for jar: " + jarName);
-			// Open the jar.
-			jar = new JarFile(jarName);
+			File jarFile = new File(getJarLocation(Main.class).toURI());
+			Log.debug("Open jar: " + jarFile.getAbsolutePath());
+			jar = new JarFile(jarFile);
 		} catch (Exception e) {
 			Log.error(e);
 			return;
@@ -2144,8 +2143,8 @@ public class Util implements ITechnicalStrings {
 				try {
 					// Create the output file (clobbering the file if it
 					// exists).
-					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_CACHE
-							+ "/internal/" + destName));
+					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_CACHE + '/'
+							+ FILE_INTERNAL_CACHE + '/' + destName));
 					try {
 						// Allocate a buffer for reading the entry data.
 						byte[] buffer = new byte[1024];
