@@ -20,24 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukHtmlPanel;
-import org.jajuk.ui.action.ActionBase;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.perspectives.InfoPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.FlowLayout;
@@ -55,6 +37,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukHtmlPanel;
+import org.jajuk.ui.action.ActionBase;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.perspectives.InfoPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Wikipedia view
@@ -127,13 +127,11 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		jcbLanguage.addActionListener(this);
 		// Buttons
 		ActionBase aCopy = ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD);
-		// Remove text inside the button
-		aCopy.setName(null);
 		jbCopy = new JButton(aCopy);
-		ActionBase aBrowse = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
-		// Remove text inside the button
-		aBrowse.setName(null);
-		jbLaunchInExternalBrowser = new JButton(aBrowse);
+		jbLaunchInExternalBrowser = new JButton(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+		// Remove text inside the buttons
+		jbLaunchInExternalBrowser.setText(null);
+		jbCopy.setText(null);
 		jbAuthorSearch = new JToggleButton(IconLoader.ICON_AUTHOR, false);
 		jbAuthorSearch.setToolTipText(Messages.getString("WikipediaView.5"));
 		jbAuthorSearch.addActionListener(this);
@@ -283,7 +281,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 							+ ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
 					Log.debug("Wikipedia search: " + url);
 					Util.copyData = url.toString();
-					jbLaunchInExternalBrowser.putClientProperty(DETAIL_CONTENT, url.toExternalForm());
+					jbLaunchInExternalBrowser.putClientProperty(DETAIL_CONTENT, url
+							.toExternalForm());
 					browser.setURL(url);
 				} catch (Exception e) {
 					Log.error(e);
