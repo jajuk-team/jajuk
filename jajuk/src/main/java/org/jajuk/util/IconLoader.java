@@ -32,6 +32,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_NO_COVER = new UrlImageIcon(Util
 			.getResource("images/included/" + ITechnicalStrings.FILE_THUMB_NO_COVER));
 
+	public static final UrlImageIcon ICON_BACKGROUND = new UrlImageIcon(Util
+			.getResource("images/included/" + ITechnicalStrings.FILE_BACKGROUND_IMAGE));
+
 	public static final UrlImageIcon ICON_LOGO = new UrlImageIcon(Util
 			.getResource("icons/64x64/jajuk-icon_64x64.png"));
 

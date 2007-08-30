@@ -18,6 +18,35 @@
  */
 package org.jajuk;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
@@ -68,34 +97,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioManager;
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -625,13 +626,32 @@ public class Main implements ITechnicalStrings {
 			fdjs.mkdir();
 		}
 		// Extract default background picture if required
-		if (!Util.getConfFileByPath(
-				FILE_CACHE + '/' + FILE_INTERNAL_CACHE + '/' + FILE_BACKGROUND_IMAGE).exists()) {
-			if (bIdeMode) {
-				Util.copy(new File("src/main/resources/images/included/" + FILE_BACKGROUND_IMAGE),
-						Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE + '/' + FILE_BACKGROUND_IMAGE));
-			} else {
-				Util.extractFile("images/included/" + FILE_BACKGROUND_IMAGE, FILE_BACKGROUND_IMAGE);
+		File fBackground = Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE + '/'
+				+ FILE_BACKGROUND_IMAGE);
+		if (!fBackground.exists()) {
+			Util.extractImage(IconLoader.ICON_BACKGROUND.getImage(), fBackground);
+		}
+
+		// Extract star icons (used by some HTML panels)
+		for (int i = 1; i <= 4; i++) {
+			File star = Util.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
+			if (!star.exists()) {
+				ImageIcon ii = null;
+				switch (i) {
+				case 1:
+					ii = IconLoader.ICON_STAR_1;
+					break;
+				case 2:
+					ii = IconLoader.ICON_STAR_2;
+					break;
+				case 3:
+					ii = IconLoader.ICON_STAR_3;
+					break;
+				case 4:
+					ii = IconLoader.ICON_STAR_4;
+					break;
+				}
+				Util.extractImage(ii.getImage(), star);
 			}
 		}
 	}
@@ -643,18 +663,6 @@ public class Main implements ITechnicalStrings {
 		new Thread() {
 			public void run() {
 				try {
-					// Extract star icons (used in HTML panels)
-					Util.getConfFileByPath("/cache/internal").mkdir();
-					for (int i = 1; i <= 4; i++) {
-						if (bIdeMode) {
-							Util.copy(new File("src/main/resources/icons/16x16/star" + i
-									+ "_16x16.png"), Util.getConfFileByPath("cache/internal/star"
-									+ i + "_16x16.png"));
-						} else {
-							Util.extractFile("icons/16x16/star" + i + "_16x16.png", "star" + i
-									+ "_16x16.png");
-						}
-					}
 					// Refresh max album rating
 					AlbumManager.getInstance().refreshMaxRating();
 				} catch (Exception e) {
@@ -679,6 +687,7 @@ public class Main implements ITechnicalStrings {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
+						sc.setTitle(Messages.getString("Main.22"));
 						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
 						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);

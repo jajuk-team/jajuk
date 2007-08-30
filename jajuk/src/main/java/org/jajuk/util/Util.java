@@ -26,7 +26,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GradientPaint;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -34,7 +33,6 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -69,6 +67,7 @@ import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -117,10 +116,6 @@ import org.jvnet.substance.utils.SubstanceConstants;
 import org.jvnet.substance.watermark.SubstanceImageWatermark;
 import org.jvnet.substance.watermark.SubstanceStripeWatermark;
 import org.jvnet.substance.watermark.WatermarkInfo;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * General use utilities methods
@@ -1017,22 +1012,37 @@ public class Util implements ITechnicalStrings {
 	 * </p>
 	 * 
 	 * @param image
+	 * @param Do
+	 *            we need alpha (transparency) ?
+	 * @param new
+	 *            image width
+	 * @param height
+	 *            new image height
 	 * @return buffured image from an image
 	 */
-	public static BufferedImage toBufferedImage(Image image) {
+	public static BufferedImage toBufferedImage(Image image, boolean alpha, int width, int height) {
 		if (image instanceof BufferedImage) {
 			return ((BufferedImage) image);
 		} else {
-			/** Make sure image is fullt loaded */
-			Image image2 = new ImageIcon(image).getImage();
 			/** Create the new image */
-			BufferedImage bufferedImage = new BufferedImage(image2.getWidth(null), image
-					.getHeight(null), BufferedImage.TYPE_INT_RGB);
-			Graphics g = bufferedImage.createGraphics();
-			g.drawImage(image2, 0, 0, null);
-			g.dispose();
+			BufferedImage bufferedImage = null;
+			if (alpha) {
+				bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			} else {
+				//Save memory
+				bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			}
+			Graphics2D graphics2D = bufferedImage.createGraphics();
+			graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			graphics2D.drawImage(image, 0, 0, width, height, null);
+			graphics2D.dispose();
 			return (bufferedImage);
 		}
+	}
+
+	public static BufferedImage toBufferedImage(Image image, boolean alpha) {
+		return toBufferedImage(image, alpha, image.getWidth(null), image.getHeight(null));
 	}
 
 	/**
@@ -1372,23 +1382,11 @@ public class Util implements ITechnicalStrings {
 		}
 		// draw original image to thumbnail image object and
 		// scale it to the new size on-the-fly
-		BufferedImage thumbImage = new BufferedImage(thumbWidth, thumbHeight,
-				BufferedImage.TYPE_INT_RGB);
-		Graphics2D graphics2D = thumbImage.createGraphics();
-		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+		BufferedImage thumbImage = toBufferedImage(image, !(Util.getExtension(thumb)
+				.equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
+		// Need alpha only for png and gif files
 		// save thumbnail image to OUTFILE
-		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(thumb));
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
-		int quality = 100;
-		quality = Math.max(0, Math.min(quality, 100));
-		param.setQuality(quality / 100.0f, false);
-		encoder.setJPEGEncodeParam(param);
-		encoder.encode(thumbImage);
-		out.close();
-		image.flush(); // free memory
+		ImageIO.write(thumbImage, Util.getExtension(thumb), thumb);
 	}
 
 	/**
@@ -1659,6 +1657,11 @@ public class Util implements ITechnicalStrings {
 				// Extract file name from URL. URI returns jar path, its parent
 				// is the bin directory and the right dir is the parent of bin
 				// dir
+				// Note: When starting from jnlp, next line thorws an exception
+				// as URI is invalid (contains %20), the method returns null and
+				// the
+				// file is downloaded again. This is usefull only when using
+				// stand-alone version
 				sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile()
 						.getParentFile().getAbsolutePath();
 				// Add MPlayer file name
@@ -1668,7 +1671,6 @@ public class Util implements ITechnicalStrings {
 			} catch (Exception e) {
 				return sMplayerPath;
 			}
-
 		}
 		return sMplayerPath; // can be null if none suitable file found
 	}
@@ -2110,6 +2112,23 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
+	 * Write down a memory image to a file
+	 * 
+	 * @param src
+	 * @param dest
+	 */
+	public static void extractImage(Image src, File dest) {
+		BufferedImage bi = toBufferedImage(src, !(Util.getExtension(dest).equalsIgnoreCase("jpg")));
+		// Need alpha only for png and gif files);
+		try {
+			ImageIO.write(bi, Util.getExtension(dest), dest);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Extract files from current jar to "cache/internal" directory
 	 * <p>
 	 * Thanks several websites, especially
@@ -2125,7 +2144,11 @@ public class Util implements ITechnicalStrings {
 		JarFile jar = null;
 		// Open the jar.
 		try {
-			File jarFile = new File(getJarLocation(Main.class).toURI());
+			File dir = new File(getJarLocation(Main.class).toURI()).getParentFile();
+			// We have to call getParentFile() method because the toURI() method
+			// returns an URI than is not always valid (contains %20 for spaces
+			// for instance)
+			File jarFile = new File(dir.getAbsolutePath() + "/jajuk.jar");
 			Log.debug("Open jar: " + jarFile.getAbsolutePath());
 			jar = new JarFile(jarFile);
 		} catch (Exception e) {
