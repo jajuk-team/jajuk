@@ -52,7 +52,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	static {
 		if (Util.isUnderWindows()) {
 			try {
-				Class.forName("org.jajuk.ui.WindowsHotKeyManager")
+				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager")
 						.getMethod("registerJIntellitype").invoke(null, null);
 			} catch (Exception e) {
 				Log.error(e);

@@ -56,13 +56,12 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	private File file;
 
 	/** Default cover image */
-	private static final ImageIcon iiDefaultCover = Util
-			.getImage(IMAGES_SPLASHSCREEN);
+	private static final ImageIcon iiDefaultCover = Util.getImage(IMAGES_SPLASHSCREEN);
 
 	/** Default URL */
 	private static URL urlDefault = null;
-	
-	/**Download id*/
+
+	/** Download id */
 	private String id;
 
 	static {
@@ -80,18 +79,17 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	public Cover(URL url, int iType) throws Exception {
 		this.url = url;
 		this.iType = iType;
-		//Create an unique id for this cover
-		id = "" + (long)(System.currentTimeMillis() * Math.random());
+		// Create an unique id for this cover
+		id = Long.toString((long)(System.currentTimeMillis() * Math.random()));
 		if (iType == Cover.LOCAL_COVER || iType == Cover.DEFAULT_COVER
 				|| iType == Cover.ABSOLUTE_DEFAULT_COVER) {
 			this.file = new File(url.getFile());
 		} else if (iType == Cover.REMOTE_COVER) {
-			this.file = Util.getCachePath(url,id);
+			this.file = Util.getCachePath(url, id);
 		}
 		// if Pre-load option is enabled, download this cover
-		if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)
-				&& iType == Cover.REMOTE_COVER) {
-			DownloadManager.downloadCover(url,id);
+		if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) && iType == Cover.REMOTE_COVER) {
+			DownloadManager.downloadCover(url, id);
 		}
 	}
 
@@ -183,20 +181,19 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 		}
 		long l = System.currentTimeMillis();
 		if (!file.exists() || file.length() == 0) {
-			this.file = DownloadManager.downloadCover(url,id);
+			this.file = DownloadManager.downloadCover(url, id);
 		}
 		ImageIcon image = null;
 		synchronized (Cover.class) {
 			image = new ImageIcon(getFile().getAbsolutePath());
 			if (image.getImageLoadStatus() != MediaTracker.COMPLETE) {
-				Log
-						.debug("Image Loading status: " + image.getImageLoadStatus()); 
-				throw new JajukException(129, url.toString(), null); 
+				Log.debug("Image Loading status: " + image.getImageLoadStatus());
+				throw new JajukException(129, url.toString(), null);
 			}
 			image.getImage().flush();
 		}
-		Log
-				.debug("Loaded {{" + url.toString() + "}} in  " + (System.currentTimeMillis() - l) + " ms");   
+		Log.debug("Loaded {{" + url.toString() + "}} in  " + (System.currentTimeMillis() - l)
+				+ " ms");
 		return image;
 	}
 
@@ -204,7 +201,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	 * toString method
 	 */
 	public String toString() {
-		return "Type=" + iType + " URL=" + url;  
+		return "Type=" + iType + " URL=" + url;
 	}
 
 	/**
@@ -242,6 +239,10 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 
 	public File getFile() {
 		return this.file;
+	}
+
+	public String getDownloadID() {
+		return this.id;
 	}
 
 }

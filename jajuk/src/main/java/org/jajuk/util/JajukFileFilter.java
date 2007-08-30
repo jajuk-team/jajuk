@@ -300,7 +300,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 */
 		@Override
 		public String getDescription() {
-			return "gif,png,jpg";
+			return "gif,png,jpg,jpeg";
 		}
 	}
 

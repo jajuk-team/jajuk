@@ -40,6 +40,7 @@ import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.TimeOutException;
@@ -74,7 +75,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import ext.SwingWorker;
@@ -282,7 +282,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		jpControl.add(jlSearching, "9,1,c,c");
 		ObservationManager.register(this);
 		try {
-			// instanciate default cover
+			// instantiate default cover
 			if (coverDefault == null) {
 				coverDefault = new Cover(IMAGES_SPLASHSCREEN, Cover.DEFAULT_COVER);
 			}
@@ -388,9 +388,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							if (files[i].length() > MAX_COVER_SIZE * 1024) {
 								continue;
 							}
-							String sExt = Util.getExtension(files[i]);
-							if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
-									|| sExt.equalsIgnoreCase("gif")) {
+							JajukFileFilter filter = JajukFileFilter.ImageFilter.getInstance();
+							if (filter.accept(files[i])) {
 								if (!bAbsoluteCover
 										&& Util.isAbsoluteDefaultCover(FIFO.getInstance()
 												.getCurrentFile().getDirectory(), files[i]
@@ -403,7 +402,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 									}
 									bAbsoluteCover = true;
 								} else { // normal local cover
-									Cover cover = new Cover(files[i].toURL(), Cover.LOCAL_COVER);
+									Cover cover = new Cover(files[i].toURL(),
+											Cover.LOCAL_COVER);
 									if (!alCovers.contains(cover)) {
 										alCovers.add(cover);
 									}
@@ -433,12 +433,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 								}
 								Collections.reverse(alUrls);
 								// set best results to be displayed first
-								Iterator it2 = alUrls.iterator();
+								Iterator<URL> it2 = alUrls.iterator();
 								// add found covers
 								while (it2.hasNext() && this.iEventID == iLocalEventID) {
 									// load each cover (pre-load or post-load)
 									// and stop if a signal has been emitted
-									URL url = (URL) it2.next();
+									URL url = it2.next();
 									try {
 										Cover cover = new Cover(url, Cover.REMOTE_COVER);
 										// Create a cover with given url ( image
@@ -783,7 +783,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 	}
 
 	/**
-	 * Long action to compute image to display (dowload, resizing...)
+	 * Long action to compute image to display (donwload, resizing...)
 	 * 
 	 * @param index
 	 * @return null (just used by the SwingWorker)
@@ -947,8 +947,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 				try {
 					// copy file from cache
-					File fSource = Util.getCachePath(cover.getURL(), Long.toString(System
-							.currentTimeMillis()));
+					File fSource = Util.getCachePath(cover.getURL(), cover.getDownloadID());
 					File file = new File(sFilePath);
 					Util.copy(fSource, file);
 					Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
@@ -980,20 +979,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				public void run() {
 					Cover cover = alCovers.get(index);
 					JFileChooser jfchooser = new JFileChooser(dirReference.getFio());
-					FileFilter filter = new FileFilter() {
-						public boolean accept(File file) {
-							String sExt = Util.getExtension(file);
-							if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg")) {
-								return true;
-							}
-							return false;
-						}
-
-						public String getDescription() {
-							return "*.gif,*.png,*.jpg";
-						}
-					};
-					jfchooser.setFileFilter(filter);
+					jfchooser.setFileFilter(JajukFileFilter.ImageFilter.getInstance());
 					jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
 					File finalFile = new File(dirReference.getFio().getPath() + "/"
 							+ Util.getOnlyFile(cover.getURL().toString()));
@@ -1002,7 +988,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					File fNew = null;
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						fNew = jfchooser.getSelectedFile();
-						// if user try to save as without changinng file name
+						// if user try to save as without changing file name
 						if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
 							return;
 						}
@@ -1039,8 +1025,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 					try {
 						// copy file from cache
-						File fSource = Util.getCachePath(cover.getURL(), Long.toString(System
-								.currentTimeMillis()));
+						File fSource = Util.getCachePath(cover.getURL(), cover.getDownloadID());
 						File file = new File(sFilePath);
 						Util.copy(fSource, file);
 						InformationJPanel.getInstance().setMessage(
