@@ -500,7 +500,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 					int items = 0;
 					// get all components recursively
 					alSelected.clear();
-					alSelectedRecursively.clear();
+					selectedRecursively.clear();
 					for (int i = 0; i < tpSelected.length; i++) {
 						Object o = tpSelected[i].getLastPathComponent();
 						if (o instanceof TreeRootElement) {
@@ -523,9 +523,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 								// don't count the same track several time
 								// if user select directory and then tracks
 								// inside
-								if (!alSelectedRecursively.contains(track)) {
-									alSelectedRecursively.add(track);
-								}
+								selectedRecursively.add(track);
 								items++;
 							}
 						}
@@ -537,7 +535,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 						// if table is synchronized with tree, notify the
 						// selection change
 						Properties properties = new Properties();
-						properties.put(DETAIL_SELECTION, alSelectedRecursively);
+						properties.put(DETAIL_SELECTION, selectedRecursively);
 						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective()
 								.getID());
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,

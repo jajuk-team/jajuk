@@ -25,6 +25,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -69,7 +70,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
 	boolean bEditable = false;
 	
 	/** Tree selection*/
-	public ArrayList<Item> treeSelection;
+	public HashSet<Item> treeSelection;
 
 	/**
 	 * 

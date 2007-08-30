@@ -32,6 +32,7 @@ import org.jdesktop.swingx.decorator.Highlighter;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -56,8 +57,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	/** Concurrency locker * */
 	volatile short[] lock = new short[0];
 
-	/** Resurvive items selection */
-	ArrayList<Item> alSelectedRecursively = new ArrayList<Item>(100);
+	/** Resursvive items selection */
+	HashSet<Item> selectedRecursively = new HashSet<Item>(100);
 
 	/** Items selection */
 	ArrayList<Item> alSelected = new ArrayList<Item>(100);

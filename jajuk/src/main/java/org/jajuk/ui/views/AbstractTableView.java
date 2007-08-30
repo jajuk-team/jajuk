@@ -59,7 +59,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -360,7 +359,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 							return;
 						}
 						// Update model tree selection
-						model.treeSelection = (ArrayList<Item>) event.getDetails().get(
+						model.treeSelection = (HashSet<Item>) event.getDetails().get(
 								DETAIL_SELECTION);
 						// force redisplay to apply the filter
 						jtable.clearSelection();

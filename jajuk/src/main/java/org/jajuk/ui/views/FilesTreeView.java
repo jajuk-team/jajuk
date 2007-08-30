@@ -267,7 +267,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_PHYSICAL);
-		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
+		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, selectedRecursively);
 		jmenuCollection.add(jmiCollectionReport);
 
 		// File menu
@@ -349,7 +349,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDirReport.putClientProperty(DETAIL_ORIGIN, XML_DIRECTORY);
-		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
+		jmiDirReport.putClientProperty(DETAIL_SELECTION, selectedRecursively);
 		jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDirRefactor.addActionListener(this);
@@ -378,8 +378,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDevPlayRepeat = new JMenuItem(Messages.getString("FilesTreeView.27"),
 				IconLoader.ICON_REPEAT);
 		jmiDevPlayRepeat.addActionListener(this);
-		jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"),
-				IconLoader.ICON_UNMOUNT);
+		jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader.ICON_UNMOUNT);
 		jmiDevMount.addActionListener(this);
 		jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"),
 				IconLoader.ICON_UNMOUNT);
@@ -406,7 +405,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDevReport.putClientProperty(DETAIL_ORIGIN, XML_DEVICE);
-		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelectedRecursively);
+		jmiDevReport.putClientProperty(DETAIL_SELECTION, selectedRecursively);
 		jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDevOrganize.addActionListener(this);
@@ -616,19 +615,19 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 					int items = 0;
 					long lSize = 0;
 					// get all components recursively
-					alSelectedRecursively.clear();
+					selectedRecursively.clear();
 					alSelected.clear();
 					for (int i = 0; i < paths.length; i++) {
 						Object o = paths[i].getLastPathComponent();
 						if (o instanceof TreeRootElement) {// root node
 							items = FileManager.getInstance().getElementCount();
-							alSelectedRecursively.addAll(FileManager.getInstance().getFiles());
-							for (Item item : alSelectedRecursively) {
+							selectedRecursively.addAll(FileManager.getInstance().getFiles());
+							for (Item item : selectedRecursively) {
 								lSize += ((File) item).getSize();
 							}
 							break;
 						} else {
-							alSelectedRecursively.add((Item) ((TransferableTreeNode) o).getData());
+							selectedRecursively.add((Item) ((TransferableTreeNode) o).getData());
 							alSelected.add((Item) ((TransferableTreeNode) o).getData());
 						}
 						// return all childs nodes recursively
@@ -639,9 +638,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 								File file = ((FileNode) node).getFile();
 								// don't count same file twice if user
 								// select directory and then files inside
-								if (!alSelectedRecursively.contains(file)) {
-									alSelectedRecursively.add(file);
-								}
+								selectedRecursively.add(file);
 								lSize += file.getSize();
 								items++;
 							}
@@ -661,14 +658,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 						// if table is synchronized with tree, notify the
 						// selection change
 						Properties properties = new Properties();
-						properties.put(DETAIL_SELECTION, alSelectedRecursively);
+						properties.put(DETAIL_SELECTION, selectedRecursively);
 						properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective()
 								.getID());
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
 								properties));
 					}
 					// No CDDB on directories without files
-					if (alSelectedRecursively.size() > 0 && alSelectedRecursively.get(0) instanceof Directory) {
+					if (selectedRecursively.size() > 0 && alSelected.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
 							// check it is a directory (can be a file if user
@@ -995,7 +992,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// properties later)
 		if ((paths.length > 1)
 				&& (e.getSource() == jmiDevProperties || e.getSource() == jmiPlaylistFileProperties)) {
-			new PropertiesWizard(alSelectedRecursively);
+			new PropertiesWizard(alSelected);
 		} else if (e.getSource() == jmiFilePlay) {
 			FIFO.getInstance().push(
 					Util.createStackItems(alFiles, ConfigurationManager
@@ -1014,7 +1011,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 			Bookmarks.getInstance().addFiles(alFiles);
 		} else if (alFiles != null && (e.getSource() == jmiDirCDDBQuery)) {
 			ArrayList<Item> alCDDBTracks = new ArrayList<Item>();
-			for (Item item : alSelectedRecursively) {
+			for (Item item : alSelected) {
 				final Directory dir = (Directory) item;
 				Util.waiting();
 				for (File file : dir.getFiles()) {
@@ -1102,19 +1099,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				}
 			}.start();
 		} else if (e.getSource() == jmiDirDesynchro) {
-			Iterator it = alDirs.iterator(); // iterate on selected dirs and
-			// childs recursively
-			while (it.hasNext()) {
-				Directory dir = (Directory) it.next();
+			for (Directory dir : alDirs) {
 				dir.setProperty(XML_DIRECTORY_SYNCHRONIZED, false);
 			}
 			jtree.revalidate();
 			jtree.repaint();
 		} else if (e.getSource() == jmiDirResynchro) {
-			Iterator it = alDirs.iterator(); // iterate on selected dirs and
-			// childs recursively
-			while (it.hasNext()) {
-				Directory dir = (Directory) it.next();
+			for (Directory dir : alDirs) {
 				dir.setProperty(XML_DIRECTORY_SYNCHRONIZED, true);
 			}
 			jtree.revalidate();
