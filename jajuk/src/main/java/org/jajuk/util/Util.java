@@ -167,6 +167,61 @@ public class Util implements ITechnicalStrings {
 	public static MattePainter aerithGrandient = new MattePainter(new GradientPaint(
 			new Point(0, 0), Color.WHITE, new Point(0, 1000), new Color(64, 110, 161)));
 
+	/** Are we under Windows ? * */
+	private static final boolean bUnderWindows;
+
+	/** Are we under Windows 32 bits ? * */
+	private static final boolean bUnderWindows32bits;
+
+	/** Are we under Linux ? * */
+	private static final boolean bUnderLinux;
+
+	/** Are we under MAC OS intel ? * */
+	private static final boolean bUnderOSXintel;
+
+	/** Are we under MAC OS power ? * */
+	private static final boolean bUnderOSXpower;
+
+	/** Are we under Windows 64 bits ? * */
+	private static final boolean bUnderWindows64bits;
+
+	// Computes OS detection operations for perf reasons (can be called in loop
+	// in refresh method for ie)
+	static {
+		String sOS = (String) System.getProperties().get("os.name");
+		// os.name can be null with JWS under MacOS
+		bUnderWindows = (sOS != null && sOS.trim().toLowerCase().lastIndexOf("windows") != -1);
+	}
+	static {
+		bUnderWindows32bits = isUnderWindows()
+				&& System.getProperties().get("sun.arch.data.model").equals("32");
+	}
+	
+	static {
+		bUnderWindows64bits = isUnderWindows()
+				&& !System.getProperties().get("sun.arch.data.model").equals("32");
+	}
+	
+	static {
+		String sOS = (String) System.getProperties().get("os.name");
+		// os.name can be null with JWS under MacOS
+		bUnderLinux = (sOS != null && sOS.trim().toLowerCase().lastIndexOf("linux") != -1);
+	}
+
+	static {
+		String sArch = System.getProperty("os.arch");
+		bUnderOSXintel = org.jdesktop.swingx.util.OS.isMacOSX()
+				&& (sArch != null && sArch.matches(".*86"));
+	}
+
+	static {
+		String sArch = System.getProperty("os.arch");
+		bUnderOSXpower = org.jdesktop.swingx.util.OS.isMacOSX()
+				&& (sArch != null && !sArch.matches(".*86"));
+	}
+
+	
+
 	/**
 	 * Genres
 	 */
@@ -796,38 +851,28 @@ public class Util implements ITechnicalStrings {
 	 * @return whether we are under Windows
 	 */
 	public static boolean isUnderWindows() {
-		String sOS = (String) System.getProperties().get("os.name");
-		// os.name can be null with JWS under MacOS
-		if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("windows") != -1) {
-			return true;
-		}
-		return false;
+		return bUnderWindows;
 	}
 
 	/**
 	 * @return whether we are under Windows 32 bits
 	 */
 	public static boolean isUnderWindows32bits() {
-		return isUnderWindows() && System.getProperties().get("sun.arch.data.model").equals("32");
+		return bUnderWindows32bits;
 	}
 
 	/**
 	 * @return whether we are under Windows 64 bits
 	 */
 	public static boolean isUnderWindows64bits() {
-		return isUnderWindows() && !System.getProperties().get("sun.arch.data.model").equals("32");
+		return bUnderWindows64bits;
 	}
 
 	/**
 	 * @return whether we are under Linux
 	 */
 	public static boolean isUnderLinux() {
-		String sOS = (String) System.getProperties().get("os.name");
-		// os.name can be null with JWS under MacOS
-		if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("linux") != -1) {
-			return true;
-		}
-		return false;
+		return bUnderLinux;
 	}
 
 	/**
@@ -1029,7 +1074,7 @@ public class Util implements ITechnicalStrings {
 			if (alpha) {
 				bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			} else {
-				//Save memory
+				// Save memory
 				bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			}
 			Graphics2D graphics2D = bufferedImage.createGraphics();
@@ -1960,16 +2005,14 @@ public class Util implements ITechnicalStrings {
 	 * @return whether we are under OS X Intel
 	 */
 	public static boolean isUnderOSXintel() {
-		String sArch = System.getProperty("os.arch");
-		return org.jdesktop.swingx.util.OS.isMacOSX() && (sArch != null && sArch.matches(".*86"));
+		return bUnderOSXintel;
 	}
 
 	/**
 	 * @return whether we are under OS X Power
 	 */
 	public static boolean isUnderOSXpower() {
-		String sArch = System.getProperty("os.arch");
-		return org.jdesktop.swingx.util.OS.isMacOSX() && (sArch != null && !sArch.matches(".*86"));
+		return bUnderOSXpower;
 	}
 
 	/**

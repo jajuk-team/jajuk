@@ -150,7 +150,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * 
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	final public String getIdentifier() {
+	final public String getLabel() {
 		return XML_DEVICE;
 	}
 

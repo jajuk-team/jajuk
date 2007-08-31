@@ -202,7 +202,7 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_TYPES;
 	}
 

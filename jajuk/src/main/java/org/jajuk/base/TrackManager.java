@@ -127,7 +127,7 @@ public class TrackManager extends ItemManager implements Observer {
 	 */
 	public synchronized Track registerTrack(String sName, Album album, Style style, Author author,
 			long length, Year year, long lOrder, Type type) {
-		String sId = getID(sName, album, style, author, length, year, lOrder, type);
+		String sId = createID(sName, album, style, author, length, year, lOrder, type);
 		return registerTrack(sId, sName, album, style, author, length, year, lOrder, type);
 	}
 
@@ -137,7 +137,7 @@ public class TrackManager extends ItemManager implements Observer {
 	 * @param track
 	 * @return
 	 */
-	protected static String getID(String sName, Album album, Style style, Author author,
+	protected static String createID(String sName, Album album, Style style, Author author,
 			long length, Year year, long lOrder, Type type) {
 		StringBuffer sb = new StringBuffer(100);
 		sb.append(style.getId()).append(author.getId()).append(album.getId()).append(sName).append(
@@ -557,7 +557,7 @@ public class TrackManager extends ItemManager implements Observer {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_TRACKS;
 	}
 

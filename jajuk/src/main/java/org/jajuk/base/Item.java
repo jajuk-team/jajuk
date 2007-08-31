@@ -49,7 +49,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	protected final String sId;
 
 	/** Name */
-	protected final String sName;
+	protected String sName;
 
 	/**
 	 * Constructor
@@ -256,7 +256,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public String toXml() {
 		try {
-			StringBuffer sb = new StringBuffer("\t\t<").append(getIdentifier()); 
+			StringBuffer sb = new StringBuffer("\t\t<").append(getLabel()); 
 			sb.append(getPropertiesXml());
 			sb.append("/>\n"); 
 			return sb.toString();
@@ -271,7 +271,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	/**
 	 * @return an identifier used to generate XML representation of this item
 	 */
-	abstract String getIdentifier();
+	abstract String getLabel();
 
 	/**
 	 * 

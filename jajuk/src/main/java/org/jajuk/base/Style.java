@@ -50,7 +50,7 @@ public class Style extends LogicalItem implements Comparable {
 	 * 
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_STYLE;
 	}
 

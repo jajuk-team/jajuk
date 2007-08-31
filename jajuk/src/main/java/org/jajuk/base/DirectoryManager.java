@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,33 +42,31 @@ public class DirectoryManager extends ItemManager {
 		super();
 		// ---register properties---
 		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+				String.class, null));
 		// Name test with (getParentDirectory() != null); //name editable only
 		// for standard
 		// directories, not root
-		registerProperty(new PropertyMetaInformation(XML_NAME, false, true,
-				true, false, false, String.class, null)); // edition to
+		registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, false, false,
+				String.class, null)); // edition to
 		// yet
 		// implemented
 		// TBI
 		// Parent
-		registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,
-				false, true, true, false, false, String.class, null));
+		registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT, false, true, true,
+				false, false, String.class, null));
 		// Device
-		registerProperty(new PropertyMetaInformation(XML_DEVICE, false, true,
-				true, false, false, String.class, null));
-		// Expand
-		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false,
-				false, false, false, true, Boolean.class, false));
-		// Synchonized directory
-		registerProperty(new PropertyMetaInformation(
-				XML_DIRECTORY_SYNCHRONIZED, false, false, true, false, false,
-				Boolean.class, true));
-		// Default cover
-		registerProperty(new PropertyMetaInformation(
-				XML_DIRECTORY_DEFAULT_COVER, false, false, true, false, false,
+		registerProperty(new PropertyMetaInformation(XML_DEVICE, false, true, true, false, false,
 				String.class, null));
+		// Expand
+		registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false,
+				true, Boolean.class, false));
+		// Synchonized directory
+		registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED, false, false,
+				true, false, false, Boolean.class, true));
+		// Default cover
+		registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER, false, false,
+				true, false, false, String.class, null));
 	}
 
 	/**
@@ -85,11 +84,9 @@ public class DirectoryManager extends ItemManager {
 	 * 
 	 * @param sName
 	 */
-	public Directory registerDirectory(String sName, Directory dParent,
-			Device device) {
+	public Directory registerDirectory(String sName, Directory dParent, Device device) {
 		synchronized (DirectoryManager.getInstance().getLock()) {
-			return registerDirectory(getID(sName, device, dParent), sName,
-					dParent, device);
+			return registerDirectory(createID(sName, device, dParent), sName, dParent, device);
 		}
 	}
 
@@ -99,7 +96,7 @@ public class DirectoryManager extends ItemManager {
 	 * @param device
 	 */
 	public Directory registerDirectory(Device device) {
-		return registerDirectory(device.getId(), "", null, device); 
+		return registerDirectory(device.getId(), "", null, device);
 	}
 
 	/**
@@ -113,12 +110,21 @@ public class DirectoryManager extends ItemManager {
 	 *            parent directory
 	 * @return ItemManager ID
 	 */
-	protected static String getID(String sName, Device device, Directory dParent) {
+	protected static String createID(String sName, Device device, Directory dParent) {
 		StringBuffer sbAbs = new StringBuffer(device.getName());
-		if (dParent != null) {
-			sbAbs.append(dParent.getRelativePath());
+		// Under windows, all files/directories with different cases should get
+		// the same ID
+		if (Util.isUnderWindows()) {
+			if (dParent != null) {
+				sbAbs.append(dParent.getRelativePath().toLowerCase());
+			}
+			sbAbs.append(sName.toLowerCase());
+		} else {
+			if (dParent != null) {
+				sbAbs.append(dParent.getRelativePath());
+			}
+			sbAbs.append(sName);
 		}
-		sbAbs.append(sName);
 		String sId = MD5Processor.hash(sbAbs.toString());
 		return sId;
 	}
@@ -128,11 +134,15 @@ public class DirectoryManager extends ItemManager {
 	 * 
 	 * @param sName
 	 */
-	public Directory registerDirectory(String sId, String sName,
-			Directory dParent, Device device) {
+	public Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
 		synchronized (DirectoryManager.getInstance().getLock()) {
 			if (hmItems.containsKey(sId)) {
-				return (Directory) hmItems.get(sId);
+				Directory dir = (Directory) hmItems.get(sId);
+				// Set name again because under Windows, dir name case could
+				// have changed but
+				// we keep the same directory object
+				dir.setName(sName);
+				return dir;
 			}
 			Directory directory = null;
 			directory = new Directory(sId, sName, dParent, device);
@@ -208,7 +218,7 @@ public class DirectoryManager extends ItemManager {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_DIRECTORIES;
 	}
 

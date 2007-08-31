@@ -24,6 +24,7 @@ import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -77,7 +78,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	/**
 	 * @return identifier used for XML generation
 	 */
-	abstract public String getIdentifier();
+	abstract public String getLabel();
 
 	/**
 	 * @param sPropertyName
@@ -140,7 +141,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	 * @return XML representation of this manager
 	 */
 	public String toXML() {
-		StringBuffer sb = new StringBuffer("\t<").append(getIdentifier() + ">");  
+		StringBuffer sb = new StringBuffer("\t<").append(getLabel() + ">");  
 		Iterator it = hmPropertiesMetaInformation.keySet().iterator();
 		while (it.hasNext()) {
 			String sProperty = (String) it.next();
@@ -156,7 +157,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	public Collection<PropertyMetaInformation> getProperties() {
 		return hmPropertiesMetaInformation.values();
 	}
-
+	
 	/**
 	 * @return custom properties Meta informations
 	 */

@@ -57,7 +57,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * 
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	final public String getIdentifier() {
+	final public String getLabel() {
 		return XML_PLAYLIST;
 	}
 

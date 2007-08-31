@@ -82,7 +82,7 @@ public class StyleManager extends ItemManager {
 	 * @param sName
 	 */
 	public Style registerStyle(String sName) {
-		String sId = getID(sName);
+		String sId = createID(sName);
 		return registerStyle(sId, sName);
 	}
 
@@ -93,7 +93,7 @@ public class StyleManager extends ItemManager {
 	 *            item name
 	 * @return ItemManager ID
 	 */
-	protected static String getID(String sName) {
+	protected static String createID(String sName) {
 		return MD5Processor.hash(sName);
 	}
 
@@ -205,7 +205,7 @@ public class StyleManager extends ItemManager {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_STYLES;
 	}
 

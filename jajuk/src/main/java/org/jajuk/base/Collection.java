@@ -137,7 +137,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Type type = (Type) it.next();
 			bw.write(type.toXml());
 		}
-		bw.write("\t</" + TypeManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + TypeManager.getInstance().getLabel() + ">\n");
 		// devices
 		bw.write(DeviceManager.getInstance().toXML());
 		it = DeviceManager.getInstance().getDevices().iterator();
@@ -145,7 +145,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Device device = (Device) it.next();
 			bw.write(device.toXml());
 		}
-		bw.write("\t</" + DeviceManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + DeviceManager.getInstance().getLabel() + ">\n");
 		// styles
 		bw.write(StyleManager.getInstance().toXML());
 		it = StyleManager.getInstance().getStyles().iterator();
@@ -153,7 +153,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Style style = (Style) it.next();
 			bw.write(style.toXml());
 		}
-		bw.write("\t</" + StyleManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + StyleManager.getInstance().getLabel() + ">\n");
 		// authors
 		bw.write(AuthorManager.getInstance().toXML());
 		it = AuthorManager.getInstance().getAuthors().iterator();
@@ -161,7 +161,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Author author = (Author) it.next();
 			bw.write(author.toXml());
 		}
-		bw.write("\t</" + AuthorManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + AuthorManager.getInstance().getLabel() + ">\n");
 		// albums
 		bw.write(AlbumManager.getInstance().toXML());
 		it = AlbumManager.getInstance().getAlbums().iterator();
@@ -169,7 +169,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Album album = (Album) it.next();
 			bw.write(album.toXml());
 		}
-		bw.write("\t</" + AlbumManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + AlbumManager.getInstance().getLabel() + ">\n");
 		// years
 		bw.write(YearManager.getInstance().toXML());
 		it = YearManager.getInstance().getYears().iterator();
@@ -177,7 +177,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Year year = (Year) it.next();
 			bw.write(year.toXml());
 		}
-		bw.write("\t</" + YearManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + YearManager.getInstance().getLabel() + ">\n");
 		// tracks
 		bw.write(TrackManager.getInstance().toXML());
 		it = TrackManager.getInstance().getTracks().iterator();
@@ -188,7 +188,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(track.toXml());
 			}
 		}
-		bw.write("\t</" + TrackManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + TrackManager.getInstance().getLabel() + ">\n");
 		// directories
 		bw.write(DirectoryManager.getInstance().toXML());
 		it = DirectoryManager.getInstance().getDirectories().iterator();
@@ -196,7 +196,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</" + DirectoryManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + DirectoryManager.getInstance().getLabel() + ">\n");
 		// files
 		bw.write(FileManager.getInstance().toXML());
 		it = FileManager.getInstance().getFiles().iterator();
@@ -204,7 +204,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
 			bw.write(file.toXml());
 		}
-		bw.write("\t</" + FileManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + FileManager.getInstance().getLabel() + ">\n");
 		// playlist files
 		bw.write(PlaylistFileManager.getInstance().toXML());
 		it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
@@ -212,7 +212,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</" + PlaylistFileManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + PlaylistFileManager.getInstance().getLabel() + ">\n");
 		// playlist
 		bw.write(PlaylistManager.getInstance().toXML());
 		it = PlaylistManager.getInstance().getPlayLists().iterator();
@@ -223,7 +223,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</" + PlaylistManager.getInstance().getIdentifier() + ">\n");
+		bw.write("\t</" + PlaylistManager.getInstance().getLabel() + ">\n");
 		bw.write("</" + XML_COLLECTION + ">\n");
 		bw.flush();
 		bw.close();
@@ -388,7 +388,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				long lType = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TYPE)));
 				// UPGRADE --For jajuk < 1.2 id changed
-				String sRightID = DeviceManager.getID(sItemName).intern();
+				String sRightID = DeviceManager.createID(sItemName).intern();
 				String sURL = attributes.getValue(attributes.getIndex(XML_URL)).intern();
 				device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, lType,
 						sURL);
@@ -404,7 +404,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sId = attributes.getValue(attributes.getIndex(XML_ID));
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : id changed
-				String sRightID = StyleManager.getID(sItemName).intern();
+				String sRightID = StyleManager.createID(sItemName).intern();
 				Style style = StyleManager.getInstance().registerStyle(sRightID, sItemName);
 				if (style != null) {
 					style.populateProperties(attributes);
@@ -425,7 +425,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sId = attributes.getValue(attributes.getIndex(XML_ID));
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : id changed
-				String sRightID = AuthorManager.getID(sItemName).intern();
+				String sRightID = AuthorManager.createID(sItemName).intern();
 				Author author = AuthorManager.getInstance().registerAuthor(sRightID, sItemName);
 				if (author != null) {
 					author.populateProperties(attributes);
@@ -439,7 +439,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sId = attributes.getValue(attributes.getIndex(XML_ID));
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : id changed
-				String sRightID = AlbumManager.getID(sItemName).intern();
+				String sRightID = AlbumManager.createID(sItemName).intern();
 				Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName);
 				if (album != null) {
 					album.populateProperties(attributes);
@@ -536,7 +536,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and
 				// used deep hash code, not used later
-				String sRightID = TrackManager.getID(sTrackName, album, style, author, length,
+				String sRightID = TrackManager.createID(sTrackName, album, style, author, length,
 						year, lOrder, type).intern();
 
 				// Date format should be OK
@@ -596,7 +596,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
 				// UPGRADE --For jajuk < 1.2 id changed
-				String sRightID = DirectoryManager.getID(sItemName, device, dParent).intern();
+				String sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
 				Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID,
 						sItemName, dParent, device);
 				directory.populateProperties(attributes);
@@ -649,7 +649,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
 				// UPGRADE --For jajuk < 1.2 id changed
-				String sRightID = FileManager.getID(sItemName, dParent).intern();
+				String sRightID = FileManager.createID(sItemName, dParent).intern();
 				org.jajuk.base.File file = FileManager.getInstance().registerFile(sRightID,
 						sItemName, dParent, track, lSize, lQuality);
 				file.populateProperties(attributes);
@@ -674,7 +674,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sID = attributes.getValue(attributes.getIndex(XML_ID));
 				String sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
 				// UPGRADE --For jajuk < 1.2 id changed
-				String sRightID = PlaylistFileManager.getID(sItemName, dParent).intern();
+				String sRightID = PlaylistFileManager.createID(sItemName, dParent).intern();
 				PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sRightID,
 						sItemName, dParent);
 				if (plf != null) {

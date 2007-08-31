@@ -120,15 +120,15 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 		jmiUnmount.setActionCommand(EventSubject.EVENT_DEVICE_UNMOUNT.toString());
 		jpmenu.add(jmiUnmount);
 
-		jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader.ICON_TEST);
-		jmiTest.addActionListener(this);
-		jmiTest.setActionCommand(EventSubject.EVENT_DEVICE_TEST.toString());
-		jpmenu.add(jmiTest);
-
 		jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader.ICON_REFRESH);
 		jmiRefresh.addActionListener(this);
 		jmiRefresh.setActionCommand(EventSubject.EVENT_DEVICE_REFRESH.toString());
 		jpmenu.add(jmiRefresh);
+
+		jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader.ICON_TEST);
+		jmiTest.addActionListener(this);
+		jmiTest.setActionCommand(EventSubject.EVENT_DEVICE_TEST.toString());
+		jpmenu.add(jmiTest);
 
 		jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader.ICON_SYNCHRO);
 		jmiSynchronize.addActionListener(this);
@@ -361,7 +361,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	public void mousePressed(MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			handlePopup(e);
-		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK)  == 0){
+		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
 			boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
 			selectItem(e);
 			if (bSameDevice) {
@@ -426,7 +426,9 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent e) {

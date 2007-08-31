@@ -83,7 +83,7 @@ public class Directory extends PhysicalItem implements Comparable {
 	 * 
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	final public String getIdentifier() {
+	final public String getLabel() {
 		return XML_DIRECTORY;
 	}
 
@@ -281,9 +281,13 @@ public class Directory extends PhysicalItem implements Comparable {
 					continue;
 				}
 				if (bIsMusic) {
-					String sId = FileManager.getID(files[i].getName(), this).intern();
+					String name = files[i].getName();
+					String sId = FileManager.createID(name, this).intern();
 					// check the file is not already known in database
 					org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
+					// Set name again to make sure Windows users will see actual
+					// name with right case
+					fileRef.setName(name);
 					// if known file and no deep scan, just leave
 					if (fileRef != null && !bDeepScan) {
 						continue;
@@ -326,14 +330,12 @@ public class Directory extends PhysicalItem implements Comparable {
 							files[i].getName(), this, track, files[i].length(), lQuality);
 					// Set file date
 					file.setProperty(XML_FILE_DATE, new Date(lastModified));
-					/*
-					 * comment is at the track level, note that we take last
-					 * found file comment but we changing a comment, we will
-					 * apply to all files for a track
-					 */
+					// Comment is at the track level, note that we take last
+					// found file comment but we changing a comment, we will
+					// apply to all files for a track
 					track.setComment(sComment);
 				} else { // playlist file
-					String sId = PlaylistFileManager.getID(files[i].getName(), this);
+					String sId = PlaylistFileManager.createID(files[i].getName(), this);
 					PlaylistFile plfRef = PlaylistFileManager.getInstance()
 							.getPlaylistFileByID(sId);
 					// if known playlist file and no deep scan, just leave
@@ -503,6 +505,17 @@ public class Directory extends PhysicalItem implements Comparable {
 			icon = IconLoader.ICON_DIRECTORY_DESYNCHRO;
 		}
 		return icon;
+	}
+
+	/**
+	 * Set name (useful for Windows because same object can have different
+	 * cases)
+	 * 
+	 * @param name
+	 *            Item name
+	 */
+	protected void setName(String name) {
+		this.sName = name;
 	}
 
 }

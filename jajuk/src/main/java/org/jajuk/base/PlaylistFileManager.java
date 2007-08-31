@@ -79,7 +79,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 	public PlaylistFile registerPlaylistFile(java.io.File fio,
 			Directory dParentDirectory) throws Exception {
 		synchronized (PlaylistFileManager.getInstance().getLock()) {
-			String sId = getID(fio.getName(), dParentDirectory);
+			String sId = createID(fio.getName(), dParentDirectory);
 			return registerPlaylistFile(sId, fio.getName(), dParentDirectory);
 		}
 	}
@@ -89,7 +89,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 	 * @param dParentDirectory
 	 * @return ItemManager ID
 	 */
-	protected static String getID(String sName, Directory dParentDirectory) {
+	protected static String createID(String sName, Directory dParentDirectory) {
 		return MD5Processor.hash(new StringBuffer(dParentDirectory.getDevice()
 				.getName()).append(dParentDirectory.getRelativePath()).append(
 				sName).toString());
@@ -167,7 +167,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_PLAYLIST_FILES;
 	}
 
@@ -194,7 +194,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 					+ java.io.File.separator + sNewName);
 			// recalculate file ID
 			plfOld.getDirectory();
-			String sNewId = PlaylistFileManager.getID(sNewName, plfOld
+			String sNewId = PlaylistFileManager.createID(sNewName, plfOld
 					.getDirectory());
 			// create a new playlist file (with own fio and sAbs)
 			PlaylistFile plfNew = new PlaylistFile(sNewId, sNewName, plfOld

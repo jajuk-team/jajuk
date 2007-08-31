@@ -76,7 +76,7 @@ public class AuthorManager extends ItemManager {
 	 * @param sName
 	 */
 	public Author registerAuthor(String sName) {
-		String sId = getID(sName);
+		String sId = createID(sName);
 		return registerAuthor(sId, sName);
 	}
 
@@ -87,7 +87,7 @@ public class AuthorManager extends ItemManager {
 	 *            item name
 	 * @return ItemManager ID
 	 */
-	protected static String getID(String sName) {
+	protected static String createID(String sName) {
 		return MD5Processor.hash(sName);
 	}
 
@@ -187,7 +187,7 @@ public class AuthorManager extends ItemManager {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_AUTHORS;
 	}
 

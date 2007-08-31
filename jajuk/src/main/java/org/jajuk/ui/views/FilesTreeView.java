@@ -417,11 +417,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmenuDev.add(jmiDevMount);
 		jmenuDev.add(jmiDevUnmount);
 		jmenuDev.add(jmiDevRefresh);
-		jmenuDev.add(jmiDevSynchronize);
 		jmenuDev.add(jmiDevTest);
 		jmenuDev.add(jmiDevCDDBQuery);
 		jmenuDev.add(jmiDevOrganize);
 		jmenuDev.add(jmiDevReport);
+		jmenuDev.add(jmiDevSynchronize);
 		jmenuDev.add(jmiDevConfiguration);
 		jmenuDev.add(jmiDevProperties);
 

@@ -687,7 +687,7 @@ public class Main implements ITechnicalStrings {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
-						sc.setTitle(Messages.getString("Main.22"));
+						sc.setProgress(5, Messages.getString("Main.22"));
 						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
 						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);

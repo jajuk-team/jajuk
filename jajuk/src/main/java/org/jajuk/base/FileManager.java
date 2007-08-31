@@ -129,11 +129,14 @@ public class FileManager extends ItemManager implements Observer {
 				// add to directory
 				file.getDirectory().addFile(file);
 				if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
-					Log.debug("registrated new file: " + file); 
+					Log.debug("registrated new file: " + file);
 				}
 			} else {
 				// If file already exist and the track has changed, make changes
 				file = (File) hmItems.get(sId);
+				// Set name again because under Windows, the file name case
+				// could have changed but we keep the same file object
+				file.setName(sName);
 			}
 			// add this file to track
 			file.setTrack(track);
@@ -151,9 +154,18 @@ public class FileManager extends ItemManager implements Observer {
 	 * @param dir
 	 * @return file ID
 	 */
-	protected static String getID(String sName, Directory dir) {
-		return MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
-				dir.getRelativePath()).append(sName).toString());
+	protected static String createID(String sName, Directory dir) {
+		String id = null;
+		// Under windows, all files/directories with different cases should get
+		// the same ID
+		if (Util.isUnderWindows()) {
+			id = MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+					dir.getRelativePath().toLowerCase()).append(sName.toLowerCase()).toString());
+		} else {
+			id = MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+					dir.getRelativePath()).append(sName).toString());
+		}
+		return id;
 	}
 
 	/**
@@ -172,7 +184,7 @@ public class FileManager extends ItemManager implements Observer {
 			}
 			// check if this file still exists
 			if (!fileOld.getIO().exists()) {
-				throw new CannotRenameException(135); 
+				throw new CannotRenameException(135);
 			}
 			java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile()
 					.getAbsolutePath()
@@ -186,25 +198,25 @@ public class FileManager extends ItemManager implements Observer {
 			org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), fileOld
 					.getTrack(), fileOld.getSize(), fileOld.getQuality());
 			// transfert all properties (inc id and name)
-			fNew.setProperties(fileOld.getProperties()); 
+			fNew.setProperties(fileOld.getProperties());
 			fNew.setProperty(XML_ID, sNewId); // reset new id and name
 			fNew.setProperty(XML_NAME, sNewName); // reset new id and name
 			// check file name and extension
-			if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))) { 
+			if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))) {
 				// no extension change
-				throw new CannotRenameException(134); 
+				throw new CannotRenameException(134);
 			}
 			// check if future file exists (under windows, file.exists
 			// return true even with
 			// different case so we test file name is different)
 			if (!fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()) {
-				throw new CannotRenameException(134); 
+				throw new CannotRenameException(134);
 			}
 			// try to rename file on disk
 			try {
 				fileOld.getIO().renameTo(fileNew);
 			} catch (Exception e) {
-				throw new CannotRenameException(134); 
+				throw new CannotRenameException(134);
 			}
 			// OK, remove old file and register this new file
 			removeFile(fileOld);
@@ -365,32 +377,35 @@ public class FileManager extends ItemManager implements Observer {
 		// (not shuffle) Album / album
 		else if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
 			long l = System.currentTimeMillis();
-			final ArrayList<Album> albums = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
-			Collections.shuffle(albums,new Random());
-			//We need an index (bennch: 45* faster)
+			final ArrayList<Album> albums = new ArrayList<Album>(AlbumManager.getInstance()
+					.getAlbums());
+			Collections.shuffle(albums, new Random());
+			// We need an index (bennch: 45* faster)
 			final HashMap<Album, Integer> index = new HashMap<Album, Integer>();
-			for (Album album:albums){
-				index.put(album,albums.indexOf(album));
+			for (Album album : albums) {
+				index.put(album, albums.indexOf(album));
 			}
-			Collections.sort(alEligibleFiles,new Comparator<File>() {
-			
+			Collections.sort(alEligibleFiles, new Comparator<File>() {
+
 				public int compare(File f1, File f2) {
-					if (f1.getTrack().getAlbum() .equals(f2.getTrack().getAlbum())){
-						int comp = (int)(f1.getTrack().getOrder() - f2.getTrack().getOrder()); 
-						if (comp == 0){
-							//If no track number is given, try to sort by filename than can contain the track
+					if (f1.getTrack().getAlbum().equals(f2.getTrack().getAlbum())) {
+						int comp = (int) (f1.getTrack().getOrder() - f2.getTrack().getOrder());
+						if (comp == 0) {
+							// If no track number is given, try to sort by
+							// filename than can contain the track
 							return f1.getName().compareTo(f2.getName());
 						}
-						return comp;  
+						return comp;
 					}
-					return index.get(f1.getTrack().getAlbum()) - index.get(f2.getTrack().getAlbum());
+					return index.get(f1.getTrack().getAlbum())
+							- index.get(f2.getTrack().getAlbum());
 				}
-			
+
 			});
 			System.out.println(System.currentTimeMillis() - l);
-			return alEligibleFiles; 
-		// else return shuffle albums
-		}else {
+			return alEligibleFiles;
+			// else return shuffle albums
+		} else {
 			return getShuffledFilesByAlbum(alEligibleFiles);
 		}
 	}
@@ -547,25 +562,27 @@ public class FileManager extends ItemManager implements Observer {
 	 * @return top files
 	 */
 	public ArrayList getBestOfFiles() {
-		return getBestOfFiles(true,Integer.parseInt(ConfigurationManager
-					.getProperty(CONF_BESTOF_TRACKS_SIZE)));
+		return getBestOfFiles(true, Integer.parseInt(ConfigurationManager
+				.getProperty(CONF_BESTOF_TRACKS_SIZE)));
 	}
 
 	/**
 	 * Return bestof files
 	 * 
-	 * @param bHideUnmounted if true, unmounted files are not choosen
-	 * @param iNbBestofFiles nb of items to return
+	 * @param bHideUnmounted
+	 *            if true, unmounted files are not choosen
+	 * @param iNbBestofFiles
+	 *            nb of items to return
 	 * @return top files
 	 */
-	public ArrayList<File> getBestOfFiles(boolean bHideUnmounted,int iNbBestofFiles) {
+	public ArrayList<File> getBestOfFiles(boolean bHideUnmounted, int iNbBestofFiles) {
 		// test a rate has changed for perfs
 		if (FileManager.getInstance().hasRateChanged() || alBestofFiles == null) {
 			// clear data
 			alBestofFiles.clear();
 			// create a temporary table to remove unmounted files
 			ArrayList<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
-			for (Track track:TrackManager.getInstance().getTracks()){
+			for (Track track : TrackManager.getInstance().getTracks()) {
 				File file = track.getPlayeableFile(bHideUnmounted);
 				if (file != null) {
 					alEligibleFiles.add(file);
@@ -645,7 +662,7 @@ public class FileManager extends ItemManager implements Observer {
 			int i = alSortedFiles.indexOf(file);
 			// test if this file is the very first one
 			if (i == 0) {
-				Messages.showErrorMessage(128); 
+				Messages.showErrorMessage(128);
 				return null;
 			}
 			// look for a correct file from index to collection begin
@@ -752,8 +769,8 @@ public class FileManager extends ItemManager implements Observer {
 			while (it.hasNext()) {
 				File file = (File) it.next();
 				if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) && // if
-																					// search
-																					// in
+						// search
+						// in
 						(!file.getDirectory().getDevice().isMounted() || file.getDirectory()
 								.getDevice().isRefreshing())) {
 					continue;
@@ -791,7 +808,7 @@ public class FileManager extends ItemManager implements Observer {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_FILES;
 	}
 
@@ -831,5 +848,5 @@ public class FileManager extends ItemManager implements Observer {
 		}
 		return fileSet;
 	}
-	
+
 }

@@ -83,7 +83,7 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 	 * 
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	final public String getIdentifier() {
+	final public String getLabel() {
 		return XML_FILE;
 	}
 
@@ -383,4 +383,16 @@ public class File extends PhysicalItem implements Comparable, ITechnicalStrings 
 		}
 		return icon;
 	}
+	
+	/**
+	 * Set name (useful for Windows because same object can have different
+	 * cases)
+	 * 
+	 * @param name
+	 * 		Item name
+	 */
+	protected void setName(String name) {
+		this.sName = name;
+	}
+
 }

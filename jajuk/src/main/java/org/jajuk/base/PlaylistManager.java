@@ -70,7 +70,7 @@ public class PlaylistManager extends ItemManager {
 	 *            playlist file
 	 */
 	public Playlist registerPlaylist(PlaylistFile plFile) {
-		return registerPlaylist(getID(plFile), plFile);
+		return registerPlaylist(createID(plFile), plFile);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class PlaylistManager extends ItemManager {
 	 *            playlist file
 	 * @return ItemManager ID
 	 */
-	protected static String getID(PlaylistFile plf) {
+	protected static String createID(PlaylistFile plf) {
 		return plf.getHashcode();
 	}
 
@@ -276,7 +276,7 @@ public class PlaylistManager extends ItemManager {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_PLAYLISTS;
 	}
 

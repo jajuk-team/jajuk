@@ -75,7 +75,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 	 * 
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	final public String getIdentifier() {
+	final public String getLabel() {
 		return XML_TYPE;
 	}
 

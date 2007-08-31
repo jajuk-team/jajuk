@@ -129,7 +129,7 @@ public class DeviceManager extends ItemManager {
 	 * @return device
 	 */
 	public Device registerDevice(String sName, long lDeviceType, String sUrl) {
-		String sId = getID(sName);
+		String sId = createID(sName);
 		return registerDevice(sId, sName, lDeviceType, sUrl);
 	}
 
@@ -155,7 +155,7 @@ public class DeviceManager extends ItemManager {
 	 * @param sName
 	 * @return An id
 	 */
-	protected static String getID(String sName) {
+	protected static String createID(String sName) {
 		return MD5Processor.hash(sName); // reprocess id;
 	}
 
@@ -351,7 +351,7 @@ public class DeviceManager extends ItemManager {
 	 * 
 	 * @see org.jajuk.base.ItemManager#getIdentifier()
 	 */
-	public String getIdentifier() {
+	public String getLabel() {
 		return XML_DEVICES;
 	}
 
