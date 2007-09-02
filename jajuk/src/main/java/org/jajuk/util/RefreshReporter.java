@@ -73,7 +73,6 @@ public class RefreshReporter {
 		dirTotal = Util.countDirectories(device.getFio());
 		rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.ICON_INFO);
 		rdialog.setProgress(10);
-		updateDialogTitle.start();
 	}
 
 	public void notifyCorruptedFile() {
@@ -88,6 +87,7 @@ public class RefreshReporter {
 		// Cleanup represents about 20% of the total workload
 		rdialog.setProgress(20);
 		rdialog.setAction(Messages.getString("RefreshDialog.1"), IconLoader.ICON_REFRESH);
+		updateDialogTitle.start();
 	}
 
 	public void updateState(Directory dir) {
