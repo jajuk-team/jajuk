@@ -442,14 +442,13 @@
 			<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
 		</replace>
 
-		<!--Copy previous release jars, comment this if you have no previous release
+		<!--Copy previous release jars, comment this if you have no previous release-->
 		<copy todir='${jnlpdir}/app'>
 			<fileset dir="${previousjnlpdir}/app">
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
-		-->
-
+		
 		<!-- Create the war file -->
 		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
 			<fileset dir='${jnlpdir}' />
