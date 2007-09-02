@@ -23,7 +23,6 @@ import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FontManager;
 import org.jajuk.ui.FontManager.JajukFont;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -32,7 +31,6 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

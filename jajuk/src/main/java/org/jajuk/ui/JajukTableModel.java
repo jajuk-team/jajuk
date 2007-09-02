@@ -24,7 +24,6 @@ import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 

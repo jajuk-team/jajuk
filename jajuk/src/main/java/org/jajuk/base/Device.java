@@ -19,6 +19,20 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.RefreshReporter;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -30,20 +44,6 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.wizard.RefreshDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
 
 /**
  * A device ( music files repository )
@@ -83,12 +83,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	/** Number of dirs in this device before refresh */
 	public int iNbDirsBeforeRefresh;
 
-	/** Number of new files found during refresh for stats */
-	public int iNbNewFiles;
-
-	/** Number of corrupted files found during refresh for stats */
-	public int iNbCorruptedFiles;
-
 	/** Number of created files on source device during synchro ( for stats ) */
 	public int iNbCreatedFilesSrc;
 
@@ -109,12 +103,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	/** date last refresh */
 	long lDateLastRefresh;
 
-	/** Refresh message */
-	private String sFinalMessage = "";
-
-	// Refresh dialog
-	RefreshDialog rdialog;
-
 	// Refresh Options
 	private static final int OPTION_REFRESH_FAST = 0;
 
@@ -132,6 +120,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	public static final int TYPE_EXT_DD = 3;
 
 	public static final int TYPE_PLAYER = 4;
+
+	private int dirCount = 0;
+
+	RefreshReporter reporter;
 
 	/**
 	 * Device constructor
@@ -208,6 +200,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 *            default=deep
 	 */
 	private void manualRefresh(boolean bAsk) {
+		reporter = new RefreshReporter(this);
 		int i = OPTION_REFRESH_DEEP;
 		if (bAsk) {
 			Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
@@ -234,22 +227,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			Messages.showErrorMessage(107);
 			return;
 		}
-		rdialog = new RefreshDialog();
-		rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + this.getName());
-		rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.ICON_INFO);
-
+		reporter.startup();
 		// clean old files up (takes a while)
 		cleanRemovedFiles();
-		// Cleanup represents about 20% of the total workload
-		rdialog.setProgress(20);
-		// Computes the number of directories
-		rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.ICON_INFO);
-		dirTotal = Util.countDirectories(new File(getUrl()));
-		rdialog.setAction(Messages.getString("RefreshDialog.1"), IconLoader.ICON_REFRESH);
-		rdialog.setProgress(10);
+		reporter.cleanupDone();
 		// Actual refresh
 		refreshCommand((i == OPTION_REFRESH_DEEP), true);
-		Messages.showInfoMessage(sFinalMessage);
 		// notify views to refresh
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		// cleanup logical items
@@ -266,6 +249,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		} catch (IOException e) {
 			Log.error(e);
 		}
+		reporter.done();
 	}
 
 	/**
@@ -277,8 +261,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	protected synchronized boolean refreshCommand(boolean bDeepScan, boolean bManual) {
 		try {
 			bAlreadyRefreshing = true;
-			long lTime = System.currentTimeMillis();
-			lDateLastRefresh = lTime;
+			lDateLastRefresh = System.currentTimeMillis();
 			// check Jajuk is not exiting because a refresh cannot start in
 			// this state
 			if (Main.bExiting) {
@@ -302,8 +285,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 			iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
 			iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
-			iNbNewFiles = 0;
-			iNbCorruptedFiles = 0;
+
 			if (bDeepScan && Log.isDebugEnabled()) {
 				Log.debug("Starting refresh of device : " + this);
 			}
@@ -312,81 +294,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				Messages.showErrorMessage(101);
 				return false;
 			}
-			int dirCount = 0;
-			// index init
-			File fCurrent = fTop;
-			int[] indexTab = new int[100]; // directory index
-			for (int i = 0; i < 100; i++) { // init
-				indexTab[i] = -1;
-			}
-			int iDeep = 0; // deep
-			Directory dParent = null;
-
 			// Create a directory for device itself and scan files to allow
 			// files at the root of the device
-			Directory d = DirectoryManager.getInstance().registerDirectory(this);
-			dParent = d;
-			d.scan(bDeepScan);
+			Directory top = DirectoryManager.getInstance().registerDirectory(this);
 			// Start actual scan
-			while (iDeep >= 0 && !Main.isExiting()) {
-				// only directories
-				File[] files = fCurrent.listFiles(Util.dirFilter);
-				// files is null if fCurrent is a not a directory
-				if (files == null || files.length == 0) {
-					// re-init for next time we will reach this deep
-					indexTab[iDeep] = -1;
-					iDeep--; // come up
-					fCurrent = fCurrent.getParentFile();
-					if (dParent != null) {
-						dParent = dParent.getParentDirectory();
-					}
-				} else {
-					if (indexTab[iDeep] < files.length - 1) {
-						// enter sub-directory
-						indexTab[iDeep]++; // inc index for next time we
-						// will reach this deep
-						fCurrent = files[indexTab[iDeep]];
-						dParent = DirectoryManager.getInstance().registerDirectory(
-								fCurrent.getName(), dParent, this);
-						if (bManual) {
-							rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.44"))
-									.append(' ').append(dParent.getRelativePath()).toString());
-							int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
-							rdialog.setProgress(progress);
-							rdialog.setTitle(Messages.getString("RefreshDialog.2") + " "
-									+ this.getName() + " (" + progress + " %)");
-						}
-						dParent.scan(bDeepScan);
-						dirCount++;
-						iDeep++;
-					} else {
-						indexTab[iDeep] = -1;
-						iDeep--;
-						fCurrent = fCurrent.getParentFile();
-						if (dParent != null) {
-							dParent = dParent.getParentDirectory();
-						}
-					}
-				}
-			}
-
-			if (bManual) {
-				// Close refresh dialog
-				rdialog.dispose();
-			}
-
-			// Display end of refresh message with stats
-			lTime = System.currentTimeMillis() - lTime;
-			StringBuffer sbOut = new StringBuffer("[").append(getName()).append(
-					Messages.getString("Device.25")).append(
-					((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).append(" - ").append(
-					iNbNewFiles).append(Messages.getString("Device.27"));
-			if (iNbCorruptedFiles > 0) {
-				sbOut.append(" - ").append(iNbCorruptedFiles).append(
-						Messages.getString("Device.43"));
-			}
-			sFinalMessage = sbOut.toString();
-			Log.debug(sFinalMessage);
+			scanRecursively(top, bDeepScan);
 			// refresh required if nb of files or dirs changed
 			if ((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0
 					|| (DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0) {
@@ -404,6 +316,19 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 	}
 
+	private void scanRecursively(Directory dir, boolean bDeepScan) {
+		dir.scan(bDeepScan, reporter);
+		if (reporter != null) {
+			reporter.updateState(dir);
+		}
+		File[] files = dir.getFio().listFiles(Util.dirFilter);
+		for (int i = 0; i < files.length; i++) {
+			Directory subDir = DirectoryManager.getInstance().registerDirectory(files[i].getName(),
+					dir, this);
+			scanRecursively(subDir, bDeepScan);
+		}
+	}
+
 	/**
 	 * Synchroning asynchronously
 	 * 
@@ -412,8 +337,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * @return
 	 */
 	public void synchronize(boolean bAsynchronous) {
-		//Check a source device is defined
-		if (Util.isVoid((String)getValue(XML_DEVICE_SYNCHRO_SOURCE))){
+		// Check a source device is defined
+		if (Util.isVoid((String) getValue(XML_DEVICE_SYNCHRO_SOURCE))) {
 			Messages.showErrorMessage(171);
 			return;
 		}
@@ -457,7 +382,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			boolean bidi = (getValue(XML_DEVICE_SYNCHRO_MODE).equals(DEVICE_SYNCHRO_MODE_BI));
 			// check this device is synchronized
 			String sIdSrc = (String) getValue(XML_DEVICE_SYNCHRO_SOURCE);
-			if (sIdSrc == null || sIdSrc.equals(getId())) { 
+			if (sIdSrc == null || sIdSrc.equals(getId())) {
 				// cannot synchro with itself
 				return;
 			}
@@ -1071,12 +996,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return Associated root directory
 	 */
-	public Directory getRootDirectory(){
+	public Directory getRootDirectory() {
 		return DirectoryManager.getInstance().getDirectoryForIO(getFio());
 	}
 

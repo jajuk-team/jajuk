@@ -24,7 +24,6 @@ import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 

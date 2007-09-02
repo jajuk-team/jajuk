@@ -32,11 +32,9 @@ import org.jajuk.ui.FontManager;
 import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Util;
 
-import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

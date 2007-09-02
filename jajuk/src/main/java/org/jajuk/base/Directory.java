@@ -19,6 +19,13 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.RefreshReporter;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,12 +34,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
-
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * A physical directory
@@ -253,9 +254,10 @@ public class Directory extends PhysicalItem implements Comparable {
 	 * 
 	 * @param bDeepScan:
 	 *            force files tag read
-	 * @param
+	 * @param reporter
+	 * 	Refresh handler
 	 */
-	public void scan(boolean bDeepScan) {
+	public void scan(boolean bDeepScan,RefreshReporter reporter) {
 		java.io.File[] files = getFio().listFiles(Util.fileFilter);
 		if (files == null || files.length == 0) { // none file, leave
 			return;
@@ -287,7 +289,9 @@ public class Directory extends PhysicalItem implements Comparable {
 					org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
 					// Set name again to make sure Windows users will see actual
 					// name with right case
-					fileRef.setName(name);
+					if (Util.isUnderWindows() && fileRef != null) {
+						fileRef.setName(name);
+					}
 					// if known file and no deep scan, just leave
 					if (fileRef != null && !bDeepScan) {
 						continue;
@@ -298,7 +302,9 @@ public class Directory extends PhysicalItem implements Comparable {
 					// tag object in all cases
 					tag = new Tag(files[i], true);
 					if (tag.isCorrupted()) {
-						device.iNbCorruptedFiles++; // stats
+						if (reporter != null) {
+							reporter.notifyCorruptedFile();
+						}
 						Log.error(103, "{{" + files[i].getAbsolutePath() + "}}", null);
 					}
 					// if an error occurs, just notice it but keep the track
@@ -312,10 +318,12 @@ public class Directory extends PhysicalItem implements Comparable {
 					String sComment = tag.getComment();
 					long lOrder = tag.getOrder();
 					if (fileRef == null) {
-						device.iNbNewFiles++;
 						// stats, do it here and not
 						// before because we ignore the
 						// file if we cannot read it
+						if (reporter != null) {
+							reporter.notifyNewFile();
+						}
 					}
 					Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
 					Style style = StyleManager.getInstance().registerStyle(sStyle);
@@ -353,10 +361,13 @@ public class Directory extends PhysicalItem implements Comparable {
 					// add playlist file to current directory
 					addPlaylistFile(plFile);
 					if (plfRef == null) {
-						device.iNbNewFiles++;
 						// stats, do it here and not
 						// before because we ignore the
 						// file if we cannot read it
+						if (reporter != null) {
+							reporter.notifyNewFile();
+						}
+
 					}
 				}
 			} catch (Exception e) {

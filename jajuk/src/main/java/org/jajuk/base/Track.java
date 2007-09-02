@@ -20,7 +20,6 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;

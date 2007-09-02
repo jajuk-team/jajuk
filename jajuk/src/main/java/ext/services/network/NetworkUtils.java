@@ -78,7 +78,6 @@ public class NetworkUtils implements ITechnicalStrings {
 		}
 		input.close();
 		String out = builder.toString();
-		Log.debug("HTML="+out);
 		return out;
 	}
 	

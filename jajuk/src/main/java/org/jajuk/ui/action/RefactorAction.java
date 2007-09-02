@@ -220,7 +220,7 @@ public class RefactorAction implements ITechnicalStrings {
 				registerFile(dir);
 			}
 		} else {
-			d.scan(true);
+			d.scan(true,null);
 		}
 	}
 }

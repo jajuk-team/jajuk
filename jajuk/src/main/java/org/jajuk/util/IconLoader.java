@@ -416,7 +416,7 @@ public class IconLoader {
 			.getResource("icons/16x16/netsearch_16x16.png"));
 
 	public static final UrlImageIcon ICON_TRACK_FIFO_PLANNED = new UrlImageIcon(Util
-			.getResource("icons/16x16/planned_16x16.png"));
+			.getResource("icons/16x16/clock_16x16.png"));
 
 	public static final UrlImageIcon ICON_TRACK_FIFO_NORM = new UrlImageIcon(Util
 			.getResource("icons/16x16/player_perspective_16x16.png"));
