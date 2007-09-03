@@ -55,23 +55,29 @@ public class DebugLogAction extends ActionBase {
 		text.setEditable(false);
 		text.setMargin(new Insets(10, 10, 10, 10));
 		text.setOpaque(true);
+		text.setBackground(Color.WHITE);
 		text.setForeground(Color.DARK_GRAY);
 		text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
-		JDialog dialog = new JDialog(Main.getWindow(), Messages.getString("DebugLogAction.0"), true);
+		final JDialog dialog = new JDialog(Main.getWindow(), Messages.getString("DebugLogAction.0"), false);
 		JPanel jp = new JPanel();
-		double[][] size = new double[][] { { TableLayout.FILL }, { TableLayout.FILL, 10, 20, 5 } };
+		double[][] size = new double[][] { { 0.5f,20,0.5f }, { TableLayout.FILL, 10, 20, 5 } };
 		jp.setLayout(new TableLayout(size));
 		JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"));
 		jbRefresh.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				// Refresh traces
 				text.setText(getTraces());
 			}
-
 		});
-		jp.add(new JScrollPane(text), "0,0");
+		JButton jbClose = new JButton(Messages.getString("Close"));
+		jbClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialog.dispose();
+			}
+		});
+		jp.add(new JScrollPane(text), "0,0,2,0");
 		jp.add(jbRefresh, "0,2");
+		jp.add(jbClose, "2,2");
 		dialog.add(jp);
 		dialog.setPreferredSize(new Dimension(800, 600));
 		dialog.pack();
