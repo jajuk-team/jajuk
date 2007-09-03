@@ -200,6 +200,9 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_MOUNT = new UrlImageIcon(Util
 			.getResource("icons/16x16/mount_16x16.png"));
 
+	public static final UrlImageIcon ICON_UPDATE_MANAGER = new UrlImageIcon(Util
+			.getResource("icons/16x16/update_manager_16x16.png"));
+
 	public static final UrlImageIcon ICON_UNMOUNT = new UrlImageIcon(Util
 			.getResource("icons/16x16/unmount_16x16.png"));
 

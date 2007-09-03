@@ -33,7 +33,7 @@ public class CheckForUpdateAction extends ActionBase {
 
 	CheckForUpdateAction() {
 		super(
-				Messages.getString("JajukJMenuBar.27"), IconLoader.ICON_TEST, true); 
+				Messages.getString("JajukJMenuBar.27"), IconLoader.ICON_UPDATE_MANAGER, true); 
 		setShortDescription(Messages.getString("JajukJMenuBar.27")); 
 	}
 

@@ -31,7 +31,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -104,8 +103,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
 	JLabel jlTotal;
 
-	JLabel jlPosition;
-
 	JSlider jsPosition;
 
 	JLabel jlCurrent;
@@ -168,12 +165,10 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		jtbProgress.setMinimumSize(new Dimension(0, 0));
 		jtbProgress.setFloatable(false);
 		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7"));
-		jlPosition = new JLabel(IconLoader.ICON_POSITION);
 		jsPosition = new JSlider(0, 100, 0);
 		jsPosition.addChangeListener(this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
-		jtbProgress.add(jlPosition);
 		jtbProgress.add(jsPosition);
 		jlCurrent = new JLabel();
 		jtbProgress.add(jlCurrent);

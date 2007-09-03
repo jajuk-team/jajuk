@@ -200,8 +200,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	JSlider jsVolume;
 
-	JPanel jpPosition;
-
 	public JajukToggleButton jbMute;
 
 	// variables declaration
