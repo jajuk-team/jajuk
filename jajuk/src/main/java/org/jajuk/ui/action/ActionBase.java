@@ -390,7 +390,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	public static void cleanup() {
 		if (Util.isUnderWindows()) {
 			try {
-				Class.forName("org.jajuk.ui.WindowsHotKeyManager").getMethod("cleanup").invoke(
+				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("cleanup").invoke(
 						null, null);
 			} catch (Exception e) {
 				Log.error(e);
