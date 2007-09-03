@@ -19,6 +19,18 @@
  */
 package org.jajuk.base;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -32,18 +44,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  * A device ( music files repository )
@@ -206,9 +206,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
 					Messages.getString("FilesTreeView.61"),// deep
 					Messages.getString("Cancel") };// cancel
-			i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"),
-					Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
+			i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
+					.getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+					null, possibleValues, possibleValues[0]);
 			if (i == OPTION_REFRESH_CANCEL) { // Cancel
 				return;
 			}
@@ -260,6 +260,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 */
 	protected synchronized boolean refreshCommand(boolean bDeepScan, boolean bManual) {
 		try {
+			if (reporter == null) {
+				reporter = new RefreshReporter(this);
+			}
+			// Notify the reporter of the actual refresh startup
+			reporter.refreshStarted();
 			bAlreadyRefreshing = true;
 			lDateLastRefresh = System.currentTimeMillis();
 			// check Jajuk is not exiting because a refresh cannot start in
@@ -313,6 +318,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		} finally { // make sure to unlock refreshing even if an error
 			// occured
 			bAlreadyRefreshing = false;
+			// Notify the reporter of the actual refresh startup
+			reporter.refreshDone();
 		}
 	}
 
@@ -322,10 +329,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			reporter.updateState(dir);
 		}
 		File[] files = dir.getFio().listFiles(Util.dirFilter);
-		for (int i = 0; i < files.length; i++) {
-			Directory subDir = DirectoryManager.getInstance().registerDirectory(files[i].getName(),
-					dir, this);
-			scanRecursively(subDir, bDeepScan);
+		if (files != null) {
+			for (int i = 0; i < files.length; i++) {
+				Directory subDir = DirectoryManager.getInstance().registerDirectory(
+						files[i].getName(), dir, this);
+				scanRecursively(subDir, bDeepScan);
+			}
 		}
 	}
 

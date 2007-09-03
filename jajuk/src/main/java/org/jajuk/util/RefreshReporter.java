@@ -20,16 +20,16 @@
 
 package org.jajuk.util;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.log.Log;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
 
 /**
  * Provides devices refresh report features Is responsible to manage various UI
@@ -46,9 +46,11 @@ public class RefreshReporter {
 
 	private int dirCount = 0;
 
-	private final int deviceURLSize;
-
+	/** Manual refresh date start* */
 	private long lDateStart;
+
+	/** Actual refresh date start* */
+	private long lRefreshDateStart;
 
 	/** Number of new files found during refresh for stats */
 	public int iNbNewFiles;
@@ -56,12 +58,8 @@ public class RefreshReporter {
 	/** Number of corrupted files found during refresh for stats */
 	public int iNbCorruptedFiles;
 
-	/** Refresh message */
-	private String sFinalMessage = "";
-
 	public RefreshReporter(Device device) {
 		this.device = device;
-		this.deviceURLSize = device.getUrl().length();
 	}
 
 	public void startup() {
@@ -83,6 +81,21 @@ public class RefreshReporter {
 		iNbNewFiles++;
 	}
 
+	public void refreshStarted() {
+		lRefreshDateStart = System.currentTimeMillis();
+	}
+
+	/**
+	 * Display a debug trace when actual refresh is done (note that automatic
+	 * refreshes only use this method)
+	 * 
+	 */
+	public void refreshDone() {
+		long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
+		String message = buildFinalMessage(refreshTime);
+		Log.debug(message);
+	}
+
 	public void cleanupDone() {
 		// Cleanup represents about 20% of the total workload
 		rdialog.setProgress(20);
@@ -91,31 +104,34 @@ public class RefreshReporter {
 	}
 
 	public void updateState(Directory dir) {
-		rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.44")).append(' ').append(
-				dir.getRelativePath()).toString());
-		int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
-		rdialog.setProgress(progress);
+		if (rdialog != null) {
+			rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.44")).append(' ')
+					.append(dir.getRelativePath()).toString());
+			int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
+			rdialog.setProgress(progress);
+		}
 		dirCount++;
+	}
+
+	private String buildFinalMessage(long time) {
+		StringBuffer sbOut = new StringBuffer("[").append(device.getName()).append(
+				Messages.getString("Device.25")).append(
+				((time < 1000) ? time + " ms" : time / 1000 + " s")).append(" - ").append(
+				iNbNewFiles).append(Messages.getString("Device.27"));
+		if (iNbCorruptedFiles > 0) {
+			sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));
+		}
+		return sbOut.toString();
 	}
 
 	public void done() {
 		// Close refresh dialog
 		rdialog.dispose();
-		//Close title timer
+		// Close title timer
 		updateDialogTitle.stop();
 		// Display end of refresh message with stats
-		lDateStart = System.currentTimeMillis() - lDateStart;
-		StringBuffer sbOut = new StringBuffer("[").append(device.getName()).append(
-				Messages.getString("Device.25")).append(
-				((lDateStart < 1000) ? lDateStart + " ms" : lDateStart / 1000 + " s"))
-				.append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27"));
-		if (iNbCorruptedFiles > 0) {
-			sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));
-		}
-		sFinalMessage = sbOut.toString();
-		Log.debug(sFinalMessage);
-		// Display a message in information panel
-		Messages.showInfoMessage(sFinalMessage);
+		String message = buildFinalMessage(System.currentTimeMillis() - lDateStart);
+		Messages.showInfoMessage(message);
 	}
 
 	/**
