@@ -180,7 +180,7 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_EXIT = new UrlImageIcon(Util
 			.getResource("icons/16x16/exit_16x16.png"));
 
-	public static final UrlImageIcon ICON_NEW = new UrlImageIcon(Util.getResource("icons/16x16/new.png"));
+	public static final UrlImageIcon ICON_NEW = new UrlImageIcon(Util.getResource("icons/16x16/new_16x16.png"));
 
 	public static final UrlImageIcon ICON_SEARCH = new UrlImageIcon(Util
 			.getResource("icons/16x16/search_16x16.png"));
@@ -189,13 +189,13 @@ public class IconLoader {
 			.getResource("icons/16x16/delete_16x16.png"));
 
 	public static final UrlImageIcon ICON_PROPERTIES = new UrlImageIcon(Util
-			.getResource("icons/16x16/fileopen_16x16.png"));
+			.getResource("icons/16x16/properties_16x16.png"));
 
 	public static final UrlImageIcon ICON_VOID = new UrlImageIcon(Util
 			.getResource("icons/16x16/void_16x16.png"));
 
 	public static final UrlImageIcon ICON_CONFIGURATION = new UrlImageIcon(Util
-			.getResource("icons/16x16/configure.png"));
+			.getResource("icons/16x16/configure_16x16.png"));
 
 	public static final UrlImageIcon ICON_MOUNT = new UrlImageIcon(Util
 			.getResource("icons/16x16/mount_16x16.png"));
@@ -207,7 +207,7 @@ public class IconLoader {
 			.getResource("icons/16x16/unmount_16x16.png"));
 
 	public static final UrlImageIcon ICON_TRACES = new UrlImageIcon(Util
-			.getResource("icons/16x16/properties_16x16.png"));
+			.getResource("icons/16x16/traces_16x16.png"));
 
 	public static final UrlImageIcon ICON_TEST = new UrlImageIcon(Util
 			.getResource("icons/16x16/test_16x16.png"));
@@ -422,7 +422,7 @@ public class IconLoader {
 			.getResource("icons/16x16/clock_16x16.png"));
 
 	public static final UrlImageIcon ICON_TRACK_FIFO_NORM = new UrlImageIcon(Util
-			.getResource("icons/16x16/player_perspective_16x16.png"));
+			.getResource("icons/16x16/player_play_16x16.png"));
 
 	public static final UrlImageIcon ICON_TRACK_FIFO_REPEAT = new UrlImageIcon(Util
 			.getResource("icons/16x16/repeat_16x16.png"));
@@ -514,7 +514,7 @@ public class IconLoader {
 			.getResource("icons/16x16/contents_16x16.png"));
 
 	public static final UrlImageIcon ICON_PLAY_TABLE = new UrlImageIcon(Util
-			.getResource("icons/16x16/play_table_16x16.png"));
+			.getResource("icons/16x16/player_play_16x16.png"));
 
 	public static final UrlImageIcon ICON_DEFAULTS = new UrlImageIcon(Util
 			.getResource("icons/16x16/undo_16x16.png"));
