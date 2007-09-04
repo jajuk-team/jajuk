@@ -20,6 +20,17 @@
 
 package org.jajuk.ui;
 
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -33,17 +44,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.log.Log;
-
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 /**
  * Jajuk main window
@@ -219,13 +219,13 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		}
 		iHorizSize = Integer.parseInt(st.nextToken());
 		// if zero horiz size or
-		//if height > to screen height (switching from a dual to a single head
+		// if height > to screen height (switching from a dual to a single head
 		// for ie),
 		// set max size available (minus some space to deal with task bars)
 		if (iHorizSize <= 0 || iHorizSize > iScreenWidth) {
 			iHorizSize = iScreenWidth - 2 * FRAME_INITIAL_BORDER;
 		}
-		//Same for width
+		// Same for width
 		iVertSize = Integer.parseInt(st.nextToken());
 		if (iVertSize <= 0 || iVertSize > iScreenHeight) {
 			iVertSize = iScreenHeight - 2 * FRAME_INITIAL_BORDER;
@@ -244,17 +244,26 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
 			File file = FIFO.getInstance().getCurrentFile();
 			if (file != null) {
-				setTitle(file.getTrack().getName());
+				// We use vertical bar to allow scripting like MSN plugins to
+				// detect jajuk frames and extract current track
+				StringBuffer sb = new StringBuffer("| ");
+				sb.append(file.getTrack().getName());
+				if (!file.getTrack().getAuthor().isUnknown()) {
+					sb.append('(' + file.getTrack().getAuthor().getName2() + ')');
+				}
+				sb.append(" |");
+				setTitle(sb.toString());
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
 			setTitle(Messages.getString("JajukWindow.17"));
-		}
-		else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+		} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
 			WebRadio radio = FIFO.getInstance().getCurrentRadio();
 			if (radio != null) {
-				setTitle(radio.getName());
+				// We use vertical bar to allow scripting like MSN plugins to
+				// detect jajuk frames and extract current track
+				setTitle("| " + radio.getName() + " |");
 			}
-		} 
+		}
 	}
 
 	/**
@@ -286,7 +295,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 				if (visible) {
 					applyStoredSize();
 					// hide and show again is a workaround for a toFront() issue
-					// under Metacity, see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
+					// under Metacity, see
+					// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
 					setVisible(false);
 					toFront();
 					setVisible(true);
