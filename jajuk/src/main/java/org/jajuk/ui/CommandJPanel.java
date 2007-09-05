@@ -194,8 +194,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	JPressButton jbFwd;
 
-	JLabel jlVolume;
-
 	JPanel jpVolume;
 
 	JSlider jsVolume;
@@ -387,14 +385,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 						.getAction(JajukAction.INCREASE_VOLUME));
 
 		jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
-		jlVolume = new JLabel(IconLoader.ICON_VOLUME);
 		int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
 		if (iVolume > 100) { // can occur in some undefined cases
 			iVolume = 100;
 		}
 		jsVolume = new JSlider(0, 100, iVolume);
 		jsVolume.setBorder(new DropShadowBorder());
-		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
 		jpVolume.add(Box.createHorizontalStrut(5));
 		jpVolume.add(jbMute);
@@ -567,7 +563,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 						"fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of
 				// history
 				// --rows
-				"0dlu, p, 3dlu, p, 3dlu"); // rows
+				"2dlu, p, 2dlu, p, 2dlu"); // rows
 		PanelBuilder builder = new PanelBuilder(layout);// , new
 		// FormDebugPanel() );
 		CellConstraints cc = new CellConstraints();

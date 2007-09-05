@@ -335,25 +335,20 @@ public class JajukSystray extends CommandJPanel {
 					}
 					File file = FileManager.getInstance().getFileByID(
 							(String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
+					String sOut = "";
+					if (Util.isUnderLinux()) {
+						sOut = getHTMLFormatText(file);
+					} else {
+						sOut = getBasicFormatText(file);
+					}
+					// Update the tray tooltip
+					trayIcon.setToolTip(sOut);
 					// check show balloon option
 					if (ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON)) {
-						String sOut = "";
-						if (Util.isUnderLinux()) {
-							sOut = getHTMLFormatText(file);
-						} else {
-							sOut = getBasicFormatText(file);
-						}
 						trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
 								TrayIcon.INFO_MESSAGE_TYPE);
 					}
-					String sOut = null;
-					// check if a file is currently playing
-					if (file == null) {
-						// display a "Ready to play" message
-						sOut = Messages.getString("JajukWindow.18");
-					} else {
-						trayIcon.setToolTip(getHTMLFormatText(file));
-					}
+
 				} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
 					WebRadio radio = FIFO.getInstance().getCurrentRadio();
 					if (radio != null) {
@@ -482,8 +477,12 @@ public class JajukSystray extends CommandJPanel {
 			}
 			String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
 			if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-				sOut += "<p><font color='#484848'>" + sAlbum + "</font></p></HTML>";
+				sOut += "<p><font color='#484848'>" + sAlbum + "</font></p>";
 			}
+			sOut += "</HTML>";
+		} else {
+			// display a "Ready to play" message
+			sOut = Messages.getString("JajukWindow.18");
 		}
 		return sOut;
 	}
@@ -509,6 +508,9 @@ public class JajukSystray extends CommandJPanel {
 				sOut += sAlbum + " / ";
 			}
 			sOut += Util.getLimitedString(file.getTrack().getName(), maxSize);
+		} else {
+			// display a "Ready to play" message
+			sOut = Messages.getString("JajukWindow.18");
 		}
 		return sOut;
 	}

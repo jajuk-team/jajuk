@@ -244,14 +244,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
 			File file = FIFO.getInstance().getCurrentFile();
 			if (file != null) {
-				// We use vertical bar to allow scripting like MSN plugins to
+				// We use trailing pattern to allow scripting like MSN plugins to
 				// detect jajuk frames and extract current track
-				StringBuffer sb = new StringBuffer("| ");
+				StringBuffer sb = new StringBuffer("~");
 				sb.append(file.getTrack().getName());
 				if (!file.getTrack().getAuthor().isUnknown()) {
-					sb.append('(' + file.getTrack().getAuthor().getName2() + ')');
+					sb.append(" (" + file.getTrack().getAuthor().getName2() + ')');
 				}
-				sb.append(" |");
+				sb.append("~");
 				setTitle(sb.toString());
 			}
 		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
@@ -261,7 +261,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			if (radio != null) {
 				// We use vertical bar to allow scripting like MSN plugins to
 				// detect jajuk frames and extract current track
-				setTitle("| " + radio.getName() + " |");
+				setTitle("\\ " + radio.getName() + " /");
 			}
 		}
 	}
