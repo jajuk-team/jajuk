@@ -80,6 +80,10 @@ public class UpgradeManager implements ITechnicalStrings {
 		if (fPerspective.exists()){
 			fPerspective.delete();
 		}
+		fPerspective = Util.getConfFileByPath("CatalogPerspective.xml");
+		if (fPerspective.exists()){
+			fPerspective.delete();
+		}
 		fPerspective = Util.getConfFileByPath("SimplePerspective.xml");
 		if (fPerspective.exists()){
 			fPerspective.delete();

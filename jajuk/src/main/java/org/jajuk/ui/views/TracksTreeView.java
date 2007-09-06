@@ -366,7 +366,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 		jmiAlbumReport.putClientProperty(DETAIL_ORIGIN, XML_ALBUM);
 		jmiAlbumReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"),
-				IconLoader.ICON_LIST);
+				IconLoader.ICON_CDDB);
 		jmiAlbumCDDBWizard.addActionListener(this);
 		jmiAlbumProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
 				IconLoader.ICON_PROPERTIES);

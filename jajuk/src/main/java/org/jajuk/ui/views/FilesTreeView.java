@@ -341,7 +341,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				IconLoader.ICON_BOOKMARK_FOLDERS);
 		jmiDirAddFavorites.addActionListener(this);
 		jmiDirCDDBQuery = new JMenuItem(Messages.getString("FilesTreeView.57"),
-				IconLoader.ICON_LIST);
+				IconLoader.ICON_CDDB);
 		jmiDirCDDBQuery.addActionListener(this);
 
 		Action actionReportDir = ActionManager.getAction(JajukAction.CREATE_REPORT);
@@ -395,7 +395,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				IconLoader.ICON_PROPERTIES);
 		jmiDevProperties.addActionListener(this);
 		jmiDevCDDBQuery = new JMenuItem(Messages.getString("FilesTreeView.57"),
-				IconLoader.ICON_NET_SEARCH);
+				IconLoader.ICON_CDDB);
 		jmiDevCDDBQuery.addActionListener(this);
 		jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"),
 				IconLoader.ICON_CONFIGURATION);

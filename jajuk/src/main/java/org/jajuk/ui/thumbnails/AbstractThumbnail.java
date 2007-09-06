@@ -130,15 +130,12 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 					if (mouseOverItem == null) {
 						if (details != null) {
 							details.dispose();
+							details = null;
 						}
 						last = null;
 						// display a popup after n seconds only if item changed
 					} else if ((System.currentTimeMillis() - lDateLastMove >= 700)
 							&& mouseOverItem != last && !bDragging) {
-						// close popup if any visible
-						if (details != null) {
-							details.dispose();
-						}
 						// Store current item
 						last = mouseOverItem;
 						// Finally display the popup (Leave if user unselected
@@ -174,9 +171,14 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	public void displayPopup() {
 		Util.waiting();
 		// Display popup out of dispatcher thread as it takes too mush time to
-		// execute and we don't risk display concurency in this popup
+		// execute and we don't risk display concurrency in this popup
 		new Thread() {
 			public void run() {
+				// close popup if any visible
+				if (details != null) {
+					details.dispose();
+					details = null;
+				}
 				// don't show details if the contextual popup menu
 				// is visible
 				if (jmenu.isVisible()) {
@@ -202,8 +204,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	void postPopulate() {
 		// Album menu
 		jmenu = new JPopupMenu();
-		jmiPlay = new JMenuItem(Messages.getString("TracksTreeView.15"),
-				IconLoader.ICON_PLAY_16x16);
+		jmiPlay = new JMenuItem(Messages.getString("TracksTreeView.15"), IconLoader.ICON_PLAY_16x16);
 		jmiPlay.addActionListener(this);
 		jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
 		jmiPush.addActionListener(this);
@@ -216,8 +217,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),
 				IconLoader.ICON_COVER_16x16);
 		jmiGetCovers.addActionListener(this);
-		jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"),
-				IconLoader.ICON_LIST);
+		jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
 		jmiCDDBWizard.addActionListener(this);
 		jmiProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
 				IconLoader.ICON_PROPERTIES);

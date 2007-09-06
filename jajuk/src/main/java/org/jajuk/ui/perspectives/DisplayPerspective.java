@@ -35,7 +35,7 @@ public class DisplayPerspective extends PerspectiveAdapter {
 	 * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Player"); 
+		return Messages.getString("Perspective_Description_Display"); 
 	}
 
 }

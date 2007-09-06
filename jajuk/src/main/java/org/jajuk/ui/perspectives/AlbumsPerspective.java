@@ -25,7 +25,7 @@ import org.jajuk.i18n.Messages;
 /**
  * Catalog perspective, shows all default covers by album
  */
-public class CatalogPerspective extends PerspectiveAdapter {
+public class AlbumsPerspective extends PerspectiveAdapter {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class CatalogPerspective extends PerspectiveAdapter {
 	 * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Catalog"); 
+		return Messages.getString("Perspective_Description_Albums"); 
 	}
 
 	

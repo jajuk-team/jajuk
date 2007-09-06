@@ -128,12 +128,6 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_FWD_16x16 = new UrlImageIcon(Util
 			.getResource("icons/16x16/player_fwd_16x16.png"));
-
-	public static final UrlImageIcon ICON_NEXT_16x16 = new UrlImageIcon(Util
-			.getResource("icons/16x16/player_next_16x16.png"));
-
-	public static final UrlImageIcon ICON_PREV_16x16 = new UrlImageIcon(Util
-			.getResource("icons/16x16/player_prev_16x16.png"));
 	
 	public static final UrlImageIcon ICON_VOLUME = new UrlImageIcon(Util
 			.getResource("icons/16x16/volume_16x16.png"));
@@ -145,7 +139,7 @@ public class IconLoader {
 			.getResource("icons/16x16/info_16x16.png"));
 
 	public static final UrlImageIcon ICON_BOOKMARK_FOLDERS = new UrlImageIcon(Util
-			.getResource("icons/16x16/bookmark_folder2_16x16.png"));
+			.getResource("icons/16x16/bookmark_16x16.png"));
 	
 	public static final UrlImageIcon ICON_PERSPECTIVE_SIMPLE = new UrlImageIcon(Util
 			.getResource("icons/40x40/perspective_simple_40x40.png"));
@@ -349,7 +343,7 @@ public class IconLoader {
 			.getResource("icons/16x16/filter_16x16.png"));
 
 	public static final UrlImageIcon ICON_DISCOVERY_DATE = new UrlImageIcon(Util
-			.getResource("icons/16x16/filter_16x16.png"));
+			.getResource("icons/16x16/calendar_16x16.png"));
 
 	public static final UrlImageIcon ICON_CLEAR_FILTER = new UrlImageIcon(Util
 			.getResource("icons/16x16/clear_16x16.png"));
@@ -370,13 +364,13 @@ public class IconLoader {
 			.getResource("icons/40x40/playlist_new_40x40.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_NEW_SMALL = new UrlImageIcon(Util
-			.getResource("icons/16x16/playlist_new_16x16.png"));
+			.getResource("icons/16x16/newList_16x16.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_BOOKMARK = new UrlImageIcon(Util
-			.getResource("icons/40x40/playlist_bookmark_40x40.png"));
+			.getResource("icons/40x40/bookmark_40x40.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_BOOKMARK_SMALL = new UrlImageIcon(Util
-			.getResource("icons/16x16/playlist_bookmark_16x16.png"));
+			.getResource("icons/16x16/bookmark_16x16.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_BESTOF = new UrlImageIcon(Util
 			.getResource("icons/40x40/playlist_bestof_40x40.png"));
@@ -512,7 +506,10 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_LIST = new UrlImageIcon(Util
 			.getResource("icons/16x16/contents_16x16.png"));
-
+	
+	public static final UrlImageIcon ICON_CDDB = new UrlImageIcon(Util
+			.getResource("icons/16x16/cddb_16x16.png"));
+	
 	public static final UrlImageIcon ICON_PLAY_TABLE = new UrlImageIcon(Util
 			.getResource("icons/16x16/player_play_16x16.png"));
 
@@ -521,9 +518,6 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_DEFAULTS_BIG = new UrlImageIcon(Util
 			.getResource("icons/22x22/undo_22x22.png"));
-
-	public static final UrlImageIcon ICON_HELP = new UrlImageIcon(Util
-			.getResource("icons/16x16/help_16x16.png"));
 
 	public static final UrlImageIcon ICON_ACCURACY_LOW = new UrlImageIcon(Util
 			.getResource("icons/16x16/accuracy_low_16x16.png"));

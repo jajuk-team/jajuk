@@ -35,7 +35,7 @@ public class TracksPerspective extends PerspectiveAdapter {
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Logical"); 
+		return Messages.getString("Perspective_Description_Tracks"); 
 	}
 
 

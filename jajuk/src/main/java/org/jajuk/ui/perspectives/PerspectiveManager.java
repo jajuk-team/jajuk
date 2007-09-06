@@ -115,10 +115,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 		// being locked on a buggy perspective like Information
 		if (!Main.isCrashRecover()) {
 			String sPerspective = Main.getDefaultPerspective();
-			/*
-			 * take a look to see if a default perspective is set (About tray
-			 * for example)
-			 */
+			// Check if a default perspective is forced 
 			if (sPerspective == null) {
 				sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT);
 				// no? take the configuration ( user last perspective)
@@ -254,7 +251,7 @@ public class PerspectiveManager implements ITechnicalStrings {
 		registerPerspective(perspective);
 		
 		// Catalog perspective
-		perspective = new CatalogPerspective();
+		perspective = new AlbumsPerspective();
 		perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CATALOG.getUrl());
 		registerPerspective(perspective);
 		

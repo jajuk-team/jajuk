@@ -204,12 +204,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		jmiUnmounted.setSelected(ConfigurationManager
 				.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 		
+		mode.add(jmiUnmounted);
 		mode.add(jcbmiRepeat);
 		mode.add(jcbmiShuffle);
 		mode.add(jcbmiContinue);
 		mode.add(jcbmiIntro);
-		mode.add(jmiUnmounted);
-
+		
 		// Configuration menu
 		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); 
 		jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
