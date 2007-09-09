@@ -73,17 +73,17 @@ public class LyricsView extends ViewAdapter implements Observer {
 	private JLabel jlTitle;
 
 	private JLabel jlAuthor;
-	
+
 	private String sURL;
-	
+
 	private Track track;
-	
+
 	private String lyrics;
-	
+
 	private JMenuItem jmiCopyToClipboard;
-	
+
 	private JMenuItem jmiLaunchInBrowser;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -185,19 +185,21 @@ public class LyricsView extends ViewAdapter implements Observer {
 	public void update(final Event event) {
 		EventSubject subject = event.getSubject();
 		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
-			new Thread(){
-				public void run(){
+			new Thread() {
+				public void run() {
 					File file = FIFO.getInstance().getCurrentFile();
 					if (file != null) {
 						track = FIFO.getInstance().getCurrentFile().getTrack();
 						sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
-							+ track.getAuthor().getName2() + "&songname=" + track.getName();
-						//Launch lyrics service asynchronously and out of the AWT dispatcher thread
+								+ track.getAuthor().getName2() + "&songname=" + track.getName();
+						// Launch lyrics service asynchronously and out of the
+						// AWT dispatcher thread
 						lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track
-							.getName());
-						//Notify to make UI changes
-						if (lyrics != null && track != null && sURL != null){
-							ObservationManager.notify(new Event(EventSubject.EVENT_LYRICS_DOWNLOADED));
+								.getName());
+						// Notify to make UI changes
+						if (lyrics != null && track != null && sURL != null) {
+							ObservationManager.notify(new Event(
+									EventSubject.EVENT_LYRICS_DOWNLOADED));
 						}
 					}
 				}
@@ -226,7 +228,11 @@ public class LyricsView extends ViewAdapter implements Observer {
 				public void run() {
 					jsp.setVisible(true);
 					textarea.setToolTipText(sURL);
-					textarea.setText(lyrics);
+					if (lyrics.length() > 0) {
+						textarea.setText(lyrics);
+					} else {
+						textarea.setText(Messages.getString("WikipediaView.3"));
+					}
 					// Make sure to display the begin of the text (must be
 					// done in a thread to be executed when textarea display
 					// is actually finished)
