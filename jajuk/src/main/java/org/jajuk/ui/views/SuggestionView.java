@@ -140,11 +140,16 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		// Now use the new TabbedPaneUI
 		tabs.setUI(new MyTabbedPaneUI());
 		// Fill tabs with empty tabs
-		tabs.addTab(Messages.getString("SuggestionView.1"), new JPanel());
-		tabs.addTab(Messages.getString("SuggestionView.2"), new JPanel());
-		tabs.addTab(Messages.getString("SuggestionView.5"), new JPanel());
-		tabs.addTab(Messages.getString("SuggestionView.3"), new JPanel());
-		tabs.addTab(Messages.getString("SuggestionView.4"), new JPanel());
+		tabs.addTab(Messages.getString("SuggestionView.1"), Util.getCentredPanel(new JLabel(
+				Messages.getString("WikipediaView.3"))));
+		tabs.addTab(Messages.getString("SuggestionView.2"), Util.getCentredPanel(new JLabel(
+				Messages.getString("WikipediaView.3"))));
+		tabs.addTab(Messages.getString("SuggestionView.5"), Util.getCentredPanel(new JLabel(
+				Messages.getString("WikipediaView.3"))));
+		tabs.addTab(Messages.getString("SuggestionView.3"), Util.getCentredPanel(new JLabel(
+				Messages.getString("SuggestionView.7"))));
+		tabs.addTab(Messages.getString("SuggestionView.4"), Util.getCentredPanel(new JLabel(
+				Messages.getString("SuggestionView.7"))));
 		// Add panels
 		refreshLocalCollectionTabs();
 		// Display LAST.FM thumbs only if a track is playing
@@ -277,13 +282,17 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			albums = AlbumManager.getInstance().getRarelyListenAlbums(
 					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
 		}
-		for (Album album : albums) {
-			// Try creating the thumbnail
-			Util.refreshThumbnail(album, "100x100");
-			LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
-			thumb.populate();
-			thumb.jlIcon.addMouseListener(new ThumbMouseListener());
-			out.add(thumb);
+		if (albums.size() > 0) {
+			for (Album album : albums) {
+				// Try creating the thumbnail
+				Util.refreshThumbnail(album, "100x100");
+				LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
+				thumb.populate();
+				thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+				out.add(thumb);
+			}
+		} else {
+			out.add(Util.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
 		}
 		return jsp;
 	}
@@ -301,13 +310,17 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			previousAuthor = author;
 			List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
 					author);
-			if (albums != null) {
+			if (albums != null && albums.size() > 0) {
 				for (AudioScrobblerAlbum album : albums) {
 					AudioScrobberAlbumThumbnail thumb = new AudioScrobberAlbumThumbnail(album);
 					thumb.populate();
 					thumb.jlIcon.addMouseListener(new ThumbMouseListener());
 					out.add(thumb);
 				}
+			}
+			// No result found
+			else {
+				out.add(Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
 			}
 		} else if (type == SuggestionType.SIMILAR_AUTHORS) {
 			// store the current author
@@ -323,6 +336,10 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 					thumb.jlIcon.addMouseListener(new ThumbMouseListener());
 					out.add(thumb);
 				}
+			}
+			// No result found
+			else {
+				out.add(Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
 			}
 		}
 		return jsp;
