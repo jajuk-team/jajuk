@@ -197,10 +197,8 @@ public class LyricsView extends ViewAdapter implements Observer {
 						lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track
 								.getName());
 						// Notify to make UI changes
-						if (lyrics != null && track != null && sURL != null) {
-							ObservationManager.notify(new Event(
+						ObservationManager.notify(new Event(
 									EventSubject.EVENT_LYRICS_DOWNLOADED));
-						}
 					}
 				}
 			}.start();
@@ -228,7 +226,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 				public void run() {
 					jsp.setVisible(true);
 					textarea.setToolTipText(sURL);
-					if (lyrics.length() > 0) {
+					if (lyrics != null && lyrics.length() > 0) {
 						textarea.setText(lyrics);
 					} else {
 						textarea.setText(Messages.getString("WikipediaView.3"));
