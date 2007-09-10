@@ -48,9 +48,6 @@ public class TrackManager extends ItemManager implements Observer {
 	/** Unmounted tracks flag */
 	boolean bChangePbm = false;
 
-	/** comparator in use* */
-	private TrackComparator comparator;
-
 	/** Max rate */
 	private long lMaxRate = 0l;
 
@@ -104,8 +101,6 @@ public class TrackManager extends ItemManager implements Observer {
 				false, Long.class, null));
 		// ---subscriptions---
 		ObservationManager.register(this);
-		// select comparator
-		comparator = new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {
@@ -607,21 +602,10 @@ public class TrackManager extends ItemManager implements Observer {
 	}
 
 	public TrackComparator getComparator() {
-		return comparator;
+		return new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
 	}
 
-	/**
-	 * Set a new track comparator
-	 * 
-	 * @param comparator
-	 */
-	public void setComparator(TrackComparator comparator) {
-		synchronized (getLock()) {
-			this.comparator = comparator;
-		}
-	}
-
-	/**
+		/**
 	 * @return maximum rating between all tracks
 	 */
 	public long getMaxRate() {

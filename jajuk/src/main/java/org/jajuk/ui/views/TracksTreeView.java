@@ -509,7 +509,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 							alSelected.addAll(TrackManager.getInstance().getTracks());
 							break;
 						} else if (o instanceof TransferableTreeNode) {
-							// this is a standard node except "by date" discovery
+							// this is a standard node except "by date"
+							// discovery
 							// nodes
 							alSelected.add((Item) ((TransferableTreeNode) o).getData());
 						}
@@ -1079,12 +1080,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 					new CDDBWizard(alTracks);
 				} else if (e.getSource() == jcbSort) {
 					Util.waiting();
+					// Set comparator
 					ConfigurationManager.setProperty(CONF_LOGICAL_TREE_SORT_ORDER, Integer
 							.toString(jcbSort.getSelectedIndex()));
-					// refresh comparator
-					TrackManager.getInstance().setComparator(
-							new TrackComparator(ConfigurationManager
-									.getInt(CONF_LOGICAL_TREE_SORT_ORDER)));
 					populateTree();
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {

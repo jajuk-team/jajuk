@@ -68,6 +68,7 @@ public class RefreshReporter {
 		rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
 		// Computes the number of directories
 		rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.ICON_INFO);
+		//Count directories, takes a while, do not execute in AWT thread
 		dirTotal = Util.countDirectories(device.getFio());
 		rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.ICON_INFO);
 		rdialog.setProgress(10);

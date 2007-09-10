@@ -49,26 +49,26 @@ public class RefreshDialog extends JFrame {
 
 	public RefreshDialog() {
 		super();
-		setUndecorated(true);
-		setIconImage(IconLoader.ICON_LOGO.getImage());
-		jlAction = new JXBusyLabel();
-		progress = new JProgressBar(0,100);
-		jlRefreshing = new JLabel();
-		double[][] dSize = new double[][]{
-				{5,500,5},{5,30,5,20,5,20,5}
-		};
-		setLayout(new TableLayout(dSize));
-		add(jlAction,"1,1,c,c");
-		add(progress,"1,3,f,c");
-		add(jlRefreshing,"1,5,c,c");
-		pack();
-		setLocationRelativeTo(this);
-		setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				setUndecorated(true);
+				setIconImage(IconLoader.ICON_LOGO.getImage());
+				jlAction = new JXBusyLabel();
+				progress = new JProgressBar(0, 100);
+				jlRefreshing = new JLabel();
+				double[][] dSize = new double[][] { { 5, 500, 5 }, { 5, 30, 5, 20, 5, 20, 5 } };
+				setLayout(new TableLayout(dSize));
+				add(jlAction, "1,1,c,c");
+				add(progress, "1,3,f,c");
+				add(jlRefreshing, "1,5,c,c");
+				pack();
+				setLocationRelativeTo(RefreshDialog.this);
+				setVisible(true);
+			}
+		});
 	}
-	
-	
 
-	public void setAction(final String action,final Icon icon) {
+	public void setAction(final String action, final Icon icon) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				jlAction.setText(action);

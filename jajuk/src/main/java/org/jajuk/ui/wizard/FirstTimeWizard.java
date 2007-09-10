@@ -20,24 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.Main;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.ui.JajukJDialog;
-import org.jajuk.ui.PathSelector;
-import org.jajuk.ui.ToggleLink;
-import org.jajuk.ui.perspectives.SimplePerspective;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.HorizontalLayout;
-import org.jdesktop.swingx.JXCollapsiblePane;
-import org.jdesktop.swingx.VerticalLayout;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -56,6 +38,24 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import org.jajuk.Main;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.JajukJDialog;
+import org.jajuk.ui.PathSelector;
+import org.jajuk.ui.ToggleLink;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.VerticalLayout;
 
 /**
  * First time Wizard
@@ -108,6 +108,7 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 		int iY_SEPARATOR = 10;
 		double p = TableLayout.PREFERRED;
 		jlLeftIcon = new JLabel(Util.getImage(IMAGE_SEARCH));
+		jlLeftIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
 		jpRightPanel = new JPanel();
 		jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));
 		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
@@ -149,14 +150,14 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 		jpFileSelection.add(jbFileSelection);
 		jpFileSelection.add(jlFileSelection);
 		advanced = new JXCollapsiblePane();
-		//force window to resize with collapsable pane
+		// force window to resize with collapsable pane
 		advanced.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
 				pack();
 			}
-		}) ;
+		});
 		// Build the toggle link used to expand / collapse the panel
 		ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
 		advanced.setLayout(new VerticalLayout(iY_SEPARATOR));
@@ -164,8 +165,8 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 		advanced.add(jlWorkspace);
 		advanced.add(workspacePath);
 		advanced.add(jcbHelp);
-	
-		double[][] size = new double[][] { { iX_SEPARATOR, p, iX_SEPARATOR },
+
+		double[][] size = new double[][] { { p, iX_SEPARATOR, p, iX_SEPARATOR },
 				{ iY_SEPARATOR, p, 60, p, p, p, p, p, iY_SEPARATOR } };
 		TableLayout layout = new TableLayout(size);
 		layout.setHGap(iX_SEPARATOR);
@@ -173,13 +174,14 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 
 		jpMain = (JPanel) getContentPane();
 		jpMain.setLayout(layout);
-		jpMain.add(jlWelcome, "1,1");
-		jpMain.add(jpFileSelection, "1,2");
-		jpMain.add(jtfFileSelected, "1,3");
-		jpMain.add(jpRefresh, "1,4");
-		jpMain.add(toggle, "1,5");
-		jpMain.add(advanced, "1,6");
-		jpMain.add(jpButtons, "1,7");
+		jpMain.add(jlWelcome, "2,1");
+		jpMain.add(jpFileSelection, "2,2");
+		jpMain.add(jtfFileSelected, "2,3");
+		jpMain.add(jpRefresh, "2,4");
+		jpMain.add(toggle, "2,5");
+		jpMain.add(advanced, "2,6");
+		jpMain.add(jpButtons, "2,7");
+		jpMain.add(jlLeftIcon, "0,0,0,7");
 
 		getRootPane().setDefaultButton(jbOk);
 	}
@@ -187,6 +189,10 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbCancel) {
 			dispose(); // close window
+			// alert Main to continue startup
+			synchronized (Main.isFirstTimeWizardClosed) {
+				Main.isFirstTimeWizardClosed.notify();
+			}
 		} else if (e.getSource() == jbFileSelection) {
 			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
 					JajukFileFilter.DirectoryFilter.getInstance()));
@@ -197,8 +203,8 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				fDir = jfc.getSelectedFile();
 				// check device availability
-				int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
-						0, fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
+				int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
+						fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
 				if (code != 0) {
 					Messages.showErrorMessage(code);
 					jbOk.setEnabled(false);
@@ -209,45 +215,44 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 				jbOk.grabFocus();
 			}
 		} else if (e.getSource() == jbOk) {
-			if (jcbHelp.isSelected()) {
-				// Display help window
-				new HelpWindow();
-			} else {
-				// set Simple perspective
-				Main.setDefaultPerspective(SimplePerspective.class.getName());
+			final boolean bShowHelp = jcbHelp.isSelected();
+			final String sPATH = workspacePath.getUrl().trim();
+			// Close window
+			dispose();
+			// Notify Main to continue startup
+			synchronized (Main.isFirstTimeWizardClosed) {
+				Main.isFirstTimeWizardClosed.notify();
 			}
-			// Check workspace directory
-			if (!workspacePath.getUrl().trim().equals("")) {
-				if (!new File(workspacePath.getUrl()).canRead()) {
-					Messages.showErrorMessage(165);
-					return;
-				}
-			}
-			// Set Workspace directory
-			try {
-				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
-				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-				bw.write(workspacePath.getUrl());
-				bw.flush();
-				bw.close();
-				// Store the workspace PATH
-				Main.workspace = workspacePath.getUrl();
-			} catch (Exception ex) {
-				Messages.showErrorMessage(24);
-				Log.debug("Cannot write bootstrap file");
-			}
-			// We have to create a device and to launch immediate refresh but
-			// the environment
-			// is still far from being operational at this startup state, so
-			// Main will unlock it later
 			new Thread() {
 				public void run() {
+					// Wait for context loading (default configuration...)
 					synchronized (Main.canLaunchRefresh) {
 						try {
 							Main.canLaunchRefresh.wait();
 						} catch (InterruptedException e) {
-							Log.error(e);
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
+					}
+					// Check workspace directory
+					if (!sPATH.equals("")) {
+						if (!new File(sPATH).canRead()) {
+							Messages.showErrorMessage(165);
+							return;
+						}
+					}
+					// Set Workspace directory
+					try {
+						java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
+						BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
+						bw.write(sPATH);
+						bw.flush();
+						bw.close();
+						// Store the workspace PATH
+						Main.workspace = sPATH;
+					} catch (Exception ex) {
+						Messages.showErrorMessage(24);
+						Log.debug("Cannot write bootstrap file");
 					}
 					// Create a directory device
 					Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
@@ -266,16 +271,19 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 					}
 					device.setProperty(XML_DEVICE_AUTO_REFRESH, dRefreshTime);
 					try {
-						device.refresh(true, false);
+						// Refresh device synchronously
+						device.refresh(false, false);
 					} catch (Exception e2) {
 						Log.error(112, device.getName(), e2);
 						Messages.showErrorMessage(112, device.getName());
 					}
+					// Show Help window if required
+					if (bShowHelp) {
+						// Display help window
+						new HelpWindow();
+					}
 				}
 			}.start();
-
-			// exit
-			dispose();
 		}
 	}
 

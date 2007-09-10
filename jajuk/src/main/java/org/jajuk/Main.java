@@ -167,14 +167,17 @@ public class Main implements ITechnicalStrings {
 	/** Does this session follows a crash revover ? */
 	private static boolean bCrashRecover = false;
 
+	/** Lock used to trigger a first time wizard device creation and refresh * */
+	public static short[] canLaunchRefresh = new short[0];
+
+	/** Lock used to trigger first time wizard window close* */
+	public static short[] isFirstTimeWizardClosed = new short[0];
+
 	/** Mplayer state */
 	private static MPlayerStatus mplayerStatus;
 
 	/** Workspace PATH* */
 	public static String workspace;
-
-	/** Lock used to trigger a first time wizard device creation and refresh * */
-	public static short[] canLaunchRefresh = new short[0];
 
 	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
@@ -358,11 +361,6 @@ public class Main implements ITechnicalStrings {
 			// Clean the collection up
 			Collection.cleanup();
 
-			// Unlock pending First time wizard if any
-			synchronized (canLaunchRefresh) {
-				canLaunchRefresh.notify();
-			}
-
 			// Display progress
 			sc.setProgress(70, Messages.getString("SplashScreen.2"));
 
@@ -462,15 +460,22 @@ public class Main implements ITechnicalStrings {
 
 			// Auto mount devices, freeze for SMB drives
 			// if network is not reacheable
-			autoMount();
+			// Do not start this if first session, it is causes concurrency with
+			// first refresh thread
+			if (!bFirstSession) {
+				autoMount();
+			}
 
 			// Launch auto-refresh thread
 			DeviceManager.getInstance().startAutoRefreshThread();
 
-			// Launch startup track if any
-			launchInitialTrack();
+			// Launch startup track if any (but don't start it if firsdt session
+			// because the first refresh is probably still running)
+			if (!bFirstSession) {
+				launchInitialTrack();
+			}
 
-			// Start up action manager. TO be done before launching ui and
+			// Start up action manager. To be done before launching ui and
 			// tray
 			ActionManager.getInstance();
 
@@ -483,7 +488,6 @@ public class Main implements ITechnicalStrings {
 
 			// start the tray
 			launchTray();
-
 		} catch (JajukException je) { // last chance to catch any error for
 			// logging purpose
 			Log.error(je);
@@ -542,22 +546,20 @@ public class Main implements ITechnicalStrings {
 				&& !fJajukDir.canRead()) {
 			// First time session ever
 			bFirstSession = true;
-			final FirstTimeWizard fsw = new FirstTimeWizard();
-			// display the first time wizard, keep the invokeAndWait as we have
-			// to block in the next while block
-			SwingUtilities.invokeAndWait(new Runnable() {
+			// display the first time wizard
+			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
+					FirstTimeWizard fsw = new FirstTimeWizard();
 					fsw.setAlwaysOnTop(true);
 					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 					fsw.setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
 					fsw.pack();
 					fsw.setVisible(true);
 				}
-
 			});
-			// Wait until user closed the wizard
-			while (fsw.isVisible()) {
-				Thread.sleep(1000);
+			// Lock until first time wizard is closed
+			synchronized (isFirstTimeWizardClosed) {
+				isFirstTimeWizardClosed.wait();
 			}
 		}
 
@@ -569,6 +571,7 @@ public class Main implements ITechnicalStrings {
 		if (!fJajukDir.exists()) {
 			fJajukDir.mkdir(); // create the directory if it doesn't exist
 		}
+
 		// check for configuration file presence
 		File fConfig = Util.getConfFileByPath(FILE_CONFIGURATION);
 		if (!fConfig.exists()) { // if config file doesn't exit, create
@@ -1014,7 +1017,7 @@ public class Main implements ITechnicalStrings {
 	 * Load persisted collection file
 	 */
 	private static void loadCollection() {
-		if (Main.bFirstSession) {
+		if (bFirstSession) {
 			Log.info("First session, collection will be created");
 			return;
 		}
@@ -1343,8 +1346,9 @@ public class Main implements ITechnicalStrings {
 					// Upgrade step2
 					UpgradeManager.upgradeStep2();
 
-					// Display tip of the day if required
-					if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
+					// Display tip of the day if required (not at the first
+					// session)
+					if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
 						TipOfTheDay tipsView = new TipOfTheDay();
 						tipsView.setLocationRelativeTo(jw);
 						tipsView.setVisible(true);
@@ -1362,6 +1366,10 @@ public class Main implements ITechnicalStrings {
 					}
 					bUILauched = true;
 					Util.stopWaiting();
+					// Notify any first time wizard to startup refresh
+					synchronized (canLaunchRefresh) {
+						canLaunchRefresh.notify();
+					}
 				}
 			}
 		});

@@ -66,7 +66,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	private String sMountPoint = "";
 
 	/** Mounted device flag */
-	private boolean bMounted;
+	private boolean bMounted = false;
 
 	/** directories */
 	private ArrayList<Directory> alDirectories = new ArrayList<Directory>(20);
@@ -200,56 +200,62 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 *            default=deep
 	 */
 	private void manualRefresh(boolean bAsk) {
-		reporter = new RefreshReporter(this);
-		int i = OPTION_REFRESH_DEEP;
-		if (bAsk) {
-			Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
-					Messages.getString("FilesTreeView.61"),// deep
-					Messages.getString("Cancel") };// cancel
-			i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
-					.getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-					null, possibleValues, possibleValues[0]);
-			if (i == OPTION_REFRESH_CANCEL) { // Cancel
-				return;
-			}
-		}
-		final Device device = this;
-		if (!device.isMounted()) {
-			try {
-				device.mount();
-			} catch (Exception e) {
-				Log.error(11, "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage(11, getName());
-				return;
-			}
-		}
-		if (bAlreadyRefreshing) {
-			Messages.showErrorMessage(107);
-			return;
-		}
-		reporter.startup();
-		// clean old files up (takes a while)
-		cleanRemovedFiles();
-		reporter.cleanupDone();
-		// Actual refresh
-		refreshCommand((i == OPTION_REFRESH_DEEP), true);
-		// notify views to refresh
-		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-		// cleanup logical items
-		TrackManager.getInstance().cleanup();
-		StyleManager.getInstance().cleanup();
-		AlbumManager.getInstance().cleanup();
-		AuthorManager.getInstance().cleanup();
-		PlaylistManager.getInstance().cleanup();
-		// commit collection at each refresh (can be useful if application
-		// is closed brutally with control-C or shutdown and that exit hook
-		// have no time to perform commit)
 		try {
-			org.jajuk.base.Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
-		} catch (IOException e) {
-			Log.error(e);
+			reporter = new RefreshReporter(this);
+			int i = OPTION_REFRESH_DEEP;
+			if (bAsk) {
+				Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
+						Messages.getString("FilesTreeView.61"),// deep
+						Messages.getString("Cancel") };// cancel
+				i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"),
+						Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
+				if (i == OPTION_REFRESH_CANCEL) { // Cancel
+					return;
+				}
+			}
+			final Device device = this;
+			if (!device.isMounted()) {
+				try {
+					device.mount();
+				} catch (Exception e) {
+					Log.error(11, "{{" + getName() + "}}", e); // mount failed
+					Messages.showErrorMessage(11, getName());
+					return;
+				}
+			}
+			if (bAlreadyRefreshing) {
+				Messages.showErrorMessage(107);
+				return;
+			}
+			bAlreadyRefreshing = true;
+			reporter.startup();
+			// clean old files up (takes a while)
+			cleanRemovedFiles();
+			reporter.cleanupDone();
+			// Actual refresh
+			refreshCommand((i == OPTION_REFRESH_DEEP), true);
+			// notify views to refresh
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+			// cleanup logical items
+			TrackManager.getInstance().cleanup();
+			StyleManager.getInstance().cleanup();
+			AlbumManager.getInstance().cleanup();
+			AuthorManager.getInstance().cleanup();
+			PlaylistManager.getInstance().cleanup();
+			// commit collection at each refresh (can be useful if application
+			// is closed brutally with control-C or shutdown and that exit hook
+			// have no time to perform commit)
+			try {
+				org.jajuk.base.Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
+			} catch (IOException e) {
+				Log.error(e);
+			}
+			reporter.done();
+		} finally {
+			//Make sure to unlock refreshing
+			bAlreadyRefreshing = false;
 		}
-		reporter.done();
 	}
 
 	/**
@@ -260,12 +266,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 */
 	protected synchronized boolean refreshCommand(boolean bDeepScan, boolean bManual) {
 		try {
+			bAlreadyRefreshing = true;
 			if (reporter == null) {
 				reporter = new RefreshReporter(this);
 			}
 			// Notify the reporter of the actual refresh startup
 			reporter.refreshStarted();
-			bAlreadyRefreshing = true;
 			lDateLastRefresh = System.currentTimeMillis();
 			// check Jajuk is not exiting because a refresh cannot start in
 			// this state
