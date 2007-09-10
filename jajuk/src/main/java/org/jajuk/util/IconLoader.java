@@ -67,7 +67,7 @@ public class IconLoader {
 			.getResource("icons/32x32/bestof_32x32.png"));
 
 	public static final UrlImageIcon ICON_BESTOF_16x16 = new UrlImageIcon(Util
-			.getResource("icons/16x16/bestof.png"));
+			.getResource("icons/16x16/bestof_16x16.png"));
 
 	public static final UrlImageIcon ICON_MUTED = new UrlImageIcon(Util
 			.getResource("icons/32x32/mute_32x32.png"));
@@ -82,7 +82,7 @@ public class IconLoader {
 			.getResource("icons/32x32/novelties_32x32.png"));
 	
 	public static final UrlImageIcon ICON_NOVELTIES_16x16 = new UrlImageIcon(Util
-			.getResource("icons/16x16/novelties.png"));
+			.getResource("icons/16x16/novelties_16x16.png"));
 
 	public static final UrlImageIcon ICON_NEXT = new UrlImageIcon(Util
 			.getResource("icons/16x16/next_16x16.png"));
@@ -165,9 +165,6 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_PERSPECTIVE_INFORMATION = new UrlImageIcon(Util
 			.getResource("icons/40x40/perspective_information_40x40.png"));
 
-	public static final UrlImageIcon ICON_PERSPECTIVE_HELP = new UrlImageIcon(Util
-			.getResource("icons/40x40/perspective_help_40x40.png"));
-
 	public static final UrlImageIcon ICON_OPEN_FILE = new UrlImageIcon(Util
 			.getResource("icons/16x16/fileopen_16x16.png"));
 
@@ -227,12 +224,6 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_DEVICE_CD_UNMOUNTED = new UrlImageIcon(Util
 			.getResource("icons/64x64/cdrom_unmount_64x64.png"));
 
-	public static final UrlImageIcon ICON_DEVICE_CD_AUDIO_MOUNTED = new UrlImageIcon(Util
-			.getResource("icons/64x64/cdaudio_mount_64x64.png"));
-
-	public static final UrlImageIcon ICON_DEVICE_CD_AUDIO_UNMOUNTED = new UrlImageIcon(Util
-			.getResource("icons/64x64/cdaudio_unmount_64x64.png"));
-
 	public static final UrlImageIcon ICON_DEVICE_EXT_DD_MOUNTED = new UrlImageIcon(Util
 			.getResource("icons/64x64/ext_dd_mount_64x64.png"));
 
@@ -251,12 +242,6 @@ public class IconLoader {
 	public static final UrlImageIcon ICON_DEVICE_PLAYER_UNMOUNTED = new UrlImageIcon(Util
 			.getResource("icons/64x64/player_unmount_64x64.png"));
 
-	public static final UrlImageIcon ICON_DEVICE_REMOTE_MOUNTED = new UrlImageIcon(Util
-			.getResource("icons/64x64/remote_mount_64x64.png"));
-
-	public static final UrlImageIcon ICON_DEVICE_REMOTE_UNMOUNTED = new UrlImageIcon(Util
-			.getResource("icons/64x64/remote_unmount_64x64.png"));
-
 	public static final UrlImageIcon ICON_DEVICE_NETWORK_DRIVE_MOUNTED = new UrlImageIcon(Util
 			.getResource("icons/64x64/nfs_mount_64x64.png"));
 
@@ -268,12 +253,6 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_DEVICE_CD_UNMOUNTED_SMALL = new UrlImageIcon(Util
 			.getResource("icons/22x22/cdrom_unmount_22x22.png"));
-
-	public static final UrlImageIcon ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL = new UrlImageIcon(Util
-			.getResource("icons/22x22/cdaudio_mount_22x22.png"));
-
-	public static final UrlImageIcon ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL = new UrlImageIcon(Util
-			.getResource("icons/22x22/cdaudio_unmount_22x22.png"));
 
 	public static final UrlImageIcon ICON_DEVICE_EXT_DD_MOUNTED_SMALL = new UrlImageIcon(Util
 			.getResource("icons/22x22/ext_dd_mount_22x22.png"));
@@ -298,12 +277,6 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_DEVICE_PLAYER_UNMOUNTED_SMALL = new UrlImageIcon(Util
 			.getResource("icons/22x22/player_unmount_22x22.png"));
-
-	public static final UrlImageIcon ICON_DEVICE_REMOTE_MOUNTED_SMALL = new UrlImageIcon(Util
-			.getResource("icons/22x22/remote_mount_22x22.png"));
-
-	public static final UrlImageIcon ICON_DEVICE_REMOTE_UNMOUNTED_SMALL = new UrlImageIcon(Util
-			.getResource("icons/22x22/remote_unmount_22x22.png"));
 
 	public static final UrlImageIcon ICON_OK = new UrlImageIcon(Util.getResource("icons/22x22/ok_22x22.png"));
 
@@ -364,7 +337,7 @@ public class IconLoader {
 			.getResource("icons/40x40/playlist_new_40x40.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_NEW_SMALL = new UrlImageIcon(Util
-			.getResource("icons/16x16/newList_16x16.png"));
+			.getResource("icons/16x16/new_16x16.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_BOOKMARK = new UrlImageIcon(Util
 			.getResource("icons/40x40/bookmark_40x40.png"));

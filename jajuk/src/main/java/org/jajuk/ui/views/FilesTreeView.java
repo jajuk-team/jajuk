@@ -550,13 +550,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 							setIcon(IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL);
 						}
 						break;
-					case 5:
-						if (device.isMounted()) {
-							setIcon(IconLoader.ICON_DEVICE_REMOTE_MOUNTED_SMALL);
-						} else {
-							setIcon(IconLoader.ICON_DEVICE_REMOTE_UNMOUNTED_SMALL);
-						}
-						break;
 					}
 				} else if (value instanceof DirectoryNode) {
 					setBorder(null);

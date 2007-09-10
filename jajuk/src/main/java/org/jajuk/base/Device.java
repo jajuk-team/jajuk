@@ -1064,13 +1064,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				icon = IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL;
 			}
 			break;
-		case 5:
-			if (isMounted()) {
-				icon = IconLoader.ICON_DEVICE_REMOTE_MOUNTED_SMALL;
-			} else {
-				icon = IconLoader.ICON_DEVICE_REMOTE_UNMOUNTED_SMALL;
-			}
-			break;
 		}
 		return icon;
 	}
