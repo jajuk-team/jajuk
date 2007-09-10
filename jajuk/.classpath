@@ -24,7 +24,6 @@
 	<classpathentry kind="lib" path="lib/jdic-20060613.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
 	<classpathentry kind="lib" path="jajuk-help.jar"/>
-	<classpathentry kind="lib" path="lib/substance-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi-1.74.jar"/>
@@ -34,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/js-0.96.5R2.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-2007_07_22.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/substance-4.1dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
