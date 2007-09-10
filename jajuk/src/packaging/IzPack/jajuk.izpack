@@ -13,26 +13,26 @@
    	 		<os family='mac' />
    	 	</laf>	 
    	 </guiprefs>
+   	 <!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
     <locale>
         <langpack iso3='eng'/>
-        <langpack iso3='fra'/>
-        <langpack iso3='deu'/>
-        <langpack iso3='ita'/>
-        <langpack iso3='swe'/>
-        <langpack iso3='ned'/>
-        <langpack iso3='spa'/>
         <langpack iso3='cat'/>
         <langpack iso3='chn'/>
-        <langpack iso3='jpn'/>
-        <langpack iso3='rus'/>
+        <langpack iso3='deu'/>
+        <langpack iso3='ell'/>
+        <langpack iso3='fra'/>
         <langpack iso3='hun'/>
+        <langpack iso3='ita'/>
+        <langpack iso3='jpn'/>
+        <langpack iso3='ned'/>
         <langpack iso3='pol'/>
         <langpack iso3='por'/>
-        <langpack iso3='ell'/>
+        <langpack iso3='rus'/>
+        <langpack iso3='spa'/>
+        <langpack iso3='swe'/>        
     </locale>
     <native name='ShellLink.dll' type='izpack'/>
     <resources>
-        <res id='HTMLInfoPanel.info' src='doc/README.html'/>
         <res id='LicencePanel.licence' src='doc/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
         <res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
@@ -48,8 +48,7 @@
         <res id='TargetPanel.dir.unix' src='/tmp/jajuk-dist/java/installDirectory.unix.txt' />
     </resources>
     <panels>
-	    <panel classname='HTMLInfoPanel'/>
-        <panel classname='LicencePanel'/>
+	    <panel classname='LicencePanel'/>
         <panel classname='ImgPacksPanel'/>
         <panel classname='TargetPanel'/>
         <panel classname='InstallPanel'/>
