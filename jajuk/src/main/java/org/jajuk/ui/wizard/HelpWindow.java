@@ -79,6 +79,7 @@ public class HelpWindow extends JDialog implements ITechnicalStrings {
 							cl,
 							"jajuk.hs", new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); 
 			hs = new HelpSet(null, url);
+			hs.setHomeID("table_of_contents");
 			hb = hs.createHelpBroker();
 			jhelp = new JHelp(hs);
 			add(jhelp);
