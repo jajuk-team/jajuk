@@ -280,8 +280,6 @@ public interface ITechnicalStrings {
 	public static final URL IMAGES_SPLASHSCREEN = Util
 			.getResource("images/included/jajuk-splashscreen.jpg");
 
-	public static final URL IMAGE_WRITE = Util.getResource("images/included/write.png");
-
 	public static final URL IMAGE_SEARCH = Util.getResource("images/included/search.png");
 
 	public static final URL IMAGE_DJ = Util.getResource("images/included/dj.jpg");
