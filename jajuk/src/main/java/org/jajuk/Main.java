@@ -22,9 +22,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -461,6 +463,12 @@ public class Main implements ITechnicalStrings {
 								// (keep old repository for security and for use
 								// by others users in multi-session mode)
 								Util.copyRecursively(from, dest);
+								// OK, now write down the bootstrap file if everything's OK
+								java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
+								BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
+								bw.write(newWorkspace);
+								bw.flush();
+								bw.close();
 							}
 						}
 					} catch (Exception e) {

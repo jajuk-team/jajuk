@@ -20,39 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.Main;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.services.lastfm.LastFmManager;
-import org.jajuk.ui.DefaultMouseWheelListener;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.PathSelector;
-import org.jajuk.ui.PatternInputVerifier;
-import org.jajuk.ui.SearchBox;
-import org.jajuk.ui.SteppedComboBox;
-import org.jajuk.ui.ToggleLink;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.HorizontalLayout;
-import org.jdesktop.swingx.JXCollapsiblePane;
-import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.watermark.WatermarkInfo;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -91,6 +58,39 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import org.jajuk.Main;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.services.lastfm.LastFmManager;
+import org.jajuk.ui.DefaultMouseWheelListener;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.PathSelector;
+import org.jajuk.ui.PatternInputVerifier;
+import org.jajuk.ui.SearchBox;
+import org.jajuk.ui.SteppedComboBox;
+import org.jajuk.ui.ToggleLink;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.VerticalLayout;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.watermark.WatermarkInfo;
 
 /**
  * View used to set Jajuk parameters.
@@ -1357,9 +1357,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
 			// Check workspace directory
 			if (!psJajukWorkspace.getUrl().trim().equals("")) {
-				//Try to create the new workspace directory
+				//Check workspace presence and create it if required
 				try{
-					new java.io.File(psJajukWorkspace.getUrl()).mkdirs();
+					java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl()); 
+					if (!fWorkspace.exists()){
+						fWorkspace.mkdirs();
+					}
+					if (!fWorkspace.canRead()){
+						throw new Exception("Cannot write to proposed Workspace");
+					}
 				}
 				catch(Exception e){
 					Messages.showErrorMessage(165);
@@ -1373,11 +1379,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				}
 			}
 			try {
-				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
-				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-				bw.write(psJajukWorkspace.getUrl());
-				bw.flush();
-				bw.close();
 				Main.newWorkspace = psJajukWorkspace.getUrl();
 				// Display a warning message and restart Jajuk
 				Messages.showInfoMessage(Messages.getString("ParameterView.209"));
