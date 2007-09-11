@@ -20,22 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.ui.JajukJDialog;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.FlowLayout;
@@ -60,16 +44,32 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 /**
  * Device creation wizard
  */
-public class DeviceWizard extends JajukJDialog implements ActionListener, ITechnicalStrings {
+public class DeviceWizard extends JFrame implements ActionListener, ITechnicalStrings {
 	private static final long serialVersionUID = 1L;
 
 	JPanel jpMain;

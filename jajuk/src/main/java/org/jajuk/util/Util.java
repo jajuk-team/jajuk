@@ -196,12 +196,12 @@ public class Util implements ITechnicalStrings {
 		bUnderWindows32bits = isUnderWindows()
 				&& System.getProperties().get("sun.arch.data.model").equals("32");
 	}
-	
+
 	static {
 		bUnderWindows64bits = isUnderWindows()
 				&& !System.getProperties().get("sun.arch.data.model").equals("32");
 	}
-	
+
 	static {
 		String sOS = (String) System.getProperties().get("os.name");
 		// os.name can be null with JWS under MacOS
@@ -219,8 +219,6 @@ public class Util implements ITechnicalStrings {
 		bUnderOSXpower = org.jdesktop.swingx.util.OS.isMacOSX()
 				&& (sArch != null && !sArch.matches(".*86"));
 	}
-
-	
 
 	/**
 	 * Genres
@@ -689,10 +687,31 @@ public class Util implements ITechnicalStrings {
 		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
 		fcSrc.close();
 		fcDest.close();
-		// Throw an exception if copied file is void as it can happen with full
+		// Display a warning if copied file is void as it can happen with full
 		// disks
 		if (fNew.length() == 0) {
-			throw new JajukException(24, file.getAbsolutePath(), null);
+			Log.warn("Copied file is void: "+ file.getAbsolutePath());
+		}
+	}
+
+	/**
+	 * Copy recursively files and directories Inspirated from
+	 * 
+	 * @param str
+	 * @param dst
+	 * @throws IOException
+	 */
+	public static void copyRecursively(File src, File dst) throws Exception {
+		if (src.isDirectory()) {
+			dst.mkdirs();
+			String list[] = src.list();
+			for (int i = 0; i < list.length; i++) {
+				String dest1 = dst.getAbsolutePath() + '/' + list[i];
+				String src1 = src.getAbsolutePath() + '/' + list[i];
+				copyRecursively(new File(src1), new File(dest1));
+			}
+		} else {
+			copy(src, dst);
 		}
 	}
 

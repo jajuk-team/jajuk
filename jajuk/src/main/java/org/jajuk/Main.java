@@ -179,6 +179,9 @@ public class Main implements ITechnicalStrings {
 	/** Workspace PATH* */
 	public static String workspace;
 
+	/** Next startup workspace PATH* */
+	public static String newWorkspace;
+
 	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
 		MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
@@ -446,6 +449,19 @@ public class Main implements ITechnicalStrings {
 							}
 							/* release keystrokes resources */
 							ActionBase.cleanup();
+
+							/** Check for workspace path change */
+							if (newWorkspace != null) {
+								File from = Util.getConfFileByPath("");
+								File dest = new File(newWorkspace
+										+ '/'
+										+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION
+												: ".jajuk"));
+								// Copy current repository to the new workspace
+								// (keep old repository for security and for use
+								// by others users in multi-session mode)
+								Util.copyRecursively(from, dest);
+							}
 						}
 					} catch (Exception e) {
 						Log.error(e);
@@ -522,7 +538,8 @@ public class Main implements ITechnicalStrings {
 	private static void initialCheckups() throws Exception {
 		// Check for bootstrap file presence
 		File bootstrap = new File(FILE_BOOTSTRAP);
-		File fJajukDir = Util.getConfFileByPath("");
+		// Default workspace: ~/.jajuk
+		File fDefaultWorkspace = Util.getConfFileByPath("");
 		if (bootstrap.canRead()) {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(bootstrap));
@@ -542,15 +559,14 @@ public class Main implements ITechnicalStrings {
 		// readable, show a wizard to select it
 		if ((!bootstrap.canRead() || Main.workspace == null)
 		// don't launch the first time wizard if a previous release .jajuk dir
-				// exists (upgrade)
-				&& !fJajukDir.canRead()) {
+				// exists (upgrade from < 1.4)
+				&& !fDefaultWorkspace.canRead()) {
 			// First time session ever
 			bFirstSession = true;
 			// display the first time wizard
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					FirstTimeWizard fsw = new FirstTimeWizard();
-					fsw.setAlwaysOnTop(true);
 					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 					fsw.setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
 					fsw.pack();
@@ -562,16 +578,21 @@ public class Main implements ITechnicalStrings {
 				isFirstTimeWizardClosed.wait();
 			}
 		}
-
 		// In all cases, make sure to set a workspace
 		if (workspace == null) {
 			workspace = System.getProperty("user.home");
 		}
 		// check for jajuk directory
-		if (!fJajukDir.exists()) {
-			fJajukDir.mkdir(); // create the directory if it doesn't exist
+		File fWorkspace = new File(workspace);
+		if (!fWorkspace.exists()) {
+			fWorkspace.mkdirs(); // create the directory if it doesn't exist
 		}
-
+		// check for image cache presence and create the workspace/.jajuk
+		// directory
+		File fCache = Util.getConfFileByPath(FILE_CACHE);
+		if (!fCache.exists()) {
+			fCache.mkdirs();
+		}
 		// check for configuration file presence
 		File fConfig = Util.getConfFileByPath(FILE_CONFIGURATION);
 		if (!fConfig.exists()) { // if config file doesn't exit, create
@@ -584,11 +605,7 @@ public class Main implements ITechnicalStrings {
 			// it empty
 			History.commit();
 		}
-		// check for image cache presence
-		File fCache = Util.getConfFileByPath(FILE_CACHE);
-		if (!fCache.exists()) {
-			fCache.mkdir();
-		}
+
 		// Internal pictures directory
 		fCache = Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE);
 		if (!fCache.exists()) {

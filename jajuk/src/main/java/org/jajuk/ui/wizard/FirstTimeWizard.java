@@ -35,6 +35,7 @@ import java.io.FileWriter;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -45,7 +46,6 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.ui.JajukJDialog;
 import org.jajuk.ui.PathSelector;
 import org.jajuk.ui.ToggleLink;
 import org.jajuk.util.ITechnicalStrings;
@@ -60,7 +60,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * First time Wizard
  */
-public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
+public class FirstTimeWizard extends JFrame implements ITechnicalStrings, ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	JLabel jlLeftIcon;
@@ -103,7 +103,6 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 	 */
 	public FirstTimeWizard() {
 		setTitle(Messages.getString("FirstTimeWizard.0"));
-		setModal(true);
 		int iX_SEPARATOR = 10;
 		int iY_SEPARATOR = 10;
 		double p = TableLayout.PREFERRED;
@@ -217,6 +216,26 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 		} else if (e.getSource() == jbOk) {
 			final boolean bShowHelp = jcbHelp.isSelected();
 			final String sPATH = workspacePath.getUrl().trim();
+			// Check workspace directory
+			if (!sPATH.equals("")) {
+				if (!new File(sPATH).canRead()) {
+					Messages.showErrorMessage(165);
+					return;
+				}
+			}
+			// Set Workspace directory
+			try {
+				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
+				bw.write(sPATH);
+				bw.flush();
+				bw.close();
+				// Store the workspace PATH
+				Main.workspace = sPATH;
+			} catch (Exception ex) {
+				Messages.showErrorMessage(24);
+				Log.debug("Cannot write bootstrap file");
+			}
 			// Close window
 			dispose();
 			// Notify Main to continue startup
@@ -233,26 +252,6 @@ public class FirstTimeWizard extends JajukJDialog implements ITechnicalStrings, 
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
-					// Check workspace directory
-					if (!sPATH.equals("")) {
-						if (!new File(sPATH).canRead()) {
-							Messages.showErrorMessage(165);
-							return;
-						}
-					}
-					// Set Workspace directory
-					try {
-						java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
-						BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-						bw.write(sPATH);
-						bw.flush();
-						bw.close();
-						// Store the workspace PATH
-						Main.workspace = sPATH;
-					} catch (Exception ex) {
-						Messages.showErrorMessage(24);
-						Log.debug("Cannot write bootstrap file");
 					}
 					// Create a directory device
 					Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,

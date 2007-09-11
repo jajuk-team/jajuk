@@ -1357,8 +1357,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
 			// Check workspace directory
 			if (!psJajukWorkspace.getUrl().trim().equals("")) {
-				if (!new java.io.File(psJajukWorkspace.getUrl()).canRead()) {
+				//Try to create the new workspace directory
+				try{
+					new java.io.File(psJajukWorkspace.getUrl()).mkdirs();
+				}
+				catch(Exception e){
 					Messages.showErrorMessage(165);
+					return;
+				}
+				//Check the workspace doesn't already contain a jajuk repository
+				if (new java.io.File(psJajukWorkspace.getUrl()+ '/' + 
+						(Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).exists()){
+					Messages.showErrorMessage(172);
 					return;
 				}
 			}
@@ -1368,10 +1378,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				bw.write(psJajukWorkspace.getUrl());
 				bw.flush();
 				bw.close();
-
-				// Request user to move the .jajuk directory and to restart
-				// Jajuk
+				Main.newWorkspace = psJajukWorkspace.getUrl();
+				// Display a warning message and restart Jajuk
 				Messages.showInfoMessage(Messages.getString("ParameterView.209"));
+				Main.exit(0);
 			} catch (Exception e) {
 				Messages.showErrorMessage(24);
 				Log.debug("Cannot write bootstrap file");
