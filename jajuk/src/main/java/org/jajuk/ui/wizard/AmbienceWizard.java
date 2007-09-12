@@ -200,7 +200,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 				}
 				Ambience ambience = ambiences.get(index);
 				// style list
-				JButton jbStyle = new JButton(IconLoader.ICON_LIST);
+				JButton jbStyle = new JButton(IconLoader.ICON_STYLE);
 				if (ambience.getName().length() == 0) {
 					jbStyle.setEnabled(false);
 				}
