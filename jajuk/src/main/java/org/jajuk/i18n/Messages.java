@@ -54,7 +54,7 @@ import javax.xml.parsers.SAXParserFactory;
  * </p>
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings {
-	/** Local ( language) to be used, default is english */
+	/** Local ( language) to be used, default is English */
 	private String sLocal = "en";
 
 	/** Supported Locals */
@@ -67,7 +67,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	private static Messages mesg;
 
 	/**
-	 * Messages themself extracted from an XML file to this properties class*
+	 * Messages themselves extracted from an XML file to this properties class*
 	 */
 	private Properties properties;
 
@@ -152,7 +152,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
 				if (sOut == null) {
 					// this property is unknown for this
-					// local, try in english
+					// local, try in English
 					sOut = getInstance().getPropertiesEn().getProperty(base + "." + i);
 				}
 
@@ -175,7 +175,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sLocale :
 	 *            standard local name like "en"
 	 * @param sDesc :
-	 *            a language-independant desc like "Language_desc_en"
+	 *            a language-independent descriptions like "Language_desc_en"
 	 */
 	public void registerLocal(String sLocal, String sDesc) {
 		alLocals.add(sLocal);
@@ -269,8 +269,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 						if (sLine.length() > 0 && !sLine.startsWith("#")
 								&& sLine.indexOf('=') != -1) {
 							StringTokenizer stLine = new StringTokenizer(sLine, "=");
-							// get full value after thet '=', we don't use the
-							// stringtokenize to allow
+							// get full value after the '=', we don't use the
+							// stringtokenizer to allow
 							// using = characters in the value
 							String sValue = sLine.substring(sLine.indexOf('=') + 1);
 							// trim to ignore space at begin end end of lines
