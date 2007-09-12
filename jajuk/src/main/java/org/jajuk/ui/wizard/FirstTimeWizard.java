@@ -26,8 +26,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -149,14 +147,6 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 		jpFileSelection.add(jbFileSelection);
 		jpFileSelection.add(jlFileSelection);
 		advanced = new JXCollapsiblePane();
-		// force window to resize with collapsable pane
-		advanced.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				super.componentResized(e);
-				pack();
-			}
-		});
 		// Build the toggle link used to expand / collapse the panel
 		ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
 		advanced.setLayout(new VerticalLayout(iY_SEPARATOR));
@@ -180,7 +170,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 		jpMain.add(toggle, "2,5");
 		jpMain.add(advanced, "2,6");
 		jpMain.add(jpButtons, "2,7");
-		jpMain.add(jlLeftIcon, "0,0,0,7");
+		jpMain.add(jlLeftIcon, "0,0,0,5");
 
 		getRootPane().setDefaultButton(jbOk);
 	}

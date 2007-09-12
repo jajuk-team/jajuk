@@ -98,7 +98,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioManager;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -219,20 +218,6 @@ public class Main implements ITechnicalStrings {
 					bTestMode = true;
 				}
 			}
-
-			// Set look and feel, needs local to be set for error
-			// messages
-			try {
-				UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
-				UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
-				// Set default fonts
-				FontManager.setDefaultFont();
-			} catch (Exception e) {
-				// Get an exception with JRE 1.7 beta, some code is not yet
-				// implemented
-				Log.error(e);
-			}
-
 			// perform initial checkups and create needed files
 			initialCheckups();
 
@@ -297,6 +282,9 @@ public class Main implements ITechnicalStrings {
 			// configurationManager.load (for local)
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
+					// Set default fonts
+					FontManager.setDefaultFont();
+					
 					// Set window look and feel and watermarks
 					Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 
@@ -463,7 +451,8 @@ public class Main implements ITechnicalStrings {
 								// (keep old repository for security and for use
 								// by others users in multi-session mode)
 								Util.copyRecursively(from, dest);
-								// OK, now write down the bootstrap file if everything's OK
+								// OK, now write down the bootstrap file if
+								// everything's OK
 								java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
 								BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
 								bw.write(newWorkspace);
