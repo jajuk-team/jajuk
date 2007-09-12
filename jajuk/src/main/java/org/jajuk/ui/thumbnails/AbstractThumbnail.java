@@ -252,7 +252,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 			public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
 				lDateLastMove = System.currentTimeMillis();
-				lastPosition = e.getLocationOnScreen();
+				lastPosition = e.getPoint();
 			}
 
 		});
@@ -288,7 +288,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 				// Consider an exit only if mouse really moved to avoid
 				// closing popup when popup appears over the mouse cursor
 				// (then, a mouseExit event is thrown)
-				if (!e.getLocationOnScreen().equals(lastPosition)) {
+				if (!e.getPoint().equals(lastPosition)) {
 					mouseOverItem = null;
 				}
 			}
