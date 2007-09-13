@@ -512,6 +512,7 @@
 			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
 			<fileset file='${distdir}/jajuk-macosx-${version}.zip' />
 		</copy>
+
 		<copy todir='${tomcat_webapps}'>
 		        <fileset file='${rootdir}/jajuk-${test}.war' />
 		</copy>
