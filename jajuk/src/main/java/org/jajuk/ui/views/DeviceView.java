@@ -89,6 +89,8 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	JMenuItem jmiSynchronize;
 
 	DeviceItem diSelected;
+	
+	volatile boolean popupTrigger = false; 
 
 	public DeviceView() {
 	}
@@ -360,14 +362,16 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 
 	public void mousePressed(MouseEvent e) {
 		if (e.isPopupTrigger()) {
-			handlePopup(e);
+			popupTrigger = true;
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if (e.isPopupTrigger()) {
+		if (e.isPopupTrigger() || popupTrigger) {
+			popupTrigger = false;
 			handlePopup(e);
 		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+			popupTrigger = false;
 			boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
 			selectItem(e);
 			if (bSameDevice) {
