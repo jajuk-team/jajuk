@@ -361,6 +361,12 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 	public void mousePressed(MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			handlePopup(e);
+		}
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		if (e.isPopupTrigger()) {
+			handlePopup(e);
 		} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
 			boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
 			selectItem(e);
@@ -375,12 +381,6 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 				diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 			}
 
-		}
-	}
-
-	public void mouseReleased(MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			handlePopup(e);
 		}
 	}
 

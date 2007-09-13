@@ -31,6 +31,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -128,12 +129,16 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		// Buttons
 		ActionBase aCopy = ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD);
 		jbCopy = new JButton(aCopy);
-		jbLaunchInExternalBrowser = new JButton(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+		jbLaunchInExternalBrowser = new JButton(ActionManager
+				.getAction(JajukAction.LAUNCH_IN_BROWSER));
 		// Remove text inside the buttons
 		jbLaunchInExternalBrowser.setText(null);
 		jbCopy.setText(null);
+		ButtonGroup bg = new ButtonGroup();
 		jbAuthorSearch = new JToggleButton(IconLoader.ICON_AUTHOR, false);
 		jbAuthorSearch.setToolTipText(Messages.getString("WikipediaView.5"));
+		// Select author search (default)
+		jbAuthorSearch.setSelected(true);
 		jbAuthorSearch.addActionListener(this);
 		jbAlbumSearch = new JToggleButton(IconLoader.ICON_ALBUM, true);
 		jbAlbumSearch.setToolTipText(Messages.getString("WikipediaView.6"));
@@ -141,6 +146,10 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		jbTrackSearch = new JToggleButton(IconLoader.ICON_TRACK, false);
 		jbTrackSearch.setToolTipText(Messages.getString("WikipediaView.7"));
 		jbTrackSearch.addActionListener(this);
+		// Group this three mutual exclusive buttons
+		bg.add(jbAuthorSearch);
+		bg.add(jbAlbumSearch);
+		bg.add(jbTrackSearch);
 
 		JToolBar jtb = new JToolBar();
 		jtb.setFloatable(false);
@@ -327,29 +336,14 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAlbumSearch) {
 			type = Type.ALBUM;
-			// Select item as the second click will deselect it (toggle button)
-			jbAlbumSearch.setSelected(true);
-			// deselect others buttons
-			jbAuthorSearch.setSelected(false);
-			jbTrackSearch.setSelected(false);
 			// force event
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAuthorSearch) {
 			type = Type.AUTHOR;
-			// Select item as the second click will deselect it (toggle button)
-			jbAuthorSearch.setSelected(true);
-			// deselect others buttons
-			jbAlbumSearch.setSelected(false);
-			jbTrackSearch.setSelected(false);
 			// force event
 			launchSearch(true);
 		} else if (arg0.getSource() == jbTrackSearch) {
 			type = Type.TRACK;
-			// Select item as the second click will deselect it (toggle button)
-			jbTrackSearch.setSelected(true);
-			// deselect others buttons
-			jbAuthorSearch.setSelected(false);
-			jbAlbumSearch.setSelected(false);
 			// force event
 			launchSearch(true);
 		}

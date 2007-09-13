@@ -54,7 +54,7 @@ import javax.xml.parsers.SAXParserFactory;
  * </p>
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings {
-	/** Local ( language) to be used, default is English */
+	/** Local ( language) to be used, default is english */
 	private String sLocal = "en";
 
 	/** Supported Locals */
@@ -67,7 +67,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	private static Messages mesg;
 
 	/**
-	 * Messages themselves extracted from an XML file to this properties class*
+	 * Messages themself extracted from an XML file to this properties class*
 	 */
 	private Properties properties;
 
@@ -152,7 +152,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
 				if (sOut == null) {
 					// this property is unknown for this
-					// local, try in English
+					// local, try in english
 					sOut = getInstance().getPropertiesEn().getProperty(base + "." + i);
 				}
 
@@ -295,7 +295,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	public static String getErrorMessage(int code) {
 		String sOut = Integer.toString(code);
 		try {
-			sOut = getString("Error." + Util.padNumber(code,3));
+			sOut = getString("Error." + Util.padNumber(code, 3));
 		} catch (Exception e) {
 			System.out.println("### Error getting error message for code: " + code);
 		}
@@ -394,24 +394,25 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 				null, icon);
 		message.run();
 	}
-	
+
 	/**
 	 * 
-	 * @param sText text to display, lines separated by \n characters
-	 * @param limit : max number of lines to be displayed without scroller
+	 * @param sText
+	 *            text to display, lines separated by \n characters
+	 * @param limit :
+	 *            max number of lines to be displayed without scroller
 	 * @return formated message: either a string, or a textaera
 	 */
-	protected static Object getLimitedMessage(String sText, int limit){
-		int iNbLines = new StringTokenizer(sText,"\n").countTokens();
+	protected static Object getLimitedMessage(String sText, int limit) {
+		int iNbLines = new StringTokenizer(sText, "\n").countTokens();
 		Object message = null;
-		if (iNbLines > limit){
+		if (iNbLines > limit) {
 			JTextArea area = new JTextArea(sText);
-	        area.setRows(10);
-	        area.setColumns(50);
-	        area.setLineWrap(true);
-	        message = new JScrollPane(area);
-	    }
-		else{
+			area.setRows(10);
+			area.setColumns(50);
+			area.setLineWrap(true);
+			message = new JScrollPane(area);
+		} else {
 			message = sText;
 		}
 		return message;
@@ -424,10 +425,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(final int code, final String sInfoSup) {
-		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(code)
-				+ " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE),
-				JOptionPane.ERROR_MESSAGE, null, null);
-		message.run();
+		JOptionPane optionPane = Util.getNarrowOptionPane(72);
+		optionPane.setMessage(Messages.getLimitedMessage(Messages.getErrorMessage(code) + " : "
+				+ sInfoSup, 20));
+		Object[] options = { Messages.getString("OK")};
+		optionPane.setOptions(options);
+		optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
+		JDialog dialog = optionPane.createDialog(null, getTitleForType(JOptionPane.ERROR_MESSAGE));
+		dialog.setAlwaysOnTop(true);
+		// keep it modal (useful at startup)
+		dialog.setModal(true);
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
 	}
 
 	/**
@@ -557,18 +567,17 @@ class ConfirmDialog implements Runnable {
 		}
 		optionPane.setOptions(options);
 		optionPane.setMessageType(iType);
-		optionPane.setMessage(Messages.getLimitedMessage(sText,20));
+		optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
 		JDialog dialog = optionPane.createDialog(null, sTitle);
 		dialog.setModal(true);
 		dialog.setAlwaysOnTop(true);
 		dialog.pack();
 		dialog.setLocationRelativeTo(Main.getWindow());
 		dialog.setVisible(true);
-		if (optionPane.getValue() == null){
-			//User closed the dialog using the cross icon
+		if (optionPane.getValue() == null) {
+			// User closed the dialog using the cross icon
 			iResu = JOptionPane.CANCEL_OPTION;
-		}
-		else if (optionPane.getValue().equals(Messages.getString("yes"))) {
+		} else if (optionPane.getValue().equals(Messages.getString("yes"))) {
 			iResu = JOptionPane.YES_OPTION;
 		} else if (optionPane.getValue().equals(Messages.getString("no"))) {
 			iResu = JOptionPane.NO_OPTION;
@@ -713,7 +722,7 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 	 */
 	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
-		optionPane.setMessage(Messages.getLimitedMessage(sText,20));
+		optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
 		Object[] options = { Messages.getString("OK"), Messages.getString("Hide") };
 		optionPane.setOptions(options);
 		optionPane.setMessageType(iType);

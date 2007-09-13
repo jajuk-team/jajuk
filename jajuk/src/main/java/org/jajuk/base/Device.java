@@ -253,7 +253,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 			reporter.done();
 		} finally {
-			//Make sure to unlock refreshing
+			// Make sure to unlock refreshing
 			bAlreadyRefreshing = false;
 		}
 	}
@@ -677,7 +677,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 					// require anymore to mount devices)
 					process.waitFor();
 				}
-			} else { // windows mount point or mount point not given, check
+			} else { // windows directory or mount point not given, check
 				// if path exists
 				File file = new File(getUrl());
 				if (!file.exists()) {
@@ -691,16 +691,15 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		File file = new File(getUrl());
 		if (file.listFiles() != null && file.listFiles().length > 0) {
 			bMounted = true;
-		}
-		// notify views to refresh if needed
-		if (bMounted && bUIRefresh) {
-			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
+			// notify views to refresh if needed
+			if (bMounted && bUIRefresh) {
+				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
+			}
 		}
 		// Still not mounted ? throw an exception
-		if (!bMounted) {
+		else {
 			throw new Exception();
 		}
-
 	}
 
 	/**
