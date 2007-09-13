@@ -24,6 +24,7 @@
 	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='uploaddir' value='${rootdir}/upload' />
+	<property name='tomcat_webapps' value='/data/' />
 	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />
 	-->
 
@@ -34,6 +35,7 @@
 	<property name='conf_jnlp-dist' value='/svn-jajuk/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/jbuild' />
 	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/testing/build-1.4' />
+	<property name='tomcat_webapps' value='/var/lib/tomcat5.5/webapps' />
 	<property name='conf_jarbundler' value='/svn-jajuk/tools/jarbundler-1.9' />
 
 	<!-- ============================== -->
@@ -510,6 +512,10 @@
 			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
 			<fileset file='${distdir}/jajuk-macosx-${version}.zip' />
 		</copy>
+		<copy todir='${tomcat_webapps}'>
+		        <fileset file='${rootdir}/jajuk-${test}.war' />
+		</copy>
+
 
 		<!-- Generate MD5 http://ant.apache.org/manual/CoreTasks/checksum.html -->
 		<checksum file="${uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" fileext=".md5" />
