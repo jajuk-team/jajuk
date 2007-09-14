@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Ant script for packagers only-->
-<!--void 1 -->
+<!--void 2 -->
 
 <project default='all' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
