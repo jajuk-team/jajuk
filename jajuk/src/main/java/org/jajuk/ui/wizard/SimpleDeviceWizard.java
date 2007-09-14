@@ -143,6 +143,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		jpMain.add(jlLeftIcon, "1,0");
 		jpMain.add(jpRightPanel, "3,0");
 		getRootPane().setDefaultButton(jbOk);
+		setAlwaysOnTop(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {

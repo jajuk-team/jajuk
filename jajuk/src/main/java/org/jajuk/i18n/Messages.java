@@ -19,14 +19,6 @@
  */
 package org.jajuk.i18n;
 
-import org.jajuk.Main;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -43,9 +35,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.jajuk.Main;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Utility class to get strings from localized property files
@@ -303,20 +302,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	}
 
 	/**
-	 * Show a dialog with specified error message
-	 * 
-	 * @param sCode
-	 */
-	public static void showErrorMessage(final int code) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(), Messages.getErrorMessage(code),
-						Messages.getErrorMessage(102), JOptionPane.ERROR_MESSAGE);
-			}
-		});
-	}
-
-	/**
 	 * Show a dialog waiting for a user decision
 	 * <p>
 	 * CAUTION! the thread which calls this method musn't have locks on
@@ -331,7 +316,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static int getChoice(String sText, int iType) {
 		ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), iType);
-		confirm.run();
 		return confirm.getResu();
 	}
 
@@ -361,7 +345,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
 				getTitleForType(JOptionPane.WARNING_MESSAGE), JOptionPane.WARNING_MESSAGE, null,
 				null);
-		message.run();
 	}
 
 	/**
@@ -379,7 +362,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 		HideableMessageDialog message = new HideableMessageDialog(sMessage,
 				getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty,
 				JOptionPane.WARNING_MESSAGE, null);
-		message.run();
 		message.getResu();
 	}
 
@@ -389,10 +371,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(final String sMessage, final Icon icon) {
-		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
-				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
-				null, icon);
-		message.run();
+		new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+				JOptionPane.INFORMATION_MESSAGE, null, icon);
 	}
 
 	/**
@@ -425,19 +405,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(final int code, final String sInfoSup) {
-		JOptionPane optionPane = Util.getNarrowOptionPane(72);
-		optionPane.setMessage(Messages.getLimitedMessage(Messages.getErrorMessage(code) + " : "
-				+ sInfoSup, 20));
-		Object[] options = { Messages.getString("OK")};
-		optionPane.setOptions(options);
-		optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
-		JDialog dialog = optionPane.createDialog(null, getTitleForType(JOptionPane.ERROR_MESSAGE));
-		dialog.setAlwaysOnTop(true);
-		// keep it modal (useful at startup)
-		dialog.setModal(true);
-		dialog.pack();
-		dialog.setLocationRelativeTo(Main.getWindow());
-		dialog.setVisible(true);
+		new ErrorMessageDialog(code, sInfoSup);
+	}
+
+	/**
+	 * Show a dialog with specified error message
+	 * 
+	 * @param sCode
+	 */
+	public static void showErrorMessage(final int code) {
+		showErrorMessage(code, null);
 	}
 
 	/**
@@ -448,10 +425,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static void showDetailedErrorMessage(final int code, final String sInfoSup,
 			String sDetails) {
-		DetailsMessageDialog message = new DetailsMessageDialog(Messages.getErrorMessage(code)
-				+ " : " + sInfoSup, getTitleForType(JOptionPane.ERROR_MESSAGE),
-				JOptionPane.ERROR_MESSAGE, sDetails, null);
-		message.run();
+		new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
+				getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails,
+				null);
 	}
 
 	/**
@@ -461,10 +437,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sInfoSup
 	 */
 	public static void showInfoMessage(final String sMessage, final String sInfoSup) {
-		DetailsMessageDialog message = new DetailsMessageDialog(sMessage + " : " + sInfoSup,
+		new DetailsMessageDialog(sMessage + " : " + sInfoSup,
 				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
 				null, null);
-		message.run();
 	}
 
 	/**
@@ -473,10 +448,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(final String sMessage) {
-		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
-				getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
-				null, null);
-		message.run();
+		new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+				JOptionPane.INFORMATION_MESSAGE, null, null);
 	}
 
 	/**
@@ -524,19 +497,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 /**
  * Confirmation Dialog
  */
-class ConfirmDialog implements Runnable {
-
-	/** Dialog output */
-	private int iResu = -2;
-
-	/** Dialog text */
-	private String sText;
-
-	/** Dialog title */
-	private String sTitle;
-
-	/** dialog type */
-	private int iType;
+class ConfirmDialog extends JajukDialog {
 
 	/**
 	 * Confirm dialog constructor
@@ -546,17 +507,6 @@ class ConfirmDialog implements Runnable {
 	 * @param iType
 	 */
 	ConfirmDialog(String sText, String sTitle, int iType) {
-		this.iType = iType;
-		this.sText = sText;
-		this.sTitle = sTitle;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
 		Object[] options = null;
 		if (iType == JOptionPane.DEFAULT_OPTION) {
@@ -586,34 +536,12 @@ class ConfirmDialog implements Runnable {
 		}
 	}
 
-	/**
-	 * 
-	 * @return the user option
-	 */
-	public int getResu() {
-		return iResu;
-	}
 }
 
 /**
  * Message Dialog
  */
-class DetailsMessageDialog implements Runnable {
-
-	/** Dialog text */
-	private String sText;
-
-	/** Dialog title */
-	private String sTitle;
-
-	/** dialog type */
-	private int iType;
-
-	/** Details */
-	private String sDetails;
-
-	/** Icon */
-	private Icon icon;
+class DetailsMessageDialog extends JajukDialog {
 
 	/**
 	 * Message dialog constructor
@@ -623,19 +551,6 @@ class DetailsMessageDialog implements Runnable {
 	 * @param iType
 	 */
 	DetailsMessageDialog(String sText, String sTitle, int iType, String sDetails, Icon icon) {
-		this.iType = iType;
-		this.sText = sText;
-		this.sTitle = sTitle;
-		this.sDetails = sDetails;
-		this.icon = icon;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
 		optionPane.setMessage(sText);
 		if (sDetails != null) {
@@ -673,30 +588,13 @@ class DetailsMessageDialog implements Runnable {
 			dialogDetail.setVisible(true);
 		}
 	}
+
 }
 
 /**
  * Hideable message dialog (has a "not show again" button)
  */
-class HideableMessageDialog implements Runnable, ITechnicalStrings {
-
-	/** Dialog text */
-	private String sText;
-
-	/** Dialog title */
-	private String sTitle;
-
-	/** Associated hide property */
-	private String sProperty;
-
-	/** dialog type */
-	private int iType;
-
-	/** Icon */
-	private Icon icon;
-
-	/** Dialog output */
-	private int iResu = -2;
+class HideableMessageDialog extends JajukDialog {
 
 	/**
 	 * Message dialog constructor
@@ -708,19 +606,6 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 	 * @param icon
 	 */
 	HideableMessageDialog(String sText, String sTitle, String sProperty, int iType, Icon icon) {
-		this.iType = iType;
-		this.sText = sText;
-		this.sProperty = sProperty;
-		this.sTitle = sTitle;
-		this.icon = icon;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
-	public void run() {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
 		optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
 		Object[] options = { Messages.getString("OK"), Messages.getString("Hide") };
@@ -742,6 +627,43 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 		}
 	}
 
+}
+
+/**
+ * Error message dialog
+ */
+class ErrorMessageDialog extends JajukDialog {
+
+	/**
+	 * Message dialog constructor
+	 * 
+	 * @param sText
+	 * @param sTitle
+	 * @param sProperty
+	 * @param iType
+	 * @param icon
+	 */
+	ErrorMessageDialog(int code, String sInfoSup) {
+		JOptionPane optionPane = Util.getNarrowOptionPane(72);
+		optionPane.setMessage(Messages.getLimitedMessage(Messages.getErrorMessage(code)
+				+ (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
+		Object[] options = { Messages.getString("OK") };
+		optionPane.setOptions(options);
+		optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
+		JDialog dialog = optionPane.createDialog(null, Messages.getString("Error"));
+		dialog.setAlwaysOnTop(true);
+		// keep it modal (useful at startup)
+		dialog.setModal(true);
+		dialog.pack();
+		dialog.setLocationRelativeTo(Main.getWindow());
+		dialog.setVisible(true);
+	}
+}
+
+abstract class JajukDialog implements ITechnicalStrings {
+	/** Dialog output */
+	protected int iResu = -2;
+
 	/**
 	 * 
 	 * @return the user option
@@ -749,5 +671,4 @@ class HideableMessageDialog implements Runnable, ITechnicalStrings {
 	public int getResu() {
 		return iResu;
 	}
-
 }
