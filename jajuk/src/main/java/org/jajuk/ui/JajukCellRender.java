@@ -22,9 +22,11 @@ package org.jajuk.ui;
 
 import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
 import java.awt.Component;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -46,6 +48,9 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 			((JLabel)c).setToolTipText(((IconLabel)oValue).getTooltip());
 			((JLabel)c).setFont(((IconLabel)oValue).getFont());
 			((JLabel)c).setText(((IconLabel)oValue).getText());
+		}
+		else if(oValue instanceof Date){
+			((JLabel)c).setText(Util.getLocaleDateFormatter().format(((Date)oValue)));
 		}
 		c.setEnabled(table == null || table.isEnabled());
 		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN)); 
