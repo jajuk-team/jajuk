@@ -697,7 +697,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 		}
 		// Still not mounted ? throw an exception
-		else {
+		if (!bMounted) {
 			throw new Exception();
 		}
 	}
