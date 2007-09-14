@@ -131,6 +131,15 @@ public class ConfigurationManager implements ITechnicalStrings {
 	 * 
 	 */
 	public static void setDefaultProperties() {
+		//Set default language
+		String sLanguage = System.getProperty("user.language");
+		if (Messages.getLocales().contains(sLanguage)) {
+			// user language exists in jajuk, take it as default
+			properties.put(CONF_OPTIONS_LANGUAGE, sLanguage);
+		} else { // user language is unknown, take English as a default,
+			// user will be able to change it later anyway
+			properties.put(CONF_OPTIONS_LANGUAGE, "en");
+		}
 		// User preferences
 		properties.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
 		properties.put(CONF_STATE_REPEAT, FALSE);
@@ -163,7 +172,6 @@ public class ConfigurationManager implements ITechnicalStrings {
 		} else {
 			properties.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.WARNING));
 		}
-		properties.put(CONF_OPTIONS_LANGUAGE, "en");
 		properties.put(CONF_OPTIONS_TAB, "0");
 		properties.put(CONF_OPTIONS_INTRO_BEGIN, "0");
 		properties.put(CONF_OPTIONS_INTRO_LENGTH, "20");
@@ -228,7 +236,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		// filter on albums
 		properties.put(CONF_THUMBS_FILTER, "0");
 		properties.put(CONF_TIP_OF_DAY_INDEX, "0");
-		properties.put(CONF_WIKIPEDIA_LANGUAGE, Messages.getInstance().getLocale());
+		properties.put(CONF_WIKIPEDIA_LANGUAGE, properties.get(CONF_OPTIONS_LANGUAGE));
 		properties.put(CONF_FADE_DURATION, "0");
 		// sort by style
 		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0");
@@ -264,22 +272,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 				"cache/internal/" + FILE_BACKGROUND_IMAGE).getAbsolutePath());
 	}
 
-	/**
-	 * Set default language without properties file available (normally only at
-	 * install)
-	 * 
-	 */
-	public void setSystemLocal() {
-		String sLanguage = System.getProperty("user.language");
-		if (Messages.getLocales().contains(sLanguage)) {
-			// user language exists in jajuk, take it as default
-			properties.put(CONF_OPTIONS_LANGUAGE, sLanguage);
-		} else { // user language is unknown, take English as a default,
-			// user will be able to change it later anyway
-			properties.put(CONF_OPTIONS_LANGUAGE, "en");
-		}
-	}
-
+	
 	/**
 	 * Set a property
 	 * 

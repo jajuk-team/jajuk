@@ -53,7 +53,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings {
-	/** Local ( language) to be used, default is english */
+	/** Local ( language) to be used, default is English */
 	private String sLocal = "en";
 
 	/** Supported Locals */

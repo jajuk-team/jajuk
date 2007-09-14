@@ -230,9 +230,6 @@ public class Main implements ITechnicalStrings {
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
 
-			// Configuration manager startup. Depends on: initialCheckups
-			org.jajuk.util.ConfigurationManager.getInstance();
-
 			// Register locals, needed by ConfigurationManager to choose
 			// default language
 			Messages.getInstance().registerLocal("en", "Language_desc_en");
@@ -246,12 +243,11 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("ca", "Language_desc_ca");
 			Messages.getInstance().registerLocal("ko", "Language_desc_ko");
 			Messages.getInstance().registerLocal("el", "Language_desc_el");
+			
+			// Configuration manager startup. Depends on: initialCheckups, registerLocal
+			ConfigurationManager.getInstance();
 
-			// Set default local (from system). Depends on registerLocal
-			ConfigurationManager.getInstance().setSystemLocal();
-
-			// Load user configuration. Depends on: initialCheckups,
-			// setSystemLocal
+			// Load user configuration. Depends on: initialCheckups
 			ConfigurationManager.load();
 
 			// Upgrade detection. Depends on: Configuration manager load
