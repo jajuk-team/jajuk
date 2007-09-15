@@ -666,7 +666,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		TableLayout layoutTags = new TableLayout(sizeTags);
 		layoutTags.setHGap(iXSeparator);
 		layoutTags.setVGap(iYSeparator);
-		jpTags.setLayout(layoutOption);
+		jpTags.setLayout(layoutTags);
 		jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
 		jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
 		jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
