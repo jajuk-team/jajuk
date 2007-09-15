@@ -511,6 +511,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 			jsRatingLevel.setMajorTickSpacing(1);
 			jsRatingLevel.setMinorTickSpacing(1);
 			jsRatingLevel.setPaintTicks(true);
+			jsRatingLevel.setSnapToTicks(true);
 			jsRatingLevel.setPaintLabels(true);
 			jsRatingLevel.setToolTipText(Messages
 					.getString("DigitalDJWizard.8")); 
