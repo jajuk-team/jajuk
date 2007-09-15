@@ -947,7 +947,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 				try {
 					// copy file from cache
-					File fSource = Util.getCachePath(cover.getURL(), cover.getDownloadID());
+					File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
 					File file = new File(sFilePath);
 					Util.copy(fSource, file);
 					Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
@@ -1025,7 +1025,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 					try {
 						// copy file from cache
-						File fSource = Util.getCachePath(cover.getURL(), cover.getDownloadID());
+						File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
 						File file = new File(sFilePath);
 						Util.copy(fSource, file);
 						InformationJPanel.getInstance().setMessage(
