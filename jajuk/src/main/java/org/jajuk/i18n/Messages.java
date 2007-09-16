@@ -19,6 +19,7 @@
  */
 package org.jajuk.i18n;
 
+import java.util.Collections;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -45,6 +46,7 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 
 /**
  * Utility class to get strings from localized property files
@@ -177,9 +179,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 *            a language-independent descriptions like "Language_desc_en"
 	 */
 	public void registerLocal(String sLocal, String sDesc) {
-		alLocals.add(sLocal);
-		alDescs.add(sDesc);
+		int i = 0;
+		if (alDescs.isEmpty()) {
+			alLocals.add(i, sLocal);
+			alDescs.add(i, sDesc);
+		} else {
+			//put local and desc in the right Arraylist position
+			while (i<alDescs.size() && getString(alDescs.get(i)).compareTo(getString(sDesc)) < 0 )
+				i++;
+			alLocals.add(i, sLocal);
+			alDescs.add(i, sDesc);
+		}
 	}
+	
 
 	/**
 	 * Return list of available locals
