@@ -18,8 +18,8 @@ Apache => LICENSE-Apache.txt
 -------------------------------------------------------------------------------
 |API                           |Credentials|Comments |URL             |License|
 -------------------------------------------------------------------------------
-|Javalayer,BasicPlayer,Tritonus|JavaZoom   |MP3 sound|http://         |LGPL   |
-|,mp3spi                       |team       |engine   |www.javazoom.net|       |
+|Javalayer,BasicPlayer,        |JavaZoom   |MP3 sound|http://         |LGPL   |
+|Tritonus, mp3spi              |team       |engine   |www.javazoom.net|       |
 -------------------------------------------------------------------------------
 |                              |           |Ogg      |                |       |
 |Jogg, JOrbis,Vorbis,Vorbis SPI|JavaZoom   |Vorbis   |http://         |LGPL   |
@@ -44,6 +44,12 @@ Apache => LICENSE-Apache.txt
 == Look and feel ==
 ----------------------------------------------------------------------------------
 |API       |Credentials        |Comments    |URL                        |License |
+----------------------------------------------------------------------------------
+|          |                   |A cross-    |                           |        |
+|          |                   |platform    |https://                   |        |
+|Substance |Kirill Grouchnikov |look & feel |substance.dev.java.net/    |BSD     |
+|          |                   |for Swing   |                           |        |
+|          |                   |applications|                           |        |
 ----------------------------------------------------------------------------------
 |          |                   |Good Look   |                           |        |
 |          |                   |And Feel but|                           |        |
@@ -152,11 +158,11 @@ http://www.vlsolutions.com/download/Licence_CeCILL-V1.1_VA.pdf
 ---------------------------------------------------------------------------
 
 == Web ==
-------------------------------------------------------------------------------
-|API  |Credentials|Comments       |URL                               |License|
-------------------------------------------------------------------------------
-|Cobra|Cobra team |Web Browser API|http://html.xamjwg.org/cobra.jsp  |GPL    |
-------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+|API    |Credentials|Comments       |URL                               |License|
+--------------------------------------------------------------------------------
+|Cobra  |Cobra team |Web Browser API|http://html.xamjwg.org/cobra.jsp  |GPL    |
+--------------------------------------------------------------------------------
 
 == Others ==
 -------------------------------------------------------------------------------
