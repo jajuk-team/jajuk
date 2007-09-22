@@ -232,19 +232,20 @@ public class Main implements ITechnicalStrings {
 
 			// Register locals, needed by ConfigurationManager to choose
 			// default language
-			Messages.getInstance().registerLocal("en", "Language_desc_en");
-			Messages.getInstance().registerLocal("fr", "Language_desc_fr");
-			Messages.getInstance().registerLocal("de", "Language_desc_de");
-			Messages.getInstance().registerLocal("it", "Language_desc_it");
-			Messages.getInstance().registerLocal("sv", "Language_desc_sv");
-			Messages.getInstance().registerLocal("nl", "Language_desc_nl");
-			Messages.getInstance().registerLocal("zh", "Language_desc_zh");
-			Messages.getInstance().registerLocal("es", "Language_desc_es");
-			Messages.getInstance().registerLocal("ca", "Language_desc_ca");
-			Messages.getInstance().registerLocal("ko", "Language_desc_ko");
-			Messages.getInstance().registerLocal("el", "Language_desc_el");
-			
-			// Configuration manager startup. Depends on: initialCheckups, registerLocal
+			Messages.getInstance().registerLocal("en");
+			Messages.getInstance().registerLocal("fr");
+			Messages.getInstance().registerLocal("de");
+			Messages.getInstance().registerLocal("it");
+			Messages.getInstance().registerLocal("sv");
+			Messages.getInstance().registerLocal("nl");
+			Messages.getInstance().registerLocal("zh");
+			Messages.getInstance().registerLocal("es");
+			Messages.getInstance().registerLocal("ca");
+			Messages.getInstance().registerLocal("ko");
+			Messages.getInstance().registerLocal("el");
+
+			// Configuration manager startup. Depends on: initialCheckups,
+			// registerLocal
 			ConfigurationManager.getInstance();
 
 			// Load user configuration. Depends on: initialCheckups
@@ -280,7 +281,7 @@ public class Main implements ITechnicalStrings {
 				public void run() {
 					// Set default fonts
 					FontManager.setDefaultFont();
-					
+
 					// Set window look and feel and watermarks
 					Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 
@@ -585,6 +586,12 @@ public class Main implements ITechnicalStrings {
 		File fCache = Util.getConfFileByPath(FILE_CACHE);
 		if (!fCache.exists()) {
 			fCache.mkdirs();
+		} else {
+			// Empty cache
+			File[] cacheFiles = fCache.listFiles();
+			for (int i = 0; i < cacheFiles.length; i++) {
+				cacheFiles[i].delete();
+			}
 		}
 		// check for configuration file presence
 		File fConfig = Util.getConfFileByPath(FILE_CONFIGURATION);
