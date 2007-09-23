@@ -486,7 +486,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 
 		it = hsSourceDirs.iterator();
 		Iterator it2;
-		// handle known extesions and image files
+		// handle known extensions and image files
 		FileFilter filter = new JajukFileFilter(false, new JajukFileFilter[] {
 				JajukFileFilter.KnownTypeFilter.getInstance(),
 				JajukFileFilter.ImageFilter.getInstance() });

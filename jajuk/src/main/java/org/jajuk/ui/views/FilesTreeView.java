@@ -267,7 +267,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_PHYSICAL);
-		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, selectedRecursively);
 		jmenuCollection.add(jmiCollectionReport);
 
 		// File menu
@@ -349,7 +348,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDirReport.putClientProperty(DETAIL_ORIGIN, XML_DIRECTORY);
-		jmiDirReport.putClientProperty(DETAIL_SELECTION, selectedRecursively);
+		jmiDirReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDirRefactor.addActionListener(this);
@@ -405,7 +404,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiDevReport.putClientProperty(DETAIL_ORIGIN, XML_DEVICE);
-		jmiDevReport.putClientProperty(DETAIL_SELECTION, selectedRecursively);
+		jmiDevReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
 				IconLoader.ICON_REORGANIZE);
 		jmiDevOrganize.addActionListener(this);
@@ -461,11 +460,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmenuPlaylistFile.add(jmiPlaylistFilePush);
 		jmenuPlaylistFile.add(jmiPlaylistFilePlayShuffle);
 		jmenuPlaylistFile.add(jmiPlaylistFilePlayRepeat);
-		// @TBI
-		// jmenuPlaylistFile.add(jmiPlaylistFileCopy);
-		// jmenuPlaylistFile.add(jmiPlaylistFileCut);
-		// jmenuPlaylistFile.add(jmiPlaylistFilePaste);
-		// jmenuPlaylistFile.add(jmiPlaylistFileDelete);
 		jmenuPlaylistFile.add(jmiPlaylistAddFavorites);
 		jmenuPlaylistFile.add(jmiPlaylistFileProperties);
 
@@ -614,7 +608,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 						Object o = paths[i].getLastPathComponent();
 						if (o instanceof TreeRootElement) {// root node
 							items = FileManager.getInstance().getElementCount();
-							selectedRecursively.addAll(FileManager.getInstance().getFiles());
 							for (Item item : selectedRecursively) {
 								lSize += ((File) item).getSize();
 							}
@@ -657,8 +650,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
 								properties));
 					}
-					// No CDDB on directories without files
-					if (selectedRecursively.size() > 0 && alSelected.get(0) instanceof Directory) {
+					//Check CDDB requests
+					if (alSelected.size() > 0 //alSelected = 0 for collection selection 
+							&& alSelected.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
 							// check it is a directory (can be a file if user
@@ -1233,11 +1227,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 			};
 			sw.start();
 		}
-		// Make sure to refresh cells (useful to remove highliters
-		// for ie)
-		revalidate();
-		repaint();
-
 	}
 
 	/**

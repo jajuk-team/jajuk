@@ -26,9 +26,11 @@ import org.jajuk.reporting.ExporterFactory;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
 import org.jajuk.util.JajukFileFilter.HTMLFilter;
 import org.jajuk.util.JajukFileFilter.XMLFilter;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -44,8 +46,8 @@ public class ReportAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	ReportAction() {
-		super(Messages.getString("TracksTreeView.33"), IconLoader.ICON_REPORT,true); 
-		setShortDescription(Messages.getString("TracksTreeView.33")); 
+		super(Messages.getString("TracksTreeView.33"), IconLoader.ICON_REPORT, true);
+		setShortDescription(Messages.getString("TracksTreeView.33"));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -57,18 +59,12 @@ public class ReportAction extends ActionBase {
 		final ArrayList<Item> alSelected = (ArrayList<Item>) source
 				.getClientProperty(DETAIL_SELECTION);
 		// Display a save as dialog
-		final JajukFileChooser chooser = new JajukFileChooser();
-		JajukFileFilter filter1 = new JajukFileFilter(XMLFilter.getInstance());
-		//Allow to navigate between directories
-		filter1.setAcceptDirectories(true);
-		JajukFileFilter filter2 = new JajukFileFilter(HTMLFilter.getInstance());
-		filter2.setAcceptDirectories(true);
-		// Accept XML files
-		chooser.addChoosableFileFilter(filter1);
-		// Accept HTML files
-		chooser.addChoosableFileFilter(filter2);
+		JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
+				.getInstance());
+		final JajukFileChooser chooser = new JajukFileChooser(filter);
+		// Allow to navigate between directories
+		chooser.setAcceptDirectories(true);
 		chooser.setDialogTitle(Messages.getString("TracksTreeView.33"));
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		// set a default file name
 		if (COLLECTION_LOGICAL.equals(type) || COLLECTION_PHYSICAL.equals(type)) {
 			// collection node selected, use file name 'collection"
@@ -84,33 +80,33 @@ public class ReportAction extends ActionBase {
 		int returnVal = chooser.showSaveDialog(null);
 		// Wait for user selection
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			//Make sure user didn't select a directory
-			if (chooser.getSelectedFile().isDirectory()){
+			// Make sure user didn't select a directory (we have to accept
+			// them to allow user to navigate)
+			if (chooser.getSelectedFile().isDirectory()) {
 				return;
 			}
 			// make it in a separated thread to avoid freezing
 			// screen for big collections
 			new Thread() {
 				public void run() {
-					String filepath = chooser.getSelectedFile().getAbsolutePath();
-					String filetypename = chooser.getFileFilter().getDescription();
-					// Create an exporter according to file extension
-					Exporter exporter = ExporterFactory.createExporter(filetypename);
-					// Process the reporting string
-					String result = null;
-					// Full logical collection report
-					if (COLLECTION_LOGICAL.equals(type)) {
-						result = exporter.processCollection(Exporter.LOGICAL_COLLECTION);
-					}
-					// Full physical collection report
-					else if (COLLECTION_PHYSICAL.equals(type)) {
-						result = exporter.processCollection(Exporter.PHYSICAL_COLLECTION);
-					}
-					// Normal report on an item or a set of items
-					else {
-						result = exporter.process(alSelected);
-					}
-					if (result != null) {
+					try {
+						Util.waiting();
+						String filepath = chooser.getSelectedFile().getAbsolutePath();
+						String filetypename = chooser.getFileFilter().getDescription();
+						// Create an exporter according to file extension
+						Exporter exporter = ExporterFactory.createExporter(filetypename);
+						// Full logical collection report
+						if (COLLECTION_LOGICAL.equals(type)) {
+							exporter.processCollection(Exporter.LOGICAL_COLLECTION);
+						}
+						// Full physical collection report
+						else if (COLLECTION_PHYSICAL.equals(type)) {
+							exporter.processCollection(Exporter.PHYSICAL_COLLECTION);
+						}
+						// Normal report on an item or a set of items
+						else {
+							exporter.process(alSelected);
+						}
 						// Save the results
 						String filename = filepath;
 						// Append extension only if needed.
@@ -119,14 +115,15 @@ public class ReportAction extends ActionBase {
 						if (!filepath.endsWith(filetypename)) {
 							filename = filepath + '.' + filetypename;
 						}
-						if (!exporter.saveToFile(result, filename)) {
-							Messages.showErrorMessage(024);
-						} else {
-							// Success
-							Messages.showInfoMessage(Messages.getString("ReportAction.0"));
-						}
-					} else {
-						Messages.showErrorMessage(167);
+						// Save created report
+						exporter.saveToFile(filename);
+						// Success
+						Messages.showInfoMessage(Messages.getString("ReportAction.0"));
+					} catch (Exception e) {
+						Log.error(e);
+						Messages.showErrorMessage(167, e.getMessage());
+					} finally {
+						Util.stopWaiting();
 					}
 				}
 			}.start();

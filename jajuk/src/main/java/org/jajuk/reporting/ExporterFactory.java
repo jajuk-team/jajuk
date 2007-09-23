@@ -29,7 +29,7 @@ public class ExporterFactory {
 	 *            Exporter type (.xml or .html)
 	 * @return Returns an instance of XMLExporter.
 	 */
-	public static Exporter createExporter(String extension) {
+	public static Exporter createExporter(String extension) throws Exception{
 		if ("html".equals(extension)) {
 			return new HTMLExporter();
 		} else {

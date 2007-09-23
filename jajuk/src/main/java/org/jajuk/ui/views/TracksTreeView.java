@@ -266,7 +266,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 		// Add custom data to this component in order to allow the ReportAction
 		// to be able to get it
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_LOGICAL);
-		jmiCollectionReport.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmenuCollection.add(jmiCollectionReport);
 
 		// Style menu

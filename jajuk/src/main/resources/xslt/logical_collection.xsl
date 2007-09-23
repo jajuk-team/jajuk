@@ -37,9 +37,7 @@
 								select='/collection/i18n/ReportAction.8' /></a></li>
 					<li><a href="#a2"><xsl:value-of
 								select='/collection/i18n/ReportAction.9' /></a></li>
-					<li><a href="#a2"><xsl:value-of
-								select='/collection/i18n/ReportAction.18' /></a></li>
-    			</ul>
+				</ul>
 				<h2 id='a1'>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.7' />
@@ -54,12 +52,7 @@
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.9' />
 				</h2>
-					<xsl:call-template name='style-author-album' />
-				<h2 id='a4'>
-					<xsl:value-of
-						select='/collection/i18n/ReportAction.18' />
-				</h2>
-				<xsl:call-template name='style-author-album-track' />
+				<xsl:call-template name='style-author-album' />
 			</body>
 		</html>
 	</xsl:template>
@@ -150,59 +143,5 @@
 					</table>
 				</xsl:for-each>
 			</xsl:for-each>
-	</xsl:template>
-	
-	<xsl:template name='style-author-album-track'>
-		<xsl:for-each select='/collection/style'>
-			<xsl:variable name='id' select='id' />
-			<h3><xsl:value-of select='name' /></h3>
-			<xsl:for-each select='author'>
-				<h4><xsl:value-of select='name' /></h4>
-				<xsl:for-each select='album'>
-					<xsl:variable name='id' select='id' />
-					<h5><xsl:value-of select='name' /> (<xsl:value-of select='year' />)</h5>
-					<table border='0' cellspacing='5'>
-						<tr>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.order'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.track'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.album'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.author'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.style'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.length'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.rate'/></th>
-							<th><xsl:value-of select='/collection/i18n/ReportAction.comment'/></th>
-						</tr>
-						<xsl:for-each select='track'>
-							<tr>
-								<td width='5%'>
-									<xsl:value-of select='order' />
-								</td>
-								<td width='20%'>
-									<xsl:value-of select='name' />
-								</td>
-								<td width='10%'>
-									<xsl:value-of select='album' />
-								</td>
-								<td width='10%'>
-									<xsl:value-of select='author' />
-								</td>
-								<td width='10%'>
-									<xsl:value-of select='style' />
-								</td>
-								<td width='10%'>
-									<xsl:value-of select='length' />
-								</td>
-								<td width='5%'>
-									<xsl:value-of select='rate' />
-								</td>
-								<td>
-									<xsl:value-of select='comment' />
-								</td>
-							</tr>
-						</xsl:for-each>
-					</table>
-				</xsl:for-each>
-			</xsl:for-each>
-		</xsl:for-each>
 	</xsl:template>
 </xsl:stylesheet>

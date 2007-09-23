@@ -20,17 +20,21 @@
 
 package org.jajuk.reporting;
 
-import org.jajuk.util.log.Log;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
+import java.io.FileInputStream;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -39,47 +43,34 @@ import javax.xml.transform.stream.StreamSource;
  */
 public class XMLTransformer {
 	/**
-	 * This method will convert an XML String into an HTML String using 
-	 * an xslt transformation
+	 * This method will convert an XML file into an HTML file using an xslt
+	 * transformation
 	 * 
 	 * @param xml
-	 *            The XML String to convert.
+	 *            The XML file to convert.
+	 * @param html
+	 *            The HTML file to convert.
 	 * @param xsltPath
 	 *            The path to the XSLT Transform to use.
-	 * @return Returns a string containing HTML markup.
 	 */
-	public static String xmlToHTML(String xml, URL xsltPath) {
-		String content = null;
+	public static void xmlToHTML(File xml, File html, File xsl) throws Exception {
+		// DOM source creation
+		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder domBuilder = domFactory.newDocumentBuilder();
+		Document document = domBuilder.parse(xml);
+		Source source = new SAXSource(new InputSource(new BufferedInputStream(new FileInputStream(xml))));
 
-		try {
-			StringWriter writer = new StringWriter();
-			StringReader reader = new StringReader(xml);
+		// Create output file
+		Result result = new StreamResult(html);
 
-			File xslt = new File(xsltPath.getFile());
+		// Transformer configuration
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		StreamSource stylesource = new StreamSource(xsl);
+		Transformer transformer = transformerFactory.newTransformer(stylesource);
+		transformer.setOutputProperty(OutputKeys.METHOD, "html");
 
-			// Create streams for the XML String and XSLT File
-			StreamSource xmlStream = new StreamSource(reader);
-			StreamSource xsltStream = new StreamSource(xslt);
-
-			// Get an instance of the TransformerFactory
-			TransformerFactory transformerFactory = TransformerFactory
-					.newInstance();
-			Transformer transformer;
-
-			// Load the XSLT File Stream.
-			transformer = transformerFactory.newTransformer(xsltStream);
-			// Do the transformation.
-			transformer.transform(xmlStream, new StreamResult(writer));
-
-			// Save output.
-			content = writer.toString();
-		} catch (TransformerConfigurationException e) {
-			Log.error(e);
-		} catch (TransformerException e) {
-			Log.error(e);
-		}
-
-		return content;
+		// Transformation
+		transformer.transform(source, result);
 	}
-	
+
 }

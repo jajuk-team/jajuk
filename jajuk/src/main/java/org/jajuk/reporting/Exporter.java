@@ -20,16 +20,12 @@
 
 package org.jajuk.reporting;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-
 import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * The base abstract class for exporting music contents to different formats.
@@ -41,38 +37,20 @@ public abstract class Exporter implements ITechnicalStrings {
 
 	public static final int LOGICAL_COLLECTION = 1;
 
+	/** Cache file (used to handle concurrency issues) */
+	protected File cache;
+
 	/**
-	 * This method will export the String sContent to the specified sPath.
+	 * This method will export the content to the specified sPath.
 	 * 
-	 * @param sContent
-	 *            The content to export.
 	 * @param sPath
 	 *            The path of the file to export to. Will create it if it does
 	 *            not exist.
-	 * @return Returns true if the contents were saved successfully, false
-	 *         otherwise.
 	 */
-	public boolean saveToFile(String sContent, String sPath) {
-		boolean result = false;
-		try {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-					new File(sPath)), "UTF-8"));
-			// Writer the contents to the file.
-			bw.write(sContent);
-			// Close the BufferedWriter
-			bw.close();
-			// Copy CSS files
-			String sCSSAll = new File(sPath).getParent() + '/' + FILE_REPORTING_CSS_ALL_FILENAME;
-			String sCSSPrint = new File(sPath).getParent() + '/'
-					+ FILE_REPORTING_CSS_PRINT_FILENAME;
-			Util.copy(FILE_REPORTING_CSS_ALL_PATH, sCSSAll);
-			Util.copy(FILE_REPORTING_CSS_PRINT_PATH, sCSSPrint);
-			// The file wrote out successfully.
-			result = true;
-		} catch (Exception e) {
-			Log.error(e);
-		}
-		return result;
+	public void saveToFile(String sPath) throws Exception {
+		// Create the final file from the cache file
+		File out = new File(sPath);
+		Util.copy(cache, out);
 	}
 
 	/**
@@ -82,18 +60,23 @@ public abstract class Exporter implements ITechnicalStrings {
 	 * @param type
 	 *            This XMLExporter constant specifies what type of collection
 	 *            we're exporting.
-	 * @return Returns a string containing the tagging of the collection, null
-	 *         if no tagging was created.
 	 */
-	abstract public String processCollection(int type);
+	abstract public void processCollection(int type) throws Exception;
 
 	/**
-	 * This methods will create an html String of items
+	 * This methods will create an HTML String of items
 	 * 
 	 * @param collection
 	 *            An ArrayList of the items to export
-	 * @return Returns a string containing the html markup, or null if an error
-	 *         occurred.
 	 */
-	abstract public String process(ArrayList<Item> collection);
+	abstract public void process(ArrayList<Item> collection) throws Exception;
+
+	/**
+	 * 
+	 * @return the unique cache file used to create the XML temporary stream
+	 */
+	public File getCacheFile() {
+		return this.cache;
+	}
+
 }
