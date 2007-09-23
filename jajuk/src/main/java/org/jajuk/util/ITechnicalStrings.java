@@ -172,8 +172,10 @@ public interface ITechnicalStrings {
 	public static final String FILE_COLLECTION_EXIT = "collection_exit.xml";
 
 	// Void file created after exit collection file
-	public static final String FILE_COLLECTION_EXIT_PROOF = "/exit_proof";
+	public static final String FILE_COLLECTION_EXIT_PROOF = "exit_proof";
 
+	public static final String FILE_REPORTING_CACHE_FILE = "cache/report";
+	
 	public static final String FILE_CONFIGURATION = "conf.properties";
 
 	public static final String FILE_HISTORY = "history.xml";
@@ -192,7 +194,7 @@ public interface ITechnicalStrings {
 
 	public static final String FILE_LANGPACK_PART2 = ".properties";
 	
-	/**Extenssion to the .jajuk_test directory in test mode only*/
+	/**Extention to the .jajuk_test directory in test mode only*/
 	public static final String TEST_VERSION = "1.4";
 	
 	// logs
