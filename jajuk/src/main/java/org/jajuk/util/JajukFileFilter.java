@@ -645,4 +645,8 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		sOut = sOut.substring(0, sOut.length() - 1);
 		return sOut;
 	}
+	
+	public JajukFileFilter[] getFilters(){
+		return filters;
+	}
 }

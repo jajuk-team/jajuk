@@ -34,8 +34,7 @@ import javax.swing.filechooser.FileSystemView;
 public class JajukFileChooser extends JFileChooser implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
-
-	javax.swing.filechooser.FileFilter filter;
+	private JajukFileFilter filter;
 
 	/**
 	 * Constructor with specified file filter
@@ -46,12 +45,13 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
 	public JajukFileChooser(JajukFileFilter jfilter) {
 		setDialogTitle(Messages.getString("JajukFileChooser.0"));
 		this.filter = jfilter;
-		setFileFilter(jfilter);
+		for (int i=0;i<jfilter.getFilters().length;i++){
+			addChoosableFileFilter(jfilter.getFilters()[i]);
+		}
 		setMultiSelectionEnabled(true);
 		//don't hide hidden files
 		setFileHidingEnabled(false);
 		setAcceptAllFileFilterUsed(false);
-		setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		// Use default directory to store documents (My Documents under Windows
 		// for ie)
 		setCurrentDirectory(FileSystemView.getFileSystemView()
@@ -64,6 +64,17 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
 	 */
 	public JajukFileChooser() {
 		this(null);
+	}
+	
+	/**
+	 * Force the filter to accept directories
+	 * @param b
+	 */
+	public void setAcceptDirectories(boolean b) {
+		filter.setAcceptDirectories(b);
+		for (int i=0;i<filter.getFilters().length;i++){
+			filter.getFilters()[i].setAcceptDirectories(b);
+		}
 	}
 
 }

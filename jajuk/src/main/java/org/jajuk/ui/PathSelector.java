@@ -77,6 +77,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 
 			public void actionPerformed(ActionEvent e) {
 				JajukFileChooser jfc = new JajukFileChooser(filter);
+				jfc.setAcceptDirectories(true);
 				jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
 				jfc.setMultiSelectionEnabled(false);
 				String sUrl = jtfUrl.getText();

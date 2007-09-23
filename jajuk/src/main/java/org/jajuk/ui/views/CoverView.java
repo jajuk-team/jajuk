@@ -33,6 +33,7 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.perspectives.DisplayPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
@@ -402,8 +403,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 									}
 									bAbsoluteCover = true;
 								} else { // normal local cover
-									Cover cover = new Cover(files[i].toURL(),
-											Cover.LOCAL_COVER);
+									Cover cover = new Cover(files[i].toURL(), Cover.LOCAL_COVER);
 									if (!alCovers.contains(cover)) {
 										alCovers.add(cover);
 									}
@@ -947,7 +947,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 						FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 				try {
 					// copy file from cache
-					File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
+					File fSource = DownloadManager.downloadCover(cover.getURL(), cover
+							.getDownloadID());
 					File file = new File(sFilePath);
 					Util.copy(fSource, file);
 					Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
@@ -978,8 +979,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			new Thread() {
 				public void run() {
 					Cover cover = alCovers.get(index);
-					JFileChooser jfchooser = new JFileChooser(dirReference.getFio());
-					jfchooser.setFileFilter(JajukFileFilter.ImageFilter.getInstance());
+					JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
+							JajukFileFilter.ImageFilter.getInstance()));
+					jfchooser.setAcceptDirectories(true);
+					jfchooser.setCurrentDirectory(dirReference.getFio());
 					jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
 					File finalFile = new File(dirReference.getFio().getPath() + "/"
 							+ Util.getOnlyFile(cover.getURL().toString()));
@@ -1025,7 +1028,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 					try {
 						// copy file from cache
-						File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
+						File fSource = DownloadManager.downloadCover(cover.getURL(), cover
+								.getDownloadID());
 						File file = new File(sFilePath);
 						Util.copy(fSource, file);
 						InformationJPanel.getInstance().setMessage(

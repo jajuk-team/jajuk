@@ -164,6 +164,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
 			jfc.setMultiSelectionEnabled(false);
+			jfc.setAcceptDirectories(true);
 			String sMountPoint = jtfMountPoint.getText();
 			if (!sMountPoint.equals("")) { // if url is already set, use it
 				// as root directory

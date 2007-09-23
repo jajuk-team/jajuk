@@ -742,6 +742,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public void saveAs() throws Exception {
 		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
 				JajukFileFilter.PlaylistFilter.getInstance()));
+		jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		jfchooser.setAcceptDirectories(true);
 		String sPlaylist = DEFAULT_PLAYLIST_FILE;
 		// computes new playlist file
 		alFiles = getFiles();
