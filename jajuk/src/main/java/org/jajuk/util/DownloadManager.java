@@ -50,22 +50,6 @@ public class DownloadManager implements ITechnicalStrings {
 	/**Maps urls and associated files in cache*/
 	private static HashMap<URL, String> urlCache = new HashMap<URL, String>(100);
 
-	/** Flush url cache every 2 hours **/
-	static{
-		new Thread(){
-			public void run(){
-				while (true){
-					try {
-						Thread.sleep(7200000);
-					} catch (InterruptedException e) {
-						Log.error(e);
-					}
-					urlCache.clear();
-				}
-			}
-		}.start();
-	}
-	
 	/**
 	 * @param search
 	 * @return a list of urls
@@ -124,7 +108,6 @@ public class DownloadManager implements ITechnicalStrings {
 			// Add the new url
 			alOut.add(url);
 		}
-
 		return alOut;
 	}
 
