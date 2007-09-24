@@ -47,7 +47,6 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-
 /**
  * Utility class to get strings from localized property files
  * <p>
@@ -60,9 +59,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
 	/** Supported Locals */
 	public ArrayList<String> alLocals = new ArrayList<String>(10);
-
-	/** Locales description */
-	public ArrayList<String> alDescs = new ArrayList<String>(10);
 
 	/** self instance for singleton */
 	private static Messages mesg;
@@ -178,20 +174,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sDesc :
 	 *            a language-independent descriptions like "Language_desc_en"
 	 */
-	public void registerLocal(String sLocal, String sDesc) {
-		int i = 0;
-		if (alDescs.isEmpty()) {
-			alLocals.add(i, sLocal);
-			alDescs.add(i, sDesc);
-		} else {
-			//put local and desc in the right Arraylist position
-			while (i<alDescs.size() && getString(alDescs.get(i)).compareTo(getString(sDesc)) < 0 )
-				i++;
-			alLocals.add(i, sLocal);
-			alDescs.add(i, sDesc);
-		}
+	public void registerLocal(String sLocal) {
+		alLocals.add(sLocal);
 	}
-	
 
 	/**
 	 * Return list of available locals
@@ -208,7 +193,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @return
 	 */
 	public static ArrayList<String> getDescs() {
-		return mesg.alDescs;
+		ArrayList<String> alDescs = new ArrayList<String>(10);
+		for (int i = 0; i < mesg.alLocals.size(); i++)
+			alDescs.add(getString("Language_desc_" + mesg.alLocals.get(i)));
+		Collections.sort(alDescs);
+		return alDescs;
 	}
 
 	/**
@@ -216,8 +205,20 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * 
 	 * @return localized description
 	 */
-	public static String getHumanForLocale(String sLocale) {
-		return getString(mesg.alDescs.get(mesg.alLocals.indexOf(sLocale)));
+	public static String getDescForLocal(String sLocal) {
+		return getString("Language_desc_" + sLocal);
+	}
+
+	/**
+	 * Return locale for a given description
+	 * 
+	 * @return locale
+	 */
+	public static String getLocalForDesc(String sDesc) {
+		for (int i = 0; i < getLocales().size(); i++)
+			if (getDescForLocal(mesg.alLocals.get(i)).equals(sDesc))
+				return getLocales().get(i);
+		return null;
 	}
 
 	/**

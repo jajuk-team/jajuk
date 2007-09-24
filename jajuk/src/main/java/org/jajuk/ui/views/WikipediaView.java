@@ -119,7 +119,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
 		jcbLanguage = new JComboBox();
 		for (String sLocale : Messages.getLocales()) {
-			jcbLanguage.addItem(Messages.getHumanForLocale(sLocale));
+			jcbLanguage.addItem(Messages.getDescForLocal(sLocale));
 		}
 		// get stored language
 		indexLang = Messages.getLocales().indexOf(

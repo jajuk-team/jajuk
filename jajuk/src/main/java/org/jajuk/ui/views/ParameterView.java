@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.util.ArrayList;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -637,9 +638,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
 		scbLanguage = new SteppedComboBox();
-		Iterator<String> itDescs = Messages.getDescs().iterator();
-		while (itDescs.hasNext()) {
-			String sDesc = itDescs.next();
+		ArrayList<String> Descs = Messages.getDescs();
+		for (String sDesc : Descs) {
 			scbLanguage.addItem(Messages.getString(sDesc));
 		}
 		scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
@@ -1218,7 +1218,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 								CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
 					}
 				} else if (e.getSource() == scbLanguage) {
-					String sLocal = Messages.getLocales().get(scbLanguage.getSelectedIndex());
+
+					String sLocal = Messages
+							.getLocalForDesc((String) scbLanguage.getSelectedItem());
 					String sPreviousLocal = Messages.getInstance().getLocale();
 					if (!sPreviousLocal.equals(sLocal)) {
 						// local has changed
@@ -1357,23 +1359,23 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		if (Main.workspace != null && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
 			// Check workspace directory
 			if (!psJajukWorkspace.getUrl().trim().equals("")) {
-				//Check workspace presence and create it if required
-				try{
-					java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl()); 
-					if (!fWorkspace.exists()){
+				// Check workspace presence and create it if required
+				try {
+					java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
+					if (!fWorkspace.exists()) {
 						fWorkspace.mkdirs();
 					}
-					if (!fWorkspace.canRead()){
+					if (!fWorkspace.canRead()) {
 						throw new Exception("Cannot write to proposed Workspace");
 					}
-				}
-				catch(Exception e){
+				} catch (Exception e) {
 					Messages.showErrorMessage(165);
 					return;
 				}
-				//Check the workspace doesn't already contain a jajuk repository
-				if (new java.io.File(psJajukWorkspace.getUrl()+ '/' + 
-						(Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).exists()){
+				// Check the workspace doesn't already contain a jajuk
+				// repository
+				if (new java.io.File(psJajukWorkspace.getUrl() + '/'
+						+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).exists()) {
 					Messages.showErrorMessage(172);
 					return;
 				}
@@ -1478,8 +1480,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbHotkeys.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS));
 
 		jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
-		scbLanguage.setSelectedIndex(Messages.getLocales().indexOf(
-				ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
+		scbLanguage.setSelectedItem(Messages.getDescForLocal(ConfigurationManager
+				.getProperty(CONF_OPTIONS_LANGUAGE)));
 		scbLanguage.addActionListener(this);
 		scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager
 				.getProperty(CONF_OPTIONS_LOG_LEVEL)));
