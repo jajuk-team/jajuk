@@ -8,10 +8,11 @@ These third party softwares used by Jajuk come with their own licenses as listed
 out below. A copy of the following licenses is include in this directory.
 
 -------------------------------------------------------------------------------
-GPL    => LICENSE-GPL.txt
-LGPL   => LICENSE-LGPL.txt
-BSD    => LICENSE-BSD.txt
-Apache => LICENSE-Apache.txt
+GPL    				=> LICENSE-GPL.txt
+LGPL   				=> LICENSE-LGPL.txt
+BSD   				=> LICENSE-BSD.txt
+Apache				=> LICENSE-Apache.txt
+Creative Commons 	=> LICENSE-CREATIVE-COMMONS.txt
 -------------------------------------------------------------------------------
 
 == Sound ==
@@ -51,39 +52,7 @@ Apache => LICENSE-Apache.txt
 |          |                   |for Swing   |                           |        |
 |          |                   |applications|                           |        |
 ----------------------------------------------------------------------------------
-|          |                   |Good Look   |                           |        |
-|          |                   |And Feel but|                           |        |
-|Kunststoff|Incors             |few bugs and|http://www.incors.org/     |BSD     |
-|          |                   |no more     |                           |        |
-|          |                   |maintened   |                           |        |
-----------------------------------------------------------------------------------
-|          |                   |Excellent   |                           |        |
-|          |[mikeai@sezampro.yu|Look and    |http://                    |        |
-|Liquidlnf |Stefan Krause]     |feel, very  |liquidlnf.sourceforge.net/ |LGPL    |
-|          |                   |project.    |                           |        |
-----------------------------------------------------------------------------------
-|          |                   |            |                           |Academic|
-|Squareness|Robert F. Beeger   |Lightweight |http://                    |Free    |
-|          |                   |cool LAF    |squareness.sourceforge.net/|License |
-|          |                   |            |                           |2.0     |
-----------------------------------------------------------------------------------
-|          |                   |Professional|                           |        |
-|          |                   |Look and    |                           |        |
-|          |                   |Feel.       |                           |        |
-|          |                   |Provides    |http://www.jgoodies.com/   |        |
-|Looks     |JGoodies           |Plastic,    |freeware/looks/            |BSD     |
-|          |                   |Plastic3D   |                           |        |
-|          |                   |and         |                           |        |
-|          |                   |PlasticXP   |                           |        |
-|          |                   |LAF         |                           |        |
-----------------------------------------------------------------------------------
-|Tiny      |Hans Bickel        |Lightweight |http://www.muntjak.de/hans/|LGPL    |
-|          |                   |cool LAF    |java/tinylaf/              |        |
-----------------------------------------------------------------------------------
-|          |                   |Professional|http://www.infonode.net/   |GPL for |
-|Infonode  |Infonode           |LAF         |index.html?ilf             |GPL use |
-|          |                   |            |                           |only    |
-----------------------------------------------------------------------------------
+
 
 == Swing helpers ==
 -------------------------------------------------------------------------------
@@ -172,8 +141,4 @@ http://www.vlsolutions.com/download/Licence_CeCILL-V1.1_VA.pdf
 |Animation    |JGoodies team|API           |www.jgoodies.com/  |BSD           |
 |             |             |              |freeware/animation/|              |
 -------------------------------------------------------------------------------
-|Commons      |Apache       |              |http://            |              |
-|Httpclient,  |Jakarta      |HTTP client   |jakarta.apache.org/|Apache        |
-|Commons-codec|HttpClient   |API           |commons/httpclient/|              |
-|             |team         |              |                   |              |
--------------------------------------------------------------------------------
+
