@@ -118,13 +118,12 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	public void initUI() {
 		jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
 		jcbLanguage = new JComboBox();
-		for (String sLocale : Messages.getLocales()) {
-			jcbLanguage.addItem(Messages.getDescForLocal(sLocale));
+		for (String sDesc : Messages.getDescs()) {
+			jcbLanguage.addItem(sDesc);
 		}
 		// get stored language
-		indexLang = Messages.getLocales().indexOf(
-				ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
-		jcbLanguage.setSelectedIndex(indexLang);
+		jcbLanguage.setSelectedItem(Messages.getDescForLocal(ConfigurationManager
+				.getProperty(CONF_WIKIPEDIA_LANGUAGE)));
 		jcbLanguage.addActionListener(this);
 		// Buttons
 		ActionBase aCopy = ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD);
@@ -286,7 +285,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 					// Store the search to avoid future identical searches
 					WikipediaView.this.search = search;
 
-					URL url = new URL(("http://" + Messages.getLocales().get(indexLang)
+					URL url = new URL(("http://"
+							+ Messages.getLocalForDesc((String) jcbLanguage.getSelectedItem())
 							+ ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
 					Log.debug("Wikipedia search: " + url);
 					Util.copyData = url.toString();
@@ -328,10 +328,9 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == jcbLanguage) {
-			indexLang = jcbLanguage.getSelectedIndex();
 			// update index
-			ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages.getLocales().get(
-					indexLang));
+			ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages
+					.getLocalForDesc((String) jcbLanguage.getSelectedItem()));
 			// force launch wikipedia search for this language
 			launchSearch(true);
 		} else if (arg0.getSource() == jbAlbumSearch) {
@@ -348,5 +347,4 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 			launchSearch(true);
 		}
 	}
-
 }
