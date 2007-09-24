@@ -330,6 +330,166 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 			return "gif,png,jpg,jpeg";
 		}
 	}
+	
+	/**
+	 * Gif filter
+	 */
+	public static class GIFFilter extends JajukFileFilter {
+		/** Self instance */
+		private static GIFFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				String ext = Util.getExtension(f);
+				return ext.equalsIgnoreCase("gif");
+			}
+		}
+
+		/** No instanciation */
+		private GIFFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static GIFFilter getInstance() {
+			if (self == null) {
+				self = new GIFFilter();
+			}
+			return self;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "gif";
+		}
+	}
+
+	
+	/**
+	 * Png filter
+	 */
+	public static class PNGFilter extends JajukFileFilter {
+		/** Self instance */
+		private static PNGFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				String ext = Util.getExtension(f);
+				return ext.equalsIgnoreCase("png");
+			}
+		}
+
+		/** No instanciation */
+		private PNGFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static PNGFilter getInstance() {
+			if (self == null) {
+				self = new PNGFilter();
+			}
+			return self;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "png";
+		}
+	}
+
+	
+	/**
+	 * jpg filter
+	 */
+	public static class JPGFilter extends JajukFileFilter {
+		/** Self instance */
+		private static JPGFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				String ext = Util.getExtension(f);
+				return ext.equalsIgnoreCase("jpg");
+			}
+		}
+
+		/** No instanciation */
+		private JPGFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static JPGFilter getInstance() {
+			if (self == null) {
+				self = new JPGFilter();
+			}
+			return self;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "jpg";
+		}
+	}
+
+	
 
 	/**
 	 * 

@@ -20,34 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Cover;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Track;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukButton;
-import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.ui.perspectives.DisplayPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.TimeOutException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -77,6 +49,34 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+
+import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
+import org.jajuk.base.Cover;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.perspectives.DisplayPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.TimeOutException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 import ext.SwingWorker;
 
@@ -980,7 +980,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				public void run() {
 					Cover cover = alCovers.get(index);
 					JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
-							JajukFileFilter.ImageFilter.getInstance()));
+							JajukFileFilter.GIFFilter.getInstance(), JajukFileFilter.PNGFilter
+									.getInstance(), JajukFileFilter.JPGFilter.getInstance()));
 					jfchooser.setAcceptDirectories(true);
 					jfchooser.setCurrentDirectory(dirReference.getFio());
 					jfchooser.setDialogTitle(Messages.getString("CoverView.10"));

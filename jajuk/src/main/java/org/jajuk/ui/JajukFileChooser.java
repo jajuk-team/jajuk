@@ -62,14 +62,6 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
 	}
 
 	/**
-	 * Default constructor
-	 * 
-	 */
-	public JajukFileChooser() {
-		this(null);
-	}
-
-	/**
 	 * Force the filter to accept directories
 	 * 
 	 * @param b
