@@ -19,21 +19,25 @@
  */
 package org.jajuk.ui;
 
+import java.awt.Component;
+import java.awt.HeadlessException;
+
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
-
 /**
  * Music-oriented file chooser
- * <p>
- * decorator
+ * 
  */
 public class JajukFileChooser extends JFileChooser implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
+
 	private JajukFileFilter filter;
 
 	/**
@@ -45,17 +49,16 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
 	public JajukFileChooser(JajukFileFilter jfilter) {
 		setDialogTitle(Messages.getString("JajukFileChooser.0"));
 		this.filter = jfilter;
-		for (int i=0;i<jfilter.getFilters().length;i++){
+		for (int i = 0; i < jfilter.getFilters().length; i++) {
 			addChoosableFileFilter(jfilter.getFilters()[i]);
 		}
 		setMultiSelectionEnabled(true);
-		//don't hide hidden files
+		// don't hide hidden files
 		setFileHidingEnabled(false);
 		setAcceptAllFileFilterUsed(false);
 		// Use default directory to store documents (My Documents under Windows
 		// for ie)
-		setCurrentDirectory(FileSystemView.getFileSystemView()
-				.getDefaultDirectory());  
+		setCurrentDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
 	}
 
 	/**
@@ -65,16 +68,24 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
 	public JajukFileChooser() {
 		this(null);
 	}
-	
+
 	/**
 	 * Force the filter to accept directories
+	 * 
 	 * @param b
 	 */
 	public void setAcceptDirectories(boolean b) {
-		filter.setAcceptDirectories(b);
-		for (int i=0;i<filter.getFilters().length;i++){
+		for (int i = 0; i < filter.getFilters().length; i++) {
 			filter.getFilters()[i].setAcceptDirectories(b);
 		}
+	}
+
+	/** Make sure to keep the dialog always on top */
+	protected JDialog createDialog(Component parent) throws HeadlessException {
+		JDialog dialog = super.createDialog(parent);
+		dialog.setAlwaysOnTop(true);
+		return dialog;
+
 	}
 
 }

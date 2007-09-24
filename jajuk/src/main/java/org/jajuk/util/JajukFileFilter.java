@@ -38,21 +38,24 @@ import javax.swing.filechooser.FileFilter;
  *      JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),
  *      JajukFileFilter.AudioFilter.getInstance());
  *      </p>
+ *      This class can be use by file choosers (probably a JajukFileChooser) and for engine 
+ *      file selection that uses the raw accept method. In the second case, it can be usefull
+ *      to use grouping fiters like music or report (but it is not intended to be used 
+ *      by file choosers that require only one extension by filter) and or/and argument given 
+ *      as an argument
+ *            
  */
 
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter, ITechnicalStrings {
 
-	/** Display files flag* */
-	private boolean bFiles = true;
-
 	/** Filters */
 	private JajukFileFilter[] filters;
 
+	/** Show directories (useful to allow user to navigate) */
+	protected boolean bShowDirectories = false;
+
 	/** And or OR applied to multi filters ? */
 	private boolean bAND = true;
-
-	/** Show directories (useful to allow user to navigate) */
-	private boolean bShowDirectories = false;
 
 	/**
 	 * 
@@ -118,7 +121,13 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			return !f.isDirectory();
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				return !f.isDirectory();
+			}
 		}
 
 		/** No instanciation */
@@ -161,10 +170,16 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
-				return false;
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				return TypeManager.getInstance().isExtensionSupported(Util.getExtension(f));
 			}
-			return TypeManager.getInstance().isExtensionSupported(Util.getExtension(f));
 		}
 
 		/** No instanciation */
@@ -208,16 +223,22 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))) {
+					// check it is an audio file
+					return (Boolean) TypeManager.getInstance().getTypeByExtension(
+							Util.getExtension(f)).getValue(XML_TYPE_IS_MUSIC);
+				}
 				return false;
 			}
-			// check extension is known
-			if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))) {
-				// check it is an audio file
-				return (Boolean) TypeManager.getInstance().getTypeByExtension(Util.getExtension(f))
-						.getValue(XML_TYPE_IS_MUSIC);
-			}
-			return false;
 		}
 
 		/** No instanciation */
@@ -266,16 +287,22 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				String ext = Util.getExtension(f);
+				if (ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg")
+						|| ext.equalsIgnoreCase("gif") || ext.equalsIgnoreCase("png")) {
+					return true;
+				}
 				return false;
 			}
-			// check extension is known
-			String ext = Util.getExtension(f);
-			if (ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("gif")
-					|| ext.equalsIgnoreCase("png")) {
-				return true;
-			}
-			return false;
 		}
 
 		/** No instanciation */
@@ -318,17 +345,23 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
-				return false;
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))) {
+					// check it is an audio file
+					return !(Boolean) TypeManager.getInstance().getTypeByExtension(
+							Util.getExtension(f)).getValue(XML_TYPE_IS_MUSIC);
+				}
+				// unknown type : not an audio file
+				return true;
 			}
-			// check extension is known
-			if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))) {
-				// check it is an audio file
-				return !(Boolean) TypeManager.getInstance()
-						.getTypeByExtension(Util.getExtension(f)).getValue(XML_TYPE_IS_MUSIC);
-			}
-			// unknown type : not an audio file
-			return true;
 		}
 
 		/** No instanciation */
@@ -372,17 +405,23 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))) {
+					// check it is a playlist
+					Type playlist = TypeManager.getInstance().getTypeByExtension(EXT_PLAYLIST);
+					return TypeManager.getInstance().getTypeByExtension(Util.getExtension(f))
+							.equals(playlist);
+				}
 				return false;
 			}
-			// check extension is known
-			if (TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))) {
-				// check it is a playlist
-				Type playlist = TypeManager.getInstance().getTypeByExtension(EXT_PLAYLIST);
-				return TypeManager.getInstance().getTypeByExtension(Util.getExtension(f)).equals(
-						playlist);
-			}
-			return false;
 		}
 
 		/** No instanciation */
@@ -425,14 +464,20 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				if ("html".equals(Util.getExtension(f).toLowerCase())) {
+					return true;
+				}
 				return false;
 			}
-			// check extension is known
-			if ("html".equals(Util.getExtension(f).toLowerCase())) {
-				return true;
-			}
-			return false;
 		}
 
 		/** No instanciation */
@@ -475,14 +520,20 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				if ("xml".equals(Util.getExtension(f).toLowerCase())) {
+					return true;
+				}
 				return false;
 			}
-			// check extension is known
-			if ("xml".equals(Util.getExtension(f).toLowerCase())) {
-				return true;
-			}
-			return false;
 		}
 
 		/** No instanciation */
@@ -525,15 +576,21 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 		 * @see java.io.FileFilter#accept(java.io.File)
 		 */
 		public boolean accept(File f) {
-			if (f.isDirectory()) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				// check extension is known
+				if ("html".equals(Util.getExtension(f).toLowerCase())
+						|| "xml".equals(Util.getExtension(f).toLowerCase())) {
+					return true;
+				}
 				return false;
 			}
-			// check extension is known
-			if ("html".equals(Util.getExtension(f).toLowerCase())
-					|| "xml".equals(Util.getExtension(f).toLowerCase())) {
-				return true;
-			}
-			return false;
 		}
 
 		/** No instanciation */
@@ -596,57 +653,48 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 	}
 
 	/**
-	 * Return file test. Apply all filters with a logical AND
-	 * 
-	 * @param f
-	 *            file to test
-	 */
-	public boolean accept(File f) {
-		// Force directories acceptation if user wants to navigate into
-		// directories
-		if (bShowDirectories && f.isDirectory()) {
-			return true;
-		} else {
-			if (bAND) {
-				boolean bResu = true;
-				for (int i = 0; i < filters.length; i++) {
-					bResu = bResu & filters[i].accept(f);
-				}
-				return bResu;
-			} else { // OR applied
-				boolean bResu = false;
-				for (int i = 0; i < filters.length; i++) {
-					bResu = bResu | filters[i].accept(f);
-				}
-				return bResu;
-			}
-		}
-	}
-
-	/**
 	 * Force the filter to accept directories
+	 * 
 	 * @param b
 	 */
 	public void setAcceptDirectories(boolean b) {
 		this.bShowDirectories = b;
 	}
 
-	public String getDescription() {
-		String sOut = ""; //$NON-NLS-1$
-		// if only dirs, no description
-		if (!bFiles) {
-			return sOut;
-		}
-		// Add description of each filter separated by a coma
-		for (int i = 0; i < filters.length; i++) {
-			sOut += filters[i].getDescription() + ',';
-		}
-		// Remove last coma
-		sOut = sOut.substring(0, sOut.length() - 1);
-		return sOut;
-	}
-	
-	public JajukFileFilter[] getFilters(){
+	public JajukFileFilter[] getFilters() {
 		return filters;
+	}
+
+	/**
+	 * Return file test. Apply all filters with a logical AND
+	 * 
+	 * @param f
+	 *            file to test
+	 */
+	public boolean accept(File f) {
+		if (bAND) {
+			boolean bResu = true;
+			for (int i = 0; i < filters.length; i++) {
+				bResu = bResu & filters[i].accept(f);
+			}
+			return bResu;
+		} else { // OR applied
+			boolean bResu = false;
+			for (int i = 0; i < filters.length; i++) {
+				bResu = bResu | filters[i].accept(f);
+			}
+			return bResu;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.filechooser.FileFilter#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
