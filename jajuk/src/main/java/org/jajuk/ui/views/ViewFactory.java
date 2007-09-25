@@ -23,6 +23,9 @@ package org.jajuk.ui.views;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
 
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -75,11 +78,12 @@ public class ViewFactory {
 	/**
 	 * 
 	 * @return All known views sorted by name
-	 * @TODO Refactor this, the known views should be get by reflection (from the default perspectives XML file ?) 
+	 * @TODO Refactor this, the known views should be get by reflection (from
+	 *       the default perspectives XML file ?)
 	 */
 	@SuppressWarnings("unchecked")
-	public static Set<Class> getKnownViews() {
-		Set<Class> out = new LinkedHashSet<Class>();
+	public static ArrayList<Class> getKnownViews() {
+		ArrayList<Class> out = new ArrayList<Class>();
 		// Take one instance of each set of view instances mapped to each view
 		// classname
 		out.add(AnimationView.class);
@@ -99,7 +103,22 @@ public class ViewFactory {
 		out.add(StatView.class);
 		out.add(SuggestionView.class);
 		out.add(WikipediaView.class);
+		Collections.sort(out, new ViewClassComparator());
 		return out;
+	}
+	
+	public static class ViewClassComparator implements Comparator {
+		public int compare(Object view1, Object view2) {
+			String s1;
+			String s2;
+			try {
+				s1 = ((IView) ((Class) view1).newInstance()).getDesc();
+				s2 = ((IView) ((Class) view2).newInstance()).getDesc();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return s1.compareTo(s2);
+		}
 	}
 
 }
