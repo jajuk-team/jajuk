@@ -103,22 +103,19 @@ public class ViewFactory {
 		out.add(StatView.class);
 		out.add(SuggestionView.class);
 		out.add(WikipediaView.class);
-		Collections.sort(out, new ViewClassComparator());
+		Collections.sort(out, new Comparator() {
+			public int compare(Object view1, Object view2) {
+				String s1;
+				String s2;
+				try {
+					s1 = ((IView) ((Class) view1).newInstance()).getDesc();
+					s2 = ((IView) ((Class) view2).newInstance()).getDesc();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				return s1.compareTo(s2);
+			}
+		});
 		return out;
 	}
-	
-	public static class ViewClassComparator implements Comparator {
-		public int compare(Object view1, Object view2) {
-			String s1;
-			String s2;
-			try {
-				s1 = ((IView) ((Class) view1).newInstance()).getDesc();
-				s2 = ((IView) ((Class) view2).newInstance()).getDesc();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-			return s1.compareTo(s2);
-		}
-	}
-
 }
