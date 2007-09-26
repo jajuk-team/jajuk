@@ -19,16 +19,16 @@
  */
 package org.jajuk.players;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Jajuk player implementation based on Mplayer
@@ -38,9 +38,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	/** Time elapsed in ms */
 	private long lTime = 0;
 
-	/** Date of last elapsed time update */
-	private long lDateLastUpdate = System.currentTimeMillis();
-
 	/** Length to be played in secs */
 	private long length;
 
@@ -49,14 +46,15 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
 	/** Current track estimated duration in ms */
 	private long lDuration;
+	
+	/** Volume when starting fade */
+	private float fadingVolume;
 
 	/** Cross fade duration in ms */
 	int iFadeDuration = 0;
 
 	/** Progress step in ms */
-	private static final int PROGRESS_STEP = 300;// need a fast refresh,
-
-	// especially for fading
+	private static final int PROGRESS_STEP = 300;// need a fast refresh, especially for fading
 
 	/** current file */
 	private org.jajuk.base.File fCurrent;
@@ -125,9 +123,29 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 						// can be null before getting length
 								&& lTime > (lDuration - iFadeDuration)) {
 							bFading = true;
+							fadingVolume = fVolume;
 							// force a finished (that doesn't stop but only
 							// make a FIFO request to switch track)
 							FIFO.getInstance().finished();
+						}
+						//If fading, decrease sound progressively
+						if (bFading) {
+							// computes the volume we have to sub to reach zero at last
+							// progress()
+							float fVolumeStep = fadingVolume
+									* ((float) 500 / iFadeDuration);
+							// divide step by two to make fade softer
+							float fNewVolume = fVolume - (fVolumeStep / 2); 
+							// decrease volume by n% of initial volume
+							if (fNewVolume < 0) {
+								fNewVolume = 0;
+							}
+							try {
+								setVolume(fNewVolume);
+							} catch (Exception e) {
+								Log.error(e);
+							}
+							return;
 						}
 						// test end of length for intro mode
 						if (length != TO_THE_END && lDuration > 0
