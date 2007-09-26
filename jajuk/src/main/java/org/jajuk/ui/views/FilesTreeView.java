@@ -574,7 +574,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 					node = (DefaultMutableTreeNode) (node.getChildAt(index));
 				} catch (NullPointerException exc) {
 				}
-
 			}
 
 			public void treeNodesInserted(TreeModelEvent e) {

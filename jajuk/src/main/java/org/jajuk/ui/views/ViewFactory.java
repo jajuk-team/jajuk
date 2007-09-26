@@ -68,7 +68,7 @@ public class ViewFactory {
 		// deterministic
 		// and it may conduct VLDocking to ignore some views if XXX/3 is parsed
 		// before XXX/2 for ie
-		view.setID(className.getName() + '/' + (int) (Integer.MAX_VALUE * Math.random()));
+		view.setID(className.getName() + '/' + (int) (System.currentTimeMillis() * Math.random()));
 		view.setPerspective(perspective);
 		// store the new view
 		views.add(view);

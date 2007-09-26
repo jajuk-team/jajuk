@@ -171,6 +171,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 							.getCurrentPerspective();
 					IView newView = ViewFactory.createView(view, current);
 					newView.initUI();
+					newView.setIsPopulated(true);
 					current.addDockable(newView);
 				}
 			});
