@@ -638,8 +638,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 		jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
 		scbLanguage = new SteppedComboBox();
-		ArrayList<String> Descs = Messages.getDescs();
-		for (String sDesc : Descs) {
+		for (String sDesc : Messages.getDescs()) {
 			scbLanguage.addItem(Messages.getString(sDesc));
 		}
 		scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));

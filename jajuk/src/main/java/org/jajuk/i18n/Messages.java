@@ -64,7 +64,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	private static Messages mesg;
 
 	/**
-	 * Messages themself extracted from an XML file to this properties class*
+	 * Messages themselves extracted from an XML file to this properties class*
 	 */
 	private Properties properties;
 
@@ -194,14 +194,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 */
 	public static ArrayList<String> getDescs() {
 		ArrayList<String> alDescs = new ArrayList<String>(10);
-		for (int i = 0; i < mesg.alLocals.size(); i++)
-			alDescs.add(getString("Language_desc_" + mesg.alLocals.get(i)));
+		for (String local : mesg.alLocals)
+			alDescs.add(getString("Language_desc_" + local));
 		Collections.sort(alDescs);
 		return alDescs;
 	}
 
 	/**
-	 * Return Description for a given locale id
+	 * Return Description for a given local id
 	 * 
 	 * @return localized description
 	 */
@@ -210,9 +210,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	}
 
 	/**
-	 * Return locale for a given description
+	 * Return local for a given description
 	 * 
-	 * @return locale
+	 * @return local
 	 */
 	public static String getLocalForDesc(String sDesc) {
 		for (int i = 0; i < getLocales().size(); i++)
@@ -318,13 +318,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * Show a dialog waiting for a user decision
 	 * <p>
 	 * CAUTION! the thread which calls this method musn't have locks on
-	 * ressources : otherwise it can conduct to GUI freeze
+	 * resources : otherwise it can conduct to GUI freeze
 	 * </p>
 	 * 
 	 * @param sText :
 	 *            dialog text
 	 * @param iType :
-	 *            dialof type : can be JOptionPane.ERROR_MESSAGE,
+	 *            dialog type : can be JOptionPane.ERROR_MESSAGE,
 	 *            WARNING_MESSAGE
 	 */
 	public static int getChoice(String sText, int iType) {
@@ -394,7 +394,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 *            text to display, lines separated by \n characters
 	 * @param limit :
 	 *            max number of lines to be displayed without scroller
-	 * @return formated message: either a string, or a textaera
+	 * @return formated message: either a string, or a textarea
 	 */
 	protected static Object getLimitedMessage(String sText, int limit) {
 		int iNbLines = new StringTokenizer(sText, "\n").countTokens();
