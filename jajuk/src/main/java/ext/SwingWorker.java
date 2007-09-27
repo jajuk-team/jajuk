@@ -1,3 +1,7 @@
+/*
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ */
 package ext;
 
 import javax.swing.SwingUtilities;

@@ -1,12 +1,15 @@
 /*
- * 
  * Jajuk Specific version of this swingx class to fix 
  * this: https://swingx.dev.java.net/issues/show_bug.cgi?id=464
- * 
- * $Id: AutoCompleteDecorator.java,v 1.9 2007/01/29 08:52:45 Bierhance Exp $
  *
- * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
- * Santa Clara, California 95054, U.S.A. All rights reserved.
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ *
+ * The original copyrights and license follow:
+ *
+ * Copyright 2004 Sun Microsystems, Inc., 4150
+ * Network Circle, Santa Clara, California 95054, U.S.A. All rights
+ * reserved.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +25,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package ext;
 
 import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;

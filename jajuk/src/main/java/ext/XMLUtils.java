@@ -1,5 +1,11 @@
 /**
  * aTunes 1.6.6
+ *
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ *
+ * The original copyrights and license follow:
+ *
  * Copyright (C) 2006-2007 Alex Aranda (fleax) alex@atunes.org
  *
  * http://www.atunes.org

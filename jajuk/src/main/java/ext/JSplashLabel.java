@@ -1,6 +1,11 @@
 /*
  * JSplashLabel.java
  *
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ *
+ * The original copyrights and license follow:
+ *
  * Copyright (c) 2004,2005 Gregory Kotsaftis
  * gregkotsaftis@yahoo.com
  * http://zeus-jscl.sourceforge.net/

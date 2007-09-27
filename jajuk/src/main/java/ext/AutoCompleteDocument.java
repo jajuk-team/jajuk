@@ -1,8 +1,13 @@
 /*
- *  * Jajuk Specific version of this swingx class to fix 
+ * Jajuk Specific version of this swingx class to fix 
  * this: https://swingx.dev.java.net/issues/show_bug.cgi?id=464
  * 
  * $Id: AutoCompleteDocument.java,v 1.4 2006/07/29 14:57:47 Bierhance Exp $
+ *
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ *
+ * The original copyrights and license follow:
  *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.

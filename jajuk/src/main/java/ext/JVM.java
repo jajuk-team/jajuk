@@ -1,6 +1,11 @@
 /*
  * $Id: JVM.java,v 1.2 2005/10/10 18:03:00 rbair Exp $
  *
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ *
+ * The original copyrights and license follow:
+ *
  * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
  * Santa Clara, California 95054, U.S.A. All rights reserved.
  *

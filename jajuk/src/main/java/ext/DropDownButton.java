@@ -1,3 +1,14 @@
+/*
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ * 
+ * Original copyright information follows:
+ *
+ * Copyright santhosh kumar
+ * 
+ * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
+ */
+
 package ext;
 
 import org.jajuk.ui.JajukButton;
@@ -19,11 +30,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-/**
- * Copyright santhosh kumar
- * 
- * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
- */
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
 		PopupMenuListener, ActionListener, PropertyChangeListener,
 		ITechnicalStrings {

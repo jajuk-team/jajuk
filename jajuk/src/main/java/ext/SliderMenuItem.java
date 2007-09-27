@@ -1,8 +1,11 @@
 /*
- *  Code modified from http://www.java2s.com/ExampleCode/Swing-JFC/AnexampleoftheJPopupMenuinaction.htm
- *  $Revision$
+ * Code modified from http://www.java2s.com/ExampleCode/Swing-JFC/AnexampleoftheJPopupMenuinaction.htm
+ * $Revision$
+ *
+ * This file has been adapted to Jajuk by the Jajuk Team.
+ * Jajuk Copyright (C) 2007 The Jajuk Team
+ *
  */
-
 package ext;
 
 import java.awt.Component;
