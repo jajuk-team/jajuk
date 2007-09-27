@@ -1,0 +1,9 @@
+All the files here have been taken from aTunes 1.6.0
+http://www.atunes.org
+http://sourceforge.net/projects/atunes
+
+These files has been adapted to Jajuk by the Jajuk Team.
+Jajuk Copyright (C) 2007 The Jajuk Team
+
+The original codes are Copyright (C) 2006-2007 Alex Aranda (fleax)
+<alex.aranda@gmail.com> and are licnesed under GPL licnese.
