@@ -27,6 +27,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FontManager;
 import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
@@ -110,14 +111,16 @@ public class AudioScrobberAlbumThumbnail extends AbstractThumbnail {
 				setLayout(new VerticalLayout(2));
 				// Use a panel to allow text to be bigger than image under it
 				add(Util.getCentredPanel(jlIcon));
-				JLabel jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15));
-				jlTitle.setToolTipText(album.getTitle());
+				JLabel jlTitle;
 				if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
 					// Album known in collection, display its name in bold
+					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15),IconLoader.ICON_STAR_1,JLabel.CENTER);
 					jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 				} else {
+					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15));
 					jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 				}
+				jlTitle.setToolTipText(album.getTitle());
 				add(jlTitle);
 				jlIcon.setBorder(new ShadowBorder());
 				// disable inadequate menu items
