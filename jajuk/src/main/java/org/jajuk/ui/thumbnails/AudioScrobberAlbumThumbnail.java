@@ -114,7 +114,7 @@ public class AudioScrobberAlbumThumbnail extends AbstractThumbnail {
 				JLabel jlTitle;
 				if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
 					// Album known in collection, display its name in bold
-					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15),IconLoader.ICON_STAR_1,JLabel.CENTER);
+					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15),IconLoader.ICON_ALBUM,JLabel.CENTER);
 					jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 				} else {
 					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15));
