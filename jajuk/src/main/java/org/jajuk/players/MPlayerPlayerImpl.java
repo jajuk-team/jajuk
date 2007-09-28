@@ -46,7 +46,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
 	/** Current track estimated duration in ms */
 	private long lDuration;
-	
+
 	/** Volume when starting fade */
 	private float fadingVolume;
 
@@ -54,7 +54,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	int iFadeDuration = 0;
 
 	/** Progress step in ms */
-	private static final int PROGRESS_STEP = 300;// need a fast refresh, especially for fading
+	private static final int PROGRESS_STEP = 300;// need a fast refresh,
+
+	// especially for fading
 
 	/** current file */
 	private org.jajuk.base.File fCurrent;
@@ -128,14 +130,19 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 							// make a FIFO request to switch track)
 							FIFO.getInstance().finished();
 						}
-						//If fading, decrease sound progressively
+						// If fading, decrease sound progressively
 						if (bFading) {
-							// computes the volume we have to sub to reach zero at last
+							// computes the volume we have to sub to reach zero
+							// at last
 							// progress()
 							float fVolumeStep = fadingVolume
-									* ((float) 500 / iFadeDuration);
-							// divide step by two to make fade softer
-							float fNewVolume = fVolume - (fVolumeStep / 2); 
+							// we double the refresh period to make sure to
+									// reach 0 at the end of iterations because
+									// we don't
+									// as many mplayer response as queries,
+									// tested on 10 & 20 sec of fading
+									* ((float) (PROGRESS_STEP * 2) / iFadeDuration);
+							float fNewVolume = fVolume - fVolumeStep;
 							// decrease volume by n% of initial volume
 							if (fNewVolume < 0) {
 								fNewVolume = 0;
@@ -145,7 +152,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 							} catch (Exception e) {
 								Log.error(e);
 							}
-							return;
 						}
 						// test end of length for intro mode
 						if (length != TO_THE_END && lDuration > 0
@@ -177,11 +183,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 								System.gc();
 								if (lDuration > 0) {
 									// if corrupted file, length=0 and we have
-									// not not call finished as it is managed by Player
+									// not not call finished as it is managed by
+									// Player
 									FIFO.getInstance().finished();
 								}
 							} else {
-								//If fading, next track has already been launched
+								// If fading, next track has already been
+								// launched
 								bFading = false;
 							}
 						} catch (Exception e) {
