@@ -363,7 +363,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				device.mount();
 			} catch (Exception e) {
 				Log.error(11, "{{" + getName() + "}}", e); // mount failed
-				Messages.showErrorMessage(011, getName());
+				Messages.showErrorMessage(11, getName());
 				return;
 			}
 		}
@@ -681,7 +681,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				// if path exists
 				File file = new File(getUrl());
 				if (!file.exists()) {
-					throw new Exception();
+					throw new Exception("Path does not exist");
 				}
 			}
 		} catch (Exception e) {
@@ -698,7 +698,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 		// Still not mounted ? throw an exception
 		if (!bMounted) {
-			throw new Exception();
+			throw new Exception("Void device");
 		}
 	}
 

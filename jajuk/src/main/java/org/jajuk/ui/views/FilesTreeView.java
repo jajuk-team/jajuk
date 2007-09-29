@@ -1050,7 +1050,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				try {
 					device.mount();
 				} catch (Exception ex) {
-					Messages.showErrorMessage(011);
+					Messages.showErrorMessage(11);
 				}
 			}
 		} else if (e.getSource() == jmiDevUnmount) {
@@ -1059,7 +1059,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				try {
 					device.unmount();
 				} catch (Exception ex) {
-					Messages.showErrorMessage(012);
+					Messages.showErrorMessage(12);
 				}
 			}
 		} else if (e.getSource() == jmiDevRefresh) {

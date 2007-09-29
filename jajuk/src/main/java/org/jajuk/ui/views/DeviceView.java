@@ -294,13 +294,13 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 			try {
 				diSelected.getDevice().mount();
 			} catch (Exception e) {
-				Messages.showErrorMessage(011);
+				Messages.showErrorMessage(11);
 			}
 		} else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_UNMOUNT.toString())) {
 			try {
 				diSelected.getDevice().unmount();
 			} catch (Exception e) {
-				Messages.showErrorMessage(012);
+				Messages.showErrorMessage(12);
 			}
 		} else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_PROPERTIES.toString())) {
 			DeviceWizard dw = new DeviceWizard();

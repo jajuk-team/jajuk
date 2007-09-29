@@ -383,12 +383,12 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 				return;
 			}
 			if (jtfUrl.getText().trim().equals("")) { 
-				Messages.showErrorMessage(021); 
+				Messages.showErrorMessage(21); 
 				this.setVisible(true);
 				return;
 			}
 			if (jtfName.getText().trim().equals("")) { 
-				Messages.showErrorMessage(022); 
+				Messages.showErrorMessage(22); 
 				this.setVisible(true);
 				return;
 			}
