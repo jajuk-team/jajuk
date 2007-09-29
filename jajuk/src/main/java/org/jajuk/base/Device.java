@@ -19,18 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -44,6 +32,18 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * A device ( music files repository )
@@ -659,6 +659,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	public void mount(boolean bUIRefresh) throws Exception {
 		if (bMounted) {
 			Messages.showErrorMessage(111);
+			return;
 		}
 		try {
 			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
@@ -689,16 +690,19 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		}
 		// Cannot mount void devices because of reference garbager thread
 		File file = new File(getUrl());
-		if (file.listFiles() != null && file.listFiles().length > 0) {
-			bMounted = true;
-			// notify views to refresh if needed
-			if (bMounted && bUIRefresh) {
-				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
+		if (file.listFiles() == null || file.listFiles().length == 0) {
+			int answer = Messages.getChoice("[" + getName() + "] "
+					+ Messages.getString("Confirmation_void_refresh"), JOptionPane.WARNING_MESSAGE);
+			if (answer != 0) {
+				// leave if user doesn't confirm to mount the void device
+				return;
 			}
 		}
-		// Still not mounted ? throw an exception
-		if (!bMounted) {
-			throw new Exception("Void device");
+		// Here the device is conciderated as mounted
+		bMounted = true;
+		// notify views to refresh if needed
+		if (bUIRefresh) {
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
 		}
 	}
 
