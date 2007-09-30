@@ -2,6 +2,7 @@
  * This file has been adapted to Jajuk by the Jajuk Team.
  * Jajuk Copyright (C) 2007 The Jajuk Team
  * 
+ * Found at http://www.jroller.com/santhosh/date/20050528
  * Original copyright information follows:
  *
  * Copyright santhosh kumar
