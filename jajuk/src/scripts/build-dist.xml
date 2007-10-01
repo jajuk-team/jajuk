@@ -2,6 +2,7 @@
 <!--Ant script for packagers only-->
 <!--void 2 -->
 
+
 <project default='all' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
 
@@ -246,35 +247,35 @@
 		<!--for security reason (this file is commited with keystore password), 
     keystore password is changed after this script execution, password is temporary -->
 		<signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/animation-1.2.0.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/basicplayer-3.0.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/cobra-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/commons-codec-1.3.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/commons-collections-3.2.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/commons-logging-1.0.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/entagged-audioformats-0.15.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/entagged-freedb-0.04.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/forms-1.1.0.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jcommon-1.0.0.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jdic-20060613.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jfreechart-1.0.1.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jintellitype-1.2.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jlayer-1.0.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jmactritonusspi-1.74.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jogg-0.0.7.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jorbis-0.0.13.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/js-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/jspeex-0.9.3.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/qdwizard-1.9.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/substance-4.1dev.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/swingx-2007_07_22.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
-                <signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/animation-1.2.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/basicplayer-3.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/cobra-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/commons-codec-1.3.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/commons-collections-3.2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/commons-logging-1.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/entagged-audioformats-0.15.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/entagged-freedb-0.04.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/forms-1.1.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jcommon-1.0.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jdic-20060613.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jfreechart-1.0.1.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jintellitype-1.2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jlayer-1.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jmactritonusspi-1.74.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jogg-0.0.7.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jorbis-0.0.13.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/js-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jspeex-0.9.3.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/qdwizard-1.9.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/substance-4.1dev.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/swingx-2007_07_22.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
 
@@ -329,7 +330,7 @@
 	<target name='sourcesdist' description='o Create the source distribution' depends='mkdist,helpsetjar'>
 		<mkdir dir='${sourcesdir}' />
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
-		<copy todir='${sourcesdir}/jajuk-src-${version}'>			
+		<copy todir='${sourcesdir}/jajuk-src-${version}'>
 			<fileset dir='${distdir}/dist-files' />
 		</copy>
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}/src' />
@@ -526,8 +527,8 @@
 				<include name="Info.plist" />
 				<include name="Resources/**" />
 			</zipfileset>
-			<fileset file="${basedir}/src/doc/README.html"/>
-			<fileset file="${basedir}/src/doc/LICENSE.txt"/>
+			<fileset file="${basedir}/src/doc/README.html" />
+			<fileset file="${basedir}/src/doc/LICENSE.txt" />
 		</zip>
 	</target>
 
