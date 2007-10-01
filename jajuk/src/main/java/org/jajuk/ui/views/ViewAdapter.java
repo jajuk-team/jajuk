@@ -177,5 +177,12 @@ public abstract class ViewAdapter extends JXPanel implements IView,
 	public int compareTo(Object other){
 		return getDesc().compareTo(((IView)other).getDesc());
 	}
+	
+	/**
+	 * Called when the view perspective is selected
+	 */
+	public void onPerspectiveSelection(){
+		
+	}
 
 }

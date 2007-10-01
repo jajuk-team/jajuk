@@ -94,7 +94,7 @@ public class AudioScrobberAlbumThumbnail extends AbstractThumbnail {
 						Log.debug("Image " + fCover.getAbsolutePath() + " Loading status: "
 								+ downloadedImage.getImageLoadStatus());
 					}
-					ii = Util.getResizedImage(downloadedImage, 100, 100);
+					ii = Util.getScaledImage(downloadedImage, 100);
 					// Free images memory
 					downloadedImage.getImage().flush();
 				} catch (Exception e) {

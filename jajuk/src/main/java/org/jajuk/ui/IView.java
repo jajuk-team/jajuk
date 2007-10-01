@@ -78,5 +78,10 @@ public interface IView extends ComponentListener, Dockable {
 	 * @param perspective
 	 */
 	public void setPerspective(IPerspective perspective);
+	
+	/**
+	 * Called when the view perspective is selected
+	 */
+	public void onPerspectiveSelection();
 
 }

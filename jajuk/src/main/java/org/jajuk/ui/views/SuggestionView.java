@@ -24,9 +24,11 @@ import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobberAlbumThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobberAuthorThumbnail;
@@ -53,6 +55,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.sun.java.help.impl.SwingWorker;
 
@@ -72,7 +76,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
 	private JTabbedPane tabs;
 
-	private String previousAuthor;
+	private String author;
 
 	private enum SuggestionType {
 		BEST_OF, NEWEST, RARE, OTHERS_ALBUMS, SIMILAR_AUTHORS
@@ -139,6 +143,12 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		}
 		// Now use the new TabbedPaneUI
 		tabs.setUI(new MyTabbedPaneUI());
+		// Refresh tabs on demand only
+		tabs.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				refreshLastFMCollectionTabs();
+			}
+		});
 		// Fill tabs with empty tabs
 		tabs.addTab(Messages.getString("SuggestionView.1"), Util.getCentredPanel(new JLabel(
 				Messages.getString("WikipediaView.3"))));
@@ -152,11 +162,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 				Messages.getString("SuggestionView.7"))));
 		// Add panels
 		refreshLocalCollectionTabs();
-		// Display LAST.FM thumbs only if a track is playing
-		if (FIFO.getInstance().getCurrentFile() != null) {
-			refreshLastFMCollectionTabs(FIFO.getInstance().getCurrentFile().getTrack().getAuthor()
-					.getName2());
-		}
+		//Add tabs
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(tabs);
 		// Look for events
@@ -172,12 +178,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 	}
 
 	private void refreshLocalCollectionTabs() {
-
 		SwingWorker sw = new SwingWorker() {
 			JScrollPane jsp1;
-
 			JScrollPane jsp2;
-
 			JScrollPane jsp3;
 
 			@Override
@@ -197,18 +200,22 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 				tabs.setComponentAt(2, (jsp3 == null) ? new JPanel() : jsp3);
 				super.finished();
 			}
-
 		};
 		sw.start();
 	}
 
-	private void refreshLastFMCollectionTabs(final String author) {
+	private void refreshLastFMCollectionTabs() {
+		String newAuthor = null;
+		File current = FIFO.getInstance().getCurrentFile();
+		if (current != null) {
+			newAuthor = current.getTrack().getAuthor().getName2();
+		}
 		// if none track playing
-		if (FIFO.getInstance().getCurrentFile() == null
+		if (current == null
 		// Last.FM infos is disable
 				|| !ConfigurationManager.getBoolean(CONF_LASTFM_INFO)
 				// If unknown author
-				|| (author == null || author.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
+				|| (newAuthor == null || newAuthor.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
 			// Set empty panels
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -220,6 +227,12 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			});
 			return;
 		}
+		// Check if author changed, otherwise, just leave
+		if (newAuthor.equals(this.author)) {
+			return;
+		}
+		// Save current author
+		author = newAuthor;
 		// Display a busy panel in the mean-time
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -234,14 +247,12 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		// Use a swing worker as construct takes a lot of time
 		SwingWorker sw = new SwingWorker() {
 			JScrollPane jsp1;
-
 			JScrollPane jsp2;
-
 			@Override
 			public Object construct() {
 				try {
-					jsp1 = getLastFMSuggestionsPanel(author, SuggestionType.OTHERS_ALBUMS);
-					jsp2 = getLastFMSuggestionsPanel(author, SuggestionType.SIMILAR_AUTHORS);
+					jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS);
+					jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS);
 				} catch (Exception e) {
 					Log.error(e);
 				}
@@ -297,7 +308,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		return jsp;
 	}
 
-	private JScrollPane getLastFMSuggestionsPanel(String author, SuggestionType type)
+	private JScrollPane getLastFMSuggestionsPanel(SuggestionType type)
 			throws Exception {
 		FlowScrollPanel out = new FlowScrollPanel();
 		JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -306,8 +317,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		out.setScroller(jsp);
 		out.setLayout(new FlowLayout(FlowLayout.LEFT));
 		if (type == SuggestionType.OTHERS_ALBUMS) {
-			// store the current author
-			previousAuthor = author;
 			List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
 					author);
 			if (albums != null && albums.size() > 0) {
@@ -323,8 +332,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 				out.add(Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
 			}
 		} else if (type == SuggestionType.SIMILAR_AUTHORS) {
-			// store the current author
-			previousAuthor = author;
 			AudioScrobblerSimilarArtists similar = AudioScrobblerService.getInstance()
 					.getSimilarArtists(author);
 			if (similar != null) {
@@ -358,21 +365,34 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			if (comp % 10 == 0) {
 				refreshLocalCollectionTabs();
 			}
-			// if artist changed, update last.fm panels
-			String newAuthor = FIFO.getInstance().getCurrentFile().getTrack().getAuthor()
-					.getName2();
-			if (!newAuthor.equals(previousAuthor)) {
-				refreshLastFMCollectionTabs(newAuthor);
-				previousAuthor = newAuthor;
-			}
-		} else if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE)) {
+			// update last.fm panels
+			refreshLastFMCollectionTabs();
+		} else if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
 			// The show/hide unmounted may have changed, refresh local
 			// collection panels
-			refreshLastFMCollectionTabs(FIFO.getInstance().getCurrentFile().getTrack().getAuthor()
-					.getName2());
+			refreshLastFMCollectionTabs();
 		} else if (subject.equals(EventSubject.EVENT_PLAYER_STOP)) {
-			previousAuthor = null;
+			author = null;
 			clearLastFMPanels();
 		}
+	}
+
+	/**
+	 * [Perf]
+	 * 
+	 * @return whether LastFM tabs are visible or not
+	 */
+	private boolean isLastFMTabsVisible() {
+		// Refresh authors only if user selected similar authors or albums tab
+		return (tabs.getSelectedIndex() == 3 || tabs.getSelectedIndex() == 4)
+		// Check this view perspective is visible
+				&& PerspectiveManager.getCurrentPerspective().equals(this.getPerspective());
+	}
+
+	/**
+	 * Refresh lastFM tabs on perspective selection if tabs visible
+	 */
+	public void onPerspectiveSelection() {
+		refreshLastFMCollectionTabs();
 	}
 }

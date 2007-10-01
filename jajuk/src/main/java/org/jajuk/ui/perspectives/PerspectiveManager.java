@@ -19,6 +19,15 @@
  */
 package org.jajuk.ui.perspectives;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
@@ -33,15 +42,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
 
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarPanel;
@@ -156,6 +156,8 @@ public class PerspectiveManager implements ITechnicalStrings {
 						}
 						view.setIsPopulated(true);
 					}
+					//Perform specific view operation at perspective display
+					view.onPerspectiveSelection();
 				}
 				ToolBarContainer tbcontainer = Main.getToolbarContainer();
 				// Remove all non-toolbar items
