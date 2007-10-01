@@ -373,7 +373,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 						(Long) oValue, filter);
 			} else if (XML_YEAR.equals(sKey)) {
 				newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),
-						(String)oValue, filter);
+						(Long)oValue, filter);
 			} else if (XML_TRACK_RATE.equals(sKey)) {
 				newItem = TrackManager.getInstance()
 						.changeTrackRate(file.getTrack(), (Long) oValue);
@@ -418,7 +418,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 						(Long) oValue, filter);
 			} else if (XML_YEAR.equals(sKey)) {
 				newItem = TrackManager.getInstance().changeTrackYear((Track) itemToChange,
-						(String) oValue, filter);
+						(Long) oValue, filter);
 			} else if (XML_TRACK_RATE.equals(sKey)) {
 				newItem = TrackManager.getInstance().changeTrackRate((Track) itemToChange,
 						(Long) oValue);
