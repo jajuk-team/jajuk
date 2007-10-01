@@ -20,25 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.Item;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.action.ActionBase;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.wizard.CDDBWizard;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -65,6 +46,25 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+
+import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.Item;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionBase;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.wizard.CDDBWizard;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
 
@@ -288,7 +288,9 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 				// Consider an exit only if mouse really moved to avoid
 				// closing popup when popup appears over the mouse cursor
 				// (then, a mouseExit event is thrown)
-				if (!e.getPoint().equals(lastPosition)) {
+				if (!e.getPoint().equals(lastPosition) && 
+						//Don't close popup if user is still over it
+						!(details != null && details.contains(e.getPoint()))) {
 					mouseOverItem = null;
 				}
 			}
