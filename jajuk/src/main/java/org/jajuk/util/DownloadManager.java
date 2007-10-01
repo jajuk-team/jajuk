@@ -194,12 +194,10 @@ public class DownloadManager implements ITechnicalStrings {
 		int iProxyPort = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
 		String sProxyLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
 		String sProxyPwd = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD);
+		Type proxyType = Type.DIRECT;
 		if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
 			// Set default proxy value
-			Type proxyType = null;
-			if (!ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-				proxyType = Type.DIRECT;
-			} else if (PROXY_TYPE_HTTP.equals(ConfigurationManager
+			if (PROXY_TYPE_HTTP.equals(ConfigurationManager
 					.getProperty(CONF_NETWORK_PROXY_TYPE))) {
 				proxyType = Type.HTTP;
 			} else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager
