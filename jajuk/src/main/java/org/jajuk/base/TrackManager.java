@@ -310,7 +310,7 @@ public class TrackManager extends ItemManager implements Observer {
 	 *            files we want to deal with
 	 * @return new track or null if wrong format
 	 */
-	public Track changeTrackYear(Track track, Long newItem, HashSet filter) throws JajukException {
+	public Track changeTrackYear(Track track, String newItem, HashSet filter) throws JajukException {
 		synchronized (TrackManager.getInstance().getLock()) {
 			// check there is actually a change
 			if (track.getYear().getName().equals(newItem)) {
