@@ -124,7 +124,6 @@ public class TracksTableView extends AbstractTableView {
 	public JajukTableModel populateTable() {
 		// model creation
 		TracksTableModel model = new TracksTableModel();
-		model.addTableModelListener(this);
 		model.setEditable(ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION));
 		return model;
 	}

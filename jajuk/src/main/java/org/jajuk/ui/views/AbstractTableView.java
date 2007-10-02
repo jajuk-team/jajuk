@@ -20,35 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukTable;
-import org.jajuk.ui.JajukTableModel;
-import org.jajuk.ui.JajukToggleButton;
-import org.jajuk.ui.TableTransferHandler;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ConditionalHighlighter;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -79,12 +50,41 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukTable;
+import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.JajukToggleButton;
+import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ConditionalHighlighter;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
+
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
 
 /**
- * Abstract table view : common implementation for both files and tracks
- * table views
+ * Abstract table view : common implementation for both files and tracks table
+ * views
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
 		MouseListener, ItemListener, TableColumnModelListener, TableModelListener,
@@ -185,6 +185,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			}
 
 			public void finished() {
+				model.addTableModelListener(AbstractTableView.this);
 				// Control panel
 				jpControl = new JPanel();
 				jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -312,15 +313,25 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	}
 
 	/**
-	 * Apply a filter, to be implemented by files and tracks tables, alter
-	 * the model
+	 * Apply a filter, to be implemented by files and tracks tables, alter the
+	 * model
 	 */
-	public void applyFilter(String sPropertyName, String sPropertyValue) {
-		model.removeTableModelListener(AbstractTableView.this);
-		model.populateModel(sPropertyName, sPropertyValue);
-		model.fireTableDataChanged();
-		jtable.packAll();
-		model.addTableModelListener(AbstractTableView.this);
+	public void applyFilter(final String sPropertyName, final String sPropertyValue) {
+		model.removeTableModelListener(this);
+		SwingWorker sw = new SwingWorker() {
+			@Override
+			public Object construct() {
+				model.populateModel(sPropertyName, sPropertyValue);
+				return null;
+			}
+
+			@Override
+			public void finished() {
+				jtable.packAll();
+				model.addTableModelListener(AbstractTableView.this);
+			}
+		};
+		sw.start();
 	}
 
 	/**
@@ -365,15 +376,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						jtable.clearSelection();
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
-					} else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)){
+					} else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
 					} else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
-						//Keep current selection
+						// Keep current selection
 						int[] selection = jtable.getSelectedRows();
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
-						//Re-apply selection
+						// Re-apply selection
 						jtable.setSelectedRows(selection);
 					} else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
 						Properties properties = event.getDetails();
@@ -382,6 +393,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 							return;
 						}
 						model = populateTable();
+						model.addTableModelListener(AbstractTableView.this);
 						jtable.setModel(model);
 						setRenderers();
 						// add new item in configuration cols
@@ -397,6 +409,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						}
 						// remove item from configuration cols
 						model = populateTable();// create a new model
+						model.addTableModelListener(AbstractTableView.this);
 						jtable.setModel(model);
 						setRenderers();
 						jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
@@ -411,14 +424,14 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				}
 			}
 		});
-
 	}
 
 	/** Fill the table */
 	abstract JajukTableModel populateTable();
 
 	private void setRenderers() {
-		for (TableColumn tc:((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)){
+		for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel())
+				.getColumns(true)) {
 			TableColumnExt col = (TableColumnExt) tc;
 			String sIdentifier = model.getIdentifier(col.getModelIndex());
 			// create a combo box for styles, note that we can't add new
