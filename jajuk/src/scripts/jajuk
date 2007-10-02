@@ -1,8 +1,72 @@
 #!/bin/sh
-#Jajuk launching script for unix in RPM install, assumes javaw program is in the PATH env. variable
+## This is Jajuk main starting script 
 
-#Go in the right environment directory
-#test if jajuk has been installed in default directory /usr/lib/jajuk/ via RPM package
+###########################
+### CONFIGURATION START ###
+
+#to use your default java on your system use JAVA_BIN="java", or you can give the full path of java.
+JAVA_BIN="java"
+
+#Java options
+JAVA_OPTIONS="-client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12"
+
+#Jajuk options
+JAJUK_OPTIONS="-notaskbar TEST_FLAG_REPLACED_BY_ANT"
+
+#Do you want this script to try to find and use an alternate java version installed on your system that will be more suitable for Jajuk? Use "true" or "false".
+FIND_OTHER_JAVA="true"
+
+### CONFIGURATION END ###
+#########################
+
+## Version warning
+warning_version () {
+    echo "==================================================================="
+    echo " Jajuk runs much faster with Java SUN 1.6, consider to install it. "
+    echo "==================================================================="
+    echo " "
+}
+
+
+## find the default java version
+JAVA_VER=$($JAVA_BIN -version 2>&1 | grep version | cut -d\" -f 2-2 | cut -c 1-3)
+
+if [ "$JAVA_VER" = "1.6" ] ; then
+    echo "Java 1.6 detected (in default path)"
+elif [ "$FIND_OTHER_JAVA" = "true" ] ; then
+    echo "Java version in the default path may not be the best or compatible with Jajuk. Let's try other places in case a better version is present..."
+    echo "To turn off this auto-detection funtion, edit $0 and set FIND_OTHER_JAVA to false"
+    #Search for Java SUN 1.6
+    if [ -e /usr/lib/j2re1.6-sun/bin/java ] ; then
+        JAVA_BIN="/usr/lib/j2re1.5-sun/bin/java"
+        echo "j2re1.6-sun detected in $JAVA_BIN"
+    elif [ -e /usr/lib/jvm/java-6-sun/jre/bin/java ] ; then
+        JAVA_BIN="/usr/lib/jvm/java-6-sun/jre/bin/java"
+        echo "j2re1.6-sun detected in $JAVA_BIN"
+    #Search for Java SUN 1.5
+    elif [ "$JAVA_VER" = "1.5" ] ; then
+        echo "Java 1.5 detected (in default path)"
+        warning_version
+    elif [ -e /usr/lib/jvm/java-1.5.0-sun/jre/bin/java ] ; then
+        JAVA_BIN="/usr/lib/jvm/java-1.5.0-sun/jre/bin/java"
+        echo "j2re1.5-sun detected in $JAVA_BIN"
+        warning_version
+    elif [ -e /usr/lib/j2re1.5-sun/bin/java ] ; then
+        JAVA_BIN="/usr/lib/j2re1.5-sun/bin/java"
+        echo "j2re1.5-sun detected in $JAVA_BIN"
+        warning_version
+    fi
+elif [ "$JAVA_VER" = "1.5" ] ; then
+    echo "Java 1.5 detected (in default path)"
+    warning_version
+else
+    echo "No Java compatible version detected, but let's still try to run it!"
+    warning_version
+fi
+
+
+##Go in the right directory
+#test if jajuk has been installed in default directory /usr/lib/jajuk/ via RPM/Deb package
 if [ -e /usr/lib/jajuk/bin/jajuk.jar ] ; then
     cd /usr/lib/jajuk/bin
 else
@@ -10,6 +74,7 @@ else
 fi
 
 
-#Launch jajuk
-java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT
-#java -client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT
+##let's finally start Jajuk:
+echo " "
+echo $JAVA_BIN $JAVA_OPTIONS -jar jajuk.jar $JAJUK_OPTIONS
+$JAVA_BIN $JAVA_OPTIONS -jar jajuk.jar $JAJUK_OPTIONS
