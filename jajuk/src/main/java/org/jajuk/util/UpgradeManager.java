@@ -84,10 +84,6 @@ public class UpgradeManager implements ITechnicalStrings {
 		if (fPerspective.exists()){
 			fPerspective.delete();
 		}
-		fPerspective = Util.getConfFileByPath("SimplePerspective.xml");
-		if (fPerspective.exists()){
-			fPerspective.delete();
-		}
 		fPerspective = Util.getConfFileByPath("PlayerPerspective.xml");
 		if (fPerspective.exists()){
 			fPerspective.delete();
