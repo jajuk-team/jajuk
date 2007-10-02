@@ -462,7 +462,7 @@ public class Track extends LogicalItem implements Comparable {
 		} else if (XML_TYPE.equals(sKey)) {
 			return (TypeManager.getInstance().getTypeByID(getStringValue(sKey))).getName();
 		} else if (XML_YEAR.equals(sKey)) {
-			return (YearManager.getInstance().getYearByID(getStringValue(sKey))).getName();
+			return getStringValue(sKey);
 		} else if (XML_FILES.equals(sKey)) {
 			StringBuffer sbOut = new StringBuffer();
 			Iterator it = alFiles.iterator();
