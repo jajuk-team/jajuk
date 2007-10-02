@@ -890,7 +890,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jspTree = new JScrollPane(jtree);
 		add(jspTree);
 		// expand all
-		expand(true);
+		expand(false);
 
 	}
 
