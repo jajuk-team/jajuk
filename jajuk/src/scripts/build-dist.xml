@@ -2,7 +2,7 @@
 <!--Ant script for packagers only-->
 <!--void 3 -->
 
-<project default='package_all' name='jajuk' basedir='../..'>
+<project default='deploy_new_release' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
@@ -24,7 +24,7 @@
 	<property name='conf_javahelpdir' value='/prog/api/jh/javahelp' />
 	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/bflorat' />
-	<property name='uploaddir' value='${rootdir}/upload' />
+	<property name='conf_uploaddir' value='${rootdir}/upload' />
 	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />
 	-->
 
@@ -34,7 +34,7 @@
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
 	<property name='conf_jnlp-dist' value='/svn-jajuk/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/jbuild' />
-	<property name='uploaddir' value='/var/www/repository.jajuk.info/jajuk/testing/build-1.4' />
+	<property name='conf_uploaddir' value='/var/www/repository.jajuk.info/jajuk/testing/build-1.4' />
 	<property name='conf_jarbundler' value='/svn-jajuk/tools/jarbundler-1.9' />
 
 	<!-- ============================== -->
@@ -67,243 +67,6 @@
 	<property name='srcdir' value='${basedir}/src' />
 
 
-	<target name='package_all' description='o Create all packages' depends='startup,upload_all_packages'>
-		<echo message='Create all packages' />
-	</target>
-
-
-	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,compile'>
-		<echo message='Create Jajuk jar file' />
-		<jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
-			<fileset dir='${distdir}/${classdir}' />
-		</jar>
-		<!--Sign jajuk jars (others are signed manually once) -->
-		<!--for security reason (this file is commited with keystore password), 
-    keystore password is changed after this script execution, password is temporary -->
-		<signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/animation-1.2.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/basicplayer-3.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/cobra-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/commons-codec-1.3.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/commons-collections-3.2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/commons-logging-1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/entagged-audioformats-0.15.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/entagged-freedb-0.04.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/forms-1.1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jcommon-1.0.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jdic-20060613.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jfreechart-1.0.1.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jintellitype-1.2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jlayer-1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jmactritonusspi-1.74.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jogg-0.0.7.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jorbis-0.0.13.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/js-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jspeex-0.9.3.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/qdwizard-1.9.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/substance-4.1dev.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/swingx-2007_07_22.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
-		<delete dir='${distdir}/${classdir}' />
-		<echo message='jajuk.jar had been successfully built in: ${distdir}/bin/${jarname}' />
-	</target>
-
-
-	<target name='package_helpjar' description='o Create Jajuk help jar files' depends='startup,clean,mkdist_helpjar'>
-		<echo message='Create Jajuk help jar files' />
-		<!--Copy-->
-		<copy todir='${helpdir}'>
-			<fileset dir='${srcdir}/doc/jajuk-hs' />
-		</copy>
-		<copy todir='${helpdir}/default'>
-			<fileset dir='${srcdir}/doc'>
-				<include name='images/**' />
-				<include name='icons/**' />
-			</fileset>
-		</copy>
-		<copy todir='${helpdir}/fr'>
-			<fileset dir='${srcdir}/doc'>
-				<include name='images/**' />
-				<include name='icons/**' />
-			</fileset>
-		</copy>
-		<!-- indexer -->
-		<!--English-->
-		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/default'>
-			<arg line='-locale en_US html' />
-		</exec>
-		<!--French-->
-		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/fr'>
-			<arg line='-locale fr_FR html' />
-		</exec>
-		<!-- jar creation -->
-		<jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
-		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
-		<jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
-		<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass" />
-		<!-- Copy jajuk jar in the workspace -->
-		<copy todir='${basedir}'>
-			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
-		</copy>
-	</target>
-
-
-	<!--IzPack package creation -->
-	<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
-	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar,package_helpjar'>
-		<echo message='Create Jajuk IzPack package' />
-		<echo message='Makes the installer using IzPack' />
-		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
-	</target>
-
-
-	<target name='package_rpm' description='o Create Jajuk RPM package' depends='startup,clean,mkdist_rpm,package_jar,package_helpjar'>
-		<echo message='Create Jajuk RPM package' />
-		<!-- Copy jajuk helpset jars in the RPM distdir -->
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/bin'>
-			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
-		</copy>
-		<!-- Copy jajuk.jar in the RPM distdir -->
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/bin'>
-			<fileset file='${distdir}/bin/${jarname}' />
-		</copy>
-
-		<!-- rights-->
-		<chmod file='${rpmdistdir}/usr/bin/jajuk' perm='ugo+rx' />
-		<chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx' />
-
-		<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
-		<copy todir='${conf_homeuser}' overwrite='yes'>
-			<fileset file='${srcdir}/packaging/RPMS/.rpmmacros' />
-		</copy>
-		<rpm specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
-	</target>
-
-
-	<!--jarbundler Mac OS X zip package creation -->
-	<target name='package_macosx' description='o Create Jajuk MAC OS X package' depends='startup,clean,mkdist_macosx,package_jar,package_helpjar,jarbundler'>
-		<echo message='Create Jajuk MAC OS X package' />
-		<!-- Create the distribution directory -->
-		<mkdir dir="${distdir}/macosx" />
-		<zip zipfile="${distdir}/jajuk-macosx-${version}.zip">
-			<zipfileset dir="${distdir}/jarbundler/Jajuk.app/Contents" prefix="Jajuk.app/Contents">
-				<include name="PkgInfo" />
-				<include name="Info.plist" />
-				<include name="Resources/**" />
-			</zipfileset>
-			<fileset file="${basedir}/src/doc/README.html" />
-			<fileset file="${basedir}/src/doc/LICENSE.txt" />
-		</zip>
-	</target>
-
-
-	<target name='package_source' description='o Create Jajuk source package' depends='startup,clean,mkdist_source,package_jar,package_helpjar'>
-		<echo message='Create Jajuk source package' />
-		<mkdir dir='${sourcesdir}' />
-		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
-		<copy todir='${sourcesdir}/jajuk-src-${version}'>
-			<fileset dir='${distdir}/dist-files' />
-		</copy>
-		<mkdir dir='${sourcesdir}/jajuk-src-${version}/src' />
-		<copy todir='${sourcesdir}/jajuk-src-${version}/src'>
-			<fileset dir='${distdir}/src' />
-		</copy>
-		<!-- Copy Jajuk documentation in doc/ -->
-		<mkdir dir='${sourcesdir}/jajuk-src-${version}/doc' />
-		<copy todir='${sourcesdir}/jajuk-src-${version}/doc'>
-			<fileset dir='${helpdir}' />
-		</copy>
-		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
-	</target>
-
-
-	<!-- Windows EXE creation-->
-	<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
-	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_helpjar'>
-		<echo message='Create Jajuk Windows executable file' />
-		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
-	</target>
-
-
-	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar,package_helpjar'>
-		<echo message='Create Java Web Start war distribution' />
-		<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
-		<!-- Unlike standalone distributions, JNLP have to use JDIC platform distributions jars, browser will
-	not work with cross-platform distributions-->
-		<mkdir dir='${jnlpdir}' />
-		<mkdir dir='${jnlpdir}/app' />
-		<mkdir dir='${jnlpdir}/app/windows' />
-		<mkdir dir='${jnlpdir}/app/linux' />
-		<!--Copy current jars -->
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${distdir}/lib/*.jar' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${distdir}/bin/*.jar' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${srcdir}/packaging/jnlp/*.jnlp' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${srcdir}/packaging/jnlp/*.gif' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${srcdir}/main/resources/images/included/jajuk-splashscreen.jpg' />
-		</copy>
-		<!--Copy native jars -->
-		<copy todir='${jnlpdir}/app/linux'>
-			<fileset file='${srcdir}/packaging/jnlp/linux/*.jar' />
-		</copy>
-		<copy todir='${jnlpdir}/app/windows'>
-			<fileset file='${srcdir}/packaging/jnlp/windows/*.jar' />
-		</copy>
-		<replace dir='${jnlpdir}/app' value='${test}'>
-			<include name='launch.jnlp' />
-			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
-		</replace>
-		<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
-		<move todir="${jnlpdir}">
-			<fileset dir="${jnlpdir}">
-				<include name="**/*.jar" />
-			</fileset>
-			<mapper type="glob" from="*.jar" to="*__V${version}.jar" />
-		</move>
-
-		<!-- Set release in user jnlp file-->
-		<replace dir='${jnlpdir}/app' value='${version}'>
-			<include name='*.jnlp' />
-			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
-		</replace>
-		<!-- Set test or no test in jnlp file-->
-		<replace dir='${jnlpdir}/app' value='${test}'>
-			<include name='*.jnlp' />
-			<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
-		</replace>
-
-		<!--Copy previous release jars, comment this if you have no previous release
-		<copy todir='${jnlpdir}/app'>
-			<fileset dir="${previousjnlpdir}/app">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-		-->
-
-		<!-- Create the war file -->
-		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
-			<fileset dir='${jnlpdir}' />
-			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
-		</war>
-	</target>
-
-
 	<target name='startup'>
 		<echo message='Building Jajuk release: ${version}' />
 		<echo message='Basedir: ${basedir}' />
@@ -312,6 +75,7 @@
 			<format property="JAJUK_TIMESTAMP" pattern="yyyy-MM-dd HH:mm:ss" />
 		</tstamp>
 	</target>
+
 
 	<target name='clean' description='o Clean up previous build files'>
 		<delete dir='${rootdir}' />
@@ -403,6 +167,256 @@
 	<target name='mkdist_helpjar'>
 		<echo message='Prepare files to build helpjar files' />
 		<mkdir dir='${helpdir}' />
+	</target>
+
+
+	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,compile'>
+		<echo message='Create Jajuk jar file' />
+		<jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
+			<fileset dir='${distdir}/${classdir}' />
+		</jar>
+		<delete dir='${distdir}/${classdir}' />
+		<echo message='jajuk.jar had been successfully built in: ${distdir}/bin/${jarname}' />
+	</target>
+
+
+	<target name='package_helpjar' description='o Create Jajuk help jar files' depends='startup,clean,mkdist_helpjar'>
+		<echo message='Create Jajuk help jar files' />
+		<!--Copy-->
+		<copy todir='${helpdir}'>
+			<fileset dir='${srcdir}/doc/jajuk-hs' />
+		</copy>
+		<copy todir='${helpdir}/default'>
+			<fileset dir='${srcdir}/doc'>
+				<include name='images/**' />
+				<include name='icons/**' />
+			</fileset>
+		</copy>
+		<copy todir='${helpdir}/fr'>
+			<fileset dir='${srcdir}/doc'>
+				<include name='images/**' />
+				<include name='icons/**' />
+			</fileset>
+		</copy>
+		<!-- indexer -->
+		<!--English-->
+		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/default'>
+			<arg line='-locale en_US html' />
+		</exec>
+		<!--French-->
+		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/fr'>
+			<arg line='-locale fr_FR html' />
+		</exec>
+		<!-- jar creation -->
+		<jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
+		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
+		<jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
+		<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass" />
+		<!-- Copy jajuk jar in the workspace -->
+		<copy todir='${basedir}'>
+			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
+		</copy>
+
+		<echo message='${helpsetjarname}.jar had been successfully built in: ${distdir}/bin/${helpsetjarname}.jar' />
+		<echo message='${helpsetjarname}_fr.jar had been successfully built in: ${distdir}/bin/${helpsetjarname}_fr.jar' />
+	</target>
+
+
+	<!-- All targets below this ligne are not neccessary to build jajuk.jar and help jar files.
+	They can be commented if you don't want to build packages -->
+
+
+	<target name='package_all' description='o Create all packages' depends='package_jar_sign,package_helpjar_sign,package_izpack,package_rpm,package_source,package_sfx,package_jnlp,package_macosx'>
+		<echo message='Successfully built packages:' />
+		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
+		<echo message=' Help Jar file in:      ${distdir}/bin/${helpsetjarname}.jar' />
+		<echo message=' Help fr Jar file in:   ${distdir}/bin/${helpsetjarname}_fr.jar' />
+		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}.noarch.rpm' />
+		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-win32.exe' />
+		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
+		<echo message=' MAC OS X in:           ${distdir}/jajuk-macosx-${version}.zip' />
+		<echo message=' Source archive in:     ${sourcesdist}' />
+		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${test}.war' />
+	</target>
+
+
+	<target name='package_jar_sign' description='o Create Jajuk jar file and sign it' depends='package_jar'>
+		<!--Sign jajuk jars (others are signed manually once) -->
+		<!--for security reason (this file is commited with keystore password), 
+    keystore password is changed after this script execution, password is temporary -->
+		<signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/animation-1.2.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/basicplayer-3.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/cobra-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/commons-codec-1.3.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/commons-collections-3.2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/commons-logging-1.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/entagged-audioformats-0.15.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/entagged-freedb-0.04.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/forms-1.1.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jcommon-1.0.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jdic-20060613.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jfreechart-1.0.1.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jintellitype-1.2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jlayer-1.0.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jmactritonusspi-1.74.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jogg-0.0.7.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jorbis-0.0.13.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/js-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/jspeex-0.9.3.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/qdwizard-1.9.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/substance-4.1dev.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/swingx-2007_07_22.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
+	</target>
+
+
+	<target name='package_helpjar_sign' description='o Create Jajuk help jar files and sign it' depends='package_helpjar'>
+		<echo message='Sign help jar files' />
+		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass" />
+	</target>
+
+
+	<!--IzPack package creation -->
+	<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
+	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar,package_helpjar'>
+		<echo message='Create Jajuk IzPack package' />
+		<echo message='Makes the installer using IzPack' />
+		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
+	</target>
+
+
+	<target name='package_rpm' description='o Create Jajuk RPM package' depends='startup,clean,mkdist_rpm,package_jar,package_helpjar'>
+		<echo message='Create Jajuk RPM package' />
+		<!-- Copy jajuk helpset jars in the RPM distdir -->
+		<copy todir='${rpmdistdir}/usr/lib/jajuk/bin'>
+			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
+		</copy>
+		<!-- Copy jajuk.jar in the RPM distdir -->
+		<copy todir='${rpmdistdir}/usr/lib/jajuk/bin'>
+			<fileset file='${distdir}/bin/${jarname}' />
+		</copy>
+
+		<!-- rights-->
+		<chmod file='${rpmdistdir}/usr/bin/jajuk' perm='ugo+rx' />
+		<chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx' />
+
+		<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
+		<copy todir='${conf_homeuser}' overwrite='yes'>
+			<fileset file='${srcdir}/packaging/RPMS/.rpmmacros' />
+		</copy>
+		<rpm specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
+	</target>
+
+
+	<!--jarbundler Mac OS X zip package creation -->
+	<target name='package_macosx' description='o Create Jajuk MAC OS X package' depends='startup,clean,mkdist_macosx,package_jar,package_helpjar,jarbundler'>
+		<echo message='Create Jajuk MAC OS X package' />
+		<!-- Create the distribution directory -->
+		<mkdir dir="${distdir}/macosx" />
+		<zip zipfile="${distdir}/jajuk-macosx-${version}.zip">
+			<zipfileset dir="${distdir}/jarbundler/Jajuk.app/Contents" prefix="Jajuk.app/Contents">
+				<include name="PkgInfo" />
+				<include name="Info.plist" />
+				<include name="Resources/**" />
+			</zipfileset>
+			<fileset file="${basedir}/src/doc/README.html" />
+			<fileset file="${basedir}/src/doc/LICENSE.txt" />
+		</zip>
+	</target>
+
+
+	<target name='package_source' description='o Create Jajuk source package (zip)' depends='startup,clean,mkdist_source'>
+		<echo message='Create Jajuk source package' />
+		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
+	</target>
+
+
+	<!-- Windows EXE creation-->
+	<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
+	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_helpjar'>
+		<echo message='Create Jajuk Windows executable file' />
+		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
+	</target>
+
+
+	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar,package_helpjar'>
+		<echo message='Create Java Web Start war distribution' />
+		<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
+		<!-- Unlike standalone distributions, JNLP have to use JDIC platform distributions jars, browser will
+	not work with cross-platform distributions-->
+		<mkdir dir='${jnlpdir}' />
+		<mkdir dir='${jnlpdir}/app' />
+		<mkdir dir='${jnlpdir}/app/windows' />
+		<mkdir dir='${jnlpdir}/app/linux' />
+		<!--Copy current jars -->
+		<copy todir='${jnlpdir}/app'>
+			<fileset file='${distdir}/lib/*.jar' />
+		</copy>
+		<copy todir='${jnlpdir}/app'>
+			<fileset file='${distdir}/bin/*.jar' />
+		</copy>
+		<copy todir='${jnlpdir}/app'>
+			<fileset file='${srcdir}/packaging/jnlp/*.jnlp' />
+		</copy>
+		<copy todir='${jnlpdir}/app'>
+			<fileset file='${srcdir}/packaging/jnlp/*.gif' />
+		</copy>
+		<copy todir='${jnlpdir}/app'>
+			<fileset file='${srcdir}/main/resources/images/included/jajuk-splashscreen.jpg' />
+		</copy>
+		<!--Copy native jars -->
+		<copy todir='${jnlpdir}/app/linux'>
+			<fileset file='${srcdir}/packaging/jnlp/linux/*.jar' />
+		</copy>
+		<copy todir='${jnlpdir}/app/windows'>
+			<fileset file='${srcdir}/packaging/jnlp/windows/*.jar' />
+		</copy>
+		<replace dir='${jnlpdir}/app' value='${test}'>
+			<include name='launch.jnlp' />
+			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
+		<move todir="${jnlpdir}">
+			<fileset dir="${jnlpdir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<mapper type="glob" from="*.jar" to="*__V${version}.jar" />
+		</move>
+
+		<!-- Set release in user jnlp file-->
+		<replace dir='${jnlpdir}/app' value='${version}'>
+			<include name='*.jnlp' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set test or no test in jnlp file-->
+		<replace dir='${jnlpdir}/app' value='${test}'>
+			<include name='*.jnlp' />
+			<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
+		</replace>
+
+		<!--Copy previous release jars, comment this if you have no previous release
+		<copy todir='${jnlpdir}/app'>
+			<fileset dir="${previousjnlpdir}/app">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		-->
+
+		<!-- Create the war file -->
+		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
+			<fileset dir='${jnlpdir}' />
+			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
+		</war>
 	</target>
 
 
@@ -511,6 +525,11 @@
 
 	<target name='mkdist_source'>
 		<echo message='Prepare files to build source package' />
+		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
+		<copy todir='${sourcesdir}/jajuk-src-${version}'>
+			<fileset file='${basedir}/**' />
+		</copy>
+
 	</target>
 
 
@@ -580,9 +599,9 @@
 
 
 	<!-- Signes and upload packages-->
-	<target name='upload_all_packages' description='o Put all generated packages and checksums into upload directory' depends='package_izpack,package_rpm,package_source,package_sfx,package_jnlp,package_macosx'>
-		<mkdir dir='${uploaddir}' />
-		<copy todir='${uploaddir}'>
+	<target name='deploy_new_release' description='o Put all generated packages and checksums into Jajuk webserver repository directory' depends='package_all'>
+		<mkdir dir='${conf_uploaddir}' />
+		<copy todir='${conf_uploaddir}'>
 			<fileset file='${sourcesdist}' />
 			<fileset file='${rpmbuilddir}/RPMS/noarch/*' />
 			<fileset file='${windowsdir}/jajuk-${version}-win32.exe' />
@@ -591,18 +610,18 @@
 		</copy>
 
 		<!-- Generate MD5 http://ant.apache.org/manual/CoreTasks/checksum.html -->
-		<checksum file="${uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${uploaddir}/jajuk-${version}.noarch.rpm" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${uploaddir}/jajuk-macosx-${version}.zip" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${conf_uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${conf_uploaddir}/jajuk-${version}.noarch.rpm" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${conf_uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${conf_uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" fileext=".md5" />
+		<checksum file="${conf_uploaddir}/jajuk-macosx-${version}.zip" forceOverwrite="yes" fileext=".md5" />
 
 		<!-- Generate SHA http://ant.apache.org/manual/CoreTasks/checksum.html -->
-		<checksum file="${uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${uploaddir}/jajuk-${version}.noarch.rpm" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${uploaddir}/jajuk-macosx-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${conf_uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${conf_uploaddir}/jajuk-${version}.noarch.rpm" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${conf_uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${conf_uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file="${conf_uploaddir}/jajuk-macosx-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
 	</target>
 
 
