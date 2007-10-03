@@ -34,6 +34,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -204,7 +205,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 			public void propertyChange(PropertyChangeEvent e) {
 				String prop = e.getPropertyName();
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-					double value = Double.parseDouble(jftfAutoRefresh.getText().replace(',','.'));
+					double value = new Scanner(jftfAutoRefresh.getText().replace(',','.')).useLocale(java.util.Locale.US).nextDouble();
 					if (value < 0 || (value < 0.5d && value != 0)) {
 						jftfAutoRefresh.setValue(0.5d);
 					}
