@@ -44,23 +44,6 @@ public class PhysicalPlaylistRepositoryView extends
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor
-	 */
-	public PhysicalPlaylistRepositoryView() {
-	
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI() {
-		// commons
-		super.initUI();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

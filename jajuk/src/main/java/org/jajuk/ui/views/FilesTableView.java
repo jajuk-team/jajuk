@@ -147,6 +147,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		System.out.println(e.getClickCount());
 		if (e.isPopupTrigger()) {
 			handlePopup(e);
 			// Left click

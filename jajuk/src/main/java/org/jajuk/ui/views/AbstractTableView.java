@@ -329,6 +329,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			public void finished() {
 				jtable.packAll();
 				model.addTableModelListener(AbstractTableView.this);
+				//Force table repaint (for instance for rating stars update)
+				jtable.revalidate();
+				jtable.repaint();
 			}
 		};
 		sw.start();
@@ -380,12 +383,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
 					} else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
-						// Keep current selection
+						// Keep current selection and nb of rows
 						int[] selection = jtable.getSelectedRows();
+						int rows = jtable.getRowCount();
 						// force filter to refresh
 						applyFilter(sAppliedCriteria, sAppliedFilter);
-						// Re-apply selection
-						jtable.setSelectedRows(selection);
+						// Re-apply selection if the number of rows is still the same
+						if (jtable.getRowCount() == rows){
+							jtable.setSelectedRows(selection);
+						}
 					} else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
 						Properties properties = event.getDetails();
 						if (properties == null) {
