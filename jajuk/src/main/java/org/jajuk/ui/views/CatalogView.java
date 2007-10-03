@@ -680,7 +680,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			// save selected item
 			LocalAlbumThumbnail oldItem = CatalogView.this.item;
 			// reset paging
-			page = 0;
+			// page = 0;
 			float alignmentY = jpItems.getAlignmentY();
 			populateCatalog();
 			// try to restore previous item
