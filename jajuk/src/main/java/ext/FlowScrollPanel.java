@@ -128,7 +128,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
 	public int getScrollableUnitIncrement(Rectangle visibleRect,
 			int orientation, int direction) {
 		Dimension prefSize = layout.preferredLayoutSize(this);
-		return prefSize.height;
+		return prefSize.height/20;
 	}
 
 	/**
