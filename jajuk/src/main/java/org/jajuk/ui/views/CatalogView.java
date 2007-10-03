@@ -448,6 +448,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 		jbNext.setEnabled(false);
 		jcbPage.setEnabled(false);
 		SwingWorker sw = new SwingWorker() {
+			int i = jsp.getVerticalScrollBar().getValue();
 			@Override
 			public Object construct() {
 				Util.waiting();
@@ -653,6 +654,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			public void finished() {
 				jsp.revalidate();
 				jsp.repaint();
+				jsp.getVerticalScrollBar().setValue(i);
 				jtfValue.requestFocusInWindow();
 				jsSize.setEnabled(true);
 				jcbFilter.setEnabled(true);
