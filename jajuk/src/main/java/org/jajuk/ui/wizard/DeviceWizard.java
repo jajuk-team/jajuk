@@ -204,7 +204,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 			public void propertyChange(PropertyChangeEvent e) {
 				String prop = e.getPropertyName();
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-					double value = new Double(jftfAutoRefresh.getValue().toString());
+					double value = Double.parseDouble(jftfAutoRefresh.getText().replace(',','.'));
 					if (value < 0 || (value < 0.5d && value != 0)) {
 						jftfAutoRefresh.setValue(0.5d);
 					}
