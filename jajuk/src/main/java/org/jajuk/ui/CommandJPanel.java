@@ -471,7 +471,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		popupNovelties = new JPopupMenu();
 		jmiNoveltiesModeSong = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.20"));
 		jmiNoveltiesModeSong.addActionListener(this);
-		jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.21"));
+		jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22"));
 		jmiNoveltiesModeAlbum.addActionListener(this);
 		if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
 			jmiNoveltiesModeSong.setSelected(true);
