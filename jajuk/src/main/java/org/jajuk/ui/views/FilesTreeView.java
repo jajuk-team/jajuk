@@ -649,8 +649,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 						ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE,
 								properties));
 					}
-					//Check CDDB requests
-					if (alSelected.size() > 0 //alSelected = 0 for collection selection 
+					// Check CDDB requests
+					if (alSelected.size() > 0 // alSelected = 0 for collection
+												// selection
 							&& alSelected.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
@@ -890,8 +891,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jspTree = new JScrollPane(jtree);
 		add(jspTree);
 		// expand all
-		expand(false);
-
+		expand();
 	}
 
 	/** Fill the tree */
@@ -1046,18 +1046,22 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 					Util.createStackItems(Util.applyPlayOption(alFiles), true, true), false);
 		} else if (e.getSource() == jmiDevMount) {
 			for (int i = 0; i < paths.length; i++) {
-				Device device = ((DeviceNode) (paths[i].getLastPathComponent())).getDevice();
+				DeviceNode node = (DeviceNode) (paths[i].getLastPathComponent());
+				Device device = node.getDevice();
 				try {
 					device.mount();
+					jtree.expandPath(new TreePath(node.getPath()));
 				} catch (Exception ex) {
 					Messages.showErrorMessage(11);
 				}
 			}
 		} else if (e.getSource() == jmiDevUnmount) {
 			for (int i = 0; i < paths.length; i++) {
-				Device device = ((DeviceNode) (paths[i].getLastPathComponent())).getDevice();
+				DeviceNode node = (DeviceNode) (paths[i].getLastPathComponent());
+				Device device = node.getDevice();
 				try {
 					device.unmount();
+					jtree.collapsePath(new TreePath(node.getPath()));
 				} catch (Exception ex) {
 					Messages.showErrorMessage(12);
 				}
@@ -1212,13 +1216,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				public void finished() {
 					SwingUtilities.updateComponentTreeUI(jtree);
 					bAutoCollapse = true;
-					// Do not collapse unmounted devices for this event
-					// (common), we want to keep unmounted devices expanded
-					if (subject.equals(EventSubject.EVENT_DEVICE_REFRESH)) {
-						expand(false);
-					} else {
-						expand(true);
-					}
+					expand();
 					bAutoCollapse = false;
 					int i = jspTree.getVerticalScrollBar().getValue();
 					jspTree.getVerticalScrollBar().setValue(i);
@@ -1229,47 +1227,36 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	}
 
 	/**
-	 * Manages auto-expand
-	 * 
-	 */
-	private void expand(boolean bDependsOnMountState) {
+	 * Manages auto-expand Expand behavior is: 
+	 * <p>At startup, tree expand state
+	 * is the same that the one kept at last session (we use XML_EXPANDED stored
+	 * properties to restore it)</p>
+	 * <p>When mounting a device from the tree, the device node is expanded</p>
+	 * <p>When unmounting a device from the tree, the device node is collapsed</p>
+	 **/
+	private void expand() {
 		// begin by expanding all needed devices and directory, only after,
 		// collapse unmounted devices if required
 		for (int i = 0; i < jtree.getRowCount(); i++) {
 			Object o = jtree.getPathForRow(i).getLastPathComponent();
 			if (o instanceof DeviceNode) {
 				Device device = ((DeviceNode) o).getDevice();
-				boolean bExp = device.getBooleanValue(XML_EXPANDED);
-				if (bExp) {
+				if (device.getBooleanValue(XML_EXPANDED)) {
 					jtree.expandRow(i);
+				}
+				// Collapse node (useful to hide an live-unmounteddevice for ie
+				// )
+				else {
+					jtree.collapseRow(i);
 				}
 			} else if (o instanceof DirectoryNode) {
 				Directory dir = ((DirectoryNode) o).getDirectory();
-				boolean bExp = dir.getBooleanValue(XML_EXPANDED);
-				if (bExp) {
+				if (dir.getBooleanValue(XML_EXPANDED)) {
 					jtree.expandRow(i);
-				}
-			}
-		}
-		// Now collapse unmounted devices is needed, we have to do it after
-		// expanding previous files
-		for (int i = 0; i < jtree.getRowCount(); i++) {
-			Object o = jtree.getPathForRow(i).getLastPathComponent();
-			if (o instanceof DeviceNode) {
-				// we want to expand following user selection (exp attribute)
-				// except after a mount (force expand) or
-				// an unmount (force collapse)
-				if (bDependsOnMountState) {
-					if (((DeviceNode) o).getDevice().isMounted()) {
-						jtree.expandRow(i);
-					} else {
-						jtree.collapseRow(i);
-					}
 				}
 			}
 		}
 	}
-
 }
 
 /**
