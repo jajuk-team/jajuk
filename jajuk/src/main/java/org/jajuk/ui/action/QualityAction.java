@@ -24,7 +24,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.IconLoader;
@@ -54,9 +53,8 @@ public class QualityAction extends ActionBase {
 		sBody += "Version: " + JAJUK_VERSION + '\n';
 		sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
 		sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
-		Iterator it = Log.getSpool();
-		while (it.hasNext()) {
-			sBody += it.next().toString() + '\n';
+		for (String line : Log.getSpool()){
+			sBody += line + '\n';
 		}
 		// if it is a bug, copy logs into the clipboard
 		StringSelection data = new StringSelection(sBody);

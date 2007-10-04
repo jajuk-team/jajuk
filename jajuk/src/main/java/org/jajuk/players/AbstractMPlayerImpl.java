@@ -75,7 +75,6 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	 */
 	public void setVolume(float fVolume) {
 		this.fVolume = fVolume;
-		Log.debug("Volume=" + (int) (100 * fVolume));
 		sendCommand("volume " + (int) (100 * fVolume) + " 2");
 	}
 

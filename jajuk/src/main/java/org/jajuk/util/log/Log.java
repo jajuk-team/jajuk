@@ -19,6 +19,8 @@
  */
 package org.jajuk.util.log;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -26,9 +28,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Logging utility class, facade to logging system
@@ -399,8 +398,9 @@ public class Log implements ITechnicalStrings {
 	/**
 	 * @return Spool traces
 	 */
-	public static Iterator getSpool() {
-		return alSpool.iterator();
+	@SuppressWarnings("unchecked")
+	public static ArrayList<String> getSpool() {
+		return (ArrayList<String>)alSpool.clone();
 	}
 
 }

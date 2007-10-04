@@ -19,14 +19,6 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.FontManager;
-import org.jajuk.ui.FontManager.JajukFont;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -34,13 +26,20 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
+import org.jajuk.ui.FontManager.JajukFont;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 public class DebugLogAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
@@ -95,9 +94,8 @@ public class DebugLogAction extends ActionBase {
 				+ Util.getAnonymizedSystemProperties().toString() + "<br>"
 				+ Util.getAnonymizedJajukProperties().toString() + "</b></font><br>";
 		// Store last traces
-		Iterator it = Log.getSpool();
-		while (it.hasNext()) {
-			traces += it.next().toString() + "<br>";
+		for (String line : Log.getSpool()){
+			traces += line + "<br>";
 		}
 		traces += "</HTML>";
 		return traces;
