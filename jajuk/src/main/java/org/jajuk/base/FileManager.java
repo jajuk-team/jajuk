@@ -756,35 +756,6 @@ public class FileManager extends ItemManager implements Observer {
 	}
 
 	/**
-	 * Perform a search in all files names with given criteria
-	 * 
-	 * @param sCriteria
-	 * @return
-	 */
-	public TreeSet<SearchResult> search(String sCriteria) {
-		synchronized (FileManager.getInstance().getLock()) {
-			TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
-			String criteria = sCriteria.toLowerCase();
-			Iterator it = hmItems.values().iterator();
-			while (it.hasNext()) {
-				File file = (File) it.next();
-				if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) && // if
-						// search
-						// in
-						(!file.getDirectory().getDevice().isMounted() || file.getDirectory()
-								.getDevice().isRefreshing())) {
-					continue;
-				}
-				String sResu = file.getAny();
-				if (new StringBuffer(sResu.toLowerCase()).lastIndexOf(criteria) != -1) {
-					tsResu.add(new SearchResult(file, file.toStringSearch()));
-				}
-			}
-			return tsResu;
-		}
-	}
-
-	/**
 	 * @return Returns the bRateHasChanged.
 	 */
 	public boolean hasRateChanged() {

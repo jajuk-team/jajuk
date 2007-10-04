@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Convenient class to manage Tracks
@@ -656,5 +657,30 @@ public class TrackManager extends ItemManager implements Observer {
 			}
 		}
 		return tracks;
+	}
+	
+	/**
+	 * Perform a search in all files names with given criteria
+	 * 
+	 * @param sCriteria
+	 * @return a tree set of available files
+	 */
+	public TreeSet<SearchResult> search(String criteria) {
+		synchronized (TrackManager.getInstance().getLock()) {
+			TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
+			Iterator it = hmItems.values().iterator();
+			while (it.hasNext()) {
+				Track track = (Track) it.next();
+				File playable = track.getPlayeableFile(ConfigurationManager
+						.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+				if (playable != null) {
+					String sResu = track.getAny();
+					if (sResu.toLowerCase().indexOf(criteria.toLowerCase()) != -1) {
+						tsResu.add(new SearchResult(playable, playable.toStringSearch()));
+					}
+				}
+			}
+			return tsResu;
+		}
 	}
 }

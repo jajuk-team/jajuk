@@ -19,11 +19,6 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,6 +27,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
 
 /**
  * A track
@@ -125,6 +125,29 @@ public class Track extends LogicalItem implements Comparable {
 			sOut += '\n' + alFiles.get(i).toString();
 		}
 		return sOut;
+	}
+	
+	/**
+	 * @return a human representation of all concatenated properties
+	 */
+	public String getAny() {
+		// rebuild any
+		StringBuffer sb = new StringBuffer(100);
+		sb.append(super.getAny()); // add all files-based properties
+		// now add others properties
+		sb.append(getName());
+		sb.append(getStyle().getName2());
+		sb.append(getAuthor().getName2());
+		sb.append(getAlbum().getName2());
+		sb.append(getDuration());
+		sb.append(getRate());
+		sb.append(getValue(XML_TRACK_COMMENT));// custom properties now
+		sb.append(getValue(XML_TRACK_ORDER));// custom properties now
+		//Add all files absolute paths
+		for (File file:getFiles()){
+			sb.append(file.getAbsolutePath());
+		}
+		return sb.toString();
 	}
 
 	/**

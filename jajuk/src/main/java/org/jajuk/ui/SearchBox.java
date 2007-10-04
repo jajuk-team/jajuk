@@ -22,6 +22,7 @@ package org.jajuk.ui;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FontManager.JajukFont;
@@ -193,7 +194,7 @@ public class SearchBox extends JTextField implements KeyListener {
 			if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
 				// second test to get sure user didn't
 				// typed before entering this method
-				TreeSet<SearchResult> tsResu = FileManager.getInstance().search(sTyped.toString());
+				TreeSet<SearchResult> tsResu = TrackManager.getInstance().search(sTyped.toString());
 				// Add web radio names
 				tsResu.addAll(WebRadioManager.getInstance().search(sTyped.toString()));
 				if (tsResu.size() > 0) {
