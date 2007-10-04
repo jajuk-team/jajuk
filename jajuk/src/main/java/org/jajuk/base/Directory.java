@@ -255,9 +255,9 @@ public class Directory extends PhysicalItem implements Comparable {
 	 * @param bDeepScan:
 	 *            force files tag read
 	 * @param reporter
-	 * 	Refresh handler
+	 *            Refresh handler
 	 */
-	public void scan(boolean bDeepScan,RefreshReporter reporter) {
+	public void scan(boolean bDeepScan, RefreshReporter reporter) {
 		java.io.File[] files = getFio().listFiles(Util.fileFilter);
 		if (files == null || files.length == 0) { // none file, leave
 			return;
@@ -267,7 +267,7 @@ public class Directory extends PhysicalItem implements Comparable {
 				// Note date for file date property. CAUTION: do not try to
 				// check current date to accelerate refreshing if file has not
 				// been modified since last refresh as user can rename a parent
-				// directory and the files are not modified
+				// directory and the files times under it are not modified
 				long lastModified = files[i].lastModified();
 				// Check file name is correct (useful to fix name encoding
 				// issues)
@@ -317,13 +317,11 @@ public class Directory extends PhysicalItem implements Comparable {
 					long lQuality = tag.getQuality();
 					String sComment = tag.getComment();
 					long lOrder = tag.getOrder();
-					if (fileRef == null) {
+					if (fileRef == null && reporter != null) {
 						// stats, do it here and not
 						// before because we ignore the
 						// file if we cannot read it
-						if (reporter != null) {
-							reporter.notifyNewFile();
-						}
+						reporter.notifyNewFile();
 					}
 					Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
 					Style style = StyleManager.getInstance().registerStyle(sStyle);
@@ -331,9 +329,18 @@ public class Directory extends PhysicalItem implements Comparable {
 					Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
 					Type type = TypeManager.getInstance().getTypeByExtension(
 							Util.getExtension(files[i]));
+					//Store number of tracks in collection (note that the collection is locked)
+					long trackNumber = TrackManager.getInstance().getElementCount();
 					Track track = TrackManager.getInstance().registerTrack(sTrackName, album,
 							style, author, length, year, lOrder, type);
-					track.setAdditionDate(new Date());
+					//Update discovery date only if it is a new track
+					if (TrackManager.getInstance().getElementCount() > trackNumber){
+						//A new track has been created, we can safely update the track date
+						//We don't want to update date if the track is already known, even if 
+						//it is a nex file because a track can map several files and discovery date
+						//is a track attribute, not file one
+						track.setAdditionDate(new Date());
+					}
 					org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
 							files[i].getName(), this, track, files[i].length(), lQuality);
 					// Set file date
