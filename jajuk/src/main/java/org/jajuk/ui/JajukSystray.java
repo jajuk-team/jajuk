@@ -78,8 +78,6 @@ public class JajukSystray extends CommandJPanel {
 
 	public JMenuItem jmiMute;
 
-	JMenuItem jmiHelp;
-
 	JMenuItem jmiShuffle;
 
 	JMenuItem jmiBestof;
@@ -156,7 +154,6 @@ public class JajukSystray extends CommandJPanel {
 		jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
 		// force icon to be display in 16x16
 		jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
-		jmiHelp = new JMenuItem(ActionManager.getAction(JajukAction.HELP_REQUIRED));
 		jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
 
 		jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
@@ -230,8 +227,6 @@ public class JajukSystray extends CommandJPanel {
 		jmenu.add(jmiDJ);
 		jmenu.add(jmiNovelties);
 		jmenu.add(jmiFinishAlbum);
-		jmenu.addSeparator();
-		jmenu.add(jmiHelp);
 		jmenu.addSeparator();
 		jmenu.add(jmiMute);
 		jmenu.add(jmVolume);
@@ -456,7 +451,7 @@ public class JajukSystray extends CommandJPanel {
 					+ FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getId() + '.'
 					+ EXT_THUMB);
 			if (cover.canRead()) {
-				sOut += "<img src='file:" + cover.getAbsolutePath() + "'/><br>";
+				sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
 			}
 			// We use gray color for font because, due to a JDIC bug under
 			// Linux, the
