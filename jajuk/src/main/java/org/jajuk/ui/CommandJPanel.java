@@ -526,7 +526,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbWebRadio.setRollover(true);
 		jtbWebRadio.setFloatable(false);
 		ddbWebRadio.addToToolBar(jtbWebRadio);
-
+	
 		// Play toolbar
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setBorder(null);
@@ -565,11 +565,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// FormDebugPanel() );
 		CellConstraints cc = new CellConstraints();
 		// Add items
-		builder.add(jtbWebRadio, cc.xy(2, 2));
+		builder.add(jtbWebRadio, cc.xyw(2, 2, 3));//grid width = 3
 		builder.add(ambiencesCombo, cc.xy(2, 4));
 		builder.add(jtbSpecial, cc.xy(4, 4));
-		builder.add(jpSearch, cc.xy(8, 2));
-		builder.add(jpHistory, cc.xyw(10, 2, 3));
+		builder.add(jpSearch, cc.xyw(6, 2, 4));
+		builder.add(jpHistory, cc.xyw(10, 2, 4));
 		builder.add(jtbModes, cc.xy(8, 4));
 		builder.add(jtbPlay, cc.xy(10, 4));
 		builder.add(jpVolume, cc.xy(12, 4));
