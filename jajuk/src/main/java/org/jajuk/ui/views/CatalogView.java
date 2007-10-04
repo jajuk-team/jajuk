@@ -681,7 +681,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 			LocalAlbumThumbnail oldItem = CatalogView.this.item;
 			// reset paging
 			// page = 0;
-			float alignmentY = jpItems.getAlignmentY();
 			populateCatalog();
 			// try to restore previous item
 			if (oldItem != null) {
@@ -693,7 +692,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 					}
 				}
 			}
-			jpItems.setAlignmentY(alignmentY);
 		} else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
 			jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
 		}
