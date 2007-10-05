@@ -116,8 +116,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 		jbFileSelection.addActionListener(this);
 		JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
 		jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
-		workspacePath = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
-				.getInstance()), System.getProperty("user.home"));
+		workspacePath = new PathSelector(System.getProperty("user.home"));
 		workspacePath.setToolTipText(Messages.getString("FirstTimeWizard.7"));
 
 		jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));

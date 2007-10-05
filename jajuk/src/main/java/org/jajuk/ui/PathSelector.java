@@ -40,8 +40,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * This is a widgets that contains an editable textfield given a PATH
- * and a PATH selection button opening up a file selector
+ * This is a widgets that contains an editable textfield given a PATH and a PATH
+ * selection button opening up a file selector
  */
 public class PathSelector extends JPanel implements ITechnicalStrings {
 
@@ -56,25 +56,12 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 	 * 
 	 * @param filter
 	 *            the filter used to select the item
-	 * @param sDefault 
-	 * 			Initialized path, null of none
+	 * @param sDefault
+	 *            Initialized path, null of none
 	 */
 	public PathSelector(final JajukFileFilter filter, String sDefault) {
-		// Set layout
-		double[][] size = new double[][] { { 200, 10, TableLayout.PREFERRED },
-				{ TableLayout.PREFERRED } };
-		setLayout(new TableLayout(size));
-		// Build items
-		jtfUrl = new JTextField();
-		if (sDefault != null){
-			jtfUrl.setText(sDefault);
-		}
-		jtfUrl.setToolTipText(Messages.getString("Path"));
-		jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		button = new JButton(IconLoader.ICON_OPEN_FILE);
-		button.setToolTipText(Messages.getString("Path"));
+		initUI(sDefault);
 		button.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				JajukFileChooser jfc = new JajukFileChooser(filter);
 				jfc.setAcceptDirectories(true);
@@ -91,48 +78,102 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
 					java.io.File file = jfc.getSelectedFile();
 					String newPath = file.getAbsolutePath();
 					jtfUrl.setText(newPath);
-					//Call specific operation if URL changed
-					if (!previousURL.equals(newPath)){
+					// Call specific operation if URL changed
+					if (!previousURL.equals(newPath)) {
 						performOnURLChange();
 					}
 				}
 			}
-
 		});
-		//Add items
-		add(jtfUrl,"0,0");
-		add(button,"2,0");
+	}
+
+	/**
+	 * Construct a Path Selector for directory selection
+	 * 
+	 * @param sDefault
+	 *            Initialized path, null of none
+	 */
+	public PathSelector(String sDefault) {
+		initUI(sDefault);
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+						JajukFileFilter.DirectoryFilter.getInstance()));
+				jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
+				jfc.setMultiSelectionEnabled(false);
+				String sUrl = jtfUrl.getText();
+				if (!sUrl.equals("")) {
+					// if URL is already set, use it as current directory
+					jfc.setCurrentDirectory(new File(sUrl));
+				}
+				int returnVal = jfc.showOpenDialog(Main.getWindow());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					String previousURL = jtfUrl.getText();
+					java.io.File file = jfc.getSelectedFile();
+					String newPath = file.getAbsolutePath();
+					jtfUrl.setText(newPath);
+					// Call specific operation if URL changed
+					if (!previousURL.equals(newPath)) {
+						performOnURLChange();
+					}
+				}
+			}
+		});
 	}
 	
+	public void setURL(String sURL){
+		jtfUrl.setText(sURL);
+	}
+
+	private void initUI(String sDefault) {
+		// Set layout
+		double[][] size = new double[][] { { 200, 10, TableLayout.PREFERRED },
+				{ TableLayout.PREFERRED } };
+		setLayout(new TableLayout(size));
+		// Build items
+		jtfUrl = new JTextField();
+		if (sDefault != null) {
+			jtfUrl.setText(sDefault);
+		}
+		jtfUrl.setToolTipText(Messages.getString("Path"));
+		jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+		button = new JButton(IconLoader.ICON_OPEN_FILE);
+		button.setToolTipText(Messages.getString("Path"));
+		// Add items
+		add(jtfUrl, "0,0");
+		add(button, "2,0");
+
+	}
+
 	/**
 	 * 
 	 * @return URL
 	 */
-	public String getUrl(){
+	public String getUrl() {
 		return jtfUrl.getText();
 	}
-	
-	public void setEnabled(boolean b){
+
+	public void setEnabled(boolean b) {
 		jtfUrl.setEnabled(b);
-		button.setEnabled(b);								
-	
-	
+		button.setEnabled(b);
 	}
-	
+
 	/**
-	 * This method can be extended to perform specific actions when selected changes URL 
-	 *
+	 * This method can be extended to perform specific actions when selected
+	 * changes URL
+	 * 
 	 */
-	public void performOnURLChange(){
-		
+	public void performOnURLChange() {
+
 	}
-	
-	
+
 	/**
 	 * Set tooltip
+	 * 
 	 * @param s
 	 */
-	public void setToolTipText(String s){
+	public void setToolTipText(String s) {
 		jtfUrl.setToolTipText(s);
 		button.setToolTipText(s);
 	}
