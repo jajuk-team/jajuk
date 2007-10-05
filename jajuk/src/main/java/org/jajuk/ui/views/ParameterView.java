@@ -22,7 +22,6 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
-import java.util.ArrayList;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -33,7 +32,6 @@ import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -723,8 +721,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
 		jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		// Directory selection
-		psJajukWorkspace = new PathSelector(new JajukFileFilter(JajukFileFilter.DirectoryFilter
-				.getInstance()), Main.workspace);
+		psJajukWorkspace = new PathSelector(Main.workspace);
 		psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
 		jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
 		jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
@@ -991,7 +988,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		filter.setAcceptDirectories(true);
 		pathWatermarkFile = new PathSelector(filter, ConfigurationManager
 				.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)) {
-
 			private static final long serialVersionUID = 1L;
 
 			public void performOnURLChange() {
@@ -1000,7 +996,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				Util.setWatermark((String) scbWatermarks.getSelectedItem());
 			}
 		};
-
 		// Add items
 		jpUI.add(jcbVisibleAtStartup, "0,0");
 		jpUI.add(jcbShowBaloon, "0,1");
@@ -1376,11 +1371,28 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 				if (new java.io.File(psJajukWorkspace.getUrl() + '/'
 						+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).exists()) {
 					Messages.showErrorMessage(172);
+					psJajukWorkspace.setURL(Main.workspace);
 					return;
 				}
 			}
 			try {
-				Main.newWorkspace = psJajukWorkspace.getUrl();
+				String newWorkspace = psJajukWorkspace.getUrl();
+				// Copy current repository to the new workspace
+				// (keep old repository for security and for use
+				// by others users in multi-session mode)
+				Util.waiting();
+				java.io.File from = Util.getConfFileByPath("");
+				java.io.File dest = new java.io.File(newWorkspace + '/'
+						+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk"));
+				Util.copyRecursively(from, dest);
+				// OK, now write down the bootstrap file if
+				// everything's OK
+				java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
+				bw.write(newWorkspace);
+				bw.flush();
+				bw.close();
+				Util.stopWaiting();
 				// Display a warning message and restart Jajuk
 				Messages.showInfoMessage(Messages.getString("ParameterView.209"));
 				Main.exit(0);

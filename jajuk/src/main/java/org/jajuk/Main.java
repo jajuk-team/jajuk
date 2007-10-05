@@ -22,11 +22,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -179,9 +177,6 @@ public class Main implements ITechnicalStrings {
 
 	/** Workspace PATH* */
 	public static String workspace;
-
-	/** Next startup workspace PATH* */
-	public static String newWorkspace;
 
 	/** MPlayer status possible values * */
 	public static enum MPlayerStatus {
@@ -436,26 +431,6 @@ public class Main implements ITechnicalStrings {
 							}
 							/* release keystrokes resources */
 							ActionBase.cleanup();
-
-							/** Check for workspace path change */
-							if (newWorkspace != null) {
-								File from = Util.getConfFileByPath("");
-								File dest = new File(newWorkspace
-										+ '/'
-										+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION
-												: ".jajuk"));
-								// Copy current repository to the new workspace
-								// (keep old repository for security and for use
-								// by others users in multi-session mode)
-								Util.copyRecursively(from, dest);
-								// OK, now write down the bootstrap file if
-								// everything's OK
-								java.io.File bootstrap = new java.io.File(FILE_BOOTSTRAP);
-								BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-								bw.write(newWorkspace);
-								bw.flush();
-								bw.close();
-							}
 						}
 					} catch (Exception e) {
 						Log.error(e);
@@ -541,7 +516,8 @@ public class Main implements ITechnicalStrings {
 				// path to jajuk workspace
 				String sPath = br.readLine();
 				br.close();
-				if (new File(sPath).canRead()) {
+				//Check if the repository can be found
+				if (new File(sPath+ '/' + (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).canRead()) {
 					Main.workspace = sPath;
 				}
 			} catch (Exception e) {
