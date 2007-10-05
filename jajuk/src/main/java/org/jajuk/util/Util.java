@@ -690,7 +690,7 @@ public class Util implements ITechnicalStrings {
 		// Display a warning if copied file is void as it can happen with full
 		// disks
 		if (fNew.length() == 0) {
-			Log.warn("Copied file is void: "+ file.getAbsolutePath());
+			Log.warn("Copied file is void: " + file.getAbsolutePath());
 		}
 	}
 
@@ -1020,6 +1020,9 @@ public class Util implements ITechnicalStrings {
 
 	/**
 	 * Convert a list of files into a list of StackItem
+	 * <p>
+	 * null files are ignored
+	 * </p>
 	 * 
 	 * @param alFiles
 	 * @param bRepeat
@@ -1032,6 +1035,7 @@ public class Util implements ITechnicalStrings {
 		Iterator it = alFiles.iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+			if (file != null){
 			try {
 				StackItem item = new StackItem(file);
 				item.setRepeat(bRepeat);
@@ -1039,6 +1043,7 @@ public class Util implements ITechnicalStrings {
 				alOut.add(item);
 			} catch (JajukException je) {
 				Log.error(je);
+			}
 			}
 		}
 		return alOut;
