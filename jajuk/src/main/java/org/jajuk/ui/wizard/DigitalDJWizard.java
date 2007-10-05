@@ -910,8 +910,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 					setProblem(null);
 
 					// Fill wizard data
-					Object put = data.put(KEY_TRANSITIONS,
-							getCleanedTransitions());
+					data.put(KEY_TRANSITIONS,getCleanedTransitions());
 
 					// create a new void proportion if needed
 					if (!containsVoidItem()) {

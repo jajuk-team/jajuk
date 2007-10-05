@@ -50,13 +50,7 @@ import javax.swing.JTable;
  */
 public class PlaylistTransferHandler implements DropTargetListener, ITechnicalStrings {
 
-	private Component jpanel;
-
-	private DropTarget dropTarget; // drop target
-
 	public PlaylistTransferHandler(Component c, int action) {
-		this.jpanel = c;
-		dropTarget = new DropTarget(jpanel, action, this);
 	}
 
 	public final void dragExit(DragSourceEvent dse) {

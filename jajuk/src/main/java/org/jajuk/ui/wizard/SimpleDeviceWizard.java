@@ -119,12 +119,6 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		jbCancel.addActionListener(this);
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
-		double sizeRight[][] = {
-				{ 0.99, iX_SEPARATOR },
-				{ iY_SEPARATOR, TableLayout.PREFERRED, iY_SEPARATOR, TableLayout.PREFERRED,
-						iY_SEPARATOR, 20, 4 * iY_SEPARATOR, 40, iY_SEPARATOR,
-						TableLayout.PREFERRED, iY_SEPARATOR, 40 } };
-
 		FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
 		JPanel jpFileSelection = new JPanel();
 		jpFileSelection.setLayout(flSelection);

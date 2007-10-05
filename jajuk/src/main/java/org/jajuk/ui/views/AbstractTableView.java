@@ -52,14 +52,12 @@ import javax.swing.table.TableColumn;
 
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukTable;
@@ -74,8 +72,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ConditionalHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -237,39 +233,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				add(new JScrollPane(jtable), "0,1");
 				jtable.setDragEnabled(true);
 				jtable.setTransferHandler(new TableTransferHandler(jtable));
-				// Background color is not actually taken into account with
-				// Substance watermarks
-				jtable
-						.addHighlighter(new ConditionalHighlighter(Color.BLACK, Color.ORANGE, -1,
-								-1) {
-
-							@Override
-							protected boolean test(ComponentAdapter adapter) {
-								Item item = ((JajukTableModel) jtable.getModel())
-										.getItemAt(adapter.row);
-								// Perfs and safety
-								if (FIFO.getInstance().getCurrentItem() == null) {
-									return false;
-								}
-								Item itemCurrent = FIFO.getInstance().getCurrentItem().getFile();
-								// in physical table view
-								if (item instanceof File) {
-									File checked = null;
-									checked = (File) item;
-									return (itemCurrent.equals(checked));
-								}
-								// In tracks table view
-								else {
-									for (File checked : ((Track) item).getFiles()) {
-										if (itemCurrent.equals(checked)) {
-											return true;
-										}
-									}
-									return false;
-								}
-							}
-
-						});
 				jtable.addMouseListener(AbstractTableView.this);
 				jtable.showColumns(jtable.getColumnsConf());
 				applyFilter(null, null);

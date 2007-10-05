@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -183,7 +182,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		// Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
-		int iXspace = 1;
 		JToolBar jtb = new JToolBar();
 		jtb.setRollover(true);
 		jtb.setBorder(null);
@@ -314,17 +312,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		eventSubjectSet.add(EventSubject.EVENT_ZERO);
 		eventSubjectSet.add(EventSubject.EVENT_COVER_CHANGE);
 		return eventSubjectSet;
-	}
-
-	/**
-	 * Compute cover ID used to store conf
-	 * 
-	 * @return cover ID like "1"
-	 */
-	private String getCoverID() {
-		StringTokenizer st = new StringTokenizer(getID(), "/");
-		st.nextToken();
-		return st.nextToken();
 	}
 
 	/*

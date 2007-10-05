@@ -20,12 +20,12 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.util.Util;
-
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
+
+import org.jajuk.util.Util;
 
 /**
  * Menu item whish icon has a fixed size
@@ -33,8 +33,10 @@ import javax.swing.JMenuItem;
 public class SizedJMenuItem extends JMenuItem {
 	private static final long serialVersionUID = -3859493402696496345L;
 
+	@SuppressWarnings("unused")
 	private int width = 16;
 
+	@SuppressWarnings("unused")
 	private int height = 16;
 
 	/**

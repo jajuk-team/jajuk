@@ -34,7 +34,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

@@ -72,8 +72,6 @@ public class JajukPredicates {
 	 */
 	public static class ReadyFilePredicate implements Predicate {
 
-		private int iAge = 0;
-
 		/*
 		 * (non-Javadoc)
 		 * 

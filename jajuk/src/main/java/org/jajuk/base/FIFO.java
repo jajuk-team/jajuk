@@ -73,9 +73,6 @@ public class FIFO implements ITechnicalStrings {
 	/** First played file flag* */
 	private static boolean bFirstFile = true;
 
-	/** Current playlist if not queue */
-	private PlaylistFile playlist;
-
 	/** Whether we are currently playing radio */
 	private boolean playingRadio = false;
 
@@ -109,7 +106,6 @@ public class FIFO implements ITechnicalStrings {
 		alPlanned = new ArrayList<StackItem>(10);
 		JajukTimer.getInstance().reset();
 		index = 0;
-		playlist = null;
 		itemLast = null;
 	}
 
@@ -1122,15 +1118,6 @@ public class FIFO implements ITechnicalStrings {
 	 */
 	public synchronized static void setFirstFile(boolean bFirstFile) {
 		FIFO.bFirstFile = bFirstFile;
-	}
-
-	/**
-	 * Set current playlist
-	 * 
-	 * @param playlist
-	 */
-	public synchronized void setPlaylist(PlaylistFile playlist) {
-		this.playlist = playlist;
 	}
 
 	/**

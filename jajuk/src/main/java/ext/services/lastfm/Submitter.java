@@ -54,8 +54,6 @@ public class Submitter {
 
 	private static String submissionURL;
 
-	private static String interval;
-
 	private static ext.services.network.Proxy proxy;
 
 	private static void handshake() throws SubmitterException {
@@ -68,7 +66,6 @@ public class Submitter {
 			if (lines[0].equals("UPTODATE")) {
 				md5Challenge = lines[1];
 				submissionURL = lines[2];
-				interval = lines[3];
 			} else
 				throw new SubmitterException(lines[0]);
 		} catch (Exception e) {

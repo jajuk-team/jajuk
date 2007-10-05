@@ -384,7 +384,6 @@ public class JajukSystray extends CommandJPanel {
 					JajukSystray.super.update(event);
 				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
 						&& !Player.isPaused()) {
-					long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
 					int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
 					// Make sure to enable the slider
 					if (!jsPosition.isEnabled()) {

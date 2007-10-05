@@ -97,14 +97,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	/** Volume of created files during synchro */
 	long lVolume = 0;
 
-	/** Number of directories computes from reading the filesystem */
-	private int dirTotal = 0;
-
 	/** date last refresh */
 	long lDateLastRefresh;
-
-	// Refresh Options
-	private static final int OPTION_REFRESH_FAST = 0;
 
 	private static final int OPTION_REFRESH_DEEP = 1;
 
@@ -120,8 +114,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	public static final int TYPE_EXT_DD = 3;
 
 	public static final int TYPE_PLAYER = 4;
-
-	private int dirCount = 0;
 
 	RefreshReporter reporter;
 

@@ -42,9 +42,6 @@ public class PlaylistFileItem extends JPanel {
 	/** Associated playlist file */
 	private PlaylistFile plf;
 
-	/** Associated name */
-	private String sName;
-
 	/** Icon */
 	private JLabel jlIcon;
 

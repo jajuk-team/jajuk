@@ -20,24 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.PlaylistManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.PlaylistFileItem;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,6 +37,23 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PlaylistManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import ext.SwingWorker;
 
@@ -264,7 +263,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		plfi.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 		// set new item
 		this.plfiSelected = plfi;
-		FIFO.getInstance().setPlaylist(plfi.getPlaylistFile());
 		Properties properties = new Properties();
 		properties.put(DETAIL_ORIGIN, AbstractPlaylistRepositoryView.this);
 		properties.put(DETAIL_SELECTION, plfi);

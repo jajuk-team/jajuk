@@ -135,6 +135,8 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 	}
 
 	private static class XSeperator extends JSeparator {
+		private static final long serialVersionUID = -6249719411021239596L;
+
 		XSeperator() {
 			ComponentUI ui = XBasicSeparatorUI.createUI(this);
 			XSeperator.this.setUI(ui);

@@ -128,6 +128,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 		 * 
 		 * @return a panel containing all items
 		 */
+		@SuppressWarnings("unchecked")
 		private JScrollPane getPanel() {
 			widgets = new JComponent[radios.size()][3];
 			JPanel out = new JPanel();

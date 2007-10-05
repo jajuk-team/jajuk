@@ -181,7 +181,6 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 	public TreeSet<SearchResult> search(String sCriteria) {
 		synchronized (FileManager.getInstance().getLock()) {
 			TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
-			String criteria = sCriteria.toLowerCase();
 			for (WebRadio radio:webradios){
 				if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1){
 					tsResu.add(new SearchResult(radio,radio.toString()));

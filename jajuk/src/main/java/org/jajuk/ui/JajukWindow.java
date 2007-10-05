@@ -54,12 +54,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 
 	private static final long serialVersionUID = 1L;
 
-	/** Max width */
-	private int iMaxWidth;
-
-	/** Max height */
-	private int iMaxHeight;
-
 	/** Self instance */
 	private static JajukWindow jw;
 
@@ -89,8 +83,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true);
-		iMaxWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-		iMaxHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		setTitle(Messages.getString("JajukWindow.17"));
 		setIconImage(IconLoader.ICON_LOGO.getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

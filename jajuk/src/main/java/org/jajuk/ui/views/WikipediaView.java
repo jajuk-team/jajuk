@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -223,10 +222,6 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 				reset();
 				return;
 			}
-			// OK, so a file should be running, display author info
-			Properties details = ObservationManager
-					.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED);
-
 			// Launch search
 			launchSearch(false);
 		}

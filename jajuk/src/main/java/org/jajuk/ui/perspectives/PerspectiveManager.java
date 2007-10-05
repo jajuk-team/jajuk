@@ -60,12 +60,6 @@ public class PerspectiveManager implements ITechnicalStrings {
 	/** perspective */
 	private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
-	/** Date used by probe */
-	private static long lTime;
-
-	/** Temporary perspective name used when parsing */
-	private static String sPerspectiveName;
-
 	/**
 	 * Reset registered perspectives
 	 * 

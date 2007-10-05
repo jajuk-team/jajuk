@@ -19,13 +19,13 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.util.log.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.jajuk.util.log.Log;
 
 /**
  * Manages types ( mp3, ogg...) supported by jajuk
@@ -89,7 +89,8 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @param type
 	 */
-	public Type registerType(String sName, String sExtension, Class cPlayerImpl, Class cTagImpl) {
+	public Type registerType(String sName, String sExtension, Class cPlayerImpl,
+			Class cTagImpl) {
 		return registerType(sExtension, sName, sExtension, cPlayerImpl, cTagImpl);
 	}
 
@@ -98,8 +99,9 @@ public class TypeManager extends ItemManager {
 	 * 
 	 * @param type
 	 */
-	private Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
-			Class cTagImpl) {
+	@SuppressWarnings("unchecked")
+	private Type registerType(String sId, String sName, String sExtension,
+			Class cPlayerImpl, Class cTagImpl) {
 		synchronized (TrackManager.getInstance().getLock()) {
 			if (hmSupportedTypes.containsKey(sExtension)) {
 				// if the type is already in memory, use it
@@ -162,7 +164,7 @@ public class TypeManager extends ItemManager {
 
 	/**
 	 * Return all music types
-	 * 
+	 *
 	 * @return
 	 */
 	public ArrayList<Type> getAllMusicTypes() {

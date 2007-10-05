@@ -20,17 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.Track;
-import org.jdesktop.swingx.JXTree;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.CompoundHighlighter;
-import org.jdesktop.swingx.decorator.ConditionalHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
-
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -39,6 +28,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
+import org.jajuk.base.Item;
+import org.jdesktop.swingx.JXTree;
 
 /**
  * An abstract files or tracks tree view. Contains common methods
@@ -70,47 +62,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 		jtree = new JXTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled");  
 		jtree.getSelectionModel().setSelectionMode(
-				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		//Background color is not actually taken into account with sustance watermarks
-		Highlighter playing = new ConditionalHighlighter(Color.BLACK,Color.ORANGE,0,-1) {
-			
-			protected boolean needsHighlight(ComponentAdapter adapter){
-				// Perfs and safety
-				if (FIFO.getInstance().getCurrentItem() == null) {
-					return false;
-				}
-				// Compare current played track and the tested element
-				DefaultMutableTreeNode item = (DefaultMutableTreeNode) adapter
-						.getValue();
-				Item itemCurrent = FIFO.getInstance().getCurrentItem()
-						.getFile();
-				// in physical table view
-				if (item instanceof FileNode) {
-					File checked = null;
-					checked = ((FileNode) item).getFile();
-					return (itemCurrent.equals(checked));
-				}
-				// In tracks table view
-				else if (item instanceof TrackNode) {
-					Track track = ((TrackNode) item).getTrack();
-					for (File checked : track.getFiles()) {
-						if (itemCurrent.equals(checked)) {
-							return true;
-						}
-					}
-				}
-				return false;
-			}
-			
-			
-			@Override
-			protected boolean test(ComponentAdapter adapter) {
-				return true;
-			}
-		
-		};
-		CompoundHighlighter pipe = new CompoundHighlighter(new Highlighter[]{playing});
-		jtree.setHighlighters(pipe);
+		TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		return jtree;
 	}
 

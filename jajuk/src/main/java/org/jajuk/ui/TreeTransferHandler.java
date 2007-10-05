@@ -32,7 +32,6 @@ import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
-import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
@@ -59,11 +58,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 
 	private DragSource dragSource; // dragsource
 
-	private DropTarget dropTarget; // droptarget
-
 	private static DefaultMutableTreeNode draggedNode;
-
-	private DefaultMutableTreeNode draggedNodeParent;
 
 	private static BufferedImage image = null; // buff image
 
@@ -77,7 +72,6 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 		drawImage = drawIcon;
 		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(tree, action, this);
-		dropTarget = new DropTarget(tree, action, this);
 	}
 
 	/* Methods for DragSourceListener */
@@ -132,7 +126,6 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 		TreePath path = tree.getSelectionPath();
 		if (path != null) {
 			draggedNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-			draggedNodeParent = (DefaultMutableTreeNode) draggedNode.getParent();
 			if (drawImage) {
 				// get path bounds of selection path
 				Rectangle pathBounds = tree.getPathBounds(path);

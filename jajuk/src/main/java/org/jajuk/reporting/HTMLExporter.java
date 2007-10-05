@@ -49,7 +49,6 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
 	 * @see Exporter.processColllection
 	 */
 	public void processCollection(int type) throws Exception {
-		String content = null;
 		// Get an instance of the XMLExporter.
 		XMLExporter xmlExporter = (XMLExporter) ExporterFactory.createExporter("xml");
 		// If we are exporting the physical collection...

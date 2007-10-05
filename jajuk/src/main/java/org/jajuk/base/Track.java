@@ -57,9 +57,6 @@ public class Track extends LogicalItem implements Comparable {
 	/** Track year */
 	private final Year year;
 
-	/** Track order */
-	private final long lOrder;
-
 	/** Track type */
 	private final Type type;
 
@@ -104,7 +101,6 @@ public class Track extends LogicalItem implements Comparable {
 		this.year = year;
 		setProperty(XML_YEAR, year.getId().intern());
 		// Order
-		this.lOrder = lOrder;
 		setProperty(XML_TRACK_ORDER, lOrder);
 		// Rate
 		setProperty(XML_TRACK_RATE, 0l);

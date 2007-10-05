@@ -22,7 +22,6 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -92,14 +91,14 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
-import org.jdesktop.swingx.decorator.ConditionalHighlighter;
 
 /**
  * Adapter for playlists editors *
  */
 public class PlaylistEditorView extends ViewAdapter implements Observer, MouseListener,
 		ActionListener, ListSelectionListener, TableColumnModelListener {
+
+	private static final long serialVersionUID = -2851288035506442507L;
 
 	JPanel jpControl;
 
@@ -445,28 +444,6 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 		jtable.getColumnModel().getColumn(0).setPreferredWidth(20);
 		jtable.getColumnModel().getColumn(0).setMaxWidth(20);
 		jtable.getTableHeader().setPreferredSize(new Dimension(0, 20));
-		// Background color is not actually taken into account with substance
-		// watermarks
-		jtable.addHighlighter(new ConditionalHighlighter(Color.BLACK, Color.ORANGE, -1, -1) {
-
-			@Override
-			protected boolean test(ComponentAdapter adapter) {
-				StackItem item = getItem(adapter.row);
-				StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
-				if (itemCurrent != null && itemCurrent.equals(item)) {
-					// if it is the currently played track, change color
-					if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-						// for queue playlist, only highlight real current track
-						return (adapter.row == FIFO.getInstance().getIndex());
-					} else { // for others, we can't guess whish one to
-						// highlight if several times the same EVO
-						return true;
-					}
-				}
-				return false;
-			}
-
-		});
 		jtable.addMouseListener(this);
 		jtable.showColumns(jtable.getColumnsConf());
 		// add this listener after hiding columns
@@ -593,8 +570,6 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				try {
 					EventSubject subject = event.getSubject();
 					bReloading = true; // flag reloading to avoid wrong column
-					// events
-					Object origin = ObservationManager.getDetail(event, DETAIL_ORIGIN);
 					// changed of playlist
 					if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject)) {
 						// test mapping between editor and repository

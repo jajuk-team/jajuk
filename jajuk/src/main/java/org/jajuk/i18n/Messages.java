@@ -355,7 +355,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sMessage
 	 */
 	public static void showWarningMessage(String sMessage) {
-		DetailsMessageDialog message = new DetailsMessageDialog(sMessage,
+		new DetailsMessageDialog(sMessage,
 				getTitleForType(JOptionPane.WARNING_MESSAGE), JOptionPane.WARNING_MESSAGE, null,
 				null);
 	}

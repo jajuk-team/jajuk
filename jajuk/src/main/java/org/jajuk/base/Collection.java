@@ -514,6 +514,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				// Get year: we check number format mainly for the case of
 				// upgrade from <1.0
+				@SuppressWarnings("unused")
 				long lYear = 0;
 				try {
 					lYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_YEAR)));

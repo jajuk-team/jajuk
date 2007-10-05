@@ -346,7 +346,6 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	private void tagAuthor(Author author, int level) throws Exception {
 		String sAuthorID = author.getId();
 		String sAuthorName = Util.formatXML(author.getName2());
-		StringBuffer sb = new StringBuffer();
 		writer.write(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
 		writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sAuthorID) + NEWLINE);
 		writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName) + NEWLINE);

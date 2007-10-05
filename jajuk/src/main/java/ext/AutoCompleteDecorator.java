@@ -270,7 +270,6 @@ public class AutoCompleteDecorator {
 		// confusing
 		textComponent.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
-				JTextComponent textComponent = (JTextComponent) e.getSource();
 				adaptor.markEntireText();
 			}
 		});
