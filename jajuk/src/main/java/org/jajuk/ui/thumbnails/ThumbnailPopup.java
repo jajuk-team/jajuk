@@ -23,6 +23,8 @@ package org.jajuk.ui.thumbnails;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -38,6 +40,7 @@ import javax.swing.event.HyperlinkEvent.EventType;
 
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
@@ -111,7 +114,8 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 						items.add(track);
 						ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(
 								1);
-						toPlay.add(track.getPlayeableFile(true));
+						File file = track.getPlayeableFile(true);
+						toPlay.add(file);
 						FIFO.getInstance().push(
 								Util.createStackItems(Util.applyPlayOption(toPlay),
 										ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
@@ -133,6 +137,17 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 		jspText.getVerticalScrollBar().setValue(0);
 		jp.add(jspText, "0,0");
 		setContentPane(jp);
+		// Make sure to close this popup when it lost focus
+		jspText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				//Test if mouse is really outside the popup, for unknown reason,
+				//this event is catched when enterring the popup (W32)
+				if (!jspText.contains(e.getPoint())){
+					dispose();
+				}
+			}
+		});
 		// compute dialog position ( note that setRelativeTo
 		// is buggy and that we need more advanced positioning)
 		int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
