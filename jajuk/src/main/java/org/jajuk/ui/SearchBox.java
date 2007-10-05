@@ -20,16 +20,6 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.base.FileManager;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.FontManager.JajukFont;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioManager;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -57,6 +47,15 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionListener;
+
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.SearchResult.SearchResultType;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager.JajukFont;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioManager;
 
 /**
  * Search combo box. Editable combo with search features
@@ -129,7 +128,6 @@ public class SearchBox extends JTextField implements KeyListener {
 	 * @param lsl
 	 */
 	public SearchBox(ListSelectionListener lsl) {
-		super(7);
 		this.lsl = lsl;
 		timer.start();
 		addKeyListener(this);

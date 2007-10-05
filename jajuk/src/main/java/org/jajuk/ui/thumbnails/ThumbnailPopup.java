@@ -142,7 +142,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				//Test if mouse is really outside the popup, for unknown reason,
-				//this event is catched when enterring the popup (W32)
+				//this event is catched when enterring the popup (Windows)
 				if (!jspText.contains(e.getPoint())){
 					dispose();
 				}
