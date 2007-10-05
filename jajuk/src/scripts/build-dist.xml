@@ -7,7 +7,7 @@
 
 	<!--Distribution release-->
     <!-- please change the value in build.xml also... -->
-	<property name='version' value='1.4_RC8' />
+	<property name='version' value='1.4_RC9' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
