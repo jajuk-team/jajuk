@@ -90,6 +90,7 @@
 		<mkdir dir='${distdir}' />
 		<copy todir='${distdir}/lib'>
 			<fileset dir='${libdir}' />
+			<fileset file='${basedir}/src/legals/*.*' />
 		</copy>
 		<mkdir dir='${distdir}/bin' />
 		<mkdir dir='${distdir}/${classdir}' />
@@ -98,12 +99,14 @@
 		</copy>
 		<!--copy README and legals file in / for package distribution-->
 		<copy todir='${distdir}'>
-			<fileset file='${basedir}/src/legals/*.*' />
+			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
+			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
 		</copy>
 		<!--copy both README and LICENCE files as must also be in src/ for source distribution-->
 		<copy todir='${distdir}/src'>
-			<fileset file='${basedir}/src/legals/*.*' />
+			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
+			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
 		</copy>
 
@@ -331,7 +334,7 @@
 				<include name="Resources/**" />
 			</zipfileset>
 			<fileset file="${basedir}/src/doc/README.html" />
-			<fileset file="${basedir}/src/doc/LICENSE.txt" />
+			<fileset file="${basedir}/src/legals/LICENSE.txt" />
 		</zip>
 	</target>
 
@@ -474,6 +477,9 @@
 		<!--DO SOMETHING BETTER HERE -->
 		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib'>
 			<fileset file="${basedir}/lib/*.jar" />
+		</copy>
+		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib'>
+			<fileset file='${basedir}/src/legals/*.*' />
 		</copy>
 		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib/linux'>
 			<fileset file="${basedir}/lib/linux/*" />

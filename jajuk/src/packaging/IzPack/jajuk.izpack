@@ -33,7 +33,7 @@
     </locale>
     <native name='ShellLink.dll' type='izpack'/>
     <resources>
-        <res id='LicencePanel.licence' src='doc/LICENSE.txt'/>
+        <res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
         <res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
     	<res id='Installer.image.0' src='main/resources/images/border2.png' />
@@ -71,7 +71,8 @@
             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE.txt'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/DERIVATED.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
             <!-- Windows specific -->
             <file override='true' targetdir='$INSTALL_PATH' src='packaging/mplayer.exe'>
