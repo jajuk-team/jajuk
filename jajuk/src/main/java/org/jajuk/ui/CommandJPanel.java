@@ -334,6 +334,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// we use a combo box model to make sure we get good performances after
 		// rebuilding the entire model like after a refresh
 		jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
+		// None selection because if we start in stop mode, a selection of the
+		// first item will not launch the track because the selected item is
+		// still the same and no action event is thrown (Java >= 1.6)
+		jcbHistory.setSelectedItem(null);
 		int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
 		// size of popup
 		jcbHistory.setPopupWidth(iWidth);
@@ -526,7 +530,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbWebRadio.setRollover(true);
 		jtbWebRadio.setFloatable(false);
 		ddbWebRadio.addToToolBar(jtbWebRadio);
-	
+
 		// Play toolbar
 		JToolBar jtbPlay = new JToolBar();
 		jtbPlay.setBorder(null);
@@ -565,7 +569,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		// FormDebugPanel() );
 		CellConstraints cc = new CellConstraints();
 		// Add items
-		builder.add(jtbWebRadio, cc.xyw(2, 2, 3));//grid width = 3
+		builder.add(jtbWebRadio, cc.xyw(2, 2, 3));// grid width = 3
 		builder.add(ambiencesCombo, cc.xy(2, 4));
 		builder.add(jtbSpecial, cc.xy(4, 4));
 		builder.add(jpSearch, cc.xyw(6, 2, 4));
