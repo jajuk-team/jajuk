@@ -858,6 +858,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			new Thread() {
 				public void run() {
 					// force refresh
+					if (getPerspective() == null)
+						dirReference = null;
 					update(new Event(EventSubject.EVENT_COVER_REFRESH, ObservationManager
 							.getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
 				}
