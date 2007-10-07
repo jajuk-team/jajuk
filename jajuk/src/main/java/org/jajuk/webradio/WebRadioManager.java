@@ -23,6 +23,7 @@ package org.jajuk.webradio;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.WebRadio;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -171,7 +172,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 			Log.error(e);
 		}
 	}
-	
+
 	/**
 	 * Perform a search in all files names with given criteria
 	 * 
@@ -181,9 +182,9 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 	public TreeSet<SearchResult> search(String sCriteria) {
 		synchronized (FileManager.getInstance().getLock()) {
 			TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
-			for (WebRadio radio:webradios){
-				if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1){
-					tsResu.add(new SearchResult(radio,radio.toString()));
+			for (WebRadio radio : webradios) {
+				if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1) {
+					tsResu.add(new SearchResult(radio, radio.toString()));
 				}
 			}
 			return tsResu;
@@ -225,6 +226,19 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 
+	 * @return Current webradio tooltip text
+	 */
+	public static String getCurrentWebRadioTooltip() {
+		String tooltipWebRadio = Messages.getString("CommandJPanel.25");
+		String defaultRadio = ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO);
+		if (WebRadioManager.getInstance().getWebRadioByName(defaultRadio) != null) {
+			tooltipWebRadio = "<html>" + tooltipWebRadio + "<p><b>" + defaultRadio + "</b></html>";
+		}
+		return tooltipWebRadio;
 	}
 
 }

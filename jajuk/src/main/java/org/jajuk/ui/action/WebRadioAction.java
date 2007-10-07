@@ -36,12 +36,7 @@ public class WebRadioAction extends ActionBase {
 
 	WebRadioAction() {
 		super(Messages.getString("CommandJPanel.25"), IconLoader.ICON_WEBRADIO, true);
-		String tooltipWebRadio = Messages.getString("CommandJPanel.25");
-		String defaultRadio = ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO);
-		if (WebRadioManager.getInstance().getWebRadioByName(defaultRadio) != null) {
-			tooltipWebRadio = "<html>" + tooltipWebRadio + "<p><b>" + defaultRadio + "</b></html>";
-		}
-		setShortDescription(tooltipWebRadio);
+		setShortDescription(WebRadioManager.getCurrentWebRadioTooltip());
 	}
 
 	public void perform(ActionEvent evt) throws JajukException {

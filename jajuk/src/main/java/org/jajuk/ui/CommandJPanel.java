@@ -941,6 +941,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	 */
 	private void populateWebRadios() {
 		try {
+			// Update button tooltip
+			ddbWebRadio.setToolTipText(WebRadioManager.getCurrentWebRadioTooltip());
 			// Clear previous elements
 			popupWebRadio.removeAll();
 			// Add configure radios item
