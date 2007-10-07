@@ -41,8 +41,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 /**
  * Jajuk player implementation based on javazoom BasicPlayer
  */
-public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
-		BasicPlayerListener {
+public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, BasicPlayerListener {
 
 	/** Current player */
 	private BasicPlayer player;
@@ -94,8 +93,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
 	 *      float)
 	 */
-	public void play(org.jajuk.base.File file, float fPosition, long length,
-			float fVolume) throws Exception {
+	public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
+			throws Exception {
 		this.fPos = 0;
 		this.lTime = 0;
 		this.mPlayingData = null;
@@ -106,11 +105,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 		this.bHasBeenRated = false;
 		// instanciate player is needed
 		if (player == null) {
-			BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager
-					.getInt(CONF_BUFFER_SIZE);
+			BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager.getInt(CONF_BUFFER_SIZE);
 			player = new BasicPlayer();
-			player.setLineBufferSize(ConfigurationManager
-					.getInt(CONF_AUDIO_BUFFER_SIZE));
+			player.setLineBufferSize(ConfigurationManager.getInt(CONF_AUDIO_BUFFER_SIZE));
 			player.addBasicPlayerListener(this); // set listener
 		}
 		// make sure to stop any current player
@@ -121,9 +118,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 		if (fPosition > 0.0f) {
 			// (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
 			// test if this is a audio format supporting seeking
-			if (TypeManager.getInstance().getTypeByExtension(
-					Util.getExtension(file.getIO())).getBooleanValue(
-					XML_TYPE_SEEK_SUPPORTED)) {
+			if (TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getIO()))
+					.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)) {
 				seek(fPosition);
 			}
 		}
@@ -207,18 +203,17 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 		}
 		// leave if already seeking
 		if (player != null && getState() == BasicPlayer.SEEKING) {
-			Log.warn("Already seeking, leaving"); 
+			Log.warn("Already seeking, leaving");
 			return;
 		}
-		if (mPlayingData.containsKey("audio.type") && player != null) { 
+		if (mPlayingData.containsKey("audio.type") && player != null) {
 			Type type = TypeManager.getInstance().getTypeByTechDesc(
-					(String) mPlayingData.get("audio.type")); 
+					(String) mPlayingData.get("audio.type"));
 			// Seek support for MP3. and WAVE
 			if (type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
-					&& mPlayingData.containsKey("audio.length.bytes")) {   
-				int iAudioLength = ((Integer) mPlayingData
-						.get("audio.length.bytes")).intValue(); 
-				long skipBytes = Math.round(iAudioLength * posValue); 
+					&& mPlayingData.containsKey("audio.length.bytes")) {
+				int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
+				long skipBytes = Math.round(iAudioLength * posValue);
 				try {
 					player.seek(skipBytes);
 					setVolume(fVolume); // need this because a seek reset volume
@@ -227,7 +222,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 					return;
 				}
 			} else {
-				Messages.showErrorMessage(126); 
+				Messages.showErrorMessage(126);
 				return;
 			}
 		}
@@ -261,15 +256,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 			java.util.Map mProperties) {
 		if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
 			lDateLastUpdate = System.currentTimeMillis();
-			this.iFadeDuration = 1000 * ConfigurationManager
-					.getInt(CONF_FADE_DURATION);
+			this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
 			if (bFading) {
 				// computes the volume we have to sub to reach zero at last
 				// progress()
-				float fVolumeStep = fadingVolume
-						* ((float) 500 / iFadeDuration);
+				float fVolumeStep = fadingVolume * ((float) 500 / iFadeDuration);
 				// divide step by two to make fade softer
-				float fNewVolume = fVolume - (fVolumeStep / 2); 
+				float fNewVolume = fVolume - (fVolumeStep / 2);
 				// decrease volume by n% of initial volume
 				if (fNewVolume < 0) {
 					fNewVolume = 0;
@@ -282,13 +275,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				return;
 			}
 			// computes read time
-			if (mPlayingData.containsKey("audio.length.bytes")) { 
-				int byteslength = ((Integer) mPlayingData
-						.get("audio.length.bytes")).intValue(); 
-				fPos = (byteslength != 0) ? (float) iBytesread
-						/ (float) byteslength : 0;
-				ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,
-						Float.toString(fPos));
+			if (mPlayingData.containsKey("audio.length.bytes")) {
+				int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
+				fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
+				ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
 				lTime = (long) (lDuration * fPos);
 			}
 			// check if the track get rate increasing level (INC_RATE_TIME
@@ -298,7 +288,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				// inc rate by 1 if file is played at least INC_RATE_TIME secs
 				fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
 				// alert bestof playlist something changed
-				FileManager.getInstance().setRateHasChanged(true); 
+				FileManager.getInstance().setRateHasChanged(true);
 				bHasBeenRated = true;
 			}
 			// Cross-Fade test
@@ -306,13 +296,20 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 				// if memory is low, we force full gc to avoid blanck during
 				// fade
 				if (Util.needFullFC()) {
-					Log.debug("Need full gc, no cross fade"); 
+					Log.debug("Need full gc, no cross fade");
+				}
+				// Ugly hack to disable cross fade for APE files due to an
+				// entagged issue, ape length is 0 so tracks start fading
+				// when starting
+				else if (fCurrent.getType().equals(
+						TypeManager.getInstance().getTypeByExtension("ape"))) {
+					Log.debug("APE file, no cross fade");
 				} else {
 					bFading = true;
 					this.fadingVolume = fVolume;
-					//we have to launch the next file from another thread to
-					 // avoid stopping current track (perceptible during
-					 // player.open() for remote files)
+					// we have to launch the next file from another thread to
+					// avoid stopping current track (perceptible during
+					// player.open() for remote files)
 					new Thread() {
 						public void run() {
 							FIFO.getInstance().finished();
@@ -338,7 +335,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 */
 	public void stateUpdated(BasicPlayerEvent bpe) {
 		if (bpe.getCode() != 10) { // do not trace volume changes
-			Log.debug("Player state changed: " + bpe); 
+			Log.debug("Player state changed: " + bpe);
 		}
 		switch (bpe.getCode()) {
 		case BasicPlayerEvent.EOM:
@@ -366,23 +363,27 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings,
 	 */
 	public void setController(BasicController arg0) {
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
 	 */
 	public long getCurrentLength() {
 		return lDuration;
 	}
 
-     public int Scrobble(){
-         return 1;
-  }
+	public int Scrobble() {
+		return 1;
+	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
 	 */
 	public void play(WebRadio radio, float fVolume) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
