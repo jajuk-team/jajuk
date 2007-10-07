@@ -16,15 +16,10 @@
 	<stream name='Drone Zone [Ambient]' url='http://somafm.com/dronezone.pls'/>
 	<stream name='Tags Trance Trip [Trance]' url='http://somafm.com/tagstrance.pls'/>
 	<stream name='Indie Pop Rocks [Indie]' url='http://www.somafm.com/indiepop.pls'/>
-	<stream name='Kohina [Computer-Music]' url='http://la.campus.ltu.se:8000/stream.ogg.m3u'/>
- 	<stream name='Mostly Classical [Classical]' url='http://www.sky.fm/mp3/classical.pls'/>
+	<stream name='Mostly Classical [Classical]' url='http://www.sky.fm/mp3/classical.pls'/>
 	<stream name='MTH.House [House]' url='http://stream.mth-house.de:8500/listen.pls'/>
- 	<stream name='Nectarine Demoscene Radio [Computer-Music]' url='http://nectarine.sik.fi:8002/live.mp3.m3u'/>
  	<stream name='Philosomatika [Psytrance]' url='http://philosomatika.com/Philosomatika.pls'/>
- 	<stream name='Proton Radio [House/Dance]' url='http://protonradio.com/proton.m3u'/>
  	<stream name='Pure DJ [Trance]' url='http://www.puredj.com/etc/pls/128K.pls'/>
- 	<stream name='Radio.BMJ.net [Trance/Livesets]' url='http://radio.bmj.net:8000/listen.pls'/>
-	<stream name='Radio Paradise [Rock/Pop/Alternative]' url='http://www.radioparadise.com/musiclinks/rp_128.m3u'/>
  	<stream name='Raggakings [Reggae]' url='http://www.raggakings.net/listen.m3u'/>
  	<stream name='Secret Agent [Downtempo/Lounge]' url='http://somafm.com/secretagent.pls'/>
  	<stream name='SLAY Radio [C64 Remixes]' url='http://sc.slayradio.org:8000/listen.pls'/>
