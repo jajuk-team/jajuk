@@ -47,7 +47,7 @@ public class NetworkUtils implements ITechnicalStrings {
 	}
 
 	public static HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
-		Log.debug("Opening Connection With: " + url);
+		Log.debug("Opening Connection With: {{" + url+"}}");
 		HttpURLConnection connection;
 		if (proxy == null)
 			connection = (HttpURLConnection) url.openConnection();

@@ -133,7 +133,7 @@ public class Player implements ITechnicalStrings {
 			Properties pDetails = new Properties();
 			pDetails.put(DETAIL_CONTENT, file);
 			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
-			Log.error(7, Messages.getString("Player.0") + fCurrent.getAbsolutePath() + "}}", t);
+			Log.error(7, Messages.getString("Player.0") + "{{" +fCurrent.getAbsolutePath() + "}}", t);
 			// process playing error asynchronously to avoid loop problems
 			// when cascading errors
 			new Thread() {
