@@ -40,8 +40,6 @@ import info.clearthought.layout.TableLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -195,14 +193,6 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 					public void caretUpdate(CaretEvent arg0) {
 						int index = getWidgetIndex(widgets, (JComponent) arg0.getSource());
 						String s = jtfURL.getText();
-						// Check the URL
-						URL url = null;
-						try {
-							url = new URL(s);
-						} catch (MalformedURLException e) {
-							setProblem(Messages.getString("RadioWizard.10"));
-							return;
-						}
 						// reset previous problems
 						if (s.length() == 0
 								|| ((JTextField) widgets[index][1]).getText().length() == 0) {
@@ -211,7 +201,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 							setProblem(null);
 							jtfURL.setToolTipText(s);
 						}
-						radios.get(index).setUrl(url);
+						radios.get(index).setUrl(s);
 					}
 				});
 				widgets[index][2] = jtfURL;

@@ -165,7 +165,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 			if (XML_STREAM.equals(sQName)) {
 				String name = attributes.getValue(attributes.getIndex(XML_NAME));
 				String url = attributes.getValue(attributes.getIndex(XML_URL));
-				WebRadio radio = new WebRadio(name, new URL(url));
+				WebRadio radio = new WebRadio(name, url);
 				webradios.add(radio);
 			}
 		} catch (Exception e) {

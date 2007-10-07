@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.net.URL;
 
 /**
  * A web Radio
@@ -29,9 +28,9 @@ public class WebRadio implements Comparable {
 
 	private String name;
 
-	private URL url;
+	private String url;
 
-	public WebRadio(String name, URL url) {
+	public WebRadio(String name, String url) {
 		this.name = name;
 		this.url = url;
 	}
@@ -40,7 +39,7 @@ public class WebRadio implements Comparable {
 		return this.name;
 	}
 
-	public URL getUrl() {
+	public String getUrl() {
 		return this.url;
 	}
 
@@ -67,7 +66,7 @@ public class WebRadio implements Comparable {
 		this.name = name;
 	}
 
-	public void setUrl(URL url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 

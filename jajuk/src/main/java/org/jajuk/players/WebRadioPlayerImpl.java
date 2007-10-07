@@ -83,7 +83,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 		this.bOpening = true;
 		this.bEOF = false;
 		// Start
-		ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl().toExternalForm()));
+		ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl()));
 		Log.debug("Using this Mplayer command: " + pb.command());
 		// Set all environment variables format: var1=xxx var2=yyy
 		try {
