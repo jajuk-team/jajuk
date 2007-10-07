@@ -202,10 +202,10 @@ echo " "
 echo "The following must be made by hand:"
 echo "=> Any changes made? compare with previous SVN: $BUILD_DIR/complete-svn.diff" 
 diff -u -r $SVN_TMP $SVN_2BC > $BUILD_DIR/complete-svn.diff
-echo "=> Do we have new images, check in $BUILD_DIR/file-list-svn.diff "
+echo "=> Do we have new images or html files, check in $BUILD_DIR/file-list-svn.diff "
 check_for_new_files
-echo "     To add new images, use:"
-echo "       svn add $SVN_2BC/<image>"
+echo "     To add new images, use one by one... :"
+echo "       svn add $SVN_2BC/file.jpg"
 echo "=> Did everything worked well? then you may want to commit:"
 echo "    svn --username fsck222 commit $SVN_2BC -m \"manual update from wiki2html\" "
 echo "=> You can safely clean (if you want): rm -rf $BUILD_DIR "
