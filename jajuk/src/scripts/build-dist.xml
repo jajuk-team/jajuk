@@ -6,8 +6,8 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release-->
-    <!-- please change the value in build.xml also... -->
-	<property name='version' value='1.4_RC9' />
+	<!-- please change the value in build.xml also... -->
+	<property name='version' value='1.4_RC9-t1' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -291,8 +291,9 @@
 
 
 	<!--IzPack package creation -->
-	<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
+
 	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar,package_helpjar'>
+		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />
 		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
@@ -346,8 +347,8 @@
 
 
 	<!-- Windows EXE creation-->
-	<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
 	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_helpjar'>
+		<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
 		<echo message='Create Jajuk Windows executable file' />
 		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
 	</target>
@@ -597,8 +598,8 @@
 
 
 	<!--jarbundler Mac OS X package creation -->
-	<taskdef name='jarbundler' classpath='${conf_jarbundler}/jarbundler-1.9.jar' classname="net.sourceforge.jarbundler.JarBundler" />
 	<target name='jarbundler' depends='package_jar,package_helpjar'>
+		<taskdef name='jarbundler' classpath='${conf_jarbundler}/jarbundler-1.9.jar' classname="net.sourceforge.jarbundler.JarBundler" />
 		<echo message='jarbundler' />
 		<mkdir dir='${distdir}/jarbundler/' />
 		<jarbundler dir="${distdir}/jarbundler/" name="Jajuk" mainclass="org.jajuk.Main" jar="${distdir}/bin/${jarname}" icon="${conf_izpackdir}/bin/icons/izpack.icns" jvmversion="1.4+" version="${version}" infostring="Jajuk" stubfile="${basedir}/src/packaging/jarbundler/JavaApplicationStub" build="${version}" vmoptions="-client -Xms35M -Xmx512M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12 -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT" />
