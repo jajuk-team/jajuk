@@ -5,7 +5,9 @@
 
 <map version="1.0">
         <mapID target="editing_tags_and_properties"  url="html/editing_tags_and_properties.html" />
+        <mapID target="english_jajuk_faq" url="html/english_jajuk_faq.html" />
         <mapID target="files_organizer" url="html/files_organizer.html" />
+        <mapID target="jajuk_dependencies" url="html/jajuk_dependencies.html" />
         <mapID target="keys_shortcuts" url="html/keys_shortcuts.html" />
         <mapID target="performance_tips" url="html/performance_tips.html" />
         <mapID target="perspectives_and_views" url="html/perspectives_and_views.html" />

@@ -42,6 +42,8 @@
 	<tocitem text="Technical"  expand="true">
 			<tocitem text="Supported formats" target="supported_formats"/>
 			<tocitem text="Performance tips" target="performance_tips"/>
+			<tocitem text="Jajuk Dependencies" target="jajuk_dependencies"/>
+			<tocitem text="English Jajuk FAQ" target="english_jajuk_faq"/>
 	</tocitem>
 	</tocitem>
 </toc>
