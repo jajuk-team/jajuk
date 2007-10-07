@@ -1073,7 +1073,7 @@ public class Main implements ITechnicalStrings {
 					Collection.load(file);
 					bParsingOK = true;
 					int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
-							+ file.getAbsolutePath(), JOptionPane.WARNING_MESSAGE);
+							+ file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION);
 					if (i == JOptionPane.CANCEL_OPTION) {
 						System.exit(-1);
 					}

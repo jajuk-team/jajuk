@@ -355,9 +355,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * @param sMessage
 	 */
 	public static void showWarningMessage(String sMessage) {
-		new DetailsMessageDialog(sMessage,
-				getTitleForType(JOptionPane.WARNING_MESSAGE), JOptionPane.WARNING_MESSAGE, null,
-				null);
+		new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
+				JOptionPane.WARNING_MESSAGE, null, null);
 	}
 
 	/**
@@ -524,6 +523,8 @@ class ConfirmDialog extends JajukDialog {
 		Object[] options = null;
 		if (iType == JOptionPane.DEFAULT_OPTION) {
 			options = new String[] { Messages.getString("Close") };
+		} else if (iType == JOptionPane.OK_CANCEL_OPTION) {
+			options = new String[] { Messages.getString("ok"), Messages.getString("Cancel") };
 		} else {
 			options = new String[] { Messages.getString("yes"), Messages.getString("no"),
 					Messages.getString("Cancel") };
