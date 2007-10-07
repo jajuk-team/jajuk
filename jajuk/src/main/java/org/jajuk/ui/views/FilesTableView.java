@@ -42,7 +42,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.JMenuItem;
@@ -205,7 +204,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void othersActionPerformed(final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		new Thread() {
 			public void run() {
 				// computes selected files
@@ -222,10 +221,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 					} else {
 						alFilesToPlay2.add(file);
 					}
-					Iterator it = alFilesToPlay2.iterator();
-					while (it.hasNext()) { // each selected file from the
-						// same directory
-						File file2 = (File) it.next();
+					for (File file2:alFilesToPlay2){
 						if (!alFilesToPlay.contains(file2)) {
 							alFilesToPlay.add(file2);
 						}

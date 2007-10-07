@@ -44,7 +44,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.JMenuItem;
@@ -217,7 +216,7 @@ public class TracksTableView extends AbstractTableView {
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void othersActionPerformed(final ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		new Thread() {
 			public void run() {
 				// computes selected tracks
@@ -242,11 +241,9 @@ public class TracksTableView extends AbstractTableView {
 					} else {
 						alTracks.add(track);
 					}
-					Iterator it = alTracks.iterator();
-					while (it.hasNext()) {
+					for (Track track2:alTracks){
 						// each selected track and tracks from same album author
 						// if required
-						Track track2 = (Track) it.next();
 						File file = track2.getPlayeableFile(false);
 						if (file != null && !alFilesToPlay.contains(file)) {
 							alFilesToPlay.add(file);

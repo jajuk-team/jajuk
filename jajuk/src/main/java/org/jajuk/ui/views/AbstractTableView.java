@@ -20,10 +20,34 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StyleManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukTable;
+import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.JajukToggleButton;
+import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -49,31 +73,6 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
-
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StyleManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukTable;
-import org.jajuk.ui.JajukTableModel;
-import org.jajuk.ui.JajukToggleButton;
-import org.jajuk.ui.TableTransferHandler;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
 
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
@@ -264,17 +263,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		return eventSubjectSet;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(final ActionEvent e) {
-		// not in a thread because it is always called inside a thread created
-		// from sub-classes
-		othersActionPerformed(e);
-	}
-
 	/**
 	 * Apply a filter, to be implemented by files and tracks tables, alter the
 	 * model
@@ -290,7 +278,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
 			@Override
 			public void finished() {
-				jtable.packAll();
 				model.addTableModelListener(AbstractTableView.this);
 				model.fireTableDataChanged();
 				// Force table repaint (for instance for rating stars update)
@@ -300,13 +287,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		};
 		sw.start();
 	}
-
-	/**
-	 * Child actions
-	 * 
-	 * @param ae
-	 */
-	abstract void othersActionPerformed(ActionEvent ae);
 
 	/*
 	 * (non-Javadoc)
