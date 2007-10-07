@@ -28,7 +28,7 @@
     <mapID target="performances_generales" url="html/performances_generales.html" />
     <mapID target="raccourcis_clavier" url="html/raccourcis_clavier.html" />
     <mapID target="reorganisation_des_fichiers" url="html/reorganisation_des_fichiers.html" />
-    <mapID target="table_of_contents" url="html/table_des_matieres.html" />
+    <mapID target="table_des_matieres" url="html/table_des_matieres.html" />
     <mapID target="utilisation_des_djs_et_des_ambiances" url="html/utilisation_des_djs_et_des_ambiances.html" />
     <mapID target="utiliser_des_supports" url="html/utiliser_des_supports.html" />
     <mapID target="utiliser_les_attributs_personnels" url="html/utiliser_les_attributs_personnels.html" />
