@@ -20,6 +20,10 @@
 
 package org.jajuk.ui;
 
+import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
+import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
+import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -349,6 +353,10 @@ public class JajukSystray extends CommandJPanel {
 					if (radio != null) {
 						trayIcon.setToolTip(radio.getName());
 					}
+					//Enable webradio navigation actions
+					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+					ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+					ActionManager.getAction(STOP_TRACK).setEnabled(true);
 				}
 
 				else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
@@ -417,7 +425,7 @@ public class JajukSystray extends CommandJPanel {
 							true));
 					jcbmiShowBalloon
 							.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
-				}
+				} 
 			}
 
 		});
