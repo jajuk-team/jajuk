@@ -1,4 +1,4 @@
-This is the Jajuk SVN repository README file. 
+This is the full Jajuk SVN repository 
 
 To compile Jajuk from the repository:
 $ cd src/scripts                  
