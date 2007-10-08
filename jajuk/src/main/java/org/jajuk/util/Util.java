@@ -1790,21 +1790,21 @@ public class Util implements ITechnicalStrings {
 		String sValue = null;
 		// Check Author name
 		if (sPattern.contains(PATTERN_ARTIST)) {
-			sValue = track.getAuthor().getName().replace("[/\\:]", "-");
+			sValue = track.getAuthor().getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			if (!sValue.equals(UNKNOWN_AUTHOR)) {
-				out = out.replace(PATTERN_ARTIST, AuthorManager.format(sValue));
+				out = out.replaceAll(PATTERN_ARTIST, AuthorManager.format(sValue));
 			} else {
 				if (bMandatory) {
 					throw new JajukException(150, file.getAbsolutePath());
 				} else {
-					out = out.replace(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
+					out = out.replaceAll(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
 				}
 			}
 		}
 		// Check Style name
 		if (sPattern.contains(PATTERN_GENRE)) {
-			sValue = track.getStyle().getName().replace("[/\\:]", "-");
+			sValue = track.getStyle().getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			if (!sValue.equals(UNKNOWN_STYLE)) {
 				out = out.replace(PATTERN_GENRE, StyleManager.format(sValue));
@@ -1818,7 +1818,7 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Album Name
 		if (sPattern.contains(PATTERN_ALBUM)) {
-			sValue = track.getAlbum().getName().replace("[/\\:]", "-");
+			sValue = track.getAlbum().getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			if (!sValue.equals(UNKNOWN_ALBUM)) {
 				out = out.replace(PATTERN_ALBUM, AlbumManager.format(sValue));
@@ -1859,7 +1859,7 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Track name
 		if (sPattern.contains(PATTERN_TRACKNAME)) {
-			sValue = track.getName().replace("[/\\:]", "-");
+			sValue = track.getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			out = out.replace(PATTERN_TRACKNAME, sValue);
 		}

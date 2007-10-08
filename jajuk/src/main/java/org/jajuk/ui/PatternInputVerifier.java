@@ -20,15 +20,14 @@
 
 package org.jajuk.ui;
 
-import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  * Input verifier used for predefined patterns. Pattern should contain at least
@@ -51,29 +50,6 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
 			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
 					Messages.getString("Error"), 
 					JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		try {
-			String[] stPattern = sText.split("[% /-]"); 
-			for (String sPattern : stPattern) {
-				if (!sPattern.equals("")) { 
-					if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_ARTIST.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_YEAR.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_TRACKNAME.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_TRACKORDER.substring(1))
-							|| sPattern.equalsIgnoreCase(PATTERN_GENRE.substring(1))) {
-					} else {
-						JOptionPane.showMessageDialog(Main.getWindow(), Messages
-								.getString("Error.146"), 
-								Messages.getString("Error"), 
-								JOptionPane.ERROR_MESSAGE);
-						tf.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
-						return false;
-					}
-				}
-			}
-		} catch (Exception e) {
 			return false;
 		}
 		return true;

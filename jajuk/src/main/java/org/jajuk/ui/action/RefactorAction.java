@@ -46,31 +46,30 @@ public class RefactorAction implements ITechnicalStrings {
 	ArrayList<File> alFiles;
 
 	String filename;
-	
+
 	public static boolean bStopAll = false;
 
 	static String sFS = java.io.File.separator;
 
 	public RefactorAction(ArrayList<File> al) {
-		//check the directory user selected contains some files
-		if (al.size() == 0){
+		// check the directory user selected contains some files
+		if (al.size() == 0) {
 			Messages.showErrorMessage(18);
 			return;
 		}
 		alFiles = al;
 		Iterator it = alFiles.iterator();
-		String sFiles = ""; 
+		String sFiles = "";
 		while (it.hasNext()) {
 			File f = (File) it.next();
-			sFiles += f.getName() + "\n"; 
+			sFiles += f.getName() + "\n";
 		}
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
-			int iResu = Messages
-					.getChoice(
-							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE);  
+			int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files")
+					+ " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE);
 			if (iResu != JOptionPane.YES_OPTION) {
-				//Cancel
-				if (iResu == JOptionPane.CANCEL_OPTION){
+				// Cancel
+				if (iResu == JOptionPane.CANCEL_OPTION) {
 					bStopAll = true;
 				}
 				Util.stopWaiting();
@@ -88,8 +87,9 @@ public class RefactorAction implements ITechnicalStrings {
 	}
 
 	public void refactor() {
+		boolean bOKToOverwrite = false;
 		Iterator it = alFiles.iterator();
-		String sErrors = ""; 
+		String sErrors = "";
 		while (it.hasNext()) {
 			File fCurrent = (File) it.next();
 			Track tCurrent = fCurrent.getTrack();
@@ -101,8 +101,8 @@ public class RefactorAction implements ITechnicalStrings {
 				continue;
 			}
 
-			filename += "." + tCurrent.getType().getExtension(); 
-			filename = filename.replace("/", sFS); 
+			filename += "." + tCurrent.getType().getExtension();
+			filename = filename.replace("/", sFS);
 
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
@@ -111,6 +111,20 @@ public class RefactorAction implements ITechnicalStrings {
 			// Check if directories exists, and if not create them
 			String sPathname = getCheckedPath(sRoot, filename);
 			java.io.File fNew = new java.io.File(sPathname);
+
+			// Confirm if dest dir already exist
+			if (fNew.getParentFile().exists() && !bOKToOverwrite) {
+				int resu = Messages.getChoice(Messages.getString("Warning.5"),
+						JOptionPane.WARNING_MESSAGE);
+				if (resu == JOptionPane.NO_OPTION) {
+					continue;
+				} else if (resu == JOptionPane.CANCEL_OPTION) {
+					return;
+				}
+			}
+			// This flag is used to avoid displaying the confirmation at each
+			// file
+			bOKToOverwrite = true;
 			fNew.getParentFile().mkdirs();
 
 			// Move file and related cover but save old Directory pathname
@@ -120,30 +134,32 @@ public class RefactorAction implements ITechnicalStrings {
 				fCover.renameTo(new java.io.File(fNew.getParent() + sFS + fCover.getName()));
 			}
 			boolean bState = false;
+			// Rename audio files
 
+			// Test if source and target files are equals
 			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
-				sErrors += fCurrent.getAbsolutePath() + " (" 
-						+ Messages.getString("Error.160") + ")\n";  
+				sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.160")
+						+ ")\n";
 			} else {
 				if (fNew.getParentFile().canWrite()) {
 					bState = fOld.renameTo(fNew);
 					if (!bState) {
-						sErrors += fCurrent.getAbsolutePath() + " (" 
-								+ Messages.getString("Error.154") + ")\n";  
+						sErrors += fCurrent.getAbsolutePath() + " ("
+								+ Messages.getString("Error.154") + ")\n";
 					}
-					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() 
-							+ "}} Success ? " + bState); 
+					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() + "}} Success ? "
+							+ bState);
 
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" 
-							+ Messages.getString("Error.161") + ")\n";  
+					sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.161")
+							+ ")\n";
 				}
 			}
 
 			// Register and scans new directories
-			String sFirstDir = ""; 
-			String sTest[] = sPathname.split(sRoot.replace("\\", "\\\\"));  
-			sFirstDir = sTest[1].split("\\" + sFS)[1]; 
+			String sFirstDir = "";
+			String sTest[] = sPathname.split(sRoot.replace("\\", "\\\\"));
+			sFirstDir = sTest[1].split("\\" + sFS)[1];
 
 			Directory dir = DirectoryManager.getInstance()
 					.registerDirectory(
@@ -172,14 +188,14 @@ public class RefactorAction implements ITechnicalStrings {
 			fCurrent.getDevice().cleanRemovedFiles();
 
 			InformationJPanel.getInstance().setMessage(
-					Messages.getString("RefactorWizard.0") + sPathname, 0); 
+					Messages.getString("RefactorWizard.0") + sPathname, 0);
 		}
 
-		if (!sErrors.equals("")) { 
-			Messages.showDetailedErrorMessage(147, "", sErrors);  
+		if (!sErrors.equals("")) {
+			Messages.showDetailedErrorMessage(147, "", sErrors);
 		} else {
-			InformationJPanel.getInstance().setMessage(
-					Messages.getString("Success"), InformationJPanel.INFORMATIVE); 
+			InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+					InformationJPanel.INFORMATIVE);
 		}
 
 	}
@@ -189,7 +205,7 @@ public class RefactorAction implements ITechnicalStrings {
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(
 				JajukFileFilter.DirectoryFilter.getInstance()));
-		String[] sPaths = sPathname.split("\\" + sFS); 
+		String[] sPaths = sPathname.split("\\" + sFS);
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];
@@ -220,7 +236,7 @@ public class RefactorAction implements ITechnicalStrings {
 				registerFile(dir);
 			}
 		} else {
-			d.scan(true,null);
+			d.scan(true, null);
 		}
 	}
 }
