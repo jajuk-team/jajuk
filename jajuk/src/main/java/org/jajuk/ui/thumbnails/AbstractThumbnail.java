@@ -225,7 +225,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
 		// Change action label
 		jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
-		jmiOpenLastFMSite.setName(Messages.getString("AbstractThumbnail.0"));
+		jmiOpenLastFMSite.setText(Messages.getString("AbstractThumbnail.0"));
 		jmiOpenLastFMSite.setToolTipText(Messages.getString("AbstractThumbnail.0"));
 		// We add all menu items, each implementation of this class should hide
 		// (setVisible(false)) menu items that are not available in their
