@@ -114,6 +114,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.theme.ThemeInfo;
 import org.jvnet.substance.utils.SubstanceConstants;
 import org.jvnet.substance.watermark.SubstanceImageWatermark;
+import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 import org.jvnet.substance.watermark.SubstanceStripeWatermark;
 import org.jvnet.substance.watermark.WatermarkInfo;
 
@@ -1035,15 +1036,15 @@ public class Util implements ITechnicalStrings {
 		Iterator it = alFiles.iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
-			if (file != null){
-			try {
-				StackItem item = new StackItem(file);
-				item.setRepeat(bRepeat);
-				item.setUserLaunch(bUserLauched);
-				alOut.add(item);
-			} catch (JajukException je) {
-				Log.error(je);
-			}
+			if (file != null) {
+				try {
+					StackItem item = new StackItem(file);
+					item.setRepeat(bRepeat);
+					item.setUserLaunch(bUserLauched);
+					alOut.add(item);
+				} catch (JajukException je) {
+					Log.error(je);
+				}
 			}
 		}
 		return alOut;
@@ -1266,11 +1267,18 @@ public class Util implements ITechnicalStrings {
 				}
 			}
 			// Set the watermark
+			String image = ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE);
 			if ("Image".equals(watermark)) {
-				SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(
-						ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE)));
-				SubstanceLookAndFeel
-						.setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
+				//Check that the backgroud image is readable 
+				if (new File(image).exists()) {
+					SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(image));
+					SubstanceLookAndFeel
+							.setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
+				}
+				else{
+					//None watermark
+					SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
+				}
 			} else {
 				SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(watermark).getClassName());
 			}
