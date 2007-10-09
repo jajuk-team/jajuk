@@ -379,8 +379,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							JajukFileFilter filter = JajukFileFilter.ImageFilter.getInstance();
 							if (filter.accept(files[i])) {
 								if (!bAbsoluteCover
-										&& Util.isAbsoluteDefaultCover(FIFO.getInstance()
-												.getCurrentFile().getDirectory(), files[i]
+										&& Util.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i]
 												.getName())) {
 									// test the cover is not already used
 									Cover cover = new Cover(files[i].toURL(),
