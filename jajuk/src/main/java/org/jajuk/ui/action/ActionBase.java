@@ -19,6 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -26,12 +32,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
 /**
  * Common super class for Swing actions. This class provides useful construction
@@ -52,8 +52,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	static {
 		if (Util.isUnderWindows()) {
 			try {
-				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager")
-						.getMethod("registerJIntellitype").invoke(null, null);
+				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod(
+						"registerJIntellitype").invoke(null, null);
 			} catch (Exception e) {
 				Log.error(e);
 			}
@@ -80,7 +80,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 */
 	protected ActionBase(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
 		// check hotkeys are enabled (false by default)
-		this.bHotkey = bHotkey && ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
+		this.bHotkey = Util.isUnderWindows() && bHotkey
+				&& ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
 		String name = pName;
 		if (name != null) {
 			int mnemonic = ActionUtil.getMnemonic(name);
@@ -94,17 +95,17 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 			setIcon(icon);
 		}
 		if (stroke != null) {
-			if (Util.isUnderWindows() && this.bHotkey) {
+			if (this.bHotkey) {
 				try {
-					Class.forName("org.jajuk.ui.WindowsHotKeyManager").getMethod("registerHotKey")
+					Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod(
+							"registerHotKey", new Class[] { KeyStroke.class, ActionBase.class })
 							.invoke(null, new Object[] { stroke, this });
 				} catch (Exception e) {
 					Log.error(e);
 				}
-			} else {
-				// else use standard swing keystroke feature
-				setAcceleratorKey(stroke);
 			}
+			// else use standard swing keystroke feature
+			setAcceleratorKey(stroke);
 		}
 		setEnabled(enabled);
 	}
@@ -382,16 +383,14 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 */
 	protected abstract void perform(ActionEvent evt) throws Exception;
 
-	
-
 	/**
 	 * Free intellipad ressources
 	 */
 	public static void cleanup() {
 		if (Util.isUnderWindows()) {
 			try {
-				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("cleanup").invoke(
-						null, null);
+				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("cleanup")
+						.invoke(null, null);
 			} catch (Exception e) {
 				Log.error(e);
 			}

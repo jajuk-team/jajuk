@@ -114,13 +114,13 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
 		// add the listener
 		jintellitype.addHotKeyListener(new HotkeyListener() {
 
-			public void onHotKey(int arg0) {
+			public void onHotKey(int key) {
 				// Leave if user disabled hotkeys
 				if (!ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS)) {
 					return;
 				}
-				// check it is the right listener that caught the event
-				if (this.equals(hmIndexAction.get(ab))) {
+				// Check it is the right listener that caught the event
+				if (ab.equals(hmIndexAction.get(key))) {
 					try {
 						// Call action itself
 						ab.perform(null);
