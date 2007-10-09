@@ -588,6 +588,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			// update initial state
 			update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
+			//update the history bar
+			update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
 			// check if some track has been launched before the view has been
 			// displayed
 			update(new Event(EventSubject.EVENT_HEART_BEAT));
