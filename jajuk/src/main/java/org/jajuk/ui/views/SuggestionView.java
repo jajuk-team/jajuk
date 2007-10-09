@@ -162,7 +162,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 				Messages.getString("SuggestionView.7"))));
 		// Add panels
 		refreshLocalCollectionTabs();
-		//Add tabs
+		// Add tabs
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(tabs);
 		// Look for events
@@ -178,6 +178,21 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 	}
 
 	private void refreshLocalCollectionTabs() {
+		// Display a busy panel in the mean-time
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JXBusyLabel busy1 = new JXBusyLabel();
+				busy1.setBusy(true);
+				JXBusyLabel busy2 = new JXBusyLabel();
+				busy2.setBusy(true);
+				JXBusyLabel busy3 = new JXBusyLabel();
+				busy3.setBusy(true);
+				tabs.setComponentAt(0, Util.getCentredPanel(busy1));
+				tabs.setComponentAt(1, Util.getCentredPanel(busy2));
+				tabs.setComponentAt(3, Util.getCentredPanel(busy3));
+			}
+		});
+
 		SwingWorker sw = new SwingWorker() {
 			JScrollPane jsp1;
 			JScrollPane jsp2;
@@ -247,7 +262,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		// Use a swing worker as construct takes a lot of time
 		SwingWorker sw = new SwingWorker() {
 			JScrollPane jsp1;
+
 			JScrollPane jsp2;
+
 			@Override
 			public Object construct() {
 				try {
@@ -308,8 +325,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 		return jsp;
 	}
 
-	private JScrollPane getLastFMSuggestionsPanel(SuggestionType type)
-			throws Exception {
+	private JScrollPane getLastFMSuggestionsPanel(SuggestionType type) throws Exception {
 		FlowScrollPanel out = new FlowScrollPanel();
 		JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
