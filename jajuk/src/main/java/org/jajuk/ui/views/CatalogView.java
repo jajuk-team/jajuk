@@ -628,6 +628,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 						LocalAlbumThumbnail item = alItemsToDisplay.get(i);
 						// populate item (construct UI) only when needed
 						item.populate();
+	                    iNbCreatedThumbs ++;
+//	                  	//invoke garbage collecting to avoid using too much memory
+	                    if (iNbCreatedThumbs % 20 == 0){
+	                        System.gc(); 
+	                    }
 						item.jlIcon.addMouseListener(new MouseAdapter() {
 							public void mousePressed(MouseEvent e) {
 								LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())

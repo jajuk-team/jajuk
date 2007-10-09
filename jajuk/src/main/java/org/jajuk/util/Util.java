@@ -1106,6 +1106,7 @@ public class Util implements ITechnicalStrings {
 			graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			graphics2D.drawImage(image, 0, 0, width, height, null);
+			image.flush();
 			graphics2D.dispose();
 			return (bufferedImage);
 		}
@@ -1464,6 +1465,8 @@ public class Util implements ITechnicalStrings {
 		// Need alpha only for png and gif files
 		// save thumbnail image to OUTFILE
 		ImageIO.write(thumbImage, Util.getExtension(thumb), thumb);
+		//Free thumb memory
+		thumbImage.flush();
 	}
 
 	/**
@@ -1957,13 +1960,6 @@ public class Util implements ITechnicalStrings {
 							InformationJPanel.INFORMATIVE);
 					return true;
 				} catch (Exception e) {
-					// create a void thumb to avoid trying to create again
-					// this thumb
-					try {
-						fThumb.createNewFile();
-					} catch (IOException e1) {
-						Log.error(e1);
-					}
 					Log.error(e);
 				}
 			}
