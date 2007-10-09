@@ -247,7 +247,8 @@ public class FIFO implements ITechnicalStrings {
 						final String sMessage = Messages.getString("Error.025") + " ("
 								+ item.getFile().getDirectory().getDevice().getName()
 								+ Messages.getString("FIFO.4");
-						int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
+						int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.INFORMATION_MESSAGE);
 						if (i == JOptionPane.YES_OPTION) {
 							try {
 								item.getFile().getDirectory().getDevice().mount();

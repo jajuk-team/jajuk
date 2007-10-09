@@ -80,7 +80,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 		JPanel jpButtons;
 
 		JScrollPane jsp;
-		
+
 		/** Selected radio index */
 		int radioIndex = 0;
 
@@ -133,7 +133,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 			double[] dHoriz = { 25, 250, 150 };
 			double[] dVert = new double[widgets.length + 2];
 			dVert[0] = 20;
-			//make sure to sort radios
+			// make sure to sort radios
 			Collections.sort(radios);
 			ButtonGroup group = new ButtonGroup();
 			// now add all web radios
@@ -284,14 +284,14 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 			} else if (ae.getSource() == jbDefaults) {
 				// Ask for confirmation
 				int choice = Messages.getChoice(Messages.getString("Confirmation_defaults_radios"),
-						JOptionPane.WARNING_MESSAGE);
-				if (choice != JOptionPane.OK_OPTION) {
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (choice != JOptionPane.YES_OPTION) {
 					return;
 				}
 				// OK ? Restore the list
 				try {
 					WebRadioManager.getInstance().restore();
-					//Refresh current list
+					// Refresh current list
 					radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
 				} catch (Exception e) {
 					// show an "operation failed' message to users

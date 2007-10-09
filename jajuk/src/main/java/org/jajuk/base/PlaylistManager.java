@@ -148,8 +148,8 @@ public class PlaylistManager extends ItemManager {
 					sMessage += "\n" + sFileToDelete;   
 				}
 				int i = Messages.getChoice(sMessage,
-						JOptionPane.WARNING_MESSAGE); 
-				if (i == JOptionPane.OK_OPTION) {
+						JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); 
+				if (i == JOptionPane.YES_OPTION) {
 					boolean bUnmountedItems = false;
 					// take a shallow copy of the array to avoid concurrency
 					// exception

@@ -229,7 +229,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 		if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && !isReady()) {
 			String sMessage = Messages.getString("Error.025") + " ("
 					+ getDirectory().getDevice().getName() + Messages.getString("FIFO.4");
-			int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
+			int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE);
 			if (i == JOptionPane.YES_OPTION) {
 				try {
 					// mount. Note that we don't refresh UI to keep

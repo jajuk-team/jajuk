@@ -36,7 +36,7 @@ import org.jajuk.util.error.JajukException;
 public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static boolean fullRestore = false;
 
 	RestoreAllViewsAction() {
@@ -47,9 +47,10 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
 	public void perform(final ActionEvent e) throws JajukException {
 		new Thread() {
 			public void run() {
-				//display a confirmation message
-				int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),JOptionPane.OK_CANCEL_OPTION);
-				if (i != JOptionPane.OK_OPTION){
+				// display a confirmation message
+				int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				if (i != JOptionPane.YES_OPTION) {
 					return;
 				}
 				// Drop all perspectives conf
@@ -60,7 +61,7 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
 				}
 				// Delete toolbars configuration too
 				Util.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
-				//Indicates to not cmmiting current configuration
+				// Indicates to not cmmiting current configuration
 				fullRestore = true;
 				Main.exit(0);
 			}

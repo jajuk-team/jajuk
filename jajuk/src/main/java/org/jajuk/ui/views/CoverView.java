@@ -379,8 +379,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 							JajukFileFilter filter = JajukFileFilter.ImageFilter.getInstance();
 							if (filter.accept(files[i])) {
 								if (!bAbsoluteCover
-										&& Util.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i]
-												.getName())) {
+										&& Util.isAbsoluteDefaultCover(fCurrent.getDirectory(),
+												files[i].getName())) {
 									// test the cover is not already used
 									Cover cover = new Cover(files[i].toURL(),
 											Cover.ABSOLUTE_DEFAULT_COVER);
@@ -885,7 +885,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			// show confirmation message if required
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)) {
 				int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")
-						+ " : " + cover.getURL().getFile(), JOptionPane.WARNING_MESSAGE);
+						+ " : " + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE);
 				if (iResu != JOptionPane.YES_OPTION) {
 					return;
 				}

@@ -281,7 +281,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			File file = new File(getUrl());
 			if (file.exists() && (file.list() == null || file.list().length == 0)) {
 				int i = Messages.getChoice(Messages.getString("Confirmation_void_refresh"),
-						JOptionPane.WARNING_MESSAGE);
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (i != JOptionPane.OK_OPTION) {
 					return false;
 				}
@@ -684,8 +684,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		File file = new File(getUrl());
 		if (file.listFiles() == null || file.listFiles().length == 0) {
 			int answer = Messages.getChoice("[" + getName() + "] "
-					+ Messages.getString("Confirmation_void_refresh"), JOptionPane.WARNING_MESSAGE);
-			if (answer != 0) {
+					+ Messages.getString("Confirmation_void_refresh"),
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (answer != JOptionPane.YES_OPTION) {
 				// leave if user doesn't confirm to mount the void device
 				return;
 			}

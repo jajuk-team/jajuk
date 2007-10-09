@@ -170,7 +170,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 	class PlayListEditorTableModel extends JajukTableModel {
 
 		private static final long serialVersionUID = 1L;
-		
+
 		public PlayListEditorTableModel() {
 			super(15);
 			setEditable(false); // table not editable
@@ -654,7 +654,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 						} catch (JajukException je) { // don't trace because
 							// it is called in a loop
 						}
-						int[] rows = jtable.getSelectedRows(); 
+						int[] rows = jtable.getSelectedRows();
 						// save selection
 						model.fireTableDataChanged();// refresh
 						bSettingSelection = true;
@@ -883,7 +883,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 								sbOut.append('\n').append(plf.getAbsolutePath());
 							}
 							int i = Messages.getChoice(sbOut.toString(),
-									JOptionPane.WARNING_MESSAGE);
+									JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 							if (i == JOptionPane.OK_OPTION) {
 								for (PlaylistFile plf : pl.getPlaylistFiles()) {
 									plf.setModified(true);

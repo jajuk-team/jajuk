@@ -477,7 +477,8 @@ public class Main implements ITechnicalStrings {
 			// logging purpose
 			Log.error(je);
 			if (je.getCode() == 5) {
-				Messages.getChoice(Messages.getErrorMessage(5), JOptionPane.ERROR_MESSAGE);
+				Messages.getChoice(Messages.getErrorMessage(5), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.ERROR_MESSAGE);
 				exit(1);
 			}
 		} catch (Exception e) { // last chance to catch any error for logging
@@ -516,8 +517,9 @@ public class Main implements ITechnicalStrings {
 				// path to jajuk workspace
 				String sPath = br.readLine();
 				br.close();
-				//Check if the repository can be found
-				if (new File(sPath+ '/' + (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).canRead()) {
+				// Check if the repository can be found
+				if (new File(sPath + '/'
+						+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).canRead()) {
 					Main.workspace = sPath;
 				}
 			} catch (Exception e) {
@@ -915,7 +917,8 @@ public class Main implements ITechnicalStrings {
 				sc.dispose();
 			}
 			Log.error(124);
-			Messages.getChoice(Messages.getErrorMessage(124), JOptionPane.DEFAULT_OPTION);
+			Messages.getChoice(Messages.getErrorMessage(124), JOptionPane.DEFAULT_OPTION,
+					JOptionPane.ERROR_MESSAGE);
 			System.exit(-1);
 		}
 		// start listening
@@ -970,15 +973,6 @@ public class Main implements ITechnicalStrings {
 			FIFO.getInstance().commit();
 		} catch (IOException e) {
 			Log.error(e);
-		}
-		// check if a confirmation is needed
-		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT))
-				.booleanValue()) {
-			int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
-					JOptionPane.INFORMATION_MESSAGE);
-			if (iResu != JOptionPane.YES_OPTION) {
-				return;
-			}
 		}
 		// Store webradio state
 		ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
@@ -1073,7 +1067,8 @@ public class Main implements ITechnicalStrings {
 					Collection.load(file);
 					bParsingOK = true;
 					int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
-							+ file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION);
+							+ file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.ERROR_MESSAGE);
 					if (i == JOptionPane.CANCEL_OPTION) {
 						System.exit(-1);
 					}
@@ -1164,7 +1159,8 @@ public class Main implements ITechnicalStrings {
 					}
 				} else {
 					// file no more exists
-					Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION);
+					Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
+							JOptionPane.WARNING_MESSAGE);
 					FIFO.setFirstFile(false);
 					// no more first file
 					return;

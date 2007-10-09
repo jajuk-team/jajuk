@@ -66,7 +66,8 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
 			int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files")
-					+ " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE);
+					+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.INFORMATION_MESSAGE);
 			if (iResu != JOptionPane.YES_OPTION) {
 				// Cancel
 				if (iResu == JOptionPane.CANCEL_OPTION) {
@@ -115,7 +116,7 @@ public class RefactorAction implements ITechnicalStrings {
 			// Confirm if dest dir already exist
 			if (fNew.getParentFile().exists() && !bOKToOverwrite) {
 				int resu = Messages.getChoice(Messages.getString("Warning.5"),
-						JOptionPane.WARNING_MESSAGE);
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (resu == JOptionPane.NO_OPTION) {
 					continue;
 				} else if (resu == JOptionPane.CANCEL_OPTION) {

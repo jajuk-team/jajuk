@@ -651,7 +651,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 					}
 					// Check CDDB requests
 					if (alSelected.size() > 0 // alSelected = 0 for collection
-												// selection
+							// selection
 							&& alSelected.get(0) instanceof Directory) {
 						boolean bShowCDDB = false;
 						for (Item item : alSelected) {
@@ -1149,8 +1149,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 						.getPlaylistFile();
 				String sFileToDelete = plf.getAbsolutePath();
 				String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;
-				int i = Messages.getChoice(sMessage, JOptionPane.WARNING_MESSAGE);
-				if (i == JOptionPane.OK_OPTION) {
+				int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (i == JOptionPane.YES_OPTION) {
 					PlaylistFileManager.getInstance().removePlaylistFile(plf);
 					// requires device refresh
 					ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
@@ -1227,13 +1228,18 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	}
 
 	/**
-	 * Manages auto-expand Expand behavior is: 
-	 * <p>At startup, tree expand state
-	 * is the same that the one kept at last session (we use XML_EXPANDED stored
-	 * properties to restore it)</p>
-	 * <p>When mounting a device from the tree, the device node is expanded</p>
-	 * <p>When unmounting a device from the tree, the device node is collapsed</p>
-	 **/
+	 * Manages auto-expand Expand behavior is:
+	 * <p>
+	 * At startup, tree expand state is the same that the one kept at last
+	 * session (we use XML_EXPANDED stored properties to restore it)
+	 * </p>
+	 * <p>
+	 * When mounting a device from the tree, the device node is expanded
+	 * </p>
+	 * <p>
+	 * When unmounting a device from the tree, the device node is collapsed
+	 * </p>
+	 */
 	private void expand() {
 		// begin by expanding all needed devices and directory, only after,
 		// collapse unmounted devices if required

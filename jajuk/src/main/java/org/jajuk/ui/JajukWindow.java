@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
@@ -102,6 +103,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			}
 
 			public void windowClosing(WindowEvent we) {
+				//Ask if a confirmation is required
+				if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
+					int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+					if (iResu != JOptionPane.YES_OPTION) {
+						return;
+					}
+				}
 				// Save windows position
 				saveSize();
 

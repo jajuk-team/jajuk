@@ -1102,7 +1102,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
 						int iResu = Messages.getChoice(Messages
 								.getString("Confirmation_clear_history"),
-								JOptionPane.WARNING_MESSAGE);
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 						if (iResu != JOptionPane.YES_OPTION) {
 							return;
 						}
@@ -1113,7 +1113,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 					if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_RESET_RATINGS)) {
 						int iResu = Messages.getChoice(Messages
 								.getString("Confirmation_reset_ratings"),
-								JOptionPane.WARNING_MESSAGE);
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 						if (iResu != JOptionPane.YES_OPTION) {
 							return;
 						}

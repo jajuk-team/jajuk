@@ -262,7 +262,7 @@ public class DeviceManager extends ItemManager {
 			// show confirmation message if required
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
 				int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
-						JOptionPane.WARNING_MESSAGE);
+						JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
 				if (iResu != JOptionPane.YES_OPTION) {
 					return;
 				}

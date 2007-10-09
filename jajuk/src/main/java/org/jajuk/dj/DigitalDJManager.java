@@ -187,7 +187,8 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
 				if (dj instanceof AmbienceDigitalDJ
 						&& ((AmbienceDigitalDJ) dj).getAmbience().getID().equals(sID)) {
 					int i = Messages.getChoice(Messages.getString("DigitalDJWizard.61") + " "
-							+ dj.getName() + " ?", JOptionPane.YES_NO_CANCEL_OPTION);
+							+ dj.getName() + " ?", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.WARNING_MESSAGE);
 					if (i == JOptionPane.YES_OPTION) {
 						remove(dj);
 					} else {

@@ -323,12 +323,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	 * 
 	 * @param sText :
 	 *            dialog text
-	 * @param iType :
-	 *            dialog type : can be JOptionPane.ERROR_MESSAGE,
-	 *            WARNING_MESSAGE
+	 * @param int
+	 *            optionType : kind of options like JOptionPane.OK_CANCEL
+	 * @param iType
+	 *            message type like JOptionPane.WARNING
 	 */
-	public static int getChoice(String sText, int iType) {
-		ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), iType);
+	public static int getChoice(String sText, int optionsType, int iType) {
+		ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
 		return confirm.getResu();
 	}
 
@@ -516,18 +517,14 @@ class ConfirmDialog extends JajukDialog {
 	 * 
 	 * @param sText
 	 * @param sTitle
+	 * @param int
+	 *            optionType : kind of options like JOptionPane.OK_CANCEL
 	 * @param iType
+	 *            message type like JOptionPane.WARNING
 	 */
-	ConfirmDialog(String sText, String sTitle, int iType) {
+	ConfirmDialog(String sText, String sTitle, int optionsType, int iType) {
 		JOptionPane optionPane = Util.getNarrowOptionPane(72);
-		Object[] options = null;
-		if (iType == JOptionPane.DEFAULT_OPTION) {
-			options = new String[] { Messages.getString("Close") };
-		} else {
-			options = new String[] { Messages.getString("yes"), Messages.getString("no"),
-					Messages.getString("Cancel") };
-		}
-		optionPane.setOptions(options);
+		optionPane.setOptionType(optionsType);
 		optionPane.setMessageType(iType);
 		optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
 		JDialog dialog = optionPane.createDialog(null, sTitle);
@@ -539,12 +536,8 @@ class ConfirmDialog extends JajukDialog {
 		if (optionPane.getValue() == null) {
 			// User closed the dialog using the cross icon
 			iResu = JOptionPane.CANCEL_OPTION;
-		} else if (optionPane.getValue().equals(Messages.getString("yes"))) {
-			iResu = JOptionPane.YES_OPTION;
-		} else if (optionPane.getValue().equals(Messages.getString("no"))) {
-			iResu = JOptionPane.NO_OPTION;
-		} else if (optionPane.getValue().equals(Messages.getString("Cancel"))) {
-			iResu = JOptionPane.CANCEL_OPTION;
+		} else {
+			iResu = ((Integer) optionPane.getValue()).intValue();
 		}
 	}
 
