@@ -376,7 +376,6 @@ public class FileManager extends ItemManager implements Observer {
 		}
 		// (not shuffle) Album / album
 		else if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
-			long l = System.currentTimeMillis();
 			final ArrayList<Album> albums = new ArrayList<Album>(AlbumManager.getInstance()
 					.getAlbums());
 			Collections.shuffle(albums, new Random());
@@ -402,7 +401,6 @@ public class FileManager extends ItemManager implements Observer {
 				}
 
 			});
-			System.out.println(System.currentTimeMillis() - l);
 			return alEligibleFiles;
 			// else return shuffle albums
 		} else {

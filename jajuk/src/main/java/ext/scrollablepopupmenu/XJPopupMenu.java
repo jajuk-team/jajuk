@@ -113,9 +113,6 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 		if (menuItem.getIcon() == null) {
 			menuItem.setIcon(EMPTY_IMAGE_ICON);
 		}
-		if (!(menuItem instanceof XCheckedButton)) {
-			System.out.println(menuItem.getName());
-		}
 	}
 
 	public void addSeparator() {
