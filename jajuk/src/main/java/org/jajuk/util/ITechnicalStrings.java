@@ -573,7 +573,7 @@ public interface ITechnicalStrings {
 	public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
 
 	/** Default substance theme * */
-	public static final String LNF_DEFAULT_THEME = "Steel Blue";
+	public static final String LNF_DEFAULT_THEME = "Orange";
 
 	/** Default substance watermark * */
 	public static final String LNF_DEFAULT_WATERMARK = "Image";
