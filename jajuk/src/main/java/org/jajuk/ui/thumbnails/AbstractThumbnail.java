@@ -98,6 +98,8 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	JMenuItem jmiPlayRepeat;
 
 	JMenuItem jmiGetCovers;
+	
+	JMenuItem jmiShowPopup;
 
 	JMenuItem jmiCDDBWizard;
 
@@ -217,6 +219,9 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),
 				IconLoader.ICON_COVER_16x16);
 		jmiGetCovers.addActionListener(this);
+		jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"),
+				IconLoader.ICON_COVER_16x16);
+		jmiShowPopup.addActionListener(this);
 		jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
 		jmiCDDBWizard.addActionListener(this);
 		jmiProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
@@ -236,6 +241,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		jmenu.add(jmiPlayRepeat);
 		jmenu.add(jmiCDDBWizard);
 		jmenu.add(jmiGetCovers);
+		jmenu.add(jmiShowPopup);
 		jmenu.add(jmiOpenLastFMSite);
 		jmenu.add(jmiProperties);
 
@@ -408,6 +414,8 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 					}
 				}
 			}.start();
+		} else if (e.getSource() == jmiShowPopup) {
+			this.displayPopup();
 		} else if (e.getSource() == jmiProperties) {
 			Item item = getItem();
 			ArrayList<Item> al = new ArrayList<Item>();
