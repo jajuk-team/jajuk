@@ -137,7 +137,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 		jbOk = new JButton(Messages.getString("OK"));
 		jbOk.setEnabled(false);
 		jbOk.addActionListener(this);
-		jbCancel = new JButton(Messages.getString("Cancel"));
+		jbCancel = new JButton(Messages.getString("Later"));
 		jbCancel.addActionListener(this);
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
