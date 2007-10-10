@@ -245,7 +245,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 	 *            force the page display
 	 */
 	private void launchSearch(final boolean bForceReload) {
-		new Thread() {
+		Thread t = new Thread() {
 			public void run() {
 				try {
 					String search = null;
@@ -293,7 +293,9 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
 				}
 
 			}
-		}.start();
+		};
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
 	}
 
 	/*
