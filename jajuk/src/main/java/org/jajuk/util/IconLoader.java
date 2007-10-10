@@ -295,7 +295,7 @@ public class IconLoader {
 			.getResource("icons/16x16/dir_desynchro_16x16.png"));
 
 	public static final UrlImageIcon ICON_PLAYLIST_FILE = new UrlImageIcon(Util
-			.getResource("icons/16x16/playlist.png"));
+			.getResource("icons/16x16/playlist_16x16.png"));
 
 	public static final UrlImageIcon ICON_STYLE = new UrlImageIcon(Util
 			.getResource("icons/16x16/style_16x16.png"));
@@ -372,9 +372,6 @@ public class IconLoader {
 
 	public static final UrlImageIcon ICON_SAVE = new UrlImageIcon(Util
 			.getResource("icons/16x16/save_16x16.png"));
-
-	public static final UrlImageIcon ICON_SAVE_AS = new UrlImageIcon(Util
-			.getResource("icons/16x16/saveas.png"));
 
 	public static final UrlImageIcon ICON_DEFAULT_COVER = new UrlImageIcon(Util
 			.getResource("icons/16x16/ok_16x16.png"));
