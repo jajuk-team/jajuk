@@ -450,12 +450,7 @@ public class Directory extends PhysicalItem implements Comparable {
 	 */
 	public boolean shouldBeHidden() {
 		if (getDevice().isMounted()
-				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { // option
-			// "only
-			// display
-			// mounted
-			// devices
-			// "
+				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { 
 			return false;
 		}
 		return true;
