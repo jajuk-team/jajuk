@@ -285,7 +285,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 	public void initUI() {
 		// Search
 		double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 },
-				{ TableLayout.PREFERRED } };
+				{ 25 } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
 		JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
@@ -302,8 +302,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 		// History
 		JPanel jpHistory = new JPanel();
-		jpHistory.setLayout(new BoxLayout(jpHistory, BoxLayout.X_AXIS));
 		jcbHistory = new SteppedComboBox();
+		JLabel jlHistory = new JLabel(IconLoader.ICON_HISTORY);
+		jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
 		// - Increase rating button
 		ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
 		actionIncRate.setName(null);
@@ -346,12 +347,16 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jcbHistory.setMinimumSize(new Dimension(0, 25));
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
 		jcbHistory.addActionListener(CommandJPanel.this);
-		jpHistory.add(jcbHistory);
 		JToolBar jtbIncRate = new JToolBar();
 		jtbIncRate.setFloatable(false);
-		jpHistory.add(Box.createHorizontalStrut(10));
 		jbIncRate.addToToolBar(jtbIncRate);
-		jpHistory.add(jtbIncRate);
+		double[][] sizeHistory = new double[][] {
+				{ 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED},
+				{ 25 } };
+		jpHistory.setLayout(new TableLayout(sizeHistory));
+		jpHistory.add(jlHistory, "1,0");
+		jpHistory.add(jcbHistory, "3,0");
+		jpHistory.add(jtbIncRate,"5,0");
 
 		// Mode toolbar
 		// we need an inner toolbar to apply size properly
@@ -588,7 +593,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 			// update initial state
 			update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
-			//update the history bar
+			// update the history bar
 			update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
 			// check if some track has been launched before the view has been
 			// displayed
