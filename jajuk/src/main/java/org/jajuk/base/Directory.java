@@ -431,16 +431,11 @@ public class Directory extends PhysicalItem implements Comparable {
 	public int compareTo(Object o) {
 		Directory otherDirectory = (Directory) o;
 		int comp = 0;
-		if (getParentDirectory() != null && otherDirectory.getParentDirectory() != null) {
-			comp = this.getParentDirectory().compareTo(otherDirectory.getParentDirectory());
-			if (comp != 0) {
-				return comp;
-			}
-		}
 		String sAbs = getDevice().getName() + getAbsolutePath();
 		String sOtherAbs = otherDirectory.getDevice().getName() + otherDirectory.getAbsolutePath();
 		// should ignore case to get a B c ... and not Bac
 		// but make sure to differentiate items with different cases
+		//TODO refactor this for performances
 		if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)) {
 			return sAbs.compareTo(sOtherAbs);
 		} else {
