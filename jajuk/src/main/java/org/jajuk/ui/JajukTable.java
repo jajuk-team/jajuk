@@ -26,6 +26,7 @@ import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
+import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -50,6 +51,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 
 	private String sConf;
 
+	private JajukCellRender jcr = new JajukCellRender();
+
+	private SubstanceDefaultTableCellRenderer.BooleanRenderer sdcr = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+
 	/**
 	 * Constructor
 	 * 
@@ -64,17 +69,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		this.sConf = sConf;
 		setShowGrid(false);
 		init(bSortable);
-		int index = 0;
-		// Force to use Jajuk cell render for all columns, except for boolean
-		// that should use default renderer (checkbox)
 		for (TableColumn col : getColumns()) {
-			if (model.getRowCount() > 0) {
-				Object o = model.getValueAt(0, index);
-				if (!(o instanceof Boolean)) {
-					col.setCellRenderer(new JajukCellRender());
-				}
-			}
-			index++;
+			col.setCellRenderer(new JajukCellRender());
 		}
 	}
 
@@ -94,6 +90,14 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		super.setColumnControlVisible(true);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 	}
+
+/*	public TableCellRenderer getCellRenderer(int row, int column) {
+	/*	if (this.getValueAt(row, column) != null
+				&& this.getValueAt(row, column).getClass().equals(Boolean.class)) {
+			return sdcr;
+		} else*/
+	//		return jcr;
+//	}
 
 	/**
 	 * Select columns to show colsToShow list of columns id to keep

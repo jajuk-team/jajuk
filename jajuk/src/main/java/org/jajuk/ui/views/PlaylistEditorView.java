@@ -548,12 +548,10 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 		// set right cell renderer for play and rate icons
 		// Play icon
 		TableColumn col = jtable.getColumnModel().getColumn(0);
-		col.setCellRenderer(new JajukCellRender());
 		col.setMinWidth(PLAY_COLUMN_SIZE);
 		col.setMaxWidth(PLAY_COLUMN_SIZE);
 		// rate
 		col = jtable.getColumnModel().getColumn(5);
-		col.setCellRenderer(new JajukCellRender());
 		col.setMinWidth(RATE_COLUMN_SIZE);
 		col.setMaxWidth(RATE_COLUMN_SIZE);
 	}

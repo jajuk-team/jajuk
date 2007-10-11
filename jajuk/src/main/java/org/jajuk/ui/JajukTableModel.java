@@ -159,6 +159,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
 	}
 
 	public int getRowCount() {
+		//iRowNum is set in concrete classes
 		return iRowNum;
 	}
 

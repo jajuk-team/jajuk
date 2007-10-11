@@ -35,8 +35,11 @@ import javax.swing.JTable;
  * Cell renderer to support cells color and icons
  */
 public class JajukCellRender extends SubstanceDefaultTableCellRenderer implements ITechnicalStrings {
-
+	
 	private static final long serialVersionUID = 154545454L;
+	
+	private SubstanceDefaultTableCellRenderer.BooleanRenderer sdcr = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+
 
 	public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
 			boolean focused, int row, int column) {
@@ -50,6 +53,9 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 			((JLabel) c).setText(((IconLabel) oValue).getText());
 		} else if (oValue instanceof Date) {
 			((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
+		} else if (oValue instanceof Boolean) {
+			c = sdcr.getTableCellRendererComponent(table, oValue, selected, focused, row,
+				column);
 		}
 		c.setEnabled(table == null || table.isEnabled());
 		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));

@@ -228,7 +228,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 					jtable = new JajukTable(model, true, CONF_LOGICAL_TABLE_COLUMNS);
 				}
 				jtable.getColumnModel().addColumnModelListener(AbstractTableView.this);
-				setRenderers();
+				setCellEditors();
 				add(new JScrollPane(jtable), "0,1");
 				jtable.setDragEnabled(true);
 				jtable.setTransferHandler(new TableTransferHandler(jtable));
@@ -341,7 +341,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						model = populateTable();
 						model.addTableModelListener(AbstractTableView.this);
 						jtable.setModel(model);
-						setRenderers();
+						setCellEditors();
 						// add new item in configuration cols
 						jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
 						jtable.showColumns(jtable.getColumnsConf());
@@ -357,7 +357,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 						model = populateTable();// create a new model
 						model.addTableModelListener(AbstractTableView.this);
 						jtable.setModel(model);
-						setRenderers();
+						setCellEditors();
 						jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
 						jtable.showColumns(jtable.getColumnsConf());
 						applyFilter(sAppliedCriteria, sAppliedFilter);
@@ -375,7 +375,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/** Fill the table */
 	abstract JajukTableModel populateTable();
 
-	private void setRenderers() {
+	private void setCellEditors() {
 		for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel())
 				.getColumns(true)) {
 			TableColumnExt col = (TableColumnExt) tc;
