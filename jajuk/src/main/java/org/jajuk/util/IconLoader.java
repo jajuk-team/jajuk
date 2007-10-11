@@ -509,5 +509,8 @@ public class IconLoader {
 	
 	public static final UrlImageIcon ICON_LAUNCH = new UrlImageIcon(Util
 			.getResource("icons/16x16/launch_16x16.png"));
+	
+	public static final UrlImageIcon ICON_HISTORY = new UrlImageIcon(Util
+			.getResource("icons/16x16/history_16x16.png"));
 }
 
