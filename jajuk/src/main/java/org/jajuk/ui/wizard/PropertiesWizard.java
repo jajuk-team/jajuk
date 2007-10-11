@@ -697,6 +697,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			}
 			// Computes all items to change
 			// contains items to be changed
+			//TODO refactor this using LinkedHashset for ie 
 			ArrayList<Item> alItemsToCheck = new ArrayList<Item>(alItems.size());
 			for (Item item : alItems) {
 				// avoid duplicates for perfs

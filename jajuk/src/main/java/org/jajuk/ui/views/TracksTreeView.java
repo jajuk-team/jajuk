@@ -20,43 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackComparator;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.FontManager;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.TransferableTreeNode;
-import org.jajuk.ui.TreeRootElement;
-import org.jajuk.ui.TreeTransferHandler;
-import org.jajuk.ui.FontManager.JajukFont;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.wizard.CDDBWizard;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -97,6 +60,43 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.FontManager;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.TransferableTreeNode;
+import org.jajuk.ui.TreeRootElement;
+import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.FontManager.JajukFont;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.CDDBWizard;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
+
 import ext.SwingWorker;
 
 /**
@@ -119,8 +119,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
 	JRadioButtonMenuItem jmiCollectionAlbum;
 
-	JRadioButtonMenuItem jmiCollectionYear;
-
+	JRadioButtonMenuItem jmiCollectionProperties;
+	
 	JMenuItem jmiCollectionReport;
 
 	JLabel jlSort;
@@ -299,7 +299,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 		jmenuStyle.add(jmiStylePush);
 		jmenuStyle.add(jmiStylePlayShuffle);
 		jmenuStyle.add(jmiStylePlayRepeat);
-		// @TBI jmenuStyle.add(jmiStyleDelete);
 		jmenuStyle.add(jmiStyleAddFavorite);
 		jmenuStyle.add(jmiStyleReport);
 		jmenuStyle.add(jmiStyleProperties);
@@ -335,7 +334,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 		jmenuAuthor.add(jmiAuthorPush);
 		jmenuAuthor.add(jmiAuthorPlayShuffle);
 		jmenuAuthor.add(jmiAuthorPlayRepeat);
-		// @TBI jmenuAuthor.add(jmiAuthorDelete);
 		jmenuAuthor.add(jmiAuthorAddFavorite);
 		jmenuAuthor.add(jmiAuthorReport);
 		jmenuAuthor.add(jmiAuthorProperties);
@@ -374,7 +372,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 		jmenuAlbum.add(jmiAlbumPush);
 		jmenuAlbum.add(jmiAlbumPlayShuffle);
 		jmenuAlbum.add(jmiAlbumPlayRepeat);
-		// @TBI jmenuAlbum.add(jmiAlbumDelete);
 		jmenuAlbum.add(jmiAlbumAddFavorite);
 		jmenuAlbum.add(jmiAlbumCDDBWizard);
 		jmenuAlbum.add(jmiAlbumReport);
@@ -640,10 +637,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 					jmenuAuthor.show(jtree, e.getX(), e.getY());
 				} else if (paths[0].getLastPathComponent() instanceof StyleNode) {
 					jmenuStyle.show(jtree, e.getX(), e.getY());
-				} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
-					jmenuCollection.show(jtree, e.getX(), e.getY());
 				} else if (paths[0].getLastPathComponent() instanceof YearNode) {
 					jmenuYear.show(jtree, e.getX(), e.getY());
+				} else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+					jmenuCollection.show(jtree, e.getX(), e.getY());
 				}
 			}
 		};
@@ -1320,7 +1317,12 @@ class YearNode extends TransferableTreeNode {
 	 * return a string representation of this node
 	 */
 	public String toString() {
-		return ((Year) super.getData()).getName();
+		if (((Year) super.getData()).getValue() > 0){
+			return ((Year) super.getData()).getName();
+		}
+		else{
+			return Messages.getString("unknown_year");
+		}
 	}
 
 	/**
