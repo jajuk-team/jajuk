@@ -30,6 +30,14 @@ URL="http://wiki.jajuk.info/index.php/Special:Wiki2XML?doit=1&whatsthis=articlel
 
 
 ## End of Configuration ##
+if [ "$(id -u)" != "1003" ]
+then
+    echo "You must be user 'jbuild', use command: su jbuild"
+    exit 1
+fi
+
+
+
 #Do some cleaning first?
 #/bin/rm -rf $SVN_2BC
 svn_co () {

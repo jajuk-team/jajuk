@@ -10,7 +10,7 @@ performance tips</title>
 performance tips</h1>
 <p>
 Go back to <a href="table_of_contents.html">
-Table of contents</a>
+table of contents</a>
 </p>
 <p>
 Read that chapter if you encounter some performances drawbacks or if you want consume less memory, disk, CPU or Network bandwidth using Jajuk.</p>
@@ -53,7 +53,9 @@ At first refresh or during a forced refresh, all tags are read again. This takes
 <h2>
 Collection performance tunning</h2>
 <p>
-These options are available in the Parameter View / Advanced tab.</p>
+These options are available in the <a href="view_preferences.html">
+view preferences</a>
+, Advanced tab.</p>
 <ul>
 <li>
 If your collection uses mainly non-European characters (like Asian languages), choose UTF-16 as collection encoding : that will reduce collection file size and accelerate startup parsing. Do not use this option if you use European languages because you collection file would then grow.</li>
@@ -65,10 +67,10 @@ Animation view uses Java 2D. CPU overhead can be significant, especially with sc
 <h2>
 JVM choice and customization</h2>
 <p>
-We recommend Sun JVM 1.5</p>
+We recommend Sun JVM 1.6</p>
 <ul>
 <li>
-If you have a really big collection (something like &gt; 200GB), you may increase -Xms parameter.</li>
+If you have a really big collection (something like 200GB), you may increase -Xms parameter.</li>
 <li>
 You can set a -Xmx parameter to restrict memory usage to this value (example: -Xmx100M), but this could conduct to unpredictable behavior when out of memory errors occur.</li>
 <li>
@@ -76,7 +78,7 @@ Use -Xloggc:&lt;file name&gt; to trace memory usage if needed.</li>
 </ul>
 <p>
 Go back to <a href="table_of_contents.html">
-Table of contents</a>
+table of contents</a>
 </p>
 </body>
 </html>
