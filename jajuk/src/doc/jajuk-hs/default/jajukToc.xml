@@ -6,20 +6,21 @@
   "http://java.sun.com/products/javahelp/toc_1_0.dtd">
 
 <toc version="1.0">
-	<tocitem text="Table of contents" target="table_of_contents"/>
-	<tocitem text="Jajuk in a nutshell">	
+	<tocitem text="Jajuk Help">
+    	<tocitem text="Table of contents" target="table_of_contents"/>
+		<tocitem text="Jajuk in a nutshell" expand="true">	
 			<tocitem text="Features" target="features"/>	
 			<tocitem text="New features highlights" target="new_features_highlights"/>
 			<tocitem text="Perspectives and views" target="perspectives_and_views"/>				
-    </tocitem>
-	<tocitem text="Static views" expand="true">	
+    	</tocitem>
+		<tocitem text="Static views" expand="true">	
 			<tocitem text="The About view" target="view_about"/>
 			<tocitem text="The Command view" target="view_command"/>
 			<tocitem text="The Help view" target="view_help"/>
 			<tocitem text="The Information view" target="view_information"/>
 			<tocitem text="The Perspective selector view" target="view_perspective_selector"/>
-    </tocitem>
-	<tocitem text="Contextual views"  expand="true">
+    	</tocitem>
+		<tocitem text="Contextual views"  expand="true">
 			<tocitem text="The Albums Catalog view" target="view_albums_catalog"/>
 			<tocitem text="The Animation view" target="view_animation"/>
 			<tocitem text="The CD Scanner view" target="view_cd_scanner"/>
@@ -37,8 +38,8 @@
 			<tocitem text="The Tracks Table view" target="view_tracks_table"/>
 			<tocitem text="The Tracks Tree view" target="view_tree_table"/>
 			<tocitem text="The Wikipedia view" target="view_wikipedia"/>
-	</tocitem>
-	<tocitem text="Using Jajuk" expand="true">
+		</tocitem>
+		<tocitem text="Using Jajuk" expand="true">
 			<tocitem text="Editing tags and properties" target="editing_tags_and_properties"/>
 			<tocitem text="Reorganize files" target="files_organizer"/>			
 			<tocitem text="Keyboard controls" target="keys_shortcuts"/>
@@ -51,12 +52,12 @@
 			<tocitem text="Using tables in views" target="using_tables_in_views"/>
 			<tocitem text="Using the tray" target="using_the_tray"/>
 			<tocitem text="Using web radio" target="using_web_radio"/>
-	</tocitem>
-	<tocitem text="Technical" expand="true">
+		</tocitem>
+		<tocitem text="Technical" expand="true">
 			<tocitem text="Supported formats" target="supported_formats"/>
 			<tocitem text="Performance tips" target="performance_tips"/>
 			<tocitem text="Jajuk Dependencies" target="jajuk_dependencies"/>
 			<tocitem text="English Jajuk FAQ" target="english_jajuk_faq"/>
-	</tocitem>
+		</tocitem>
 	</tocitem>
 </toc>
