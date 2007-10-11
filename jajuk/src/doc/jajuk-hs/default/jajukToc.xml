@@ -36,7 +36,7 @@
 			<tocitem text="The Statistics view" target="view_statistics"/>
 			<tocitem text="The Suggestions view" target="view_suggestions"/>
 			<tocitem text="The Tracks Table view" target="view_tracks_table"/>
-			<tocitem text="The Tracks Tree view" target="view_tree_table"/>
+			<tocitem text="The Tracks Tree view" target="view_tracks_tree"/>
 			<tocitem text="The Wikipedia view" target="view_wikipedia"/>
 		</tocitem>
 		<tocitem text="Using Jajuk" expand="true">
