@@ -1,368 +1,552 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 
 <head>
 
+
 <link rel="stylesheet" type="text/css" href="href://wiki.jajuk.info/index.php?title=MediaWiki:Common.css&amp;action=raw" />
+
 
 <title>
 
+
 view parameter</title>
+
 
 </head>
 
+
 <body>
 
+
 <h1>
+
 
 view parameter</h1>
 
+
 <p>
+
 
 Go back to <a href="table_of_contents.html">
 
+
 Table of contents</a>
 
+
 </p>
+
 
 <h1>
 
+
 The Parameter view</h1>
 
+
 <p>
+
 
 This view contains all the Jajuk configuration. Note you will have to press the "OK" button in the lower part of the view to apply changes. You can reset everything to the "factory defaults" by clicking on the "restore defaults" button.</p>
 
+
 <h2>
+
 
 Options tab</h2>
 
+
 <p>
+
 
 This tab contains some general options:</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Only display mounted devices" [default=false]: If checked, Jajuk will become unaware of all items located on unmounted devices. It can be useful if you won't see tracks from unavailable devices.</li>
 
+
 <li>
+
 
 "Push on double click" [default=false]: If checked, Jajuk default behavior when double-clicking on a track will be to push it into the queue, not to play it.</li>
 
+
 <li>
+
 
 "Push on drop" [default=true]: If checked, Jajuk default behavior when drag &amp; dropping a track will be to push it into the queue, not to play it.</li>
 
+
 <li>
+
 
 "Synchronize tree and table view" [default=false]: If checked, table view will only display files (physical view) or tracks (logical view) from tree view selection.</li>
 
+
 <li>
+
 
 "Show a popup when launching a track" [default=true]: If checked, a tray popup will be shown at the bottom of the screen when launching a track.</li>
 
+
 <li>
+
 
 "Enable Hotkeys" [default=false][Windows only]: Use hotkeys so keystrokes (see list in [./keys.html Keystrokes]) like F8 work even out of Jajuk.</li>
 
+
 <li>
+
 
 "Language" [default=your system locale if supported or English otherwise]: Interface language. Needs a restart to be taken into account.</li>
 
+
 <li>
+
 
 "Look and Feel" [default=Plastic XP]: Interface theme.</li>
 
+
 <li>
+
 
 "Log level" [default=Error in normal mode, debug in debug mode (-debug)]: Set the verbosity of logs in your {home directory}/.jajuk/jajuk.log file. Please set to "Debug" before sending us a bug.</li>
 
+
 </ul>
 
+
 <h2>
+
 
 Mode tab</h2>
 
+
 <p>
+
 
 This tab contains some options on player modes:</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Intro begin position (%)" [default=0]: For intro mode, beginning track position in percent.</li>
 
+
 <li>
+
 
 "Intro length (sec)" [default=20]: For intro mode, track length in seconds.</li>
 
+
 <li>
+
 
 "Best of playlist size" [default=20]: Size of the "bestof" smart playlist (see [up.html Using Playlists])</li>
 
+
 <li>
+
 
 "Time limit of novelties (days)" [default=30]: After this number of day since first refresh, the tracks are no more novelties and will not be chosen any more by the novelties function (Command view).</li>
 
+
 <li>
+
 
 "Number of visible planned tracks" [default=10]: In Playlist editor view, number of visible planned tracks (see [view_playlist_editor.html Playlist Editor view]).</li>
 
+
 <li>
+
 
 <div lang="fr-FR">
 
+
 "Cross-fade duration" [default=0]: Cross-fade duration in secs between two tracks. Zero means no cross-fade.</div>
+
 
 </li>
 
+
 </ul>
 
+
 <h2>
+
 
 Startup tab</h2>
 
+
 <p>
+
 
 This tab is used to select Jajuk startup mode [default=Last one at last position]:</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Nothing": no track at all is launched at startup.</li>
 
+
 <li>
+
 
 "Last one from beginning": last track is fully played.</li>
 
+
 <li>
+
 
 "Last one at last position": last track is launched at position you stopped it when exiting Jajuk.</li>
 
+
 <li>
+
 
 "Shuffle track": A shuffle track from the entire collection.</li>
 
+
 <li>
+
 
 "Best of track": A track from your best of..</li>
 
+
 <li>
+
 
 "Novelties": A track from your novelties.</li>
 
+
 <li>
+
 
 "Specified file": choose a track by making a search in the text field and clicking of wanted track.</li>
 
+
 </ul>
 
+
 <h2>
+
 
 Tags tab</h2>
 
+
 <p>
+
 
 This tab is used to tune Jajuk tag features</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Use parent directory as album name" [default=true]: If the album tag is not available, take parent directory name as album name.</li>
 
+
 <li>
+
 
 "File Organizer Pattern": set pattern used when using the [./reorg.html file organizer].</li>
 
+
 <li>
+
 
 "Animation Pattern": set Animation view text pattern (variables are the same that Organizer's pattern)</li>
 
+
 </ul>
 
+
 <h2>
+
 
 History tab</h2>
 
+
 <p>
+
 
 This tab is used to tune the History bar (in [view_command.html Command view]). Note: the history data is in the {home directory}/.jajuk/history.xml file.</p>
 
+
 <ul>
 
+
 <li>
+
 
 "History duration" [default=-1]: Number of days you want to keep history. -1: infinite, 0: no history.</li>
 
+
 <li>
+
 
 "Clear History" button: Clears the history bar.</li>
 
+
 <li>
+
 
 "Reset ratings" button: Reset all tracks ratings to zero.</li>
 
+
 </ul>
 
+
 <h2>
+
 
 P2P tab</h2>
 
+
 <p>
+
 
 Not yet implemented</p>
 
+
 <h2>
+
 
 Covers tab</h2>
 
+
 <p>
+
 
 This tab is used to tune covers (see [view_cover.html the Cover view]).</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Shuffle cover" [default=false]: Shuffle covers when playing a new album.</li>
 
+
 <li>
+
 
 "Load cover at each track" [default=false, only if "shuffle cover" option is set]: allows selecting a different shuffle cover at each new track and not only at each new album.</li>
 
+
 <li>
+
 
 "Use auto cover" [default=true]: Grab remote covers from the Web.</li>
 
+
 <li>
+
 
 "Preload covers" [default=false, only if auto-cover option is set]: Load all found remote covers from the Web and don't wait the cover to be requested. It allows navigating more quickly into covers when all of them are loaded.</li>
 
+
 <li>
+
 
 "Minimum cover size in KB" [default=5, only if auto-cover option is set]: Minimum size for a remote cover to be taken.</li>
 
+
 <li>
+
 
 "Load cover at each track in KB" [default=100, only if auto-cover option is set]: Maximum size for a remote cover to be taken.</li>
 
+
 </ul>
 
+
 <h2>
+
 
 Confirmation tab</h2>
 
+
 <p>
+
 
 This tab is used to tune confirmations.</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Before physically deleting a file" [default=true]: Ask before physically and definitively deleting a file.</li>
 
+
 <li>
+
 
 "Before exiting Jajuk" [default=false]: Ask before quitting Jajuk.</li>
 
+
 <li>
+
 
 "Before removing a device" [default=true]: Ask before removing a device. No data will be deleted on your disk but the device will be deleted from the Jajuk database.</li>
 
+
 <li>
+
 
 "Before physically deleting a cover" [default=true]: Ask before physically and definitively deleting a cover (image file).</li>
 
+
 <li>
+
 
 "Before clearing history" [default=true]: Ask before clearing history in history bar.</li>
 
+
 <li>
+
 
 "Before reseting ratings" [default=true]: Ask before reseting all tracks ratings to zero.</li>
 
+
 </ul>
 
+
 <h2>
+
 
 Network tab</h2>
 
+
 <p>
+
 
 This tab is used to tune network options.</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Connection timeout in seconds" [default=5]: Timeout in seconds when establishing a connection to a server.</li>
 
+
 <li>
+
 
 "Transfer timeout in seconds" [default=20]: Timeout in seconds when transferring a file.</li>
 
+
 <li>
+
 
 "Use a HTTP proxy" [default=false]: Use a HTTP proxy, useful if used inside a corporate network for example.</li>
 
+
 <li>
+
 
 "Proxy host name" [default="proxy", only if Use a HTTP proxy is set]: Proxy host name or IP address.</li>
 
+
 <li>
+
 
 "Proxy port" [default="3128", only if Use a HTTP proxy is set]: Proxy port.</li>
 
+
 <li>
+
 
 "Proxy user name" [no default]: Proxy user name.</li>
 
+
 </ul>
+
 
 <h2>
 
+
 Advanced tab</h2>
 
+
 <p>
+
 
 This tab is used to tune some Jajuk advanced parameters</p>
 
+
 <ul>
 
+
 <li>
+
 
 "Use Regexp in filters" [default=false]: Use regexp strings like ".*foo.* in the filter field of the Table view.</li>
 
+
 <li>
+
 
 "Collection charset" [default=UTF-8]: Collection charset. UTF-16 is optimized for Asian languages and UTF-8 is optimized for European languages.</li>
 
+
 <li>
+
 
 "Backup collection file" [default=true]: If checked, the {home directory}/.jajuk/collection.xml is backup daily.</li>
 
+
 <li>
+
 
 "Backup size (MB)" [default=20, only if "Backup collection file" option is set]: Maximum backup size of all collection file backups.</li>
 
+
 </ul>
+
 
 <p>
 
+
 Go back to <a href="table_of_contents.html">
+
 
 Table of contents</a>
 
+
 </p>
+
 
 </body>
 
+
 </html>
+
 
