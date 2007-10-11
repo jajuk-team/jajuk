@@ -64,20 +64,18 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		this.sConf = sConf;
 		setShowGrid(false);
 		init(bSortable);
-		// Force to use Jajuk cell render for all columns
+		int index = 0;
+		// Force to use Jajuk cell render for all columns, except for boolean
+		// that should use default renderer (checkbox)
 		for (TableColumn col : getColumns()) {
-			col.setCellRenderer(new JajukCellRender());
+			if (model.getRowCount() > 0) {
+				Object o = model.getValueAt(0, index);
+				if (!(o instanceof Boolean)) {
+					col.setCellRenderer(new JajukCellRender());
+				}
+			}
+			index++;
 		}
-		/*
-		// Add alternate rows highlither
-		ColorScheme colors = SubstanceLookAndFeel.getActiveColorScheme();
-		if (SubstanceLookAndFeel.getTheme().getKind() == ThemeKind.DARK) {
-			addHighlighter(new AlternateRowHighlighter(colors.getMidColor(),
-					colors.getDarkColor(), colors.getForegroundColor()));
-		} else {
-			addHighlighter(new AlternateRowHighlighter(Color.WHITE, colors
-					.getUltraLightColor(), colors.getForegroundColor()));
-		}*/
 	}
 
 	/**
@@ -101,12 +99,11 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 * Select columns to show colsToShow list of columns id to keep
 	 */
 	public void showColumns(ArrayList<String> colsToShow) {
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel())
-				.getColumns(false).iterator();
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-			if (!colsToShow.contains(((JajukTableModel) getModel())
-					.getIdentifier(col.getModelIndex()))) {
+			if (!colsToShow.contains(((JajukTableModel) getModel()).getIdentifier(col
+					.getModelIndex()))) {
 				col.setVisible(false);
 			}
 		}
@@ -121,7 +118,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	public ArrayList<String> getColumnsConf() {
 		ArrayList<String> alOut = new ArrayList<String>(10);
 		String value = ConfigurationManager.getProperty(sConf);
-		StringTokenizer st = new StringTokenizer(value, ","); 
+		StringTokenizer st = new StringTokenizer(value, ",");
 		while (st.hasMoreTokens()) {
 			alOut.add(st.nextToken());
 		}
@@ -140,7 +137,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		ArrayList alOut = getColumnsConf();
 		if (!alOut.contains(property)) {
 			String value = ConfigurationManager.getProperty(sConf);
-			ConfigurationManager.setProperty(sConf, value + "," + property); 
+			ConfigurationManager.setProperty(sConf, value + "," + property);
 		}
 	}
 
@@ -165,14 +162,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 */
 	public void createColumnsConf() {
 		StringBuffer sb = new StringBuffer();
-		Iterator it = ((DefaultTableColumnModelExt) getColumnModel())
-				.getColumns(true).iterator();
+		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
-			String sIdentifier = ((JajukTableModel) getModel())
-					.getIdentifier(col.getModelIndex());
+			String sIdentifier = ((JajukTableModel) getModel()).getIdentifier(col.getModelIndex());
 			if (col.isVisible()) {
-				sb.append(sIdentifier + ","); 
+				sb.append(sIdentifier + ",");
 			}
 		}
 		String value;
@@ -194,7 +189,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		StringBuffer sb = new StringBuffer();
 		Iterator it = alCol.iterator();
 		while (it.hasNext()) {
-			sb.append((String) it.next() + ","); 
+			sb.append((String) it.next() + ",");
 		}
 		// remove last coma
 		if (sb.length() > 0) {
@@ -227,9 +222,11 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		}
 	}
 
-		/**
+	/**
 	 * Select a list of rows
-	 * @param indexes list of row indexes to be selected 
+	 * 
+	 * @param indexes
+	 *            list of row indexes to be selected
 	 */
 	public void setSelectedRows(int[] indexes) {
 		for (int i = 0; i < indexes.length; i++) {

@@ -97,9 +97,7 @@ public class TracksTableModel extends JajukTableModel {
 		vId.add(XML_TRACK_HITS);
 
 		// custom properties now
-		Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
-		while (it.hasNext()) {
-			PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+		for (PropertyMetaInformation meta:TrackManager.getInstance().getCustomProperties()){
 			vColNames.add(meta.getName());
 			vId.add(meta.getName());
 		}
@@ -259,11 +257,7 @@ public class TracksTableModel extends JajukTableModel {
 				}
 				// Date values not editable, use properties panel instead to
 				// edit
-				if (meta.getType().equals(Date.class)) {
-					bCellEditable[iRow][iNumberStandardCols + i] = false;
-				} else {
-					bCellEditable[iRow][iNumberStandardCols + i] = true;
-				}
+				bCellEditable[iRow][iNumberStandardCols + i] = !(meta.getType().equals(Date.class));
 			}
 		}
 	}

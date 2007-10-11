@@ -42,18 +42,17 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 			boolean focused, int row, int column) {
 		Component c = super.getTableCellRendererComponent(table, oValue, selected, focused, row,
 				column);
-		if (oValue instanceof IconLabel){
-			((JLabel)c).setOpaque(false);
-			((JLabel)c).setIcon(((IconLabel)oValue));
-			((JLabel)c).setToolTipText(((IconLabel)oValue).getTooltip());
-			((JLabel)c).setFont(((IconLabel)oValue).getFont());
-			((JLabel)c).setText(((IconLabel)oValue).getText());
-		}
-		else if(oValue instanceof Date){
-			((JLabel)c).setText(Util.getLocaleDateFormatter().format(((Date)oValue)));
+		if (oValue instanceof IconLabel) {
+			((JLabel) c).setOpaque(false);
+			((JLabel) c).setIcon(((IconLabel) oValue));
+			((JLabel) c).setToolTipText(((IconLabel) oValue).getTooltip());
+			((JLabel) c).setFont(((IconLabel) oValue).getFont());
+			((JLabel) c).setText(((IconLabel) oValue).getText());
+		} else if (oValue instanceof Date) {
+			((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
 		}
 		c.setEnabled(table == null || table.isEnabled());
-		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN)); 
+		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 		return c;
 	}
 

@@ -20,19 +20,19 @@
 
 package org.jajuk.base;
 
-import org.apache.commons.collections.bidimap.TreeBidiMap;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.Filter;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
+
+import org.apache.commons.collections.bidimap.TreeBidiMap;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.Filter;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Managers parent class
@@ -140,7 +140,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	 * @return XML representation of this manager
 	 */
 	public String toXML() {
-		StringBuffer sb = new StringBuffer("\t<").append(getLabel() + ">");  
+		StringBuffer sb = new StringBuffer("\t<").append(getLabel() + ">");
 		Iterator it = hmPropertiesMetaInformation.keySet().iterator();
 		while (it.hasNext()) {
 			String sProperty = (String) it.next();
@@ -156,7 +156,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	public Collection<PropertyMetaInformation> getProperties() {
 		return hmPropertiesMetaInformation.values();
 	}
-	
+
 	/**
 	 * @return custom properties Meta informations
 	 */
@@ -293,11 +293,11 @@ public abstract class ItemManager implements ITechnicalStrings {
 			if (filter.isExact()) {
 				checked = filter.getValue();
 			} else {
-				checked = ".*" + filter.getValue() + ".*";  
+				checked = ".*" + filter.getValue() + ".*";
 			}
 			ArrayList<Item> out = new ArrayList<Item>(col.size());
 			for (Item item : col) {
-				//If none property set, the search if global "any"
+				// If none property set, the search if global "any"
 				if (filter.getProperty() == null) {
 					comparator = item.getAny();
 				} else {
@@ -345,7 +345,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 	public static Item changeItem(Item itemToChange, String sKey, Object oValue, HashSet filter)
 			throws JajukException {
 		if (Log.isDebugEnabled()) {
-			Log.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange);   
+			Log.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange);
 		}
 		Item newItem = itemToChange;
 		if (itemToChange instanceof File) {
@@ -397,6 +397,10 @@ public abstract class ItemManager implements ITechnicalStrings {
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
+		} else if (itemToChange instanceof Device) {
+			itemToChange.setProperty(sKey, oValue);
+		} else if (itemToChange instanceof Playlist) {
+			itemToChange.setProperty(sKey, oValue);
 		} else if (itemToChange instanceof Track) {
 			if (XML_NAME.equals(sKey)) {
 				newItem = TrackManager.getInstance().changeTrackName((Track) itemToChange,
@@ -446,6 +450,8 @@ public abstract class ItemManager implements ITechnicalStrings {
 			} else { // others properties
 				itemToChange.setProperty(sKey, oValue);
 			}
+		} else if (itemToChange instanceof Year) {
+			itemToChange.setProperty(sKey, oValue);
 		}
 		return newItem;
 	}
