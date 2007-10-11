@@ -6,9 +6,11 @@
 <map version="1.0">
         <mapID target="editing_tags_and_properties"  url="html/editing_tags_and_properties.html" />
         <mapID target="english_jajuk_faq" url="html/english_jajuk_faq.html" />
+        <mapID target="features" url="html/features.html" />
         <mapID target="files_organizer" url="html/files_organizer.html" />
         <mapID target="jajuk_dependencies" url="html/jajuk_dependencies.html" />
         <mapID target="keys_shortcuts" url="html/keys_shortcuts.html" />
+        <mapID target="new_features_highlights" url="html/new_features_highlights.html" />
         <mapID target="performance_tips" url="html/performance_tips.html" />
         <mapID target="perspectives_and_views" url="html/perspectives_and_views.html" />
         <mapID target="playing_music" url="html/playing_music.html" />
@@ -17,8 +19,11 @@
         <mapID target="using_custom_properties" url="html/using_custom_properties.html" />
         <mapID target="using_devices" url="html/using_devices.html" />
         <mapID target="using_digital_djs" url="html/using_digital_djs.html" />
+        <mapID target="using_jajuk_menus" url="html/using_jajuk_menus.html" />        
         <mapID target="using_playlists" url="html/using_playlists.html" />
+        <mapID target="using_tables_in_views" url="html/using_tables_in_views.html" />         
         <mapID target="using_the_tray" url="html/using_the_tray.html" />
+        <mapID target="using_web_radio" url="html/using_web_radio.html" />
         <mapID target="view_about" url="html/view_about.html" />
         <mapID target="view_albums_catalog" url="html/view_albums_catalog.html" />
         <mapID target="view_animation" url="html/view_animation.html" />
@@ -26,14 +31,19 @@
         <mapID target="view_command" url="html/view_command.html" />
         <mapID target="view_cover" url="html/view_cover.html" />
         <mapID target="view_devices" url="html/view_devices.html" />
+        <mapID target="view_files_table" url="html/view_files_table.html" />
+        <mapID target="view_files_tree" url="html/view_files_tree.html" />
         <mapID target="view_help" url="html/view_help.html" />
         <mapID target="view_information" url="html/view_information.html" />
-        <mapID target="view_logical_tracks_tree" url="html/view_logical_tracks_tree.html" />
-        <mapID target="view_parameter" url="html/view_parameter.html" />
-        <mapID target="view_physical_files_tree" url="html/view_physical_files_tree.html" />
+        <mapID target="view_logical_playlists" url="html/view_logical_playlists.html" />        
+        <mapID target="view_lyrics" url="html/view_lyrics.html" />        
+        <mapID target="view_perspective_selector" url="html/view_perspective_selector.html" />
+        <mapID target="view_physical_playlists" url="html/view_physical_playlists.html" />        
         <mapID target="view_playlist_editor" url="html/view_playlist_editor.html" />
-        <mapID target="view_playlist_repository" url="html/view_playlist_repository.html" />
+        <mapID target="view_preferences" url="html/view_preferences.html" />
         <mapID target="view_statistics" url="html/view_statistics.html" />
-        <mapID target="view_table" url="html/view_table.html" />
+        <mapID target="view_suggestions" url="html/view_suggestions.html" /> 
+        <mapID target="view_tracks_table" url="html/view_tracks_table.html" /> 
+        <mapID target="view_tracks_tree" url="html/view_tracks_tree.html" />         
         <mapID target="view_wikipedia" url="html/view_wikipedia.html" />
 </map>
