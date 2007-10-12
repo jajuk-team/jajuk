@@ -1791,30 +1791,30 @@ public class Util implements ITechnicalStrings {
 		Track track = file.getTrack();
 		String sValue = null;
 		// Check Author name
-		if (sPattern.contains(PATTERN_ARTIST)) {
+		if (sPattern.contains(PATTERN_AUTHOR)) {
 			sValue = track.getAuthor().getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			if (!sValue.equals(UNKNOWN_AUTHOR)) {
-				out = out.replaceAll(PATTERN_ARTIST, AuthorManager.format(sValue));
+				out = out.replaceAll(PATTERN_AUTHOR, AuthorManager.format(sValue));
 			} else {
 				if (bMandatory) {
 					throw new JajukException(150, file.getAbsolutePath());
 				} else {
-					out = out.replaceAll(PATTERN_ARTIST, Messages.getString(UNKNOWN_AUTHOR));
+					out = out.replaceAll(PATTERN_AUTHOR, Messages.getString(UNKNOWN_AUTHOR));
 				}
 			}
 		}
 		// Check Style name
-		if (sPattern.contains(PATTERN_GENRE)) {
+		if (sPattern.contains(PATTERN_STYLE)) {
 			sValue = track.getStyle().getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			if (!sValue.equals(UNKNOWN_STYLE)) {
-				out = out.replace(PATTERN_GENRE, StyleManager.format(sValue));
+				out = out.replace(PATTERN_STYLE, StyleManager.format(sValue));
 			} else {
 				if (bMandatory) {
 					throw new JajukException(153, file.getAbsolutePath());
 				} else {
-					out = out.replace(PATTERN_GENRE, Messages.getString(UNKNOWN_STYLE));
+					out = out.replace(PATTERN_STYLE, Messages.getString(UNKNOWN_STYLE));
 				}
 			}
 		}
