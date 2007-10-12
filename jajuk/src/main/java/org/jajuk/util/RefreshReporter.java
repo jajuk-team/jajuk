@@ -27,7 +27,6 @@ import javax.swing.Timer;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.log.Log;
 

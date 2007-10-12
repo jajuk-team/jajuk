@@ -27,12 +27,12 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.base.WebRadio;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.FontManager;
-import org.jajuk.ui.FontManager.JajukFont;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
 import java.awt.Insets;

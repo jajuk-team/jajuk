@@ -30,11 +30,11 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukJDialog;
-import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.FilesPerspective;
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
 import java.awt.event.ActionListener;

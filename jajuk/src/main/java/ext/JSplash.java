@@ -26,9 +26,9 @@
  */
 package ext;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -34,10 +34,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.FontManager;
-import org.jajuk.ui.FontManager.JajukFont;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

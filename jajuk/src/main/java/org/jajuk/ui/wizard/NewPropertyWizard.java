@@ -24,8 +24,8 @@ import org.jajuk.base.Event;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXDatePicker;
 

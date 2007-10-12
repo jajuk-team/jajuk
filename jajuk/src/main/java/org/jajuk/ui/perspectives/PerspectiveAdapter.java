@@ -29,11 +29,10 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IView;
+import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

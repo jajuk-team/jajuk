@@ -22,7 +22,6 @@ package org.jajuk.util;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.i18n.Messages;
 
 import java.io.File;
 

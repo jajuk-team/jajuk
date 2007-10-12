@@ -34,8 +34,8 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
 import java.io.BufferedWriter;

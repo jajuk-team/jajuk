@@ -25,11 +25,11 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IPerspective;
+import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 

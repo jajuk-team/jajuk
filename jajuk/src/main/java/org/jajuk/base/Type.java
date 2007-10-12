@@ -19,9 +19,9 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
+import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 import javax.swing.ImageIcon;

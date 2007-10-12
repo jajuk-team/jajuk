@@ -20,9 +20,9 @@
 package org.jajuk.base;
 
 import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;

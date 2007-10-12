@@ -20,7 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.Messages;
 
 /**
  * Physical perspective

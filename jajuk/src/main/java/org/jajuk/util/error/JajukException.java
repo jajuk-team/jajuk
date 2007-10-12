@@ -19,7 +19,7 @@
  */
 package org.jajuk.util.error;
 
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.Messages;
 
 /**
  * JajukException

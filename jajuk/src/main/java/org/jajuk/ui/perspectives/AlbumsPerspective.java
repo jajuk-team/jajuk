@@ -20,7 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.Messages;
 
 /**
  * Catalog perspective, shows all default covers by album

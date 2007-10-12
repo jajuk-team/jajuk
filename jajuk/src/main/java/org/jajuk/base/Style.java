@@ -19,8 +19,8 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 
 import java.util.ArrayList;
 

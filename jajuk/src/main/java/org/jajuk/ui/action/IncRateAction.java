@@ -22,9 +22,9 @@ package org.jajuk.ui.action;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;

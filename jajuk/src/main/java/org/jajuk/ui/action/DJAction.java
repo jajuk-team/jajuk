@@ -25,9 +25,9 @@ import org.jajuk.base.File;
 import org.jajuk.base.StyleManager;
 import org.jajuk.dj.DigitalDJ;
 import org.jajuk.dj.DigitalDJManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 

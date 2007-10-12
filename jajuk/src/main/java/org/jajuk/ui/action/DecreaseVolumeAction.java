@@ -20,7 +20,7 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.base.Player;
-import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.widgets.CommandJPanel;
 
 import java.awt.event.ActionEvent;
 

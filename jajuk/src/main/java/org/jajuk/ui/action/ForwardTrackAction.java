@@ -20,8 +20,8 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.base.Player;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 
 import java.awt.event.ActionEvent;
 

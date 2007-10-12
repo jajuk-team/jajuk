@@ -19,9 +19,9 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.RemovePropertyWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;

@@ -22,7 +22,6 @@ package org.jajuk.util;
 
 import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
 
 import java.io.File;

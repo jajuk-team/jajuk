@@ -20,8 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IView;
+import org.jajuk.ui.perspectives.IPerspective;
 
 import java.util.Collections;
 import java.util.ArrayList;

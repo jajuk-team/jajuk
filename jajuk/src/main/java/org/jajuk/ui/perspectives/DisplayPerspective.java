@@ -20,7 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.Messages;
 
 /**
  * Player perspective, contains view usefull to be displayed duriong playing

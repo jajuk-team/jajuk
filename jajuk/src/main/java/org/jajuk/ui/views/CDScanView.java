@@ -37,11 +37,11 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
 
 import ext.SwingWorker;
 

@@ -20,8 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IView;
+import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.util.ITechnicalStrings;
 import org.jdesktop.swingx.JXPanel;
 

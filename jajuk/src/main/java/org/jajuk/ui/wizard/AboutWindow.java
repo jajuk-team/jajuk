@@ -21,9 +21,9 @@
 package org.jajuk.ui.wizard;
 
 import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jfree.ui.about.AboutPanel;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.SystemPropertiesPanel;

@@ -23,7 +23,7 @@ package org.jajuk.ui.action;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.Messages;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

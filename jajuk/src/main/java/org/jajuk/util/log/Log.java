@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 

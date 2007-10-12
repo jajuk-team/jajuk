@@ -20,7 +20,6 @@
 package org.jajuk.util;
 
 import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.log.Log;
 

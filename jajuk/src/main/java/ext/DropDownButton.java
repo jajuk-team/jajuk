@@ -12,7 +12,7 @@
 
 package ext;
 
-import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 

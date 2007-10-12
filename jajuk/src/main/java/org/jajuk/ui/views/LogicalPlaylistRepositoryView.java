@@ -24,10 +24,10 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.ui.helpers.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 

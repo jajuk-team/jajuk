@@ -24,9 +24,9 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.base.WebRadio;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioManager;
 

@@ -56,13 +56,13 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

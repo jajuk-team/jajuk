@@ -25,12 +25,11 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.IView;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
 import info.clearthought.layout.TableLayout;

@@ -22,8 +22,8 @@ package org.jajuk.dj;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;

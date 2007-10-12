@@ -20,12 +20,12 @@
 package org.jajuk.ui.action;
 
 import org.jajuk.base.Item;
-import org.jajuk.i18n.Messages;
 import org.jajuk.reporting.Exporter;
 import org.jajuk.reporting.ExporterFactory;
-import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.JajukFileFilter.HTMLFilter;
 import org.jajuk.util.JajukFileFilter.XMLFilter;

@@ -24,11 +24,11 @@ import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

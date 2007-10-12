@@ -26,10 +26,10 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 
 import java.util.ArrayList;
 import java.util.Collection;

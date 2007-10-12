@@ -20,13 +20,13 @@
 package org.jajuk.base;
 
 import org.jajuk.Main;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
 import org.jajuk.util.RefreshReporter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;

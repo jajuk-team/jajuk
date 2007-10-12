@@ -53,7 +53,6 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
@@ -63,6 +62,7 @@ import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

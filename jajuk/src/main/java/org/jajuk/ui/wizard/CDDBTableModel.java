@@ -22,9 +22,9 @@ package org.jajuk.ui.wizard;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.wizard.CDDBWizard.CDDBTrack;
+import org.jajuk.util.Messages;
 
 import java.util.ArrayList;
 import java.util.Iterator;

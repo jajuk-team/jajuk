@@ -20,7 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.i18n.Messages;
+import org.jajuk.util.Messages;
 
 /**
  * Information perspective, display various information about played tracks

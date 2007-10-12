@@ -21,10 +21,10 @@ package org.jajuk.ui.action;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.Messages;
 
 import java.awt.event.ActionEvent;
 

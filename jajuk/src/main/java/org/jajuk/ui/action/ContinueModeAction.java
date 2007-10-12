@@ -22,11 +22,11 @@ package org.jajuk.ui.action;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.StackItem;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.widgets.CommandJPanel;
+import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;

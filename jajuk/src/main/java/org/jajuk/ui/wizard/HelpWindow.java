@@ -27,12 +27,12 @@ import java.util.Locale;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.JHelp;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Help perspective *
  */
-public class HelpWindow extends JFrame implements ITechnicalStrings {
+public class HelpWindow extends JDialog implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
