@@ -103,7 +103,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 						new PropertiesWizard(items);
 					} else if (XML_URL.equals(url.getHost())) {
 						try {
-							Desktop.browse(url);
+							Desktop.browse(new URL(url.getQuery()));
 						} catch (Exception e1) {
 							Log.error(e1);
 						}

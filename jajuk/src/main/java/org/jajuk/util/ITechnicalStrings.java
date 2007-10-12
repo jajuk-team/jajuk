@@ -1087,11 +1087,11 @@ public interface ITechnicalStrings {
 	public static final String THUMBNAIL_SIZE_300x300 = "300x300";
 
 	// Patterns
-	public static final String PATTERN_ARTIST = "%artist";
+	public static final String PATTERN_AUTHOR = "%artist";
 
 	public static final String PATTERN_ALBUM = "%album";
 
-	public static final String PATTERN_GENRE = "%genre";
+	public static final String PATTERN_STYLE = "%genre";
 
 	public static final String PATTERN_YEAR = "%year";
 
@@ -1099,10 +1099,10 @@ public interface ITechnicalStrings {
 
 	public static final String PATTERN_TRACKORDER = "%n";
 
-	public static final String PATTERN_DEFAULT_REORG = PATTERN_ARTIST + "/" + PATTERN_YEAR + " - "
+	public static final String PATTERN_DEFAULT_REORG = PATTERN_AUTHOR + "/" + PATTERN_YEAR + " - "
 			+ PATTERN_ALBUM + "/" + PATTERN_TRACKORDER + " - " + PATTERN_TRACKNAME;
 
-	public static final String PATTERN_DEFAULT_ANIMATION = PATTERN_ARTIST + " / " + PATTERN_ALBUM
+	public static final String PATTERN_DEFAULT_ANIMATION = PATTERN_AUTHOR + " / " + PATTERN_ALBUM
 			+ " / " + PATTERN_TRACKNAME;
 
 	// Actions
