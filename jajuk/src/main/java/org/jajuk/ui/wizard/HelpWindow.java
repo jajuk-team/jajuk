@@ -20,11 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.log.Log;
-
 import java.awt.Dimension;
 import java.net.URL;
 import java.util.Locale;
@@ -32,15 +27,20 @@ import java.util.Locale;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.JHelp;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  * Help view using java help api
  * <p>
  * Help perspective *
  */
-public class HelpWindow extends JDialog implements ITechnicalStrings {
+public class HelpWindow extends JFrame implements ITechnicalStrings {
 
 	private static final long serialVersionUID = 1L;
 
