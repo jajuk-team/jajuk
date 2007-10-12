@@ -173,8 +173,8 @@ public class AuthorManager extends ItemManager {
 	public static String format(String sName) {
 		String sOut;
 		sOut = sName.trim(); // suppress spaces at the begin and the end
-		sOut.replace('-', ' '); // move - to space
-		sOut.replace('_', ' '); // move _ to space
+		sOut = sOut.replace('-', ' '); // move - to space
+		sOut = sOut.replace('_', ' '); // move _ to space
 		char c = sOut.charAt(0);
 		sOut = sOut.toLowerCase();
 		StringBuffer sb = new StringBuffer(sOut);
