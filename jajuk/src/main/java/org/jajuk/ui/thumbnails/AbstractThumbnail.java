@@ -220,7 +220,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 				IconLoader.ICON_COVER_16x16);
 		jmiGetCovers.addActionListener(this);
 		jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"),
-				IconLoader.ICON_COVER_16x16);
+				IconLoader.ICON_POPUP);
 		jmiShowPopup.addActionListener(this);
 		jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
 		jmiCDDBWizard.addActionListener(this);
