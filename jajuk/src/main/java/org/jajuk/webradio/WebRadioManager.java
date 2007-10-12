@@ -81,6 +81,9 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 			saxParser.parse(fwebradios.toURI().toURL().toString(), this);
 		} catch (Exception e) {
 			Log.error(e);
+			// Remove file if it is corrupted so it will be downloaded again
+			// next time
+			fwebradios.delete();
 		}
 	}
 
