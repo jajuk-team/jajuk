@@ -6,7 +6,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.4_RC13' />
+	<property name='version' value='1.4_RC14' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
