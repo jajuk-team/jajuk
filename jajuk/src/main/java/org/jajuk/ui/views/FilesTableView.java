@@ -115,8 +115,6 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	public JajukTableModel populateTable() {
 		// model creation
 		FilesTableModel model = new FilesTableModel();
-		model.addTableModelListener(this);
-		model.setEditable(ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
 		return model;
 	}
 
@@ -206,6 +204,13 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	public void actionPerformed(final ActionEvent e) {
 		new Thread() {
 			public void run() {
+				// Editable state
+				if (e.getSource() == jtbEditable) {
+					ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION, Boolean
+							.toString(jtbEditable.isSelected()));
+					model.setEditable(jtbEditable.isSelected());
+					return;
+				}
 				// computes selected files
 				ArrayList<File> alFilesToPlay = new ArrayList<File>(jtable.getSelectedRowCount());
 				ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable.getSelectedRowCount());
@@ -258,12 +263,6 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 				else if (e.getSource() == jmiFileAddFavorites) {
 					Bookmarks.getInstance().addFiles(alFilesToPlay);
 				}
-				// editable state
-				else if (e.getSource() == jtbEditable) {
-					ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_EDITION, Boolean
-							.toString(jtbEditable.isSelected()));
-					model.setEditable(jtbEditable.isSelected());
-				}
 				// properties
 				else if (e.getSource() == jmiProperties) {
 					ArrayList<Item> alItems1 = new ArrayList<Item>(1); // file
@@ -302,7 +301,6 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	void initTable() {
 		boolean bEditable = ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
 		jtbEditable.setSelected(bEditable);
-		model.setEditable(bEditable);
 	}
 
 }

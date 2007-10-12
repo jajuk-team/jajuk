@@ -20,31 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StyleManager;
-import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.TableTransferHandler;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.widgets.JajukToggleButton;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -73,6 +48,31 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
+
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StyleManager;
+import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.TableTransferHandler;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.widgets.JajukToggleButton;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
 
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
@@ -180,7 +180,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			}
 
 			public void finished() {
-				model.addTableModelListener(AbstractTableView.this);
 				// Control panel
 				jpControl = new JPanel();
 				jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -268,10 +267,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 * model
 	 */
 	public void applyFilter(final String sPropertyName, final String sPropertyValue) {
-		model.removeTableModelListener(this);
 		SwingWorker sw = new SwingWorker() {
 			@Override
 			public Object construct() {
+				model.removeTableModelListener(AbstractTableView.this);
 				model.populateModel(sPropertyName, sPropertyValue);
 				return null;
 			}
@@ -454,6 +453,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		if (e.getColumn() < 0) {
 			return;
 		}
+		model.removeTableModelListener(AbstractTableView.this);
 		String sKey = model.getIdentifier(e.getColumn());
 		Object oValue = model.getValueAt(e.getFirstRow(), e.getColumn());
 		/* can be Boolean or String */
@@ -469,11 +469,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			Item itemNew = ItemManager.changeItem(item, sKey, oValue, filter);
 			model.setItemAt(e.getFirstRow(), itemNew); // update model
 			// user message
-			itemNew.getMeta(sKey);
 			InformationJPanel.getInstance().setMessage(
 					Messages.getString("PropertiesWizard.8") + ": "
 							+ ItemManager.getHumanType(sKey), InformationJPanel.INFORMATIVE);
 			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+			
 		} catch (NoneAccessibleFileException none) {
 			Messages.showErrorMessage(none.getCode());
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
@@ -484,6 +484,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			Log.error("104", je);
 			Messages.showErrorMessage(104, je.getMessage());
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
+		}
+		finally{
+			if (model != null){
+				model.addTableModelListener(AbstractTableView.this);
+			}
 		}
 	}
 

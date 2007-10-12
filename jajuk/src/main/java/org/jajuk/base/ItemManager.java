@@ -41,7 +41,7 @@ public abstract class ItemManager implements ITechnicalStrings {
 
 	/** Items collection* */
 	protected TreeBidiMap hmItems = new TreeBidiMap();
-
+	
 	/**
 	 * Maps item classes -> instance, must be a linked map for ordering
 	 * (mandatory in commited collection)

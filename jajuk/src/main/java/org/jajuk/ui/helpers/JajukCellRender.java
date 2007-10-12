@@ -20,17 +20,17 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
-
 import java.awt.Component;
 import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.IconLabel;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
 /**
  * Cell renderer to support cells color and icons
@@ -39,9 +39,8 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 	
 	private static final long serialVersionUID = 154545454L;
 	
-	private SubstanceDefaultTableCellRenderer.BooleanRenderer sdcr = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
-
-
+	private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+	
 	public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
 			boolean focused, int row, int column) {
 		Component c = super.getTableCellRendererComponent(table, oValue, selected, focused, row,
@@ -55,10 +54,9 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
 		} else if (oValue instanceof Date) {
 			((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
 		} else if (oValue instanceof Boolean) {
-			c = sdcr.getTableCellRendererComponent(table, oValue, selected, focused, row,
-				column);
+			c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
+					column);
 		}
-		c.setEnabled(table == null || table.isEnabled());
 		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 		return c;
 	}

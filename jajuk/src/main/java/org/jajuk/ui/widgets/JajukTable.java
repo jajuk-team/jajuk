@@ -20,15 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jajuk.ui.helpers.JajukCellRender;
-import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
-
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +29,15 @@ import java.util.StringTokenizer;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+
+import org.jajuk.ui.helpers.JajukCellRender;
+import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  * JXTable with following features:
@@ -66,17 +66,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 		this.sConf = sConf;
 		setShowGrid(false);
 		init(bSortable);
-		int index = 0;
 		// Force to use Jajuk cell render for all columns, except for boolean
 		// that should use default renderer (checkbox)
 		for (TableColumn col : getColumns()) {
-			if (model.getRowCount() > 0) {
-				Object o = model.getValueAt(0, index);
-				if (!(o instanceof Boolean)) {
-					col.setCellRenderer(new JajukCellRender());
-				}
-			}
-			index++;
+			col.setCellRenderer(new JajukCellRender());
 		}
 	}
 

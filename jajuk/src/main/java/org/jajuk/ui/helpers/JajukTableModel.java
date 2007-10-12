@@ -177,7 +177,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
 	}
 
 	/**
-	 * Fill model with data using an optionnal filter property and pattern
+	 * Fill model with data using an optional filter property and pattern
 	 * 
 	 * @param sProperty
 	 *            Property (column) to filter

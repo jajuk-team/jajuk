@@ -123,7 +123,6 @@ public class TracksTableView extends AbstractTableView {
 	public JajukTableModel populateTable() {
 		// model creation
 		TracksTableModel model = new TracksTableModel();
-		model.setEditable(ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION));
 		return model;
 	}
 
@@ -219,6 +218,13 @@ public class TracksTableView extends AbstractTableView {
 	public void actionPerformed(final ActionEvent e) {
 		new Thread() {
 			public void run() {
+				// Editable state
+				if (e.getSource() == jtbEditable) {
+					ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION, Boolean
+							.toString(jtbEditable.isSelected()));
+					model.setEditable(jtbEditable.isSelected());
+					return;
+				}
 				// computes selected tracks
 				ArrayList<File> alFilesToPlay = new ArrayList<File>(10);
 				int[] indexes = jtable.getSelectedRows();
@@ -287,12 +293,6 @@ public class TracksTableView extends AbstractTableView {
 				else if (e.getSource() == jmiTrackAddFavorite) {
 					Bookmarks.getInstance().addFiles(alFilesToPlay);
 				}
-				// editable state
-				else if (e.getSource() == jtbEditable) {
-					ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION, Boolean
-							.toString(jtbEditable.isSelected()));
-					model.setEditable(jtbEditable.isSelected());
-				}
 				// properties
 				else if (e.getSource() == jmiProperties) {
 					if (jtable.getSelectedRowCount() == 1) {
@@ -327,7 +327,6 @@ public class TracksTableView extends AbstractTableView {
 	void initTable() {
 		boolean bEditable = ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
 		jtbEditable.setSelected(bEditable);
-		model.setEditable(bEditable);
 	}
 
 }

@@ -56,6 +56,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 */
 	public FilesTableModel() {
 		super(18);
+		setEditable(ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel
@@ -131,7 +132,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	}
 
 	/**
-	 * Fill model with data using an optionnal filter property and pattern
+	 * Fill model with data using an optional filter property and pattern
 	 */
 	@SuppressWarnings("unchecked")
 	public synchronized void populateModel(String sPropertyName, String sPattern) {

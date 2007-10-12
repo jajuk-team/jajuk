@@ -57,7 +57,7 @@ public class TracksTableModel extends JajukTableModel {
 	 */
 	public TracksTableModel() {
 		super(12);
-
+		setEditable(ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION));
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel
