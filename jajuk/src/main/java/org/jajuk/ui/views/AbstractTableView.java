@@ -453,7 +453,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		if (e.getColumn() < 0) {
 			return;
 		}
-		model.removeTableModelListener(AbstractTableView.this);
 		String sKey = model.getIdentifier(e.getColumn());
 		Object oValue = model.getValueAt(e.getFirstRow(), e.getColumn());
 		/* can be Boolean or String */
@@ -484,11 +483,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			Log.error("104", je);
 			Messages.showErrorMessage(104, je.getMessage());
 			((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
-		}
-		finally{
-			if (model != null){
-				model.addTableModelListener(AbstractTableView.this);
-			}
 		}
 	}
 
