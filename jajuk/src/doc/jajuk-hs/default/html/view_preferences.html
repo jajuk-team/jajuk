@@ -22,6 +22,10 @@ factory defaults</i>
  by clicking on the <i>
 restore defaults</i>
  button.</p>
+<p>
+<i>
+Security notice</i>
+: all passwords set here (proxy password, Last.FM password...) are *not* stored in clear in the jajuk configuration files but obfuscated</p>
 <h2>
 Options tab</h2>
 <p>
@@ -29,7 +33,7 @@ This tab contains some general options:</p>
 <ul>
 <li>
 <b>
-Only display mounted devices</b>
+Only show available tracks</b>
  [default=false]: If checked, Jajuk will become unaware of all items located on unmounted devices. It can be useful if you won't see tracks from unavailable devices.</li>
 <li>
 <b>
@@ -57,23 +61,11 @@ keys shortcuts</a>
 <b>
 Language</b>
  [default=your system locale if supported or English otherwise]: Interface language. Needs a restart to be taken into account.</li>
-<li>
-<b>
-Look and Feel</b>
- [default=Plastic XP]: Interface theme.</li>
-<li>
-<b>
-Log level</b>
- [default=Error in normal mode, debug in debug mode (-debug)]: Set the verbosity of logs in your <i>
-{home directory}/.jajuk/jajuk.log</i>
- file. Please set to <i>
-Debug</i>
- before sending us a bug.</li>
 </ul>
 <h2>
-Mode tab</h2>
+Modes tab</h2>
 <p>
-This tab contains some options on player modes:</p>
+This tab contains player engine preferences:</p>
 <ul>
 <li>
 <b>
@@ -83,6 +75,10 @@ Intro begin position (%)</b>
 <b>
 Intro length (sec)</b>
  [default=20]: For intro mode, track length in seconds.</li>
+<li>
+<b>
+Cross fade duration (seconds)</b>
+ [default=10]: Define cross fade between two tracks. If mplayer is not available, the cross fade is not always honored </li>
 <li>
 <b>
 Best of playlist size</b>
@@ -105,6 +101,48 @@ view playlist editor</a>
 <b>
 Cross-fade duration</b>
  [default=0]: Cross-fade duration in secs between two tracks. Zero means no cross-fade.</li>
+</ul>
+<h2>
+GUI tab</h2>
+<ul>
+<li>
+<b>
+Show user interface at start-up</b>
+ [default=true]: Should we display the full Jajuk window or just the tray at startup ? (a single click on the tray displays the window)</li>
+<li>
+<b>
+Show balloons</b>
+ [default=false]: Should jajuk show a popup detailing new launched tracks ?</li>
+<li>
+<b>
+Font size</b>
+ [default=12]: font size used mainly in tree and table views</li>
+<li>
+<b>
+Theme</b>
+ [default=Orange]: Color theme to use</li>
+<li>
+<b>
+Watermarks</b>
+ [default=Image]: watermark to use</li>
+<li>
+<b>
+Watermark image</b>
+ [default=default jajuk background]: set here a custom image if you previously selected image watermark</li>
+<li>
+<b>
+Show album popups</b>
+ [default=true]: Should Jajuk show popups on thumbs (mainly in <a href="view_catalog.html">
+view catalog</a>
+ and <a href="view_suggestions.html">
+view suggestions</a>
+)</li>
+<li>
+<b>
+Catalog view preferences / Catalog view page size</b>
+ [default=200]: set here the number of albums by page in the <a href="view_catalog.html">
+view catalog</a>
+. Zero means all in one.</li>
 </ul>
 <h2>
 Startup tab</h2>
@@ -137,7 +175,7 @@ Novelties</b>
 : A track from your novelties.</li>
 <li>
 <b>
-Specified file</b>
+Track</b>
 : choose a track by making a search in the text field and clicking of wanted track.</li>
 </ul>
 <h2>
@@ -185,9 +223,27 @@ Reset ratings</b>
  button: Reset all tracks ratings to zero.</li>
 </ul>
 <h2>
-P2P tab</h2>
-<p>
-Not yet implemented</p>
+Last.FM</h2>
+<ul>
+<li>
+<b>
+Enable Last.FM information queries</b>
+: Allow jajuk to make queries to Last.FM web services in order to display various information on playing artist like similar artists and others albms in the <a href="view_suggestions.html">
+view suggestions</a>
+</li>
+<li>
+<b>
+Scrobble my listening</b>
+: Allow Jajuk to send information on titles you listen to Last.FM website in order to feed your Last.FM profile (check http://last.fm website)</li>
+<li>
+<b>
+Last.FM user name</b>
+: Last.FM login name you used when creating your Last.FM profile</li>
+<li>
+<b>
+Last.FM password</b>
+: Last.FM password you used when creating your Last.FM profile</li>
+</ul>
 <h2>
 Covers tab</h2>
 <p>
@@ -255,20 +311,16 @@ Before reseting ratings</b>
 <h2>
 Network tab</h2>
 <p>
-This tab is used to tune network options.</p>
+This tab is used to tune network options (useful if used inside a corporate network for example)</p>
 <ul>
 <li>
-<b>
-Connection timeout in seconds</b>
- [default=5]: Timeout in seconds when establishing a connection to a server.</li>
-<li>
-<b>
-Transfer timeout in seconds</b>
- [default=20]: Timeout in seconds when transferring a file.</li>
-<li>
-<b>
-Use a HTTP proxy</b>
- [default=false]: Use a HTTP proxy, useful if used inside a corporate network for example.</li>
+Select your HTTP proxy [Default: no proxy] : <b>
+No proxy</b>
+ <b>
+HTTP proxy</b>
+ or <b>
+SOCKS</b>
+ proxy</li>
 <li>
 <b>
 Proxy host name</b>
@@ -280,11 +332,19 @@ proxy</b>
 Proxy port</b>
  [default=<b>
 3128</b>
-, only if Use a HTTP proxy is set]: Proxy port.</li>
+ (sometimes 8080 for some proxies), only if Use a HTTP proxy is set]: Proxy port</li>
 <li>
 <b>
 Proxy user name</b>
- [no default]: Proxy user name.</li>
+ [no default]: Proxy user name</li>
+<li>
+<b>
+Proxy password</b>
+ [no default]: Proxy password</li>
+<li>
+<b>
+Connection timeout in seconds</b>
+ [default=5]: Timeout in seconds when establishing a connection to a server</li>
 </ul>
 <h2>
 Advanced tab</h2>
@@ -299,20 +359,42 @@ Use Regexp in filters</b>
  in the filter field of the Table view.</li>
 <li>
 <b>
+Backup size (MB)</b>
+ [default=20, only if <i>
+Backup collection file</i>
+ option is set]: Maximum backup size of all collection file backups (collection_&lt;date&gt;.xml files in jajuk repository).</li>
+<li>
+<b>
 Collection charset</b>
  [default=UTF-8]: Collection charset. UTF-16 is optimized for Asian languages and UTF-8 is optimized for European languages.</li>
 <li>
 <b>
-Backup collection file</b>
- [default=true]: If checked, the <i>
-{home directory}/.jajuk/collection.xml</i>
- is backup daily.</li>
+Log level</b>
+ [default=Error in normal mode, debug in debug mode (-debug)]: Set the verbosity of logs in your <i>
+{Jajuk repository}/jajuk.log</i>
+ file. Please set to <i>
+Debug</i>
+ before sending us a bug.</li>
 <li>
 <b>
-Backup size (MB)</b>
- [default=20, only if <i>
-Backup collection file</i>
- option is set]: Maximum backup size of all collection file backups.</li>
+Sound engine arguments</b>
+ [default=none]: Additional MPlayer arguments like '-ao esd' or '-ao arts' for ie</li>
+<li>
+<b>
+Environment variables</b>
+ [default=nonel]: Set environment variables used by the audio player (ARTS_SERVER under KDE or ESPEAKER under Gnome for ie). Format: var1=xx var2=yyy...</li>
+<li>
+<b>
+Jajuk home path</b>
+ [default=user home directory]: Set the directory containing Jajuk configuration. This directory is called the Jajuk <i>
+workspace</i>
+, it contains one or more Jajuk <i>
+repository</i>
+ (.jajuk directories, one for each test release and one single for final release)</li>
+<li>
+<b>
+Check Jajuk updates</b>
+ [default=true]: Allow Jajuk at every startup to check on the jajuk website if a new release becomes available (can be forced using the Help menu).</li>
 </ul>
 <p>
 Go back to <a href="table_of_contents.html">
