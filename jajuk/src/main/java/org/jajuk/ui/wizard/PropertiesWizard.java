@@ -56,9 +56,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -71,7 +68,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -420,40 +416,32 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						widgets[index][1] = jcb;
 					} else if (meta.getType().equals(Double.class)
 							|| meta.getType().equals(Long.class)) {
-						// for a double, value is a formatted textfield
-						final JFormattedTextField jtfValue;
-						if (meta.getType().equals(Double.class)) {
-							jtfValue = new JFormattedTextField(NumberFormat.getInstance());
-						} else {
-							jtfValue = new JFormattedTextField(NumberFormat.getIntegerInstance());
-						}
-						jtfValue.addKeyListener(new KeyListener() {
-							public void keyTyped(KeyEvent arg0) {
-							}
-
-							public void keyPressed(KeyEvent arg0) {
-							}
-
+						// Note : we manage fiedl validation by ourself, and we
+						// don't use formatted textfields because they display
+						// numbers with comas (this is wrong to display
+						// years for instance)
+						final JTextField jtfValue;
+						jtfValue = new JTextField();
+						jtfValue.addKeyListener(new KeyAdapter() {
 							public void keyReleased(KeyEvent arg0) {
 								if (jtfValue.getText().length() == 0) {
 									hmPropertyToChange.remove(meta);
 									return;
 								}
+								Object oValue = null;
 								try {
-									jtfValue.commitEdit();
-								} catch (ParseException e) {
+									if (meta.getType().equals(Long.class)) {
+										oValue = Integer.parseInt(jtfValue.getText());
+									} else if (meta.getType().equals(Double.class)) {
+										oValue = Double.parseDouble(jtfValue.getText());
+									}
+								} catch (Exception e) {
 									Log.error(137, meta.getName(), null);
-									// disable field to avoid that user
-									// typing enter in error dialog
-									// generate a new key event and creates
-									// a looping error scheme
-									jtfValue.setEnabled(false);
+									jtfValue.setText("");
 									Messages.showErrorMessage(137, meta.getName());
-									jtfValue.setEnabled(true);
 									hmPropertyToChange.remove(meta);
 									return;
 								}
-								Object oValue = jtfValue.getValue();
 								hmPropertyToChange.put(meta, oValue);
 							}
 						});
@@ -697,7 +685,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			}
 			// Computes all items to change
 			// contains items to be changed
-			//TODO refactor this using LinkedHashset for ie 
+			// TODO refactor this using LinkedHashset for ie
 			ArrayList<Item> alItemsToCheck = new ArrayList<Item>(alItems.size());
 			for (Item item : alItems) {
 				// avoid duplicates for perfs
