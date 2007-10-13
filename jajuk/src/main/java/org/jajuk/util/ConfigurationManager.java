@@ -195,7 +195,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME, "proxy");
 		properties.put(CONF_NETWORK_PROXY_PORT, "3128");
 		properties.put(CONF_NETWORK_PROXY_LOGIN, "");
-		properties.put(CONF_NETWORK_CONNECTION_TO, "3");
+		properties.put(CONF_NETWORK_CONNECTION_TO, "10");
 		properties.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
 		properties.put(CONF_COVERS_AUTO_COVER, TRUE);
 		properties.put(CONF_COVERS_SHUFFLE, FALSE);
