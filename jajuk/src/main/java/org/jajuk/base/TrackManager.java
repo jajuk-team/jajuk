@@ -582,7 +582,7 @@ public class TrackManager extends ItemManager implements Observer {
 	 */
 	public Set<Track> getAssociatedTracks(Item item) {
 		synchronized (TrackManager.getInstance().getLock()) {
-			Set<Track> out = new LinkedHashSet<Track>();
+			Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
 			for (Object item2 : hmItems.values()) {
 				Track track = (Track) item2;
 				if ((item instanceof Album && track.getAlbum().equals(item))
