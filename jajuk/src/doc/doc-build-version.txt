@@ -1,0 +1,15 @@
+#!/bin/more
+#This file is used to:
+# * set the version of the javadoc Jajuk Help manual
+# * set manual to be built
+# * trigger new Jajuk help manuel built
+
+
+#Manual version, to trigger a new automatic built, just increment this number
+MANUAL_VERSION="20071016"
+
+#List of up to date manual to be built. Use space to separate if many, e.g.: UPTODATE_MANUAL="default fr spanish"
+UPTODATE_MANUAL="default"
+
+
+#END
