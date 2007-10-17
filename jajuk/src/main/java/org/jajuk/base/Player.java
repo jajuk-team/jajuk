@@ -266,12 +266,12 @@ public class Player implements ITechnicalStrings {
 	 * @param bMute
 	 * @throws Exception
 	 */
-	public static void mute(boolean bMute) {
+	public static void mute(boolean pMute) {
 		try {
 			if (playerImpl == null) { // none current player, leave
 				return;
 			}
-			if (bMute) {
+			if (pMute) {
 				if (playerImpl1 != null) {
 					playerImpl1.setVolume(0.0f);
 				}
@@ -281,7 +281,7 @@ public class Player implements ITechnicalStrings {
 			} else {
 				playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
 			}
-			Player.bMute = bMute;
+			Player.bMute = pMute;
 		} catch (Exception e) {
 			Log.error(e);
 		}
