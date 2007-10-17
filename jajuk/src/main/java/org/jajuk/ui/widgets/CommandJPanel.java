@@ -821,7 +821,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 					jsVolume.removeChangeListener(CommandJPanel.this);
 					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
 					jsVolume.addChangeListener(CommandJPanel.this);
-					jbMute.setSelected(false);
+					jbMute.setSelected(Player.isMuted());
+					ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_UNMUTED); 
 				} else if (EventSubject.EVENT_DJS_CHANGE.equals(event.getSubject())) {
 					populateDJs();
 					// If no more DJ, change the tooltip
