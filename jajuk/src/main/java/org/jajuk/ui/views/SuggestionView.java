@@ -29,8 +29,8 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
-import org.jajuk.ui.thumbnails.AudioScrobberAlbumThumbnail;
-import org.jajuk.ui.thumbnails.AudioScrobberAuthorThumbnail;
+import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
+import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -337,7 +337,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 					author);
 			if (albums != null && albums.size() > 0) {
 				for (AudioScrobblerAlbum album : albums) {
-					AudioScrobberAlbumThumbnail thumb = new AudioScrobberAlbumThumbnail(album);
+					AudioScrobblerAlbumThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
 					thumb.populate();
 					thumb.jlIcon.addMouseListener(new ThumbMouseListener());
 					out.add(thumb);
@@ -353,7 +353,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 			if (similar != null) {
 				List<AudioScrobblerArtist> authors = similar.getArtists();
 				for (AudioScrobblerArtist similarAuthor : authors) {
-					AudioScrobberAuthorThumbnail thumb = new AudioScrobberAuthorThumbnail(
+					AudioScrobblerAuthorThumbnail thumb = new AudioScrobblerAuthorThumbnail(
 							similarAuthor);
 					thumb.populate();
 					thumb.jlIcon.addMouseListener(new ThumbMouseListener());
