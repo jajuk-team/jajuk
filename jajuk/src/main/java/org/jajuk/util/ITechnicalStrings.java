@@ -195,7 +195,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LANGPACK_PART2 = ".properties";
 	
 	/**Extention to the .jajuk_test directory in test mode only*/
-	public static final String TEST_VERSION = "1.4";
+	public static final String TEST_VERSION = "1.5";
 	
 	// logs
 	public static final String FILE_LOGS = "jajuk.log";
