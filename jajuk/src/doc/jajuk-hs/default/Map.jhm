@@ -23,7 +23,7 @@
         <mapID target="using_playlists" url="html/using_playlists.html" />
         <mapID target="using_tables_in_views" url="html/using_tables_in_views.html" />         
         <mapID target="using_the_tray" url="html/using_the_tray.html" />
-        <mapID target="using_web_radio" url="html/using_web_radio.html" />
+        <mapID target="using_web_radios" url="html/using_web_radios.html" />
         <mapID target="view_about" url="html/view_about.html" />
         <mapID target="view_albums_catalog" url="html/view_albums_catalog.html" />
         <mapID target="view_animation" url="html/view_animation.html" />
