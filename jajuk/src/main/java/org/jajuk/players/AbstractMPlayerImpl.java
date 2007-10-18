@@ -109,7 +109,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	ArrayList<String> buildCommand(String url) {
 		String sCommand = "mplayer"; //$NON-NLS-1$
 		if (Util.isUnderWindows()) {
-			sCommand = Util.getMPlayerWindowsPath();
+			sCommand = Util.getMPlayerWindowsPath().getAbsolutePath();
 		} else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()) {
 			sCommand = Util.getMPlayerOSXPath();
 		}

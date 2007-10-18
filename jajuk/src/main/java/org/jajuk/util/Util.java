@@ -127,7 +127,8 @@ public class Util implements ITechnicalStrings {
 
 	public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
-	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+	public static final Cursor DEFAULT_CURSOR = new Cursor(
+			Cursor.DEFAULT_CURSOR);
 
 	/** contains clipboard data */
 	public static String copyData;
@@ -136,36 +137,40 @@ public class Util implements ITechnicalStrings {
 	private static boolean bWaiting = false;
 
 	/** Addition date Date format */
-	private static SimpleDateFormat sdfAdded = new SimpleDateFormat(ADDITION_DATE_FORMAT);
+	private static SimpleDateFormat sdfAdded = new SimpleDateFormat(
+			ADDITION_DATE_FORMAT);
 
 	/** Default locale format* */
-	private static DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale
-			.getDefault());
+	private static DateFormat dateFormatter = DateFormat.getDateInstance(
+			DateFormat.DEFAULT, Locale.getDefault());
 
 	/** Directory filter used in refresh */
-	public static JajukFileFilter dirFilter = new JajukFileFilter(JajukFileFilter.DirectoryFilter
-			.getInstance());
+	public static JajukFileFilter dirFilter = new JajukFileFilter(
+			JajukFileFilter.DirectoryFilter.getInstance());
 
 	/** File filter used in refresh */
-	public static JajukFileFilter fileFilter = new JajukFileFilter(JajukFileFilter.KnownTypeFilter
-			.getInstance());
+	public static JajukFileFilter fileFilter = new JajukFileFilter(
+			JajukFileFilter.KnownTypeFilter.getInstance());
 
 	/** Icons cache */
-	private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
+	private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(
+			200);
 
 	/** Mplayer exe path */
-	private static String sMplayerPath = null;
+	private static File mplayerPath = null;
 
 	/** downdown shadow border */
-	private static DropShadowBorder shadowBorder = new DropShadowBorder(Color.BLACK, 5, .5f, 12,
-			false, true, true, true);
+	private static DropShadowBorder shadowBorder = new DropShadowBorder(
+			Color.BLACK, 5, .5f, 12, false, true, true, true);
 
 	/** Generic gradiant* */
-	public static MattePainter grayGrandient = new MattePainter(new GradientPaint(new Point(0, 0),
-			new Color(226, 226, 226), new Point(0, 1000), new Color(250, 248, 248)));
+	public static MattePainter grayGrandient = new MattePainter(
+			new GradientPaint(new Point(0, 0), new Color(226, 226, 226),
+					new Point(0, 1000), new Color(250, 248, 248)));
 
-	public static MattePainter aerithGrandient = new MattePainter(new GradientPaint(
-			new Point(0, 0), Color.WHITE, new Point(0, 1000), new Color(64, 110, 161)));
+	public static MattePainter aerithGrandient = new MattePainter(
+			new GradientPaint(new Point(0, 0), Color.WHITE, new Point(0, 1000),
+					new Color(64, 110, 161)));
 
 	/** Are we under Windows ? * */
 	private static final boolean bUnderWindows;
@@ -190,22 +195,26 @@ public class Util implements ITechnicalStrings {
 	static {
 		String sOS = (String) System.getProperties().get("os.name");
 		// os.name can be null with JWS under MacOS
-		bUnderWindows = (sOS != null && sOS.trim().toLowerCase().lastIndexOf("windows") != -1);
+		bUnderWindows = (sOS != null && sOS.trim().toLowerCase().lastIndexOf(
+				"windows") != -1);
 	}
 	static {
 		bUnderWindows32bits = isUnderWindows()
-				&& System.getProperties().get("sun.arch.data.model").equals("32");
+				&& System.getProperties().get("sun.arch.data.model").equals(
+						"32");
 	}
 
 	static {
 		bUnderWindows64bits = isUnderWindows()
-				&& !System.getProperties().get("sun.arch.data.model").equals("32");
+				&& !System.getProperties().get("sun.arch.data.model").equals(
+						"32");
 	}
 
 	static {
 		String sOS = (String) System.getProperties().get("os.name");
 		// os.name can be null with JWS under MacOS
-		bUnderLinux = (sOS != null && sOS.trim().toLowerCase().lastIndexOf("linux") != -1);
+		bUnderLinux = (sOS != null && sOS.trim().toLowerCase().lastIndexOf(
+				"linux") != -1);
 	}
 
 	static {
@@ -223,28 +232,36 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * Genres
 	 */
-	public static final String[] genres = { "Blues", "Classic Rock", "Country", "Dance", "Disco",
-			"Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop",
-			"R&B", "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska",
-			"Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop", "Vocal",
-			"Jazz+Funk", "Fusion", "Trance", "Classical", "Instrumental", "Acid", "House", "Game",
-			"Sound Clip", "Gospel", "Noise", "AlternRock", "Bass", "Soul", "Punk", "Space",
-			"Meditative", "Instrumental Pop", "Instrumental Rock", "Ethnic", "Gothic", "Darkwave",
-			"Techno-Industrial", "Electronic", "Pop-Folk", "Eurodance", "Dream", "Southern Rock",
-			"Comedy", "Cult", "Gangsta", "Top 40", "Christian Rap", "Pop/Funk", "Jungle",
-			"Native American", "Cabaret", "New Wave", "Psychedelic", "Rave", "Showtunes",
-			"Trailer", "Lo-Fi", "Tribal", "Acid Punk", "Acid Jazz", "Polka", "Retro", "Musical",
-			"Rock & Roll", "Hard Rock", "Folk", "Folk-Rock", "National Folk", "Swing",
-			"Fast Fusion", "Bebob", "Latin", "Revival", "Celtic", "Bluegrass", "Avantgarde",
-			"Gothic Rock", "Progressive Rock", "Psychedelic Rock", "Symphonic Rock", "Slow Rock",
-			"Big Band", "Chorus", "Easy Listening", "Acoustic", "Humour", "Speech", "Chanson",
-			"Opera", "Chamber Music", "Sonata", "Symphony", "Booty Brass", "Primus", "Porn Groove",
-			"Satire", "Slow Jam", "Club", "Tango", "Samba", "Folklore", "Ballad", "Power Ballad",
-			"Rhytmic Soul", "Freestyle", "Duet", "Punk Rock", "Drum Solo", "Acapella",
-			"Euro-House", "Dance Hall", "Goa", "Drum & Bass", "Club-House", "Hardcore", "Terror",
-			"Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta",
-			"Heavy Metal", "Black Metal", "Crossover", "Contemporary C", "Christian Rock",
-			"Merengue", "Salsa", "Thrash Metal", "Anime", "JPop", "SynthPop" };
+	public static final String[] genres = { "Blues", "Classic Rock", "Country",
+			"Dance", "Disco", "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal",
+			"New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae",
+			"Rock", "Techno", "Industrial", "Alternative", "Ska",
+			"Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient",
+			"Trip-Hop", "Vocal", "Jazz+Funk", "Fusion", "Trance", "Classical",
+			"Instrumental", "Acid", "House", "Game", "Sound Clip", "Gospel",
+			"Noise", "AlternRock", "Bass", "Soul", "Punk", "Space",
+			"Meditative", "Instrumental Pop", "Instrumental Rock", "Ethnic",
+			"Gothic", "Darkwave", "Techno-Industrial", "Electronic",
+			"Pop-Folk", "Eurodance", "Dream", "Southern Rock", "Comedy",
+			"Cult", "Gangsta", "Top 40", "Christian Rap", "Pop/Funk", "Jungle",
+			"Native American", "Cabaret", "New Wave", "Psychedelic", "Rave",
+			"Showtunes", "Trailer", "Lo-Fi", "Tribal", "Acid Punk",
+			"Acid Jazz", "Polka", "Retro", "Musical", "Rock & Roll",
+			"Hard Rock", "Folk", "Folk-Rock", "National Folk", "Swing",
+			"Fast Fusion", "Bebob", "Latin", "Revival", "Celtic", "Bluegrass",
+			"Avantgarde", "Gothic Rock", "Progressive Rock",
+			"Psychedelic Rock", "Symphonic Rock", "Slow Rock", "Big Band",
+			"Chorus", "Easy Listening", "Acoustic", "Humour", "Speech",
+			"Chanson", "Opera", "Chamber Music", "Sonata", "Symphony",
+			"Booty Brass", "Primus", "Porn Groove", "Satire", "Slow Jam",
+			"Club", "Tango", "Samba", "Folklore", "Ballad", "Power Ballad",
+			"Rhytmic Soul", "Freestyle", "Duet", "Punk Rock", "Drum Solo",
+			"Acapella", "Euro-House", "Dance Hall", "Goa", "Drum & Bass",
+			"Club-House", "Hardcore", "Terror", "Indie", "BritPop",
+			"Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta",
+			"Heavy Metal", "Black Metal", "Crossover", "Contemporary C",
+			"Christian Rock", "Merengue", "Salsa", "Thrash Metal", "Anime",
+			"JPop", "SynthPop" };
 
 	/**
 	 * No constructor
@@ -420,8 +437,9 @@ public class Util implements ITechnicalStrings {
 	 *         implementation
 	 */
 	public static boolean isChar(int ucs4char) {
-		return ucs4char >= 32 && ucs4char <= 55295 || ucs4char == 10 || ucs4char == 9
-				|| ucs4char == 13 || ucs4char >= 57344 && ucs4char <= 65533 || ucs4char >= 0x10000
+		return ucs4char >= 32 && ucs4char <= 55295 || ucs4char == 10
+				|| ucs4char == 9 || ucs4char == 13 || ucs4char >= 57344
+				&& ucs4char <= 65533 || ucs4char >= 0x10000
 				&& ucs4char <= 0x10ffff;
 	}
 
@@ -431,8 +449,8 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static boolean isXMLValid(String s) {
 		// check reserved chars
-		if (s.contains("&") || s.contains("\'") || s.contains("\"") || s.contains("<")
-				|| s.contains(">")) {
+		if (s.contains("&") || s.contains("\'") || s.contains("\"")
+				|| s.contains("<") || s.contains(">")) {
 			return false;
 		}
 		// check invalid chars
@@ -505,7 +523,8 @@ public class Util implements ITechnicalStrings {
 	private static Thread tWaiting = new Thread() {
 		public void run() {
 			Container container = null;
-			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+			IPerspective perspective = PerspectiveManager
+					.getCurrentPerspective();
 			if (perspective != null) {
 				container = perspective.getContentPane();
 				container.setCursor(WAIT_CURSOR);
@@ -520,7 +539,8 @@ public class Util implements ITechnicalStrings {
 	private static Thread tDefault = new Thread() {
 		public void run() {
 			Container container = null;
-			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+			IPerspective perspective = PerspectiveManager
+					.getCurrentPerspective();
 			if (perspective != null) {
 				container = perspective.getContentPane();
 				container.setCursor(DEFAULT_CURSOR);
@@ -582,7 +602,8 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void backupFile(File file, int iMB) {
 		try {
-			if (Integer.parseInt(ConfigurationManager.getProperty(CONF_BACKUP_SIZE)) <= 0) { // 0 or
+			if (Integer.parseInt(ConfigurationManager
+					.getProperty(CONF_BACKUP_SIZE)) <= 0) { // 0 or
 				// less
 				// means
 				// no backup
@@ -593,10 +614,12 @@ public class Util implements ITechnicalStrings {
 			// files
 			long lUsedMB = 0;
 			ArrayList<File> alFiles = new ArrayList<File>(10);
-			File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
+			File[] files = new File(file.getAbsolutePath()).getParentFile()
+					.listFiles();
 			if (files != null) {
 				for (int i = 0; i < files.length; i++) {
-					if (files[i].getName().indexOf(removeExtension(file.getName())) != -1) {
+					if (files[i].getName().indexOf(
+							removeExtension(file.getName())) != -1) {
 						lUsedMB += files[i].length();
 						alFiles.add(files[i]);
 					}
@@ -617,8 +640,9 @@ public class Util implements ITechnicalStrings {
 			// backup itself using nio, file name is
 			// collection-backup-yyyMMdd.xml
 			String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date());
-			File fileNew = new File(Util.removeExtension(file.getAbsolutePath()) + "-backup-"
-					+ sExt + "." + Util.getExtension(file));
+			File fileNew = new File(Util
+					.removeExtension(file.getAbsolutePath())
+					+ "-backup-" + sExt + "." + Util.getExtension(file));
 			FileChannel fcSrc = new FileInputStream(file).getChannel();
 			FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
 			fcDest.transferFrom(fcSrc, 0, fcSrc.size());
@@ -650,9 +674,10 @@ public class Util implements ITechnicalStrings {
 	 *            destination directory
 	 */
 	public static void copyToDir(File file, File directory) throws Exception {
-		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath());
-		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(
-				file.getName()).toString());
+		Log.debug("Copying: " + file.getAbsolutePath() + "  to : "
+				+ directory.getAbsolutePath());
+		File fileNew = new File(new StringBuffer(directory.getAbsolutePath())
+				.append("/").append(file.getName()).toString());
 		if (!file.exists() || !file.canRead()) {
 			throw new JajukException(9, file.getAbsolutePath(), null);
 		}
@@ -675,7 +700,8 @@ public class Util implements ITechnicalStrings {
 	 *            destination file
 	 */
 	public static void copy(File file, File fNew) throws Exception {
-		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + fNew.getAbsolutePath());
+		Log.debug("Copying: " + file.getAbsolutePath() + "  to : "
+				+ fNew.getAbsolutePath());
 		if (!file.exists() || !file.canRead()) {
 			throw new JajukException(9, file.getAbsolutePath(), null);
 		}
@@ -725,8 +751,8 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void copy(File file, String sNewName) throws Exception {
 		Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName);
-		File fileNew = new File(new StringBuffer(file.getParentFile().getAbsolutePath())
-				.append('/').append(sNewName).toString());
+		File fileNew = new File(new StringBuffer(file.getParentFile()
+				.getAbsolutePath()).append('/').append(sNewName).toString());
 		if (!file.exists() || !file.canRead()) {
 			throw new JajukException(9, file.getAbsolutePath(), null);
 		}
@@ -752,7 +778,8 @@ public class Util implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	public static void copy(URL src, String dest) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
+		BufferedReader br = new BufferedReader(new InputStreamReader(src
+				.openStream()));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
 		String sLine = null;
 		do {
@@ -772,11 +799,14 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is a standard cover or not
 	 */
 	public static boolean isStandardCover(String sFileName) {
-		return sFileName.toLowerCase().matches(".*" + FILE_DEFAULT_COVER + ".*")
-				|| sFileName.toLowerCase().matches(".*" + FILE_DEFAULT_COVER_2 + ".*")
+		return sFileName.toLowerCase()
+				.matches(".*" + FILE_DEFAULT_COVER + ".*")
+				|| sFileName.toLowerCase().matches(
+						".*" + FILE_DEFAULT_COVER_2 + ".*")
 				// just for previous compatibility, now it is a directory
 				// property
-				|| sFileName.toLowerCase().matches(".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*");
+				|| sFileName.toLowerCase().matches(
+						".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*");
 
 	}
 
@@ -788,7 +818,8 @@ public class Util implements ITechnicalStrings {
 	 * @param sFileName
 	 * @return whether the given filename is an absolute default cover
 	 */
-	public static boolean isAbsoluteDefaultCover(Directory directory, String sFilename) {
+	public static boolean isAbsoluteDefaultCover(Directory directory,
+			String sFilename) {
 		String sDefault = directory.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
 		if (sDefault != null && sDefault.equals(sFilename)) {
 			return true;
@@ -847,7 +878,8 @@ public class Util implements ITechnicalStrings {
 	public static File getCachePath(URL url, String id) {
 		File out = null;
 		if (id == null) {
-			out = Util.getConfFileByPath(FILE_CACHE + '/' + Util.getOnlyFile(url.toString()));
+			out = Util.getConfFileByPath(FILE_CACHE + '/'
+					+ Util.getOnlyFile(url.toString()));
 		} else {
 			out = Util.getConfFileByPath(FILE_CACHE + '/' + id + '_'
 					+ Util.getOnlyFile(url.toString()));
@@ -903,7 +935,8 @@ public class Util implements ITechnicalStrings {
 		int byteslength = -1;
 		if (properties != null) {
 			if (properties.containsKey("audio.length.bytes")) {
-				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();
+				byteslength = ((Integer) properties.get("audio.length.bytes"))
+						.intValue();
 			}
 			if (properties.containsKey("duration")) {
 				milliseconds = (((Long) properties.get("duration")).longValue()) / 1000;
@@ -914,19 +947,24 @@ public class Util implements ITechnicalStrings {
 				float samplerate = -1.0f;
 				int framesize = -1;
 				if (properties.containsKey("audio.samplesize.bits")) {
-					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue();
+					bitspersample = ((Integer) properties
+							.get("audio.samplesize.bits")).intValue();
 				}
 				if (properties.containsKey("audio.channels")) {
-					channels = ((Integer) properties.get("audio.channels")).intValue();
+					channels = ((Integer) properties.get("audio.channels"))
+							.intValue();
 				}
 				if (properties.containsKey("audio.samplerate.hz")) {
-					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue();
+					samplerate = ((Float) properties.get("audio.samplerate.hz"))
+							.floatValue();
 				}
 				if (properties.containsKey("audio.framesize.bytes")) {
-					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();
+					framesize = ((Integer) properties
+							.get("audio.framesize.bytes")).intValue();
 				}
 				if (bitspersample > 0) {
-					milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (bitspersample / 8)));
+					milliseconds = (int) (1000.0f * byteslength / (samplerate
+							* channels * (bitspersample / 8)));
 				} else {
 					milliseconds = (int) (1000.0f * byteslength / (samplerate * framesize));
 				}
@@ -1008,7 +1046,8 @@ public class Util implements ITechnicalStrings {
 	 * @return Given list to play with shuffle or others runles applied
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<org.jajuk.base.File> applyPlayOption(List<org.jajuk.base.File> alFiles) {
+	public static List<org.jajuk.base.File> applyPlayOption(
+			List<org.jajuk.base.File> alFiles) {
 		if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)) {
 			List<org.jajuk.base.File> alFilesToPlay = (List<org.jajuk.base.File>) ((ArrayList<org.jajuk.base.File>) alFiles)
 					.clone();
@@ -1029,8 +1068,9 @@ public class Util implements ITechnicalStrings {
 	 * @param bUserLauched
 	 * @return
 	 */
-	public static List<StackItem> createStackItems(List<org.jajuk.base.File> alFiles,
-			boolean bRepeat, boolean bUserLauched) {
+	public static List<StackItem> createStackItems(
+			List<org.jajuk.base.File> alFiles, boolean bRepeat,
+			boolean bUserLauched) {
 		ArrayList<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
 		Iterator it = alFiles.iterator();
 		while (it.hasNext()) {
@@ -1058,7 +1098,8 @@ public class Util implements ITechnicalStrings {
 	 * @param iNewHeight
 	 * @return resized image
 	 */
-	public static ImageIcon getResizedImage(ImageIcon img, int iNewWidth, int iNewHeight) {
+	public static ImageIcon getResizedImage(ImageIcon img, int iNewWidth,
+			int iNewHeight) {
 		// Wait for full image loading
 		MediaTracker mediaTracker = new MediaTracker(new Container());
 		mediaTracker.addImage(img.getImage(), 0);
@@ -1069,7 +1110,8 @@ public class Util implements ITechnicalStrings {
 		}
 		ImageIcon iiNew = new ImageIcon();
 		Image image = img.getImage();
-		Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight, Image.SCALE_AREA_AVERAGING);
+		Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight,
+				Image.SCALE_AREA_AVERAGING);
 		iiNew.setImage(scaleImg);
 		return iiNew;
 	}
@@ -1089,17 +1131,20 @@ public class Util implements ITechnicalStrings {
 	 *            new image height
 	 * @return buffured image from an image
 	 */
-	public static BufferedImage toBufferedImage(Image image, boolean alpha, int width, int height) {
+	public static BufferedImage toBufferedImage(Image image, boolean alpha,
+			int width, int height) {
 		if (image instanceof BufferedImage) {
 			return ((BufferedImage) image);
 		} else {
 			/** Create the new image */
 			BufferedImage bufferedImage = null;
 			if (alpha) {
-				bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+				bufferedImage = new BufferedImage(width, height,
+						BufferedImage.TYPE_INT_ARGB);
 			} else {
 				// Save memory
-				bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				bufferedImage = new BufferedImage(width, height,
+						BufferedImage.TYPE_INT_RGB);
 			}
 			Graphics2D graphics2D = bufferedImage.createGraphics();
 			graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
@@ -1112,7 +1157,8 @@ public class Util implements ITechnicalStrings {
 	}
 
 	public static BufferedImage toBufferedImage(Image image, boolean alpha) {
-		return toBufferedImage(image, alpha, image.getWidth(null), image.getHeight(null));
+		return toBufferedImage(image, alpha, image.getWidth(null), image
+				.getHeight(null));
 	}
 
 	/**
@@ -1132,7 +1178,8 @@ public class Util implements ITechnicalStrings {
 		} else {
 			// no? so we optimize width
 			iNewHeight = iScale;
-			iNewWidth = (int) (img.getIconWidth() * ((float) iNewHeight / img.getIconHeight()));
+			iNewWidth = (int) (img.getIconWidth() * ((float) iNewHeight / img
+					.getIconHeight()));
 		}
 		return getResizedImage(img, iNewWidth, iNewHeight);
 	}
@@ -1149,7 +1196,8 @@ public class Util implements ITechnicalStrings {
 			updateWindowUI(frames[i]);
 		}
 		// update tray
-		if (Main.getSystray() != null && JajukSystray.getInstance().jmenu != null) {
+		if (Main.getSystray() != null
+				&& JajukSystray.getInstance().jmenu != null) {
 			updateComponentTreeUI(JajukSystray.getInstance().jmenu);
 		}
 	}
@@ -1233,16 +1281,20 @@ public class Util implements ITechnicalStrings {
 			UIManager.setLookAndFeel(LNF_SUBSTANCE_CLASS);
 			// hide some useless elements such locker for not editable labels
 			UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
-			UIManager.put(SubstanceLookAndFeel.WATERMARK_TO_BLEED, Boolean.TRUE);
-			UIManager.put(SubstanceLookAndFeel.ENABLE_INVERTED_THEMES, Boolean.TRUE);
-			UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES, Boolean.TRUE);
+			UIManager
+					.put(SubstanceLookAndFeel.WATERMARK_TO_BLEED, Boolean.TRUE);
+			UIManager.put(SubstanceLookAndFeel.ENABLE_INVERTED_THEMES,
+					Boolean.TRUE);
+			UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES,
+					Boolean.TRUE);
 			// Check the theme is known, if not take the default theme
 			Map<String, ThemeInfo> themes = SubstanceLookAndFeel.getAllThemes();
 			if (themes.get(pTheme) == null) {
 				pTheme = LNF_DEFAULT_THEME;
 			}
 			// Set substance theme
-			SubstanceLookAndFeel.setCurrentTheme(themes.get(pTheme).getClassName());
+			SubstanceLookAndFeel.setCurrentTheme(themes.get(pTheme)
+					.getClassName());
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -1258,7 +1310,8 @@ public class Util implements ITechnicalStrings {
 		try {
 			String watermark = pWatermark;
 			// Check the watermark is known, if not take the default one
-			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
+			Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel
+					.getAllWatermarks();
 			if (watermarks.get(watermark) == null) {
 				// the image watermark is not included in the list for unknown
 				// reasons
@@ -1267,26 +1320,32 @@ public class Util implements ITechnicalStrings {
 				}
 			}
 			// Set the watermark
-			String image = ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK_IMAGE);
+			String image = ConfigurationManager
+					.getProperty(CONF_OPTIONS_WATERMARK_IMAGE);
 			if ("Image".equals(watermark)) {
-				//Check that the backgroud image is readable 
+				// Check that the backgroud image is readable
 				if (new File(image).exists()) {
-					SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(image));
+					SubstanceLookAndFeel
+							.setCurrentWatermark(new SubstanceImageWatermark(
+									image));
 					SubstanceLookAndFeel
 							.setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
-				}
-				else{
-					//None watermark
-					SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
+				} else {
+					// None watermark
+					SubstanceLookAndFeel
+							.setCurrentWatermark(new SubstanceNoneWatermark());
 				}
 			} else {
-				SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(watermark).getClassName());
+				SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(
+						watermark).getClassName());
 			}
 		} catch (Exception e) {
 			Log.error(e);
 			// Set default watermark
-			SubstanceLookAndFeel.setCurrentWatermark(new SubstanceStripeWatermark());
-			ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK, LNF_DEFAULT_WATERMARK);
+			SubstanceLookAndFeel
+					.setCurrentWatermark(new SubstanceStripeWatermark());
+			ConfigurationManager.setProperty(CONF_OPTIONS_WATERMARK,
+					LNF_DEFAULT_WATERMARK);
 		}
 	}
 
@@ -1297,7 +1356,8 @@ public class Util implements ITechnicalStrings {
 	 * @return
 	 */
 	public static String formatPropertyDesc(String sDesc) {
-		return "<HTML><center><b><font size=+0 color=#000000>" + sDesc + "</font></b><HTML>";
+		return "<HTML><center><b><font size=+0 color=#000000>" + sDesc
+				+ "</font></b><HTML>";
 	}
 
 	/**
@@ -1316,8 +1376,10 @@ public class Util implements ITechnicalStrings {
 	 * @param iFromLeft
 	 *            max number of pixels from left
 	 */
-	public static void setShuffleLocation(Window window, int iFromTop, int iFromLeft) {
-		window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft));
+	public static void setShuffleLocation(Window window, int iFromTop,
+			int iFromLeft) {
+		window.setLocation((int) (Math.random() * iFromTop), (int) (Math
+				.random() * iFromLeft));
 	}
 
 	/**
@@ -1360,7 +1422,8 @@ public class Util implements ITechnicalStrings {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String format(Object oValue, PropertyMetaInformation meta) throws Exception {
+	public static String format(Object oValue, PropertyMetaInformation meta)
+			throws Exception {
 		Class cType = meta.getType();
 		// default (works for strings, long and double)
 		String sValue = oValue.toString();
@@ -1404,7 +1467,8 @@ public class Util implements ITechnicalStrings {
 	 *            required size
 	 * @throws Exception
 	 */
-	public static void createThumbnail(File orig, File thumb, int maxDim) throws Exception {
+	public static void createThumbnail(File orig, File thumb, int maxDim)
+			throws Exception {
 		/*
 		 * do not use URL object has it can corrupt special paths
 		 */
@@ -1439,7 +1503,8 @@ public class Util implements ITechnicalStrings {
 	 *            required size
 	 * @throws Exception
 	 */
-	public static void createThumbnail(ImageIcon ii, File thumb, int maxDim) throws Exception {
+	public static void createThumbnail(ImageIcon ii, File thumb, int maxDim)
+			throws Exception {
 		Image image = ii.getImage();
 		// Wait for full image loading
 		MediaTracker mediaTracker = new MediaTracker(new Container());
@@ -1459,12 +1524,13 @@ public class Util implements ITechnicalStrings {
 		}
 		// draw original image to thumbnail image object and
 		// scale it to the new size on-the-fly
-		BufferedImage thumbImage = toBufferedImage(image, !(Util.getExtension(thumb)
-				.equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
+		BufferedImage thumbImage = toBufferedImage(image, !(Util
+				.getExtension(thumb).equalsIgnoreCase("jpg")), thumbWidth,
+				thumbHeight);
 		// Need alpha only for png and gif files
 		// save thumbnail image to OUTFILE
 		ImageIO.write(thumbImage, Util.getExtension(thumb), thumb);
-		//Free thumb memory
+		// Free thumb memory
 		thumbImage.flush();
 	}
 
@@ -1504,7 +1570,8 @@ public class Util implements ITechnicalStrings {
 	 * @return Anonymized Jajuk properties (for log or quality agent)
 	 */
 	public static Properties getAnonymizedJajukProperties() {
-		Properties properties = (Properties) ConfigurationManager.getProperties().clone();
+		Properties properties = (Properties) ConfigurationManager
+				.getProperties().clone();
 		// We remove sensible data from logs
 		properties.remove("jajuk.network.proxy_login");
 		properties.remove("jajuk.network.proxy_port");
@@ -1608,16 +1675,20 @@ public class Util implements ITechnicalStrings {
 	 *            the item (a directory, a file...)
 	 * @return the files
 	 */
-	public static ArrayList<org.jajuk.base.File> getFilesFromSelection(Item oData) {
+	public static ArrayList<org.jajuk.base.File> getFilesFromSelection(
+			Item oData) {
 		// computes selection
-		ArrayList<org.jajuk.base.File> alSelectedFiles = new ArrayList<org.jajuk.base.File>(100);
+		ArrayList<org.jajuk.base.File> alSelectedFiles = new ArrayList<org.jajuk.base.File>(
+				100);
 		// computes logical selection if any
 		Set<Track> alLogicalTracks = null;
-		if (oData instanceof Style || oData instanceof Author || oData instanceof Year
-				|| oData instanceof Album || oData instanceof Track) {
-			if (oData instanceof Style || oData instanceof Year || oData instanceof Author
-					|| oData instanceof Album) {
-				alLogicalTracks = TrackManager.getInstance().getAssociatedTracks(oData);
+		if (oData instanceof Style || oData instanceof Author
+				|| oData instanceof Year || oData instanceof Album
+				|| oData instanceof Track) {
+			if (oData instanceof Style || oData instanceof Year
+					|| oData instanceof Author || oData instanceof Album) {
+				alLogicalTracks = TrackManager.getInstance()
+						.getAssociatedTracks(oData);
 			} else if (oData instanceof Track) {
 				alLogicalTracks = new LinkedHashSet<Track>(100);
 				alLogicalTracks.add((Track) oData);
@@ -1636,8 +1707,8 @@ public class Util implements ITechnicalStrings {
 			}
 		}
 		// computes physical selection if any
-		else if (oData instanceof org.jajuk.base.File || oData instanceof Directory
-				|| oData instanceof Device) {
+		else if (oData instanceof org.jajuk.base.File
+				|| oData instanceof Directory || oData instanceof Device) {
 			if (oData instanceof org.jajuk.base.File) {
 				alSelectedFiles.add((org.jajuk.base.File) oData);
 			} else if (oData instanceof Directory) {
@@ -1658,14 +1729,15 @@ public class Util implements ITechnicalStrings {
 	 *            ambience
 	 * @return the list filtered
 	 */
-	public static List<org.jajuk.base.File> filterByAmbience(List<org.jajuk.base.File> al,
-			Ambience ambience) {
+	public static List<org.jajuk.base.File> filterByAmbience(
+			List<org.jajuk.base.File> al, Ambience ambience) {
 		// Void filter, return the input
 		if (ambience == null || ambience.getStyles().size() == 0) {
 			return al;
 		}
 		// Filter by ambience
-		ArrayList<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(al.size() / 2);
+		ArrayList<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(
+				al.size() / 2);
 		for (org.jajuk.base.File file : al) {
 			if (ambience.getStyles().contains(file.getTrack().getStyle())) {
 				out.add(file);
@@ -1716,56 +1788,67 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * @return MPLayer exe path
+	 * @return MPLayer exe file
 	 */
-	public static String getMPlayerWindowsPath() {
+	public static File getMPlayerWindowsPath() {
 		// Use cache
-		if (sMplayerPath != null) {
-			return sMplayerPath;
+		if (mplayerPath != null) {
+			return mplayerPath;
 		}
 		File file = null;
-		// Check in ~/.jajuk directory (used by .exe or .jar distribution
+		// Check in ~/.jajuk directory (used by webstart distribution
 		// installers)
-		if ((file = Util.getConfFileByPath(FILE_MPLAYER_EXE)).exists()) {
-			sMplayerPath = file.getAbsolutePath();
-			return sMplayerPath;
+		if ((file = Util.getConfFileByPath(FILE_MPLAYER_EXE)).exists()
+				&& file.length() > 0) {
+			mplayerPath = file;
+			return mplayerPath;
 		} else {
-			// Check in the path where jajuk.jar is executed
+			// Check in the path where jajuk.jar is executed (all others
+			// distributions)
 			String sPATH = null;
 			try {
 				// Extract file name from URL. URI returns jar path, its parent
 				// is the bin directory and the right dir is the parent of bin
 				// dir
-				// Note: When starting from jnlp, next line thorws an exception
+				// Note: When starting from jnlp, next line throws an exception
 				// as URI is invalid (contains %20), the method returns null and
-				// the
-				// file is downloaded again. This is usefull only when using
+				// the file is downloaded again. This url is used only when
+				// using
 				// stand-alone version
-				sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile()
-						.getParentFile().getAbsolutePath();
+				if (Main.bIdeMode) {
+					// If under dev, take mplayer exe file from the packjaging
+					// directory
+					sPATH = "./src/packaging";
+				} else {
+					sPATH = new File(getJarLocation(Main.class).toURI())
+							.getParentFile().getParentFile().getAbsolutePath();
+				}
 				// Add MPlayer file name
 				if ((file = new File(sPATH + '/' + FILE_MPLAYER_EXE)).exists()) {
-					sMplayerPath = file.getAbsolutePath();
+					mplayerPath = file;
 				}
 			} catch (Exception e) {
-				return sMplayerPath;
+				return mplayerPath;
 			}
 		}
-		return sMplayerPath; // can be null if none suitable file found
+		return mplayerPath; // can be null if none suitable file found
 	}
 
 	/**
 	 * @return MPLayer binary MAC full path
 	 */
 	public static String getMPlayerOSXPath() {
-		String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+		String forced = ConfigurationManager
+				.getProperty(CONF_MPLAYER_PATH_FORCED);
 		if (forced != null && !"".equals(forced)) {
 			return forced + "/mplayer";
 		} else if (Util.isUnderOSXintel()
-				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer").exists()) {
+				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer")
+						.exists()) {
 			return FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer";
 		} else if (Util.isUnderOSXpower()
-				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer").exists()) {
+				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer")
+						.exists()) {
 			return FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer";
 		} else {
 			// Simply return mplayer from PATH, works if app is launch from CLI
@@ -1785,8 +1868,8 @@ public class Util implements ITechnicalStrings {
 	 * @throws JajukException
 	 *             if some tags are missing
 	 */
-	public static String applyPattern(org.jajuk.base.File file, String sPattern, boolean bMandatory)
-			throws JajukException {
+	public static String applyPattern(org.jajuk.base.File file,
+			String sPattern, boolean bMandatory) throws JajukException {
 		String out = sPattern;
 		Track track = file.getTrack();
 		String sValue = null;
@@ -1795,12 +1878,14 @@ public class Util implements ITechnicalStrings {
 			sValue = track.getAuthor().getName().replaceAll("[/\\:]", "-");
 			sValue = sValue.trim();
 			if (!sValue.equals(UNKNOWN_AUTHOR)) {
-				out = out.replaceAll(PATTERN_AUTHOR, AuthorManager.format(sValue));
+				out = out.replaceAll(PATTERN_AUTHOR, AuthorManager
+						.format(sValue));
 			} else {
 				if (bMandatory) {
 					throw new JajukException(150, file.getAbsolutePath());
 				} else {
-					out = out.replaceAll(PATTERN_AUTHOR, Messages.getString(UNKNOWN_AUTHOR));
+					out = out.replaceAll(PATTERN_AUTHOR, Messages
+							.getString(UNKNOWN_AUTHOR));
 				}
 			}
 		}
@@ -1814,7 +1899,8 @@ public class Util implements ITechnicalStrings {
 				if (bMandatory) {
 					throw new JajukException(153, file.getAbsolutePath());
 				} else {
-					out = out.replace(PATTERN_STYLE, Messages.getString(UNKNOWN_STYLE));
+					out = out.replace(PATTERN_STYLE, Messages
+							.getString(UNKNOWN_STYLE));
 				}
 			}
 		}
@@ -1828,7 +1914,8 @@ public class Util implements ITechnicalStrings {
 				if (bMandatory) {
 					throw new JajukException(149, file.getAbsolutePath());
 				} else {
-					out = out.replace(PATTERN_ALBUM, Messages.getString(UNKNOWN_ALBUM));
+					out = out.replace(PATTERN_ALBUM, Messages
+							.getString(UNKNOWN_ALBUM));
 				}
 			}
 		}
@@ -1838,10 +1925,12 @@ public class Util implements ITechnicalStrings {
 			if (lOrder == 0) {
 				String sFilename = file.getName();
 				if (Character.isDigit(sFilename.charAt(0))) {
-					String sTo = file.getName().substring(0, 3).trim().replaceAll("[^0-9]", "");
+					String sTo = file.getName().substring(0, 3).trim()
+							.replaceAll("[^0-9]", "");
 					for (char c : sTo.toCharArray()) {
 						if (!Character.isDigit(c)) {
-							throw new JajukException(152, file.getAbsolutePath());
+							throw new JajukException(152, file
+									.getAbsolutePath());
 						}
 					}
 					lOrder = Long.parseLong(sTo);
@@ -1868,7 +1957,8 @@ public class Util implements ITechnicalStrings {
 		// Check Year Value
 		if (sPattern.contains(PATTERN_YEAR)) {
 			if (track.getYear().getValue() != 0) {
-				out = out.replace(PATTERN_YEAR, track.getYear().getValue() + "");
+				out = out
+						.replace(PATTERN_YEAR, track.getYear().getValue() + "");
 			} else {
 				if (bMandatory) {
 					throw new JajukException(148, file.getAbsolutePath());
@@ -1895,7 +1985,8 @@ public class Util implements ITechnicalStrings {
 		if (Main.workspace != null && !Main.workspace.trim().equals("")) {
 			sRoot = Main.workspace;
 		}
-		return new File(sRoot + '/' + (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")
+		return new File(sRoot + '/'
+				+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")
 				+ '/' + sPATH);
 	}
 
@@ -1914,7 +2005,8 @@ public class Util implements ITechnicalStrings {
 		if (sHostname == null) {
 			// Try using IP now
 			try {
-				java.net.InetAddress inetAdd = java.net.InetAddress.getByName("127.0.0.1");
+				java.net.InetAddress inetAdd = java.net.InetAddress
+						.getByName("127.0.0.1");
 				sHostname = inetAdd.getHostName();
 			} catch (Exception e) {
 				Log.debug("Cannot get Hostname by IP");
@@ -1935,14 +2027,15 @@ public class Util implements ITechnicalStrings {
 	 * @return whether a new cover has been created
 	 */
 	public static boolean refreshThumbnail(Album album, String size) {
-		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getId() + '.'
-				+ EXT_THUMB);
+		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+				+ album.getId() + '.' + EXT_THUMB);
 		File fCover = null;
 		if (!fThumb.exists()) {
 			// search for local covers in all directories mapping the
 			// current track to reach other
 			// devices covers and display them together
-			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(
+					album);
 			if (tracks.size() == 0) {
 				return false;
 			}
@@ -1952,10 +2045,12 @@ public class Util implements ITechnicalStrings {
 			fCover = trackCurrent.getAlbum().getCoverFile();
 			if (fCover != null) {
 				try {
-					int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
+					int iSize = Integer.parseInt(new StringTokenizer(size, "x")
+							.nextToken());
 					Util.createThumbnail(fCover, fThumb, iSize);
 					InformationJPanel.getInstance().setMessage(
-							Messages.getString("CatalogView.5") + ' ' + album.getName2(),
+							Messages.getString("CatalogView.5") + ' '
+									+ album.getName2(),
 							InformationJPanel.INFORMATIVE);
 					return true;
 				} catch (Exception e) {
@@ -2012,8 +2107,10 @@ public class Util implements ITechnicalStrings {
 			}
 			Log.debug("Testing path: " + fullPath);
 			// check MPlayer release : 1.0pre8 min
-			proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			proc = Runtime.getRuntime().exec(
+					new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			BufferedReader in = new BufferedReader(new InputStreamReader(proc
+					.getInputStream()));
 			String line = null;
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
 			for (; (line = in.readLine()) != null;) {
@@ -2102,7 +2199,8 @@ public class Util implements ITechnicalStrings {
 	 * @return HTML RGB color ex: FF0000
 	 */
 	public static String getHTMLColor(Color color) {
-		return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
+		return Long.toString(color.getRed(), 16)
+				+ Long.toString(color.getGreen(), 16)
 				+ Long.toString(color.getBlue(), 16);
 
 	}
@@ -2128,7 +2226,8 @@ public class Util implements ITechnicalStrings {
 			abyte = in.charAt(i);
 			int cap = abyte & 32;
 			abyte &= ~cap;
-			abyte = ((abyte >= 'A') && (abyte <= 'Z') ? ((abyte - 'A' + 13) % 26 + 'A') : abyte)
+			abyte = ((abyte >= 'A') && (abyte <= 'Z') ? ((abyte - 'A' + 13) % 26 + 'A')
+					: abyte)
 					| cap;
 			tempReturn.append((char) abyte);
 		}
@@ -2159,20 +2258,20 @@ public class Util implements ITechnicalStrings {
 		IconLabel ilRate = null;
 		switch (starsNumber) {
 		case 1:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null, null, Long
-					.toString(rate));
+			ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null,
+					null, Long.toString(rate));
 			break;
 		case 2:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null, null, Long
-					.toString(rate));
+			ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null,
+					null, Long.toString(rate));
 			break;
 		case 3:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null, null, Long
-					.toString(rate));
+			ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null,
+					null, Long.toString(rate));
 			break;
 		case 4:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null, null, Long
-					.toString(rate));
+			ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null,
+					null, Long.toString(rate));
 			break;
 		default:
 			return null;
@@ -2188,7 +2287,8 @@ public class Util implements ITechnicalStrings {
 	 * @param dest
 	 */
 	public static void extractImage(Image src, File dest) {
-		BufferedImage bi = toBufferedImage(src, !(Util.getExtension(dest).equalsIgnoreCase("jpg")));
+		BufferedImage bi = toBufferedImage(src, !(Util.getExtension(dest)
+				.equalsIgnoreCase("jpg")));
 		// Need alpha only for png and gif files);
 		try {
 			ImageIO.write(bi, Util.getExtension(dest), dest);
@@ -2210,11 +2310,13 @@ public class Util implements ITechnicalStrings {
 	 *            destination PATH
 	 * @throws Exception
 	 */
-	public static void extractFile(String entryName, String destName) throws Exception {
+	public static void extractFile(String entryName, String destName)
+			throws Exception {
 		JarFile jar = null;
 		// Open the jar.
 		try {
-			File dir = new File(getJarLocation(Main.class).toURI()).getParentFile();
+			File dir = new File(getJarLocation(Main.class).toURI())
+					.getParentFile();
 			// We have to call getParentFile() method because the toURI() method
 			// returns an URI than is not always valid (contains %20 for spaces
 			// for instance)
@@ -2236,8 +2338,9 @@ public class Util implements ITechnicalStrings {
 				try {
 					// Create the output file (clobbering the file if it
 					// exists).
-					FileOutputStream file = new FileOutputStream(getConfFileByPath(FILE_CACHE + '/'
-							+ FILE_INTERNAL_CACHE + '/' + destName));
+					FileOutputStream file = new FileOutputStream(
+							getConfFileByPath(FILE_CACHE + '/'
+									+ FILE_INTERNAL_CACHE + '/' + destName));
 					try {
 						// Allocate a buffer for reading the entry data.
 						byte[] buffer = new byte[1024];

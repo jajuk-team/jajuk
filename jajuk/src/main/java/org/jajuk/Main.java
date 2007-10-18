@@ -316,11 +316,12 @@ public class Main implements ITechnicalStrings {
 			UpgradeManager.upgradeStep1();
 
 			// Display user system configuration
+			Log.debug("Workspace used: "+workspace);
 			Log.debug(Util.getAnonymizedSystemProperties().toString());
 
 			// Display user Jajuk configuration
 			Log.debug(Util.getAnonymizedJajukProperties().toString());
-
+			
 			// check for another session (needs setLocal)
 			checkOtherSession();
 
@@ -678,10 +679,11 @@ public class Main implements ITechnicalStrings {
 			// test mplayer presence in PATH
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 			if (Util.isUnderWindows()) {
+				File mplayerPath = Util.getMPlayerWindowsPath();
 				// try to find mplayer executable in know locations first
-				if (Util.getMPlayerWindowsPath() == null ||
+				if (mplayerPath == null ||
 				// if file exists, test size
-						new File(Util.getMPlayerWindowsPath()).length() != MPLAYER_EXE_SIZE) {
+						mplayerPath.length() != MPLAYER_EXE_SIZE) {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
