@@ -76,11 +76,11 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	 *            remote file
 	 * @param iType
 	 */
-	public Cover(URL url, int iType) throws Exception {
+	public Cover(final URL url, final int iType) throws Exception {
 		this.url = url;
 		this.iType = iType;
 		// Create an unique id for this cover
-		id = Long.toString((long)(System.currentTimeMillis() * Math.random()));
+		id = Long.toString((long) (System.currentTimeMillis() * Math.random()));
 		if (iType == Cover.LOCAL_COVER || iType == Cover.DEFAULT_COVER
 				|| iType == Cover.ABSOLUTE_DEFAULT_COVER) {
 			this.file = new File(url.getFile());
@@ -88,9 +88,19 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 			this.file = Util.getCachePath(url, id);
 		}
 		// if Pre-load option is enabled, download this cover
-		if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) && iType == Cover.REMOTE_COVER) {
-			DownloadManager.downloadCover(url, id);
-		}
+		// Make it in a thread to free up the AWT-dispatcher thread
+		new Thread() {
+			public void run() {
+				if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)
+						&& iType == Cover.REMOTE_COVER) {
+					try {
+						DownloadManager.downloadCover(url, id);
+					} catch (Exception e) {
+						Log.error(e);
+					}
+				}
+			}
+		}.start();
 	}
 
 	/*

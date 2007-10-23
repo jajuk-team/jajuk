@@ -283,15 +283,9 @@ public class ConfigurationManager implements ITechnicalStrings {
 	}
 
 	/** Commit properties in a file */
-	public static void commit() {
-		try {
+	public static void commit() throws Exception {
 			properties.store(new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION)),
 					"User configuration");
-		} catch (IOException e) {
-			Log.error(113, e);
-			Messages.showErrorMessage(113);
-		}
-
 	}
 
 	/** Load properties from in file */

@@ -38,7 +38,8 @@ import org.jajuk.util.log.Log;
  * options to create actions, just leaving open the necessity of implementing
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
-public abstract class ActionBase extends AbstractAction implements ITechnicalStrings {
+public abstract class ActionBase extends AbstractAction implements
+		ITechnicalStrings {
 
 	/**
 	 * Shared mutex for locking.
@@ -52,8 +53,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	static {
 		if (Util.isUnderWindows()) {
 			try {
-				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod(
-						"registerJIntellitype").invoke(null, null);
+				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager")
+						.getMethod("registerJIntellitype").invoke(null, null);
 			} catch (Exception e) {
 				Log.error(e);
 			}
@@ -78,7 +79,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+	protected ActionBase(String pName, Icon icon, KeyStroke stroke,
+			boolean enabled, boolean bHotkey) {
 		// check hotkeys are enabled (false by default)
 		this.bHotkey = Util.isUnderWindows() && bHotkey
 				&& ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
@@ -97,9 +99,12 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 		if (stroke != null) {
 			if (this.bHotkey) {
 				try {
-					Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod(
-							"registerHotKey", new Class[] { KeyStroke.class, ActionBase.class })
-							.invoke(null, new Object[] { stroke, this });
+					Class.forName("org.jajuk.ui.action.WindowsHotKeyManager")
+							.getMethod(
+									"registerHotKey",
+									new Class[] { KeyStroke.class,
+											ActionBase.class }).invoke(null,
+									new Object[] { stroke, this });
 				} catch (Exception e) {
 					Log.error(e);
 				}
@@ -131,7 +136,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
+	protected ActionBase(String name, Icon icon, String stroke,
+			boolean enabled, boolean bHotkey) {
 		this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
 	}
 
@@ -152,7 +158,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+	protected ActionBase(String name, KeyStroke stroke, boolean enabled,
+			boolean bHotkey) {
 		this(name, null, stroke, enabled, bHotkey);
 	}
 
@@ -176,7 +183,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 *            Is this command should be enabled even when jajuk has not the
 	 *            focus (has a effect under windows only)
 	 */
-	protected ActionBase(String name, String stroke, boolean enabled, boolean bHotkey) {
+	protected ActionBase(String name, String stroke, boolean enabled,
+			boolean bHotkey) {
 		this(name, null, stroke, enabled, bHotkey);
 	}
 
@@ -195,7 +203,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 *            focus (has a effect under windows only)
 	 * @see javax.swing.KeyStroke#getKeyStroke(String)
 	 */
-	protected ActionBase(Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+	protected ActionBase(Icon icon, KeyStroke stroke, boolean enabled,
+			boolean bHotkey) {
 		this(null, icon, stroke, enabled, bHotkey);
 	}
 
@@ -217,7 +226,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	 *            focus (has a effect under windows only)
 	 * @see javax.swing.KeyStroke#getKeyStroke(String)
 	 */
-	protected ActionBase(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
+	protected ActionBase(Icon icon, String stroke, boolean enabled,
+			boolean bHotkey) {
 		this(null, icon, stroke, enabled, bHotkey);
 	}
 
@@ -370,7 +380,8 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 		} catch (Throwable e2) {
 			Log.error(e2);
 		} finally {
-			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+			ObservationManager.notify(new Event(
+					EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 
@@ -386,14 +397,10 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 	/**
 	 * Free intellipad ressources
 	 */
-	public static void cleanup() {
+	public static void cleanup() throws Exception {
 		if (Util.isUnderWindows()) {
-			try {
-				Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("cleanup")
-						.invoke(null, null);
-			} catch (Exception e) {
-				Log.error(e);
-			}
+			Class.forName("org.jajuk.ui.action.WindowsHotKeyManager")
+					.getMethod("cleanup").invoke(null, null);
 		}
 	}
 

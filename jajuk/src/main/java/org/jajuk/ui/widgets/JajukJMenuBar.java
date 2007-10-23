@@ -236,7 +236,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		help.setMnemonic(ActionUtil.getMnemonic(helpText));
 		jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
 		jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
-		jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
 		jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
 		jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
 		jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukAction.CHECK_FOR_UPDATES));
@@ -246,6 +245,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 		help.add(jmiTipOfTheDay);
 		//this works only for Linux and Windows
 		if (Util.isUnderLinux() || Util.isUnderWindows()){
+			jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
 			help.add(jmiQualityAgent);
 		}
 		help.add(jmiTraces);

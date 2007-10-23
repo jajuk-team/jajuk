@@ -606,8 +606,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			// Add widgets
 			int i = 0;
 			int j = 4;
-			for (@SuppressWarnings("unused")
-			PropertyMetaInformation meta : alToDisplay) {
+			for (PropertyMetaInformation meta : alToDisplay) {
 				builder.add(widgets[i][0], cc.xy(2, j));
 				builder.add(widgets[i][1], cc.xy(4, j));
 				if (widgets[i][2] != null) { // link widget can be null

@@ -434,9 +434,13 @@ public class Main implements ITechnicalStrings {
 							ActionBase.cleanup();
 						}
 					} catch (Exception e) {
-						Log.error(e);
+						//don't use Log class here, it can cause freeze if 
+						//workspace no more available
+						e.printStackTrace();
 					} finally {
-						Log.debug("Exit Hook end");
+						//don't use Log class here, it can cause freeze if 
+						//workspace no more available
+						System.out.println("Exit Hook end");
 					}
 				}
 			};

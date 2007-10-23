@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision: 2970 $$
  */
 
 package org.jajuk.ui.views;
@@ -31,6 +31,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
@@ -1556,7 +1557,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,
 		LastFmManager.getInstance().configure();
 
 		// configuration
-		ConfigurationManager.commit();
+		try {
+			ConfigurationManager.commit();
+		} catch (Exception e) {
+			Log.error(113, e);
+			Messages.showErrorMessage(113);
+		}
 		// notify playlist editor (useful for novelties)
 		ObservationManager
 				.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));

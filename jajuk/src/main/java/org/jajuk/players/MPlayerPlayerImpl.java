@@ -166,39 +166,43 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 						st.nextToken();
 						lDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
 					}
+					// End of file
+					else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
+						bEOF = true;
+						bOpening = false;
+						// Launch next track
+						try {
+							// End of file: inc rate by 1 if file is fully
+							// played
+							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
+							// alert best-of playlist something changed
+							FileManager.getInstance().setRateHasChanged(true);
+							// if using crossfade, ignore end of file
+							if (!bFading) {
+								// Benefit from end of file to perform a full gc
+								System.gc();
+								if (lDuration > 0) {
+									// if corrupted file, length=0 and we have
+									// not not call finished as it is managed by
+									// Player
+									FIFO.getInstance().finished();
+								}
+							} else {
+								// If fading, next track has already been
+								// launched
+								bFading = false;
+							}
+						} catch (Exception e) {
+							Log.error(e);
+						}
+						break;
+					}
 					// Opening ?
 					else if (line.matches(".*Starting playback.*")) {
 						bOpening = false;
 					}
 				}
-				// Reach this point at the end of file
-				bEOF = true;
-				bOpening = false;
-				// Launch next track
-				try {
-					// End of file: inc rate by 1 if file is fully
-					// played
-					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-					// alert best-of playlist something changed
-					FileManager.getInstance().setRateHasChanged(true);
-					// if using crossfade, ignore end of file
-					if (!bFading) {
-						// Benefit from end of file to perform a full gc
-						System.gc();
-						if (lDuration > 0) {
-							// if corrupted file, length=0 and we have
-							// not not call finished as it is managed by
-							// Player
-							FIFO.getInstance().finished();
-						}
-					} else {
-						// If fading, next track has already been
-						// launched
-						bFading = false;
-					}
-				} catch (Exception e) {
-					Log.error(e);
-				}
+				// can reach this point at the end of file
 				in.close();
 				return;
 			} catch (Exception e) {

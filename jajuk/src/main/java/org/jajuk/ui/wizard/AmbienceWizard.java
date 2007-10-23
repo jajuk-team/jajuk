@@ -36,6 +36,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
@@ -412,7 +413,12 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 		}
 		// commit it to avoid it is lost before the app close
 		AmbienceManager.getInstance().commit();
-		ConfigurationManager.commit();
+		try {
+			ConfigurationManager.commit();
+		} catch (Exception e) {
+			Log.error(113, e);
+			Messages.showErrorMessage(113);
+		}
 		// Refresh UI
 		ObservationManager
 				.notify(new Event(EventSubject.EVENT_AMBIENCES_CHANGE));

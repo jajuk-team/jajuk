@@ -167,6 +167,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7"));
 		jsPosition = new JSlider(0, 100, 0);
 		jsPosition.addChangeListener(this);
+		jsPosition.addMouseWheelListener(InformationJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
 		jtbProgress.add(jsPosition);
