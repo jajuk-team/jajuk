@@ -19,11 +19,31 @@ CPU usage</h2>
 <ul>
 <li>
 On a PC/P4M 1.8Ghz, Jajuk uses about 9% CPU for mp3 and 3% for Ogg Vorbis. On a Centrino 1.8 Ghz: 0% CPU.</li>
+<li>
+Tips to reduce CPU Usage:<ul>
+<li>
+In your current perspective, don't keep opened or minimized views that you don't need</li>
+</ul>
+</li>
 </ul>
 <h2>
 Memory Usage</h2>
-<p>
-A JVM runs inside a reserved memory heap. The JVM takes all the Xms MB of memory at startup and requires more memory to the OS only if necessary. For a big size collection and all cover options enabled, it takes about 65MB maximum of memory but 40MB should be enough most of the time.</p>
+<ul>
+<li>
+Jajuk usually uses 100 MB of memory or more for large collections when using GUI. It can looks large but keep in kind that Jajuk comes with a lot of features and image manipulation and that even with optimizations, there's still a floor of memory footprint we can't go bellow.</li>
+<li>
+A JVM runs inside a reserved memory heap. The JVM takes all the Xms MB of memory at startup and requires more memory to the OS only if necessary. For a big size collection and all cover options enabled, it takes about 65MB maximum of memory but 40MB should be enough most of the time.</li>
+<li>
+Tips to reduce memory consumption:<ul>
+<li>
+Don't use image wallpapers (Preference view / GUI tab)</li>
+<li>
+Don't use covers prefetch (Preference view / covers tab)</li>
+<li>
+Don't open perspectives you don't use (perspective memory is used only once opened)</li>
+</ul>
+</li>
+</ul>
 <h2>
 Bandwidth</h2>
 <ul>

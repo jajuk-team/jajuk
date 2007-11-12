@@ -103,22 +103,32 @@ On a recently manufactured PC, Jajuk uses less than 5% CPU and typically from 40
 <li>
 This can be useful to create jajuk devices mapped to a drive letter one time for ever (exemple: first external hard drive = M:, second external hard drive = N:)</li>
 <li>
-See: http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/dm_drive_letter.mspx?mfr=true</li>
+Check this <a href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/dm_drive_letter.mspx?mfr=true">
+Microsoft page</a>
+</li>
 </ul>
 <h2>
 Troubleshooting</h2>
 <h3>
 All Operating systems</h3>
 <h4>
-What can I do if my collection looks corrupted ?</h4>
-<p>
-Check out <a href="http://jajuk.info/index.php/Using_devices#Collection_backup_and_restore">
-the device page of the jajuk manual</a>
-</p>
+I experience sound skips</h4>
+<ul>
+<li>
+(Linux and MacOS only, mplayer is provided with Windows distribution) Install mplayer (see Category:Installation_Guides)</li>
+<li>
+If you can't install mplayer and you use Jajuk &gt;= 1.4.2, use this settings in jajuk script : -client -Xms35M -Xmx256M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12</li>
+</ul>
 <h4>
 I experience Out Of Memory issues</h4>
 <p>
 By default, Jajuk can use from 35MB to 512MB of physical memory. That should be large enough for most users. If you have a really huge collection and experience out-of-memory problems, increase the -Xmx value in the Jajuk launch script (open a support ticket if you need help)</p>
+<h4>
+What can I do if my collection looks *really* corrupted ?</h4>
+<p>
+Check out <a href="http://jajuk.info/index.php/Using_devices#Collection_backup_and_restore">
+the device page of the jajuk manual</a>
+. Note that this case has never been reported so far as Jajuk provides an efficient build-in recovery system.</p>
 <h3>
 Windows Only</h3>
 <h4>
@@ -145,6 +155,24 @@ This is a Sun JRE 1.6 issue dealing with proxy settings. To fix it :</li>
 Cannot run Jajuk on Vista 64 bits (cannot execute 32 bits dll)</h4>
 <p>
 (Thanks elefkof SF user)You need to install both a 32-bit and 64-bits JRE. It will allow you to have a 64-bit and 32-bit versions alongside each other. It will use the 32-bit JRE for 32 bit apps and 64 bit JRE for 64 bit apps. See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4802695</p>
+<h4>
+Access is denied under Vista</h4>
+<ul>
+<li>
+I get this error message: java.io.FileNotFoundException: C:\Program Files (x86)\Jajuk\bin\JIntellitype.dll (Access is denied) when launching java installer under a Vista 64 bit</li>
+<li>
+Workaround: Run the installer as an administrator. That should work. (thanks kawayanuuc )</li>
+</ul>
+<h4>
+Conflict between Web Start install and .Exe installer</h4>
+<p>
+If you launch Jajuk in Web start mode (Try it live), icons and startup menus are created. After installing Jajuk from the download jajuk-&lt;version&gt;-win32.exe file, launching Jajuk from the new created icon still executes the Web start version.</p>
+<ul>
+<li>
+As a workaround, remove the Web start version from Start -&gt; Parameters -&gt; Configuration Panel -&gt; Java -&gt; "Display" in Temporary Internet files panel, select Jajuk application and remove it.</li>
+<li>
+Then you can try again Web start version, it uses a separated menu entry (Jajuk-Webstart) to avoid conflicts.</li>
+</ul>
 <h3>
 Linux Only</h3>
 <h4>
@@ -204,14 +232,6 @@ sudo ln -s /usr/share/X11/locale/en_US.UTF-8 /usr/share/X11/locale/ru_RU.UTF-8
 I experience sound skips</h4>
 <p>
 Make sure to use mplayer if under Linux or Mac OSX</p>
-<h3>
-Mac OS X Only</h3>
-<h4>
-I experience sound skips</h4>
-<p>
-Make sure to use mplayer (see the <a href="installation_guide.html">
-installation guide</a>
-)</p>
 <p>
 Go back to <a href="table_of_contents.html">
 table of contents</a>
