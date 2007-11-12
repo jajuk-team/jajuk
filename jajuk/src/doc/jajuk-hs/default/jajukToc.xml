@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE toc
+  PUBLIC 
+  "-//Sun Microsystems Inc.//DTD 
+  JavaHelp TOC Version 1.0//EN"
+  "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+
+<toc version="1.0">
+	<tocitem text="Jajuk Help">
+    	<tocitem text="Table of contents" target="table_of_contents"/>
+		<tocitem text="Jajuk in a nutshell" expand="true">	
+			<tocitem text="Features" target="features"/>	
+			<tocitem text="New features highlights" target="new_features_highlights"/>
+			<tocitem text="Perspectives and views" target="perspectives_and_views"/>				
+    	</tocitem>
+		<tocitem text="Static views" expand="true">	
+			<tocitem text="The About view" target="view_about"/>
+			<tocitem text="The Command view" target="view_command"/>
+			<tocitem text="The Help view" target="view_help"/>
+			<tocitem text="The Information view" target="view_information"/>
+			<tocitem text="The Perspective selector view" target="view_perspective_selector"/>
+    	</tocitem>
+		<tocitem text="Contextual views"  expand="true">
+			<tocitem text="The Albums Catalog view" target="view_albums_catalog"/>
+			<tocitem text="The Animation view" target="view_animation"/>
+			<tocitem text="The CD Scanner view" target="view_cd_scanner"/>
+			<tocitem text="The Cover view" target="view_cover"/>			
+			<tocitem text="The Device View" target="view_devices"/>			
+			<tocitem text="The Files Table view" target="view_files_table"/>
+			<tocitem text="The Files Tree view" target="view_files_tree"/>						
+			<tocitem text="The Logical Playlist view" target="view_logical_playlists"/>
+			<tocitem text="The Lyrics view" target="view_lyrics"/>
+			<tocitem text="The Physical Playlist view" target="view_physical_playlists"/>
+			<tocitem text="The Playlist Editor view" target="view_playlist_editor"/>
+			<tocitem text="The Preferences view" target="view_preferences"/>			
+			<tocitem text="The Statistics view" target="view_statistics"/>
+			<tocitem text="The Suggestions view" target="view_suggestions"/>
+			<tocitem text="The Tracks Table view" target="view_tracks_table"/>
+			<tocitem text="The Tracks Tree view" target="view_tracks_tree"/>
+			<tocitem text="The Wikipedia view" target="view_wikipedia"/>
+		</tocitem>
+		<tocitem text="Using Jajuk" expand="true">
+			<tocitem text="Editing tags and properties" target="editing_tags_and_properties"/>
+			<tocitem text="Reorganize files" target="files_organizer"/>			
+			<tocitem text="Keyboard controls" target="keys_shortcuts"/>
+			<tocitem text="Playing music" target="playing_music"/>
+			<tocitem text="Using custom properties" target="using_custom_properties"/>
+			<tocitem text="Using devices" target="using_devices"/>
+			<tocitem text="Using digital DJs" target="using_digital_djs"/>
+			<tocitem text="Using Jajuk Menus" target="using_jajuk_menus"/>
+			<tocitem text="Using playlists" target="using_playlists"/>
+			<tocitem text="Using tables in views" target="using_tables_in_views"/>
+			<tocitem text="Using the tray" target="using_the_tray"/>
+			<tocitem text="Using web radios" target="using_web_radios"/>
+		</tocitem>
+		<tocitem text="Technical" expand="true">
+			<tocitem text="Supported formats" target="supported_formats"/>
+			<tocitem text="Special options" target="special_options"/>
+			<tocitem text="Performance tips" target="performance_tips"/>
+			<tocitem text="Jajuk Dependencies" target="jajuk_dependencies"/>
+			<tocitem text="English Jajuk FAQ" target="english_jajuk_faq"/>
+		</tocitem>
+	</tocitem>
+</toc>
