@@ -41,7 +41,7 @@
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
-		<Program_Type />
+		<Program_Type>Freeware</Program_Type>
 		<Program_Release_Status>New Release</Program_Release_Status>
 		<Program_Install_Support>No Install Support</Program_Install_Support>
 		<Program_OS_Support>Win 3.1x,Win95,Win98,WinME,WinNT 3.x,WinNT 4.x,WinXP,Windows2000,Windows2003,Unix,Linux,Linux Gnome,Linux GPL,Linux Open Source,Mac OS X,Java</Program_OS_Support>
@@ -92,7 +92,7 @@
 			<Application_XML_File_URL>http://jajuk.sourceforge.net/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.4.2-win32.exe?download</Primary_Download_URL>
+			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.4.2-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
