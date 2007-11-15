@@ -80,7 +80,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
 		String sPage = DownloadManager.downloadHtml(url);
 		// Remove scripting
 		int index = -1;
-		StringBuffer sb = new StringBuffer(sPage);
+		StringBuilder sb = new StringBuilder(sPage);
 		do {
 			index = sb.indexOf("<script");
 			if (index > 0) {

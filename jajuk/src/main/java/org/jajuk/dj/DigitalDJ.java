@@ -91,7 +91,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable {
 	 * @return DJ common parameters
 	 */
 	protected String toXMLGeneralParameters() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
 		sb.append("<" + XML_DJ_DJ + " " + XML_VERSION + "='" + JAJUK_VERSION + "' " + XML_ID + "='"
 				+ sID + "' " + XML_NAME + "='" + sName + "' " + XML_TYPE + "='"

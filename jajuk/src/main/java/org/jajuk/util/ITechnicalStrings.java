@@ -142,9 +142,9 @@ public interface ITechnicalStrings {
 	/** Mplayer windows exe size in bytes */
 	public static final long MPLAYER_EXE_SIZE = 3284992l;
 	
-	public static final String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS";
+	public static final String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS/mplayer";
 	
-	public static final String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS";
+	public static final String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS/mplayer";
 	
 	/** Wikipedia view default URL */
 	public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.info";
@@ -195,7 +195,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LANGPACK_PART2 = ".properties";
 	
 	/**Extention to the .jajuk_test directory in test mode only*/
-	public static final String TEST_VERSION = "1.5";
+	public static final String TEST_VERSION = "1.4";
 	
 	// logs
 	public static final String FILE_LOGS = "jajuk.log";
@@ -315,9 +315,7 @@ public interface ITechnicalStrings {
 	public static final String LOCAL = "local";
 		
 	// Command line options
-	// if selected, no jajuk window at startup, only tray
-	public static final String CLI_NOTASKBAR = "notaskbar";
-
+	
 	// Tells jajuk it is inside the IDE
 	public static final String CLI_IDE = "ide";
 
@@ -576,7 +574,7 @@ public interface ITechnicalStrings {
 	public static final String LNF_DEFAULT_THEME = "Orange";
 
 	/** Default substance watermark * */
-	public static final String LNF_DEFAULT_WATERMARK = "Image";
+	public static final String LNF_DEFAULT_WATERMARK = "None";
 
 	/** Image watermark*/
 	public static final String LNF_WATERMARK_IMAGE = "Image";

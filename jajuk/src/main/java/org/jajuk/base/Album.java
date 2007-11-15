@@ -19,16 +19,17 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 /**
  * An Album *
@@ -38,24 +39,6 @@ import javax.swing.ImageIcon;
 public class Album extends LogicalItem implements Comparable<Album> {
 
 	private static final long serialVersionUID = 1L;
-
-	/** No covers image cache : size:default icon */
-	private static HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
-
-	static {
-		noCoversCache.put(THUMBNAIL_SIZE_50x50, Util.getResizedImage(IconLoader.ICON_NO_COVER, 50,
-				50));
-		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				100, 100));
-		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				150, 150));
-		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				200, 200));
-		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				250, 250));
-		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER,
-				300, 300));
-	}
 
 	/**
 	 * Album constructor
@@ -84,7 +67,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 	 * toString method
 	 */
 	public String toString() {
-		return "Album[ID=" + getId() + " Name={{" + getName() + "}}]";
+		return "Album[ID=" + getID() + " Name={{" + getName() + "}}]";
 	}
 
 	/**
@@ -92,16 +75,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
 	 * 
 	 * @param other
 	 *            item to be compared
-	 * @return comparaison result
+	 * @return comparison result
 	 */
 	public int compareTo(Album otherAlbum) {
-		// compare using name and id to differenciate unknown items
-		return (getName2() + getId()).compareToIgnoreCase(otherAlbum.getName2()
-				+ otherAlbum.getId());
+		// compare using name and id to differentiate unknown items
+		StringBuilder current = new StringBuilder(getName2());
+		current.append(getID());
+		StringBuilder other = new StringBuilder(otherAlbum.getName2());
+		other.append(otherAlbum.getID());
+		return current.toString().compareToIgnoreCase(other.toString());
 	}
 
 	/**
-	 * @return whether the albumr is Unknown or not
+	 * @return whether the album is Unknown or not
 	 */
 	public boolean isUnknown() {
 		return this.getName().equals(UNKNOWN_ALBUM);
@@ -145,7 +131,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 		File fDir = null; // analyzed directory
 		// search for local covers in all directories mapping the current track
 		// to reach other devices covers and display them together
-		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
+		Set<Track> tracks = TrackManager.getInstance()
+				.getAssociatedTracks(this);
 		if (tracks.size() == 0) {
 			return null;
 		}
@@ -153,15 +140,18 @@ public class Album extends LogicalItem implements Comparable<Album> {
 		HashSet<Directory> dirs = new HashSet<Directory>(2);
 		for (Track track : tracks) {
 			for (org.jajuk.base.File file : track.getFiles()) {
-				// note that hashset ensures directory unicity
-				dirs.add(file.getDirectory());
+				if (file.isReady()) {
+					// note that hashset ensures directory unicity
+					dirs.add(file.getDirectory());
+				}
 			}
 		}
 		// look for absolute cover in collection
 		for (Directory dir : dirs) {
 			String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
 			if (sAbsolut != null && !sAbsolut.trim().equals("")) {
-				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
+				File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/'
+						+ sAbsolut);
 				if (fAbsoluteDefault.canRead()) {
 					return fAbsoluteDefault;
 				}
@@ -177,7 +167,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 						&& files[i].length() < MAX_COVER_SIZE * 1024) {
 					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
+					if (sExt.equalsIgnoreCase("jpg")
+							|| sExt.equalsIgnoreCase("png")
 							|| sExt.equalsIgnoreCase("gif")) {
 						if (Util.isStandardCover(files[i].getAbsolutePath())) {
 							return files[i];
@@ -196,7 +187,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 						&& files[i].length() < MAX_COVER_SIZE * 1024) {
 					// check size to avoid out of memory errors
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
+					if (sExt.equalsIgnoreCase("jpg")
+							|| sExt.equalsIgnoreCase("png")
 							|| sExt.equalsIgnoreCase("gif")) {
 						return files[i];
 					}
@@ -236,13 +228,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
 	 * @return album thumb for given size
 	 */
 	public ImageIcon getThumbnail(String size) {
-		File fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getId() + '.'
-				+ EXT_THUMB);
+		File fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+				+ getID() + '.' + EXT_THUMB);
 		// Check if thumb already exists
 		if (!fCover.exists() || fCover.length() == 0) {
-			return noCoversCache.get(size);
+			return IconLoader.noCoversCache.get(size);
 		}
-		return new ImageIcon(fCover.getAbsolutePath());
+		// Create the image using Toolkit and not ImageIO API to be able to
+		// flush all the image data
+		Image img = Toolkit.getDefaultToolkit().getImage(
+				fCover.getAbsolutePath());
+		// Free thumb memory
+		img.flush();
+		return new ImageIcon(img);
 	}
 
 }

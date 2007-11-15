@@ -182,7 +182,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
 				String s = "";
 				try {
 					s = Util.applyPattern(file, ConfigurationManager
-							.getProperty(CONF_ANIMATION_PATTERN), false);
+							.getProperty(CONF_ANIMATION_PATTERN), false,false);
 				} catch (JajukException e) {
 					Log.error(e);
 				}

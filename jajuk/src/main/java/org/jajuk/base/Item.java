@@ -42,14 +42,18 @@ import javax.swing.ImageIcon;
  */
 abstract public class Item implements Serializable, ITechnicalStrings {
 
-	/** Item properties, singleton */
-	private LinkedHashMap<String, Object> properties;
-
-	/** ID. Ex:1,2,3... */
-	protected final String sId;
-
-	/** Name */
-	protected String sName;
+    
+        /**We cache the ID to avoid getting it from properties for CPU performance reasons*/    
+        String sID;
+        
+        /**We cache the name to avoid getting it from properties for CPU performance reasons*/    
+        String name;
+	
+        /**
+	 * Item properties, singleton use very high load factor as this size will
+	 * not change often
+	 */
+	private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>(2, 1f);
 
 	/**
 	 * Constructor
@@ -60,36 +64,31 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 *            element name
 	 */
 	Item(final String sId, final String sName) {
-		this.sId = sId.intern();
-		setProperty(XML_ID, sId.intern());
-		if (sName != null) {
-			this.sName = sName.intern();
-			setProperty(XML_NAME, sName.intern());
-		} else {
-			this.sName = sName;
-			setProperty(XML_NAME, sName);
-		}
+		this.sID = sId;
+                setProperty(XML_ID, sId);
+                this.name = sName;
+		setProperty(XML_NAME, sName);
 	}
 
 	/**
 	 * @return
 	 */
-	public String getId() {
-		return sId;
+	public String getID() {
+		return this.sID;
 	}
 
 	/**
 	 * @return
 	 */
 	public String getName() {
-		return sName;
+		return name;
 	}
-	
+
 	/**
 	 * Item hashcode (used by the equals method)
 	 */
 	public int hashCode() {
-		return getId().hashCode();
+		return getID().hashCode();
 	}
 
 	/**
@@ -109,9 +108,8 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 		if (otherItem == null || !(otherItem instanceof Item)) {
 			return false;
 		}
-		return getId().equals(((Item)otherItem).getId());
+		return getID().equals(((Item) otherItem).getID());
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -119,10 +117,6 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @see org.jajuk.base.Item#getProperties()
 	 */
 	public LinkedHashMap<String, Object> getProperties() {
-		if (properties == null) {
-			// use  very high load factor as this size will not change often
-			properties = new LinkedHashMap<String, Object>(5, 1f);
-		}
 		return properties;
 	}
 
@@ -132,30 +126,33 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @see org.jajuk.base.Item#getProperty(java.lang.String)
 	 */
 	public Object getValue(String sKey) {
-		// look at properties to check the given property is known
-		if (!getProperties().containsKey(sKey)) { // no? take property
-			// default
-			return getDefaultValue(sKey);
-		}
-		return getProperties().get(sKey); // return property value
+            Object out = getProperties().get(sKey);
+             // look at properties to check the given property is known
+            if ( out == null) { 
+                  // no? take property default
+		return getDefaultValue(sKey);
+            }
+            return out;
 	}
 
 	public long getLongValue(String sKey) {
-		// look at properties to check the given property is known
-		if (!getProperties().containsKey(sKey)) { // no? take property
-			// default
-			return (Long) getDefaultValue(sKey);
-		}
-		return (Long) getProperties().get(sKey); // return property value
+            Long out = (Long)getProperties().get(sKey);
+            // look at properties to check the given property is known
+            if (out == null) { 
+                // no? take property default
+		return (Long) getDefaultValue(sKey);
+            }
+            return out;
 	}
 
 	public double getDoubleValue(String sKey) {
-		// look at properties to check the given property is known
-		if (!getProperties().containsKey(sKey)) { // no? take property
-			// default
-			return (Double) getDefaultValue(sKey);
-		}
-		return (Double) getProperties().get(sKey); // return property value
+            Double out = (Double)getProperties().get(sKey);
+            // look at properties to check the given property is known
+            if (out == null) { 
+                // no? take property default
+		return (Double) getDefaultValue(sKey);
+            }
+            return out;
 	}
 
 	/**
@@ -163,31 +160,33 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * is a String. If you are not sure, use Util.parse method
 	 */
 	public String getStringValue(String sKey) {
-		// look at properties to check the given property is known
-		if (!getProperties().containsKey(sKey)) { // no? take property
-			// default
-			return (String) getDefaultValue(sKey);
-		}
-		return (String) getProperties().get(sKey); // return property value
+            String out = (String) getProperties().get(sKey);
+            // look at properties to check the given property is known
+            if (out == null) { 
+                // no? take property default
+		return (String) getDefaultValue(sKey);
+            }
+            return out;
 	}
 
 	public boolean getBooleanValue(String sKey) {
-		// look at properties to check the given property is known
-		if (!getProperties().containsKey(sKey)) { // no? take property
-			// default
-			return (Boolean) getDefaultValue(sKey);
-		}
-		return (Boolean) getProperties().get(sKey); // return property value
+            Boolean out = (Boolean) getProperties().get(sKey);
+            // look at properties to check the given property is known
+            if (out == null) { 
+                // no? take property default
+		return (Boolean) getDefaultValue(sKey);
+            }
+            return out;
 	}
 
 	public Date getDateValue(String sKey) {
-		// look at properties to check the given property is known
-		if (!getProperties().containsKey(sKey)) { // no? take property
-			// default
-			return (Date) getDefaultValue(sKey);
-		}
-		return (Date) getProperties().get(sKey); // return property
-		// value}
+            Date out = (Date) getProperties().get(sKey);
+            // look at properties to check the given property is known
+            if (out == null) { 
+                // no? take property default
+		return (Date) getDefaultValue(sKey);
+            }
+            return out;
 	}
 
 	public Object getDefaultValue(String sKey) {
@@ -202,7 +201,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public boolean containsProperty(String sKey) {
 		return properties.containsKey(sKey) && properties.get(sKey) != null
-				&& !properties.get(sKey).equals(""); 
+				&& !properties.get(sKey).equals("");
 	}
 
 	/*
@@ -220,7 +219,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @see org.jajuk.base.Item#getAny()
 	 */
 	public String getAny() {
-		StringBuffer sb = new StringBuffer(100); 
+		StringBuilder sb = new StringBuilder(100);
 		LinkedHashMap properties = getProperties();
 		Iterator it = properties.keySet().iterator();
 		while (it.hasNext()) {
@@ -256,15 +255,15 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public String toXml() {
 		try {
-			StringBuffer sb = new StringBuffer("\t\t<").append(getLabel()); 
+			StringBuilder sb = new StringBuilder("\t\t<").append(getLabel());
 			sb.append(getPropertiesXml());
-			sb.append("/>\n"); 
+			sb.append("/>\n");
 			return sb.toString();
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			// catch any error here because it can prevent
 			// collection to commit
 			Log.error(e);
-			return ""; 
+			return "";
 		}
 	}
 
@@ -280,7 +279,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	private String getPropertiesXml() {
 		LinkedHashMap properties = getProperties();
 		Iterator it = properties.keySet().iterator();
-		StringBuffer sb = new StringBuffer(); 
+		StringBuilder sb = new StringBuilder();
 		while (it.hasNext()) {
 			String sKey = (String) it.next();
 			String sValue = null;
@@ -295,7 +294,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 				sValue = Util.formatXML(sValue); // make sure to remove
 				// non-XML characters
 			}
-			sb.append(" " + Util.formatXML(sKey) + "='" + sValue + "'");   
+			sb.append(" " + Util.formatXML(sKey) + "='" + sValue + "'");
 		}
 		return sb.toString();
 	}
@@ -315,11 +314,10 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 				PropertyMetaInformation meta = getMeta(sProperty);
 				try {
 					if (meta != null) {
-						setProperty(sProperty, Util.parse(sValue, meta
-								.getType()));
+						setProperty(sProperty, Util.parse(sValue, meta.getType()));
 					}
 				} catch (Exception e) {
-					Log.error(137, sProperty, e); 
+					Log.error(137, sProperty, e);
 				}
 			}
 		}
@@ -361,7 +359,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 			return Util.format(getValue(sKey), getMeta(sKey));
 		} catch (Exception e) {
 			Log.error(e);
-			return ""; 
+			return "";
 		}
 	}
 
@@ -371,8 +369,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @return Meta information for current item and given property name
 	 */
 	public PropertyMetaInformation getMeta(String sProperty) {
-		return ItemManager.getItemManager(this.getClass()).getMetaInformation(
-				sProperty);
+		return ItemManager.getItemManager(this.getClass()).getMetaInformation(sProperty);
 	}
 
 	/**
@@ -386,12 +383,11 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 		while (it.hasNext()) {
 			String sProperty = (String) it.next();
 			if (!getMeta(sProperty).isConstructor()) {
-				this.properties.put(sProperty, propertiesSource
-						.getValue(sProperty));
+				this.properties.put(sProperty, propertiesSource.getValue(sProperty));
 			}
 		}
 	}
-	
+
 	/**
 	 * @return an icon representation for this item or null if none available
 	 */

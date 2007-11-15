@@ -18,7 +18,7 @@
            <all-permissions/>
        </security> 
        <resources>
-           <j2se version='1.5+' java-vm-args='-client -Xms35M -Xmx256M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12'/>
+           <j2se version='1.5+' java-vm-args='-client -Xms20M -Xmx256M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
            <jar href='jajuk-help.jar' version='VERSION_REPLACED_BY_ANT'/> 
@@ -58,7 +58,6 @@
            <nativelib href='linux/jdic-native.jar' version='VERSION_REPLACED_BY_ANT'/>
        </resources>
       <application-desc main-class='org.jajuk.Main'>
-      	<argument>-notaskbar</argument>
       	<argument>TEST_FLAG_REPLACED_BY_ANT</argument>
       </application-desc>
 </jnlp>

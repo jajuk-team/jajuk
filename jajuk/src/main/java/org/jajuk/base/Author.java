@@ -29,7 +29,7 @@ import javax.swing.ImageIcon;
  * <p>
  * Logical item
  */
-public class Author extends LogicalItem implements Comparable {
+public class Author extends LogicalItem implements Comparable<Author> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,7 +69,7 @@ public class Author extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Author[ID=" + sId + " Name={{" + sName + "}}]";   
+		return "Author[ID=" + getID() + " Name={{" + getName() + "}}]";   
 	}
 
 	/**
@@ -77,14 +77,15 @@ public class Author extends LogicalItem implements Comparable {
 	 * 
 	 * @param other
 	 *            item to be compared
-	 * @return comparaison result
+	 * @return comparison result
 	 */
-	public int compareTo(Object o) {
-		Author otherAuthor = (Author) o;
-		// compare using name and id to differenciate unknown items
-		return (getName2() + getId()).compareToIgnoreCase(otherAuthor
-				.getName2()
-				+ otherAuthor.getId());
+	public int compareTo(Author otherItem) {
+		// compare using name and id to differentiate unknown items
+		StringBuilder current = new StringBuilder(getName2());
+		current.append(getID());
+		StringBuilder other = new StringBuilder(otherItem.getName2());
+		other.append(otherItem.getID());
+		return current.toString().compareToIgnoreCase(other.toString());
 	}
 
 	/**

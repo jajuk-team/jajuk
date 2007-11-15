@@ -86,7 +86,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 		this.album = album;
 		this.bShowFullText = bShowText;
 		this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
-				+ album.getId() + '.' + EXT_THUMB);
+				+ album.getID() + '.' + EXT_THUMB);
 	}
 
 	public void populate() {
@@ -176,7 +176,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 	String getDescription() {
 		String size = "200x200";
 		Util.refreshThumbnail(album, size);
-		java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getId()
+		java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
 				+ '.' + EXT_THUMB);
 		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
 		Track firstTrack = tracks.iterator().next();
@@ -220,19 +220,19 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 		// We use file://<item type>?<item id> as HTML hyperlink format
 		if (bSingleAuthor) {
 			sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://"
-					+ XML_AUTHOR + '?' + firstTrack.getAuthor().getId() + "'>"
+					+ XML_AUTHOR + '?' + firstTrack.getAuthor().getID() + "'>"
 					+ firstTrack.getAuthor().getName2() + "</a>";
 		}
 		// Display style
 		if (bSingleStyle) {
 			sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
-					+ XML_STYLE + '?' + firstTrack.getStyle().getId() + "'>"
+					+ XML_STYLE + '?' + firstTrack.getStyle().getID() + "'>"
 					+ firstTrack.getStyle().getName2() + "</a>";
 		}
 		// Display year
 		if (bSingleYear) {
 			sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + XML_YEAR
-					+ '?' + firstTrack.getYear().getId() + "'>" + firstTrack.getYear().getName()
+					+ '?' + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName()
 					+ "</a>";
 		}
 		// display rating (average of each track rating)
@@ -271,7 +271,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 			if (track.getOrder() > 0) {
 				sOut += Util.padNumber(track.getOrder(), 2) + ": ";
 			}
-			sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getId() + "'>"
+			sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getID() + "'>"
 					+ track.getName() + "</a>" + " (";
 			sOut += Util.formatTimeBySec(track.getDuration(), false) + ") </b>";
 			if (!bSingleYear && track.getYear().getValue() != 0) {

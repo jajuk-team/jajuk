@@ -88,7 +88,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	public PlaylistFile(int iType, String sId, String sName, Directory dParentDirectory) {
 		super(sId, sName);
 		this.dParentDirectory = dParentDirectory;
-		setProperty(XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory.getId()
+		setProperty(XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory.getID()
 				.intern());
 		this.iType = iType;
 	}
@@ -118,8 +118,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID=" + sId + " Name={{" + getName() + "}} Hashcode="
-				+ getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getId() + "]";
+		return "Playlist file[ID=" + getID() + " Name={{" + getName() + "}} Hashcode="
+				+ getStringValue(XML_HASHCODE) + " Dir=" + dParentDirectory.getID() + "]";
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 			return false;
 		}
 		PlaylistFile plfOther = (PlaylistFile) otherPlaylistFile;
-		return (this.getId().equals(plfOther.getId()) && plfOther.getType() == this.iType);
+		return (this.getID().equals(plfOther.getID()) && plfOther.getType() == this.iType);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 			return sAbs;
 		}
 		Directory dCurrent = getDirectory();
-		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl()).append(
+		StringBuilder sbOut = new StringBuilder(getDirectory().getDevice().getUrl()).append(
 				dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(
 				this.getName());
 		sAbs = sbOut.toString();
@@ -183,7 +183,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 */
 	public String computesHashcode() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(this.getFio()));
-		StringBuffer sbContent = new StringBuffer();
+		StringBuilder sbContent = new StringBuilder();
 		String sTemp;
 		do {
 			sTemp = br.readLine();
@@ -211,14 +211,19 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 * @return comparaison result
 	 */
 	public int compareTo(Object o) {
+		//Perf: leave if items are equals
+		if (o.equals(this)){
+			return 0;
+		}
 		PlaylistFile otherPlaylistFile = (PlaylistFile) o;
 		String sAbs = getName() + getAbsolutePath();
 		String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
-		if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)) {
-			return sAbs.compareTo(sOtherAbs);
-		} else {
-			return sAbs.compareToIgnoreCase(sOtherAbs);
-		}
+		//never return 0 here, because bidimap needs to distinct items
+        int comp = sAbs.compareToIgnoreCase(sOtherAbs);
+        if (comp == 0){
+        	return sAbs.compareTo(sOtherAbs);
+        }
+        return comp;
 	}
 
 	/**
@@ -263,33 +268,19 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 			// bestof playlist
 			alFiles = new ArrayList<File>(10);
 			// even unmounted files if required
-			Iterator it = FileManager.getInstance().getBestOfFiles(
-					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED),
-					Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_TRACKS_SIZE)))
-					.iterator();
-			while (it.hasNext()) {
-				alFiles.add((File) it.next());
+			for (File file:FileManager.getInstance().getBestOfFiles()){
+				alFiles.add(file);
 			}
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) {
 			// novelties playlist
 			alFiles = new ArrayList<File>(10);
-			ArrayList alNovelties = FileManager.getInstance().getGlobalNoveltiesPlaylist(
-					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-			// even unmounted files if required
-			if (alNovelties == null) {
-				return alFiles;
-			}
-			Iterator it = alNovelties.iterator();
-			while (it.hasNext()) {
-				alFiles.add((File) it.next());
+			for (File file:FileManager.getInstance().getGlobalNoveltiesPlaylist(
+					ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED))){
+				alFiles.add(file);
 			}
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
 			// bookmark playlist
-			alFiles = new ArrayList<File>(10);
-			Iterator it = Bookmarks.getInstance().getFiles().iterator();
-			while (it.hasNext()) {
-				alFiles.add((File) it.next());
-			}
+			alFiles = Bookmarks.getInstance().getFiles();
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
 			// new playlist
 			if (alFiles == null) {
@@ -297,12 +288,9 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 			}
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
 			// queue playlist clean data
-			alFiles = new ArrayList<File>(10);
 			if (!FIFO.isStopped()) {
-				ArrayList alQueue = (ArrayList) FIFO.getInstance().getFIFO().clone();
-				Iterator it = alQueue.iterator();
-				while (it.hasNext()) {
-					alFiles.add(((StackItem) it.next()).getFile());
+				for (StackItem item:FIFO.getInstance().getFIFO()){
+					alFiles.add(item.getFile());
 				}
 			}
 		}
@@ -587,13 +575,13 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 				if (sLine.charAt(0) == '.') {
 					sLine = sLine.substring(1, sLine.length());
 				}
-				StringBuffer sb = new StringBuffer(sLine);
+				StringBuilder sb = new StringBuilder(sLine);
 				// comment
 				if (sb.charAt(0) == '#') {
 					continue;
 				} else {
 					java.io.File fileTrack = null;
-					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl())
+					StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl())
 							.append(getDirectory().getRelativePath());
 					if (sLine.charAt(0) != '/') {
 						sb.insert(0, '/');
@@ -801,7 +789,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 */
 	protected void setParentDirectory(Directory parentDirectory) {
 		this.dParentDirectory = parentDirectory;
-		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getId());
+		setProperty(XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getID());
 	}
 
 	/**

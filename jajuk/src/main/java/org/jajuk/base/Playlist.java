@@ -49,7 +49,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	public Playlist(String sId, PlaylistFile plFile) {
 		super(sId, null);
 		this.alPlaylistFiles.add(plFile);
-		setProperty(XML_PLAYLIST_FILES, plFile.getId());
+		setProperty(XML_PLAYLIST_FILES, plFile.getID());
 	}
 
 	/*
@@ -65,7 +65,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		StringBuffer sbOut = new StringBuffer("Playlist[ID=" + sId + "]");   
+		StringBuilder sbOut = new StringBuilder("Playlist[ID=" + getID() + "]");   
 		for (int i = 0; i < alPlaylistFiles.size(); i++) {
 			sbOut.append('\n').append(alPlaylistFiles.get(i).toString());
 		}
@@ -88,7 +88,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	 */
 	public String getHumanValue(String sKey) {
 		if (XML_PLAYLIST_FILES.equals(sKey)) {
-			StringBuffer sbOut = new StringBuffer();
+			StringBuilder sbOut = new StringBuilder();
 			Iterator it = alPlaylistFiles.iterator();
 			while (it.hasNext()) {
 				PlaylistFile plf = (PlaylistFile) it.next();
@@ -122,7 +122,7 @@ public class Playlist extends LogicalItem implements Comparable {
 	public void addFile(PlaylistFile plFile) {
 		if (!alPlaylistFiles.contains(plFile)) {
 			alPlaylistFiles.add(plFile);
-			String sPlaylistFiles = plFile.getId();
+			String sPlaylistFiles = plFile.getID();
 			if (this.containsProperty(XML_PLAYLIST_FILES)) {
 				sPlaylistFiles += "," + getValue(XML_PLAYLIST_FILES); // add 
 				// previous
@@ -149,9 +149,9 @@ public class Playlist extends LogicalItem implements Comparable {
 	public void rebuildProperty() {
 		String sPlaylistFiles = ""; 
 		if (alPlaylistFiles.size() > 0) {
-			sPlaylistFiles += alPlaylistFiles.get(0).getId();
+			sPlaylistFiles += alPlaylistFiles.get(0).getID();
 			for (int i = 1; i < alPlaylistFiles.size(); i++) {
-				sPlaylistFiles += "," + alPlaylistFiles.get(i).getId(); 
+				sPlaylistFiles += "," + alPlaylistFiles.get(i).getID(); 
 			}
 		}
 		setProperty(XML_PLAYLIST_FILES, sPlaylistFiles);
@@ -182,17 +182,21 @@ public class Playlist extends LogicalItem implements Comparable {
 	 * @return comparaison result
 	 */
 	public int compareTo(Object o) {
+		//Perf: leave if items are equals
+		if (o.equals(this)){
+			return 0;
+		}
 		Playlist otherPlaylist = (Playlist) o;
 		// use id in compare because 2 different playlists can have the same
 		// name
-		String sAbs = getName() + getId();
-		String sOtherAbs = otherPlaylist.getName() + otherPlaylist.getId();
-		if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)) {
-			return (sAbs + getId()).compareToIgnoreCase(sOtherAbs
-					+ otherPlaylist.getId());
-		} else {
-			return sAbs.compareToIgnoreCase(sOtherAbs);
-		}
+		String sAbs = getName() + getID();
+		String sOtherAbs = otherPlaylist.getName() + otherPlaylist.getID();
+		//never return 0 here, because bidimap needs to distinct items
+        int comp = sAbs.compareToIgnoreCase(sOtherAbs);
+        if (comp == 0){
+        	return sAbs.compareTo(sOtherAbs);
+        }
+        return comp;
 	}
 
 	/**

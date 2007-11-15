@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
+import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -115,8 +116,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 							// inc rate by 1 if file is played at least
 							// INC_RATE_TIME secs
 							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-							FileManager.getInstance().setRateHasChanged(true);
-							// alert bestof playlist something changed
+							// Alert rating manager that something changed
+							RatingManager.setRateHasChanged(true);
 							bHasBeenRated = true;
 						}
 
@@ -175,8 +176,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 							// End of file: inc rate by 1 if file is fully
 							// played
 							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-							// alert best-of playlist something changed
-							FileManager.getInstance().setRateHasChanged(true);
+							// Alert rating manager that something changed
+							RatingManager.setRateHasChanged(true);
 							// if using crossfade, ignore end of file
 							if (!bFading) {
 								// Benefit from end of file to perform a full gc

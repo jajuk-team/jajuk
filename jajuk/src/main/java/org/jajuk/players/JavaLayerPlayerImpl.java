@@ -24,6 +24,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.WebRadio;
+import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
@@ -287,8 +288,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
 					&& (lTime >= INC_RATE_TIME * 1000 || (length != TO_THE_END && lTime > length))) {
 				// inc rate by 1 if file is played at least INC_RATE_TIME secs
 				fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-				// alert bestof playlist something changed
-				FileManager.getInstance().setRateHasChanged(true);
+				// Alert rating manager that something changed
+				RatingManager.setRateHasChanged(true);
 				bHasBeenRated = true;
 			}
 			// Cross-Fade test
@@ -341,10 +342,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
 		case BasicPlayerEvent.EOM:
 			// inc rate by 1 if file is fully played
 			fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-			FileManager.getInstance().setRateHasChanged(true); // alert bestof
-			// playlist
-			// something
-			// changed
+			// Alert rating manager that something changed
+			RatingManager.setRateHasChanged(true);
 			if (!bFading) { // if using crossfade, ignore end of file
 				System.gc();// Benefit from end of file to perform a full gc
 				FIFO.getInstance().finished();

@@ -203,7 +203,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		ArrayList<Directory> children = new ArrayList<Directory>(directory.getDirectories());
 		writer.write(addTabs(level) + Tag.openTag(XML_DIRECTORY) + NEWLINE);
 		String sName = Util.formatXML(directory.getName());
-		String sID = Util.formatXML(directory.getId());
+		String sID = Util.formatXML(directory.getID());
 		String sPath = Util.formatXML(directory.getAbsolutePath());
 		// Tag directory data.
 		writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sID) + NEWLINE);
@@ -221,7 +221,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagFile(org.jajuk.base.File file, int level) throws Exception {
-		String sFileID = file.getId();
+		String sFileID = file.getID();
 		String sName = Util.formatXML(file.getName());
 		String sPath = Util.formatXML(file.getAbsolutePath());
 		long lSize = file.getSize();
@@ -240,7 +240,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 			writer.write(Tag.openTag(XML_DIRECTORY) + NEWLINE);
 			String sName = Util.formatXML(directory.getName());
 			String sPath = Util.formatXML(directory.getAbsolutePath());
-			String sID = directory.getId();
+			String sID = directory.getID();
 
 			// Tag directory data.
 			writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
@@ -260,7 +260,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagDevice(Device device, int level) throws Exception {
-		String sID = device.getId();
+		String sID = device.getID();
 		writer.write(Tag.openTag(XML_DEVICE) + NEWLINE);
 		writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
 		writer
@@ -289,7 +289,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagTrack(Track track, int level) throws Exception {
-		String sTrackID = track.getId();
+		String sTrackID = track.getID();
 		String sTrackName = Util.formatXML(track.getName());
 		String sTrackStyle = Util.formatXML(track.getStyle().getName2());
 		String sTrackAuthor = Util.formatXML(track.getAuthor().getName2());
@@ -316,7 +316,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagAlbum(Album album, int level) throws Exception {
-		String sAlbumID = album.getId();
+		String sAlbumID = album.getID();
 		String sAlbumName = Util.formatXML(album.getName2());
 		String sStyleName = "";
 		String sAuthorName = "";
@@ -344,7 +344,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagAuthor(Author author, int level) throws Exception {
-		String sAuthorID = author.getId();
+		String sAuthorID = author.getID();
 		String sAuthorName = Util.formatXML(author.getName2());
 		writer.write(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
 		writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sAuthorID) + NEWLINE);
@@ -357,7 +357,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagYear(Year year, int level) throws Exception {
-		String sYearID = year.getId();
+		String sYearID = year.getID();
 		String sYearName = year.getName();
 		writer.write(addTabs(level) + Tag.openTag(XML_YEAR) + NEWLINE);
 		writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sYearID) + NEWLINE);
@@ -369,7 +369,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private void tagStyle(Style style, int level) throws Exception {
-		String sStyleID = style.getId();
+		String sStyleID = style.getID();
 		String sStyleName = Util.formatXML(style.getName2());
 		writer.write(addTabs(level) + Tag.openTag(XML_STYLE) + NEWLINE);
 		writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sStyleID) + NEWLINE);
@@ -384,7 +384,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 	}
 
 	private String addTabs(int num) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		while (i < num) {
 			sb.append('\t');

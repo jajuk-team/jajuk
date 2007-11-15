@@ -138,13 +138,13 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
 	 * @see dj.DigitalDJ#toXML()
 	 */
 	public String toXML() {
-		StringBuffer sb = new StringBuffer(2000);
+		StringBuilder sb = new StringBuilder(2000);
 		sb.append(toXMLGeneralParameters());
 		sb.append("\t<" + XML_DJ_PROPORTIONS + ">\n");  
 		for (Proportion proportion : proportions) {
 			String stylesDesc = ""; 
 			for (Style style : proportion.getStyles()) {
-				stylesDesc += style.getId() + ',';
+				stylesDesc += style.getID() + ',';
 			}
 			// remove trailing coma
 			stylesDesc = stylesDesc.substring(0, stylesDesc.length() - 1);

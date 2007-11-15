@@ -83,7 +83,8 @@ import ext.AutoCompleteDecorator;
 /**
  * ItemManager properties wizard for any jajuk item
  */
-public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
+public class PropertiesWizard extends JajukJDialog implements
+		ITechnicalStrings, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -128,15 +129,16 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		if (alItems.size() > 1) {
 			bMerged = true;
 		}
-		panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? Util.getLimitedString((alItems
-				.get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6"), bMerged);
+		panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? Util
+				.getLimitedString((alItems.get(0)).getDesc(), 50) : Messages
+				.getString("PropertiesWizard.6"), bMerged);
 		CellConstraints cc = new CellConstraints();
-		PanelBuilder builder = new PanelBuilder(new FormLayout("5dlu,p:grow,5dlu",
-				"1dlu,fill:p,5dlu,p,3dlu"));
+		PanelBuilder builder = new PanelBuilder(new FormLayout(
+				"5dlu,p:grow,5dlu", "1dlu,fill:p,5dlu,p,3dlu"));
 		builder.add(panel1, cc.xy(2, 2));
 		// OK/Cancel buttons
-		okc = new OKCancelPanel(PropertiesWizard.this, Messages.getString("Apply"), Messages
-				.getString("Close"));
+		okc = new OKCancelPanel(PropertiesWizard.this, Messages
+				.getString("Apply"), Messages.getString("Close"));
 		builder.add(okc, cc.xy(2, 4));
 		jpMain = builder.getPanel();
 		display();
@@ -175,31 +177,38 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		}
 		if (alItems1.size() > 0) {
 			if (alItems1.size() == 1) {
-				panel1 = new PropertiesPanel(alItems1, Util.getLimitedString(alItems1.get(0)
-						.getDesc(), 50), false);
+				panel1 = new PropertiesPanel(alItems1, Util.getLimitedString(
+						alItems1.get(0).getDesc(), 50), false);
 			} else {
-				panel1 = new PropertiesPanel(alItems1, Util.formatPropertyDesc(Messages
-						.getString("PropertiesWizard.6")), true);
+				panel1 = new PropertiesPanel(alItems1, Util
+						.formatPropertyDesc(Messages
+								.getString("PropertiesWizard.6")), true);
 			}
 			panel1.setBorder(BorderFactory.createEtchedBorder());
 		}
 		if (alItems2.size() > 0) {
 			if (alItems2.size() == 1) {
-				panel2 = new PropertiesPanel(alItems2, Util.getLimitedString(alItems2.get(0)
-						.getDesc(), 50), false);
+				panel2 = new PropertiesPanel(alItems2, Util.getLimitedString(
+						alItems2.get(0).getDesc(), 50), false);
 			} else {
-				panel2 = new PropertiesPanel(alItems2, Util.formatPropertyDesc(alItems2.size()
-						+ " " + Messages.getString("Property_tracks")), true);
+				panel2 = new PropertiesPanel(alItems2, Util
+						.formatPropertyDesc(alItems2.size() + " "
+								+ Messages.getString("Property_tracks")), true);
 			}
 			panel2.setBorder(BorderFactory.createEtchedBorder());
 		}
 		PanelBuilder builder = new PanelBuilder(new FormLayout(
-				"2dlu,p:grow(0.5),5dlu,p:grow(0.5),2dlu", "1dlu,fill:p,5dlu,p,3dlu"));
+				"2dlu,p:grow(0.5),5dlu,p:grow(0.5),2dlu",
+				"1dlu,fill:p,5dlu,p,3dlu"));
 		CellConstraints cc = new CellConstraints();
 		builder.add(panel1, cc.xy(2, 2));
-		builder.add(panel2, cc.xy(4, 2));
+		// panel2 can be null for a void directory for instance
+		if (panel2 != null) {
+			builder.add(panel2, cc.xy(4, 2));
+		}
 		// OK/Cancel buttons
-		okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages.getString("Close"));
+		okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages
+				.getString("Close"));
 		builder.add(okc, cc.xy(2, 4));
 		jpMain = builder.getPanel();
 		display();
@@ -243,7 +252,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						// clear tables selection
 						ObservationManager.notify(new Event(
 								EventSubject.EVENT_TABLE_CLEAR_SELECTION));
-						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+						ObservationManager.notify(new Event(
+								EventSubject.EVENT_DEVICE_REFRESH));
 					}
 				}
 			}.start();
@@ -258,11 +268,19 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 	 */
 	public boolean isLinkable(PropertyMetaInformation meta) {
 		String sKey = meta.getName();
-		return sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK) || sKey.equals(XML_DEVICE)
-				|| sKey.equals(XML_TRACK) || sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR)
-				|| sKey.equals(XML_YEAR) || sKey.equals(XML_STYLE) || sKey.equals(XML_DIRECTORY)
-				|| sKey.equals(XML_FILE) || sKey.equals(XML_PLAYLIST)
-				|| sKey.equals(XML_PLAYLIST_FILE) || sKey.equals(XML_FILES)
+		return sKey.equals(XML_DEVICE)
+				|| sKey.equals(XML_TRACK)
+				|| sKey.equals(XML_DEVICE)
+				|| sKey.equals(XML_TRACK)
+				|| sKey.equals(XML_ALBUM)
+				|| sKey.equals(XML_AUTHOR)
+				|| sKey.equals(XML_YEAR)
+				|| sKey.equals(XML_STYLE)
+				|| sKey.equals(XML_DIRECTORY)
+				|| sKey.equals(XML_FILE)
+				|| sKey.equals(XML_PLAYLIST)
+				|| sKey.equals(XML_PLAYLIST_FILE)
+				|| sKey.equals(XML_FILES)
 				|| sKey.equals(XML_PLAYLIST_FILES)
 				// avoid confusing between music types and device types
 				|| (sKey.equals(XML_TYPE) && !(alItems.get(0) instanceof Device));
@@ -313,8 +331,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			Item pa = alItems.get(0);
 			// first item Process properties to display
 			alToDisplay = new ArrayList<PropertyMetaInformation>(10);
-			for (PropertyMetaInformation meta : ItemManager.getItemManager(pa.getClass())
-					.getProperties()) {
+			for (PropertyMetaInformation meta : ItemManager.getItemManager(
+					pa.getClass()).getProperties()) {
 				// add only editable and non constructor properties
 				if (meta.isVisible() && (bMerged ? meta.isMergeable() : true)) {
 					// if more than one item to display, show only mergeable
@@ -370,14 +388,15 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					// (custom properties are always editable, even for offline
 					// items)
 					bEditable = bEditable
-							&& !(pa instanceof Directory && !((Directory) pa).getDevice()
-									.isMounted())
+							&& !(pa instanceof Directory && !((Directory) pa)
+									.getDevice().isMounted())
 							// item is not an unmounted dir
 							&& !(pa instanceof File
 							// check item is not an unmounted file
 							&& !((File) pa).isReady())
 							// item is not an unmounted playlist file
-							&& !(pa instanceof PlaylistFile && !((PlaylistFile) pa).isReady());
+							&& !(pa instanceof PlaylistFile && !((PlaylistFile) pa)
+									.isReady());
 				}
 				if (bEditable) {
 					iEditable++;
@@ -391,7 +410,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						});
 						if (bAllEquals) {
 							// If several items, take first value found
-							jdp.setDate(new Date(pa.getDateValue(meta.getName()).getTime()));
+							jdp.setDate(new Date(pa
+									.getDateValue(meta.getName()).getTime()));
 						} else {
 							jdp.setDate(new Date(System.currentTimeMillis()));
 						}
@@ -411,7 +431,9 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						// if some elements are different, set opposite value of
 						// first item to allow change
 						else {
-							jcb.setSelected(!pa.getBooleanValue(meta.getName()));
+							jcb
+									.setSelected(!pa.getBooleanValue(meta
+											.getName()));
 						}
 						widgets[index][1] = jcb;
 					} else if (meta.getType().equals(Double.class)
@@ -431,14 +453,18 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								Object oValue = null;
 								try {
 									if (meta.getType().equals(Long.class)) {
-										oValue = Integer.parseInt(jtfValue.getText());
-									} else if (meta.getType().equals(Double.class)) {
-										oValue = Double.parseDouble(jtfValue.getText());
+										oValue = Integer.parseInt(jtfValue
+												.getText());
+									} else if (meta.getType().equals(
+											Double.class)) {
+										oValue = Double.parseDouble(jtfValue
+												.getText());
 									}
 								} catch (Exception e) {
 									Log.error(137, meta.getName(), null);
 									jtfValue.setText("");
-									Messages.showErrorMessage(137, meta.getName());
+									Messages.showErrorMessage(137, meta
+											.getName());
 									hmPropertyToChange.remove(meta);
 									return;
 								}
@@ -454,7 +480,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					} else if (meta.getType().equals(String.class)
 					// for styles
 							&& meta.getName().equals(XML_STYLE)) {
-						Vector<String> styles = StyleManager.getInstance().getStylesList();
+						Vector<String> styles = StyleManager.getInstance()
+								.getStylesList();
 						final JComboBox jcb = new JComboBox(styles);
 						jcb.setEditable(true);
 						AutoCompleteDecorator.decorate(jcb);
@@ -478,7 +505,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						jcb.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								Object oValue = jcb.getSelectedItem();
-								if (oValue == null || ((String) oValue).trim().length() == 0) {
+								if (oValue == null
+										|| ((String) oValue).trim().length() == 0) {
 									// can occur during ui interaction
 									return;
 								}
@@ -486,7 +514,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								if (((String) oValue).length() < 1) {
 									jcb.setSelectedIndex(-1);
 									Log.error(137, meta.getName(), null);
-									Messages.showErrorMessage(137, meta.getName());
+									Messages.showErrorMessage(137, meta
+											.getName());
 									return;
 								}
 								hmPropertyToChange.put(meta, oValue);
@@ -520,7 +549,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						jcb.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								Object oValue = jcb.getSelectedItem();
-								if (oValue == null || ((String) oValue).trim().length() == 0) {
+								if (oValue == null
+										|| ((String) oValue).trim().length() == 0) {
 									// can occur during ui interaction
 									return;
 								}
@@ -528,7 +558,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								if (((String) oValue).length() < 1) {
 									jcb.setSelectedIndex(-1);
 									Log.error(137, meta.getName(), null);
-									Messages.showErrorMessage(137, meta.getName());
+									Messages.showErrorMessage(137, meta
+											.getName());
 									return;
 								}
 								hmPropertyToChange.put(meta, oValue);
@@ -557,7 +588,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						String s = pa.getHumanValue(meta.getName());
 						if (s.indexOf(",") != -1) {
 							String[] sTab = s.split(",");
-							StringBuffer sb = new StringBuffer();
+							StringBuilder sb = new StringBuilder();
 							sb.append("<html>");
 							for (int i = 0; i < sTab.length; i++) {
 								sb.append("<p>").append(sTab[i]).append("</p>");
@@ -577,7 +608,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					JButton jbLink = new JButton(IconLoader.ICON_PROPERTIES);
 					jbLink.addActionListener(this);
 					jbLink.setActionCommand("link");
-					jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));
+					jbLink.setToolTipText(Messages
+							.getString("PropertiesWizard.12"));
 					widgets[index][2] = jbLink;
 				}
 				index++;
@@ -590,14 +622,14 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			CellConstraints cc = new CellConstraints();
 			// construct properties panel
 			// Add title
-			JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
-					+ "</b></html>");
+			JLabel jlName = new JLabel("<html><b>"
+					+ Messages.getString("PropertiesWizard.1") + "</b></html>");
 			jlName.setToolTipText(Messages.getString("PropertiesWizard.1"));
-			JLabel jlValue = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.2")
-					+ "</b></html>");
+			JLabel jlValue = new JLabel("<html><b>"
+					+ Messages.getString("PropertiesWizard.2") + "</b></html>");
 			jlValue.setToolTipText(Messages.getString("PropertiesWizard.2"));
-			JLabel jlLink = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.4")
-					+ "</b></html>");
+			JLabel jlLink = new JLabel("<html><b>"
+					+ Messages.getString("PropertiesWizard.4") + "</b></html>");
 			jlLink.setToolTipText(Messages.getString("PropertiesWizard.4"));
 
 			builder.add(jlName, cc.xy(2, 2));
@@ -632,12 +664,13 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 		public void actionPerformed(ActionEvent ae) {
 			// Link
 			if (ae.getActionCommand().equals("link")) {
-				PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent) ae
-						.getSource()));
+				PropertyMetaInformation meta = alToDisplay
+						.get(getWidgetIndex((JComponent) ae.getSource()));
 				String sProperty = meta.getName();
 				if (XML_FILES.equals(sProperty)) {
 					Track track = (Track) alItems.get(0);
-					ArrayList<Item> alFiles = new ArrayList<Item>(track.getFiles().size());
+					ArrayList<Item> alFiles = new ArrayList<Item>(track
+							.getFiles().size());
 					alFiles.addAll(track.getFiles());
 					// show properties window for this item
 					new PropertiesWizard(alFiles);
@@ -648,7 +681,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					ArrayList<Item> alItems = new ArrayList<Item>(3);
 					while (st.hasMoreTokens()) {
 						String sPlf = st.nextToken();
-						Item pa = PlaylistFileManager.getInstance().getPlaylistFileByID(sPlf);
+						Item pa = PlaylistFileManager.getInstance()
+								.getPlaylistFileByID(sPlf);
 						if (pa != null) {
 							alItems.add(pa);
 						}
@@ -658,7 +692,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				} else {
 					String sValue = alItems.get(0).getStringValue(sProperty);
 					// can be only an ID
-					Item pa = ItemManager.getItemManager(sProperty).getItemByID(sValue);
+					Item pa = ItemManager.getItemManager(sProperty)
+							.getItemByID(sValue);
 					if (pa != null) {
 						ArrayList<Item> alItems = new ArrayList<Item>(1);
 						alItems.add(pa);
@@ -677,7 +712,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 			Object oValue = null;
 			Item newItem = null;
 			// list of really changed tracks (for message)
-			ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
+			ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(
+					2);
 			// none change, leave
 			if (hmPropertyToChange.keySet().size() == 0) {
 				return;
@@ -693,35 +729,43 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 					alItemsToCheck.add(item);
 				}
 			}
-			ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
+			ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck
+					.size());
 			// details for errors
 			String sDetails = "";
-			// Now we have all items to concidere, write tags for each
+			// Now we have all items to considere, write tags for each
 			// property to change
 			for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-				ArrayList<Item> alIntermediate = new ArrayList<Item>(alItemsToCheck.size());
+				ArrayList<Item> alIntermediate = new ArrayList<Item>(
+						alItemsToCheck.size());
 				for (Item item : alItemsToCheck) {
 					// New value
 					oValue = hmPropertyToChange.get(meta);
-					// Check it is not null for non custom properties
-					if (oValue == null || (oValue.toString().trim().length() == 0)
-							&& !meta.isCustom()) {
-						Log.error(137, meta.getName(), null);
-						Messages.showErrorMessage(137, meta.getName());
+					// Check it is not null for non custom properties. Note that
+					// we also allow void values for comments
+					if (oValue == null
+							|| (oValue.toString().trim().length() == 0)
+							&& !(meta.isCustom() || meta.getName().equals(
+									XML_TRACK_COMMENT))) {
+						Log.error(137, '{'+meta.getName()+'}', null);
+						Messages.showErrorMessage(137, '{'+meta.getName()+'}');
 						return;
 					}
 					// Old value
 					String sOldValue = item.getHumanValue(meta.getName());
-					if ((sOldValue != null && !Util.format(oValue, meta).equals(sOldValue))) {
+					if ((sOldValue != null && !Util.format(oValue, meta)
+							.equals(sOldValue))) {
 						try {
 							// if we change track properties for only one file
-							newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
+							newItem = ItemManager.changeItem(item, meta
+									.getName(), oValue, filter);
 						}
 						// none accessible file for this track, for this error,
 						// we display an error and leave completely
 						catch (NoneAccessibleFileException none) {
 							none.printStackTrace();
-							Messages.showErrorMessage(none.getCode(), item.getHumanValue(XML_NAME));
+							Messages.showErrorMessage(none.getCode(), item
+									.getHumanValue(XML_NAME));
 							// close window to avoid reseting all properties to
 							// old values
 							dispose();
@@ -744,10 +788,12 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 								if (je.getCause() != null) {
 									sDetails += "\nCaused by:" + je.getCause();
 									if (je.getCause().getCause() != null) {
-										sDetails += "\nCaused by:" + je.getCause().getCause();
+										sDetails += "\nCaused by:"
+												+ je.getCause().getCause();
 										if (je.getCause().getCause().getCause() != null) {
 											sDetails += "\nCaused by:"
-													+ je.getCause().getCause().getCause();
+													+ je.getCause().getCause()
+															.getCause();
 										}
 									}
 								}
@@ -771,7 +817,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 						// if individual item, change title in case of
 						// constructor element change
 						if (!bMerged) {
-							jlDesc.setText(Util.formatPropertyDesc(newItem.getDesc()));
+							jlDesc.setText(Util.formatPropertyDesc(newItem
+									.getDesc()));
 						}
 						// note this property have been changed
 						if (!alChanged.contains(meta)) {
@@ -787,7 +834,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 				 * and will no more contain unmounted files
 				 */
 				if (!isMonoFile() && TrackManager.getInstance().isChangePbm()) {
-					Messages.showWarningMessage(Messages.getString("Error.138"));
+					Messages
+							.showWarningMessage(Messages.getString("Error.138"));
 				}
 			}
 			// display a message for file write issues
@@ -808,15 +856,17 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 
 			// display a message if user changed at least one property
 			if (alChanged.size() > 0) {
-				StringBuffer sbChanged = new StringBuffer();
+				StringBuilder sbChanged = new StringBuilder();
 				sbChanged.append("{");
 				for (PropertyMetaInformation meta : alChanged) {
 					sbChanged.append(meta.getHumanName()).append(' ');
 				}
 				sbChanged.append('}');
 				InformationJPanel.getInstance().setMessage(
-						alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
-								+ sbChanged.toString(), InformationJPanel.INFORMATIVE);
+						alChanged.size() + " "
+								+ Messages.getString("PropertiesWizard.10")
+								+ ": " + sbChanged.toString(),
+						InformationJPanel.INFORMATIVE);
 			}
 			Util.stopWaiting();
 		}
@@ -848,6 +898,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 	 */
 	private boolean isMonoFile() {
 		// mono file mode for files and directories
-		return alItems.get(0) instanceof File || alItems.get(0) instanceof Directory;
+		return alItems.get(0) instanceof File
+				|| alItems.get(0) instanceof Directory;
 	}
 }

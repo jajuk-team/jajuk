@@ -387,7 +387,7 @@ public class History extends DefaultHandler implements ITechnicalStrings,
 				org.jajuk.base.File fNew = (org.jajuk.base.File) properties
 						.get(DETAIL_NEW);
 				// change id in history
-				changeID(fileOld.getId(), fNew.getId());
+				changeID(fileOld.getID(), fNew.getID());
 			}
 		} catch (Exception e) {
 			Log.error(e);

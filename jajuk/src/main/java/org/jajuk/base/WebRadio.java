@@ -24,7 +24,7 @@ package org.jajuk.base;
 /**
  * A web Radio
  */
-public class WebRadio implements Comparable {
+public class WebRadio implements Comparable<WebRadio> {
 
 	private String name;
 
@@ -50,12 +50,12 @@ public class WebRadio implements Comparable {
 		return name.equals(((WebRadio) other).getName());
 	}
 
-	public int compareTo(Object other) {
+	public int compareTo(WebRadio other) {
 		// make null url web radio to appear first (useful for the wizard)
 		if (getUrl() == null) {
 			return -1;
 		}
-		return name.compareTo(((WebRadio) other).getName());
+		return name.compareTo((other).getName());
 	}
 
 	public String toString() {

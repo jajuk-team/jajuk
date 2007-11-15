@@ -129,7 +129,7 @@ public class PlaylistManager extends ItemManager {
 			pl.removePlaylistFile(plf);
 			plf.getDirectory().removePlaylistFile(plf);
 			if (pl.getPlaylistFiles().size() == 0) {
-				removeItem(pl.getId());
+				removeItem(pl.getID());
 			}
 		}
 	}
@@ -168,14 +168,14 @@ public class PlaylistManager extends ItemManager {
 								continue;
 							}
 							PlaylistFileManager.getInstance().removeItem(
-									plf.getId());
+									plf.getID());
 							removePlaylistFile(plf);
 						} else {
 							bUnmountedItems = true;
 						}
 					}
 					if (pl.getPlaylistFiles().size() == 0) {
-						removeItem(pl.getId());
+						removeItem(pl.getID());
 					}
 					if (bUnmountedItems) {
 						Messages.showErrorMessage(138); 
@@ -195,13 +195,13 @@ public class PlaylistManager extends ItemManager {
 	protected void refreshPlaylist(PlaylistFile plf) {
 		Playlist pl = getPlayList(plf);
 		// check if a change really occured
-		if (pl.getId().equals(plf.getHashcode())) {
+		if (pl.getID().equals(plf.getHashcode())) {
 			return;
 		}
 		pl.removePlaylistFile(plf);
 		// if no more mapped playlist files, remove this playlist
 		if (pl.getPlaylistFiles().size() == 0) {
-			removeItem(pl.getId());
+			removeItem(pl.getID());
 		}
 		// Register the new playlist
 		registerPlaylist(plf);
@@ -222,7 +222,7 @@ public class PlaylistManager extends ItemManager {
 				while (itPlaylistFiles.hasNext()) {
 					PlaylistFile plf = (PlaylistFile) itPlaylistFiles.next();
 					if (PlaylistFileManager.getInstance().getPlaylistFileByID(
-							plf.getId()) == null) {
+							plf.getID()) == null) {
 						itPlaylistFiles.remove();
 					}
 				}

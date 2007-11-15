@@ -247,7 +247,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 			if (file != null) {
 				// We use trailing pattern to allow scripting like MSN plugins to
 				// detect jajuk frames and extract current track
-				StringBuffer sb = new StringBuffer("~");
+				StringBuilder sb = new StringBuilder("~");
 				sb.append(file.getTrack().getName());
 				if (!file.getTrack().getAuthor().isUnknown()) {
 					sb.append(" (" + file.getTrack().getAuthor().getName2() + ')');

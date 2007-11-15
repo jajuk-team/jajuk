@@ -78,7 +78,7 @@ public class HistoryItem {
 		if (file == null) {
 			return null;
 		}
-		StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor()
+		StringBuilder sbAuthor = new StringBuilder(file.getTrack().getAuthor()
 				.getName2());
 		String sDate = History.getInstance().getDateFormatter().format(
 				new Date(getDate())); 

@@ -20,6 +20,14 @@
 
 package org.jajuk.ui.thumbnails;
 
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.io.File;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
@@ -32,14 +40,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import java.awt.Color;
-import java.awt.MediaTracker;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import com.sun.java.help.impl.SwingWorker;
 import com.vlsolutions.swing.docking.ShadowBorder;
@@ -85,18 +85,20 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
 					URL remote = new URL(album.getCoverURL());
 					// Download image and store file reference (to generate the
 					// popup thumb for ie)
-					fCover = DownloadManager.downloadCover(remote, Long.toString(System
-							.currentTimeMillis()));
-					fThumb = Util.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis()
-							+ '.' + Util.getExtension(fCover));
-					ImageIcon downloadedImage = new ImageIcon(fCover.getAbsolutePath());
-					if (downloadedImage.getImageLoadStatus() != MediaTracker.COMPLETE) {
-						Log.debug("Image " + fCover.getAbsolutePath() + " Loading status: "
-								+ downloadedImage.getImageLoadStatus());
-					}
+					fCover = DownloadManager.downloadCover(remote, Long
+							.toString(System.currentTimeMillis()));
+					fThumb = Util.getConfFileByPath(FILE_CACHE + "/"
+							+ System.currentTimeMillis() + '.'
+							+ Util.getExtension(fCover));
+					// Create the image using Toolkit and not ImageIO API to be able to
+					// flush all the image data
+					ImageIcon downloadedImage = new ImageIcon(Toolkit
+							.getDefaultToolkit().getImage(
+									fCover.getAbsolutePath()));
 					ii = Util.getScaledImage(downloadedImage, 100);
 					// Free images memory
 					downloadedImage.getImage().flush();
+					ii.getImage().flush();
 				} catch (Exception e) {
 					Log.error(e);
 				}
@@ -114,11 +116,16 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
 				JLabel jlTitle;
 				if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
 					// Album known in collection, display its name in bold
-					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15),IconLoader.ICON_ALBUM,JLabel.CENTER);
-					jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+					jlTitle = new JLabel(Util.getLimitedString(
+							album.getTitle(), 15), IconLoader.ICON_ALBUM,
+							JLabel.CENTER);
+					jlTitle.setFont(FontManager.getInstance().getFont(
+							JajukFont.BOLD));
 				} else {
-					jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15));
-					jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+					jlTitle = new JLabel(Util.getLimitedString(
+							album.getTitle(), 15));
+					jlTitle.setFont(FontManager.getInstance().getFont(
+							JajukFont.PLAIN));
 				}
 				jlTitle.setToolTipText(album.getTitle());
 				add(jlTitle);
@@ -134,7 +141,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
 					jmenu.remove(jmiProperties);
 				}
 				// Set URL to open
-				jmiOpenLastFMSite.putClientProperty(DETAIL_CONTENT, album.getUrl());
+				jmiOpenLastFMSite.putClientProperty(DETAIL_CONTENT, album
+						.getUrl());
 
 			}
 
@@ -149,7 +157,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
 	 */
 	@Override
 	public Item getItem() {
-		Album item = AlbumManager.getInstance().getAlbumByName(album.getTitle());
+		Album item = AlbumManager.getInstance()
+				.getAlbumByName(album.getTitle());
 		if (item != null) {
 			return item;
 		}
@@ -165,24 +174,28 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
 	String getDescription() {
 		// populate album detail
 		if (album.getTracks() == null) {
-			AudioScrobblerAlbum album = AudioScrobblerService.getInstance().getAlbum(
-					this.album.getArtist(), this.album.getTitle());
+			AudioScrobblerAlbum album = AudioScrobblerService.getInstance()
+					.getAlbum(this.album.getArtist(), this.album.getTitle());
 			if (album != null) {
 				this.album = album;
 			}
 		}
-		Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
-		Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
-		String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
-				+ Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
-				+ XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>"
+		Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme()
+				.getUltraLightColor();
+		Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme()
+				.getForegroundColor();
+		String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor)
+				+ "'><TABLE color='" + Util.getHTMLColor(fgcolor)
+				+ "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
+				+ '?' + album.getUrl() + "'>" + album.getTitle() + "</a>"
 				+ "</b><br><br>";
 		// display cover
 		sOut += "<img src='" + album.getCoverURL() + "'><br>";
 		// Display author as global value only if it is a single author album
 		// We use file://<item type>?<item id> as HTML hyperlink format
-		sOut += "<br>" + Messages.getString("Property_author") + " : " + "<a href='file://"
-				+ XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
+		sOut += "<br>" + Messages.getString("Property_author") + " : "
+				+ "<a href='file://" + XML_URL + '?' + album.getArtistUrl()
+				+ "'>" + album.getArtist() + "</a>";
 		// Display year if available
 		String year = album.getYear();
 		if (!Util.isVoid(year)) {
@@ -192,8 +205,9 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
 		// Show each track detail if available
 		if (album.getTracks() != null) {
 			for (AudioScrobblerTrack track : album.getTracks()) {
-				sOut += "<b>" + "<a href='file://" + XML_URL + '?' + track.getUrl() + "'>"
-						+ track.getTitle() + "</a></b><br>";
+				sOut += "<b>" + "<a href='file://" + XML_URL + '?'
+						+ track.getUrl() + "'>" + track.getTitle()
+						+ "</a></b><br>";
 			}
 		}
 		sOut += "</TD></TR></TABLE></html>";

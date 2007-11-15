@@ -27,8 +27,9 @@
 package ext;
 
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UrlImageIcon;
+import org.jajuk.util.Util;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -107,12 +108,14 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 	 *            <b>NOTE:</b> Use only one flag for: messages / percent (one
 	 *            or the other, NOT both).
 	 */
-	public JSplash(URL url, boolean progress, boolean messages,
-			boolean percent, String copyrightString, String versionString,
-			Font versionStringFont, Color versionStringColor) {
+	public JSplash(URL url, boolean progress, boolean messages, boolean percent,
+			String copyrightString, String versionString, Font versionStringFont,
+			Color versionStringColor) {
 		super();
-		setTitle(Messages.getString("JajukWindow.17")); 
-		setIconImage(IconLoader.ICON_LOGO.getImage());
+		setTitle(Messages.getString("JajukWindow.17"));
+		//Do not use IconLoader class here to avoid loading all icons now
+		setIconImage(new UrlImageIcon(Util.getResource("icons/64x64/jajuk-icon_64x64.png"))
+				.getImage());
 		setUndecorated(true);
 
 		m_progressBar = progress;
@@ -121,7 +124,6 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 
 		// build a panel with a black line for border,
 		// and set it as the content pane
-		//
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -129,8 +131,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 
 		// build a label and set it's icon
 		//
-		JSplashLabel label = new JSplashLabel(url, copyrightString,
-				versionString, versionStringFont, versionStringColor);
+		JSplashLabel label = new JSplashLabel(url, copyrightString, versionString,
+				versionStringFont, versionStringColor);
 
 		// build a progress bar
 		//
@@ -144,13 +146,13 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 			}
 
 			if (m_progressBarMessages && !m_progressBarPercent) {
-				m_progress.setString(""); 
+				m_progress.setString("");
 			}
 
 			m_progress.setMaximum(100);
 			m_progress.setMinimum(0);
 			m_progress.setValue(0);
-			m_progress.setFont(new Font("verdana", Font.BOLD, 15)); 
+			m_progress.setFont(new Font("verdana", Font.BOLD, 15));
 		}
 
 		// add the components to the panel

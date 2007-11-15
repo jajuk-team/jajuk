@@ -178,7 +178,7 @@ public class Submitter {
 	 * @return A heidecimal String representing the byte array.
 	 */
 	private static String hexEncode(byte[] array) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < array.length; ++i) {
 			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));

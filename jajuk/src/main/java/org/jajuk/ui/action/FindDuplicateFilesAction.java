@@ -57,7 +57,7 @@ public class FindDuplicateFilesAction extends ActionBase {
 	}
 
 	private String convertToString(List<File> duplicateFilesList) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (File file : duplicateFilesList) {
 			buffer.append('\t');
 			buffer.append(file.getName());

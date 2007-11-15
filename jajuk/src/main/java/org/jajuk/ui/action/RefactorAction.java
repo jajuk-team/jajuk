@@ -20,6 +20,11 @@
 
 package org.jajuk.ui.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -36,36 +41,36 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JOptionPane;
-
 public class RefactorAction implements ITechnicalStrings {
 
-	ArrayList<File> alFiles;
-
-	String filename;
+	private ArrayList<File> alFiles;
 
 	public static boolean bStopAll = false;
 
-	static String sFS = java.io.File.separator;
+	private static String sFS = java.io.File.separator;
 
-	public RefactorAction(ArrayList<File> al) {
+	/** [PERF] Stores directory to be refreshed to avoid rescanning them twice */
+	private List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
+
+	/**
+	 * 
+	 * @param pFiles
+	 *            files to be reorganized (can be from different directories)
+	 */
+	public RefactorAction(ArrayList<File> pFiles) {
 		// check the directory user selected contains some files
-		if (al.size() == 0) {
+		if (pFiles.size() == 0) {
 			Messages.showErrorMessage(18);
 			return;
 		}
-		alFiles = al;
-		Iterator it = alFiles.iterator();
+		alFiles = pFiles;
 		String sFiles = "";
-		while (it.hasNext()) {
-			File f = (File) it.next();
+		for (File f : alFiles) {
 			sFiles += f.getName() + "\n";
 		}
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
-			int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files")
+			int iResu = Messages.getChoice(Messages
+					.getString("Confirmation_refactor_files")
 					+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
 					JOptionPane.INFORMATION_MESSAGE);
 			if (iResu != JOptionPane.YES_OPTION) {
@@ -81,22 +86,25 @@ public class RefactorAction implements ITechnicalStrings {
 			public void run() {
 				Util.waiting();
 				refactor();
-				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+				ObservationManager.notify(new Event(
+						EventSubject.EVENT_DEVICE_REFRESH));
 			}
 		}.start();
 		Util.stopWaiting();
 	}
 
+	/**
+	 * Refactoring itself
+	 */
 	public void refactor() {
 		boolean bOKToOverwrite = false;
-		Iterator it = alFiles.iterator();
 		String sErrors = "";
-		while (it.hasNext()) {
-			File fCurrent = (File) it.next();
+		String filename;
+		for (File fCurrent : alFiles) {
 			Track tCurrent = fCurrent.getTrack();
 			try {
 				filename = Util.applyPattern(fCurrent, ConfigurationManager
-						.getProperty(CONF_REFACTOR_PATTERN), true);
+						.getProperty(CONF_REFACTOR_PATTERN), true, true);
 			} catch (JajukException je) {
 				sErrors += je.getMessage() + '\n';
 				continue;
@@ -104,19 +112,16 @@ public class RefactorAction implements ITechnicalStrings {
 
 			filename += "." + tCurrent.getType().getExtension();
 			filename = filename.replace("/", sFS);
-
-			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
-			String sRoot = fCurrent.getDevice().getFio().getPath();
-
-			// Check if directories exists, and if not create them
-			String sPathname = getCheckedPath(sRoot, filename);
+			String sPathname = fCurrent.getDevice().getFio().getPath() + sFS
+					+ filename;
 			java.io.File fNew = new java.io.File(sPathname);
 
-			// Confirm if dest dir already exist
+			// Confirm if destination dir already exist
 			if (fNew.getParentFile().exists() && !bOKToOverwrite) {
 				int resu = Messages.getChoice(Messages.getString("Warning.5"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE);
 				if (resu == JOptionPane.NO_OPTION) {
 					continue;
 				} else if (resu == JOptionPane.CANCEL_OPTION) {
@@ -132,109 +137,96 @@ public class RefactorAction implements ITechnicalStrings {
 			// for future deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
 			if (fCover != null) {
-				fCover.renameTo(new java.io.File(fNew.getParent() + sFS + fCover.getName()));
+				fCover.renameTo(new java.io.File(fNew.getParent() + sFS
+						+ fCover.getName()));
 			}
-			boolean bState = false;
 			// Rename audio files
+			boolean bRenameSuccess = false;
 
 			// Test if source and target files are equals
 			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
-				sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.160")
-						+ ")\n";
+				sErrors += fCurrent.getAbsolutePath() + " ("
+						+ Messages.getString("Error.160") + ")\n";
 			} else {
 				if (fNew.getParentFile().canWrite()) {
-					bState = fOld.renameTo(fNew);
-					if (!bState) {
+					bRenameSuccess = fOld.renameTo(fNew);
+					if (!bRenameSuccess) {
 						sErrors += fCurrent.getAbsolutePath() + " ("
 								+ Messages.getString("Error.154") + ")\n";
 					}
-					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() + "}} Success ? "
-							+ bState);
+					Log.debug("[Refactoring] {{" + fNew.getAbsolutePath()
+							+ "}} Success ? " + bRenameSuccess);
 
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.161")
-							+ ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.161") + ")\n";
 				}
 			}
 
 			// Register and scans new directories
-			String sFirstDir = "";
-			String sTest[] = sPathname.split(sRoot.replace("\\", "\\\\"));
+			String sFirstDir = null;
+			String sTest[] = sPathname.split(fCurrent.getDevice().getFio()
+					.getPath().replace("\\", "\\\\"));
 			sFirstDir = sTest[1].split("\\" + sFS)[1];
 
-			Directory dir = DirectoryManager.getInstance()
-					.registerDirectory(
-							sFirstDir,
-							DirectoryManager.getInstance().getDirectoryForIO(
-									fCurrent.getDevice().getFio()), fCurrent.getDevice());
+			Directory dir = DirectoryManager.getInstance().registerDirectory(
+					sFirstDir,
+					DirectoryManager.getInstance().getDirectoryForIO(
+							fCurrent.getDevice().getFio()),
+					fCurrent.getDevice());
 
-			registerFile(dir);
+			// Ask to refresh this directory afterward
+			if (!toBeRefreshed.contains(dir)) {
+				toBeRefreshed.add(dir);
+			}
 
 			// See if old directory contain other files and move them
 			java.io.File dOld = fOld.getParentFile();
-			java.io.File[] list = dOld.listFiles(new JajukFileFilter(JajukFileFilter.NotAudioFilter
-					.getInstance()));
+			java.io.File[] list = dOld.listFiles(new JajukFileFilter(
+					JajukFileFilter.NotAudioFilter.getInstance()));
 			if (list == null) {
-				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
+				DirectoryManager.getInstance()
+						.removeDirectory(fOld.getParent());
 			} else if (list.length != 0) {
 				for (java.io.File f : list) {
-					f.renameTo(new java.io.File(fNew.getParent() + sFS + f.getName()));
+					f.renameTo(new java.io.File(fNew.getParent() + sFS
+							+ f.getName()));
 				}
 			} else if (list.length == 0) {
 				if (dOld.delete()) {
-					DirectoryManager.getInstance().removeDirectory(fOld.getParent());
+					DirectoryManager.getInstance().removeDirectory(
+							fOld.getParent());
 
 				}
 			}
-			fCurrent.getDevice().cleanRemovedFiles();
 
 			InformationJPanel.getInstance().setMessage(
 					Messages.getString("RefactorWizard.0") + sPathname, 0);
 		}
-
+		// Refresh and cleanup required directories
+		for (Directory dir : toBeRefreshed) {
+			registerDirectory(dir);
+			dir.getDevice().cleanRemovedFiles();
+		}
 		if (!sErrors.equals("")) {
 			Messages.showDetailedErrorMessage(147, "", sErrors);
 		} else {
-			InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+			InformationJPanel.getInstance().setMessage(
+					Messages.getString("Success"),
 					InformationJPanel.INFORMATIVE);
 		}
 
 	}
 
-	public String getCheckedPath(String sRoot, String sPathname) {
-
-		java.io.File fioRoot = new java.io.File(sRoot);
-		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(
-				JajukFileFilter.DirectoryFilter.getInstance()));
-		String[] sPaths = sPathname.split("\\" + sFS);
-		String sReturn = sRoot;
-		for (int i = 0; i < sPaths.length - 1; i++) {
-			String sPath = sPaths[i];
-			boolean bool = false;
-			for (java.io.File fio : fioList) {
-				String s = fio.getPath();
-				if (s.equalsIgnoreCase(sReturn + sFS + sPath)) {
-					sReturn += sFS + fio.getName();
-					bool = true;
-				}
-			}
-			if (bool == false) {
-				sReturn += sFS + sPath;
-			}
-		}
-		return sReturn + sFS + sPaths[sPaths.length - 1];
-	}
-
-	public void registerFile(Directory d) {
-
-		java.io.File fList[] = d.getFio().listFiles(
-				new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
-
-		if (fList != null && fList.length != 0) {
-			for (java.io.File f : fList) {
-				Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(), d,
-						d.getDevice());
-				registerFile(dir);
+	public void registerDirectory(Directory d) {
+		java.io.File dirList[] = d.getFio().listFiles(
+				new JajukFileFilter(JajukFileFilter.DirectoryFilter
+						.getInstance()));
+		if (dirList != null && dirList.length != 0) {
+			for (java.io.File f : dirList) {
+				Directory dir = DirectoryManager.getInstance()
+						.registerDirectory(f.getName(), d, d.getDevice());
+				registerDirectory(dir);
 			}
 		} else {
 			d.scan(true, null);

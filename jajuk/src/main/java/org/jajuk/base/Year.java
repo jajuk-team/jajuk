@@ -58,7 +58,7 @@ public class Year extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Year[ID=" + sId + " Value=" + sName + "]";   
+		return "Year[ID=" + getID() + " Value=" + getName() + "]";   
 	}
 
 		

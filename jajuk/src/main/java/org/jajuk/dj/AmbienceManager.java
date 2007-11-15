@@ -206,7 +206,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
 			if (ambience.getStyles().size() > 0) {
 				String styles = "";
 				for (Style style : ambience.getStyles()) {
-					styles += style.getId() + ',';
+					styles += style.getID() + ',';
 				}
 				styles = styles.substring(0, styles.length() - 1);
 				ConfigurationManager.setProperty(AMBIENCE_PREFIX + ambience.getID() + '/'

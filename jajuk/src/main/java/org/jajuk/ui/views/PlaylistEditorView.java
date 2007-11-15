@@ -872,7 +872,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL) {
 					// if logical editor, warning message
 					if (getPerspective() instanceof TracksPerspective) {
-						StringBuffer sbOut = new StringBuffer(Messages
+						StringBuilder sbOut = new StringBuilder(Messages
 								.getString("AbstractPlaylistEditorView.17"));
 						Playlist pl = PlaylistManager.getInstance().getPlaylistByID(
 								plfi.getPlaylistFile().getHashcode());

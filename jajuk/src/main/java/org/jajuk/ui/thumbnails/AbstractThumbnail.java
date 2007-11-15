@@ -20,33 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import java.awt.Point;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.Timer;
-import javax.swing.TransferHandler;
-
 import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.FIFO;
@@ -65,6 +38,32 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+
+import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.Timer;
+import javax.swing.TransferHandler;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
 
@@ -436,14 +435,6 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 			Util.waiting();
 			new CDDBWizard(alTracks);
 		}
-	}
-
-	public void setIcon(ImageIcon icon) {
-		jlIcon.setIcon(icon);
-		// !!! need to flush image because the read image from a file
-		// with same name
-		// than previous image and a buffer would display the old image
-		icon.getImage().flush();
 	}
 
 	/*

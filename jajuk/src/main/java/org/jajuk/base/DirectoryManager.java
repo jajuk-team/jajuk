@@ -96,7 +96,7 @@ public class DirectoryManager extends ItemManager {
 	 * @param device
 	 */
 	public Directory registerDirectory(Device device) {
-		return registerDirectory(device.getId(), "", null, device);
+		return registerDirectory(device.getID(), "", null, device);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class DirectoryManager extends ItemManager {
 	 * @return ItemManager ID
 	 */
 	protected static String createID(String sName, Device device, Directory dParent) {
-		StringBuffer sbAbs = new StringBuffer(device.getName());
+		StringBuilder sbAbs = new StringBuilder(device.getName());
 		// Under windows, all files/directories with different cases should get
 		// the same ID
 		if (Util.isUnderWindows()) {
@@ -136,8 +136,8 @@ public class DirectoryManager extends ItemManager {
 	 */
 	public Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
 		synchronized (DirectoryManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) {
-				Directory dir = (Directory) hmItems.get(sId);
+			Directory dir = (Directory) hmItems.get(sId);
+			if (dir != null) {
 				// Set name again because under Windows, dir name case could
 				// have changed but
 				// we keep the same directory object
@@ -166,7 +166,7 @@ public class DirectoryManager extends ItemManager {
 			Iterator it = hmItems.keySet().iterator();
 			while (it.hasNext()) {
 				Directory directory = getDirectoryByID((String) it.next());
-				if (directory.getDevice().getId().equals(sId)) {
+				if (directory.getDevice().getID().equals(sId)) {
 					it.remove();
 				}
 			}
@@ -197,19 +197,19 @@ public class DirectoryManager extends ItemManager {
 			synchronized (PlaylistFileManager.getInstance().getLock()) {
 				// remove all playlists
 				for (PlaylistFile plf : dir.getPlaylistFiles()) {
-					PlaylistFileManager.getInstance().removeItem(plf.getId());
+					PlaylistFileManager.getInstance().removeItem(plf.getID());
 				}
 			}
 			// remove all sub dirs
 			Iterator it = dir.getDirectories().iterator();
 			while (it.hasNext()) {
 				Directory dSub = (Directory) it.next();
-				removeDirectory(dSub.getId()); // self call
+				removeDirectory(dSub.getID()); // self call
 				// remove it
 				it.remove();
 			}
 			// remove this dir from collection
-			hmItems.remove(dir.getId());
+			hmItems.remove(dir.getID());
 		}
 	}
 

@@ -40,7 +40,7 @@ import javax.swing.ImageIcon;
  * <p>
  * Physical item
  */
-public class Directory extends PhysicalItem implements Comparable {
+public class Directory extends PhysicalItem implements Comparable<Directory> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,9 +73,9 @@ public class Directory extends PhysicalItem implements Comparable {
 	public Directory(String sId, String sName, Directory dParent, Device device) {
 		super(sId, sName);
 		this.dParent = dParent;
-		setProperty(XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getId()));
+		setProperty(XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getID()));
 		this.device = device;
-		setProperty(XML_DEVICE, device.getId());
+		setProperty(XML_DEVICE, device.getID());
 		this.fio = new File(device.getUrl() + getRelativePath());
 	}
 
@@ -92,8 +92,8 @@ public class Directory extends PhysicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Directory[ID=" + sId + " Name={{" + getRelativePath() + "}} ParentID="
-				+ (dParent == null ? "null" : dParent.getId()) + " Device={{" + device.getName()
+		return "Directory[ID=" + getID() + " Name={{" + getRelativePath() + "}} ParentID="
+				+ (dParent == null ? "null" : dParent.getID()) + " Device={{" + device.getName()
 				+ "}}]";
 	}
 
@@ -394,7 +394,7 @@ public class Directory extends PhysicalItem implements Comparable {
 			// directory
 			return "";
 		}
-		StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar)
+		StringBuilder sbOut = new StringBuilder().append(java.io.File.separatorChar)
 				.append(getName());
 		boolean bTop = false;
 		Directory dCurrent = this;
@@ -428,19 +428,20 @@ public class Directory extends PhysicalItem implements Comparable {
 	 *            directory to be compared
 	 * @return comparaison result
 	 */
-	public int compareTo(Object o) {
-		Directory otherDirectory = (Directory) o;
-		int comp = 0;
-		String sAbs = getDevice().getName() + getAbsolutePath();
-		String sOtherAbs = otherDirectory.getDevice().getName() + otherDirectory.getAbsolutePath();
-		// should ignore case to get a B c ... and not Bac
-		// but make sure to differentiate items with different cases
-		//TODO refactor this for performances
-		if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)) {
-			return sAbs.compareTo(sOtherAbs);
-		} else {
-			return sAbs.compareToIgnoreCase(sOtherAbs);
+	public int compareTo(Directory otherDirectory) {
+		//Perf: leave if directories are equals
+		if (otherDirectory.equals(this)){
+			return 0;
 		}
+		String abs = new StringBuilder(getDevice().getName()).append(getAbsolutePath()).toString();
+		String otherAbs = new StringBuilder(otherDirectory.getDevice().getName()).append(otherDirectory.getAbsolutePath()).toString();
+		// should ignore case to get a B c ... and not Bac
+		//Never return 0 here, because bidimap needs to distinct items
+        int comp = abs.compareToIgnoreCase(otherAbs);
+        if (comp == 0){
+        	return abs.compareTo(otherAbs);
+        }
+        return comp;
 	}
 
 	/**
@@ -523,7 +524,8 @@ public class Directory extends PhysicalItem implements Comparable {
 	 *            Item name
 	 */
 	protected void setName(String name) {
-		this.sName = name;
+		setProperty(XML_NAME, name);
+		this.name = name;
 	}
 
 }

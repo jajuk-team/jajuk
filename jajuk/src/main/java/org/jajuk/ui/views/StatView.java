@@ -406,7 +406,7 @@ public class StatView extends ViewAdapter implements Observer {
 		int iYear = iNow / 100;
 		int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
 		for (int k = 0; k < iMounthsNumber; k++) {
-			sMounths[iMounthsNumber - k] = new StringBuffer()
+			sMounths[iMounthsNumber - k] = new StringBuilder()
 					.append((iMounth / 10 == 0) ? "0" : "").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();  
 			iMounth--;
 			if (iMounth == 0) {

@@ -156,7 +156,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 * 
 	 */
 	public void createColumnsConf() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
 		while (it.hasNext()) {
 			TableColumnExt col = (TableColumnExt) it.next();
@@ -181,7 +181,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
 	 * 
 	 */
 	private String getColumnsConf(ArrayList alCol) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		Iterator it = alCol.iterator();
 		while (it.hasNext()) {
 			sb.append((String) it.next() + ",");

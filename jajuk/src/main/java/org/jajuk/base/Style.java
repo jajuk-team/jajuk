@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
  * <p>
  * Logical item
  */
-public class Style extends LogicalItem implements Comparable {
+public class Style extends LogicalItem implements Comparable<Style> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -71,7 +71,7 @@ public class Style extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Style[ID=" + sId + " Name={{" + getName() + "}}]";   
+		return "Style[ID=" + getID() + " Name={{" + getName() + "}}]";   
 	}
 
 	/**
@@ -79,13 +79,15 @@ public class Style extends LogicalItem implements Comparable {
 	 * 
 	 * @param other
 	 *            item to be compared
-	 * @return comparaison result
+	 * @return comparison result
 	 */
-	public int compareTo(Object o) {
-		Style otherStyle = (Style) o;
-		// compare using name and id to differenciate unknown items
-		return (getName2() + getId()).compareToIgnoreCase(otherStyle.getName2()
-				+ otherStyle.getId());
+	public int compareTo(Style otherItem) {
+		// compare using name and id to differentiate unknown items
+		StringBuilder current = new StringBuilder(getName2());
+		current.append(getID());
+		StringBuilder other = new StringBuilder(otherItem.getName2());
+		other.append(otherItem.getID());
+		return current.toString().compareToIgnoreCase(other.toString());
 	}
 
 	/**

@@ -83,6 +83,12 @@ Files has been adapted to Jajuk by the Jajuk Team.
 Jajuk Copyright (C) 2007 The Jajuk Team
 
 -------------------------------------------------------
+ProcessLauncher class
+LGPL code found at http://ydisanto.ftp-developpez.com/tutoriels/j2se/runtime/fichiers/ProcessLauncher.java
+authors: Fabio MARAZZATO, Yann D'ISANTO
+
+Used for : Executing external process 
+-------------------------------------------------------
 Util class (org.jajuk.util package)
 This class contains various code extracts found on the web, the URL 
 is given in the method javadoc comment when it is the case.

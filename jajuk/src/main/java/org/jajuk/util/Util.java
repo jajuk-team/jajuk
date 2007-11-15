@@ -19,6 +19,42 @@
  */
 package org.jajuk.util;
 
+import org.jajuk.Main;
+import org.jajuk.Main.MPlayerStatus;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
+import org.jajuk.dj.Ambience;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.widgets.CommandJPanel;
+import org.jajuk.ui.widgets.IconLabel;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukSystray;
+import org.jajuk.ui.widgets.PerspectiveBarJPanel;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.border.DropShadowBorder;
+import org.jdesktop.swingx.painter.MattePainter;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.utils.SubstanceConstants;
+import org.jvnet.substance.watermark.SubstanceImageWatermark;
+import org.jvnet.substance.watermark.SubstanceNoneWatermark;
+import org.jvnet.substance.watermark.SubstanceStripeWatermark;
+import org.jvnet.substance.watermark.WatermarkInfo;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -81,42 +117,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.jajuk.Main;
-import org.jajuk.Main.MPlayerStatus;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Item;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
-import org.jajuk.dj.Ambience;
-import org.jajuk.ui.perspectives.IPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.CommandJPanel;
-import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukSystray;
-import org.jajuk.ui.widgets.PerspectiveBarJPanel;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.MattePainter;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.utils.SubstanceConstants;
-import org.jvnet.substance.watermark.SubstanceImageWatermark;
-import org.jvnet.substance.watermark.SubstanceNoneWatermark;
-import org.jvnet.substance.watermark.SubstanceStripeWatermark;
-import org.jvnet.substance.watermark.WatermarkInfo;
-
 /**
  * General use utilities methods
  */
@@ -159,19 +159,6 @@ public class Util implements ITechnicalStrings {
 	/** Mplayer exe path */
 	private static File mplayerPath = null;
 
-	/** downdown shadow border */
-	private static DropShadowBorder shadowBorder = new DropShadowBorder(
-			Color.BLACK, 5, .5f, 12, false, true, true, true);
-
-	/** Generic gradiant* */
-	public static MattePainter grayGrandient = new MattePainter(
-			new GradientPaint(new Point(0, 0), new Color(226, 226, 226),
-					new Point(0, 1000), new Color(250, 248, 248)));
-
-	public static MattePainter aerithGrandient = new MattePainter(
-			new GradientPaint(new Point(0, 0), Color.WHITE, new Point(0, 1000),
-					new Color(64, 110, 161)));
-
 	/** Are we under Windows ? * */
 	private static final boolean bUnderWindows;
 
@@ -189,6 +176,12 @@ public class Util implements ITechnicalStrings {
 
 	/** Are we under Windows 64 bits ? * */
 	private static final boolean bUnderWindows64bits;
+        
+        /**Today*/
+	static public final Date today = new Date();
+	
+	/**current class loader*/
+	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader(); 
 
 	// Computes OS detection operations for perf reasons (can be called in loop
 	// in refresh method for ie)
@@ -272,12 +265,11 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * Get a file extension
 	 * 
-	 * @param file
+	 * @param filename
 	 * @return
 	 */
-	public static String getExtension(File file) {
-		String s = file.getName();
-		StringTokenizer st = new StringTokenizer(s, ".");
+	public static String getExtension(String filename) {
+		StringTokenizer st = new StringTokenizer(filename, ".");
 		String sExt = "";
 		if (st.countTokens() > 1) {
 			while (st.hasMoreTokens()) {
@@ -285,6 +277,16 @@ public class Util implements ITechnicalStrings {
 			}
 		}
 		return sExt.toLowerCase();
+	}
+	
+	/**
+	 * Get a file extension
+	 * 
+	 * @param file
+	 * @return
+	 */
+	public static String getExtension(File file) {
+		return getExtension(file.getName());
 	}
 
 	/**
@@ -302,12 +304,12 @@ public class Util implements ITechnicalStrings {
 	 * 
 	 * @param path
 	 *            -File path
-	 * @return StringBuffer - File content.
+	 * @return StringBuilder - File content.
 	 * @throws JajukException -
 	 *             Throws a JajukException if a problem occurs during the file
 	 *             access.
 	 */
-	public static StringBuffer readFile(String path) throws JajukException {
+	public static StringBuilder readFile(String path) throws JajukException {
 		// Read
 		File file = null;
 		try {
@@ -325,7 +327,7 @@ public class Util implements ITechnicalStrings {
 		BufferedReader input = new BufferedReader(fileReader);
 
 		// Read
-		StringBuffer strColl = new StringBuffer();
+		StringBuilder strColl = new StringBuilder();
 		String line = null;
 		try {
 			while ((line = input.readLine()) != null) {
@@ -353,20 +355,20 @@ public class Util implements ITechnicalStrings {
 	 * 
 	 * @param sUrl :
 	 *            relative file url
-	 * @return StringBuffer - File content.
+	 * @return StringBuilder - File content.
 	 * @throws JajukException
 	 *             -Throws a JajukException if a problem occurs during the file
 	 *             access.
 	 */
-	public static StringBuffer readJarFile(String sURL) throws JajukException {
+	public static StringBuilder readJarFile(String sURL) throws JajukException {
 		// Read
 		InputStream is;
-		StringBuffer sb = null;
+		StringBuilder sb = null;
 		try {
 			is = Main.class.getResourceAsStream(sURL);
 			// Read
 			byte[] b = new byte[200];
-			sb = new StringBuffer();
+			sb = new StringBuilder();
 			int i = 0;
 			do {
 				i = is.read(b, 0, b.length);
@@ -414,7 +416,7 @@ public class Util implements ITechnicalStrings {
 		if (s.contains(">")) {
 			sOut = sOut.replaceAll(">", "&gt;");
 		}
-		StringBuffer sbOut = new StringBuffer(sOut.length());
+		StringBuilder sbOut = new StringBuilder(sOut.length());
 		/*
 		 * Transform String to XML-valid characters. XML 1.0 specs ; Character
 		 * Range [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
@@ -472,7 +474,7 @@ public class Util implements ITechnicalStrings {
 	public static String formatTag(String s) {
 		// we delete all non char characters to avoid parsing errors
 		char c;
-		StringBuffer sb = new StringBuffer(s.length());
+		StringBuilder sb = new StringBuilder(s.length());
 		for (int i = 0; i < s.length(); i++) {
 			c = s.charAt(i);
 			if (isChar(c)) {
@@ -493,31 +495,25 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/** Format a time from secs to a human readable format */
-	public static String formatTimeBySec(long lTime, boolean bTrimZeros) {
-		long l = lTime;
-		if (l == -1) { // means we are in repeat mode
-			return "--:--";
-		}
-		if (l < 0)
-			l = 0; // make sure to to get negative values
-		long lHours = l / 3600;
-		long lMins = l / 60 - (lHours * 60);
-		long lSecs = l - (lHours * 3600) - (lMins * 60);
-		StringBuffer sbHours = new StringBuffer(Long.toString(lHours));
-		if (sbHours.length() == 1 && !bTrimZeros)
-			sbHours.insert(0, '0');
-		StringBuffer sbMins = new StringBuffer(Long.toString(lMins));
-		if (sbMins.length() == 1 && !bTrimZeros)
-			sbMins.insert(0, '0');
-		StringBuffer sbSecs = new StringBuffer(Long.toString(lSecs));
-		if (sbSecs.length() == 1)
-			sbSecs.insert(0, '0');
-
-		StringBuffer sbResult = new StringBuffer();
-		if (lHours > 0)
-			sbResult.append(sbHours).append(":");
-		return sbResult.append(sbMins).append(":").append(sbSecs).toString();
-	}
+    public static String formatTimeBySec(long lTime, boolean bTrimZeros) {
+        //Convert time to int for performance reasons
+        int l = (int) lTime;
+        if (l == -1) { // means we are in repeat mode
+            return "--:--";
+        } else if (l < 0) {
+            // make sure to to get negative values
+            l = 0;
+        }
+        int hours = l / 3600;
+        int mins = l / 60 - (hours * 60);
+        int secs = l - (hours * 3600) - (mins * 60);
+        StringBuilder sbResult = new StringBuilder(8);
+        if (hours > 0) {
+            sbResult.append(padNumber(hours, 2)).append(":");
+        }
+        return sbResult.append(padNumber(mins, 2)).append(":")
+                .append(padNumber(secs, 2)).toString();
+    }
 
 	/** Waiting cursor thread, stored to avoid construction */
 	private static Thread tWaiting = new Thread() {
@@ -676,7 +672,7 @@ public class Util implements ITechnicalStrings {
 	public static void copyToDir(File file, File directory) throws Exception {
 		Log.debug("Copying: " + file.getAbsolutePath() + "  to : "
 				+ directory.getAbsolutePath());
-		File fileNew = new File(new StringBuffer(directory.getAbsolutePath())
+		File fileNew = new File(new StringBuilder(directory.getAbsolutePath())
 				.append("/").append(file.getName()).toString());
 		if (!file.exists() || !file.canRead()) {
 			throw new JajukException(9, file.getAbsolutePath(), null);
@@ -751,7 +747,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void copy(File file, String sNewName) throws Exception {
 		Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName);
-		File fileNew = new File(new StringBuffer(file.getParentFile()
+		File fileNew = new File(new StringBuilder(file.getParentFile()
 				.getAbsolutePath()).append('/').append(sNewName).toString());
 		if (!file.exists() || !file.canRead()) {
 			throw new JajukException(9, file.getAbsolutePath(), null);
@@ -1108,12 +1104,10 @@ public class Util implements ITechnicalStrings {
 		} catch (InterruptedException e) {
 			Log.error(e);
 		}
-		ImageIcon iiNew = new ImageIcon();
-		Image image = img.getImage();
-		Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight,
+		Image scaleImg = img.getImage().getScaledInstance(iNewWidth, iNewHeight,
 				Image.SCALE_AREA_AVERAGING);
-		iiNew.setImage(scaleImg);
-		return iiNew;
+		//Leave image cache here as we may want to keep original image
+		return new ImageIcon(scaleImg);
 	}
 
 	/**
@@ -1784,7 +1778,7 @@ public class Util implements ITechnicalStrings {
 	 * http://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
 	 */
 	public static URL getResource(String name) {
-		return Thread.currentThread().getContextClassLoader().getResource(name);
+		return classLoader.getResource(name);
 	}
 
 	/**
@@ -1840,16 +1834,14 @@ public class Util implements ITechnicalStrings {
 	public static String getMPlayerOSXPath() {
 		String forced = ConfigurationManager
 				.getProperty(CONF_MPLAYER_PATH_FORCED);
-		if (forced != null && !"".equals(forced)) {
-			return forced + "/mplayer";
+		if (!Util.isVoid(forced)) {
+			return forced;
 		} else if (Util.isUnderOSXintel()
-				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer")
-						.exists()) {
-			return FILE_DEFAULT_MPLAYER_X86_OSX_PATH + "/mplayer";
+				&& new File(FILE_DEFAULT_MPLAYER_X86_OSX_PATH).exists()) {
+			return FILE_DEFAULT_MPLAYER_X86_OSX_PATH;
 		} else if (Util.isUnderOSXpower()
-				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer")
-						.exists()) {
-			return FILE_DEFAULT_MPLAYER_POWER_OSX_PATH + "/mplayer";
+				&& new File(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH).exists()) {
+			return FILE_DEFAULT_MPLAYER_POWER_OSX_PATH;
 		} else {
 			// Simply return mplayer from PATH, works if app is launch from CLI
 			return "mplayer";
@@ -1857,26 +1849,50 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
+	 * This method intends to cleanup a future filename so it can be created on
+	 * all operating systems. Windows forbids characters : /\"<>|:*?
+	 * 
+	 * @param in
+	 *            filename
+	 * @return filename with forbidden characters replaced at best
+	 */
+	public static String getNormalizedFilename(String in) {
+		String out = in.trim();
+		// Replace / : < > and \ by -
+		out = in.replaceAll("[/:<>\\\\]", "-");
+		// Replace * and | by spaces
+		out = out.replaceAll("[\\*|]", " ");
+		// Remove " and ? characters
+		out = out.replaceAll("[\"\\?]", "");
+		return out;
+	}
+
+	/**
 	 * Apply a pattern
 	 * 
 	 * @param file
-	 *            file on whish to apply pattern
+	 *            file to apply pattern to
 	 * @param sPattern
 	 * @param bMandatory
 	 *            are all needed tags mandatory ?
 	 * @return computed string
+	 * @return make sure the created string can be used as file name on target
+	 *         file system
 	 * @throws JajukException
 	 *             if some tags are missing
 	 */
 	public static String applyPattern(org.jajuk.base.File file,
-			String sPattern, boolean bMandatory) throws JajukException {
+			String sPattern, boolean bMandatory, boolean normalize)
+			throws JajukException {
 		String out = sPattern;
 		Track track = file.getTrack();
 		String sValue = null;
 		// Check Author name
 		if (sPattern.contains(PATTERN_AUTHOR)) {
-			sValue = track.getAuthor().getName().replaceAll("[/\\:]", "-");
-			sValue = sValue.trim();
+			sValue = track.getAuthor().getName();
+			if (normalize) {
+				sValue = getNormalizedFilename(sValue);
+			}
 			if (!sValue.equals(UNKNOWN_AUTHOR)) {
 				out = out.replaceAll(PATTERN_AUTHOR, AuthorManager
 						.format(sValue));
@@ -1891,8 +1907,10 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Style name
 		if (sPattern.contains(PATTERN_STYLE)) {
-			sValue = track.getStyle().getName().replaceAll("[/\\:]", "-");
-			sValue = sValue.trim();
+			sValue = track.getStyle().getName();
+			if (normalize) {
+				sValue = getNormalizedFilename(sValue);
+			}
 			if (!sValue.equals(UNKNOWN_STYLE)) {
 				out = out.replace(PATTERN_STYLE, StyleManager.format(sValue));
 			} else {
@@ -1906,8 +1924,10 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Album Name
 		if (sPattern.contains(PATTERN_ALBUM)) {
-			sValue = track.getAlbum().getName().replaceAll("[/\\:]", "-");
-			sValue = sValue.trim();
+			sValue = track.getAlbum().getName();
+			if (normalize) {
+				sValue = getNormalizedFilename(sValue);
+			}
 			if (!sValue.equals(UNKNOWN_ALBUM)) {
 				out = out.replace(PATTERN_ALBUM, AlbumManager.format(sValue));
 			} else {
@@ -1950,8 +1970,10 @@ public class Util implements ITechnicalStrings {
 		}
 		// Check Track name
 		if (sPattern.contains(PATTERN_TRACKNAME)) {
-			sValue = track.getName().replaceAll("[/\\:]", "-");
-			sValue = sValue.trim();
+			sValue = track.getName();
+			if (normalize) {
+				sValue = getNormalizedFilename(sValue);
+			}
 			out = out.replace(PATTERN_TRACKNAME, sValue);
 		}
 		// Check Year Value
@@ -1968,10 +1990,6 @@ public class Util implements ITechnicalStrings {
 			}
 		}
 		return out;
-	}
-
-	public static DropShadowBorder getShadowBorder() {
-		return shadowBorder;
 	}
 
 	/**
@@ -2028,7 +2046,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static boolean refreshThumbnail(Album album, String size) {
 		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
-				+ album.getId() + '.' + EXT_THUMB);
+				+ album.getID() + '.' + EXT_THUMB);
 		File fCover = null;
 		if (!fThumb.exists()) {
 			// search for local covers in all directories mapping the
@@ -2048,10 +2066,6 @@ public class Util implements ITechnicalStrings {
 					int iSize = Integer.parseInt(new StringTokenizer(size, "x")
 							.nextToken());
 					Util.createThumbnail(fCover, fThumb, iSize);
-					InformationJPanel.getInstance().setMessage(
-							Messages.getString("CatalogView.5") + ' '
-									+ album.getName2(),
-							InformationJPanel.INFORMATIVE);
 					return true;
 				} catch (Exception e) {
 					Log.error(e);
@@ -2067,15 +2081,15 @@ public class Util implements ITechnicalStrings {
 	 * @param l
 	 *            the number to be padded
 	 * @param size
-	 *            the targetted size
+	 *            the targeted size
 	 * @return
 	 */
 	public static String padNumber(long l, int size) {
-		String sOut = Long.toString(l);
-		while (sOut.length() < size) {
-			sOut = '0' + sOut;
+		StringBuilder sb = new StringBuilder(Long.toString(l));
+		while (sb.length() < size) {
+			sb.insert(0,'0');
 		}
-		return sOut;
+		return sb.toString();
 	}
 
 	/**
@@ -2103,7 +2117,7 @@ public class Util implements ITechnicalStrings {
 			if ("".equals(mplayerPATH)) {
 				fullPath = "mplayer";
 			} else {
-				fullPath = mplayerPATH + "/mplayer";
+				fullPath = mplayerPATH;
 			}
 			Log.debug("Testing path: " + fullPath);
 			// check MPlayer release : 1.0pre8 min
@@ -2221,7 +2235,7 @@ public class Util implements ITechnicalStrings {
 			return "";
 		}
 		int abyte = 0;
-		StringBuffer tempReturn = new StringBuffer();
+		StringBuilder tempReturn = new StringBuilder();
 		for (int i = 0; i < in.length(); i++) {
 			abyte = in.charAt(i);
 			int cap = abyte & 32;

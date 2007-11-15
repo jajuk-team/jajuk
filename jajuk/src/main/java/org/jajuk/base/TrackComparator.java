@@ -70,7 +70,7 @@ public class TrackComparator implements Comparator<Track> {
 		switch (iSortingMethod) {
 		// Style/author/album
 		case STYLE_AUTHOR_ALBUM:
-			sHashCompare = new StringBuffer().append(track.getStyle().getName2()).append(
+			sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
 					track.getAuthor().getName2())// need 2 spaces to make
 					// a right sorting (ex:
 					// Rock and Rock & Roll)
@@ -80,24 +80,24 @@ public class TrackComparator implements Comparator<Track> {
 		// Author/album
 		case AUTHOR_ALBUM:
 			// need 2 spaces to make a right sorting (ex: Rock and Rock & Roll)
-			sHashCompare = new StringBuffer().append(track.getAuthor().getName2()).append(
+			sHashCompare = new StringBuilder().append(track.getAuthor().getName2()).append(
 					track.getAlbum().getName2()) 
 					.append(track.getName()).toString(); 
 			break;
 		// Album
 		case ALBUM:
-			sHashCompare = new StringBuffer().append(track.getAlbum().getName2()) 
+			sHashCompare = new StringBuilder().append(track.getAlbum().getName2()) 
 					.append(track.getName()).toString(); 
 			break;
 		// Year / album
 		case YEAR_ALBUM:
-			sHashCompare = new StringBuffer()
+			sHashCompare = new StringBuilder()
 					.append(Util.padNumber(track.getYear().getValue(), 10)) 
 					.append(track.getName()).toString(); 
 			break;
 		// discovery date / album
 		case DISCOVERY_ALBUM:
-			sHashCompare = new StringBuffer().append(
+			sHashCompare = new StringBuilder().append(
 					Util.getAdditionDateFormat().format(track.getAdditionDate())).append(
 					track.getAlbum().getName2()).append(track.getName()).toString(); 
 			break;
@@ -128,13 +128,11 @@ public class TrackComparator implements Comparator<Track> {
 		}
 		String sHashCompare = getCompareString(track1);
 		String sHashCompareOther = getCompareString(track2);
-		// Do not change this code ! we need to ignore case except if both
-		// tracks have the same name
-		if (sHashCompare.equalsIgnoreCase(sHashCompareOther)
-				&& !sHashCompare.equals(sHashCompareOther)) {
-			return sHashCompare.compareTo(sHashCompareOther);
-		} else {
-			return sHashCompare.compareToIgnoreCase(sHashCompareOther);
-		}
+		//never return 0 here, because bidimap needs to distinct items
+        int comp = sHashCompare.compareToIgnoreCase(sHashCompareOther);
+        if (comp == 0){
+        	return sHashCompare.compareTo(sHashCompareOther);
+        }
+        return comp;
 	}
 }

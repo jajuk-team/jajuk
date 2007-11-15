@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="jajuk-help_fr.jar"/>
@@ -34,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/swingx-2007_07_22.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/substance-4.1dev.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -113,11 +113,10 @@ public class AlbumManager extends ItemManager implements Observer {
 	 */
 	public Album registerAlbum(String sId, String sName) {
 		synchronized (TrackManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) {
-				Album album = (Album) hmItems.get(sId);
+			Album album = (Album) hmItems.get(sId);
+			if (album != null) {
 				return album;
 			}
-			Album album = null;
 			album = new Album(sId, sName);
 			hmItems.put(sId, album);
 			return album;
@@ -169,12 +168,11 @@ public class AlbumManager extends ItemManager implements Observer {
 	 */
 	public static synchronized String format(String sName) {
 		String sOut;
-		sOut = sName.trim(); // supress spaces at the begin and the end
+		sOut = sName.trim(); // suppress spaces at the begin and the end
 		sOut = sOut.replace('-', ' '); // move - to space
 		sOut = sOut.replace('_', ' '); // move _ to space
 		char c = sOut.charAt(0);
-		sOut = sOut.toLowerCase();
-		StringBuffer sb = new StringBuffer(sOut);
+		StringBuilder sb = new StringBuilder(sOut);
 		sb.setCharAt(0, Character.toUpperCase(c));
 		return sb.toString();
 	}

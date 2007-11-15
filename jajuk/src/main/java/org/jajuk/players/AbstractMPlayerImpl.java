@@ -45,10 +45,10 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 
 	/** File is opened flag * */
 	volatile boolean bOpening = false;
-	
+
 	/** Stop position thread flag */
 	volatile boolean bStop = false;
-	
+
 	/** Fading state */
 	volatile boolean bFading = false;
 
@@ -108,10 +108,16 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	 */
 	ArrayList<String> buildCommand(String url) {
 		String sCommand = "mplayer"; //$NON-NLS-1$
-		if (Util.isUnderWindows()) {
-			sCommand = Util.getMPlayerWindowsPath().getAbsolutePath();
-		} else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()) {
-			sCommand = Util.getMPlayerOSXPath();
+		//Use any forced mplayer path
+		String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+		if (!Util.isVoid(forced)) {
+			sCommand = forced;
+		} else {
+			if (Util.isUnderWindows()) {
+				sCommand = Util.getMPlayerWindowsPath().getAbsolutePath();
+			} else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()) {
+				sCommand = Util.getMPlayerOSXPath();
+			}
 		}
 		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
 		// Build command
@@ -121,7 +127,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 		cmd.add("-quiet");
 		// slave: slave mode (control with stdin)
 		cmd.add("-slave");
-		// -af volume=-200: set volume to 0 to avoid begining the track (few ms)
+		// -af volume=-200: set volume to 0 to avoid beginning the track (few ms)
 		// with the wrong volume
 		cmd.add("-af");
 		cmd.add("volume=-200");

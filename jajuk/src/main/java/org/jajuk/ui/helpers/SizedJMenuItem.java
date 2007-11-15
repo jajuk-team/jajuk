@@ -33,10 +33,10 @@ import org.jajuk.util.Util;
 public class SizedJMenuItem extends JMenuItem {
 	private static final long serialVersionUID = -3859493402696496345L;
 
-	@SuppressWarnings("unused")
+	
 	private int width = 16;
 
-	@SuppressWarnings("unused")
+	
 	private int height = 16;
 
 	/**

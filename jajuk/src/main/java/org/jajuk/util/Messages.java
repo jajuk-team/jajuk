@@ -239,7 +239,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 	private Properties parseLangpack(String sLocal) throws Exception {
 		final Properties properties = new Properties();
 		// Choose right jajuk_<lang>.properties file to load
-		StringBuffer sbFilename = new StringBuffer(FILE_LANGPACK_PART1);
+		StringBuilder sbFilename = new StringBuilder(FILE_LANGPACK_PART1);
 		if (!sLocal.equals("en")) { // for english, properties file is
 			// simply jajuk.properties
 			sbFilename.append('_').append(sLocal);
@@ -259,7 +259,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 			SAXParser saxParser = spf.newSAXParser();
 			saxParser.parse(url.openStream(), new DefaultHandler() {
 				// this buffer will contain the entire properties strings
-				StringBuffer sb = new StringBuffer(15000);
+				StringBuilder sb = new StringBuilder(15000);
 
 				// call for each element strings, actually will be called
 				// several time if the element is large (our case : large CDATA)

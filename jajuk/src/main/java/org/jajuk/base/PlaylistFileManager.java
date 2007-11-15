@@ -90,7 +90,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 	 * @return ItemManager ID
 	 */
 	protected static String createID(String sName, Directory dParentDirectory) {
-		return MD5Processor.hash(new StringBuffer(dParentDirectory.getDevice()
+		return MD5Processor.hash(new StringBuilder(dParentDirectory.getDevice()
 				.getName()).append(dParentDirectory.getRelativePath()).append(
 				sName).toString());
 	}
@@ -119,7 +119,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 			PlaylistManager.getInstance().removePlaylistFile(plf);
 			plf.getDirectory().removePlaylistFile(plf);
 			// remove playlist file
-			removeItem(plf.getId());
+			removeItem(plf.getID());
 		}
 	}
 
@@ -155,7 +155,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 			while (it.hasNext()) {
 				PlaylistFile plf = (PlaylistFile) it.next();
 				if (plf.getDirectory() == null
-						|| plf.getDirectory().getDevice().getId().equals(sId)) {
+						|| plf.getDirectory().getDevice().getID().equals(sId)) {
 					it.remove();
 				}
 			}
@@ -227,7 +227,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
 				throw new JajukException(134); 
 			}
 			// OK, remove old file and register this new file
-			hmItems.remove(plfOld.getId());
+			hmItems.remove(plfOld.getID());
 			if (!hmItems.containsKey(sNewId)) {
 				hmItems.put(sNewId, plfNew);
 			}

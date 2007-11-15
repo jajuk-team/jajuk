@@ -414,7 +414,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 			device.setUrl(jtfUrl.getText());
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null) {
 				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE, alDevices.get(
-						jcbSynchronized.getSelectedIndex()).getId());
+						jcbSynchronized.getSelectedIndex()).getID());
 				if (jrbBidirSynchro.isSelected()) {
 					device.setProperty(XML_DEVICE_SYNCHRO_MODE, DEVICE_SYNCHRO_MODE_BI);
 				} else {
@@ -429,7 +429,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 					|| (!this.sInitialURL.equals(jtfUrl.getText()))) {
 				try {
 					//Drop existing directory to avoid phantom directories if existing device
-					DirectoryManager.getInstance().removeDirectory(device.getId());
+					DirectoryManager.getInstance().removeDirectory(device.getID());
 					device.refresh(true);
 				} catch (Exception e2) {
 					Log.error(112, device.getName(), e2); 

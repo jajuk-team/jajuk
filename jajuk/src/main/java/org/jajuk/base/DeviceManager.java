@@ -286,10 +286,10 @@ public class DeviceManager extends ItemManager {
 					return;
 				}
 			}
-			hmItems.remove(device.getId());
-			DirectoryManager.getInstance().cleanDevice(device.getId());
-			FileManager.getInstance().cleanDevice(device.getId());
-			PlaylistFileManager.getInstance().cleanDevice(device.getId());
+			hmItems.remove(device.getID());
+			DirectoryManager.getInstance().cleanDevice(device.getID());
+			FileManager.getInstance().cleanDevice(device.getID());
+			PlaylistFileManager.getInstance().cleanDevice(device.getID());
 			// Clean the collection up
 			org.jajuk.base.Collection.cleanup();
 			// remove synchronization if another device was synchronized
@@ -299,7 +299,7 @@ public class DeviceManager extends ItemManager {
 				Device deviceToCheck = (Device) it.next();
 				if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
 					String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
-					if (sSyncSource.equals(device.getId())) {
+					if (sSyncSource.equals(device.getID())) {
 						deviceToCheck.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
 					}
 				}

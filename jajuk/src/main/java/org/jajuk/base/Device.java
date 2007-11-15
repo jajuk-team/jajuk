@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import org.jajuk.Main;
+import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -142,7 +143,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type="
+		return "Device[ID=" + getID() + " Name=" + getName() + " Type="
 				+ DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE)) + " URL="
 				+ sUrl + " Mount point=" + sMountPoint + "]";
 	}
@@ -305,6 +306,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			// refresh required if nb of files or dirs changed
 			if ((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0
 					|| (DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0) {
+				//Refresh thumbs for new albums
+				ThumbnailsMaker.launchAllSizes(false);
 				return true;
 			}
 			return false;
@@ -389,7 +392,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			boolean bidi = (getValue(XML_DEVICE_SYNCHRO_MODE).equals(DEVICE_SYNCHRO_MODE_BI));
 			// check this device is synchronized
 			String sIdSrc = (String) getValue(XML_DEVICE_SYNCHRO_SOURCE);
-			if (sIdSrc == null || sIdSrc.equals(getId())) {
+			if (sIdSrc == null || sIdSrc.equals(getID())) {
 				// cannot synchro with itself
 				return;
 			}
@@ -403,7 +406,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			}
 			// start message
 			InformationJPanel.getInstance().setMessage(
-					new StringBuffer(Messages.getString("Device.31")).append(dSrc.getName())
+					new StringBuilder(Messages.getString("Device.31")).append(dSrc.getName())
 							.append(',').append(this.getName()).append("]").toString(),
 					InformationJPanel.INFORMATIVE);
 			// in both cases (bi or uni-directional), make an unidirectional
@@ -413,7 +416,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			iNbCreatedFilesDest += synchronizeUnidirectonal(this, dSrc);
 			// end message
 			lTime = System.currentTimeMillis() - lTime;
-			String sOut = new StringBuffer(Messages.getString("Device.33")).append(
+			String sOut = new StringBuilder(Messages.getString("Device.33")).append(
 					((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).append(" - ").append(
 					iNbCreatedFilesSrc + iNbCreatedFilesDest).append(
 					Messages.getString("Device.35")).append(lVolume / 1048576).append(
@@ -505,12 +508,12 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 				}
 			}
 			// create it if needed
-			File fileNewDir = new File(new StringBuffer(dest.getUrl()).append(sPath).toString());
+			File fileNewDir = new File(new StringBuilder(dest.getUrl()).append(sPath).toString());
 			if (bNeedCreate) {
 				fileNewDir.mkdirs();
 			}
 			// synchronize files
-			File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(sPath).toString());
+			File fileSrc = new File(new StringBuilder(dSrc.getUrl()).append(sPath).toString());
 			File[] fSrcFiles = fileSrc.listFiles(filter);
 			if (fSrcFiles != null) {
 				for (int i = 0; i < fSrcFiles.length; i++) {
@@ -532,7 +535,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 							iNbCreatedFiles++;
 							lVolume += fSrcFiles[i].length();
 							InformationJPanel.getInstance().setMessage(
-									new StringBuffer(Messages.getString("Device.41")).append(
+									new StringBuilder(Messages.getString("Device.41")).append(
 											dSrc.getName()).append(',').append(dest.getName())
 											.append(Messages.getString("Device.42")).append(
 													fSrcFiles[i].getAbsolutePath()).append("]")
@@ -923,7 +926,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			if (!Main.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()) {
 				if (!dir.getFio().exists()) {
 					// note that associated files are removed too
-					DirectoryManager.getInstance().removeDirectory(dir.getId());
+					DirectoryManager.getInstance().removeDirectory(dir.getID());
 					Log.debug("Removed: " + dir);
 					bChanges = true;
 				}

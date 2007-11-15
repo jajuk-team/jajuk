@@ -52,7 +52,7 @@ public class LastFmManager implements Observer, ITechnicalStrings {
 	private LastFmManager() {
 		// Register on the list for subject we are interested in
 		ObservationManager.register(this);
-		// Display an hideable message to user if audioscrobbler is disable
+		// Display an hideable message to user if audioscrobber is disable
 		// Show this message only one time by jajuk session
 		if (!ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)
 		// don't dhow this message if first jajuk launch: already too many

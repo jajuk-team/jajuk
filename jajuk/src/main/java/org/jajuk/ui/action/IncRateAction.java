@@ -19,10 +19,13 @@
  */
 package org.jajuk.ui.action;
 
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -50,5 +53,7 @@ public class IncRateAction extends ActionBase {
 			Track track = file.getTrack();
 			track.setRate(track.getRate() + ConfigurationManager.getInt(CONF_INC_RATING));
 		}
+		//Force immediate rating refresh (without using the rating manager) 
+		ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
 	}
 }

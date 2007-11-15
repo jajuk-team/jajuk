@@ -320,7 +320,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					jpRoot.add(Box.createVerticalStrut(500));
 					if (plfiSelected.getPlaylistFile().getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL
 							|| PlaylistFileManager.getInstance().getPlaylistFileByID(
-									plfiSelected.getPlaylistFile().getId()) != null) {
+									plfiSelected.getPlaylistFile().getID()) != null) {
 						selectPlaylistFileItem(plfiSelected);
 					} else { // means previously selected playlist has
 						// changed, select queue

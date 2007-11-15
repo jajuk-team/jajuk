@@ -769,7 +769,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 	}
 
 	/**
-	 * Long action to compute image to display (donwload, resizing...)
+	 * Long action to compute image to display (download, resizing...)
 	 * 
 	 * @param index
 	 * @return null (just used by the SwingWorker)
@@ -785,7 +785,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 		try {
 			if (CoverView.this.iEventID == iLocalEventID) {
 				cover = alCovers.get(index); // take image at the given index
-				icon = cover.getImage();
+				icon = new ImageIcon(cover.getImage());
 			} else {
 				Log.debug("Download stopped - 2");
 				return null;
@@ -831,9 +831,11 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				iNewWidth = (int) (icon.getIconWidth() * ((float) iNewHeight / icon.getIconHeight()));
 			}
 		}
-
 		if (CoverView.this.iEventID == iLocalEventID) {
 			ii = Util.getResizedImage(icon, iNewWidth, iNewHeight);
+			//Free source and destination image buffer
+			icon.getImage().flush();
+			ii.getImage().flush();
 		} else {
 			Log.debug("Download stopped - 2");
 			return null;
@@ -932,7 +934,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 				// Add a jajuk suffix to know this cover has been downloaded by
 				// jajuk
 				int pos = sFilePath.lastIndexOf('.');
-				sFilePath = new StringBuffer(sFilePath).insert(pos,
+				sFilePath = new StringBuilder(sFilePath).insert(pos,
 						FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 				try {
 					// copy file from cache
@@ -1014,7 +1016,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 					// Add a jajuk suffix to know this cover has been downloaded
 					// by jajuk
 					int pos = sFilePath.lastIndexOf('.');
-					sFilePath = new StringBuffer(sFilePath).insert(pos,
+					sFilePath = new StringBuilder(sFilePath).insert(pos,
 							FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
 					try {
 						// copy file from cache
@@ -1051,7 +1053,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 			for (int i = 0; i < 4; i++) {
 				Album album = dirReference.getFiles().iterator().next().getTrack().getAlbum();
 				File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + (50 + 50 * i) + "x"
-						+ (50 + 50 * i) + '/' + album.getId() + '.' + EXT_THUMB);
+						+ (50 + 50 * i) + '/' + album.getID() + '.' + EXT_THUMB);
 				Util.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
 			}
 			ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));

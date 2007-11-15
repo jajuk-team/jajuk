@@ -20,18 +20,18 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
-import java.awt.MediaTracker;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * A cover, encapsulates URL, files and manages cover priority to display
@@ -56,7 +56,8 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	private File file;
 
 	/** Default cover image */
-	private static final ImageIcon iiDefaultCover = Util.getImage(IMAGES_SPLASHSCREEN);
+	private static final ImageIcon iiDefaultCover = Util
+			.getImage(IMAGES_SPLASHSCREEN);
 
 	/** Default URL */
 	private static URL urlDefault = null;
@@ -184,26 +185,24 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
 	/**
 	 * @return Returns the image.
 	 */
-	public ImageIcon getImage() throws Exception {
+	public Image getImage() throws Exception {
 		// default cover image is cached in memory for perfs
 		if (getURL().equals(urlDefault)) {
-			return iiDefaultCover;
+			return iiDefaultCover.getImage();
 		}
 		long l = System.currentTimeMillis();
 		if (!file.exists() || file.length() == 0) {
 			this.file = DownloadManager.downloadCover(url, id);
 		}
-		ImageIcon image = null;
+		Image image = null;
 		synchronized (Cover.class) {
-			image = new ImageIcon(getFile().getAbsolutePath());
-			if (image.getImageLoadStatus() != MediaTracker.COMPLETE) {
-				Log.debug("Image Loading status: " + image.getImageLoadStatus());
-				throw new JajukException(129, url.toString(), null);
-			}
-			image.getImage().flush();
+			// Read cover using ImageIO API (note that we don't need using
+			// Mediatracker as read method is synchronous)
+			image = Toolkit.getDefaultToolkit().getImage(
+					getFile().getAbsolutePath());
 		}
-		Log.debug("Loaded {{" + url.toString() + "}} in  " + (System.currentTimeMillis() - l)
-				+ " ms");
+		Log.debug("Loaded {{" + url.toString() + "}} in  "
+				+ (System.currentTimeMillis() - l) + " ms");
 		return image;
 	}
 

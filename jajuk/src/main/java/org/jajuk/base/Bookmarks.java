@@ -26,7 +26,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -42,11 +41,6 @@ public class Bookmarks implements ITechnicalStrings {
 	/** Bookmarks files */
 	ArrayList<File> alFiles = new ArrayList<File>(100);
 
-	/**
-	 * Singleton accessor
-	 * 
-	 * @return the singleton
-	 */
 	public static synchronized Bookmarks getInstance() {
 		if (bookmarks == null) {
 			bookmarks = new Bookmarks();
@@ -57,10 +51,10 @@ public class Bookmarks implements ITechnicalStrings {
 	/** Private constructor */
 	private Bookmarks() {
 		String sBookmarks = ConfigurationManager.getProperty(CONF_BOOKMARKS);
-		if (sBookmarks == null || "".equals(sBookmarks.trim())) { 
+		if (sBookmarks == null || "".equals(sBookmarks.trim())) {
 			return;
 		}
-		StringTokenizer stFiles = new StringTokenizer(sBookmarks, ","); 
+		StringTokenizer stFiles = new StringTokenizer(sBookmarks, ",");
 		while (stFiles.hasMoreTokens()) {
 			String sId = stFiles.nextToken();
 			File file = FileManager.getInstance().getFileByID(sId);
@@ -71,21 +65,19 @@ public class Bookmarks implements ITechnicalStrings {
 	}
 
 	/**
-	 * Return bookmarks as a colon separeted list of file ids
+	 * Return bookmarks as a colon separated list of file ids
 	 */
 	public String toString() {
-		Iterator it = alFiles.iterator();
-		StringBuffer sbOut = new StringBuffer();
-		while (it.hasNext()) {
-			File file = (File) it.next();
-			sbOut.append(file.getId()).append(',');
+		StringBuilder sbOut = new StringBuilder();
+		for (File file : alFiles) {
+			sbOut.append(file.getID()).append(',');
 		}
 		int i = sbOut.length();
 		return sbOut.substring(0, i - 1);// remove last ','
 	}
 
 	/** Return bookmarked files */
-	public ArrayList getFiles() {
+	public ArrayList<File> getFiles() {
 		return alFiles;
 	}
 
@@ -95,7 +87,7 @@ public class Bookmarks implements ITechnicalStrings {
 	 */
 	public void clear() {
 		alFiles.clear();
-		ConfigurationManager.setProperty(CONF_BOOKMARKS, ""); 
+		ConfigurationManager.setProperty(CONF_BOOKMARKS, "");
 	}
 
 	/**
@@ -164,17 +156,14 @@ public class Bookmarks implements ITechnicalStrings {
 	 */
 	public void addFiles(List<File> alFilesToAdd) {
 		try {
-			Iterator it = alFilesToAdd.iterator();
-			while (it.hasNext()) {
-				addFile((File) it.next());
+			for (File file : alFilesToAdd) {
+				addFile(file);
 			}
 		} catch (Exception e) {
 			Log.error(e);
 		} finally {
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYLIST_REFRESH)); // refresh
-			// playlist
-			// editor
+			//refresh playlist editor
+			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
 		}
 	}
 }

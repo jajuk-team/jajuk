@@ -104,7 +104,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 	 * toString method
 	 */
 	public String toString() {
-		return "Type[ID=" + sId + " Name=" + getName() + " ; Extension=" + sExtension + "]";    
+		return "Type[ID=" + getID() + " Name=" + getName() + " ; Extension=" + sExtension + "]";    
 	}
 
 	/**

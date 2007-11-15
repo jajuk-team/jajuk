@@ -104,11 +104,10 @@ public class StyleManager extends ItemManager {
 	 */
 	public Style registerStyle(String sId, String sName) {
 		synchronized (StyleManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) {
-				Style style = (Style) hmItems.get(sId);
+			Style style = (Style) hmItems.get(sId);
+			if (style != null) {
 				return style;
 			}
-			Style style = null;
 			style = new Style(sId, sName);
 			hmItems.put(sId, style);
 			// add it in styles list if new

@@ -20,6 +20,10 @@
 
 package org.jajuk.util;
 
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+
 
 /**
  * Load icons from this class
@@ -27,13 +31,14 @@ package org.jajuk.util;
  * Use: IconLoader.ICON_LOGO
  * </p>
  */
-public class IconLoader {
+public class IconLoader implements ITechnicalStrings{
+	
+	/** No covers image cache : size:default icon */
+	public static HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(
+			10);
 
 	public static final UrlImageIcon ICON_NO_COVER = new UrlImageIcon(Util
 			.getResource("images/included/" + ITechnicalStrings.FILE_THUMB_NO_COVER));
-
-	public static final UrlImageIcon ICON_BACKGROUND = new UrlImageIcon(Util
-			.getResource("images/included/" + ITechnicalStrings.FILE_BACKGROUND_IMAGE));
 
 	public static final UrlImageIcon ICON_LOGO = new UrlImageIcon(Util
 			.getResource("icons/64x64/jajuk-icon_64x64.png"));
@@ -515,5 +520,20 @@ public class IconLoader {
 	
 	public static final UrlImageIcon ICON_POPUP = new UrlImageIcon(Util
 			.getResource("icons/16x16/popup_16x16.png"));
+        
+        static {
+		noCoversCache.put(THUMBNAIL_SIZE_50x50, Util.getResizedImage(
+				IconLoader.ICON_NO_COVER, 50, 50));
+		noCoversCache.put(THUMBNAIL_SIZE_100x100, Util.getResizedImage(
+				IconLoader.ICON_NO_COVER, 100, 100));
+		noCoversCache.put(THUMBNAIL_SIZE_150x150, Util.getResizedImage(
+				IconLoader.ICON_NO_COVER, 150, 150));
+		noCoversCache.put(THUMBNAIL_SIZE_200x200, Util.getResizedImage(
+				IconLoader.ICON_NO_COVER, 200, 200));
+		noCoversCache.put(THUMBNAIL_SIZE_250x250, Util.getResizedImage(
+				IconLoader.ICON_NO_COVER, 250, 250));
+		noCoversCache.put(THUMBNAIL_SIZE_300x300, Util.getResizedImage(
+				IconLoader.ICON_NO_COVER, 300, 300));
+	}
 }
 

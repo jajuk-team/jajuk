@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
+import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -454,7 +455,7 @@ public class FIFO implements ITechnicalStrings {
 				Log.debug("Now playing :" + fCurrent);
 				// Send an event that a track has been launched
 				Properties pDetails = new Properties();
-				pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
+				pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
 				pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
 				ObservationManager.notify(new Event(EventSubject.EVENT_FILE_LAUNCHED, pDetails));
 				// all cases for a cover full refresh
@@ -480,7 +481,7 @@ public class FIFO implements ITechnicalStrings {
 				// add hits number
 				fCurrent.getTrack().incHits(); // inc hits number
 				fCurrent.getTrack().incSessionHits();// inc session hits
-				FileManager.getInstance().setRateHasChanged(true);
+				RatingManager.setRateHasChanged(true);
 			}
 		} catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
 			Log.error(122, t);
@@ -1158,7 +1159,7 @@ public class FIFO implements ITechnicalStrings {
 			if (index > 0) {
 				// do not store current track (otherwise, it
 				// will be duplicate at startup)
-				writer.println(st.getFile().getId());
+				writer.println(st.getFile().getID());
 			}
 			index++;
 		}

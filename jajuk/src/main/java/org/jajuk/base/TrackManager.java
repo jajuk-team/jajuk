@@ -135,9 +135,9 @@ public class TrackManager extends ItemManager implements Observer {
 	 */
 	protected static String createID(String sName, Album album, Style style, Author author,
 			long length, Year year, long lOrder, Type type) {
-		StringBuffer sb = new StringBuffer(100);
-		sb.append(style.getId()).append(author.getId()).append(album.getId()).append(sName).append(
-				year.getValue()).append(length).append(lOrder).append(type.getId());
+		StringBuilder sb = new StringBuilder(100);
+		sb.append(style.getID()).append(author.getID()).append(album.getID()).append(sName).append(
+				year.getValue()).append(length).append(lOrder).append(type.getID());
 		// distinguish tracks by type because we can't find best file
 		// on different quality levels by format
 		return MD5Processor.hash(sb.toString());
@@ -151,10 +151,10 @@ public class TrackManager extends ItemManager implements Observer {
 	public Track registerTrack(String sId, String sName, Album album, Style style, Author author,
 			long length, Year year, long lOrder, Type type) {
 		synchronized (TrackManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) {
-				return (Track) hmItems.get(sId);
+			Track track = (Track)hmItems.get(sId);
+			if (track != null) {
+				return track;
 			}
-			Track track = null;
 			track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
 			hmItems.put(sId, track);
 			return track;
@@ -510,7 +510,7 @@ public class TrackManager extends ItemManager implements Observer {
 			if (track.getFiles().size() == 0) { // normal case: old track has no
 				// more associated
 				// tracks, remove it
-				removeItem(track.getId());// remove old track
+				removeItem(track.getID());// remove old track
 				bChangePbm = false;
 			} else { // some files have not been changed because located on
 				// unmounted devices
@@ -534,7 +534,7 @@ public class TrackManager extends ItemManager implements Observer {
 				Iterator itFiles = track.getFiles().iterator();
 				while (itFiles.hasNext()) {
 					org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
-					if (FileManager.getInstance().getFileByID(file.getId()) == null) {
+					if (FileManager.getInstance().getFileByID(file.getID()) == null) {
 						itFiles.remove();// no? remove it from the track
 					}
 				}

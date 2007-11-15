@@ -108,7 +108,6 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 		} else if (cType.equals(String.class)) {
 			if (oDefaultValue == null) {
 				this.oDefaultValue = ""; // if no default is given, "" 
-				// 
 			}
 			this.sHumanType = Messages.getString("Property_Format_String"); 
 		} else if (cType.equals(Long.class)) {
@@ -124,7 +123,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 		} else if (cType.equals(Date.class)) {
 			// date default
 			if (oDefaultValue == null) {
-				this.oDefaultValue = new Date();
+				this.oDefaultValue = Util.today;
 			} else {
 				this.oDefaultValue = oDefaultValue;
 			}

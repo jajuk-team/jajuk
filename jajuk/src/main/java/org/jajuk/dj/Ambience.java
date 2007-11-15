@@ -181,7 +181,7 @@ public class Ambience implements Comparable<Ambience> {
 	public String toXML() {
 		String s = ""; 
 		for (Style style : getStyles()) {
-			s += style.getId() + ","; 
+			s += style.getID() + ","; 
 		}
 		return s.substring(0, s.length() - 1); // remove last coma
 	}

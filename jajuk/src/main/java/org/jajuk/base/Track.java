@@ -84,22 +84,22 @@ public class Track extends LogicalItem implements Comparable {
 		super(sId, sName);
 		// album
 		this.album = album;
-		setProperty(XML_ALBUM, album.getId().intern());
+		setProperty(XML_ALBUM, album.getID());
 		// style
 		this.style = style;
-		setProperty(XML_STYLE, style.getId().intern());
+		setProperty(XML_STYLE, style.getID());
 		// author
 		this.author = author;
-		setProperty(XML_AUTHOR, author.getId().intern());
+		setProperty(XML_AUTHOR, author.getID());
 		// Length
 		this.length = length;
 		setProperty(XML_TRACK_LENGTH, length);
 		// Type
 		this.type = type;
-		setProperty(XML_TYPE, type.getId().intern());
+		setProperty(XML_TYPE, type.getID());
 		// Year
 		this.year = year;
-		setProperty(XML_YEAR, year.getId().intern());
+		setProperty(XML_YEAR, year.getID());
 		// Order
 		setProperty(XML_TRACK_ORDER, lOrder);
 		// Rate
@@ -112,23 +112,23 @@ public class Track extends LogicalItem implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		String sOut = "Track[ID=" + sId + " Name={{" + getName() + "}} " + album + " " +    
-				style
-				+ " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate() + " " +     
-				type + " Hits=" + getHits() + " Addition date=" + getAdditionDate() + " Comment=" +   
-				getComment() + " order=" + getOrder() + " Nb of files=" + alFiles.size() + "]";     
+		String sOut = "Track[ID=" + getID() + " Name={{" + getName() + "}} " + album + " " + style
+				+ " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate="
+				+ getRate() + " " + type + " Hits=" + getHits() + " Addition date="
+				+ getAdditionDate() + " Comment=" + getComment() + " order=" + getOrder()
+				+ " Nb of files=" + alFiles.size() + "]";
 		for (int i = 0; i < alFiles.size(); i++) {
 			sOut += '\n' + alFiles.get(i).toString();
 		}
 		return sOut;
 	}
-	
+
 	/**
 	 * @return a human representation of all concatenated properties
 	 */
 	public String getAny() {
 		// rebuild any
-		StringBuffer sb = new StringBuffer(100);
+		StringBuilder sb = new StringBuilder(100);
 		sb.append(super.getAny()); // add all files-based properties
 		// now add others properties
 		sb.append(getName());
@@ -139,8 +139,8 @@ public class Track extends LogicalItem implements Comparable {
 		sb.append(getRate());
 		sb.append(getValue(XML_TRACK_COMMENT));// custom properties now
 		sb.append(getValue(XML_TRACK_ORDER));// custom properties now
-		//Add all files absolute paths
-		for (File file:getFiles()){
+		// Add all files absolute paths
+		for (File file : getFiles()) {
 			sb.append(file.getAbsolutePath());
 		}
 		return sb.toString();
@@ -157,7 +157,7 @@ public class Track extends LogicalItem implements Comparable {
 	 */
 	public int compareTo(Object o) {
 		Track otherTrack = (Track) o;
-		return getId().compareTo(otherTrack.getId());
+		return getID().compareTo(otherTrack.getID());
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class Track extends LogicalItem implements Comparable {
 		Iterator it = alFiles.iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
-			l += file.lSize;
+			l += file.getSize();
 		}
 		return l;
 	}
@@ -256,9 +256,7 @@ public class Track extends LogicalItem implements Comparable {
 					}
 				}
 			});
-			fileOut = alMountedFiles.get(alMountedFiles.size() - 1); // highest
-			// score
-			// last
+			fileOut = alMountedFiles.get(alMountedFiles.size() - 1);
 		}
 		return fileOut;
 	}
@@ -341,19 +339,8 @@ public class Track extends LogicalItem implements Comparable {
 	 * @param file
 	 */
 	public void addFile(File file) {
-		if (!alFiles.contains(file) && file.getTrack().equals(this)) {// make
-			// sure
-			// a
-			// file
-			// will
-			// be
-			// referenced
-			// by
-			// only
-			// one
-			// track
-			// (first
-			// found)
+		// make sure a file will be referenced by only one track (first found)
+		if (!alFiles.contains(file) && file.getTrack().equals(this)) {
 			alFiles.add(file);
 		}
 	}
@@ -429,7 +416,7 @@ public class Track extends LogicalItem implements Comparable {
 	 */
 	public boolean shouldBeHidden() {
 		if (getPlayeableFile(true) != null
-				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { 
+				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) {
 			return false;
 		}
 		return true;
@@ -448,7 +435,7 @@ public class Track extends LogicalItem implements Comparable {
 	 * Get item description
 	 */
 	public String getDesc() {
-		return Messages.getString("Item_Track") + " : " + getName();  
+		return Messages.getString("Item_Track") + " : " + getName();
 	}
 
 	/*
@@ -483,11 +470,11 @@ public class Track extends LogicalItem implements Comparable {
 		} else if (XML_YEAR.equals(sKey)) {
 			return getStringValue(sKey);
 		} else if (XML_FILES.equals(sKey)) {
-			StringBuffer sbOut = new StringBuffer();
+			StringBuilder sbOut = new StringBuilder();
 			Iterator it = alFiles.iterator();
 			while (it.hasNext()) {
 				File file = (File) it.next();
-				sbOut.append(file.getAbsolutePath() + ","); 
+				sbOut.append(file.getAbsolutePath() + ",");
 			}
 			return sbOut.substring(0, sbOut.length() - 1); // remove last
 			// ','
@@ -499,8 +486,10 @@ public class Track extends LogicalItem implements Comparable {
 			return super.getHumanValue(sKey);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.jajuk.base.Item#getIconRepresentation()
 	 */
 	@Override

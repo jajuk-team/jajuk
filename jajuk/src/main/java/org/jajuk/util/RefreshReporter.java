@@ -106,7 +106,7 @@ public class RefreshReporter {
 
 	public void updateState(Directory dir) {
 		if (rdialog != null) {
-			rdialog.setRefreshing(new StringBuffer(Messages.getString("Device.44")).append(' ')
+			rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ')
 					.append(dir.getRelativePath()).toString());
 			int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
 			rdialog.setProgress(progress);
@@ -115,7 +115,7 @@ public class RefreshReporter {
 	}
 
 	private String buildFinalMessage(long time) {
-		StringBuffer sbOut = new StringBuffer("[").append(device.getName()).append(
+		StringBuilder sbOut = new StringBuilder("[").append(device.getName()).append(
 				Messages.getString("Device.25")).append(
 				((time < 1000) ? time + " ms" : time / 1000 + " s")).append(" - ").append(
 				iNbNewFiles).append(Messages.getString("Device.27"));

@@ -525,7 +525,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 							}
 						}
 					}
-					StringBuffer sbOut = new StringBuffer().append(items).append(
+					StringBuilder sbOut = new StringBuilder().append(items).append(
 							Messages.getString("TracksTreeView.31"));
 					InformationJPanel.getInstance().setSelection(sbOut.toString());
 					if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {

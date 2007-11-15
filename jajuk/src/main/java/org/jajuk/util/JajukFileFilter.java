@@ -38,7 +38,7 @@ import javax.swing.filechooser.FileFilter;
  *      JajukFileFilter.AudioFilter.getInstance());
  *      </p>
  *      This class can be use by file choosers (probably a JajukFileChooser) and for engine 
- *      file selection that uses the raw accept method. In the second case, it can be usefull
+ *      file selection that uses the raw accept method. In the second case, it can be useful
  *      to use grouping fiters like music or report (but it is not intended to be used 
  *      by file choosers that require only one extension by filter) and or/and argument given 
  *      as an argument
@@ -271,6 +271,59 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
 			return sOut;
 		}
 	}
+	
+	/**
+	 * 
+	 * Jar filter
+	 */
+	public static class JarFilter extends JajukFileFilter {
+		/** Self instance */
+		private static JarFilter self = null;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */
+		public boolean accept(File f) {
+			// Force directories acceptation if user wants to navigate into
+			// directories
+			if (this.bShowDirectories && f.isDirectory()) {
+				return true;
+			} else {
+				if (f.isDirectory()) {
+					return false;
+				}
+				return "jar".equals(Util.getExtension(f));
+			}
+		}
+
+		/** No instanciation */
+		private JarFilter() {
+		}
+
+		/**
+		 * 
+		 * @return singleton
+		 */
+		public static JarFilter getInstance() {
+			if (self == null) {
+				self = new JarFilter();
+			}
+			return self;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see javax.swing.filechooser.FileFilter#getDescription()
+		 */
+		@Override
+		public String getDescription() {
+			return "jar";
+		}
+	}
+
 
 	/**
 	 * 

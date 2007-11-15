@@ -630,7 +630,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 						}
 					}
 					lSize /= 1048576; // set size in MB
-					StringBuffer sbOut = new StringBuffer().append(items).append(
+					StringBuilder sbOut = new StringBuilder().append(items).append(
 							Messages.getString("FilesTreeView.52"));
 					if (lSize > 1024) { // more than 1024 MB -> in GB
 						sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(

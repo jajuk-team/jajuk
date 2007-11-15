@@ -219,11 +219,11 @@ public class TransitionDigitalDJ extends DigitalDJ {
 	 * @see dj.DigitalDJ#toXML()
 	 */
 	public String toXML() {
-		StringBuffer sb = new StringBuffer(2000);
+		StringBuilder sb = new StringBuilder(2000);
 		sb.append(toXMLGeneralParameters());
 		sb
 				.append("\t<" + XML_DJ_TRANSITIONS + " " + XML_DJ_STARTUP_STYLE + "='" +   
-						getStartupStyle().getId() + "'>\n"); 
+						getStartupStyle().getID() + "'>\n"); 
 		for (Transition transition : transitions) {
 			sb.append("\t\t<" + XML_DJ_TRANSITION + " " +  
 					XML_DJ_FROM

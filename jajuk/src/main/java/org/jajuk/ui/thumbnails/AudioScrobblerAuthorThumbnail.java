@@ -20,6 +20,15 @@
 
 package org.jajuk.ui.thumbnails;
 
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
@@ -30,15 +39,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import java.awt.Color;
-import java.awt.MediaTracker;
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import com.sun.java.help.impl.SwingWorker;
 import com.vlsolutions.swing.docking.ShadowBorder;
@@ -88,14 +88,15 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 							.currentTimeMillis()));
 					fThumb = Util.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis()
 							+ "_100x100." + Util.getExtension(fCover));
-					ImageIcon downloadedImage = new ImageIcon(fCover.getAbsolutePath());
-					if (downloadedImage.getImageLoadStatus() != MediaTracker.COMPLETE) {
-						Log.debug("Image " + fCover + " Loading status: "
-								+ downloadedImage.getImageLoadStatus());
-					}
+					// Create the image using Toolkit and not ImageIO API to be able to
+					// flush all the image data
+					ImageIcon downloadedImage = new ImageIcon(Toolkit
+							.getDefaultToolkit().getImage(
+									fCover.getAbsolutePath()));
 					ii = Util.getScaledImage(downloadedImage, 100);
 					// Free images memory
 					downloadedImage.getImage().flush();
+					ii.getImage().flush();
 				} catch (Exception e) {
 					Log.error(e);
 				}

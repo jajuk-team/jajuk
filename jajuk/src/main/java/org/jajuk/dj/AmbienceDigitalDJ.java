@@ -96,7 +96,7 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 	 * @see dj.DigitalDJ#toXML()
 	 */
 	public String toXML() {
-		StringBuffer sb = new StringBuffer(2000);
+		StringBuilder sb = new StringBuilder(2000);
 		sb.append(toXMLGeneralParameters());
 		sb.append("\t<" + XML_DJ_AMBIENCE + " " + XML_DJ_VALUE + "='");   
 		sb.append(ambience.getID() + "'/>\n"); 

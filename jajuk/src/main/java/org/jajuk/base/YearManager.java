@@ -75,11 +75,10 @@ public class YearManager extends ItemManager {
 	 */
 	public Year registerYear(String sId, String pYear) {
 		synchronized (YearManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) {
-				Year year = (Year) hmItems.get(sId);
+			Year year = (Year) hmItems.get(sId);
+			if (year != null) {
 				return year;
 			}
-			Year year = null;
 			year = new Year(sId, pYear);
 			hmItems.put(sId, year);
 			return year;

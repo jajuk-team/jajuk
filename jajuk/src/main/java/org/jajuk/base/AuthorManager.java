@@ -98,11 +98,10 @@ public class AuthorManager extends ItemManager {
 	 */
 	public Author registerAuthor(String sId, String sName) {
 		synchronized (AuthorManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) {
-				Author author = (Author) hmItems.get(sId);
+			Author author = (Author) hmItems.get(sId);
+			if (author != null) {
 				return author;
 			}
-			Author author = null;
 			author = new Author(sId, sName);
 			hmItems.put(sId, author);
 			// add it in styles list if new
@@ -176,8 +175,7 @@ public class AuthorManager extends ItemManager {
 		sOut = sOut.replace('-', ' '); // move - to space
 		sOut = sOut.replace('_', ' '); // move _ to space
 		char c = sOut.charAt(0);
-		sOut = sOut.toLowerCase();
-		StringBuffer sb = new StringBuffer(sOut);
+		StringBuilder sb = new StringBuilder(sOut);
 		sb.setCharAt(0, Character.toUpperCase(c));
 		return sb.toString();
 	}

@@ -59,10 +59,12 @@ import javax.swing.event.ChangeListener;
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
 		ChangeListener, MouseWheelListener {
+
 	private static final long serialVersionUID = 1L;
 
 	// consts
 	/** Informative message type ( displayed in blue ) * */
+
 	public static final int INFORMATIVE = 0;
 
 	/** Informative message type ( displayed in red )* */
@@ -79,6 +81,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
 	/** Swing Timer to refresh the component */
 	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
+
 		public void actionPerformed(ActionEvent e) {
 			update(new Event(EventSubject.EVENT_HEART_BEAT));
 		}
@@ -97,6 +100,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 	}
 
 	// widgets declaration
+
 	JLabel jlMessage;
 
 	JLabel jlSelection;
@@ -108,6 +112,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 	JLabel jlCurrent;
 
 	// attributes
+
 	String sMessage;
 
 	/** Current message type */
@@ -190,7 +195,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 			update(new Event(EventSubject.EVENT_PLAY_ERROR, ObservationManager
 					.getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
 		}
-		//Check if a webradio has been launch before this view is visible
+		// Check if a webradio has been launch before this view is visible
 		update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
 				.getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
 		// register for given events
@@ -243,6 +248,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		this.sMessage = sMessage;
 		this.iType = iMessageType;
 		SwingUtilities.invokeLater(new Runnable() {
+
 			public void run() {
 				InformationJPanel.this.sMessage = sMessage;
 				jlMessage.setText(sMessage);
@@ -298,58 +304,63 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 	 * 
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(final Event event) {
-		// we synchronize this method to make error message is visible all 2
-		// secs
+	public void update(final Event event) {
 		final EventSubject subject = event.getSubject();
 		// do not insert this subject inside the invokeLater because we have to
 		// leave the awt dispatcher called inside the setMessage and THEN, sleep
 		// for 2 secs.
 		if (EventSubject.EVENT_PLAY_ERROR.equals(subject)) {
 			try {
-				// reset data
-				setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
-						+ Util.formatTimeBySec(0, false));
-				// set error message
-				Object o = ObservationManager.getDetail(event, DETAIL_CONTENT);
-				// current item is a file
-				if (o instanceof File) {
-					File fCurrent = (File) o;
-					if (fCurrent != null) {
-						// display associated error code is given
-						String sReason = (String) ObservationManager
-								.getDetail(event, DETAIL_REASON);
-						if (sReason != null) {
-							setMessage(Messages.getString("Error." + sReason) + ": "
-									+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
-						} else {// default message
-							setMessage(Messages.getString("Error.007") + ": "
-									+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+				// we synchronize this code to make sure error message is
+				// visible all 2
+				// secs
+				synchronized (this) {
+					// reset data
+					setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
+							+ Util.formatTimeBySec(0, false));
+					// set error message
+					Object o = ObservationManager.getDetail(event, DETAIL_CONTENT);
+					// current item is a file
+					if (o instanceof File) {
+						File fCurrent = (File) o;
+						if (fCurrent != null) {
+							// display associated error code is given
+							String sReason = (String) ObservationManager.getDetail(event,
+									DETAIL_REASON);
+							if (sReason != null) {
+								setMessage(Messages.getString("Error." + sReason) + ": "
+										+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+							} else {// default message
+								setMessage(Messages.getString("Error.007") + ": "
+										+ fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+							}
+						} else { // none specified file
+							setMessage(Messages.getString("Error.007"), InformationJPanel.ERROR);
 						}
-					} else { // none specified file
-						setMessage(Messages.getString("Error.007"), InformationJPanel.ERROR);
-					}
-				} else if (o instanceof WebRadio) {
-					WebRadio radio = (WebRadio) o;
-					if (radio != null) {
-						// display associated error code is given
-						String sReason = (String) ObservationManager
-								.getDetail(event, DETAIL_REASON);
-						if (sReason != null) {
-							setMessage(Messages.getString("Error." + sReason) + ": "
-									+ radio.toString(), InformationJPanel.ERROR);
-						} else {// default message
-							setMessage(Messages.getString("Error.007") + ": " + radio.toString(),
-									InformationJPanel.ERROR);
+					} else if (o instanceof WebRadio) {
+						WebRadio radio = (WebRadio) o;
+						if (radio != null) {
+							// display associated error code is given
+							String sReason = (String) ObservationManager.getDetail(event,
+									DETAIL_REASON);
+							if (sReason != null) {
+								setMessage(Messages.getString("Error." + sReason) + ": "
+										+ radio.toString(), InformationJPanel.ERROR);
+							} else {// default message
+								setMessage(Messages.getString("Error.007") + ": "
+										+ radio.toString(), InformationJPanel.ERROR);
+							}
+						} else { // none specified file
+							setMessage(Messages.getString("Error.170"), InformationJPanel.ERROR);
 						}
-					} else { // none specified file
-						setMessage(Messages.getString("Error.170"), InformationJPanel.ERROR);
 					}
 				}
 			} catch (Exception e) {
 				Log.error(e);
 			}
 		} else {
+			// [PERF] compute this outside the AWT thread for perfs
+			final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
@@ -357,8 +368,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
 						long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
 						int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
-						String sCurrentTotalMessage = Util.formatTimeBySec(JajukTimer.getInstance()
-								.getTotalTimeToPlay(), false);
+						String sCurrentTotalMessage = Util.formatTimeBySec(timeToPlay, false);
 						setTotalTimeMessage(sCurrentTotalMessage + " ["
 								+ FIFO.getInstance().getFIFO().size() + "]");
 						setCurrentTimeMessage(Util.formatTimeBySec(lTime, false) + " / "
@@ -407,7 +417,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 							setMessage(sMessage, InformationJPanel.INFORMATIVE);
 						}
 					} else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
-						if (event.getDetails() == null){
+						if (event.getDetails() == null) {
 							return;
 						}
 						WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
@@ -452,6 +462,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 	 */
 	private void setPosition(final float fPosition) {
 		new Thread() {
+
 			public void run() {
 				Player.seek(fPosition);
 			}

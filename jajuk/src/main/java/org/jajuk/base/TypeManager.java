@@ -188,7 +188,7 @@ public class TypeManager extends ItemManager {
 	 */
 	public String getTypeListString() {
 		synchronized (TrackManager.getInstance().getLock()) {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			Iterator it = hmSupportedTypes.keySet().iterator();
 			while (it.hasNext()) {
 				sb.append(it.next());

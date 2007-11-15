@@ -20,25 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -54,6 +35,27 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
+
+import info.clearthought.layout.TableLayout;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 /**
  * First time Wizard
@@ -100,6 +102,14 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 	 * First time wizard
 	 */
 	public FirstTimeWizard() {
+		initUI();		
+		pack();
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
+		setVisible(true);
+	}
+	
+	private void initUI(){
 		setTitle(Messages.getString("FirstTimeWizard.0"));
 		int iX_SEPARATOR = 10;
 		int iY_SEPARATOR = 10;
@@ -172,6 +182,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 		jpMain.add(jlLeftIcon, "0,0,0,5");
 
 		getRootPane().setDefaultButton(jbOk);
+
 	}
 
 	public void actionPerformed(ActionEvent e) {

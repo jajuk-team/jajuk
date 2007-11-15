@@ -48,12 +48,6 @@ import java.util.TreeSet;
  * Convenient class to manage files
  */
 public class FileManager extends ItemManager implements Observer {
-	/**
-	 * Flag the fact a rate has change for a track, used by bestof view refresh
-	 * for perfs
-	 */
-	private boolean bRateHasChanged = true;
-
 	/** Best of files */
 	private ArrayList<File> alBestofFiles = new ArrayList<File>(20);
 
@@ -122,8 +116,8 @@ public class FileManager extends ItemManager implements Observer {
 	public File registerFile(String sId, String sName, Directory directory, Track track,
 			long lSize, long lQuality) {
 		synchronized (FileManager.getInstance().getLock()) {
-			File file = null;
-			if (!hmItems.containsKey(sId)) {
+			File file = (File)hmItems.get(sId);
+			if (file == null) {
 				file = new File(sId, sName, directory, track, lSize, lQuality);
 				hmItems.put(sId, file);
 				// add to directory
@@ -133,7 +127,6 @@ public class FileManager extends ItemManager implements Observer {
 				}
 			} else {
 				// If file already exist and the track has changed, make changes
-				file = (File) hmItems.get(sId);
 				// Set name again because under Windows, the file name case
 				// could have changed but we keep the same file object
 				file.setName(sName);
@@ -159,10 +152,10 @@ public class FileManager extends ItemManager implements Observer {
 		// Under windows, all files/directories with different cases should get
 		// the same ID
 		if (Util.isUnderWindows()) {
-			id = MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+			id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
 					dir.getRelativePath().toLowerCase()).append(sName.toLowerCase()).toString());
 		} else {
-			id = MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+			id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
 					dir.getRelativePath()).append(sName).toString());
 		}
 		return id;
@@ -191,7 +184,7 @@ public class FileManager extends ItemManager implements Observer {
 					+ java.io.File.separator + sNewName);
 			// recalculate file ID
 			Directory dir = fileOld.getDirectory();
-			String sNewId = MD5Processor.hash(new StringBuffer(dir.getDevice().getName()).append(
+			String sNewId = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
 					dir.getDevice().getUrl()).append(dir.getRelativePath()).append(sNewName)
 					.toString());
 			// create a new file (with own fio and sAbs)
@@ -248,7 +241,7 @@ public class FileManager extends ItemManager implements Observer {
 	public File changeFileDirectory(File old, Directory newDir) {
 		synchronized (FileManager.getInstance().getLock()) {
 			// recalculate file ID
-			String sNewId = MD5Processor.hash(new StringBuffer(newDir.getDevice().getName())
+			String sNewId = MD5Processor.hash(new StringBuilder(newDir.getDevice().getName())
 					.append(newDir.getDevice().getUrl()).append(newDir.getRelativePath()).append(
 							old.getName()).toString());
 			// create a new file (with own fio and sAbs)
@@ -278,7 +271,7 @@ public class FileManager extends ItemManager implements Observer {
 			while (it.hasNext()) {
 				File file = (File) it.next();
 				if (file.getDirectory() == null
-						|| file.getDirectory().getDevice().getId().equals(sId)) {
+						|| file.getDirectory().getDevice().getID().equals(sId)) {
 					it.remove(); // this is the right way to remove entry
 					// in the hashmap
 				}
@@ -288,7 +281,7 @@ public class FileManager extends ItemManager implements Observer {
 			while (it.hasNext()) {
 				File file = (File) it.next();
 				if (file.getDirectory() == null
-						|| file.getDirectory().getDevice().getId().equals(sId)) {
+						|| file.getDirectory().getDevice().getID().equals(sId)) {
 					it.remove(); // this is the right way to remove entry
 				}
 			}
@@ -302,7 +295,7 @@ public class FileManager extends ItemManager implements Observer {
 	 */
 	public void removeFile(File file) {
 		synchronized (FileManager.getInstance().getLock()) {
-			hmItems.remove(file.getId());
+			hmItems.remove(file.getID());
 			file.getDirectory().removeFile(file);
 		}
 	}
@@ -555,16 +548,6 @@ public class FileManager extends ItemManager implements Observer {
 	}
 
 	/**
-	 * Return CONF_BESTOF_SIZE top files
-	 * 
-	 * @return top files
-	 */
-	public ArrayList getBestOfFiles() {
-		return getBestOfFiles(true, Integer.parseInt(ConfigurationManager
-				.getProperty(CONF_BESTOF_TRACKS_SIZE)));
-	}
-
-	/**
 	 * Return bestof files
 	 * 
 	 * @param bHideUnmounted
@@ -573,15 +556,21 @@ public class FileManager extends ItemManager implements Observer {
 	 *            nb of items to return
 	 * @return top files
 	 */
-	public ArrayList<File> getBestOfFiles(boolean bHideUnmounted, int iNbBestofFiles) {
-		// test a rate has changed for perfs
-		if (FileManager.getInstance().hasRateChanged() || alBestofFiles == null) {
-			// clear data
+	public ArrayList<File> getBestOfFiles() {
+		if (alBestofFiles == null) {
+			refreshBestOfFiles();
+		}
+		return alBestofFiles;
+	}
+
+	public void refreshBestOfFiles(){
+		int iNbBestofFiles = Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_TRACKS_SIZE));	
+		// clear data
 			alBestofFiles.clear();
 			// create a temporary table to remove unmounted files
 			ArrayList<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
 			for (Track track : TrackManager.getInstance().getTracks()) {
-				File file = track.getPlayeableFile(bHideUnmounted);
+				File file = track.getPlayeableFile(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 				if (file != null) {
 					alEligibleFiles.add(file);
 				}
@@ -593,9 +582,6 @@ public class FileManager extends ItemManager implements Observer {
 				alBestofFiles.add(file);
 				i++;
 			}
-			setRateHasChanged(false);
-		}
-		return alBestofFiles;
 	}
 
 	/**
@@ -750,25 +736,6 @@ public class FileManager extends ItemManager implements Observer {
 				}
 			}
 			return out;
-		}
-	}
-
-	/**
-	 * @return Returns the bRateHasChanged.
-	 */
-	public boolean hasRateChanged() {
-		return bRateHasChanged;
-	}
-
-	/**
-	 * @param rateHasChanged
-	 *            The bRateHasChanged to set.
-	 */
-	public void setRateHasChanged(boolean rateHasChanged) {
-		bRateHasChanged = rateHasChanged;
-		if (bRateHasChanged) {
-			// refresh to update rates
-			ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
 		}
 	}
 

@@ -18,35 +18,6 @@
  */
 package org.jajuk;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
@@ -70,6 +41,7 @@ import org.jajuk.base.WebRadio;
 import org.jajuk.base.YearManager;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJManager;
+import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
@@ -96,6 +68,33 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioManager;
+
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -284,15 +283,13 @@ public class Main implements ITechnicalStrings {
 							JAJUK_VERSION + " " + JAJUK_VERSION_DATE, FontManager.getInstance()
 									.getFont(JajukFont.SPLASH), null);
 					sc.setTitle(Messages.getString("JajukWindow.3"));
+					sc.setProgress(0, Messages.getString("SplashScreen.0"));
 					sc.splashOn();
 				}
 			});
 
 			// Apply any proxy (requires load conf)
 			DownloadManager.setDefaultProxySettings();
-
-			// Display progress
-			sc.setProgress(0, Messages.getString("SplashScreen.0"));
 
 			// Registers ItemManager managers
 			ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
@@ -316,12 +313,12 @@ public class Main implements ITechnicalStrings {
 			UpgradeManager.upgradeStep1();
 
 			// Display user system configuration
-			Log.debug("Workspace used: "+workspace);
+			Log.debug("Workspace used: " + workspace);
 			Log.debug(Util.getAnonymizedSystemProperties().toString());
 
 			// Display user Jajuk configuration
 			Log.debug(Util.getAnonymizedJajukProperties().toString());
-			
+
 			// check for another session (needs setLocal)
 			checkOtherSession();
 
@@ -339,13 +336,15 @@ public class Main implements ITechnicalStrings {
 			registerTypes();
 
 			// Display progress
+			// sc can be null if not already loaded. Done for perfs
 			sc.setProgress(10, Messages.getString("SplashScreen.1"));
+
+			// Start operations that can be done asynchronously during
+			// collection loading
+			startupAsyncBeforeCollectionLoad();
 
 			// Load collection
 			loadCollection();
-
-			// Clean the collection up
-			Collection.cleanup();
 
 			// Display progress
 			sc.setProgress(70, Messages.getString("SplashScreen.2"));
@@ -362,91 +361,8 @@ public class Main implements ITechnicalStrings {
 			// Load djs
 			DigitalDJManager.getInstance().loadAllDJs();
 
-			// Various asynchronous startup actions
-			startupAsync();
-
-			// Start check for update thread if required
-			if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
-				new Thread() {
-					public void run() {
-						// Wait 10 min before checking
-						try {
-							Thread.sleep(600000);
-							UpgradeManager.checkForUpdate(false);
-						} catch (InterruptedException e) {
-							Log.error(e);
-						}
-					}
-				}.start();
-			}
-
-			// start exit hook
-			Thread tHook = new Thread() {
-				public void run() {
-					Log.debug("Exit Hook begin");
-					try {
-						Player.stop(true); // stop sound ASAP
-					} catch (Exception e) {
-						e.printStackTrace();
-						// no log to make sure to reach collection commit
-					}
-					try {
-						if (iExitCode == 0) {
-							// Remove session flag
-							File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
-									+ InetAddress.getLocalHost().getHostName() + '_'
-									+ System.getProperty("user.name"));
-							sessionUser.delete();
-
-							// commit only if exit is safe (to avoid commiting
-							// empty collection) commit ambiences
-							AmbienceManager.getInstance().commit();
-							// Commit webradios
-							WebRadioManager.getInstance().commit();
-							// commit configuration
-							org.jajuk.util.ConfigurationManager.commit();
-							// commit history
-							History.commit();
-							// commit perspectives if no full restore engaged
-							if (!RestoreAllViewsAction.fullRestore) {
-								PerspectiveManager.commit();
-							}
-							// Commit collection if not refreshing ( fix for
-							// 939816 )
-							if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-								Collection.commit(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
-								// create a proof file
-								Util.createEmptyFile(Util
-										.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
-							}
-							// Commit toolbars (only if it is visible to avoid
-							// commiting void screen)
-							if (!RestoreAllViewsAction.fullRestore && getWindow() != null
-									&& getWindow().isWindowVisible()) {
-								ToolBarIO tbIO = new ToolBarIO(tbcontainer);
-								FileOutputStream out = new FileOutputStream(Util
-										.getConfFileByPath(FILE_TOOLBARS_CONF));
-								tbIO.writeXML(out);
-								out.flush();
-								out.close();
-							}
-							/* release keystrokes resources */
-							ActionBase.cleanup();
-						}
-					} catch (Exception e) {
-						//don't use Log class here, it can cause freeze if 
-						//workspace no more available
-						e.printStackTrace();
-					} finally {
-						//don't use Log class here, it can cause freeze if 
-						//workspace no more available
-						System.out.println("Exit Hook end");
-					}
-				}
-			};
-			tHook.setPriority(Thread.MAX_PRIORITY);
-
-			Runtime.getRuntime().addShutdownHook(tHook);
+			// Various asynchronous startup actions that needs collection load
+			startupAsyncAfterCollectionLoad();
 
 			// Auto mount devices, freeze for SMB drives
 			// if network is not reacheable
@@ -455,9 +371,6 @@ public class Main implements ITechnicalStrings {
 			if (!bFirstSession) {
 				autoMount();
 			}
-
-			// Launch auto-refresh thread
-			DeviceManager.getInstance().startAutoRefreshThread();
 
 			// Launch startup track if any (but don't start it if firsdt session
 			// because the first refresh is probably still running)
@@ -510,7 +423,7 @@ public class Main implements ITechnicalStrings {
 	 * 
 	 * @throws Exception
 	 */
-	private static void initialCheckups() throws Exception {
+	public static void initialCheckups() throws Exception {
 		// Check for bootstrap file presence
 		File bootstrap = new File(FILE_BOOTSTRAP);
 		// Default workspace: ~/.jajuk
@@ -543,11 +456,7 @@ public class Main implements ITechnicalStrings {
 			// display the first time wizard
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					FirstTimeWizard fsw = new FirstTimeWizard();
-					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-					fsw.setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
-					fsw.pack();
-					fsw.setVisible(true);
+					new FirstTimeWizard();
 				}
 			});
 			// Lock until first time wizard is closed
@@ -628,12 +537,6 @@ public class Main implements ITechnicalStrings {
 		if (!fdjs.exists()) {
 			fdjs.mkdir();
 		}
-		// Extract default background picture if required
-		File fBackground = Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE + '/'
-				+ FILE_BACKGROUND_IMAGE);
-		if (!fBackground.exists()) {
-			Util.extractImage(IconLoader.ICON_BACKGROUND.getImage(), fBackground);
-		}
 
 		// Extract star icons (used by some HTML panels)
 		for (int i = 1; i <= 4; i++) {
@@ -660,14 +563,113 @@ public class Main implements ITechnicalStrings {
 	}
 
 	/**
-	 * Asynchronous tasks executed at startup
+	 * Asynchronous tasks executed at startup at the same time (for perf)
 	 */
-	private static void startupAsync() {
+	private static void startupAsyncAfterCollectionLoad() {
 		new Thread() {
 			public void run() {
 				try {
+					// start exit hook
+					Thread tHook = new Thread() {
+						public void run() {
+							Log.debug("Exit Hook begin");
+							try {
+								Player.stop(true); // stop sound ASAP
+							} catch (Exception e) {
+								e.printStackTrace();
+								// no log to make sure to reach collection
+								// commit
+							}
+							try {
+								if (iExitCode == 0) {
+									// Remove session flag
+									File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
+											+ InetAddress.getLocalHost().getHostName() + '_'
+											+ System.getProperty("user.name"));
+									sessionUser.delete();
+
+									// commit only if exit is safe (to avoid
+									// commiting
+									// empty collection) commit ambiences
+									AmbienceManager.getInstance().commit();
+									// Commit webradios
+									WebRadioManager.getInstance().commit();
+									// commit configuration
+									org.jajuk.util.ConfigurationManager.commit();
+									// commit history
+									History.commit();
+									// commit perspectives if no full restore
+									// engaged
+									if (!RestoreAllViewsAction.fullRestore) {
+										PerspectiveManager.commit();
+									}
+									// Commit collection if not refreshing ( fix
+									// for
+									// 939816 )
+									if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+										Collection.commit(Util
+												.getConfFileByPath(FILE_COLLECTION_EXIT));
+										// create a proof file
+										Util.createEmptyFile(Util
+												.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
+									}
+									// Commit toolbars (only if it is visible to
+									// avoid
+									// commiting void screen)
+									if (!RestoreAllViewsAction.fullRestore && getWindow() != null
+											&& getWindow().isWindowVisible()) {
+										ToolBarIO tbIO = new ToolBarIO(tbcontainer);
+										FileOutputStream out = new FileOutputStream(Util
+												.getConfFileByPath(FILE_TOOLBARS_CONF));
+										tbIO.writeXML(out);
+										out.flush();
+										out.close();
+									}
+									/* release keystrokes resources */
+									ActionBase.cleanup();
+								}
+							} catch (Exception e) {
+								// don't use Log class here, it can cause freeze
+								// if
+								// workspace no more available
+								e.printStackTrace();
+							} finally {
+								// don't use Log class here, it can cause freeze
+								// if workspace is no more available
+								System.out.println("Exit Hook end");
+							}
+						}
+					};
+					tHook.setPriority(Thread.MAX_PRIORITY);
+					Runtime.getRuntime().addShutdownHook(tHook);
+
+					// Clean the collection up
+					Collection.cleanup();
+
 					// Refresh max album rating
 					AlbumManager.getInstance().refreshMaxRating();
+
+					// Launch auto-refresh thread
+					DeviceManager.getInstance().startAutoRefreshThread();
+
+					// Start rating manager thread
+					RatingManager.getInstance().start();
+
+					// Start check for update thread if required
+					if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
+						new Thread() {
+							public void run() {
+								// Wait 10 min before checking
+								try {
+									Thread.sleep(600000);
+									UpgradeManager.checkForUpdate(false);
+								} catch (InterruptedException e) {
+									Log.error(e);
+								}
+							}
+						}.start();
+					}
+
 				} catch (Exception e) {
 					Log.error(e);
 				}
@@ -676,9 +678,21 @@ public class Main implements ITechnicalStrings {
 	}
 
 	/**
+	 * Asynchronous tasks executed at startup at the same time (for perf)
+	 */
+	private static void startupAsyncBeforeCollectionLoad() {
+		new Thread() {
+			public void run() {
+				// Force loading all icons now
+				IconLoader.ICON_ACCURACY_HIGH.toString();
+			}
+		}.start();
+	}
+
+	/**
 	 * Registers supported audio supports and default properties
 	 */
-	private static void registerTypes() {
+	public static void registerTypes() {
 		try {
 			// test mplayer presence in PATH
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
@@ -711,7 +725,7 @@ public class Main implements ITechnicalStrings {
 			else {
 				// If a forced mplayer path is defined, test it
 				String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
-				if (forced != null && !"".equals(forced)) {
+				if (!Util.isVoid(forced)) {
 					// Test forced path
 					mplayerStatus = Util.getMplayerStatus(forced);
 				} else {
@@ -763,7 +777,10 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP3.getUrl().toExternalForm());
+				// Do not use IconLoader to get icon, it takes too much time to
+				// load all icons
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_mp3_16x16.png")
+						.toExternalForm());
 				// playlists
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"),
 						EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null);
@@ -776,7 +793,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_OGG.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ogg_16x16.png")
+						.toExternalForm());
 				// Wave
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"),
 						EXT_WAV, Class.forName(PLAYER_IMPL_JAVALAYER),
@@ -784,7 +802,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_WAV.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wav_16x16.png")
+						.toExternalForm());
 				// au
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.au"),
 						EXT_AU, Class.forName(PLAYER_IMPL_JAVALAYER),
@@ -792,7 +811,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AU.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wav_16x16.png")
+						.toExternalForm());
 			} else { // mplayer enabled
 				// mp3
 				Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"),
@@ -801,7 +821,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP3.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_mp3_16x16.png")
+						.toExternalForm());
 				// playlists
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"),
 						EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null);
@@ -814,7 +835,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_OGG.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ogg_16x16.png")
+						.toExternalForm());
 				// Wave
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"),
 						EXT_WAV, Class.forName(PLAYER_IMPL_MPLAYER),
@@ -822,7 +844,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_WAV.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wav_16x16.png")
+						.toExternalForm());
 				// au
 				type = TypeManager
 						.getInstance()
@@ -831,7 +854,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AU.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wav_16x16.png")
+						.toExternalForm());
 				// flac
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.flac"),
 						EXT_FLAC, Class.forName(PLAYER_IMPL_MPLAYER),
@@ -839,9 +863,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_FLAC);
-				type
-						.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_FLAC.getUrl()
-								.toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_flac_16x16.png")
+						.toExternalForm());
 				// WMA
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.wma"),
 						EXT_WMA, Class.forName(PLAYER_IMPL_MPLAYER),
@@ -849,28 +872,32 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WMA);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_WMA.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wma_16x16.png")
+						.toExternalForm());
 				// AAC
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"),
 						EXT_AAC, Class.forName(PLAYER_IMPL_MPLAYER), null);
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AAC.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_aac_16x16.png")
+						.toExternalForm());
 				// M4A (=AAC)
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"),
 						EXT_M4A, Class.forName(PLAYER_IMPL_MPLAYER), null);
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_AAC.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_aac_16x16.png")
+						.toExternalForm());
 				// Real audio
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.real"),
 						EXT_REAL, Class.forName(PLAYER_IMPL_MPLAYER), null);
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RAM);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_RAM.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ram_16x16.png")
+						.toExternalForm());
 				// mp2
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.mp2"),
 						EXT_MP2, Class.forName(PLAYER_IMPL_MPLAYER),
@@ -878,7 +905,8 @@ public class Main implements ITechnicalStrings {
 				type.setProperty(XML_TYPE_IS_MUSIC, true);
 				type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
 				type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
-				type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_MP2.getUrl().toExternalForm());
+				type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_mp2_16x16.png")
+						.toExternalForm());
 				// web radios
 				type = TypeManager.getInstance().registerType(Messages.getString("Type.radio"),
 						EXT_RADIO, Class.forName(PLAYER_IMPL_WEBRADIOS), null);
@@ -894,14 +922,16 @@ public class Main implements ITechnicalStrings {
 			type.setProperty(XML_TYPE_IS_MUSIC, true);
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
 			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
-			type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_APE.getUrl().toExternalForm());
+			type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
+					.toExternalForm());
 			// MAC
 			type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), EXT_MAC,
 					Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
 			type.setProperty(XML_TYPE_IS_MUSIC, true);
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
 			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
-			type.setProperty(XML_TYPE_ICON, IconLoader.ICON_TYPE_APE.getUrl().toExternalForm());
+			type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
+					.toExternalForm());
 		} catch (Exception e1) {
 			Log.error(26, e1);
 		}
@@ -1024,9 +1054,14 @@ public class Main implements ITechnicalStrings {
 				fCollectionExitProof.delete(); // delete this file created just
 				// after collection exit commit
 				Collection.load(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
+				// Remove the collection (required by renameTo next line under
+				// Windows)
+				fCollection.delete();
 				// parsing of collection exit ok, use this collection file as
 				// final collection
-				fCollectionExit.renameTo(fCollection);
+				if (!fCollectionExit.renameTo(fCollection)) {
+					Log.warn("Cannot rename collection file");
+				}
 				// backup the collection
 				Util.backupFile(Util.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
 						.getInt(CONF_BACKUP_SIZE));
@@ -1046,7 +1081,7 @@ public class Main implements ITechnicalStrings {
 				// always up-to-date
 				Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
 			} catch (Exception e2) {
-				// not better? strange
+				// not better? strange...
 				Log.error(5, fCollection.getAbsolutePath(), e2);
 				bParsingOK = false;
 			}
@@ -1087,6 +1122,7 @@ public class Main implements ITechnicalStrings {
 				// collection
 				Collection.cleanup();
 				DeviceManager.getInstance().cleanAllDevices();
+				System.gc();
 				try {
 					Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
 				} catch (Exception e2) {
@@ -1227,7 +1263,7 @@ public class Main implements ITechnicalStrings {
 	 * Auto-Mount required devices
 	 * 
 	 */
-	private static void autoMount() {
+	public static void autoMount() {
 		for (Device device : DeviceManager.getInstance().getDevices()) {
 			if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)) {
 				try {
