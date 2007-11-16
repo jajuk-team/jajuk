@@ -89,7 +89,7 @@
 			<Application_Order_URL />
 			<Application_Screenshot_URL>http://wiki.jajuk.info/upload/thumb/c/c6/1_4_display_perspective.jpg/800px-1_4_display_perspective.jpg</Application_Screenshot_URL>
 			<Application_Icon_URL>http://wiki.jajuk.info/upload/0/07/32x32.png</Application_Icon_URL>
-			<Application_XML_File_URL>https://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml</Application_XML_File_URL>
+			<Application_XML_File_URL>http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
 			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.4.2-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
