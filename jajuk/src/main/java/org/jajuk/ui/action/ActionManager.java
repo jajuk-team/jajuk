@@ -52,6 +52,8 @@ import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
+import static org.jajuk.ui.action.JajukAction.DELETE_FILE;
+import static org.jajuk.ui.action.JajukAction.DELETE_DIRECTORY;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -158,6 +160,10 @@ public final class ActionManager {
 		
 		//Export
 		installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
+		
+		//File Actions
+		installAction(DELETE_FILE, new DeleteFileAction(), false);
+		installAction(DELETE_DIRECTORY, new DeleteDirectoryAction(), false);
 		
 		//MISC
 		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);

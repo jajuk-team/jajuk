@@ -285,8 +285,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
 		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
-		jmiFileDelete = new JMenuItem(Messages.getString("FilesTreeView.7"));
-		//jmiFileDelete.setEnabled(false);
+		jmiFileDelete = new JMenuItem(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE);
 		jmiFileDelete.addActionListener(this);
 		jmiFileProperties = new JMenuItem(Messages.getString("FilesTreeView.9"),
 				IconLoader.ICON_PROPERTIES);
@@ -331,8 +330,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirPaste = new JMenuItem(Messages.getString("FilesTreeView.19"));
 		jmiDirPaste.setEnabled(false);
 		jmiDirPaste.addActionListener(this);
-		jmiDirDelete = new JMenuItem(Messages.getString("FilesTreeView.21"));
-		//jmiDirDelete.setEnabled(false);
+		jmiDirDelete = new JMenuItem(Messages.getString("FilesTreeView.21"), IconLoader.ICON_DELETE);
 		jmiDirDelete.addActionListener(this);
 		jmiDirProperties = new JMenuItem(Messages.getString("FilesTreeView.23"),
 				IconLoader.ICON_PROPERTIES);
