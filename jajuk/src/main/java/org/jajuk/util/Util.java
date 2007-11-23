@@ -791,6 +791,45 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
+	 * Delete a file
+	 * 
+	 * @param file :
+	 *            source file
+	 */
+	public static void deleteFile(File file) throws Exception {
+		Log.debug("Deleting: " + file.getAbsolutePath());
+		if (file.isFile() && file.exists()) {
+			file.delete();
+			// check that file has been really deleted (sometimes,
+			// we get no exception)
+			if (file.exists()) {
+				throw new Exception("");
+			}	
+		} else {// not a file, must have a problem
+			throw new Exception("");
+		}
+		return;
+	}
+
+	/**
+	 * Delete a directory
+	 * 
+	 * @param dir :
+	 *            source directory
+	 */
+	public static void deleteDir(File dir) throws Exception {
+		Log.debug("Deleting: " + dir.getAbsolutePath());
+		if (dir.isDirectory()) {
+			for(File file : dir.listFiles())
+				deleteFile(file);
+			dir.delete();
+			}
+		else 
+			deleteFile(dir);
+		return;
+	}
+	
+	/**
 	 * @param sFileName
 	 * @return whether the given filename is a standard cover or not
 	 */

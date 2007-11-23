@@ -286,7 +286,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
 		jmiFileDelete = new JMenuItem(Messages.getString("FilesTreeView.7"));
-		jmiFileDelete.setEnabled(false);
+		//jmiFileDelete.setEnabled(false);
 		jmiFileDelete.addActionListener(this);
 		jmiFileProperties = new JMenuItem(Messages.getString("FilesTreeView.9"),
 				IconLoader.ICON_PROPERTIES);
@@ -296,6 +296,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
+		jmenuFile.add(jmiFileDelete);
 		jmenuFile.add(jmiFileAddFavorites);
 		jmenuFile.add(jmiFileProperties);
 
@@ -331,7 +332,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirPaste.setEnabled(false);
 		jmiDirPaste.addActionListener(this);
 		jmiDirDelete = new JMenuItem(Messages.getString("FilesTreeView.21"));
-		jmiDirDelete.setEnabled(false);
+		//jmiDirDelete.setEnabled(false);
 		jmiDirDelete.addActionListener(this);
 		jmiDirProperties = new JMenuItem(Messages.getString("FilesTreeView.23"),
 				IconLoader.ICON_PROPERTIES);
@@ -354,6 +355,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirRefactor.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
 		jmenuDir.add(jmiDirPush);
+		jmenuDir.add(jmiDirDelete);
 		jmenuDir.add(jmiDirPlayShuffle);
 		jmenuDir.add(jmiDirPlayRepeat);
 		jmenuDir.add(jmiDirDesynchro);
@@ -1140,6 +1142,56 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 							false);
 				} else if (e.getSource() == jmiPlaylistAddFavorites) {
 					Bookmarks.getInstance().addFiles(alToPlay);
+				}
+			}
+		} else if (e.getSource() == jmiFileDelete) {
+			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+				String sFiles = "";
+				for (File f : alFiles) {
+					sFiles += f.getName() + "\n";
+				}
+				int iResu = Messages.getChoice(Messages
+						.getString("Confirmation_delete_files")
+                        	+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
+                        	JOptionPane.INFORMATION_MESSAGE);
+				if (iResu != JOptionPane.YES_OPTION) {
+					return;
+				}
+			}
+			for (File f : alFiles) {
+				try {
+					Util.deleteFile(f.getIO());
+					FileManager.getInstance().removeFile(f);
+					ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+				} catch (Exception ioe) {
+					Log.error(131, ioe);
+					Messages.showErrorMessage(131);
+					return;
+				}
+			}
+		} else if (e.getSource() == jmiDirDelete) {
+			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+				String sFiles = "";
+				for (Directory d : alDirs) {
+					sFiles += d.getName() + "\n";
+				}
+				int iResu = Messages.getChoice(Messages
+						.getString("Confirmation_delete_dirs")
+                        	+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
+                        	JOptionPane.INFORMATION_MESSAGE);
+				if (iResu != JOptionPane.YES_OPTION) {
+					return;
+				}
+			}
+			for (Directory d : alDirs) {
+				try {
+					Util.deleteDir(new java.io.File(d.getAbsolutePath()));
+					DirectoryManager.getInstance().removeDirectory(d.getID());
+					ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+				}catch (Exception ioe) {
+					Log.error(131, ioe);
+					Messages.showErrorMessage(131);
+					return;
 				}
 			}
 		} else if (e.getSource() == jmiPlaylistFileDelete) {
