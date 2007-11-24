@@ -113,6 +113,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	/** Directories selection */
 	ArrayList<Directory> alDirs = new ArrayList<Directory>(10);
 
+	/** Files selected for cut/copy */
+	ArrayList<File> moveFiles = new ArrayList<File>(100);
+	
+	/** Directories selected for cut/copy */
+	ArrayList<Directory> moveDirs = new ArrayList<Directory>(100);
+	
 	/** Collection export */
 	JPopupMenu jmenuCollection;
 
@@ -226,6 +232,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	 * Used to differentiate user action tree collapse from code tree colapse*
 	 */
 	private boolean bAutoCollapse = false;
+	
+	/**
+	 * Used to differentiate between cut and copy actions
+	 */
+	
+	private boolean bCut = false;
 
 	/*
 	 * (non-Javadoc)
@@ -277,10 +289,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFilePush = new JMenuItem(Messages.getString("FilesTreeView.2"), IconLoader.ICON_PUSH);
 		jmiFilePush.addActionListener(this);
 		jmiFileCopy = new JMenuItem(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY);
-		jmiFileCopy.setEnabled(false);
 		jmiFileCopy.addActionListener(this);
 		jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"));
-		jmiFileCut.setEnabled(false);
 		jmiFileCut.addActionListener(this);
 		jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
 		jmiFilePaste.setEnabled(false);
@@ -295,6 +305,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
+		jmenuFile.add(jmiFileCut);
+		jmenuFile.add(jmiFileCopy);
 		jmenuFile.add(jmiFileDelete);
 		jmenuFile.add(jmiFileAddFavorites);
 		jmenuFile.add(jmiFileProperties);
@@ -322,10 +334,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirCreatePlaylist.setEnabled(false);
 		jmiDirCreatePlaylist.addActionListener(this);
 		jmiDirCopy = new JMenuItem(Messages.getString("FilesTreeView.17"));
-		jmiDirCopy.setEnabled(false);
 		jmiDirCopy.addActionListener(this);
 		jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"));
-		jmiDirCut.setEnabled(false);
 		jmiDirCut.addActionListener(this);
 		jmiDirPaste = new JMenuItem(Messages.getString("FilesTreeView.19"));
 		jmiDirPaste.setEnabled(false);
@@ -353,6 +363,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirRefactor.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
 		jmenuDir.add(jmiDirPush);
+		jmenuDir.add(jmiDirCut);
+		jmenuDir.add(jmiDirCopy);
+		jmenuDir.add(jmiDirPaste);
 		jmenuDir.add(jmiDirDelete);
 		jmenuDir.add(jmiDirPlayShuffle);
 		jmenuDir.add(jmiDirPlayRepeat);
@@ -1142,6 +1155,108 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 					Bookmarks.getInstance().addFiles(alToPlay);
 				}
 			}
+		} else if (e.getSource() == jmiFileCopy) {
+			moveFiles.clear();
+			moveDirs.clear();
+			for(File f : alFiles)
+				moveFiles.add(f);
+			jmiDirPaste.setEnabled(true);
+			alFiles.clear();
+			alDirs.clear();
+			alSelected.clear();
+			jmenuFile.repaint();
+		} else if (e.getSource() == jmiDirCopy) {
+			moveFiles.clear();
+			moveDirs.clear();
+			for(Directory d : alDirs)
+				moveDirs.add(d);
+			jmiDirPaste.setEnabled(true);
+			alFiles.clear();
+			alDirs.clear();
+			alSelected.clear();
+			jmenuFile.repaint();
+		} else if (e.getSource() == jmiFileCut) {
+			bCut = true;
+			moveFiles.clear();
+			moveDirs.clear();
+			for(File f : alFiles)
+				moveFiles.add(f);
+			for(Directory d : alDirs)
+				moveDirs.add(d);
+			jmiDirPaste.setEnabled(true);
+			alFiles.clear();
+			alDirs.clear();
+			alSelected.clear();
+			jmenuFile.repaint();
+		} else if (e.getSource() == jmiDirCut) {
+			bCut = true;
+			moveFiles.clear();
+			moveDirs.clear();
+			for(Directory d : alDirs)
+				moveDirs.add(d);
+			jmiDirPaste.setEnabled(true);
+			alFiles.clear();
+			alDirs.clear();
+			alSelected.clear();
+			jmenuFile.repaint();
+		} else if (e.getSource() == jmiDirPaste) {
+			Item item = alSelected.get(0);
+			java.io.File dir;
+			if (item instanceof Directory){
+				dir = new java.io.File(((Directory) item).getAbsolutePath());
+			}
+			else{
+				dir = ((File) item).getIO().getParentFile();
+			}
+			
+			if (bCut == false){
+				for (File f : moveFiles){
+					try{
+						Util.copyToDir(f.getIO(), dir);
+					} catch(Exception ioe) {
+						Log.error(131, ioe);
+						Messages.showErrorMessage(131);
+					}
+				}
+				for (Directory d : moveDirs){
+					try{
+						java.io.File src = new java.io.File(d.getAbsolutePath());
+						java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
+						Util.copyRecursively(src, dst);
+					} catch(Exception ioe) {
+						Log.error(131, ioe);
+						Messages.showErrorMessage(131);
+					}
+				}
+			}
+			else{
+				for (File f : moveFiles){
+					try{
+						Util.copyToDir(f.getIO(), dir);
+						Util.deleteFile(f.getIO());
+						FileManager.getInstance().removeFile(f);
+					} catch(Exception ioe) {
+						Log.error(131, ioe);
+						Messages.showErrorMessage(131);
+					}
+				}
+				for (Directory d : moveDirs){
+					try{
+						java.io.File src = new java.io.File(d.getAbsolutePath());
+						java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
+						Util.copyRecursively(src, dst);
+						Util.deleteDir(src);
+						DirectoryManager.getInstance().removeDirectory(d.getID());
+					} catch(Exception ioe) {
+						Log.error(131, ioe);
+						Messages.showErrorMessage(131);
+					}
+				}
+			}
+			bCut = false;
+			jmiDirPaste.setEnabled(false);
+			jmenuFile.repaint();
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		} else if (e.getSource() == jmiFileDelete) {
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 				String sFiles = "";
@@ -1160,13 +1275,16 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				try {
 					Util.deleteFile(f.getIO());
 					FileManager.getInstance().removeFile(f);
-					ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 				} catch (Exception ioe) {
 					Log.error(131, ioe);
 					Messages.showErrorMessage(131);
-					return;
 				}
 			}
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+			alFiles.clear();
+			jtree.revalidate();
+			jtree.repaint();
+			return;
 		} else if (e.getSource() == jmiDirDelete) {
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 				String sFiles = "";
@@ -1185,13 +1303,16 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 				try {
 					Util.deleteDir(new java.io.File(d.getAbsolutePath()));
 					DirectoryManager.getInstance().removeDirectory(d.getID());
-					ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 				}catch (Exception ioe) {
 					Log.error(131, ioe);
 					Messages.showErrorMessage(131);
-					return;
 				}
 			}
+			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+			alDirs.clear();
+			jtree.revalidate();
+			jtree.repaint();
+			return;
 		} else if (e.getSource() == jmiPlaylistFileDelete) {
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 				// file delete confirmation
