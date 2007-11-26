@@ -403,4 +403,8 @@ public enum JajukAction {
 	 * Used to delete selected directories from disk.
 	 */
 	DELETE_DIRECTORY,
+	/**
+	 * Used to move selected files and directories.
+	 */
+	FILE_MOVE,
 }

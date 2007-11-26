@@ -113,11 +113,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	/** Directories selection */
 	ArrayList<Directory> alDirs = new ArrayList<Directory>(10);
 
-	/** Files selected for cut/copy */
-	ArrayList<File> moveFiles = new ArrayList<File>(100);
-	
-	/** Directories selected for cut/copy */
-	ArrayList<Directory> moveDirs = new ArrayList<Directory>(100);
+	/** Items selected for cut/copy */
+	ArrayList<Item> moveItems = new ArrayList<Item>(100);
+
+	/** Used to differentiate between cut and copy actions */
+	ArrayList<String> moveAction = new ArrayList<String>(1);
 	
 	/** Collection export */
 	JPopupMenu jmenuCollection;
@@ -233,12 +233,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	 */
 	private boolean bAutoCollapse = false;
 	
-	/**
-	 * Used to differentiate between cut and copy actions
-	 */
-	
-	private boolean bCut = false;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -290,12 +284,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFilePush.addActionListener(this);
 		jmiFileCopy = new JMenuItem(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY);
 		jmiFileCopy.addActionListener(this);
-		jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"));
+		jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"),IconLoader.ICON_INTRO);
 		jmiFileCut.addActionListener(this);
 		jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
 		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
-		jmiFileDelete = new JMenuItem(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE_FILE);
+		jmiFileDelete = new JMenuItem(actionDeleteFile);
+		jmiFileDelete.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiFileDelete.addActionListener(this);
 		jmiFileProperties = new JMenuItem(Messages.getString("FilesTreeView.9"),
 				IconLoader.ICON_PROPERTIES);
@@ -333,14 +329,20 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
 		jmiDirCreatePlaylist.setEnabled(false);
 		jmiDirCreatePlaylist.addActionListener(this);
-		jmiDirCopy = new JMenuItem(Messages.getString("FilesTreeView.17"));
+		jmiDirCopy = new JMenuItem(Messages.getString("FilesTreeView.17"), IconLoader.ICON_COPY);
 		jmiDirCopy.addActionListener(this);
-		jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"));
+		jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"), IconLoader.ICON_INTRO);
 		jmiDirCut.addActionListener(this);
-		jmiDirPaste = new JMenuItem(Messages.getString("FilesTreeView.19"));
+		Action actionFileMove = ActionManager.getAction(JajukAction.FILE_MOVE);
+		jmiDirPaste = new JMenuItem(actionFileMove);
 		jmiDirPaste.setEnabled(false);
+		jmiDirPaste.putClientProperty(DETAIL_OLD, moveItems);
+		jmiDirPaste.putClientProperty(DETAIL_NEW, alSelected);
+		jmiDirPaste.putClientProperty(DETAIL_SELECTION, moveAction);
 		jmiDirPaste.addActionListener(this);
-		jmiDirDelete = new JMenuItem(Messages.getString("FilesTreeView.21"), IconLoader.ICON_DELETE);
+		Action actionDeleteDir = ActionManager.getAction(JajukAction.DELETE_DIRECTORY);
+		jmiDirDelete = new JMenuItem(actionDeleteDir);
+		jmiDirDelete.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiDirDelete.addActionListener(this);
 		jmiDirProperties = new JMenuItem(Messages.getString("FilesTreeView.23"),
 				IconLoader.ICON_PROPERTIES);
@@ -1155,164 +1157,29 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 					Bookmarks.getInstance().addFiles(alToPlay);
 				}
 			}
-		} else if (e.getSource() == jmiFileCopy) {
-			moveFiles.clear();
-			moveDirs.clear();
-			for(File f : alFiles)
-				moveFiles.add(f);
+		} else if (e.getSource() == jmiFileCopy || e.getSource() == jmiDirCopy) {
+			moveAction.clear();
+			moveAction.add("Copy");
+			moveItems.clear();
+			for(Item item : alSelected)
+				moveItems.add(item);
 			jmiDirPaste.setEnabled(true);
-			alFiles.clear();
-			alDirs.clear();
 			alSelected.clear();
 			jmenuFile.repaint();
-		} else if (e.getSource() == jmiDirCopy) {
-			moveFiles.clear();
-			moveDirs.clear();
-			for(Directory d : alDirs)
-				moveDirs.add(d);
+			jmenuDir.repaint();
+		} else if (e.getSource() == jmiFileCut || e.getSource() == jmiDirCut) {
+			moveAction.clear();
+			moveAction.add("Cut");
+			moveItems.clear();
+			for(Item item : alSelected)
+				moveItems.add(item);
 			jmiDirPaste.setEnabled(true);
-			alFiles.clear();
-			alDirs.clear();
 			alSelected.clear();
 			jmenuFile.repaint();
-		} else if (e.getSource() == jmiFileCut) {
-			bCut = true;
-			moveFiles.clear();
-			moveDirs.clear();
-			for(File f : alFiles)
-				moveFiles.add(f);
-			for(Directory d : alDirs)
-				moveDirs.add(d);
-			jmiDirPaste.setEnabled(true);
-			alFiles.clear();
-			alDirs.clear();
-			alSelected.clear();
-			jmenuFile.repaint();
-		} else if (e.getSource() == jmiDirCut) {
-			bCut = true;
-			moveFiles.clear();
-			moveDirs.clear();
-			for(Directory d : alDirs)
-				moveDirs.add(d);
-			jmiDirPaste.setEnabled(true);
-			alFiles.clear();
-			alDirs.clear();
-			alSelected.clear();
-			jmenuFile.repaint();
+			jmenuDir.repaint();
 		} else if (e.getSource() == jmiDirPaste) {
-			Item item = alSelected.get(0);
-			java.io.File dir;
-			if (item instanceof Directory){
-				dir = new java.io.File(((Directory) item).getAbsolutePath());
-			}
-			else{
-				dir = ((File) item).getIO().getParentFile();
-			}
-			
-			if (bCut == false){
-				for (File f : moveFiles){
-					try{
-						Util.copyToDir(f.getIO(), dir);
-					} catch(Exception ioe) {
-						Log.error(131, ioe);
-						Messages.showErrorMessage(131);
-					}
-				}
-				for (Directory d : moveDirs){
-					try{
-						java.io.File src = new java.io.File(d.getAbsolutePath());
-						java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
-						Util.copyRecursively(src, dst);
-					} catch(Exception ioe) {
-						Log.error(131, ioe);
-						Messages.showErrorMessage(131);
-					}
-				}
-			}
-			else{
-				for (File f : moveFiles){
-					try{
-						Util.copyToDir(f.getIO(), dir);
-						Util.deleteFile(f.getIO());
-						FileManager.getInstance().removeFile(f);
-					} catch(Exception ioe) {
-						Log.error(131, ioe);
-						Messages.showErrorMessage(131);
-					}
-				}
-				for (Directory d : moveDirs){
-					try{
-						java.io.File src = new java.io.File(d.getAbsolutePath());
-						java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
-						Util.copyRecursively(src, dst);
-						Util.deleteDir(src);
-						DirectoryManager.getInstance().removeDirectory(d.getID());
-					} catch(Exception ioe) {
-						Log.error(131, ioe);
-						Messages.showErrorMessage(131);
-					}
-				}
-			}
-			bCut = false;
 			jmiDirPaste.setEnabled(false);
 			jmenuFile.repaint();
-			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-		} else if (e.getSource() == jmiFileDelete) {
-			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
-				String sFiles = "";
-				for (File f : alFiles) {
-					sFiles += f.getName() + "\n";
-				}
-				int iResu = Messages.getChoice(Messages
-						.getString("Confirmation_delete_files")
-                        	+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
-                        	JOptionPane.INFORMATION_MESSAGE);
-				if (iResu != JOptionPane.YES_OPTION) {
-					return;
-				}
-			}
-			for (File f : alFiles) {
-				try {
-					Util.deleteFile(f.getIO());
-					FileManager.getInstance().removeFile(f);
-				} catch (Exception ioe) {
-					Log.error(131, ioe);
-					Messages.showErrorMessage(131);
-				}
-			}
-			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-			alFiles.clear();
-			jtree.revalidate();
-			jtree.repaint();
-			return;
-		} else if (e.getSource() == jmiDirDelete) {
-			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
-				String sFiles = "";
-				for (Directory d : alDirs) {
-					sFiles += d.getName() + "\n";
-				}
-				int iResu = Messages.getChoice(Messages
-						.getString("Confirmation_delete_dirs")
-                        	+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
-                        	JOptionPane.INFORMATION_MESSAGE);
-				if (iResu != JOptionPane.YES_OPTION) {
-					return;
-				}
-			}
-			for (Directory d : alDirs) {
-				try {
-					Util.deleteDir(new java.io.File(d.getAbsolutePath()));
-					DirectoryManager.getInstance().removeDirectory(d.getID());
-				}catch (Exception ioe) {
-					Log.error(131, ioe);
-					Messages.showErrorMessage(131);
-				}
-			}
-			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-			alDirs.clear();
-			jtree.revalidate();
-			jtree.repaint();
-			return;
 		} else if (e.getSource() == jmiPlaylistFileDelete) {
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 				// file delete confirmation

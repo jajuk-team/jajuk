@@ -54,6 +54,7 @@ import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 import static org.jajuk.ui.action.JajukAction.DELETE_FILE;
 import static org.jajuk.ui.action.JajukAction.DELETE_DIRECTORY;
+import static org.jajuk.ui.action.JajukAction.FILE_MOVE;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -164,6 +165,7 @@ public final class ActionManager {
 		//File Actions
 		installAction(DELETE_FILE, new DeleteFileAction(), false);
 		installAction(DELETE_DIRECTORY, new DeleteDirectoryAction(), false);
+		installAction(FILE_MOVE, new FileMoveAction(), false);
 		
 		//MISC
 		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);

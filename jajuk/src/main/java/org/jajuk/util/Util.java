@@ -821,7 +821,10 @@ public class Util implements ITechnicalStrings {
 		Log.debug("Deleting: " + dir.getAbsolutePath());
 		if (dir.isDirectory()) {
 			for(File file : dir.listFiles())
-				deleteFile(file);
+				if (file.isDirectory())
+					deleteDir(file);
+				else
+					deleteFile(file);
 			dir.delete();
 			}
 		else 
