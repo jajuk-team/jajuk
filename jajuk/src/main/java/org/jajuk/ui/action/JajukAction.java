@@ -407,4 +407,8 @@ public enum JajukAction {
 	 * Used to move selected files and directories.
 	 */
 	FILE_MOVE,
+	/**
+	 * Used to refresh a directory.
+	 */
+	REFRESH,
 }

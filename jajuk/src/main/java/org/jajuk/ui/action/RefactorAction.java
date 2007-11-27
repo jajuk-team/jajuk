@@ -205,7 +205,7 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 		// Refresh and cleanup required directories
 		for (Directory dir : toBeRefreshed) {
-			registerDirectory(dir);
+			DirectoryManager.registerDirectory(dir);
 			dir.getDevice().cleanRemovedFiles();
 		}
 		if (!sErrors.equals("")) {
@@ -216,20 +216,5 @@ public class RefactorAction implements ITechnicalStrings {
 					InformationJPanel.INFORMATIVE);
 		}
 
-	}
-
-	public void registerDirectory(Directory d) {
-		java.io.File dirList[] = d.getFio().listFiles(
-				new JajukFileFilter(JajukFileFilter.DirectoryFilter
-						.getInstance()));
-		if (dirList != null && dirList.length != 0) {
-			for (java.io.File f : dirList) {
-				Directory dir = DirectoryManager.getInstance()
-						.registerDirectory(f.getName(), d, d.getDevice());
-				registerDirectory(dir);
-			}
-		} else {
-			d.scan(true, null);
-		}
 	}
 }

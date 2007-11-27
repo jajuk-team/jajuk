@@ -147,6 +147,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	JMenuItem jmiDirPlay;
 
 	JMenuItem jmiDirPush;
+	
+	JMenuItem jmiDirRefresh;
 
 	JMenuItem jmiDirPlayShuffle;
 
@@ -314,6 +316,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirPlay.addActionListener(this);
 		jmiDirPush = new JMenuItem(Messages.getString("FilesTreeView.11"), IconLoader.ICON_PUSH);
 		jmiDirPush.addActionListener(this);
+		Action actionRefreshDir = ActionManager.getAction(JajukAction.REFRESH);
+		jmiDirRefresh = new JMenuItem(actionRefreshDir);
+		jmiDirRefresh.putClientProperty(DETAIL_SELECTION, alSelected);
+		jmiDirRefresh.addActionListener(this);
 		jmiDirPlayShuffle = new JMenuItem(Messages.getString("FilesTreeView.12"),
 				IconLoader.ICON_SHUFFLE);
 		jmiDirPlayShuffle.addActionListener(this);
@@ -365,6 +371,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirRefactor.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
 		jmenuDir.add(jmiDirPush);
+		jmenuDir.add(jmiDirRefresh);
 		jmenuDir.add(jmiDirCut);
 		jmenuDir.add(jmiDirCopy);
 		jmenuDir.add(jmiDirPaste);

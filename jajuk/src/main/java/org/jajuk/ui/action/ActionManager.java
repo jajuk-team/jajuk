@@ -55,6 +55,7 @@ import static org.jajuk.ui.action.JajukAction.WIZARD;
 import static org.jajuk.ui.action.JajukAction.DELETE_FILE;
 import static org.jajuk.ui.action.JajukAction.DELETE_DIRECTORY;
 import static org.jajuk.ui.action.JajukAction.FILE_MOVE;
+import static org.jajuk.ui.action.JajukAction.REFRESH;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -169,6 +170,8 @@ public final class ActionManager {
 		
 		//MISC
 		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
+		installAction(REFRESH, new RefreshDirectoryAction(), false);
+		
 		//Do not install this action under OSX because it causes a crash as jar is missing 
 		if (Util.isUnderLinux() || Util.isUnderWindows()){
 			installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);

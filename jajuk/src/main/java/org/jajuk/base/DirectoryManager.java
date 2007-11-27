@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 
@@ -99,6 +100,26 @@ public class DirectoryManager extends ItemManager {
 		return registerDirectory(device.getID(), "", null, device);
 	}
 
+	/**
+	 * Register a directory for refreshing
+	 * 
+	 * @param Directory d
+	 */
+	public static void registerDirectory(Directory d) {
+		java.io.File dirList[] = d.getFio().listFiles(
+				new JajukFileFilter(JajukFileFilter.DirectoryFilter
+						.getInstance()));
+		if (dirList != null && dirList.length != 0) {
+			for (java.io.File f : dirList) {
+				Directory dir = DirectoryManager.getInstance()
+						.registerDirectory(f.getName(), d, d.getDevice());
+				registerDirectory(dir);
+			}
+		} else {
+			d.scan(true, null);
+		}
+	}
+	
 	/**
 	 * Return hashcode for this item
 	 * 

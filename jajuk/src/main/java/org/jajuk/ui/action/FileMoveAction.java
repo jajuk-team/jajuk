@@ -28,7 +28,6 @@ import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -89,7 +88,7 @@ public class FileMoveAction extends ActionBase {
 								Util.copyRecursively(src, dst);
 								Util.deleteDir(src);
 								DirectoryManager.getInstance().removeDirectory(((Directory) t).getID());
-								registerDirectory(destDir);
+								DirectoryManager.registerDirectory(destDir);
 							} catch(Exception ioe) {
 								Log.error(131, ioe);
 								Messages.showErrorMessage(131);
@@ -118,25 +117,10 @@ public class FileMoveAction extends ActionBase {
 							}
 						}
 					}
-					registerDirectory(destDir);
+					DirectoryManager.registerDirectory(destDir);
 				}
 				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			}
 		}.start();
-	}
-	
-	public void registerDirectory(Directory d) {
-		java.io.File dirList[] = d.getFio().listFiles(
-				new JajukFileFilter(JajukFileFilter.DirectoryFilter
-						.getInstance()));
-		if (dirList != null && dirList.length != 0) {
-			for (java.io.File f : dirList) {
-				Directory dir = DirectoryManager.getInstance()
-						.registerDirectory(f.getName(), d, d.getDevice());
-				registerDirectory(dir);
-			}
-		} else {
-			d.scan(true, null);
-		}
 	}
 }
