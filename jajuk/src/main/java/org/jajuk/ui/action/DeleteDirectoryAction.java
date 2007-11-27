@@ -22,6 +22,7 @@ package org.jajuk.ui.action;
 import org.jajuk.base.Event;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -54,6 +55,7 @@ public class DeleteDirectoryAction extends ActionBase {
 		final ArrayList<Item> alSelected = (ArrayList<Item>) source
 		    .getClientProperty(DETAIL_SELECTION);
 		ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
+		ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
          
 		for (Item item : alSelected) {
 		    if (item instanceof Directory) {
@@ -77,12 +79,19 @@ public class DeleteDirectoryAction extends ActionBase {
 		}
 		for (Directory d : alDirs) {
 		    try {
-			Util.deleteDir(new java.io.File(d.getAbsolutePath()));
-			DirectoryManager.getInstance().removeDirectory(d.getID());
+		    	Util.deleteDir(new java.io.File(d.getAbsolutePath()));
+		    	DirectoryManager.getInstance().removeDirectory(d.getID());
 		    }catch (Exception ioe) {
-			Log.error(131, ioe);
-			Messages.showErrorMessage(131);
+		    	Log.error(131, ioe);
+		    	rejDirs.add(d);
 		    }
+		}
+		if(rejDirs.size() > 0){
+			String rejString = "";
+			for (Directory d : rejDirs){
+				rejString += d.getName() + "\n";
+			}
+			Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
 		}
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		return;

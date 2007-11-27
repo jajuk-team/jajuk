@@ -54,6 +54,7 @@ public class DeleteFileAction extends ActionBase {
         final ArrayList<Item> alSelected = (ArrayList<Item>) source
                         .getClientProperty(DETAIL_SELECTION);
         ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
+        ArrayList<File> rejFiles = new ArrayList<File>(alSelected.size());
          
         for (Item item : alSelected) {
         	if (item instanceof File) {
@@ -69,7 +70,7 @@ public class DeleteFileAction extends ActionBase {
 			}
 			int iResu = Messages.getChoice(Messages
 					.getString("Confirmation_delete_files")
-                    	+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
+                    	+ " : \n\n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
                     	JOptionPane.INFORMATION_MESSAGE);
 			if (iResu != JOptionPane.YES_OPTION) {
 				return;
@@ -82,8 +83,15 @@ public class DeleteFileAction extends ActionBase {
 				FileManager.getInstance().removeFile(f);
 			} catch (Exception ioe) {
 				Log.error(131, ioe);
-				Messages.showErrorMessage(131);
+				rejFiles.add(f);
 			}
+		}
+		if(rejFiles.size() > 0){
+			String rejString = "";
+			for (File f : rejFiles){
+				rejString += f.getName() + "\n";
+			}
+			Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
 		}
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 		return;

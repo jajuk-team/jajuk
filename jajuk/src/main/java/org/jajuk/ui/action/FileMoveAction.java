@@ -45,8 +45,8 @@ public class FileMoveAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	FileMoveAction() {
-		super(Messages.getString("FilesTreeView.5"), IconLoader.ICON_SAVE, true);
-		setShortDescription(Messages.getString("FilesTreeView.7"));
+		super(Messages.getString("ActionMove.0"), IconLoader.ICON_PASTE, true);
+		setShortDescription(Messages.getString("ActionMove.0"));
 	}
 
 	public void perform(ActionEvent e) {
@@ -70,7 +70,7 @@ public class FileMoveAction extends ActionBase {
 					dir = ((File) item).getIO().getParentFile();
 					destDir = ((File) item).getDirectory();
 				}
-				if (moveAction == "Cut"){
+				if ("Cut".equals(moveAction)){
 					Log.debug("Inside Cut");
 					for (Item t : moveItems){
 						if (t instanceof File){
@@ -96,7 +96,7 @@ public class FileMoveAction extends ActionBase {
 							}
 						}
 					}
-				} else if (moveAction == "Copy"){
+				} else if ("Copy".equals(moveAction)){
 					Log.debug("Inside Copy");
 					for (Item t : moveItems){
 						if (t instanceof File){
@@ -123,7 +123,6 @@ public class FileMoveAction extends ActionBase {
 				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			}
 		}.start();
-		return;
 	}
 	
 	public void registerDirectory(Directory d) {

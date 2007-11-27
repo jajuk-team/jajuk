@@ -284,7 +284,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFilePush.addActionListener(this);
 		jmiFileCopy = new JMenuItem(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY);
 		jmiFileCopy.addActionListener(this);
-		jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"),IconLoader.ICON_INTRO);
+		jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"),IconLoader.ICON_CUT);
 		jmiFileCut.addActionListener(this);
 		jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
 		jmiFilePaste.setEnabled(false);
@@ -331,7 +331,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirCreatePlaylist.addActionListener(this);
 		jmiDirCopy = new JMenuItem(Messages.getString("FilesTreeView.17"), IconLoader.ICON_COPY);
 		jmiDirCopy.addActionListener(this);
-		jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"), IconLoader.ICON_INTRO);
+		jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"), IconLoader.ICON_CUT);
 		jmiDirCut.addActionListener(this);
 		Action actionFileMove = ActionManager.getAction(JajukAction.FILE_MOVE);
 		jmiDirPaste = new JMenuItem(actionFileMove);

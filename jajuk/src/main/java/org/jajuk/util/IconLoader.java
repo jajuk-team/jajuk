@@ -512,6 +512,12 @@ public class IconLoader implements ITechnicalStrings{
 	public static final UrlImageIcon ICON_COPY = new UrlImageIcon(Util
 			.getResource("icons/16x16/editcopy_16x16.png"));
 	
+	public static final UrlImageIcon ICON_CUT = new UrlImageIcon(Util
+			.getResource("icons/16x16/editcut_16x16.png"));
+	
+	public static final UrlImageIcon ICON_PASTE = new UrlImageIcon(Util
+			.getResource("icons/16x16/editpaste_16x16.png"));
+	
 	public static final UrlImageIcon ICON_LAUNCH = new UrlImageIcon(Util
 			.getResource("icons/16x16/launch_16x16.png"));
 	
