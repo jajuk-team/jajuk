@@ -57,7 +57,7 @@ public class RefreshDirectoryAction extends ActionBase {
 		else{
 			dir = ((File) item).getDirectory();
 		}
-		DirectoryManager.registerDirectory(dir);
+		DirectoryManager.refreshDirectory(dir);
 		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 	}
 }

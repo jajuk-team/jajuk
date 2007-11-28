@@ -205,7 +205,7 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 		// Refresh and cleanup required directories
 		for (Directory dir : toBeRefreshed) {
-			DirectoryManager.registerDirectory(dir);
+			DirectoryManager.refreshDirectory(dir);
 			dir.getDevice().cleanRemovedFiles();
 		}
 		if (!sErrors.equals("")) {

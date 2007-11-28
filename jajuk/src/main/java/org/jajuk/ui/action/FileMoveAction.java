@@ -88,7 +88,7 @@ public class FileMoveAction extends ActionBase {
 								Util.copyRecursively(src, dst);
 								Util.deleteDir(src);
 								DirectoryManager.getInstance().removeDirectory(((Directory) t).getID());
-								DirectoryManager.registerDirectory(destDir);
+								DirectoryManager.refreshDirectory(destDir);
 							} catch(Exception ioe) {
 								Log.error(131, ioe);
 								Messages.showErrorMessage(131);
@@ -117,7 +117,7 @@ public class FileMoveAction extends ActionBase {
 							}
 						}
 					}
-					DirectoryManager.registerDirectory(destDir);
+					DirectoryManager.refreshDirectory(destDir);
 				}
 				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
 			}

@@ -105,7 +105,7 @@ public class DirectoryManager extends ItemManager {
 	 * 
 	 * @param Directory d
 	 */
-	public static void registerDirectory(Directory d) {
+	public static void refreshDirectory(Directory d) {
 		java.io.File dirList[] = d.getFio().listFiles(
 				new JajukFileFilter(JajukFileFilter.DirectoryFilter
 						.getInstance()));
@@ -113,7 +113,7 @@ public class DirectoryManager extends ItemManager {
 			for (java.io.File f : dirList) {
 				Directory dir = DirectoryManager.getInstance()
 						.registerDirectory(f.getName(), d, d.getDevice());
-				registerDirectory(dir);
+				refreshDirectory(dir);
 			}
 		} else {
 			d.scan(true, null);
