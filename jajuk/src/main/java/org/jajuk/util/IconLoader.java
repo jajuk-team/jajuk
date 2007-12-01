@@ -377,7 +377,10 @@ public class IconLoader implements ITechnicalStrings{
 
 	public static final UrlImageIcon ICON_SAVE = new UrlImageIcon(Util
 			.getResource("icons/16x16/save_16x16.png"));
-
+	
+	public static final UrlImageIcon ICON_EXT_DRIVE = new UrlImageIcon(Util
+			.getResource("icons/16x16/ext_drive_16x16.png"));
+	
 	public static final UrlImageIcon ICON_DEFAULT_COVER = new UrlImageIcon(Util
 			.getResource("icons/16x16/ok_16x16.png"));
 

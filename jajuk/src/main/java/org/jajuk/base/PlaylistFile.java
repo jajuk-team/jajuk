@@ -37,6 +37,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -782,7 +784,46 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 			}
 		}
 	}
-
+	
+	/**
+	 * Stores all the files and the playlist in external device
+	 */
+	public void storePlaylist() throws Exception {
+		final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+	 			JajukFileFilter.DirectoryFilter.getInstance()));
+	 	jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+	 	jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
+	 	jfc.setMultiSelectionEnabled(false);
+	 	int returnVal = jfc.showDialog(Main.getWindow(),"Ok");
+	 	if (returnVal == JFileChooser.APPROVE_OPTION) {
+	 		new Thread(){
+	 			public void run(){
+	 				java.io.File fDir = jfc.getSelectedFile();
+	 				Date curDate = new Date(); 
+	 				SimpleDateFormat Stamp = new SimpleDateFormat("yyyyMMdd-HHmm");
+	 				String dirName = "Collection-" + Stamp.format(curDate);
+	 				java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
+	 				destDir.mkdir();
+	 				java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
+	 				try{
+	 					BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+	 					bw.write(PLAYLIST_NOTE);
+	 					for (File plf : alFiles) {
+	 						Util.copyToDir(plf.getIO(), destDir);
+	 						bw.newLine();
+	 						bw.write(plf.getAbsolutePath());
+	 					}
+	 					bw.flush();
+	 					bw.close();
+	 				}catch (Exception e) {
+						Log.error(e);
+	 				}
+	 			}
+	 		}.start();
+	 	}
+	}
+	
+	
 	/**
 	 * @param parentDirectory
 	 *            The dParentDirectory to set.

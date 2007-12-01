@@ -25,6 +25,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
@@ -46,6 +47,7 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -54,6 +56,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jajuk.util.JajukFileFilter;
 
 import info.clearthought.layout.TableLayout;
 
@@ -72,12 +75,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -115,6 +120,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 	JajukButton jbAddShuffle;
 
 	JajukButton jbClear;
+	
+	JajukButton jbPrepParty;
 
 	JLabel jlTitle;
 
@@ -417,6 +424,9 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 		jbClear = new JajukButton(IconLoader.ICON_CLEAR);
 		jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9"));
 		jbClear.addActionListener(this);
+		jbPrepParty = new JajukButton(IconLoader.ICON_EXT_DRIVE);
+		jbPrepParty.setToolTipText(Messages.getString("AbstractPlaylistEditorView.26"));
+		jbPrepParty.addActionListener(this);
 		jlTitle = new JLabel("");
 		JToolBar jtb = new JToolBar();
 		jtb.setRollover(true);
@@ -429,6 +439,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 		jtb.add(jbUp);
 		jtb.add(jbDown);
 		jtb.add(jbClear);
+		jtb.add(jbPrepParty);
 
 		jpControl.add(jtb, "1,1");
 		jpControl.add(jlTitle, "3,1,c,c");
@@ -971,6 +982,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 					Messages.showErrorMessage(je.getCode());
 					Log.error(je);
 				}
+			} else if (ae.getSource() == jbPrepParty) {
+				plfi.getPlaylistFile().storePlaylist();
 			} else if (ae.getSource() == jmiFilePlay || (ae.getSource() == jmiFilePush)) {
 				// computes selected items
 				ArrayList<StackItem> alItemsToPlay = new ArrayList<StackItem>(jtable

@@ -100,6 +100,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	JMenuItem jmiDelete;
 
 	JMenuItem jmiProperties;
+	
+	JMenuItem jmiPrepParty;
 
 	MouseAdapter ma;
 
@@ -131,6 +133,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		jmiSaveAs.addActionListener(this);
 		jpmenu.add(jmiSaveAs);
 
+		jmiPrepParty = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.19"));
+		jmiPrepParty.addActionListener(this);
+		jpmenu.add(jmiPrepParty);
+		
 		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));
 		jmiProperties.addActionListener(this);
 		jpmenu.add(jmiProperties);
@@ -495,6 +501,15 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 							Log.error(e);
 						}
 						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+					}else if (ae.getSource() == jmiPrepParty) {
+						try {
+							plfiSelected.getPlaylistFile().storePlaylist();
+						} catch (JajukException je) {
+							Log.error(je);
+							Messages.showErrorMessage(je.getCode());
+						} catch (Exception e) {
+							Log.error(e);
+						}
 					}
 				}
 			}
