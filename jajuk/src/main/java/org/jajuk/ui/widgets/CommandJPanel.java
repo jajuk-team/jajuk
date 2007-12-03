@@ -30,6 +30,42 @@ import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.History;
+import org.jajuk.base.HistoryItem;
+import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Player;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.WebRadio;
+import org.jajuk.base.SearchResult.SearchResultType;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.dj.DigitalDJ;
+import org.jajuk.dj.DigitalDJManager;
+import org.jajuk.ui.action.ActionBase;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.ActionUtil;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.wizard.AmbienceWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioManager;
+import org.jdesktop.swingx.JXPanel;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -69,41 +105,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
-
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.History;
-import org.jajuk.base.HistoryItem;
-import org.jajuk.base.JajukTimer;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Player;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.WebRadio;
-import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.dj.DigitalDJ;
-import org.jajuk.dj.DigitalDJManager;
-import org.jajuk.ui.action.ActionBase;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.ActionUtil;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.wizard.AmbienceWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioManager;
-import org.jdesktop.swingx.JXPanel;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -285,8 +286,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
 	public void initUI() {
 		// Search
-		double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 },
-				{ 25 } };
+		double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 25 } };
 		JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
 		sbSearch = new SearchBox(CommandJPanel.this);
 		JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
@@ -352,12 +352,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 		jtbIncRate.setFloatable(false);
 		jbIncRate.addToToolBar(jtbIncRate);
 		double[][] sizeHistory = new double[][] {
-				{ 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED},
+				{ 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED },
 				{ 25 } };
 		jpHistory.setLayout(new TableLayout(sizeHistory));
 		jpHistory.add(jlHistory, "1,0");
 		jpHistory.add(jcbHistory, "3,0");
-		jpHistory.add(jtbIncRate,"5,0");
+		jpHistory.add(jtbIncRate, "5,0");
 
 		// Mode toolbar
 		// we need an inner toolbar to apply size properly
@@ -779,14 +779,32 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 					ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
 					ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
 					ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
+					// We need to set the icon here because the event can be
+					// thrown by the information panel, not directly the
+					// PlayPauseAction
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
 				} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+					// Disable volume control when pausing to fix an mplayer
+					// issue:
+					// setting the volume resume the file
+					jsVolume.setEnabled(false);
+					jsVolume.removeMouseWheelListener(CommandJPanel.this);
 					ActionManager.getAction(REWIND_TRACK).setEnabled(false);
 					ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+					// We need to set the icon here because the event can be
+					// thrown by the information panel, not directly the
+					// PlayPauseAction
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
 				} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+					// Enable the volume when resuming (fix a mplayer issue, see
+					// above)
+					jsVolume.setEnabled(true);
+					jsVolume.addMouseWheelListener(CommandJPanel.this);
 					ActionManager.getAction(REWIND_TRACK).setEnabled(true);
 					ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+					// We need to set the icon here because the event can be
+					// thrown by the information panel, not directly the
+					// PlayPauseAction
 					ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
 				} else if (EventSubject.EVENT_SPECIAL_MODE.equals(subject)) {
 					if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(
@@ -822,7 +840,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 					jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
 					jsVolume.addChangeListener(CommandJPanel.this);
 					jbMute.setSelected(Player.isMuted());
-					ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_UNMUTED); 
+					ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_UNMUTED);
 				} else if (EventSubject.EVENT_DJS_CHANGE.equals(event.getSubject())) {
 					populateDJs();
 					// If no more DJ, change the tooltip

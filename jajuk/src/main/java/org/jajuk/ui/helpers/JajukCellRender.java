@@ -20,17 +20,17 @@
 
 package org.jajuk.ui.helpers;
 
-import java.awt.Component;
-import java.util.Date;
-
-import javax.swing.JLabel;
-import javax.swing.JTable;
-
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
+
+import java.awt.Component;
+import java.util.Date;
+
+import javax.swing.JLabel;
+import javax.swing.JTable;
 
 /**
  * Cell renderer to support cells color and icons

@@ -19,9 +19,9 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.event.ComponentListener;
-
 import org.jajuk.ui.perspectives.IPerspective;
+
+import java.awt.event.ComponentListener;
 
 import com.vlsolutions.swing.docking.Dockable;
 

@@ -19,6 +19,10 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -26,10 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 
 /**
  * An Album *

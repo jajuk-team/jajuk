@@ -98,7 +98,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 	}
 
 	public String getAbsolutePath() {
-		return this.fio.getAbsolutePath();
+		StringBuilder sbOut = new StringBuilder(getDevice().getUrl()).append(getRelativePath());
+		return sbOut.toString();
 	}
 
 	/**
@@ -329,16 +330,20 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 					Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
 					Type type = TypeManager.getInstance().getTypeByExtension(
 							Util.getExtension(files[i]));
-					//Store number of tracks in collection (note that the collection is locked)
+					// Store number of tracks in collection (note that the
+					// collection is locked)
 					long trackNumber = TrackManager.getInstance().getElementCount();
 					Track track = TrackManager.getInstance().registerTrack(sTrackName, album,
 							style, author, length, year, lOrder, type);
-					//Update discovery date only if it is a new track
-					if (TrackManager.getInstance().getElementCount() > trackNumber){
-						//A new track has been created, we can safely update the track date
-						//We don't want to update date if the track is already known, even if 
-						//it is a nex file because a track can map several files and discovery date
-						//is a track attribute, not file one
+					// Update discovery date only if it is a new track
+					if (TrackManager.getInstance().getElementCount() > trackNumber) {
+						// A new track has been created, we can safely update
+						// the track date
+						// We don't want to update date if the track is already
+						// known, even if
+						// it is a nex file because a track can map several
+						// files and discovery date
+						// is a track attribute, not file one
 						track.setAdditionDate(new Date());
 					}
 					org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
@@ -383,19 +388,24 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 		}
 	}
 
+	/** Reset pre-calculated paths* */
+	protected void reset() {
+		fio = null;
+	}
+
 	/**
 	 * Return full directory path name relative to device url
 	 * 
 	 * @return String
 	 */
 	public String getRelativePath() {
-		if (getName().equals("")) { // if this directory is a root device
-			// 
+		if (getName().equals("")) { 
+			// if this directory is a root device
 			// directory
 			return "";
 		}
-		StringBuilder sbOut = new StringBuilder().append(java.io.File.separatorChar)
-				.append(getName());
+		StringBuilder sbOut = new StringBuilder().append(java.io.File.separatorChar).append(
+				getName());
 		boolean bTop = false;
 		Directory dCurrent = this;
 		while (!bTop && dCurrent != null) {
@@ -414,6 +424,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 	 * @return Returns the IO file reference to this directory.
 	 */
 	public File getFio() {
+		if (fio == null) {
+			fio = new java.io.File(getAbsolutePath());
+		}
 		return fio;
 	}
 
@@ -429,19 +442,20 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 	 * @return comparaison result
 	 */
 	public int compareTo(Directory otherDirectory) {
-		//Perf: leave if directories are equals
-		if (otherDirectory.equals(this)){
+		// Perf: leave if directories are equals
+		if (otherDirectory.equals(this)) {
 			return 0;
 		}
 		String abs = new StringBuilder(getDevice().getName()).append(getAbsolutePath()).toString();
-		String otherAbs = new StringBuilder(otherDirectory.getDevice().getName()).append(otherDirectory.getAbsolutePath()).toString();
+		String otherAbs = new StringBuilder(otherDirectory.getDevice().getName()).append(
+				otherDirectory.getAbsolutePath()).toString();
 		// should ignore case to get a B c ... and not Bac
-		//Never return 0 here, because bidimap needs to distinct items
-        int comp = abs.compareToIgnoreCase(otherAbs);
-        if (comp == 0){
-        	return abs.compareTo(otherAbs);
-        }
-        return comp;
+		// Never return 0 here, because bidimap needs to distinct items
+		int comp = abs.compareToIgnoreCase(otherAbs);
+		if (comp == 0) {
+			return abs.compareTo(otherAbs);
+		}
+		return comp;
 	}
 
 	/**
@@ -451,7 +465,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 	 */
 	public boolean shouldBeHidden() {
 		if (getDevice().isMounted()
-				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) { 
+				|| ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) {
 			return false;
 		}
 		return true;

@@ -110,6 +110,11 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
 				ambiences.put(ambienceID, ambience);
 			}
 		}
+		// If none ambience, means ambience can have been reset after a style
+		// hashcode computation change, reset to defaults
+		if (ambiences.size() == 0) {
+			createDefaultAmbiences();
+		}
 	}
 
 	/**

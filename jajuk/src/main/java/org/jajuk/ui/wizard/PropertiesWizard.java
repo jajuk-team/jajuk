@@ -246,7 +246,6 @@ public class PropertiesWizard extends JajukJDialog implements
 					} catch (Exception ex) {
 						Messages.showErrorMessage(104, ex.getMessage());
 						Log.error(104, ex.getMessage(), ex);
-						return;
 					} finally {
 						// -UI refresh-
 						// clear tables selection
@@ -437,8 +436,9 @@ public class PropertiesWizard extends JajukJDialog implements
 						}
 						widgets[index][1] = jcb;
 					} else if (meta.getType().equals(Double.class)
+							|| meta.getType().equals(Integer.class)
 							|| meta.getType().equals(Long.class)) {
-						// Note : we manage fiedl validation by ourself, and we
+						// Note : we manage field validation by ourself, and we
 						// don't use formatted textfields because they display
 						// numbers with comas (this is wrong to display
 						// years for instance)
@@ -453,11 +453,15 @@ public class PropertiesWizard extends JajukJDialog implements
 								Object oValue = null;
 								try {
 									if (meta.getType().equals(Long.class)) {
-										oValue = Integer.parseInt(jtfValue
+										oValue = Long.parseLong(jtfValue
 												.getText());
 									} else if (meta.getType().equals(
 											Double.class)) {
 										oValue = Double.parseDouble(jtfValue
+												.getText());
+									} else if (meta.getType().equals(
+											Integer.class)) {
+										oValue = Integer.parseInt(jtfValue
 												.getText());
 									}
 								} catch (Exception e) {
@@ -478,7 +482,7 @@ public class PropertiesWizard extends JajukJDialog implements
 						jtfValue.setPreferredSize(dim);
 						widgets[index][1] = jtfValue;
 					} else if (meta.getType().equals(String.class)
-					// for styles
+							// for styles
 							&& meta.getName().equals(XML_STYLE)) {
 						Vector<String> styles = StyleManager.getInstance()
 								.getStylesList();
@@ -733,7 +737,7 @@ public class PropertiesWizard extends JajukJDialog implements
 					.size());
 			// details for errors
 			String sDetails = "";
-			// Now we have all items to considere, write tags for each
+			// Now we have all items to consider, write tags for each
 			// property to change
 			for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
 				ArrayList<Item> alIntermediate = new ArrayList<Item>(
@@ -753,7 +757,7 @@ public class PropertiesWizard extends JajukJDialog implements
 					}
 					// Old value
 					String sOldValue = item.getHumanValue(meta.getName());
-					if ((sOldValue != null && !Util.format(oValue, meta)
+					if ((sOldValue != null && !Util.format(oValue, meta,true)
 							.equals(sOldValue))) {
 						try {
 							// if we change track properties for only one file

@@ -19,6 +19,11 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,11 +32,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
-
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 
 /**
  * A track

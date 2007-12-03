@@ -19,11 +19,11 @@
  */
 package org.jajuk.ui.perspectives;
 
+import org.jajuk.ui.views.IView;
+
 import java.awt.Container;
 import java.net.URL;
 import java.util.Set;
-
-import org.jajuk.ui.views.IView;
 
 /**
  * Representation of a perspective

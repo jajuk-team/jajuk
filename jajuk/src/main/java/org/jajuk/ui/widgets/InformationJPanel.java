@@ -131,7 +131,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 	private InformationJPanel() {
 		// dimensions
 		// set current jpanel properties
-		double size[][] = { { 0.44, 0.13, 0.10, 0.33 }, { 20 } };
+		double size[][] = { { 0.44, 0.13, 0.10, 0.33 }, { TableLayout.PREFERRED } };
 		setLayout(new TableLayout(size));
 
 		// message bar
@@ -210,6 +210,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
 		eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
 		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
+		eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
+		eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
 		return eventSubjectSet;
 	}
 
@@ -377,7 +379,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						if (!jsPosition.isEnabled()) {
 							jsPosition.setEnabled(true);
 						}
-						// if position is adjusting, no dont disturb user
+						// if position is adjusting, don't disturb user
 						if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
 							return;
 						}
@@ -430,15 +432,15 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 						jsPosition.removeMouseWheelListener(InformationJPanel.this);
 						jsPosition.removeChangeListener(InformationJPanel.this);
 					} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
-						// remove and re-add listener to make sure not to add it
-						// twice
-						jsPosition.removeMouseWheelListener(InformationJPanel.this);
-						jsPosition.addMouseWheelListener(InformationJPanel.this);
-						jsPosition.removeChangeListener(InformationJPanel.this);
-						jsPosition.addChangeListener(InformationJPanel.this);
+						// Avoid adding listeners twice
+						if (jsPosition.getMouseWheelListeners().length == 0) {
+							jsPosition.addMouseWheelListener(InformationJPanel.this);
+						}
+						if (jsPosition.getChangeListeners().length == 0) {
+							jsPosition.addChangeListener(InformationJPanel.this);
+						}
 						jsPosition.setEnabled(true);
 					}
-
 				}
 			});
 		}

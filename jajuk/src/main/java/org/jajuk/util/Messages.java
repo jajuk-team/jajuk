@@ -19,11 +19,16 @@
  */
 package org.jajuk.util;
 
-import java.util.Collections;
+import org.jajuk.Main;
+import org.jajuk.util.log.Log;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -38,11 +43,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.jajuk.Main;
-import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Utility class to get strings from localized property files

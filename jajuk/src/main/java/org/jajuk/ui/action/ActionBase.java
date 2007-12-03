@@ -19,12 +19,6 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -32,6 +26,12 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
 
 /**
  * Common super class for Swing actions. This class provides useful construction

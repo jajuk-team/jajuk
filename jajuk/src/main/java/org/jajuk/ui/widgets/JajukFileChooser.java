@@ -19,16 +19,16 @@
  */
 package org.jajuk.ui.widgets;
 
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
+
 import java.awt.Component;
 import java.awt.HeadlessException;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
-
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Messages;
 
 /**
  * Music-oriented file chooser

@@ -20,14 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
@@ -40,6 +32,14 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
+
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.io.File;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import com.sun.java.help.impl.SwingWorker;
 import com.vlsolutions.swing.docking.ShadowBorder;

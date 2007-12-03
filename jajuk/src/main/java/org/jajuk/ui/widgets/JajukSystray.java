@@ -355,7 +355,7 @@ public class JajukSystray extends CommandJPanel {
 					if (radio != null) {
 						trayIcon.setToolTip(radio.getName());
 					}
-					//Enable webradio navigation actions
+					// Enable webradio navigation actions
 					ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
 					ActionManager.getAction(NEXT_TRACK).setEnabled(true);
 					ActionManager.getAction(STOP_TRACK).setEnabled(true);
@@ -385,11 +385,24 @@ public class JajukSystray extends CommandJPanel {
 					jmiPrevious.setEnabled(true);
 					jmiFinishAlbum.setEnabled(true);
 				} else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+					//Apply basic CommandJPanel actions
+					JajukSystray.super.update(event);
+					//disable position
+					jsPosition.setEnabled(false);
 					jsPosition.removeMouseWheelListener(JajukSystray.this);
 					jsPosition.removeChangeListener(JajukSystray.this);
-					jsPosition.setEnabled(false);
 				} else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+					//Apply basic CommandJPanel actions
 					JajukSystray.super.update(event);
+					//disable position
+					// Avoid adding listeners twice
+					if (jsPosition.getMouseWheelListeners().length == 0) {
+						jsPosition.addMouseWheelListener(JajukSystray.this);
+					}
+					if (jsPosition.getChangeListeners().length == 0) {
+						jsPosition.addChangeListener(JajukSystray.this);
+					}
+					jsPosition.setEnabled(true);
 				} else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
 					JajukSystray.super.update(event);
 				} else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
@@ -427,7 +440,7 @@ public class JajukSystray extends CommandJPanel {
 							true));
 					jcbmiShowBalloon
 							.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
-				} 
+				}
 			}
 
 		});

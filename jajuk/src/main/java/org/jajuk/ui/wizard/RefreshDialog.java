@@ -19,6 +19,9 @@
  */
 package org.jajuk.ui.wizard;
 
+import org.jajuk.util.IconLoader;
+import org.jdesktop.swingx.JXBusyLabel;
+
 import info.clearthought.layout.TableLayout;
 
 import javax.swing.Icon;
@@ -26,9 +29,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-
-import org.jajuk.util.IconLoader;
-import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Refresh dialog

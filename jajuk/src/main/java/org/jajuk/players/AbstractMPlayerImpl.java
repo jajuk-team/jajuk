@@ -108,7 +108,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	 */
 	ArrayList<String> buildCommand(String url) {
 		String sCommand = "mplayer"; //$NON-NLS-1$
-		//Use any forced mplayer path
+		// Use any forced mplayer path
 		String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
 		if (!Util.isVoid(forced)) {
 			sCommand = forced;
@@ -127,10 +127,10 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 		cmd.add("-quiet");
 		// slave: slave mode (control with stdin)
 		cmd.add("-slave");
-		// -af volume=-200: set volume to 0 to avoid beginning the track (few ms)
-		// with the wrong volume
+		// -af volume: Use volnorm to limit gain to max 
+		// If mute, use -200db otherwise, use a linear scale
 		cmd.add("-af");
-		cmd.add("volume=-200");
+		cmd.add("volnorm,volume=" + ((fVolume == 0) ? -200 : ((int) (20 * fVolume) - 20)));
 		// -softvol : use soft mixer, allows to set volume only to this mplayer
 		// instance, not others programs
 		cmd.add("-softvol");
@@ -201,18 +201,15 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
 	 *      float)
 	 */
-	public void play(File file, float fPosition, long length, float fVolume) throws Exception {
-		// TODO Auto-generated method stub
-	}
+	public abstract void play(File file, float fPosition, long length, float fVolume)
+			throws Exception;
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
 	 */
-	public void play(WebRadio radio, float fVolume) throws Exception {
-		// TODO Auto-generated method stub
-	}
+	public abstract void play(WebRadio radio, float fVolume) throws Exception;
 
 	/*
 	 * (non-Javadoc)

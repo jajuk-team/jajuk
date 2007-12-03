@@ -202,10 +202,10 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_COVERS_PRELOAD, FALSE);
 		properties.put(CONF_COVERS_SIZE, "3"); // medium and large
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK, FALSE);
-		properties.put(CONF_PHYSICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK + ',' + XML_ALBUM
+		properties.put(CONF_FILES_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK + ',' + XML_ALBUM
 				+ ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_RATE + ','
 				+ XML_TRACK_LENGTH);
-		properties.put(CONF_LOGICAL_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME + ',' + XML_ALBUM
+		properties.put(CONF_TRACKS_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME + ',' + XML_ALBUM
 				+ ',' + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ','
 				+ XML_TRACK_RATE);
 		properties.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
@@ -227,8 +227,8 @@ public class ConfigurationManager implements ITechnicalStrings {
 		}
 		properties.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER
 				+ "," + width + "," + height);
-		properties.put(CONF_LOGICAL_TABLE_EDITION, FALSE);
-		properties.put(CONF_PHYSICAL_TABLE_EDITION, FALSE);
+		properties.put(CONF_TRACKS_TABLE_EDITION, FALSE);
+		properties.put(CONF_FILES_TABLE_EDITION, FALSE);
 		properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
 		properties.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150x150);
 		properties.put(CONF_THUMBS_SORTER, "2"); // sort by album
@@ -236,7 +236,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_THUMBS_FILTER, "0");
 		properties.put(CONF_TIP_OF_DAY_INDEX, "0");
 		properties.put(CONF_WIKIPEDIA_LANGUAGE, properties.get(CONF_OPTIONS_LANGUAGE));
-		properties.put(CONF_FADE_DURATION, "0");
+		properties.put(CONF_FADE_DURATION, "6");
 		// sort by style
 		properties.put(CONF_LOGICAL_TREE_SORT_ORDER, "0");
 		properties.put(CONF_DEFAULT_DJ, "");// default dj

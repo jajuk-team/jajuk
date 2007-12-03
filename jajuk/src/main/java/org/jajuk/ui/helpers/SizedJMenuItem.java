@@ -20,12 +20,12 @@
 
 package org.jajuk.ui.helpers;
 
+import org.jajuk.util.Util;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
-
-import org.jajuk.util.Util;
 
 /**
  * Menu item whish icon has a fixed size

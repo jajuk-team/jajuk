@@ -63,10 +63,16 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 		// check for webradio repository file
 		fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
 		if (!fwebradios.exists()) {
-			downloadRepository();
+			// download the stream list and load it asynchonously to avoid
+			// freezing unconnected people
+			new Thread() {
+				public void run() {
+					downloadRepository();
+				}
+			}.start();
 		}
-		// Load repository if any
-		if (fwebradios.exists()) {
+		// Load repository if it exists
+		else {
 			loadRepository();
 		}
 
@@ -87,6 +93,11 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 		}
 	}
 
+	/**
+	 * Download asynchronously the default streams list
+	 * 
+	 * @return the downnlod thread
+	 */
 	private void downloadRepository() {
 		// try to download the default directory (from jajuk SVN trunk
 		// directly)
@@ -102,6 +113,11 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 				Log.error(e2);
 			}
 		}
+		// Load repository if any
+		if (fwebradios.exists()) {
+			loadRepository();
+		}
+
 	}
 
 	public static WebRadioManager getInstance() {
@@ -153,9 +169,11 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 		webradios.clear();
 		// Download repository
 		downloadRepository();
-		// Reload repository
-		if (fwebradios.exists()) {
-			loadRepository();
+		// Check file now exists and not void
+		File out = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+		if (!out.exists() || out.length() == 0) {
+			// show an "operation failed' message to users
+			throw new Exception("Cannot download webradio repository");
 		}
 	}
 

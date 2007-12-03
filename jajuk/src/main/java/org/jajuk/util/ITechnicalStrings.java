@@ -674,20 +674,27 @@ public interface ITechnicalStrings {
 	/** Window position and size */
 	public static final String CONF_WINDOW_POSITION = "jajuk.window_position";
 
-	/** Physical table columns */
-	public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
+	/** Files table columns */
+	public static final String CONF_FILES_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
 
-	/** Physical table edition state */
-	public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition";
+	/** Files table edition state */
+	public static final String CONF_FILES_TABLE_EDITION = "jajuk.ui.physical_table_edition";
 
-	/** Logical table columns */
-	public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns";
+	/** Tracks table columns */
+	public static final String CONF_TRACKS_TABLE_COLUMNS = "jajuk.ui.logical_table_columns";
+
+		/** Tracks table edition state */
+	public static final String CONF_TRACKS_TABLE_EDITION = "jajuk.ui.logical_table_edition";
+
+	/** Albums table edition state */
+	public static final String CONF_ALBUMS_TABLE_COLUMNS = "jajuk.ui.albums_table_columns";
+	
+	/** Albums table edition state */
+	public static final String CONF_ALBUMS_TABLE_EDITION = "jajuk.ui.albums_table_edition";
 
 	/** Playlist editor columns to display */
 	public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
 
-	/** Logical table edition state */
-	public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition";
 
 	/** Catalog items size */
 	public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";

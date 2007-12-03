@@ -19,20 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.jajuk.Main;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -45,6 +31,19 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Items root container
@@ -68,7 +67,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	private HashMap<String, String> hmWrongRightTrackID = new HashMap<String, String>();
 
 	/** upgrade for album IDs */
-	private HashMap<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
+	public HashMap<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
 
 	/** upgrade for author IDs */
 	private HashMap<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
@@ -186,99 +185,121 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
 		// types
 		bw.write(TypeManager.getInstance().toXML());
-		Iterator it = null;
-		it = TypeManager.getInstance().getTypes().iterator();
-		while (it.hasNext()) {
-			Type type = (Type) it.next();
+		for (Type type:TypeManager.getInstance().getTypes()){
 			bw.write(type.toXml());
 		}
-		bw.write("\t</" + TypeManager.getInstance().getLabel() + ">\n");
+		StringBuilder sb = new StringBuilder(40);
+		sb.append("\t</");
+		sb.append(TypeManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// devices
 		bw.write(DeviceManager.getInstance().toXML());
-		it = DeviceManager.getInstance().getDevices().iterator();
-		while (it.hasNext()) {
-			Device device = (Device) it.next();
+		for (Device device:DeviceManager.getInstance().getDevices()){
 			bw.write(device.toXml());
 		}
-		bw.write("\t</" + DeviceManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(40);
+		sb.append("\t</");
+		sb.append(DeviceManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// styles
 		bw.write(StyleManager.getInstance().toXML());
-		it = StyleManager.getInstance().getStyles().iterator();
-		while (it.hasNext()) {
-			Style style = (Style) it.next();
+		for (Style style:StyleManager.getInstance().getStyles()){
 			bw.write(style.toXml());
 		}
-		bw.write("\t</" + StyleManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(40);
+		sb.append("\t</");
+		sb.append(StyleManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// authors
 		bw.write(AuthorManager.getInstance().toXML());
-		it = AuthorManager.getInstance().getAuthors().iterator();
-		while (it.hasNext()) {
-			Author author = (Author) it.next();
+		for (Author author:AuthorManager.getInstance().getAuthors()){
 			bw.write(author.toXml());
 		}
-		bw.write("\t</" + AuthorManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(40);
+		sb.append("\t</");
+		sb.append(AuthorManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// albums
 		bw.write(AlbumManager.getInstance().toXML());
-		it = AlbumManager.getInstance().getAlbums().iterator();
-		while (it.hasNext()) {
-			Album album = (Album) it.next();
+		for (Album album:AlbumManager.getInstance().getAlbums()){
 			bw.write(album.toXml());
 		}
-		bw.write("\t</" + AlbumManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(40);
+		sb.append("\t</");
+		sb.append(AlbumManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// years
 		bw.write(YearManager.getInstance().toXML());
-		it = YearManager.getInstance().getYears().iterator();
-		while (it.hasNext()) {
-			Year year = (Year) it.next();
+		for (Year year:YearManager.getInstance().getYears()){
 			bw.write(year.toXml());
 		}
-		bw.write("\t</" + YearManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(40);
+		sb.append("\t</");
+		sb.append(YearManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// tracks
 		bw.write(TrackManager.getInstance().toXML());
-		it = TrackManager.getInstance().getTracks().iterator();
-		while (it.hasNext()) {
-			Track track = (Track) it.next();
+		for (Track track:TrackManager.getInstance().getTracks()){
 			if (track.getFiles().size() > 0) { // this way we clean up all
 				// orphan tracks
 				bw.write(track.toXml());
 			}
 		}
-		bw.write("\t</" + TrackManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(200);
+		sb.append("\t</");
+		sb.append(TrackManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// directories
 		bw.write(DirectoryManager.getInstance().toXML());
-		it = DirectoryManager.getInstance().getDirectories().iterator();
-		while (it.hasNext()) {
-			Directory directory = (Directory) it.next();
+		for (Directory directory:DirectoryManager.getInstance().getDirectories()){
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</" + DirectoryManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(100);
+		sb.append("\t</");
+		sb.append(DirectoryManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// files
 		bw.write(FileManager.getInstance().toXML());
-		it = FileManager.getInstance().getFiles().iterator();
-		while (it.hasNext()) {
-			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+		for (org.jajuk.base.File file:FileManager.getInstance().getFiles()){
 			bw.write(file.toXml());
 		}
-		bw.write("\t</" + FileManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(200);
+		sb.append("\t</");
+		sb.append(FileManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// playlist files
 		bw.write(PlaylistFileManager.getInstance().toXML());
-		it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
-		while (it.hasNext()) {
-			PlaylistFile playlistFile = (PlaylistFile) it.next();
+		for (PlaylistFile playlistFile:PlaylistFileManager.getInstance().getPlaylistFiles()){
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</" + PlaylistFileManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(200);
+		sb.append("\t</");
+		sb.append(PlaylistFileManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
 		// playlist
 		bw.write(PlaylistManager.getInstance().toXML());
-		it = PlaylistManager.getInstance().getPlayLists().iterator();
-		while (it.hasNext()) {
-			Playlist playlist = (Playlist) it.next();
+		for (Playlist playlist:PlaylistManager.getInstance().getPlayLists()){
 			if (playlist.getPlaylistFiles().size() > 0) {
 				// this way we clean up all orphan playlists
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</" + PlaylistManager.getInstance().getLabel() + ">\n");
+		sb = new StringBuilder(100);
+		sb.append("\t</");
+		sb.append(PlaylistManager.getInstance().getLabel());
+		sb.append(">\n");
+		bw.write(sb.toString());
+		//end of collection
 		bw.write("</" + XML_COLLECTION + ">\n");
 		bw.flush();
 		bw.close();
@@ -451,8 +472,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 							// Date format has changed from 1.3 (only yyyyMMdd
 							// addition format is used)
 							// so an exception will be thrown when upgrading
-							// from
-							// 1.2
+							// from 1.2
 							// we reset default value to "today"
 							oDefaultValue = Util.parse(sDefaultValue, cType);
 						} catch (Exception e) {

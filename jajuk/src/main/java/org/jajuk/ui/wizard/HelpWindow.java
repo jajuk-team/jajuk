@@ -22,6 +22,7 @@ package org.jajuk.ui.wizard;
 
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -60,6 +61,7 @@ public class HelpWindow extends JFrame implements ITechnicalStrings {
 				initUI();
 				setLocationByPlatform(true);
 				setSize(new Dimension(800,600));
+				setIconImage(IconLoader.ICON_LOGO.getImage());
 				setVisible(true);
 			}
 

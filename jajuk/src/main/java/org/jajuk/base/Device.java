@@ -257,7 +257,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 	 * @return true if some changes occured in device
 	 * 
 	 */
-	protected synchronized boolean refreshCommand(boolean bDeepScan, boolean bManual) {
+	public synchronized boolean refreshCommand(boolean bDeepScan, boolean bManual) {
 		try {
 			bAlreadyRefreshing = true;
 			if (reporter == null) {
@@ -306,7 +306,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			// refresh required if nb of files or dirs changed
 			if ((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0
 					|| (DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0) {
-				//Refresh thumbs for new albums
+				// Refresh thumbs for new albums
 				ThumbnailsMaker.launchAllSizes(false);
 				return true;
 			}
@@ -595,16 +595,16 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 		setProperty(XML_URL, url);
 		this.fio = new File(url);
 		/** Reset files */
-		Iterator it = FileManager.getInstance().getFiles().iterator();
-		while (it.hasNext()) {
-			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+		for (org.jajuk.base.File file : FileManager.getInstance().getFiles()) {
 			file.reset();
 		}
 		/** Reset playlist files */
-		it = PlaylistFileManager.getInstance().getPlaylistFiles().iterator();
-		while (it.hasNext()) {
-			org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it.next();
+		for (PlaylistFile plf : PlaylistFileManager.getInstance().getPlaylistFiles()) {
 			plf.reset();
+		}
+		/** Reset directories */
+		for (Directory dir : DirectoryManager.getInstance().getDirectories()) {
+			dir.reset();
 		}
 	}
 
@@ -657,28 +657,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			return;
 		}
 		try {
-			if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
-				// look to see if the device is already mounted ( the mount
-				// command cannot say that )
-				File file = new File(getMountPoint());
-				if (file.exists() && file.list().length == 0) {
-					// if none file in this directory, it probably
-					// means device is not mounted, try to mount it
-
-					// run the actual mount command
-					Process process = Runtime.getRuntime().exec(
-							new String[] { "mount", getMountPoint() });
-					// just make a try, do not report error
-					// if it fails (linux 2.6 doesn't
-					// require anymore to mount devices)
-					process.waitFor();
-				}
-			} else { // windows directory or mount point not given, check
-				// if path exists
-				File file = new File(getUrl());
-				if (!file.exists()) {
-					throw new Exception("Path does not exist");
-				}
+			File file = new File(getUrl());
+			if (!file.exists()) {
+				throw new Exception("Path does not exist");
 			}
 		} catch (Exception e) {
 			throw new JajukException(11, getName(), e);
@@ -732,25 +713,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
 			return;
 		}
 		int iExit = 0;
-		if (!Util.isUnderWindows() && !getMountPoint().trim().equals("")) {
-			// not a windows
-			try {
-				// we try to unmount the device if under Unix. Note that this is
-				// useless most of the time with Linux 2.6+, so it's just a try
-				// and we don't check exit code anymore
-				Process process = Runtime.getRuntime().exec(
-						new String[] { "umount", getMountPoint() });
-				iExit = process.waitFor();
-				if (bEjection) { // jection if required
-					process = Runtime.getRuntime().exec(new String[] { "eject", getMountPoint() });
-					process.waitFor();
-				}
-			} catch (Exception e) {
-				Log.error(12, Integer.toString(iExit), e); // mount failed
-				Messages.showErrorMessage(12, getName());
-				return;
-			}
-		}
 		bMounted = false;
 		if (bUIRefresh) {
 			ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_UNMOUNT));

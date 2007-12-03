@@ -49,6 +49,8 @@ import org.jajuk.ui.action.RestoreAllViewsAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
@@ -215,11 +217,6 @@ public class Main implements ITechnicalStrings {
 			// perform initial checkups and create needed files
 			initialCheckups();
 
-			// Set a session file
-			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/' + Util.getHostName()
-					+ '_' + System.getProperty("user.name"));
-			sessionUser.mkdir();
-
 			// log startup depends on : setExecLocation, initialCheckups
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
@@ -321,6 +318,11 @@ public class Main implements ITechnicalStrings {
 
 			// check for another session (needs setLocal)
 			checkOtherSession();
+
+			// Set a session file
+			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/' + Util.getHostName()
+					+ '_' + System.getProperty("user.name"));
+			sessionUser.mkdir();
 
 			// Register device types
 			DeviceManager.getInstance().registerDeviceType(
@@ -582,12 +584,6 @@ public class Main implements ITechnicalStrings {
 							}
 							try {
 								if (iExitCode == 0) {
-									// Remove session flag
-									File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
-											+ InetAddress.getLocalHost().getHostName() + '_'
-											+ System.getProperty("user.name"));
-									sessionUser.delete();
-
 									// commit only if exit is safe (to avoid
 									// commiting
 									// empty collection) commit ambiences
@@ -627,6 +623,21 @@ public class Main implements ITechnicalStrings {
 									}
 									/* release keystrokes resources */
 									ActionBase.cleanup();
+
+									// Remove localhost_<user> session files
+									// (can occur when network is not available)
+									File sessionUser = Util.getConfFileByPath(FILE_SESSIONS
+											+ "/localhost" + '_' + System.getProperty("user.name"));
+									sessionUser.delete();
+									// Remove session flag. Exception can be
+									// thrown here if loopback interface is not
+									// correctly set up, so should be the last
+									// thing to do
+									sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
+											+ InetAddress.getLocalHost().getHostName() + '_'
+											+ System.getProperty("user.name"));
+									sessionUser.delete();
+
 								}
 							} catch (Exception e) {
 								// don't use Log class here, it can cause freeze
@@ -654,6 +665,19 @@ public class Main implements ITechnicalStrings {
 
 					// Start rating manager thread
 					RatingManager.getInstance().start();
+
+					// Force rebuilding thumbs (after an album id hashcode
+					// method change for eg)
+					if (Collection.getInstance().hmWrongRightAlbumID.size() > 0) {
+						ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
+						ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100x100);
+						ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150x150);
+						ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200x200);
+						ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250x250);
+						ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300x300);
+						// Launch thumbs creation in another process
+						ThumbnailsMaker.launchAllSizes(true);
+					}
 
 					// Start check for update thread if required
 					if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {

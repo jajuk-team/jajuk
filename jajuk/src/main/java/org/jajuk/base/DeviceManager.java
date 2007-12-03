@@ -87,9 +87,6 @@ public class DeviceManager extends ItemManager {
 		// URL
 		registerProperty(new PropertyMetaInformation(XML_URL, false, true, true, false, false,
 				Long.class, null));
-		// Mount point
-		registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT, false, true, true,
-				false, false, String.class, null));
 		// Auto-mount
 		registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT, false, true, true,
 				false, false, Boolean.class, null));
@@ -165,13 +162,11 @@ public class DeviceManager extends ItemManager {
 	 * @param sName
 	 * @param iDeviceType
 	 * @param sUrl
-	 * @param sMountPoint
 	 * @param bNew:
 	 *            is it a new device ?
 	 * @return 0:ok or error code
 	 */
-	public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
-			String sMountPoint, boolean bNew) {
+	public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
 		synchronized (DeviceManager.getInstance().getLock()) {
 			// don't check if it is a CD as all CDs may use the same mount point
 			if (iDeviceType == Device.TYPE_CD) {
@@ -199,15 +194,6 @@ public class DeviceManager extends ItemManager {
 			}
 			// check availability
 			if (iDeviceType != 2) { // not a remote device, TBI for remote
-				// make sure it's mounted if under unix
-				if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")) {
-					try {
-						// run the actual mount command
-						Process process = Runtime.getRuntime().exec(new String[]{"mount",sMountPoint});
-						process.waitFor();
-					} catch (Exception e) {
-					}
-				}
 				// test directory is available
 				File file = new File(sUrl);
 				// check if the url exists and is readable
@@ -262,7 +248,7 @@ public class DeviceManager extends ItemManager {
 			// show confirmation message if required
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
 				int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
-						JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (iResu != JOptionPane.YES_OPTION) {
 					return;
 				}

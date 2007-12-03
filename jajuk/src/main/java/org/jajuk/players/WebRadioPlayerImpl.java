@@ -19,6 +19,7 @@
  */
 package org.jajuk.players;
 
+import org.jajuk.base.File;
 import org.jajuk.base.WebRadio;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -35,9 +36,6 @@ import java.util.StringTokenizer;
  */
 public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 
-	/** Current reader thread */
-	volatile ReaderThread reader;
-
 	/**
 	 * Reader : read information from mplayer like position
 	 */
@@ -47,26 +45,17 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				String line = null;
 				for (; (line = in.readLine()) != null;) {
-					if (line.matches(".*ANS_TIME_POSITION.*")) {
-						StringTokenizer st = new StringTokenizer(line, "=");
-						st.nextToken();
-					} else if (line.matches("Exiting.*End.*")) {
+					bOpening = false;
+					//Search for Exiting (...) pattern
+					if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
 						bEOF = true;
-						bOpening = false;
-					}
-					// Opening ?
-					else if (line.matches(".*Starting playback.*")) {
-						bOpening = false;
 					}
 				}
 				// can reach this point at the end of file
 				in.close();
 				return;
 			} catch (Exception e) {
-				// A stop causes a steam close exception, so ignore it
-				if (!e.getMessage().matches(".*Stream closed")) {
 					Log.error(e);
-				}
 			}
 		}
 	}
@@ -118,9 +107,10 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 		} catch (Exception e) {
 			Log.error(e);
 		}
+		//Start mplayer
 		proc = pb.start();
-		reader = new ReaderThread();
-		reader.start();
+		//start mplayer replies reader thread
+		new ReaderThread().start();
 		// if opening, wait, 30 secs max
 		int i = 0;
 		while (bOpening && i < 30) {
@@ -137,7 +127,13 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 		}
 		// Get track length
 		sendCommand("get_time_length");
-		setVolume(fVolume);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.File, float, long, float)
+	 */
+	@Override
+	public void play(File file, float position, long length, float volume) throws Exception {
 	}
 
 	

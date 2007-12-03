@@ -269,9 +269,6 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 		writer.write(addTabs(1) + Tag.tagData(XML_TYPE, Util.formatXML(device.getDeviceTypeS()))
 				+ NEWLINE);
 		writer.write(addTabs(1) + Tag.tagData(XML_URL, Util.formatXML(device.getUrl())) + NEWLINE);
-		writer.write(addTabs(1)
-				+ Tag.tagData(XML_DEVICE_MOUNT_POINT, Util.formatXML(device.getMountPoint()))
-				+ NEWLINE);
 		Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
 		// check void devices
 		if (dir != null) {

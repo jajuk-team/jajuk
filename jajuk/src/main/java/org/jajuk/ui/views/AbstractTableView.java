@@ -20,6 +20,31 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.StyleManager;
+import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.TableTransferHandler;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.widgets.JajukToggleButton;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.error.CannotRenameException;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -48,31 +73,6 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
-
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.StyleManager;
-import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.TableTransferHandler;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.widgets.JajukToggleButton;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.error.CannotRenameException;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
 
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
@@ -128,9 +128,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/** Constructor */
 	public AbstractTableView() {
 		if (AbstractTableView.this instanceof FilesTableView) {
-			sConf = CONF_PHYSICAL_TABLE_COLUMNS;
+			sConf = CONF_FILES_TABLE_COLUMNS;
 		} else {
-			sConf = CONF_LOGICAL_TABLE_COLUMNS;
+			sConf = CONF_TRACKS_TABLE_COLUMNS;
 		}
 		// launches a thread used to perform dynamic filtering when user is
 		// typing
@@ -222,9 +222,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 				setLayout(new TableLayout(size));
 				add(jpControl, "0,0");
 				if (AbstractTableView.this instanceof FilesTableView) {
-					jtable = new JajukTable(model, true, CONF_PHYSICAL_TABLE_COLUMNS);
+					jtable = new JajukTable(model, true, CONF_FILES_TABLE_COLUMNS);
 				} else {
-					jtable = new JajukTable(model, true, CONF_LOGICAL_TABLE_COLUMNS);
+					jtable = new JajukTable(model, true, CONF_TRACKS_TABLE_COLUMNS);
 				}
 				jtable.getColumnModel().addColumnModelListener(AbstractTableView.this);
 				setCellEditors();

@@ -20,6 +20,16 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -32,16 +42,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
-
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Messages;
 
 import ext.SwingWorker;
 
@@ -136,7 +136,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 						Device device = null;
 						device = DeviceManager.getInstance().registerDevice(
 								jtfName.getText().trim(), 1, jtfMountPoint.getText().trim());
-						device.setProperty(XML_DEVICE_MOUNT_POINT, jtfMountPoint.getText().trim());
 						try {
 							device.mount();
 							device.refresh(false); // refresh synchronously

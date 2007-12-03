@@ -20,14 +20,14 @@
 
 package org.jajuk.ui.helpers;
 
+import org.jajuk.Main;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-
-import org.jajuk.Main;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
 
 /**
  * Input verifier used for predefined patterns. Pattern should contain at least

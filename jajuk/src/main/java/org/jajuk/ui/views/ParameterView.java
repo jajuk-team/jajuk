@@ -20,6 +20,40 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.Main;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.services.core.RatingManager;
+import org.jajuk.services.lastfm.LastFmManager;
+import org.jajuk.ui.helpers.DefaultMouseWheelListener;
+import org.jajuk.ui.helpers.PatternInputVerifier;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.PathSelector;
+import org.jajuk.ui.widgets.SearchBox;
+import org.jajuk.ui.widgets.SteppedComboBox;
+import org.jajuk.ui.widgets.ToggleLink;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.VerticalLayout;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.theme.ThemeInfo;
+import org.jvnet.substance.watermark.WatermarkInfo;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -57,40 +91,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.jajuk.Main;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.services.core.RatingManager;
-import org.jajuk.services.lastfm.LastFmManager;
-import org.jajuk.ui.helpers.DefaultMouseWheelListener;
-import org.jajuk.ui.helpers.PatternInputVerifier;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.PathSelector;
-import org.jajuk.ui.widgets.SearchBox;
-import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.ui.widgets.ToggleLink;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.HorizontalLayout;
-import org.jdesktop.swingx.JXCollapsiblePane;
-import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.watermark.WatermarkInfo;
 
 /**
  * View used to set Jajuk parameters.

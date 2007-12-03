@@ -20,6 +20,23 @@
 
 package org.jajuk.ui.thumbnails;
 
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.YearManager;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.jdic.desktop.Desktop;
+import org.jdesktop.swingx.JXPanel;
+import org.jvnet.substance.SubstanceLookAndFeel;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Toolkit;
@@ -37,23 +54,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
-
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.YearManager;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.desktop.Desktop;
-import org.jdesktop.swingx.JXPanel;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * HTML popup displayed over a thumbnail, it details album informations and

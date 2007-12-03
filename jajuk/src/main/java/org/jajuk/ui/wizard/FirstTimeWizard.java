@@ -203,7 +203,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 				fDir = jfc.getSelectedFile();
 				// check device availability
 				int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
-						fDir.getAbsolutePath(), fDir.getAbsolutePath(), true);
+						fDir.getAbsolutePath(), true);
 				if (code != 0) {
 					Messages.showErrorMessage(code);
 					jbOk.setEnabled(false);
@@ -256,7 +256,6 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 					// Create a directory device
 					Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
 							fDir.getAbsolutePath());
-					device.setProperty(XML_DEVICE_MOUNT_POINT, fDir.getAbsolutePath());
 					device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
 					// Set refresh time
 					double dRefreshTime = 5d;

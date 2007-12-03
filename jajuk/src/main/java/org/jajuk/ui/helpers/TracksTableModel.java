@@ -20,14 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
-
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
@@ -39,6 +31,14 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for logical table view
@@ -57,7 +57,7 @@ public class TracksTableModel extends JajukTableModel {
 	 */
 	public TracksTableModel() {
 		super(12);
-		setEditable(ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION));
+		setEditable(ConfigurationManager.getBoolean(CONF_TRACKS_TABLE_EDITION));
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel

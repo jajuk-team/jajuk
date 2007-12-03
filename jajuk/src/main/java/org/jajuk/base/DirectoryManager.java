@@ -168,7 +168,7 @@ public class DirectoryManager extends ItemManager {
 			Directory directory = null;
 			directory = new Directory(sId, sName, dParent, device);
 			if (dParent != null) {
-				// add the direcotry to parent
+				// add the directory to parent
 				dParent.addDirectory(directory);
 			}
 			hmItems.put(sId, directory);

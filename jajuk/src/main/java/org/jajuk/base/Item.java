@@ -277,24 +277,26 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 * @return XML representation for item properties
 	 */
 	private String getPropertiesXml() {
-		LinkedHashMap properties = getProperties();
-		Iterator it = properties.keySet().iterator();
+		LinkedHashMap<String,Object> properties = getProperties();
 		StringBuilder sb = new StringBuilder();
-		while (it.hasNext()) {
-			String sKey = (String) it.next();
+		for (String sKey:properties.keySet()){
 			String sValue = null;
 			Object oValue = properties.get(sKey);
 			if (oValue != null) {
 				PropertyMetaInformation meta = getMeta(sKey);
 				try {
-					sValue = Util.format(oValue, meta);
+					sValue = Util.format(oValue, meta, false);
 				} catch (Exception e) { // should not occur
 					Log.error(e);
 				}
 				sValue = Util.formatXML(sValue); // make sure to remove
 				// non-XML characters
 			}
-			sb.append(" " + Util.formatXML(sKey) + "='" + sValue + "'");
+			sb.append(' ');
+			sb.append(Util.formatXML(sKey));
+			sb.append("='");
+			sb.append(sValue);
+			sb.append("'");
 		}
 		return sb.toString();
 	}
@@ -356,7 +358,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 	 */
 	public String getHumanValue(String sKey) {
 		try {
-			return Util.format(getValue(sKey), getMeta(sKey));
+			return Util.format(getValue(sKey), getMeta(sKey),true);
 		} catch (Exception e) {
 			Log.error(e);
 			return "";

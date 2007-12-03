@@ -26,9 +26,12 @@ import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_REMOVE;
 import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
+import static org.jajuk.ui.action.JajukAction.DELETE_DIRECTORY;
+import static org.jajuk.ui.action.JajukAction.DELETE_FILE;
 import static org.jajuk.ui.action.JajukAction.DJ;
 import static org.jajuk.ui.action.JajukAction.EXIT;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.action.JajukAction.FILE_MOVE;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
 import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
 import static org.jajuk.ui.action.JajukAction.INCREASE_VOLUME;
@@ -42,6 +45,7 @@ import static org.jajuk.ui.action.JajukAction.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.action.JajukAction.QUALITY;
+import static org.jajuk.ui.action.JajukAction.REFRESH;
 import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
 import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
@@ -52,10 +56,8 @@ import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
-import static org.jajuk.ui.action.JajukAction.DELETE_FILE;
-import static org.jajuk.ui.action.JajukAction.DELETE_DIRECTORY;
-import static org.jajuk.ui.action.JajukAction.FILE_MOVE;
-import static org.jajuk.ui.action.JajukAction.REFRESH;
+
+import org.jajuk.util.Util;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -64,8 +66,6 @@ import java.util.List;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
-
-import org.jajuk.util.Util;
 
 /**
  * Helper class used to create, store and lookup actions.

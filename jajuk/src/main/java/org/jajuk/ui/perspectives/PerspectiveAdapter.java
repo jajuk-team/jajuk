@@ -20,6 +20,13 @@
 
 package org.jajuk.ui.perspectives;
 
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewFactory;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import java.awt.Container;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -28,13 +35,6 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.jajuk.ui.views.IView;
-import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 import com.vlsolutions.swing.docking.Dockable;
 import com.vlsolutions.swing.docking.DockableResolver;

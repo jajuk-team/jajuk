@@ -19,17 +19,17 @@
  */
 package org.jajuk.players;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import org.jajuk.base.FIFO;
-import org.jajuk.base.FileManager;
+import org.jajuk.base.WebRadio;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * Jajuk player implementation based on Mplayer
@@ -55,7 +55,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	int iFadeDuration = 0;
 
 	/** Progress step in ms */
-	private static final int PROGRESS_STEP = 300;// need a fast refresh,
+	private static final int PROGRESS_STEP = 200;// need a fast refresh,
 
 	// especially for fading
 
@@ -64,12 +64,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
 	/** pause flag * */
 	private volatile boolean bPaused = false;
-
-	/** Current position thread */
-	private volatile PositionThread position;
-
-	/** Current reader thread */
-	private volatile ReaderThread reader;
 
 	/** Inc rating flag */
 	private boolean bHasBeenRated = false;
@@ -81,13 +75,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 		public void run() {
 			while (!bStop) { // stop this thread when exiting
 				try {
-					Thread.sleep(PROGRESS_STEP);
 					if (!bPaused && !bStop) {
 						// a get_percent_pos resumes (mplayer issue)
 						sendCommand("get_time_pos");
 					}
+					Thread.sleep(PROGRESS_STEP);
 				} catch (Exception e) {
-					e.printStackTrace();
+					Log.error(e);
 				}
 			}
 		}
@@ -103,6 +97,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 				String line = null;
 				for (; (line = in.readLine()) != null;) {
 					if (line.matches(".*ANS_TIME_POSITION.*")) {
+						//Stream no more opening
+						bOpening = false;
+						
 						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
 						lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
@@ -198,19 +195,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 						}
 						break;
 					}
-					// Opening ?
-					else if (line.matches(".*Starting playback.*")) {
-						bOpening = false;
-					}
 				}
 				// can reach this point at the end of file
 				in.close();
 				return;
 			} catch (Exception e) {
-				// A stop causes a steam close exception, so ignore it
-				if (!e.getMessage().matches(".*Stream closed")) {
-					Log.error(e);
-				}
+				Log.error(e);
 			}
 		}
 	}
@@ -247,13 +237,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 		} catch (Exception e) {
 			Log.error(e);
 		}
+		//Start mplayer
 		proc = pb.start();
-		if (position == null) {
-			position = new PositionThread();
-			position.start();
-		}
-		reader = new ReaderThread();
-		reader.start();
+		//start mplayer replies reader thread
+		new ReaderThread().start();
+		//start writer to mplayer thread
+		new PositionThread().start();
 		// if opening, wait
 		int i = 0;
 		while (bOpening && i < 500) {
@@ -268,12 +257,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 		if (bEOF) {
 			throw new JajukException(7);
 		}
-		// Get track length
-		sendCommand("get_time_length");
 		if (fPosition > 0.0f) {
 			seek(fPosition);
 		}
-		setVolume(fVolume);
+		// Get track length
+		sendCommand("get_time_length");
 	}
 
 	/**
@@ -348,6 +336,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	 */
 	public long getCurrentLength() {
 		return lDuration;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio, float)
+	 */
+	@Override
+	public void play(WebRadio radio, float volume) throws Exception {
 	}
 
 }

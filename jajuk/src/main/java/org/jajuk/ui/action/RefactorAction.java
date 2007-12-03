@@ -20,11 +20,6 @@
 
 package org.jajuk.ui.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -40,6 +35,11 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 
 public class RefactorAction implements ITechnicalStrings {
 

@@ -19,13 +19,13 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.util.log.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.jajuk.util.log.Log;
 
 /**
  * Manages types ( mp3, ogg...) supported by jajuk

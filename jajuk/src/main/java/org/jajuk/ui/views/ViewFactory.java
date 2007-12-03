@@ -22,8 +22,8 @@ package org.jajuk.ui.views;
 
 import org.jajuk.ui.perspectives.IPerspective;
 
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;

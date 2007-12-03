@@ -20,6 +20,8 @@
 
 package org.jajuk.reporting;
 
+import org.xml.sax.InputSource;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,8 +36,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.xml.sax.InputSource;
 
 /**
  * This class will take a XML file and either convert it to HTML or PDF.

@@ -34,8 +34,8 @@ import org.jajuk.util.log.Log;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 public class DeleteFileAction extends ActionBase {
 	/**

@@ -185,7 +185,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
 		String sDefault = ""; 
 		try {
 			if (oDefaultValue != null) {
-				sDefault = Util.format(oDefaultValue, this);
+				sDefault = Util.format(oDefaultValue, this,false);
 			}
 		} catch (Exception e) { // should to occur at this point
 			Log.error(e);

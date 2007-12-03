@@ -220,7 +220,7 @@ public class TracksTableView extends AbstractTableView {
 			public void run() {
 				// Editable state
 				if (e.getSource() == jtbEditable) {
-					ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION, Boolean
+					ConfigurationManager.setProperty(CONF_TRACKS_TABLE_EDITION, Boolean
 							.toString(jtbEditable.isSelected()));
 					model.setEditable(jtbEditable.isSelected());
 					return;
@@ -325,7 +325,7 @@ public class TracksTableView extends AbstractTableView {
 	 */
 	@Override
 	void initTable() {
-		boolean bEditable = ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
+		boolean bEditable = ConfigurationManager.getBoolean(CONF_TRACKS_TABLE_EDITION);
 		jtbEditable.setSelected(bEditable);
 	}
 

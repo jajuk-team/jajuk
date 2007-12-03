@@ -34,6 +34,7 @@ import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -44,7 +45,6 @@ import org.jajuk.util.Filter;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 import info.clearthought.layout.TableLayout;
 
@@ -59,7 +59,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,7 +66,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -810,12 +808,12 @@ public class CatalogView extends ViewAdapter implements Observer,
 			ConfigurationManager.setProperty(CONF_THUMBS_SORTER, Integer
 					.toString(jcbSorter.getSelectedIndex()));
 		} else if (e.getSource() == jbRefresh) {
-			cleanThumbs(THUMBNAIL_SIZE_50x50);
-			cleanThumbs(THUMBNAIL_SIZE_100x100);
-			cleanThumbs(THUMBNAIL_SIZE_150x150);
-			cleanThumbs(THUMBNAIL_SIZE_200x200);
-			cleanThumbs(THUMBNAIL_SIZE_250x250);
-			cleanThumbs(THUMBNAIL_SIZE_300x300);
+			ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
+			ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100x100);
+			ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150x150);
+			ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200x200);
+			ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250x250);
+			ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300x300);
 			Util.waiting();
 			SwingWorker sw = new SwingWorker() {
 				@Override
@@ -866,28 +864,7 @@ public class CatalogView extends ViewAdapter implements Observer,
 		}
 	}
 
-	private void cleanThumbs(String size) {
-		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size);
-		if (fThumb.exists()) {
-			File[] files = fThumb.listFiles();
-			for (File file : files) {
-				if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) {
-					file.delete();
-				}
-			}
-			// Refresh default cover
-			File fDefault = Util.getConfFileByPath(FILE_THUMBS + "/" + size
-					+ "/" + FILE_THUMB_NO_COVER);
-			fDefault.delete();
-			try {
-				int iSize = Integer.parseInt(new StringTokenizer(size, "x")
-						.nextToken());
-				Util.createThumbnail(IconLoader.ICON_NO_COVER, fDefault, iSize);
-			} catch (Exception e) {
-				Log.error(e);
-			}
-		}
-	}
+	
 
 	/**
 	 * @return current thumbs size as selected with the combo

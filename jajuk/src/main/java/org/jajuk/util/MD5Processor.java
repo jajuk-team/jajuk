@@ -32,8 +32,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Processor {
 
-	private static final BigInteger vbase = new BigInteger("10128");
-
 	/**
 	 * MD5 hashcoding, return a hashcode
 	 * 
@@ -51,13 +49,6 @@ public class MD5Processor {
 		}
 		msgDigest.update(sIn.getBytes());
 		byte[] digest = msgDigest.digest();
-		BigInteger bi = new BigInteger(digest);
-		StringBuilder sb = new StringBuilder(11);
-		BigInteger q = bi;
-		do {
-			sb.append((char) (q.mod(vbase).intValue() + 0xB000));
-			q = q.divide(vbase);
-		} while (q.intValue() != 0);
-		return sb.toString().intern();
+		return new BigInteger(digest).abs().toString(36).intern();
 	}
 }

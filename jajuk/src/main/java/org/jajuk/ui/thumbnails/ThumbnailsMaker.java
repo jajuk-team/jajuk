@@ -129,6 +129,11 @@ public class ThumbnailsMaker implements ITechnicalStrings {
 		java.util.Set<Album> albums = AlbumManager.getInstance().getAlbums();
 		// For each album, create the associated thumb
 		for (Album album : albums) {
+			// Leave if jajuk leaved
+			if (Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF).exists()) {
+				Log.debug("Parent Jajuk closed, leaving now...");
+				return;
+			}
 			if (Util.refreshThumbnail(album, size + "x" + size)) {
 				stat++;
 			}

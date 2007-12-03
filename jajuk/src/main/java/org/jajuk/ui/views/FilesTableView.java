@@ -206,7 +206,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 			public void run() {
 				// Editable state
 				if (e.getSource() == jtbEditable) {
-					ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION, Boolean
+					ConfigurationManager.setProperty(CONF_TRACKS_TABLE_EDITION, Boolean
 							.toString(jtbEditable.isSelected()));
 					model.setEditable(jtbEditable.isSelected());
 					return;
@@ -299,7 +299,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	 */
 	@Override
 	void initTable() {
-		boolean bEditable = ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
+		boolean bEditable = ConfigurationManager.getBoolean(CONF_FILES_TABLE_EDITION);
 		jtbEditable.setSelected(bEditable);
 	}
 

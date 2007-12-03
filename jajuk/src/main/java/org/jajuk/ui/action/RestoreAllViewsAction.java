@@ -19,11 +19,6 @@
  */
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
-
-import javax.swing.JOptionPane;
-
 import org.jajuk.Main;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -32,6 +27,11 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+
+import javax.swing.JOptionPane;
 
 public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrings {
 

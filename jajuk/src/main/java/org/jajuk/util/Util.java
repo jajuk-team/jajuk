@@ -45,8 +45,6 @@ import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
-import org.jdesktop.swingx.painter.MattePainter;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.theme.ThemeInfo;
 import org.jvnet.substance.utils.SubstanceConstants;
@@ -61,11 +59,9 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
@@ -1455,16 +1451,22 @@ public class Util implements ITechnicalStrings {
 	 * 
 	 * @param sValue
 	 * @param cType
+	 * @param bHuman is this string intended to be human-readable ?
 	 * @return
 	 * @throws Exception
 	 */
-	public static String format(Object oValue, PropertyMetaInformation meta)
+	public static String format(Object oValue, PropertyMetaInformation meta, boolean bHuman)
 			throws Exception {
 		Class cType = meta.getType();
 		// default (works for strings, long and double)
 		String sValue = oValue.toString();
 		if (cType.equals(Date.class)) {
-			sValue = getAdditionDateFormat().format(oValue);
+			if (bHuman){
+				sValue = getLocaleDateFormatter().format(oValue);
+			}
+			else{
+				sValue = getAdditionDateFormat().format(oValue);
+			}
 		} else if (cType.equals(Class.class)) {
 			sValue = oValue.getClass().getName();
 		}

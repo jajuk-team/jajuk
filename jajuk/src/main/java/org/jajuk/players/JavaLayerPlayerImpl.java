@@ -20,7 +20,6 @@
 package org.jajuk.players;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.WebRadio;

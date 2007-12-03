@@ -20,18 +20,18 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
-
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * A cover, encapsulates URL, files and manages cover priority to display

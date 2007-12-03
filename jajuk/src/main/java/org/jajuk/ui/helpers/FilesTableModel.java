@@ -20,13 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
-
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
@@ -38,6 +31,13 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for physical table view
@@ -56,7 +56,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 */
 	public FilesTableModel() {
 		super(18);
-		setEditable(ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
+		setEditable(ConfigurationManager.getBoolean(CONF_FILES_TABLE_EDITION));
 		// Columns names
 		// First column is play icon, need to set a space character
 		// for proper display in some look and feel

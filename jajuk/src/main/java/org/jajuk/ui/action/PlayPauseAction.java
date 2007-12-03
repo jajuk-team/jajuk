@@ -48,10 +48,8 @@ public class PlayPauseAction extends ActionBase {
 		} else { // player is not paused, pause it
 			Player.pause();
 			ObservationManager
-					.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE)); // notify
-			// of
-			// this
-			// event
+					.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE)); 
+			// notify of this event
 			setIcon(IconLoader.ICON_PLAY);
 			setName(Messages.getString("JajukWindow.12")); 
 		}
