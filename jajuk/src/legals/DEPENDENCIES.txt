@@ -98,6 +98,9 @@ Creative Commons 	=> LICENSE-CREATIVE-COMMONS.txt
 |           |            |advanced     |www.vlsolutions.com      |            |
 |           |            |toolbars     |                         |            |
 -------------------------------------------------------------------------------
+|JHlabs     |JHLabs      |Images       |http://www.jhlabs.com    |Apache 2    |
+|Filters    |            |filters      |/ip/filters              |            |
+-------------------------------------------------------------------------------
 
 (*) The CeCILL License is a french GPL compatible license. For those developing 
 open source applications, it allows you to use, modify and distribute VLDocking 

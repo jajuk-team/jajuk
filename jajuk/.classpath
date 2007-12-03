@@ -33,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/jintellitype-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/substance-4.1dev.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
