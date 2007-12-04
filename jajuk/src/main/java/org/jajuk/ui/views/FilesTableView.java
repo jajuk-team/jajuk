@@ -77,9 +77,9 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 		return Messages.getString("FilesTableView.0");
 	}
 
-	/** Constructor */
-	public FilesTableView() {
-		super();
+	public void initUI(){
+		//Perform common table view initializations
+		super.initUI();
 		// File menu
 		jmenuFile = new JPopupMenu();
 		jmiFilePlay = new JMenuItem(Messages.getString("FilesTableView.1"),

@@ -132,26 +132,28 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		} else {
 			sConf = CONF_TRACKS_TABLE_COLUMNS;
 		}
-		// launches a thread used to perform dynamic filtering when user is
-		// typing
-		new Thread() {
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException ie) {
-						Log.error(ie);
-					}
-					if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
-						sAppliedFilter = jtfValue.getText();
-						sAppliedCriteria = getApplyCriteria();
-						applyFilter(sAppliedCriteria, sAppliedFilter);
-						bNeedSearch = false;
-					}
+	}
+	
+	/**
+	 * Launches a thread used to perform dynamic filtering when user is typing
+	 */
+	Thread filteringThread = new Thread() {
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException ie) {
+					Log.error(ie);
+				}
+				if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+					sAppliedFilter = jtfValue.getText();
+					sAppliedCriteria = getApplyCriteria();
+					applyFilter(sAppliedCriteria, sAppliedFilter);
+					bNeedSearch = false;
 				}
 			}
-		}.start();
-	}
+		}
+	}; 
 
 	/**
 	 * 
@@ -247,6 +249,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			}
 		};
 		sw.start();
+		//Start filtering thread
+		filteringThread.start();
 	}
 
 	public Set<EventSubject> getRegistrationKeys() {

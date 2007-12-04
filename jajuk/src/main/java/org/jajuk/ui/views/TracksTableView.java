@@ -81,9 +81,9 @@ public class TracksTableView extends AbstractTableView {
 		return Messages.getString("TracksTableView.0");
 	}
 
-	/** Constructor */
-	public TracksTableView() {
-		super();
+	public void initUI(){
+		//Perform common table view initializations
+		super.initUI();
 		// Track menu
 		jmenuTrack = new JPopupMenu();
 		jmiTrackPlay = new JMenuItem(Messages.getString("TracksTableView.7"),
