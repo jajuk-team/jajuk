@@ -534,6 +534,7 @@ public class Util implements ITechnicalStrings {
 			IPerspective perspective = PerspectiveManager
 					.getCurrentPerspective();
 			if (perspective != null) {
+				Main.getWindow().setCursor(DEFAULT_CURSOR);
 				container = perspective.getContentPane();
 				container.setCursor(DEFAULT_CURSOR);
 				CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);

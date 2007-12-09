@@ -105,6 +105,7 @@ import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
 import com.vlsolutions.swing.toolbars.ToolBarIO;
 
+import ext.EventDispatchThreadHangMonitor;
 import ext.JSplash;
 import ext.JVM;
 
@@ -1330,6 +1331,9 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					//Init perf monitor
+					ext.EventDispatchThreadHangMonitor.initMonitoring();
+					
 					// Light drag and drop for VLDocking
 					UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
 

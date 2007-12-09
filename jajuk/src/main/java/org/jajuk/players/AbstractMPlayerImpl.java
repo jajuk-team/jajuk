@@ -32,7 +32,8 @@ import java.util.ArrayList;
 /**
  * Mplayer player implementation
  */
-abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStrings {
+abstract public class AbstractMPlayerImpl implements IPlayerImpl,
+		ITechnicalStrings {
 
 	/** Stored Volume */
 	float fVolume;
@@ -76,6 +77,10 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	public void setVolume(float fVolume) {
 		this.fVolume = fVolume;
 		sendCommand("volume " + (int) (100 * fVolume) + " 2");
+		//Not not log this when fading, generates too mush logs
+		if (!bFading){
+			Log.debug("Set Volume= "+(int)(100*fVolume)+" %");
+		}
 	}
 
 	/**
@@ -109,7 +114,8 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	ArrayList<String> buildCommand(String url) {
 		String sCommand = "mplayer"; //$NON-NLS-1$
 		// Use any forced mplayer path
-		String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+		String forced = ConfigurationManager
+				.getProperty(CONF_MPLAYER_PATH_FORCED);
 		if (!Util.isVoid(forced)) {
 			sCommand = forced;
 		} else {
@@ -119,7 +125,8 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 				sCommand = Util.getMPlayerOSXPath();
 			}
 		}
-		String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
+		String sAdditionalArgs = ConfigurationManager
+				.getProperty(CONF_MPLAYER_ARGS);
 		// Build command
 		ArrayList<String> cmd = new ArrayList<String>(10);
 		cmd.add(sCommand);
@@ -127,10 +134,11 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 		cmd.add("-quiet");
 		// slave: slave mode (control with stdin)
 		cmd.add("-slave");
-		// -af volume: Use volnorm to limit gain to max 
+		// -af volume: Use volnorm to limit gain to max
 		// If mute, use -200db otherwise, use a linear scale
 		cmd.add("-af");
-		cmd.add("volnorm,volume=" + ((fVolume == 0) ? -200 : ((int) (20 * fVolume) - 20)));
+		cmd.add("volnorm,volume="
+				+ ((fVolume == 0) ? -200 : ((int) (20 * fVolume) - 20)));
 		// -softvol : use soft mixer, allows to set volume only to this mplayer
 		// instance, not others programs
 		cmd.add("-softvol");
@@ -139,7 +147,8 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 		// ~/.mplayer/config file. User can set a large cache for video for ie.
 		String cacheSize = "500";
 		// 500Kb, mplayer starts before the cache is filled up
-		if (!ConfigurationManager.getProperty(CONF_MPLAYER_ARGS).matches(".*-cache.*")) {
+		if (!ConfigurationManager.getProperty(CONF_MPLAYER_ARGS).matches(
+				".*-cache.*")) {
 			// If user already forced a cache value, do not overwrite it
 			cmd.add("-cache");
 			cmd.add(cacheSize);
@@ -201,8 +210,8 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
 	 *      float)
 	 */
-	public abstract void play(File file, float fPosition, long length, float fVolume)
-			throws Exception;
+	public abstract void play(File file, float fPosition, long length,
+			float fVolume) throws Exception;
 
 	/*
 	 * (non-Javadoc)

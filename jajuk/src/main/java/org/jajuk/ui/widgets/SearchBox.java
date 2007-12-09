@@ -20,16 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioManager;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -57,6 +47,17 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionListener;
+
+import org.jajuk.base.SearchResult;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.SearchResult.SearchResultType;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jajuk.webradio.WebRadioManager;
 
 /**
  * Search combo box. Editable combo with search features
@@ -93,7 +94,8 @@ public class SearchBox extends JTextField implements KeyListener {
 	Timer timer = new Timer(100, new ActionListener() {
 
 		public void actionPerformed(ActionEvent arg0) {
-			if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+			if (bNeedSearch
+					&& (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
 				search();
 			}
 
@@ -102,18 +104,19 @@ public class SearchBox extends JTextField implements KeyListener {
 	});
 
 	/**
-	 * Display results as a jlabel with an icon 
+	 * Display results as a jlabel with an icon
 	 */
 	class SearchListRenderer extends JPanel implements ListCellRenderer {
 		private static final long serialVersionUID = 8975989658927794678L;
 
-		public Component getListCellRendererComponent(JList list, Object value, int index,
-				boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
 			SearchResult sr = (SearchResult) value;
 			JPanel jp = new JPanel(new BorderLayout());
 			JLabel jl = null;
 			if (sr.getType() == SearchResultType.FILE) {
-				jl = new JLabel(sr.getResu(), sr.getFile().getIconRepresentation(), SwingConstants.HORIZONTAL);
+				jl = new JLabel(sr.getResu(), sr.getFile()
+						.getIconRepresentation(), SwingConstants.HORIZONTAL);
 			} else if (sr.getType() == SearchResultType.WEBRADIO) {
 				jl = new JLabel(sr.getResu(), IconLoader.ICON_WEBRADIO_16x16,
 						SwingConstants.HORIZONTAL);
@@ -193,9 +196,11 @@ public class SearchBox extends JTextField implements KeyListener {
 			if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
 				// second test to get sure user didn't
 				// typed before entering this method
-				TreeSet<SearchResult> tsResu = TrackManager.getInstance().search(sTyped.toString());
+				TreeSet<SearchResult> tsResu = TrackManager.getInstance()
+						.search(sTyped.toString());
 				// Add web radio names
-				tsResu.addAll(WebRadioManager.getInstance().search(sTyped.toString()));
+				tsResu.addAll(WebRadioManager.getInstance().search(
+						sTyped.toString()));
 				if (tsResu.size() > 0) {
 					DefaultListModel model = new DefaultListModel();
 					alResults = new ArrayList<SearchResult>();
@@ -208,13 +213,16 @@ public class SearchBox extends JTextField implements KeyListener {
 					jlist.setCellRenderer(new SearchListRenderer());
 					PopupFactory factory = PopupFactory.getSharedInstance();
 					JScrollPane jsp = new JScrollPane(jlist);
-					int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize()
-							.getWidth() * 0.7f);
+					int width = (int) ((float) Toolkit.getDefaultToolkit()
+							.getScreenSize().getWidth() * 0.7f);
 					jsp.setMinimumSize(new Dimension(width, 250));
 					jsp.setPreferredSize(new Dimension(width, 250));
 					jsp.setMaximumSize(new Dimension(width, 250));
 					jlist.setSelectionMode(0);
 					jlist.addListSelectionListener(lsl);
+					// For some reasons, we get the waiting cursor on the popup
+					// sometimes, force it to default
+					jlist.setCursor(Util.DEFAULT_CURSOR);
 					jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 					if (popup != null) {
 						popup.hide();
@@ -226,8 +234,8 @@ public class SearchBox extends JTextField implements KeyListener {
 					// only on absolute coordonates in opposition to swing
 					// widgets)
 					SwingUtilities.convertPointToScreen(point, this);
-					popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width),
-							(int) point.getY() - 250);
+					popup = factory.getPopup(this, jsp, (int) point.getX()
+							+ 500 - (width), (int) point.getY() - 250);
 					popup.show();
 				} else {
 					if (popup != null) {

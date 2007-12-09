@@ -19,6 +19,10 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -29,9 +33,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionEvent;
-import java.util.List;
 
 public class GlobalRandomAction extends ActionBase {
 
@@ -56,6 +57,11 @@ public class GlobalRandomAction extends ActionBase {
 		Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
 		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
 				.getGlobalShufflePlaylist(), ambience);
+		//For perfs (mainly playlist editor view refresh), we set a ceil for tracks number
+		if (alToPlay.size() > NB_TRACKS_ON_ACTION){
+			alToPlay = (List<File>)alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+		}
+		//Push them
 		FIFO.getInstance().push(
 				Util.createStackItems(alToPlay, ConfigurationManager
 						.getBoolean(CONF_STATE_REPEAT), false), false);

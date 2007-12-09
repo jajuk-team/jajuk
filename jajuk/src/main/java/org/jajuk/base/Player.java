@@ -134,19 +134,6 @@ public class Player implements ITechnicalStrings {
 			pDetails.put(DETAIL_CONTENT, file);
 			ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
 			Log.error(7, Messages.getString("Player.0") + "{{" +fCurrent.getAbsolutePath() + "}}", t);
-			// process playing error asynchronously to avoid loop problems
-			// when cascading errors
-			new Thread() {
-				public void run() {
-					Player.stop(false);
-					try {
-						Thread.sleep(WAIT_AFTER_ERROR);
-					} catch (InterruptedException e) {
-						Log.error(e);
-					}
-					FIFO.getInstance().finished();
-				}
-			}.start();
 			return false;
 		}
 	}

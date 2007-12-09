@@ -20,10 +20,32 @@
 
 package org.jajuk.ui.helpers;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Type;
+import org.jajuk.base.Year;
+import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for albums table view
@@ -98,7 +120,7 @@ public class AlbumsTableModel extends JajukTableModel {
 	 */
 	@SuppressWarnings("unchecked")
 	public synchronized void populateModel(String sPropertyName, String sPattern) {
-	/*	Set<Track> allTracks = TrackManager.getInstance().getTracks();
+		/*Set<Track> allTracks = TrackManager.getInstance().getTracks();
 		// For perfs, store a map album-> list of tracks
 		HashMap<Album, Set<Track>> hmAlbumTracks = new HashMap<Album, Set<Track>>(allTracks.size());
 		// Map album-> whether it contains at least one available file to

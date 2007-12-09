@@ -639,7 +639,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 						// Refresh number of tracks if we are in the queue
 						if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
 							jlTitle.setText(plfi.getName() + " ["
-									+ FIFO.getInstance().getFIFO().size() + "]");
+									+ FIFO.getInstance().getFIFOSize() + "]");
 						}
 						// when nothing is selected, set default button state
 						if (jtable.getSelectionModel().getMinSelectionIndex() == -1) {
@@ -1131,12 +1131,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 			} else {
 				// still here ?
 				if (bPlanned) {
-					if (selection.getMaxSelectionIndex() > alItems.size()) {
-						// a planned track can't go to normal files stack
-						jbUp.setEnabled(true);
-					} else {
-						jbUp.setEnabled(false);
-					}
+					//No up/down buttons for planned tracks
+					jbUp.setEnabled(false);
 				} else { // normal item
 					if (selection.getMinSelectionIndex() == 0
 							|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && selection
@@ -1162,13 +1158,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				jbDown.setEnabled(false);
 			} else { // yet here ?
 				if (bPlanned) {
-					if (selection.getMaxSelectionIndex() < alItems.size() + alPlanned.size() - 1) { // can't
-						// go
-						// further
-						jbDown.setEnabled(true);
-					} else {
-						jbDown.setEnabled(false);
-					}
+					//No up/down buttons for planned tracks
+					jbDown.setEnabled(false);
 				} else { // normal item
 					if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE
 							&& selection.getMaxSelectionIndex() == 0) {

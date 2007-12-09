@@ -175,7 +175,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 		properties.put(CONF_OPTIONS_INTRO_BEGIN, "0");
 		properties.put(CONF_OPTIONS_INTRO_LENGTH, "20");
 		properties.put(CONF_OPTIONS_SYNC_TABLE_TREE, FALSE);
-		properties.put(CONF_UI_SHOW_BALLOON, TRUE);
+		properties.put(CONF_UI_SHOW_BALLOON, FALSE);
 		properties.put(CONF_P2P_SHARE, FALSE);
 		properties.put(CONF_P2P_ADD_REMOTE_PROPERTIES, FALSE);
 		properties.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);

@@ -94,3 +94,8 @@ This class contains various code extracts found on the web, the URL
 is given in the method javadoc comment when it is the case.
 
 -------------------------------------------------------
+EventDispatcherThreadHangMonitor (ext package)
+LGPL code found at http://elliotth.blogspot.com/2005/05/automatically-detecting-awt-event.html
+Author: Elliott Hughes <enh@jessies.org>
+
+Used for: Live performance monitoring

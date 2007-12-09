@@ -135,6 +135,9 @@ public interface ITechnicalStrings {
 	/** Number of album novelties items */
 	public static final int NB_NOVELTIES_ALBUMS = 8;
 	
+	/*Number of tracks for global actions (global shuffle, bestof...)*/
+	public static final int NB_TRACKS_ON_ACTION = 200;
+	
 	/** Number of milliseconds in a day */
 	public static final int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE
 			* MINUTES_IN_AN_HOUR * HOURS_IN_A_DAY;
@@ -150,7 +153,7 @@ public interface ITechnicalStrings {
 	public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.info";
 
 	/** Update URL = PAD file URL*/
-	public static final String CHECK_FOR_UPDATE_URL = "http://jajuk.sourceforge.net/jajuk_pad.xml";
+	public static final String CHECK_FOR_UPDATE_URL = "http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml";
 
 	// Jajuk version
 	public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";

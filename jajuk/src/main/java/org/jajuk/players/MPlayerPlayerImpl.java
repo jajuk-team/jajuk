@@ -19,17 +19,17 @@
  */
 package org.jajuk.players;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.WebRadio;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Jajuk player implementation based on Mplayer
@@ -93,26 +93,28 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	private class ReaderThread extends Thread {
 		public void run() {
 			try {
-				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						proc.getInputStream()));
 				String line = null;
 				for (; (line = in.readLine()) != null;) {
 					if (line.matches(".*ANS_TIME_POSITION.*")) {
-						//Stream no more opening
+						// Stream no more opening
 						bOpening = false;
-						
 						StringTokenizer st = new StringTokenizer(line, "=");
 						st.nextToken();
 						lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
 						// Store current position for use at next startup
-						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float
-								.toString(getCurrentPosition()));
+						ConfigurationManager.setProperty(
+								CONF_STARTUP_LAST_POSITION, Float
+										.toString(getCurrentPosition()));
 						// check if the track get rate increasing level
 						// (INC_RATE_TIME secs or intro length)
 						if (!bHasBeenRated
 								&& (lTime >= (INC_RATE_TIME * 1000) || (length != TO_THE_END && lTime > length))) {
 							// inc rate by 1 if file is played at least
 							// INC_RATE_TIME secs
-							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
+							fCurrent.getTrack().setRate(
+									fCurrent.getTrack().getRate() + 1);
 							// Alert rating manager that something changed
 							RatingManager.setRateHasChanged(true);
 							bHasBeenRated = true;
@@ -167,24 +169,26 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 					// End of file
 					else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
 						bEOF = true;
-						bOpening = false;
 						// Launch next track
 						try {
 							// End of file: inc rate by 1 if file is fully
 							// played
-							fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
+							fCurrent.getTrack().setRate(
+									fCurrent.getTrack().getRate() + 1);
 							// Alert rating manager that something changed
 							RatingManager.setRateHasChanged(true);
-							// if using crossfade, ignore end of file
-							if (!bFading) {
+							// If using crossfade, ignore end of file
+							if (!bFading
+							// Do not launch next track if not opening: it means
+									// that the file is in error (EOF comes
+									// before any
+									// play) and the finished() is processed by
+									// Player
+									// on exception processing
+									&& !bOpening) {
 								// Benefit from end of file to perform a full gc
 								System.gc();
-								if (lDuration > 0) {
-									// if corrupted file, length=0 and we have
-									// not not call finished as it is managed by
-									// Player
-									FIFO.getInstance().finished();
-								}
+								FIFO.getInstance().finished();
 							} else {
 								// If fading, next track has already been
 								// launched
@@ -198,7 +202,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 				}
 				// can reach this point at the end of file
 				in.close();
-				return;
 			} catch (Exception e) {
 				Log.error(e);
 			}
@@ -211,8 +214,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	 * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
 	 *      float)
 	 */
-	public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
-			throws Exception {
+	public void play(org.jajuk.base.File file, float fPosition, long length,
+			float fVolume) throws Exception {
 		this.lTime = 0;
 		this.fVolume = fVolume;
 		this.length = length;
@@ -222,8 +225,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 		this.bOpening = true;
 		this.bHasBeenRated = false;
 		this.bEOF = false;
-		this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
-		ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
+		this.iFadeDuration = 1000 * ConfigurationManager
+				.getInt(CONF_FADE_DURATION);
+		ProcessBuilder pb = new ProcessBuilder(buildCommand(file
+				.getAbsolutePath()));
 		Log.debug("Using this Mplayer command: " + pb.command());
 		// Set all environment variables format: var1=xxx var2=yyy
 		try {
@@ -237,15 +242,16 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 		} catch (Exception e) {
 			Log.error(e);
 		}
-		//Start mplayer
+		// Start mplayer
 		proc = pb.start();
-		//start mplayer replies reader thread
+		// start mplayer replies reader thread
 		new ReaderThread().start();
-		//start writer to mplayer thread
+		// start writer to mplayer thread
 		new PositionThread().start();
 		// if opening, wait
 		int i = 0;
-		while (bOpening && i < 500) {
+		// Try to open the file during 10 secs
+		while (bOpening && !bEOF && i < 1000) {
 			try {
 				Thread.sleep(10);
 				i++;
@@ -253,15 +259,27 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 				Log.error(e);
 			}
 		}
-		// If end of file already reached, it means that file cannot be read
-		if (bEOF) {
+		// Check the file has been property opened
+		if (!bOpening && !bEOF) {
+			if (fPosition > 0.0f) {
+				seek(fPosition);
+			}
+			// Get track length
+			sendCommand("get_time_length");
+		} else {
+			// try to kill the mplayer process if still alive
+			if (proc != null) {
+				new Thread() {
+					public void start() {
+						Log.debug("OOT Mplayer process, try to kill it");
+						proc.destroy();
+						Log.debug("OK, the process should have been killed");
+					}
+				}.start();
+			}
+			// Notify the problem opening the file
 			throw new JajukException(7);
 		}
-		if (fPosition > 0.0f) {
-			seek(fPosition);
-		}
-		// Get track length
-		sendCommand("get_time_length");
 	}
 
 	/**
@@ -338,8 +356,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 		return lDuration;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio, float)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio,
+	 *      float)
 	 */
 	@Override
 	public void play(WebRadio radio, float volume) throws Exception {

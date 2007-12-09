@@ -36,26 +36,27 @@ public class NextAlbumAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	NextAlbumAction() {
-		super("next album", "shift F10", false, true);  
+		super("next album", "shift F10", false, true);
 	}
 
 	public void perform(ActionEvent evt) {
-		synchronized (MUTEX) {
-			new Thread() {
-				public void run() {
+		new Thread() {
+			public void run() {
+				//Take FIFO lock
+				synchronized (FIFO.MUTEX) {
 					try {
 						FIFO.getInstance().playNextAlbum();
 					} catch (Exception e) {
 						Log.error(e);
 					}
+					if (Player.isPaused()) {
+						// player was paused, reset pause button
+						// when changing of track
+						Player.setPaused(false);
+						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+					}
 				}
-			}.start();
-			if (Player.isPaused()) { // player was paused, reset pause button
-				// when changing of track
-				Player.setPaused(false);
-				ObservationManager.notify(new Event(
-						EventSubject.EVENT_PLAYER_RESUME)); 
 			}
-		}
+		}.start();
 	}
 }

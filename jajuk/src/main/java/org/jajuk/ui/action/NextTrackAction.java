@@ -55,8 +55,8 @@ public class NextTrackAction extends ActionBase {
 		} else {
 			// if playing a radio, launch next radio station
 			if (FIFO.getInstance().isPlayingRadio()) {
-				final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
-						.getWebRadios());
+				final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager
+						.getInstance().getWebRadios());
 				int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
 				if (index == radios.size() - 1) {
 					index = 0;
@@ -72,24 +72,24 @@ public class NextTrackAction extends ActionBase {
 
 			} else {
 				// Playing a track
-				synchronized (MUTEX) {
-					new Thread() {
-						public void run() {
+				new Thread() {
+					public void run() {
+						synchronized (FIFO.MUTEX) {
 							try {
 								FIFO.getInstance().playNext();
 							} catch (Exception e) {
 								Log.error(e);
 							}
+							// Player was paused, reset pause button when
+							// changing of track
+							if (Player.isPaused()) {
+								Player.setPaused(false);
+								ObservationManager.notify(new Event(
+										EventSubject.EVENT_PLAYER_RESUME));
+							}
 						}
-					}.start();
-
-					// Player was paused, reset pause button when changing of
-					// track
-					if (Player.isPaused()) {
-						Player.setPaused(false);
-						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
 					}
-				}
+				}.start();
 			}
 		}
 	}

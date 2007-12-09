@@ -196,33 +196,20 @@
 				<include name='icons/**' />
 			</fileset>
 		</copy>
-		<copy todir='${helpdir}/fr'>
-			<fileset dir='${srcdir}/doc'>
-				<include name='images/**' />
-				<include name='icons/**' />
-			</fileset>
-		</copy>
 		<!-- indexer -->
 		<!--English-->
 		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/default'>
 			<arg line='-locale en_US html' />
 		</exec>
-		<!--French-->
-		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/fr'>
-			<arg line='-locale fr_FR html' />
-		</exec>
 		<!-- jar creation -->
 		<jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
 		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
-		<jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
-		<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass" />
 		<!-- Copy jajuk jar in the workspace -->
 		<copy todir='${basedir}'>
 			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
 		</copy>
 
 		<echo message='${helpsetjarname}.jar had been successfully built in: ${distdir}/bin/${helpsetjarname}.jar' />
-		<echo message='${helpsetjarname}_fr.jar had been successfully built in: ${distdir}/bin/${helpsetjarname}_fr.jar' />
 	</target>
 
 
@@ -230,7 +217,6 @@
 		<echo message='Successfully built packages:' />
 		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
 		<echo message=' Help Jar file in:      ${distdir}/bin/${helpsetjarname}.jar' />
-		<echo message=' Help fr Jar file in:   ${distdir}/bin/${helpsetjarname}_fr.jar' />
 		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}.noarch.rpm' />
 		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-win32.exe' />
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
@@ -282,7 +268,6 @@
 	<target name='package_helpjar_sign' description='o Create Jajuk help jar files and sign it' depends='package_helpjar'>
 		<echo message='Sign help jar files' />
 		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass" />
 	</target>
 
 

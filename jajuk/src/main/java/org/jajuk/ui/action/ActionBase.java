@@ -19,6 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -27,12 +33,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.KeyStroke;
-
 /**
  * Common super class for Swing actions. This class provides useful construction
  * options to create actions, just leaving open the necessity of implementing
@@ -40,11 +40,6 @@ import javax.swing.KeyStroke;
  */
 public abstract class ActionBase extends AbstractAction implements
 		ITechnicalStrings {
-
-	/**
-	 * Shared mutex for locking.
-	 */
-	protected static final byte[] MUTEX = new byte[0];
 
 	/** Is this action an hotkey ? */
 	private boolean bHotkey = false;
