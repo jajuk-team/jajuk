@@ -26,6 +26,8 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.StackItem;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.FilesTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
@@ -44,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -59,6 +62,8 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	JMenuItem jmiFilePlay;
 
 	JMenuItem jmiFilePush;
+	
+	JMenuItem jmiFileDelete;
 
 	JMenuItem jmiFilePlayShuffle;
 
@@ -67,7 +72,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 	JMenuItem jmiFilePlayDirectory;
 
 	JMenuItem jmiFileAddFavorites;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -87,6 +92,9 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 		jmiFilePlay.addActionListener(this);
 		jmiFilePush = new JMenuItem(Messages.getString("FilesTableView.2"), IconLoader.ICON_PUSH);
 		jmiFilePush.addActionListener(this);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE_FILE);
+		jmiFileDelete = new JMenuItem(actionDeleteFile);
+		jmiFileDelete.addActionListener(this);
 		jmiFilePlayShuffle = new JMenuItem(Messages.getString("FilesTableView.3"),
 				IconLoader.ICON_SHUFFLE);
 		jmiFilePlayShuffle.addActionListener(this);
@@ -104,6 +112,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 		jmiFileAddFavorites.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
+		jmenuFile.add(jmiFileDelete);
 		jmenuFile.add(jmiFilePlayShuffle);
 		jmenuFile.add(jmiFilePlayRepeat);
 		jmenuFile.add(jmiFilePlayDirectory);
@@ -230,6 +239,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 							alFilesToPlay.add(file2);
 						}
 					}
+					
 				}
 				// simple play
 				if (e.getSource() == jmiFilePlay || e.getSource() == jmiFilePlayDirectory) {
@@ -245,6 +255,10 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 									Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
 											true), true);
+				}
+				// delete
+				else if(e.getSource() == jmiFileDelete){
+					jmiFileDelete.putClientProperty(DETAIL_SELECTION, alSelectedFiles);
 				}
 				// shuffle play
 				else if (e.getSource() == jmiFilePlayShuffle) {

@@ -44,7 +44,7 @@ public class DeleteFileAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	DeleteFileAction() {
-		super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, true);
+		super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, "delete", true, false);
 		setShortDescription(Messages.getString("FilesTreeView.7"));
 	}
 

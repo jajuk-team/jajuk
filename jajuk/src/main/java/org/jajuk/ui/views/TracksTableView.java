@@ -29,6 +29,8 @@ import org.jajuk.base.Item;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.helpers.TracksTableModel;
@@ -46,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -61,6 +64,8 @@ public class TracksTableView extends AbstractTableView {
 	JMenuItem jmiTrackPlay;
 
 	JMenuItem jmiTrackPush;
+	
+	JMenuItem jmiTrackDelete;
 
 	JMenuItem jmiTrackPlayShuffle;
 
@@ -71,7 +76,7 @@ public class TracksTableView extends AbstractTableView {
 	JMenuItem jmiTrackPlayAuthor;
 
 	JMenuItem jmiTrackAddFavorite;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -91,6 +96,9 @@ public class TracksTableView extends AbstractTableView {
 		jmiTrackPlay.addActionListener(this);
 		jmiTrackPush = new JMenuItem(Messages.getString("TracksTableView.8"), IconLoader.ICON_PUSH);
 		jmiTrackPush.addActionListener(this);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE_FILE);
+		jmiTrackDelete = new JMenuItem(actionDeleteFile);
+		jmiTrackDelete.addActionListener(this);
 		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("TracksTableView.9"),
 				IconLoader.ICON_SHUFFLE);
 		jmiTrackPlayShuffle.addActionListener(this);
@@ -111,6 +119,7 @@ public class TracksTableView extends AbstractTableView {
 		jmiProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
 		jmenuTrack.add(jmiTrackPush);
+		jmenuTrack.add(jmiTrackDelete);
 		jmenuTrack.add(jmiTrackPlayShuffle);
 		jmenuTrack.add(jmiTrackPlayRepeat);
 		jmenuTrack.add(jmiTrackPlayAlbum);
@@ -275,6 +284,10 @@ public class TracksTableView extends AbstractTableView {
 									Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 											ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
 											true), true);
+				}
+				// delete
+				else if(e.getSource() == jmiTrackDelete){
+					jmiTrackDelete.putClientProperty(DETAIL_SELECTION, alSelectedTracks);	
 				}
 				// shuffle play
 				else if (e.getSource() == jmiTrackPlayShuffle) {

@@ -1171,9 +1171,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 			for(Item item : alSelected)
 				moveItems.add(item);
 			jmiDirPaste.setEnabled(true);
-			alSelected.clear();
 			jmenuFile.repaint();
-			jmenuDir.repaint();
 		} else if (e.getSource() == jmiFileCut || e.getSource() == jmiDirCut) {
 			moveAction.clear();
 			moveAction.add("Cut");
@@ -1181,13 +1179,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 			for(Item item : alSelected)
 				moveItems.add(item);
 			jmiDirPaste.setEnabled(true);
-			alSelected.clear();
 			jmenuFile.repaint();
-			jmenuDir.repaint();
 		} else if (e.getSource() == jmiDirPaste) {
-			jmiDirPaste.setEnabled(false);
-			jmenuFile.repaint();
+			if ("Cut".equals(moveAction.get(0))) {
+				jmiDirPaste.setEnabled(false);
+				jmenuDir.repaint();
+			}
 		} else if (e.getSource() == jmiPlaylistFileDelete) {
+		
 			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 				// file delete confirmation
 				PlaylistFile plf = ((PlaylistFileNode) paths[0].getLastPathComponent())

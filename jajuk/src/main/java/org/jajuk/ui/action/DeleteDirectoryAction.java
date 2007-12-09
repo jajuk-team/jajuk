@@ -19,6 +19,7 @@
  */
 package org.jajuk.ui.action;
 
+import org.jajuk.base.File;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -44,7 +45,7 @@ public class DeleteDirectoryAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	DeleteDirectoryAction() {
-		super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, true);
+		super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, "delete", true, false);
 		setShortDescription(Messages.getString("FilesTreeView.7"));
 	}
 
@@ -65,12 +66,18 @@ public class DeleteDirectoryAction extends ActionBase {
 		// Ask if a confirmation is required
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
 		    String sFiles = "";
+		    int Count = 0;
 		    for (Directory d : alDirs) {
-			sFiles += d.getName() + "\n";
+		    	sFiles += d.getName() + "\n";
+		    	Count += d.getFilesRecursively().size();
+		    	for (File f : d.getFilesRecursively()){
+		    		sFiles += "  + " + f.getName() + "\n";
+		    	}
+			
 		    }
 		    int iResu = Messages.getChoice(Messages
 						   .getString("Confirmation_delete_dirs")
-						   + " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
+						   + " : \n" + sFiles + "\n" + Count + " files will be deleted.", JOptionPane.YES_NO_CANCEL_OPTION,
 						   JOptionPane.INFORMATION_MESSAGE);
 		    if (iResu != JOptionPane.YES_OPTION) {
 			return;
