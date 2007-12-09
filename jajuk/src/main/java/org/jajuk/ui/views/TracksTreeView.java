@@ -122,6 +122,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 	JRadioButtonMenuItem jmiCollectionProperties;
 	
 	JMenuItem jmiCollectionReport;
+	
+	JMenuItem jmiCollectionDuplicateFiles;
 
 	JLabel jlSort;
 
@@ -268,6 +270,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_LOGICAL);
 		jmenuCollection.add(jmiCollectionReport);
 
+		Action actionDuplicateFiles = ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES);
+		jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
+		jmenuCollection.add(jmiCollectionDuplicateFiles);
+		
 		// Style menu
 		jmenuStyle = new JPopupMenu();
 		jmiStylePlay = new JMenuItem(Messages.getString("TracksTreeView.1"),

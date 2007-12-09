@@ -411,4 +411,9 @@ public enum JajukAction {
 	 * Used to refresh a directory.
 	 */
 	REFRESH,
+	/**
+	 * Used to find duplicate files.
+	 */
+	FIND_DUPLICATE_FILES
+	
 }

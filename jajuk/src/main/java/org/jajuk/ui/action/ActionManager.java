@@ -32,6 +32,7 @@ import static org.jajuk.ui.action.JajukAction.DJ;
 import static org.jajuk.ui.action.JajukAction.EXIT;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
 import static org.jajuk.ui.action.JajukAction.FILE_MOVE;
+import static org.jajuk.ui.action.JajukAction.FIND_DUPLICATE_FILES;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
 import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
 import static org.jajuk.ui.action.JajukAction.INCREASE_VOLUME;
@@ -169,6 +170,7 @@ public final class ActionManager {
 		installAction(FILE_MOVE, new FileMoveAction(), false);
 		
 		//MISC
+		installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
 		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
 		installAction(REFRESH, new RefreshDirectoryAction(), false);
 		

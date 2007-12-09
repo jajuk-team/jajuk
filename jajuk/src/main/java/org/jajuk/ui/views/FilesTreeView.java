@@ -123,6 +123,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 	JPopupMenu jmenuCollection;
 
 	JMenuItem jmiCollectionReport;
+	
+	JMenuItem jmiCollectionDuplicateFiles;
 
 	JPopupMenu jmenuFile;
 
@@ -277,6 +279,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_PHYSICAL);
 		jmenuCollection.add(jmiCollectionReport);
 
+		Action actionDuplicateFiles = ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES);
+		jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
+		jmenuCollection.add(jmiCollectionDuplicateFiles);
+		
 		// File menu
 		jmenuFile = new JPopupMenu();
 		jmiFilePlay = new JMenuItem(Messages.getString("FilesTreeView.1"),

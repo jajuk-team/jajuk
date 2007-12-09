@@ -23,22 +23,28 @@ package org.jajuk.ui.action;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JComponent;
+
+import org.jajuk.ui.widgets.DuplicateFilesList;
+
 public class FindDuplicateFilesAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;
 
-	protected FindDuplicateFilesAction(String name, boolean enabled) {
-		super(name, enabled);
+	protected FindDuplicateFilesAction() {
+		super(Messages.getString("FindDuplicateFilesAction.2"), IconLoader.ICON_SEARCH, true);
+		setShortDescription(Messages.getString("FindDuplicateFilesAction.2"));
 	}
 
-	@Override
-	protected void perform(ActionEvent evt) throws Exception {
+	public void perform(ActionEvent evt) throws Exception {
 		List<File> duplicateFilesList = new ArrayList<File>();
 		for (Track track : TrackManager.getInstance().getTracks()) {
 			List<File> trackFileList = track.getFiles();
@@ -51,8 +57,17 @@ public class FindDuplicateFilesAction extends ActionBase {
 		if (duplicateFilesList.size() < 1) {
 			Messages.showInfoMessage("FindDuplicateFilesAction.0");
 		} else {
-			Messages.showDetailedErrorMessage(168, "",
-					convertToString(duplicateFilesList));
+			JFrame frame = new JFrame("List of Duplicate Files found");
+	        
+	        //Create and set up the content pane.
+	        JComponent newContentPane = new DuplicateFilesList(duplicateFilesList);
+	        newContentPane.setOpaque(true); //content panes must be opaque
+	        frame.setContentPane(newContentPane);
+
+	        //Display the window.
+	        frame.pack();
+	        frame.setVisible(true);
+							
 		}
 	}
 
