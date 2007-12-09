@@ -21,6 +21,11 @@
 package org.jajuk.ui.widgets;
 
 import org.jajuk.base.File;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import java.awt.*;
@@ -35,17 +40,26 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
 	
     private JList list;
     private DefaultListModel listModel;
+    private List<File> allFiles;
 
     private static final String deleteString = "Delete";
     
     private JButton deleteButton;
-    
-    public DuplicateFilesList(List<File> Files) {
+        
+    public DuplicateFilesList(List<List<File>> Files) {
         super(new BorderLayout());
-
+        
+        allFiles = new ArrayList<File>();
         listModel = new DefaultListModel();
-        for (File f : Files){
-        	listModel.addElement(f.getName() + " => " + f.getAbsolutePath());
+        
+        for (List<File> L : Files){
+        	allFiles.add(L.get(0));
+        	listModel.addElement(L.get(0).getName() + " => " + L.get(0).getAbsolutePath());
+        	L.remove(0);
+        	for (File f : L){
+        		allFiles.add(f);
+        		listModel.addElement("  + " + f.getName() + " => " + f.getAbsolutePath());
+        	}
         }
         
         //Create the list and put it in a scroll pane.
@@ -71,28 +85,31 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
 
     class DeleteListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            //This method can be called only if
-            //there's a valid selection
-            //so go ahead and remove whatever's selected.
-            int index = list.getSelectedIndex();
-            listModel.remove(index);
+        	int indices[] = list.getSelectedIndices();
+        	String sFiles= "";
+        	for (int i: indices){
+        		sFiles += allFiles.get(i).getName() + "\n";
+        	}
 
-            int size = listModel.getSize();
-
-            if (size == 0) { //Nobody's left, disable firing.
-                deleteButton.setEnabled(false);
-
-            } else { //Select an index.
-                if (index == listModel.getSize()) {
-                    //removed item in last position
-                    index--;
-                }
-
-                list.setSelectedIndex(index);
-                list.ensureIndexIsVisible(index);
-            }
+        	int iResu = Messages.getChoice(Messages
+					.getString("Confirmation_delete_files")
+                    	+ " : \n\n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
+                    	JOptionPane.INFORMATION_MESSAGE);
+			if (iResu != JOptionPane.YES_OPTION) {
+				return;
+			}
+        	           
+        	for (int i: indices){
+        		try{
+        			Util.deleteFile(allFiles.get(i).getIO());
+        		}catch (Exception ioe) {
+    				Log.error(131, ioe);
+        		}
+        		listModel.remove(i);
+        	}
         }
     }
+    
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
 

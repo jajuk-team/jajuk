@@ -45,13 +45,11 @@ public class FindDuplicateFilesAction extends ActionBase {
 	}
 
 	public void perform(ActionEvent evt) throws Exception {
-		List<File> duplicateFilesList = new ArrayList<File>();
+		List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
 		for (Track track : TrackManager.getInstance().getTracks()) {
 			List<File> trackFileList = track.getFiles();
 			if (trackFileList.size() > 1) {
-				for (int i = 1; i < trackFileList.size(); i++) {
-					duplicateFilesList.add(trackFileList.get(i));
-				}
+				duplicateFilesList.add(trackFileList);
 			}
 		}
 		if (duplicateFilesList.size() < 1) {
