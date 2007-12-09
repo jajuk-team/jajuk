@@ -798,10 +798,11 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 	if (returnVal == JFileChooser.APPROVE_OPTION) {
 	 		new Thread(){
 	 			public void run(){
+	 				Util.waiting();
 	 				java.io.File fDir = jfc.getSelectedFile();
 	 				Date curDate = new Date(); 
-	 				SimpleDateFormat Stamp = new SimpleDateFormat("yyyyMMdd-HHmm");
-	 				String dirName = "Collection-" + Stamp.format(curDate);
+	 				SimpleDateFormat Stamp = new SimpleDateFormat("ddMMyyyy-HH:mm");
+	 				String dirName = "Party-" + Stamp.format(curDate);
 	 				java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
 	 				destDir.mkdir();
 	 				java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
@@ -818,6 +819,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
 	 				}catch (Exception e) {
 						Log.error(e);
 	 				}
+	 				Util.stopWaiting();
+	 				Messages.showInfoMessage(dirName +" "+ Messages.getString("AbstractPlaylistEditorView.27") + " "+ fDir.getAbsolutePath());
 	 			}
 	 		}.start();
 	 	}
