@@ -36,9 +36,11 @@ import org.jajuk.util.log.Log;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 public class DeleteAction extends ActionBase {
 	/**
@@ -47,7 +49,7 @@ public class DeleteAction extends ActionBase {
 	private static final long serialVersionUID = 1L;
 
 	DeleteAction() {
-		super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, "delete", true, false);
+		super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 1, true), true, false);
 		setShortDescription(Messages.getString("FilesTreeView.7"));
 	}
 
