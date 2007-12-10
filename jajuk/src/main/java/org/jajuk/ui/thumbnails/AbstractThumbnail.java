@@ -55,6 +55,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -77,6 +78,8 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 
 	/** Size */
 	int size;
+	
+	ArrayList<Item> alSelected = new ArrayList<Item>(100);
 
 	public JLabel jlIcon;
 
@@ -91,6 +94,8 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 	JMenuItem jmiPlay;
 
 	JMenuItem jmiPush;
+	
+	JMenuItem jmiDelete;
 
 	JMenuItem jmiPlayShuffle;
 
@@ -209,6 +214,10 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		jmiPlay.addActionListener(this);
 		jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
 		jmiPush.addActionListener(this);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
+		jmiDelete = new JMenuItem(actionDeleteFile);
+		jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
+		jmiDelete.addActionListener(this);
 		jmiPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"),
 				IconLoader.ICON_SHUFFLE);
 		jmiPlayShuffle.addActionListener(this);
@@ -236,6 +245,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 		// context
 		jmenu.add(jmiPlay);
 		jmenu.add(jmiPush);
+		jmenu.add(jmiDelete);
 		jmenu.add(jmiPlayShuffle);
 		jmenu.add(jmiPlayRepeat);
 		jmenu.add(jmiCDDBWizard);
@@ -388,6 +398,14 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 			play(false, true, false);
 		} else if (e.getSource() == jmiPush) {
 			play(false, false, true);
+		} else if (e.getSource() == jmiDelete) {
+			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+			for (Track track : tracks) {
+				org.jajuk.base.File file = track.getPlayeableFile(false);
+				if (file != null) {
+					alSelected.add(file);
+				}
+			}
 		} else if (e.getSource() == jmiGetCovers) {
 			// This item is enabled only for albums
 			new Thread() {
