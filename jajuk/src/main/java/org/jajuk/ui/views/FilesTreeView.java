@@ -297,7 +297,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
 		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
-		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE_FILE);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
 		jmiFileDelete = new JMenuItem(actionDeleteFile);
 		jmiFileDelete.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiFileDelete.addActionListener(this);
@@ -352,7 +352,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 		jmiDirPaste.putClientProperty(DETAIL_NEW, alSelected);
 		jmiDirPaste.putClientProperty(DETAIL_SELECTION, moveAction);
 		jmiDirPaste.addActionListener(this);
-		Action actionDeleteDir = ActionManager.getAction(JajukAction.DELETE_DIRECTORY);
+		Action actionDeleteDir = ActionManager.getAction(JajukAction.DELETE);
 		jmiDirDelete = new JMenuItem(actionDeleteDir);
 		jmiDirDelete.putClientProperty(DETAIL_SELECTION, alSelected);
 		jmiDirDelete.addActionListener(this);

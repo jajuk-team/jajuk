@@ -396,13 +396,9 @@ public enum JajukAction {
 	 */
 	WEB_RADIO,
 	/**
-	 * Used to delete selected file(s) from disk.
+	 * Used to delete selected files/directories from disk.
 	 */
-	DELETE_FILE,
-	/**
-	 * Used to delete selected directories from disk.
-	 */
-	DELETE_DIRECTORY,
+	DELETE,
 	/**
 	 * Used to move selected files and directories.
 	 */

@@ -92,7 +92,7 @@ public class FilesTableView extends AbstractTableView implements MouseListener {
 		jmiFilePlay.addActionListener(this);
 		jmiFilePush = new JMenuItem(Messages.getString("FilesTableView.2"), IconLoader.ICON_PUSH);
 		jmiFilePush.addActionListener(this);
-		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE_FILE);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
 		jmiFileDelete = new JMenuItem(actionDeleteFile);
 		jmiFileDelete.addActionListener(this);
 		jmiFilePlayShuffle = new JMenuItem(Messages.getString("FilesTableView.3"),

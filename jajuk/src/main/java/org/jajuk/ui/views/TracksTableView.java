@@ -96,7 +96,7 @@ public class TracksTableView extends AbstractTableView {
 		jmiTrackPlay.addActionListener(this);
 		jmiTrackPush = new JMenuItem(Messages.getString("TracksTableView.8"), IconLoader.ICON_PUSH);
 		jmiTrackPush.addActionListener(this);
-		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE_FILE);
+		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
 		jmiTrackDelete = new JMenuItem(actionDeleteFile);
 		jmiTrackDelete.addActionListener(this);
 		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("TracksTableView.9"),

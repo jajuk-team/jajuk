@@ -26,8 +26,7 @@ import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_REMOVE;
 import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
-import static org.jajuk.ui.action.JajukAction.DELETE_DIRECTORY;
-import static org.jajuk.ui.action.JajukAction.DELETE_FILE;
+import static org.jajuk.ui.action.JajukAction.DELETE;
 import static org.jajuk.ui.action.JajukAction.DJ;
 import static org.jajuk.ui.action.JajukAction.EXIT;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
@@ -165,8 +164,7 @@ public final class ActionManager {
 		installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
 		
 		//File Actions
-		installAction(DELETE_FILE, new DeleteFileAction(), false);
-		installAction(DELETE_DIRECTORY, new DeleteDirectoryAction(), false);
+		installAction(DELETE, new DeleteAction(), false);
 		installAction(FILE_MOVE, new FileMoveAction(), false);
 		
 		//MISC
