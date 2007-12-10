@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Description:  Definitions for various Lyrics Providers
+                If the provider does not define a qualified classname,
+                we use the standard GenericProvider with the given URL as
+                query source.
+  Author:       The Jajuk Team
+  Created:      December 09, 2007
+  Examples:
+    <provider class="org.jajuk.services.lyrics.providers.LyrcProvider" />
+    <provider url="http://host/path/script?artist=%artist%&title=%title%" />
+    <provider
+      class="org.jajuk.services.lyrics.providers.SomeProvider"
+      url="http://host/path/script?artist=%artist%&title=%title%" />
+-->
+
+<providers>
+  <provider class="org.jajuk.services.lyrics.providers.LyrcProvider" />
+</providers>

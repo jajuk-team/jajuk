@@ -231,6 +231,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_MPLAYER_EXE = "mplayer.exe";
 
 	public static final String FILE_TOOLBARS_CONF = "toolbars.xml";
+	
+	public static final URL    FILE_LYRICS_CONF_PATH = Util.getResource("xml/lyrics.xml");
 
 	public static final String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 

@@ -20,21 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Track;
-import org.jajuk.base.WebRadio;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,11 +35,27 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Track;
+import org.jajuk.base.WebRadio;
+import org.jajuk.services.lyrics.LyricsService;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import ext.services.lyrics.LyricsService;
 
 /**
  * Lyrics view
@@ -64,187 +65,236 @@ import ext.services.lyrics.LyricsService;
  */
 public class LyricsView extends ViewAdapter implements Observer {
 
-	private static final long serialVersionUID = 2229941034734574056L;
+  private static final long serialVersionUID = 2229941034734574056L;
 
-	private JTextArea textarea;
+  private JTextArea         textarea            = null;
+  JScrollPane               jsp                 = null;
+  private JLabel            jlTitle             = null;
+  private JLabel            jlAuthor            = null;
+  private String            sURL                = null;
+  private Track             track               = null;
+  private String            lyrics              = null;
+  private JMenuItem         jmiCopyToClipboard  = null;
+  private JMenuItem         jmiLaunchInBrowser  = null;
 
-	JScrollPane jsp;
+  
+  public LyricsView() {
+  }
 
-	private JLabel jlTitle;
+  /*
+   * (non-Javadoc)
+   * @see org.jajuk.ui.IView#initUI()
+   */
+  public void initUI() {
+    final FormLayout      layout    = new FormLayout(
+                              // --columns
+                              "3dlu,p:grow, 3dlu",
+                              // --rows
+                              "5dlu, p, 3dlu, p, 3dlu,fill:" +
+                             (getHeight() - 200) +
+                             ":grow,3dlu");
+    final PanelBuilder    builder   = new PanelBuilder(layout);
+    final CellConstraints cc        = new CellConstraints();
+    final JPanel          p         = builder.getPanel();
+    final JTextArea       textarea  = getTextarea();
+    final JLabel          author    = getJlAuthor();
+    final JLabel          title     = getJlTitle();
+    final JScrollPane     jsp       = getJsp();
+    final FontManager     fmgr      = FontManager.getInstance();
+    
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    textarea.setLineWrap(true);
+    textarea.setWrapStyleWord(true);
+    textarea.setEditable(false);
+    textarea.setMargin(new Insets(10, 10, 10, 10));
+    textarea.setFont(fmgr.getFont(JajukFont.BOLD));
+    textarea.addMouseListener(new MouseAdapter() {
 
-	private JLabel jlAuthor;
+      @Override
+      public void mousePressed(final MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          handlePopup(e);
+        }
+      }
 
-	private String sURL;
+      public void mouseReleased(final MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          handlePopup(e);
+        }
+      }
+      
+    });
+    author.setFont(fmgr.getFont(JajukFont.PLAIN_L));
+    title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
+    textarea.setFont(fmgr.getFont(JajukFont.PLAIN));
+    // Add items
+    builder.add(jlTitle, cc.xy(2, 2));
+    builder.add(jlAuthor, cc.xy(2, 4));
+    builder.add(jsp, cc.xy(2, 6));
+    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+    add(p);
+    ObservationManager.register(this);
+    // check if a track has already been launched
+    update(new Event(EventSubject.EVENT_FILE_LAUNCHED,
+                     ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+  }
 
-	private Track track;
+  public void handlePopup(final MouseEvent e) {
+    final JPopupMenu menu = new JPopupMenu();
 
-	private String lyrics;
+    menu.add(getJmiCopyToClipboard());
+    getJmiLaunchInBrowser().putClientProperty(DETAIL_CONTENT, sURL);
+    menu.add(getJmiLaunchInBrowser());
+    menu.show(getTextarea(), e.getX(), e.getY());
+  }
 
-	private JMenuItem jmiCopyToClipboard;
+  /*
+   * (non-Javadoc)
+   * @see org.jajuk.base.Observer#getRegistrationKeys()
+   */
+  public Set<EventSubject> getRegistrationKeys() {
+    final HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
 
-	private JMenuItem jmiLaunchInBrowser;
+    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(EventSubject.EVENT_ZERO);
+    eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(EventSubject.EVENT_LYRICS_DOWNLOADED);
+    return eventSubjectSet;
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
+   */
+  public void update(final Event event) {
+    final EventSubject subject = event.getSubject();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("LyricsView.0");
-	}
+    Log.debug("updating lyrics view");
+    if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+      new Thread() {
+        
+        public void run() {
+          final File file = FIFO.getInstance().getCurrentFile();
+          
+          if (file != null) {
+            track = FIFO.getInstance().getCurrentFile().getTrack();
+            sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
+                + track.getAuthor().getName2() + "&songname=" + track.getName();
+            // Launch lyrics service asynchronously and out of the
+            // AWT dispatcher thread
+            Log.debug("calling LyricsService");
+            lyrics = LyricsService.getLyrics(track.getAuthor().getName2(),
+                                             track.getName());
+            // Notify to make UI changes
+            ObservationManager.notify(new Event(
+                  EventSubject.EVENT_LYRICS_DOWNLOADED));
+          }
+        }
+        
+      }.start();
+    } else if (subject.equals(EventSubject.EVENT_ZERO)) {
+      SwingUtilities.invokeLater(new Runnable() {
+        
+        public void run() {
+          jsp.setVisible(false);
+          jlAuthor.setText("");
+          jlTitle.setText(Messages.getString("JajukWindow.18"));
+        }
+        
+      });
+    } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+      SwingUtilities.invokeLater(new Runnable() {
+        
+        public void run() {
+          final WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
+          
+          if (radio != null) {
+            jlTitle.setText(radio.getName());
+            jlAuthor.setText("");
+            jsp.setVisible(false);
+          }
+        }
+        
+      });
+    } else if (subject.equals(EventSubject.EVENT_LYRICS_DOWNLOADED)) {
+      SwingUtilities.invokeLater(new Runnable() {
+        
+        public void run() {
+          jsp.setVisible(true);
+          textarea.setToolTipText(sURL);
+          if ((lyrics != null) && (lyrics.length() > 0)) {
+            textarea.setText(lyrics);
+          } else {
+            textarea.setText(Messages.getString("WikipediaView.3"));
+          }
+          // Make sure to display the begin of the text (must be
+          // done in a thread to be executed when textarea display
+          // is actually finished)
+          SwingUtilities.invokeLater(new Runnable() {
+            
+            public void run() {
+              jsp.getVerticalScrollBar().setValue(0);
+            }
+            
+          });
+          jlAuthor.setText(track.getAuthor().getName2());
+          jlTitle.setText(track.getName());
+          Util.copyData = sURL;
+        }
+        
+      });
 
-	public LyricsView() {
-	}
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#initUI()
-	 */
-	public void initUI() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		textarea = new JTextArea();
-		textarea.setLineWrap(true);
-		textarea.setWrapStyleWord(true);
-		textarea.setEditable(false);
-		textarea.setMargin(new Insets(10, 10, 10, 10));
-		textarea.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-		textarea.addMouseListener(new MouseAdapter() {
+  /*
+   * (non-Javadoc)
+   * @see org.jajuk.ui.IView#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("LyricsView.0");
+  }
+  
+  private JTextArea getTextarea() {
+    if (textarea == null) {
+      textarea = new JTextArea();
+    }
+    return (textarea);
+  }
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					handlePopup(e);
-				}
-			}
+  private JScrollPane getJsp() {
+    if (jsp == null) {
+      jsp = new JScrollPane(getTextarea());
+    }
+    return (jsp);
+  }
+  
+  private JLabel getJlTitle() {
+    if (jlTitle == null) {
+      jlTitle = new JLabel();
+    }
+    return (jlTitle);
+  }
+  
+  private JLabel getJlAuthor() {
+    if (jlAuthor == null) {
+      jlAuthor = new JLabel();
+    }
+    return (jlAuthor);
+  }
 
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					handlePopup(e);
-				}
-			}
-		});
-		jlAuthor = new JLabel();
-		jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_L));
-		jlTitle = new JLabel();
-		jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_XL));
-		jsp = new JScrollPane(textarea);
-		textarea.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
-		int height = getHeight() - 200;
-		FormLayout layout = new FormLayout(
-		// --columns
-				"3dlu,p:grow, 3dlu",
-				// --rows
-				"5dlu, p, 3dlu, p, 3dlu,fill:" + height + ":grow,3dlu"); // rows
-		PanelBuilder builder = new PanelBuilder(layout);
-		CellConstraints cc = new CellConstraints();
-		// Add items
-		builder.add(jlTitle, cc.xy(2, 2));
-		builder.add(jlAuthor, cc.xy(2, 4));
-		builder.add(jsp, cc.xy(2, 6));
-		JPanel p = builder.getPanel();
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		add(p);
+  private JMenuItem getJmiCopyToClipboard() {
+    if (jmiCopyToClipboard == null) {
+      jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD));
+    }
+    return (jmiCopyToClipboard);
+  }
 
-		ObservationManager.register(this);
-		// check if a track has already been launched
-		update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-				.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
-
-	}
-
-	public void handlePopup(final MouseEvent e) {
-		JPopupMenu menu = new JPopupMenu();
-		jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD));
-		menu.add(jmiCopyToClipboard);
-		jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
-		jmiLaunchInBrowser.putClientProperty(DETAIL_CONTENT, sURL);
-		menu.add(jmiLaunchInBrowser);
-		menu.show(textarea, e.getX(), e.getY());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Observer#getRegistrationKeys()
-	 */
-	public Set<EventSubject> getRegistrationKeys() {
-		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-		eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-		eventSubjectSet.add(EventSubject.EVENT_ZERO);
-		eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
-		eventSubjectSet.add(EventSubject.EVENT_LYRICS_DOWNLOADED);
-		return eventSubjectSet;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
-	 */
-	public void update(final Event event) {
-		EventSubject subject = event.getSubject();
-		if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
-			new Thread() {
-				public void run() {
-					File file = FIFO.getInstance().getCurrentFile();
-					if (file != null) {
-						track = FIFO.getInstance().getCurrentFile().getTrack();
-						sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
-								+ track.getAuthor().getName2() + "&songname=" + track.getName();
-						// Launch lyrics service asynchronously and out of the
-						// AWT dispatcher thread
-						lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track
-								.getName());
-						// Notify to make UI changes
-						ObservationManager.notify(new Event(
-									EventSubject.EVENT_LYRICS_DOWNLOADED));
-					}
-				}
-			}.start();
-		} else if (subject.equals(EventSubject.EVENT_ZERO)) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					jsp.setVisible(false);
-					jlAuthor.setText("");
-					jlTitle.setText(Messages.getString("JajukWindow.18"));
-				}
-			});
-		} else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
-					if (radio != null) {
-						jlTitle.setText(radio.getName());
-						jlAuthor.setText("");
-						jsp.setVisible(false);
-					}
-				}
-			});
-		} else if (subject.equals(EventSubject.EVENT_LYRICS_DOWNLOADED)) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					jsp.setVisible(true);
-					textarea.setToolTipText(sURL);
-					if (lyrics != null && lyrics.length() > 0) {
-						textarea.setText(lyrics);
-					} else {
-						textarea.setText(Messages.getString("WikipediaView.3"));
-					}
-					// Make sure to display the begin of the text (must be
-					// done in a thread to be executed when textarea display
-					// is actually finished)
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							jsp.getVerticalScrollBar().setValue(0);
-						}
-					});
-					jlAuthor.setText(track.getAuthor().getName2());
-					jlTitle.setText(track.getName());
-					Util.copyData = sURL;
-				}
-			});
-
-		}
-	}
+  private JMenuItem getJmiLaunchInBrowser() {
+    if (jmiLaunchInBrowser == null) {
+      jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+    }
+    return (jmiLaunchInBrowser);
+  }
+  
 }
