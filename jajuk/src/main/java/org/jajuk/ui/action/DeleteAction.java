@@ -62,7 +62,8 @@ public class DeleteAction extends ActionBase {
         ArrayList<File> rejFiles = new ArrayList<File>(alSelected.size());
         ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
 		ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
-         
+		ArrayList<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
+		
         for (Item item : alSelected) {
         	if (item instanceof File) {
         		alFiles.add((File) item);
@@ -91,8 +92,11 @@ public class DeleteAction extends ActionBase {
 
     		for (File f : alFiles) {
     			try {
+    				Directory d = f.getDirectory();
     				Util.deleteFile(f.getIO());
     				FileManager.getInstance().removeFile(f);
+    				if (d.getFiles().size() == 0)
+    					emptyDirs.add(f.getDirectory());
     			} catch (Exception ioe) {
     				Log.error(131, ioe);
     				rejFiles.add(f);
@@ -104,6 +108,38 @@ public class DeleteAction extends ActionBase {
     				rejString += f.getName() + "\n";
     			}
     			Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
+    		}
+    		
+    		if (emptyDirs.size() > 0){
+    			String emptyDirsString = "";
+    			for (Directory d : emptyDirs){
+    				emptyDirsString += d.getName() + "\n";
+    			}
+    			
+    			int iResu = Messages.getChoice(Messages
+    					.getString("Confirmation_delete_empty_dirs")
+                        	+ " : \n\n" + emptyDirsString, JOptionPane.YES_NO_CANCEL_OPTION,
+                        	JOptionPane.INFORMATION_MESSAGE);
+    			if (iResu != JOptionPane.YES_OPTION) {
+    				return;
+    			} else{
+    				for (Directory d : emptyDirs) {
+    	    		    try {
+    	    		    	Util.deleteDir(new java.io.File(d.getAbsolutePath()));
+    	    		    	DirectoryManager.getInstance().removeDirectory(d.getID());
+    	    		    }catch (Exception ioe) {
+    	    		    	Log.error(131, ioe);
+    	    		    	rejDirs.add(d);
+    	    		    }
+    	    		}
+    	    		if(rejDirs.size() > 0){
+    	    			String rejString = "";
+    	    			for (Directory d : rejDirs){
+    	    				rejString += d.getName() + "\n";
+    	    			}
+    	    			Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
+    	    		}
+    			}
     		}
         }
         

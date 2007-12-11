@@ -726,6 +726,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 			// because cursor is over first track
 			// and it can't be removed in queue mode
 			jbRun.setEnabled(false);
+			// disable prepare party for queue playlist 
+			jbPrepParty.setEnabled(false);
 		} else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF
 				|| iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) {
 			jbClear.setEnabled(false);
