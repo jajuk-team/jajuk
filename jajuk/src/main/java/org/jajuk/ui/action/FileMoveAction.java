@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 public class FileMoveAction extends ActionBase {
 	/**
@@ -73,6 +74,16 @@ public class FileMoveAction extends ActionBase {
 					Log.debug("Inside Cut");
 					for (Item t : moveItems){
 						if (t instanceof File){
+							java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
+							if (newFile.exists()){
+								int iResu = Messages.getChoice(Messages
+				    					.getString("Confirmation_file_overwrite")
+				                        	+ " : \n\n" + ((File) t).getName() , JOptionPane.YES_NO_CANCEL_OPTION,
+				                        	JOptionPane.INFORMATION_MESSAGE);
+								if (iResu != JOptionPane.YES_OPTION) {
+				    				return;
+				    			}
+							} 
 							try{
 								Util.copyToDir(((File) t).getIO(), dir);
 								Util.deleteFile(((File) t).getIO());
@@ -99,6 +110,16 @@ public class FileMoveAction extends ActionBase {
 					Log.debug("Inside Copy");
 					for (Item t : moveItems){
 						if (t instanceof File){
+							java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
+							if (newFile.exists()){
+								int iResu = Messages.getChoice(Messages
+				    					.getString("Confirmation_file_overwrite")
+				                        	+ " : \n\n" + ((File) t).getName() , JOptionPane.YES_NO_CANCEL_OPTION,
+				                        	JOptionPane.INFORMATION_MESSAGE);
+								if (iResu != JOptionPane.YES_OPTION) {
+				    				return;
+				    			}
+							} 
 							try{
 								Util.copyToDir(((File) t).getIO(), dir);
 							} catch(Exception ioe) {

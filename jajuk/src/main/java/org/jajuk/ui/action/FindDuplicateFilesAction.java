@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.action;
 
+import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -59,9 +60,8 @@ public class FindDuplicateFilesAction extends ActionBase {
 		if (duplicateFilesList.size() < 1) {
 			Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
 		} else {
-			final JDialog duplicateFiles = new JDialog();
-			duplicateFiles.setName("List of Duplicate Files found");
-	        duplicateFiles.setMaximumSize(new Dimension(800,600));	       	        
+			final JDialog duplicateFiles = new JDialog(Main.getWindow(),"List of Duplicate Files found");
+			duplicateFiles.setMaximumSize(new Dimension(800,600));	       	        
 	        
 	        JButton jbClose = new JButton(Messages.getString("Close"));
             jbClose.addActionListener(new ActionListener() {
