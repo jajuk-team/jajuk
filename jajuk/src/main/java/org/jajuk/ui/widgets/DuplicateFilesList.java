@@ -28,11 +28,21 @@ import org.jajuk.util.log.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JPanel;
+import javax.swing.JList;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class DuplicateFilesList extends JPanel implements ListSelectionListener {
 	
@@ -42,23 +52,21 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     private DefaultListModel listModel;
     private List<File> allFiles;
 
-    private static final String deleteString = "Delete";
-    
     private JButton deleteButton;
-        
-    public DuplicateFilesList(List<List<File>> Files) {
+            
+    public DuplicateFilesList(List<List<File>> Files, JButton jbClose) {
         super(new BorderLayout());
-        
+                       
         allFiles = new ArrayList<File>();
         listModel = new DefaultListModel();
         
         for (List<File> L : Files){
         	allFiles.add(L.get(0));
-        	listModel.addElement(L.get(0).getName() + " => " + L.get(0).getAbsolutePath());
+        	listModel.addElement(L.get(0).getName() + " ( " + L.get(0).getDirectory().getAbsolutePath() + " ) ");
         	L.remove(0);
         	for (File f : L){
         		allFiles.add(f);
-        		listModel.addElement("  + " + f.getName() + " => " + f.getAbsolutePath());
+        		listModel.addElement("  + " + f.getName() + " ( " + f.getDirectory().getAbsolutePath() + " ) ");
         	}
         }
         
@@ -68,15 +76,18 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
         list.setVisibleRowCount(30);
         JScrollPane listScrollPane = new JScrollPane(list);
                
-        deleteButton = new JButton(deleteString);
-        deleteButton.setActionCommand(deleteString);
+        deleteButton = new JButton(Messages.getString("Delete"));
+        deleteButton.setActionCommand(Messages.getString("Delete"));
         deleteButton.addActionListener(new DeleteListener());
-
+        
         //Create a panel that uses BoxLayout.
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane,
                                            BoxLayout.LINE_AXIS));
         buttonPane.add(deleteButton);
+        buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        
+        buttonPane.add(jbClose);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         add(listScrollPane, BorderLayout.CENTER);

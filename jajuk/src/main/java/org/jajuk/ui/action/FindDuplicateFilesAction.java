@@ -26,11 +26,15 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
+import javax.swing.JDialog;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import org.jajuk.ui.widgets.DuplicateFilesList;
@@ -39,7 +43,7 @@ public class FindDuplicateFilesAction extends ActionBase {
 
 	private static final long serialVersionUID = 1L;
 
-	protected FindDuplicateFilesAction() {
+	FindDuplicateFilesAction() {
 		super(Messages.getString("FindDuplicateFilesAction.2"), IconLoader.ICON_SEARCH, true);
 		setShortDescription(Messages.getString("FindDuplicateFilesAction.2"));
 	}
@@ -53,18 +57,27 @@ public class FindDuplicateFilesAction extends ActionBase {
 			}
 		}
 		if (duplicateFilesList.size() < 1) {
-			Messages.showInfoMessage("FindDuplicateFilesAction.0");
+			Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
 		} else {
-			JFrame frame = new JFrame("List of Duplicate Files found");
+			final JDialog duplicateFiles = new JDialog();
+			duplicateFiles.setName("List of Duplicate Files found");
+	        duplicateFiles.setMaximumSize(new Dimension(800,600));	       	        
 	        
+	        JButton jbClose = new JButton(Messages.getString("Close"));
+            jbClose.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                            duplicateFiles.dispose();
+                    }
+            });
+            
 	        //Create and set up the content pane.
-	        JComponent newContentPane = new DuplicateFilesList(duplicateFilesList);
-	        newContentPane.setOpaque(true); //content panes must be opaque
-	        frame.setContentPane(newContentPane);
-
+	        JComponent newContentPane = new DuplicateFilesList(duplicateFilesList, jbClose);
+	        newContentPane.setOpaque(true); 
+	        duplicateFiles.setContentPane(newContentPane);
+	        
 	        //Display the window.
-	        frame.pack();
-	        frame.setVisible(true);
+	        duplicateFiles.pack();
+	        duplicateFiles.setVisible(true);
 							
 		}
 	}
