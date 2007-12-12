@@ -248,7 +248,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		// buttons
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-		jbOk = new JButton(Messages.getString("OK"));
+		jbOk = new JButton(Messages.getString("Ok"));
 		jbOk.requestFocusInWindow();
 		jbOk.addActionListener(this);
 		jbCancel = new JButton(Messages.getString("Cancel"));
