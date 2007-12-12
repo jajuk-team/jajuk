@@ -35,7 +35,7 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
 	private static final long CHECK_INTERVAL_MS = 100;
 
 	// Maximum time we won't warn about in test mode
-	private static final long UNREASONABLE_DISPATCH_DURATION_MS_TEST = 300;
+	private static final long UNREASONABLE_DISPATCH_DURATION_MS_TEST = 500;
 
 	// Maximum time we won't warn about in production mode
 	private static final long UNREASONABLE_DISPATCH_DURATION_MS_PROD = 10000;
