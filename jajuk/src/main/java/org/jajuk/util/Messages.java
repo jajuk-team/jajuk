@@ -19,11 +19,6 @@
  */
 package org.jajuk.util;
 
-import org.jajuk.Main;
-import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -44,6 +39,11 @@ import javax.swing.JTextArea;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.jajuk.Main;
+import org.jajuk.util.log.Log;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
  * Utility class to get strings from localized property files
  * <p>
@@ -62,10 +62,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /** All choice option, completes JDialog options */
    public static final int ALL_OPTION = 10;
-   
+
    /** Specific Yes NO All Cancel option*/
    public static final int YES_NO_ALL_CANCEL_OPTION = 11;
-   
+
    /**
     * Messages themselves extracted from an XML file to this properties class*
     */
@@ -91,11 +91,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    }
 
    /**
-    * 
+    *
     * @param sKey
     * @return wheter given key exists
     */
-   public boolean contains(String sKey) {
+   public boolean contains(final String sKey) {
       return getPropertiesEn().containsKey(sKey);
    }
 
@@ -103,7 +103,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     * @param key
     * @return
     */
-   public static String getString(String key) {
+   public static String getString(final String key) {
       String sOut = key;
       try {
          sOut = getInstance().getProperties().getProperty(key);
@@ -117,7 +117,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
             Log.error(105, "key: " + key, new Exception());
             sOut = key;
          }
-      } catch (Exception e) { // system error
+      } catch (final Exception e) { // system error
          Log.error(e);
       }
       return sOut;
@@ -125,45 +125,47 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Fetch all messages from a given base key. <P/> Example:
-    * 
+    *
     * <pre>
     *     example.0=Message 1
     *     example.1=Message 2
     *     example.2=Message 3
     * </pre>
-    * 
+    *
     * Using <tt>Messages.getAll("example");</tt> will return a size 3 String
     * array containing the messages in order. <P/> The keys need to have
     * continuous numbers. So, adding <tt>example.5=Message 5</tt> to the
     * bundle, will not result in adding it to the array without first adding
     * <tt>example.3</tt> and <tt>example.4</tt>.
-    * 
+    *
     * @param base
     *            The base to use for generating the keys.
     * @return An array of Strings containing the messages linked to the key,
     *         never <tt>null</tt>. If <tt>base.0</tt> is not found, and
     *         empty array is returned.
     */
-   public static String[] getAll(String base) {
-      List<String> msgs = new ArrayList<String>();
+   public static String[] getAll(final String base) {
+      final List<String>  msgs    = new ArrayList<String>();
+      final String        prefix  = base + ".";
+
       try {
+        final Properties    properties        = getInstance().getProperties();
+        final Properties    defaultProperties = getInstance().getPropertiesEn();
+
          for (int i = 0;; i++) {
-            String sOut = getInstance().getProperties().getProperty(base + "." + i);
+            String sOut = properties.getProperty(prefix + i);
 
             if (sOut == null) {
-               // this property is unknown for this
-               // local, try in English
-               sOut = getInstance().getPropertiesEn().getProperty(base + "." + i);
+               // this property is unknown for this local, try in English
+               sOut = defaultProperties.getProperty(prefix + i);
+               // unknown property, assume we found all properties in the set
+               if (sOut == null) {
+                  break;
+               }
             }
-
-            // Property not found, assume we found all properties in the set
-            if (sOut == null) {
-               break;
-            }
-
             msgs.add(sOut);
          }
-      } catch (Exception e) { // System error
+      } catch (final Exception e) { // System error
          Log.error(e);
       }
       return msgs.toArray(new String[msgs.size()]);
@@ -171,19 +173,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Register a local
-    * 
+    *
     * @param sLocale :
     *            standard local name like "en"
     * @param sDesc :
     *            a language-independent descriptions like "Language_desc_en"
     */
-   public void registerLocal(String sLocal) {
+   public void registerLocal(final String sLocal) {
       alLocals.add(sLocal);
    }
 
    /**
     * Return list of available locals
-    * 
+    *
     * @return
     */
    public static ArrayList<String> getLocales() {
@@ -192,60 +194,63 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Return list of available local descriptions
-    * 
+    *
     * @return
     */
    public static ArrayList<String> getDescs() {
-      ArrayList<String> alDescs = new ArrayList<String>(10);
-      for (String local : mesg.alLocals)
-         alDescs.add(getString("Language_desc_" + local));
+      final ArrayList<String> alDescs = new ArrayList<String>(10);
+      for (final String local : mesg.alLocals) {
+        alDescs.add(getString("Language_desc_" + local));
+      }
       Collections.sort(alDescs);
       return alDescs;
    }
 
    /**
     * Return Description for a given local id
-    * 
+    *
     * @return localized description
     */
-   public static String getDescForLocal(String sLocal) {
+   public static String getDescForLocal(final String sLocal) {
       return getString("Language_desc_" + sLocal);
    }
 
    /**
     * Return local for a given description
-    * 
+    *
     * @return local
     */
-   public static String getLocalForDesc(String sDesc) {
-      for (int i = 0; i < getLocales().size(); i++)
-         if (getDescForLocal(mesg.alLocals.get(i)).equals(sDesc))
-            return getLocales().get(i);
-      return null;
+   public static String getLocalForDesc(final String sDesc) {
+     for (final String locale : getLocales()) {
+       if (getDescForLocal(locale).equals(sDesc)) {
+         return locale;
+       }
+     }
+     return null;
    }
 
    /**
     * Change current local
-    * 
+    *
     * @param sLocal
     */
-   public void setLocal(String sLocal) throws Exception {
+   public void setLocal(final String sLocal) throws Exception {
       ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
-      this.properties = null; // make sure to reinitialize cached strings
+      properties = null; // make sure to reinitialize cached strings
       this.sLocal = sLocal;
    }
 
    /****************************************************************************
     * Parse a fake properties file inside an XML file as CDATA
-    * 
+    *
     * @param sLocal
     * @return a properties with all entries
     * @throws Exception
     */
-   private Properties parseLangpack(String sLocal) throws Exception {
+   private Properties parseLangpack(final String sLocal) throws Exception {
       final Properties properties = new Properties();
       // Choose right jajuk_<lang>.properties file to load
-      StringBuilder sbFilename = new StringBuilder(FILE_LANGPACK_PART1);
+      final StringBuilder sbFilename = new StringBuilder(FILE_LANGPACK_PART1);
       if (!sLocal.equals("en")) { // for english, properties file is
          // simply jajuk.properties
          sbFilename.append('_').append(sLocal);
@@ -259,33 +264,35 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
       // parse it, actually it is a big properties file as CDATA in an XML
       // file
       try {
-         SAXParserFactory spf = SAXParserFactory.newInstance();
+         final SAXParserFactory spf = SAXParserFactory.newInstance();
          spf.setValidating(false);
          spf.setNamespaceAware(false);
-         SAXParser saxParser = spf.newSAXParser();
+         final SAXParser saxParser = spf.newSAXParser();
          saxParser.parse(url.openStream(), new DefaultHandler() {
             // this buffer will contain the entire properties strings
             StringBuilder sb = new StringBuilder(15000);
 
             // call for each element strings, actually will be called
             // several time if the element is large (our case : large CDATA)
-            public void characters(char[] ch, int start, int length) throws SAXException {
+            @Override
+            public void characters(final char[] ch, final int start, final int length) throws SAXException {
                sb.append(ch, start, length);
             }
 
             // call when closing the tag (</body> in our case )
-            public void endElement(String uri, String localName, String qName) throws SAXException {
-               String sWhole = sb.toString();
+            @Override
+            public void endElement(final String uri, final String localName, final String qName) throws SAXException {
+               final String sWhole = sb.toString();
                // ok, parse it ( comments start with #)
-               StringTokenizer st = new StringTokenizer(sWhole, "\n");
+               final StringTokenizer st = new StringTokenizer(sWhole, "\n");
                while (st.hasMoreTokens()) {
-                  String sLine = st.nextToken();
-                  if (sLine.length() > 0 && !sLine.startsWith("#") && sLine.indexOf('=') != -1) {
-                     StringTokenizer stLine = new StringTokenizer(sLine, "=");
+                  final String sLine = st.nextToken();
+                  if ((sLine.length() > 0) && !sLine.startsWith("#") && (sLine.indexOf('=') != -1)) {
+                     final StringTokenizer stLine = new StringTokenizer(sLine, "=");
                      // get full value after the '=', we don't use the
                      // stringtokenizer to allow
                      // using = characters in the value
-                     String sValue = sLine.substring(sLine.indexOf('=') + 1);
+                     final String sValue = sLine.substring(sLine.indexOf('=') + 1);
                      // trim to ignore space at begin end end of lines
                      properties.put(stLine.nextToken().trim(), sValue);
                   }
@@ -293,23 +300,23 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
             }
          });
          return properties;
-      } catch (Exception e) {
+      } catch (final Exception e) {
          throw e;
       }
    }
 
    /**
     * Return the message display to the user corresponding to the error code.
-    * 
+    *
     * @param code
     *            Error code.
     * @return String Message corresponding to the error code.
     */
-   public static String getErrorMessage(int code) {
+   public static String getErrorMessage(final int code) {
       String sOut = Integer.toString(code);
       try {
          sOut = getString("Error." + Util.padNumber(code, 3));
-      } catch (Exception e) {
+      } catch (final Exception e) {
          System.out.println("### Error getting error message for code: " + code);
       }
       return sOut;
@@ -321,7 +328,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     * CAUTION! the thread which calls this method musn't have locks on resources :
     * otherwise it can conduct to GUI freeze
     * </p>
-    * 
+    *
     * @param sText :
     *            dialog text
     * @param int
@@ -329,17 +336,17 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     * @param iType
     *            message type like JOptionPane.WARNING
     */
-   public static int getChoice(String sText, int optionsType, int iType) {
-      ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
+   public static int getChoice(final String sText, final int optionsType, final int iType) {
+      final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
       return confirm.getResu();
    }
 
    /**
-    * 
+    *
     * @param iType
     * @return String for given JOptionPane message type
     */
-   static private String getTitleForType(int iType) {
+   static private String getTitleForType(final int iType) {
       switch (iType) {
       case JOptionPane.ERROR_MESSAGE:
          return Messages.getString("Error");
@@ -353,27 +360,27 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Show a dialog with specified warning message
-    * 
+    *
     * @param sMessage
     */
-   public static void showWarningMessage(String sMessage) {
+   public static void showWarningMessage(final String sMessage) {
       new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
             JOptionPane.WARNING_MESSAGE, null, null);
    }
 
    /**
     * Show a dialog with specified warning message + a "not show again" button
-    * 
+    *
     * @param sMessage
     * @param sProperty :
     *            property name
     */
-   public static void showHideableWarningMessage(String sMessage, String sProperty) {
+   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
       // User required to hide this message
       if (ConfigurationManager.getBoolean(sProperty)) {
          return;
       }
-      HideableMessageDialog message = new HideableMessageDialog(sMessage,
+      final HideableMessageDialog message = new HideableMessageDialog(sMessage,
             getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
             null);
       message.getResu();
@@ -381,7 +388,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Show a dialog with specified error message and an icon
-    * 
+    *
     * @param sMessage
     */
    public static void showInfoMessage(final String sMessage, final Icon icon) {
@@ -390,18 +397,18 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    }
 
    /**
-    * 
+    *
     * @param sText
     *            text to display, lines separated by \n characters
     * @param limit :
     *            max number of lines to be displayed without scroller
     * @return formated message: either a string, or a textarea
     */
-   protected static Object getLimitedMessage(String sText, int limit) {
-      int iNbLines = new StringTokenizer(sText, "\n").countTokens();
+   protected static Object getLimitedMessage(final String sText, final int limit) {
+      final int iNbLines = new StringTokenizer(sText, "\n").countTokens();
       Object message = null;
       if (iNbLines > limit) {
-         JTextArea area = new JTextArea(sText);
+         final JTextArea area = new JTextArea(sText);
          area.setRows(10);
          area.setColumns(50);
          area.setLineWrap(true);
@@ -414,7 +421,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Show a dialog with specified error message and infosup
-    * 
+    *
     * @param code
     * @param sInfoSup
     */
@@ -424,7 +431,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Show a dialog with specified error message
-    * 
+    *
     * @param sCode
     */
    public static void showErrorMessage(final int code) {
@@ -433,19 +440,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Show a dialog with specified error message and infosup and details
-    * 
+    *
     * @param sCode
     * @param sInfoSup
     */
    public static void showDetailedErrorMessage(final int code, final String sInfoSup,
-         String sDetails) {
+         final String sDetails) {
       new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
             getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
    }
 
    /**
     * Show a dialog with specified error message with infos up
-    * 
+    *
     * @param sMessage
     * @param sInfoSup
     */
@@ -457,7 +464,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
    /**
     * Show a dialog with specified error message
-    * 
+    *
     * @param sMessage
     */
    public static void showInfoMessage(final String sMessage) {
@@ -469,13 +476,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     * @return Returns the sLocal.
     */
    public String getLocale() {
-      return this.sLocal;
+      return sLocal;
    }
 
    /**
     * Return true if the messaging system is started, can be usefull mainly at
     * startup by services ( like logs) using them to avoid dead locks
-    * 
+    *
     * @return
     */
    public static boolean isInitialized() {
@@ -486,24 +493,24 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     * @return Returns the properties.
     */
    public Properties getProperties() throws Exception {
-      if (this.properties == null) {
-         this.properties = parseLangpack(this.sLocal);
+      if (properties == null) {
+         properties = parseLangpack(sLocal);
       }
-      return this.properties;
+      return properties;
    }
 
    /**
     * @return Returns the propertiesEn.
     */
    public Properties getPropertiesEn() {
-      if (this.propertiesEn == null) {
+      if (propertiesEn == null) {
          try {
-            this.propertiesEn = parseLangpack("en");
-         } catch (Exception e) {
+            propertiesEn = parseLangpack("en");
+         } catch (final Exception e) {
             Log.error(e);
          }
       }
-      return this.propertiesEn;
+      return propertiesEn;
    }
 }
 
@@ -514,7 +521,7 @@ class ConfirmDialog extends JajukDialog {
 
    /**
     * Confirm dialog constructor
-    * 
+    *
     * @param sText
     * @param sTitle
     * @param int
@@ -523,8 +530,8 @@ class ConfirmDialog extends JajukDialog {
     * @param iType
     *            message type like JOptionPane.WARNING
     */
-   ConfirmDialog(String sText, String sTitle, int optionsType, int iType) {
-      JOptionPane optionPane = Util.getNarrowOptionPane(72);
+   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
+      final JOptionPane optionPane = Util.getNarrowOptionPane(72);
       if (optionsType == Messages.ALL_OPTION) {
           optionPane.setOptions(new
          Object[]{Messages.getString("Yes"),Messages.getString("No"),Messages.getString("All"),Messages.getString("Cancel")});
@@ -533,13 +540,13 @@ class ConfirmDialog extends JajukDialog {
       }
       optionPane.setMessageType(iType);
       optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
-      JDialog dialog = optionPane.createDialog(null, sTitle);
+      final JDialog dialog = optionPane.createDialog(null, sTitle);
       dialog.setModal(true);
       dialog.setAlwaysOnTop(true);
       dialog.pack();
       dialog.setLocationRelativeTo(Main.getWindow());
       dialog.setVisible(true);
-      Object resu = optionPane.getValue();
+      final Object resu = optionPane.getValue();
       //Set Cancel as default
       iResu = JOptionPane.CANCEL_OPTION;
       if (optionPane.getValue() == null) {
@@ -580,37 +587,37 @@ class DetailsMessageDialog extends JajukDialog {
 
    /**
     * Message dialog constructor
-    * 
+    *
     * @param sText
     * @param sTitle
     * @param iType
     */
-   DetailsMessageDialog(String sText, String sTitle, int iType, String sDetails, Icon icon) {
-      JOptionPane optionPane = Util.getNarrowOptionPane(72);
+   DetailsMessageDialog(final String sText, final String sTitle, final int iType, final String sDetails, final Icon icon) {
+      final JOptionPane optionPane = Util.getNarrowOptionPane(72);
       optionPane.setMessage(sText);
       if (sDetails != null) {
-         Object[] options = { Messages.getString("Ok"), Messages.getString("Details") };
+         final Object[] options = { Messages.getString("Ok"), Messages.getString("Details") };
          optionPane.setOptions(options);
       }
       optionPane.setMessageType(iType);
       if (icon != null) {
          optionPane.setIcon(icon);
       }
-      JDialog dialog = optionPane.createDialog(null, sTitle);
+      final JDialog dialog = optionPane.createDialog(null, sTitle);
       dialog.setModal(true);
       dialog.setAlwaysOnTop(true);
       dialog.setVisible(true);
       if (optionPane.getValue().equals(Messages.getString("Details"))) {
          // details
          final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
-         JPanel jp = new JPanel();
+         final JPanel jp = new JPanel();
          jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
-         JTextArea jta = new JTextArea(sDetails);
+         final JTextArea jta = new JTextArea(sDetails);
          jta.setEditable(false);
          jp.add(new JScrollPane(jta));
-         JButton jbOK = new JButton(Messages.getString("Ok"));
+         final JButton jbOK = new JButton(Messages.getString("Ok"));
          jbOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                dialogDetail.dispose();
             }
          });
@@ -633,23 +640,23 @@ class HideableMessageDialog extends JajukDialog {
 
    /**
     * Message dialog constructor
-    * 
+    *
     * @param sText
     * @param sTitle
     * @param sProperty
     * @param iType
     * @param icon
     */
-   HideableMessageDialog(String sText, String sTitle, String sProperty, int iType, Icon icon) {
-      JOptionPane optionPane = Util.getNarrowOptionPane(72);
+   HideableMessageDialog(final String sText, final String sTitle, final String sProperty, final int iType, final Icon icon) {
+      final JOptionPane optionPane = Util.getNarrowOptionPane(72);
       optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
-      Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
+      final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
       optionPane.setOptions(options);
       optionPane.setMessageType(iType);
       if (icon != null) {
          optionPane.setIcon(icon);
       }
-      JDialog dialog = optionPane.createDialog(null, sTitle);
+      final JDialog dialog = optionPane.createDialog(null, sTitle);
       dialog.setAlwaysOnTop(true);
       // keep it modal (useful at startup)
       dialog.setModal(true);
@@ -671,21 +678,21 @@ class ErrorMessageDialog extends JajukDialog {
 
    /**
     * Message dialog constructor
-    * 
+    *
     * @param sText
     * @param sTitle
     * @param sProperty
     * @param iType
     * @param icon
     */
-   ErrorMessageDialog(int code, String sInfoSup) {
-      JOptionPane optionPane = Util.getNarrowOptionPane(72);
+   ErrorMessageDialog(final int code, final String sInfoSup) {
+      final JOptionPane optionPane = Util.getNarrowOptionPane(72);
       optionPane.setMessage(Messages.getLimitedMessage(Messages.getErrorMessage(code)
             + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
-      Object[] options = { Messages.getString("Ok") };
+      final Object[] options = { Messages.getString("Ok") };
       optionPane.setOptions(options);
       optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
-      JDialog dialog = optionPane.createDialog(null, Messages.getString("Error"));
+      final JDialog dialog = optionPane.createDialog(null, Messages.getString("Error"));
       dialog.setAlwaysOnTop(true);
       // keep it modal (useful at startup)
       dialog.setModal(true);
@@ -700,7 +707,7 @@ abstract class JajukDialog implements ITechnicalStrings {
    protected int iResu = -2;
 
    /**
-    * 
+    *
     * @return the user option
     */
    public int getResu() {
