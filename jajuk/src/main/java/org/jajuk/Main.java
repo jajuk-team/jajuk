@@ -1,22 +1,59 @@
 /*
  * Jajuk Copyright (C) 2003 The Jajuk Team
- * 
- * This program is free software; you can redistribute 
+ *
+ * This program is free software; you can redistribute
  * it and/or modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2 of the
  * License, or any later version.
- * 
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, 
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Revision$
  */
 package org.jajuk;
+
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+import com.vlsolutions.swing.docking.ui.DockingUISettings;
+import com.vlsolutions.swing.toolbars.ToolBarContainer;
+import com.vlsolutions.swing.toolbars.ToolBarIO;
+
+import ext.JSplash;
+import ext.JVM;
+
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -70,44 +107,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioManager;
-
-import java.awt.BorderLayout;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import com.vlsolutions.swing.docking.ui.DockingUISettings;
-import com.vlsolutions.swing.toolbars.ToolBarContainer;
-import com.vlsolutions.swing.toolbars.ToolBarIO;
-
-import ext.EventDispatchThreadHangMonitor;
-import ext.JSplash;
-import ext.JVM;
 
 /**
  * Jajuk launching class
@@ -185,9 +184,54 @@ public class Main implements ITechnicalStrings {
 		MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
 	}
 
+	/** ConfigurationManager Locales */
+	public static final String[] locales = {
+	  "en",
+    "fr",
+    "de",
+    "it",
+    "sv",
+    "nl",
+    "zh",
+    "es",
+    "ca",
+    "ko",
+    "el"
+	};
+
+
+	/** DeviceTypes Identification strings */
+	public static final String[] deviceTypes = {
+	  "Device_type.directory",
+	  "Device_type.file_cd",
+	  "Device_type.network_drive",
+	  "Device_type.extdd",
+	  "Device_type.player"
+	};
+
+	public static final String[] configChecks = {
+	  FILE_CONFIGURATION,
+	  FILE_HISTORY
+	};
+
+	public static final String[] dirChecks = {
+	  // internal pictures cache directory
+	  FILE_CACHE + '/' + FILE_INTERNAL_CACHE,
+	  // thumbnails directories and sub-directories
+	  FILE_THUMBS,
+	  FILE_THUMBS + "/" + THUMBNAIL_SIZE_50x50,
+	  FILE_THUMBS + "/" + THUMBNAIL_SIZE_100x100,
+	  FILE_THUMBS + "/" + THUMBNAIL_SIZE_150x150,
+	  FILE_THUMBS + "/" + THUMBNAIL_SIZE_200x200,
+	  FILE_THUMBS + "/" + THUMBNAIL_SIZE_250x250,
+	  FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300,
+	  // DJs directories
+	  FILE_DJ_DIR
+	};
+
 	/**
 	 * Main entry
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(final String[] args) {
@@ -200,18 +244,18 @@ public class Main implements ITechnicalStrings {
 				System.exit(2); // error code 2 : wrong JVM
 			}
 			// set command line options
-			for (int i = 0; i < args.length; i++) {
+			for (final String element : args) {
 				// Tells jajuk it is inside the IDE (useful to find right
 				// location for images and jar resources)
-				if (args[i].equals("-" + CLI_IDE)) {
+				if (element.equals("-" + CLI_IDE)) {
 					bIdeMode = true;
 				}
 				// Tells jajuk to use a .jajuk_test repository
 				// The information can be given from CLI using
 				// -test=[test|notest] option
 				// or using the "test" env variable
-				String test = System.getProperty("test");
-				if (args[i].equals("-" + CLI_TEST) || (test != null && test.equals("test"))) {
+				final String test = System.getProperty("test");
+				if (element.equals("-" + CLI_TEST) || ((test != null) && test.equals("test"))) {
 					bTestMode = true;
 				}
 			}
@@ -224,17 +268,9 @@ public class Main implements ITechnicalStrings {
 
 			// Register locals, needed by ConfigurationManager to choose
 			// default language
-			Messages.getInstance().registerLocal("en");
-			Messages.getInstance().registerLocal("fr");
-			Messages.getInstance().registerLocal("de");
-			Messages.getInstance().registerLocal("it");
-			Messages.getInstance().registerLocal("sv");
-			Messages.getInstance().registerLocal("nl");
-			Messages.getInstance().registerLocal("zh");
-			Messages.getInstance().registerLocal("es");
-			Messages.getInstance().registerLocal("ca");
-			Messages.getInstance().registerLocal("ko");
-			Messages.getInstance().registerLocal("el");
+			for (final String locale : locales) {
+			  Messages.getInstance().registerLocal(locale);
+			}
 
 			// Configuration manager startup. Depends on: initialCheckups,
 			// registerLocal
@@ -244,12 +280,12 @@ public class Main implements ITechnicalStrings {
 			ConfigurationManager.load();
 
 			// Upgrade detection. Depends on: Configuration manager load
-			String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+			final String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
 
 			// check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
 			if (!bFirstSession
 			// if first session, not taken as an upgrade
-					&& (sRelease == null || // null for jajuk releases < 1.2
+					&& ((sRelease == null) || // null for jajuk releases < 1.2
 					!sRelease.substring(0, 3).equals(JAJUK_VERSION.substring(0, 3)))) {
 				bUpgraded = true;
 			}
@@ -321,20 +357,14 @@ public class Main implements ITechnicalStrings {
 			checkOtherSession();
 
 			// Set a session file
-			File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/' + Util.getHostName()
+			final File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/' + Util.getHostName()
 					+ '_' + System.getProperty("user.name"));
 			sessionUser.mkdir();
 
 			// Register device types
-			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.directory"));
-			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.file_cd"));
-			DeviceManager.getInstance().registerDeviceType(
-					Messages.getString("Device_type.network_drive"));
-			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
-			DeviceManager.getInstance()
-					.registerDeviceType(Messages.getString("Device_type.player"));
+			for (final String deviceTypeId : deviceTypes) {
+		    DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
+			}
 			// registers supported audio supports and default properties
 			registerTypes();
 
@@ -394,7 +424,7 @@ public class Main implements ITechnicalStrings {
 
 			// start the tray
 			launchTray();
-		} catch (JajukException je) { // last chance to catch any error for
+		} catch (final JajukException je) { // last chance to catch any error for
 			// logging purpose
 			Log.error(je);
 			if (je.getCode() == 5) {
@@ -402,19 +432,19 @@ public class Main implements ITechnicalStrings {
 						JOptionPane.ERROR_MESSAGE);
 				exit(1);
 			}
-		} catch (Exception e) { // last chance to catch any error for logging
+		} catch (final Exception e) { // last chance to catch any error for logging
 			// purpose
 			e.printStackTrace();
 			Log.error(106, e);
 			exit(1);
-		} catch (Error error) { // last chance to catch any error for logging
+		} catch (final Error error) { // last chance to catch any error for logging
 			// purpose
 			error.printStackTrace();
 			Log.error(106, error);
 			exit(1);
 		} finally { // make sure to close splashscreen in all cases (ie if
 			// UI is not started)
-			if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP) && sc != null) {
+			if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP) && (sc != null)) {
 				sc.setProgress(100);
 				sc.splashOff();
 			}
@@ -423,34 +453,34 @@ public class Main implements ITechnicalStrings {
 
 	/**
 	 * Performs some basic startup tests
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public static void initialCheckups() throws Exception {
 		// Check for bootstrap file presence
-		File bootstrap = new File(FILE_BOOTSTRAP);
+		final File bootstrap = new File(FILE_BOOTSTRAP);
 		// Default workspace: ~/.jajuk
-		File fDefaultWorkspace = Util.getConfFileByPath("");
+		final File fDefaultWorkspace = Util.getConfFileByPath("");
 		if (bootstrap.canRead()) {
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(bootstrap));
+				final BufferedReader br = new BufferedReader(new FileReader(bootstrap));
 				// Bootstrap file should contain a single line containing the
 				// path to jajuk workspace
-				String sPath = br.readLine();
+				final String sPath = br.readLine();
 				br.close();
 				// Check if the repository can be found
 				if (new File(sPath + '/'
 						+ (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk")).canRead()) {
 					Main.workspace = sPath;
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				System.out.println("Cannot read bootstrap file, using ~ directory");
 				Main.workspace = System.getProperty("user.home");
 			}
 		}
 		// No bootstrap or unreadable or the path included inside is not
 		// readable, show a wizard to select it
-		if ((!bootstrap.canRead() || Main.workspace == null)
+		if ((!bootstrap.canRead() || (Main.workspace == null))
 		// don't launch the first time wizard if a previous release .jajuk dir
 				// exists (upgrade from < 1.4)
 				&& !fDefaultWorkspace.canRead()) {
@@ -472,78 +502,46 @@ public class Main implements ITechnicalStrings {
 			workspace = System.getProperty("user.home");
 		}
 		// check for jajuk directory
-		File fWorkspace = new File(workspace);
+		final File fWorkspace = new File(workspace);
 		if (!fWorkspace.exists()) {
 			fWorkspace.mkdirs(); // create the directory if it doesn't exist
 		}
 		// check for image cache presence and create the workspace/.jajuk
 		// directory
-		File fCache = Util.getConfFileByPath(FILE_CACHE);
+		final File fCache = Util.getConfFileByPath(FILE_CACHE);
 		if (!fCache.exists()) {
 			fCache.mkdirs();
 		} else {
 			// Empty cache
-			File[] cacheFiles = fCache.listFiles();
-			for (int i = 0; i < cacheFiles.length; i++) {
-				cacheFiles[i].delete();
+			final File[] cacheFiles = fCache.listFiles();
+			for (final File element : cacheFiles) {
+				element.delete();
 			}
 		}
-		// check for configuration file presence
-		File fConfig = Util.getConfFileByPath(FILE_CONFIGURATION);
-		if (!fConfig.exists()) { // if config file doesn't exit, create
-			// it with default values
-			org.jajuk.util.ConfigurationManager.commit();
-		}
-		// check for history.xml file
-		File fHistory = Util.getConfFileByPath(FILE_HISTORY);
-		if (!fHistory.exists()) { // if history file doesn't exit, create
-			// it empty
-			History.commit();
+
+		// checking required internal configuration files
+		for (final String check : configChecks) {
+		  final File file = Util.getConfFileByPath(check);
+
+		  if (file.exists() == false) {
+		    // if config file doesn't exit, create
+	      // it with default values
+	      org.jajuk.util.ConfigurationManager.commit();
+		  }
 		}
 
-		// Internal pictures directory
-		fCache = Util.getConfFileByPath(FILE_CACHE + '/' + FILE_INTERNAL_CACHE);
-		if (!fCache.exists()) {
-			fCache.mkdir();
-		}
-		// check for thumbnails cache presence
-		File fThumbs = Util.getConfFileByPath(FILE_THUMBS);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_50x50);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_100x100);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_150x150);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_200x200);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_250x250);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300);
-		if (!fThumbs.exists()) {
-			fThumbs.mkdir();
-		}
-		// check for djs directory
-		File fdjs = Util.getConfFileByPath(FILE_DJ_DIR);
-		if (!fdjs.exists()) {
-			fdjs.mkdir();
+		// checking required internal directories
+		for (final String check : dirChecks) {
+		  final File file = Util.getConfFileByPath(check);
+
+		  if ((file.exists() == false) && (file.mkdir() == false)) {
+        Log.warn("Could not create missing required directory [" + check + "]");
+	    }
 		}
 
 		// Extract star icons (used by some HTML panels)
 		for (int i = 1; i <= 4; i++) {
-			File star = Util.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
+			final File star = Util.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
 			if (!star.exists()) {
 				ImageIcon ii = null;
 				switch (i) {
@@ -570,11 +568,13 @@ public class Main implements ITechnicalStrings {
 	 */
 	private static void startupAsyncAfterCollectionLoad() {
 		new Thread() {
-			public void run() {
+			@Override
+      public void run() {
 				try {
 					// start exit hook
-					Thread tHook = new Thread() {
-						public void run() {
+					final Thread tHook = new Thread() {
+						@Override
+            public void run() {
 							Log.debug("Exit Hook begin");
 							try {
 								Player.stop(true); // stop sound ASAP
@@ -613,7 +613,7 @@ public class Main implements ITechnicalStrings {
 									// Commit toolbars (only if it is visible to
 									// avoid
 									// commiting void screen)
-									if (!RestoreAllViewsAction.fullRestore && getWindow() != null
+									if (!RestoreAllViewsAction.fullRestore && (getWindow() != null)
 											&& getWindow().isWindowVisible()) {
 										ToolBarIO tbIO = new ToolBarIO(tbcontainer);
 										FileOutputStream out = new FileOutputStream(Util
@@ -683,19 +683,20 @@ public class Main implements ITechnicalStrings {
 					// Start check for update thread if required
 					if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
 						new Thread() {
-							public void run() {
+							@Override
+              public void run() {
 								// Wait 10 min before checking
 								try {
 									Thread.sleep(600000);
 									UpgradeManager.checkForUpdate(false);
-								} catch (InterruptedException e) {
+								} catch (final InterruptedException e) {
 									Log.error(e);
 								}
 							}
 						}.start();
 					}
 
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					Log.error(e);
 				}
 			}
@@ -707,7 +708,8 @@ public class Main implements ITechnicalStrings {
 	 */
 	private static void startupAsyncBeforeCollectionLoad() {
 		new Thread() {
-			public void run() {
+			@Override
+      public void run() {
 				// Force loading all icons now
 				IconLoader.ICON_ACCURACY_HIGH.toString();
 			}
@@ -722,17 +724,17 @@ public class Main implements ITechnicalStrings {
 			// test mplayer presence in PATH
 			mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
 			if (Util.isUnderWindows()) {
-				File mplayerPath = Util.getMPlayerWindowsPath();
+				final File mplayerPath = Util.getMPlayerWindowsPath();
 				// try to find mplayer executable in know locations first
-				if (mplayerPath == null ||
-				// if file exists, test size
-						mplayerPath.length() != MPLAYER_EXE_SIZE) {
+				if ((mplayerPath == null) ||
+				(// if file exists, test size
+        mplayerPath.length() != MPLAYER_EXE_SIZE)) {
 					// probably in JNLP mode or wrong size,
 					// try to download static mplayer distro if needed
 					try {
 						sc.setProgress(5, Messages.getString("Main.22"));
 						Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
-						File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
+						final File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
 						DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
 						// make sure to delete corrupted mplayer in case of
 						// download problem
@@ -740,7 +742,7 @@ public class Main implements ITechnicalStrings {
 							fMPlayer.delete();
 							throw new Exception("MPlayer corrupted"); //$NON-NLS-1$
 						}
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						mplayerStatus = MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
 					}
 				}
@@ -749,7 +751,7 @@ public class Main implements ITechnicalStrings {
 			// using external standard distributions
 			else {
 				// If a forced mplayer path is defined, test it
-				String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+				final String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
 				if (!Util.isVoid(forced)) {
 					// Test forced path
 					mplayerStatus = Util.getMplayerStatus(forced);
@@ -957,14 +959,14 @@ public class Main implements ITechnicalStrings {
 			type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
 			type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
 					.toExternalForm());
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			Log.error(26, e1);
 		}
 	}
 
 	/**
 	 * check if another session is already started
-	 * 
+	 *
 	 */
 	private static void checkOtherSession() {
 		// check for a concurrent jajuk session on local box, try to create a
@@ -972,7 +974,7 @@ public class Main implements ITechnicalStrings {
 		try {
 			ss = new ServerSocket(PORT);
 			// No error? jajuk was not started, leave
-		} catch (IOException e) { // error? looks like Jajuk is already
+		} catch (final IOException e) { // error? looks like Jajuk is already
 			// started
 			if (sc != null) {
 				sc.dispose();
@@ -984,10 +986,11 @@ public class Main implements ITechnicalStrings {
 		}
 		// start listening
 		new Thread() {
-			public void run() {
+			@Override
+      public void run() {
 				try {
 					ss.accept();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					Log.error(e);
 				}
 			}
@@ -995,23 +998,23 @@ public class Main implements ITechnicalStrings {
 		// Now check for remote concurrent users using the same configuration
 		// files
 		// Create concurrent session directory if needed
-		File sessions = Util.getConfFileByPath(FILE_SESSIONS);
+		final File sessions = Util.getConfFileByPath(FILE_SESSIONS);
 		if (!sessions.exists()) {
 			sessions.mkdir();
 		}
 		// Check for concurrent session
-		File[] files = sessions.listFiles();
+		final File[] files = sessions.listFiles();
 		String sHostname;
 		try {
 			sHostname = InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
+		} catch (final UnknownHostException e) {
 			sHostname = "";
 		}
 		// display a warning if sessions directory contains some others users
 		// We ignore presence of ourself session id that can be caused by a
 		// crash
-		if (files.length > 0
-				&& !(files.length == 1 && files[0].getName().equals(
+		if ((files.length > 0)
+				&& !((files.length == 1) && files[0].getName().equals(
 						sHostname + '_' + System.getProperty("user.name")))) {
 			Messages.showHideableWarningMessage(Messages.getString("Warning.2"),
 					CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
@@ -1020,7 +1023,7 @@ public class Main implements ITechnicalStrings {
 
 	/**
 	 * Exit code, then system will execute the exit hook
-	 * 
+	 *
 	 * @param iExitCode
 	 *            exit code
 	 *            <p>
@@ -1028,11 +1031,11 @@ public class Main implements ITechnicalStrings {
 	 *            <p>
 	 *            1: unexpected error
 	 */
-	public static void exit(int iExitCode) {
+	public static void exit(final int iExitCode) {
 		// Store current FIFO for next session
 		try {
 			FIFO.getInstance().commit();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Log.error(e);
 		}
 		// Store webradio state
@@ -1051,11 +1054,13 @@ public class Main implements ITechnicalStrings {
 		 * hide window
 		 */
 		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-		if (jw != null)
-			jw.display(false);
+		if (jw != null) {
+      jw.display(false);
+    }
 		// hide systray
-		if (jsystray != null)
-			jsystray.closeSystray();
+		if (jsystray != null) {
+      jsystray.closeSystray();
+    }
 		// display a message
 		Log.debug("Exit with code: " + iExitCode);
 		System.exit(iExitCode);
@@ -1069,9 +1074,9 @@ public class Main implements ITechnicalStrings {
 			Log.info("First session, collection will be created");
 			return;
 		}
-		File fCollection = Util.getConfFileByPath(FILE_COLLECTION);
-		File fCollectionExit = Util.getConfFileByPath(FILE_COLLECTION_EXIT);
-		File fCollectionExitProof = Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
+		final File fCollection = Util.getConfFileByPath(FILE_COLLECTION);
+		final File fCollectionExit = Util.getConfFileByPath(FILE_COLLECTION_EXIT);
+		final File fCollectionExitProof = Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
 		// check if previous exit was OK
 		boolean bParsingOK = true;
 		try {
@@ -1094,7 +1099,7 @@ public class Main implements ITechnicalStrings {
 				bCrashRecover = true;
 				throw new JajukException(5);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Log.error(5, fCollectionExit.getAbsolutePath(), e);
 			Log
 					.debug("Jajuk was not closed properly during previous session, try to load previous collection file");
@@ -1105,7 +1110,7 @@ public class Main implements ITechnicalStrings {
 				// try to load "official" collection file, should be OK but not
 				// always up-to-date
 				Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
-			} catch (Exception e2) {
+			} catch (final Exception e2) {
 				// not better? strange...
 				Log.error(5, fCollection.getAbsolutePath(), e2);
 				bParsingOK = false;
@@ -1113,7 +1118,7 @@ public class Main implements ITechnicalStrings {
 		}
 		if (!bParsingOK) { // even final collection file parsing failed
 			// (very unlikely), try to restore a backup file
-			File[] fBackups = Util.getConfFileByPath("").listFiles(new FilenameFilter() {
+			final File[] fBackups = Util.getConfFileByPath("").listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
 					if (name.indexOf("backup") != -1) {
 						return true;
@@ -1121,25 +1126,25 @@ public class Main implements ITechnicalStrings {
 					return false;
 				}
 			});
-			ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
+			final ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
 			Collections.sort(alBackupFiles); // sort alphabetically (newest
 			// last)
 			Collections.reverse(alBackupFiles); // newest first now
-			Iterator<File> it = alBackupFiles.iterator();
+			final Iterator<File> it = alBackupFiles.iterator();
 			// parse all backup files, newest first
 			while (!bParsingOK && it.hasNext()) {
-				File file = it.next();
+				final File file = it.next();
 				try {
 					Collection.load(file);
 					bParsingOK = true;
-					int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
+					final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
 							+ file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.ERROR_MESSAGE);
 					if (i == JOptionPane.CANCEL_OPTION) {
 						System.exit(-1);
 					}
 					break;
-				} catch (Exception e2) {
+				} catch (final Exception e2) {
 					Log.error(5, file.getAbsolutePath(), e2);
 				}
 			}
@@ -1150,7 +1155,7 @@ public class Main implements ITechnicalStrings {
 				System.gc();
 				try {
 					Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
-				} catch (Exception e2) {
+				} catch (final Exception e2) {
 					Log.error(e2);
 				}
 			}
@@ -1180,7 +1185,8 @@ public class Main implements ITechnicalStrings {
 								ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
 						if (radio != null) {
 							new Thread() {
-								public void run() {
+								@Override
+                public void run() {
 									FIFO.getInstance().launchRadio(radio);
 								}
 							}.start();
@@ -1189,7 +1195,7 @@ public class Main implements ITechnicalStrings {
 					}
 					// last file from beginning or last file keep position
 					else if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
-							&& History.getInstance().getHistory().size() > 0) {
+							&& (History.getInstance().getHistory().size() > 0)) {
 						// make sure user didn't exit jajuk in the stopped state
 						// and that history is not void
 						fileToPlay = FileManager.getInstance().getFileByID(
@@ -1214,9 +1220,9 @@ public class Main implements ITechnicalStrings {
 							fileToPlay.getDevice().mount(true);
 							Log.debug("Mount OK");
 							alToPlay.add(fileToPlay);
-						} catch (Exception e) {
+						} catch (final Exception e) {
 							Log.debug("Mount failed");
-							Properties pDetail = new Properties();
+							final Properties pDetail = new Properties();
 							pDetail.put(DETAIL_CONTENT, fileToPlay);
 							pDetail.put(DETAIL_REASON, "010");
 							ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR,
@@ -1237,22 +1243,22 @@ public class Main implements ITechnicalStrings {
 				if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
 						|| ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
 								STARTUP_MODE_LAST_KEEP_POS)) {
-					File fifo = Util.getConfFileByPath(FILE_FIFO);
+					final File fifo = Util.getConfFileByPath(FILE_FIFO);
 					if (!fifo.exists()) {
 						Log.debug("No fifo file");
 					} else {
 						try {
-							BufferedReader br = new BufferedReader(new FileReader(Util
+							final BufferedReader br = new BufferedReader(new FileReader(Util
 									.getConfFileByPath(FILE_FIFO)));
 							String s = null;
 							for (; (s = br.readLine()) != null;) {
-								org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
-								if (file != null && file.isReady()) {
+								final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
+								if ((file != null) && file.isReady()) {
 									alToPlay.add(file);
 								}
 							}
 							br.close();
-						} catch (IOException ioe) {
+						} catch (final IOException ioe) {
 							Log.error(ioe);
 						}
 					}
@@ -1266,7 +1272,7 @@ public class Main implements ITechnicalStrings {
 			} else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
 					STARTUP_MODE_NOVELTIES)) {
 				alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
-				if (alToPlay != null && alToPlay.size() > 0) {
+				if ((alToPlay != null) && (alToPlay.size() > 0)) {
 					// shuffle the selection
 					Collections.shuffle(alToPlay, new Random());
 				} else {
@@ -1276,7 +1282,7 @@ public class Main implements ITechnicalStrings {
 				}
 			}
 			// launch selected file
-			if (alToPlay != null && alToPlay.size() > 0) {
+			if ((alToPlay != null) && (alToPlay.size() > 0)) {
 				FIFO.getInstance().push(
 						Util.createStackItems(alToPlay, ConfigurationManager
 								.getBoolean(CONF_STATE_REPEAT), false), false);
@@ -1286,19 +1292,19 @@ public class Main implements ITechnicalStrings {
 
 	/**
 	 * Auto-Mount required devices
-	 * 
+	 *
 	 */
 	public static void autoMount() {
-		for (Device device : DeviceManager.getInstance().getDevices()) {
+		for (final Device device : DeviceManager.getInstance().getDevices()) {
 			if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)) {
 				try {
 					device.mount();
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					Log.error(112, device.getName(), e);
 					// show a confirm dialog if the device can't be mounted,
 					// we can't use regular Messages.showErrorMessage
 					// because main window is not yet displayed
-					String sError = Messages.getErrorMessage(112) + " : " + device.getName();
+					final String sError = Messages.getErrorMessage(112) + " : " + device.getName();
 					InformationJPanel.getInstance().setMessage(sError, InformationJPanel.ERROR);
 					continue;
 				}
@@ -1333,7 +1339,7 @@ public class Main implements ITechnicalStrings {
 				try {
 					//Init perf monitor
 					ext.EventDispatchThreadHangMonitor.initMonitoring();
-					
+
 					// Light drag and drop for VLDocking
 					UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
 
@@ -1392,10 +1398,10 @@ public class Main implements ITechnicalStrings {
 					PerspectiveManager.init();
 
 					// Add main container (contains toolbars + desktop)
-					FormLayout layout = new FormLayout("f:d:grow", // columns
+					final FormLayout layout = new FormLayout("f:d:grow", // columns
 							"f:d:grow, 0dlu, d"); // rows
-					PanelBuilder builder = new PanelBuilder(layout);
-					CellConstraints cc = new CellConstraints();
+					final PanelBuilder builder = new PanelBuilder(layout);
+					final CellConstraints cc = new CellConstraints();
 					// Add items
 					builder.add(tbcontainer, cc.xy(1, 1));
 					builder.add(command, cc.xy(1, 3));
@@ -1408,12 +1414,12 @@ public class Main implements ITechnicalStrings {
 					// Display tip of the day if required (not at the first
 					// session)
 					if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
-						TipOfTheDay tipsView = new TipOfTheDay();
+						final TipOfTheDay tipsView = new TipOfTheDay();
 						tipsView.setLocationRelativeTo(jw);
 						tipsView.setVisible(true);
 					}
 
-				} catch (Exception e) { // last chance to catch any error for
+				} catch (final Exception e) { // last chance to catch any error for
 					// logging purpose
 					e.printStackTrace();
 					Log.error(106, e);
@@ -1464,12 +1470,12 @@ public class Main implements ITechnicalStrings {
 	 * @param perspective
 	 *            The sPerspective to set.
 	 */
-	public static void setDefaultPerspective(String perspective) {
+	public static void setDefaultPerspective(final String perspective) {
 		sPerspective = perspective;
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the systray
 	 */
 	public static JajukSystray getSystray() {
