@@ -40,7 +40,7 @@ public class LyrcProvider extends GenericProvider {
    * @param querySource
    */
   public LyrcProvider(final String querySource) {
-    super("http://www.lyrc.com.ar/en/tema1en.php?artist=%artist%&songname=%title%");
+    super("http://www.lyrc.com.ar/en/tema1en.php?artist=%artist&songname=%title");
   }
 
   private StringTokenizer getTokenizer(final String source) {
@@ -49,7 +49,7 @@ public class LyrcProvider extends GenericProvider {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    *      java.lang.String)
    */
@@ -84,7 +84,7 @@ public class LyrcProvider extends GenericProvider {
 
       // Get tokens from artist and song names
       while (artistTokens.hasMoreTokens()) {
-        String token = artistTokens.nextToken();
+        final String token = artistTokens.nextToken();
 
         if (validToken(token)) {
           tokensToFind.add(token);
@@ -145,7 +145,7 @@ public class LyrcProvider extends GenericProvider {
   /**
    * Extracts lyrics from the HTML page. The correct subsection is to be
    * extracted first, before being cleaned and stripped from useless HTML tags.
-   * 
+   *
    * @return the lyrics
    */
   private String cleanLyrics(String html) {

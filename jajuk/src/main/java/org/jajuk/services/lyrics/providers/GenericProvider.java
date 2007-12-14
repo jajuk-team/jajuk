@@ -49,7 +49,7 @@ public class GenericProvider implements IProvider {
     this.querySource = querySource;
   }
 
-  protected String  getQueryString(final String artist, final String title) {
+  public String getQueryString(final String artist, final String title) {
     String  queryString = getQuerySource();
 
     try {
@@ -63,7 +63,7 @@ public class GenericProvider implements IProvider {
     }
     return (queryString);
   }
-  
+
   protected URL     getQueryURL(final String artist, final String title) {
     try {
       return (new URL(getQueryString(artist, title)));
@@ -73,14 +73,14 @@ public class GenericProvider implements IProvider {
     }
     return (null);
   }
-  
+
   /* (non-Javadoc)
    * @see ext.services.lyrics.providers.IProvider#getLyrics(java.lang.String, java.lang.String)
    */
   public String     getLyrics(final String artist, final String title) {
     final URL       url   = getQueryURL(artist, title);
     String          text  = null;
-    
+
     if (url != null) {
       try {
         text = DownloadManager.downloadHtml(url, "ISO-8859-1");

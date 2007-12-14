@@ -28,6 +28,7 @@ package org.jajuk.services.lyrics.providers;
 public interface IProvider {
 
   public String getQuerySource();
+  public String getQueryString(final String artist, final String title);
   public String getSource();
 
   public String getLyrics(final String artist, final String title);

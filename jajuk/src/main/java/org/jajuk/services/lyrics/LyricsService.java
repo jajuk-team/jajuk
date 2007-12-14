@@ -5,7 +5,7 @@
  *  Originally taken from:
  *   aTunes 1.6.0
  *   Copyright (C) 2006-2007 Alex Aranda (fleax) alex.aranda@gmail.com
- *   
+ *
  *   http://www.atunes.org
  *   http://sourceforge.net/projects/atunes
  *
@@ -28,6 +28,8 @@
 package org.jajuk.services.lyrics;
 
 
+import ext.services.xml.XMLBuilder;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,8 +49,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import ext.services.xml.XMLBuilder;
-
 
 /**
  * Lyrics retrieval service.
@@ -61,11 +61,12 @@ import ext.services.xml.XMLBuilder;
 public class LyricsService {
 
   private static HashMap<String, IProvider> providers = null;
+  private static IProvider                  current   = null;
 
 
   /**
    * Loads the appropriate providers from the providers XML definition file.
-   * 
+   *
    * @return  a map of providers loaded from the XML configuration file
    */
   @SuppressWarnings("unchecked")
@@ -76,17 +77,17 @@ public class LyricsService {
     try {
       final BufferedReader  reader  = new BufferedReader(new FileReader(new File(new URI(ITechnicalStrings.FILE_LYRICS_CONF_PATH.toString()))));
       final StringBuilder   xml     = new StringBuilder();
-      
+
       for (String line = null; (line = reader.readLine()) != null; ) {
         xml.append(line);
       }
       final Document  xmlDoc    = XMLBuilder.getXMLDocument(xml.toString());
       final NodeList  children  = xmlDoc.getDocumentElement().getChildNodes();
       final int       length    = children.getLength();
-      
+
       for (int i = 0; (i < length); i++) {
         final Node  n = children.item(i);
-        
+
         if (n instanceof Element) {
           final Element   e   = ((Element) n);
           final String    key = e.getTagName();
@@ -98,10 +99,10 @@ public class LyricsService {
             Log.debug(" provider class='" + className + "' url='" + url + "'");
             if ((className != null) && (className.length() != 0)) {
               try {
-                Class<IProvider>        clazz       = (Class<IProvider>) Class.forName(className);
-                Constructor<IProvider>  constructor = clazz.getConstructor(String.class);
+                final Class<IProvider>        clazz       = (Class<IProvider>) Class.forName(className);
+                final Constructor<IProvider>  constructor = clazz.getConstructor(String.class);
                 final IProvider         provider    = constructor.newInstance(url);
-                
+
                 if (provider.getSource() != null) {
                   providers.put(provider.getSource(), provider);
                   Log.debug(" added provider " + provider.getSource());
@@ -145,22 +146,24 @@ public class LyricsService {
     }
     return (providers);
   }
-  
+
   /**
    * Cycles through lyrics providers to return the best matching lyrics.
-   * 
+   *
    * @param artist  the song's artist
    * @param title   the song's title
-   * 
+   *
    * @return        the song's lyrics
    */
   public static String  getLyrics(final String artist, final String title) {
     String              lyrics = null;
 
+    current = null;
     Log.debug("Retrieving lyrics for artist {{" + artist + "}} and song {{" + title + "}}");
     for (final IProvider provider : getProviders().values()) {
       lyrics = provider.getLyrics(artist, title);
-      
+      current = provider;
+
       if (lyrics != null) {
         break;
       }
@@ -170,7 +173,7 @@ public class LyricsService {
 
   /**
    * Returns the lazy-instantiated providers collection
-   * 
+   *
    * @return  the map of loaded providers
    */
   public static synchronized HashMap<String, IProvider> getProviders() {
@@ -180,4 +183,7 @@ public class LyricsService {
     return (providers);
   }
 
+  public static synchronized IProvider getCurrentProvider() {
+    return (current);
+  }
 }

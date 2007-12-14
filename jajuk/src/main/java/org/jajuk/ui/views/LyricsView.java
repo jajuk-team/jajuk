@@ -20,6 +20,10 @@
 
 package org.jajuk.ui.views;
 
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -52,10 +56,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 
 /**
  * Lyrics view
@@ -77,7 +77,7 @@ public class LyricsView extends ViewAdapter implements Observer {
   private JMenuItem         jmiCopyToClipboard  = null;
   private JMenuItem         jmiLaunchInBrowser  = null;
 
-  
+
   public LyricsView() {
   }
 
@@ -101,7 +101,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     final JLabel          title     = getJlTitle();
     final JScrollPane     jsp       = getJsp();
     final FontManager     fmgr      = FontManager.getInstance();
-    
+
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     textarea.setLineWrap(true);
     textarea.setWrapStyleWord(true);
@@ -117,12 +117,13 @@ public class LyricsView extends ViewAdapter implements Observer {
         }
       }
 
+      @Override
       public void mouseReleased(final MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
         }
       }
-      
+
     });
     author.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
@@ -161,7 +162,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     eventSubjectSet.add(EventSubject.EVENT_LYRICS_DOWNLOADED);
     return eventSubjectSet;
   }
-  
+
   /*
    * (non-Javadoc)
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
@@ -172,53 +173,58 @@ public class LyricsView extends ViewAdapter implements Observer {
     Log.debug("updating lyrics view");
     if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
       new Thread() {
-        
+
+        @Override
         public void run() {
           final File file = FIFO.getInstance().getCurrentFile();
-          
+
           if (file != null) {
             track = FIFO.getInstance().getCurrentFile().getTrack();
-            sURL = "http://www.lyrc.com.ar/en/tema1en.php?artist="
-                + track.getAuthor().getName2() + "&songname=" + track.getName();
             // Launch lyrics service asynchronously and out of the
             // AWT dispatcher thread
             Log.debug("calling LyricsService");
             lyrics = LyricsService.getLyrics(track.getAuthor().getName2(),
                                              track.getName());
+            if (lyrics != null) {
+              sURL = LyricsService.getCurrentProvider().getQueryString(track.getAuthor().getName2(), track.getName());
+            }
+            else {
+              sURL = "<none>";
+            }
             // Notify to make UI changes
             ObservationManager.notify(new Event(
                   EventSubject.EVENT_LYRICS_DOWNLOADED));
           }
         }
-        
+
       }.start();
     } else if (subject.equals(EventSubject.EVENT_ZERO)) {
       SwingUtilities.invokeLater(new Runnable() {
-        
+
         public void run() {
           jsp.setVisible(false);
           jlAuthor.setText("");
           jlTitle.setText(Messages.getString("JajukWindow.18"));
         }
-        
+
       });
     } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
-        
+
         public void run() {
           final WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
-          
+
           if (radio != null) {
             jlTitle.setText(radio.getName());
             jlAuthor.setText("");
             jsp.setVisible(false);
           }
         }
-        
+
       });
     } else if (subject.equals(EventSubject.EVENT_LYRICS_DOWNLOADED)) {
       SwingUtilities.invokeLater(new Runnable() {
-        
+
         public void run() {
           jsp.setVisible(true);
           textarea.setToolTipText(sURL);
@@ -231,17 +237,17 @@ public class LyricsView extends ViewAdapter implements Observer {
           // done in a thread to be executed when textarea display
           // is actually finished)
           SwingUtilities.invokeLater(new Runnable() {
-            
+
             public void run() {
               jsp.getVerticalScrollBar().setValue(0);
             }
-            
+
           });
           jlAuthor.setText(track.getAuthor().getName2());
           jlTitle.setText(track.getName());
           Util.copyData = sURL;
         }
-        
+
       });
 
     }
@@ -254,7 +260,7 @@ public class LyricsView extends ViewAdapter implements Observer {
   public String getDesc() {
     return Messages.getString("LyricsView.0");
   }
-  
+
   private JTextArea getTextarea() {
     if (textarea == null) {
       textarea = new JTextArea();
@@ -268,14 +274,14 @@ public class LyricsView extends ViewAdapter implements Observer {
     }
     return (jsp);
   }
-  
+
   private JLabel getJlTitle() {
     if (jlTitle == null) {
       jlTitle = new JLabel();
     }
     return (jlTitle);
   }
-  
+
   private JLabel getJlAuthor() {
     if (jlAuthor == null) {
       jlAuthor = new JLabel();
@@ -296,5 +302,5 @@ public class LyricsView extends ViewAdapter implements Observer {
     }
     return (jmiLaunchInBrowser);
   }
-  
+
 }
