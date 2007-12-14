@@ -179,7 +179,7 @@ public class Util implements ITechnicalStrings {
 	static public final Date today = new Date();
 
 	/**current class loader*/
-	private static final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	private static ClassLoader classLoader = null;
 
 	/**
 	 * Genres
@@ -1618,7 +1618,7 @@ public class Util implements ITechnicalStrings {
 	 * http://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
 	 */
 	public static URL getResource(final String name) {
-		return Util.classLoader.getResource(name);
+		return Util.getClassLoader().getResource(name);
 	}
 
 	/**
@@ -2433,5 +2433,12 @@ public class Util implements ITechnicalStrings {
 	 */
 	private Util() {
 	}
+
+	public static ClassLoader  getClassLoader() {
+    if (classLoader == null) {
+      classLoader = Thread.currentThread().getContextClassLoader();
+    }
+    return (classLoader);
+  }
 
 }

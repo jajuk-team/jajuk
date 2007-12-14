@@ -19,8 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.util.Set;
-
 import javax.swing.ImageIcon;
 
 import org.jajuk.players.IPlayerImpl;
@@ -159,9 +157,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
     String[]  extensions  = {};
 
     if (types != null) {
-      final Set<Type> typesSet    = TypeManager.getInstance().getTypes();
-      final int       typesSize   = typesSet.size();
-      final Type[]    typesArray  = typesSet.toArray(new Type[typesSize]);
+      final int       typesSize   = types.size();
+      final Type[]    typesArray  = types.toArray(new Type[typesSize]);
 
       extensions  = new String[typesSize];
       for (int i = 0; i < typesSize; i++) {
