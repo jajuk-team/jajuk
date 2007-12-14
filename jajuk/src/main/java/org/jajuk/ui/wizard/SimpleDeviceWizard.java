@@ -20,19 +20,8 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
-
 import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -46,6 +35,19 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.filters.DirectoryFilter;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.VerticalLayout;
 
 /**
  * Simple device creation wiard that creates a directory device given a
@@ -86,9 +88,9 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 	 */
 	public SimpleDeviceWizard() {
 		setTitle(Messages.getString("SimpleDeviceWizard.0"));
-		int iX_SEPARATOR = 10;
-		int iY_SEPARATOR = 10;
-		jlLeftIcon = new JLabel(Util.getImage(IMAGE_SEARCH));
+		final int iX_SEPARATOR = 10;
+		final int iY_SEPARATOR = 10;
+		jlLeftIcon = new JLabel(Util.getImage(ITechnicalStrings.IMAGE_SEARCH));
 		jpRightPanel = new JPanel();
 		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
 		jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
@@ -101,9 +103,9 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
 		jtfRefreshTime = new JTextField("5");// 5 mins by default
 		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
-		JPanel jpRefresh = new JPanel();
-		double sizeRefresh[][] = {
-				{ TableLayout.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR, TableLayout.PREFERRED },
+		final JPanel jpRefresh = new JPanel();
+		final double sizeRefresh[][] = {
+				{ TableLayoutConstants.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR, TableLayoutConstants.PREFERRED },
 				{ 20 } };
 		jpRefresh.setLayout(new TableLayout(sizeRefresh));
 		jpRefresh.add(jlRefreshTime, "0,0");
@@ -119,8 +121,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		jbCancel.addActionListener(this);
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
-		FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
-		JPanel jpFileSelection = new JPanel();
+		final FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
+		final JPanel jpFileSelection = new JPanel();
 		jpFileSelection.setLayout(flSelection);
 		jpFileSelection.add(jbFileSelection);
 		jpFileSelection.add(Box.createHorizontalStrut(10));
@@ -131,7 +133,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		jpRightPanel.add(jtfFileSelected, "0,5");
 		jpRightPanel.add(jpRefresh, "0,7");
 		jpRightPanel.add(jpButtons, "0,11");
-		double size[][] = { { 20, TableLayout.PREFERRED, 30, TableLayout.PREFERRED }, { 0.99 } };
+		final double size[][] = { { 20, TableLayoutConstants.PREFERRED, 30, TableLayoutConstants.PREFERRED }, { 0.99 } };
 		jpMain = (JPanel) getContentPane();
 		jpMain.setLayout(new TableLayout(size));
 		jpMain.add(jlLeftIcon, "1,0");
@@ -140,20 +142,20 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		setAlwaysOnTop(true);
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == jbCancel) {
 			dispose(); // close window
 		} else if (e.getSource() == jbFileSelection) {
-			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-					JajukFileFilter.DirectoryFilter.getInstance()));
+			final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+					DirectoryFilter.getInstance()));
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
 			jfc.setMultiSelectionEnabled(false);
-			int returnVal = jfc.showOpenDialog(this);
+			final int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				fDir = jfc.getSelectedFile();
 				// check device availability
-				int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
+				final int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
 						fDir.getAbsolutePath(), true);
 				if (code != 0) {
 					Messages.showErrorMessage(code);
@@ -167,9 +169,9 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 		} else if (e.getSource() == jbOk) {
 			try {
 				// Create a directory device
-				Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
+				final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
 						fDir.getAbsolutePath());
-				device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
+				device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, true);
 				// Set refresh time
 				double dRefreshTime = 5d;
 				try {
@@ -177,13 +179,13 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 					if (dRefreshTime < 0) {
 						dRefreshTime = 0;
 					}
-				} catch (NumberFormatException e1) {
+				} catch (final NumberFormatException e1) {
 					dRefreshTime = 0;
 				}
-				device.setProperty(XML_DEVICE_AUTO_REFRESH, dRefreshTime);
+				device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
 				try {
 					device.refresh(true, false);
-				} catch (Exception e2) {
+				} catch (final Exception e2) {
 					Log.error(112, device.getName(), e2);
 					Messages.showErrorMessage(112, device.getName());
 				}

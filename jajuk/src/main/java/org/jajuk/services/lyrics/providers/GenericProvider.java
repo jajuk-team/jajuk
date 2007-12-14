@@ -83,9 +83,7 @@ public class GenericProvider implements IProvider {
     
     if (url != null) {
       try {
-        final String html = DownloadManager.downloadHtml(url, "ISO-8859-1");
-
-        text = html;
+        text = DownloadManager.downloadHtml(url, "ISO-8859-1");
       }
       catch (final Exception e) {
         Log.warn("Could not retrieve URL [" + url + "]");

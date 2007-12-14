@@ -20,6 +20,11 @@
 
 package org.jajuk.ui.thumbnails;
 
+import ext.ProcessLauncher;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import org.apache.log4j.Appender;
 import org.jajuk.Main;
 import org.jajuk.base.Album;
@@ -39,21 +44,117 @@ import org.jajuk.base.YearManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-import org.jajuk.util.JajukFileFilter.JarFilter;
+import org.jajuk.util.filters.JarFilter;
 import org.jajuk.util.log.Log;
-
-import java.io.File;
-import java.util.ArrayList;
-
-import ext.ProcessLauncher;
 
 /**
  * Creating thumbs use a large amount of RAM. This executable class is intended
  * to build all thumbs in a separated java process to free memory when the
  * process is done.
- * 
+ *
  */
 public class ThumbnailsMaker implements ITechnicalStrings {
+
+	/**
+	 *
+	 * @return separator between a '-cp' argument
+	 */
+	private static char getJarSeparator() {
+		if (Util.isUnderWindows()) {
+			return ';';
+		} else {
+			return ':';
+		}
+	}
+
+	/**
+	 * Convenient method to launch all thumb makers, one for each size
+	 *
+	 * @param bSynchronous
+	 *            do you have to wait all process done ?
+	 */
+	public static void launchAllSizes(final boolean bSynchronous) {
+		final Thread t = new Thread() {
+			@Override
+      public void run() {
+				for (int i = 50; i <= 300; i += 50) {
+					try {
+						ThumbnailsMaker.launchProcessus(i);
+					} catch (Exception e) { // TODO Auto-generated
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		// Set min prority to avoid using too much CPU
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
+		if (bSynchronous) {
+			try {
+				t.join();
+			} catch (final InterruptedException e) { // TODO Auto-generated catch
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	/**
+	 * Convenient method to launch the thumb creation in another JVM
+	 *
+	 * @param size
+	 * @return status : 0 if OK, 1 ok error
+	 */
+	public static int launchProcessus(final int size) throws Exception {
+		final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
+				+ File.separatorChar + "java";
+		final String jarPath = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath()
+				+ File.separator + "jajuk.jar";
+		final ArrayList<String> commands = new ArrayList<String>(10);
+		commands.add(jvmPath);
+		commands.add("-Xms50M");
+		commands.add("-Xmx600M");
+		commands.add("-cp");
+		// Add the bin directory that contains classes
+		String cp = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath();
+		cp += ThumbnailsMaker.getJarSeparator();
+		final File libDir = new File(Util.getJarLocation(Appender.class).toURI()).getParentFile();
+		final File[] files = libDir.listFiles(JarFilter.getInstance());
+		for (final File element : files) {
+			cp += element.getAbsolutePath() + ThumbnailsMaker.getJarSeparator();
+		}
+		// If we are not in dev, add jajuk jar itself to the classpath
+		if (!Main.bIdeMode) {
+			cp += ThumbnailsMaker.getJarSeparator() + jarPath;
+		}
+		// remove last separator
+		cp = cp.substring(0, cp.length() - 1);
+		commands.add(cp);
+
+		// Add this class self name (with package)
+		commands.add(ThumbnailsMaker.class.getCanonicalName());
+		// Add size as a program argument
+		commands.add(Integer.toString(size));
+		// Add the test status
+		commands.add(Boolean.toString(Main.bTestMode));
+		// Add the workspace value
+		commands.add(Main.workspace);
+		Log.debug("Use command:" + commands);
+		// We use this class and not ProcessBuilder as it hangs under windows
+		// probably because of stream reading
+		final ProcessLauncher launcher = new ProcessLauncher();
+		return launcher.exec(commands.toArray(new String[commands.size()]));
+	}
+
+	/**
+	 * @param args :
+	 *            <p>
+	 *            size: thumb size like 100, or 300
+	 */
+	public static void main(final String[] args) {
+		new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2]
+				.toString());
+	}
 
 	private int size = 0;
 
@@ -61,18 +162,18 @@ public class ThumbnailsMaker implements ITechnicalStrings {
 
 	private boolean bTest = false;
 
-	private String workspace;
+	private final String workspace;
 
 	/**
 	 * No instances
 	 */
-	private ThumbnailsMaker(int pSize, boolean pTest, String pWorkspace) {
-		this.size = pSize;
-		this.bTest = pTest;
-		this.workspace = pWorkspace;
+	private ThumbnailsMaker(final int pSize, final boolean pTest, final String pWorkspace) {
+		size = pSize;
+		bTest = pTest;
+		workspace = pWorkspace;
 		try {
 			buildThumbs();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			// Leave in error
 			System.exit(1);
@@ -81,18 +182,8 @@ public class ThumbnailsMaker implements ITechnicalStrings {
 		System.exit(0);
 	}
 
-	/**
-	 * @param args :
-	 *            <p>
-	 *            size: thumb size like 100, or 300
-	 */
-	public static void main(String[] args) {
-		new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2]
-				.toString());
-	}
-
 	private void buildThumbs() throws Exception {
-		long lTime = System.currentTimeMillis();
+		final long lTime = System.currentTimeMillis();
 		Main.bTestMode = bTest;
 		Main.workspace = workspace;
 		// log startup depends on : setExecLocation, initialCheckups
@@ -123,14 +214,14 @@ public class ThumbnailsMaker implements ITechnicalStrings {
 		// registers supported audio supports and default properties
 		Main.registerTypes();
 		// load collection
-		Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
+		Collection.load(Util.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
 		// Mount devices
 		Main.autoMount();
-		java.util.Set<Album> albums = AlbumManager.getInstance().getAlbums();
+		final java.util.Set<Album> albums = AlbumManager.getInstance().getAlbums();
 		// For each album, create the associated thumb
-		for (Album album : albums) {
+		for (final Album album : albums) {
 			// Leave if jajuk leaved
-			if (Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF).exists()) {
+			if (Util.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION_EXIT_PROOF).exists()) {
 				Log.debug("Parent Jajuk closed, leaving now...");
 				return;
 			}
@@ -138,103 +229,13 @@ public class ThumbnailsMaker implements ITechnicalStrings {
 				stat++;
 			}
 			// Call GC to avoid increasing too much memory
-			if (stat > 0 && stat % 30 == 0) {
+			if ((stat > 0) && (stat % 30 == 0)) {
 				System.gc();
 			}
 		}
 		Log.setVerbosity(Log.DEBUG);
 		Log.debug("[Thumb maker] " + stat + " thumbs created for size: " + size + " in "
 				+ (System.currentTimeMillis() - lTime) + " ms");
-	}
-
-	/**
-	 * Convenient method to launch the thumb creation in another JVM
-	 * 
-	 * @param size
-	 * @return status : 0 if OK, 1 ok error
-	 */
-	public static int launchProcessus(int size) throws Exception {
-		String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
-				+ File.separatorChar + "java";
-		String jarPath = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath()
-				+ File.separator + "jajuk.jar";
-		ArrayList<String> commands = new ArrayList<String>(10);
-		commands.add(jvmPath);
-		commands.add("-Xms50M");
-		commands.add("-Xmx600M");
-		commands.add("-cp");
-		// Add the bin directory that contains classes
-		String cp = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath();
-		cp += getJarSeparator();
-		File libDir = new File(Util.getJarLocation(Appender.class).toURI()).getParentFile();
-		File[] files = libDir.listFiles(JarFilter.getInstance());
-		for (int i = 0; i < files.length; i++) {
-			cp += files[i].getAbsolutePath() + getJarSeparator();
-		}
-		// If we are not in dev, add jajuk jar itself to the classpath
-		if (!Main.bIdeMode) {
-			cp += getJarSeparator() + jarPath;
-		}
-		// remove last separator
-		cp = cp.substring(0, cp.length() - 1);
-		commands.add(cp);
-
-		// Add this class self name (with package)
-		commands.add(ThumbnailsMaker.class.getCanonicalName());
-		// Add size as a program argument
-		commands.add(Integer.toString(size));
-		// Add the test status
-		commands.add(Boolean.toString(Main.bTestMode));
-		// Add the workspace value
-		commands.add(Main.workspace);
-		Log.debug("Use command:" + commands);
-		// We use this class and not ProcessBuilder as it hangs under windows
-		// probably because of stream reading
-		ProcessLauncher launcher = new ProcessLauncher();
-		return launcher.exec(commands.toArray(new String[commands.size()]));
-	}
-
-	/**
-	 * 
-	 * @return separator between a '-cp' argument
-	 */
-	private static char getJarSeparator() {
-		if (Util.isUnderWindows()) {
-			return ';';
-		} else {
-			return ':';
-		}
-	}
-
-	/**
-	 * Convenient method to launch all thumb makers, one for each size
-	 * 
-	 * @param bSynchronous
-	 *            do you have to wait all process done ?
-	 */
-	public static void launchAllSizes(boolean bSynchronous) {
-		Thread t = new Thread() {
-			public void run() {
-				for (int i = 50; i <= 300; i += 50) {
-					try {
-						launchProcessus(i);
-					} catch (Exception e) { // TODO Auto-generated
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		// Set min prority to avoid using too much CPU
-		t.setPriority(Thread.MIN_PRIORITY);
-		t.start();
-		if (bSynchronous) {
-			try {
-				t.join();
-			} catch (InterruptedException e) { // TODO Auto-generated catch
-				e.printStackTrace();
-			}
-
-		}
 	}
 
 }

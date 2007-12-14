@@ -20,6 +20,11 @@
 
 package org.jajuk.ui.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -34,30 +39,26 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
 public class RefactorAction implements ITechnicalStrings {
-
-	private ArrayList<File> alFiles;
 
 	public static boolean bStopAll = false;
 
 	private static String sFS = java.io.File.separator;
 
+	private ArrayList<File> alFiles = null;
+
 	/** [PERF] Stores directory to be refreshed to avoid rescanning them twice */
-	private List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
+	private final List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
 
 	/**
-	 * 
+	 *
 	 * @param pFiles
 	 *            files to be reorganized (can be from different directories)
 	 */
-	public RefactorAction(ArrayList<File> pFiles) {
+	public RefactorAction(final ArrayList<File> pFiles) {
 		// check the directory user selected contains some files
 		if (pFiles.size() == 0) {
 			Messages.showErrorMessage(18);
@@ -65,25 +66,26 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 		alFiles = pFiles;
 		String sFiles = "";
-		for (File f : alFiles) {
+		for (final File f : alFiles) {
 			sFiles += f.getName() + "\n";
 		}
-		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
-			int iResu = Messages.getChoice(Messages
+		if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_REFACTOR_FILES)) {
+			final int iResu = Messages.getChoice(Messages
 					.getString("Confirmation_refactor_files")
 					+ " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
 					JOptionPane.INFORMATION_MESSAGE);
 			if (iResu != JOptionPane.YES_OPTION) {
 				// Cancel
 				if (iResu == JOptionPane.CANCEL_OPTION) {
-					bStopAll = true;
+					RefactorAction.bStopAll = true;
 				}
 				Util.stopWaiting();
 				return;
 			}
 		}
 		new Thread() {
-			public void run() {
+			@Override
+      public void run() {
 				Util.waiting();
 				refactor();
 				ObservationManager.notify(new Event(
@@ -100,26 +102,26 @@ public class RefactorAction implements ITechnicalStrings {
 		boolean bOKToOverwrite = false;
 		String sErrors = "";
 		String filename;
-		for (File fCurrent : alFiles) {
-			Track tCurrent = fCurrent.getTrack();
+		for (final File fCurrent : alFiles) {
+			final Track tCurrent = fCurrent.getTrack();
 			try {
 				filename = Util.applyPattern(fCurrent, ConfigurationManager
-						.getProperty(CONF_REFACTOR_PATTERN), true, true);
-			} catch (JajukException je) {
+						.getProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN), true, true);
+			} catch (final JajukException je) {
 				sErrors += je.getMessage() + '\n';
 				continue;
 			}
 
 			filename += "." + tCurrent.getType().getExtension();
-			filename = filename.replace("/", sFS);
-			java.io.File fOld = fCurrent.getIO();
-			String sPathname = fCurrent.getDevice().getFio().getPath() + sFS
+			filename = filename.replace("/", RefactorAction.sFS);
+			final java.io.File fOld = fCurrent.getIO();
+			final String sPathname = fCurrent.getDevice().getFio().getPath() + RefactorAction.sFS
 					+ filename;
-			java.io.File fNew = new java.io.File(sPathname);
+			final java.io.File fNew = new java.io.File(sPathname);
 
 			// Confirm if destination dir already exist
 			if (fNew.getParentFile().exists() && !bOKToOverwrite) {
-				int resu = Messages.getChoice(Messages.getString("Warning.5"),
+				final int resu = Messages.getChoice(Messages.getString("Warning.5"),
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 				if (resu == JOptionPane.NO_OPTION) {
@@ -135,9 +137,9 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// Move file and related cover but save old Directory pathname
 			// for future deletion
-			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
+			final java.io.File fCover = tCurrent.getAlbum().getCoverFile();
 			if (fCover != null) {
-				fCover.renameTo(new java.io.File(fNew.getParent() + sFS
+				fCover.renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS
 						+ fCover.getName()));
 			}
 			// Rename audio files
@@ -165,11 +167,11 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// Register and scans new directories
 			String sFirstDir = null;
-			String sTest[] = sPathname.split(fCurrent.getDevice().getFio()
+			final String sTest[] = sPathname.split(fCurrent.getDevice().getFio()
 					.getPath().replace("\\", "\\\\"));
-			sFirstDir = sTest[1].split("\\" + sFS)[1];
+			sFirstDir = sTest[1].split("\\" + RefactorAction.sFS)[1];
 
-			Directory dir = DirectoryManager.getInstance().registerDirectory(
+			final Directory dir = DirectoryManager.getInstance().registerDirectory(
 					sFirstDir,
 					DirectoryManager.getInstance().getDirectoryForIO(
 							fCurrent.getDevice().getFio()),
@@ -181,15 +183,15 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 
 			// See if old directory contain other files and move them
-			java.io.File dOld = fOld.getParentFile();
-			java.io.File[] list = dOld.listFiles(new JajukFileFilter(
-					JajukFileFilter.NotAudioFilter.getInstance()));
+			final java.io.File dOld = fOld.getParentFile();
+			final java.io.File[] list = dOld.listFiles(new JajukFileFilter(
+					NotAudioFilter.getInstance()));
 			if (list == null) {
 				DirectoryManager.getInstance()
 						.removeDirectory(fOld.getParent());
 			} else if (list.length != 0) {
-				for (java.io.File f : list) {
-					f.renameTo(new java.io.File(fNew.getParent() + sFS
+				for (final java.io.File f : list) {
+					f.renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS
 							+ f.getName()));
 				}
 			} else if (list.length == 0) {
@@ -204,7 +206,7 @@ public class RefactorAction implements ITechnicalStrings {
 					Messages.getString("RefactorWizard.0") + sPathname, 0);
 		}
 		// Refresh and cleanup required directories
-		for (Directory dir : toBeRefreshed) {
+		for (final Directory dir : toBeRefreshed) {
 			DirectoryManager.refreshDirectory(dir);
 			dir.getDevice().cleanRemovedFiles();
 		}

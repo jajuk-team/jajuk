@@ -20,20 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.FlowLayout;
@@ -64,6 +50,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
+import org.jajuk.util.filters.DirectoryFilter;
+import org.jajuk.util.log.Log;
 
 /**
  * Device creation wizard
@@ -134,7 +135,8 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 	 */
 	public DeviceWizard() {
 		addWindowListener(new WindowAdapter() {
-			public void windowActivated(WindowEvent e) {
+			@Override
+      public void windowActivated(final WindowEvent e) {
 				jtfName.requestFocusInWindow();
 			}
 		});
@@ -145,13 +147,13 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
 		jp1 = new JPanel();
 		jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
-		int iX_SEPARATOR = 5;
-		double size1[][] = { { 0.5, iX_SEPARATOR, 0.45, iX_SEPARATOR, 40 },
+		final int iX_SEPARATOR = 5;
+		final double size1[][] = { { 0.5, iX_SEPARATOR, 0.45, iX_SEPARATOR, 40 },
 				{ 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 } };
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel(Messages.getString("DeviceWizard.1"));
 		jcbType = new JComboBox();
-		Iterator itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
+		final Iterator itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
 		while (itDevicesTypes.hasNext()) {
 			jcbType.addItem(itDevicesTypes.next());
 		}
@@ -180,12 +182,12 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance());
 		// mininum delay is half a minute
 		jftfAutoRefresh.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent e) {
-				String prop = e.getPropertyName();
+			public void propertyChange(final PropertyChangeEvent e) {
+				final String prop = e.getPropertyName();
 				if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-					double value = Double.valueOf(jftfAutoRefresh.getText().replace(',', '.'));
+					final double value = Double.valueOf(jftfAutoRefresh.getText().replace(',', '.'));
 					jftfAutoRefresh.setValue(value);
-					if (value < 0 || (value < 0.5d && value != 0)) {
+					if ((value < 0) || ((value < 0.5d) && (value != 0))) {
 						jftfAutoRefresh.setValue(0.5d);
 					}
 				}
@@ -197,9 +199,9 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		// populate combo
-		Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+		final Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
 		while (it.hasNext()) {
-			Device device2 = it.next();
+			final Device device2 = it.next();
 			alDevices.add(device2);
 			jcbSynchronized.addItem(device2.getName());
 		}
@@ -234,7 +236,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		jp1.add(jcbAutoMount, "0,10");
 		jp1.add(jcboxSynchronized, "0,12");
 		jp1.add(jcbSynchronized, "2,12");
-		double size2[][] = { { 0.99 }, { 20, 20, 20, 20, 20, 20, 20 } };
+		final double size2[][] = { { 0.99 }, { 20, 20, 20, 20, 20, 20, 20 } };
 		jp2 = new JPanel();
 		jp2.setLayout(new TableLayout(size2));
 		jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
@@ -265,77 +267,9 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		pack();
 	}
 
-	/**
-	 * Update widgets for default state
-	 */
-	public void updateWidgetsDefault() {
-		jcbRefresh.setSelected(true);
-		jcbAutoMount.setSelected(true);
-		jftfAutoRefresh.setValue(0.5d);
-		jcboxSynchronized.setSelected(false);
-		jrbUnidirSynchro.setSelected(true);// default synchro mode
-		jrbBidirSynchro.setEnabled(false);
-	}
-
-	/**
-	 * Update widgets for device property state
-	 */
-	public void updateWidgets(final Device device) {
-		bNew = false;
-		setTitle(Messages.getString("DeviceWizard.0") + " : " + device.getName());
-		this.device = device;
-		jcbSynchronized.removeAllItems();
-		alDevices.clear();
-		// set default values for widgets
-		updateWidgetsDefault();
-		Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-		while (it.hasNext()) {
-			Device device2 = it.next();
-			if (!device2.equals(device)) {
-				alDevices.add(device2);
-				jcbSynchronized.addItem(device2.getName());
-			}
-		}
-		// then, specifics
-		jcbType.setSelectedItem(device.getDeviceTypeS());
-		jtfName.setText(device.getName());
-		jtfName.setEnabled(false); // device name cannot be changed
-		jtfUrl.setText(device.getUrl());
-		this.sInitialURL = device.getUrl();
-		jcbRefresh.setEnabled(false); // no instant refresh for updates
-		jcbRefresh.setSelected(false);
-		jcbAutoMount.setSelected(true);
-		if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)) {
-			jcbAutoMount.setSelected(true);
-		} else {
-			jcbAutoMount.setSelected(false);
-		}
-		jftfAutoRefresh.setValue(device.getDoubleValue(XML_DEVICE_AUTO_REFRESH));
-		if (jcbSynchronized.getItemCount() == 0) {
-			jcboxSynchronized.setEnabled(false);
-			jcbSynchronized.setEnabled(false);
-			jrbBidirSynchro.setEnabled(false);
-		}
-		if (device.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
-			String sSynchroSource = device.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
-			jrbBidirSynchro.setEnabled(true);
-			jrbUnidirSynchro.setEnabled(true);
-			jcboxSynchronized.setSelected(true);
-			jcboxSynchronized.setEnabled(true);
-			jcbSynchronized.setEnabled(true);
-			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance()
-					.getDeviceByID(sSynchroSource)));
-			if (DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(XML_DEVICE_SYNCHRO_MODE))) {
-				jrbBidirSynchro.setSelected(true);
-			} else {
-				jrbUnidirSynchro.setSelected(true);
-			}
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(final ActionEvent e) {
@@ -353,27 +287,27 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 			// surface checks
 			try {
 				jftfAutoRefresh.commitEdit();
-			} catch (ParseException e1) {
+			} catch (final ParseException e1) {
 				Messages.showErrorMessage(137);
-				this.setVisible(true);
+				setVisible(true);
 				return;
 			}
 			if (jtfUrl.getText().trim().equals("")) {
 				Messages.showErrorMessage(21);
-				this.setVisible(true);
+				setVisible(true);
 				return;
 			}
 			if (jtfName.getText().trim().equals("")) {
 				Messages.showErrorMessage(22);
-				this.setVisible(true);
+				setVisible(true);
 				return;
 			}
 			// check device availability (test name only if new device)
-			int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
+			final int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
 					jcbType.getSelectedIndex(), jtfUrl.getText(), bNew);
 			if (code != 0) {
 				Messages.showErrorMessage(code);
-				this.setVisible(true); // display wizard window which has been
+				setVisible(true); // display wizard window which has been
 				// hidden by the error window
 				return;
 			}
@@ -381,22 +315,22 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
 						jcbType.getSelectedIndex(), jtfUrl.getText());
 			}
-			device.setProperty(XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
-			device.setProperty(XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
+			device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
+			device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
 					.toString()));
-			device.setProperty(XML_TYPE, new Long(jcbType.getSelectedIndex()));
+			device.setProperty(ITechnicalStrings.XML_TYPE, new Long(jcbType.getSelectedIndex()));
 			device.setUrl(jtfUrl.getText());
-			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null) {
-				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE, alDevices.get(
+			if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
+				device.setProperty(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE, alDevices.get(
 						jcbSynchronized.getSelectedIndex()).getID());
 				if (jrbBidirSynchro.isSelected()) {
-					device.setProperty(XML_DEVICE_SYNCHRO_MODE, DEVICE_SYNCHRO_MODE_BI);
+					device.setProperty(ITechnicalStrings.XML_DEVICE_SYNCHRO_MODE, ITechnicalStrings.DEVICE_SYNCHRO_MODE_BI);
 				} else {
-					device.setProperty(XML_DEVICE_SYNCHRO_MODE, DEVICE_SYNCHRO_MODE_UNI);
+					device.setProperty(ITechnicalStrings.XML_DEVICE_SYNCHRO_MODE, ITechnicalStrings.DEVICE_SYNCHRO_MODE_UNI);
 				}
 			} else { // no synchro
-				device.removeProperty(XML_DEVICE_SYNCHRO_MODE);
-				device.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
+				device.removeProperty(ITechnicalStrings.XML_DEVICE_SYNCHRO_MODE);
+				device.removeProperty(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE);
 			}
 			// Force deep refresh if it is a new device or if URL changed
 			if (jcbRefresh.isSelected() && bNew) {
@@ -405,11 +339,11 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 					// existing device
 					DirectoryManager.getInstance().removeDirectory(device.getID());
 					device.refresh(true);
-				} catch (Exception e2) {
+				} catch (final Exception e2) {
 					Log.error(112, device.getName(), e2);
 					Messages.showErrorMessage(112, device.getName());
 				}
-			} else if (!this.sInitialURL.equals(jtfUrl.getText())) {
+			} else if (!sInitialURL.equals(jtfUrl.getText())) {
 				try {
 					// try to remount the device
 					device.mount();
@@ -417,7 +351,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 					device.refreshCommand(false, false);
 					// Force a cleanup *after* the refresh
 					device.cleanRemovedFiles();
-				} catch (Exception e2) {
+				} catch (final Exception e2) {
 					Log.error(112, device.getName(), e2);
 					Messages.showErrorMessage(112, device.getName());
 				}
@@ -431,50 +365,123 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
 		} else if (e.getSource() == jbCancel) {
 			dispose(); // close window
 		} else if (e.getSource() == jbUrl) {
-			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-					JajukFileFilter.DirectoryFilter.getInstance()));
+			final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+					DirectoryFilter.getInstance()));
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
 			jfc.setMultiSelectionEnabled(false);
-			String sUrl = jtfUrl.getText();
+			final String sUrl = jtfUrl.getText();
 			if (!sUrl.equals("")) {
 				// if url is already set, use it as root directory
 				jfc.setCurrentDirectory(new File(sUrl));
 			}
-			int returnVal = jfc.showOpenDialog(this);
+			final int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				java.io.File file = jfc.getSelectedFile();
+				final java.io.File file = jfc.getSelectedFile();
 				jtfUrl.setText(file.getAbsolutePath());
 			}
 		} else if (e.getSource() == jcbType) {
 			switch (jcbType.getSelectedIndex()) {
 			case 0: // directory
 				jcbAutoMount.setSelected(true);
-				if (bNew)
-					jftfAutoRefresh.setValue(0.5d);
+				if (bNew) {
+          jftfAutoRefresh.setValue(0.5d);
+        }
 				break;
 			case 1: // file cd
 				jcbAutoMount.setSelected(false);
-				if (bNew)
-					jftfAutoRefresh.setValue(0d);
+				if (bNew) {
+          jftfAutoRefresh.setValue(0d);
+        }
 				break;
 			case 2: // network drive
 				jcbAutoMount.setSelected(true);
 				// no auto-refresh by default for network drive
-				if (bNew)
-					jftfAutoRefresh.setValue(0d);
+				if (bNew) {
+          jftfAutoRefresh.setValue(0d);
+        }
 				break;
 			case 3: // ext dd
 				jcbAutoMount.setSelected(true);
-				if (bNew)
-					jftfAutoRefresh.setValue(3d);
+				if (bNew) {
+          jftfAutoRefresh.setValue(3d);
+        }
 				break;
 			case 4: // player
 				jcbAutoMount.setSelected(false);
-				if (bNew)
-					jftfAutoRefresh.setValue(3d);
+				if (bNew) {
+          jftfAutoRefresh.setValue(3d);
+        }
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Update widgets for device property state
+	 */
+	public void updateWidgets(final Device device) {
+		bNew = false;
+		setTitle(Messages.getString("DeviceWizard.0") + " : " + device.getName());
+		this.device = device;
+		jcbSynchronized.removeAllItems();
+		alDevices.clear();
+		// set default values for widgets
+		updateWidgetsDefault();
+		final Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+		while (it.hasNext()) {
+			final Device device2 = it.next();
+			if (!device2.equals(device)) {
+				alDevices.add(device2);
+				jcbSynchronized.addItem(device2.getName());
+			}
+		}
+		// then, specifics
+		jcbType.setSelectedItem(device.getDeviceTypeS());
+		jtfName.setText(device.getName());
+		jtfName.setEnabled(false); // device name cannot be changed
+		jtfUrl.setText(device.getUrl());
+		sInitialURL = device.getUrl();
+		jcbRefresh.setEnabled(false); // no instant refresh for updates
+		jcbRefresh.setSelected(false);
+		jcbAutoMount.setSelected(true);
+		if (device.getBooleanValue(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT)) {
+			jcbAutoMount.setSelected(true);
+		} else {
+			jcbAutoMount.setSelected(false);
+		}
+		jftfAutoRefresh.setValue(device.getDoubleValue(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH));
+		if (jcbSynchronized.getItemCount() == 0) {
+			jcboxSynchronized.setEnabled(false);
+			jcbSynchronized.setEnabled(false);
+			jrbBidirSynchro.setEnabled(false);
+		}
+		if (device.containsProperty(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE)) {
+			final String sSynchroSource = device.getStringValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE);
+			jrbBidirSynchro.setEnabled(true);
+			jrbUnidirSynchro.setEnabled(true);
+			jcboxSynchronized.setSelected(true);
+			jcboxSynchronized.setEnabled(true);
+			jcbSynchronized.setEnabled(true);
+			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance()
+					.getDeviceByID(sSynchroSource)));
+			if (ITechnicalStrings.DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_MODE))) {
+				jrbBidirSynchro.setSelected(true);
+			} else {
+				jrbUnidirSynchro.setSelected(true);
+			}
+		}
+	}
+
+	/**
+	 * Update widgets for default state
+	 */
+	public void updateWidgetsDefault() {
+		jcbRefresh.setSelected(true);
+		jcbAutoMount.setSelected(true);
+		jftfAutoRefresh.setValue(0.5d);
+		jcboxSynchronized.setSelected(false);
+		jrbUnidirSynchro.setSelected(true);// default synchro mode
+		jrbBidirSynchro.setEnabled(false);
 	}
 }

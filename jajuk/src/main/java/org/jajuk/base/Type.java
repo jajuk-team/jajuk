@@ -19,12 +19,14 @@
  */
 package org.jajuk.base;
 
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
-
-import javax.swing.ImageIcon;
 
 /**
  * Music type
@@ -44,7 +46,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param sId
 	 *            type id if given
 	 * @param sName
@@ -57,8 +59,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 	 *            Type Tagger implementation class
 	 * @throws Exception
 	 */
-	public Type(String sId, String sName, String sExtension, Class<IPlayerImpl> cPlayerImpl,
-			Class<ITagImpl> cTagImpl) throws Exception {
+	public Type(final String sId, final String sName, final String sExtension, final Class<IPlayerImpl> cPlayerImpl,
+			final Class<ITagImpl> cTagImpl) throws Exception {
 		super(sId, sName);
 		this.cPlayerImpl = cPlayerImpl;
 		this.sExtension = sExtension;
@@ -70,12 +72,47 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 		}
 	}
 
+	/**
+	 * Alphabetical comparator used to display ordered lists
+	 *
+	 * @param other
+	 *            item to be compared
+	 * @return comparaison result
+	 */
+	public int compareTo(final Type other) {
+		return toString().compareTo(other.toString());
+	}
+
+	/**
+	 * Get item description
+	 */
+	@Override
+  public String getDesc() {
+		return Messages.getString("Type") + " : " + getName();
+	}
+
+	/**
+	 * @return
+	 */
+	public String getExtension() {
+		return sExtension;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 */
+	@Override
+	public ImageIcon getIconRepresentation() {
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.jajuk.base.Item#getIdentifier()
 	 */
-	final public String getLabel() {
+	@Override
+  final public String getLabel() {
 		return XML_TYPE;
 	}
 
@@ -94,20 +131,6 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 	}
 
 	/**
-	 * @return
-	 */
-	public String getExtension() {
-		return sExtension;
-	}
-
-	/**
-	 * toString method
-	 */
-	public String toString() {
-		return "Type[ID=" + getID() + " Name=" + getName() + " ; Extension=" + sExtension + "]";    
-	}
-
-	/**
 	 * @return Returns the tagImpl.
 	 */
 	public ITagImpl getTagImpl() {
@@ -117,36 +140,35 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 				return tagInstance;
 			}
 			tagInstance = cTagImpl.newInstance();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Log.error(e);
 		}
 		return tagInstance;
 	}
 
 	/**
-	 * Get item description
-	 */
-	public String getDesc() {
-		return Messages.getString("Type") + " : " + getName();  
-	}
-
-	/**
-	 * Alphabetical comparator used to display ordered lists
-	 * 
-	 * @param other
-	 *            item to be compared
-	 * @return comparaison result
-	 */
-	public int compareTo(Type other) {
-		return toString().compareTo(other.toString());
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.Item#getIconRepresentation()
+	 * toString method
 	 */
 	@Override
-	public ImageIcon getIconRepresentation() {
-		return null;
+  public String toString() {
+		return "Type[ID=" + getID() + " Name=" + getName() + " ; Extension=" + sExtension + "]";
 	}
+
+
+  public static String[] getExtensionsFromTypes(final java.util.Collection<Type> types) {
+    String[]  extensions  = {};
+
+    if (types != null) {
+      final Set<Type> typesSet    = TypeManager.getInstance().getTypes();
+      final int       typesSize   = typesSet.size();
+      final Type[]    typesArray  = typesSet.toArray(new Type[typesSize]);
+
+      extensions  = new String[typesSize];
+      for (int i = 0; i < typesSize; i++) {
+        extensions[i++] = typesArray[i].getExtension();
+      }
+    }
+    return (extensions);
+  }
 
 }

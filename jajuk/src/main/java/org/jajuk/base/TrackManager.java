@@ -234,8 +234,9 @@ public class TrackManager extends ItemManager implements Observer {
 				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
-			for (File file : alReady) {
-				Tag tag = new Tag(file.getIO());
+			for (final File file : alReady) {
+				final Tag tag = new Tag(file.getIO());
+
 				tag.setAuthorName(sNewAuthor);
 				tag.commit();
 			}
@@ -283,8 +284,9 @@ public class TrackManager extends ItemManager implements Observer {
 				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
-			for (File file : alReady) {
-				Tag tag = new Tag(file.getIO());
+			for (final File file : alReady) {
+				final Tag tag = new Tag(file.getIO());
+
 				tag.setStyleName(sNewStyle);
 				tag.commit();
 			}
@@ -329,8 +331,9 @@ public class TrackManager extends ItemManager implements Observer {
 				throw new NoneAccessibleFileException(10);
 			}
 			// change tag in files
-			for (File file : alReady) {
-				Tag tag = new Tag(file.getIO());
+			for (final File file : alReady) {
+				final Tag tag = new Tag(file.getIO());
+				
 				tag.setYear(newItem);
 				tag.commit();
 			}

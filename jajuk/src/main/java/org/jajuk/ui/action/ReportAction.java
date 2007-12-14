@@ -19,24 +19,25 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.base.Item;
-import org.jajuk.reporting.Exporter;
-import org.jajuk.reporting.ExporterFactory;
-import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.JajukFileFilter.HTMLFilter;
-import org.jajuk.util.JajukFileFilter.XMLFilter;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+
+import org.jajuk.base.Item;
+import org.jajuk.reporting.Exporter;
+import org.jajuk.reporting.ExporterFactory;
+import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.filters.HTMLFilter;
+import org.jajuk.util.filters.XMLFilter;
+import org.jajuk.util.log.Log;
 
 /**
  * Report collection as a file
@@ -50,34 +51,35 @@ public class ReportAction extends ActionBase {
 		setShortDescription(Messages.getString("TracksTreeView.33"));
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+  @SuppressWarnings("unchecked")
 	public void perform(final ActionEvent e) throws JajukException {
-		JComponent source = (JComponent) e.getSource();
+		final JComponent source = (JComponent) e.getSource();
 		// First item
-		final String type = (String) source.getClientProperty(DETAIL_ORIGIN);
+		final String type = (String) source.getClientProperty(ITechnicalStrings.DETAIL_ORIGIN);
 		// Get required data from the tree (selected node and node type)
 		final ArrayList<Item> alSelected = (ArrayList<Item>) source
-				.getClientProperty(DETAIL_SELECTION);
+				.getClientProperty(ITechnicalStrings.DETAIL_SELECTION);
 		// Display a save as dialog
-		JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
+		final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
 				.getInstance());
 		final JajukFileChooser chooser = new JajukFileChooser(filter);
 		// Allow to navigate between directories
 		chooser.setAcceptDirectories(true);
 		chooser.setDialogTitle(Messages.getString("TracksTreeView.33"));
 		// set a default file name
-		if (COLLECTION_LOGICAL.equals(type) || COLLECTION_PHYSICAL.equals(type)) {
+		if (ITechnicalStrings.COLLECTION_LOGICAL.equals(type) || ITechnicalStrings.COLLECTION_PHYSICAL.equals(type)) {
 			// collection node selected, use file name 'collection"
 			chooser.setSelectedFile(new java.io.File(Messages.getString("ReportAction.17")));
 		} else {
 			// use the first node name
-			Item item = alSelected.get(0);
+			final Item item = alSelected.get(0);
 			// Use html format as a default
 			chooser.setSelectedFile(new java.io.File(item.getName()));
 		}
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		// display the dialog
-		int returnVal = chooser.showSaveDialog(null);
+		final int returnVal = chooser.showSaveDialog(null);
 		// Wait for user selection
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			// Make sure user didn't select a directory (we have to accept
@@ -88,19 +90,20 @@ public class ReportAction extends ActionBase {
 			// make it in a separated thread to avoid freezing
 			// screen for big collections
 			new Thread() {
-				public void run() {
+				@Override
+        public void run() {
 					try {
 						Util.waiting();
-						String filepath = chooser.getSelectedFile().getAbsolutePath();
-						String filetypename = chooser.getFileFilter().getDescription();
+						final String filepath = chooser.getSelectedFile().getAbsolutePath();
+						final String filetypename = chooser.getFileFilter().getDescription();
 						// Create an exporter according to file extension
-						Exporter exporter = ExporterFactory.createExporter(filetypename);
+						final Exporter exporter = ExporterFactory.createExporter(filetypename);
 						// Full logical collection report
-						if (COLLECTION_LOGICAL.equals(type)) {
+						if (ITechnicalStrings.COLLECTION_LOGICAL.equals(type)) {
 							exporter.processCollection(Exporter.LOGICAL_COLLECTION);
 						}
 						// Full physical collection report
-						else if (COLLECTION_PHYSICAL.equals(type)) {
+						else if (ITechnicalStrings.COLLECTION_PHYSICAL.equals(type)) {
 							exporter.processCollection(Exporter.PHYSICAL_COLLECTION);
 						}
 						// Normal report on an item or a set of items
@@ -119,7 +122,7 @@ public class ReportAction extends ActionBase {
 						exporter.saveToFile(filename);
 						// Success
 						Messages.showInfoMessage(Messages.getString("ReportAction.0"));
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						Log.error(e);
 						Messages.showErrorMessage(167, e.getMessage());
 					} finally {

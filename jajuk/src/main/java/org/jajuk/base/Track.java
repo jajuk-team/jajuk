@@ -209,10 +209,9 @@ public class Track extends LogicalItem implements Comparable {
 	 */
 	public long getTotalSize() {
 		long l = 0;
-		Iterator it = alFiles.iterator();
-		while (it.hasNext()) {
-			File file = (File) it.next();
-			l += file.getSize();
+
+		for (final File file : alFiles) {
+		  l += file.getSize();
 		}
 		return l;
 	}
@@ -224,14 +223,13 @@ public class Track extends LogicalItem implements Comparable {
 	 */
 	public File getPlayeableFile(boolean bHideUnmounted) {
 		File fileOut = null;
-		ArrayList<File> alMountedFiles = new ArrayList<File>(2);
+		final ArrayList<File> alMountedFiles = new ArrayList<File>(2);
+
 		// firstly, filter mounted files if needed
-		Iterator it = alFiles.iterator();
-		while (it.hasNext()) {
-			File file = (File) it.next();
-			if (!bHideUnmounted || file.isReady()) {
-				alMountedFiles.add(file);
-			}
+		for (final File file : alFiles) {
+		  if (!bHideUnmounted || file.isReady()) {
+        alMountedFiles.add(file);
+      }
 		}
 		if (alMountedFiles.size() == 1) {
 			fileOut = alMountedFiles.get(0);
@@ -470,11 +468,11 @@ public class Track extends LogicalItem implements Comparable {
 		} else if (XML_YEAR.equals(sKey)) {
 			return getStringValue(sKey);
 		} else if (XML_FILES.equals(sKey)) {
-			StringBuilder sbOut = new StringBuilder();
-			Iterator it = alFiles.iterator();
-			while (it.hasNext()) {
-				File file = (File) it.next();
-				sbOut.append(file.getAbsolutePath() + ",");
+			final StringBuilder sbOut = new StringBuilder();
+			
+			for (final File file : alFiles) {
+			  sbOut.append(file.getAbsolutePath());
+			  sbOut.append(',');
 			}
 			return sbOut.substring(0, sbOut.length() - 1); // remove last
 			// ','
