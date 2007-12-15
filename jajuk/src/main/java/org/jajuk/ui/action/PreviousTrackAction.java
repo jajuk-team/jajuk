@@ -39,60 +39,58 @@ import java.util.ArrayList;
  */
 public class PreviousTrackAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	PreviousTrackAction() {
-		super(Messages.getString("JajukWindow.13"), IconLoader.ICON_PLAYER_PREVIOUS, "F9", false,
-				true);
-		setShortDescription(Messages.getString("JajukWindow.29"));
-	}
+  PreviousTrackAction() {
+    super(Messages.getString("JajukWindow.13"), IconLoader.ICON_PLAYER_PREVIOUS, "F9", false, true);
+    setShortDescription(Messages.getString("JajukWindow.29"));
+  }
 
-	public void perform(ActionEvent evt) {
-		// check modifiers to see if it is a movement inside track, between
-		// tracks or between albums
-		if (evt != null &&
-		// evt == null when using hotkeys
-				(evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-			ActionManager.getAction(JajukAction.PREVIOUS_ALBUM).actionPerformed(evt);
-		} else {
-			// if playing a radio, launch next radio station
-			if (FIFO.getInstance().isPlayingRadio()) {
-				final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager
-						.getInstance().getWebRadios());
-				int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
-				if (index == 0) {
-					index = radios.size() - 1;
-				} else {
-					index--;
-				}
-				final int i = index;
-				new Thread() {
-					public void run() {
-						FIFO.getInstance().launchRadio(radios.get(i));
-					}
-				}.start();
-			} else {
-				new Thread() {
-					public void run() {
-						synchronized (FIFO.MUTEX) {
-							try {
-								FIFO.getInstance().playPrevious();
-							} catch (Exception e) {
-								Log.error(e);
-							}
-							// Player was paused, reset pause button when
-							// changing of
-							// track
-							if (Player.isPaused()) {
-								Player.setPaused(false);
-								ObservationManager.notify(new Event(
-										EventSubject.EVENT_PLAYER_RESUME));
-							}
-						}
-					}
-				}.start();
+  public void perform(ActionEvent evt) {
+    // check modifiers to see if it is a movement inside track, between
+    // tracks or between albums
+    if (evt != null &&
+    // evt == null when using hotkeys
+        (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+      ActionManager.getAction(JajukAction.PREVIOUS_ALBUM).actionPerformed(evt);
+    } else {
+      // if playing a radio, launch next radio station
+      if (FIFO.getInstance().isPlayingRadio()) {
+        final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
+            .getWebRadios());
+        int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
+        if (index == 0) {
+          index = radios.size() - 1;
+        } else {
+          index--;
+        }
+        final int i = index;
+        new Thread() {
+          public void run() {
+            FIFO.getInstance().launchRadio(radios.get(i));
+          }
+        }.start();
+      } else {
+        new Thread() {
+          public void run() {
+            synchronized (FIFO.MUTEX) {
+              try {
+                FIFO.getInstance().playPrevious();
+              } catch (Exception e) {
+                Log.error(e);
+              }
+              // Player was paused, reset pause button when
+              // changing of
+              // track
+              if (Player.isPaused()) {
+                Player.setPaused(false);
+                ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+              }
+            }
+          }
+        }.start();
 
-			}
-		}
-	}
+      }
+    }
+  }
 }

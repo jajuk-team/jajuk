@@ -34,50 +34,47 @@ import javax.swing.TransferHandler;
  * DND handler for table
  */
 
-public class TableTransferHandler extends TransferHandler implements
-		ITechnicalStrings {
+public class TableTransferHandler extends TransferHandler implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private JTable jtable;
+  private JTable jtable;
 
-	public static int iSelectedRow = 0;
+  public static int iSelectedRow = 0;
 
-	/** Constructor */
-	public TableTransferHandler(JTable jtable) {
-		this.jtable = jtable;
-	}
+  /** Constructor */
+  public TableTransferHandler(JTable jtable) {
+    this.jtable = jtable;
+  }
 
-	/**
-	 * Called when dragging
-	 */
-	protected Transferable createTransferable(JComponent c) {
-		// make sure to remove others selected rows (can occur during the drag)
-		jtable.getSelectionModel().setSelectionInterval(iSelectedRow,
-				iSelectedRow);
-		if (jtable instanceof JajukTable) {// sorting only for jajuk table
-			iSelectedRow = ((JajukTable) jtable)
-					.convertRowIndexToModel(iSelectedRow); // selected row
-			// in model
-		}
-		Object o = ((JajukTableModel) jtable.getModel())
-				.getItemAt(iSelectedRow);
-		if (o == null) { // no? try to find a file for this id
-			o = FileManager.getInstance().getFileByID(
-					jtable.getModel().getValueAt(iSelectedRow, 0).toString());
-		}
-		if (o != null) {
-			return new TransferableTableRow(o);
-		}
+  /**
+   * Called when dragging
+   */
+  protected Transferable createTransferable(JComponent c) {
+    // make sure to remove others selected rows (can occur during the drag)
+    jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
+    if (jtable instanceof JajukTable) {// sorting only for jajuk table
+      iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow); // selected
+      // row
+      // in model
+    }
+    Object o = ((JajukTableModel) jtable.getModel()).getItemAt(iSelectedRow);
+    if (o == null) { // no? try to find a file for this id
+      o = FileManager.getInstance().getFileByID(
+          jtable.getModel().getValueAt(iSelectedRow, 0).toString());
+    }
+    if (o != null) {
+      return new TransferableTableRow(o);
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	/**
-	 * return action type
-	 */
-	public int getSourceActions(JComponent c) {
-		return COPY_OR_MOVE;
-	}
+  /**
+   * return action type
+   */
+  public int getSourceActions(JComponent c) {
+    return COPY_OR_MOVE;
+  }
 
 }

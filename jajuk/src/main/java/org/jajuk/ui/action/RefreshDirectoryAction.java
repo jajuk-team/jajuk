@@ -35,29 +35,28 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 public class RefreshDirectoryAction extends ActionBase {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-	RefreshDirectoryAction() {
-		super(Messages.getString("ActionRefresh.0"), IconLoader.ICON_REFRESH, true);
-		setShortDescription(Messages.getString("ActionRefresh.0"));
-	}
-	public void perform(ActionEvent e) {
-		JComponent source = (JComponent) e.getSource();
-		// Get required data from the tree (selected node and node type)
-		final ArrayList<Item> alSelected = (ArrayList<Item>) source
-		    .getClientProperty(DETAIL_SELECTION);
-		Item item = alSelected.get(0);
-		Directory dir;
-		if (item instanceof Directory){
-			dir = (Directory) item; 
-		}
-		else{
-			dir = ((File) item).getDirectory();
-		}
-		DirectoryManager.refreshDirectory(dir);
-		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-	}
+  RefreshDirectoryAction() {
+    super(Messages.getString("ActionRefresh.0"), IconLoader.ICON_REFRESH, true);
+    setShortDescription(Messages.getString("ActionRefresh.0"));
+  }
+
+  public void perform(ActionEvent e) {
+    JComponent source = (JComponent) e.getSource();
+    // Get required data from the tree (selected node and node type)
+    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    Item item = alSelected.get(0);
+    Directory dir;
+    if (item instanceof Directory) {
+      dir = (Directory) item;
+    } else {
+      dir = ((File) item).getDirectory();
+    }
+    DirectoryManager.refreshDirectory(dir);
+    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+  }
 }

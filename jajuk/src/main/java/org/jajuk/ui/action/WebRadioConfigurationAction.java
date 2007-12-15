@@ -30,18 +30,18 @@ import java.awt.event.ActionEvent;
  */
 public class WebRadioConfigurationAction extends ActionBase {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-	WebRadioConfigurationAction() {
-		super(Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);
-	}
+  WebRadioConfigurationAction() {
+    super(Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		// display the wizard
-		WebRadioWizard wizard = new WebRadioWizard();
-		wizard.show();
-	}
+  public void perform(ActionEvent evt) {
+    // display the wizard
+    WebRadioWizard wizard = new WebRadioWizard();
+    wizard.show();
+  }
 }

@@ -24,45 +24,45 @@ import java.awt.Image;
 
 public class AudioScrobblerSimilarArtistsRunnable implements Runnable, ITechnicalStrings {
 
-	private AudioScrobblerListener listener;
+  private AudioScrobblerListener listener;
 
-	private AudioScrobblerService service;
+  private AudioScrobblerService service;
 
-	private String artist;
+  private String artist;
 
-	private boolean interrupted;
+  private boolean interrupted;
 
-	public AudioScrobblerSimilarArtistsRunnable(AudioScrobblerListener listener,
-			AudioScrobblerService service, String artist) {
-		this.listener = listener;
-		this.service = service;
-		this.artist = artist;
-	}
+  public AudioScrobblerSimilarArtistsRunnable(AudioScrobblerListener listener,
+      AudioScrobblerService service, String artist) {
+    this.listener = listener;
+    this.service = service;
+    this.artist = artist;
+  }
 
-	public void run() {
-		if (!interrupted && artist != null && !UNKNOWN_AUTHOR.equals(artist)) {
-			AudioScrobblerSimilarArtists artists = service.getSimilarArtists(artist);
+  public void run() {
+    if (!interrupted && artist != null && !UNKNOWN_AUTHOR.equals(artist)) {
+      AudioScrobblerSimilarArtists artists = service.getSimilarArtists(artist);
 
-			if (!interrupted && artists != null) {
-				Image artistImage = service.getImage(artists);
-				if (!interrupted && artistImage != null)
-					listener.notifyArtistImage(artistImage);
+      if (!interrupted && artists != null) {
+        Image artistImage = service.getImage(artists);
+        if (!interrupted && artistImage != null)
+          listener.notifyArtistImage(artistImage);
 
-				for (int i = 0; i < artists.getArtists().size(); i++) {
-					Image img = null;
-					AudioScrobblerArtist a = artists.getArtists().get(i);
-					if (!interrupted)
-						img = service.getImage(a);
+        for (int i = 0; i < artists.getArtists().size(); i++) {
+          Image img = null;
+          AudioScrobblerArtist a = artists.getArtists().get(i);
+          if (!interrupted)
+            img = service.getImage(a);
 
-					if (!interrupted)
-						listener.notifyFinishGetSimilarArtist(a, img);
-				}
-			}
-		}
-	}
+          if (!interrupted)
+            listener.notifyFinishGetSimilarArtist(a, img);
+        }
+      }
+    }
+  }
 
-	protected void interrupt() {
-		interrupted = true;
-	}
+  protected void interrupt() {
+    interrupted = true;
+  }
 
 }

@@ -28,20 +28,17 @@ import org.jajuk.util.Messages;
 import java.awt.event.ActionEvent;
 
 public class IntroModeAction extends ActionBase {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	IntroModeAction() {
-		super(
-				Messages.getString("JajukJMenuBar.13"), IconLoader.ICON_INTRO, true); 
-		setShortDescription(Messages.getString("CommandJPanel.4")); 
-	}
+  IntroModeAction() {
+    super(Messages.getString("JajukJMenuBar.13"), IconLoader.ICON_INTRO, true);
+    setShortDescription(Messages.getString("CommandJPanel.4"));
+  }
 
-	public void perform(ActionEvent evt) {
-		boolean b = Boolean.valueOf(ConfigurationManager
-				.getProperty(CONF_STATE_INTRO));
-		ConfigurationManager
-				.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
-		JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
-		CommandJPanel.getInstance().jbIntro.setSelected(!b);
-	}
+  public void perform(ActionEvent evt) {
+    boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO));
+    ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
+    JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
+    CommandJPanel.getInstance().jbIntro.setSelected(!b);
+  }
 }

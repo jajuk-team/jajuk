@@ -28,17 +28,16 @@ import java.awt.event.ActionEvent;
 
 public class RemovePropertyAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	RemovePropertyAction() {
-		super(Messages.getString("JajukJMenuBar.7"), IconLoader.ICON_DELETE, 
-				true);
-		setShortDescription(Messages.getString("JajukJMenuBar.7")); 
-	}
+  RemovePropertyAction() {
+    super(Messages.getString("JajukJMenuBar.7"), IconLoader.ICON_DELETE, true);
+    setShortDescription(Messages.getString("JajukJMenuBar.7"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		RemovePropertyWizard rpw = new RemovePropertyWizard();
-		rpw.pack();
-		rpw.setVisible(true);
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    RemovePropertyWizard rpw = new RemovePropertyWizard();
+    rpw.pack();
+    rpw.setVisible(true);
+  }
 }

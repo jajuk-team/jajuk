@@ -42,356 +42,361 @@ import javax.swing.ImageIcon;
  */
 abstract public class Item implements Serializable, ITechnicalStrings {
 
-    
-        /**We cache the ID to avoid getting it from properties for CPU performance reasons*/    
-        String sID;
-        
-        /**We cache the name to avoid getting it from properties for CPU performance reasons*/    
-        String name;
-	
-        /**
-	 * Item properties, singleton use very high load factor as this size will
-	 * not change often
-	 */
-	private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>(2, 1f);
+  /**
+   * We cache the ID to avoid getting it from properties for CPU performance
+   * reasons
+   */
+  String sID;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param sId
-	 *            element ID
-	 * @param sName
-	 *            element name
-	 */
-	Item(final String sId, final String sName) {
-		this.sID = sId;
-                setProperty(XML_ID, sId);
-                this.name = sName;
-		setProperty(XML_NAME, sName);
-	}
+  /**
+   * We cache the name to avoid getting it from properties for CPU performance
+   * reasons
+   */
+  String name;
 
-	/**
-	 * @return
-	 */
-	public String getID() {
-		return this.sID;
-	}
+  /**
+   * Item properties, singleton use very high load factor as this size will not
+   * change often
+   */
+  private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>(2, 1f);
 
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return name;
-	}
+  /**
+   * Constructor
+   * 
+   * @param sId
+   *          element ID
+   * @param sName
+   *          element name
+   */
+  Item(final String sId, final String sName) {
+    this.sID = sId;
+    setProperty(XML_ID, sId);
+    this.name = sName;
+    setProperty(XML_NAME, sName);
+  }
 
-	/**
-	 * Item hashcode (used by the equals method)
-	 */
-	public int hashCode() {
-		return getID().hashCode();
-	}
+  /**
+   * @return
+   */
+  public String getID() {
+    return this.sID;
+  }
 
-	/**
-	 * Get item description (HTML)
-	 * 
-	 * @return item description
-	 */
-	abstract public String getDesc();
+  /**
+   * @return
+   */
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * Equal method to check two albums are identical
-	 * 
-	 * @param otherAlbum
-	 * @return
-	 */
-	public boolean equals(Object otherItem) {
-		if (otherItem == null || !(otherItem instanceof Item)) {
-			return false;
-		}
-		return getID().equals(((Item) otherItem).getID());
-	}
+  /**
+   * Item hashcode (used by the equals method)
+   */
+  public int hashCode() {
+    return getID().hashCode();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#getProperties()
-	 */
-	public LinkedHashMap<String, Object> getProperties() {
-		return properties;
-	}
+  /**
+   * Get item description (HTML)
+   * 
+   * @return item description
+   */
+  abstract public String getDesc();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#getProperty(java.lang.String)
-	 */
-	public Object getValue(String sKey) {
-            Object out = getProperties().get(sKey);
-             // look at properties to check the given property is known
-            if ( out == null) { 
-                  // no? take property default
-		return getDefaultValue(sKey);
-            }
-            return out;
-	}
+  /**
+   * Equal method to check two albums are identical
+   * 
+   * @param otherAlbum
+   * @return
+   */
+  public boolean equals(Object otherItem) {
+    if (otherItem == null || !(otherItem instanceof Item)) {
+      return false;
+    }
+    return getID().equals(((Item) otherItem).getID());
+  }
 
-	public long getLongValue(String sKey) {
-            Long out = (Long)getProperties().get(sKey);
-            // look at properties to check the given property is known
-            if (out == null) { 
-                // no? take property default
-		return (Long) getDefaultValue(sKey);
-            }
-            return out;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getProperties()
+   */
+  public LinkedHashMap<String, Object> getProperties() {
+    return properties;
+  }
 
-	public double getDoubleValue(String sKey) {
-            Double out = (Double)getProperties().get(sKey);
-            // look at properties to check the given property is known
-            if (out == null) { 
-                // no? take property default
-		return (Double) getDefaultValue(sKey);
-            }
-            return out;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getProperty(java.lang.String)
+   */
+  public Object getValue(String sKey) {
+    Object out = getProperties().get(sKey);
+    // look at properties to check the given property is known
+    if (out == null) {
+      // no? take property default
+      return getDefaultValue(sKey);
+    }
+    return out;
+  }
 
-	/**
-	 * Return String value for String type values. We assume that given property
-	 * is a String. If you are not sure, use Util.parse method
-	 */
-	public String getStringValue(String sKey) {
-            String out = (String) getProperties().get(sKey);
-            // look at properties to check the given property is known
-            if (out == null) { 
-                // no? take property default
-		return (String) getDefaultValue(sKey);
-            }
-            return out;
-	}
+  public long getLongValue(String sKey) {
+    Long out = (Long) getProperties().get(sKey);
+    // look at properties to check the given property is known
+    if (out == null) {
+      // no? take property default
+      return (Long) getDefaultValue(sKey);
+    }
+    return out;
+  }
 
-	public boolean getBooleanValue(String sKey) {
-            Boolean out = (Boolean) getProperties().get(sKey);
-            // look at properties to check the given property is known
-            if (out == null) { 
-                // no? take property default
-		return (Boolean) getDefaultValue(sKey);
-            }
-            return out;
-	}
+  public double getDoubleValue(String sKey) {
+    Double out = (Double) getProperties().get(sKey);
+    // look at properties to check the given property is known
+    if (out == null) {
+      // no? take property default
+      return (Double) getDefaultValue(sKey);
+    }
+    return out;
+  }
 
-	public Date getDateValue(String sKey) {
-            Date out = (Date) getProperties().get(sKey);
-            // look at properties to check the given property is known
-            if (out == null) { 
-                // no? take property default
-		return (Date) getDefaultValue(sKey);
-            }
-            return out;
-	}
+  /**
+   * Return String value for String type values. We assume that given property
+   * is a String. If you are not sure, use Util.parse method
+   */
+  public String getStringValue(String sKey) {
+    String out = (String) getProperties().get(sKey);
+    // look at properties to check the given property is known
+    if (out == null) {
+      // no? take property default
+      return (String) getDefaultValue(sKey);
+    }
+    return out;
+  }
 
-	public Object getDefaultValue(String sKey) {
-		PropertyMetaInformation meta = getMeta(sKey);
-		return meta.getDefaultValue();
-	}
+  public boolean getBooleanValue(String sKey) {
+    Boolean out = (Boolean) getProperties().get(sKey);
+    // look at properties to check the given property is known
+    if (out == null) {
+      // no? take property default
+      return (Boolean) getDefaultValue(sKey);
+    }
+    return out;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#containsKey(java.lang.String)
-	 */
-	public boolean containsProperty(String sKey) {
-		return properties.containsKey(sKey) && properties.get(sKey) != null
-				&& !properties.get(sKey).equals("");
-	}
+  public Date getDateValue(String sKey) {
+    Date out = (Date) getProperties().get(sKey);
+    // look at properties to check the given property is known
+    if (out == null) {
+      // no? take property default
+      return (Date) getDefaultValue(sKey);
+    }
+    return out;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
-	 */
-	public void setProperty(String sKey, Object oValue) {
-		getProperties().put(sKey, oValue);
-	}
+  public Object getDefaultValue(String sKey) {
+    PropertyMetaInformation meta = getMeta(sKey);
+    return meta.getDefaultValue();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#getAny()
-	 */
-	public String getAny() {
-		StringBuilder sb = new StringBuilder(100);
-		LinkedHashMap properties = getProperties();
-		Iterator it = properties.keySet().iterator();
-		while (it.hasNext()) {
-			String sKey = (String) it.next();
-			String sValue = getHumanValue(sKey);
-			if (sValue != null) {
-				PropertyMetaInformation meta = getMeta(sKey);
-				if (!meta.isVisible()) { // computes "any" only on
-					// visible items
-					continue;
-				}
-				sb.append(sValue);
-			}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#containsKey(java.lang.String)
+   */
+  public boolean containsProperty(String sKey) {
+    return properties.containsKey(sKey) && properties.get(sKey) != null
+        && !properties.get(sKey).equals("");
+  }
 
-		}
-		return sb.toString();
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
+   */
+  public void setProperty(String sKey, Object oValue) {
+    getProperties().put(sKey, oValue);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#setDefaultProperty(java.lang.String,
-	 *      java.lang.String)
-	 */
-	public void populateDefaultProperty(PropertyMetaInformation meta) {
-		properties.put(meta.getName(), meta.getDefaultValue());
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getAny()
+   */
+  public String getAny() {
+    StringBuilder sb = new StringBuilder(100);
+    LinkedHashMap properties = getProperties();
+    Iterator it = properties.keySet().iterator();
+    while (it.hasNext()) {
+      String sKey = (String) it.next();
+      String sValue = getHumanValue(sKey);
+      if (sValue != null) {
+        PropertyMetaInformation meta = getMeta(sKey);
+        if (!meta.isVisible()) { // computes "any" only on
+          // visible items
+          continue;
+        }
+        sb.append(sValue);
+      }
 
-	/**
-	 * Return an XML representation of this item
-	 * 
-	 * @return
-	 */
-	public String toXml() {
-		try {
-			StringBuilder sb = new StringBuilder("\t\t<").append(getLabel());
-			sb.append(getPropertiesXml());
-			sb.append("/>\n");
-			return sb.toString();
-		} catch (Exception e) {
-			// catch any error here because it can prevent
-			// collection to commit
-			Log.error(e);
-			return "";
-		}
-	}
+    }
+    return sb.toString();
+  }
 
-	/**
-	 * @return an identifier used to generate XML representation of this item
-	 */
-	abstract String getLabel();
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#setDefaultProperty(java.lang.String,
+   *      java.lang.String)
+   */
+  public void populateDefaultProperty(PropertyMetaInformation meta) {
+    properties.put(meta.getName(), meta.getDefaultValue());
+  }
 
-	/**
-	 * 
-	 * @return XML representation for item properties
-	 */
-	private String getPropertiesXml() {
-		LinkedHashMap<String,Object> properties = getProperties();
-		StringBuilder sb = new StringBuilder();
-		for (String sKey:properties.keySet()){
-			String sValue = null;
-			Object oValue = properties.get(sKey);
-			if (oValue != null) {
-				PropertyMetaInformation meta = getMeta(sKey);
-				try {
-					sValue = Util.format(oValue, meta, false);
-				} catch (Exception e) { // should not occur
-					Log.error(e);
-				}
-				sValue = Util.formatXML(sValue); // make sure to remove
-				// non-XML characters
-			}
-			sb.append(' ');
-			sb.append(Util.formatXML(sKey));
-			sb.append("='");
-			sb.append(sValue);
-			sb.append("'");
-		}
-		return sb.toString();
-	}
+  /**
+   * Return an XML representation of this item
+   * 
+   * @return
+   */
+  public String toXml() {
+    try {
+      StringBuilder sb = new StringBuilder("\t\t<").append(getLabel());
+      sb.append(getPropertiesXml());
+      sb.append("/>\n");
+      return sb.toString();
+    } catch (Exception e) {
+      // catch any error here because it can prevent
+      // collection to commit
+      Log.error(e);
+      return "";
+    }
+  }
 
-	/**
-	 * Set all personnal properties of an XML file for an item (doesn't
-	 * overwrite existing properties for perfs)
-	 * 
-	 * @param attributes :
-	 *            list of attributes for this XML item
-	 */
-	public void populateProperties(Attributes attributes) {
-		for (int i = 0; i < attributes.getLength(); i++) {
-			String sProperty = attributes.getQName(i);
-			if (!properties.containsKey(sProperty)) {
-				String sValue = attributes.getValue(i);
-				PropertyMetaInformation meta = getMeta(sProperty);
-				try {
-					if (meta != null) {
-						setProperty(sProperty, Util.parse(sValue, meta.getType()));
-					}
-				} catch (Exception e) {
-					Log.error(137, sProperty, e);
-				}
-			}
-		}
-	}
+  /**
+   * @return an identifier used to generate XML representation of this item
+   */
+  abstract String getLabel();
 
-	/**
-	 * @param properties
-	 *            The properties to set.
-	 */
-	public void setProperties(LinkedHashMap<String, Object> properties) {
-		this.properties = properties;
-	}
+  /**
+   * 
+   * @return XML representation for item properties
+   */
+  private String getPropertiesXml() {
+    LinkedHashMap<String, Object> properties = getProperties();
+    StringBuilder sb = new StringBuilder();
+    for (String sKey : properties.keySet()) {
+      String sValue = null;
+      Object oValue = properties.get(sKey);
+      if (oValue != null) {
+        PropertyMetaInformation meta = getMeta(sKey);
+        try {
+          sValue = Util.format(oValue, meta, false);
+        } catch (Exception e) { // should not occur
+          Log.error(e);
+        }
+        sValue = Util.formatXML(sValue); // make sure to remove
+        // non-XML characters
+      }
+      sb.append(' ');
+      sb.append(Util.formatXML(sKey));
+      sb.append("='");
+      sb.append(sValue);
+      sb.append("'");
+    }
+    return sb.toString();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#removeProperty(java.lang.String)
-	 */
-	public void removeProperty(String sKey) {
-		LinkedHashMap properties = getProperties();
-		if (properties.containsKey(sKey)) {
-			properties.remove(sKey);
-		}
-	}
+  /**
+   * Set all personnal properties of an XML file for an item (doesn't overwrite
+   * existing properties for perfs)
+   * 
+   * @param attributes :
+   *          list of attributes for this XML item
+   */
+  public void populateProperties(Attributes attributes) {
+    for (int i = 0; i < attributes.getLength(); i++) {
+      String sProperty = attributes.getQName(i);
+      if (!properties.containsKey(sProperty)) {
+        String sValue = attributes.getValue(i);
+        PropertyMetaInformation meta = getMeta(sProperty);
+        try {
+          if (meta != null) {
+            setProperty(sProperty, Util.parse(sValue, meta.getType()));
+          }
+        } catch (Exception e) {
+          Log.error(137, sProperty, e);
+        }
+      }
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#displayProperty()
-	 */
-	public void displayProperties() {
-	}
+  /**
+   * @param properties
+   *          The properties to set.
+   */
+  public void setProperties(LinkedHashMap<String, Object> properties) {
+    this.properties = properties;
+  }
 
-	/**
-	 * Default implementation for this method, simply return standard value
-	 */
-	public String getHumanValue(String sKey) {
-		try {
-			return Util.format(getValue(sKey), getMeta(sKey),true);
-		} catch (Exception e) {
-			Log.error(e);
-			return "";
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#removeProperty(java.lang.String)
+   */
+  public void removeProperty(String sKey) {
+    LinkedHashMap properties = getProperties();
+    if (properties.containsKey(sKey)) {
+      properties.remove(sKey);
+    }
+  }
 
-	/**
-	 * @param sProperty
-	 *            Property name
-	 * @return Meta information for current item and given property name
-	 */
-	public PropertyMetaInformation getMeta(String sProperty) {
-		return ItemManager.getItemManager(this.getClass()).getMetaInformation(sProperty);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#displayProperty()
+   */
+  public void displayProperties() {
+  }
 
-	/**
-	 * Clone all properties from a given properties list but not overwrite
-	 * constructor properties
-	 * 
-	 * @param propertiesSource
-	 */
-	public void cloneProperties(Item propertiesSource) {
-		Iterator it = propertiesSource.getProperties().keySet().iterator();
-		while (it.hasNext()) {
-			String sProperty = (String) it.next();
-			if (!getMeta(sProperty).isConstructor()) {
-				this.properties.put(sProperty, propertiesSource.getValue(sProperty));
-			}
-		}
-	}
+  /**
+   * Default implementation for this method, simply return standard value
+   */
+  public String getHumanValue(String sKey) {
+    try {
+      return Util.format(getValue(sKey), getMeta(sKey), true);
+    } catch (Exception e) {
+      Log.error(e);
+      return "";
+    }
+  }
 
-	/**
-	 * @return an icon representation for this item or null if none available
-	 */
-	abstract public ImageIcon getIconRepresentation();
+  /**
+   * @param sProperty
+   *          Property name
+   * @return Meta information for current item and given property name
+   */
+  public PropertyMetaInformation getMeta(String sProperty) {
+    return ItemManager.getItemManager(this.getClass()).getMetaInformation(sProperty);
+  }
+
+  /**
+   * Clone all properties from a given properties list but not overwrite
+   * constructor properties
+   * 
+   * @param propertiesSource
+   */
+  public void cloneProperties(Item propertiesSource) {
+    Iterator it = propertiesSource.getProperties().keySet().iterator();
+    while (it.hasNext()) {
+      String sProperty = (String) it.next();
+      if (!getMeta(sProperty).isConstructor()) {
+        this.properties.put(sProperty, propertiesSource.getValue(sProperty));
+      }
+    }
+  }
+
+  /**
+   * @return an icon representation for this item or null if none available
+   */
+  abstract public ImageIcon getIconRepresentation();
 }

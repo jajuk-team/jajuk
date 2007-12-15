@@ -31,62 +31,61 @@ import javax.swing.KeyStroke;
 
 public class JajukButton extends JButton {
 
-	private static final long serialVersionUID = 1L;
-	
-	public JajukButton() {
-		this(null, null);
-	}
+  private static final long serialVersionUID = 1L;
 
-	public JajukButton(Icon icon) {
-		this(null, icon);
-	}
+  public JajukButton() {
+    this(null, null);
+  }
 
-	public JajukButton(String text) {
-		this(text, null);
-	}
+  public JajukButton(Icon icon) {
+    this(null, icon);
+  }
 
-	public JajukButton(Action a) {
-		super(a);
-		setRolloverEnabled(true);
-	}
+  public JajukButton(String text) {
+    this(text, null);
+  }
 
-	public JajukButton(String text, Icon icon) {
-		super(text, icon);
-	}
-	
+  public JajukButton(Action a) {
+    super(a);
+    setRolloverEnabled(true);
+  }
 
-	@Override
-	protected void init(String text, Icon icon) {
-		// Hide action text on button
-		if (icon != null) {
-			putClientProperty("hideActionText", Boolean.TRUE); 
-		}
-		super.init(text, icon);
-	}
+  public JajukButton(String text, Icon icon) {
+    super(text, icon);
+  }
 
-	@Override
-	protected void configurePropertiesFromAction(Action action) {
-		if (action.getValue(Action.SMALL_ICON) != null) {
-			putClientProperty("hideActionText", Boolean.TRUE); 
-		}
+  @Override
+  protected void init(String text, Icon icon) {
+    // Hide action text on button
+    if (icon != null) {
+      putClientProperty("hideActionText", Boolean.TRUE);
+    }
+    super.init(text, icon);
+  }
 
-		super.configurePropertiesFromAction(action);
+  @Override
+  protected void configurePropertiesFromAction(Action action) {
+    if (action.getValue(Action.SMALL_ICON) != null) {
+      putClientProperty("hideActionText", Boolean.TRUE);
+    }
 
-		KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-		if (stroke != null) {
-			InputMap keyMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-			keyMap.put(stroke, "action"); 
+    super.configurePropertiesFromAction(action);
 
-			ActionMap actionMap = getActionMap();
-			actionMap.put("action", new ActionWrapper()); 
-		}
-	}
+    KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+    if (stroke != null) {
+      InputMap keyMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+      keyMap.put(stroke, "action");
 
-	private class ActionWrapper extends AbstractAction {
-		private static final long serialVersionUID = 1L;
+      ActionMap actionMap = getActionMap();
+      actionMap.put("action", new ActionWrapper());
+    }
+  }
 
-		public void actionPerformed(ActionEvent e) {
-			fireActionPerformed(e);
-		}
-	}
+  private class ActionWrapper extends AbstractAction {
+    private static final long serialVersionUID = 1L;
+
+    public void actionPerformed(ActionEvent e) {
+      fireActionPerformed(e);
+    }
+  }
 }

@@ -38,59 +38,58 @@ import java.util.ArrayList;
  * <code>CTRL + RIGHT ARROW</code>.
  */
 public class NextTrackAction extends ActionBase {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	NextTrackAction() {
-		super(Messages.getString("JajukWindow.14"), IconLoader.ICON_PLAYER_NEXT, "F10", false, true);
-		setShortDescription(Messages.getString("JajukWindow.30"));
-	}
+  NextTrackAction() {
+    super(Messages.getString("JajukWindow.14"), IconLoader.ICON_PLAYER_NEXT, "F10", false, true);
+    setShortDescription(Messages.getString("JajukWindow.30"));
+  }
 
-	public void perform(ActionEvent evt) {
-		// check modifiers to see if it is a movement inside track, between
-		// tracks or between albums
-		if (evt != null
-		// evt == null when using hotkeys
-				&& (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-			ActionManager.getAction(JajukAction.NEXT_ALBUM).actionPerformed(evt);
-		} else {
-			// if playing a radio, launch next radio station
-			if (FIFO.getInstance().isPlayingRadio()) {
-				final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager
-						.getInstance().getWebRadios());
-				int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
-				if (index == radios.size() - 1) {
-					index = 0;
-				} else {
-					index++;
-				}
-				final int i = index;
-				new Thread() {
-					public void run() {
-						FIFO.getInstance().launchRadio(radios.get(i));
-					}
-				}.start();
+  public void perform(ActionEvent evt) {
+    // check modifiers to see if it is a movement inside track, between
+    // tracks or between albums
+    if (evt != null
+    // evt == null when using hotkeys
+        && (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+      ActionManager.getAction(JajukAction.NEXT_ALBUM).actionPerformed(evt);
+    } else {
+      // if playing a radio, launch next radio station
+      if (FIFO.getInstance().isPlayingRadio()) {
+        final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
+            .getWebRadios());
+        int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
+        if (index == radios.size() - 1) {
+          index = 0;
+        } else {
+          index++;
+        }
+        final int i = index;
+        new Thread() {
+          public void run() {
+            FIFO.getInstance().launchRadio(radios.get(i));
+          }
+        }.start();
 
-			} else {
-				// Playing a track
-				new Thread() {
-					public void run() {
-						synchronized (FIFO.MUTEX) {
-							try {
-								FIFO.getInstance().playNext();
-							} catch (Exception e) {
-								Log.error(e);
-							}
-							// Player was paused, reset pause button when
-							// changing of track
-							if (Player.isPaused()) {
-								Player.setPaused(false);
-								ObservationManager.notify(new Event(
-										EventSubject.EVENT_PLAYER_RESUME));
-							}
-						}
-					}
-				}.start();
-			}
-		}
-	}
+      } else {
+        // Playing a track
+        new Thread() {
+          public void run() {
+            synchronized (FIFO.MUTEX) {
+              try {
+                FIFO.getInstance().playNext();
+              } catch (Exception e) {
+                Log.error(e);
+              }
+              // Player was paused, reset pause button when
+              // changing of track
+              if (Player.isPaused()) {
+                Player.setPaused(false);
+                ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+              }
+            }
+          }
+        }.start();
+      }
+    }
+  }
 }

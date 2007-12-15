@@ -35,135 +35,135 @@ import java.util.StringTokenizer;
  */
 public class Bookmarks implements ITechnicalStrings {
 
-	/** Singleton self-instance */
-	private static Bookmarks bookmarks;
+  /** Singleton self-instance */
+  private static Bookmarks bookmarks;
 
-	/** Bookmarks files */
-	ArrayList<File> alFiles = new ArrayList<File>(100);
+  /** Bookmarks files */
+  ArrayList<File> alFiles = new ArrayList<File>(100);
 
-	public static synchronized Bookmarks getInstance() {
-		if (bookmarks == null) {
-			bookmarks = new Bookmarks();
-		}
-		return bookmarks;
-	}
+  public static synchronized Bookmarks getInstance() {
+    if (bookmarks == null) {
+      bookmarks = new Bookmarks();
+    }
+    return bookmarks;
+  }
 
-	/** Private constructor */
-	private Bookmarks() {
-		String sBookmarks = ConfigurationManager.getProperty(CONF_BOOKMARKS);
-		if (sBookmarks == null || "".equals(sBookmarks.trim())) {
-			return;
-		}
-		StringTokenizer stFiles = new StringTokenizer(sBookmarks, ",");
-		while (stFiles.hasMoreTokens()) {
-			String sId = stFiles.nextToken();
-			File file = FileManager.getInstance().getFileByID(sId);
-			if (file != null) {
-				alFiles.add(file);
-			}
-		}
-	}
+  /** Private constructor */
+  private Bookmarks() {
+    String sBookmarks = ConfigurationManager.getProperty(CONF_BOOKMARKS);
+    if (sBookmarks == null || "".equals(sBookmarks.trim())) {
+      return;
+    }
+    StringTokenizer stFiles = new StringTokenizer(sBookmarks, ",");
+    while (stFiles.hasMoreTokens()) {
+      String sId = stFiles.nextToken();
+      File file = FileManager.getInstance().getFileByID(sId);
+      if (file != null) {
+        alFiles.add(file);
+      }
+    }
+  }
 
-	/**
-	 * Return bookmarks as a colon separated list of file ids
-	 */
-	public String toString() {
-		StringBuilder sbOut = new StringBuilder();
-		for (File file : alFiles) {
-			sbOut.append(file.getID()).append(',');
-		}
-		int i = sbOut.length();
-		return sbOut.substring(0, i - 1);// remove last ','
-	}
+  /**
+   * Return bookmarks as a colon separated list of file ids
+   */
+  public String toString() {
+    StringBuilder sbOut = new StringBuilder();
+    for (File file : alFiles) {
+      sbOut.append(file.getID()).append(',');
+    }
+    int i = sbOut.length();
+    return sbOut.substring(0, i - 1);// remove last ','
+  }
 
-	/** Return bookmarked files */
-	public ArrayList<File> getFiles() {
-		return alFiles;
-	}
+  /** Return bookmarked files */
+  public ArrayList<File> getFiles() {
+    return alFiles;
+  }
 
-	/**
-	 * Clear bookmarks
-	 * 
-	 */
-	public void clear() {
-		alFiles.clear();
-		ConfigurationManager.setProperty(CONF_BOOKMARKS, "");
-	}
+  /**
+   * Clear bookmarks
+   * 
+   */
+  public void clear() {
+    alFiles.clear();
+    ConfigurationManager.setProperty(CONF_BOOKMARKS, "");
+  }
 
-	/**
-	 * Down a track in the playlist
-	 * 
-	 * @param index
-	 */
-	public synchronized void down(int index) {
-		if (index < alFiles.size() - 1) { // the last track cannot go
-			// depper
-			File file = alFiles.get(index + 1); // save n+1 file
-			alFiles.set(index + 1, alFiles.get(index));
-			alFiles.set(index, file); // n+1 file becomes nth file
-			ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
-		}
-	}
+  /**
+   * Down a track in the playlist
+   * 
+   * @param index
+   */
+  public synchronized void down(int index) {
+    if (index < alFiles.size() - 1) { // the last track cannot go
+      // depper
+      File file = alFiles.get(index + 1); // save n+1 file
+      alFiles.set(index + 1, alFiles.get(index));
+      alFiles.set(index, file); // n+1 file becomes nth file
+      ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+    }
+  }
 
-	/**
-	 * Up a track in the playlist
-	 * 
-	 * @param index
-	 */
-	public synchronized void up(int index) {
-		if (index > 0) { // the first track cannot go further
-			File file = alFiles.get(index - 1); // save n-1 file
-			alFiles.set(index - 1, alFiles.get(index));
-			alFiles.set(index, file); // n-1 file becomes nth file
-			ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
-		}
-	}
+  /**
+   * Up a track in the playlist
+   * 
+   * @param index
+   */
+  public synchronized void up(int index) {
+    if (index > 0) { // the first track cannot go further
+      File file = alFiles.get(index - 1); // save n-1 file
+      alFiles.set(index - 1, alFiles.get(index));
+      alFiles.set(index, file); // n-1 file becomes nth file
+      ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+    }
+  }
 
-	/**
-	 * Remove a track from the playlist
-	 * 
-	 * @param index
-	 */
-	public synchronized void remove(int index) {
-		alFiles.remove(index);
-		ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
-	}
+  /**
+   * Remove a track from the playlist
+   * 
+   * @param index
+   */
+  public synchronized void remove(int index) {
+    alFiles.remove(index);
+    ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+  }
 
-	/**
-	 * Add a track from the playlist
-	 * 
-	 * @param index
-	 */
-	public synchronized void addFile(int index, File file) {
-		alFiles.add(index, file);
-		ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
-	}
+  /**
+   * Add a track from the playlist
+   * 
+   * @param index
+   */
+  public synchronized void addFile(int index, File file) {
+    alFiles.add(index, file);
+    ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+  }
 
-	/**
-	 * Add a file to this playlist
-	 * 
-	 * @param file
-	 */
-	public void addFile(File file) {
-		int index = alFiles.size();
-		addFile(index, file);
-	}
+  /**
+   * Add a file to this playlist
+   * 
+   * @param file
+   */
+  public void addFile(File file) {
+    int index = alFiles.size();
+    addFile(index, file);
+  }
 
-	/**
-	 * Add files to this playlist
-	 * 
-	 * @param alFilesToAdd
-	 */
-	public void addFiles(List<File> alFilesToAdd) {
-		try {
-			for (File file : alFilesToAdd) {
-				addFile(file);
-			}
-		} catch (Exception e) {
-			Log.error(e);
-		} finally {
-			//refresh playlist editor
-			ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-		}
-	}
+  /**
+   * Add files to this playlist
+   * 
+   * @param alFilesToAdd
+   */
+  public void addFiles(List<File> alFilesToAdd) {
+    try {
+      for (File file : alFilesToAdd) {
+        addFile(file);
+      }
+    } catch (Exception e) {
+      Log.error(e);
+    } finally {
+      // refresh playlist editor
+      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+    }
+  }
 }

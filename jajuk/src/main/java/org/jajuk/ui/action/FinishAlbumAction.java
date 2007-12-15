@@ -35,28 +35,26 @@ import java.util.Properties;
 
 public class FinishAlbumAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	FinishAlbumAction() {
-		super(
-				Messages.getString("JajukWindow.16"), IconLoader.ICON_FINISH_ALBUM, 
-				FIFO.getInstance().getCurrentItem() != null);
-		setShortDescription(Messages.getString("JajukWindow.32")); 
-	}
+  FinishAlbumAction() {
+    super(Messages.getString("JajukWindow.16"), IconLoader.ICON_FINISH_ALBUM, FIFO.getInstance()
+        .getCurrentItem() != null);
+    setShortDescription(Messages.getString("JajukWindow.32"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		StackItem item = FIFO.getInstance().getCurrentItem();// stores
-		// current item
-		FIFO.getInstance().clear(); // clear fifo
-		Directory dir = item.getFile().getDirectory();
-		// then re-add current item
-		FIFO.getInstance().push(
-				Util.createStackItems(dir.getFilesFromFile(item.getFile()),
-						item.isRepeat(), item.isUserLaunch()), true); 
-		FIFO.getInstance().computesPlanned(true); // update planned list
-		Properties properties = new Properties();
-		properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
-		ObservationManager.notify(new Event(EventSubject.EVENT_SPECIAL_MODE,
-				properties));
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    StackItem item = FIFO.getInstance().getCurrentItem();// stores
+    // current item
+    FIFO.getInstance().clear(); // clear fifo
+    Directory dir = item.getFile().getDirectory();
+    // then re-add current item
+    FIFO.getInstance().push(
+        Util.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(), item
+            .isUserLaunch()), true);
+    FIFO.getInstance().computesPlanned(true); // update planned list
+    Properties properties = new Properties();
+    properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
+    ObservationManager.notify(new Event(EventSubject.EVENT_SPECIAL_MODE, properties));
+  }
 }

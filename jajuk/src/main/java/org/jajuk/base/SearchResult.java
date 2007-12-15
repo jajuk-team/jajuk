@@ -25,81 +25,82 @@ package org.jajuk.base;
  */
 public class SearchResult implements Comparable {
 
-	/** Result type **/
-	public enum SearchResultType {FILE,WEBRADIO}
-	
-	/** The associated file */
-	File file;
+  /** Result type * */
+  public enum SearchResultType {
+    FILE, WEBRADIO
+  }
 
-	/** The associated web radio */
-	WebRadio radio;
+  /** The associated file */
+  File file;
 
-	/** Pre-calculated search string */
-	String sResu;
+  /** The associated web radio */
+  WebRadio radio;
 
-	public SearchResult(File file) {
-		this(file, file.toStringSearch());
-	}
+  /** Pre-calculated search string */
+  String sResu;
 
-	public SearchResult(File file, String sResu) {
-		this.file = file;
-		this.sResu = sResu;
-	}
-	
-	public SearchResult(WebRadio radio, String sResu) {
-		this.radio = radio;
-		this.sResu = sResu;
-	}
+  public SearchResult(File file) {
+    this(file, file.toStringSearch());
+  }
 
-	/**
-	 * Return hashcode, used during sorting
-	 */
-	public int hashCode() {
-		return sResu.hashCode();
-	}
+  public SearchResult(File file, String sResu) {
+    this.file = file;
+    this.sResu = sResu;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object o) {
-		SearchResult sr = (SearchResult) o;
-		return sResu.compareToIgnoreCase(sr.getResu());
-	}
+  public SearchResult(WebRadio radio, String sResu) {
+    this.radio = radio;
+    this.sResu = sResu;
+  }
 
-	/**
-	 * @return Returns the file.
-	 */
-	public File getFile() {
-		return file;
-	}
-	
-	/**
-	 * 
-	 * @return result type: file or web radio
-	 */
-	public SearchResultType getType(){
-		if (file != null){
-			return SearchResultType.FILE;
-		}
-		else{
-			return SearchResultType.WEBRADIO;
-		}
-	}
-	
-	/**
-	 * @return Returns the webradio.
-	 */
-	public WebRadio getWebradio() {
-		return radio;
-	}
+  /**
+   * Return hashcode, used during sorting
+   */
+  public int hashCode() {
+    return sResu.hashCode();
+  }
 
-	/**
-	 * @return Returns the sResu.
-	 */
-	public String getResu() {
-		return sResu;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo(Object o) {
+    SearchResult sr = (SearchResult) o;
+    return sResu.compareToIgnoreCase(sr.getResu());
+  }
+
+  /**
+   * @return Returns the file.
+   */
+  public File getFile() {
+    return file;
+  }
+
+  /**
+   * 
+   * @return result type: file or web radio
+   */
+  public SearchResultType getType() {
+    if (file != null) {
+      return SearchResultType.FILE;
+    } else {
+      return SearchResultType.WEBRADIO;
+    }
+  }
+
+  /**
+   * @return Returns the webradio.
+   */
+  public WebRadio getWebradio() {
+    return radio;
+  }
+
+  /**
+   * @return Returns the sResu.
+   */
+  public String getResu() {
+    return sResu;
+  }
 
 }

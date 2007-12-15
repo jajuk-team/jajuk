@@ -29,13 +29,13 @@ import java.util.Set;
  */
 public interface Observer {
 
-	/**
-	 * Action to be done when receiving an event with this ID
-	 * 
-	 * @param lEventID
-	 *            Event ID, maps a subject and details
-	 */
-	public void update(Event event);
+  /**
+   * Action to be done when receiving an event with this ID
+   * 
+   * @param lEventID
+   *          Event ID, maps a subject and details
+   */
+  public void update(Event event);
 
-	public Set<EventSubject> getRegistrationKeys();
+  public Set<EventSubject> getRegistrationKeys();
 }

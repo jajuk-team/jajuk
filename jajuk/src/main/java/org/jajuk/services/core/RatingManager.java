@@ -33,59 +33,61 @@ import org.jajuk.util.log.Log;
  * <p>
  * It exists for performance reasons
  * </p>
- * <p>Singleton<p>
+ * <p>
+ * Singleton
+ * <p>
  */
 public class RatingManager extends Thread implements ITechnicalStrings {
 
-	private static RatingManager self;
-	
-	/**
-	 * Flag the fact a rate has change for a track, used by bestof view refresh
-	 * for perfs
-	 */
-	private static boolean bRateHasChanged = true;
+  private static RatingManager self;
 
-	private RatingManager() {
-		setPriority(Thread.MIN_PRIORITY);
-	}
-	
-	public static RatingManager getInstance(){
-		if (self == null){
-			self = new RatingManager();
-		}
-		return self;
-	}
+  /**
+   * Flag the fact a rate has change for a track, used by bestof view refresh
+   * for perfs
+   */
+  private static boolean bRateHasChanged = true;
 
-	public void run() {
-		while (!Main.bExiting) {
-			// Computes every 10 mins, until jajuk ends
-			try {
-				Thread.sleep(600000);
-			} catch (InterruptedException e) {
-				Log.error(e);
-			}
-			if (bRateHasChanged) {
-				// refresh to update rates
-				ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
-				bRateHasChanged = false;
-			}
+  private RatingManager() {
+    setPriority(Thread.MIN_PRIORITY);
+  }
 
-		}
-	}
+  public static RatingManager getInstance() {
+    if (self == null) {
+      self = new RatingManager();
+    }
+    return self;
+  }
 
-	/**
-	 * @return Returns the bRateHasChanged.
-	 */
-	public static boolean hasRateChanged() {
-		return bRateHasChanged;
-	}
+  public void run() {
+    while (!Main.bExiting) {
+      // Computes every 10 mins, until jajuk ends
+      try {
+        Thread.sleep(600000);
+      } catch (InterruptedException e) {
+        Log.error(e);
+      }
+      if (bRateHasChanged) {
+        // refresh to update rates
+        ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
+        bRateHasChanged = false;
+      }
 
-	/**
-	 * @param rateHasChanged
-	 *            The bRateHasChanged to set.
-	 */
-	public static void setRateHasChanged(boolean rateHasChanged) {
-		bRateHasChanged = rateHasChanged;
-	}
+    }
+  }
+
+  /**
+   * @return Returns the bRateHasChanged.
+   */
+  public static boolean hasRateChanged() {
+    return bRateHasChanged;
+  }
+
+  /**
+   * @param rateHasChanged
+   *          The bRateHasChanged to set.
+   */
+  public static void setRateHasChanged(boolean rateHasChanged) {
+    bRateHasChanged = rateHasChanged;
+  }
 
 }

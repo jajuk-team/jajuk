@@ -22,25 +22,24 @@ import org.w3c.dom.Element;
 
 public class AudioScrobblerTrack {
 
-	private String title;
-	private String url;
-	
-	protected static AudioScrobblerTrack getTrack(Element t) {
-		AudioScrobblerTrack track = new AudioScrobblerTrack();
-		
-		track.title = t.getAttribute("title");
-		track.url = ext.XMLUtils.getChildElementContent(t, "url");
-		
-		return track;
-	}
-	
-	
-	public String getTitle() {
-		return title;
-	}
-	public String getUrl() {
-		return url;
-	}
-	
-	
+  private String title;
+  private String url;
+
+  protected static AudioScrobblerTrack getTrack(Element t) {
+    AudioScrobblerTrack track = new AudioScrobblerTrack();
+
+    track.title = t.getAttribute("title");
+    track.url = ext.XMLUtils.getChildElementContent(t, "url");
+
+    return track;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
 }

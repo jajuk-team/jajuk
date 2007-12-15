@@ -33,24 +33,24 @@ import javax.swing.UIManager;
  */
 public class ToggleLink extends JXHyperlink {
 
-	private static final long serialVersionUID = 8652043694603450888L;
+  private static final long serialVersionUID = 8652043694603450888L;
 
-	/**
-	 * @param text hyperlink text
-	 * @param panel the associated collapsible panel
-	 */
-	public ToggleLink(String text,JXCollapsiblePane panel) {
-		// get the built-in toggle action
-		Action toggleAction = panel.getActionMap().get(JXCollapsiblePane.TOGGLE_ACTION);
-		setAction(toggleAction);
-		setText(text);
-		setFont(getFont().deriveFont(Font.BOLD));
-		// use the collapse/expand icons from the JTree UI
-		toggleAction.putValue(JXCollapsiblePane.COLLAPSE_ICON, UIManager
-				.getIcon("Tree.expandedIcon"));
-		toggleAction.putValue(JXCollapsiblePane.EXPAND_ICON, UIManager
-				.getIcon("Tree.collapsedIcon"));
-		setFocusPainted(false);
-	}
+  /**
+   * @param text
+   *          hyperlink text
+   * @param panel
+   *          the associated collapsible panel
+   */
+  public ToggleLink(String text, JXCollapsiblePane panel) {
+    // get the built-in toggle action
+    Action toggleAction = panel.getActionMap().get(JXCollapsiblePane.TOGGLE_ACTION);
+    setAction(toggleAction);
+    setText(text);
+    setFont(getFont().deriveFont(Font.BOLD));
+    // use the collapse/expand icons from the JTree UI
+    toggleAction.putValue(JXCollapsiblePane.COLLAPSE_ICON, UIManager.getIcon("Tree.expandedIcon"));
+    toggleAction.putValue(JXCollapsiblePane.EXPAND_ICON, UIManager.getIcon("Tree.collapsedIcon"));
+    setFocusPainted(false);
+  }
 
 }

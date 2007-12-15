@@ -30,21 +30,21 @@ import java.awt.event.ActionEvent;
 
 public class RestoreViewsAction extends ActionBase implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	RestoreViewsAction() {
-		super(Messages.getString("JajukJMenuBar.17"), IconLoader.ICON_REFRESH, true);
-		setShortDescription(Messages.getString("JajukJMenuBar.17"));
-	}
+  RestoreViewsAction() {
+    super(Messages.getString("JajukJMenuBar.17"), IconLoader.ICON_REFRESH, true);
+    setShortDescription(Messages.getString("JajukJMenuBar.17"));
+  }
 
-	public void perform(final ActionEvent e) throws JajukException {
-		new Thread() {
-			public void run() {
-				IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-				// Restore local or global views
-				perspective.restoreDefaults();
-			}
-		}.start();
+  public void perform(final ActionEvent e) throws JajukException {
+    new Thread() {
+      public void run() {
+        IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+        // Restore local or global views
+        perspective.restoreDefaults();
+      }
+    }.start();
 
-	}
+  }
 }

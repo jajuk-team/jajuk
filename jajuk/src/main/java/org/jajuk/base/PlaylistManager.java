@@ -36,272 +36,267 @@ import javax.swing.JOptionPane;
  * Convenient class to manage playlists
  */
 public class PlaylistManager extends ItemManager {
-	/** Self instance */
-	private static PlaylistManager singleton;
+  /** Self instance */
+  private static PlaylistManager singleton;
 
-	/**
-	 * No constructor available, only static access
-	 */
-	private PlaylistManager() {
-		super();
-		// ---register properties---
-		// ID
-		registerProperty(new PropertyMetaInformation(XML_ID, false, true,
-				false, false, false, String.class, null));
-		// Playlist file
-		registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES, false,
-				true, true, false, false, String.class, null));
-	}
+  /**
+   * No constructor available, only static access
+   */
+  private PlaylistManager() {
+    super();
+    // ---register properties---
+    // ID
+    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+        String.class, null));
+    // Playlist file
+    registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES, false, true, true, false,
+        false, String.class, null));
+  }
 
-	/**
-	 * @return singleton
-	 */
-	public static PlaylistManager getInstance() {
-		if (singleton == null) {
-			singleton = new PlaylistManager();
-		}
-		return singleton;
-	}
+  /**
+   * @return singleton
+   */
+  public static PlaylistManager getInstance() {
+    if (singleton == null) {
+      singleton = new PlaylistManager();
+    }
+    return singleton;
+  }
 
-	/**
-	 * Register an Playlist
-	 * 
-	 * @param file :
-	 *            playlist file
-	 */
-	public Playlist registerPlaylist(PlaylistFile plFile) {
-		return registerPlaylist(createID(plFile), plFile);
-	}
+  /**
+   * Register an Playlist
+   * 
+   * @param file :
+   *          playlist file
+   */
+  public Playlist registerPlaylist(PlaylistFile plFile) {
+    return registerPlaylist(createID(plFile), plFile);
+  }
 
-	/**
-	 * @param plf
-	 *            playlist file
-	 * @return ItemManager ID
-	 */
-	protected static String createID(PlaylistFile plf) {
-		return plf.getHashcode();
-	}
+  /**
+   * @param plf
+   *          playlist file
+   * @return ItemManager ID
+   */
+  protected static String createID(PlaylistFile plf) {
+    return plf.getHashcode();
+  }
 
-	/**
-	 * Register an Playlist with a known id
-	 * 
-	 * @param file :
-	 *            playlist file
-	 */
-	public Playlist registerPlaylist(String sId, PlaylistFile plFile) {
-		synchronized (PlaylistManager.getInstance().getLock()) {
-			if (hmItems.containsKey(sId)) { // playlist already exist, add a
-				// file
-				Playlist playlist = (Playlist) hmItems.get(sId);
-				if (!playlist.getPlaylistFiles().contains(plFile)) {
-					playlist.addFile(plFile);
-				}
-				return playlist;
-			} else { // new playlist
-				// firstly, make sure the playlist file is not already
-				// referenced by another playlist
-				boolean bPresence = false;
-				for (Item item : getItems()) {
-					Playlist pl = (Playlist) item;
-					if (pl.getPlaylistFiles().contains(plFile)) {
-						bPresence = true;
-					}
-				}
-				if (bPresence) {
-					return null;
-				}
-				Playlist playlist = null;
-				playlist = new Playlist(sId, plFile);
-				playlist.removeProperty(XML_NAME);// no name attribute for
-				// playlists
-				hmItems.put(sId, playlist);
-				return playlist;
-			}
-		}
-	}
+  /**
+   * Register an Playlist with a known id
+   * 
+   * @param file :
+   *          playlist file
+   */
+  public Playlist registerPlaylist(String sId, PlaylistFile plFile) {
+    synchronized (PlaylistManager.getInstance().getLock()) {
+      if (hmItems.containsKey(sId)) { // playlist already exist, add a
+        // file
+        Playlist playlist = (Playlist) hmItems.get(sId);
+        if (!playlist.getPlaylistFiles().contains(plFile)) {
+          playlist.addFile(plFile);
+        }
+        return playlist;
+      } else { // new playlist
+        // firstly, make sure the playlist file is not already
+        // referenced by another playlist
+        boolean bPresence = false;
+        for (Item item : getItems()) {
+          Playlist pl = (Playlist) item;
+          if (pl.getPlaylistFiles().contains(plFile)) {
+            bPresence = true;
+          }
+        }
+        if (bPresence) {
+          return null;
+        }
+        Playlist playlist = null;
+        playlist = new Playlist(sId, plFile);
+        playlist.removeProperty(XML_NAME);// no name attribute for
+        // playlists
+        hmItems.put(sId, playlist);
+        return playlist;
+      }
+    }
+  }
 
-	public void removePlaylistFile(PlaylistFile plf) {
-		synchronized (PlaylistManager.getInstance().getLock()) {
-			Playlist pl = getPlayList(plf);
-			if (pl == null) {
-				return;
-			}
-			pl.removePlaylistFile(plf);
-			plf.getDirectory().removePlaylistFile(plf);
-			if (pl.getPlaylistFiles().size() == 0) {
-				removeItem(pl.getID());
-			}
-		}
-	}
+  public void removePlaylistFile(PlaylistFile plf) {
+    synchronized (PlaylistManager.getInstance().getLock()) {
+      Playlist pl = getPlayList(plf);
+      if (pl == null) {
+        return;
+      }
+      pl.removePlaylistFile(plf);
+      plf.getDirectory().removePlaylistFile(plf);
+      if (pl.getPlaylistFiles().size() == 0) {
+        removeItem(pl.getID());
+      }
+    }
+  }
 
-	@SuppressWarnings("unchecked") 
-	public void removePlaylist(Playlist pl) {
-		synchronized (PlaylistManager.getInstance().getLock()) {
-			// file deletion confirmation
-			if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
-				String sFileToDelete = ""; 
-				String sMessage = Messages.getString("Confirmation_delete"); 
-				for (PlaylistFile plf : pl.getPlaylistFiles()) {
-					sFileToDelete = plf.getDirectory().getFio()
-							.getAbsoluteFile().toString()
-							+ java.io.File.separatorChar + pl.getName(); 
-					sMessage += "\n" + sFileToDelete;   
-				}
-				int i = Messages.getChoice(sMessage,
-						JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); 
-				if (i == JOptionPane.YES_OPTION) {
-					boolean bUnmountedItems = false;
-					// take a shallow copy of the array to avoid concurrency
-					// exception
-					ArrayList<PlaylistFile> alFiles = (ArrayList<PlaylistFile>) pl
-							.getPlaylistFiles().clone();
-					for (int j = 0; j < alFiles.size(); j++) {
-						PlaylistFile plf = alFiles.get(j);
-						java.io.File fileToDelete = plf.getFio();
-						if (fileToDelete.exists()) {
-							fileToDelete.delete();
-							// check that file has been really deleted
-							// (sometimes, we get no exception)
-							if (fileToDelete.exists()) {
-								Log.error("131", new JajukException(131)); 
-								Messages.showErrorMessage(131); 
-								continue;
-							}
-							PlaylistFileManager.getInstance().removeItem(
-									plf.getID());
-							removePlaylistFile(plf);
-						} else {
-							bUnmountedItems = true;
-						}
-					}
-					if (pl.getPlaylistFiles().size() == 0) {
-						removeItem(pl.getID());
-					}
-					if (bUnmountedItems) {
-						Messages.showErrorMessage(138); 
-					}
-				}
-			}
-		}
-	}
+  @SuppressWarnings("unchecked")
+  public void removePlaylist(Playlist pl) {
+    synchronized (PlaylistManager.getInstance().getLock()) {
+      // file deletion confirmation
+      if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+        String sFileToDelete = "";
+        String sMessage = Messages.getString("Confirmation_delete");
+        for (PlaylistFile plf : pl.getPlaylistFiles()) {
+          sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
+              + java.io.File.separatorChar + pl.getName();
+          sMessage += "\n" + sFileToDelete;
+        }
+        int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+        if (i == JOptionPane.YES_OPTION) {
+          boolean bUnmountedItems = false;
+          // take a shallow copy of the array to avoid concurrency
+          // exception
+          ArrayList<PlaylistFile> alFiles = (ArrayList<PlaylistFile>) pl.getPlaylistFiles().clone();
+          for (int j = 0; j < alFiles.size(); j++) {
+            PlaylistFile plf = alFiles.get(j);
+            java.io.File fileToDelete = plf.getFio();
+            if (fileToDelete.exists()) {
+              fileToDelete.delete();
+              // check that file has been really deleted
+              // (sometimes, we get no exception)
+              if (fileToDelete.exists()) {
+                Log.error("131", new JajukException(131));
+                Messages.showErrorMessage(131);
+                continue;
+              }
+              PlaylistFileManager.getInstance().removeItem(plf.getID());
+              removePlaylistFile(plf);
+            } else {
+              bUnmountedItems = true;
+            }
+          }
+          if (pl.getPlaylistFiles().size() == 0) {
+            removeItem(pl.getID());
+          }
+          if (bUnmountedItems) {
+            Messages.showErrorMessage(138);
+          }
+        }
+      }
+    }
+  }
 
-	/**
-	 * Update associated playlist after a change into the playlist. A playlist
-	 * can only map playlists with exactly the same content
-	 * 
-	 * @param plf
-	 *            changed playlist file
-	 */
-	protected void refreshPlaylist(PlaylistFile plf) {
-		Playlist pl = getPlayList(plf);
-		// check if a change really occured
-		if (pl.getID().equals(plf.getHashcode())) {
-			return;
-		}
-		pl.removePlaylistFile(plf);
-		// if no more mapped playlist files, remove this playlist
-		if (pl.getPlaylistFiles().size() == 0) {
-			removeItem(pl.getID());
-		}
-		// Register the new playlist
-		registerPlaylist(plf);
-	}
+  /**
+   * Update associated playlist after a change into the playlist. A playlist can
+   * only map playlists with exactly the same content
+   * 
+   * @param plf
+   *          changed playlist file
+   */
+  protected void refreshPlaylist(PlaylistFile plf) {
+    Playlist pl = getPlayList(plf);
+    // check if a change really occured
+    if (pl.getID().equals(plf.getHashcode())) {
+      return;
+    }
+    pl.removePlaylistFile(plf);
+    // if no more mapped playlist files, remove this playlist
+    if (pl.getPlaylistFiles().size() == 0) {
+      removeItem(pl.getID());
+    }
+    // Register the new playlist
+    registerPlaylist(plf);
+  }
 
-	/**
-	 * Perform a playlist cleanup : delete useless items
-	 * 
-	 */
-	public void cleanup() {
-		synchronized (PlaylistManager.getInstance().getLock()) {
-			Iterator itPlaylists = hmItems.values().iterator();
+  /**
+   * Perform a playlist cleanup : delete useless items
+   * 
+   */
+  public void cleanup() {
+    synchronized (PlaylistManager.getInstance().getLock()) {
+      Iterator itPlaylists = hmItems.values().iterator();
 
-			while (itPlaylists.hasNext()) {
-				Playlist playlist = (Playlist) itPlaylists.next();
-				Iterator itPlaylistFiles = playlist.getPlaylistFiles()
-						.iterator();
-				while (itPlaylistFiles.hasNext()) {
-					PlaylistFile plf = (PlaylistFile) itPlaylistFiles.next();
-					if (PlaylistFileManager.getInstance().getPlaylistFileByID(
-							plf.getID()) == null) {
-						itPlaylistFiles.remove();
-					}
-				}
-				if (playlist.getPlaylistFiles().size() == 0) {
-					itPlaylists.remove();
-				}
-			}
-		}
-	}
+      while (itPlaylists.hasNext()) {
+        Playlist playlist = (Playlist) itPlaylists.next();
+        Iterator itPlaylistFiles = playlist.getPlaylistFiles().iterator();
+        while (itPlaylistFiles.hasNext()) {
+          PlaylistFile plf = (PlaylistFile) itPlaylistFiles.next();
+          if (PlaylistFileManager.getInstance().getPlaylistFileByID(plf.getID()) == null) {
+            itPlaylistFiles.remove();
+          }
+        }
+        if (playlist.getPlaylistFiles().size() == 0) {
+          itPlaylists.remove();
+        }
+      }
+    }
+  }
 
-	/**
-	 * Return playlist associated with a given playlist file
-	 * 
-	 * @param plfi
-	 * @return the playlist or null if none associated playlist
-	 */
-	public Playlist getPlaylist(PlaylistFile plf) {
-		synchronized (getLock()) {
-			Iterator it = hmItems.values().iterator();
-			while (it.hasNext()) {
-				Playlist pl = (Playlist) it.next();
-				if (pl.getPlaylistFiles().contains(plf)) {
-					return pl;
-				}
-			}
-			return null;
-		}
-	}
+  /**
+   * Return playlist associated with a given playlist file
+   * 
+   * @param plfi
+   * @return the playlist or null if none associated playlist
+   */
+  public Playlist getPlaylist(PlaylistFile plf) {
+    synchronized (getLock()) {
+      Iterator it = hmItems.values().iterator();
+      while (it.hasNext()) {
+        Playlist pl = (Playlist) it.next();
+        if (pl.getPlaylistFiles().contains(plf)) {
+          return pl;
+        }
+      }
+      return null;
+    }
+  }
 
-	/**
-	 * 
-	 * @param plf
-	 * @return pl ylist for a given playlist file
-	 */
-	public Playlist getPlayList(PlaylistFile plf) {
-		synchronized (PlaylistManager.getInstance().getLock()) {
-			Iterator it = hmItems.values().iterator();
+  /**
+   * 
+   * @param plf
+   * @return pl ylist for a given playlist file
+   */
+  public Playlist getPlayList(PlaylistFile plf) {
+    synchronized (PlaylistManager.getInstance().getLock()) {
+      Iterator it = hmItems.values().iterator();
 
-			while (it.hasNext()) {
-				Playlist pl = (Playlist) it.next();
-				if (pl.getPlaylistFiles().contains(plf)) {
-					return pl;
-				}
-			}
-			return null;
-		}
-	}
+      while (it.hasNext()) {
+        Playlist pl = (Playlist) it.next();
+        if (pl.getPlaylistFiles().contains(plf)) {
+          return pl;
+        }
+      }
+      return null;
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.ItemManager#getIdentifier()
-	 */
-	public String getLabel() {
-		return XML_PLAYLISTS;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.ItemManager#getIdentifier()
+   */
+  public String getLabel() {
+    return XML_PLAYLISTS;
+  }
 
-	/**
-	 * @param sID
-	 *            Item ID
-	 * @return item
-	 */
-	public Playlist getPlaylistByID(String sID) {
-		synchronized (getLock()) {
-			return (Playlist) hmItems.get(sID);
-		}
-	}
+  /**
+   * @param sID
+   *          Item ID
+   * @return item
+   */
+  public Playlist getPlaylistByID(String sID) {
+    synchronized (getLock()) {
+      return (Playlist) hmItems.get(sID);
+    }
+  }
 
-	/**
-	 * 
-	 * @return playlists list
-	 */
-	public Set<Playlist> getPlayLists() {
-		Set<Playlist> playListSet = new LinkedHashSet<Playlist>();
-		synchronized (getLock()) {
-			for (Item item : getItems()) {
-				playListSet.add((Playlist) item);
-			}
-		}
-		return playListSet;
-	}
+  /**
+   * 
+   * @return playlists list
+   */
+  public Set<Playlist> getPlayLists() {
+    Set<Playlist> playListSet = new LinkedHashSet<Playlist>();
+    synchronized (getLock()) {
+      for (Item item : getItems()) {
+        playListSet.add((Playlist) item);
+      }
+    }
+    return playListSet;
+  }
 }

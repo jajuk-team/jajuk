@@ -267,7 +267,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
     jtfValue.addKeyListener(new KeyAdapter() {
       public void keyReleased(KeyEvent e) {
-        //Ignore escape press, they can come from popup closing
+        // Ignore escape press, they can come from popup closing
         if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
           bNeedSearch = true;
           lDateTyped = System.currentTimeMillis();

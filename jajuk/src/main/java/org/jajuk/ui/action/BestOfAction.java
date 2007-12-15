@@ -34,27 +34,26 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class BestOfAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	BestOfAction() {
-		super(
-				Messages.getString("JajukWindow.7"), IconLoader.ICON_BESTOF, true); 
-		setShortDescription(Messages.getString("JajukWindow.24")); 
-	}
+  BestOfAction() {
+    super(Messages.getString("JajukWindow.7"), IconLoader.ICON_BESTOF, true);
+    setShortDescription(Messages.getString("JajukWindow.24"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
-				.getGlobalBestofPlaylist(), ambience);
-		//For perfs (mainly playlist editor view refresh), we set a ceil for tracks number
-		if (alToPlay.size() > NB_TRACKS_ON_ACTION){
-			alToPlay = (List<File>)alToPlay.subList(0, NB_TRACKS_ON_ACTION);
-		}
-		FIFO.getInstance().push(
-				Util.createStackItems(alToPlay, ConfigurationManager
-						.getBoolean(CONF_STATE_REPEAT), false), false);
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
+    List<File> alToPlay = Util.filterByAmbience(
+        FileManager.getInstance().getGlobalBestofPlaylist(), ambience);
+    // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
+    // number
+    if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
+      alToPlay = (List<File>) alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+    }
+    FIFO.getInstance().push(
+        Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),
+        false);
+  }
 }

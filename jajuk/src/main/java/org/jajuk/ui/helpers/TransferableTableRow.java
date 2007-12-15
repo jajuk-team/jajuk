@@ -31,53 +31,51 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * Transferable table row ( for DND )
  */
-public class TransferableTableRow extends DefaultMutableTreeNode implements
-		Transferable {
-	private static final long serialVersionUID = 1L;
+public class TransferableTableRow extends DefaultMutableTreeNode implements Transferable {
+  private static final long serialVersionUID = 1L;
 
-	public static final DataFlavor ROW_FLAVOR = new DataFlavor(
-			DataFlavor.javaJVMLocalObjectMimeType, "Row"); 
+  public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
+      "Row");
 
-	private Object oData;
+  private Object oData;
 
-	public TransferableTableRow(Object oData) {
-		this.oData = oData;
-	}
+  public TransferableTableRow(Object oData) {
+    this.oData = oData;
+  }
 
-	public Object getData() {
-		return oData;
-	}
+  public Object getData() {
+    return oData;
+  }
 
-	private DataFlavor[] flavors = { ROW_FLAVOR };
+  private DataFlavor[] flavors = { ROW_FLAVOR };
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
-	 */
-	public DataFlavor[] getTransferDataFlavors() {
-		return flavors;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
+   */
+  public DataFlavor[] getTransferDataFlavors() {
+    return flavors;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
-	 */
-	public boolean isDataFlavorSupported(DataFlavor flavor) {
-		return Arrays.asList(flavors).contains(flavor);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
+   */
+  public boolean isDataFlavorSupported(DataFlavor flavor) {
+    return Arrays.asList(flavors).contains(flavor);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
-	 */
-	public Object getTransferData(DataFlavor flavor)
-			throws UnsupportedFlavorException, IOException {
-		if (flavor == ROW_FLAVOR) {
-			return this;
-		}
-		throw new UnsupportedFlavorException(flavor);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
+   */
+  public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+    if (flavor == ROW_FLAVOR) {
+      return this;
+    }
+    throw new UnsupportedFlavorException(flavor);
+  }
 }

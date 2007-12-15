@@ -22,16 +22,16 @@ package org.jajuk.util.filters;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *
+ * 
  * XMLfilter
  */
 public class XMLFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static XMLFilter  self  = null;
+  protected static XMLFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static XMLFilter getInstance() {

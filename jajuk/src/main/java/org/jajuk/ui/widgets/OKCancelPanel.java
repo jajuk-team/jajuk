@@ -33,49 +33,49 @@ import javax.swing.JPanel;
  */
 public class OKCancelPanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private JajukButton jbOk;
+  private JajukButton jbOk;
 
-	private JajukButton jbCancel;
+  private JajukButton jbCancel;
 
-	/** Associated action listener */
-	ActionListener al;
+  /** Associated action listener */
+  ActionListener al;
 
-	public OKCancelPanel(ActionListener al) {
-		this.al = al;
-		// buttons
-		double[][] dSize = {
-				{ TableLayout.TRAILING, TableLayout.FILL, TableLayout.TRAILING,
-						TableLayout.FILL, TableLayout.TRAILING }, { TableLayout.PREFERRED } };
-		setLayout(new TableLayout(dSize));
-		jbOk = new JajukButton(Messages.getString("Ok")); 
-		jbOk.addActionListener(al);
-		jbCancel = new JajukButton(Messages.getString("Cancel")); 
-		jbCancel.addActionListener(al);
-		add(jbOk, "1,0"); 
-		add(jbCancel, "3,0"); 
-	}
+  public OKCancelPanel(ActionListener al) {
+    this.al = al;
+    // buttons
+    double[][] dSize = {
+        { TableLayout.TRAILING, TableLayout.FILL, TableLayout.TRAILING, TableLayout.FILL,
+            TableLayout.TRAILING }, { TableLayout.PREFERRED } };
+    setLayout(new TableLayout(dSize));
+    jbOk = new JajukButton(Messages.getString("Ok"));
+    jbOk.addActionListener(al);
+    jbCancel = new JajukButton(Messages.getString("Cancel"));
+    jbCancel.addActionListener(al);
+    add(jbOk, "1,0");
+    add(jbCancel, "3,0");
+  }
 
-	/**
-	 * OK Cancel panel with given button names
-	 * 
-	 * @param al
-	 * @param sOKTitle
-	 * @param sCancelTitle
-	 */
-	public OKCancelPanel(ActionListener al, String sOKTitle, String sCancelTitle) {
-		this(al);
-		jbOk.setText(sOKTitle);
-		jbCancel.setText(sCancelTitle);
-	}
+  /**
+   * OK Cancel panel with given button names
+   * 
+   * @param al
+   * @param sOKTitle
+   * @param sCancelTitle
+   */
+  public OKCancelPanel(ActionListener al, String sOKTitle, String sCancelTitle) {
+    this(al);
+    jbOk.setText(sOKTitle);
+    jbCancel.setText(sCancelTitle);
+  }
 
-	public JajukButton getOKButton() {
-		return jbOk;
-	}
+  public JajukButton getOKButton() {
+    return jbOk;
+  }
 
-	public JajukButton getCancelButton() {
-		return jbCancel;
-	}
+  public JajukButton getCancelButton() {
+    return jbCancel;
+  }
 
 }

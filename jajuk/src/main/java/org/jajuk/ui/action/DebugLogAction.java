@@ -42,62 +42,63 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class DebugLogAction extends ActionBase {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	DebugLogAction() {
-		super(Messages.getString("JajukJMenuBar.23"), IconLoader.ICON_TRACES, true);
-		setShortDescription(Messages.getString("JajukJMenuBar.23")); 
-	}
+  DebugLogAction() {
+    super(Messages.getString("JajukJMenuBar.23"), IconLoader.ICON_TRACES, true);
+    setShortDescription(Messages.getString("JajukJMenuBar.23"));
+  }
 
-	public void perform(ActionEvent evt) {
-		final JEditorPane text = new JEditorPane("text/html", getTraces()); 
-		text.setEditable(false);
-		text.setMargin(new Insets(10, 10, 10, 10));
-		text.setOpaque(true);
-		text.setBackground(Color.WHITE);
-		text.setForeground(Color.DARK_GRAY);
-		text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD)); 
-		final JDialog dialog = new JDialog(Main.getWindow(), Messages.getString("DebugLogAction.0"), false);
-		JPanel jp = new JPanel();
-		double[][] size = new double[][] { { 0.5f,20,0.5f }, { TableLayout.FILL, 10, 20, 5 } };
-		jp.setLayout(new TableLayout(size));
-		JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"));
-		jbRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// Refresh traces
-				text.setText(getTraces());
-			}
-		});
-		JButton jbClose = new JButton(Messages.getString("Close"));
-		jbClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dialog.dispose();
-			}
-		});
-		jp.add(new JScrollPane(text), "0,0,2,0");
-		jp.add(jbRefresh, "0,2");
-		jp.add(jbClose, "2,2");
-		dialog.add(jp);
-		dialog.setPreferredSize(new Dimension(800, 600));
-		dialog.pack();
-		dialog.setLocationRelativeTo(Main.getWindow());
-		dialog.setVisible(true);
-	}
+  public void perform(ActionEvent evt) {
+    final JEditorPane text = new JEditorPane("text/html", getTraces());
+    text.setEditable(false);
+    text.setMargin(new Insets(10, 10, 10, 10));
+    text.setOpaque(true);
+    text.setBackground(Color.WHITE);
+    text.setForeground(Color.DARK_GRAY);
+    text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+    final JDialog dialog = new JDialog(Main.getWindow(), Messages.getString("DebugLogAction.0"),
+        false);
+    JPanel jp = new JPanel();
+    double[][] size = new double[][] { { 0.5f, 20, 0.5f }, { TableLayout.FILL, 10, 20, 5 } };
+    jp.setLayout(new TableLayout(size));
+    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"));
+    jbRefresh.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // Refresh traces
+        text.setText(getTraces());
+      }
+    });
+    JButton jbClose = new JButton(Messages.getString("Close"));
+    jbClose.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        dialog.dispose();
+      }
+    });
+    jp.add(new JScrollPane(text), "0,0,2,0");
+    jp.add(jbRefresh, "0,2");
+    jp.add(jbClose, "2,2");
+    dialog.add(jp);
+    dialog.setPreferredSize(new Dimension(800, 600));
+    dialog.pack();
+    dialog.setLocationRelativeTo(Main.getWindow());
+    dialog.setVisible(true);
+  }
 
-	/**
-	 * 
-	 * @return Current traces
-	 */
-	private String getTraces() {
-		// Store system properties
-		String traces = "<HTML><font color='green'><b>"
-				+ Util.getAnonymizedSystemProperties().toString() + "<br>"
-				+ Util.getAnonymizedJajukProperties().toString() + "</b></font><br>";
-		// Store last traces
-		for (String line : Log.getSpool()){
-			traces += line + "<br>";
-		}
-		traces += "</HTML>";
-		return traces;
-	}
+  /**
+   * 
+   * @return Current traces
+   */
+  private String getTraces() {
+    // Store system properties
+    String traces = "<HTML><font color='green'><b>"
+        + Util.getAnonymizedSystemProperties().toString() + "<br>"
+        + Util.getAnonymizedJajukProperties().toString() + "</b></font><br>";
+    // Store last traces
+    for (String line : Log.getSpool()) {
+      traces += line + "<br>";
+    }
+    traces += "</HTML>";
+    return traces;
+  }
 }

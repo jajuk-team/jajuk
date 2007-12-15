@@ -21,22 +21,22 @@ package org.jajuk.util.error;
 
 public class TimeOutException extends JajukException {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public TimeOutException(int code) {
-		super(code);
-	}
+  public TimeOutException(int code) {
+    super(code);
+  }
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param code
-	 *            Code of the current error.
-	 * @param pCause
-	 *            Original exception of the error.
-	 */
-	public TimeOutException(int code, Throwable pCause) {
-		super(code, pCause);
-	}
+  /**
+   * JajukException constructor.
+   * 
+   * @param code
+   *          Code of the current error.
+   * @param pCause
+   *          Original exception of the error.
+   */
+  public TimeOutException(int code, Throwable pCause) {
+    super(code, pCause);
+  }
 
 }

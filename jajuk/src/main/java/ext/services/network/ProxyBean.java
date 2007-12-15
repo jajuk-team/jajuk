@@ -22,49 +22,57 @@ import java.io.Serializable;
 
 public class ProxyBean implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4754871342674379108L;
-	public static final String HTTP_PROXY = "HTTP_PROXY";
-	public static final String SOCKS_PROXY = "SOCKS_PROXY";
-	
-	private String type;
-	private String url;
-	private int port;
-	private String user;
-	private String password;
-	
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public int getPort() {
-		return port;
-	}
-	public void setPort(int port) {
-		this.port = port;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getUser() {
-		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 4754871342674379108L;
+  public static final String HTTP_PROXY = "HTTP_PROXY";
+  public static final String SOCKS_PROXY = "SOCKS_PROXY";
+
+  private String type;
+  private String url;
+  private int port;
+  private String user;
+  private String password;
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public int getPort() {
+    return port;
+  }
+
+  public void setPort(int port) {
+    this.port = port;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public String getUser() {
+    return user;
+  }
+
+  public void setUser(String user) {
+    this.user = user;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
 }

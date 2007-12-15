@@ -25,15 +25,25 @@ import java.util.ArrayList;
 
 public interface AudioScrobblerListener {
 
-	public void notifyAlbumRetrieved(Track track);
-	public void notifyCoverRetrieved(AudioScrobblerAlbum album, Image cover);
-	public void notifyArtistImage(Image img);
-	public void notifyFinishGetSimilarArtist(AudioScrobblerArtist a, Image img);
-	public ArrayList<AudioScrobblerAlbum> getAlbums();
-	public void setAlbum(AudioScrobblerAlbum album);
-	public void setAlbums(ArrayList<AudioScrobblerAlbum> album);
-	public void setImage(Image img);
-	public void savePicture(Image img, Track track);
-	public void setLastAlbumRetrieved(String album);
-	public void setLastArtistRetrieved(String artist);
+  public void notifyAlbumRetrieved(Track track);
+
+  public void notifyCoverRetrieved(AudioScrobblerAlbum album, Image cover);
+
+  public void notifyArtistImage(Image img);
+
+  public void notifyFinishGetSimilarArtist(AudioScrobblerArtist a, Image img);
+
+  public ArrayList<AudioScrobblerAlbum> getAlbums();
+
+  public void setAlbum(AudioScrobblerAlbum album);
+
+  public void setAlbums(ArrayList<AudioScrobblerAlbum> album);
+
+  public void setImage(Image img);
+
+  public void savePicture(Image img, Track track);
+
+  public void setLastAlbumRetrieved(String album);
+
+  public void setLastArtistRetrieved(String artist);
 }

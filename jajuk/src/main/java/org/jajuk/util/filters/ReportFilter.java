@@ -22,16 +22,16 @@ package org.jajuk.util.filters;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *
+ * 
  * Report filter (.html or XML file)
  */
 public class ReportFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static ReportFilter  self  = null;
+  protected static ReportFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static ReportFilter getInstance() {

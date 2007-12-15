@@ -66,205 +66,193 @@ import javax.swing.JMenuItem;
  */
 public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	static JajukJMenuBar jjmb;
+  static JajukJMenuBar jjmb;
 
-	JMenu file;
+  JMenu file;
 
-	JMenuItem jmiFileOpen;
+  JMenuItem jmiFileOpen;
 
-	JajukFileChooser jfchooser;
+  JajukFileChooser jfchooser;
 
-	JMenuItem jmiFileExit;
+  JMenuItem jmiFileExit;
 
-	JMenu views;
+  JMenu views;
 
-	JMenuItem jmiRestoreDefaultViews;
+  JMenuItem jmiRestoreDefaultViews;
 
-	JMenuItem jmiRestoreDefaultViewsAllPerpsectives;
+  JMenuItem jmiRestoreDefaultViewsAllPerpsectives;
 
-	JMenu properties;
+  JMenu properties;
 
-	JMenuItem jmiNewProperty;
+  JMenuItem jmiNewProperty;
 
-	JMenuItem jmiRemoveProperty;
+  JMenuItem jmiRemoveProperty;
 
-	JMenu mode;
+  JMenu mode;
 
-	public JCheckBoxMenuItem jcbmiRepeat;
+  public JCheckBoxMenuItem jcbmiRepeat;
 
-	public JCheckBoxMenuItem jcbmiShuffle;
+  public JCheckBoxMenuItem jcbmiShuffle;
 
-	public JCheckBoxMenuItem jcbmiContinue;
+  public JCheckBoxMenuItem jcbmiContinue;
 
-	public JCheckBoxMenuItem jcbmiIntro;
+  public JCheckBoxMenuItem jcbmiIntro;
 
-	JMenu configuration;
+  JMenu configuration;
 
-	JMenuItem jmiDJ;
+  JMenuItem jmiDJ;
 
-	JMenuItem jmiAmbience;
+  JMenuItem jmiAmbience;
 
-	JMenuItem jmiWebradios;
+  JMenuItem jmiWebradios;
 
-	JMenuItem jmiWizard;
+  JMenuItem jmiWizard;
 
-	JMenuItem jmiOptions;
-	
-	public JCheckBoxMenuItem jmiUnmounted;
+  JMenuItem jmiOptions;
 
-	JMenu help;
+  public JCheckBoxMenuItem jmiUnmounted;
 
-	JMenuItem jmiHelp;
+  JMenu help;
 
-	JMenuItem jmiTipOfTheDay;
+  JMenuItem jmiHelp;
 
-	JMenuItem jmiQualityAgent;
+  JMenuItem jmiTipOfTheDay;
 
-	JMenuItem jmiTraces;
-	
-	JMenuItem jmiCheckforUpdates;
+  JMenuItem jmiQualityAgent;
 
-	JMenuItem jmiAbout;
+  JMenuItem jmiTraces;
 
-	/** Hashmap JCheckBoxMenuItem -> associated view */
-	public HashMap hmCheckboxView = new HashMap(10);
+  JMenuItem jmiCheckforUpdates;
 
-	private JajukJMenuBar() {
-		setAlignmentX(0.0f);
-		// File menu
-		file = new JMenu(Messages.getString("JajukJMenuBar.0")); 
+  JMenuItem jmiAbout;
 
-		jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
-		file.add(jmiFileExit);
+  /** Hashmap JCheckBoxMenuItem -> associated view */
+  public HashMap hmCheckboxView = new HashMap(10);
 
-		// Properties menu
-		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); 
-		jmiNewProperty = new JMenuItem(ActionManager
-				.getAction(CUSTOM_PROPERTIES_ADD));
-		jmiRemoveProperty = new JMenuItem(ActionManager
-				.getAction(CUSTOM_PROPERTIES_REMOVE));
-		properties.add(jmiNewProperty);
-		properties.add(jmiRemoveProperty);
+  private JajukJMenuBar() {
+    setAlignmentX(0.0f);
+    // File menu
+    file = new JMenu(Messages.getString("JajukJMenuBar.0"));
 
-		// View menu
-		views = new JMenu(Messages.getString("JajukJMenuBar.8")); 
-		jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
-		jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(ActionManager.getAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS));
-		
-		views.add(jmiRestoreDefaultViews);
-		views.add(jmiRestoreDefaultViewsAllPerpsectives);
-		views.addSeparator();
-		//Add the list of available views parsed in XML files at startup
-		JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
-		for (final Class view:ViewFactory.getKnownViews()){
-			JMenuItem jmi = null;
-			try {
-				jmi = new JMenuItem(((IView)view.newInstance()).getDesc(),IconLoader.ICON_LOGO_FRAME);
-			} catch (Exception e1) {
-				Log.error(e1);
-			} 
-			jmi.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					//Simply add the new view in the current perspective
-					PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
-							.getCurrentPerspective();
-					IView newView = ViewFactory.createView(view, current);
-					newView.initUI();
-					newView.setIsPopulated(true);
-					current.addDockable(newView);
-				}
-			});
-			jmViews.add(jmi);
-		}
-		views.add(jmViews);
+    jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
+    file.add(jmiFileExit);
 
-		// Mode menu
-		String modeText = Messages.getString("JajukJMenuBar.9"); 
-		mode = new JMenu(ActionUtil.strip(modeText));
-		mode.setMnemonic(ActionUtil.getMnemonic(modeText));
+    // Properties menu
+    properties = new JMenu(Messages.getString("JajukJMenuBar.5"));
+    jmiNewProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_ADD));
+    jmiRemoveProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_REMOVE));
+    properties.add(jmiNewProperty);
+    properties.add(jmiRemoveProperty);
 
-		jcbmiRepeat = new JCheckBoxMenuItem(ActionManager
-				.getAction(REPEAT_MODE_STATUS_CHANGE));
-		jcbmiRepeat.setSelected(ConfigurationManager
-				.getBoolean(CONF_STATE_REPEAT));
-		jcbmiShuffle = new JCheckBoxMenuItem(ActionManager
-				.getAction(SHUFFLE_MODE_STATUS_CHANGED));
-		jcbmiShuffle.setSelected(ConfigurationManager
-				.getBoolean(CONF_STATE_SHUFFLE));
-		jcbmiContinue = new JCheckBoxMenuItem(ActionManager
-				.getAction(CONTINUE_MODE_STATUS_CHANGED));
-		jcbmiContinue.setSelected(ConfigurationManager
-				.getBoolean(CONF_STATE_CONTINUE));
-		jcbmiIntro = new JCheckBoxMenuItem(ActionManager
-				.getAction(INTRO_MODE_STATUS_CHANGED));
-		jcbmiIntro.setSelected(ConfigurationManager
-				.getBoolean(CONF_STATE_INTRO));
+    // View menu
+    views = new JMenu(Messages.getString("JajukJMenuBar.8"));
+    jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
+    jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(ActionManager
+        .getAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS));
 
-		jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
-		jmiUnmounted.setSelected(ConfigurationManager
-				.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-		
-		mode.add(jmiUnmounted);
-		mode.add(jcbmiRepeat);
-		mode.add(jcbmiShuffle);
-		mode.add(jcbmiContinue);
-		mode.add(jcbmiIntro);
-		
-		// Configuration menu
-		configuration = new JMenu(Messages.getString("JajukJMenuBar.21")); 
-		jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
-		//Overwrite default icon
-		jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16x16);
-		jmiAmbience = new JMenuItem(ActionManager
-				.getAction(CONFIGURE_AMBIENCES));
-		jmiWebradios = new JMenuItem(ActionManager
-				.getAction(JajukAction.CONFIGURE_WEBRADIOS));
-		jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
-		jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
-		jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
-		configuration.add(jmiOptions);
-		configuration.add(jmiDJ);
-		configuration.add(jmiAmbience);
-		configuration.add(jmiWebradios);
-		configuration.add(jmiWizard);
-		
-		// Help menu
-		String helpText = Messages.getString("JajukJMenuBar.14"); 
-		help = new JMenu(ActionUtil.strip(helpText));
-		help.setMnemonic(ActionUtil.getMnemonic(helpText));
-		jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
-		jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
-		jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
-		jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
-		jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukAction.CHECK_FOR_UPDATES));
-		jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
+    views.add(jmiRestoreDefaultViews);
+    views.add(jmiRestoreDefaultViewsAllPerpsectives);
+    views.addSeparator();
+    // Add the list of available views parsed in XML files at startup
+    JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
+    for (final Class view : ViewFactory.getKnownViews()) {
+      JMenuItem jmi = null;
+      try {
+        jmi = new JMenuItem(((IView) view.newInstance()).getDesc(), IconLoader.ICON_LOGO_FRAME);
+      } catch (Exception e1) {
+        Log.error(e1);
+      }
+      jmi.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          // Simply add the new view in the current perspective
+          PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
+              .getCurrentPerspective();
+          IView newView = ViewFactory.createView(view, current);
+          newView.initUI();
+          newView.setIsPopulated(true);
+          current.addDockable(newView);
+        }
+      });
+      jmViews.add(jmi);
+    }
+    views.add(jmViews);
 
-		help.add(jmiHelp);
-		help.add(jmiTipOfTheDay);
-		//this works only for Linux and Windows
-		if (Util.isUnderLinux() || Util.isUnderWindows()){
-			jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
-			help.add(jmiQualityAgent);
-		}
-		help.add(jmiTraces);
-		help.add(jmiCheckforUpdates);
-		help.add(jmiAbout);
+    // Mode menu
+    String modeText = Messages.getString("JajukJMenuBar.9");
+    mode = new JMenu(ActionUtil.strip(modeText));
+    mode.setMnemonic(ActionUtil.getMnemonic(modeText));
 
-		// add menus
-		add(file);
-		add(views);
-		add(properties);
-		add(mode);
-		add(configuration);
-		add(help);
-	}
+    jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
+    jcbmiRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+    jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
+    jcbmiShuffle.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
+    jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE_STATUS_CHANGED));
+    jcbmiContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
+    jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
+    jcbmiIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
 
-	static public synchronized JajukJMenuBar getInstance() {
-		if (jjmb == null) {
-			jjmb = new JajukJMenuBar();
-		}
-		return jjmb;
-	}
+    jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
+    jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+
+    mode.add(jmiUnmounted);
+    mode.add(jcbmiRepeat);
+    mode.add(jcbmiShuffle);
+    mode.add(jcbmiContinue);
+    mode.add(jcbmiIntro);
+
+    // Configuration menu
+    configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
+    jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
+    // Overwrite default icon
+    jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16x16);
+    jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
+    jmiWebradios = new JMenuItem(ActionManager.getAction(JajukAction.CONFIGURE_WEBRADIOS));
+    jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
+    jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
+    jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
+    configuration.add(jmiOptions);
+    configuration.add(jmiDJ);
+    configuration.add(jmiAmbience);
+    configuration.add(jmiWebradios);
+    configuration.add(jmiWizard);
+
+    // Help menu
+    String helpText = Messages.getString("JajukJMenuBar.14");
+    help = new JMenu(ActionUtil.strip(helpText));
+    help.setMnemonic(ActionUtil.getMnemonic(helpText));
+    jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
+    jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
+    jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
+    jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
+    jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukAction.CHECK_FOR_UPDATES));
+    jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
+
+    help.add(jmiHelp);
+    help.add(jmiTipOfTheDay);
+    // this works only for Linux and Windows
+    if (Util.isUnderLinux() || Util.isUnderWindows()) {
+      jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
+      help.add(jmiQualityAgent);
+    }
+    help.add(jmiTraces);
+    help.add(jmiCheckforUpdates);
+    help.add(jmiAbout);
+
+    // add menus
+    add(file);
+    add(views);
+    add(properties);
+    add(mode);
+    add(configuration);
+    add(help);
+  }
+
+  static public synchronized JajukJMenuBar getInstance() {
+    if (jjmb == null) {
+      jjmb = new JajukJMenuBar();
+    }
+    return jjmb;
+  }
 }

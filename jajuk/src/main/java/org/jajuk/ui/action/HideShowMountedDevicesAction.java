@@ -31,20 +31,20 @@ import java.awt.event.ActionEvent;
 /**
  * Fast access to hide/show unmounted devices option
  */
-public class HideShowMountedDevicesAction extends ActionBase{
+public class HideShowMountedDevicesAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	HideShowMountedDevicesAction() {
-		super(Messages.getString("JajukJMenuBar.24"), true);  
-	}
+  HideShowMountedDevicesAction() {
+    super(Messages.getString("JajukJMenuBar.24"), true);
+  }
 
-	public void perform(ActionEvent evt) {
-		boolean bHideUnmountedStatus = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
-		ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, 
-				Boolean.toString(!bHideUnmountedStatus));
-		JajukJMenuBar.getInstance().jmiUnmounted.setSelected(!bHideUnmountedStatus);
-		ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-		ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-	}
+  public void perform(ActionEvent evt) {
+    boolean bHideUnmountedStatus = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
+    ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
+        .toString(!bHideUnmountedStatus));
+    JajukJMenuBar.getInstance().jmiUnmounted.setSelected(!bHideUnmountedStatus);
+    ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+  }
 }

@@ -31,56 +31,56 @@ import java.util.Set;
 
 public interface IPerspective {
 
-	/**
-	 * @return the perspective's id
-	 */
-	public String getID();
+  /**
+   * @return the perspective's id
+   */
+  public String getID();
 
-	public abstract String getDesc();
+  public abstract String getDesc();
 
-	/**
-	 * Return the icon's jar path
-	 * 
-	 * @return String Icon's jar path representing the perspective.
-	 */
-	public abstract URL getIconPath();
+  /**
+   * Return the icon's jar path
+   * 
+   * @return String Icon's jar path representing the perspective.
+   */
+  public abstract URL getIconPath();
 
-	/**
-	 * Set icon path inside jar
-	 * 
-	 * @param iconURL
-	 *            icon path inside jar
-	 */
-	public void setIconPath(URL iconURL);
+  /**
+   * Set icon path inside jar
+   * 
+   * @param iconURL
+   *          icon path inside jar
+   */
+  public void setIconPath(URL iconURL);
 
-	/**
-	 * @return Arraylist views registered in the perspective.
-	 */
-	public Set<IView> getViews();
+  /**
+   * @return Arraylist views registered in the perspective.
+   */
+  public Set<IView> getViews();
 
-	/**
-	 * @return Returns the desktop.
-	 */
-	public Container getContentPane();
+  /**
+   * @return Returns the desktop.
+   */
+  public Container getContentPane();
 
-	/**
-	 * Serialize the perspective
-	 */
-	public void commit() throws Exception;
+  /**
+   * Serialize the perspective
+   */
+  public void commit() throws Exception;
 
-	/**
-	 * Deserialize the perspective
-	 */
-	public void load() throws Exception;
+  /**
+   * Deserialize the perspective
+   */
+  public void load() throws Exception;
 
-	/**
-	 * Restaure defaults views
-	 */
-	public void restoreDefaults();
+  /**
+   * Restaure defaults views
+   */
+  public void restoreDefaults();
 
-	/**
-	 * As been selected flag
-	 */
-	public void setAsBeenSelected(boolean b);
+  /**
+   * As been selected flag
+   */
+  public void setAsBeenSelected(boolean b);
 
 }

@@ -30,28 +30,28 @@ import java.awt.event.ActionEvent;
 
 public class PlayPauseAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	PlayPauseAction() {
-		super(
-				Messages.getString("JajukWindow.10"), IconLoader.ICON_PAUSE, "ctrl P", false, true);  
-		setShortDescription(Messages.getString("JajukWindow.26")); 
-	}
+  PlayPauseAction() {
+    super(Messages.getString("JajukWindow.10"), IconLoader.ICON_PAUSE, "ctrl P", false, true);
+    setShortDescription(Messages.getString("JajukWindow.26"));
+  }
 
-	public void perform(ActionEvent evt) {
-		if (Player.isPaused()) { // player was paused, resume it
-			Player.resume();
-			ObservationManager.notify(new Event(
-					EventSubject.EVENT_PLAYER_RESUME)); // notify of this event
-			setIcon(IconLoader.ICON_PAUSE);
-			setName(Messages.getString("JajukWindow.10")); 
-		} else { // player is not paused, pause it
-			Player.pause();
-			ObservationManager
-					.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE)); 
-			// notify of this event
-			setIcon(IconLoader.ICON_PLAY);
-			setName(Messages.getString("JajukWindow.12")); 
-		}
-	}
+  public void perform(ActionEvent evt) {
+    if (Player.isPaused()) { // player was paused, resume it
+      Player.resume();
+      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME)); // notify
+      // of
+      // this
+      // event
+      setIcon(IconLoader.ICON_PAUSE);
+      setName(Messages.getString("JajukWindow.10"));
+    } else { // player is not paused, pause it
+      Player.pause();
+      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE));
+      // notify of this event
+      setIcon(IconLoader.ICON_PLAY);
+      setName(Messages.getString("JajukWindow.12"));
+    }
+  }
 }

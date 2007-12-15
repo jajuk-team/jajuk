@@ -29,110 +29,106 @@ import java.util.Comparator;
  * Mutli-method track comparator
  */
 public class TrackComparator implements Comparator<Track> {
-	/**
-	 * Sorting method
-	 */
-	private int iSortingMethod = 0;
+  /**
+   * Sorting method
+   */
+  private int iSortingMethod = 0;
 
-	/** sorting methods constants */
-	public static final int STYLE_AUTHOR_ALBUM = 0;
+  /** sorting methods constants */
+  public static final int STYLE_AUTHOR_ALBUM = 0;
 
-	public static final int AUTHOR_ALBUM = 1;
+  public static final int AUTHOR_ALBUM = 1;
 
-	public static final int ALBUM = 2;
+  public static final int ALBUM = 2;
 
-	public static final int YEAR_ALBUM = 3;
+  public static final int YEAR_ALBUM = 3;
 
-	public static final int DISCOVERY_ALBUM = 4;
+  public static final int DISCOVERY_ALBUM = 4;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param iSortingMethod
-	 *            Sorting method
-	 */
-	public TrackComparator(int iSortingMethod) {
-		this.iSortingMethod = iSortingMethod;
-	}
+  /**
+   * Constructor
+   * 
+   * @param iSortingMethod
+   *          Sorting method
+   */
+  public TrackComparator(int iSortingMethod) {
+    this.iSortingMethod = iSortingMethod;
+  }
 
-	/**
-	 * 
-	 * @param track
-	 * @return Hashcode string used to compare two tracks in accordance with the
-	 *         sorting method
-	 */
-	private String getCompareString(Track track) {
-		String sHashCompare = null;
-		// comparaison based on style, author, album, name and year to
-		// differenciate 2 tracks with all the same attributes
-		// note we need to use year because in sorted set, we must differenciate
-		// 2 tracks with different years
-		switch (iSortingMethod) {
-		// Style/author/album
-		case STYLE_AUTHOR_ALBUM:
-			sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
-					track.getAuthor().getName2())// need 2 spaces to make
-					// a right sorting (ex:
-					// Rock and Rock & Roll)
-					.append(track.getAlbum().getName2()) 
-					.append(track.getName()).toString(); 
-			break;
-		// Author/album
-		case AUTHOR_ALBUM:
-			// need 2 spaces to make a right sorting (ex: Rock and Rock & Roll)
-			sHashCompare = new StringBuilder().append(track.getAuthor().getName2()).append(
-					track.getAlbum().getName2()) 
-					.append(track.getName()).toString(); 
-			break;
-		// Album
-		case ALBUM:
-			sHashCompare = new StringBuilder().append(track.getAlbum().getName2()) 
-					.append(track.getName()).toString(); 
-			break;
-		// Year / album
-		case YEAR_ALBUM:
-			sHashCompare = new StringBuilder()
-					.append(Util.padNumber(track.getYear().getValue(), 10)) 
-					.append(track.getName()).toString(); 
-			break;
-		// discovery date / album
-		case DISCOVERY_ALBUM:
-			sHashCompare = new StringBuilder().append(
-					Util.getAdditionDateFormat().format(track.getAdditionDate())).append(
-					track.getAlbum().getName2()).append(track.getName()).toString(); 
-			break;
-		}
-		return sHashCompare;
-	}
+  /**
+   * 
+   * @param track
+   * @return Hashcode string used to compare two tracks in accordance with the
+   *         sorting method
+   */
+  private String getCompareString(Track track) {
+    String sHashCompare = null;
+    // comparaison based on style, author, album, name and year to
+    // differenciate 2 tracks with all the same attributes
+    // note we need to use year because in sorted set, we must differenciate
+    // 2 tracks with different years
+    switch (iSortingMethod) {
+    // Style/author/album
+    case STYLE_AUTHOR_ALBUM:
+      sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
+          track.getAuthor().getName2())// need 2 spaces to make
+          // a right sorting (ex:
+          // Rock and Rock & Roll)
+          .append(track.getAlbum().getName2()).append(track.getName()).toString();
+      break;
+    // Author/album
+    case AUTHOR_ALBUM:
+      // need 2 spaces to make a right sorting (ex: Rock and Rock & Roll)
+      sHashCompare = new StringBuilder().append(track.getAuthor().getName2()).append(
+          track.getAlbum().getName2()).append(track.getName()).toString();
+      break;
+    // Album
+    case ALBUM:
+      sHashCompare = new StringBuilder().append(track.getAlbum().getName2())
+          .append(track.getName()).toString();
+      break;
+    // Year / album
+    case YEAR_ALBUM:
+      sHashCompare = new StringBuilder().append(Util.padNumber(track.getYear().getValue(), 10))
+          .append(track.getName()).toString();
+      break;
+    // discovery date / album
+    case DISCOVERY_ALBUM:
+      sHashCompare = new StringBuilder().append(
+          Util.getAdditionDateFormat().format(track.getAdditionDate())).append(
+          track.getAlbum().getName2()).append(track.getName()).toString();
+      break;
+    }
+    return sHashCompare;
+  }
 
-	/**
-	 * Tracks compare
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
-	public int compare(Track track1, Track track2) {
-		if (track1.equals(track2)) {
-			return 0;
-		}
-		// if track # is given, sort by # in a same album, otherwise, sort
-		// alphabeticaly
-		if (track2.getAlbum().equals(track1.getAlbum())
-				&& track2.getAuthor().equals(track1.getAuthor())
-				&& track2.getStyle().equals(track1.getStyle())
-				&& (track1.getOrder() != track2.getOrder())) {
-			// do not use year as an album can contains tracks with
-			// different year but we want to keep order
-			return (int) (track1.getOrder() - track2.getOrder());
-		}
-		String sHashCompare = getCompareString(track1);
-		String sHashCompareOther = getCompareString(track2);
-		//never return 0 here, because bidimap needs to distinct items
-        int comp = sHashCompare.compareToIgnoreCase(sHashCompareOther);
-        if (comp == 0){
-        	return sHashCompare.compareTo(sHashCompareOther);
-        }
-        return comp;
-	}
+  /**
+   * Tracks compare
+   * 
+   * @param arg0
+   * @param arg1
+   * @return
+   */
+  public int compare(Track track1, Track track2) {
+    if (track1.equals(track2)) {
+      return 0;
+    }
+    // if track # is given, sort by # in a same album, otherwise, sort
+    // alphabeticaly
+    if (track2.getAlbum().equals(track1.getAlbum())
+        && track2.getAuthor().equals(track1.getAuthor())
+        && track2.getStyle().equals(track1.getStyle()) && (track1.getOrder() != track2.getOrder())) {
+      // do not use year as an album can contains tracks with
+      // different year but we want to keep order
+      return (int) (track1.getOrder() - track2.getOrder());
+    }
+    String sHashCompare = getCompareString(track1);
+    String sHashCompareOther = getCompareString(track2);
+    // never return 0 here, because bidimap needs to distinct items
+    int comp = sHashCompare.compareToIgnoreCase(sHashCompareOther);
+    if (comp == 0) {
+      return sHashCompare.compareTo(sHashCompareOther);
+    }
+    return comp;
+  }
 }

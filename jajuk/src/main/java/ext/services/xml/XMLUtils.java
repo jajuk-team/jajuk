@@ -23,21 +23,23 @@ import org.w3c.dom.NodeList;
 
 public class XMLUtils {
 
-	public static Element getChildElement( Element el, String tagName) {
-		if (el == null) return null;
-		NodeList list = el.getElementsByTagName(tagName);
-		if ( list != null && list.getLength() > 0) {
-			return (Element)list.item(0);
-		}
-		return null;
-	}
-	public static String getAttributeValue ( Element el, String attributeName) {
-		return (null == el? null : el.getAttribute(attributeName));
-	}
-	
-	public static String getChildElementContent(Element el, String tagName){
-		Element el2 = getChildElement(el,tagName);
-		return el2 == null ? "" : el2.getTextContent();
-	}
-	
+  public static Element getChildElement(Element el, String tagName) {
+    if (el == null)
+      return null;
+    NodeList list = el.getElementsByTagName(tagName);
+    if (list != null && list.getLength() > 0) {
+      return (Element) list.item(0);
+    }
+    return null;
+  }
+
+  public static String getAttributeValue(Element el, String attributeName) {
+    return (null == el ? null : el.getAttribute(attributeName));
+  }
+
+  public static String getChildElementContent(Element el, String tagName) {
+    Element el2 = getChildElement(el, tagName);
+    return el2 == null ? "" : el2.getTextContent();
+  }
+
 }

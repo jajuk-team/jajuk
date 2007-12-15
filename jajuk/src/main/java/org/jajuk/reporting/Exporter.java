@@ -32,51 +32,51 @@ import java.util.ArrayList;
  */
 public abstract class Exporter implements ITechnicalStrings {
 
-	/** Public Constants */
-	public static final int PHYSICAL_COLLECTION = 0;
+  /** Public Constants */
+  public static final int PHYSICAL_COLLECTION = 0;
 
-	public static final int LOGICAL_COLLECTION = 1;
+  public static final int LOGICAL_COLLECTION = 1;
 
-	/** Cache file (used to handle concurrency issues) */
-	protected File cache;
+  /** Cache file (used to handle concurrency issues) */
+  protected File cache;
 
-	/**
-	 * This method will export the content to the specified sPath.
-	 * 
-	 * @param sPath
-	 *            The path of the file to export to. Will create it if it does
-	 *            not exist.
-	 */
-	public void saveToFile(String sPath) throws Exception {
-		// Create the final file from the cache file
-		File out = new File(sPath);
-		Util.copy(cache, out);
-	}
+  /**
+   * This method will export the content to the specified sPath.
+   * 
+   * @param sPath
+   *          The path of the file to export to. Will create it if it does not
+   *          exist.
+   */
+  public void saveToFile(String sPath) throws Exception {
+    // Create the final file from the cache file
+    File out = new File(sPath);
+    Util.copy(cache, out);
+  }
 
-	/**
-	 * This method will take a constant specifying what type of collection to
-	 * export.
-	 * 
-	 * @param type
-	 *            This XMLExporter constant specifies what type of collection
-	 *            we're exporting.
-	 */
-	abstract public void processCollection(int type) throws Exception;
+  /**
+   * This method will take a constant specifying what type of collection to
+   * export.
+   * 
+   * @param type
+   *          This XMLExporter constant specifies what type of collection we're
+   *          exporting.
+   */
+  abstract public void processCollection(int type) throws Exception;
 
-	/**
-	 * This methods will create an HTML String of items
-	 * 
-	 * @param collection
-	 *            An ArrayList of the items to export
-	 */
-	abstract public void process(ArrayList<Item> collection) throws Exception;
+  /**
+   * This methods will create an HTML String of items
+   * 
+   * @param collection
+   *          An ArrayList of the items to export
+   */
+  abstract public void process(ArrayList<Item> collection) throws Exception;
 
-	/**
-	 * 
-	 * @return the unique cache file used to create the XML temporary stream
-	 */
-	public File getCacheFile() {
-		return this.cache;
-	}
+  /**
+   * 
+   * @return the unique cache file used to create the XML temporary stream
+   */
+  public File getCacheFile() {
+    return this.cache;
+  }
 
 }

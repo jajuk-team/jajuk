@@ -22,16 +22,16 @@ package org.jajuk.util.filters;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *
+ * 
  * HTMLfilter
  */
 public class HTMLFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static HTMLFilter  self  = null;
+  protected static HTMLFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static HTMLFilter getInstance() {

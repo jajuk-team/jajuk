@@ -27,7 +27,6 @@
 
 package org.jajuk.services.lyrics;
 
-
 import ext.services.xml.XMLBuilder;
 
 import java.io.BufferedReader;
@@ -49,84 +48,75 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 /**
- * Lyrics retrieval service.
- * This service will retrieves lyrics from various providers,
- * querying all of them until one returns some valid input.
- * (TODO: user-selectable multi-input-sources.
- *  edit the LyricsService so that it will notify about various
- *  valid sources, so we could propose various inputs to the user)
+ * Lyrics retrieval service. This service will retrieves lyrics from various
+ * providers, querying all of them until one returns some valid input. (TODO:
+ * user-selectable multi-input-sources. edit the LyricsService so that it will
+ * notify about various valid sources, so we could propose various inputs to the
+ * user)
  */
 public class LyricsService {
 
   private static HashMap<String, IProvider> providers = null;
-  private static IProvider                  current   = null;
-
+  private static IProvider current = null;
 
   /**
    * Loads the appropriate providers from the providers XML definition file.
-   *
-   * @return  a map of providers loaded from the XML configuration file
+   * 
+   * @return a map of providers loaded from the XML configuration file
    */
   @SuppressWarnings("unchecked")
-  public static HashMap<String, IProvider>  loadProviders() {
-    final HashMap<String, IProvider>  providers = new HashMap<String, IProvider>();
+  public static HashMap<String, IProvider> loadProviders() {
+    final HashMap<String, IProvider> providers = new HashMap<String, IProvider>();
 
     Log.debug("Loading Providers");
     try {
-      final BufferedReader  reader  = new BufferedReader(new FileReader(new File(new URI(ITechnicalStrings.FILE_LYRICS_CONF_PATH.toString()))));
-      final StringBuilder   xml     = new StringBuilder();
+      final BufferedReader reader = new BufferedReader(new FileReader(new File(new URI(
+          ITechnicalStrings.FILE_LYRICS_CONF_PATH.toString()))));
+      final StringBuilder xml = new StringBuilder();
 
-      for (String line = null; (line = reader.readLine()) != null; ) {
+      for (String line = null; (line = reader.readLine()) != null;) {
         xml.append(line);
       }
-      final Document  xmlDoc    = XMLBuilder.getXMLDocument(xml.toString());
-      final NodeList  children  = xmlDoc.getDocumentElement().getChildNodes();
-      final int       length    = children.getLength();
+      final Document xmlDoc = XMLBuilder.getXMLDocument(xml.toString());
+      final NodeList children = xmlDoc.getDocumentElement().getChildNodes();
+      final int length = children.getLength();
 
       for (int i = 0; (i < length); i++) {
-        final Node  n = children.item(i);
+        final Node n = children.item(i);
 
         if (n instanceof Element) {
-          final Element   e   = ((Element) n);
-          final String    key = e.getTagName();
+          final Element e = ((Element) n);
+          final String key = e.getTagName();
 
           if ((key != null) && key.toLowerCase().equals("provider")) {
-            final String  className = e.getAttribute("class");
-            final String  url       = e.getAttribute("url");
+            final String className = e.getAttribute("class");
+            final String url = e.getAttribute("url");
 
             Log.debug(" provider class='" + className + "' url='" + url + "'");
             if ((className != null) && (className.length() != 0)) {
               try {
-                final Class<IProvider>        clazz       = (Class<IProvider>) Class.forName(className);
-                final Constructor<IProvider>  constructor = clazz.getConstructor(String.class);
-                final IProvider         provider    = constructor.newInstance(url);
+                final Class<IProvider> clazz = (Class<IProvider>) Class.forName(className);
+                final Constructor<IProvider> constructor = clazz.getConstructor(String.class);
+                final IProvider provider = constructor.newInstance(url);
 
                 if (provider.getSource() != null) {
                   providers.put(provider.getSource(), provider);
                   Log.debug(" added provider " + provider.getSource());
                 }
-              }
-              catch (final ClassNotFoundException ex) {
+              } catch (final ClassNotFoundException ex) {
                 Log.warn("Class [" + className + "] could not be found: " + ex);
-              }
-              catch (final SecurityException ex) {
+              } catch (final SecurityException ex) {
                 Log.warn("Security-related problem while loading constructor: " + ex);
-              }
-              catch (final NoSuchMethodException ex) {
+              } catch (final NoSuchMethodException ex) {
                 Log.warn("A matching constructor could not be found: " + ex);
-              }
-              catch (final IllegalArgumentException ex) {
+              } catch (final IllegalArgumentException ex) {
                 Log.warn("Wrong parameters for constructor: " + ex);
-              }
-              catch (final InstantiationException ex) {
+              } catch (final InstantiationException ex) {
                 Log.warn("Could not create an instance: " + ex);
-              }
-              catch (final IllegalAccessException ex) {
+              } catch (final IllegalAccessException ex) {
                 Log.warn("Forbidden access to constructor: " + ex);
-              }
-              catch (final InvocationTargetException ex) {
+              } catch (final InvocationTargetException ex) {
                 Log.warn("Wrong invocation sequence for constructor: " + ex);
                 Log.warn("Target constructor threw: " + ex.getCause());
               }
@@ -134,14 +124,11 @@ public class LyricsService {
           }
         }
       }
-    }
-    catch (final FileNotFoundException e) {
+    } catch (final FileNotFoundException e) {
       Log.warn("File " + ITechnicalStrings.FILE_LYRICS_CONF_PATH + " was not found.");
-    }
-    catch (final IOException e) {
+    } catch (final IOException e) {
       Log.warn("IO Exception while loading " + ITechnicalStrings.FILE_LYRICS_CONF_PATH);
-    }
-    catch (final URISyntaxException e) {
+    } catch (final URISyntaxException e) {
       Log.warn("Invalid URI " + ITechnicalStrings.FILE_LYRICS_CONF_PATH);
     }
     return (providers);
@@ -149,14 +136,16 @@ public class LyricsService {
 
   /**
    * Cycles through lyrics providers to return the best matching lyrics.
-   *
-   * @param artist  the song's artist
-   * @param title   the song's title
-   *
-   * @return        the song's lyrics
+   * 
+   * @param artist
+   *          the song's artist
+   * @param title
+   *          the song's title
+   * 
+   * @return the song's lyrics
    */
-  public static String  getLyrics(final String artist, final String title) {
-    String              lyrics = null;
+  public static String getLyrics(final String artist, final String title) {
+    String lyrics = null;
 
     current = null;
     Log.debug("Retrieving lyrics for artist {{" + artist + "}} and song {{" + title + "}}");
@@ -173,8 +162,8 @@ public class LyricsService {
 
   /**
    * Returns the lazy-instantiated providers collection
-   *
-   * @return  the map of loaded providers
+   * 
+   * @return the map of loaded providers
    */
   public static synchronized HashMap<String, IProvider> getProviders() {
     if (providers == null) {

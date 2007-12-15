@@ -35,172 +35,172 @@ import javax.swing.table.DefaultTableModel;
  */
 public abstract class JajukTableModel extends DefaultTableModel implements ITechnicalStrings {
 
-	/** Column identifiers */
-	volatile public Vector<String> vId = new Vector<String>(10);
+  /** Column identifiers */
+  volatile public Vector<String> vId = new Vector<String>(10);
 
-	/** Rows number */
-	public int iRowNum;
+  /** Rows number */
+  public int iRowNum;
 
-	/** Values table* */
-	public Object[][] oValues;
+  /** Values table* */
+  public Object[][] oValues;
 
-	// Play icon in cache
-	public static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY_TABLE;
+  // Play icon in cache
+  public static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY_TABLE;
 
-	// Unmount Play icon in cache
-	public static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
+  // Unmount Play icon in cache
+  public static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
 
-	/** Objects */
-	public Item[] oItems;
+  /** Objects */
+  public Item[] oItems;
 
-	/** Number of standard columns */
-	public int iNumberStandardCols;
+  /** Number of standard columns */
+  public int iNumberStandardCols;
 
-	/** Cell editable flag */
-	public boolean[][] bCellEditable;
+  /** Cell editable flag */
+  public boolean[][] bCellEditable;
 
-	/** Column names */
-	public Vector<String> vColNames = new Vector<String>(10);
+  /** Column names */
+  public Vector<String> vColNames = new Vector<String>(10);
 
-	/** Last value used for undo */
-	public Object oLast = null;
+  /** Last value used for undo */
+  public Object oLast = null;
 
-	/** Editable flag */
-	boolean bEditable = false;
-	
-	/** Tree selection*/
-	public HashSet<Item> treeSelection;
+  /** Editable flag */
+  boolean bEditable = false;
 
-	/**
-	 * 
-	 * @param iNumberStandardCols
-	 *            Number of columns of this model (without custom properties)
-	 */
-	public JajukTableModel(int iNumberStandardCols) {
-		this.iNumberStandardCols = iNumberStandardCols;
-	}
+  /** Tree selection */
+  public HashSet<Item> treeSelection;
 
-	/**
-	 * 
-	 * Default constructor
-	 */
-	public JajukTableModel() {
-		this.iNumberStandardCols = 0;
-	}
+  /**
+   * 
+   * @param iNumberStandardCols
+   *          Number of columns of this model (without custom properties)
+   */
+  public JajukTableModel(int iNumberStandardCols) {
+    this.iNumberStandardCols = iNumberStandardCols;
+  }
 
-	/**
-	 * @param sColName
-	 * @return Column identifier for a given column title
-	 */
-	public String getIdentifier(String sColName) {
-		return vId.get(vColNames.indexOf(sColName));
-	}
+  /**
+   * 
+   * Default constructor
+   */
+  public JajukTableModel() {
+    this.iNumberStandardCols = 0;
+  }
 
-	/**
-	 * Return item at given position
-	 * 
-	 * @param iRow
-	 * @return
-	 */
-	public Item getItemAt(int iRow) {
-		return oItems[iRow];
-	}
+  /**
+   * @param sColName
+   * @return Column identifier for a given column title
+   */
+  public String getIdentifier(String sColName) {
+    return vId.get(vColNames.indexOf(sColName));
+  }
 
-	/**
-	 * Set item at given position
-	 * 
-	 * @param iRow
-	 * @param IPropertyabe
-	 *            item to set
-	 */
-	public void setItemAt(int iRow, Item item) {
-		oItems[iRow] = item;
-	}
+  /**
+   * Return item at given position
+   * 
+   * @param iRow
+   * @return
+   */
+  public Item getItemAt(int iRow) {
+    return oItems[iRow];
+  }
 
-	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
-		//We need to test this as UI may request it before table is populated
-		if (oValues == null || oValues.length == 0){
-			return null;
-		}
-		return oValues[rowIndex][columnIndex];
-	}
+  /**
+   * Set item at given position
+   * 
+   * @param iRow
+   * @param IPropertyabe
+   *          item to set
+   */
+  public void setItemAt(int iRow, Item item) {
+    oItems[iRow] = item;
+  }
 
-	public synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
-		oLast = oValues[rowIndex][columnIndex];
-		oValues[rowIndex][columnIndex] = oValue;
-		fireTableCellUpdated(rowIndex, columnIndex);
-	}
+  public synchronized Object getValueAt(int rowIndex, int columnIndex) {
+    // We need to test this as UI may request it before table is populated
+    if (oValues == null || oValues.length == 0) {
+      return null;
+    }
+    return oValues[rowIndex][columnIndex];
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.table.TableModel#getColumnCount()
-	 */
-	public int getColumnCount() {
-		return vColNames.size();
-	}
+  public synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
+    oLast = oValues[rowIndex][columnIndex];
+    oValues[rowIndex][columnIndex] = oValue;
+    fireTableCellUpdated(rowIndex, columnIndex);
+  }
 
-	/**
-	 * Undo last change
-	 * 
-	 */
-	public void undo(int rowIndex, int columnIndex) {
-		if (oLast != null) {
-			oValues[rowIndex][columnIndex] = oLast;
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see javax.swing.table.TableModel#getColumnCount()
+   */
+  public int getColumnCount() {
+    return vColNames.size();
+  }
 
-	public String getColumnName(int column) {
-		return vColNames.get(column);
-	}
+  /**
+   * Undo last change
+   * 
+   */
+  public void undo(int rowIndex, int columnIndex) {
+    if (oLast != null) {
+      oValues[rowIndex][columnIndex] = oLast;
+    }
+  }
 
-	public String getIdentifier(int column) {
-		return vId.get(column);
-	}
+  public String getColumnName(int column) {
+    return vColNames.get(column);
+  }
 
-	public int getRowCount() {
-		//iRowNum is set in concrete classes
-		return iRowNum;
-	}
+  public String getIdentifier(int column) {
+    return vId.get(column);
+  }
 
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return bEditable && bCellEditable[rowIndex][columnIndex];
-	}
+  public int getRowCount() {
+    // iRowNum is set in concrete classes
+    return iRowNum;
+  }
 
-	public Class<? extends Object> getColumnClass(int columnIndex) {
-		Object o = getValueAt(0, columnIndex);
-		if (o != null) {
-			return o.getClass();
-		} else {
-			return null;
-		}
-	}
+  public boolean isCellEditable(int rowIndex, int columnIndex) {
+    return bEditable && bCellEditable[rowIndex][columnIndex];
+  }
 
-	/**
-	 * Fill model with data using an optional filter property and pattern
-	 * 
-	 * @param sProperty
-	 *            Property (column) to filter
-	 * @param sPattern
-	 *            pattern
-	 */
-	public abstract void populateModel(String sProperty, String sPattern);
+  public Class<? extends Object> getColumnClass(int columnIndex) {
+    Object o = getValueAt(0, columnIndex);
+    if (o != null) {
+      return o.getClass();
+    } else {
+      return null;
+    }
+  }
 
-	/**
-	 * Fill model with data
-	 */
-	public void populateModel() {
-		populateModel(null, null);
-	}
+  /**
+   * Fill model with data using an optional filter property and pattern
+   * 
+   * @param sProperty
+   *          Property (column) to filter
+   * @param sPattern
+   *          pattern
+   */
+  public abstract void populateModel(String sProperty, String sPattern);
 
-	/**
-	 * Set this model editable state
-	 * 
-	 * @param b
-	 *            whether model is editable or not
-	 */
-	public void setEditable(boolean b) {
-		this.bEditable = b;
-	}
+  /**
+   * Fill model with data
+   */
+  public void populateModel() {
+    populateModel(null, null);
+  }
+
+  /**
+   * Set this model editable state
+   * 
+   * @param b
+   *          whether model is editable or not
+   */
+  public void setEditable(boolean b) {
+    this.bEditable = b;
+  }
 
 }

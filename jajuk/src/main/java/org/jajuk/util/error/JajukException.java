@@ -25,69 +25,65 @@ import org.jajuk.util.Messages;
  * JajukException
  */
 public class JajukException extends Exception {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/** Error code */
-	private int code;
+  /** Error code */
+  private int code;
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param pCode
-	 *            Code of the current error.
-	 */
-	public JajukException(int code) {
-		this(code, null, null);
-	}
+  /**
+   * JajukException constructor.
+   * 
+   * @param pCode
+   *          Code of the current error.
+   */
+  public JajukException(int code) {
+    this(code, null, null);
+  }
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param pCode
-	 *            Code of the current error.
-	 * @param pCause
-	 *            Original exception of the error.
-	 */
-	public JajukException(int code, Throwable pCause) {
-		this(code, null, pCause);
-	}
+  /**
+   * JajukException constructor.
+   * 
+   * @param pCode
+   *          Code of the current error.
+   * @param pCause
+   *          Original exception of the error.
+   */
+  public JajukException(int code, Throwable pCause) {
+    this(code, null, pCause);
+  }
 
-	public int getCode() {
-		return this.code;
-	}
+  public int getCode() {
+    return this.code;
+  }
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param code
-	 *            Code of the current error.
-	 * @param pMessage
-	 *            Message.
-	 * @param pCause
-	 *            Original exception of the error.
-	 */
-	public JajukException(int code, String pMessage, Throwable pCause) {
-		super((pMessage != null && pMessage.length() > 0) ? Messages
-				.getErrorMessage(code)
-				+ " : " + pMessage : 
-				Messages.getErrorMessage(code), pCause);
-		this.code = code;
-	}
-	
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param code
-	 *            Code of the current error.
-	 * @param pMessage
-	 *            Message.
-	 */
-	public JajukException(int code, String pMessage) {
-		super((pMessage != null && pMessage.length() > 0) ? Messages
-				.getErrorMessage(code)
-				+ " : " + pMessage : 
-				Messages.getErrorMessage(code));
-		this.code = code;
-	}
+  /**
+   * JajukException constructor.
+   * 
+   * @param code
+   *          Code of the current error.
+   * @param pMessage
+   *          Message.
+   * @param pCause
+   *          Original exception of the error.
+   */
+  public JajukException(int code, String pMessage, Throwable pCause) {
+    super((pMessage != null && pMessage.length() > 0) ? Messages.getErrorMessage(code) + " : "
+        + pMessage : Messages.getErrorMessage(code), pCause);
+    this.code = code;
+  }
+
+  /**
+   * JajukException constructor.
+   * 
+   * @param code
+   *          Code of the current error.
+   * @param pMessage
+   *          Message.
+   */
+  public JajukException(int code, String pMessage) {
+    super((pMessage != null && pMessage.length() > 0) ? Messages.getErrorMessage(code) + " : "
+        + pMessage : Messages.getErrorMessage(code));
+    this.code = code;
+  }
 
 }

@@ -22,16 +22,16 @@ package org.jajuk.util.filters;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *
+ * 
  * Jar filter
  */
 public class JarFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static JarFilter  self  = null;
+  protected static JarFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static JarFilter getInstance() {

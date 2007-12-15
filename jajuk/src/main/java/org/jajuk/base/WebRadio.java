@@ -20,61 +20,60 @@
 
 package org.jajuk.base;
 
-
 /**
  * A web Radio
  */
 public class WebRadio implements Comparable<WebRadio> {
 
-	private String name;
+  private String name;
 
-	private String url;
+  private String url;
 
-	public WebRadio(String name, String url) {
-		this.name = name;
-		this.url = url;
-	}
+  public WebRadio(String name, String url) {
+    this.name = name;
+    this.url = url;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public String getUrl() {
-		return this.url;
-	}
+  public String getUrl() {
+    return this.url;
+  }
 
-	public boolean equals(Object other) {
-		if (!(other instanceof WebRadio)) {
-			return false;
-		}
-		return name.equals(((WebRadio) other).getName());
-	}
+  public boolean equals(Object other) {
+    if (!(other instanceof WebRadio)) {
+      return false;
+    }
+    return name.equals(((WebRadio) other).getName());
+  }
 
-	public int compareTo(WebRadio other) {
-		// make null url web radio to appear first (useful for the wizard)
-		if (getUrl() == null) {
-			return -1;
-		}
-		return name.compareTo((other).getName());
-	}
+  public int compareTo(WebRadio other) {
+    // make null url web radio to appear first (useful for the wizard)
+    if (getUrl() == null) {
+      return -1;
+    }
+    return name.compareTo((other).getName());
+  }
 
-	public String toString() {
-		return name + " (" + url + ")";
-	}
+  public String toString() {
+    return name + " (" + url + ")";
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-	/**
-	 * @return associated type, we always use mplayer for web radios
-	
-	public Type getType() {
-		return TypeManager.getInstance().getTypeByExtension(EXT_RADIO);
-	}*/
+  /**
+   * @return associated type, we always use mplayer for web radios
+   * 
+   * public Type getType() { return
+   * TypeManager.getInstance().getTypeByExtension(EXT_RADIO); }
+   */
 
 }

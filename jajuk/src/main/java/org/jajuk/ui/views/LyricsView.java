@@ -56,7 +56,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
-
 /**
  * Lyrics view
  * <p>
@@ -67,40 +66,38 @@ public class LyricsView extends ViewAdapter implements Observer {
 
   private static final long serialVersionUID = 2229941034734574056L;
 
-  private JTextArea         textarea            = null;
-  JScrollPane               jsp                 = null;
-  private JLabel            jlTitle             = null;
-  private JLabel            jlAuthor            = null;
-  private String            sURL                = null;
-  private Track             track               = null;
-  private String            lyrics              = null;
-  private JMenuItem         jmiCopyToClipboard  = null;
-  private JMenuItem         jmiLaunchInBrowser  = null;
-
+  private JTextArea textarea = null;
+  JScrollPane jsp = null;
+  private JLabel jlTitle = null;
+  private JLabel jlAuthor = null;
+  private String sURL = null;
+  private Track track = null;
+  private String lyrics = null;
+  private JMenuItem jmiCopyToClipboard = null;
+  private JMenuItem jmiLaunchInBrowser = null;
 
   public LyricsView() {
   }
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.IView#initUI()
    */
   public void initUI() {
-    final FormLayout      layout    = new FormLayout(
-                              // --columns
-                              "3dlu,p:grow, 3dlu",
-                              // --rows
-                              "5dlu, p, 3dlu, p, 3dlu,fill:" +
-                             (getHeight() - 200) +
-                             ":grow,3dlu");
-    final PanelBuilder    builder   = new PanelBuilder(layout);
-    final CellConstraints cc        = new CellConstraints();
-    final JPanel          p         = builder.getPanel();
-    final JTextArea       textarea  = getTextarea();
-    final JLabel          author    = getJlAuthor();
-    final JLabel          title     = getJlTitle();
-    final JScrollPane     jsp       = getJsp();
-    final FontManager     fmgr      = FontManager.getInstance();
+    final FormLayout layout = new FormLayout(
+    // --columns
+        "3dlu,p:grow, 3dlu",
+        // --rows
+        "5dlu, p, 3dlu, p, 3dlu,fill:" + (getHeight() - 200) + ":grow,3dlu");
+    final PanelBuilder builder = new PanelBuilder(layout);
+    final CellConstraints cc = new CellConstraints();
+    final JPanel p = builder.getPanel();
+    final JTextArea textarea = getTextarea();
+    final JLabel author = getJlAuthor();
+    final JLabel title = getJlTitle();
+    final JScrollPane jsp = getJsp();
+    final FontManager fmgr = FontManager.getInstance();
 
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     textarea.setLineWrap(true);
@@ -136,8 +133,8 @@ public class LyricsView extends ViewAdapter implements Observer {
     add(p);
     ObservationManager.register(this);
     // check if a track has already been launched
-    update(new Event(EventSubject.EVENT_FILE_LAUNCHED,
-                     ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+    update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+        .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
   }
 
   public void handlePopup(final MouseEvent e) {
@@ -151,6 +148,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
   public Set<EventSubject> getRegistrationKeys() {
@@ -165,6 +163,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final Event event) {
@@ -183,17 +182,15 @@ public class LyricsView extends ViewAdapter implements Observer {
             // Launch lyrics service asynchronously and out of the
             // AWT dispatcher thread
             Log.debug("calling LyricsService");
-            lyrics = LyricsService.getLyrics(track.getAuthor().getName2(),
-                                             track.getName());
+            lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());
             if (lyrics != null) {
-              sURL = LyricsService.getCurrentProvider().getQueryString(track.getAuthor().getName2(), track.getName());
-            }
-            else {
+              sURL = LyricsService.getCurrentProvider().getQueryString(
+                  track.getAuthor().getName2(), track.getName());
+            } else {
               sURL = "<none>";
             }
             // Notify to make UI changes
-            ObservationManager.notify(new Event(
-                  EventSubject.EVENT_LYRICS_DOWNLOADED));
+            ObservationManager.notify(new Event(EventSubject.EVENT_LYRICS_DOWNLOADED));
           }
         }
 
@@ -255,6 +252,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.IView#getDesc()
    */
   public String getDesc() {

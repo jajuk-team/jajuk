@@ -27,16 +27,16 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
 /**
- *
+ * 
  * Not Audio file filter (must be a file)
  */
 public class NotAudioFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static NotAudioFilter  self  = null;
+  protected static NotAudioFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static NotAudioFilter getInstance() {
@@ -54,7 +54,7 @@ public class NotAudioFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see java.io.FileFilter#accept(java.io.File)
    */
   @Override
@@ -63,15 +63,14 @@ public class NotAudioFilter extends JajukFileFilter {
     // directories
     if (f.isDirectory()) {
       return (bShowDirectories);
-    }
-    else {
-      final String      extension = Util.getExtension(f);
-      final TypeManager mgr       = TypeManager.getInstance();
+    } else {
+      final String extension = Util.getExtension(f);
+      final TypeManager mgr = TypeManager.getInstance();
       // check extension is known
       if (mgr.isExtensionSupported(extension)) {
         // check it is an audio file
-        return !(Boolean) mgr.getTypeByExtension(extension)
-            .getValue(ITechnicalStrings.XML_TYPE_IS_MUSIC);
+        return !(Boolean) mgr.getTypeByExtension(extension).getValue(
+            ITechnicalStrings.XML_TYPE_IS_MUSIC);
       }
     }
     // unknown type : not an audio file
@@ -80,7 +79,7 @@ public class NotAudioFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see javax.swing.filechooser.FileFilter#getDescription()
    */
   @Override

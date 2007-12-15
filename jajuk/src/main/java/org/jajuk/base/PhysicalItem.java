@@ -21,17 +21,16 @@
 package org.jajuk.base;
 
 /**
- *  A physical Item (file, directory, device...)
+ * A physical Item (file, directory, device...)
  */
 public abstract class PhysicalItem extends Item {
 
-	/**
-	 * @param sId
-	 * @param sName
-	 */
-	PhysicalItem(String sId, String sName) {
-		super(sId, sName);
-	}
-	
+  /**
+   * @param sId
+   * @param sName
+   */
+  PhysicalItem(String sId, String sName) {
+    super(sId, sName);
+  }
 
 }

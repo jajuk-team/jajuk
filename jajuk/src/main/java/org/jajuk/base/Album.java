@@ -41,10 +41,10 @@ import javax.swing.ImageIcon;
 public class Album extends LogicalItem implements Comparable<Album> {
 
   private static final long serialVersionUID = 1L;
-  
-  /**For perfs, we store the associated styles*/
+
+  /** For perfs, we store the associated styles */
   private HashSet<Style> styles;
-  /**For perfs, we store the associated authors*/
+  /** For perfs, we store the associated authors */
   private HashSet<Author> authors;
 
   /**
@@ -124,9 +124,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public String getHumanValue(String sKey) {
     if (XML_NAME.equals(sKey)) {
       return getName2();
-    }
-    else if (XML_ANY.equals(sKey)){
-      //return getNa
+    } else if (XML_ANY.equals(sKey)) {
+      // return getNa
     }
     // default
     return super.getHumanValue(sKey);
@@ -254,8 +253,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         different styles
    */
   public Style getStyle() {
-    if (styles == null){
-      //Load it lazily
+    if (styles == null) {
+      // Load it lazily
       styles = new HashSet<Style>(1);
       for (Track track : TrackManager.getInstance().getAssociatedTracks(this)) {
         styles.add(track.getStyle());
@@ -268,15 +267,15 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
     return out;
   }
-  
-   /**
+
+  /**
    * 
    * @return author for the album. Return null if the album contains tracks with
    *         different authors
    */
   public Author getAuthor() {
-    if (authors == null){
-      //Load it lazily
+    if (authors == null) {
+      // Load it lazily
       authors = new HashSet<Author>(1);
       for (Track track : TrackManager.getInstance().getAssociatedTracks(this)) {
         authors.add(track.getAuthor());
@@ -289,7 +288,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
     return out;
   }
-
 
   public boolean matches(String property, String pattern) {
     if (Util.isVoid(property) || Util.isVoid(pattern)) {

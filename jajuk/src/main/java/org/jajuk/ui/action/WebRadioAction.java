@@ -32,21 +32,21 @@ import java.awt.event.ActionEvent;
 
 public class WebRadioAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	WebRadioAction() {
-		super(Messages.getString("CommandJPanel.25"), IconLoader.ICON_WEBRADIO, true);
-		setShortDescription(WebRadioManager.getCurrentWebRadioTooltip());
-	}
+  WebRadioAction() {
+    super(Messages.getString("CommandJPanel.25"), IconLoader.ICON_WEBRADIO, true);
+    setShortDescription(WebRadioManager.getCurrentWebRadioTooltip());
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		new Thread() {
-			public void run() {
-				WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
-						ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
-				FIFO.getInstance().launchRadio(radio);
-			}
-		}.start();
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    new Thread() {
+      public void run() {
+        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
+            ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
+        FIFO.getInstance().launchRadio(radio);
+      }
+    }.start();
+  }
 
 }

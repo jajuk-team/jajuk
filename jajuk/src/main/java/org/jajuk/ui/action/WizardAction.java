@@ -31,22 +31,21 @@ import java.awt.event.ActionEvent;
  */
 public class WizardAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	WizardAction() {
-		super(
-				Messages.getString("JajukJMenuBar.18"), IconLoader.ICON_WIZARD, true); 
-	}
+  WizardAction() {
+    super(Messages.getString("JajukJMenuBar.18"), IconLoader.ICON_WIZARD, true);
+  }
 
-	/**
-	 * Invoked when an action occurs.
-	 * 
-	 * @param evt
-	 */
-	public void perform(ActionEvent evt) {
-		SimpleDeviceWizard wizard = new SimpleDeviceWizard();
-		wizard.pack();
-		wizard.setLocationRelativeTo(Main.getWindow());
-		wizard.setVisible(true);
-	}
+  /**
+   * Invoked when an action occurs.
+   * 
+   * @param evt
+   */
+  public void perform(ActionEvent evt) {
+    SimpleDeviceWizard wizard = new SimpleDeviceWizard();
+    wizard.pack();
+    wizard.setLocationRelativeTo(Main.getWindow());
+    wizard.setVisible(true);
+  }
 }

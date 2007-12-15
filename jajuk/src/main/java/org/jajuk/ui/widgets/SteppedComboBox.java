@@ -33,60 +33,60 @@ import javax.swing.plaf.basic.ComboPopup;
  */
 
 public class SteppedComboBox extends JComboBox {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	protected int popupWidth;
+  protected int popupWidth;
 
-	public SteppedComboBox() {
-		super();
-		init();
-	}
+  public SteppedComboBox() {
+    super();
+    init();
+  }
 
-	public SteppedComboBox(ComboBoxModel aModel) {
-		super(aModel);
-		init();
-	}
+  public SteppedComboBox(ComboBoxModel aModel) {
+    super(aModel);
+    init();
+  }
 
-	public SteppedComboBox(final Object[] items) {
-		super(items);
-		init();
-	}
+  public SteppedComboBox(final Object[] items) {
+    super(items);
+    init();
+  }
 
-	public SteppedComboBox(Vector items) {
-		super(items);
-		init();
-	}
+  public SteppedComboBox(Vector items) {
+    super(items);
+    init();
+  }
 
-	public void setPopupWidth(int width) {
-		popupWidth = width;
-	}
+  public void setPopupWidth(int width) {
+    popupWidth = width;
+  }
 
-	public Dimension getPopupSize() {
-		Dimension size = getSize();
-		if (popupWidth < 1)
-			popupWidth = size.width;
-		return new Dimension(popupWidth, size.height);
-	}
+  public Dimension getPopupSize() {
+    Dimension size = getSize();
+    if (popupWidth < 1)
+      popupWidth = size.width;
+    return new Dimension(popupWidth, size.height);
+  }
 
-	protected void init() {
-		try {
-			ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
-				protected ComboPopup createPopup() {
-					BasicComboPopup popup = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
-					popup.getAccessibleContext().setAccessibleParent(comboBox);
-					// Non opaque to avoid being transparent so we can't read
-					// popup content over others text
-					popup.setOpaque(true);
-					return popup;
-				}
-			};
-			if (cbui != null) {
-				setUI(cbui);
-				popupWidth = 0;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+  protected void init() {
+    try {
+      ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
+        protected ComboPopup createPopup() {
+          BasicComboPopup popup = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
+          popup.getAccessibleContext().setAccessibleParent(comboBox);
+          // Non opaque to avoid being transparent so we can't read
+          // popup content over others text
+          popup.setOpaque(true);
+          return popup;
+        }
+      };
+      if (cbui != null) {
+        setUI(cbui);
+        popupWidth = 0;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-	}
+  }
 }

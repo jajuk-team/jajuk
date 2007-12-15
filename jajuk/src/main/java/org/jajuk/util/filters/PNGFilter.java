@@ -27,10 +27,10 @@ import org.jajuk.util.JajukFileFilter;
 public class PNGFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static PNGFilter  self  = null;
+  protected static PNGFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static PNGFilter getInstance() {

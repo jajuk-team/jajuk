@@ -33,58 +33,57 @@ import java.util.Date;
  */
 public class JajukPredicates {
 
-	/**
-	 * 
-	 * Age-filtering predicate Applied on tracks only
-	 */
-	public static class AgePredicate implements Predicate {
+  /**
+   * 
+   * Age-filtering predicate Applied on tracks only
+   */
+  public static class AgePredicate implements Predicate {
 
-		private int iAge = 0;
+    private int iAge = 0;
 
-		public AgePredicate(int iAge) {
-			this.iAge = iAge;
-		}
+    public AgePredicate(int iAge) {
+      this.iAge = iAge;
+    }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-		 */
-		public boolean evaluate(Object o) {
-			if (!(o instanceof Track)) {
-				return false;
-			}
-			Track track = (Track) o;
-			Date now = new Date();
-			int iTrackAge = (int) ((now.getTime() - track.getAdditionDate()
-					.getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
-			if (iTrackAge <= iAge) {
-				return true;
-			}
-			return false;
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      if (!(o instanceof Track)) {
+        return false;
+      }
+      Track track = (Track) o;
+      Date now = new Date();
+      int iTrackAge = (int) ((now.getTime() - track.getAdditionDate().getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
+      if (iTrackAge <= iAge) {
+        return true;
+      }
+      return false;
+    }
 
-	}
+  }
 
-	/**
-	 * 
-	 * Ready (mounted) filtering predicate Applied on files only
-	 */
-	public static class ReadyFilePredicate implements Predicate {
+  /**
+   * 
+   * Ready (mounted) filtering predicate Applied on files only
+   */
+  public static class ReadyFilePredicate implements Predicate {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-		 */
-		public boolean evaluate(Object o) {
-			if (!(o instanceof File)) {
-				return false;
-			}
-			File file = (File) o;
-			return (file != null && file.isReady());
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      if (!(o instanceof File)) {
+        return false;
+      }
+      File file = (File) o;
+      return (file != null && file.isReady());
+    }
 
-	}
+  }
 
 }

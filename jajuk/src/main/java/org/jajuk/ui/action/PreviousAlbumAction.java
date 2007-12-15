@@ -34,31 +34,31 @@ import java.awt.event.ActionEvent;
  */
 public class PreviousAlbumAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	PreviousAlbumAction() {
-		super("previous album", "shift F9", false, true);
-	}
+  PreviousAlbumAction() {
+    super("previous album", "shift F9", false, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		new Thread() {
-			public void run() {
-				synchronized (FIFO.MUTEX) {
-					try {
-						FIFO.getInstance().playPreviousAlbum();
-					} catch (Exception e) {
-						Log.error(e);
-					}
-					if (Player.isPaused()) { // player was paused, reset
-						// pause button
-						// when changing of track
-						Player.setPaused(false);
-						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME)); // notify
-																								// of
-						// this event
-					}
-				}
-			}
-		}.start();
-	}
+  public void perform(ActionEvent evt) {
+    new Thread() {
+      public void run() {
+        synchronized (FIFO.MUTEX) {
+          try {
+            FIFO.getInstance().playPreviousAlbum();
+          } catch (Exception e) {
+            Log.error(e);
+          }
+          if (Player.isPaused()) { // player was paused, reset
+            // pause button
+            // when changing of track
+            Player.setPaused(false);
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME)); // notify
+            // of
+            // this event
+          }
+        }
+      }
+    }.start();
+  }
 }

@@ -27,16 +27,16 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
 /**
- *
+ * 
  * Known type filter
  */
 public class KnownTypeFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static KnownTypeFilter  self  = null;
+  protected static KnownTypeFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static KnownTypeFilter getInstance() {
@@ -55,7 +55,7 @@ public class KnownTypeFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see java.io.FileFilter#accept(java.io.File)
    */
   @Override

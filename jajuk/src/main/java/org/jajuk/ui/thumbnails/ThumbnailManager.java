@@ -29,39 +29,38 @@ import java.io.File;
 import java.util.StringTokenizer;
 
 /**
- *  Manage thumbnails
+ * Manage thumbnails
  */
-public class ThumbnailManager implements ITechnicalStrings{
+public class ThumbnailManager implements ITechnicalStrings {
 
-	
-	/**No instances*/
-	private ThumbnailManager(){
-	}
-	
-	/**
-	 * Delete all thumbs for a given size
-	 * @param size size, eg: ITechnicalStrings.THUMBNAIL_SIZE_150x150 
-	 */
-	public static void cleanThumbs(String size) {
-		File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size);
-		if (fThumb.exists()) {
-			File[] files = fThumb.listFiles();
-			for (File file : files) {
-				if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) {
-					file.delete();
-				}
-			}
-			// Refresh default cover
-			File fDefault = Util.getConfFileByPath(FILE_THUMBS + "/" + size
-					+ "/" + FILE_THUMB_NO_COVER);
-			fDefault.delete();
-			try {
-				int iSize = Integer.parseInt(new StringTokenizer(size, "x")
-						.nextToken());
-				Util.createThumbnail(IconLoader.ICON_NO_COVER, fDefault, iSize);
-			} catch (Exception e) {
-				Log.error(e);
-			}
-		}
-	}
+  /** No instances */
+  private ThumbnailManager() {
+  }
+
+  /**
+   * Delete all thumbs for a given size
+   * 
+   * @param size
+   *          size, eg: ITechnicalStrings.THUMBNAIL_SIZE_150x150
+   */
+  public static void cleanThumbs(String size) {
+    File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size);
+    if (fThumb.exists()) {
+      File[] files = fThumb.listFiles();
+      for (File file : files) {
+        if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) {
+          file.delete();
+        }
+      }
+      // Refresh default cover
+      File fDefault = Util.getConfFileByPath(FILE_THUMBS + "/" + size + "/" + FILE_THUMB_NO_COVER);
+      fDefault.delete();
+      try {
+        int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
+        Util.createThumbnail(IconLoader.ICON_NO_COVER, fDefault, iSize);
+      } catch (Exception e) {
+        Log.error(e);
+      }
+    }
+  }
 }

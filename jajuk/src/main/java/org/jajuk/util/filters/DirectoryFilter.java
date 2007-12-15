@@ -33,10 +33,10 @@ import org.jajuk.util.Messages;
 public class DirectoryFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static DirectoryFilter  self  = null;
+  protected static DirectoryFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static DirectoryFilter getInstance() {
@@ -54,7 +54,7 @@ public class DirectoryFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see java.io.FileFilter#accept(java.io.File)
    */
   @Override
@@ -64,7 +64,7 @@ public class DirectoryFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see javax.swing.filechooser.FileFilter#getDescription()
    */
   @Override

@@ -19,22 +19,21 @@
  */
 package org.jajuk.reporting;
 
-
 public class ExporterFactory {
 
-	/**
-	 * This methods returns an instance of Exporter.
-	 * 
-	 * @param extention
-	 *            Exporter type (.xml or .html)
-	 * @return Returns an instance of XMLExporter.
-	 */
-	public static Exporter createExporter(String extension) throws Exception{
-		if ("html".equals(extension)) {
-			return new HTMLExporter();
-		} else {
-			return new XMLExporter();
-		}
+  /**
+   * This methods returns an instance of Exporter.
+   * 
+   * @param extention
+   *          Exporter type (.xml or .html)
+   * @return Returns an instance of XMLExporter.
+   */
+  public static Exporter createExporter(String extension) throws Exception {
+    if ("html".equals(extension)) {
+      return new HTMLExporter();
+    } else {
+      return new XMLExporter();
+    }
 
-	}
+  }
 }

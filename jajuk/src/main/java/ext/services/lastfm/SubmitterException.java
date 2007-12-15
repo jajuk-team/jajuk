@@ -19,11 +19,11 @@
 package ext.services.lastfm;
 
 public class SubmitterException extends Exception {
-	
-	private static final long serialVersionUID = -7383228060002549115L;
 
-	public SubmitterException(String cause) {
-		super("Error submitting to Last.fm. Cause: " + cause);
-	}
+  private static final long serialVersionUID = -7383228060002549115L;
+
+  public SubmitterException(String cause) {
+    super("Error submitting to Last.fm. Cause: " + cause);
+  }
 
 }

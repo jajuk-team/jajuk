@@ -26,20 +26,18 @@ import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
 
-
 public class CheckForUpdateAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	CheckForUpdateAction() {
-		super(
-				Messages.getString("JajukJMenuBar.27"), IconLoader.ICON_UPDATE_MANAGER, true); 
-		setShortDescription(Messages.getString("JajukJMenuBar.27")); 
-	}
+  CheckForUpdateAction() {
+    super(Messages.getString("JajukJMenuBar.27"), IconLoader.ICON_UPDATE_MANAGER, true);
+    setShortDescription(Messages.getString("JajukJMenuBar.27"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		if (! UpgradeManager.checkForUpdate(true)){
-			Messages.showInfoMessage(Messages.getString("UpdateManager.2"));
-		}
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    if (!UpgradeManager.checkForUpdate(true)) {
+      Messages.showInfoMessage(Messages.getString("UpdateManager.2"));
+    }
+  }
 }

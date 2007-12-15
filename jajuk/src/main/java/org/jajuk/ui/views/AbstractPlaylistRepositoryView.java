@@ -63,471 +63,465 @@ import ext.SwingWorker;
  * Physical perspective *
  */
 abstract public class AbstractPlaylistRepositoryView extends ViewAdapter implements Observer,
-		ActionListener {
+    ActionListener {
 
-	/** Selected playlist file item */
-	PlaylistFileItem plfiSelected;
+  /** Selected playlist file item */
+  PlaylistFileItem plfiSelected;
 
-	/** Queue playlist */
-	PlaylistFileItem plfiQueue;
+  /** Queue playlist */
+  PlaylistFileItem plfiQueue;
 
-	/** New playlist */
-	PlaylistFileItem plfiNew;
+  /** New playlist */
+  PlaylistFileItem plfiNew;
 
-	/** Queue playlist */
-	PlaylistFileItem plfiBookmarks;
+  /** Queue playlist */
+  PlaylistFileItem plfiBookmarks;
 
-	/** Bestof playlist */
-	PlaylistFileItem plfiBestof;
+  /** Bestof playlist */
+  PlaylistFileItem plfiBestof;
 
-	/** Novelties playlist */
-	PlaylistFileItem plfiNovelties;
+  /** Novelties playlist */
+  PlaylistFileItem plfiNovelties;
 
-	/** List of playlistfile item */
-	ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList<PlaylistFileItem>(10);
+  /** List of playlistfile item */
+  ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList<PlaylistFileItem>(10);
 
-	/** Concorency flag */
-	boolean bReleased = true;
+  /** Concorency flag */
+  boolean bReleased = true;
 
-	JPanel jpRoot;
+  JPanel jpRoot;
 
-	JPopupMenu jpmenu;
+  JPopupMenu jpmenu;
 
-	JMenuItem jmiPlay;
+  JMenuItem jmiPlay;
 
-	JMenuItem jmiSaveAs;
+  JMenuItem jmiSaveAs;
 
-	JMenuItem jmiDelete;
+  JMenuItem jmiDelete;
 
-	JMenuItem jmiProperties;
-	
-	JMenuItem jmiPrepParty;
+  JMenuItem jmiProperties;
 
-	MouseAdapter ma;
+  JMenuItem jmiPrepParty;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI() {
-		// needed to get the vertical scroller (don't ask why)
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+  MouseAdapter ma;
 
-		// root pane
-		jpRoot = new JPanel();
-		jpRoot.setLayout(new BoxLayout(jpRoot, BoxLayout.Y_AXIS));
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    // needed to get the vertical scroller (don't ask why)
+    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		// Popup menus
-		jpmenu = new JPopupMenu();
+    // root pane
+    jpRoot = new JPanel();
+    jpRoot.setLayout(new BoxLayout(jpRoot, BoxLayout.Y_AXIS));
 
-		jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0"));
-		jmiPlay.addActionListener(this);
-		jpmenu.add(jmiPlay);
+    // Popup menus
+    jpmenu = new JPopupMenu();
 
-		jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
-		jmiDelete.addActionListener(this);
-		jpmenu.add(jmiDelete);
+    jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0"));
+    jmiPlay.addActionListener(this);
+    jpmenu.add(jmiPlay);
 
-		jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));
-		jmiSaveAs.addActionListener(this);
-		jpmenu.add(jmiSaveAs);
+    jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
+    jmiDelete.addActionListener(this);
+    jpmenu.add(jmiDelete);
 
-		jmiPrepParty = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.19"));
-		jmiPrepParty.addActionListener(this);
-		jpmenu.add(jmiPrepParty);
-		
-		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));
-		jmiProperties.addActionListener(this);
-		jpmenu.add(jmiProperties);
+    jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));
+    jmiSaveAs.addActionListener(this);
+    jpmenu.add(jmiSaveAs);
 
-		// mouse adapter
-		// mouse adapter
-		ma = new MouseAdapter() {
+    jmiPrepParty = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.19"));
+    jmiPrepParty.addActionListener(this);
+    jpmenu.add(jmiPrepParty);
 
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					handlePopup(e);
-					// Left click
-				} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
-					PlaylistFileItem plfi = (PlaylistFileItem) e.getComponent();
-					if (plfi == plfiSelected) {
-						try {
-							play(plfi);
-						} catch (JajukException je) {
-							Log.error(je.getCode(), plfiSelected.getName(), null); //$NON-NLS-1$
-							Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
-							selectQueue();
-							return;
-						}
-					} else { // we selected a new playlist file
-						try {
-							plfi.getPlaylistFile().getFiles();
-						} catch (JajukException je) {
-							Log.error(je.getCode(), plfi.getName(), null); //$NON-NLS-1$
-							Messages.showErrorMessage(je.getCode(), plfi.getName()); //$NON-NLS-1$
-							selectQueue();
-							return;
-						}
-						Util.waiting();
-						selectPlaylistFileItem(plfi);
-					}
-				}
-			}
+    jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));
+    jmiProperties.addActionListener(this);
+    jpmenu.add(jmiProperties);
 
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					handlePopup(e);
-				}
-			}
+    // mouse adapter
+    // mouse adapter
+    ma = new MouseAdapter() {
 
-			public void handlePopup(final MouseEvent e) {
-				PlaylistFileItem plfi = (PlaylistFileItem) e.getComponent();
-				if (plfi == plfiSelected) {
-					// right click
-					showMenu(plfi, e);
-				} else {
-					try {
-						plfi.getPlaylistFile().getFiles();
-					} catch (JajukException je) {
-						Log.error(je.getCode(), plfi.getName(), null); //$NON-NLS-1$
-						Messages.showErrorMessage(je.getCode(), plfi.getName()); //$NON-NLS-1$
-						selectQueue();
-						return;
-					}
-					selectPlaylistFileItem(plfi);
-					showMenu(plfi, e);
-				}
-			}
+      public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          handlePopup(e);
+          // Left click
+        } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+          PlaylistFileItem plfi = (PlaylistFileItem) e.getComponent();
+          if (plfi == plfiSelected) {
+            try {
+              play(plfi);
+            } catch (JajukException je) {
+              Log.error(je.getCode(), plfiSelected.getName(), null); //$NON-NLS-1$
+              Messages.showErrorMessage(je.getCode(), plfiSelected.getName()); //$NON-NLS-1$
+              selectQueue();
+              return;
+            }
+          } else { // we selected a new playlist file
+            try {
+              plfi.getPlaylistFile().getFiles();
+            } catch (JajukException je) {
+              Log.error(je.getCode(), plfi.getName(), null); //$NON-NLS-1$
+              Messages.showErrorMessage(je.getCode(), plfi.getName()); //$NON-NLS-1$
+              selectQueue();
+              return;
+            }
+            Util.waiting();
+            selectPlaylistFileItem(plfi);
+          }
+        }
+      }
 
-		};
-		// refresh
-		populatePlaylists();
-		// make sure playlists items are packed to the top no ugly horizontal
-		// scrolling
-		jpRoot.add(Box.createVerticalStrut(500));
-		JScrollPane jsp = new JScrollPane(jpRoot, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		jsp.getVerticalScrollBar().setUnitIncrement(60);
-		add(jsp);
-		// Register on the list for subject we are interested in
-		ObservationManager.register(this);
-		// set queue playlist as default in playlist editor
-		selectPlaylistFileItem(plfiQueue);
-	}
+      public void mouseReleased(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          handlePopup(e);
+        }
+      }
 
-	public Set<EventSubject> getRegistrationKeys() {
-		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-		eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
-		eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
-		eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-		return eventSubjectSet;
-	}
+      public void handlePopup(final MouseEvent e) {
+        PlaylistFileItem plfi = (PlaylistFileItem) e.getComponent();
+        if (plfi == plfiSelected) {
+          // right click
+          showMenu(plfi, e);
+        } else {
+          try {
+            plfi.getPlaylistFile().getFiles();
+          } catch (JajukException je) {
+            Log.error(je.getCode(), plfi.getName(), null); //$NON-NLS-1$
+            Messages.showErrorMessage(je.getCode(), plfi.getName()); //$NON-NLS-1$
+            selectQueue();
+            return;
+          }
+          selectPlaylistFileItem(plfi);
+          showMenu(plfi, e);
+        }
+      }
 
-	private void selectQueue() {
-		selectPlaylistFileItem(plfiQueue);
-	}
+    };
+    // refresh
+    populatePlaylists();
+    // make sure playlists items are packed to the top no ugly horizontal
+    // scrolling
+    jpRoot.add(Box.createVerticalStrut(500));
+    JScrollPane jsp = new JScrollPane(jpRoot, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jsp.getVerticalScrollBar().setUnitIncrement(60);
+    add(jsp);
+    // Register on the list for subject we are interested in
+    ObservationManager.register(this);
+    // set queue playlist as default in playlist editor
+    selectPlaylistFileItem(plfiQueue);
+  }
 
-	/**
-	 * Display the playlist menu
-	 * 
-	 * @param plfi
-	 * @param e
-	 */
-	private void showMenu(PlaylistFileItem plfi, MouseEvent e) {
-		if (plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL) {
-			// cannot delete special playlists
-			jmiDelete.setEnabled(false);
-			// Save as is only for special playlists
-			jmiSaveAs.setEnabled(true);
-			jmiProperties.setEnabled(false);
-		} else {
-			jmiDelete.setEnabled(true);
-			jmiSaveAs.setEnabled(false);
-			jmiProperties.setEnabled(true);
-		}
-		// cannot play the queue playlist : nonsense
-		if (plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-			jmiPlay.setEnabled(false);
-		} else {
-			jmiPlay.setEnabled(true);
-		}
-		jpmenu.show(e.getComponent(), e.getX(), e.getY());
+  public Set<EventSubject> getRegistrationKeys() {
+    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+    return eventSubjectSet;
+  }
 
-	}
+  private void selectQueue() {
+    selectPlaylistFileItem(plfiQueue);
+  }
 
-	/**
-	 * Set current playlist file item
-	 * 
-	 * @param plfi
-	 */
-	synchronized void selectPlaylistFileItem(PlaylistFileItem plfi) {
-		// remove item border
-		if (plfiSelected != null) {
-			plfiSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		}
-		plfi.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-		// set new item
-		this.plfiSelected = plfi;
-		Properties properties = new Properties();
-		properties.put(DETAIL_ORIGIN, AbstractPlaylistRepositoryView.this);
-		properties.put(DETAIL_SELECTION, plfi);
-		properties.put(DETAIL_TARGET, PerspectiveManager.getCurrentPerspective().getID());
-		ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED,
-				properties));
-	}
+  /**
+   * Display the playlist menu
+   * 
+   * @param plfi
+   * @param e
+   */
+  private void showMenu(PlaylistFileItem plfi, MouseEvent e) {
+    if (plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL) {
+      // cannot delete special playlists
+      jmiDelete.setEnabled(false);
+      // Save as is only for special playlists
+      jmiSaveAs.setEnabled(true);
+      jmiProperties.setEnabled(false);
+    } else {
+      jmiDelete.setEnabled(true);
+      jmiSaveAs.setEnabled(false);
+      jmiProperties.setEnabled(true);
+    }
+    // cannot play the queue playlist : nonsense
+    if (plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+      jmiPlay.setEnabled(false);
+    } else {
+      jmiPlay.setEnabled(true);
+    }
+    jpmenu.show(e.getComponent(), e.getX(), e.getY());
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("PhysicalPlaylistRepositoryView.6");
-	}
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getViewName()
-	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView";
-	}
+  /**
+   * Set current playlist file item
+   * 
+   * @param plfi
+   */
+  synchronized void selectPlaylistFileItem(PlaylistFileItem plfi) {
+    // remove item border
+    if (plfiSelected != null) {
+      plfiSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    }
+    plfi.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+    // set new item
+    this.plfiSelected = plfi;
+    Properties properties = new Properties();
+    properties.put(DETAIL_ORIGIN, AbstractPlaylistRepositoryView.this);
+    properties.put(DETAIL_SELECTION, plfi);
+    properties.put(DETAIL_TARGET, PerspectiveManager.getCurrentPerspective().getID());
+    ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED, properties));
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.Observer#update(java.lang.String)
-	 */
-	public void update(final Event event) {
-		EventSubject subject = event.getSubject();
-		if (subject.equals(EventSubject.EVENT_DEVICE_MOUNT)
-				|| subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT)
-				|| subject.equals(EventSubject.EVENT_DEVICE_REFRESH)) {
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("PhysicalPlaylistRepositoryView.6");
+  }
 
-			SwingWorker sw = new SwingWorker() {
-				public Object construct() {
-					bReleased = false; // take "MUTEX"
-					if (jpRoot.getComponentCount() > 0) {
-						jpRoot.removeAll();
-					}
-					populatePlaylists();
-					// try to keep back previous selected playlist if it
-					// exists
-					if (plfiSelected == null || !alPlaylistFileItems.contains(plfiSelected)) {
-						plfiSelected = plfiQueue;
-					}
-					return null;
-				}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#getViewName()
+   */
+  public String getViewName() {
+    return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView";
+  }
 
-				public void finished() {
-					// make sure specials playlists are packed to the top
-					jpRoot.add(Box.createVerticalStrut(500));
-					if (plfiSelected.getPlaylistFile().getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL
-							|| PlaylistFileManager.getInstance().getPlaylistFileByID(
-									plfiSelected.getPlaylistFile().getID()) != null) {
-						selectPlaylistFileItem(plfiSelected);
-					} else { // means previously selected playlist has
-						// changed, select queue
-						selectPlaylistFileItem(plfiQueue);
-					}
-					AbstractPlaylistRepositoryView.this.revalidate();
-					AbstractPlaylistRepositoryView.this.repaint();
-					bReleased = true;
-				}
-			};
-			int i = 0;
-			while (!bReleased && i < 100) {
-				// wait until ressource is released
-				// we can't just synchronize because action is done in 2 methods
-				// of swing worker
-				try {
-					Thread.sleep(100);
-					i++;
-				} catch (InterruptedException e) {
-					Log.error(e);
-				}
-			}
-			sw.start();
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.Observer#update(java.lang.String)
+   */
+  public void update(final Event event) {
+    EventSubject subject = event.getSubject();
+    if (subject.equals(EventSubject.EVENT_DEVICE_MOUNT)
+        || subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT)
+        || subject.equals(EventSubject.EVENT_DEVICE_REFRESH)) {
 
-	/**
-	 * Create special playlists from collection, this is called by both logicial
-	 * and physical populate methods
-	 */
-	synchronized void populatePlaylists() {
-		alPlaylistFileItems.clear();
-		// special playlists
-		JPanel jpSpecials = new JPanel();
-		jpSpecials.setBorder(BorderFactory.createTitledBorder(Messages
-				.getString("PhysicalPlaylistRepositoryView.8")));
-		jpSpecials.setLayout(new BoxLayout(jpSpecials, BoxLayout.Y_AXIS));
-		// queue
-		// note we give an id : this id is only used to match current playlist
-		if (plfiQueue == null) {
-			plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
-					IconLoader.ICON_PLAYLIST_QUEUE, new PlaylistFile(
-							PlaylistFileItem.PLAYLIST_TYPE_QUEUE, "1", null, null), Messages
-							.getString("PhysicalPlaylistRepositoryView.9"));
-			plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10"));
-			plfiQueue.addMouseListener(ma);
-		} else if (plfiSelected != null
-				&& plfiQueue.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
-			plfiSelected = plfiQueue;
-		}
-		jpSpecials.add(plfiQueue);
-		alPlaylistFileItems.add(plfiQueue);
+      SwingWorker sw = new SwingWorker() {
+        public Object construct() {
+          bReleased = false; // take "MUTEX"
+          if (jpRoot.getComponentCount() > 0) {
+            jpRoot.removeAll();
+          }
+          populatePlaylists();
+          // try to keep back previous selected playlist if it
+          // exists
+          if (plfiSelected == null || !alPlaylistFileItems.contains(plfiSelected)) {
+            plfiSelected = plfiQueue;
+          }
+          return null;
+        }
 
-		// new
-		if (plfiNew == null) {
-			plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,
-					IconLoader.ICON_PLAYLIST_NEW, new PlaylistFile(
-							PlaylistFileItem.PLAYLIST_TYPE_NEW, "2", null, null), Messages
-							.getString("PhysicalPlaylistRepositoryView.11"));
-			plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12"));
-			plfiNew.addMouseListener(ma);
-		} else if (plfiSelected != null
-				&& plfiNew.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
-			plfiSelected = plfiNew;
-		}
-		jpSpecials.add(plfiNew);
-		alPlaylistFileItems.add(plfiNew);
-		// bookmark
-		if (plfiBookmarks == null) {
-			plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,
-					IconLoader.ICON_PLAYLIST_BOOKMARK, new PlaylistFile(
-							PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK, "3", null, null), Messages
-							.getString("PhysicalPlaylistRepositoryView.13"));
-			plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14"));
-			plfiBookmarks.addMouseListener(ma);
-		} else if (plfiSelected != null
-				&& plfiBookmarks.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
-			plfiSelected = plfiBookmarks;
-		}
-		jpSpecials.add(plfiBookmarks);
-		alPlaylistFileItems.add(plfiBookmarks);
-		// Best of
-		if (plfiBestof == null) {
-			plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,
-					IconLoader.ICON_PLAYLIST_BESTOF, new PlaylistFile(
-							PlaylistFileItem.PLAYLIST_TYPE_BESTOF, "4", null, null), Messages
-							.getString("PhysicalPlaylistRepositoryView.15"));
-			plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16"));
-			plfiBestof.addMouseListener(ma);
-		} else if (plfiSelected != null
-				&& plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
-			plfiSelected = plfiBestof;
-		}
-		jpSpecials.add(plfiBestof);
-		alPlaylistFileItems.add(plfiBestof);
-		if (plfiSelected != null
-				&& plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
-			plfiSelected = plfiBestof;
-		}
-		// Novelties
-		if (plfiNovelties == null) {
-			plfiNovelties = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,
-					IconLoader.ICON_PLAYLIST_NOVELTIES, new PlaylistFile(
-							PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES, "1", null, null), Messages
-							.getString("PhysicalPlaylistRepositoryView.17"));
-			plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18"));
-			plfiNovelties.addMouseListener(ma);
-		} else if (plfiSelected != null
-				&& plfiNovelties.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
-			plfiSelected = plfiNovelties;
-		}
-		jpSpecials.add(plfiNovelties);
-		alPlaylistFileItems.add(plfiNovelties);
+        public void finished() {
+          // make sure specials playlists are packed to the top
+          jpRoot.add(Box.createVerticalStrut(500));
+          if (plfiSelected.getPlaylistFile().getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL
+              || PlaylistFileManager.getInstance().getPlaylistFileByID(
+                  plfiSelected.getPlaylistFile().getID()) != null) {
+            selectPlaylistFileItem(plfiSelected);
+          } else { // means previously selected playlist has
+            // changed, select queue
+            selectPlaylistFileItem(plfiQueue);
+          }
+          AbstractPlaylistRepositoryView.this.revalidate();
+          AbstractPlaylistRepositoryView.this.repaint();
+          bReleased = true;
+        }
+      };
+      int i = 0;
+      while (!bReleased && i < 100) {
+        // wait until ressource is released
+        // we can't just synchronize because action is done in 2 methods
+        // of swing worker
+        try {
+          Thread.sleep(100);
+          i++;
+        } catch (InterruptedException e) {
+          Log.error(e);
+        }
+      }
+      sw.start();
+    }
+  }
 
-		jpRoot.add(jpSpecials);
-	}
+  /**
+   * Create special playlists from collection, this is called by both logicial
+   * and physical populate methods
+   */
+  synchronized void populatePlaylists() {
+    alPlaylistFileItems.clear();
+    // special playlists
+    JPanel jpSpecials = new JPanel();
+    jpSpecials.setBorder(BorderFactory.createTitledBorder(Messages
+        .getString("PhysicalPlaylistRepositoryView.8")));
+    jpSpecials.setLayout(new BoxLayout(jpSpecials, BoxLayout.Y_AXIS));
+    // queue
+    // note we give an id : this id is only used to match current playlist
+    if (plfiQueue == null) {
+      plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
+          IconLoader.ICON_PLAYLIST_QUEUE, new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,
+              "1", null, null), Messages.getString("PhysicalPlaylistRepositoryView.9"));
+      plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10"));
+      plfiQueue.addMouseListener(ma);
+    } else if (plfiSelected != null
+        && plfiQueue.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
+      plfiSelected = plfiQueue;
+    }
+    jpSpecials.add(plfiQueue);
+    alPlaylistFileItems.add(plfiQueue);
 
-	abstract public void removeItem(PlaylistFileItem plfiSelected);
+    // new
+    if (plfiNew == null) {
+      plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,
+          IconLoader.ICON_PLAYLIST_NEW, new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW, "2",
+              null, null), Messages.getString("PhysicalPlaylistRepositoryView.11"));
+      plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12"));
+      plfiNew.addMouseListener(ma);
+    } else if (plfiSelected != null
+        && plfiNew.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
+      plfiSelected = plfiNew;
+    }
+    jpSpecials.add(plfiNew);
+    alPlaylistFileItems.add(plfiNew);
+    // bookmark
+    if (plfiBookmarks == null) {
+      plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,
+          IconLoader.ICON_PLAYLIST_BOOKMARK, new PlaylistFile(
+              PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK, "3", null, null), Messages
+              .getString("PhysicalPlaylistRepositoryView.13"));
+      plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14"));
+      plfiBookmarks.addMouseListener(ma);
+    } else if (plfiSelected != null
+        && plfiBookmarks.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
+      plfiSelected = plfiBookmarks;
+    }
+    jpSpecials.add(plfiBookmarks);
+    alPlaylistFileItems.add(plfiBookmarks);
+    // Best of
+    if (plfiBestof == null) {
+      plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,
+          IconLoader.ICON_PLAYLIST_BESTOF, new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,
+              "4", null, null), Messages.getString("PhysicalPlaylistRepositoryView.15"));
+      plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16"));
+      plfiBestof.addMouseListener(ma);
+    } else if (plfiSelected != null
+        && plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
+      plfiSelected = plfiBestof;
+    }
+    jpSpecials.add(plfiBestof);
+    alPlaylistFileItems.add(plfiBestof);
+    if (plfiSelected != null && plfiBestof.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
+      plfiSelected = plfiBestof;
+    }
+    // Novelties
+    if (plfiNovelties == null) {
+      plfiNovelties = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,
+          IconLoader.ICON_PLAYLIST_NOVELTIES, new PlaylistFile(
+              PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES, "1", null, null), Messages
+              .getString("PhysicalPlaylistRepositoryView.17"));
+      plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18"));
+      plfiNovelties.addMouseListener(ma);
+    } else if (plfiSelected != null
+        && plfiNovelties.getPlaylistFile().equals(plfiSelected.getPlaylistFile())) {
+      plfiSelected = plfiNovelties;
+    }
+    jpSpecials.add(plfiNovelties);
+    alPlaylistFileItems.add(plfiNovelties);
 
-	abstract public void play(PlaylistFileItem plfi) throws JajukException;
+    jpRoot.add(jpSpecials);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(final ActionEvent ae) {
-		new Thread() {
-			public void run() {
-				// Property action is available even for unmounted items
-				if (ae.getSource() == jmiProperties) {
-					ArrayList<Item> alItems = new ArrayList<Item>(1);
-					if (AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView) {
-						alItems.add(plfiSelected.getPlaylistFile());
-					} else {
-						alItems.add(PlaylistManager.getInstance().getPlayList(
-								plfiSelected.getPlaylistFile()));
-					}
-					new PropertiesWizard(alItems);
-				}
-				// Others actions: not available for unmounted items
-				else {
-					if (ae.getSource() == jmiDelete) {
-						removeItem(plfiSelected);
-						ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-					} else if (ae.getSource() == jmiPlay) {
-						try {
-							play(plfiSelected);
-						} catch (JajukException je) {
-							Log.error(je.getCode(), "{{" + plfiSelected.getName() + "}}", null);
-							Messages.showErrorMessage(je.getCode(), plfiSelected.getName());
-							selectQueue();
-							return;
-						}
-					} else if (ae.getSource() == jmiProperties) {
-						ArrayList<Item> alItems = new ArrayList<Item>(1);
-						if (AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView) {
-							alItems.add(plfiSelected.getPlaylistFile());
-						} else {
-							alItems.add(PlaylistManager.getInstance().getPlayList(
-									plfiSelected.getPlaylistFile()));
-						}
-						new PropertiesWizard(alItems);
-					} else if (ae.getSource() == jmiSaveAs) { // save as
-						try {
-							plfiSelected.getPlaylistFile().saveAs();
-							ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-						} catch (JajukException je) {
-							Log.error(je);
-							Messages.showErrorMessage(je.getCode());
-						} catch (Exception e) {
-							Log.error(e);
-						}
-						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-					}else if (ae.getSource() == jmiPrepParty) {
-						try {
-							plfiSelected.getPlaylistFile().storePlaylist();
-						} catch (JajukException je) {
-							Log.error(je);
-							Messages.showErrorMessage(je.getCode());
-						} catch (Exception e) {
-							Log.error(e);
-						}
-					}
-				}
-			}
-		}.start();
-	}
+  abstract public void removeItem(PlaylistFileItem plfiSelected);
 
-	/**
-	 * @return Returns the alPlaylistFileItems.
-	 */
-	public ArrayList getPlaylistFileItems() {
-		return alPlaylistFileItems;
-	}
+  abstract public void play(PlaylistFileItem plfi) throws JajukException;
 
-	/**
-	 * @return Returns the plfiQueue.
-	 */
-	public PlaylistFileItem getQueue() {
-		return plfiQueue;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
+  public void actionPerformed(final ActionEvent ae) {
+    new Thread() {
+      public void run() {
+        // Property action is available even for unmounted items
+        if (ae.getSource() == jmiProperties) {
+          ArrayList<Item> alItems = new ArrayList<Item>(1);
+          if (AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView) {
+            alItems.add(plfiSelected.getPlaylistFile());
+          } else {
+            alItems.add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));
+          }
+          new PropertiesWizard(alItems);
+        }
+        // Others actions: not available for unmounted items
+        else {
+          if (ae.getSource() == jmiDelete) {
+            removeItem(plfiSelected);
+            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+          } else if (ae.getSource() == jmiPlay) {
+            try {
+              play(plfiSelected);
+            } catch (JajukException je) {
+              Log.error(je.getCode(), "{{" + plfiSelected.getName() + "}}", null);
+              Messages.showErrorMessage(je.getCode(), plfiSelected.getName());
+              selectQueue();
+              return;
+            }
+          } else if (ae.getSource() == jmiProperties) {
+            ArrayList<Item> alItems = new ArrayList<Item>(1);
+            if (AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView) {
+              alItems.add(plfiSelected.getPlaylistFile());
+            } else {
+              alItems
+                  .add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));
+            }
+            new PropertiesWizard(alItems);
+          } else if (ae.getSource() == jmiSaveAs) { // save as
+            try {
+              plfiSelected.getPlaylistFile().saveAs();
+              ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+            } catch (JajukException je) {
+              Log.error(je);
+              Messages.showErrorMessage(je.getCode());
+            } catch (Exception e) {
+              Log.error(e);
+            }
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+          } else if (ae.getSource() == jmiPrepParty) {
+            try {
+              plfiSelected.getPlaylistFile().storePlaylist();
+            } catch (JajukException je) {
+              Log.error(je);
+              Messages.showErrorMessage(je.getCode());
+            } catch (Exception e) {
+              Log.error(e);
+            }
+          }
+        }
+      }
+    }.start();
+  }
+
+  /**
+   * @return Returns the alPlaylistFileItems.
+   */
+  public ArrayList getPlaylistFileItems() {
+    return alPlaylistFileItems;
+  }
+
+  /**
+   * @return Returns the plfiQueue.
+   */
+  public PlaylistFileItem getQueue() {
+    return plfiQueue;
+  }
 
 }

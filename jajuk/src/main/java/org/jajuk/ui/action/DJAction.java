@@ -36,52 +36,50 @@ import java.util.List;
 
 public class DJAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	DJAction() {
-		super(
-				Messages.getString("CommandJPanel.16"), IconLoader.ICON_DIGITAL_DJ, true); 
-		String sTooltip = Messages.getString("CommandJPanel.18"); 
-		DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
-				ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
-		if (dj != null) {
-			String sDJ = dj.getName();
-			sTooltip = "<html>" + Messages.getString("CommandJPanel.18") + "<p><b>" + sDJ + "</b></p></html>";    
-		}
-		setShortDescription(sTooltip); 
-	}
+  DJAction() {
+    super(Messages.getString("CommandJPanel.16"), IconLoader.ICON_DIGITAL_DJ, true);
+    String sTooltip = Messages.getString("CommandJPanel.18");
+    DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
+        ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+    if (dj != null) {
+      String sDJ = dj.getName();
+      sTooltip = "<html>" + Messages.getString("CommandJPanel.18") + "<p><b>" + sDJ
+          + "</b></p></html>";
+    }
+    setShortDescription(sTooltip);
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		if (StyleManager.getInstance().getStyles().size() == 0) {
-			Messages.showErrorMessage(156); // void collection error
-			// 
-		} else {
-			new Thread() {
-				public void run() {
+  public void perform(ActionEvent evt) throws JajukException {
+    if (StyleManager.getInstance().getStyles().size() == 0) {
+      Messages.showErrorMessage(156); // void collection error
+      // 
+    } else {
+      new Thread() {
+        public void run() {
 
-					DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
-							ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
-					if (dj != null) {
-						ConfigurationManager.setProperty(CONF_FADE_DURATION,
-								Integer.toString(dj.getFadingDuration()));
-						Util.waiting();
-						List<File> al = dj.generatePlaylist();
-						Util.stopWaiting();
-						if (al.size() == 0) { // DJ constraints cannot be
-							// respected
-							Messages.showErrorMessage(158); 
-							return;
-						}
-						FIFO.getInstance().push(
-								Util.createStackItems(Util.applyPlayOption(al),
-										ConfigurationManager
-												.getBoolean(CONF_STATE_REPEAT),
-										false), false);
-					} else {
-						Messages.showErrorMessage(157); 
-					}
-				}
-			}.start();
-		}
-	}
+          DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
+              ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+          if (dj != null) {
+            ConfigurationManager.setProperty(CONF_FADE_DURATION, Integer.toString(dj
+                .getFadingDuration()));
+            Util.waiting();
+            List<File> al = dj.generatePlaylist();
+            Util.stopWaiting();
+            if (al.size() == 0) { // DJ constraints cannot be
+              // respected
+              Messages.showErrorMessage(158);
+              return;
+            }
+            FIFO.getInstance().push(
+                Util.createStackItems(Util.applyPlayOption(al), ConfigurationManager
+                    .getBoolean(CONF_STATE_REPEAT), false), false);
+          } else {
+            Messages.showErrorMessage(157);
+          }
+        }
+      }.start();
+    }
+  }
 }

@@ -46,187 +46,185 @@ import com.vlsolutions.swing.docking.DockingDesktop;
  * Perspective adapter, provide default implementation for perspectives
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective,
-		ITechnicalStrings {
-	/** Perspective id (class) */
-	private String sID;
+    ITechnicalStrings {
+  /** Perspective id (class) */
+  private String sID;
 
-	/** Perspective icon path */
-	private URL iconPath;
+  /** Perspective icon path */
+  private URL iconPath;
 
-	/**
-	 * As been selected flag (workaround for VLDocking issue when saving
-	 * position)
-	 */
-	protected boolean bAsBeenSelected = false;
+  /**
+   * As been selected flag (workaround for VLDocking issue when saving position)
+   */
+  protected boolean bAsBeenSelected = false;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param sName
-	 * @param sIconName
-	 */
-	public PerspectiveAdapter() {
-		this.sID = getClass().getName();
-	}
+  /**
+   * Constructor
+   * 
+   * @param sName
+   * @param sIconName
+   */
+  public PerspectiveAdapter() {
+    this.sID = getClass().getName();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.perspectives.IPerspective#getID()
-	 */
-	public String getID() {
-		return sID;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.perspectives.IPerspective#getID()
+   */
+  public String getID() {
+    return sID;
+  }
 
-	/**
-	 * toString method
-	 */
-	public String toString() {
-		return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
-	}
+  /**
+   * toString method
+   */
+  public String toString() {
+    return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#getIconPath()
-	 */
-	public URL getIconPath() {
-		return iconPath;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IPerspective#getIconPath()
+   */
+  public URL getIconPath() {
+    return iconPath;
+  }
 
-	/**
-	 * Set icon path
-	 */
-	public void setIconPath(URL iconURL) {
-		this.iconPath = iconURL;
-	}
+  /**
+   * Set icon path
+   */
+  public void setIconPath(URL iconURL) {
+    this.iconPath = iconURL;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
-	 */
-	public void commit() throws Exception {
-		// workaround for a VLDocking issue + performances
-		if (!bAsBeenSelected) {
-			return;
-		}
-		File saveFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
-		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
-		writeXML(out);
-		out.flush();
-		out.close();
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.perspectives.IPerspective#commit()
+   */
+  public void commit() throws Exception {
+    // workaround for a VLDocking issue + performances
+    if (!bAsBeenSelected) {
+      return;
+    }
+    File saveFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
+    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
+    writeXML(out);
+    out.flush();
+    out.close();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.perspectives.IPerspective#load()
-	 */
-	public void load() throws Exception {
-		// Try to read XML conf file from home directory
-		File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
-		// If file doesn't exist (normally only at first install), read
-		// perspective conf from the jar
-		URL url = loadFile.toURL();
-		if (!loadFile.exists()) {
-			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-					+ getClass().getSimpleName() + ".xml");
-		}
-		BufferedInputStream in = new BufferedInputStream(url.openStream());
-		// then, load the workspace
-		DockingContext ctx = new DockingContext();
-		DockableResolver resolver = new DockableResolver() {
-			public Dockable resolveDockable(String keyName) {
-				Dockable view = null;
-				try {
-					String className = keyName.substring(0, keyName.indexOf('/'));
-					// Compatibility with < 1.4
-					if (className.equals("org.jajuk.ui.views.PhysicalPlaylistEditorView")
-							|| className.equals("org.jajuk.ui.views.LogicalPlaylistEditorView")) {
-						className = "org.jajuk.ui.views.PlaylistEditorView";
-					}
-					view = ViewFactory
-							.createView(Class.forName(className), PerspectiveAdapter.this);
-				} catch (Exception e) {
-					Log.error(e);
-				}
-				return view;
-			}
-		};
-		ctx.setDockableResolver(resolver);
-		setContext(ctx);
-		ctx.addDesktop(this);
-		try {
-			ctx.readXML(in);
-		} catch (Exception e) {
-			// error parsing the file, user can't be blocked, use
-			// default conf
-			Log.error(e);
-			Log.debug("Error parsing conf file, use defaults - " + getID());
-			url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-					+ getClass().getSimpleName() + ".xml");
-			in = new BufferedInputStream(url.openStream());
-			ctx.readXML(in);
-		} finally {
-			in.close(); // stream isn't closed
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.perspectives.IPerspective#load()
+   */
+  public void load() throws Exception {
+    // Try to read XML conf file from home directory
+    File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
+    // If file doesn't exist (normally only at first install), read
+    // perspective conf from the jar
+    URL url = loadFile.toURL();
+    if (!loadFile.exists()) {
+      url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
+          + ".xml");
+    }
+    BufferedInputStream in = new BufferedInputStream(url.openStream());
+    // then, load the workspace
+    DockingContext ctx = new DockingContext();
+    DockableResolver resolver = new DockableResolver() {
+      public Dockable resolveDockable(String keyName) {
+        Dockable view = null;
+        try {
+          String className = keyName.substring(0, keyName.indexOf('/'));
+          // Compatibility with < 1.4
+          if (className.equals("org.jajuk.ui.views.PhysicalPlaylistEditorView")
+              || className.equals("org.jajuk.ui.views.LogicalPlaylistEditorView")) {
+            className = "org.jajuk.ui.views.PlaylistEditorView";
+          }
+          view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+        return view;
+      }
+    };
+    ctx.setDockableResolver(resolver);
+    setContext(ctx);
+    ctx.addDesktop(this);
+    try {
+      ctx.readXML(in);
+    } catch (Exception e) {
+      // error parsing the file, user can't be blocked, use
+      // default conf
+      Log.error(e);
+      Log.debug("Error parsing conf file, use defaults - " + getID());
+      url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
+          + ".xml");
+      in = new BufferedInputStream(url.openStream());
+      ctx.readXML(in);
+    } finally {
+      in.close(); // stream isn't closed
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.perspectives.IPerspective#getContentPane()
-	 */
-	public Container getContentPane() {
-		return this;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.perspectives.IPerspective#getContentPane()
+   */
+  public Container getContentPane() {
+    return this;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#restaureDefaults()
-	 */
-	public void restoreDefaults() {
-		// SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
-		// to ensure views are not invisible
-		try {
-			// Remove current conf file to force using default file from the
-			// jar
-			File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
-			loadFile.delete();
-			// Remove all registered dockables
-			DockableState[] ds = getDockables();
-			for (int i = 0; i < ds.length; i++) {
-				remove(ds[i].getDockable());
-			}
-			// force reload
-			load();
-			// set perspective again to force UI refresh
-			PerspectiveManager.setCurrentPerspective(this);
-		} catch (Exception e) {
-			// display an error message
-			Log.error(e);
-			Messages.showErrorMessage(163);
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IPerspective#restaureDefaults()
+   */
+  public void restoreDefaults() {
+    // SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
+    // to ensure views are not invisible
+    try {
+      // Remove current conf file to force using default file from the
+      // jar
+      File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
+      loadFile.delete();
+      // Remove all registered dockables
+      DockableState[] ds = getDockables();
+      for (int i = 0; i < ds.length; i++) {
+        remove(ds[i].getDockable());
+      }
+      // force reload
+      load();
+      // set perspective again to force UI refresh
+      PerspectiveManager.setCurrentPerspective(this);
+    } catch (Exception e) {
+      // display an error message
+      Log.error(e);
+      Messages.showErrorMessage(163);
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IPerspective#setAsBeenSelected()
-	 */
-	public void setAsBeenSelected(boolean b) {
-		bAsBeenSelected = b;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IPerspective#setAsBeenSelected()
+   */
+  public void setAsBeenSelected(boolean b) {
+    bAsBeenSelected = b;
+  }
 
-	public Set<IView> getViews() {
-		Set<IView> views = new HashSet<IView>();
-		DockableState[] dockables = getDockables();
-		for (int i = 0; i < dockables.length; i++) {
-			views.add((IView) dockables[i].getDockable());
-		}
-		return views;
-	}
+  public Set<IView> getViews() {
+    Set<IView> views = new HashSet<IView>();
+    DockableState[] dockables = getDockables();
+    for (int i = 0; i < dockables.length; i++) {
+      views.add((IView) dockables[i].getDockable());
+    }
+    return views;
+  }
 
 }

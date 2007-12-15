@@ -36,32 +36,31 @@ import javax.swing.JOptionPane;
  */
 public class PatternInputVerifier extends InputVerifier implements ITechnicalStrings {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.InputVerifier#verify(javax.swing.JComponent)
-	 */
-	@Override
-	public boolean verify(JComponent input) {
-		JFormattedTextField tf = (JFormattedTextField) input;
-		String sText = tf.getText().toLowerCase();
-		// Check pattern contains at least one /
-		if (sText.indexOf('/') == -1) {
-			JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
-					Messages.getString("Error"), 
-					JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return true;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see javax.swing.InputVerifier#verify(javax.swing.JComponent)
+   */
+  @Override
+  public boolean verify(JComponent input) {
+    JFormattedTextField tf = (JFormattedTextField) input;
+    String sText = tf.getText().toLowerCase();
+    // Check pattern contains at least one /
+    if (sText.indexOf('/') == -1) {
+      JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
+          Messages.getString("Error"), JOptionPane.ERROR_MESSAGE);
+      return false;
+    }
+    return true;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.InputVerifier#shouldYieldFocus(javax.swing.JComponent)
-	 */
-	public boolean shouldYieldFocus(JComponent input) {
-		return verify(input);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see javax.swing.InputVerifier#shouldYieldFocus(javax.swing.JComponent)
+   */
+  public boolean shouldYieldFocus(JComponent input) {
+    return verify(input);
+  }
 
 }

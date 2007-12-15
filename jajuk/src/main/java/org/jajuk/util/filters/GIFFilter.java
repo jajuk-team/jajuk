@@ -27,10 +27,10 @@ import org.jajuk.util.JajukFileFilter;
 public class GIFFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static GIFFilter  self  = null;
+  protected static GIFFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static GIFFilter getInstance() {

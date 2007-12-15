@@ -47,139 +47,139 @@ import org.jajuk.util.filters.DirectoryFilter;
  */
 public class PathSelector extends JPanel implements ITechnicalStrings {
 
-	private static final long serialVersionUID = -8370527665529267952L;
+  private static final long serialVersionUID = -8370527665529267952L;
 
-	JTextField jtfUrl;
+  JTextField jtfUrl;
 
-	JButton button;
+  JButton button;
 
-	/**
-	 * Construct a Path Selector
-	 *
-	 * @param filter
-	 *            the filter used to select the item
-	 * @param sDefault
-	 *            Initialized path, null of none
-	 */
-	public PathSelector(final JajukFileFilter filter, final String sDefault) {
-		initUI(sDefault);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent e) {
-				final JajukFileChooser jfc = new JajukFileChooser(filter);
-				jfc.setAcceptDirectories(true);
-				jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
-				jfc.setMultiSelectionEnabled(false);
-				final String sUrl = jtfUrl.getText();
-				if (!sUrl.equals("")) {
-					// if URL is already set, use it as current directory
-					jfc.setCurrentDirectory(new File(sUrl));
-				}
-				final int returnVal = jfc.showOpenDialog(Main.getWindow());
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					final String previousURL = jtfUrl.getText();
-					final java.io.File file = jfc.getSelectedFile();
-					final String newPath = file.getAbsolutePath();
-					jtfUrl.setText(newPath);
-					// Call specific operation if URL changed
-					if (!previousURL.equals(newPath)) {
-						performOnURLChange();
-					}
-				}
-			}
-		});
-	}
+  /**
+   * Construct a Path Selector
+   * 
+   * @param filter
+   *          the filter used to select the item
+   * @param sDefault
+   *          Initialized path, null of none
+   */
+  public PathSelector(final JajukFileFilter filter, final String sDefault) {
+    initUI(sDefault);
+    button.addActionListener(new ActionListener() {
+      public void actionPerformed(final ActionEvent e) {
+        final JajukFileChooser jfc = new JajukFileChooser(filter);
+        jfc.setAcceptDirectories(true);
+        jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
+        jfc.setMultiSelectionEnabled(false);
+        final String sUrl = jtfUrl.getText();
+        if (!sUrl.equals("")) {
+          // if URL is already set, use it as current directory
+          jfc.setCurrentDirectory(new File(sUrl));
+        }
+        final int returnVal = jfc.showOpenDialog(Main.getWindow());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+          final String previousURL = jtfUrl.getText();
+          final java.io.File file = jfc.getSelectedFile();
+          final String newPath = file.getAbsolutePath();
+          jtfUrl.setText(newPath);
+          // Call specific operation if URL changed
+          if (!previousURL.equals(newPath)) {
+            performOnURLChange();
+          }
+        }
+      }
+    });
+  }
 
-	/**
-	 * Construct a Path Selector for directory selection
-	 *
-	 * @param sDefault
-	 *            Initialized path, null of none
-	 */
-	public PathSelector(final String sDefault) {
-		initUI(sDefault);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent e) {
-				final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-						DirectoryFilter.getInstance()));
-				jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
-				jfc.setMultiSelectionEnabled(false);
-				final String sUrl = jtfUrl.getText();
-				if (!sUrl.equals("")) {
-					// if URL is already set, use it as current directory
-					jfc.setCurrentDirectory(new File(sUrl));
-				}
-				final int returnVal = jfc.showOpenDialog(Main.getWindow());
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					final String previousURL = jtfUrl.getText();
-					final java.io.File file = jfc.getSelectedFile();
-					final String newPath = file.getAbsolutePath();
-					jtfUrl.setText(newPath);
-					// Call specific operation if URL changed
-					if (!previousURL.equals(newPath)) {
-						performOnURLChange();
-					}
-				}
-			}
-		});
-	}
+  /**
+   * Construct a Path Selector for directory selection
+   * 
+   * @param sDefault
+   *          Initialized path, null of none
+   */
+  public PathSelector(final String sDefault) {
+    initUI(sDefault);
+    button.addActionListener(new ActionListener() {
+      public void actionPerformed(final ActionEvent e) {
+        final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
+            .getInstance()));
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
+        jfc.setMultiSelectionEnabled(false);
+        final String sUrl = jtfUrl.getText();
+        if (!sUrl.equals("")) {
+          // if URL is already set, use it as current directory
+          jfc.setCurrentDirectory(new File(sUrl));
+        }
+        final int returnVal = jfc.showOpenDialog(Main.getWindow());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+          final String previousURL = jtfUrl.getText();
+          final java.io.File file = jfc.getSelectedFile();
+          final String newPath = file.getAbsolutePath();
+          jtfUrl.setText(newPath);
+          // Call specific operation if URL changed
+          if (!previousURL.equals(newPath)) {
+            performOnURLChange();
+          }
+        }
+      }
+    });
+  }
 
-	/**
-	 *
-	 * @return URL
-	 */
-	public String getUrl() {
-		return jtfUrl.getText();
-	}
+  /**
+   * 
+   * @return URL
+   */
+  public String getUrl() {
+    return jtfUrl.getText();
+  }
 
-	private void initUI(final String sDefault) {
-		// Set layout
-		final double[][] size = new double[][] { { 200, 10, TableLayoutConstants.PREFERRED },
-				{ TableLayoutConstants.PREFERRED } };
-		setLayout(new TableLayout(size));
-		// Build items
-		jtfUrl = new JTextField();
-		if (sDefault != null) {
-			jtfUrl.setText(sDefault);
-		}
-		jtfUrl.setToolTipText(Messages.getString("Path"));
-		jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		button = new JButton(IconLoader.ICON_OPEN_FILE);
-		button.setToolTipText(Messages.getString("Path"));
-		// Add items
-		add(jtfUrl, "0,0");
-		add(button, "2,0");
+  private void initUI(final String sDefault) {
+    // Set layout
+    final double[][] size = new double[][] { { 200, 10, TableLayoutConstants.PREFERRED },
+        { TableLayoutConstants.PREFERRED } };
+    setLayout(new TableLayout(size));
+    // Build items
+    jtfUrl = new JTextField();
+    if (sDefault != null) {
+      jtfUrl.setText(sDefault);
+    }
+    jtfUrl.setToolTipText(Messages.getString("Path"));
+    jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    button = new JButton(IconLoader.ICON_OPEN_FILE);
+    button.setToolTipText(Messages.getString("Path"));
+    // Add items
+    add(jtfUrl, "0,0");
+    add(button, "2,0");
 
-	}
+  }
 
-	/**
-	 * This method can be extended to perform specific actions when selected
-	 * changes URL
-	 *
-	 */
-	public void performOnURLChange() {
+  /**
+   * This method can be extended to perform specific actions when selected
+   * changes URL
+   * 
+   */
+  public void performOnURLChange() {
 
-	}
+  }
 
-	@Override
+  @Override
   public void setEnabled(final boolean b) {
-		jtfUrl.setEnabled(b);
-		button.setEnabled(b);
-	}
+    jtfUrl.setEnabled(b);
+    button.setEnabled(b);
+  }
 
-	/**
-	 * Set tooltip
-	 *
-	 * @param s
-	 */
-	@Override
+  /**
+   * Set tooltip
+   * 
+   * @param s
+   */
+  @Override
   public void setToolTipText(final String s) {
-		jtfUrl.setToolTipText(s);
-		button.setToolTipText(s);
-	}
+    jtfUrl.setToolTipText(s);
+    button.setToolTipText(s);
+  }
 
-	public void setURL(final String sURL){
-		jtfUrl.setText(sURL);
-	}
+  public void setURL(final String sURL) {
+    jtfUrl.setText(sURL);
+  }
 
 }

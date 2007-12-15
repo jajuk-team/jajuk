@@ -32,100 +32,95 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
-		PopupMenuListener, ActionListener, PropertyChangeListener,
-		ITechnicalStrings {
-	
-	private final JButton arrowButton;
+    PopupMenuListener, ActionListener, PropertyChangeListener, ITechnicalStrings {
 
-	private boolean popupVisible = false;
+  private final JButton arrowButton;
 
-	public DropDownButton(ImageIcon icon) {
-		super(icon);
-		if (icon.getIconWidth() < 20){
-			arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_16x16);
-		}
-		else{
-			arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_32x32);
-		}
-		getModel().addChangeListener(this);
-		arrowButton.getModel().addChangeListener(this);
-		arrowButton.addActionListener(this);
-		arrowButton.setBorder(null);
-		arrowButton.setMargin(new Insets(1, 0, 1, 0));
-		addPropertyChangeListener("enabled", this); // NOI18N 
-	}
+  private boolean popupVisible = false;
 
-	/*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
+  public DropDownButton(ImageIcon icon) {
+    super(icon);
+    if (icon.getIconWidth() < 20) {
+      arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_16x16);
+    } else {
+      arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_32x32);
+    }
+    getModel().addChangeListener(this);
+    arrowButton.getModel().addChangeListener(this);
+    arrowButton.addActionListener(this);
+    arrowButton.setBorder(null);
+    arrowButton.setMargin(new Insets(1, 0, 1, 0));
+    addPropertyChangeListener("enabled", this); // NOI18N
+  }
 
-	public void propertyChange(PropertyChangeEvent evt) {
-		arrowButton.setEnabled(isEnabled());
-	}
+  /*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
 
-	/*------------------------------[ ChangeListener ]---------------------------------------------------*/
+  public void propertyChange(PropertyChangeEvent evt) {
+    arrowButton.setEnabled(isEnabled());
+  }
 
-	public void stateChanged(ChangeEvent e) {
-		if (e.getSource() == getModel()) {
-			if (popupVisible && !getModel().isRollover()) {
-				getModel().setRollover(true);
-				return;
-			}
-			arrowButton.getModel().setRollover(
-					getModel().isRollover());
-			arrowButton.setSelected(getModel().isArmed()
-					&& getModel().isPressed());
-		} else {
-			if (popupVisible && !arrowButton.getModel().isSelected()) {
-				arrowButton.getModel().setSelected(true);
-				return;
-			}
-			getModel().setRollover(
-					arrowButton.getModel().isRollover());
-		}
-	}
+  /*------------------------------[ ChangeListener ]---------------------------------------------------*/
 
-	/*------------------------------[ ActionListener ]---------------------------------------------------*/
+  public void stateChanged(ChangeEvent e) {
+    if (e.getSource() == getModel()) {
+      if (popupVisible && !getModel().isRollover()) {
+        getModel().setRollover(true);
+        return;
+      }
+      arrowButton.getModel().setRollover(getModel().isRollover());
+      arrowButton.setSelected(getModel().isArmed() && getModel().isPressed());
+    } else {
+      if (popupVisible && !arrowButton.getModel().isSelected()) {
+        arrowButton.getModel().setSelected(true);
+        return;
+      }
+      getModel().setRollover(arrowButton.getModel().isRollover());
+    }
+  }
 
-	public void actionPerformed(ActionEvent ae) {
-		JPopupMenu popup = getPopupMenu();
-		popup.addPopupMenuListener(this);
-		popup.show(this, 0, getHeight());
-	}
+  /*------------------------------[ ActionListener ]---------------------------------------------------*/
 
-	/*------------------------------[ PopupMenuListener ]---------------------------------------------------*/
+  public void actionPerformed(ActionEvent ae) {
+    JPopupMenu popup = getPopupMenu();
+    popup.addPopupMenuListener(this);
+    popup.show(this, 0, getHeight());
+  }
 
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		popupVisible = true;
-		getModel().setRollover(true);
-		arrowButton.getModel().setSelected(true);
-	}
+  /*------------------------------[ PopupMenuListener ]---------------------------------------------------*/
 
-	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		popupVisible = false;
+  public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    popupVisible = true;
+    getModel().setRollover(true);
+    arrowButton.getModel().setSelected(true);
+  }
 
-		getModel().setRollover(false);
-		arrowButton.getModel().setSelected(false);
-		((JPopupMenu) e.getSource()).removePopupMenuListener(this);
-		// act as good programmer :)
-	}
+  public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    popupVisible = false;
 
-	public void popupMenuCanceled(PopupMenuEvent e) {
-		popupVisible = false;
-	}
+    getModel().setRollover(false);
+    arrowButton.getModel().setSelected(false);
+    ((JPopupMenu) e.getSource()).removePopupMenuListener(this);
+    // act as good programmer :)
+  }
 
-	/*------------------------------[ Other Methods ]---------------------------------------------------*/
+  public void popupMenuCanceled(PopupMenuEvent e) {
+    popupVisible = false;
+  }
 
-	protected abstract JPopupMenu getPopupMenu();
+  /*------------------------------[ Other Methods ]---------------------------------------------------*/
 
-	public JButton addToToolBar(JToolBar toolbar) {
-		JToolBar tempBar = new JToolBar();
-		tempBar.setBorder(null);
-		tempBar.setRollover(true);
-		tempBar.setAlignmentX(0.5f);
-		tempBar.setRollover(true);
-		tempBar.setFloatable(false);
-		tempBar.add(this);
-		tempBar.add(arrowButton);
-		toolbar.add(tempBar);
-		return this;
-	}
+  protected abstract JPopupMenu getPopupMenu();
+
+  public JButton addToToolBar(JToolBar toolbar) {
+    JToolBar tempBar = new JToolBar();
+    tempBar.setBorder(null);
+    tempBar.setRollover(true);
+    tempBar.setAlignmentX(0.5f);
+    tempBar.setRollover(true);
+    tempBar.setFloatable(false);
+    tempBar.add(this);
+    tempBar.add(arrowButton);
+    toolbar.add(tempBar);
+    return this;
+  }
 }

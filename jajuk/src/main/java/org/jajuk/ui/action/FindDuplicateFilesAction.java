@@ -42,53 +42,53 @@ import org.jajuk.ui.widgets.DuplicateFilesList;
 
 public class FindDuplicateFilesAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	FindDuplicateFilesAction() {
-		super(Messages.getString("FindDuplicateFilesAction.2"), IconLoader.ICON_SEARCH, true);
-		setShortDescription(Messages.getString("FindDuplicateFilesAction.2"));
-	}
+  FindDuplicateFilesAction() {
+    super(Messages.getString("FindDuplicateFilesAction.2"), IconLoader.ICON_SEARCH, true);
+    setShortDescription(Messages.getString("FindDuplicateFilesAction.2"));
+  }
 
-	public void perform(ActionEvent evt) throws Exception {
-		List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
-		for (Track track : TrackManager.getInstance().getTracks()) {
-			List<File> trackFileList = track.getFiles();
-			if (trackFileList.size() > 1) {
-				duplicateFilesList.add(trackFileList);
-			}
-		}
-		if (duplicateFilesList.size() < 1) {
-			Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
-		} else {
-			final JDialog duplicateFiles = new JDialog(Main.getWindow(),"List of Duplicate Files found");
-			duplicateFiles.setMaximumSize(new Dimension(800,600));	       	        
-	        
-	        JButton jbClose = new JButton(Messages.getString("Close"));
-            jbClose.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                            duplicateFiles.dispose();
-                    }
-            });
-            
-	        //Create and set up the content pane.
-	        JComponent newContentPane = new DuplicateFilesList(duplicateFilesList, jbClose);
-	        newContentPane.setOpaque(true); 
-	        duplicateFiles.setContentPane(newContentPane);
-	        
-	        //Display the window.
-	        duplicateFiles.pack();
-	        duplicateFiles.setVisible(true);
-							
-		}
-	}
+  public void perform(ActionEvent evt) throws Exception {
+    List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
+    for (Track track : TrackManager.getInstance().getTracks()) {
+      List<File> trackFileList = track.getFiles();
+      if (trackFileList.size() > 1) {
+        duplicateFilesList.add(trackFileList);
+      }
+    }
+    if (duplicateFilesList.size() < 1) {
+      Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
+    } else {
+      final JDialog duplicateFiles = new JDialog(Main.getWindow(), "List of Duplicate Files found");
+      duplicateFiles.setMaximumSize(new Dimension(800, 600));
 
-	private String convertToString(List<File> duplicateFilesList) {
-		StringBuilder buffer = new StringBuilder();
-		for (File file : duplicateFilesList) {
-			buffer.append('\t');
-			buffer.append(file.getName());
-			buffer.append('\n');
-		}
-		return buffer.toString();
-	}
+      JButton jbClose = new JButton(Messages.getString("Close"));
+      jbClose.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          duplicateFiles.dispose();
+        }
+      });
+
+      // Create and set up the content pane.
+      JComponent newContentPane = new DuplicateFilesList(duplicateFilesList, jbClose);
+      newContentPane.setOpaque(true);
+      duplicateFiles.setContentPane(newContentPane);
+
+      // Display the window.
+      duplicateFiles.pack();
+      duplicateFiles.setVisible(true);
+
+    }
+  }
+
+  private String convertToString(List<File> duplicateFilesList) {
+    StringBuilder buffer = new StringBuilder();
+    for (File file : duplicateFilesList) {
+      buffer.append('\t');
+      buffer.append(file.getName());
+      buffer.append('\n');
+    }
+    return buffer.toString();
+  }
 }

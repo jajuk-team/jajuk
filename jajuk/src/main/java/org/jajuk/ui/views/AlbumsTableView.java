@@ -33,99 +33,99 @@ import java.awt.event.MouseEvent;
  */
 public class AlbumsTableView extends AbstractTableView {
 
-	private static final long serialVersionUID = 7576455252866971945L;
+  private static final long serialVersionUID = 7576455252866971945L;
 
-	public AlbumsTableView() {
-		super();
-		sConf = CONF_ALBUMS_TABLE_COLUMNS;
-	}
+  public AlbumsTableView() {
+    super();
+    sConf = CONF_ALBUMS_TABLE_COLUMNS;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.views.IView#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("AlbumsTableView.0");
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.views.IView#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("AlbumsTableView.0");
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.views.IView#initUI()
-	 */
-	public void initUI() {
-		super.initUI();
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.views.IView#initUI()
+   */
+  public void initUI() {
+    super.initUI();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.views.AbstractTableView#initTable()
-	 */
-	@Override
-	void initTable() {
-		jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.views.AbstractTableView#initTable()
+   */
+  @Override
+  void initTable() {
+    jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.views.AbstractTableView#populateTable()
-	 */
-	@Override
-	JajukTableModel populateTable() {
-		// model creation
-		AlbumsTableModel model = new AlbumsTableModel();
-		return model;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.views.AbstractTableView#populateTable()
+   */
+  @Override
+  JajukTableModel populateTable() {
+    // model creation
+    AlbumsTableModel model = new AlbumsTableModel();
+    return model;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
+  public void actionPerformed(ActionEvent e) {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+   */
+  public void mouseClicked(MouseEvent e) {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	 */
-	public void mouseEntered(MouseEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+   */
+  public void mouseEntered(MouseEvent e) {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+   */
+  public void mouseExited(MouseEvent e) {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+   */
+  public void mousePressed(MouseEvent e) {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+   */
+  public void mouseReleased(MouseEvent e) {
+  }
 
 }

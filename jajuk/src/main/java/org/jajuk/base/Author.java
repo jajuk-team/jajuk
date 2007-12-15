@@ -31,95 +31,97 @@ import javax.swing.ImageIcon;
  */
 public class Author extends LogicalItem implements Comparable<Author> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Author constructor
-	 * 
-	 * @param id
-	 * @param sName
-	 */
-	public Author(String sId, String sName) {
-		super(sId, sName);
-	}
+  /**
+   * Author constructor
+   * 
+   * @param id
+   * @param sName
+   */
+  public Author(String sId, String sName) {
+    super(sId, sName);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#getIdentifier()
-	 */
-	final public String getLabel() {
-		return XML_AUTHOR;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getIdentifier()
+   */
+  final public String getLabel() {
+    return XML_AUTHOR;
+  }
 
-	/**
-	 * Return author name, dealing with unkwnown for any language
-	 * 
-	 * @return author name
-	 */
-	public String getName2() {
-		String sOut = getName();
-		if (sOut.equals(UNKNOWN_AUTHOR)) {
-			sOut = Messages.getString(UNKNOWN_AUTHOR);
-		}
-		return sOut;
-	}
+  /**
+   * Return author name, dealing with unkwnown for any language
+   * 
+   * @return author name
+   */
+  public String getName2() {
+    String sOut = getName();
+    if (sOut.equals(UNKNOWN_AUTHOR)) {
+      sOut = Messages.getString(UNKNOWN_AUTHOR);
+    }
+    return sOut;
+  }
 
-	/**
-	 * toString method
-	 */
-	public String toString() {
-		return "Author[ID=" + getID() + " Name={{" + getName() + "}}]";   
-	}
+  /**
+   * toString method
+   */
+  public String toString() {
+    return "Author[ID=" + getID() + " Name={{" + getName() + "}}]";
+  }
 
-	/**
-	 * Alphabetical comparator used to display ordered lists
-	 * 
-	 * @param other
-	 *            item to be compared
-	 * @return comparison result
-	 */
-	public int compareTo(Author otherItem) {
-		// compare using name and id to differentiate unknown items
-		StringBuilder current = new StringBuilder(getName2());
-		current.append(getID());
-		StringBuilder other = new StringBuilder(otherItem.getName2());
-		other.append(otherItem.getID());
-		return current.toString().compareToIgnoreCase(other.toString());
-	}
+  /**
+   * Alphabetical comparator used to display ordered lists
+   * 
+   * @param other
+   *          item to be compared
+   * @return comparison result
+   */
+  public int compareTo(Author otherItem) {
+    // compare using name and id to differentiate unknown items
+    StringBuilder current = new StringBuilder(getName2());
+    current.append(getID());
+    StringBuilder other = new StringBuilder(otherItem.getName2());
+    other.append(otherItem.getID());
+    return current.toString().compareToIgnoreCase(other.toString());
+  }
 
-	/**
-	 * @return whether the author is Unknown or not
-	 */
-	public boolean isUnknown() {
-		return this.getName().equals(UNKNOWN_AUTHOR);
-	}
+  /**
+   * @return whether the author is Unknown or not
+   */
+  public boolean isUnknown() {
+    return this.getName().equals(UNKNOWN_AUTHOR);
+  }
 
-	/**
-	 * Get item description
-	 */
-	public String getDesc() {
-		return Messages.getString("Item_Author") + " : " + getName2();  
-	}
+  /**
+   * Get item description
+   */
+  public String getDesc() {
+    return Messages.getString("Item_Author") + " : " + getName2();
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
-	 */
-	public String getHumanValue(String sKey) {
-		if (XML_NAME.equals(sKey)) {
-			return getName2();
-		}
-		// default
-		return super.getHumanValue(sKey);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
+   */
+  public String getHumanValue(String sKey) {
+    if (XML_NAME.equals(sKey)) {
+      return getName2();
+    }
+    // default
+    return super.getHumanValue(sKey);
+  }
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.Item#getIconRepresentation()
-	 */
-	@Override
-	public ImageIcon getIconRepresentation() {
-		return IconLoader.ICON_AUTHOR;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getIconRepresentation()
+   */
+  @Override
+  public ImageIcon getIconRepresentation() {
+    return IconLoader.ICON_AUTHOR;
+  }
 }

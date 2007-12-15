@@ -42,89 +42,85 @@ import javax.swing.JComboBox;
  * Remove property wizard
  */
 public class RemovePropertyWizard extends CustomPropertyWizard {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	JComboBox jcbName;
+  JComboBox jcbName;
 
-	/**
-	 * Constructor
-	 */
-	public RemovePropertyWizard() {
-		super(Messages.getString("RemovePropertyWizard.0")); 
-		jcbName = new JComboBox();
-		populate();// create default UI
-		jcbName.addItemListener(this);
-		populateProperties();// fill properties combo with properties for
-		// default item
-		int iXSeparator = 10;
-		int iYSeparator = 20;
-		double[][] dSize = {
-				{ iXSeparator, 0.5, iXSeparator, 0.5, iXSeparator },
-				{ iYSeparator, 20, iYSeparator, 20, iYSeparator } };
-		jpMain.setLayout(new TableLayout(dSize));
-		jpMain.add(jlItemChoice, "1,1"); 
-		jpMain.add(jcbItemChoice, "3,1"); 
-		jpMain.add(jlName, "1,3"); 
-		jpMain.add(jcbName, "3,3"); 
-		getContentPane().add(jpMain);
-		getContentPane().add(okp);
-		getContentPane().add(Box.createVerticalStrut(10));
-		getRootPane().setDefaultButton(okp.getOKButton());
-	}
+  /**
+   * Constructor
+   */
+  public RemovePropertyWizard() {
+    super(Messages.getString("RemovePropertyWizard.0"));
+    jcbName = new JComboBox();
+    populate();// create default UI
+    jcbName.addItemListener(this);
+    populateProperties();// fill properties combo with properties for
+    // default item
+    int iXSeparator = 10;
+    int iYSeparator = 20;
+    double[][] dSize = { { iXSeparator, 0.5, iXSeparator, 0.5, iXSeparator },
+        { iYSeparator, 20, iYSeparator, 20, iYSeparator } };
+    jpMain.setLayout(new TableLayout(dSize));
+    jpMain.add(jlItemChoice, "1,1");
+    jpMain.add(jcbItemChoice, "3,1");
+    jpMain.add(jlName, "1,3");
+    jpMain.add(jcbName, "3,3");
+    getContentPane().add(jpMain);
+    getContentPane().add(okp);
+    getContentPane().add(Box.createVerticalStrut(10));
+    getRootPane().setDefaultButton(okp.getOKButton());
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent ae) {
-		if (ae.getSource().equals(this.okp.getOKButton())) {
-			ItemManager im = getItemManager();
-			String sProperty = jcbName.getSelectedItem().toString();
-			im.removeProperty(sProperty);
-			Properties properties = new Properties();
-			properties.put(DETAIL_CONTENT, sProperty);
-			Event event = new Event(
-					EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE, properties);
-			ObservationManager.notify(event);
-			dispose();
-		} else if (ae.getSource().equals(this.okp.getCancelButton())) {
-			dispose();
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
+  public void actionPerformed(ActionEvent ae) {
+    if (ae.getSource().equals(this.okp.getOKButton())) {
+      ItemManager im = getItemManager();
+      String sProperty = jcbName.getSelectedItem().toString();
+      im.removeProperty(sProperty);
+      Properties properties = new Properties();
+      properties.put(DETAIL_CONTENT, sProperty);
+      Event event = new Event(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE, properties);
+      ObservationManager.notify(event);
+      dispose();
+    } else if (ae.getSource().equals(this.okp.getCancelButton())) {
+      dispose();
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
-	 */
-	public void itemStateChanged(ItemEvent e) {
-		if (e.getSource() == jcbItemChoice) {
-			populateProperties();
-		}
-		// update OK button state
-		if (jcbItemChoice.getSelectedIndex() != -1
-				&& jcbName.getSelectedIndex() != -1) {
-			okp.getOKButton().setEnabled(true);
-			okp.getOKButton().requestFocusInWindow();
-		} else {
-			okp.getOKButton().setEnabled(false);
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+   */
+  public void itemStateChanged(ItemEvent e) {
+    if (e.getSource() == jcbItemChoice) {
+      populateProperties();
+    }
+    // update OK button state
+    if (jcbItemChoice.getSelectedIndex() != -1 && jcbName.getSelectedIndex() != -1) {
+      okp.getOKButton().setEnabled(true);
+      okp.getOKButton().requestFocusInWindow();
+    } else {
+      okp.getOKButton().setEnabled(false);
+    }
+  }
 
-	public void populateProperties() {
-		// clear combo
-		jcbName.removeAllItems();
-		// refresh properties list for this item
-		ItemManager im = getItemManager();
-		if (im != null) {
-			Iterator it = im.getCustomProperties().iterator();
-			while (it.hasNext()) {
-				PropertyMetaInformation meta = (PropertyMetaInformation) it
-						.next();
-				jcbName.addItem(meta.getName());
-			}
-		}
-	}
+  public void populateProperties() {
+    // clear combo
+    jcbName.removeAllItems();
+    // refresh properties list for this item
+    ItemManager im = getItemManager();
+    if (im != null) {
+      Iterator it = im.getCustomProperties().iterator();
+      while (it.hasNext()) {
+        PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+        jcbName.addItem(meta.getName());
+      }
+    }
+  }
 
 }

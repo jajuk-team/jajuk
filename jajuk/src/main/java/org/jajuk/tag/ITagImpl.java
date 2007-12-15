@@ -24,110 +24,110 @@ package org.jajuk.tag;
  */
 public interface ITagImpl {
 
-	/**
-	 * @return track name as defined in tags are file name otherwise
-	 */
-	public String getTrackName() throws Exception;
+  /**
+   * @return track name as defined in tags are file name otherwise
+   */
+  public String getTrackName() throws Exception;
 
-	/**
-	 * @return album name
-	 */
-	public String getAlbumName() throws Exception;
+  /**
+   * @return album name
+   */
+  public String getAlbumName() throws Exception;
 
-	/**
-	 * @return author name
-	 */
-	public String getAuthorName() throws Exception;
+  /**
+   * @return author name
+   */
+  public String getAuthorName() throws Exception;
 
-	/**
-	 * @return style name
-	 */
-	public String getStyleName() throws Exception;
+  /**
+   * @return style name
+   */
+  public String getStyleName() throws Exception;
 
-	/**
-	 * @return length in sec
-	 */
-	public long getLength() throws Exception;
+  /**
+   * @return length in sec
+   */
+  public long getLength() throws Exception;
 
-	/**
-	 * @return creation year
-	 */
-	public String getYear() throws Exception;
+  /**
+   * @return creation year
+   */
+  public String getYear() throws Exception;
 
-	/**
-	 * @return quality
-	 */
-	public long getQuality() throws Exception;
+  /**
+   * @return quality
+   */
+  public long getQuality() throws Exception;
 
-	/**
-	 * @return comment
-	 */
-	public String getComment() throws Exception;
+  /**
+   * @return comment
+   */
+  public String getComment() throws Exception;
 
-	/**
-	 * @return track order
-	 * @throws Exception
-	 */
-	public long getOrder() throws Exception;
+  /**
+   * @return track order
+   * @throws Exception
+   */
+  public long getOrder() throws Exception;
 
-	/**
-	 * @return specific property or null if property not tagged
-	 */
-	public String getTagItem(String sTagItem) throws Exception;
+  /**
+   * @return specific property or null if property not tagged
+   */
+  public String getTagItem(String sTagItem) throws Exception;
 
-	/**
-	 * @param sTrackName
-	 */
-	public void setTrackName(String sTrackName) throws Exception;
+  /**
+   * @param sTrackName
+   */
+  public void setTrackName(String sTrackName) throws Exception;
 
-	/**
-	 * @param sAlbumName
-	 */
-	public void setAlbumName(String sAlbumName) throws Exception;
+  /**
+   * @param sAlbumName
+   */
+  public void setAlbumName(String sAlbumName) throws Exception;
 
-	/**
-	 * @param sAuthorName
-	 */
-	public void setAuthorName(String sAuthorName) throws Exception;
+  /**
+   * @param sAuthorName
+   */
+  public void setAuthorName(String sAuthorName) throws Exception;
 
-	/**
-	 * @param style
-	 */
-	public void setStyleName(String style) throws Exception;
+  /**
+   * @param style
+   */
+  public void setStyleName(String style) throws Exception;
 
-	/**
-	 * @param sYear
-	 */
-	public void setYear(String sYear) throws Exception;
+  /**
+   * @param sYear
+   */
+  public void setYear(String sYear) throws Exception;
 
-	/**
-	 * @param sComment
-	 */
-	public void setComment(String sComment) throws Exception;
+  /**
+   * @param sComment
+   */
+  public void setComment(String sComment) throws Exception;
 
-	/**
-	 * Set current file to work with.
-	 * 
-	 * @param fio
-	 */
-	public void setFile(java.io.File fio) throws Exception;
+  /**
+   * Set current file to work with.
+   * 
+   * @param fio
+   */
+  public void setFile(java.io.File fio) throws Exception;
 
-	/**
-	 * Set track order
-	 * 
-	 * @param sOrder
-	 * @throws Exception
-	 */
-	public void setOrder(long lOrder) throws Exception;
+  /**
+   * Set track order
+   * 
+   * @param sOrder
+   * @throws Exception
+   */
+  public void setOrder(long lOrder) throws Exception;
 
-	/**
-	 * @return Set a specific property
-	 */
-	public void setTagItem(String sTagItem, String sValue) throws Exception;
+  /**
+   * @return Set a specific property
+   */
+  public void setTagItem(String sTagItem, String sValue) throws Exception;
 
-	/**
-	 * Commit all changes in the tag
-	 */
-	public void commit() throws Exception;
+  /**
+   * Commit all changes in the tag
+   */
+  public void commit() throws Exception;
 
 }

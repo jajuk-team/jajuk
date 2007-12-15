@@ -28,16 +28,16 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
 /**
- *
+ * 
  * Playlist filter
  */
 public class PlaylistFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static PlaylistFilter  self  = null;
+  protected static PlaylistFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static PlaylistFilter getInstance() {
@@ -55,7 +55,7 @@ public class PlaylistFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see java.io.FileFilter#accept(java.io.File)
    */
   @Override
@@ -64,10 +64,9 @@ public class PlaylistFilter extends JajukFileFilter {
     // directories
     if (f.isDirectory()) {
       return (bShowDirectories);
-    }
-    else {
-      final String      extension = Util.getExtension(f);
-      final TypeManager mgr       = TypeManager.getInstance();
+    } else {
+      final String extension = Util.getExtension(f);
+      final TypeManager mgr = TypeManager.getInstance();
 
       // check extension is known
       if (mgr.isExtensionSupported(extension)) {
@@ -81,7 +80,7 @@ public class PlaylistFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see javax.swing.filechooser.FileFilter#getDescription()
    */
   @Override

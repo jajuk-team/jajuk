@@ -24,36 +24,35 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * Flag class telling a tree node is a root element
  */
-public class TreeRootElement extends DefaultMutableTreeNode{
+public class TreeRootElement extends DefaultMutableTreeNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3183130517695923747L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -3183130517695923747L;
 
-	/**
-	 * 
-	 */
-	public TreeRootElement() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+  /**
+   * 
+   */
+  public TreeRootElement() {
+    super();
+    // TODO Auto-generated constructor stub
+  }
 
-	/**
-	 * @param userObject
-	 * @param allowsChildren
-	 */
-	public TreeRootElement(Object userObject, boolean allowsChildren) {
-		super(userObject, allowsChildren);
-		// TODO Auto-generated constructor stub
-	}
+  /**
+   * @param userObject
+   * @param allowsChildren
+   */
+  public TreeRootElement(Object userObject, boolean allowsChildren) {
+    super(userObject, allowsChildren);
+    // TODO Auto-generated constructor stub
+  }
 
-	/**
-	 * @param userObject
-	 */
-	public TreeRootElement(Object userObject) {
-		super(userObject);
-		// TODO Auto-generated constructor stub
-	}
+  /**
+   * @param userObject
+   */
+  public TreeRootElement(Object userObject) {
+    super(userObject);
+    // TODO Auto-generated constructor stub
+  }
 }
-

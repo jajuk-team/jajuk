@@ -33,30 +33,30 @@ import java.awt.event.ActionEvent;
  * <code>CTRL + SHIFT + RIGHT ARROW</code>.
  */
 public class NextAlbumAction extends ActionBase {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	NextAlbumAction() {
-		super("next album", "shift F10", false, true);
-	}
+  NextAlbumAction() {
+    super("next album", "shift F10", false, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		new Thread() {
-			public void run() {
-				//Take FIFO lock
-				synchronized (FIFO.MUTEX) {
-					try {
-						FIFO.getInstance().playNextAlbum();
-					} catch (Exception e) {
-						Log.error(e);
-					}
-					if (Player.isPaused()) {
-						// player was paused, reset pause button
-						// when changing of track
-						Player.setPaused(false);
-						ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
-					}
-				}
-			}
-		}.start();
-	}
+  public void perform(ActionEvent evt) {
+    new Thread() {
+      public void run() {
+        // Take FIFO lock
+        synchronized (FIFO.MUTEX) {
+          try {
+            FIFO.getInstance().playNextAlbum();
+          } catch (Exception e) {
+            Log.error(e);
+          }
+          if (Player.isPaused()) {
+            // player was paused, reset pause button
+            // when changing of track
+            Player.setPaused(false);
+            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+          }
+        }
+      }
+    }.start();
+  }
 }

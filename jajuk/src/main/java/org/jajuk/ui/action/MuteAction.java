@@ -28,29 +28,28 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 
 /**
- * Action of clicking on the mute button  
+ * Action of clicking on the mute button
  */
 public class MuteAction extends ActionBase {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	MuteAction() {
-		super(Messages.getString("JajukWindow.2"), IconLoader.ICON_UNMUTED,
-				"F8", true, true);
-		setShortDescription(Messages.getString("JajukWindow.19"));
-	}
+  MuteAction() {
+    super(Messages.getString("JajukWindow.2"), IconLoader.ICON_UNMUTED, "F8", true, true);
+    setShortDescription(Messages.getString("JajukWindow.19"));
+  }
 
-	public void perform(ActionEvent evt) {
-		Player.mute();
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (Player.isMuted()) {
-					setName(Messages.getString("JajukWindow.1"));
-					setIcon(IconLoader.ICON_MUTED);
-				} else {
-					setName(Messages.getString("JajukWindow.2"));
-					setIcon(IconLoader.ICON_UNMUTED);
-				}
-			}
-		});
-	}
+  public void perform(ActionEvent evt) {
+    Player.mute();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        if (Player.isMuted()) {
+          setName(Messages.getString("JajukWindow.1"));
+          setIcon(IconLoader.ICON_MUTED);
+        } else {
+          setName(Messages.getString("JajukWindow.2"));
+          setIcon(IconLoader.ICON_UNMUTED);
+        }
+      }
+    });
+  }
 }

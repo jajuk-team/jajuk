@@ -22,16 +22,16 @@ package org.jajuk.util.filters;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *
+ * 
  * Image filter
  */
 public class ImageFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static ImageFilter  self  = null;
+  protected static ImageFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static ImageFilter getInstance() {

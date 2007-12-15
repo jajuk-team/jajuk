@@ -28,17 +28,16 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
 /**
- *
+ * 
  * Audio filter
  */
 public class AudioFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static AudioFilter  self  = null;
-
+  protected static AudioFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static AudioFilter getInstance() {
@@ -57,7 +56,7 @@ public class AudioFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see java.io.FileFilter#accept(java.io.File)
    */
   @Override
@@ -70,8 +69,8 @@ public class AudioFilter extends JajukFileFilter {
       if (f.isDirectory()) {
         return false;
       }
-      final TypeManager mgr       = TypeManager.getInstance();
-      final String      extension = Util.getExtension(f);
+      final TypeManager mgr = TypeManager.getInstance();
+      final String extension = Util.getExtension(f);
 
       // check extension is known
       if (TypeManager.getInstance().isExtensionSupported(extension)) {
@@ -84,7 +83,7 @@ public class AudioFilter extends JajukFileFilter {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see javax.swing.filechooser.FileFilter#getDescription()
    */
   @Override

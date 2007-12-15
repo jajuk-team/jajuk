@@ -49,7 +49,7 @@ public class LyrcProvider extends GenericProvider {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    *      java.lang.String)
    */
@@ -114,7 +114,7 @@ public class LyrcProvider extends GenericProvider {
 
           Log.debug("Found suggestion " + suggestion);
           try {
-            final URL   url = new URL(suggestionURL);
+            final URL url = new URL(suggestionURL);
 
             return (cleanLyrics(DownloadManager.downloadHtml(url, "ISO-8859-1")));
           } catch (final MalformedURLException e) {
@@ -145,7 +145,7 @@ public class LyrcProvider extends GenericProvider {
   /**
    * Extracts lyrics from the HTML page. The correct subsection is to be
    * extracted first, before being cleaned and stripped from useless HTML tags.
-   *
+   * 
    * @return the lyrics
    */
   private String cleanLyrics(String html) {

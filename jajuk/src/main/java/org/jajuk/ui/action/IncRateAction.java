@@ -32,28 +32,26 @@ import org.jajuk.util.error.JajukException;
 
 import java.awt.event.ActionEvent;
 
-
 /**
  * 
- *  Manual increase of rate
+ * Manual increase of rate
  */
 public class IncRateAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
-	
-	IncRateAction() {
-		super(
-				Messages.getString("IncRateAction.0"), IconLoader.ICON_INC_RATING, true); 
-		setShortDescription(Messages.getString("IncRateAction.0")); 
-	}
+  private static final long serialVersionUID = 1L;
 
-	public void perform(ActionEvent evt) throws JajukException {
-		File file = FIFO.getInstance().getCurrentFile();
-		if (file != null){
-			Track track = file.getTrack();
-			track.setRate(track.getRate() + ConfigurationManager.getInt(CONF_INC_RATING));
-		}
-		//Force immediate rating refresh (without using the rating manager) 
-		ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
-	}
+  IncRateAction() {
+    super(Messages.getString("IncRateAction.0"), IconLoader.ICON_INC_RATING, true);
+    setShortDescription(Messages.getString("IncRateAction.0"));
+  }
+
+  public void perform(ActionEvent evt) throws JajukException {
+    File file = FIFO.getInstance().getCurrentFile();
+    if (file != null) {
+      Track track = file.getTrack();
+      track.setRate(track.getRate() + ConfigurationManager.getInt(CONF_INC_RATING));
+    }
+    // Force immediate rating refresh (without using the rating manager)
+    ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
+  }
 }

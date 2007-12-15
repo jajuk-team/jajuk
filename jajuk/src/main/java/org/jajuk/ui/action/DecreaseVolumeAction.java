@@ -29,21 +29,20 @@ import java.awt.event.ActionEvent;
  * <code>CTRL + DOWN ARROW</code>.
  */
 public class DecreaseVolumeAction extends ActionBase {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	DecreaseVolumeAction() {
-		super("decrease volume", "ctrl DOWN", true, true);  
-	}
+  DecreaseVolumeAction() {
+    super("decrease volume", "ctrl DOWN", true, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		int iOld = CommandJPanel.getInstance().getCurrentVolume();
-		int iNew = iOld - 5;
-		// if user move the volume slider, unmute
-		if (Player.isMuted()) {
-			Player.mute(false);
-		}
-		Player.setVolume(((float) iNew) / 100);
-	}
-	
-	
+  public void perform(ActionEvent evt) {
+    int iOld = CommandJPanel.getInstance().getCurrentVolume();
+    int iNew = iOld - 5;
+    // if user move the volume slider, unmute
+    if (Player.isMuted()) {
+      Player.mute(false);
+    }
+    Player.setVolume(((float) iNew) / 100);
+  }
+
 }

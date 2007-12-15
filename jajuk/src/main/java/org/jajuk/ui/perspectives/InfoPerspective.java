@@ -27,15 +27,15 @@ import org.jajuk.util.Messages;
  */
 public class InfoPerspective extends PerspectiveAdapter {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("Perspective_Description_Info"); 
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("Perspective_Description_Info");
+  }
 
 }

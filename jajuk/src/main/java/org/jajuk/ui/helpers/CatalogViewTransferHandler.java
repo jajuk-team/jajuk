@@ -35,42 +35,42 @@ import javax.swing.TransferHandler;
 
 public class CatalogViewTransferHandler extends TransferHandler implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private LocalAlbumThumbnail item;
+  private LocalAlbumThumbnail item;
 
-	/** Constructor */
-	public CatalogViewTransferHandler(LocalAlbumThumbnail item) {
-		this.item = item;
-	}
+  /** Constructor */
+  public CatalogViewTransferHandler(LocalAlbumThumbnail item) {
+    this.item = item;
+  }
 
-	/**
-	 * Called when dragging
-	 */
-	protected Transferable createTransferable(JComponent c) {
-		Object o = item.getItem();
-		if (o != null){
-			return new TransferableAlbum(o);
-		}
-		return null;
-	}
+  /**
+   * Called when dragging
+   */
+  protected Transferable createTransferable(JComponent c) {
+    Object o = item.getItem();
+    if (o != null) {
+      return new TransferableAlbum(o);
+    }
+    return null;
+  }
 
-	/**
-	 * return action type
-	 */
-	public int getSourceActions(JComponent c) {
-		return COPY_OR_MOVE;
-	}
+  /**
+   * return action type
+   */
+  public int getSourceActions(JComponent c) {
+    return COPY_OR_MOVE;
+  }
 
-	/**
-	 * Called when dropping, no drop in catalog view for now
-	 */
-	public boolean importData(JComponent c, Transferable t) {
-		return false;
-	}
+  /**
+   * Called when dropping, no drop in catalog view for now
+   */
+  public boolean importData(JComponent c, Transferable t) {
+    return false;
+  }
 
-	public boolean canImport(JComponent c, DataFlavor[] flavors) {
-		return false;
-	}
+  public boolean canImport(JComponent c, DataFlavor[] flavors) {
+    return false;
+  }
 
 }

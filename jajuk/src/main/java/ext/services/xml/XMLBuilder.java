@@ -28,15 +28,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class XMLBuilder {
 
-	public static Document getXMLDocument(String xml) {
-		if ((null != xml) && (xml.length() != 0)) {
-			try {
-				DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-				return parser.parse(new InputSource(new StringReader(xml)));
-			} catch (Exception e) {
-				return null;
-			}
-		}
-		return null;
-	}
+  public static Document getXMLDocument(String xml) {
+    if ((null != xml) && (xml.length() != 0)) {
+      try {
+        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        return parser.parse(new InputSource(new StringReader(xml)));
+      } catch (Exception e) {
+        return null;
+      }
+    }
+    return null;
+  }
 }

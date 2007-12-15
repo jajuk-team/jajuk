@@ -21,28 +21,28 @@ package org.jajuk.util.error;
 
 public class CannotRenameException extends JajukException {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * constructor.
-	 * 
-	 * @param pCode
-	 *            Code of the current error.
-	 */
-	public CannotRenameException(int code) {
-		super(code);
-	}
+  /**
+   * constructor.
+   * 
+   * @param pCode
+   *          Code of the current error.
+   */
+  public CannotRenameException(int code) {
+    super(code);
+  }
 
-	/**
-	 * JajukException constructor.
-	 * 
-	 * @param code
-	 *            Code of the current error.
-	 * @param pCause
-	 *            Original exception of the error.
-	 */
-	public CannotRenameException(int code, Throwable pCause) {
-		super(code, pCause);
-	}
+  /**
+   * JajukException constructor.
+   * 
+   * @param code
+   *          Code of the current error.
+   * @param pCause
+   *          Original exception of the error.
+   */
+  public CannotRenameException(int code, Throwable pCause) {
+    super(code, pCause);
+  }
 
 }

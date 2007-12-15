@@ -30,19 +30,19 @@ import java.awt.event.ActionEvent;
  */
 public class IncreaseVolumeAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	IncreaseVolumeAction() {
-		super("increase volume", "ctrl UP", true, true);  
-	}
+  IncreaseVolumeAction() {
+    super("increase volume", "ctrl UP", true, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		int iOld = CommandJPanel.getInstance().getCurrentVolume();
-		int iNew = iOld + 5;
-		// if user move the volume slider, unmute
-		if (Player.isMuted()) {
-			Player.mute(false);
-		}
-		Player.setVolume(((float) iNew) / 100);
-	}
+  public void perform(ActionEvent evt) {
+    int iOld = CommandJPanel.getInstance().getCurrentVolume();
+    int iNew = iOld + 5;
+    // if user move the volume slider, unmute
+    if (Player.isMuted()) {
+      Player.mute(false);
+    }
+    Player.setVolume(((float) iNew) / 100);
+  }
 }

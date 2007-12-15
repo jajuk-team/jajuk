@@ -18,41 +18,40 @@
 
 package ext.services.lastfm;
 
-
 import org.w3c.dom.Element;
 
 import ext.services.xml.XMLUtils;
 
 public class AudioScrobblerArtist {
 
-	private String name;
-	private String match;
-	private String url;
-	private String imageUrl;
-	
-	public String getImageUrl() {
-		return imageUrl;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getUrl() {
-		return url;
-	}
-	
-	protected static AudioScrobblerArtist getArtist(Element el) {
-		AudioScrobblerArtist artist = new AudioScrobblerArtist();
-		artist.name = XMLUtils.getChildElementContent(el, "name");
-		artist.match = XMLUtils.getChildElementContent(el, "match");
-		artist.url = XMLUtils.getChildElementContent(el, "url");
-		artist.imageUrl = XMLUtils.getChildElementContent(el, "image");
-		return artist;
-	}
+  private String name;
+  private String match;
+  private String url;
+  private String imageUrl;
 
-	public String getMatch() {
-		return match;
-	}
-	
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  protected static AudioScrobblerArtist getArtist(Element el) {
+    AudioScrobblerArtist artist = new AudioScrobblerArtist();
+    artist.name = XMLUtils.getChildElementContent(el, "name");
+    artist.match = XMLUtils.getChildElementContent(el, "match");
+    artist.url = XMLUtils.getChildElementContent(el, "url");
+    artist.imageUrl = XMLUtils.getChildElementContent(el, "image");
+    return artist;
+  }
+
+  public String getMatch() {
+    return match;
+  }
+
 }

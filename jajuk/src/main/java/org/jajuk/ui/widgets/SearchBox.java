@@ -64,191 +64,186 @@ import org.jajuk.webradio.WebRadioManager;
  */
 public class SearchBox extends JTextField implements KeyListener {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/** Do search panel need a search */
-	private boolean bNeedSearch = false;
+  /** Do search panel need a search */
+  private boolean bNeedSearch = false;
 
-	/** Default time in ms before launching a search automaticaly */
-	private static final int WAIT_TIME = 500;
+  /** Default time in ms before launching a search automaticaly */
+  private static final int WAIT_TIME = 500;
 
-	/** Minimum number of characters to start a search */
-	private static final int MIN_CRITERIA_LENGTH = 1;
+  /** Minimum number of characters to start a search */
+  private static final int MIN_CRITERIA_LENGTH = 1;
 
-	/** Search result */
-	public ArrayList<SearchResult> alResults;
+  /** Search result */
+  public ArrayList<SearchResult> alResults;
 
-	/** Typed string */
-	private String sTyped;
+  /** Typed string */
+  private String sTyped;
 
-	public Popup popup;
+  public Popup popup;
 
-	public JList jlist;
+  public JList jlist;
 
-	private long lDateTyped;
+  private long lDateTyped;
 
-	/** Listener to handle selections */
-	private ListSelectionListener lsl;
+  /** Listener to handle selections */
+  private ListSelectionListener lsl;
 
-	/** Search when typing timer */
-	Timer timer = new Timer(100, new ActionListener() {
+  /** Search when typing timer */
+  Timer timer = new Timer(100, new ActionListener() {
 
-		public void actionPerformed(ActionEvent arg0) {
-			if (bNeedSearch
-					&& (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
-				search();
-			}
+    public void actionPerformed(ActionEvent arg0) {
+      if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+        search();
+      }
 
-		}
+    }
 
-	});
+  });
 
-	/**
-	 * Display results as a jlabel with an icon
-	 */
-	class SearchListRenderer extends JPanel implements ListCellRenderer {
-		private static final long serialVersionUID = 8975989658927794678L;
+  /**
+   * Display results as a jlabel with an icon
+   */
+  class SearchListRenderer extends JPanel implements ListCellRenderer {
+    private static final long serialVersionUID = 8975989658927794678L;
 
-		public Component getListCellRendererComponent(JList list, Object value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			SearchResult sr = (SearchResult) value;
-			JPanel jp = new JPanel(new BorderLayout());
-			JLabel jl = null;
-			if (sr.getType() == SearchResultType.FILE) {
-				jl = new JLabel(sr.getResu(), sr.getFile()
-						.getIconRepresentation(), SwingConstants.HORIZONTAL);
-			} else if (sr.getType() == SearchResultType.WEBRADIO) {
-				jl = new JLabel(sr.getResu(), IconLoader.ICON_WEBRADIO_16x16,
-						SwingConstants.HORIZONTAL);
-			}
-			jp.add(jl, BorderLayout.WEST);
-			return jp;
-		}
-	}
+    public Component getListCellRendererComponent(JList list, Object value, int index,
+        boolean isSelected, boolean cellHasFocus) {
+      SearchResult sr = (SearchResult) value;
+      JPanel jp = new JPanel(new BorderLayout());
+      JLabel jl = null;
+      if (sr.getType() == SearchResultType.FILE) {
+        jl = new JLabel(sr.getResu(), sr.getFile().getIconRepresentation(),
+            SwingConstants.HORIZONTAL);
+      } else if (sr.getType() == SearchResultType.WEBRADIO) {
+        jl = new JLabel(sr.getResu(), IconLoader.ICON_WEBRADIO_16x16, SwingConstants.HORIZONTAL);
+      }
+      jp.add(jl, BorderLayout.WEST);
+      return jp;
+    }
+  }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param lsl
-	 */
-	public SearchBox(ListSelectionListener lsl) {
-		this.lsl = lsl;
-		timer.start();
-		addKeyListener(this);
-		setToolTipText(Messages.getString("SearchBox.0"));
-		setBorder(BorderFactory.createEtchedBorder());
-		setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
-		Color mediumGray = new Color(172, 172, 172);
-		setForeground(mediumGray);
-		setBorder(BorderFactory.createLineBorder(Color.BLUE));
-	}
+  /**
+   * Constructor
+   * 
+   * @param lsl
+   */
+  public SearchBox(ListSelectionListener lsl) {
+    this.lsl = lsl;
+    timer.start();
+    addKeyListener(this);
+    setToolTipText(Messages.getString("SearchBox.0"));
+    setBorder(BorderFactory.createEtchedBorder());
+    setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
+    Color mediumGray = new Color(172, 172, 172);
+    setForeground(mediumGray);
+    setBorder(BorderFactory.createLineBorder(Color.BLUE));
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-	 */
-	public void keyPressed(KeyEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+   */
+  public void keyPressed(KeyEvent e) {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-	 */
-	public void keyReleased(KeyEvent e) {
-		if (e.getKeyChar() == KeyEvent.VK_ESCAPE && popup != null) {
-			popup.hide();
-			return;
-		}
-		bNeedSearch = false; // stop clock for auto-search
-		sTyped = getText();
-		if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
-			// perform automatic search only when user provide more than 5
-			// letters
-			if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-				search();
-			} else {
-				bNeedSearch = true;
-				lDateTyped = System.currentTimeMillis();
-			}
-		} else if (popup != null) {
-			popup.hide();
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+   */
+  public void keyReleased(KeyEvent e) {
+    if (e.getKeyChar() == KeyEvent.VK_ESCAPE && popup != null) {
+      popup.hide();
+      return;
+    }
+    bNeedSearch = false; // stop clock for auto-search
+    sTyped = getText();
+    if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
+      // perform automatic search only when user provide more than 5
+      // letters
+      if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+        search();
+      } else {
+        bNeedSearch = true;
+        lDateTyped = System.currentTimeMillis();
+      }
+    } else if (popup != null) {
+      popup.hide();
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-	 */
-	public void keyTyped(KeyEvent e) {
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+   */
+  public void keyTyped(KeyEvent e) {
+  }
 
-	/**
-	 * Perform a search when user stop to type in the search combo for 2 sec or
-	 * pressed enter
-	 */
-	private void search() {
-		try {
-			bNeedSearch = false;
-			setEnabled(false); // no typing during search
-			if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
-				// second test to get sure user didn't
-				// typed before entering this method
-				TreeSet<SearchResult> tsResu = TrackManager.getInstance()
-						.search(sTyped.toString());
-				// Add web radio names
-				tsResu.addAll(WebRadioManager.getInstance().search(
-						sTyped.toString()));
-				if (tsResu.size() > 0) {
-					DefaultListModel model = new DefaultListModel();
-					alResults = new ArrayList<SearchResult>();
-					alResults.addAll(tsResu);
-					for (SearchResult sr : tsResu) {
-						model.addElement(sr);
-					}
-					jlist = new JList(model);
-					jlist.setLayoutOrientation(JList.VERTICAL);
-					jlist.setCellRenderer(new SearchListRenderer());
-					PopupFactory factory = PopupFactory.getSharedInstance();
-					JScrollPane jsp = new JScrollPane(jlist);
-					int width = (int) ((float) Toolkit.getDefaultToolkit()
-							.getScreenSize().getWidth() * 0.7f);
-					jsp.setMinimumSize(new Dimension(width, 250));
-					jsp.setPreferredSize(new Dimension(width, 250));
-					jsp.setMaximumSize(new Dimension(width, 250));
-					jlist.setSelectionMode(0);
-					jlist.addListSelectionListener(lsl);
-					// For some reasons, we get the waiting cursor on the popup
-					// sometimes, force it to default
-					jlist.setCursor(Util.DEFAULT_CURSOR);
-					jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					if (popup != null) {
-						popup.hide();
-					}
-					// take upper-left point relative to the
-					// textfield
-					Point point = new Point(0, 0);
-					// take absolute coordonates in the screen (popups works
-					// only on absolute coordonates in opposition to swing
-					// widgets)
-					SwingUtilities.convertPointToScreen(point, this);
-					popup = factory.getPopup(this, jsp, (int) point.getX()
-							+ 500 - (width), (int) point.getY() - 250);
-					popup.show();
-				} else {
-					if (popup != null) {
-						popup.hide();
-					}
-				}
-			}
-			requestFocusInWindow();
-		} catch (Exception e) {
-			Log.error(e);
-		} finally { // make sure to enable search box in all cases
-			setEnabled(true);
-		}
-	}
+  /**
+   * Perform a search when user stop to type in the search combo for 2 sec or
+   * pressed enter
+   */
+  private void search() {
+    try {
+      bNeedSearch = false;
+      setEnabled(false); // no typing during search
+      if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
+        // second test to get sure user didn't
+        // typed before entering this method
+        TreeSet<SearchResult> tsResu = TrackManager.getInstance().search(sTyped.toString());
+        // Add web radio names
+        tsResu.addAll(WebRadioManager.getInstance().search(sTyped.toString()));
+        if (tsResu.size() > 0) {
+          DefaultListModel model = new DefaultListModel();
+          alResults = new ArrayList<SearchResult>();
+          alResults.addAll(tsResu);
+          for (SearchResult sr : tsResu) {
+            model.addElement(sr);
+          }
+          jlist = new JList(model);
+          jlist.setLayoutOrientation(JList.VERTICAL);
+          jlist.setCellRenderer(new SearchListRenderer());
+          PopupFactory factory = PopupFactory.getSharedInstance();
+          JScrollPane jsp = new JScrollPane(jlist);
+          int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.7f);
+          jsp.setMinimumSize(new Dimension(width, 250));
+          jsp.setPreferredSize(new Dimension(width, 250));
+          jsp.setMaximumSize(new Dimension(width, 250));
+          jlist.setSelectionMode(0);
+          jlist.addListSelectionListener(lsl);
+          // For some reasons, we get the waiting cursor on the popup
+          // sometimes, force it to default
+          jlist.setCursor(Util.DEFAULT_CURSOR);
+          jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+          if (popup != null) {
+            popup.hide();
+          }
+          // take upper-left point relative to the
+          // textfield
+          Point point = new Point(0, 0);
+          // take absolute coordonates in the screen (popups works
+          // only on absolute coordonates in opposition to swing
+          // widgets)
+          SwingUtilities.convertPointToScreen(point, this);
+          popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point
+              .getY() - 250);
+          popup.show();
+        } else {
+          if (popup != null) {
+            popup.hide();
+          }
+        }
+      }
+      requestFocusInWindow();
+    } catch (Exception e) {
+      Log.error(e);
+    } finally { // make sure to enable search box in all cases
+      setEnabled(true);
+    }
+  }
 
 }

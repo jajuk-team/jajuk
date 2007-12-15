@@ -54,145 +54,146 @@ import org.jdesktop.swingx.VerticalLayout;
  * directory
  */
 public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	JLabel jlLeftIcon;
+  JLabel jlLeftIcon;
 
-	JPanel jpRightPanel;
+  JPanel jpRightPanel;
 
-	JLabel jlFileSelection;
+  JLabel jlFileSelection;
 
-	JTextField jtfFileSelected;
+  JTextField jtfFileSelected;
 
-	JButton jbFileSelection;
+  JButton jbFileSelection;
 
-	JLabel jlRefreshTime;
+  JLabel jlRefreshTime;
 
-	JTextField jtfRefreshTime;
+  JTextField jtfRefreshTime;
 
-	JLabel jlMins;
+  JLabel jlMins;
 
-	JPanel jpButtons;
+  JPanel jpButtons;
 
-	JButton jbOk;
+  JButton jbOk;
 
-	JButton jbCancel;
+  JButton jbCancel;
 
-	JPanel jpMain;
+  JPanel jpMain;
 
-	/** Selected directory */
-	private File fDir;
+  /** Selected directory */
+  private File fDir;
 
-	/**
-	 * First time wizard
-	 */
-	public SimpleDeviceWizard() {
-		setTitle(Messages.getString("SimpleDeviceWizard.0"));
-		final int iX_SEPARATOR = 10;
-		final int iY_SEPARATOR = 10;
-		jlLeftIcon = new JLabel(Util.getImage(ITechnicalStrings.IMAGE_SEARCH));
-		jpRightPanel = new JPanel();
-		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
-		jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
-		jtfFileSelected = new JTextField("");
-		jtfFileSelected.setForeground(Color.BLUE);
-		jtfFileSelected.setEditable(false);
-		jbFileSelection.addActionListener(this);
+  /**
+   * First time wizard
+   */
+  public SimpleDeviceWizard() {
+    setTitle(Messages.getString("SimpleDeviceWizard.0"));
+    final int iX_SEPARATOR = 10;
+    final int iY_SEPARATOR = 10;
+    jlLeftIcon = new JLabel(Util.getImage(ITechnicalStrings.IMAGE_SEARCH));
+    jpRightPanel = new JPanel();
+    jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
+    jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
+    jtfFileSelected = new JTextField("");
+    jtfFileSelected.setForeground(Color.BLUE);
+    jtfFileSelected.setEditable(false);
+    jbFileSelection.addActionListener(this);
 
-		// Refresh time
-		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
-		jtfRefreshTime = new JTextField("5");// 5 mins by default
-		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
-		final JPanel jpRefresh = new JPanel();
-		final double sizeRefresh[][] = {
-				{ TableLayoutConstants.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR, TableLayoutConstants.PREFERRED },
-				{ 20 } };
-		jpRefresh.setLayout(new TableLayout(sizeRefresh));
-		jpRefresh.add(jlRefreshTime, "0,0");
-		jpRefresh.add(jtfRefreshTime, "2,0");
-		jpRefresh.add(jlMins, "4,0");
-		// buttons
-		jpButtons = new JPanel();
-		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-		jbOk = new JButton(Messages.getString("Ok"));
-		jbOk.setEnabled(false);
-		jbOk.addActionListener(this);
-		jbCancel = new JButton(Messages.getString("Cancel"));
-		jbCancel.addActionListener(this);
-		jpButtons.add(jbOk);
-		jpButtons.add(jbCancel);
-		final FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
-		final JPanel jpFileSelection = new JPanel();
-		jpFileSelection.setLayout(flSelection);
-		jpFileSelection.add(jbFileSelection);
-		jpFileSelection.add(Box.createHorizontalStrut(10));
-		jpFileSelection.add(jlFileSelection);
+    // Refresh time
+    jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
+    jtfRefreshTime = new JTextField("5");// 5 mins by default
+    jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
+    final JPanel jpRefresh = new JPanel();
+    final double sizeRefresh[][] = {
+        { TableLayoutConstants.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
+            TableLayoutConstants.PREFERRED }, { 20 } };
+    jpRefresh.setLayout(new TableLayout(sizeRefresh));
+    jpRefresh.add(jlRefreshTime, "0,0");
+    jpRefresh.add(jtfRefreshTime, "2,0");
+    jpRefresh.add(jlMins, "4,0");
+    // buttons
+    jpButtons = new JPanel();
+    jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
+    jbOk = new JButton(Messages.getString("Ok"));
+    jbOk.setEnabled(false);
+    jbOk.addActionListener(this);
+    jbCancel = new JButton(Messages.getString("Cancel"));
+    jbCancel.addActionListener(this);
+    jpButtons.add(jbOk);
+    jpButtons.add(jbCancel);
+    final FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
+    final JPanel jpFileSelection = new JPanel();
+    jpFileSelection.setLayout(flSelection);
+    jpFileSelection.add(jbFileSelection);
+    jpFileSelection.add(Box.createHorizontalStrut(10));
+    jpFileSelection.add(jlFileSelection);
 
-		jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
-		jpRightPanel.add(jpFileSelection, "0,3");
-		jpRightPanel.add(jtfFileSelected, "0,5");
-		jpRightPanel.add(jpRefresh, "0,7");
-		jpRightPanel.add(jpButtons, "0,11");
-		final double size[][] = { { 20, TableLayoutConstants.PREFERRED, 30, TableLayoutConstants.PREFERRED }, { 0.99 } };
-		jpMain = (JPanel) getContentPane();
-		jpMain.setLayout(new TableLayout(size));
-		jpMain.add(jlLeftIcon, "1,0");
-		jpMain.add(jpRightPanel, "3,0");
-		getRootPane().setDefaultButton(jbOk);
-		setAlwaysOnTop(true);
-	}
+    jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
+    jpRightPanel.add(jpFileSelection, "0,3");
+    jpRightPanel.add(jtfFileSelected, "0,5");
+    jpRightPanel.add(jpRefresh, "0,7");
+    jpRightPanel.add(jpButtons, "0,11");
+    final double size[][] = {
+        { 20, TableLayoutConstants.PREFERRED, 30, TableLayoutConstants.PREFERRED }, { 0.99 } };
+    jpMain = (JPanel) getContentPane();
+    jpMain.setLayout(new TableLayout(size));
+    jpMain.add(jlLeftIcon, "1,0");
+    jpMain.add(jpRightPanel, "3,0");
+    getRootPane().setDefaultButton(jbOk);
+    setAlwaysOnTop(true);
+  }
 
-	public void actionPerformed(final ActionEvent e) {
-		if (e.getSource() == jbCancel) {
-			dispose(); // close window
-		} else if (e.getSource() == jbFileSelection) {
-			final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-					DirectoryFilter.getInstance()));
-			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
-			jfc.setMultiSelectionEnabled(false);
-			final int returnVal = jfc.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				fDir = jfc.getSelectedFile();
-				// check device availability
-				final int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
-						fDir.getAbsolutePath(), true);
-				if (code != 0) {
-					Messages.showErrorMessage(code);
-					jbOk.setEnabled(false);
-					return;
-				}
-				jtfFileSelected.setText(fDir.getAbsolutePath());
-				jbOk.setEnabled(true);
-				jbOk.grabFocus();
-			}
-		} else if (e.getSource() == jbOk) {
-			try {
-				// Create a directory device
-				final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
-						fDir.getAbsolutePath());
-				device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, true);
-				// Set refresh time
-				double dRefreshTime = 5d;
-				try {
-					dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
-					if (dRefreshTime < 0) {
-						dRefreshTime = 0;
-					}
-				} catch (final NumberFormatException e1) {
-					dRefreshTime = 0;
-				}
-				device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
-				try {
-					device.refresh(true, false);
-				} catch (final Exception e2) {
-					Log.error(112, device.getName(), e2);
-					Messages.showErrorMessage(112, device.getName());
-				}
-			} finally {
-				// exit
-				dispose();
-			}
-		}
-	}
+  public void actionPerformed(final ActionEvent e) {
+    if (e.getSource() == jbCancel) {
+      dispose(); // close window
+    } else if (e.getSource() == jbFileSelection) {
+      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
+          .getInstance()));
+      jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+      jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
+      jfc.setMultiSelectionEnabled(false);
+      final int returnVal = jfc.showOpenDialog(this);
+      if (returnVal == JFileChooser.APPROVE_OPTION) {
+        fDir = jfc.getSelectedFile();
+        // check device availability
+        final int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
+            fDir.getAbsolutePath(), true);
+        if (code != 0) {
+          Messages.showErrorMessage(code);
+          jbOk.setEnabled(false);
+          return;
+        }
+        jtfFileSelected.setText(fDir.getAbsolutePath());
+        jbOk.setEnabled(true);
+        jbOk.grabFocus();
+      }
+    } else if (e.getSource() == jbOk) {
+      try {
+        // Create a directory device
+        final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
+            fDir.getAbsolutePath());
+        device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, true);
+        // Set refresh time
+        double dRefreshTime = 5d;
+        try {
+          dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
+          if (dRefreshTime < 0) {
+            dRefreshTime = 0;
+          }
+        } catch (final NumberFormatException e1) {
+          dRefreshTime = 0;
+        }
+        device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
+        try {
+          device.refresh(true, false);
+        } catch (final Exception e2) {
+          Log.error(112, device.getName(), e2);
+          Messages.showErrorMessage(112, device.getName());
+        }
+      } finally {
+        // exit
+        dispose();
+      }
+    }
+  }
 }

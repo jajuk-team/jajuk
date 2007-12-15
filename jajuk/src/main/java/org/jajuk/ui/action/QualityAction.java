@@ -36,40 +36,39 @@ import java.net.URL;
  */
 public class QualityAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	QualityAction() {
-		super(
-				Messages.getString("JajukJMenuBar.19"), IconLoader.ICON_EDIT, true); 
-	}
+  QualityAction() {
+    super(Messages.getString("JajukJMenuBar.19"), IconLoader.ICON_EDIT, true);
+  }
 
-	/**
-	 * Invoked when an action occurs.
-	 * 
-	 * @param evt
-	 */
-	public void perform(ActionEvent evt) {
-		String sBody = "";
-		sBody += "Version: " + JAJUK_VERSION + '\n';
-		sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
-		sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
-		for (String line : Log.getSpool()){
-			sBody += line + '\n';
-		}
-		// if it is a bug, copy logs into the clipboard
-		StringSelection data = new StringSelection(sBody);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(data, data);
-		try {
-			// Show Trac ticket creation page in an external browser
-			URL url = new URL("http://trac.jajuk.info/newticket");
-			Desktop.browse(url);
-			// Display a message
-			Messages.showInfoMessage(Messages.getString("QualityFeedbackWizard.20"));
-		} catch (Exception e) {
-			Messages.showErrorMessage(136);
-			Log.error(e);
-		}
+  /**
+   * Invoked when an action occurs.
+   * 
+   * @param evt
+   */
+  public void perform(ActionEvent evt) {
+    String sBody = "";
+    sBody += "Version: " + JAJUK_VERSION + '\n';
+    sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
+    sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
+    for (String line : Log.getSpool()) {
+      sBody += line + '\n';
+    }
+    // if it is a bug, copy logs into the clipboard
+    StringSelection data = new StringSelection(sBody);
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    clipboard.setContents(data, data);
+    try {
+      // Show Trac ticket creation page in an external browser
+      URL url = new URL("http://trac.jajuk.info/newticket");
+      Desktop.browse(url);
+      // Display a message
+      Messages.showInfoMessage(Messages.getString("QualityFeedbackWizard.20"));
+    } catch (Exception e) {
+      Messages.showErrorMessage(136);
+      Log.error(e);
+    }
 
-	}
+  }
 }

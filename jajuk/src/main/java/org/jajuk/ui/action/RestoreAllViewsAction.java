@@ -35,37 +35,36 @@ import javax.swing.JOptionPane;
 
 public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public static boolean fullRestore = false;
+  public static boolean fullRestore = false;
 
-	RestoreAllViewsAction() {
-		super(Messages.getString("JajukJMenuBar.26"), IconLoader.ICON_RESTORE_ALL_VIEWS, true);
-		setShortDescription(Messages.getString("JajukJMenuBar.26"));
-	}
+  RestoreAllViewsAction() {
+    super(Messages.getString("JajukJMenuBar.26"), IconLoader.ICON_RESTORE_ALL_VIEWS, true);
+    setShortDescription(Messages.getString("JajukJMenuBar.26"));
+  }
 
-	public void perform(final ActionEvent e) throws JajukException {
-		new Thread() {
-			public void run() {
-				// display a confirmation message
-				int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				if (i != JOptionPane.YES_OPTION) {
-					return;
-				}
-				// Drop all perspectives conf
-				for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
-					File loadFile = Util.getConfFileByPath(perspective.getClass().getSimpleName()
-							+ ".xml");
-					loadFile.delete();
-				}
-				// Delete toolbars configuration too
-				Util.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
-				// Indicates to not cmmiting current configuration
-				fullRestore = true;
-				Main.exit(0);
-			}
-		}.start();
+  public void perform(final ActionEvent e) throws JajukException {
+    new Thread() {
+      public void run() {
+        // display a confirmation message
+        int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (i != JOptionPane.YES_OPTION) {
+          return;
+        }
+        // Drop all perspectives conf
+        for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
+          File loadFile = Util.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
+          loadFile.delete();
+        }
+        // Delete toolbars configuration too
+        Util.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
+        // Indicates to not cmmiting current configuration
+        fullRestore = true;
+        Main.exit(0);
+      }
+    }.start();
 
-	}
+  }
 }

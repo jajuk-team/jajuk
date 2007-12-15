@@ -30,82 +30,83 @@ import javax.swing.ImageIcon;
  */
 public class Year extends LogicalItem implements Comparable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private final long value;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Year constructor
-	 * 
-	 * @param id
-	 * @param sName
-	 */
-	public Year(String sId, String sValue) {
-		super(sId, sValue);
-		this.value = Long.parseLong(sValue);
-	}
+  private final long value;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Item#getIdentifier()
-	 */
-	final public String getLabel() {
-		return XML_YEAR;
-	}
+  /**
+   * Year constructor
+   * 
+   * @param id
+   * @param sName
+   */
+  public Year(String sId, String sValue) {
+    super(sId, sValue);
+    this.value = Long.parseLong(sValue);
+  }
 
-	/**
-	 * toString method
-	 */
-	public String toString() {
-		return "Year[ID=" + getID() + " Value=" + getName() + "]";   
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getIdentifier()
+   */
+  final public String getLabel() {
+    return XML_YEAR;
+  }
 
-		
-	/**
-	 * 
-	 * @return year as a long
-	 */
-	public long getValue(){
-		return value;
-	}
+  /**
+   * toString method
+   */
+  public String toString() {
+    return "Year[ID=" + getID() + " Value=" + getName() + "]";
+  }
 
-	/**
-	 * Alphabetical comparator used to display ordered lists
-	 * 
-	 * @param other
-	 *            item to be compared
-	 * @return comparaison result
-	 */
-	public int compareTo(Object o) {
-		Year other = (Year) o;
-		return (int)(getValue() - other.getValue());
-	}
+  /**
+   * 
+   * @return year as a long
+   */
+  public long getValue() {
+    return value;
+  }
 
-	/**
-	 * Get item description
-	 */
-	public String getDesc() {
-		return Messages.getString("Property_year") + " : " + getName();
-	}
-	
-	/**
-	 * 
-	 * @return a human-readable year format
-	 */
-	public String getName2(){
-		String s = getName();
-		if ("0".equals(s)){
-			return Messages.getString(UNKNOWN_STYLE);
-		}
-		return s;
-	}
+  /**
+   * Alphabetical comparator used to display ordered lists
+   * 
+   * @param other
+   *          item to be compared
+   * @return comparaison result
+   */
+  public int compareTo(Object o) {
+    Year other = (Year) o;
+    return (int) (getValue() - other.getValue());
+  }
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.Item#getIconRepresentation()
-	 */
-	@Override
-	public ImageIcon getIconRepresentation() {
-		return IconLoader.ICON_YEAR;
-	}
+  /**
+   * Get item description
+   */
+  public String getDesc() {
+    return Messages.getString("Property_year") + " : " + getName();
+  }
+
+  /**
+   * 
+   * @return a human-readable year format
+   */
+  public String getName2() {
+    String s = getName();
+    if ("0".equals(s)) {
+      return Messages.getString(UNKNOWN_STYLE);
+    }
+    return s;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.Item#getIconRepresentation()
+   */
+  @Override
+  public ImageIcon getIconRepresentation() {
+    return IconLoader.ICON_YEAR;
+  }
 }

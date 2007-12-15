@@ -36,29 +36,29 @@ import javax.swing.JTable;
  * Cell renderer to support cells color and icons
  */
 public class JajukCellRender extends SubstanceDefaultTableCellRenderer implements ITechnicalStrings {
-	
-	private static final long serialVersionUID = 154545454L;
-	
-	private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
-	
-	public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
-			boolean focused, int row, int column) {
-		Component c = super.getTableCellRendererComponent(table, oValue, selected, focused, row,
-				column);
-		if (oValue instanceof IconLabel) {
-			((JLabel) c).setOpaque(false);
-			((JLabel) c).setIcon(((IconLabel) oValue));
-			((JLabel) c).setToolTipText(((IconLabel) oValue).getTooltip());
-			((JLabel) c).setFont(((IconLabel) oValue).getFont());
-			((JLabel) c).setText(((IconLabel) oValue).getText());
-		} else if (oValue instanceof Date) {
-			((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
-		} else if (oValue instanceof Boolean) {
-			c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
-					column);
-		}
-		c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
-		return c;
-	}
+
+  private static final long serialVersionUID = 154545454L;
+
+  private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+
+  public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
+      boolean focused, int row, int column) {
+    Component c = super
+        .getTableCellRendererComponent(table, oValue, selected, focused, row, column);
+    if (oValue instanceof IconLabel) {
+      ((JLabel) c).setOpaque(false);
+      ((JLabel) c).setIcon(((IconLabel) oValue));
+      ((JLabel) c).setToolTipText(((IconLabel) oValue).getTooltip());
+      ((JLabel) c).setFont(((IconLabel) oValue).getFont());
+      ((JLabel) c).setText(((IconLabel) oValue).getText());
+    } else if (oValue instanceof Date) {
+      ((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
+    } else if (oValue instanceof Boolean) {
+      c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
+          column);
+    }
+    c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+    return c;
+  }
 
 }

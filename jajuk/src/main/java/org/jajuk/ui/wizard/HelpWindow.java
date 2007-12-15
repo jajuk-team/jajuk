@@ -43,59 +43,57 @@ import javax.swing.SwingUtilities;
  */
 public class HelpWindow extends JFrame implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/** hepl set */
-	HelpSet hs;
+  /** hepl set */
+  HelpSet hs;
 
-	/** Help broker */
-	HelpBroker hb;
+  /** Help broker */
+  HelpBroker hb;
 
-	/** Help component */
-	JHelp jhelp;
+  /** Help component */
+  JHelp jhelp;
 
-	public HelpWindow() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				setTitle(Messages.getString("Help"));
-				initUI();
-				setLocationByPlatform(true);
-				setSize(new Dimension(800,600));
-				setIconImage(IconLoader.ICON_LOGO.getImage());
-				setVisible(true);
-			}
+  public HelpWindow() {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        setTitle(Messages.getString("Help"));
+        initUI();
+        setLocationByPlatform(true);
+        setSize(new Dimension(800, 600));
+        setIconImage(IconLoader.ICON_LOGO.getImage());
+        setVisible(true);
+      }
 
-		});
-	}
+    });
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI() {
-		try {
-			ClassLoader cl = HelpWindow.class.getClassLoader();
-			URL url = HelpSet
-					.findHelpSet(
-							cl,
-							"jajuk.hs", new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); 
-			hs = new HelpSet(null, url);
-			hb = hs.createHelpBroker();
-			jhelp = new JHelp(hs);
-			add(jhelp);
-		} catch (Exception e) {
-			Log.error(e);
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    try {
+      ClassLoader cl = HelpWindow.class.getClassLoader();
+      URL url = HelpSet.findHelpSet(cl, "jajuk.hs", new Locale(ConfigurationManager
+          .getProperty(CONF_OPTIONS_LANGUAGE)));
+      hs = new HelpSet(null, url);
+      hb = hs.createHelpBroker();
+      jhelp = new JHelp(hs);
+      add(jhelp);
+    } catch (Exception e) {
+      Log.error(e);
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("HelpView.2"); 
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("HelpView.2");
+  }
 
 }

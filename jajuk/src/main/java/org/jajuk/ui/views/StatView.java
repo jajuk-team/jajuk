@@ -67,370 +67,356 @@ import java.util.TreeMap;
  * Statistics view
  * <p>
  * Help perspective
-  */
+ */
 public class StatView extends ViewAdapter implements Observer {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor
-	 */
-	public StatView() {
-	}
+  /**
+   * Constructor
+   */
+  public StatView() {
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI() {
-		double[][] size = new double[][] { { 0.5f, 10, 0.5f },
-				{ 0.5f, 10, 0.5f } };
-		setLayout(new TableLayout(size));
-		ObservationManager.register(this);
-		update(new Event(EventSubject.EVENT_DEVICE_REFRESH, ObservationManager
-				.getDetailsLastOccurence(EventSubject.EVENT_DEVICE_REFRESH)));
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    double[][] size = new double[][] { { 0.5f, 10, 0.5f }, { 0.5f, 10, 0.5f } };
+    setLayout(new TableLayout(size));
+    ObservationManager.register(this);
+    update(new Event(EventSubject.EVENT_DEVICE_REFRESH, ObservationManager
+        .getDetailsLastOccurence(EventSubject.EVENT_DEVICE_REFRESH)));
+  }
 
-	public Set<EventSubject> getRegistrationKeys() {
-		HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-		eventSubjectSet.add(EventSubject.EVENT_DEVICE_DELETE);
-		eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-		return eventSubjectSet;
-	}
+  public Set<EventSubject> getRegistrationKeys() {
+    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_DELETE);
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+    return eventSubjectSet;
+  }
 
-	/**
-	 * Style repartition pie
-	 * 
-	 * @return the chart
-	 */
-	private ChartPanel createStyleRepartition() {
-		synchronized (StyleManager.getInstance().getLock()) {
-			ChartPanel cpanel = null;
-			try {
-				DefaultPieDataset pdata = null;
-				JFreeChart jfchart = null;
-				// data
-				pdata = new DefaultPieDataset();
-				Iterator<Style> it = StyleManager.getInstance().getStyles()
-						.iterator();
-				int iTotal = 0;
-				double dOthers = 0;
-				TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
-				while (it.hasNext()) {
-					Style style = it.next();
-					int iCount = style.getCount();
-					iTotal += iCount;
-					tm.put(style.getName2(), new Integer(iCount));
-				}
-				Iterator<String> keys = tm.keySet().iterator();
-				while (keys.hasNext()) {
-					String sName = keys.next();
-					Integer i = tm.get(sName);
-					double d = i.doubleValue();
-					if (iTotal > 0 && d / iTotal < 0.05) {
-						// less than 5% -> go to others
-						dOthers += d;
-					} else {
-						double dValue = Math
-								.round(100 * new Double(d / iTotal));
-						pdata.setValue(sName, dValue);
-					}
-				}
-				if (iTotal > 0 && dOthers > 0) {
-					double dValue = Math.round(100 * (dOthers / iTotal));
-					pdata.setValue(Messages.getString("StatView.0"), dValue); 
-				}
-				// chart
-				jfchart = ChartFactory.createPieChart3D(Messages
-						.getString("StatView.1"), pdata, true, true, true); 
-				// set the background color for the chart...
-				PiePlot plot = (PiePlot) jfchart.getPlot();
-				plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
-				plot.setNoDataMessage(Messages.getString("StatView.2")); 
-				plot.setForegroundAlpha(0.5f);
-				plot.setBackgroundAlpha(0.5f);
-				StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator(
-						"{0} = {2}");
-				plot.setLabelGenerator(labels);
-				cpanel = new ChartPanel(jfchart);
-			} catch (Exception e) {
-				Log.error(e);
-			}
-			return cpanel;
-		}
-	}
+  /**
+   * Style repartition pie
+   * 
+   * @return the chart
+   */
+  private ChartPanel createStyleRepartition() {
+    synchronized (StyleManager.getInstance().getLock()) {
+      ChartPanel cpanel = null;
+      try {
+        DefaultPieDataset pdata = null;
+        JFreeChart jfchart = null;
+        // data
+        pdata = new DefaultPieDataset();
+        Iterator<Style> it = StyleManager.getInstance().getStyles().iterator();
+        int iTotal = 0;
+        double dOthers = 0;
+        TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
+        while (it.hasNext()) {
+          Style style = it.next();
+          int iCount = style.getCount();
+          iTotal += iCount;
+          tm.put(style.getName2(), new Integer(iCount));
+        }
+        Iterator<String> keys = tm.keySet().iterator();
+        while (keys.hasNext()) {
+          String sName = keys.next();
+          Integer i = tm.get(sName);
+          double d = i.doubleValue();
+          if (iTotal > 0 && d / iTotal < 0.05) {
+            // less than 5% -> go to others
+            dOthers += d;
+          } else {
+            double dValue = Math.round(100 * new Double(d / iTotal));
+            pdata.setValue(sName, dValue);
+          }
+        }
+        if (iTotal > 0 && dOthers > 0) {
+          double dValue = Math.round(100 * (dOthers / iTotal));
+          pdata.setValue(Messages.getString("StatView.0"), dValue);
+        }
+        // chart
+        jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"), pdata, true,
+            true, true);
+        // set the background color for the chart...
+        PiePlot plot = (PiePlot) jfchart.getPlot();
+        plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
+        plot.setNoDataMessage(Messages.getString("StatView.2"));
+        plot.setForegroundAlpha(0.5f);
+        plot.setBackgroundAlpha(0.5f);
+        StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator("{0} = {2}");
+        plot.setLabelGenerator(labels);
+        cpanel = new ChartPanel(jfchart);
+      } catch (Exception e) {
+        Log.error(e);
+      }
+      return cpanel;
+    }
+  }
 
-	/**
-	 * Device size pie
-	 * 
-	 * @return the chart
-	 */
-	private ChartPanel createDeviceRepartition() {
-		ChartPanel cpanel = null;
-		try {
-			DefaultPieDataset pdata = null;
-			JFreeChart jfchart = null;
-			// data
-			pdata = new DefaultPieDataset();
-			// prepare devices
-			long lTotalSize = 0;
-			double dOthers = 0;
-			ArrayList<Device> alDevices = null;
-			alDevices = new ArrayList<Device>(DeviceManager.getInstance()
-					.getDevices());
-			long[] lSizes = new long[DeviceManager.getInstance()
-					.getElementCount()];
-			for (File file:FileManager.getInstance().getFiles()){
-				lTotalSize += file.getSize();
-				lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file
-						.getSize();
-			}
-			Iterator<Device> itDevices = DeviceManager.getInstance()
-					.getDevices().iterator();
-			while (itDevices.hasNext()) {
-				Device device = itDevices.next();
-				long lSize = lSizes[alDevices.indexOf(device)];
-				if (lTotalSize > 0 && (double) lSize / lTotalSize < 0.05) {
-					// less than 5% -> go to others
-					dOthers += lSize;
-				} else {
-					double dValue = Math.round((double) lSize / 1073741824);
-					pdata.setValue(device.getName(), dValue);
-				}
-			}
-			if (dOthers > 0) {
-				double dValue = Math.round((dOthers / 1073741824));
-				pdata.setValue(Messages.getString("StatView.3"), dValue); 
-			}
-			// chart
-			jfchart = ChartFactory.createPieChart3D(Messages
-					.getString("StatView.4"), pdata, true, true, true); 
-			// set the background color for the chart...
-			PiePlot plot = (PiePlot) jfchart.getPlot();
-			plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
-			plot.setNoDataMessage(Messages.getString("StatView.5")); 
-			plot.setForegroundAlpha(0.5f);
-			plot.setBackgroundAlpha(0.5f);
-			plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
-			cpanel = new ChartPanel(jfchart);
-		} catch (Exception e) {
-			Log.error(e);
-		}
-		return cpanel;
-	}
+  /**
+   * Device size pie
+   * 
+   * @return the chart
+   */
+  private ChartPanel createDeviceRepartition() {
+    ChartPanel cpanel = null;
+    try {
+      DefaultPieDataset pdata = null;
+      JFreeChart jfchart = null;
+      // data
+      pdata = new DefaultPieDataset();
+      // prepare devices
+      long lTotalSize = 0;
+      double dOthers = 0;
+      ArrayList<Device> alDevices = null;
+      alDevices = new ArrayList<Device>(DeviceManager.getInstance().getDevices());
+      long[] lSizes = new long[DeviceManager.getInstance().getElementCount()];
+      for (File file : FileManager.getInstance().getFiles()) {
+        lTotalSize += file.getSize();
+        lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
+      }
+      Iterator<Device> itDevices = DeviceManager.getInstance().getDevices().iterator();
+      while (itDevices.hasNext()) {
+        Device device = itDevices.next();
+        long lSize = lSizes[alDevices.indexOf(device)];
+        if (lTotalSize > 0 && (double) lSize / lTotalSize < 0.05) {
+          // less than 5% -> go to others
+          dOthers += lSize;
+        } else {
+          double dValue = Math.round((double) lSize / 1073741824);
+          pdata.setValue(device.getName(), dValue);
+        }
+      }
+      if (dOthers > 0) {
+        double dValue = Math.round((dOthers / 1073741824));
+        pdata.setValue(Messages.getString("StatView.3"), dValue);
+      }
+      // chart
+      jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.4"), pdata, true, true,
+          true);
+      // set the background color for the chart...
+      PiePlot plot = (PiePlot) jfchart.getPlot();
+      plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
+      plot.setNoDataMessage(Messages.getString("StatView.5"));
+      plot.setForegroundAlpha(0.5f);
+      plot.setBackgroundAlpha(0.5f);
+      plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
+      cpanel = new ChartPanel(jfchart);
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return cpanel;
+  }
 
-	/**
-	 * Collection size bars
-	 * 
-	 * @return the chart
-	 */
-	private ChartPanel createCollectionSize() {
-		ChartPanel cpanel = null;
-		try {
-			CategoryDataset cdata = null;
-			JFreeChart jfchart = null;
-			int iMounthsNumber = 5; // number of mounts we show, mounts
-			// before are set together in 'before'
-			long lSizeByMounth[] = new long[iMounthsNumber + 1];
-			// contains size ( in Go ) for each mounth, first cell is before
-			// data
-			int[] iMounts = getMounts(iMounthsNumber);
-			Iterator<Track> it = TrackManager.getInstance().getTracks()
-					.iterator();
-			while (it.hasNext()) {
-				Track track = it.next();
-				int i = Integer.parseInt(Util.getAdditionDateFormat().format(
-						track.getAdditionDate())) / 100;
-				for (int j = 0; j < iMounthsNumber + 1; j++) {
-					if (i <= iMounts[j]) {
-						lSizeByMounth[j] += track.getTotalSize();
-					}
-				}
-			}
-			double[][] data = new double[1][iMounthsNumber + 1];
-			for (int i = 0; i < iMounthsNumber + 1; i++) {
-				data[0][i] = (double) lSizeByMounth[i] / 1073741824;
-			}
-			cdata = DatasetUtilities.createCategoryDataset(
-					new String[] { "" }, getMountsLabels(iMounthsNumber), data); 
-			// chart
-			jfchart = ChartFactory.createBarChart3D(Messages
-					.getString("StatView.7"), // chart title 
-					Messages.getString("StatView.8"), // domain axis label
-					Messages.getString("StatView.9"), // range axis label
-					cdata, // data
-					PlotOrientation.VERTICAL, // orientation
-					false, // include legend
-					true, // tooltips
-					false // urls
-					);
+  /**
+   * Collection size bars
+   * 
+   * @return the chart
+   */
+  private ChartPanel createCollectionSize() {
+    ChartPanel cpanel = null;
+    try {
+      CategoryDataset cdata = null;
+      JFreeChart jfchart = null;
+      int iMounthsNumber = 5; // number of mounts we show, mounts
+      // before are set together in 'before'
+      long lSizeByMounth[] = new long[iMounthsNumber + 1];
+      // contains size ( in Go ) for each mounth, first cell is before
+      // data
+      int[] iMounts = getMounts(iMounthsNumber);
+      Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
+      while (it.hasNext()) {
+        Track track = it.next();
+        int i = Integer.parseInt(Util.getAdditionDateFormat().format(track.getAdditionDate())) / 100;
+        for (int j = 0; j < iMounthsNumber + 1; j++) {
+          if (i <= iMounts[j]) {
+            lSizeByMounth[j] += track.getTotalSize();
+          }
+        }
+      }
+      double[][] data = new double[1][iMounthsNumber + 1];
+      for (int i = 0; i < iMounthsNumber + 1; i++) {
+        data[0][i] = (double) lSizeByMounth[i] / 1073741824;
+      }
+      cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
+          getMountsLabels(iMounthsNumber), data);
+      // chart
+      jfchart = ChartFactory.createBarChart3D(Messages.getString("StatView.7"), // chart
+          // title
+          Messages.getString("StatView.8"), // domain axis label
+          Messages.getString("StatView.9"), // range axis label
+          cdata, // data
+          PlotOrientation.VERTICAL, // orientation
+          false, // include legend
+          true, // tooltips
+          false // urls
+          );
 
-			CategoryPlot plot = jfchart.getCategoryPlot();
-			CategoryAxis axis = plot.getDomainAxis();
-			new CategoryLabelPosition(RectangleAnchor.TOP,
-					TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT,
-					-Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0);
-			axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
+      CategoryPlot plot = jfchart.getCategoryPlot();
+      CategoryAxis axis = plot.getDomainAxis();
+      new CategoryLabelPosition(RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT,
+          TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0);
+      axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
 
-			// set the background color for the chart...
-			plot.setNoDataMessage(Messages.getString("StatView.10")); 
-			plot.setForegroundAlpha(0.5f);
-			plot.setBackgroundAlpha(0.5f);
-			// plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
-			cpanel = new ChartPanel(jfchart);
-		} catch (Exception e) {
-			Log.error(e);
-		}
-		return cpanel;
-	}
+      // set the background color for the chart...
+      plot.setNoDataMessage(Messages.getString("StatView.10"));
+      plot.setForegroundAlpha(0.5f);
+      plot.setBackgroundAlpha(0.5f);
+      // plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
+      cpanel = new ChartPanel(jfchart);
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return cpanel;
+  }
 
-	/**
-	 * Track number bars
-	 * 
-	 * @return the chart
-	 */
-	private ChartPanel createTrackNumber() {
-		ChartPanel cpanel = null;
-		try {
-			CategoryDataset cdata = null;
-			JFreeChart jfchart = null;
-			// number of mounts we show, mounts
-			// before are set together in 'before'
-			int iMounthsNumber = 5;
-			// contains number of tracks for each mounth, first cell is 'before'
-			// data
-			int iTracksByMounth[] = new int[iMounthsNumber + 1];
-			int[] iMounts = getMounts(iMounthsNumber);
-			Iterator<Track> it = TrackManager.getInstance().getTracks()
-					.iterator();
-			while (it.hasNext()) {
-				Track track = it.next();
-				int i = Integer.parseInt(Util.getAdditionDateFormat().format(
-						track.getAdditionDate())) / 100;
-				for (int j = 0; j < iMounthsNumber + 1; j++) {
-					if (i <= iMounts[j]) {
-						iTracksByMounth[j]++;
-					}
-				}
-			}
-			double[][] data = new double[1][iMounthsNumber + 1];
-			for (int i = 0; i < iMounthsNumber + 1; i++) {
-				data[0][i] = iTracksByMounth[i];
-			}
-			cdata = DatasetUtilities.createCategoryDataset(
-					new String[] { "" }, getMountsLabels(iMounthsNumber), data); 
+  /**
+   * Track number bars
+   * 
+   * @return the chart
+   */
+  private ChartPanel createTrackNumber() {
+    ChartPanel cpanel = null;
+    try {
+      CategoryDataset cdata = null;
+      JFreeChart jfchart = null;
+      // number of mounts we show, mounts
+      // before are set together in 'before'
+      int iMounthsNumber = 5;
+      // contains number of tracks for each mounth, first cell is 'before'
+      // data
+      int iTracksByMounth[] = new int[iMounthsNumber + 1];
+      int[] iMounts = getMounts(iMounthsNumber);
+      Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
+      while (it.hasNext()) {
+        Track track = it.next();
+        int i = Integer.parseInt(Util.getAdditionDateFormat().format(track.getAdditionDate())) / 100;
+        for (int j = 0; j < iMounthsNumber + 1; j++) {
+          if (i <= iMounts[j]) {
+            iTracksByMounth[j]++;
+          }
+        }
+      }
+      double[][] data = new double[1][iMounthsNumber + 1];
+      for (int i = 0; i < iMounthsNumber + 1; i++) {
+        data[0][i] = iTracksByMounth[i];
+      }
+      cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
+          getMountsLabels(iMounthsNumber), data);
 
-			// chart
-			jfchart = ChartFactory.createBarChart3D(Messages
-					.getString("StatView.12"), // chart title 
-					Messages.getString("StatView.13"), // domain axis label
-					Messages.getString("StatView.14"), // range axis label
-					cdata, // data
-					PlotOrientation.VERTICAL, // orientation
-					false, // include legend
-					true, // tooltips
-					false // urls
-					);
-			CategoryPlot plot = jfchart.getCategoryPlot();
-			CategoryAxis axis = plot.getDomainAxis();
-			new CategoryLabelPosition(RectangleAnchor.TOP,
-					TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT,
-					-Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0);
-			axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
+      // chart
+      jfchart = ChartFactory.createBarChart3D(Messages.getString("StatView.12"), // chart
+          // title
+          Messages.getString("StatView.13"), // domain axis label
+          Messages.getString("StatView.14"), // range axis label
+          cdata, // data
+          PlotOrientation.VERTICAL, // orientation
+          false, // include legend
+          true, // tooltips
+          false // urls
+          );
+      CategoryPlot plot = jfchart.getCategoryPlot();
+      CategoryAxis axis = plot.getDomainAxis();
+      new CategoryLabelPosition(RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT,
+          TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0);
+      axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
 
-			// set the background color for the chart...
-			plot.setNoDataMessage(Messages.getString("StatView.15")); 
-			plot.setForegroundAlpha(0.5f);
-			plot.setBackgroundAlpha(0.5f);
-			// plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
-			cpanel = new ChartPanel(jfchart);
-		} catch (Exception e) {
-			Log.error(e);
-		}
-		return cpanel;
-	}
+      // set the background color for the chart...
+      plot.setNoDataMessage(Messages.getString("StatView.15"));
+      plot.setForegroundAlpha(0.5f);
+      plot.setBackgroundAlpha(0.5f);
+      // plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
+      cpanel = new ChartPanel(jfchart);
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return cpanel;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("StatView.16"); 
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("StatView.16");
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.Observer#update(java.lang.String)
-	 */
-	public synchronized void update(Event event) {
-		EventSubject subject = event.getSubject();
-		if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
-				|| EventSubject.EVENT_DEVICE_DELETE.equals(subject)) {
-			Util.waiting();
-			if (getComponentCount() > 0) {
-				removeAll();
-			}
-			ChartPanel cp1 = createStyleRepartition();
-			if (cp1 != null)
-				add(cp1, "0,0"); 
-			ChartPanel cp2 = createCollectionSize();
-			if (cp2 != null)
-				add(cp2, "0,2"); 
-			ChartPanel cp3 = createTrackNumber();
-			if (cp3 != null)
-				add(cp3, "2,2"); 
-			ChartPanel cp4 = createDeviceRepartition();
-			if (cp4 != null)
-				add(cp4, "2,0"); 
-			revalidate();
-			repaint();
-			Util.stopWaiting();
-		}
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.Observer#update(java.lang.String)
+   */
+  public synchronized void update(Event event) {
+    EventSubject subject = event.getSubject();
+    if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
+        || EventSubject.EVENT_DEVICE_DELETE.equals(subject)) {
+      Util.waiting();
+      if (getComponentCount() > 0) {
+        removeAll();
+      }
+      ChartPanel cp1 = createStyleRepartition();
+      if (cp1 != null)
+        add(cp1, "0,0");
+      ChartPanel cp2 = createCollectionSize();
+      if (cp2 != null)
+        add(cp2, "0,2");
+      ChartPanel cp3 = createTrackNumber();
+      if (cp3 != null)
+        add(cp3, "2,2");
+      ChartPanel cp4 = createDeviceRepartition();
+      if (cp4 != null)
+        add(cp4, "2,0");
+      revalidate();
+      repaint();
+      Util.stopWaiting();
+    }
+  }
 
-	/**
-	 * Computes mounts labels
-	 * 
-	 * @param iMounthsNumber :
-	 *            number of mounts ( without 'before' ) you want
-	 * @return the mounts labels
-	 */
-	private String[] getMountsLabels(int iMounthsNumber) {
-		int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE)
-				.format(new Date())) / 100; // reference mounth
-		String sMounths[] = new String[iMounthsNumber + 1];
-		// contains number of tracks for each mounth, first cell is 'before'
-		int iYear = iNow / 100;
-		int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
-		for (int k = 0; k < iMounthsNumber; k++) {
-			sMounths[iMounthsNumber - k] = new StringBuilder()
-					.append((iMounth / 10 == 0) ? "0" : "").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();  
-			iMounth--;
-			if (iMounth == 0) {
-				iMounth = 12;
-				iYear--;
-			}
-		}
-		sMounths[0] = Messages.getString("StatView.24"); 
-		return sMounths;
-	}
+  /**
+   * Computes mounts labels
+   * 
+   * @param iMounthsNumber :
+   *          number of mounts ( without 'before' ) you want
+   * @return the mounts labels
+   */
+  private String[] getMountsLabels(int iMounthsNumber) {
+    int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date())) / 100; // reference
+    // mounth
+    String sMounths[] = new String[iMounthsNumber + 1];
+    // contains number of tracks for each mounth, first cell is 'before'
+    int iYear = iNow / 100;
+    int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
+    for (int k = 0; k < iMounthsNumber; k++) {
+      sMounths[iMounthsNumber - k] = new StringBuilder().append((iMounth / 10 == 0) ? "0" : "")
+          .append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();
+      iMounth--;
+      if (iMounth == 0) {
+        iMounth = 12;
+        iYear--;
+      }
+    }
+    sMounths[0] = Messages.getString("StatView.24");
+    return sMounths;
+  }
 
-	/**
-	 * Get mounths as integers
-	 * 
-	 * @param iMounthsNumber
-	 * @return
-	 */
-	private int[] getMounts(int iMounthsNumber) {
-		int[] iMounths = new int[iMounthsNumber + 1];
-		String[] sMounths = getMountsLabels(iMounthsNumber + 1);
-		for (int i = 0; i < iMounthsNumber + 1; i++) {
-			iMounths[i] = Integer.parseInt(sMounths[i + 1].substring(3, 7)
-					+ sMounths[i + 1].substring(0, 2));
-		}
-		return iMounths;
-	}
+  /**
+   * Get mounths as integers
+   * 
+   * @param iMounthsNumber
+   * @return
+   */
+  private int[] getMounts(int iMounthsNumber) {
+    int[] iMounths = new int[iMounthsNumber + 1];
+    String[] sMounths = getMountsLabels(iMounthsNumber + 1);
+    for (int i = 0; i < iMounthsNumber + 1; i++) {
+      iMounths[i] = Integer.parseInt(sMounths[i + 1].substring(3, 7)
+          + sMounths[i + 1].substring(0, 2));
+    }
+    return iMounths;
+  }
 }

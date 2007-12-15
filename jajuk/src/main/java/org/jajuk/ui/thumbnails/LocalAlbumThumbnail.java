@@ -57,244 +57,243 @@ import com.vlsolutions.swing.docking.ShadowBorder;
  */
 public class LocalAlbumThumbnail extends AbstractThumbnail {
 
-	private static final long serialVersionUID = -282669695411453802L;
+  private static final long serialVersionUID = -282669695411453802L;
 
-	/** Associated album */
-	Album album;
+  /** Associated album */
+  Album album;
 
-	/** No cover flag */
-	boolean bNoCover = false;
+  /** No cover flag */
+  boolean bNoCover = false;
 
-	JTextArea jlAuthor;
+  JTextArea jlAuthor;
 
-	JTextArea jlAlbum;
+  JTextArea jlAlbum;
 
-	private boolean bShowFullText;
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param album :
-	 *            associated album
-	 * @param size :
-	 *            size of the thumbnail
-	 * @param bShowText:
-	 *            Display full album / author information under the icon or not ?
-	 */
-	public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
-		super(size);
-		this.album = album;
-		this.bShowFullText = bShowText;
-		this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
-				+ album.getID() + '.' + EXT_THUMB);
-	}
+  private boolean bShowFullText;
 
-	public void populate() {
-		// create the thumbnail if it doesn't exist
-		Util.refreshThumbnail(album, size + "x" + size);
-		if (!fCover.exists() || fCover.length() == 0) {
-			bNoCover = true;
-			this.fCover = null;
-		}
-		double[][] dMain = null;
-		jlIcon = new JLabel();
-		ImageIcon ii = album.getThumbnail(size + "x" + size);
-		if (!bNoCover) {
-			jlIcon.setBorder(new ShadowBorder());
-			ii.getImage().flush(); // flush image buffer to avoid JRE to
-			// use old image
-		}
-		jlIcon.setIcon(ii);
-		if (bShowFullText) {
-			dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-					{ size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
-			setLayout(new TableLayout(dMain));
-			int iRows = 7 + 3 * (size / 50 - 1);
-			Color mediumGray = new Color(172, 172, 172);
+  /**
+   * Constructor
+   * 
+   * @param album :
+   *          associated album
+   * @param size :
+   *          size of the thumbnail
+   * @param bShowText:
+   *          Display full album / author information under the icon or not ?
+   */
+  public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
+    super(size);
+    this.album = album;
+    this.bShowFullText = bShowText;
+    this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
+        + album.getID() + '.' + EXT_THUMB);
+  }
 
-			Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator()
-					.next();
-			jlAuthor = new JTextArea(author.getName2(), 1, iRows);
-			jlAuthor.setLineWrap(true);
-			jlAuthor.setWrapStyleWord(true);
-			jlAuthor.setEditable(false);
-			jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-			jlAuthor.setForeground(mediumGray);
-			jlAuthor.setBorder(null);
+  public void populate() {
+    // create the thumbnail if it doesn't exist
+    Util.refreshThumbnail(album, size + "x" + size);
+    if (!fCover.exists() || fCover.length() == 0) {
+      bNoCover = true;
+      this.fCover = null;
+    }
+    double[][] dMain = null;
+    jlIcon = new JLabel();
+    ImageIcon ii = album.getThumbnail(size + "x" + size);
+    if (!bNoCover) {
+      jlIcon.setBorder(new ShadowBorder());
+      ii.getImage().flush(); // flush image buffer to avoid JRE to
+      // use old image
+    }
+    jlIcon.setIcon(ii);
+    if (bShowFullText) {
+      dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
+          { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
+      setLayout(new TableLayout(dMain));
+      int iRows = 7 + 3 * (size / 50 - 1);
+      Color mediumGray = new Color(172, 172, 172);
 
-			jlAlbum = new JTextArea(album.getName2(), 1, iRows);
-			jlAlbum.setLineWrap(true);
-			jlAlbum.setWrapStyleWord(true);
-			jlAlbum.setEditable(false);
-			
-			jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-			jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-			jlAlbum.setForeground(mediumGray);
-			jlAlbum.setBorder(null);
-			add(jlIcon, "1,0,c,c");
-			add(jlAuthor, "1,2");
-			add(jlAlbum, "1,4");
-		} else {
-			setLayout(new VerticalLayout(2));
-			add(Util.getCentredPanel(jlIcon));
-			JLabel jlTitle = new JLabel(Util.getLimitedString(album.getName2(), 15));
-			jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-			jlTitle.setToolTipText(album.getName2());
-			add(jlTitle);
-		}
-		// Add dnd support
-		jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
-		postPopulate();
-		// disable inadequate menu items
-		jmenu.remove(jmiOpenLastFMSite);
-	}
+      Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
+      jlAuthor = new JTextArea(author.getName2(), 1, iRows);
+      jlAuthor.setLineWrap(true);
+      jlAuthor.setWrapStyleWord(true);
+      jlAuthor.setEditable(false);
+      jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      jlAuthor.setForeground(mediumGray);
+      jlAuthor.setBorder(null);
 
-	public boolean isNoCover() {
-		return bNoCover;
-	}
+      jlAlbum = new JTextArea(album.getName2(), 1, iRows);
+      jlAlbum.setLineWrap(true);
+      jlAlbum.setWrapStyleWord(true);
+      jlAlbum.setEditable(false);
 
-	public File getCoverFile() {
-		return fCover;
-	}
+      jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      jlAlbum.setForeground(mediumGray);
+      jlAlbum.setBorder(null);
+      add(jlIcon, "1,0,c,c");
+      add(jlAuthor, "1,2");
+      add(jlAlbum, "1,4");
+    } else {
+      setLayout(new VerticalLayout(2));
+      add(Util.getCentredPanel(jlIcon));
+      JLabel jlTitle = new JLabel(Util.getLimitedString(album.getName2(), 15));
+      jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      jlTitle.setToolTipText(album.getName2());
+      add(jlTitle);
+    }
+    // Add dnd support
+    jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
+    postPopulate();
+    // disable inadequate menu items
+    jmenu.remove(jmiOpenLastFMSite);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getItem()
-	 */
-	@Override
-	public Item getItem() {
-		return album;
-	}
+  public boolean isNoCover() {
+    return bNoCover;
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
-	 */
-	@Override
-	String getDescription() {
-		String size = "200x200";
-		Util.refreshThumbnail(album, size);
-		java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
-				+ '.' + EXT_THUMB);
-		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
-		Track firstTrack = tracks.iterator().next();
-		// Check if this album has a single author or not
-		boolean bSingleAuthor = true;
-		Author author = firstTrack.getAuthor();
-		for (Track track : tracks) {
-			if (!track.getAuthor().equals(author)) {
-				bSingleAuthor = false;
-				break;
-			}
-		}
-		// Check if this album is single style or not
-		boolean bSingleStyle = true;
-		Style style = firstTrack.getStyle();
-		for (Track track : tracks) {
-			if (!track.getStyle().equals(style)) {
-				bSingleStyle = false;
-				break;
-			}
-		}
-		// Check if this album is single year or not
-		boolean bSingleYear = true;
-		long year = firstTrack.getYear().getValue();
-		for (Track track : tracks) {
-			if (track.getYear().getValue() != year) {
-				bSingleYear = false;
-				break;
-			}
-		}
-		Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
-		Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
-		String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
-				+ Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + album.getName2()
-				+ "</b><br><br>";
-		// display cover if available
-		if (cover.canRead()) {
-			sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
-		}
-		// Display author as global value only if it is a single author album
-		// We use file://<item type>?<item id> as HTML hyperlink format
-		if (bSingleAuthor) {
-			sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://"
-					+ XML_AUTHOR + '?' + firstTrack.getAuthor().getID() + "'>"
-					+ firstTrack.getAuthor().getName2() + "</a>";
-		}
-		// Display style
-		if (bSingleStyle) {
-			sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
-					+ XML_STYLE + '?' + firstTrack.getStyle().getID() + "'>"
-					+ firstTrack.getStyle().getName2() + "</a>";
-		}
-		// Display year
-		if (bSingleYear) {
-			sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + XML_YEAR
-					+ '?' + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName()
-					+ "</a>";
-		}
-		// display rating (average of each track rating)
-		try {
-			long lRate = album.getRate();
-			long lInterval = AlbumManager.getInstance().getMaxRate() / 4;
-			int nbStars = 1;
-			if (lRate <= lInterval) {
-				nbStars = 1;
-			} else if (lRate <= 2 * lInterval) {
-				nbStars = 2;
-			} else if (lRate <= 3 * lInterval) {
-				nbStars = 3;
-			} else {
-				nbStars = 4;
-			}
-			sOut += "<br>"
-					+ Messages.getString("Property_rate")
-					+ ": <img src='"
-					+ Util.getConfFileByPath("cache/internal/star" + nbStars + "_16x16.png")
-							.toURL().toExternalForm() + "'>";
-		} catch (MalformedURLException e) {
-			Log.error(e);
-		}
-		// Compute total length in secs
-		long length = 0;
-		for (Track track : tracks) {
-			length += track.getDuration();
-		}
-		sOut += "<br>" + Messages.getString("Property_length") + ": "
-				+ Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
+  public File getCoverFile() {
+    return fCover;
+  }
 
-		// Show each track detail
-		for (Track track : tracks) {
-			sOut += "<br>";
-			if (track.getOrder() > 0) {
-				sOut += Util.padNumber(track.getOrder(), 2) + ": ";
-			}
-			sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getID() + "'>"
-					+ track.getName() + "</a>" + " (";
-			sOut += Util.formatTimeBySec(track.getDuration(), false) + ") </b>";
-			if (!bSingleYear && track.getYear().getValue() != 0) {
-				sOut += " - " + track.getYear().getValue() + "   ";
-			}
-			// Show author if known and if it is not already shown at album
-			// level
-			if (!bSingleAuthor
-					&& !track.getAuthor().getName2().equals(Messages.getString(UNKNOWN_AUTHOR))) {
-				sOut += " - " + track.getAuthor().getName2() + "   ";
-			}
-		}
-		sOut += "</TD></TR></TABLE></html>";
-		return sOut;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getItem()
+   */
+  @Override
+  public Item getItem() {
+    return album;
+  }
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
-	 */
-	@Override
-	public void launch() {
-		//play the album
-		play(false, false, false);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
+   */
+  @Override
+  String getDescription() {
+    String size = "200x200";
+    Util.refreshThumbnail(album, size);
+    java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
+        + '.' + EXT_THUMB);
+    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+    Track firstTrack = tracks.iterator().next();
+    // Check if this album has a single author or not
+    boolean bSingleAuthor = true;
+    Author author = firstTrack.getAuthor();
+    for (Track track : tracks) {
+      if (!track.getAuthor().equals(author)) {
+        bSingleAuthor = false;
+        break;
+      }
+    }
+    // Check if this album is single style or not
+    boolean bSingleStyle = true;
+    Style style = firstTrack.getStyle();
+    for (Track track : tracks) {
+      if (!track.getStyle().equals(style)) {
+        bSingleStyle = false;
+        break;
+      }
+    }
+    // Check if this album is single year or not
+    boolean bSingleYear = true;
+    long year = firstTrack.getYear().getValue();
+    for (Track track : tracks) {
+      if (track.getYear().getValue() != year) {
+        bSingleYear = false;
+        break;
+      }
+    }
+    Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
+    Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
+    String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
+        + Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + album.getName2()
+        + "</b><br><br>";
+    // display cover if available
+    if (cover.canRead()) {
+      sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
+    }
+    // Display author as global value only if it is a single author album
+    // We use file://<item type>?<item id> as HTML hyperlink format
+    if (bSingleAuthor) {
+      sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://" + XML_AUTHOR
+          + '?' + firstTrack.getAuthor().getID() + "'>" + firstTrack.getAuthor().getName2()
+          + "</a>";
+    }
+    // Display style
+    if (bSingleStyle) {
+      sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://" + XML_STYLE
+          + '?' + firstTrack.getStyle().getID() + "'>" + firstTrack.getStyle().getName2() + "</a>";
+    }
+    // Display year
+    if (bSingleYear) {
+      sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + XML_YEAR + '?'
+          + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName() + "</a>";
+    }
+    // display rating (average of each track rating)
+    try {
+      long lRate = album.getRate();
+      long lInterval = AlbumManager.getInstance().getMaxRate() / 4;
+      int nbStars = 1;
+      if (lRate <= lInterval) {
+        nbStars = 1;
+      } else if (lRate <= 2 * lInterval) {
+        nbStars = 2;
+      } else if (lRate <= 3 * lInterval) {
+        nbStars = 3;
+      } else {
+        nbStars = 4;
+      }
+      sOut += "<br>"
+          + Messages.getString("Property_rate")
+          + ": <img src='"
+          + Util.getConfFileByPath("cache/internal/star" + nbStars + "_16x16.png").toURL()
+              .toExternalForm() + "'>";
+    } catch (MalformedURLException e) {
+      Log.error(e);
+    }
+    // Compute total length in secs
+    long length = 0;
+    for (Track track : tracks) {
+      length += track.getDuration();
+    }
+    sOut += "<br>" + Messages.getString("Property_length") + ": "
+        + Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
+
+    // Show each track detail
+    for (Track track : tracks) {
+      sOut += "<br>";
+      if (track.getOrder() > 0) {
+        sOut += Util.padNumber(track.getOrder(), 2) + ": ";
+      }
+      sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getID() + "'>" + track.getName()
+          + "</a>" + " (";
+      sOut += Util.formatTimeBySec(track.getDuration(), false) + ") </b>";
+      if (!bSingleYear && track.getYear().getValue() != 0) {
+        sOut += " - " + track.getYear().getValue() + "   ";
+      }
+      // Show author if known and if it is not already shown at album
+      // level
+      if (!bSingleAuthor
+          && !track.getAuthor().getName2().equals(Messages.getString(UNKNOWN_AUTHOR))) {
+        sOut += " - " + track.getAuthor().getName2() + "   ";
+      }
+    }
+    sOut += "</TD></TR></TABLE></html>";
+    return sOut;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
+   */
+  @Override
+  public void launch() {
+    // play the album
+    play(false, false, false);
+  }
 
 }

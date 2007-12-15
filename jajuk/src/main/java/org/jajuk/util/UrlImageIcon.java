@@ -30,17 +30,17 @@ import javax.swing.ImageIcon;
  */
 public class UrlImageIcon extends ImageIcon {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private URL url;
+  private URL url;
 
-	public UrlImageIcon(URL url) {
-		super(url);
-		this.url = url;
-	}
+  public UrlImageIcon(URL url) {
+    super(url);
+    this.url = url;
+  }
 
-	public URL getUrl() {
-		return this.url;
-	}
+  public URL getUrl() {
+    return this.url;
+  }
 
 }

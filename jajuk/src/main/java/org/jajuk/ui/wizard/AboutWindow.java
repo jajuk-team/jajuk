@@ -52,99 +52,97 @@ import javax.swing.SwingUtilities;
  */
 public class AboutWindow extends JDialog implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/** Licence panel */
-	private JPanel jpLicence;
+  /** Licence panel */
+  private JPanel jpLicence;
 
-	/** General informations panel */
-	private AboutPanel ap;
+  /** General informations panel */
+  private AboutPanel ap;
 
-	/** JVM properties panel */
-	private SystemPropertiesPanel spp;
+  /** JVM properties panel */
+  private SystemPropertiesPanel spp;
 
-	/** Tabbed pane with previous panels */
-	private JTabbedPane jtp;
+  /** Tabbed pane with previous panels */
+  private JTabbedPane jtp;
 
-	/** Additional informations */
-	private static final String INFOS = "http://jajuk.info";
+  /** Additional informations */
+  private static final String INFOS = "http://jajuk.info";
 
-	/**
-	 * Constructor
-	 */
-	public AboutWindow() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				setTitle(Messages.getString("JajukJMenuBar.16"));
-				initUI();
-				setLocationByPlatform(true);
-				setSize(new Dimension(600,300));
-				setVisible(true);
-			}
+  /**
+   * Constructor
+   */
+  public AboutWindow() {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        setTitle(Messages.getString("JajukJMenuBar.16"));
+        initUI();
+        setLocationByPlatform(true);
+        setSize(new Dimension(600, 300));
+        setVisible(true);
+      }
 
-		});
-	}
+    });
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void initUI() {
-		// license panel
-		jpLicence = new JPanel(new BorderLayout());
-		JTextArea jta = new JTextArea(Licences.getInstance().getGPL());
-		jta.setLineWrap(true);
-		jta.setWrapStyleWord(true);
-		jta.setCaretPosition(0);
-		jta.setEditable(false);
-		jta.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				if (me.getClickCount() == 1
-						&& ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
-						&& ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
-					try {
-						JDialog jd = new JDialog(Main.getWindow());
-						ImageIcon ii = new ImageIcon(new URL(
-								"http://jajuk.sourceforge.net/01/flbf.jpg"));
-						JPanel jp = new JPanel();
-						jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
-						JLabel jl = new JLabel(ii);
-						jp.add(jl);
-						jd.setContentPane(jp);
-						jd.pack();
-						jd.setLocationRelativeTo(Main.getWindow());
-						jd.setVisible(true);
-					} catch (Exception e) {
-						// No logs
-					}
-				}
-			}
-		});
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    // license panel
+    jpLicence = new JPanel(new BorderLayout());
+    JTextArea jta = new JTextArea(Licences.getInstance().getGPL());
+    jta.setLineWrap(true);
+    jta.setWrapStyleWord(true);
+    jta.setCaretPosition(0);
+    jta.setEditable(false);
+    jta.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent me) {
+        if (me.getClickCount() == 1
+            && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
+            && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
+          try {
+            JDialog jd = new JDialog(Main.getWindow());
+            ImageIcon ii = new ImageIcon(new URL("http://jajuk.sourceforge.net/01/flbf.jpg"));
+            JPanel jp = new JPanel();
+            jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
+            JLabel jl = new JLabel(ii);
+            jp.add(jl);
+            jd.setContentPane(jp);
+            jd.pack();
+            jd.setLocationRelativeTo(Main.getWindow());
+            jd.setVisible(true);
+          } catch (Exception e) {
+            // No logs
+          }
+        }
+      }
+    });
 
-		jpLicence.add(new JScrollPane(jta));
-		jtp = new JTabbedPane();
-		JPanel jpAbout = new JPanel();
-		jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
-		ap = new AboutPanel("Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE,
-				"<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, IconLoader.ICON_LOGO
-						.getImage());
-		jpAbout.add(ap);
-		jpAbout.add(Box.createVerticalGlue());
-		spp = new SystemPropertiesPanel();
-		jtp.addTab(Messages.getString("AboutView.7"), jpAbout);
-		jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
-		jtp.addTab(Messages.getString("AboutView.9"), spp);
-		add(jtp);
-	}
+    jpLicence.add(new JScrollPane(jta));
+    jtp = new JTabbedPane();
+    JPanel jpAbout = new JPanel();
+    jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
+    ap = new AboutPanel("Jajuk", JAJUK_VERSION + " " + JAJUK_VERSION_DATE,
+        "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, IconLoader.ICON_LOGO.getImage());
+    jpAbout.add(ap);
+    jpAbout.add(Box.createVerticalGlue());
+    spp = new SystemPropertiesPanel();
+    jtp.addTab(Messages.getString("AboutView.7"), jpAbout);
+    jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
+    jtp.addTab(Messages.getString("AboutView.9"), spp);
+    add(jtp);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return Messages.getString("AboutView.10");
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#getDesc()
+   */
+  public String getDesc() {
+    return Messages.getString("AboutView.10");
+  }
 
 }

@@ -21,35 +21,33 @@ import javax.swing.MenuSelectionManager;
  */
 public class SliderMenuItem extends JSlider implements MenuElement {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public SliderMenuItem(int iMin, int iMax, int iValue) {
-		setMajorTickSpacing(8);
-		setMinorTickSpacing(6);
-		setMinimum(iMin);
-		setMaximum(iMax);
-		setValue(iValue);
-	}
+  public SliderMenuItem(int iMin, int iMax, int iValue) {
+    setMajorTickSpacing(8);
+    setMinorTickSpacing(6);
+    setMinimum(iMin);
+    setMaximum(iMax);
+    setValue(iValue);
+  }
 
-	public void processMouseEvent(MouseEvent e, MenuElement path[],
-			MenuSelectionManager manager) {
-		super.processMouseMotionEvent(e);
-		super.processMouseEvent(e);
-	}
+  public void processMouseEvent(MouseEvent e, MenuElement path[], MenuSelectionManager manager) {
+    super.processMouseMotionEvent(e);
+    super.processMouseEvent(e);
+  }
 
-	public void processKeyEvent(KeyEvent e, MenuElement path[],
-			MenuSelectionManager manager) {
-		super.processKeyEvent(e);
-	}
+  public void processKeyEvent(KeyEvent e, MenuElement path[], MenuSelectionManager manager) {
+    super.processKeyEvent(e);
+  }
 
-	public void menuSelectionChanged(boolean isIncluded) {
-	}
+  public void menuSelectionChanged(boolean isIncluded) {
+  }
 
-	public MenuElement[] getSubElements() {
-		return new MenuElement[0];
-	}
+  public MenuElement[] getSubElements() {
+    return new MenuElement[0];
+  }
 
-	public Component getComponent() {
-		return this;
-	}
+  public Component getComponent() {
+    return this;
+  }
 }

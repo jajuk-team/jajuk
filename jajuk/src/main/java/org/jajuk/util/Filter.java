@@ -27,52 +27,51 @@ import org.jajuk.base.PropertyMetaInformation;
  */
 public class Filter {
 
-	/** Property */
-	PropertyMetaInformation meta;
+  /** Property */
+  PropertyMetaInformation meta;
 
-	/** Value* */
-	String sValue;
+  /** Value* */
+  String sValue;
 
-	/** Human* */
-	boolean bHuman = false;
+  /** Human* */
+  boolean bHuman = false;
 
-	/** Exact* */
-	boolean bExact = false;
+  /** Exact* */
+  boolean bExact = false;
 
-	/**
-	 * Filter constructor
-	 * 
-	 * @param meta
-	 *            meta property. null if the filter is on any property
-	 * @param sValue
-	 *            value
-	 * @param bHuman
-	 *            is the filter apply value itself or its human representation
-	 *            if different ?
-	 * @param bExact
-	 *            is the filter should match exactly the value ?
-	 */
-	public Filter(PropertyMetaInformation meta, String sValue, boolean bHuman,
-			boolean bExact) {
-		this.meta = meta;
-		this.sValue = sValue;
-		this.bHuman = bHuman;
-		this.bExact = bExact;
-	}
+  /**
+   * Filter constructor
+   * 
+   * @param meta
+   *          meta property. null if the filter is on any property
+   * @param sValue
+   *          value
+   * @param bHuman
+   *          is the filter apply value itself or its human representation if
+   *          different ?
+   * @param bExact
+   *          is the filter should match exactly the value ?
+   */
+  public Filter(PropertyMetaInformation meta, String sValue, boolean bHuman, boolean bExact) {
+    this.meta = meta;
+    this.sValue = sValue;
+    this.bHuman = bHuman;
+    this.bExact = bExact;
+  }
 
-	public boolean isExact() {
-		return bExact;
-	}
+  public boolean isExact() {
+    return bExact;
+  }
 
-	public boolean isHuman() {
-		return bHuman;
-	}
+  public boolean isHuman() {
+    return bHuman;
+  }
 
-	public PropertyMetaInformation getProperty() {
-		return meta;
-	}
+  public PropertyMetaInformation getProperty() {
+    return meta;
+  }
 
-	public String getValue() {
-		return sValue;
-	}
+  public String getValue() {
+    return sValue;
+  }
 }

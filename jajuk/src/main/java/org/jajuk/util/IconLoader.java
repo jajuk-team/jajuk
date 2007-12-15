@@ -535,16 +535,17 @@ public class IconLoader implements ITechnicalStrings {
       .getResource("icons/16x16/popup_16x16.png"));
 
   static {
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_50x50, Util.getResizedImage(IconLoader.ICON_NO_COVER, 50, 50));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_100x100, Util.getResizedImage(IconLoader.ICON_NO_COVER, 100,
-        100));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_150x150, Util.getResizedImage(IconLoader.ICON_NO_COVER, 150,
-        150));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_200x200, Util.getResizedImage(IconLoader.ICON_NO_COVER, 200,
-        200));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_250x250, Util.getResizedImage(IconLoader.ICON_NO_COVER, 250,
-        250));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_300x300, Util.getResizedImage(IconLoader.ICON_NO_COVER, 300,
-        300));
+    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_50x50, Util.getResizedImage(
+        IconLoader.ICON_NO_COVER, 50, 50));
+    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_100x100, Util.getResizedImage(
+        IconLoader.ICON_NO_COVER, 100, 100));
+    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_150x150, Util.getResizedImage(
+        IconLoader.ICON_NO_COVER, 150, 150));
+    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_200x200, Util.getResizedImage(
+        IconLoader.ICON_NO_COVER, 200, 200));
+    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_250x250, Util.getResizedImage(
+        IconLoader.ICON_NO_COVER, 250, 250));
+    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_300x300, Util.getResizedImage(
+        IconLoader.ICON_NO_COVER, 300, 300));
   }
 }

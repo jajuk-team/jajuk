@@ -30,18 +30,17 @@ import java.awt.event.ActionEvent;
  */
 public class DJConfigurationAction extends ActionBase {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-	DJConfigurationAction() {
-		super(
-				Messages.getString("CommandJPanel.17"), IconLoader.ICON_CONFIGURATION, true);  
-	}
+  DJConfigurationAction() {
+    super(Messages.getString("CommandJPanel.17"), IconLoader.ICON_CONFIGURATION, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		DigitalDJWizard wizard = new DigitalDJWizard(); // display the DJ wizard
-		wizard.show();
-	}
+  public void perform(ActionEvent evt) {
+    DigitalDJWizard wizard = new DigitalDJWizard(); // display the DJ wizard
+    wizard.show();
+  }
 }

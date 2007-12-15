@@ -37,33 +37,32 @@ import javax.swing.tree.TreeSelectionModel;
  */
 public abstract class AbstractTreeView extends ViewAdapter {
 
-	/** The tree scrollpane */
-	JScrollPane jspTree;
+  /** The tree scrollpane */
+  JScrollPane jspTree;
 
-	/** The phyical tree */
-	JXTree jtree;
-	
-	/** Current selection */
-	TreePath[] paths;
+  /** The phyical tree */
+  JXTree jtree;
 
-	/** Concurrency locker * */
-	volatile short[] lock = new short[0];
+  /** Current selection */
+  TreePath[] paths;
 
-	/** Resursvive items selection */
-	HashSet<Item> selectedRecursively = new HashSet<Item>(100);
+  /** Concurrency locker * */
+  volatile short[] lock = new short[0];
 
-	/** Items selection */
-	ArrayList<Item> alSelected = new ArrayList<Item>(100);
+  /** Resursvive items selection */
+  HashSet<Item> selectedRecursively = new HashSet<Item>(100);
 
-	/** Top tree node */
-	DefaultMutableTreeNode top;
+  /** Items selection */
+  ArrayList<Item> alSelected = new ArrayList<Item>(100);
 
-	protected JTree createTree() {
-		jtree = new JXTree(top);
-		jtree.putClientProperty("JTree.lineStyle", "Angled");  
-		jtree.getSelectionModel().setSelectionMode(
-		TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		return jtree;
-	}
+  /** Top tree node */
+  DefaultMutableTreeNode top;
+
+  protected JTree createTree() {
+    jtree = new JXTree(top);
+    jtree.putClientProperty("JTree.lineStyle", "Angled");
+    jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+    return jtree;
+  }
 
 }

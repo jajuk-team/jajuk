@@ -36,48 +36,48 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class JajukFileChooser extends JFileChooser implements ITechnicalStrings {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private JajukFileFilter filter;
+  private JajukFileFilter filter;
 
-	/**
-	 * Constructor with specified file filter
-	 * 
-	 * @param jfilter
-	 *            filter to use
-	 */
-	public JajukFileChooser(JajukFileFilter jfilter) {
-		setDialogTitle(Messages.getString("JajukFileChooser.0"));
-		this.filter = jfilter;
-		for (int i = 0; i < jfilter.getFilters().length; i++) {
-			addChoosableFileFilter(jfilter.getFilters()[i]);
-		}
-		setMultiSelectionEnabled(true);
-		// don't hide hidden files
-		setFileHidingEnabled(false);
-		setAcceptAllFileFilterUsed(false);
-		// Use default directory to store documents (My Documents under Windows
-		// for ie)
-		setCurrentDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
-	}
+  /**
+   * Constructor with specified file filter
+   * 
+   * @param jfilter
+   *          filter to use
+   */
+  public JajukFileChooser(JajukFileFilter jfilter) {
+    setDialogTitle(Messages.getString("JajukFileChooser.0"));
+    this.filter = jfilter;
+    for (int i = 0; i < jfilter.getFilters().length; i++) {
+      addChoosableFileFilter(jfilter.getFilters()[i]);
+    }
+    setMultiSelectionEnabled(true);
+    // don't hide hidden files
+    setFileHidingEnabled(false);
+    setAcceptAllFileFilterUsed(false);
+    // Use default directory to store documents (My Documents under Windows
+    // for ie)
+    setCurrentDirectory(FileSystemView.getFileSystemView().getDefaultDirectory());
+  }
 
-	/**
-	 * Force the filter to accept directories
-	 * 
-	 * @param b
-	 */
-	public void setAcceptDirectories(boolean b) {
-		for (int i = 0; i < filter.getFilters().length; i++) {
-			filter.getFilters()[i].setAcceptDirectories(b);
-		}
-	}
+  /**
+   * Force the filter to accept directories
+   * 
+   * @param b
+   */
+  public void setAcceptDirectories(boolean b) {
+    for (int i = 0; i < filter.getFilters().length; i++) {
+      filter.getFilters()[i].setAcceptDirectories(b);
+    }
+  }
 
-	/** Make sure to keep the dialog always on top */
-	protected JDialog createDialog(Component parent) throws HeadlessException {
-		JDialog dialog = super.createDialog(parent);
-		dialog.setAlwaysOnTop(true);
-		return dialog;
+  /** Make sure to keep the dialog always on top */
+  protected JDialog createDialog(Component parent) throws HeadlessException {
+    JDialog dialog = super.createDialog(parent);
+    dialog.setAlwaysOnTop(true);
+    return dialog;
 
-	}
+  }
 
 }

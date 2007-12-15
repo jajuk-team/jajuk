@@ -20,7 +20,6 @@
 
 package org.jajuk.services.lyrics.providers;
 
-
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,84 +29,85 @@ import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
-
 /**
- * GenericProvider is a basic processor for web-based lyrics providers.
- * It doesn't provide fine-grained processing and simply retrieves raw
- * text data from HTML pages.
- *
- * The GenericProvider is used as a base class by other, more
- * fine-grained specific providers.
+ * GenericProvider is a basic processor for web-based lyrics providers. It
+ * doesn't provide fine-grained processing and simply retrieves raw text data
+ * from HTML pages.
+ * 
+ * The GenericProvider is used as a base class by other, more fine-grained
+ * specific providers.
  */
 public class GenericProvider implements IProvider {
 
-  private String  source      = null;
-  private String  querySource = null;
-
+  private String source = null;
+  private String querySource = null;
 
   public GenericProvider(final String querySource) {
     this.querySource = querySource;
   }
 
   public String getQueryString(final String artist, final String title) {
-    String  queryString = getQuerySource();
+    String queryString = getQuerySource();
 
     try {
       queryString = queryString.replace(ITechnicalStrings.PATTERN_AUTHOR,
-                                        (artist != null) ? URLEncoder.encode(artist, "ISO-8859-1") : "");
+          (artist != null) ? URLEncoder.encode(artist, "ISO-8859-1") : "");
       queryString = queryString.replace(ITechnicalStrings.PATTERN_TRACKNAME,
-                                        (title != null) ? URLEncoder.encode(title, "ISO-8859-1") : "");
-    }
-    catch (final UnsupportedEncodingException e) {
+          (title != null) ? URLEncoder.encode(title, "ISO-8859-1") : "");
+    } catch (final UnsupportedEncodingException e) {
       Log.warn("Could not URL encode artist {{" + artist + "}} and song title {{" + title + "}}");
     }
     return (queryString);
   }
 
-  protected URL     getQueryURL(final String artist, final String title) {
+  protected URL getQueryURL(final String artist, final String title) {
     try {
       return (new URL(getQueryString(artist, title)));
-    }
-    catch (final MalformedURLException e) {
+    } catch (final MalformedURLException e) {
       Log.warn("Invalid lyrics provider [" + querySource + "]");
     }
     return (null);
   }
 
-  /* (non-Javadoc)
-   * @see ext.services.lyrics.providers.IProvider#getLyrics(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see ext.services.lyrics.providers.IProvider#getLyrics(java.lang.String,
+   *      java.lang.String)
    */
-  public String     getLyrics(final String artist, final String title) {
-    final URL       url   = getQueryURL(artist, title);
-    String          text  = null;
+  public String getLyrics(final String artist, final String title) {
+    final URL url = getQueryURL(artist, title);
+    String text = null;
 
     if (url != null) {
       try {
         text = DownloadManager.downloadHtml(url, "ISO-8859-1");
-      }
-      catch (final Exception e) {
+      } catch (final Exception e) {
         Log.warn("Could not retrieve URL [" + url + "]");
       }
     }
     return (text);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see ext.services.lyrics.providers.IProvider#getQuerySource()
    */
-  public String     getQuerySource() {
+  public String getQuerySource() {
     return (querySource);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see ext.services.lyrics.providers.IProvider#getSource()
    */
-  public String     getSource() {
+  public String getSource() {
     if (source == null) {
       try {
         source = new URL(querySource).getHost();
-      }
-      catch (final MalformedURLException e) {
+      } catch (final MalformedURLException e) {
         Log.warn("Invalid lyrics provider [" + querySource + "]");
       }
     }

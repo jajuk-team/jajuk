@@ -21,17 +21,16 @@
 package org.jajuk.base;
 
 /**
- *  A logical Item (style, author, year, album...)
+ * A logical Item (style, author, year, album...)
  */
 public abstract class LogicalItem extends Item {
 
-	/**
-	 * @param sId
-	 * @param sName
-	 */
-	LogicalItem(String sId, String sName) {
-		super(sId, sName);
-	}
-	
+  /**
+   * @param sId
+   * @param sName
+   */
+  LogicalItem(String sId, String sName) {
+    super(sId, sName);
+  }
 
 }

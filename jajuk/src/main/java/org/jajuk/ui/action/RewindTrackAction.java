@@ -31,27 +31,27 @@ import java.awt.event.ActionEvent;
  */
 public class RewindTrackAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private static final float JUMP_SIZE = 0.1f;
+  private static final float JUMP_SIZE = 0.1f;
 
-	RewindTrackAction() {
-		super(IconLoader.ICON_REW, "alt F9", false, true); 
-		setShortDescription(Messages.getString("CommandJPanel.10")); 
+  RewindTrackAction() {
+    super(IconLoader.ICON_REW, "alt F9", false, true);
+    setShortDescription(Messages.getString("CommandJPanel.10"));
 
-	}
+  }
 
-	public void perform(ActionEvent evt) {
-		// check modifiers to see if it is a movement inside track, between
-		// tracks or between albums
-		if (evt != null
-				//evt == null when using hotkeys
-				&& (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-			// replay the entire file
-			Player.seek(0);
-		} else {
-			float fCurrentPosition = Player.getCurrentPosition();
-			Player.seek(fCurrentPosition - JUMP_SIZE);
-		}
-	}
+  public void perform(ActionEvent evt) {
+    // check modifiers to see if it is a movement inside track, between
+    // tracks or between albums
+    if (evt != null
+    // evt == null when using hotkeys
+        && (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+      // replay the entire file
+      Player.seek(0);
+    } else {
+      float fCurrentPosition = Player.getCurrentPosition();
+      Player.seek(fCurrentPosition - JUMP_SIZE);
+    }
+  }
 }

@@ -32,23 +32,23 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Processor {
 
-	/**
-	 * MD5 hashcoding, return a hashcode
-	 * 
-	 * @param sIn
-	 *            input String
-	 * @return hashed output
-	 */
-	public static final String hash(String sIn) {
-		java.security.MessageDigest msgDigest;
-		try {
-			msgDigest = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			Log.error(e);
-			return null;
-		}
-		msgDigest.update(sIn.getBytes());
-		byte[] digest = msgDigest.digest();
-		return new BigInteger(digest).abs().toString(36).intern();
-	}
+  /**
+   * MD5 hashcoding, return a hashcode
+   * 
+   * @param sIn
+   *          input String
+   * @return hashed output
+   */
+  public static final String hash(String sIn) {
+    java.security.MessageDigest msgDigest;
+    try {
+      msgDigest = MessageDigest.getInstance("MD5");
+    } catch (NoSuchAlgorithmException e) {
+      Log.error(e);
+      return null;
+    }
+    msgDigest.update(sIn.getBytes());
+    byte[] digest = msgDigest.digest();
+    return new BigInteger(digest).abs().toString(36).intern();
+  }
 }

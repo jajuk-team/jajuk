@@ -30,21 +30,20 @@ import java.awt.event.ActionEvent;
  */
 public class TipOfTheDayAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	TipOfTheDayAction() {
-		super(
-				Messages.getString("JajukJMenuBar.20"), IconLoader.ICON_TIP_SMALL, true); 
-	}
+  TipOfTheDayAction() {
+    super(Messages.getString("JajukJMenuBar.20"), IconLoader.ICON_TIP_SMALL, true);
+  }
 
-	/**
-	 * Invoked when an action occurs.
-	 * 
-	 * @param evt
-	 */
-	public void perform(ActionEvent evt) {
-		TipOfTheDay tipsView = new TipOfTheDay();
-		tipsView.setLocationByPlatform(true);
-		tipsView.setVisible(true);
-	}
+  /**
+   * Invoked when an action occurs.
+   * 
+   * @param evt
+   */
+  public void perform(ActionEvent evt) {
+    TipOfTheDay tipsView = new TipOfTheDay();
+    tipsView.setLocationByPlatform(true);
+    tipsView.setVisible(true);
+  }
 }

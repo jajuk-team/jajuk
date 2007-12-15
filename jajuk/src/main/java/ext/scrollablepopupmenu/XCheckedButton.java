@@ -26,190 +26,187 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class XCheckedButton extends JButton {
 
-	private static final long serialVersionUID = 6665536733427576873L;
+  private static final long serialVersionUID = 6665536733427576873L;
 
-	// Icon to be used to for the Checked Icon of the Button
-	private ImageIcon checkedIcon;
-	
-	/**Requires the icon to be always displayed, even when the item is unselected*/
-	private boolean iconAlwaysVisible = false;
-	
+  // Icon to be used to for the Checked Icon of the Button
+  private ImageIcon checkedIcon;
 
-	/**
-	 * These colors are required in order to simulate the JMenuItem's L&F
-	 */
-	public static final Color MENU_HIGHLIGHT_BG_COLOR = UIManager
-			.getColor("MenuItem.selectionBackground");
+  /** Requires the icon to be always displayed, even when the item is unselected */
+  private boolean iconAlwaysVisible = false;
 
-	public static final Color MENU_HIGHLIGHT_FG_COLOR = UIManager
-			.getColor("MenuItem.selectionForeground");
+  /**
+   * These colors are required in order to simulate the JMenuItem's L&F
+   */
+  public static final Color MENU_HIGHLIGHT_BG_COLOR = UIManager
+      .getColor("MenuItem.selectionBackground");
 
-	public static final Color MENUITEM_BG_COLOR = UIManager.getColor("MenuItem.background");
+  public static final Color MENU_HIGHLIGHT_FG_COLOR = UIManager
+      .getColor("MenuItem.selectionForeground");
 
-	public static final Color MENUITEM_FG_COLOR = UIManager.getColor("MenuItem.foreground");
+  public static final Color MENUITEM_BG_COLOR = UIManager.getColor("MenuItem.background");
 
-	// This property if set to false, will result in the checked Icon not being
-	// displayed
+  public static final Color MENUITEM_FG_COLOR = UIManager.getColor("MenuItem.foreground");
 
-	// when the button is selected
-	private boolean displayCheck = true;
+  // This property if set to false, will result in the checked Icon not being
+  // displayed
 
-	public XCheckedButton() {
-		super();
-		init();
+  // when the button is selected
+  private boolean displayCheck = true;
 
-	}
+  public XCheckedButton() {
+    super();
+    init();
 
-	public XCheckedButton(Action a) {
-		super(a);
-		init();
-	}
+  }
 
-	public XCheckedButton(Icon icon) {
-		super(icon);
-		init();
-	}
+  public XCheckedButton(Action a) {
+    super(a);
+    init();
+  }
 
-	public XCheckedButton(String text, Icon icon) {
-		super(text, icon);
-		init();
-	}
+  public XCheckedButton(Icon icon) {
+    super(icon);
+    init();
+  }
 
-	public XCheckedButton(String text) {
-		super(text);
-		init();
-	}
+  public XCheckedButton(String text, Icon icon) {
+    super(text, icon);
+    init();
+  }
 
-	/**
-	 * Initialize component LAF and add Listeners
-	 */
-	private void init() {
-		MouseAdapter mouseAdapter = getMouseAdapter();
+  public XCheckedButton(String text) {
+    super(text);
+    init();
+  }
 
-		// Basically JGoodies LAF UI for JButton does not allow Background color
-		// to be set.
-		// So we need to set the default UI,
-		ComponentUI ui = BasicButtonUI.createUI(this);
-		this.setUI(ui);
-		setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 2));
-		setMenuItemDefaultColors();
-		// setContentAreaFilled(false);
-		setHorizontalTextPosition(SwingConstants.RIGHT);
-		setHorizontalAlignment(SwingConstants.LEFT);
-		// setModel(new JToggleButton.ToggleButtonModel());
-		setModel(new XCheckedButtonModel());
-		setSelected(false);
-		this.addMouseListener(mouseAdapter);
+  /**
+   * Initialize component LAF and add Listeners
+   */
+  private void init() {
+    MouseAdapter mouseAdapter = getMouseAdapter();
 
-	}
+    // Basically JGoodies LAF UI for JButton does not allow Background color
+    // to be set.
+    // So we need to set the default UI,
+    ComponentUI ui = BasicButtonUI.createUI(this);
+    this.setUI(ui);
+    setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 2));
+    setMenuItemDefaultColors();
+    // setContentAreaFilled(false);
+    setHorizontalTextPosition(SwingConstants.RIGHT);
+    setHorizontalAlignment(SwingConstants.LEFT);
+    // setModel(new JToggleButton.ToggleButtonModel());
+    setModel(new XCheckedButtonModel());
+    setSelected(false);
+    this.addMouseListener(mouseAdapter);
 
-	private void setMenuItemDefaultColors() {
-		XCheckedButton.this.setBackground(MENUITEM_BG_COLOR);
-		XCheckedButton.this.setForeground(MENUITEM_FG_COLOR);
-	}
+  }
 
-	/**
-	 * @return
-	 */
-	private MouseAdapter getMouseAdapter() {
-		return new MouseAdapter() {
-			// For static menuitems, the background color remains the
-			// highlighted color, if this is not overridden
-			public void mousePressed(MouseEvent e) {
-				setMenuItemDefaultColors();
-			}
+  private void setMenuItemDefaultColors() {
+    XCheckedButton.this.setBackground(MENUITEM_BG_COLOR);
+    XCheckedButton.this.setForeground(MENUITEM_FG_COLOR);
+  }
 
-			public void mouseEntered(MouseEvent e) {
-				XCheckedButton.this.setBackground(MENU_HIGHLIGHT_BG_COLOR);
-				XCheckedButton.this.setForeground(MENU_HIGHLIGHT_FG_COLOR);
-			}
+  /**
+   * @return
+   */
+  private MouseAdapter getMouseAdapter() {
+    return new MouseAdapter() {
+      // For static menuitems, the background color remains the
+      // highlighted color, if this is not overridden
+      public void mousePressed(MouseEvent e) {
+        setMenuItemDefaultColors();
+      }
 
-			public void mouseExited(MouseEvent e) {
-				setMenuItemDefaultColors();
-			}
+      public void mouseEntered(MouseEvent e) {
+        XCheckedButton.this.setBackground(MENU_HIGHLIGHT_BG_COLOR);
+        XCheckedButton.this.setForeground(MENU_HIGHLIGHT_FG_COLOR);
+      }
 
-		};
-	}
+      public void mouseExited(MouseEvent e) {
+        setMenuItemDefaultColors();
+      }
 
-	/**
-	 * @param checkedFlag
-	 */
-	public void displayIcon(boolean checkedFlag) {
-		if (checkedFlag && isDisplayCheck()) {
-			if (checkedIcon == null) {
-				checkedIcon = IconLoader.ICON_OK;
-			}
-			this.setIcon(checkedIcon);
-		} else {
-			this.setIcon(IconLoader.ICON_EMPTY);
-		}
-		this.repaint();
-	}
+    };
+  }
 
-	private class XCheckedButtonModel extends JToggleButton.ToggleButtonModel {
-		private static final long serialVersionUID = 4628990599914525833L;
+  /**
+   * @param checkedFlag
+   */
+  public void displayIcon(boolean checkedFlag) {
+    if (checkedFlag && isDisplayCheck()) {
+      if (checkedIcon == null) {
+        checkedIcon = IconLoader.ICON_OK;
+      }
+      this.setIcon(checkedIcon);
+    } else {
+      this.setIcon(IconLoader.ICON_EMPTY);
+    }
+    this.repaint();
+  }
 
-		/*
-		 * Need to Override keeping the super code, else the check mark won't
-		 * come
-		 */
-		public void setSelected(boolean b) {
+  private class XCheckedButtonModel extends JToggleButton.ToggleButtonModel {
+    private static final long serialVersionUID = 4628990599914525833L;
 
-			ButtonGroup group = getGroup();
-			if (group != null) {
-				// use the group model instead
-				group.setSelected(this, b);
-				b = group.isSelected(this);
-			}
+    /*
+     * Need to Override keeping the super code, else the check mark won't come
+     */
+    public void setSelected(boolean b) {
 
-			if (isSelected() == b) {
-				return;
-			}
+      ButtonGroup group = getGroup();
+      if (group != null) {
+        // use the group model instead
+        group.setSelected(this, b);
+        b = group.isSelected(this);
+      }
 
-			if (b) {
-				stateMask |= SELECTED;
-			} else {
-				stateMask &= ~SELECTED;
-			}
+      if (isSelected() == b) {
+        return;
+      }
 
-			// Send ChangeEvent
-			fireStateChanged();
+      if (b) {
+        stateMask |= SELECTED;
+      } else {
+        stateMask &= ~SELECTED;
+      }
 
-			// Send ItemEvent
-			fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this, this
-					.isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
+      // Send ChangeEvent
+      fireStateChanged();
 
-			XCheckedButton.this.displayIcon(b | iconAlwaysVisible);
+      // Send ItemEvent
+      fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this, this
+          .isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
 
-		}
+      XCheckedButton.this.displayIcon(b | iconAlwaysVisible);
 
-	}
+    }
 
-	// Returns true if Button will display Checked Icon on Click. Default
-	// Behaviour is to display a Checked Icon
+  }
 
-	public boolean isDisplayCheck() {
-		return displayCheck;
-	}
+  // Returns true if Button will display Checked Icon on Click. Default
+  // Behaviour is to display a Checked Icon
 
-	/**
-	 * Sets the property which determines whether a checked Icon should be
-	 * displayed or not Setting to false, makes this button display like a
-	 * normal button
-	 * 
-	 * @param displayCheck
-	 */
-	public void setDisplayCheck(boolean displayCheck) {
-		this.displayCheck = displayCheck;
-	}
+  public boolean isDisplayCheck() {
+    return displayCheck;
+  }
 
-	public void setCheckedIcon(ImageIcon checkedIcon) {
-		this.checkedIcon = checkedIcon;
-	}
+  /**
+   * Sets the property which determines whether a checked Icon should be
+   * displayed or not Setting to false, makes this button display like a normal
+   * button
+   * 
+   * @param displayCheck
+   */
+  public void setDisplayCheck(boolean displayCheck) {
+    this.displayCheck = displayCheck;
+  }
 
-	public void setIconAlwaysVisible(boolean iconAlwaysVisible) {
-		this.iconAlwaysVisible = iconAlwaysVisible;
-	}
+  public void setCheckedIcon(ImageIcon checkedIcon) {
+    this.checkedIcon = checkedIcon;
+  }
 
-	
+  public void setIconAlwaysVisible(boolean iconAlwaysVisible) {
+    this.iconAlwaysVisible = iconAlwaysVisible;
+  }
+
 }

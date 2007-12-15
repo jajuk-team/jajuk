@@ -20,15 +20,15 @@
 
 package org.jajuk.services.lyrics.providers;
 
-
 /**
- * Interface for lyrics providers to be used by the modified
- * LyricsService
+ * Interface for lyrics providers to be used by the modified LyricsService
  */
 public interface IProvider {
 
   public String getQuerySource();
+
   public String getQueryString(final String artist, final String title);
+
   public String getSource();
 
   public String getLyrics(final String artist, final String title);

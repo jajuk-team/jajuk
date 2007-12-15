@@ -36,67 +36,67 @@ import javax.swing.SwingUtilities;
  */
 public class RefreshDialog extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7883506101436294760L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -7883506101436294760L;
 
-	private JXBusyLabel jlAction;
+  private JXBusyLabel jlAction;
 
-	private JProgressBar progress;
+  private JProgressBar progress;
 
-	private JLabel jlRefreshing;
+  private JLabel jlRefreshing;
 
-	public RefreshDialog() {
-		super();
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				setUndecorated(true);
-				setIconImage(IconLoader.ICON_LOGO.getImage());
-				jlAction = new JXBusyLabel();
-				progress = new JProgressBar(0, 100);
-				jlRefreshing = new JLabel();
-				double[][] dSize = new double[][] { { 5, 500, 5 }, { 5, 30, 5, 20, 5, 20, 5 } };
-				setLayout(new TableLayout(dSize));
-				add(jlAction, "1,1,c,c");
-				add(progress, "1,3,f,c");
-				add(jlRefreshing, "1,5,c,c");
-				pack();
-				setLocationRelativeTo(RefreshDialog.this);
-				setVisible(true);
-			}
-		});
-	}
+  public RefreshDialog() {
+    super();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        setUndecorated(true);
+        setIconImage(IconLoader.ICON_LOGO.getImage());
+        jlAction = new JXBusyLabel();
+        progress = new JProgressBar(0, 100);
+        jlRefreshing = new JLabel();
+        double[][] dSize = new double[][] { { 5, 500, 5 }, { 5, 30, 5, 20, 5, 20, 5 } };
+        setLayout(new TableLayout(dSize));
+        add(jlAction, "1,1,c,c");
+        add(progress, "1,3,f,c");
+        add(jlRefreshing, "1,5,c,c");
+        pack();
+        setLocationRelativeTo(RefreshDialog.this);
+        setVisible(true);
+      }
+    });
+  }
 
-	public void setAction(final String action, final Icon icon) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				jlAction.setText(action);
-				jlAction.setIcon(icon);
-				jlAction.setBusy(true);
-			}
-		});
-	}
+  public void setAction(final String action, final Icon icon) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        jlAction.setText(action);
+        jlAction.setIcon(icon);
+        jlAction.setBusy(true);
+      }
+    });
+  }
 
-	public void setRefreshing(final String path) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				jlRefreshing.setText(path);
-			}
-		});
-	}
+  public void setRefreshing(final String path) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        jlRefreshing.setText(path);
+      }
+    });
+  }
 
-	/**
-	 * 
-	 * @param pos
-	 *            position from 0 to 100
-	 */
-	public void setProgress(final int pos) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				progress.setValue(pos);
-			}
-		});
-	}
+  /**
+   * 
+   * @param pos
+   *          position from 0 to 100
+   */
+  public void setProgress(final int pos) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        progress.setValue(pos);
+      }
+    });
+  }
 
 }

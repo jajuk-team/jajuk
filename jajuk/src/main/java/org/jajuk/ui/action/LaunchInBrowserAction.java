@@ -37,22 +37,22 @@ import javax.swing.JComponent;
  */
 public class LaunchInBrowserAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	LaunchInBrowserAction() {
-		//this action is available only under linux and windows for now
-		super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Util
-				.isUnderLinux() || Util.isUnderWindows()));
-		setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
-	}
+  LaunchInBrowserAction() {
+    // this action is available only under linux and windows for now
+    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Util
+        .isUnderLinux() || Util.isUnderWindows()));
+    setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		try {
-			JComponent source = (JComponent) evt.getSource();
-			String url = (String) source.getClientProperty(DETAIL_CONTENT);
-			Desktop.browse(new URL(url));
-		} catch (Exception e) {
-			Log.error(e);
-		}
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    try {
+      JComponent source = (JComponent) evt.getSource();
+      String url = (String) source.getClientProperty(DETAIL_CONTENT);
+      Desktop.browse(new URL(url));
+    } catch (Exception e) {
+      Log.error(e);
+    }
+  }
 }

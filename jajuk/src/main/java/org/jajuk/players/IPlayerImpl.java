@@ -27,74 +27,73 @@ import org.jajuk.base.WebRadio;
  */
 public interface IPlayerImpl {
 
-	/**
-	 * Launches player
-	 * 
-	 * @param file :
-	 *            jajuk file to be played
-	 * @param fPosition
-	 *            position in % of the file
-	 * @param length
-	 *            length to play in ms or TO_THE_END of you want to play to the
-	 *            end of the current file
-	 * @param bMuted
-	 *            mute state
-	 * @param fVolume
-	 *            volume
-	 * @throws Exception
-	 */
-	public void play(File file, float fPosition, long length, float fVolume)
-			throws Exception;
+  /**
+   * Launches player
+   * 
+   * @param file :
+   *          jajuk file to be played
+   * @param fPosition
+   *          position in % of the file
+   * @param length
+   *          length to play in ms or TO_THE_END of you want to play to the end
+   *          of the current file
+   * @param bMuted
+   *          mute state
+   * @param fVolume
+   *          volume
+   * @throws Exception
+   */
+  public void play(File file, float fPosition, long length, float fVolume) throws Exception;
 
-	
-	/**
-	 * Play a web radio stream
-	 * @param radio
-	 * @param fVolume
-	 * @throws Exception
-	 */
-	public void play(WebRadio radio, float fVolume) throws Exception;
-	
-	/**
-	 * Stop current player
-	 * 
-	 * @throws Exception
-	 */
-	public void stop() throws Exception;
+  /**
+   * Play a web radio stream
+   * 
+   * @param radio
+   * @param fVolume
+   * @throws Exception
+   */
+  public void play(WebRadio radio, float fVolume) throws Exception;
 
-	/**
-	 * Set the gain
-	 * 
-	 * @param fVolume :
-	 *            gain from 0 to 1
-	 * @throws Exception
-	 */
-	public void setVolume(float fVolume) throws Exception;
+  /**
+   * Stop current player
+   * 
+   * @throws Exception
+   */
+  public void stop() throws Exception;
 
-	/**
-	 * @return elapsed time (ms) for this player
-	 */
-	public long getElapsedTime();
+  /**
+   * Set the gain
+   * 
+   * @param fVolume :
+   *          gain from 0 to 1
+   * @throws Exception
+   */
+  public void setVolume(float fVolume) throws Exception;
 
-	/** Pause the player */
-	public void pause() throws Exception;
+  /**
+   * @return elapsed time (ms) for this player
+   */
+  public long getElapsedTime();
 
-	/** Resume the player */
-	public void resume() throws Exception;
+  /** Pause the player */
+  public void pause() throws Exception;
 
-	/** Seek to a given position in %. ex : 0.2 for 20% */
-	public void seek(float fPosition);
+  /** Resume the player */
+  public void resume() throws Exception;
 
-	/** Return track LENGTH in  */
-	public float getCurrentPosition();
+  /** Seek to a given position in %. ex : 0.2 for 20% */
+  public void seek(float fPosition);
 
-	/** Return track position in ms */
-	public long getCurrentLength();
+  /** Return track LENGTH in */
+  public float getCurrentPosition();
 
-	/** Return volume in % */
-	public float getCurrentVolume();
+  /** Return track position in ms */
+  public long getCurrentLength();
 
-	/** Return player state */
-	public int getState();
+  /** Return volume in % */
+  public float getCurrentVolume();
+
+  /** Return player state */
+  public int getState();
 
 }

@@ -46,75 +46,75 @@ import javax.swing.JLabel;
  */
 public final class JSplashLabel extends JLabel {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Used to draw the text string.
-	 */
-	private String m_text = null;
+  /**
+   * Used to draw the text string.
+   */
+  private String m_text = null;
 
-	/**
-	 * Used to draw the copyright notice
-	 */
-	private String m_copyright = null;
+  /**
+   * Used to draw the copyright notice
+   */
+  private String m_copyright = null;
 
-	/**
-	 * Font to use when drawing the text.
-	 */
-	private Font m_font = null;
+  /**
+   * Font to use when drawing the text.
+   */
+  private Font m_font = null;
 
-	/**
-	 * Constructor.
-	 * <p>
-	 * 
-	 * @param url
-	 *            The location of the image (<b>it cannot be null</b>).
-	 * @param s
-	 *            The string to draw (can be null).
-	 * @param f
-	 *            The font to use (can be null).
-	 * @param c
-	 *            The color to use (can be null).
-	 */
-	public JSplashLabel(URL url, String copyright, String s, Font f, Color c) {
-		super();
+  /**
+   * Constructor.
+   * <p>
+   * 
+   * @param url
+   *          The location of the image (<b>it cannot be null</b>).
+   * @param s
+   *          The string to draw (can be null).
+   * @param f
+   *          The font to use (can be null).
+   * @param c
+   *          The color to use (can be null).
+   */
+  public JSplashLabel(URL url, String copyright, String s, Font f, Color c) {
+    super();
 
-		ImageIcon icon = new ImageIcon(url);
-		if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-			System.err.println("Cannot load splash screen: " + url);
-			setText("Cannot load splash screen: " + url);
-		} else {
-			setIcon(icon);
-			m_copyright = copyright;
-			m_text = s;
-			m_font = f;
-			if (m_font != null) {
-				setFont(m_font);
-			}
-		}
-	}
+    ImageIcon icon = new ImageIcon(url);
+    if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+      System.err.println("Cannot load splash screen: " + url);
+      setText("Cannot load splash screen: " + url);
+    } else {
+      setIcon(icon);
+      m_copyright = copyright;
+      m_text = s;
+      m_font = f;
+      if (m_font != null) {
+        setFont(m_font);
+      }
+    }
+  }
 
-	/**
-	 * Overrides paint in order to draw the version number on the splash screen.
-	 * <p>
-	 * 
-	 * @param g
-	 *            The graphics context to use.
-	 */
-	public void paint(Graphics g) {
-		super.paint(g);
+  /**
+   * Overrides paint in order to draw the version number on the splash screen.
+   * <p>
+   * 
+   * @param g
+   *          The graphics context to use.
+   */
+  public void paint(Graphics g) {
+    super.paint(g);
 
-		if (m_text != null) {
-			g.setColor(Color.BLACK);
-			// Draw copyright notice
-			FontMetrics fm = g.getFontMetrics();
-			int width = fm.stringWidth(m_copyright) + 50;
-			int height = fm.getHeight();
-			g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 20);
+    if (m_text != null) {
+      g.setColor(Color.BLACK);
+      // Draw copyright notice
+      FontMetrics fm = g.getFontMetrics();
+      int width = fm.stringWidth(m_copyright) + 50;
+      int height = fm.getHeight();
+      g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 20);
 
-			// Draw release
-			g.drawString(m_text, getWidth() - width, (getHeight() - height));
-		}
-	}
+      // Draw release
+      g.drawString(m_text, getWidth() - width, (getHeight() - height));
+    }
+  }
 
 }

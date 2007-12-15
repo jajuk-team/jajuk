@@ -74,412 +74,407 @@ import com.vlsolutions.swing.docking.ShadowBorder;
  * display...
  */
 public abstract class AbstractThumbnail extends JPanel implements ITechnicalStrings,
-		ActionListener, Transferable {
+    ActionListener, Transferable {
 
-	/** Size */
-	int size;
-	
-	ArrayList<Item> alSelected = new ArrayList<Item>(100);
+  /** Size */
+  int size;
 
-	public JLabel jlIcon;
+  ArrayList<Item> alSelected = new ArrayList<Item>(100);
 
-	static private long lDateLastMove;
+  public JLabel jlIcon;
 
-	static private Point lastPosition;
+  static private long lDateLastMove;
 
-	private boolean selected = false;
+  static private Point lastPosition;
 
-	JPopupMenu jmenu;
+  private boolean selected = false;
 
-	JMenuItem jmiPlay;
+  JPopupMenu jmenu;
 
-	JMenuItem jmiPush;
-	
-	JMenuItem jmiDelete;
+  JMenuItem jmiPlay;
 
-	JMenuItem jmiPlayShuffle;
+  JMenuItem jmiPush;
 
-	JMenuItem jmiPlayRepeat;
+  JMenuItem jmiDelete;
 
-	JMenuItem jmiGetCovers;
-	
-	JMenuItem jmiShowPopup;
+  JMenuItem jmiPlayShuffle;
 
-	JMenuItem jmiCDDBWizard;
+  JMenuItem jmiPlayRepeat;
 
-	JMenuItem jmiProperties;
+  JMenuItem jmiGetCovers;
 
-	JMenuItem jmiOpenLastFMSite;
+  JMenuItem jmiShowPopup;
 
-	/** Dragging flag used to disable simple click behavior */
-	private static boolean bDragging = false;
+  JMenuItem jmiCDDBWizard;
 
-	/** Current details dialog */
-	private static ThumbnailPopup details;
+  JMenuItem jmiProperties;
 
-	private static AbstractThumbnail last;
+  JMenuItem jmiOpenLastFMSite;
 
-	private static AbstractThumbnail mouseOverItem = null;
+  /** Dragging flag used to disable simple click behavior */
+  private static boolean bDragging = false;
 
-	// Number of clicks on the thumb
-	private int clickNumber;
+  /** Current details dialog */
+  private static ThumbnailPopup details;
 
-	/** Associated file */
-	File fCover;
+  private static AbstractThumbnail last;
 
-	/** Timer used to launch popup */
-	static {
-		Timer timerPopup = new Timer(200, new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					// Close popup ASAP when over none catalog item
-					if (mouseOverItem == null) {
-						if (details != null) {
-							details.dispose();
-							details = null;
-						}
-						last = null;
-						// display a popup after n seconds only if item changed
-					} else if ((System.currentTimeMillis() - lDateLastMove >= 700)
-							&& mouseOverItem != last && !bDragging) {
-						// Store current item
-						last = mouseOverItem;
-						// Finally display the popup (Leave if user unselected
-						// the option "Show catalog popups"
-						if (ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
-							mouseOverItem.displayPopup();
-						}
-					}
-					bDragging = false;
-				} catch (Exception e) {
-					// Make sure not to exit
-					Log.error(e);
-				}
-			}
-		});
-		timerPopup.start();
-	}
+  private static AbstractThumbnail mouseOverItem = null;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param size :
-	 *            size of the thumbnail
-	 */
-	public AbstractThumbnail(int size) {
-		this.size = size;
-		setSelected(false);
-	}
+  // Number of clicks on the thumb
+  private int clickNumber;
 
-	/**
-	 * display a popup over the catalog item
-	 */
-	public void displayPopup() {
-		Util.waiting();
-		// Display popup out of dispatcher thread as it takes too mush time to
-		// execute and we don't risk display concurrency in this popup
-		new Thread() {
-			public void run() {
-				// close popup if any visible
-				if (details != null) {
-					details.dispose();
-					details = null;
-				}
-				// don't show details if the contextual popup menu
-				// is visible
-				if (jmenu.isVisible()) {
-					return;
-				}
-				String description = getDescription();
-				if (description != null) {
-					details = new ThumbnailPopup(description, jlIcon);
-					Util.stopWaiting();
-				}
-			}
-		}.start();
-	}
+  /** Associated file */
+  File fCover;
 
-	abstract public void populate() throws Exception;
+  /** Timer used to launch popup */
+  static {
+    Timer timerPopup = new Timer(200, new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        try {
+          // Close popup ASAP when over none catalog item
+          if (mouseOverItem == null) {
+            if (details != null) {
+              details.dispose();
+              details = null;
+            }
+            last = null;
+            // display a popup after n seconds only if item changed
+          } else if ((System.currentTimeMillis() - lDateLastMove >= 700) && mouseOverItem != last
+              && !bDragging) {
+            // Store current item
+            last = mouseOverItem;
+            // Finally display the popup (Leave if user unselected
+            // the option "Show catalog popups"
+            if (ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
+              mouseOverItem.displayPopup();
+            }
+          }
+          bDragging = false;
+        } catch (Exception e) {
+          // Make sure not to exit
+          Log.error(e);
+        }
+      }
+    });
+    timerPopup.start();
+  }
 
-	/** Return HTML text to display in the popup */
-	abstract String getDescription();
+  /**
+   * Constructor
+   * 
+   * @param size :
+   *          size of the thumbnail
+   */
+  public AbstractThumbnail(int size) {
+    this.size = size;
+    setSelected(false);
+  }
 
-	/**
-	 * Performs common UI operations for any kind of thumb
-	 */
-	void postPopulate() {
-		// Album menu
-		jmenu = new JPopupMenu();
-		jmiPlay = new JMenuItem(Messages.getString("TracksTreeView.15"), IconLoader.ICON_PLAY_16x16);
-		jmiPlay.addActionListener(this);
-		jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
-		jmiPush.addActionListener(this);
-		Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
-		jmiDelete = new JMenuItem(actionDeleteFile);
-		jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
-		jmiDelete.addActionListener(this);
-		jmiPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"),
-				IconLoader.ICON_SHUFFLE);
-		jmiPlayShuffle.addActionListener(this);
-		jmiPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.18"),
-				IconLoader.ICON_REPEAT);
-		jmiPlayRepeat.addActionListener(this);
-		jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),
-				IconLoader.ICON_COVER_16x16);
-		jmiGetCovers.addActionListener(this);
-		jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"),
-				IconLoader.ICON_POPUP);
-		jmiShowPopup.addActionListener(this);
-		jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
-		jmiCDDBWizard.addActionListener(this);
-		jmiProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
-				IconLoader.ICON_PROPERTIES);
-		jmiProperties.addActionListener(this);
-		ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
-		// Change action label
-		jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
-		jmiOpenLastFMSite.setText(Messages.getString("AbstractThumbnail.0"));
-		jmiOpenLastFMSite.setToolTipText(Messages.getString("AbstractThumbnail.0"));
-		// We add all menu items, each implementation of this class should hide
-		// (setVisible(false)) menu items that are not available in their
-		// context
-		jmenu.add(jmiPlay);
-		jmenu.add(jmiPush);
-		jmenu.add(jmiDelete);
-		jmenu.add(jmiPlayShuffle);
-		jmenu.add(jmiPlayRepeat);
-		jmenu.add(jmiCDDBWizard);
-		jmenu.add(jmiGetCovers);
-		jmenu.add(jmiShowPopup);
-		jmenu.add(jmiOpenLastFMSite);
-		jmenu.add(jmiProperties);
+  /**
+   * display a popup over the catalog item
+   */
+  public void displayPopup() {
+    Util.waiting();
+    // Display popup out of dispatcher thread as it takes too mush time to
+    // execute and we don't risk display concurrency in this popup
+    new Thread() {
+      public void run() {
+        // close popup if any visible
+        if (details != null) {
+          details.dispose();
+          details = null;
+        }
+        // don't show details if the contextual popup menu
+        // is visible
+        if (jmenu.isVisible()) {
+          return;
+        }
+        String description = getDescription();
+        if (description != null) {
+          details = new ThumbnailPopup(description, jlIcon);
+          Util.stopWaiting();
+        }
+      }
+    }.start();
+  }
 
-		jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseDragged(MouseEvent e) {
-				// Notify the mouse listener that we are dragging
-				bDragging = true;
-				JComponent c = (JComponent) e.getSource();
-				TransferHandler handler = c.getTransferHandler();
-				handler.exportAsDrag(c, e, TransferHandler.COPY);
-			}
+  abstract public void populate() throws Exception;
 
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				super.mouseMoved(e);
-				lDateLastMove = System.currentTimeMillis();
-				lastPosition = e.getPoint();
-			}
+  /** Return HTML text to display in the popup */
+  abstract String getDescription();
 
-		});
+  /**
+   * Performs common UI operations for any kind of thumb
+   */
+  void postPopulate() {
+    // Album menu
+    jmenu = new JPopupMenu();
+    jmiPlay = new JMenuItem(Messages.getString("TracksTreeView.15"), IconLoader.ICON_PLAY_16x16);
+    jmiPlay.addActionListener(this);
+    jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
+    jmiPush.addActionListener(this);
+    Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
+    jmiDelete = new JMenuItem(actionDeleteFile);
+    jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiDelete.addActionListener(this);
+    jmiPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"), IconLoader.ICON_SHUFFLE);
+    jmiPlayShuffle.addActionListener(this);
+    jmiPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.18"), IconLoader.ICON_REPEAT);
+    jmiPlayRepeat.addActionListener(this);
+    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_COVER_16x16);
+    jmiGetCovers.addActionListener(this);
+    jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP);
+    jmiShowPopup.addActionListener(this);
+    jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
+    jmiCDDBWizard.addActionListener(this);
+    jmiProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
+        IconLoader.ICON_PROPERTIES);
+    jmiProperties.addActionListener(this);
+    ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
+    // Change action label
+    jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
+    jmiOpenLastFMSite.setText(Messages.getString("AbstractThumbnail.0"));
+    jmiOpenLastFMSite.setToolTipText(Messages.getString("AbstractThumbnail.0"));
+    // We add all menu items, each implementation of this class should hide
+    // (setVisible(false)) menu items that are not available in their
+    // context
+    jmenu.add(jmiPlay);
+    jmenu.add(jmiPush);
+    jmenu.add(jmiDelete);
+    jmenu.add(jmiPlayShuffle);
+    jmenu.add(jmiPlayRepeat);
+    jmenu.add(jmiCDDBWizard);
+    jmenu.add(jmiGetCovers);
+    jmenu.add(jmiShowPopup);
+    jmenu.add(jmiOpenLastFMSite);
+    jmenu.add(jmiProperties);
 
-		jlIcon.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					handlePopup(e);
-				} else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
-					// Leave if already dragging
-					if (bDragging) {
-						return;
-					}
-					// Left click
-					if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
-						// if second click (item already selected), play
-						// We have to check time between last two click as a
-						// single clicks is
-						// managed by both mouse listeners
-						if (selected && clickNumber > 0) {
-							launch();
-						}
-						clickNumber++;
-					}
-				}
-			}
+    jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
+      public void mouseDragged(MouseEvent e) {
+        // Notify the mouse listener that we are dragging
+        bDragging = true;
+        JComponent c = (JComponent) e.getSource();
+        TransferHandler handler = c.getTransferHandler();
+        handler.exportAsDrag(c, e, TransferHandler.COPY);
+      }
 
-			public void mouseEntered(MouseEvent e) {
-				mouseOverItem = AbstractThumbnail.this;
-			}
+      @Override
+      public void mouseMoved(MouseEvent e) {
+        super.mouseMoved(e);
+        lDateLastMove = System.currentTimeMillis();
+        lastPosition = e.getPoint();
+      }
 
-			public void mouseExited(MouseEvent e) {
-				// Consider an exit only if mouse really moved to avoid
-				// closing popup when popup appears over the mouse cursor
-				// (then, a mouseExit event is thrown)
-				if (!e.getPoint().equals(lastPosition) && 
-						//Don't close popup if user is still over it
-						!(details != null && details.contains(e.getPoint()))) {
-					mouseOverItem = null;
-				}
-			}
+    });
 
-			public void mouseReleased(MouseEvent e) {
-				// Leave if already dragging
-				if (bDragging) {
-					return;
-				}
-				if (e.isPopupTrigger()) {
-					handlePopup(e);
-				}
-			}
+    jlIcon.addMouseListener(new MouseAdapter() {
+      public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          handlePopup(e);
+        } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+          // Leave if already dragging
+          if (bDragging) {
+            return;
+          }
+          // Left click
+          if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
+            // if second click (item already selected), play
+            // We have to check time between last two click as a
+            // single clicks is
+            // managed by both mouse listeners
+            if (selected && clickNumber > 0) {
+              launch();
+            }
+            clickNumber++;
+          }
+        }
+      }
 
-			public void handlePopup(final MouseEvent e) {
-				if (e.getSource() == jlIcon) {
-					// Show contextual menu
-					jmenu.show(jlIcon, e.getX(), e.getY());
-					// Hide any details frame
-					if (details != null) {
-						details.dispose();
-						details = null;
-					}
-				}
-			}
+      public void mouseEntered(MouseEvent e) {
+        mouseOverItem = AbstractThumbnail.this;
+      }
 
-		});
-	}
+      public void mouseExited(MouseEvent e) {
+        // Consider an exit only if mouse really moved to avoid
+        // closing popup when popup appears over the mouse cursor
+        // (then, a mouseExit event is thrown)
+        if (!e.getPoint().equals(lastPosition) &&
+        // Don't close popup if user is still over it
+            !(details != null && details.contains(e.getPoint()))) {
+          mouseOverItem = null;
+        }
+      }
 
-	/**
-	 * 
-	 * @param b
-	 */
-	public void setSelected(boolean b) {
-		selected = b;
-		// Reset number of clicks
-		if (!b) {
-			clickNumber = 0;
-		}
-		// Add a shadow for selected items
-		if (b) {
-			setBorder(new ShadowBorder());
-		} else {
-			// add an empty border of the same size than the border to avoid
-			// image moves when setting borders
-			setBorder(BorderFactory.createEmptyBorder(3, 2, 5, 5));
-		}
-	}
+      public void mouseReleased(MouseEvent e) {
+        // Leave if already dragging
+        if (bDragging) {
+          return;
+        }
+        if (e.isPopupTrigger()) {
+          handlePopup(e);
+        }
+      }
 
-	public abstract void launch();
+      public void handlePopup(final MouseEvent e) {
+        if (e.getSource() == jlIcon) {
+          // Show contextual menu
+          jmenu.show(jlIcon, e.getX(), e.getY());
+          // Hide any details frame
+          if (details != null) {
+            details.dispose();
+            details = null;
+          }
+        }
+      }
 
-	public void play(boolean bRepeat, boolean bShuffle, boolean bPush) {
-		Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
-		// compute selection
-		ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(tracks
-				.size());
-		for (Track track : tracks) {
-			org.jajuk.base.File file = track.getPlayeableFile(false);
-			if (file != null) {
-				alFilesToPlay.add(file);
-			}
-		}
-		if (bShuffle) {
-			Collections.shuffle(alFilesToPlay, new Random());
-		}
-		FIFO.getInstance().push(Util.createStackItems(alFilesToPlay, bRepeat, true), bPush);
-	}
+    });
+  }
 
-	/**
-	 * If the thumb represents something (album, author...) known in the
-	 * collection, the implementation of this method should return the
-	 * associated item
-	 * 
-	 * @return the collection item
-	 */
-	public abstract Item getItem();
+  /**
+   * 
+   * @param b
+   */
+  public void setSelected(boolean b) {
+    selected = b;
+    // Reset number of clicks
+    if (!b) {
+      clickNumber = 0;
+    }
+    // Add a shadow for selected items
+    if (b) {
+      setBorder(new ShadowBorder());
+    } else {
+      // add an empty border of the same size than the border to avoid
+      // image moves when setting borders
+      setBorder(BorderFactory.createEmptyBorder(3, 2, 5, 5));
+    }
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		// Menu items
-		if (e.getSource() == jmiPlay) {
-			play(false, false, false);
-		} else if (e.getSource() == jmiPlayRepeat) {
-			play(true, false, false);
-		} else if (e.getSource() == jmiPlayShuffle) {
-			play(false, true, false);
-		} else if (e.getSource() == jmiPush) {
-			play(false, false, true);
-		} else if (e.getSource() == jmiDelete) {
-			Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
-			for (Track track : tracks) {
-				org.jajuk.base.File file = track.getPlayeableFile(false);
-				if (file != null) {
-					alSelected.add(file);
-				}
-			}
-		} else if (e.getSource() == jmiGetCovers) {
-			// This item is enabled only for albums
-			new Thread() {
-				public void run() {
-					JDialog jd = new JDialog(Main.getWindow(), Messages.getString("CatalogView.18"));
-					org.jajuk.base.File file = null;
-					Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
-					if (tracks.size() > 0) {
-						Track track = tracks.iterator().next();
-						file = track.getPlayeableFile(false);
-					}
-					CoverView cv = null;
-					if (file != null) {
-						cv = new CoverView(file);
-						cv.setID("catalog/0");
-						cv.initUI();
-						jd.add(cv);
-						jd.setSize(400, 450);
-						jd.setLocationByPlatform(true);
-						jd.setVisible(true);
-					} else {
-						Messages.showErrorMessage(166);
-					}
-				}
-			}.start();
-		} else if (e.getSource() == jmiShowPopup) {
-			this.displayPopup();
-		} else if (e.getSource() == jmiProperties) {
-			Item item = getItem();
-			ArrayList<Item> al = new ArrayList<Item>();
-			al.add(item);
-			if (item instanceof Album) {
-				// Show tracks infos to allow user to change year, rate...
-				ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
-						.getAssociatedTracks(item));
-				new PropertiesWizard(al, alTracks);
-			} else {
-				new PropertiesWizard(al);
-			}
+  public abstract void launch();
 
-		} else if (e.getSource() == jmiCDDBWizard) {
-			// This menu is enabled only for albums
-			ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
-					.getAssociatedTracks(getItem()));
-			Util.waiting();
-			new CDDBWizard(alTracks);
-		}
-	}
+  public void play(boolean bRepeat, boolean bShuffle, boolean bPush) {
+    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+    // compute selection
+    ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(tracks.size());
+    for (Track track : tracks) {
+      org.jajuk.base.File file = track.getPlayeableFile(false);
+      if (file != null) {
+        alFilesToPlay.add(file);
+      }
+    }
+    if (bShuffle) {
+      Collections.shuffle(alFilesToPlay, new Random());
+    }
+    FIFO.getInstance().push(Util.createStackItems(alFilesToPlay, bRepeat, true), bPush);
+  }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
-	 */
-	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-		return null;
-	}
+  /**
+   * If the thumb represents something (album, author...) known in the
+   * collection, the implementation of this method should return the associated
+   * item
+   * 
+   * @return the collection item
+   */
+  public abstract Item getItem();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
-	 */
-	public DataFlavor[] getTransferDataFlavors() {
-		return null;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
+  public void actionPerformed(ActionEvent e) {
+    // Menu items
+    if (e.getSource() == jmiPlay) {
+      play(false, false, false);
+    } else if (e.getSource() == jmiPlayRepeat) {
+      play(true, false, false);
+    } else if (e.getSource() == jmiPlayShuffle) {
+      play(false, true, false);
+    } else if (e.getSource() == jmiPush) {
+      play(false, false, true);
+    } else if (e.getSource() == jmiDelete) {
+      Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+      for (Track track : tracks) {
+        org.jajuk.base.File file = track.getPlayeableFile(false);
+        if (file != null) {
+          alSelected.add(file);
+        }
+      }
+    } else if (e.getSource() == jmiGetCovers) {
+      // This item is enabled only for albums
+      new Thread() {
+        public void run() {
+          JDialog jd = new JDialog(Main.getWindow(), Messages.getString("CatalogView.18"));
+          org.jajuk.base.File file = null;
+          Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+          if (tracks.size() > 0) {
+            Track track = tracks.iterator().next();
+            file = track.getPlayeableFile(false);
+          }
+          CoverView cv = null;
+          if (file != null) {
+            cv = new CoverView(file);
+            cv.setID("catalog/0");
+            cv.initUI();
+            jd.add(cv);
+            jd.setSize(400, 450);
+            jd.setLocationByPlatform(true);
+            jd.setVisible(true);
+          } else {
+            Messages.showErrorMessage(166);
+          }
+        }
+      }.start();
+    } else if (e.getSource() == jmiShowPopup) {
+      this.displayPopup();
+    } else if (e.getSource() == jmiProperties) {
+      Item item = getItem();
+      ArrayList<Item> al = new ArrayList<Item>();
+      al.add(item);
+      if (item instanceof Album) {
+        // Show tracks infos to allow user to change year, rate...
+        ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
+            .getAssociatedTracks(item));
+        new PropertiesWizard(al, alTracks);
+      } else {
+        new PropertiesWizard(al);
+      }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
-	 */
-	public boolean isDataFlavorSupported(DataFlavor flavor) {
-		return false;
-	}
+    } else if (e.getSource() == jmiCDDBWizard) {
+      // This menu is enabled only for albums
+      ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
+          .getAssociatedTracks(getItem()));
+      Util.waiting();
+      new CDDBWizard(alTracks);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
+   */
+  public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
+   */
+  public DataFlavor[] getTransferDataFlavors() {
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
+   */
+  public boolean isDataFlavorSupported(DataFlavor flavor) {
+    return false;
+  }
 
 }

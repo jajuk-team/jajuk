@@ -31,15 +31,13 @@ import java.awt.event.ActionEvent;
  */
 public class ConfigurationRequiredAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	ConfigurationRequiredAction() {
-		super(
-				Messages.getString("JajukJMenuBar.22"), IconLoader.ICON_CONFIGURATION, true);  
-	}
+  ConfigurationRequiredAction() {
+    super(Messages.getString("JajukJMenuBar.22"), IconLoader.ICON_CONFIGURATION, true);
+  }
 
-	public void perform(ActionEvent evt) {
-		PerspectiveManager
-				.setCurrentPerspective(ConfigurationPerspective.class.getName());
-	}
+  public void perform(ActionEvent evt) {
+    PerspectiveManager.setCurrentPerspective(ConfigurationPerspective.class.getName());
+  }
 }

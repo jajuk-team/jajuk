@@ -30,18 +30,17 @@ import java.awt.event.ActionEvent;
  */
 public class ShowAboutAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	ShowAboutAction() {
-		super(
-				Messages.getString("JajukWindow.5"), IconLoader.ICON_INFO, true); 
-		setShortDescription(Messages.getString("JajukWindow.22")); 
-	}
+  ShowAboutAction() {
+    super(Messages.getString("JajukWindow.5"), IconLoader.ICON_INFO, true);
+    setShortDescription(Messages.getString("JajukWindow.22"));
+  }
 
-	/**
-	 * Invoked when an action occurs.
-	 */
-	public void perform(ActionEvent evt) {
-		new AboutWindow();
-	}
+  /**
+   * Invoked when an action occurs.
+   */
+  public void perform(ActionEvent evt) {
+    new AboutWindow();
+  }
 }

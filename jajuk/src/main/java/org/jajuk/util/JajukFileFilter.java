@@ -105,7 +105,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
       extensionsString += this.extensions[i] + ',';
     }
     // Drop last coma
-    if (!Util.isVoid(extensionsString)){
+    if (!Util.isVoid(extensionsString)) {
       extensionsString = extensionsString.substring(0, extensionsString.length() - 1);
     }
   }

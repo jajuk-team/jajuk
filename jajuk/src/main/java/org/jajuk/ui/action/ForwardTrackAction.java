@@ -31,17 +31,17 @@ import java.awt.event.ActionEvent;
  */
 public class ForwardTrackAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private static final float JUMP_SIZE = 0.1f;
+  private static final float JUMP_SIZE = 0.1f;
 
-	ForwardTrackAction() {
-		super(IconLoader.ICON_FWD, "alt F10", false, true); 
-		setShortDescription(Messages.getString("CommandJPanel.13")); 
-	}
+  ForwardTrackAction() {
+    super(IconLoader.ICON_FWD, "alt F10", false, true);
+    setShortDescription(Messages.getString("CommandJPanel.13"));
+  }
 
-	public void perform(ActionEvent evt) {
-		float fCurrentPosition = Player.getCurrentPosition();
-		Player.seek(fCurrentPosition + JUMP_SIZE);
-	}
+  public void perform(ActionEvent evt) {
+    float fCurrentPosition = Player.getCurrentPosition();
+    Player.seek(fCurrentPosition + JUMP_SIZE);
+  }
 }

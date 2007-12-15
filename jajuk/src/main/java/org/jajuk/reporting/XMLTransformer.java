@@ -41,35 +41,36 @@ import javax.xml.transform.stream.StreamSource;
  * This class will take a XML file and either convert it to HTML or PDF.
  */
 public class XMLTransformer {
-	/**
-	 * This method will convert an XML file into an HTML file using an xslt
-	 * transformation
-	 * 
-	 * @param xml
-	 *            The XML file to convert.
-	 * @param html
-	 *            The HTML file to convert.
-	 * @param xsltPath
-	 *            The path to the XSLT Transform to use.
-	 */
-	public static void xmlToHTML(File xml, File html, File xsl) throws Exception {
-		// DOM source creation
-		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder domBuilder = domFactory.newDocumentBuilder();
-		domBuilder.parse(xml);
-		Source source = new SAXSource(new InputSource(new BufferedInputStream(new FileInputStream(xml))));
+  /**
+   * This method will convert an XML file into an HTML file using an xslt
+   * transformation
+   * 
+   * @param xml
+   *          The XML file to convert.
+   * @param html
+   *          The HTML file to convert.
+   * @param xsltPath
+   *          The path to the XSLT Transform to use.
+   */
+  public static void xmlToHTML(File xml, File html, File xsl) throws Exception {
+    // DOM source creation
+    DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder domBuilder = domFactory.newDocumentBuilder();
+    domBuilder.parse(xml);
+    Source source = new SAXSource(
+        new InputSource(new BufferedInputStream(new FileInputStream(xml))));
 
-		// Create output file
-		Result result = new StreamResult(html);
+    // Create output file
+    Result result = new StreamResult(html);
 
-		// Transformer configuration
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		StreamSource stylesource = new StreamSource(xsl);
-		Transformer transformer = transformerFactory.newTransformer(stylesource);
-		transformer.setOutputProperty(OutputKeys.METHOD, "html");
+    // Transformer configuration
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    StreamSource stylesource = new StreamSource(xsl);
+    Transformer transformer = transformerFactory.newTransformer(stylesource);
+    transformer.setOutputProperty(OutputKeys.METHOD, "html");
 
-		// Transformation
-		transformer.transform(source, result);
-	}
+    // Transformation
+    transformer.transform(source, result);
+  }
 
 }

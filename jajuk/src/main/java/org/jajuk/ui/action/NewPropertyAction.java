@@ -29,18 +29,17 @@ import java.awt.event.ActionEvent;
 
 public class NewPropertyAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	NewPropertyAction() {
-		super(Messages.getString("JajukJMenuBar.6"), IconLoader.ICON_NEW, 
-				true);
-		setShortDescription(Messages.getString("JajukJMenuBar.6")); 
-	}
+  NewPropertyAction() {
+    super(Messages.getString("JajukJMenuBar.6"), IconLoader.ICON_NEW, true);
+    setShortDescription(Messages.getString("JajukJMenuBar.6"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		NewPropertyWizard npw = new NewPropertyWizard();
-		npw.pack();
-		npw.setLocationRelativeTo(Main.getWindow());
-		npw.setVisible(true);
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    NewPropertyWizard npw = new NewPropertyWizard();
+    npw.pack();
+    npw.setLocationRelativeTo(Main.getWindow());
+    npw.setVisible(true);
+  }
 }

@@ -24,7 +24,7 @@ import java.io.File;
 import org.jajuk.util.JajukFileFilter;
 
 /**
- *
+ * 
  * Any File filter
  * <p>
  * Singleton
@@ -33,10 +33,10 @@ import org.jajuk.util.JajukFileFilter;
 public class AnyFileFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static AnyFileFilter  self  = null;
+  protected static AnyFileFilter self = null;
 
   /**
-   *
+   * 
    * @return singleton
    */
   public static AnyFileFilter getInstance() {
@@ -50,10 +50,12 @@ public class AnyFileFilter extends JajukFileFilter {
    * Singleton constructor (protected for testing purposes)
    */
   private AnyFileFilter() {
-    super(new String[]{});
+    super(new String[] {});
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.filechooser.FileFilter#getDescription()
    */
   @Override
@@ -61,7 +63,9 @@ public class AnyFileFilter extends JajukFileFilter {
     return ("*.*");
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.util.JajukFileFilter#isKnownExtension(java.io.File)
    */
   @Override

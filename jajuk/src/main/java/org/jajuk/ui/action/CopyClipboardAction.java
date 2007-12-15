@@ -31,21 +31,20 @@ import java.awt.event.ActionEvent;
 
 /**
  * 
- *  Copy to clipboard the string stored in Util.copyData
+ * Copy to clipboard the string stored in Util.copyData
  */
 public class CopyClipboardAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	CopyClipboardAction() {
-		super(
-				Messages.getString("CopyClipboardAction.0"), IconLoader.ICON_COPY, true); 
-		setShortDescription(Messages.getString("CopyClipboardAction.0")); 
-	}
+  CopyClipboardAction() {
+    super(Messages.getString("CopyClipboardAction.0"), IconLoader.ICON_COPY, true);
+    setShortDescription(Messages.getString("CopyClipboardAction.0"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		StringSelection data = new StringSelection(Util.copyData);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(data, data);
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    StringSelection data = new StringSelection(Util.copyData);
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    clipboard.setContents(data, data);
+  }
 }

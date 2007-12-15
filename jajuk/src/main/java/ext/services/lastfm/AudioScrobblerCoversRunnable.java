@@ -22,33 +22,34 @@ import java.awt.Image;
 import java.util.ArrayList;
 
 public class AudioScrobblerCoversRunnable implements Runnable {
-	
-	private AudioScrobblerListener listener;
-	private AudioScrobblerService service;
-	private ArrayList<AudioScrobblerAlbum> albums;
-	
-	private boolean interrupted;
-	
-	public AudioScrobblerCoversRunnable(AudioScrobblerListener listener, AudioScrobblerService service, ArrayList<AudioScrobblerAlbum> albums) {
-		this.listener = listener;
-		this.service = service;
-		this.albums = albums;
-	}
 
-	public void run() {
-		if (albums != null)
-			for (int i = 0; i < albums.size(); i++) {
-				Image img = null;
-				if (!interrupted) {
-					img = service.getSmallImage(albums.get(i));
-				}
+  private AudioScrobblerListener listener;
+  private AudioScrobblerService service;
+  private ArrayList<AudioScrobblerAlbum> albums;
 
-				if (!interrupted)
-					listener.notifyCoverRetrieved(albums.get(i), img);
-			}
-	}
-	
-	protected void interrupt() {
-		interrupted = true;
-	}
+  private boolean interrupted;
+
+  public AudioScrobblerCoversRunnable(AudioScrobblerListener listener,
+      AudioScrobblerService service, ArrayList<AudioScrobblerAlbum> albums) {
+    this.listener = listener;
+    this.service = service;
+    this.albums = albums;
+  }
+
+  public void run() {
+    if (albums != null)
+      for (int i = 0; i < albums.size(); i++) {
+        Image img = null;
+        if (!interrupted) {
+          img = service.getSmallImage(albums.get(i));
+        }
+
+        if (!interrupted)
+          listener.notifyCoverRetrieved(albums.get(i), img);
+      }
+  }
+
+  protected void interrupt() {
+    interrupted = true;
+  }
 }

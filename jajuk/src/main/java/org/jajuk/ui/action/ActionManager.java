@@ -75,162 +75,157 @@ import javax.swing.UIManager;
  */
 public final class ActionManager {
 
-	private static final EnumMap<JajukAction, ActionBase> map = new EnumMap<JajukAction, ActionBase>(
-			JajukAction.class);
+  private static final EnumMap<JajukAction, ActionBase> map = new EnumMap<JajukAction, ActionBase>(
+      JajukAction.class);
 
-	private static final List<KeyStroke> strokeList = new ArrayList<KeyStroke>();
+  private static final List<KeyStroke> strokeList = new ArrayList<KeyStroke>();
 
-	/** Self instance */
-	public static ActionManager self = null;
+  /** Self instance */
+  public static ActionManager self = null;
 
-	/**
-	 * 
-	 * @return singleton
-	 */
-	public static ActionManager getInstance() {
-		if (self == null) {
-			self = new ActionManager();
-		}
-		return self;
-	}
+  /**
+   * 
+   * @return singleton
+   */
+  public static ActionManager getInstance() {
+    if (self == null) {
+      self = new ActionManager();
+    }
+    return self;
+  }
 
-	private ActionManager() {
-		// Private constructor to disallow instantiation.
-		// CommandJPanel: Mode Panel
-		installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), false);
-		installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(),
-				false);
-		installAction(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction(),
-				false);
-		installAction(INTRO_MODE_STATUS_CHANGED, new IntroModeAction(), false);
+  private ActionManager() {
+    // Private constructor to disallow instantiation.
+    // CommandJPanel: Mode Panel
+    installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), false);
+    installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(), false);
+    installAction(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction(), false);
+    installAction(INTRO_MODE_STATUS_CHANGED, new IntroModeAction(), false);
 
-		// CommandJPanel: Special Functions Panel
-		installAction(SHUFFLE_GLOBAL, new GlobalRandomAction(), false);
-		installAction(BEST_OF, new BestOfAction(), false);
-		installAction(DJ, new DJAction(), false);
-		installAction(NOVELTIES, new NoveltiesAction(), false);
-		installAction(FINISH_ALBUM, new FinishAlbumAction(), false);
-		installAction(JajukAction.WEB_RADIO, new WebRadioAction(), false);
-		
-		// CommandJPanel: Play Panel
-		installAction(PREVIOUS_TRACK, new PreviousTrackAction(), true);
-		installAction(NEXT_TRACK, new NextTrackAction(), true);
-		installAction(PREVIOUS_ALBUM, new PreviousAlbumAction(), true);
-		installAction(NEXT_ALBUM, new NextAlbumAction(), true);
-		installAction(REWIND_TRACK, new RewindTrackAction(), true);
-		installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
-		installAction(STOP_TRACK, new StopTrackAction(), false);
-		installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
-		installAction(JajukAction.INC_RATE, new IncRateAction(), true);
+    // CommandJPanel: Special Functions Panel
+    installAction(SHUFFLE_GLOBAL, new GlobalRandomAction(), false);
+    installAction(BEST_OF, new BestOfAction(), false);
+    installAction(DJ, new DJAction(), false);
+    installAction(NOVELTIES, new NoveltiesAction(), false);
+    installAction(FINISH_ALBUM, new FinishAlbumAction(), false);
+    installAction(JajukAction.WEB_RADIO, new WebRadioAction(), false);
 
-		// CommandJPanel: Volume control
-		installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);
-		installAction(INCREASE_VOLUME, new IncreaseVolumeAction(), true);
-		installAction(MUTE_STATE, new MuteAction(), false);
+    // CommandJPanel: Play Panel
+    installAction(PREVIOUS_TRACK, new PreviousTrackAction(), true);
+    installAction(NEXT_TRACK, new NextTrackAction(), true);
+    installAction(PREVIOUS_ALBUM, new PreviousAlbumAction(), true);
+    installAction(NEXT_ALBUM, new NextAlbumAction(), true);
+    installAction(REWIND_TRACK, new RewindTrackAction(), true);
+    installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
+    installAction(STOP_TRACK, new StopTrackAction(), false);
+    installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
+    installAction(JajukAction.INC_RATE, new IncRateAction(), true);
 
-		// JajukJMenuBar: File Menu
-		installAction(EXIT, new ExitAction(), false);
+    // CommandJPanel: Volume control
+    installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);
+    installAction(INCREASE_VOLUME, new IncreaseVolumeAction(), true);
+    installAction(MUTE_STATE, new MuteAction(), false);
 
-		// JajukJMenuBar: views
-		installAction(VIEW_RESTORE_DEFAULTS, new RestoreViewsAction(), false);
-		installAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS, new RestoreAllViewsAction(), false);
+    // JajukJMenuBar: File Menu
+    installAction(EXIT, new ExitAction(), false);
 
-		// JajukJMenuBar: attributes
-		installAction(CUSTOM_PROPERTIES_ADD, new NewPropertyAction(), false);
-		installAction(CUSTOM_PROPERTIES_REMOVE, new RemovePropertyAction(),
-				false);
+    // JajukJMenuBar: views
+    installAction(VIEW_RESTORE_DEFAULTS, new RestoreViewsAction(), false);
+    installAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS, new RestoreAllViewsAction(), false);
 
-		// JajukJMenuBar: configuration
-		installAction(CONFIGURE_DJS, new DJConfigurationAction(), false);
-		installAction(JajukAction.CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
-		installAction(CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(),
-				false);
-		installAction(WIZARD, new WizardAction(), false);
-		installAction(OPTIONS, new ConfigurationRequiredAction(), false);
-		installAction(JajukAction.UNMOUNTED, new HideShowMountedDevicesAction(), false);
+    // JajukJMenuBar: attributes
+    installAction(CUSTOM_PROPERTIES_ADD, new NewPropertyAction(), false);
+    installAction(CUSTOM_PROPERTIES_REMOVE, new RemovePropertyAction(), false);
 
-		// JajukJMenuBar: Help Menu
-		installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
-		installAction(SHOW_ABOUT, new ShowAboutAction(), false);
-		//Do not install this action under OSX because it causes a crash as jar is missing 
-		if (Util.isUnderLinux() || Util.isUnderWindows()){
-			installAction(QUALITY, new QualityAction(), false);
-		}
-		installAction(SHOW_TRACES, new DebugLogAction(), false);
-		installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
-		installAction(JajukAction.CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
-		
-		//Export
-		installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
-		
-		//File Actions
-		installAction(DELETE, new DeleteAction(), false);
-		installAction(FILE_MOVE, new FileMoveAction(), false);
-		
-		//MISC
-		installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
-		installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
-		installAction(REFRESH, new RefreshDirectoryAction(), false);
-		
-		//Do not install this action under OSX because it causes a crash as jar is missing 
-		if (Util.isUnderLinux() || Util.isUnderWindows()){
-			installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
-		}
-	}
+    // JajukJMenuBar: configuration
+    installAction(CONFIGURE_DJS, new DJConfigurationAction(), false);
+    installAction(JajukAction.CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
+    installAction(CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(), false);
+    installAction(WIZARD, new WizardAction(), false);
+    installAction(OPTIONS, new ConfigurationRequiredAction(), false);
+    installAction(JajukAction.UNMOUNTED, new HideShowMountedDevicesAction(), false);
 
-	/**
-	 * @param action
-	 *            The <code>JajukAction</code> to get.
-	 * @return The <code>ActionBase</code> implementation linked to the
-	 *         <code>JajukAction</code>.
-	 */
-	public static ActionBase getAction(JajukAction action) {
-		ActionBase actionBase = map.get(action);
-		if (actionBase == null) {
-			throw new ExceptionInInitializerError(
-					"No action mapping found for " + action); 
-		}
-		return actionBase;
-	}
+    // JajukJMenuBar: Help Menu
+    installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
+    installAction(SHOW_ABOUT, new ShowAboutAction(), false);
+    // Do not install this action under OSX because it causes a crash as jar is
+    // missing
+    if (Util.isUnderLinux() || Util.isUnderWindows()) {
+      installAction(QUALITY, new QualityAction(), false);
+    }
+    installAction(SHOW_TRACES, new DebugLogAction(), false);
+    installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
+    installAction(JajukAction.CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
 
-	/**
-	 * Installs a new action in the action manager. If
-	 * <code>removeFromLAF</code> is <code>true</code>, then the keystroke
-	 * attached to the action will be stored in list. To remove the these
-	 * keystrokes from the <code>InputMap</code>s of the different
-	 * components, call {@link #uninstallStrokes()}.
-	 * 
-	 * @param name
-	 *            The name for the action.
-	 * @param action
-	 *            The action implementation.
-	 * @param removeFromLAF
-	 *            Remove default keystrokes from look and feel.
-	 */
-	private static void installAction(JajukAction name, ActionBase action,
-			boolean removeFromLAF) {
-		map.put(name, action);
+    // Export
+    installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
 
-		if (removeFromLAF) {
-			KeyStroke stroke = (KeyStroke) action
-					.getValue(ActionBase.ACCELERATOR_KEY);
-			if (stroke != null) {
-				strokeList.add(stroke);
-			}
-		}
-	}
+    // File Actions
+    installAction(DELETE, new DeleteAction(), false);
+    installAction(FILE_MOVE, new FileMoveAction(), false);
 
-	/**
-	 * Uninstall default keystrokes from different JComponents to allow more
-	 * globally configured JaJuk keystrokes.
-	 */
-	public static void uninstallStrokes() {
-		InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap"); 
-		InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap"); 
+    // MISC
+    installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
+    installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
+    installAction(REFRESH, new RefreshDirectoryAction(), false);
 
-		for (KeyStroke stroke : strokeList) {
-			tableMap.remove(stroke);
-			treeMap.remove(stroke);
-		}
-	}
+    // Do not install this action under OSX because it causes a crash as jar is
+    // missing
+    if (Util.isUnderLinux() || Util.isUnderWindows()) {
+      installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
+    }
+  }
+
+  /**
+   * @param action
+   *          The <code>JajukAction</code> to get.
+   * @return The <code>ActionBase</code> implementation linked to the
+   *         <code>JajukAction</code>.
+   */
+  public static ActionBase getAction(JajukAction action) {
+    ActionBase actionBase = map.get(action);
+    if (actionBase == null) {
+      throw new ExceptionInInitializerError("No action mapping found for " + action);
+    }
+    return actionBase;
+  }
+
+  /**
+   * Installs a new action in the action manager. If <code>removeFromLAF</code>
+   * is <code>true</code>, then the keystroke attached to the action will be
+   * stored in list. To remove the these keystrokes from the
+   * <code>InputMap</code>s of the different components, call
+   * {@link #uninstallStrokes()}.
+   * 
+   * @param name
+   *          The name for the action.
+   * @param action
+   *          The action implementation.
+   * @param removeFromLAF
+   *          Remove default keystrokes from look and feel.
+   */
+  private static void installAction(JajukAction name, ActionBase action, boolean removeFromLAF) {
+    map.put(name, action);
+
+    if (removeFromLAF) {
+      KeyStroke stroke = (KeyStroke) action.getValue(ActionBase.ACCELERATOR_KEY);
+      if (stroke != null) {
+        strokeList.add(stroke);
+      }
+    }
+  }
+
+  /**
+   * Uninstall default keystrokes from different JComponents to allow more
+   * globally configured JaJuk keystrokes.
+   */
+  public static void uninstallStrokes() {
+    InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap");
+    InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap");
+
+    for (KeyStroke stroke : strokeList) {
+      tableMap.remove(stroke);
+      treeMap.remove(stroke);
+    }
+  }
 }

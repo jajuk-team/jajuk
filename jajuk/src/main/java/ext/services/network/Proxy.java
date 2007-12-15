@@ -27,45 +27,46 @@ import java.net.UnknownHostException;
 
 public class Proxy extends java.net.Proxy implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7495084217081194366L;
-	private String url;
-	private int port;
-	private String user;
-	private String password;
-	
-	public Proxy(Type type, String url, int port, String user, String password) throws UnknownHostException, IOException {
-		super(type, new Socket(url, port).getRemoteSocketAddress());
-		this.url = url;
-		this.port = port;
-		this.user = user;
-		this.password = password;
-	}
-	
-	public URLConnection getConnection(URL u) throws IOException {
-        URLConnection con = u.openConnection(this);
-        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-        String encodedUserPwd = encoder.encode((user + ':' + password).getBytes());
-        con.setRequestProperty("Proxy-Authorization", "Basic " + encodedUserPwd);
-        return con;
-	}
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 7495084217081194366L;
+  private String url;
+  private int port;
+  private String user;
+  private String password;
 
-	public String getPassword() {
-		return password;
-	}
+  public Proxy(Type type, String url, int port, String user, String password)
+      throws UnknownHostException, IOException {
+    super(type, new Socket(url, port).getRemoteSocketAddress());
+    this.url = url;
+    this.port = port;
+    this.user = user;
+    this.password = password;
+  }
 
-	public String getUrl() {
-		return url;
-	}
+  public URLConnection getConnection(URL u) throws IOException {
+    URLConnection con = u.openConnection(this);
+    sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+    String encodedUserPwd = encoder.encode((user + ':' + password).getBytes());
+    con.setRequestProperty("Proxy-Authorization", "Basic " + encodedUserPwd);
+    return con;
+  }
 
-	public int getPort() {
-		return port;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public String getUser() {
-		return user;
-	}
-	
+  public String getUrl() {
+    return url;
+  }
+
+  public int getPort() {
+    return port;
+  }
+
+  public String getUser() {
+    return user;
+  }
+
 }

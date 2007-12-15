@@ -36,29 +36,28 @@ import java.util.List;
 
 public class NoveltiesAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	NoveltiesAction() {
-		super(
-				Messages.getString("JajukWindow.15"), IconLoader.ICON_NOVELTIES, true); 
-		setShortDescription(Messages.getString("JajukWindow.31")); 
-	}
+  NoveltiesAction() {
+    super(Messages.getString("JajukWindow.15"), IconLoader.ICON_NOVELTIES, true);
+    setShortDescription(Messages.getString("JajukWindow.31"));
+  }
 
-	public void perform(ActionEvent evt) throws JajukException {
-		Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-		List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
-				.getShuffleNoveltiesPlaylist(), ambience);
-		//For perfs (mainly playlist editor view refresh), we set a ceil for tracks number
-		if (alToPlay.size() > NB_TRACKS_ON_ACTION){
-			alToPlay = (List<File>)alToPlay.subList(0, NB_TRACKS_ON_ACTION);
-		}
-		if (alToPlay != null && alToPlay.size() > 0) {
-			FIFO.getInstance().push(
-					Util.createStackItems(Util.applyPlayOption(alToPlay),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-							false), false);
-		} else { // none novelty found
-			Messages.showWarningMessage(Messages.getString("Error.127")); 
-		}
-	}
+  public void perform(ActionEvent evt) throws JajukException {
+    Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
+    List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
+        .getShuffleNoveltiesPlaylist(), ambience);
+    // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
+    // number
+    if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
+      alToPlay = (List<File>) alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+    }
+    if (alToPlay != null && alToPlay.size() > 0) {
+      FIFO.getInstance().push(
+          Util.createStackItems(Util.applyPlayOption(alToPlay), ConfigurationManager
+              .getBoolean(CONF_STATE_REPEAT), false), false);
+    } else { // none novelty found
+      Messages.showWarningMessage(Messages.getString("Error.127"));
+    }
+  }
 }

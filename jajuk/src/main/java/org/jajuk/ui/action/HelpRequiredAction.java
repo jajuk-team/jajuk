@@ -30,14 +30,13 @@ import java.awt.event.ActionEvent;
  */
 public class HelpRequiredAction extends ActionBase {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	HelpRequiredAction() {
-		super(
-				Messages.getString("JajukJMenuBar.15"), IconLoader.ICON_INFO, "F1", true, false);  
-	}
+  HelpRequiredAction() {
+    super(Messages.getString("JajukJMenuBar.15"), IconLoader.ICON_INFO, "F1", true, false);
+  }
 
-	public void perform(ActionEvent evt) {
-		new HelpWindow();
-	}
+  public void perform(ActionEvent evt) {
+    new HelpWindow();
+  }
 }

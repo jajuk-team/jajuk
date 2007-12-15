@@ -39,117 +39,120 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 public class FileMoveAction extends ActionBase {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-	FileMoveAction() {
-		super(Messages.getString("ActionMove.0"), IconLoader.ICON_PASTE, true);
-		setShortDescription(Messages.getString("ActionMove.0"));
-	}
+  FileMoveAction() {
+    super(Messages.getString("ActionMove.0"), IconLoader.ICON_PASTE, true);
+    setShortDescription(Messages.getString("ActionMove.0"));
+  }
 
-	public void perform(ActionEvent e) {
-		JComponent source = (JComponent) e.getSource();
-		final ArrayList<Item> alSelected = (ArrayList<Item>) source
-        	.getClientProperty(DETAIL_NEW);
-		final ArrayList<Item> moveItems = (ArrayList<Item>) source
-    		.getClientProperty(DETAIL_OLD);
-		final String moveAction = ((ArrayList<String>) source.getClientProperty(DETAIL_SELECTION)).get(0);
-		
-		new Thread(){
-			public void run(){
-				Item item = alSelected.get(0);
-				Directory destDir;
-				java.io.File dir;
-				if (item instanceof Directory){
-					dir = new java.io.File(((Directory) item).getAbsolutePath());
-					destDir = (Directory) item; 
-				}
-				else{
-					dir = ((File) item).getIO().getParentFile();
-					destDir = ((File) item).getDirectory();
-				}
-				
-				boolean overwriteAll = false;
-				if ("Cut".equals(moveAction)){
-					Log.debug("Inside Cut");
-					for (Item t : moveItems){
-					  if (t instanceof File){
-					    if (!overwriteAll){
-	              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
-	              if (newFile.exists()){
-	                  int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
-	                                  + " : \n\n" + ((File) t).getName(), Messages.YES_NO_ALL_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-	                  if (iResu != JOptionPane.YES_OPTION) {
-	                    return;
-	                  }
-	                  if (iResu == Messages.ALL_OPTION) {
-	                    overwriteAll=true;
-	                  }
-	              } 
-					    }
-							try{
-								Util.copyToDir(((File) t).getIO(), dir);
-								Util.deleteFile(((File) t).getIO());
-								FileManager.getInstance().changeFileDirectory((File) t, destDir);
-							} catch(Exception ioe) {
-								Log.error(131, ioe);
-								Messages.showErrorMessage(131);
-							}
-						}else{
-							try{
-								java.io.File src = new java.io.File(((Directory) t).getAbsolutePath());
-								java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + ((Directory) t).getName());
-								Util.copyRecursively(src, dst);
-								Util.deleteDir(src);
-								DirectoryManager.getInstance().removeDirectory(((Directory) t).getID());
-								DirectoryManager.refreshDirectory(destDir);
-							} catch(Exception ioe) {
-								Log.error(131, ioe);
-								Messages.showErrorMessage(131);
-							}
-						}
-					}
-				} else if ("Copy".equals(moveAction)){
-					Log.debug("Inside Copy");
-					for (Item t : moveItems){
-					  if (t instanceof File){
-					    if (!overwriteAll){
-	              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
-	              if (newFile.exists()){
-	                int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
-                      + " : \n\n" + ((File) t).getName(), Messages.YES_NO_ALL_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-	                if (iResu != JOptionPane.YES_OPTION) {
-	                    return;
-	                }
-	                if (iResu == Messages.ALL_OPTION) {
-                    overwriteAll=true;
-	                }
-	              } 
-					    }
-					    try{
-								Util.copyToDir(((File) t).getIO(), dir);
-							} catch(Exception ioe) {
-								Log.error(131, ioe);
-								Messages.showErrorMessage(131);
-							}
-						}else{
-							try{
-								Directory d = (Directory) t;
-								java.io.File src = new java.io.File(((Directory) t).getAbsolutePath());
-								java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
-								Util.copyRecursively(src, dst);
-							} catch(Exception ioe) {
-								Log.error(131, ioe);
-								Messages.showErrorMessage(131);
-							}
-						}
-					}
-					DirectoryManager.refreshDirectory(destDir);
-				}
-				ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-			}
-		}.start();
-	}
+  public void perform(ActionEvent e) {
+    JComponent source = (JComponent) e.getSource();
+    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_NEW);
+    final ArrayList<Item> moveItems = (ArrayList<Item>) source.getClientProperty(DETAIL_OLD);
+    final String moveAction = ((ArrayList<String>) source.getClientProperty(DETAIL_SELECTION))
+        .get(0);
+
+    new Thread() {
+      public void run() {
+        Item item = alSelected.get(0);
+        Directory destDir;
+        java.io.File dir;
+        if (item instanceof Directory) {
+          dir = new java.io.File(((Directory) item).getAbsolutePath());
+          destDir = (Directory) item;
+        } else {
+          dir = ((File) item).getIO().getParentFile();
+          destDir = ((File) item).getDirectory();
+        }
+
+        boolean overwriteAll = false;
+        if ("Cut".equals(moveAction)) {
+          Log.debug("Inside Cut");
+          for (Item t : moveItems) {
+            if (t instanceof File) {
+              if (!overwriteAll) {
+                java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/"
+                    + ((File) t).getName());
+                if (newFile.exists()) {
+                  int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+                      + " : \n\n" + ((File) t).getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
+                      JOptionPane.INFORMATION_MESSAGE);
+                  if (iResu != JOptionPane.YES_OPTION) {
+                    return;
+                  }
+                  if (iResu == Messages.ALL_OPTION) {
+                    overwriteAll = true;
+                  }
+                }
+              }
+              try {
+                Util.copyToDir(((File) t).getIO(), dir);
+                Util.deleteFile(((File) t).getIO());
+                FileManager.getInstance().changeFileDirectory((File) t, destDir);
+              } catch (Exception ioe) {
+                Log.error(131, ioe);
+                Messages.showErrorMessage(131);
+              }
+            } else {
+              try {
+                java.io.File src = new java.io.File(((Directory) t).getAbsolutePath());
+                java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/"
+                    + ((Directory) t).getName());
+                Util.copyRecursively(src, dst);
+                Util.deleteDir(src);
+                DirectoryManager.getInstance().removeDirectory(((Directory) t).getID());
+                DirectoryManager.refreshDirectory(destDir);
+              } catch (Exception ioe) {
+                Log.error(131, ioe);
+                Messages.showErrorMessage(131);
+              }
+            }
+          }
+        } else if ("Copy".equals(moveAction)) {
+          Log.debug("Inside Copy");
+          for (Item t : moveItems) {
+            if (t instanceof File) {
+              if (!overwriteAll) {
+                java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/"
+                    + ((File) t).getName());
+                if (newFile.exists()) {
+                  int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+                      + " : \n\n" + ((File) t).getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
+                      JOptionPane.INFORMATION_MESSAGE);
+                  if (iResu != JOptionPane.YES_OPTION) {
+                    return;
+                  }
+                  if (iResu == Messages.ALL_OPTION) {
+                    overwriteAll = true;
+                  }
+                }
+              }
+              try {
+                Util.copyToDir(((File) t).getIO(), dir);
+              } catch (Exception ioe) {
+                Log.error(131, ioe);
+                Messages.showErrorMessage(131);
+              }
+            } else {
+              try {
+                Directory d = (Directory) t;
+                java.io.File src = new java.io.File(((Directory) t).getAbsolutePath());
+                java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
+                Util.copyRecursively(src, dst);
+              } catch (Exception ioe) {
+                Log.error(131, ioe);
+                Messages.showErrorMessage(131);
+              }
+            }
+          }
+          DirectoryManager.refreshDirectory(destDir);
+        }
+        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+      }
+    }.start();
+  }
 }

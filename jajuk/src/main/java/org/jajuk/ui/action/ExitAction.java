@@ -29,29 +29,29 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 public class ExitAction extends ActionBase {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-	ExitAction() {
-		super(Messages.getString("JajukWindow.4"), IconLoader.ICON_EXIT, "alt X", true, false);
-		setShortDescription(Messages.getString("JajukWindow.21"));
-	}
+  ExitAction() {
+    super(Messages.getString("JajukWindow.4"), IconLoader.ICON_EXIT, "alt X", true, false);
+    setShortDescription(Messages.getString("JajukWindow.21"));
+  }
 
-	public void perform(ActionEvent evt) {
-		// Ask if a confirmation is required
-		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
-			int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			if (iResu != JOptionPane.YES_OPTION) {
-				return;
-			}
-		}
-		if (Main.getWindow() != null) {
-			// Hide window ASAP
-			Main.getWindow().setVisible(false);
-		}
-		Main.exit(0);
-	}
+  public void perform(ActionEvent evt) {
+    // Ask if a confirmation is required
+    if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
+      int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (iResu != JOptionPane.YES_OPTION) {
+        return;
+      }
+    }
+    if (Main.getWindow() != null) {
+      // Hide window ASAP
+      Main.getWindow().setVisible(false);
+    }
+    Main.exit(0);
+  }
 }

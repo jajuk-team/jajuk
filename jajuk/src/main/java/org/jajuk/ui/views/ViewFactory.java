@@ -34,87 +34,87 @@ import java.util.Set;
  */
 public class ViewFactory {
 
-	/** Maps view class -> view instances set */
-	private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
+  /** Maps view class -> view instances set */
+  private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
 
-	/**
-	 * No instantiation *
-	 */
-	private ViewFactory() {
-	}
+  /**
+   * No instantiation *
+   */
+  private ViewFactory() {
+  }
 
-	/**
-	 * Create a new view instance
-	 * 
-	 * @param className
-	 * @return
-	 */
-	public static IView createView(Class className, IPerspective perspective) {
-		Set<IView> views = hmClassesInstances.get(className);
-		if (views == null) {
-			views = new LinkedHashSet<IView>();
-			hmClassesInstances.put(className, views);
-		}
-		IView view;
-		try {
-			view = (IView) className.newInstance();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		// Set ID using a random number to discriminate same views (same view in
-		// the same perspective are in different perspectives)
-		// do not use sequential numbers as the serialization views order is not
-		// deterministic
-		// and it may conduct VLDocking to ignore some views if XXX/3 is parsed
-		// before XXX/2 for ie
-		view.setID(className.getName() + '/' + (int) (System.currentTimeMillis() * Math.random()));
-		view.setPerspective(perspective);
-		// store the new view
-		views.add(view);
-		return view;
-	}
+  /**
+   * Create a new view instance
+   * 
+   * @param className
+   * @return
+   */
+  public static IView createView(Class className, IPerspective perspective) {
+    Set<IView> views = hmClassesInstances.get(className);
+    if (views == null) {
+      views = new LinkedHashSet<IView>();
+      hmClassesInstances.put(className, views);
+    }
+    IView view;
+    try {
+      view = (IView) className.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    // Set ID using a random number to discriminate same views (same view in
+    // the same perspective are in different perspectives)
+    // do not use sequential numbers as the serialization views order is not
+    // deterministic
+    // and it may conduct VLDocking to ignore some views if XXX/3 is parsed
+    // before XXX/2 for ie
+    view.setID(className.getName() + '/' + (int) (System.currentTimeMillis() * Math.random()));
+    view.setPerspective(perspective);
+    // store the new view
+    views.add(view);
+    return view;
+  }
 
-	/**
-	 * 
-	 * @return All known views sorted by name
-	 * @TODO Refactor this, the known views should be get by reflection (from
-	 *       the default perspectives XML file ?)
-	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Class> getKnownViews() {
-		ArrayList<Class> out = new ArrayList<Class>();
-		// Take one instance of each set of view instances mapped to each view
-		// classname
-		out.add(AnimationView.class);
-		out.add(CatalogView.class);
-		out.add(CDScanView.class);
-		out.add(CoverView.class);
-		out.add(DeviceView.class);
-		out.add(TracksTableView.class);
-		out.add(TracksTreeView.class);
-		out.add(PlaylistEditorView.class);
-		out.add(LogicalPlaylistRepositoryView.class);
-		out.add(LyricsView.class);
-		out.add(ParameterView.class);
-		out.add(PhysicalPlaylistRepositoryView.class);
-		out.add(FilesTableView.class);
-		out.add(FilesTreeView.class);
-		out.add(StatView.class);
-		out.add(SuggestionView.class);
-		out.add(WikipediaView.class);
-		Collections.sort(out, new Comparator() {
-			public int compare(Object view1, Object view2) {
-				String s1;
-				String s2;
-				try {
-					s1 = ((IView) ((Class) view1).newInstance()).getDesc();
-					s2 = ((IView) ((Class) view2).newInstance()).getDesc();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-				return s1.compareTo(s2);
-			}
-		});
-		return out;
-	}
+  /**
+   * 
+   * @return All known views sorted by name
+   * @TODO Refactor this, the known views should be get by reflection (from the
+   *       default perspectives XML file ?)
+   */
+  @SuppressWarnings("unchecked")
+  public static ArrayList<Class> getKnownViews() {
+    ArrayList<Class> out = new ArrayList<Class>();
+    // Take one instance of each set of view instances mapped to each view
+    // classname
+    out.add(AnimationView.class);
+    out.add(CatalogView.class);
+    out.add(CDScanView.class);
+    out.add(CoverView.class);
+    out.add(DeviceView.class);
+    out.add(TracksTableView.class);
+    out.add(TracksTreeView.class);
+    out.add(PlaylistEditorView.class);
+    out.add(LogicalPlaylistRepositoryView.class);
+    out.add(LyricsView.class);
+    out.add(ParameterView.class);
+    out.add(PhysicalPlaylistRepositoryView.class);
+    out.add(FilesTableView.class);
+    out.add(FilesTreeView.class);
+    out.add(StatView.class);
+    out.add(SuggestionView.class);
+    out.add(WikipediaView.class);
+    Collections.sort(out, new Comparator() {
+      public int compare(Object view1, Object view2) {
+        String s1;
+        String s2;
+        try {
+          s1 = ((IView) ((Class) view1).newInstance()).getDesc();
+          s2 = ((IView) ((Class) view2).newInstance()).getDesc();
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+        return s1.compareTo(s2);
+      }
+    });
+    return out;
+  }
 }

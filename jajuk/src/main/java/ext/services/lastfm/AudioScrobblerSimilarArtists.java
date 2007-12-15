@@ -26,38 +26,40 @@ import java.util.ArrayList;
 
 public class AudioScrobblerSimilarArtists {
 
-	private String artistName;
-	private String picture;
-	private ArrayList<AudioScrobblerArtist> artists;
-	
-	public static int MAX_SIMILAR_ARTISTS = 15;
-	
-	public String getArtistName() {
-		return artistName;
-	}
-	public String getPicture() {
-		return picture;
-	}
-	public ArrayList<AudioScrobblerArtist> getArtists() {
-		return artists;
-	}
-	
-	protected static AudioScrobblerSimilarArtists getSimilarArtists(Document xml) {
-		Element el = (Element) xml.getElementsByTagName("similarartists").item(0);
-		AudioScrobblerSimilarArtists similar = new AudioScrobblerSimilarArtists();
-		similar.artistName = el.getAttribute("artist");
-		similar.picture = el.getAttribute("picture");
-		
-		similar.artists = new ArrayList<AudioScrobblerArtist>();
-		NodeList artists = el.getElementsByTagName("artist");
-		for (int i = 0; i < artists.getLength(); i++) {
-			if (i == MAX_SIMILAR_ARTISTS)
-				break;
-			Element e = (Element) artists.item(i);
-			similar.artists.add(AudioScrobblerArtist.getArtist(e));
-		}
-		
-		return similar;
-	}
-	
+  private String artistName;
+  private String picture;
+  private ArrayList<AudioScrobblerArtist> artists;
+
+  public static int MAX_SIMILAR_ARTISTS = 15;
+
+  public String getArtistName() {
+    return artistName;
+  }
+
+  public String getPicture() {
+    return picture;
+  }
+
+  public ArrayList<AudioScrobblerArtist> getArtists() {
+    return artists;
+  }
+
+  protected static AudioScrobblerSimilarArtists getSimilarArtists(Document xml) {
+    Element el = (Element) xml.getElementsByTagName("similarartists").item(0);
+    AudioScrobblerSimilarArtists similar = new AudioScrobblerSimilarArtists();
+    similar.artistName = el.getAttribute("artist");
+    similar.picture = el.getAttribute("picture");
+
+    similar.artists = new ArrayList<AudioScrobblerArtist>();
+    NodeList artists = el.getElementsByTagName("artist");
+    for (int i = 0; i < artists.getLength(); i++) {
+      if (i == MAX_SIMILAR_ARTISTS)
+        break;
+      Element e = (Element) artists.item(i);
+      similar.artists.add(AudioScrobblerArtist.getArtist(e));
+    }
+
+    return similar;
+  }
+
 }

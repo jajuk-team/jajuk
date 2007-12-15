@@ -28,99 +28,98 @@ import java.util.HashSet;
  * Represent a style proportion (used by digital DJs)
  */
 public class Proportion {
-	/** styles */
-	private Ambience ambience;
+  /** styles */
+  private Ambience ambience;
 
-	/** Proportion* */
-	private float proportion;
+  /** Proportion* */
+  private float proportion;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param style
-	 *            styles
-	 * @param proportion
-	 *            style proportion in %. Ex: 0.1
-	 */
-	public Proportion(Ambience ambience, float proportion) {
-		this.ambience = ambience;
-		this.proportion = proportion;
-	}
+  /**
+   * Constructor
+   * 
+   * @param style
+   *          styles
+   * @param proportion
+   *          style proportion in %. Ex: 0.1
+   */
+  public Proportion(Ambience ambience, float proportion) {
+    this.ambience = ambience;
+    this.proportion = proportion;
+  }
 
-	/**
-	 * Constructor for void proportion
-	 */
-	public Proportion() {
-		this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),
-				""); 
-		this.proportion = 0.2f;
-	}
+  /**
+   * Constructor for void proportion
+   */
+  public Proportion() {
+    this.ambience = new Ambience(Long.toString(System.currentTimeMillis()), "");
+    this.proportion = 0.2f;
+  }
 
-	/**
-	 * equals method
-	 * 
-	 * @return whether two object are equals
-	 */
-	public boolean equals(Object other) {
-		if (other == null || !(other instanceof Proportion)) {
-			return false;
-		}
-		return getProportion() == ((Proportion) other).getProportion()
-				&& getStyles().equals(((Proportion) other).getStyles());
-	}
+  /**
+   * equals method
+   * 
+   * @return whether two object are equals
+   */
+  public boolean equals(Object other) {
+    if (other == null || !(other instanceof Proportion)) {
+      return false;
+    }
+    return getProportion() == ((Proportion) other).getProportion()
+        && getStyles().equals(((Proportion) other).getStyles());
+  }
 
-	/**
-	 * @return Returns the styles
-	 */
-	public HashSet<Style> getStyles() {
-		return this.ambience.getStyles();
-	}
+  /**
+   * @return Returns the styles
+   */
+  public HashSet<Style> getStyles() {
+    return this.ambience.getStyles();
+  }
 
-	/**
-	 * Add a style
-	 */
-	public void addStyle(Style style) {
-		ambience.addStyle(style);
-	}
+  /**
+   * Add a style
+   */
+  public void addStyle(Style style) {
+    ambience.addStyle(style);
+  }
 
-	/**
-	 * @return String representation of this proportion
-	 */
-	public String toString() {
-		return "" + proportion; 
-	}
+  /**
+   * @return String representation of this proportion
+   */
+  public String toString() {
+    return "" + proportion;
+  }
 
-	/**
-	 * From String, return style1,style2,...
-	 */
-	public String getStylesDesc() {
-		String out = ""; 
-		for (Style s : ambience.getStyles()) {
-			out += s.getName2() + ',';
-		}
-		if (out.length() > 0) {
-			out = out.substring(0, out.length() - 1); // remove trailling ,
-		}
-		return out;
-	}
+  /**
+   * From String, return style1,style2,...
+   */
+  public String getStylesDesc() {
+    String out = "";
+    for (Style s : ambience.getStyles()) {
+      out += s.getName2() + ',';
+    }
+    if (out.length() > 0) {
+      out = out.substring(0, out.length() - 1); // remove trailling ,
+    }
+    return out;
+  }
 
-	/**
-	 * 
-	 * @return next style to be played or null if no idea
-	 */
-	public Style getNextStyle() {
-		return null;
-	}
+  /**
+   * 
+   * @return next style to be played or null if no idea
+   */
+  public Style getNextStyle() {
+    return null;
+  }
 
-	public float getProportion() {
-		return this.proportion;
-	}
+  public float getProportion() {
+    return this.proportion;
+  }
 
-	public void setStyle(Ambience ambience) {
-		this.ambience = ambience;
-	}
+  public void setStyle(Ambience ambience) {
+    this.ambience = ambience;
+  }
 
-	public void setProportion(float proportion) {
-		this.proportion = proportion;
-	}
+  public void setProportion(float proportion) {
+    this.proportion = proportion;
+  }
 }
