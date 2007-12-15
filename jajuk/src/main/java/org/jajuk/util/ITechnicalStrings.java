@@ -60,6 +60,9 @@ public interface ITechnicalStrings {
 	/** Listening port to check others jajuk sessions */
 	public static final int PORT = 62322;
 
+	/** Listening port to check others test jajuk sessions */
+  public static final int PORT_TEST = 62323;
+
 	/** Quality agent e-mail */
 	public static final String FEEDBACK_EMAIL = "jajuk-support@lists.sourceforge.net";
 
