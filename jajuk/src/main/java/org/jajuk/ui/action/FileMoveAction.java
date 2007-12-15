@@ -75,21 +75,19 @@ public class FileMoveAction extends ActionBase {
 				if ("Cut".equals(moveAction)){
 					Log.debug("Inside Cut");
 					for (Item t : moveItems){
-					  if (!overwriteAll){
-					    if (t instanceof File){
+					  if (t instanceof File){
+					    if (!overwriteAll){
 	              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
 	              if (newFile.exists()){
-	                int iResu = Messages.getChoice(Messages
-	                      .getString("Confirmation_file_overwrite")
-	                                  + " : \n\n" + ((File) t).getName() , Messages.YES_NO_ALL_CANCEL_OPTION,
-	                                  JOptionPane.INFORMATION_MESSAGE);
-	                if (iResu != JOptionPane.YES_OPTION) {
+	                  int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+	                                  + " : \n\n" + ((File) t).getName(), Messages.ALL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+	                  if (iResu != JOptionPane.YES_OPTION) {
 	                    return;
 	                  }
-	                if (iResu == Messages.ALL_OPTION) {
-                      overwriteAll=true;
-                  }
-	               } 
+	                  if (iResu == Messages.ALL_OPTION) {
+	                    overwriteAll=true;
+	                  }
+	              } 
 					    }
 							try{
 								Util.copyToDir(((File) t).getIO(), dir);
@@ -116,18 +114,21 @@ public class FileMoveAction extends ActionBase {
 				} else if ("Copy".equals(moveAction)){
 					Log.debug("Inside Copy");
 					for (Item t : moveItems){
-						if (t instanceof File){
-							java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
-							if (newFile.exists()){
-								int iResu = Messages.getChoice(Messages
-				    					.getString("Confirmation_file_overwrite")
-				                        	+ " : \n\n" + ((File) t).getName() , JOptionPane.YES_NO_CANCEL_OPTION,
-				                        	JOptionPane.INFORMATION_MESSAGE);
-								if (iResu != JOptionPane.YES_OPTION) {
-				    				return;
-				    			}
-							} 
-							try{
+					  if (t instanceof File){
+					    if (!overwriteAll){
+	              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
+	              if (newFile.exists()){
+	                int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+                      + " : \n\n" + ((File) t).getName(), Messages.ALL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+	                if (iResu != JOptionPane.YES_OPTION) {
+	                    return;
+	                }
+	                if (iResu == Messages.ALL_OPTION) {
+                    overwriteAll=true;
+	                }
+	              } 
+					    }
+					    try{
 								Util.copyToDir(((File) t).getIO(), dir);
 							} catch(Exception ioe) {
 								Log.error(131, ioe);
