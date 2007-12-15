@@ -49,26 +49,16 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
 	private static final long serialVersionUID = 1L;
 	
     private JList list;
-    private DefaultListModel listModel;
-    private List<File> allFiles;
+    private DefaultListModel listModel = new DefaultListModel();
+    private List<List<File>> allFiles;
 
     private JButton deleteButton;
-            
+    private JButton selectAllButton;
+    
     public DuplicateFilesList(List<List<File>> Files, JButton jbClose) {
         super(new BorderLayout());
-                       
-        allFiles = new ArrayList<File>();
-        listModel = new DefaultListModel();
-        
-        for (List<File> L : Files){
-        	allFiles.add(L.get(0));
-        	listModel.addElement(L.get(0).getName() + " ( " + L.get(0).getDirectory().getAbsolutePath() + " ) ");
-        	L.remove(0);
-        	for (File f : L){
-        		allFiles.add(f);
-        		listModel.addElement("  + " + f.getName() + " ( " + f.getDirectory().getAbsolutePath() + " ) ");
-        	}
-        }
+        allFiles = Files;
+        populateList(Files);
         
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -80,6 +70,10 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
         deleteButton.setActionCommand(Messages.getString("Delete"));
         deleteButton.addActionListener(new DeleteListener());
         
+        selectAllButton = new JButton(Messages.getString("SelectAll"));
+        selectAllButton.setActionCommand(Messages.getString("SelectAll"));
+        selectAllButton.addActionListener(new SelectAllListener());
+        
         //Create a panel that uses BoxLayout.
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane,
@@ -89,36 +83,97 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
         
         buttonPane.add(jbClose);
         buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        
+        buttonPane.add(selectAllButton);
+        buttonPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         add(listScrollPane, BorderLayout.CENTER);
         add(buttonPane, BorderLayout.PAGE_END);
+    }
+    
+    public void populateList(List<List<File>> Files){
+      for (List<File> L : Files){
+        listModel.addElement(L.get(0).getName() + " ( " + L.get(0).getDirectory().getAbsolutePath() + " ) ");
+        for (int i =1;i < L.size(); i++){
+          listModel.addElement("  + " + L.get(i).getName() + " ( " + L.get(i).getDirectory().getAbsolutePath() + " ) ");
+        }
+      }
     }
 
     class DeleteListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	int indices[] = list.getSelectedIndices();
-        	String sFiles= "";
-        	for (int i: indices){
-        		sFiles += allFiles.get(i).getName() + "\n";
-        	}
-
+        	String sFiles = getSelectedFiles(indices);
+        	
         	int iResu = Messages.getChoice(Messages
 					.getString("Confirmation_delete_files")
-                    	+ " : \n\n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
-                    	JOptionPane.INFORMATION_MESSAGE);
-			if (iResu != JOptionPane.YES_OPTION) {
-				return;
-			}
+                    	+ " : \n\n" + sFiles + "\n" + indices.length + " " + Messages.getString("Confirmation_file_number"), 
+                    	JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        	if (iResu != JOptionPane.YES_OPTION) {
+        	  return;
+        	}
         	           
         	for (int i: indices){
-        		try{
-        			Util.deleteFile(allFiles.get(i).getIO());
-        		}catch (Exception ioe) {
-    				Log.error(131, ioe);
-        		}
-        		listModel.remove(i);
+        	  deleteFile(i);
+        	}
+        	for (int i: indices){
+        	  listModel.remove(i);
         	}
         }
+        
+        public void deleteFile(int index){
+          int i = 0, r=0, c=0;
+          for (List<File> L : allFiles){
+            c = 0;
+            for (File f : L){
+              if (i == index){
+                try{
+                  Util.deleteFile(L.get(i).getIO());
+                  allFiles.get(r).remove(c);
+                }catch (Exception ioe) {
+                Log.error(131, ioe);
+                }
+              }
+              i++;
+              c++;
+            }
+            r++;
+          }
+          populateList(allFiles);
+          list.repaint();
+        }
+        
+        public String getSelectedFiles(int indices[]){
+          String sFiles= "";
+          List<File> iList = new ArrayList<File>();
+          for (List<File> L : allFiles){
+            for (File f : L){
+              iList.add(f);
+            }
+          }
+          for(int k : indices){
+            sFiles += iList.get(k).getName() + "\n";
+          }
+          return sFiles;
+        }
+    }
+    
+    class SelectAllListener implements ActionListener {
+      public void actionPerformed(ActionEvent e) {
+        List<Integer> iList = new ArrayList<Integer>();
+        int i = 0;
+        for (List<File> L : allFiles){
+          i++;
+          for (int k = 1; k < L.size(); k++){
+            iList.add(i++);
+          }
+        }
+        int[] indices = new int[iList.size()];
+        for(int k = 0; k< iList.size(); k++)
+            indices[k] = iList.get(k);
+        
+        list.setSelectedIndices(indices);
+      }
     }
     
     public void valueChanged(ListSelectionEvent e) {

@@ -61,8 +61,8 @@ public class DeleteAction extends ActionBase {
         ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
         ArrayList<File> rejFiles = new ArrayList<File>(alSelected.size());
         ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
-		ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
-		ArrayList<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
+        ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
+        ArrayList<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
 		
         for (Item item : alSelected) {
         	if (item instanceof File) {
@@ -83,8 +83,8 @@ public class DeleteAction extends ActionBase {
     			}
     			int iResu = Messages.getChoice(Messages
     					.getString("Confirmation_delete_files")
-                        	+ " : \n\n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION,
-                        	JOptionPane.INFORMATION_MESSAGE);
+                        	+ " : \n\n" + sFiles + "\n" + alFiles.size() + " " + Messages.getString("Confirmation_file_number"), 
+                        	    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
     			if (iResu != JOptionPane.YES_OPTION) {
     				return;
     			}
@@ -158,8 +158,8 @@ public class DeleteAction extends ActionBase {
     		    }
     		    int iResu = Messages.getChoice(Messages
     						   .getString("Confirmation_delete_dirs")
-    						   + " : \n" + sFiles + "\n" + Count + " files will be deleted.", JOptionPane.YES_NO_CANCEL_OPTION,
-    						   JOptionPane.INFORMATION_MESSAGE);
+    						   + " : \n" + sFiles + "\n" + Count + " " + Messages.getString("Confirmation_file_number"), 
+    						   JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
     		    if (iResu != JOptionPane.YES_OPTION) {
     			return;
     		    }
