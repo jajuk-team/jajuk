@@ -320,7 +320,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 				// Style
 				oValues[iRow][4] = bf.getTrack().getStyle().getName2();
 				// Rate
-				oValues[iRow][5] = Util.getStars(bf.getTrack().getRate());
+				oValues[iRow][5] = Util.getStars(bf.getTrack());
 				// Year
 				oValues[iRow][6] = bf.getTrack().getYear();
 				// Length

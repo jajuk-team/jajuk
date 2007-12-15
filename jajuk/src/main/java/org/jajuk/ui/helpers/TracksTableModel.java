@@ -221,7 +221,7 @@ public class TracksTableModel extends JajukTableModel {
 			oValues[iRow][4] = track.getStyle().getName2();
 			bCellEditable[iRow][4] = bHasATagEditor;
 			// Rate
-			IconLabel ilRate = Util.getStars(track.getRate());
+			IconLabel ilRate = Util.getStars(track);
 			oValues[iRow][5] = ilRate;
 			bCellEditable[iRow][5] = false;
 			ilRate.setInteger(true);

@@ -33,6 +33,7 @@ import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
@@ -52,145 +53,83 @@ import java.util.regex.PatternSyntaxException;
  */
 public class AlbumsTableModel extends JajukTableModel {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Model constructor
-	 * 
-	 * @param iColNum
-	 *            number of rows
-	 * @param sColName
-	 *            columns names
-	 */
-	public AlbumsTableModel() {
-		super(10);
-		setEditable(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
-		// Columns names
-		// First column is play icon, need to set a space character
-		// for proper display in some look and feel
-		vColNames.add(" ");
-		vId.add(XML_PLAY);
+  /**
+   * Model constructor
+   * 
+   * @param iColNum
+   *          number of rows
+   * @param sColName
+   *          columns names
+   */
+  public AlbumsTableModel() {
+    super(10);
+    setEditable(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
+    // Columns names
+    // First column is play icon, need to set a space character
+    // for proper display in some look and feel
+    vColNames.add(" ");
+    vId.add(XML_PLAY);
 
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-		vId.add(XML_ALBUM);
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
+    vId.add(XML_ALBUM);
 
-		// First track found author. If different authors in album, will be
-		// displayed in italic
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-		vId.add(XML_AUTHOR);
+    // First track found author. If different authors in album, will be
+    // displayed in italic
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
+    vId.add(XML_AUTHOR);
 
-		// First track found style. If different styles in album, will be
-		// displayed in italic
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-		vId.add(XML_STYLE);
+    // First track found style. If different styles in album, will be
+    // displayed in italic
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
+    vId.add(XML_STYLE);
 
-		// First found track year, italic if different values
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-		vId.add(XML_YEAR);
+    // First found track year, italic if different values
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
+    vId.add(XML_YEAR);
 
-		// Album rate (average of its tracks rate)
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-		vId.add(XML_TRACK_RATE);
+    // Album rate (average of its tracks rate)
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
+    vId.add(XML_TRACK_RATE);
 
-		// Total album length
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-		vId.add(XML_TRACK_LENGTH);
+    // Total album length
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
+    vId.add(XML_TRACK_LENGTH);
 
-		// Number of tracks
-		vColNames.add(Messages.getString("AlbumsTableView.1"));
-		vId.add(XML_TRACKS);
+    // Number of tracks
+    vColNames.add(Messages.getString("AlbumsTableView.1"));
+    vId.add(XML_TRACKS);
 
-		// First found track discovery date, italic if different values
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
-		vId.add(XML_TRACK_ADDED);
+    // First found track discovery date, italic if different values
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
+    vId.add(XML_TRACK_ADDED);
 
-		// Sum of all tracks hits
-		vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-		vId.add(XML_TRACK_HITS);
+    // Sum of all tracks hits
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
+    vId.add(XML_TRACK_HITS);
 
-		// custom properties now
-		for (PropertyMetaInformation meta : AlbumManager.getInstance().getCustomProperties()) {
-			vColNames.add(meta.getName());
-			vId.add(meta.getName());
-		}
-	}
+    // custom properties now
+    for (PropertyMetaInformation meta : AlbumManager.getInstance().getCustomProperties()) {
+      vColNames.add(meta.getName());
+      vId.add(meta.getName());
+    }
+  }
 
-	/**
-	 * Fill model with data using an optional filter property and pattern
-	 */
-	@SuppressWarnings("unchecked")
+  /**
+   * Fill model with data using an optional filter property and pattern
+   */
+  @SuppressWarnings("unchecked")
 	public synchronized void populateModel(String sPropertyName, String sPattern) {
-		/*Set<Track> allTracks = TrackManager.getInstance().getTracks();
-		// For perfs, store a map album-> list of tracks
-		HashMap<Album, Set<Track>> hmAlbumTracks = new HashMap<Album, Set<Track>>(allTracks.size());
-		// Map album-> whether it contains at least one available file to
-		// play
-		HashMap<Album, Boolean> hmAlbumAvailable = new HashMap<Album, Boolean>(allTracks.size());
-		// Map album -> style (null if different styles)
-		HashMap<Album, Style> hmAlbumStyle = new HashMap<Album, Style>(allTracks.size());
-		// Map album -> author (null if different authors)
-		HashMap<Album, Author> hmAlbumAuthor = new HashMap<Album, Author>(allTracks.size());
-		// Map album -> discovery date (null if different among items)
-		HashMap<Album, Date> hmAlbumDicoveryDate = new HashMap<Album, Date>(allTracks.size());
-		// Map album -> year (null if different among items)
-		HashMap<Album, Year> hmAlbumYear = new HashMap<Album, Year>(allTracks.size());
-		//Fake items used to set the albums maps different styles/years...
-		Style multipleStyle = new Style("-1","");
-		Author multipleAuthor = new Author("-1","");
-		Date multipleDiscoveryDate = new Date(0);
-		Year multipleYear = new Year("-1","");
-		for (Track track : TrackManager.getInstance().getTracks()) {
-			Album album = track.getAlbum();
-			Set<Track> trackSet = hmAlbumTracks.get(album);
-			if (trackSet != null){
-				//Prepare a set that contains all tracks for a given album
-				trackSet = new HashSet<Track>(10);
-				trackSet.add(track);
-				hmAlbumTracks.put(album, trackSet);
-			}
-			Style style = track.getStyle();
-			//Set the style only if
-			if (!multipleStyle.equals(hmAlbumStyle.get(album))){
-				hmAlbumStyle.put(album, style);
-			}
-			Author author = track.getAuthor();
-			Date discovery = track.getAdditionDate();
-			Year year = track.getYear();
-			
-			
-			for (Track track : tracksSet) {
-				if (track.getPlayeableFile(true) != null) {
-					bOneAvailableFile = true;
-				}
-				// check if next track is different (don't test if style is
-				// already null for perf)
-				if (style != null && !track.getStyle().equals(style)) {
-					style = null;
-				}
-				// Same for authors
-				if (author != null && !track.getAuthor().equals(author)) {
-					author = null;
-				}
-				// Same for discovery date
-				if (discovery != null && !track.getAdditionDate().equals(discovery)) {
-					discovery = null;
-				}
-				// Same for year
-				if (year != null && !track.getYear().equals(year)) {
-					year = null;
-				}
-			}
-			hmAlbumAuthor.put(album, author);
-			hmAlbumStyle.put(album, style);
+		Set<Track> allTracks = TrackManager.getInstance().getTracks();
+		ArrayList<Track> alToShow = null;
+    //OK, begin by filtering by pattern 
+		if (!Util.isVoid(sPattern)){
+		  
 		}
 		
-		
-		boolean bOneAvailableFile = false;
-			hmAlbumAvailable.put(album, bOneAvailableFile);
-			
 		// Filter mounted files if needed and apply sync table with tree option
 		// if needed
-		ArrayList<Track> alToShow = null;
 		// look at selection
 		Set<Track> alTracks = TrackManager.getInstance().getTracks();
 		alToShow = new ArrayList<Track>(alTracks.size());
@@ -230,7 +169,7 @@ public class AlbumsTableModel extends JajukTableModel {
 						sValue = album.getName2();
 					}
 					else if (XML_STYLE.equals(sPropertyName)){
-						sValue = hm album.getName2();
+						sValue = album.getName2();
 					}
 					
 					if (sValue == null) {
@@ -379,7 +318,7 @@ public class AlbumsTableModel extends JajukTableModel {
 			}
 			bCellEditable[iRow][4] = bHasATagEditor;
 			// Rate
-			IconLabel ilRate = Util.getStars(album);
+			IconLabel ilRate = new IconLabel(IconLoader.ICON_STAR_1,""); //TODO Util.getStars(album);
 			oValues[iRow][5] = ilRate;
 			bCellEditable[iRow][5] = false;
 			ilRate.setInteger(true);
@@ -417,6 +356,6 @@ public class AlbumsTableModel extends JajukTableModel {
 				// edit
 				bCellEditable[iRow][iNumberStandardCols + i] = !(meta.getType().equals(Date.class));
 			}
-		}*/
+		}
 	}
 }

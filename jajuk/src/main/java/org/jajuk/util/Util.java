@@ -1662,51 +1662,82 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * @return the stars icon
-	 */
-	public static IconLabel getStars(final long rate) {
-		final int starsNumber = Util.getStarsNumber(rate);
-		IconLabel ilRate = null;
-		switch (starsNumber) {
-		case 1:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null,
-					null, Long.toString(rate));
-			break;
-		case 2:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null,
-					null, Long.toString(rate));
-			break;
-		case 3:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null,
-					null, Long.toString(rate));
-			break;
-		case 4:
-			ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null,
-					null, Long.toString(rate));
-			break;
-		default:
-			return null;
-		}
-		ilRate.setInteger(true);
-		return ilRate;
-	}
+   * @param the rate
+   * @return Number of stars for a given track rate
+   */
+  public static int getTrackStarsNumber(long lRate) {
+    long lInterval = TrackManager.getInstance().getMaxRate() / 4;
+    if (lRate <= lInterval) {
+      return 1;
+    } else if (lRate <= 2 * lInterval) {
+      return 2;
+    } else if (lRate <= 3 * lInterval) {
+      return 3;
+    } else {
+      return 4;
+    }
+  }
 
-	/**
-	 * @return Number of stars
-	 */
-	public static int getStarsNumber(final long lRate) {
-		final long lInterval = TrackManager.getInstance().getMaxRate() / 4;
-		if (lRate <= lInterval) {
-			return 1;
-		} else if (lRate <= 2 * lInterval) {
-			return 2;
-		} else if (lRate <= 3 * lInterval) {
-			return 3;
-		} else {
-			return 4;
-		}
-	}
+  /**
+   * 
+   * @param lRate the rate
+   * @return Number of stars for a given album rate
+   */
+  public static int getAlbumStarsNumber(long lRate) {
+    long lInterval = AlbumManager.getInstance().getMaxRate() / 4;
+    int nbStars = 1;
+    if (lRate <= lInterval) {
+      nbStars = 1;
+    } else if (lRate <= 2 * lInterval) {
+      nbStars = 2;
+    } else if (lRate <= 3 * lInterval) {
+      nbStars = 3;
+    } else {
+      nbStars = 4;
+    }
+    return nbStars;
+  }
 
+  /**
+   * @return the stars icon
+   */
+  public static IconLabel getStars(Item item) {
+    int starsNumber = 0;
+    long rate = 0;
+    if (item instanceof Track){
+      rate = ((Track)item).getRate(); 
+      starsNumber = getTrackStarsNumber(rate);
+    }
+    else if (item instanceof Album){
+      rate = ((Album)item).getRate(); 
+      starsNumber = getAlbumStarsNumber(rate);
+    }
+    IconLabel ilRate = null;
+    switch (starsNumber) {
+    case 1:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null, null, Long
+          .toString(rate));
+      break;
+    case 2:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null, null, Long
+          .toString(rate));
+      break;
+    case 3:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null, null, Long
+          .toString(rate));
+      break;
+    case 4:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null, null, Long
+          .toString(rate));
+      break;
+    default:
+      return null;
+    }
+    ilRate.setInteger(true);
+    return ilRate;
+  }
+  
+  
 	/** Return a genre string for a given genre id * */
 	public static String getStringGenre(final int i) {
 		if ((i >= 0) && (i < 126)) {
