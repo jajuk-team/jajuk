@@ -532,7 +532,7 @@ class ConfirmDialog extends JajukDialog {
     */
    ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
       final JOptionPane optionPane = Util.getNarrowOptionPane(72);
-      if (optionsType == Messages.ALL_OPTION) {
+      if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
           optionPane.setOptions(new
          Object[]{Messages.getString("Yes"),Messages.getString("No"),Messages.getString("YestoAll"),Messages.getString("Cancel")});
       } else {

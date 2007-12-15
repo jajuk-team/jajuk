@@ -80,7 +80,7 @@ public class FileMoveAction extends ActionBase {
 	              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
 	              if (newFile.exists()){
 	                  int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
-	                                  + " : \n\n" + ((File) t).getName(), Messages.ALL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+	                                  + " : \n\n" + ((File) t).getName(), Messages.YES_NO_ALL_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 	                  if (iResu != JOptionPane.YES_OPTION) {
 	                    return;
 	                  }
@@ -119,7 +119,7 @@ public class FileMoveAction extends ActionBase {
 	              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + ((File) t).getName());
 	              if (newFile.exists()){
 	                int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
-                      + " : \n\n" + ((File) t).getName(), Messages.ALL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                      + " : \n\n" + ((File) t).getName(), Messages.YES_NO_ALL_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 	                if (iResu != JOptionPane.YES_OPTION) {
 	                    return;
 	                }
