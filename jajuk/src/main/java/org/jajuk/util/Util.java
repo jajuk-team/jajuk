@@ -112,7 +112,6 @@ import org.jvnet.substance.theme.ThemeInfo;
 import org.jvnet.substance.utils.SubstanceConstants;
 import org.jvnet.substance.watermark.SubstanceImageWatermark;
 import org.jvnet.substance.watermark.SubstanceNoneWatermark;
-import org.jvnet.substance.watermark.SubstanceStripeWatermark;
 import org.jvnet.substance.watermark.WatermarkInfo;
 
 /**
@@ -2269,9 +2268,6 @@ public class Util implements ITechnicalStrings {
 			}
 		} catch (final Exception e) {
 			Log.error(e);
-			// Set default watermark
-			SubstanceLookAndFeel
-					.setCurrentWatermark(new SubstanceStripeWatermark());
 			ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
 					ITechnicalStrings.LNF_DEFAULT_WATERMARK);
 		}
