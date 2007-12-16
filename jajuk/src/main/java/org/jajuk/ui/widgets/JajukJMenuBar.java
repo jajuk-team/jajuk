@@ -99,6 +99,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
   public JCheckBoxMenuItem jcbmiContinue;
 
   public JCheckBoxMenuItem jcbmiIntro;
+  
+  JMenu tools;
+  
+  JMenuItem jmiduplicateFinder;
 
   JMenu configuration;
 
@@ -201,7 +205,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
-
+    
+    // Tools Menu
+    tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
+    jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
+    
+    tools.add(jmiduplicateFinder);
+    
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -245,6 +255,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     add(views);
     add(properties);
     add(mode);
+    add(tools);
     add(configuration);
     add(help);
   }
