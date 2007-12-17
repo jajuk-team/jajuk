@@ -21,6 +21,8 @@
 package org.jajuk.ui.widgets;
 
 import org.jajuk.base.File;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,7 +40,6 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
-import javax.swing.BoxLayout;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionListener;
@@ -49,23 +50,26 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
   private static final long serialVersionUID = 1L;
 
   private JList list;
-  private DefaultListModel listModel = new DefaultListModel();
+  private JScrollPane listScrollPane;
+  private DefaultListModel listModel;
   private List<List<File>> allFiles;
+  private List<File> flatFilesList;
 
   private JButton deleteButton;
   private JButton selectAllButton;
+  private JButton closeButton;
 
   public DuplicateFilesList(List<List<File>> Files, JButton jbClose) {
     super(new BorderLayout());
     allFiles = Files;
+    closeButton = jbClose;
     populateList(Files);
-
-    // Create the list and put it in a scroll pane.
+    
     list = new JList(listModel);
     list.addListSelectionListener(this);
     list.setVisibleRowCount(30);
-    JScrollPane listScrollPane = new JScrollPane(list);
-
+    listScrollPane = new JScrollPane(list);
+    
     deleteButton = new JButton(Messages.getString("Delete"));
     deleteButton.setActionCommand(Messages.getString("Delete"));
     deleteButton.addActionListener(new DeleteListener());
@@ -74,16 +78,13 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     selectAllButton.setActionCommand(Messages.getString("SelectAll"));
     selectAllButton.addActionListener(new SelectAllListener());
 
-    // Create a panel that uses BoxLayout.
     JPanel buttonPane = new JPanel();
-    buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+    buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
+    
     buttonPane.add(deleteButton);
-    buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-    buttonPane.add(jbClose);
-    buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+    buttonPane.add(closeButton);
     buttonPane.add(selectAllButton);
+    
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     add(listScrollPane, BorderLayout.CENTER);
@@ -91,6 +92,14 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
   }
 
   public void populateList(List<List<File>> Files) {
+    flatFilesList = new ArrayList<File>();
+    for (List<File> L : allFiles) {
+      for (File f : L) {
+        flatFilesList.add(f);
+      }
+    }
+    
+    listModel = new DefaultListModel();
     for (List<File> L : Files) {
       listModel.addElement(L.get(0).getName() + " ( " + L.get(0).getDirectory().getAbsolutePath()
           + " ) ");
@@ -112,47 +121,38 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
-
+      
       for (int i : indices) {
-        deleteFile(i);
+        try {
+          Util.deleteFile(flatFilesList.get(i).getIO());
+        } catch (Exception ioe) {
+          Log.error(131, ioe);
+        }
       }
+      
       for (int i : indices) {
         listModel.remove(i);
+        flatFilesList.remove(i);
       }
     }
 
-    public void deleteFile(int index) {
-      int i = 0, r = 0, c = 0;
-      for (List<File> L : allFiles) {
-        c = 0;
-        for (File f : L) {
-          if (i == index) {
-            try {
-              Util.deleteFile(L.get(i).getIO());
-              allFiles.get(r).remove(c);
-            } catch (Exception ioe) {
-              Log.error(131, ioe);
-            }
-          }
-          i++;
-          c++;
+    public void refreshFilesList(int index) {
+      allFiles = new ArrayList<List<File>>();
+      for (Track track : TrackManager.getInstance().getTracks()) {
+        List<File> trackFileList = track.getFiles();
+        if (trackFileList.size() > 1) {
+          allFiles.add(trackFileList);
         }
-        r++;
       }
       populateList(allFiles);
       list.repaint();
+      listScrollPane.repaint();
     }
 
     public String getSelectedFiles(int indices[]) {
       String sFiles = "";
-      List<File> iList = new ArrayList<File>();
-      for (List<File> L : allFiles) {
-        for (File f : L) {
-          iList.add(f);
-        }
-      }
       for (int k : indices) {
-        sFiles += iList.get(k).getName() + "\n";
+        sFiles += flatFilesList.get(k).getName() + "\n";
       }
       return sFiles;
     }
@@ -180,11 +180,11 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     if (e.getValueIsAdjusting() == false) {
 
       if (list.getSelectedIndex() == -1) {
-        // No selection, disable fire button.
+        // No selection, disable delete button.
         deleteButton.setEnabled(false);
 
       } else {
-        // Selection, enable the fire button.
+        // Selection, enable the delete button.
         deleteButton.setEnabled(true);
       }
     }

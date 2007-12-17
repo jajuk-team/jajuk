@@ -26,6 +26,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,7 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import org.jajuk.ui.widgets.DuplicateFilesList;
 
@@ -60,7 +62,9 @@ public class FindDuplicateFilesAction extends ActionBase {
     if (duplicateFilesList.size() < 1) {
       Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
     } else {
-      final JDialog duplicateFiles = new JDialog(Main.getWindow(), "List of Duplicate Files found");
+      final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+      final JDialog duplicateFiles = optionPane.createDialog(null, "List of Duplicate Files found");
+      
       duplicateFiles.setMaximumSize(new Dimension(800, 600));
 
       JButton jbClose = new JButton(Messages.getString("Close"));
@@ -76,10 +80,12 @@ public class FindDuplicateFilesAction extends ActionBase {
       duplicateFiles.setContentPane(newContentPane);
 
       // Display the window.
+      duplicateFiles.setModal(true);
+      duplicateFiles.setAlwaysOnTop(true);
       duplicateFiles.pack();
+      duplicateFiles.setLocationRelativeTo(Main.getWindow());
       duplicateFiles.setVisible(true);
-
-    }
+     }
   }
 
   private String convertToString(List<File> duplicateFilesList) {
