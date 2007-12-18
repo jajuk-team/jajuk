@@ -62,7 +62,7 @@ public class FindDuplicateFilesAction extends ActionBase {
     if (duplicateFilesList.size() < 1) {
       Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
     } else {
-      final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+      final JOptionPane optionPane = Util.getNarrowOptionPane(100);
       final JDialog duplicateFiles = optionPane.createDialog(null, "List of Duplicate Files found");
       
       duplicateFiles.setMaximumSize(new Dimension(800, 600));

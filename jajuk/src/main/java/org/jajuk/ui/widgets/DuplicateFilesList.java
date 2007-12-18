@@ -20,9 +20,12 @@
 
 package org.jajuk.ui.widgets;
 
+import org.jajuk.base.Event;
 import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -51,7 +54,7 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
 
   private JList list;
   private JScrollPane listScrollPane;
-  private DefaultListModel listModel;
+  private DefaultListModel listModel = new DefaultListModel();
   private List<List<File>> allFiles;
   private List<File> flatFilesList;
 
@@ -77,7 +80,7 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     selectAllButton = new JButton(Messages.getString("SelectAll"));
     selectAllButton.setActionCommand(Messages.getString("SelectAll"));
     selectAllButton.addActionListener(new SelectAllListener());
-
+    
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
     
@@ -91,21 +94,21 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     add(buttonPane, BorderLayout.PAGE_END);
   }
 
-  public void populateList(List<List<File>> Files) {
+  public void populateList(List<List<File>> allFiles) {
     flatFilesList = new ArrayList<File>();
-    for (List<File> L : allFiles) {
-      for (File f : L) {
+    for (List<File> lFiles : allFiles) {
+      for (File f : lFiles) {
         flatFilesList.add(f);
       }
     }
     
-    listModel = new DefaultListModel();
-    for (List<File> L : Files) {
-      listModel.addElement(L.get(0).getName() + " ( " + L.get(0).getDirectory().getAbsolutePath()
+    listModel.removeAllElements();
+    for (List<File> lFiles : allFiles) {
+      listModel.addElement(lFiles.get(0).getName() + " ( " + lFiles.get(0).getDirectory().getAbsolutePath()
           + " ) ");
-      for (int i = 1; i < L.size(); i++) {
-        listModel.addElement("  + " + L.get(i).getName() + " ( "
-            + L.get(i).getDirectory().getAbsolutePath() + " ) ");
+      for (int i = 1; i < lFiles.size(); i++) {
+        listModel.addElement("  + " + lFiles.get(i).getName() + " ( "
+           + lFiles.get(i).getDirectory().getAbsolutePath() + " ) ");
       }
     }
   }
@@ -133,20 +136,25 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
       for (int i : indices) {
         listModel.remove(i);
         flatFilesList.remove(i);
+        deleteFilefromList(i);
       }
+      
+      populateList(allFiles);
     }
 
-    public void refreshFilesList(int index) {
-      allFiles = new ArrayList<List<File>>();
-      for (Track track : TrackManager.getInstance().getTracks()) {
-        List<File> trackFileList = track.getFiles();
-        if (trackFileList.size() > 1) {
-          allFiles.add(trackFileList);
+    public void deleteFilefromList(int index) {
+      int count = 0;
+      for (int r=0; r< allFiles.size(); r++) {
+        for (int c=0; c< allFiles.get(r).size(); c++){
+          if(count == index){
+            if(allFiles.get(r).size() <= 2)
+              allFiles.remove(r);
+            else
+              allFiles.get(r).remove(c);
+          }
+          count++;
         }
       }
-      populateList(allFiles);
-      list.repaint();
-      listScrollPane.repaint();
     }
 
     public String getSelectedFiles(int indices[]) {
@@ -162,9 +170,9 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     public void actionPerformed(ActionEvent e) {
       List<Integer> iList = new ArrayList<Integer>();
       int i = 0;
-      for (List<File> L : allFiles) {
+      for (List<File> lFiles : allFiles) {
         i++;
-        for (int k = 1; k < L.size(); k++) {
+        for (int k = 1; k < lFiles.size(); k++) {
           iList.add(i++);
         }
       }
