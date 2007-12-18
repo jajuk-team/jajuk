@@ -658,7 +658,7 @@ public class Main implements ITechnicalStrings {
                 // Wait 10 min before checking
                 try {
                   Thread.sleep(600000);
-                  UpgradeManager.checkForUpdate(false);
+                  UpgradeManager.checkForUpdate();
                 } catch (final InterruptedException e) {
                   Log.error(e);
                 }

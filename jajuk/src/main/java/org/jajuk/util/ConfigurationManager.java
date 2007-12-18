@@ -258,7 +258,6 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_OPTIONS_WATERMARK, LNF_DEFAULT_WATERMARK);
     properties.put(CONF_OPTIONS_LNF, LNF_DEFAULT_THEME);
     properties.put(CONF_DEFAULT_WEB_RADIO, DEFAULT_WEBRADIO);
-    properties.put(CONF_NOT_SHOW_AGAIN_UPDATE, FALSE);
     properties.put(CONF_CHECK_FOR_UPDATE, TRUE);
     properties.put(CONF_IGNORED_RELEASES, "");
     properties.put(CONF_AUDIOSCROBBLER_ENABLE, FALSE);

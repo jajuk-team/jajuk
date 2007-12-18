@@ -30,7 +30,11 @@ import java.net.URL;
 /**
  * Maintain all behavior needed upgrades from releases to releases
  */
-public class UpgradeManager implements ITechnicalStrings {
+public final class UpgradeManager implements ITechnicalStrings {
+  
+  private static String newVersionName;
+  
+  
   /**
    * Actions to migrate an existing installation Step1 just at startup
    */
@@ -124,11 +128,9 @@ public class UpgradeManager implements ITechnicalStrings {
   /**
    * Check for a new Jajuk release
    * 
-   * @param bForced:
-   *          force to display new release message if a new release is found
    * @return true if a new release has been found
    */
-  public static boolean checkForUpdate(boolean bForced) {
+  public static boolean checkForUpdate() {
     // Try to download current jajuk PAD file
     String sRelease = null;
     try {
@@ -136,36 +138,24 @@ public class UpgradeManager implements ITechnicalStrings {
       int beginIndex = pad.indexOf("<Program_Version>");
       int endIndex = pad.indexOf("</Program_Version>");
       sRelease = pad.substring(beginIndex + 17, endIndex);
-      if (bForced) {
-        if (!JAJUK_VERSION.equals(sRelease)
+       if (!JAJUK_VERSION.equals(sRelease)
         // Don't use this in test
             && !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))) {
-          Messages.showInfoMessage(Messages.getString("UpdateManager.0") + sRelease
-              + Messages.getString("UpdateManager.1"));
-        }
-      } else {
-        // Display a warning message if a new release is available and
-        // if we are not in test
-        if (!JAJUK_VERSION.equals(sRelease)
-        // Don't use this in test
-            && !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))
-            // mask message is this release has already been ignored
-            && (ConfigurationManager.getProperty(CONF_IGNORED_RELEASES).indexOf(sRelease) < 0)) {
-          Messages.showHideableWarningMessage(Messages.getString("UpdateManager.0") + sRelease
-              + Messages.getString("UpdateManager.1"), CONF_NOT_SHOW_AGAIN_UPDATE);
-          // If user requires ignoring, ignore only the current
-          // release
-          if (ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_UPDATE)) {
-            String ignored = ConfigurationManager.getProperty(CONF_IGNORED_RELEASES);
-            ConfigurationManager.setProperty(CONF_IGNORED_RELEASES, ignored + "," + sRelease);
-            ConfigurationManager.setProperty(CONF_NOT_SHOW_AGAIN_UPDATE, FALSE);
-          }
-        }
-        return true;
+          newVersionName = sRelease;
+          return true;
       }
     } catch (Exception e) {
       Log.debug("Cannot check for updates");
     }
     return false;
+  }
+
+   /**
+   * 
+   * @return new version name if nay
+   * <p>Example: "1.6", "1.7.8"
+   */
+  public static String getNewVersionName() {
+    return newVersionName;
   }
 }

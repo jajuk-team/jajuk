@@ -748,9 +748,6 @@ public interface ITechnicalStrings {
   /** Default ambience* */
   public static final String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
 
-  /* New release don't show again flag */
-  public static final String CONF_NOT_SHOW_AGAIN_UPDATE = "jajuk.not_show_again.update";
-
   /* Wrong player not show again flag */
   public static final String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
 

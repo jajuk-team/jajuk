@@ -36,6 +36,18 @@ import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
@@ -47,17 +59,9 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 /**
  * Jajuk menu bar
@@ -99,9 +103,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
   public JCheckBoxMenuItem jcbmiContinue;
 
   public JCheckBoxMenuItem jcbmiIntro;
-  
+
   JMenu tools;
-  
+
   JMenuItem jmiduplicateFinder;
 
   JMenu configuration;
@@ -131,6 +135,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
   JMenuItem jmiCheckforUpdates;
 
   JMenuItem jmiAbout;
+
+  JLabel jlUpdate;
 
   /** Hashmap JCheckBoxMenuItem -> associated view */
   public HashMap hmCheckboxView = new HashMap(10);
@@ -205,13 +211,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
-    
+
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
-    
+
     tools.add(jmiduplicateFinder);
-    
+
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -250,7 +256,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     help.add(jmiCheckforUpdates);
     help.add(jmiAbout);
 
-    // add menus
+    jlUpdate = new JLabel(" ", IconLoader.ICON_UPDATE_MANAGER, JLabel.HORIZONTAL);
+    String newRelease = UpgradeManager.getNewVersionName();
+    if (newRelease != null) {
+      jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
+          + Messages.getString("UpdateManager.1"));
+    }
+
     add(file);
     add(views);
     add(properties);
@@ -258,6 +270,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     add(tools);
     add(configuration);
     add(help);
+    // add menus
+    if (UpgradeManager.getNewVersionName() != null) {
+      add(Box.createHorizontalGlue());
+      add(jlUpdate);
+    }
+
   }
 
   static public synchronized JajukJMenuBar getInstance() {

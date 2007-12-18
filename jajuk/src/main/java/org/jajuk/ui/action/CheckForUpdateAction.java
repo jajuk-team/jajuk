@@ -36,7 +36,11 @@ public class CheckForUpdateAction extends ActionBase {
   }
 
   public void perform(ActionEvent evt) throws JajukException {
-    if (!UpgradeManager.checkForUpdate(true)) {
+    String newRelease = UpgradeManager.getNewVersionName(); 
+    if (newRelease != null) {
+      Messages.showInfoMessage(Messages.getString("UpdateManager.0") + newRelease
+          + Messages.getString("UpdateManager.1"));
+    } else {
       Messages.showInfoMessage(Messages.getString("UpdateManager.2"));
     }
   }
