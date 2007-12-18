@@ -363,7 +363,8 @@ public class Log implements ITechnicalStrings {
    * @param sMessage
    */
   private static void spool(String sMessage) {
-    if (alSpool.size() == FEEDBACK_LINES) { // we have to make some room
+    // we have to make some room
+    if (alSpool.size() > FEEDBACK_LINES) { 
       alSpool.remove(0);
     }
     try {
