@@ -85,8 +85,8 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
     
     buttonPane.add(deleteButton);
+    buttonPane.add(selectAllButton);  
     buttonPane.add(closeButton);
-    buttonPane.add(selectAllButton);
     
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
