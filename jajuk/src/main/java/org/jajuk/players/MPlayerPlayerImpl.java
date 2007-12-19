@@ -138,7 +138,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                   // we don't
                   // as many mplayer response as queries,
                   // tested on 10 & 20 sec of fading
-                  * ((float) (PROGRESS_STEP * 2) / iFadeDuration);
+                  * ((float) PROGRESS_STEP / iFadeDuration);
               float fNewVolume = fVolume - fVolumeStep;
               // decrease volume by n% of initial volume
               if (fNewVolume < 0) {
