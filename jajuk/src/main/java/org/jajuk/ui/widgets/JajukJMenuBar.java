@@ -107,6 +107,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
   JMenu tools;
 
   JMenuItem jmiduplicateFinder;
+  
+  JMenuItem jmialarmClock;
 
   JMenu configuration;
 
@@ -215,9 +217,11 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
-
+    jmialarmClock = new JMenuItem(ActionManager.getAction(JajukAction.ALARM_CLOCK));
+    
     tools.add(jmiduplicateFinder);
-
+    tools.add(jmialarmClock);
+    
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));

@@ -410,6 +410,9 @@ public enum JajukAction {
   /**
    * Used to find duplicate files.
    */
-  FIND_DUPLICATE_FILES
-
+  FIND_DUPLICATE_FILES,
+  /**
+   * Used to set alarm clock.
+   */
+  ALARM_CLOCK
 }

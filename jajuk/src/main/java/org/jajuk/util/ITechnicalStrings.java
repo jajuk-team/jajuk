@@ -1124,5 +1124,12 @@ public interface ITechnicalStrings {
 
   // Strings
   public static final String FRAME_MAXIMIZED = "max";
+  
+  // Alarm Clock
+  public static final String ALARM_TIME_HOUR = "hour";
+  
+  public static final String ALARM_TIME_MINUTES = "minutes";
+  
+  public static final String ALARM_TIME_SECONDS = "seconds";
 
 }

@@ -533,6 +533,9 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final UrlImageIcon ICON_POPUP = new UrlImageIcon(Util
       .getResource("icons/16x16/popup_16x16.png"));
+  
+  public static final UrlImageIcon ICON_ALARM = new UrlImageIcon(Util
+      .getResource("icons/16x16/alarm_16x16.png"));
 
   static {
     IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_50x50, Util.getResizedImage(

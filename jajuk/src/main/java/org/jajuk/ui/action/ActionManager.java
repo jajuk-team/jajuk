@@ -19,6 +19,7 @@
  */
 package org.jajuk.ui.action;
 
+import static org.jajuk.ui.action.JajukAction.ALARM_CLOCK;
 import static org.jajuk.ui.action.JajukAction.BEST_OF;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
@@ -168,7 +169,8 @@ public final class ActionManager {
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
     installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
     installAction(REFRESH, new RefreshDirectoryAction(), false);
-
+    installAction(ALARM_CLOCK, new AlarmClock(), false);
+    
     // Do not install this action under OSX because it causes a crash as jar is
     // missing
     if (Util.isUnderLinux() || Util.isUnderWindows()) {
