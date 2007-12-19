@@ -112,6 +112,29 @@ public class Log implements ITechnicalStrings {
     spool("[DEBUG] " + s);
     logger.debug(s);
   }
+  
+  public static void debug(String sInfosup, Throwable t) {
+    // Just make a print stake trace if Log is not yet enabled (example:
+    // collection commit problem in initialCheckups)
+    if (log == null) {
+      System.out.println("[DEBUG] " + sInfosup);
+      t.printStackTrace();
+      return;
+    }
+    String sOut;
+    if (Messages.isInitialized()) {
+      sOut = ((sInfosup == null) ? "" : ": " + sInfosup);
+    } else {
+      sOut = ((sInfosup == null) ? "" : ":" + sInfosup);
+    }
+    spool("<font color='red'>[DEBUG] " + sOut + "</font>");
+    if (t != null) {
+      spool(t);
+    }
+    logger.debug(sOut, t);
+  }
+  
+  
 
   /**
    * Log a info-level message
