@@ -145,7 +145,7 @@ public final class UpgradeManager implements ITechnicalStrings {
           return true;
       }
     } catch (Exception e) {
-      Log.debug("Cannot check for updates");
+      Log.debug("Cannot check for updates",e);
     }
     return false;
   }

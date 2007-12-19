@@ -36,12 +36,13 @@ import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 
+import com.sun.java.help.impl.SwingWorker;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -260,13 +261,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     help.add(jmiCheckforUpdates);
     help.add(jmiAbout);
 
-    jlUpdate = new JLabel(" ", IconLoader.ICON_UPDATE_MANAGER, JLabel.HORIZONTAL);
-    String newRelease = UpgradeManager.getNewVersionName();
-    if (newRelease != null) {
-      jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
-          + Messages.getString("UpdateManager.1"));
-    }
-
     add(file);
     add(views);
     add(properties);
@@ -274,10 +268,33 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     add(tools);
     add(configuration);
     add(help);
-    // add menus
-    if (UpgradeManager.getNewVersionName() != null) {
-      add(Box.createHorizontalGlue());
-      add(jlUpdate);
+
+    // Check for new release and display the icon if a new release is available
+    SwingWorker sw = new SwingWorker() {
+
+      @Override
+      public Object construct() {
+        UpgradeManager.checkForUpdate();
+        return null;
+      }
+
+      public void finished() {
+        // add the new release label if required
+        if (UpgradeManager.getNewVersionName() != null) {
+          jlUpdate = new JLabel(" ", IconLoader.ICON_UPDATE_MANAGER, JLabel.HORIZONTAL);
+          String newRelease = UpgradeManager.getNewVersionName();
+          if (newRelease != null) {
+            jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
+                + Messages.getString("UpdateManager.1"));
+          }
+          add(Box.createHorizontalGlue());
+          add(jlUpdate);
+        }
+      }
+
+    };
+    if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
+      sw.start();
     }
 
   }
