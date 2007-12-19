@@ -186,7 +186,7 @@ public class Main implements ITechnicalStrings {
 
   /** ConfigurationManager Locales */
   public static final String[] locales = { "en", "fr", "de", "it", "sv", "nl", "zh", "es", "ca",
-      "ko", "el" };
+      "ko", "el", "ru" };
 
   /** DeviceTypes Identification strings */
   public static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
