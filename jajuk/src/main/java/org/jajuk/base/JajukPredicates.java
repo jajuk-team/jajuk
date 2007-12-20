@@ -56,7 +56,7 @@ public class JajukPredicates {
       }
       Track track = (Track) o;
       Date now = new Date();
-      int iTrackAge = (int) ((now.getTime() - track.getAdditionDate().getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
+      int iTrackAge = (int) ((now.getTime() - track.getDiscoveryDate().getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
       if (iTrackAge <= iAge) {
         return true;
       }

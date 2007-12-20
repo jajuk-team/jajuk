@@ -114,7 +114,7 @@ public class Track extends LogicalItem implements Comparable {
   public String toString() {
     String sOut = "Track[ID=" + getID() + " Name={{" + getName() + "}} " + album + " " + style
         + " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate()
-        + " " + type + " Hits=" + getHits() + " Addition date=" + getAdditionDate() + " Comment="
+        + " " + type + " Hits=" + getHits() + " Addition date=" + getDiscoveryDate() + " Comment="
         + getComment() + " order=" + getOrder() + " Nb of files=" + alFiles.size() + "]";
     for (int i = 0; i < alFiles.size(); i++) {
       sOut += '\n' + alFiles.get(i).toString();
@@ -302,9 +302,10 @@ public class Track extends LogicalItem implements Comparable {
   }
 
   /**
-   * @return
+   * @return the date where the track has been discovered (added into the
+   *         collection)
    */
-  public Date getAdditionDate() {
+  public Date getDiscoveryDate() {
     return getDateValue(XML_TRACK_ADDED);
   }
 
@@ -386,7 +387,7 @@ public class Track extends LogicalItem implements Comparable {
    * @param additionDate
    *          The sAdditionDate to set.
    */
-  public void setAdditionDate(Date additionDate) {
+  public void setDiscoveryDate(Date additionDate) {
     setProperty(XML_TRACK_ADDED, additionDate);
   }
 
@@ -475,7 +476,7 @@ public class Track extends LogicalItem implements Comparable {
       return sbOut.substring(0, sbOut.length() - 1); // remove last
       // ','
     } else if (XML_TRACK_ADDED.equals(sKey)) {
-      return Util.getLocaleDateFormatter().format(getAdditionDate());
+      return Util.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default

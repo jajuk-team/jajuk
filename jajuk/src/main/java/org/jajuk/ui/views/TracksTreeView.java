@@ -944,7 +944,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         continue;
       }
       // less than one week ?
-      long diff = today.getTime() - track.getAdditionDate().getTime();
+      long diff = today.getTime() - track.getDiscoveryDate().getTime();
       if (diff < 604800000l) {
         addTrackAndAlbum(nodeWeekly, track);
       } else if (diff < 2419200000l) {

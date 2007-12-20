@@ -231,7 +231,7 @@ public class TracksTableModel extends JajukTableModel {
       oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
       bCellEditable[iRow][7] = bHasATagEditor;
       // Date discovery
-      oValues[iRow][8] = track.getAdditionDate(); // show date using
+      oValues[iRow][8] = track.getDiscoveryDate(); // show date using
       // default local format
       // and not technical
       // representation

@@ -805,6 +805,9 @@ public interface ITechnicalStrings {
   /** Increase rate value */
   public static final String CONF_INC_RATING = "jajuk.inc_rating.step";
 
+  /** Use file date as discrovery date option */
+  public static final String CONF_FORCE_FILE_DATE = "jajuk.force_file_date";
+
   /** Shuffle/novelties mode */
   public static final String MODE_ALBUM = "album";
 

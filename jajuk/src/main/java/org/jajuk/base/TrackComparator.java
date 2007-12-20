@@ -95,7 +95,7 @@ public class TrackComparator implements Comparator<Track> {
     // discovery date / album
     case DISCOVERY_ALBUM:
       sHashCompare = new StringBuilder().append(
-          Util.getAdditionDateFormat().format(track.getAdditionDate())).append(
+          Util.getAdditionDateFormat().format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
       break;
     }

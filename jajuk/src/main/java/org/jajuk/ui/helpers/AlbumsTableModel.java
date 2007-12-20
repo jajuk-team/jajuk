@@ -225,7 +225,7 @@ public class AlbumsTableModel extends JajukTableModel {
       // Take first author found
       Author author = tracksSet.iterator().next().getAuthor();
       // Same for discovery date
-      Date discovery = tracksSet.iterator().next().getAdditionDate();
+      Date discovery = tracksSet.iterator().next().getDiscoveryDate();
       // Same for years
       Year year = tracksSet.iterator().next().getYear();
       for (Track track : tracksSet) {
@@ -242,7 +242,7 @@ public class AlbumsTableModel extends JajukTableModel {
           author = null;
         }
         // Same for discovery date
-        if (discovery != null && !track.getAdditionDate().equals(discovery)) {
+        if (discovery != null && !track.getDiscoveryDate().equals(discovery)) {
           discovery = null;
         }
         // Same for year

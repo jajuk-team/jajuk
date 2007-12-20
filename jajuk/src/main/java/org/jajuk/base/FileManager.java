@@ -443,8 +443,8 @@ public class FileManager extends ItemManager implements Observer {
     // sort alphabetically and by date, newest first
     Collections.sort(alEligibleFiles, new Comparator<File>() {
       public int compare(File file1, File file2) {
-        String sCompared1 = file1.getTrack().getAdditionDate().getTime() + file1.getAbsolutePath();
-        String sCompared2 = file2.getTrack().getAdditionDate().getTime() + file2.getAbsolutePath();
+        String sCompared1 = file1.getTrack().getDiscoveryDate().getTime() + file1.getAbsolutePath();
+        String sCompared2 = file2.getTrack().getDiscoveryDate().getTime() + file2.getAbsolutePath();
         return sCompared2.compareTo(sCompared1);
       }
     });

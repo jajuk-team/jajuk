@@ -301,7 +301,7 @@ public class AlbumManager extends ItemManager implements Observer {
         .getElementCount());
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getPlayeableFile(bHideUnmounted) != null) {
-        cache.put(track.getAlbum(), track.getAdditionDate());
+        cache.put(track.getAlbum(), track.getDiscoveryDate());
       }
     }
     // Now sort albums by discovery date

@@ -334,6 +334,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JPanel jpModes;
 
   JCheckBox jcbCheckUpdates;
+  
+  JCheckBox jcbForceFileDate;
 
   /**
    * 
@@ -597,6 +599,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_CHECK_FOR_UPDATE, Boolean
         .toString(jcbCheckUpdates.isSelected()));
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FORCE_FILE_DATE, Boolean
+        .toString(jcbForceFileDate.isSelected()));
     // Apply new mplayer path and display a warning message if changed
     final String oldMplayerPath = ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_MPLAYER_PATH_FORCED);
@@ -1152,8 +1156,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_CHECK_FOR_UPDATE));
-
-    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
+    jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
+    jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.ParameterView.245"));
+    jcbForceFileDate.setSelected(ConfigurationManager
+        .getBoolean(ITechnicalStrings.CONF_FORCE_FILE_DATE));
+    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
     layoutAdvanced.setHGap(iXSeparator);
     layoutAdvanced.setVGap(iYSeparator);
@@ -1174,6 +1181,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpAdvanced.add(jlJajukWorkspace, "0,7");
     jpAdvanced.add(psJajukWorkspace, "1,7");
     jpAdvanced.add(jcbCheckUpdates, "0,8");
+    jpAdvanced.add(jcbForceFileDate, "0,9");
 
     // - Network
     jpNetwork = new JPanel();

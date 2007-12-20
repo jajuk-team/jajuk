@@ -328,7 +328,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         // Comment
         oValues[iRow][8] = bf.getTrack().getStringValue(XML_TRACK_COMMENT);
         // Date discovery
-        oValues[iRow][9] = bf.getTrack().getAdditionDate();
+        oValues[iRow][9] = bf.getTrack().getDiscoveryDate();
         // show date using default local format and not technical
         // representation Order
         oValues[iRow][10] = bf.getTrack().getOrder();

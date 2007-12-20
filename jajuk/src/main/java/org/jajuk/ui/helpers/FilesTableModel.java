@@ -282,7 +282,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       oValues[iRow][16] = file.getTrack().getHits();
       bCellEditable[iRow][16] = false;
       // Discovery date
-      oValues[iRow][17] = file.getTrack().getAdditionDate();
+      oValues[iRow][17] = file.getTrack().getDiscoveryDate();
       bCellEditable[iRow][17] = false;
 
       // -- Custom properties now --

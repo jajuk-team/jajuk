@@ -19,21 +19,20 @@
  */
 package org.jajuk.base;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.ImageIcon;
+
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.RefreshReporter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.ImageIcon;
 
 /**
  * A physical directory
@@ -197,11 +196,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return child files
    */
   public ArrayList<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
-    Iterator it = files.iterator();
     ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
     boolean bOK = false;
-    while (it.hasNext()) {
-      org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+    for (org.jajuk.base.File file:files){
       if (bOK || file.equals(fileStart)) {
         alOut.add(file);
         bOK = true;
@@ -333,17 +330,23 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           long trackNumber = TrackManager.getInstance().getElementCount();
           Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
               length, year, lOrder, type);
-          // Update discovery date only if it is a new track
-          if (TrackManager.getInstance().getElementCount() > trackNumber) {
+
+          // Use file date if the "force file date" option is used
+          if (ConfigurationManager.getBoolean(CONF_FORCE_FILE_DATE)) {
+            track.setDiscoveryDate(new Date(lastModified));
+          } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
+            // Update discovery date only if it is a new track
+
             // A new track has been created, we can safely update
             // the track date
             // We don't want to update date if the track is already
             // known, even if
-            // it is a nex file because a track can map several
+            // it is a new file because a track can map several
             // files and discovery date
             // is a track attribute, not file one
-            track.setAdditionDate(new Date());
+            track.setDiscoveryDate(new Date());
           }
+
           org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
               files[i].getName(), this, track, files[i].length(), lQuality);
           // Set file date

@@ -691,7 +691,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               author, length, year, lOrder, type);
           track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
           track.setHits(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
-          track.setAdditionDate(dAdditionDate);
+          track.setDiscoveryDate(dAdditionDate);
           String sComment = attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT)).intern();
           if (sComment == null) {
             sComment = "";

@@ -554,7 +554,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                   return track2.getYear().compareTo(track1.getYear());
                 }
               case 4: // Discovery date
-                return track2.getAdditionDate().compareTo(track1.getAdditionDate());
+                return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
               }
               return 0;
             }
