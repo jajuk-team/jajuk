@@ -21,8 +21,6 @@
 package org.jajuk.ui.widgets;
 
 import org.jajuk.Main;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
@@ -30,7 +28,6 @@ import org.jajuk.util.ITechnicalStrings;
 
 import org.jajuk.ui.widgets.SearchBox;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemListener;
@@ -211,7 +208,6 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     pack();
     setLocationRelativeTo(Main.getWindow());
     setVisible(true);
-    JDialog x = new JDialog();
   }
   
   public void actionPerformed(final ActionEvent e) {

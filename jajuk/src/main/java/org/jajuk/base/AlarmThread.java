@@ -30,12 +30,13 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
   private String alarmTime, currentTime;
   private List<File> alToPlay;
   private volatile boolean bstop = false;
-  
-  public AlarmThread(String aTime, String cTime, List<File> alFiles){
+  private String alarmAction;
+  public AlarmThread(String aTime, String cTime, List<File> alFiles, String mode){
     super();
     alarmTime = aTime;
     currentTime = cTime;
     alToPlay = alFiles;
+    alarmAction = mode;
     }
     public void run(){
       try{
@@ -45,8 +46,7 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
     }
     
     public void wakeUpSleeper(){
-      if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION).equals(
-          ITechnicalStrings.ALARM_START_MODE)){
+      if (alarmAction.equals(ITechnicalStrings.ALARM_START_MODE)){
         FIFO.getInstance().push(Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),false);
       }else{
         FIFO.getInstance().stopRequest();
