@@ -169,7 +169,7 @@ public final class ActionManager {
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
     installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
     installAction(REFRESH, new RefreshDirectoryAction(), false);
-    installAction(ALARM_CLOCK, new AlarmClock(), false);
+    installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     
     // Do not install this action under OSX because it causes a crash as jar is
     // missing

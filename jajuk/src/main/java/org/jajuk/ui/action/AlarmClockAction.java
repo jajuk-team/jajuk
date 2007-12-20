@@ -23,13 +23,14 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.Player;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 import org.jajuk.ui.widgets.AlarmClockDialog;
 
@@ -38,15 +39,17 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AlarmClock extends ActionBase {
+public class AlarmClockAction extends ActionBase{
 
   private static final long serialVersionUID = 1L;
   
   private static int hours, minutes, seconds;
   
   private static long alarmTime, currentTime;
+  
+  private List<File> alToPlay = new ArrayList<File>();
    
-  AlarmClock() {
+  AlarmClockAction() {
     super(Messages.getString("AlarmClock.0"), IconLoader.ICON_ALARM, true);
     setShortDescription(Messages.getString("AlarmClock.0"));
   }
@@ -59,6 +62,21 @@ public class AlarmClock extends ActionBase {
     hours = ConfigurationManager.getInt(ALARM_TIME_HOUR);
     minutes = ConfigurationManager.getInt(ALARM_TIME_MINUTES);
     seconds = ConfigurationManager.getInt(ALARM_TIME_SECONDS);
+    
+    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION).equals(
+        ITechnicalStrings.ALARM_START_MODE)){
+      if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_FILE)) {
+        File fileToPlay = FileManager.getInstance().getFileByID(ConfigurationManager.getProperty(CONF_ALARM_FILE));
+        alToPlay.add(fileToPlay);
+      } else if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_SHUFFLE)) {
+        alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+      } else if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_BESTOF)) {
+        alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+      } else if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_NOVELTIES)) {
+        alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+      }
+    }
+      
     Calendar cal = Calendar.getInstance();
     alarmTime = Time.valueOf(hours+":"+minutes+":"+seconds).getTime();
     currentTime = Time.valueOf(cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)).getTime();
@@ -66,18 +84,8 @@ public class AlarmClock extends ActionBase {
     if ((alarmTime - currentTime) < 0){
       Messages.showWarningMessage("Time already elapsed!");
     }
-    Log.debug(hours+":"+minutes+":"+seconds);
-    Log.debug(cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND));
-    Log.debug("Alarm Time: " + alarmTime);
-    Log.debug("Current Time : " + currentTime);
+    
     new AlarmThread().start();
-  }
-  
-  public void wakeUpSleeper(){
-    File file = FileManager.getInstance().getShuffleFile();
-    List<File> alFiles = new ArrayList<File>();
-    alFiles.add(file);
-    FIFO.getInstance().push(Util.createStackItems(alFiles, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),false);
   }
   
   class AlarmThread extends Thread{
@@ -90,6 +98,18 @@ public class AlarmClock extends ActionBase {
       }catch (InterruptedException e){}
       wakeUpSleeper();
     }
+    
+    public void wakeUpSleeper(){
+      if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION).equals(
+          ITechnicalStrings.ALARM_START_MODE)){
+        FIFO.getInstance().push(Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),false);
+      }else{
+        FIFO.getInstance().stopRequest();
+      }
+    }
   }
 }
+ 
+   
+
 

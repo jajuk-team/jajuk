@@ -520,7 +520,18 @@ public interface ITechnicalStrings {
   public static final String STARTUP_MODE_BESTOF = "bestof";
 
   public static final String STARTUP_MODE_NOVELTIES = "novelties";
-
+  
+  // alarm mode
+  public static final String ALARM_START_MODE = "Start Playing";
+  
+  public static final String ALARM_STOP_MODE = "Stop Playing";
+  
+  public static final String CONF_ALARM_ACTION = "jajuk.alarm.action";
+  
+  public static final String CONF_ALARM_FILE = "";
+  
+  public static final String CONF_ALARM_MODE = "jajuk.alarm.mode";
+  
   // --- Configuration keys ---
 
   public static final String CONF_RELEASE = "jajuk.release";
