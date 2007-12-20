@@ -47,6 +47,8 @@ public class AlarmClockAction extends ActionBase{
   private static String alarmTime, currentTime;
   
   private List<File> alToPlay;
+  
+  private static String alarmMessage; 
    
   AlarmClockAction() {
     super(Messages.getString("AlarmClock.0"), IconLoader.ICON_ALARM, true);
@@ -62,8 +64,10 @@ public class AlarmClockAction extends ActionBase{
     minutes = ConfigurationManager.getInt(ALARM_TIME_MINUTES);
     seconds = ConfigurationManager.getInt(ALARM_TIME_SECONDS);
     
-    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION).equals(
-        ITechnicalStrings.ALARM_START_MODE)){
+    alarmMessage = ConfigurationManager.getProperty(ALARM_MESSAGE);
+    String alarmAction = ConfigurationManager.getProperty(CONF_ALARM_ACTION);
+    
+    if (alarmAction.equals(ITechnicalStrings.ALARM_START_MODE)){
       alToPlay = new ArrayList<File>();
       if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_FILE)) {
         File fileToPlay = FileManager.getInstance().getFileByID(ConfigurationManager.getProperty(CONF_ALARM_FILE));
@@ -85,7 +89,7 @@ public class AlarmClockAction extends ActionBase{
       Messages.showWarningMessage(Messages.getString("AlarmClock.4"));
     }
     
-    AlarmThread aAlarm = new AlarmThread(alarmTime, currentTime, alToPlay, ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION));
+    AlarmThread aAlarm = new AlarmThread(alarmTime, currentTime, alToPlay, alarmAction, alarmMessage);
     aAlarm.start();
     AlarmThreadManager.getInstance().addAlarm(aAlarm);
   }

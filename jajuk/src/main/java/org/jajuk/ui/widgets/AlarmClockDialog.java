@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JDialog;
@@ -99,6 +100,12 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   
   SteppedComboBox scbAlarmOption;
   
+  JPanel jpMessage;
+  
+  JCheckBox jcbMessage;
+  
+  JTextField jtfMessage;
+  
   SearchBox sbSearch;
   
   boolean choice;
@@ -136,13 +143,28 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpAction.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     //scbAlarmOption.addActionListener(this);
     
-    jpChoices = new JPanel();
+    jpMessage = new JPanel();
     final double p = TableLayoutConstants.PREFERRED;
-    final double sizeStart[][] = { { 150, 200 }, { p, p, p, p, p, p, p } };
+    final double sizeMessage[][] = { { 100, 300 }, { p } };
+    final TableLayout layoutMessage = new TableLayout(sizeMessage);
+    layoutMessage.setVGap(20);
+    layoutMessage.setHGap(20);
+    jpMessage.setLayout(layoutMessage);
+    jcbMessage = new JCheckBox(Messages.getString("AlarmDialog.6"));
+    jcbMessage.setToolTipText(Messages.getString("AlarmDialog.7"));
+    jcbMessage.addActionListener(this);
+    jtfMessage = new JTextField(20);
+    jtfMessage.setToolTipText(Messages.getString("AlarmDialog.7"));
+    jtfMessage.setEnabled(false);
+    jpMessage.add(jcbMessage, "0,0");
+    jpMessage.add(jtfMessage, "1,0");
+    jpMessage.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 5));
+    
+    jpChoices = new JPanel();
+    final double sizeStart[][] = { { 150, 200 }, { p, p, p, p, p, p} };
     final TableLayout layoutStartup = new TableLayout(sizeStart);
     layoutStartup.setVGap(20);
     layoutStartup.setHGap(20);
-
     jpChoices.setLayout(layoutStartup);
     jlChoice = new JLabel(Messages.getString("ParameterView.9"));
     jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14"));
@@ -188,15 +210,17 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpOKCancel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     
     jpAlarmClock = new JPanel(new FlowLayout());
-    final double sizeAlarmPanel[][] = { { 500 }, { p, p, p, p} };
+    final double sizeAlarmPanel[][] = { { 500 }, { p, p, p, p, p} };
     final TableLayout layoutAlarmPanel = new TableLayout(sizeAlarmPanel);
     layoutStartup.setVGap(20);
     layoutStartup.setHGap(20);
     jpAlarmClock.setLayout(layoutAlarmPanel);
     jpAlarmClock.add(jpFields,  "0,0");
     jpAlarmClock.add(jpAction,  "0,1");
-    jpAlarmClock.add(jpChoices, "0,2");
-    jpAlarmClock.add(jpOKCancel,"0,3");
+    jpAlarmClock.add(jpMessage, "0,2");
+    jpAlarmClock.add(jpChoices, "0,3");
+    jpAlarmClock.add(jpOKCancel,"0,4");
+       
     jpAlarmClock.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     
     
@@ -229,8 +253,14 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
       jrbFile.setEnabled(false);
       sbSearch.setEnabled(false);
     }
-         
-    if (e.getSource() == jbOK){
+    if (e.getSource() == jcbMessage){
+      if (jcbMessage.isSelected())
+        jtfMessage.setEnabled(true);
+      else{
+        jtfMessage.setEnabled(false);
+        ConfigurationManager.setProperty(ALARM_MESSAGE, "");
+      }
+    } else if (e.getSource() == jbOK){
       updateParameters();
       choice = true;
       dispose();
@@ -259,6 +289,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     ConfigurationManager.setProperty(ALARM_TIME_HOUR, "" + jtfHour.getText());
     ConfigurationManager.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
     ConfigurationManager.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
+    ConfigurationManager.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
     
     if (jrbShuffle.isSelected()) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_MODE,

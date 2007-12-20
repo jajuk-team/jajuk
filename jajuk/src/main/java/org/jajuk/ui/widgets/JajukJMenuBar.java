@@ -331,7 +331,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.add(Messages.getString("AlarmClock.2"));
     else{
       for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
-        JMenuItem jma = new JMenuItem(Messages.getString("AlarmClock.3") + " @ " + alarm.getAlarmTime(), IconLoader.ICON_ALARM);
+        JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
         jma.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent evt) {
             int iResu = Messages.getChoice(

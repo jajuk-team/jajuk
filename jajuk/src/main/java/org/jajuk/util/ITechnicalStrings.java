@@ -1132,6 +1132,8 @@ public interface ITechnicalStrings {
   
   public static final String ALARM_TIME_SECONDS = "seconds";
   
+  public static final String ALARM_MESSAGE = "alarm.message";
+  
   // Alarm mode
   public static final String ALARM_START_MODE = "Start Playing";
   

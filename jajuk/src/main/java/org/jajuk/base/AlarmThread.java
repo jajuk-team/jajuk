@@ -22,6 +22,7 @@ package org.jajuk.base;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.Messages;
 
 import java.sql.Time;
 import java.util.List;
@@ -31,12 +32,15 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
   private List<File> alToPlay;
   private volatile boolean bstop = false;
   private String alarmAction;
-  public AlarmThread(String aTime, String cTime, List<File> alFiles, String mode){
+  private String alarmMessage;
+  
+  public AlarmThread(String aTime, String cTime, List<File> alFiles, String mode, String message){
     super();
     alarmTime = aTime;
     currentTime = cTime;
     alToPlay = alFiles;
     alarmAction = mode;
+    alarmMessage = message;
     }
     public void run(){
       try{
@@ -52,6 +56,8 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
         FIFO.getInstance().stopRequest();
       }
       AlarmThreadManager.getInstance().removeAlarm(this);
+      if(!"".equals(alarmMessage))
+        Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " " + alarmMessage);
     }
     
     public void stopAlarm(){
@@ -60,5 +66,12 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
     
     public String getAlarmTime(){
       return this.alarmTime;
+    }
+    
+    public String getAlarmText(){
+      if(!"".equals(alarmMessage))
+        return Messages.getString("Stop")+ ": " + alarmMessage + " " + Messages.getString("AlarmClock.3") + " @ "+ getAlarmTime();
+      else
+        return Messages.getString("Stop")+ ": " + Messages.getString("AlarmClock.3") + " @ "+ getAlarmTime(); 
     }
   }
