@@ -178,7 +178,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpChoices.add(jrbFile, "0,4");
     jpChoices.add(sbSearch, "1,4");
     jpChoices.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
+    jrbShuffle.setSelected(true);
     
     jpOKCancel = new JPanel();
     jpOKCancel.setLayout(new FlowLayout());

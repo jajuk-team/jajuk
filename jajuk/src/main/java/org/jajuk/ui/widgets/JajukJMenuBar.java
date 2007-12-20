@@ -39,7 +39,10 @@ import static org.jajuk.ui.action.JajukAction.WIZARD;
 import com.sun.java.help.impl.SwingWorker;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.Box;
@@ -48,7 +51,12 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
+import org.jajuk.base.Item;
+import org.jajuk.base.AlarmThread;
+import org.jajuk.base.AlarmThreadManager;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
@@ -69,10 +77,10 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
+public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseMotionListener {
 
   private static final long serialVersionUID = 1L;
-
+  
   static JajukJMenuBar jjmb;
 
   JMenu file;
@@ -138,6 +146,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
   JMenuItem jmiCheckforUpdates;
 
   JMenuItem jmiAbout;
+  
+  JMenu jmReminders;
 
   JLabel jlUpdate;
 
@@ -219,10 +229,19 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukAction.ALARM_CLOCK));
+    jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
+    jmReminders.addMouseMotionListener(this);
+    for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
+      JMenuItem jma = new JMenuItem(alarm.getAlarmTime(), IconLoader.ICON_ALARM);
+      jmReminders.add(jma);
+      jmReminders.addSeparator();
+    }
     
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
-    
+    tools.addSeparator();
+    tools.add(jmReminders);
+        
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -304,5 +323,32 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings {
       jjmb = new JajukJMenuBar();
     }
     return jjmb;
+  }
+  
+  public void mouseMoved(MouseEvent e){
+    jmReminders.removeAll();
+    if (AlarmThreadManager.getInstance().getAllAlarms().size() == 0)
+      jmReminders.add(Messages.getString("AlarmClock.2"));
+    else{
+      for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
+        JMenuItem jma = new JMenuItem(Messages.getString("AlarmClock.3") + " @ " + alarm.getAlarmTime(), IconLoader.ICON_ALARM);
+        jma.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent evt) {
+            int iResu = Messages.getChoice(
+                Messages.getString("Confirmation_alarm_stop"),
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (iResu != JOptionPane.YES_OPTION) {
+              return;
+            }
+            AlarmThreadManager.getInstance().stopAlarm(alarm);
+          }
+        });
+        jmReminders.add(jma);
+      }
+    }
+  }
+  
+  public void mouseDragged(MouseEvent e){
+    mouseMoved(e);
   }
 }

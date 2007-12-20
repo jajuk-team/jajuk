@@ -21,15 +21,14 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.base.FIFO;
+import org.jajuk.base.AlarmThread;
+import org.jajuk.base.AlarmThreadManager;
 import org.jajuk.base.File;
-import org.jajuk.base.Player;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
 import org.jajuk.ui.widgets.AlarmClockDialog;
@@ -45,7 +44,7 @@ public class AlarmClockAction extends ActionBase{
   
   private static int hours, minutes, seconds;
   
-  private static long alarmTime, currentTime;
+  private static String alarmTime, currentTime;
   
   private List<File> alToPlay = new ArrayList<File>();
    
@@ -58,7 +57,7 @@ public class AlarmClockAction extends ActionBase{
     AlarmClockDialog acDialog = new AlarmClockDialog();
     if(!acDialog.getChoice())
       return;
-        
+    
     hours = ConfigurationManager.getInt(ALARM_TIME_HOUR);
     minutes = ConfigurationManager.getInt(ALARM_TIME_MINUTES);
     seconds = ConfigurationManager.getInt(ALARM_TIME_SECONDS);
@@ -78,35 +77,16 @@ public class AlarmClockAction extends ActionBase{
     }
       
     Calendar cal = Calendar.getInstance();
-    alarmTime = Time.valueOf(hours+":"+minutes+":"+seconds).getTime();
-    currentTime = Time.valueOf(cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)).getTime();
+    alarmTime = hours+":"+minutes+":"+seconds;
+    currentTime = cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND);
     
-    if ((alarmTime - currentTime) < 0){
-      Messages.showWarningMessage("Time already elapsed!");
-    }
-    
-    new AlarmThread().start();
-  }
-  
-  class AlarmThread extends Thread{
-    AlarmThread(){
-      super();
-    }
-    public void run(){
-      try{
-        sleep(alarmTime - currentTime);
-      }catch (InterruptedException e){}
-      wakeUpSleeper();
+    if ((Time.valueOf(alarmTime).getTime() - Time.valueOf(currentTime).getTime()) < 0){
+      Messages.showWarningMessage(Messages.getString("AlarmClock.4"));
     }
     
-    public void wakeUpSleeper(){
-      if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION).equals(
-          ITechnicalStrings.ALARM_START_MODE)){
-        FIFO.getInstance().push(Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),false);
-      }else{
-        FIFO.getInstance().stopRequest();
-      }
-    }
+    AlarmThread aAlarm = new AlarmThread(alarmTime, currentTime, alToPlay);
+    aAlarm.start();
+    AlarmThreadManager.getInstance().addAlarm(aAlarm);
   }
 }
  

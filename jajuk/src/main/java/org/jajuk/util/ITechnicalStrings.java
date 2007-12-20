@@ -521,17 +521,6 @@ public interface ITechnicalStrings {
 
   public static final String STARTUP_MODE_NOVELTIES = "novelties";
   
-  // alarm mode
-  public static final String ALARM_START_MODE = "Start Playing";
-  
-  public static final String ALARM_STOP_MODE = "Stop Playing";
-  
-  public static final String CONF_ALARM_ACTION = "jajuk.alarm.action";
-  
-  public static final String CONF_ALARM_FILE = "";
-  
-  public static final String CONF_ALARM_MODE = "jajuk.alarm.mode";
-  
   // --- Configuration keys ---
 
   public static final String CONF_RELEASE = "jajuk.release";
@@ -1142,5 +1131,19 @@ public interface ITechnicalStrings {
   public static final String ALARM_TIME_MINUTES = "minutes";
   
   public static final String ALARM_TIME_SECONDS = "seconds";
-
+  
+  // Alarm mode
+  public static final String ALARM_START_MODE = "Start Playing";
+  
+  public static final String ALARM_STOP_MODE = "Stop Playing";
+  
+  public static final String CONF_ALARM_ACTION = "jajuk.alarm.action";
+  
+  public static final String CONF_ALARM_FILE = "jajuk.alarm.file";
+  
+  public static final String CONF_ALARM_MODE = "jajuk.alarm.mode";
+  
+  // Alarms List
+  
+  public static final String ALARMS_SET = "jajuk.alarms";
 }
