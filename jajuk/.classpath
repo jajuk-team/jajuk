@@ -27,7 +27,6 @@
 	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmactritonusspi-1.74.jar"/>
 	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/qdwizard-1.9.jar"/>
 	<classpathentry kind="lib" path="lib/cobra-0.96.5R2.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.96.5R2.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-2007_07_22.jar"/>
@@ -35,5 +34,6 @@
 	<classpathentry kind="lib" path="lib/substance-4.1dev.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
+	<classpathentry kind="lib" path="/QDWizard/target/qdwizard-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

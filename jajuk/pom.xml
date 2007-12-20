@@ -155,9 +155,9 @@
 		<dependency>
 			<groupId>QDWizard</groupId>
 			<artifactId>qdwizard</artifactId>
-			<version>1.9</version>
+			<version>2.0.1</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/qdwizard-1.9.jar</systemPath>
+			<systemPath>${basedir}/lib/qdwizard-2.0.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>Swingx</groupId>
