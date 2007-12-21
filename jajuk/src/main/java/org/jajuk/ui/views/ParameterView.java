@@ -1157,7 +1157,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbCheckUpdates.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_CHECK_FOR_UPDATE));
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
-    jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.ParameterView.245"));
+    jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
     jcbForceFileDate.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_FORCE_FILE_DATE));
     final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
