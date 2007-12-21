@@ -6,7 +6,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5dev_try2' />
+	<property name='version' value='1.5dev_try3' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -222,7 +222,7 @@
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
-		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${test}.war' />
+		<echo message=' JNLP war file in:      ${rootdir}/jajuk-trunk-${test}.war' />
 	</target>
 
 
@@ -399,7 +399,7 @@
 		-->
 
 		<!-- Create the war file -->
-		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
+		<war destfile='${rootdir}/jajuk-trunk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
 			<fileset dir='${jnlpdir}' />
 			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
 		</war>
