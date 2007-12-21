@@ -205,7 +205,9 @@ public class Util implements ITechnicalStrings {
     public void run() {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-      Main.getWindow().setCursor(Util.WAIT_CURSOR);
+      if (Main.getWindow() != null){
+        Main.getWindow().setCursor(Util.WAIT_CURSOR);
+      }
       if (perspective != null) {
         container = perspective.getContentPane();
         container.setCursor(Util.WAIT_CURSOR);
@@ -221,7 +223,9 @@ public class Util implements ITechnicalStrings {
     public void run() {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-      Main.getWindow().setCursor(Util.DEFAULT_CURSOR);
+      if (Main.getWindow() != null){
+        Main.getWindow().setCursor(Util.DEFAULT_CURSOR);
+      }
       if (perspective != null) {
         container = perspective.getContentPane();
         container.setCursor(Util.DEFAULT_CURSOR);
