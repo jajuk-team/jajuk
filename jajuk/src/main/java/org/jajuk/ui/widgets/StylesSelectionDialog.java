@@ -165,16 +165,15 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
       }
     });
     JPanel jp = new JPanel();
-    JScrollPane jsp = new JScrollPane(jlist);
     jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
     jp.add(Box.createVerticalStrut(10));
     jp.add(jpAmbiences);
     jp.add(Box.createVerticalStrut(10));
-    jp.add(jsp);
+    jp.add(jlist);
     jp.add(okc);
     jp.add(Box.createVerticalStrut(10));
     jp.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    add(jp);
+    add(new JScrollPane(jp));
     getRootPane().setDefaultButton(okc.getOKButton());
   }
 
