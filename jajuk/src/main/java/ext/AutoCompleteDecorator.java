@@ -28,14 +28,6 @@
 
 package ext;
 
-import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;
-import org.jdesktop.swingx.autocomplete.AutoCompleteComboBoxEditor;
-import org.jdesktop.swingx.autocomplete.ComboBoxAdaptor;
-import org.jdesktop.swingx.autocomplete.ListAdaptor;
-import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
-import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
-import org.jdesktop.swingx.autocomplete.workarounds.AquaLnFPopupLocationFix;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -57,6 +49,13 @@ import javax.swing.UIManager;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
+
+import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;
+import org.jdesktop.swingx.autocomplete.AutoCompleteComboBoxEditor;
+import org.jdesktop.swingx.autocomplete.ComboBoxAdaptor;
+import org.jdesktop.swingx.autocomplete.ListAdaptor;
+import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
 
 /**
  * This class contains only static utility methods that can be used to set up
@@ -183,9 +182,6 @@ public class AutoCompleteDecorator {
     boolean strictMatching = !comboBox.isEditable();
     // has to be editable
     comboBox.setEditable(true);
-    // fix the popup location
-    AquaLnFPopupLocationFix.install(comboBox);
-
     // configure the text component=editor component
     JTextComponent editorComponent = (JTextComponent) comboBox.getEditor().getEditorComponent();
     final AbstractAutoCompleteAdaptor adaptor = new ComboBoxAdaptor(comboBox);
