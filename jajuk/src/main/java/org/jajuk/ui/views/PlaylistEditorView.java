@@ -258,16 +258,13 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 
       // custom properties now
       // for tracks
-      Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
-      while (it.hasNext()) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+
+      for (PropertyMetaInformation meta : TrackManager.getInstance().getCustomProperties()) {
         vColNames.add(meta.getName());
         vId.add(meta.getName());
       }
       // for files
-      it = FileManager.getInstance().getCustomProperties().iterator();
-      while (it.hasNext()) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+      for (PropertyMetaInformation meta : FileManager.getInstance().getCustomProperties()) {
         vColNames.add(meta.getName());
         vId.add(meta.getName());
       }
@@ -342,10 +339,11 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         oValues[iRow][14] = bf.getTrack().getHits();
         // Custom properties now
         // for tracks
-        Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
+        Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
+            .iterator();
         for (int i = 0; it2.hasNext(); i++) {
-          PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
-          LinkedHashMap properties = bf.getTrack().getProperties();
+          PropertyMetaInformation meta = it2.next();
+          LinkedHashMap<String, Object> properties = bf.getTrack().getProperties();
           Object o = properties.get(meta.getName());
           if (o != null) {
             oValues[iRow][iNumberStandardCols + i] = o;
@@ -357,8 +355,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         it2 = FileManager.getInstance().getCustomProperties().iterator();
         // note that index lust start at custom track properties size
         for (int i = TrackManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
-          PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
-          LinkedHashMap properties = bf.getProperties();
+          PropertyMetaInformation meta = it2.next();
+          LinkedHashMap<String, Object> properties = bf.getProperties();
           Object o = properties.get(meta.getName());
           if (o != null) {
             oValues[iRow][iNumberStandardCols + i] = o;
@@ -418,7 +416,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
     jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9"));
     jbClear.addActionListener(this);
     jbPrepParty = new JajukButton(IconLoader.ICON_EXT_DRIVE);
-    jbPrepParty.setToolTipText(Messages.getString("AbstractPlaylistEditorView.26"));
+    jbPrepParty.setToolTipText(Messages.getString("AbstractPlaylistEditorView.27"));
     jbPrepParty.addActionListener(this);
     jlTitle = new JLabel("");
     JToolBar jtb = new JToolBar();
@@ -985,9 +983,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
           alItemsToPlay.add(getItem(indexes[i]));
         }
         ArrayList<File> alFiles = new ArrayList<File>(alItemsToPlay.size());
-        Iterator it = alItemsToPlay.iterator();
-        while (it.hasNext()) {
-          alFiles.add(((StackItem) it.next()).getFile());
+        for (StackItem item : alItemsToPlay) {
+          alFiles.add(item.getFile());
         }
         Bookmarks.getInstance().addFiles(alFiles);
       } else if (ae.getSource() == jmiFileProperties) {

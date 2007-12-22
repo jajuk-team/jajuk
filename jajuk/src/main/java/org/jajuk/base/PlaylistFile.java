@@ -865,7 +865,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
           }
           Util.stopWaiting();
           Messages.showInfoMessage(dirName + " "
-              + Messages.getString("AbstractPlaylistEditorView.27") + " " + fDir.getAbsolutePath());
+              + Messages.getString("AbstractPlaylistEditorView.28") + " " + fDir.getAbsolutePath());
         }
       }.start();
     }
