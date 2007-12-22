@@ -925,7 +925,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     introLength.setMinorTickSpacing(1);
     introLength.setPaintTicks(true);
     introLength.setPaintLabels(true);
-    introLength.setToolTipText(Messages.getString("ParameterView.110"));
+    introLength.setToolTipText(Messages.getString("ParameterView.62"));
     introLength.addMouseWheelListener(new DefaultMouseWheelListener(introLength));
 
     // best of size
