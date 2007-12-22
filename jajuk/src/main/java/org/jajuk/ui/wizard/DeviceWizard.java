@@ -344,7 +344,8 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
           Log.error(112, device.getName(), e2);
           Messages.showErrorMessage(112, device.getName());
         }
-      } else if (!sInitialURL.equals(jtfUrl.getText())) {
+      } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
+        //If user changed the URL, force refresh
         try {
           // try to remount the device
           device.mount();
