@@ -21,7 +21,9 @@
 
 package org.jajuk.base;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.jajuk.util.log.Log;
 
@@ -37,13 +39,39 @@ public class AlarmThreadManager{
     return singleton;
   }
   
+  public void run(){
+    new Thread() {
+      public void run(){
+        boolean bstop = false;
+        while(!bstop){
+          try{
+            Thread.sleep(1000);
+          }catch(InterruptedException e){}
+          if(allAlarms.size() == 0)
+            bstop = true;
+          else{
+            Calendar cal = Calendar.getInstance();
+            String currentTime = cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND);
+            for(AlarmThread alarm : allAlarms){
+              if((Time.valueOf(currentTime).getTime() - Time.valueOf(alarm.getAlarmTime()).getTime()) > 0)
+                alarm.wakeUpSleeper();
+            }
+          }
+        }
+      }
+    }.start();
+    
+  }
   public void addAlarm(AlarmThread aAlarm){
-    allAlarms.add(aAlarm);
-    Log.debug("Inside Add Alarm");
+    if (allAlarms.size() == 0){
+      allAlarms.add(aAlarm);
+      run();
+    } 
+    else
+      allAlarms.add(aAlarm);
   }
   
   public void stopAlarm(AlarmThread aAlarm){
-    aAlarm.stop();
     allAlarms.remove(aAlarm);
   }
   

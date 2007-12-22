@@ -89,7 +89,7 @@ public class AlarmClockAction extends ActionBase{
       Messages.showWarningMessage(Messages.getString("AlarmClock.4"));
     }
     
-    AlarmThread aAlarm = new AlarmThread(alarmTime, currentTime, alToPlay, alarmAction, alarmMessage);
+    AlarmThread aAlarm = new AlarmThread(alarmTime, alToPlay, alarmAction, alarmMessage);
     aAlarm.start();
     AlarmThreadManager.getInstance().addAlarm(aAlarm);
   }

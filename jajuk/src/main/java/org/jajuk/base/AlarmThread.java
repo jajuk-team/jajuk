@@ -28,25 +28,17 @@ import java.sql.Time;
 import java.util.List;
 
 public class AlarmThread extends Thread implements ITechnicalStrings{
-  private String alarmTime, currentTime;
+  private String alarmTime;
   private List<File> alToPlay;
-  private volatile boolean bstop = false;
   private String alarmAction;
   private String alarmMessage;
   
-  public AlarmThread(String aTime, String cTime, List<File> alFiles, String mode, String message){
+  public AlarmThread(String aTime, List<File> alFiles, String mode, String message){
     super();
     alarmTime = aTime;
-    currentTime = cTime;
     alToPlay = alFiles;
     alarmAction = mode;
     alarmMessage = message;
-    }
-    public void run(){
-      try{
-        sleep(Time.valueOf(alarmTime).getTime() - Time.valueOf(currentTime).getTime());
-      }catch (InterruptedException e){}
-      wakeUpSleeper();
     }
     
     public void wakeUpSleeper(){
@@ -58,10 +50,6 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
       AlarmThreadManager.getInstance().removeAlarm(this);
       if(!"".equals(alarmMessage))
         Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " " + alarmMessage);
-    }
-    
-    public void stopAlarm(){
-      this.bstop = true;
     }
     
     public String getAlarmTime(){
