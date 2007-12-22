@@ -198,7 +198,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   public ArrayList<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
     ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
     boolean bOK = false;
-    for (org.jajuk.base.File file:files){
+    for (org.jajuk.base.File file : files) {
       if (bOK || file.equals(fileStart)) {
         alOut.add(file);
         bOK = true;
@@ -261,11 +261,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     for (int i = 0; i < files.length; i++) {
       try { // check errors for each file
-        // Note date for file date property. CAUTION: do not try to
-        // check current date to accelerate refreshing if file has not
-        // been modified since last refresh as user can rename a parent
-        // directory and the files times under it are not modified
-        long lastModified = files[i].lastModified();
         // Check file name is correct (useful to fix name encoding
         // issues)
         if (!new File(files[i].getAbsolutePath()).exists()) {
@@ -330,6 +325,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           long trackNumber = TrackManager.getInstance().getElementCount();
           Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
               length, year, lOrder, type);
+
+          // Note date for file date property. CAUTION: do not try to
+          // check current date to accelerate refreshing if file has not
+          // been modified since last refresh as user can rename a parent
+          // directory and the files times under it are not modified
+          long lastModified = files[i].lastModified();
 
           // Use file date if the "force file date" option is used
           if (ConfigurationManager.getBoolean(CONF_FORCE_FILE_DATE)) {
