@@ -53,7 +53,9 @@ public class AlarmThreadManager{
             Calendar cal = Calendar.getInstance();
             String currentTime = cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND);
             for(AlarmThread alarm : allAlarms){
-              if((Time.valueOf(currentTime).getTime() - Time.valueOf(alarm.getAlarmTime()).getTime()) > 0)
+              long timediff= Time.valueOf(currentTime).getTime() - alarm.getAlarmMilliSeconds();
+              // wake up only if within 5 minutes of alarm Time
+              if(timediff > 0 && timediff < 300000)
                 alarm.wakeUpSleeper();
             }
           }

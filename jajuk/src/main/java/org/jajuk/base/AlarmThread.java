@@ -32,13 +32,17 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
   private List<File> alToPlay;
   private String alarmAction;
   private String alarmMessage;
+  private boolean alarmDaily;
+  private long alarmMilliSeconds;
   
-  public AlarmThread(String aTime, List<File> alFiles, String mode, String message){
+  public AlarmThread(String aTime, boolean daily, List<File> alFiles, String mode, String message){
     super();
     alarmTime = aTime;
+    alarmMilliSeconds = Time.valueOf(alarmTime).getTime();
     alToPlay = alFiles;
     alarmAction = mode;
     alarmMessage = message;
+    alarmDaily = daily;
     }
     
     public void wakeUpSleeper(){
@@ -47,7 +51,10 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
       }else{
         FIFO.getInstance().stopRequest();
       }
-      AlarmThreadManager.getInstance().removeAlarm(this);
+      if(!isDaily())
+        AlarmThreadManager.getInstance().removeAlarm(this);
+      else
+        this.alarmMilliSeconds += 24*3600*1000;
       if(!"".equals(alarmMessage))
         Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " " + alarmMessage);
     }
@@ -56,10 +63,18 @@ public class AlarmThread extends Thread implements ITechnicalStrings{
       return this.alarmTime;
     }
     
+    public long getAlarmMilliSeconds(){
+      return alarmMilliSeconds;
+    }
+   
     public String getAlarmText(){
       if(!"".equals(alarmMessage))
-        return Messages.getString("Stop")+ ": " + alarmMessage + " " + Messages.getString("AlarmClock.3") + " @ "+ getAlarmTime();
+        return Messages.getString("Stop")+ ": " + alarmMessage + " " + (isDaily()?Messages.getString("AlarmDialog.8"):"") + " " + Messages.getString("AlarmClock.3") + " @ "+ getAlarmTime();
       else
-        return Messages.getString("Stop")+ ": " + Messages.getString("AlarmClock.3") + " @ "+ getAlarmTime(); 
+        return Messages.getString("Stop")+ ": " + (isDaily()?Messages.getString("AlarmDialog.8"):"") + " " + Messages.getString("AlarmClock.3") + " @ "+ getAlarmTime(); 
+    }
+    
+    public boolean isDaily(){
+      return alarmDaily;
     }
   }

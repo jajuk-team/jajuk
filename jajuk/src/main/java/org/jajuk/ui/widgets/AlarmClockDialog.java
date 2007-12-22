@@ -98,6 +98,8 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   
   JTextField jtfSeconds;
   
+  JCheckBox jcbDaily;
+  
   SteppedComboBox scbAlarmOption;
   
   JPanel jpMessage;
@@ -121,6 +123,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jtfSeconds.setToolTipText(Messages.getString("AlarmDialog.3"));
     jlSeparator1 = new JLabel(":");
     jlSeparator2 = new JLabel(":");
+    jcbDaily = new JCheckBox(Messages.getString("AlarmDialog.8"));
+    jcbDaily.setToolTipText(Messages.getString("AlarmDialog.9"));
+    jcbDaily.addActionListener(this);
     
     jpFields = new JPanel();
     jpFields.add(jlTime);
@@ -129,6 +134,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpFields.add(jtfMinutes);
     jpFields.add(jlSeparator2);
     jpFields.add(jtfSeconds);
+    jpFields.add(jcbDaily);
     jpFields.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     
     jpAction = new JPanel();
@@ -290,7 +296,11 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     ConfigurationManager.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
     ConfigurationManager.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
     ConfigurationManager.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
-    
+    if (jcbDaily.isSelected())
+      ConfigurationManager.setProperty(CONF_ALARM_DAILY, ""+true);
+    else{
+      ConfigurationManager.setProperty(CONF_ALARM_DAILY, ""+false);
+    }
     if (jrbShuffle.isSelected()) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_MODE,
           ITechnicalStrings.STARTUP_MODE_SHUFFLE);

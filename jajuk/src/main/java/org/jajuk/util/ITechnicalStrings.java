@@ -1148,6 +1148,8 @@ public interface ITechnicalStrings {
   
   public static final String CONF_ALARM_MODE = "jajuk.alarm.mode";
   
+  public static final String CONF_ALARM_DAILY = "jajuk.alarm.daily";
+  
   // Alarms List
   
   public static final String ALARMS_SET = "jajuk.alarms";
