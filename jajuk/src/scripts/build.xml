@@ -253,7 +253,7 @@
 		<signjar jar="${distdir}/lib/jspeex-0.9.3.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/qdwizard-2.0.1.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/qdwizard-2.0.2.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/substance-4.1dev.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/swingx-2007_07_22.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />

@@ -34,6 +34,6 @@
 	<classpathentry kind="lib" path="lib/substance-4.1dev.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
-	<classpathentry kind="lib" path="lib/qdwizard-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/qdwizard-2.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
