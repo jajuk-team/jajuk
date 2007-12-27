@@ -128,16 +128,7 @@ public class Track extends LogicalItem implements Comparable {
   public String getAny() {
     // rebuild any
     StringBuilder sb = new StringBuilder(100);
-    sb.append(super.getAny()); // add all files-based properties
-    // now add others properties
-    sb.append(getName());
-    sb.append(getStyle().getName2());
-    sb.append(getAuthor().getName2());
-    sb.append(getAlbum().getName2());
-    sb.append(getDuration());
-    sb.append(getRate());
-    sb.append(getValue(XML_TRACK_COMMENT));// custom properties now
-    sb.append(getValue(XML_TRACK_ORDER));// custom properties now
+    sb.append(super.getAny()); // add all track-based properties
     // Add all files absolute paths
     for (File file : getFiles()) {
       sb.append(file.getAbsolutePath());
@@ -190,7 +181,7 @@ public class Track extends LogicalItem implements Comparable {
    * @param filter
    *          files we want to deal with, null means no filter
    */
-  public ArrayList<File> getReadyFiles(HashSet filter) {
+  public ArrayList<File> getReadyFiles(HashSet<File> filter) {
     ArrayList<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady() && (filter == null || filter.contains(file))) {

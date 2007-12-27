@@ -20,13 +20,6 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -36,6 +29,13 @@ import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Messages;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
 
 /**
  * Convenient class to manage Tracks
@@ -157,6 +157,8 @@ public class TrackManager extends ItemManager implements Observer {
       }
       track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
       hmItems.put(sId, track);
+      //For performances, add the track to the album cache
+      album.tracks.add(track);
       return track;
     }
   }
@@ -172,7 +174,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackAlbum(Track track, String sNewAlbum, HashSet filter)
+  public Track changeTrackAlbum(Track track, String sNewAlbum, HashSet<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -191,6 +193,8 @@ public class TrackManager extends ItemManager implements Observer {
         tag.setAlbumName(sNewAlbum);
         tag.commit();
       }
+      //Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
       // if current track album name is changed, notify it
       if (FIFO.getInstance().getCurrentFile() != null
           && FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
@@ -219,7 +223,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackAuthor(Track track, String sNewAuthor, HashSet filter)
+  public Track changeTrackAuthor(Track track, String sNewAuthor, HashSet<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -266,7 +270,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackStyle(Track track, String sNewStyle, HashSet filter)
+  public Track changeTrackStyle(Track track, String sNewStyle, HashSet<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -310,7 +314,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wrong format
    */
-  public Track changeTrackYear(Track track, String newItem, HashSet filter) throws JajukException {
+  public Track changeTrackYear(Track track, String newItem, HashSet<File> filter) throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getYear().getName().equals(newItem)) {
@@ -354,7 +358,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackComment(Track track, String sNewItem, HashSet filter)
+  public Track changeTrackComment(Track track, String sNewItem, HashSet<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -414,7 +418,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackOrder(Track track, long lNewOrder, HashSet filter) throws JajukException {
+  public Track changeTrackOrder(Track track, long lNewOrder, HashSet<File> filter) throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getOrder() == lNewOrder) {
@@ -455,7 +459,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackName(Track track, String sNewItem, HashSet filter) throws JajukException {
+  public Track changeTrackName(Track track, String sNewItem, HashSet<File> filter) throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getName().equals(sNewItem)) {
@@ -485,7 +489,7 @@ public class TrackManager extends ItemManager implements Observer {
     }
   }
 
-  private void updateFilesReferences(Track oldTrack, Track newTrack, HashSet filter) {
+  private void updateFilesReferences(Track oldTrack, Track newTrack, HashSet<File> filter) {
     synchronized (TrackManager.getInstance().getLock()) {
       // Reset files property before adding new files
       for (File file : oldTrack.getReadyFiles(filter)) {
@@ -496,7 +500,7 @@ public class TrackManager extends ItemManager implements Observer {
     }
   }
 
-  private void postChange(Track track, Track newTrack, HashSet filter) {
+  private void postChange(Track track, Track newTrack, HashSet<File> filter) {
     synchronized (TrackManager.getInstance().getLock()) {
       // re apply old properties from old item
       newTrack.cloneProperties(track);
@@ -517,11 +521,12 @@ public class TrackManager extends ItemManager implements Observer {
   /**
    * Perform a track cleanup : delete useless items
    */
+  @SuppressWarnings("unchecked")
   public void cleanup() {
     synchronized (TrackManager.getInstance().getLock()) {
-      Iterator itTracks = hmItems.values().iterator();
+      Iterator<Track> itTracks = hmItems.values().iterator();
       while (itTracks.hasNext()) {
-        Track track = (Track) itTracks.next();
+        Track track = itTracks.next();
         if (track.getFiles().size() == 0) { // no associated file
           itTracks.remove();
           continue;
@@ -577,6 +582,9 @@ public class TrackManager extends ItemManager implements Observer {
    */
   public Set<Track> getAssociatedTracks(Item item) {
     synchronized (TrackManager.getInstance().getLock()) {
+      if (item instanceof Album){
+        return ((Album)item).tracks;
+      }
       Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
       for (Object item2 : hmItems.values()) {
         Track track = (Track) item2;
@@ -663,9 +671,8 @@ public class TrackManager extends ItemManager implements Observer {
   public TreeSet<SearchResult> search(String criteria) {
     synchronized (TrackManager.getInstance().getLock()) {
       TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
-      Iterator it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        Track track = (Track) it.next();
+      for (Object item: hmItems.values()){
+        Track track = (Track)item;
         File playable = track.getPlayeableFile(ConfigurationManager
             .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
         if (playable != null) {

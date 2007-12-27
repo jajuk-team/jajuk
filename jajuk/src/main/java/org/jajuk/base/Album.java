@@ -19,19 +19,21 @@
  */
 package org.jajuk.base;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.File;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.PatternSyntaxException;
+
+import javax.swing.ImageIcon;
+
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
-
-import javax.swing.ImageIcon;
 
 /**
  * An Album *
@@ -42,10 +44,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   private static final long serialVersionUID = 1L;
 
-  /** For perfs, we store the associated styles */
-  private HashSet<Style> styles;
-  /** For perfs, we store the associated authors */
-  private HashSet<Author> authors;
+  /** For perfs, we store the associated tracks */
+  protected Set<Track> tracks = new TreeSet<Track>();
 
   /**
    * Album constructor
@@ -58,7 +58,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return album name, dealing with unkwnown for any language
+   * Return album name, dealing with unknown for any language
    * 
    * @return album name
    */
@@ -122,13 +122,60 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   public String getHumanValue(String sKey) {
-    if (XML_NAME.equals(sKey)) {
-      return getName2();
+    // We compute here al pseudo keys (non album real attributes) that can be
+    // required on an album
+    if (XML_AUTHOR.equals(sKey)) {
+      Author author = getAuthor();
+      if (author != null) {
+        return author.getName2();
+      } else {
+        // More than one author, display void string
+        return "";
+      }
+    } else if (XML_STYLE.equals(sKey)) {
+      Style style = getStyle();
+      if (style != null) {
+        return style.getName2();
+      } else {
+        // More than one style, display void string
+        return "";
+      }
+    } else if (XML_YEAR.equals(sKey)) {
+      return Long.toString(getYear().getValue());
+    } else if (XML_TRACK_RATE.equals(sKey)) {
+      return Long.toString(getRate());
+    } else if (XML_TRACK_LENGTH.equals(sKey)) {
+      return Long.toString(getDuration());
+    } else if (XML_TRACKS.equals(sKey)) {
+      return Integer.toString(getNbOfTracks());
+    } else if (XML_TRACK_ADDED.equals(sKey)) {
+      return Util.getLocaleDateFormatter().format(getDiscoveryDate());
+    } else if (XML_TRACK_HITS.equals(sKey)) {
+      return Long.toString(getHits());
     } else if (XML_ANY.equals(sKey)) {
-      // return getNa
+      return getAny();
     }
     // default
     return super.getHumanValue(sKey);
+  }
+
+  /**
+   * @return a human representation of all concatenated properties
+   */
+  public String getAny() {
+    // rebuild any
+    StringBuilder sb = new StringBuilder(100);
+    sb.append(super.getAny()); // add all album-based properties
+    // now add others properties
+    sb.append(getAuthor().getName2());
+    sb.append(getStyle().getName2());
+    sb.append(getHumanValue(XML_YEAR));
+    sb.append(getHumanValue(XML_TRACK_RATE));
+    sb.append(getHumanValue(XML_TRACK_LENGTH));
+    sb.append(getHumanValue(XML_TRACKS));
+    sb.append(getHumanValue(XML_TRACK_ADDED));
+    sb.append(getHumanValue(XML_TRACK_HITS));
+    return sb.toString();
   }
 
   /**
@@ -219,7 +266,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public long getRate() {
     float rate = 0f;
     int nb = 0;
-    for (Track track : TrackManager.getInstance().getAssociatedTracks(this)) {
+    for (Track track : tracks) {
       rate += track.getRate();
       nb++;
     }
@@ -253,19 +300,16 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         different styles
    */
   public Style getStyle() {
-    if (styles == null) {
-      // Load it lazily
-      styles = new HashSet<Style>(1);
-      for (Track track : TrackManager.getInstance().getAssociatedTracks(this)) {
-        styles.add(track.getStyle());
-      }
+    HashSet<Style> styles = new HashSet<Style>(1);
+    for (Track track : tracks) {
+      styles.add(track.getStyle());
     }
-    Style out = null;
     // If different styles, the album style is null
     if (styles.size() == 1) {
-      out = styles.iterator().next();
+      return styles.iterator().next();
+    } else {
+      return null;
     }
-    return out;
   }
 
   /**
@@ -274,19 +318,90 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         different authors
    */
   public Author getAuthor() {
-    if (authors == null) {
-      // Load it lazily
-      authors = new HashSet<Author>(1);
-      for (Track track : TrackManager.getInstance().getAssociatedTracks(this)) {
-        authors.add(track.getAuthor());
+    HashSet<Author> authors = new HashSet<Author>(1);
+    for (Track track : tracks) {
+      authors.add(track.getAuthor());
+    }
+    // If different Authors, the album Author is null
+    if (authors.size() == 1) {
+      return authors.iterator().next();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * 
+   * @return year for the album. Return null if the album contains tracks with
+   *         different years
+   */
+  public Year getYear() {
+    HashSet<Year> years = new HashSet<Year>(1);
+    for (Track track : tracks) {
+      years.add(track.getYear());
+    }
+    // If different Authors, the album Author is null
+    if (years.size() == 1) {
+      return years.iterator().next();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Return full album length in secs
+   */
+  public long getDuration() {
+    long length = 0;
+    for (Track track : tracks) {
+      length += track.getDuration();
+    }
+    return length;
+  }
+
+  /**
+   * @return album nb of tracks
+   */
+  public int getNbOfTracks() {
+    int nb = 0;
+    for (Track track : tracks) {
+      nb += 1;
+    }
+    return nb;
+  }
+
+  /**
+   * @return album total nb of hits
+   */
+  public long getHits() {
+    int hits = 0;
+    for (Track track : tracks) {
+      hits += track.getHits();
+    }
+    return hits;
+  }
+
+  /**
+   * @return wether the album contains a least one available track
+   */
+  public boolean containsReadyFiles() {
+    for (Track track : tracks) {
+      if (track.getReadyFiles().size() > 0){
+        return true;
       }
     }
-    Author out = null;
-    // If different authors, the album style is null
-    if (authors.size() == 1) {
-      out = authors.iterator().next();
+    return false;
+  }
+
+  /**
+   * @return First found track discovery date
+   */
+  public Date getDiscoveryDate() {
+    if (tracks.size() > 0) {
+      return tracks.iterator().next().getDiscoveryDate();
+    } else {
+      return null;
     }
-    return out;
   }
 
   public boolean matches(String property, String pattern) {
@@ -316,6 +431,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
       Log.error(pse);
     }
     return match;
+  }
+
+  /**
+   * Reset tracks references
+   */
+  protected void resetTracks() {
+    tracks.clear();
   }
 
 }

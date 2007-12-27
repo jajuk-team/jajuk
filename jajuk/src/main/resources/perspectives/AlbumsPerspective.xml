@@ -3,9 +3,15 @@
 <DockingDesktop name="">
 <DockingPanel>
 <Dockable>
-<Key dockName="org.jajuk.ui.views.CatalogView/0"/>
+<Key dockName="org.jajuk.ui.views.CatalogView/2147483647"/>
 </Dockable>
 </DockingPanel>
+<Border zone="1">
+<Dockable>
+<Key dockName="org.jajuk.ui.views.AlbumsTableView/2147483647"/>
+<RelativePosition x="0.0" y="0.80" w="1.0" h="0.20" />
+</Dockable>
+</Border>
 <TabGroups>
 </TabGroups>
 </DockingDesktop>
