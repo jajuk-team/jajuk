@@ -76,7 +76,6 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.jajuk.Main;
@@ -96,13 +95,8 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.dj.Ambience;
-import org.jajuk.ui.perspectives.IPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukSystray;
-import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
@@ -128,9 +122,6 @@ public class Util implements ITechnicalStrings {
 
   /** contains clipboard data */
   public static String copyData;
-
-  /** Waiting flag for perfs */
-  private static boolean bWaiting = false;
 
   /** Addition date Date format */
   private static SimpleDateFormat sdfAdded = new SimpleDateFormat(
@@ -200,41 +191,6 @@ public class Util implements ITechnicalStrings {
       "Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta", "Heavy Metal",
       "Black Metal", "Crossover", "Contemporary C", "Christian Rock", "Merengue", "Salsa",
       "Thrash Metal", "Anime", "JPop", "SynthPop" };
-  /** Waiting cursor thread, stored to avoid construction */
-  private static Thread tWaiting = new Thread() {
-    public void run() {
-      Container container = null;
-      IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-      if (Main.getWindow() != null){
-        Main.getWindow().setCursor(Util.WAIT_CURSOR);
-      }
-      if (perspective != null) {
-        container = perspective.getContentPane();
-        container.setCursor(Util.WAIT_CURSOR);
-        CommandJPanel.getInstance().setCursor(Util.WAIT_CURSOR);
-        InformationJPanel.getInstance().setCursor(Util.WAIT_CURSOR);
-        PerspectiveBarJPanel.getInstance().setCursor(Util.WAIT_CURSOR);
-      }
-    }
-  };
-
-  /** Default cursor thread, stored to avoid construction */
-  private static Thread tDefault = new Thread() {
-    public void run() {
-      Container container = null;
-      IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-      if (Main.getWindow() != null){
-        Main.getWindow().setCursor(Util.DEFAULT_CURSOR);
-      }
-      if (perspective != null) {
-        container = perspective.getContentPane();
-        container.setCursor(Util.DEFAULT_CURSOR);
-        CommandJPanel.getInstance().setCursor(Util.DEFAULT_CURSOR);
-        InformationJPanel.getInstance().setCursor(Util.DEFAULT_CURSOR);
-        PerspectiveBarJPanel.getInstance().setCursor(Util.DEFAULT_CURSOR);
-      }
-    }
-  };
 
   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
@@ -976,7 +932,7 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
-   * Formater for properties dialog window
+   * Formatter for properties dialog window
    * 
    * @param sDesc
    * @return
@@ -2234,9 +2190,8 @@ public class Util implements ITechnicalStrings {
    * Set current cursor as default cursor
    */
   public static synchronized void stopWaiting() {
-    if (Util.bWaiting) {
-      Util.bWaiting = false;
-      SwingUtilities.invokeLater(Util.tDefault);
+    if (Main.getWindow() != null) {
+      Main.getWindow().getContentPane().setCursor(Util.DEFAULT_CURSOR);
     }
   }
 
@@ -2371,9 +2326,8 @@ public class Util implements ITechnicalStrings {
    * Set current cursor as waiting cursor
    */
   public static synchronized void waiting() {
-    if (!Util.bWaiting) {
-      Util.bWaiting = true;
-      SwingUtilities.invokeLater(Util.tWaiting);
+    if (Main.getWindow() != null) {
+      Main.getWindow().getContentPane().setCursor(Util.WAIT_CURSOR);
     }
   }
 
