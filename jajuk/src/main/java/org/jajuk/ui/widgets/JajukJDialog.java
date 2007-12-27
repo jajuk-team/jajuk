@@ -20,10 +20,10 @@
 
 package org.jajuk.ui.widgets;
 
+import javax.swing.JDialog;
+
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
-
-import javax.swing.JDialog;
 
 /**
  * Custom JDialog

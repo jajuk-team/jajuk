@@ -19,11 +19,13 @@
  */
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.ui.views.IView;
-
 import java.awt.Container;
 import java.net.URL;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
+
+import org.jajuk.ui.views.IView;
 
 /**
  * Representation of a perspective
@@ -39,19 +41,19 @@ public interface IPerspective {
   public abstract String getDesc();
 
   /**
-   * Return the icon's jar path
+   * Return the icon
    * 
-   * @return String Icon's jar path representing the perspective.
+   * @return perspective icon
    */
-  public abstract URL getIconPath();
+  public abstract ImageIcon getIcon();
 
   /**
-   * Set icon path inside jar
+   * Set icon 
    * 
    * @param iconURL
-   *          icon path inside jar
+   *          icon
    */
-  public void setIconPath(URL iconURL);
+  public void setIcon(ImageIcon icon);
 
   /**
    * @return Arraylist views registered in the perspective.

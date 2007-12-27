@@ -20,12 +20,11 @@
 
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.ui.views.IView;
-import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
+import com.vlsolutions.swing.docking.Dockable;
+import com.vlsolutions.swing.docking.DockableResolver;
+import com.vlsolutions.swing.docking.DockableState;
+import com.vlsolutions.swing.docking.DockingContext;
+import com.vlsolutions.swing.docking.DockingDesktop;
 
 import java.awt.Container;
 import java.io.BufferedInputStream;
@@ -36,11 +35,14 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.vlsolutions.swing.docking.Dockable;
-import com.vlsolutions.swing.docking.DockableResolver;
-import com.vlsolutions.swing.docking.DockableState;
-import com.vlsolutions.swing.docking.DockingContext;
-import com.vlsolutions.swing.docking.DockingDesktop;
+import javax.swing.ImageIcon;
+
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewFactory;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Perspective adapter, provide default implementation for perspectives
@@ -50,8 +52,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   /** Perspective id (class) */
   private String sID;
 
-  /** Perspective icon path */
-  private URL iconPath;
+  /** Perspective icon */
+  private ImageIcon icon;
 
   /**
    * As been selected flag (workaround for VLDocking issue when saving position)
@@ -89,15 +91,15 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.IPerspective#getIconPath()
    */
-  public URL getIconPath() {
-    return iconPath;
+  public ImageIcon getIcon() {
+    return icon;
   }
 
   /**
    * Set icon path
    */
-  public void setIconPath(URL iconURL) {
-    this.iconPath = iconURL;
+  public void setIcon(ImageIcon icon) {
+    this.icon = icon;
   }
 
   /*

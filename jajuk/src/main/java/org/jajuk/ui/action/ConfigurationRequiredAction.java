@@ -19,12 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.ui.perspectives.ConfigurationPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Action for configurate the application

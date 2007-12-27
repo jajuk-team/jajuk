@@ -20,13 +20,13 @@
 
 package org.jajuk.dj;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Ambience DJ

@@ -19,12 +19,12 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.util.Messages;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.util.Messages;
 
 /**
  * A playlist

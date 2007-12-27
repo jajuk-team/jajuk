@@ -20,14 +20,14 @@
 
 package org.jajuk.base;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
+
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
 
 /**
  * A Jajuk property meta information

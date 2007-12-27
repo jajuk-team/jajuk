@@ -19,14 +19,14 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionEvent;
 
 public class RestoreViewsAction extends ActionBase implements ITechnicalStrings {
 

@@ -20,16 +20,16 @@
 
 package org.jajuk.dj;
 
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.util.ITechnicalStrings;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Style;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  * A proportion (10% JAZZ, 20% ROCK...) digital DJ

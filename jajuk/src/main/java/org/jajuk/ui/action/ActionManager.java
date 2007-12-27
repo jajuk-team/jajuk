@@ -58,8 +58,6 @@ import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 
-import org.jajuk.util.Util;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -67,6 +65,8 @@ import java.util.List;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+
+import org.jajuk.util.Util;
 
 /**
  * Helper class used to create, store and lookup actions.

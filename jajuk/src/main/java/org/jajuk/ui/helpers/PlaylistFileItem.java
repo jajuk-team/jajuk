@@ -20,18 +20,18 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UrlImageIcon;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Messages;
 
 /**
  * A physical playlist icon + text
@@ -70,7 +70,7 @@ public class PlaylistFileItem extends JPanel {
    * @param sName :
    *          name of the playlist file to be displayed
    */
-  public PlaylistFileItem(int iType, UrlImageIcon icon, PlaylistFile plf, String sName) {
+  public PlaylistFileItem(int iType, ImageIcon icon, PlaylistFile plf, String sName) {
     this.iType = iType;
     this.plf = plf;
     double[][] dSize = { { 200 }, { 50, 10, 5 } };

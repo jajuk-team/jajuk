@@ -20,32 +20,8 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Event;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.ui.helpers.DefaultMouseWheelListener;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukButton;
-import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Filter;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-
+import ext.FlowScrollPanel;
+import ext.SwingWorker;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -80,8 +56,31 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ext.FlowScrollPanel;
-import ext.SwingWorker;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.ui.helpers.DefaultMouseWheelListener;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.ui.thumbnails.ThumbnailsMaker;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.SteppedComboBox;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Filter;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 /**
  * Catalog view. Displays all default covers by album

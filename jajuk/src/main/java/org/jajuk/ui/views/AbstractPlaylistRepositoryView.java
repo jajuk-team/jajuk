@@ -20,22 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.PlaylistManager;
-import org.jajuk.ui.helpers.PlaylistFileItem;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
+import ext.SwingWorker;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -55,7 +40,22 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
-import ext.SwingWorker;
+import org.jajuk.base.Event;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PlaylistManager;
+import org.jajuk.ui.helpers.PlaylistFileItem;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Shows playlist files

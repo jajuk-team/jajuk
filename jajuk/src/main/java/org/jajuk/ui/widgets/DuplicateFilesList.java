@@ -20,33 +20,27 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.JList;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.jajuk.base.File;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 public class DuplicateFilesList extends JPanel implements ListSelectionListener {
 

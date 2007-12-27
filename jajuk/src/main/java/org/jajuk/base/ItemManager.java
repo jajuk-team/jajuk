@@ -20,19 +20,19 @@
 
 package org.jajuk.base;
 
-import org.apache.commons.collections.bidimap.TreeBidiMap;
-import org.jajuk.util.Filter;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
+
+import org.apache.commons.collections.bidimap.TreeBidiMap;
+import org.jajuk.util.Filter;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Managers parent class

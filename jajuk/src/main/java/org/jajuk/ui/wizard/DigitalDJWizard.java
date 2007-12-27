@@ -19,34 +19,7 @@
  */
 package org.jajuk.ui.wizard;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceDigitalDJ;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.dj.DigitalDJ;
-import org.jajuk.dj.DigitalDJManager;
-import org.jajuk.dj.Proportion;
-import org.jajuk.dj.ProportionDigitalDJ;
-import org.jajuk.dj.Transition;
-import org.jajuk.dj.TransitionDigitalDJ;
-import org.jajuk.ui.helpers.DefaultMouseWheelListener;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.widgets.StylesSelectionDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.qdwizard.ClearPoint;
-import org.qdwizard.Screen;
-import org.qdwizard.Wizard;
-
+import ext.AutoCompleteDecorator;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -75,7 +48,33 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ext.AutoCompleteDecorator;
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceDigitalDJ;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.dj.DigitalDJ;
+import org.jajuk.dj.DigitalDJManager;
+import org.jajuk.dj.Proportion;
+import org.jajuk.dj.ProportionDigitalDJ;
+import org.jajuk.dj.Transition;
+import org.jajuk.dj.TransitionDigitalDJ;
+import org.jajuk.ui.helpers.DefaultMouseWheelListener;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.StylesSelectionDialog;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.qdwizard.ClearPoint;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
 
 /**
  * DJ creation wizard

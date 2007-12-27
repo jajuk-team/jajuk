@@ -19,21 +19,21 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.log.Log;
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.IntellitypeListener;
+import com.melloware.jintellitype.JIntellitype;
 
 import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.IntellitypeListener;
-import com.melloware.jintellitype.JIntellitype;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  * This manager contains all windows-specific code dealing with hotkeys

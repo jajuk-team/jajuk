@@ -19,6 +19,8 @@
  */
 package org.jajuk.base;
 
+import java.io.File;
+
 import org.jajuk.tag.ITagImpl;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
@@ -27,8 +29,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import java.io.File;
 
 /**
  * abstract tag, independent from real implementation

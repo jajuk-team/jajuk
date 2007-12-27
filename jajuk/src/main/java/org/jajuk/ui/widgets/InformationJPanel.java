@@ -19,21 +19,6 @@
  */
 package org.jajuk.ui.widgets;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.JajukTimer;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Player;
-import org.jajuk.base.WebRadio;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -53,6 +38,21 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Player;
+import org.jajuk.base.WebRadio;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Status / information panel ( static view )

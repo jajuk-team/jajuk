@@ -20,17 +20,17 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
 
 /**
  * Generic property handler, parent class for all items

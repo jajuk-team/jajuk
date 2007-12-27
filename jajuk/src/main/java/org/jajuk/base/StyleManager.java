@@ -20,11 +20,6 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,6 +30,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
+
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Convenient class to manage styles

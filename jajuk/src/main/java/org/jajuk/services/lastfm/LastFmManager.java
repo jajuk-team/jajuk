@@ -20,6 +20,12 @@
 
 package org.jajuk.services.lastfm;
 
+import ext.services.lastfm.Submitter;
+import ext.services.lastfm.SubmitterException;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
@@ -31,12 +37,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import ext.services.lastfm.Submitter;
-import ext.services.lastfm.SubmitterException;
 
 /**
  * LastFM Manager, handle file launch events to submit informations among others

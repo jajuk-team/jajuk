@@ -20,15 +20,15 @@
 
 package org.jajuk.util;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.ui.wizard.RefreshDialog;
-import org.jajuk.util.log.Log;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
+
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.ui.wizard.RefreshDialog;
+import org.jajuk.util.log.Log;
 
 /**
  * Provides devices refresh report features Is responsible to manage various UI

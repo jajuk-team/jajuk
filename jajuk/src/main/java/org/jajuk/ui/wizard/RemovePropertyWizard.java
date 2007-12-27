@@ -20,13 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Messages;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -36,6 +29,13 @@ import java.util.Properties;
 
 import javax.swing.Box;
 import javax.swing.JComboBox;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Messages;
 
 /**
  * 

@@ -19,6 +19,12 @@
  */
 package org.jajuk.base;
 
+import java.util.Properties;
+
+import javax.sound.sampled.LineUnavailableException;
+
+import javazoom.jlgui.basicplayer.BasicPlayer;
+
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
@@ -26,12 +32,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
-
-import java.util.Properties;
-
-import javax.sound.sampled.LineUnavailableException;
-
-import javazoom.jlgui.basicplayer.BasicPlayer;
 
 /**
  * abstract class for music player, independent from real implementation

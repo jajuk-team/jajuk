@@ -19,15 +19,7 @@
  */
 package org.jajuk.ui.widgets;
 
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.perspectives.IPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.UrlImageIcon;
-import org.jdesktop.swingx.JXPanel;
-
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -39,6 +31,15 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXPanel;
 
 /**
  * Menu bar used to choose the current perspective.
@@ -88,13 +89,23 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
     int index = 0;
     while (it.hasNext()) {
       final IPerspective perspective = it.next();
-      JButton jb = new JButton(perspective.getDesc(), new UrlImageIcon(perspective.getIconPath()));
+      Font font = FontManager.getInstance().getFont(JajukFont.PERSPECTIVES);
+      int iconSize = ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
+      JButton jb = new JButton(perspective.getIcon());
+      jb.setToolTipText(perspective.getDesc());
+      if (iconSize >= 32) {
+        int glyphSize = font.getSize();
+        // Limit perspective label to icon width
+        String desc = Util.getLimitedString(perspective.getDesc(), 3 + (iconSize / glyphSize));
+        // No text for icon < 32 pixels in width: too narrow
+        jb.setText(desc);
+      }
       jb.setVerticalTextPosition(JButton.BOTTOM);
       jb.setHorizontalTextPosition(JButton.CENTER);
-      jb.setMinimumSize(new Dimension(85, 65));
-      jb.setPreferredSize(new Dimension(85, 65));
-      jb.setMaximumSize(new Dimension(85, 65));
-      jb.setFont(FontManager.getInstance().getFont(JajukFont.PERSPECTIVES));
+      // jb.setMinimumSize(new Dimension(85, 65));
+      // jb.setPreferredSize(new Dimension(85, 65));
+      // jb.setMaximumSize(new Dimension(85, 65));
+      jb.setFont(font);
       jb.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           // no thread, it causes ugly screen repaint

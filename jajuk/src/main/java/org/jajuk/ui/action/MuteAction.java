@@ -19,13 +19,13 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.base.Player;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
+
+import org.jajuk.base.Player;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 
 /**
  * Action of clicking on the mute button

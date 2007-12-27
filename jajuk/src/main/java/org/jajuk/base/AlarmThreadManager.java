@@ -25,7 +25,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import org.jajuk.util.log.Log;
 
 public class AlarmThreadManager{
   private static AlarmThreadManager singleton;

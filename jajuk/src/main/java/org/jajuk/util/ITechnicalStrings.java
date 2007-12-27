@@ -579,7 +579,7 @@ public interface ITechnicalStrings {
   public static final String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
 
   /** Default substance theme * */
-  public static final String LNF_DEFAULT_THEME = "Orange";
+  public static final String LNF_DEFAULT_THEME = "Steel Blue";
 
   /** Default substance watermark * */
   public static final String LNF_DEFAULT_WATERMARK = "None";
@@ -805,8 +805,11 @@ public interface ITechnicalStrings {
   /** Increase rate value */
   public static final String CONF_INC_RATING = "jajuk.inc_rating.step";
 
-  /** Use file date as discrovery date option */
+  /** Use file date as discovery date option */
   public static final String CONF_FORCE_FILE_DATE = "jajuk.force_file_date";
+
+  /** Perspective chooser icon size: 16x16, 32x32 or 40x40 */
+  public static final String CONF_PERSPECTIVE_ICONS_SIZE = "jajuk.ui.perspective_icons_size";
 
   /** Shuffle/novelties mode */
   public static final String MODE_ALBUM = "album";

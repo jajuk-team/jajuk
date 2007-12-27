@@ -20,6 +20,14 @@
 
 package org.jajuk.ui.wizard;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.DeviceManager;
@@ -36,14 +44,6 @@ import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {

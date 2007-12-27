@@ -20,12 +20,12 @@
 
 package org.jajuk.util;
 
+import java.io.File;
+import java.net.URL;
+
 import org.jajuk.Main;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.util.log.Log;
-
-import java.io.File;
-import java.net.URL;
 
 /**
  * Maintain all behavior needed upgrades from releases to releases

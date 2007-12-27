@@ -20,16 +20,12 @@
 
 package org.jajuk.ui.thumbnails;
 
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Item;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
+import com.sun.java.help.impl.SwingWorker;
+import com.vlsolutions.swing.docking.ShadowBorder;
+
+import ext.services.lastfm.AudioScrobblerAlbum;
+import ext.services.lastfm.AudioScrobblerArtist;
+import ext.services.lastfm.AudioScrobblerService;
 
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -40,12 +36,16 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import com.sun.java.help.impl.SwingWorker;
-import com.vlsolutions.swing.docking.ShadowBorder;
-
-import ext.services.lastfm.AudioScrobblerAlbum;
-import ext.services.lastfm.AudioScrobblerArtist;
-import ext.services.lastfm.AudioScrobblerService;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Item;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.VerticalLayout;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * Last.FM Album thumb represented as artists label + (optionally) others text

@@ -20,8 +20,6 @@
 
 package org.jajuk.tag;
 
-import org.jajuk.util.Util;
-
 import java.io.File;
 import java.util.Map;
 
@@ -29,6 +27,8 @@ import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
+
+import org.jajuk.util.Util;
 
 /**
  * Tager implementationfor formats without tags and read by BasicPlayer API

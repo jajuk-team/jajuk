@@ -20,10 +20,10 @@
 
 package org.jajuk.base;
 
+import java.util.Date;
+
 import org.apache.commons.collections.Predicate;
 import org.jajuk.util.ITechnicalStrings;
-
-import java.util.Date;
 
 /**
  * List of Predicates (filter criteria)

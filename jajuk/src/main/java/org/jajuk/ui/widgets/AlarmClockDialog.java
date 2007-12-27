@@ -20,37 +20,33 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jajuk.Main;
-import org.jajuk.base.SearchResult;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.ITechnicalStrings;
-
-import org.jajuk.ui.widgets.SearchBox;
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
+import org.jajuk.Main;
+import org.jajuk.base.SearchResult;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
 
 /**
  * Alarm Clock Dialog window

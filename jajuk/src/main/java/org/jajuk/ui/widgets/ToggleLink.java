@@ -20,13 +20,13 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jdesktop.swingx.JXCollapsiblePane;
-import org.jdesktop.swingx.JXHyperlink;
-
 import java.awt.Font;
 
 import javax.swing.Action;
 import javax.swing.UIManager;
+
+import org.jdesktop.swingx.JXCollapsiblePane;
+import org.jdesktop.swingx.JXHyperlink;
 
 /**
  * Generic toggle hyperlink to open/collapse a collapsable panel

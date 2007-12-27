@@ -20,23 +20,21 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import org.jajuk.base.AlarmThread;
 import org.jajuk.base.AlarmThreadManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.ui.widgets.AlarmClockDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
-
-import org.jajuk.ui.widgets.AlarmClockDialog;
-
-import java.sql.Time;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AlarmClockAction extends ActionBase{
 

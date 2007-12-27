@@ -20,17 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Item;
-import org.jajuk.ui.views.PlaylistEditorView;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import java.awt.Component;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragSource;
@@ -44,6 +33,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JTable;
+
+import org.jajuk.base.Bookmarks;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.ui.views.PlaylistEditorView;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * DND handler for playlists

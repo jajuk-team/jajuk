@@ -20,14 +20,14 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.ui.perspectives.IPerspective;
-import org.jajuk.util.ITechnicalStrings;
-import org.jdesktop.swingx.JXPanel;
+import com.vlsolutions.swing.docking.DockKey;
 
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 
-import com.vlsolutions.swing.docking.DockKey;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.util.ITechnicalStrings;
+import org.jdesktop.swingx.JXPanel;
 
 /**
  * Default implementation for views

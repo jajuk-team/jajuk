@@ -19,10 +19,10 @@
  */
 package org.jajuk.base;
 
+import javax.swing.ImageIcon;
+
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import javax.swing.ImageIcon;
 
 /**
  * 

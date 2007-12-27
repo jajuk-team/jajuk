@@ -20,6 +20,11 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
@@ -28,11 +33,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionListener;
-import java.util.Iterator;
-
-import javax.swing.JOptionPane;
 
 /**
  * Shows playlist files

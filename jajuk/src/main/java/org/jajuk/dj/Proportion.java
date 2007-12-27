@@ -20,9 +20,9 @@
 
 package org.jajuk.dj;
 
-import org.jajuk.base.Style;
-
 import java.util.HashSet;
+
+import org.jajuk.base.Style;
 
 /**
  * Represent a style proportion (used by digital DJs)

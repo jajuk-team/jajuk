@@ -19,6 +19,9 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.List;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -29,10 +32,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NoveltiesAction extends ActionBase {
 

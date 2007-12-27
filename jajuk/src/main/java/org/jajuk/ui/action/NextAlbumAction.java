@@ -19,14 +19,14 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.log.Log;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Action class for jumping to the next album. Installed keystroke:

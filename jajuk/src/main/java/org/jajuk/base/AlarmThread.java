@@ -19,13 +19,13 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.Messages;
-
 import java.sql.Time;
 import java.util.List;
+
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 public class AlarmThread extends Thread implements ITechnicalStrings{
   private String alarmTime;

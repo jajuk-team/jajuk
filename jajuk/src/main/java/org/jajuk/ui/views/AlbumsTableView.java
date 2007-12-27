@@ -20,13 +20,13 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+
 import org.jajuk.ui.helpers.AlbumsTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * List collection albums as a table

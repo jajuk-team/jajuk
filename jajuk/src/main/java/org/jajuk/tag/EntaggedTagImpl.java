@@ -20,17 +20,17 @@
 
 package org.jajuk.tag;
 
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
+import entagged.audioformats.AudioFile;
+import entagged.audioformats.AudioFileIO;
+import entagged.audioformats.Tag;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import entagged.audioformats.AudioFile;
-import entagged.audioformats.AudioFileIO;
-import entagged.audioformats.Tag;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 
 /**
  * jlGui MP3 tager implementation

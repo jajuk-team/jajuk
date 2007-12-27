@@ -20,18 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-
+import ext.FlowScrollPanel;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -56,7 +45,17 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import ext.FlowScrollPanel;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.ui.wizard.DeviceWizard;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 /**
  * Device view used to create and modify Jajuk devices

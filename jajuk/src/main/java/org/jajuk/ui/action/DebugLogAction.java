@@ -19,14 +19,6 @@
  */
 package org.jajuk.ui.action;
 
-import org.jajuk.Main;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -40,6 +32,14 @@ import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import org.jajuk.Main;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 public class DebugLogAction extends ActionBase {
   private static final long serialVersionUID = 1L;

@@ -19,6 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -31,12 +37,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 
 public class FileMoveAction extends ActionBase {
   /**

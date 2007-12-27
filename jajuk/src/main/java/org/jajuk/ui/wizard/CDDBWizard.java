@@ -19,24 +19,14 @@
  */
 package org.jajuk.ui.wizard;
 
-import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.widgets.OKCancelPanel;
-import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
+import com.sun.java.help.impl.SwingWorker;
 
+import entagged.freedb.Freedb;
+import entagged.freedb.FreedbAlbum;
+import entagged.freedb.FreedbException;
+import entagged.freedb.FreedbQueryResult;
+import entagged.freedb.FreedbReadResult;
+import entagged.freedb.FreedbTrack;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Toolkit;
@@ -62,14 +52,23 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import com.sun.java.help.impl.SwingWorker;
-
-import entagged.freedb.Freedb;
-import entagged.freedb.FreedbAlbum;
-import entagged.freedb.FreedbException;
-import entagged.freedb.FreedbQueryResult;
-import entagged.freedb.FreedbReadResult;
-import entagged.freedb.FreedbTrack;
+import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.widgets.SteppedComboBox;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, ActionListener,
     TableColumnModelListener, TableModelListener, MouseListener {

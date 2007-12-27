@@ -19,28 +19,28 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
-import org.jajuk.base.Track;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Track;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
 public class DeleteAction extends ActionBase {
   /**

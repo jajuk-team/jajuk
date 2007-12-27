@@ -19,6 +19,8 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
@@ -26,8 +28,6 @@ import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
 
 public class RepeatModeAction extends ActionBase {
   private static final long serialVersionUID = 1L;

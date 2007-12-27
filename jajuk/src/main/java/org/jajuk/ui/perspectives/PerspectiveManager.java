@@ -19,6 +19,19 @@
  */
 package org.jajuk.ui.perspectives;
 
+import com.vlsolutions.swing.toolbars.ToolBarContainer;
+import com.vlsolutions.swing.toolbars.ToolBarPanel;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
@@ -32,18 +45,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
-
-import com.vlsolutions.swing.toolbars.ToolBarContainer;
-import com.vlsolutions.swing.toolbars.ToolBarPanel;
 
 /**
  * Perspectives Manager
@@ -222,50 +223,86 @@ public class PerspectiveManager implements ITechnicalStrings {
   /**
    * Register default perspective configuration. Will be overwritten by
    * perspective.xml parsing if it exists
+   * <p>
+   * We set an icon for each perspective, resizing it if user selected another
+   * size than 40x40
+   * </p>
    * 
    */
   public static void registerDefaultPerspectives() {
     reset();
-
+    int iconSize = ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
     IPerspective perspective = null;
     // Simple perspective
     perspective = new SimplePerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_SIMPLE.getUrl());
+    ImageIcon icon = IconLoader.ICON_PERSPECTIVE_SIMPLE;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Files perspective
     perspective = new FilesPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PHYSICAL.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_PHYSICAL;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Tracks perspective
     perspective = new TracksPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_LOGICAL.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_LOGICAL;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Catalog perspective
     perspective = new AlbumsPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CATALOG.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_CATALOG;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Display perspective
     perspective = new DisplayPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_PLAYER.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_PLAYER;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Information perspective
     perspective = new InfoPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_INFORMATION.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_INFORMATION;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Configuration perspective
     perspective = new ConfigurationPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_CONFIGURATION.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_CONFIGURATION;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
 
     // Stats perspective
     perspective = new StatPerspective();
-    perspective.setIconPath(IconLoader.ICON_PERSPECTIVE_STATISTICS.getUrl());
+    icon = IconLoader.ICON_PERSPECTIVE_STATISTICS;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
     registerPerspective(perspective);
   }
 

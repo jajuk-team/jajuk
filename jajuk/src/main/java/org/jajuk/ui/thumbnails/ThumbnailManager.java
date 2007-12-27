@@ -20,13 +20,13 @@
 
 package org.jajuk.ui.thumbnails;
 
+import java.io.File;
+import java.util.StringTokenizer;
+
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import java.io.File;
-import java.util.StringTokenizer;
 
 /**
  * Manage thumbnails

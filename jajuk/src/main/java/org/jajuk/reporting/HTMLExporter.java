@@ -20,6 +20,9 @@
 
 package org.jajuk.reporting;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -29,9 +32,6 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * This class exports music contents to HTML.

@@ -20,13 +20,13 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jajuk.util.Messages;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+
+import org.jajuk.util.Messages;
 
 /**
  * Ok Cancel generic panel

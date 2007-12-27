@@ -20,41 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.base.Playlist;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StackItem;
-import org.jajuk.base.TrackManager;
-import org.jajuk.ui.helpers.Duration;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
-import org.jajuk.ui.helpers.PlaylistFileItem;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.perspectives.TracksPerspective;
-import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukButton;
-import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -91,6 +56,41 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
+
+import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Item;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.TrackManager;
+import org.jajuk.ui.helpers.Duration;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
+import org.jajuk.ui.helpers.PlaylistFileItem;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.perspectives.TracksPerspective;
+import org.jajuk.ui.widgets.IconLabel;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Adapter for playlists editors *

@@ -20,6 +20,9 @@
 
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.List;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.StyleManager;
@@ -30,9 +33,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionEvent;
-import java.util.List;
 
 public class DJAction extends ActionBase {
 

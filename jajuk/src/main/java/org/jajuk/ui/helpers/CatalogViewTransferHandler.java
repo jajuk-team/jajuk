@@ -20,14 +20,14 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
-import org.jajuk.util.ITechnicalStrings;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
+
+import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  * DND handler for table

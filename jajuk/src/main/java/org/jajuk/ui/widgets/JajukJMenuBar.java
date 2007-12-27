@@ -39,10 +39,9 @@ import static org.jajuk.ui.action.JajukAction.WIZARD;
 import com.sun.java.help.impl.SwingWorker;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.Box;
@@ -52,9 +51,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 
-import org.jajuk.base.Item;
 import org.jajuk.base.AlarmThread;
 import org.jajuk.base.AlarmThreadManager;
 import org.jajuk.ui.action.ActionManager;

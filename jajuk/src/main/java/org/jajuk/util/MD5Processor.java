@@ -19,11 +19,11 @@
  */
 package org.jajuk.util;
 
-import org.jajuk.util.log.Log;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to compute MD5 hascodes and return them using predefined

@@ -20,6 +20,21 @@
 
 package org.jajuk.ui.thumbnails;
 
+import com.sun.java.help.impl.SwingWorker;
+import com.vlsolutions.swing.docking.ShadowBorder;
+
+import ext.services.lastfm.AudioScrobblerAlbum;
+import ext.services.lastfm.AudioScrobblerService;
+import ext.services.lastfm.AudioScrobblerTrack;
+
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.io.File;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
@@ -32,21 +47,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
-import com.sun.java.help.impl.SwingWorker;
-import com.vlsolutions.swing.docking.ShadowBorder;
-
-import ext.services.lastfm.AudioScrobblerAlbum;
-import ext.services.lastfm.AudioScrobblerService;
-import ext.services.lastfm.AudioScrobblerTrack;
 
 /**
  * Last.FM Album thumb represented as album cover + (optionally) others text

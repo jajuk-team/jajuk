@@ -19,15 +19,15 @@
  */
 package org.jajuk.util;
 
-import org.jajuk.Main;
-import org.jajuk.ui.perspectives.SimplePerspective;
-import org.jajuk.util.log.Log;
-
 import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+
+import org.jajuk.Main;
+import org.jajuk.ui.perspectives.SimplePerspective;
+import org.jajuk.util.log.Log;
 
 /**
  * Manage all the configuration and user preferences of jajuk.
@@ -264,6 +264,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
     properties.put(CONF_LASTFM_INFO, TRUE);
     properties.put(CONF_WEBRADIO_WAS_PLAYING, FALSE);
+    properties.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");
   }
 
   /**

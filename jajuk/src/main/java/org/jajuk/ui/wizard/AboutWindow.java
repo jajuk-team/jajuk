@@ -20,14 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.Main;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jfree.ui.about.AboutPanel;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.SystemPropertiesPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -44,6 +36,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+
+import org.jajuk.Main;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jfree.ui.about.AboutPanel;
+import org.jfree.ui.about.Licences;
+import org.jfree.ui.about.SystemPropertiesPanel;
 
 /**
  * View used to show the Jajuk about and contributors.

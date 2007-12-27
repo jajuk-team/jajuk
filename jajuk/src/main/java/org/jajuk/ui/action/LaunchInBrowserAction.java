@@ -19,17 +19,17 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.net.URL;
+
+import javax.swing.JComponent;
+
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.desktop.Desktop;
-
-import java.awt.event.ActionEvent;
-import java.net.URL;
-
-import javax.swing.JComponent;
 
 /**
  * 

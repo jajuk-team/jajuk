@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import ext.AutoCompleteDecorator;
+import ext.SwingWorker;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -74,9 +76,6 @@ import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-import ext.AutoCompleteDecorator;
-import ext.SwingWorker;
-
 /**
  * Abstract table view : common implementation for both files and tracks table
  * views
@@ -89,7 +88,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   JPanel jpControl;
 
-  protected JajukToggleButton jtbEditable;
+  JajukToggleButton jtbEditable;
 
   JLabel jlFilter;
 

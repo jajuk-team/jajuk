@@ -20,12 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceManager;
-import org.jajuk.util.Messages;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -45,6 +39,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.util.Messages;
 
 /**
  * Allow a user to select a list of styles

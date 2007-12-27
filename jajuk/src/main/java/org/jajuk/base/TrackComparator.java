@@ -20,9 +20,9 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.Util;
-
 import java.util.Comparator;
+
+import org.jajuk.util.Util;
 
 /**
  * 

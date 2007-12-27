@@ -20,6 +20,19 @@
 
 package org.jajuk.ui.thumbnails;
 
+import com.vlsolutions.swing.docking.ShadowBorder;
+
+import info.clearthought.layout.TableLayout;
+
+import java.awt.Color;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
@@ -36,19 +49,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
-
-import info.clearthought.layout.TableLayout;
-
-import java.awt.Color;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.util.Set;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-
-import com.vlsolutions.swing.docking.ShadowBorder;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information

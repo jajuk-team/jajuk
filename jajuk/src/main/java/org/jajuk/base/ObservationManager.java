@@ -20,14 +20,14 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.log.Log;
-
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
+
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  * This is a mediator managing relationships between subjets and observers

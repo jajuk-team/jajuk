@@ -19,18 +19,17 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UrlImageIcon;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * A music file to be played
@@ -365,7 +364,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
     if (iconUrl == null) {
       icon = IconLoader.ICON_TYPE_WAV;
     } else {
-      icon = new UrlImageIcon(iconUrl);
+      icon = new ImageIcon(iconUrl);
     }
     return icon;
   }

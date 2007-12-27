@@ -19,6 +19,10 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.BorderFactory;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.StackItem;
@@ -28,10 +32,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionEvent;
-
-import javax.swing.BorderFactory;
 
 public class ContinueModeAction extends ActionBase {
 

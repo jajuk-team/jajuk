@@ -23,7 +23,6 @@ import java.io.File;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 

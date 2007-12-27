@@ -20,15 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jdesktop.swingx.JXDatePicker;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -46,6 +37,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jdesktop.swingx.JXDatePicker;
 
 /**
  * 

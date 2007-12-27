@@ -19,12 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.Main;
 import org.jajuk.ui.wizard.SimpleDeviceWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Action for displaying the tip of the day.

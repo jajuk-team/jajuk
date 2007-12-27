@@ -20,7 +20,6 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jajuk.base.FIFO;

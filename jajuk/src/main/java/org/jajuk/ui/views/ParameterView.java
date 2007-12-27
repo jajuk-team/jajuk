@@ -334,8 +334,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JPanel jpModes;
 
   JCheckBox jcbCheckUpdates;
-  
+
   JCheckBox jcbForceFileDate;
+
+  JSlider jsPerspectiveSize;
 
   /**
    * 
@@ -619,6 +621,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbShowPopups.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
         .toString(jcbShowPopups.isSelected()));
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, Integer
+        .toString(jsPerspectiveSize.getValue()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
         pathWatermarkFile.getUrl());
     final int oldFont = ConfigurationManager.getInt(ITechnicalStrings.CONF_FONTS_SIZE);
@@ -1328,7 +1332,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // -- User interface --
     jpUI = new JPanel();
-    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
+    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutUI = new TableLayout(sizeUI);
     layoutUI.setHGap(iXSeparator);
     layoutUI.setVGap(iYSeparator);
@@ -1344,6 +1348,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsCatalogPages.setPaintLabels(true);
     jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
+    JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
+    jsPerspectiveSize = new JSlider(16, 60, ConfigurationManager
+        .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE));
+    jsPerspectiveSize.setSnapToTicks(true);
+    jsPerspectiveSize.setMajorTickSpacing(8);
+    jsPerspectiveSize.setMinorTickSpacing(1);
+    jsPerspectiveSize.setPaintTicks(true);
+    jsPerspectiveSize.setPaintLabels(true);
+    jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
+    //Alert user that this change will be effective at next startup
+    jsPerspectiveSize.addChangeListener(new ChangeListener() {
+      public void stateChanged(ChangeEvent e) {
+        if (!jsPerspectiveSize.getValueIsAdjusting()){
+          Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+          applyParameters();
+        }
+      }
+    });
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
     catalogView.setLayout(new VerticalLayout(10));
     catalogView.setCollapsed(true);
@@ -1447,6 +1469,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpUI.add(jcbShowPopups, "0,6");
     jpUI.add(toggle, "0,7");
     jpUI.add(catalogView, "0,8,1,8");
+    jpUI.add(jlPerspectiveSize, "0,9");
+    jpUI.add(jsPerspectiveSize, "1,9");
 
     // --OK/cancel panel
     final Dimension dim = new Dimension(200, 20);
@@ -1718,7 +1742,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     scbWatermarks.setSelectedItem(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK));
     scbWatermarks.addActionListener(this);
-
+    jsPerspectiveSize.setValue(ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE));
   }
 
   /*

@@ -23,6 +23,24 @@ package org.jajuk.ui.widgets;
 import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+import ext.SliderMenuItem;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -47,25 +65,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelEvent;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JSlider;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-
-import ext.SliderMenuItem;
 
 /**
  * Jajuk systray

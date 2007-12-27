@@ -19,14 +19,14 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
 
 public class PlayPauseAction extends ActionBase {
 

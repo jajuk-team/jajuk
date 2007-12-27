@@ -20,15 +20,15 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.base.Item;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-
 import java.util.HashSet;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+
+import org.jajuk.base.Item;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
 
 /**
  * Jajuk table model, adds identifier to model

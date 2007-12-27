@@ -20,6 +20,23 @@
 
 package org.jajuk.ui.views;
 
+import com.jgoodies.animation.Animation;
+import com.jgoodies.animation.Animations;
+import com.jgoodies.animation.Animator;
+import com.jgoodies.animation.animations.BasicTextAnimation;
+import com.jgoodies.animation.components.BasicTextLabel;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -34,23 +51,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.SwingUtilities;
-
-import com.jgoodies.animation.Animation;
-import com.jgoodies.animation.Animations;
-import com.jgoodies.animation.Animator;
-import com.jgoodies.animation.animations.BasicTextAnimation;
-import com.jgoodies.animation.components.BasicTextLabel;
 
 /**
  * Animation-based view

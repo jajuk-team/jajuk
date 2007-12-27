@@ -19,17 +19,17 @@
  */
 package org.jajuk.ui.wizard;
 
+import entagged.freedb.FreedbReadResult;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.wizard.CDDBWizard.CDDBTrack;
 import org.jajuk.util.Messages;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import entagged.freedb.FreedbReadResult;
 
 public class CDDBTableModel extends JajukTableModel {
 

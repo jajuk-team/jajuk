@@ -20,12 +20,12 @@
 
 package org.jajuk.reporting;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * The base abstract class for exporting music contents to different formats.

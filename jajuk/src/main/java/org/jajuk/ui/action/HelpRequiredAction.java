@@ -19,11 +19,11 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.ui.wizard.HelpWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Action for displaying the online help

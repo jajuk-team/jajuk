@@ -19,11 +19,11 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
 
 public class StopTrackAction extends ActionBase {
   private static final long serialVersionUID = 1L;

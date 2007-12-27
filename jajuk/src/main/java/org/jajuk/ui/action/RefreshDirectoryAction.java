@@ -19,6 +19,11 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
+
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -28,11 +33,6 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-
-import javax.swing.JComponent;
 
 public class RefreshDirectoryAction extends ActionBase {
   /**

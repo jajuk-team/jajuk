@@ -20,27 +20,25 @@
 
 package org.jajuk.ui.action;
 
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.ui.widgets.DuplicateFilesList;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JDialog;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-
-import org.jajuk.ui.widgets.DuplicateFilesList;
 
 public class FindDuplicateFilesAction extends ActionBase {
 

@@ -20,24 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.ui.action.ActionBase;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.perspectives.InfoPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.JajukHtmlPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.FlowLayout;
@@ -55,6 +37,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.ui.action.ActionBase;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.perspectives.InfoPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.widgets.JajukHtmlPanel;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Wikipedia view

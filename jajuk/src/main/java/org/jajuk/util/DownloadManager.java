@@ -20,7 +20,8 @@
 
 package org.jajuk.util;
 
-import org.jajuk.util.log.Log;
+import ext.services.network.NetworkUtils;
+import ext.services.network.Proxy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -37,8 +38,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ext.services.network.NetworkUtils;
-import ext.services.network.Proxy;
+import org.jajuk.util.log.Log;
 
 /**
  * Manages network downloads

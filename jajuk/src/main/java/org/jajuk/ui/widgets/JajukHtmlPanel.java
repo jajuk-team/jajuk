@@ -20,6 +20,17 @@
 
 package org.jajuk.ui.widgets;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
@@ -31,17 +42,6 @@ import org.xamjwg.html.parser.DocumentBuilderImpl;
 import org.xamjwg.html.parser.InputSourceImpl;
 import org.xamjwg.html.test.SimpleHtmlParserContext;
 import org.xamjwg.html.test.SimpleHtmlRendererContext;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Type description

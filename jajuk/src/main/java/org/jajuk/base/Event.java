@@ -20,9 +20,9 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.EventSubject;
-
 import java.util.Properties;
+
+import org.jajuk.util.EventSubject;
 
 /**
  * Jajuk event (Observer pattern)

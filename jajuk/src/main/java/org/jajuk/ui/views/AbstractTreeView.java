@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Item;
-import org.jdesktop.swingx.JXTree;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -31,6 +28,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
+import org.jajuk.base.Item;
+import org.jdesktop.swingx.JXTree;
 
 /**
  * An abstract files or tracks tree view. Contains common methods

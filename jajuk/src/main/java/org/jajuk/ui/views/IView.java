@@ -19,11 +19,11 @@
  */
 package org.jajuk.ui.views;
 
-import org.jajuk.ui.perspectives.IPerspective;
+import com.vlsolutions.swing.docking.Dockable;
 
 import java.awt.event.ComponentListener;
 
-import com.vlsolutions.swing.docking.Dockable;
+import org.jajuk.ui.perspectives.IPerspective;
 
 /**
  * A view

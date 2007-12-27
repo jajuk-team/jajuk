@@ -20,15 +20,15 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.base.FileManager;
-import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.ITechnicalStrings;
-
 import java.awt.datatransfer.Transferable;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
+
+import org.jajuk.base.FileManager;
+import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  * DND handler for table

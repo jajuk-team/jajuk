@@ -20,9 +20,9 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.EventSubject;
-
 import java.util.Set;
+
+import org.jajuk.util.EventSubject;
 
 /**
  * GoF Observer pattern Observer

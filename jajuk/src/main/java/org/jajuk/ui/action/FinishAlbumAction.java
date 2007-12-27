@@ -19,6 +19,9 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.Properties;
+
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -29,9 +32,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-
-import java.awt.event.ActionEvent;
-import java.util.Properties;
 
 public class FinishAlbumAction extends ActionBase {
 

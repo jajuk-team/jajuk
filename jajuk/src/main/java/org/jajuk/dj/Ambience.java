@@ -20,11 +20,11 @@
 
 package org.jajuk.dj;
 
+import java.util.HashSet;
+
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.util.log.Log;
-
-import java.util.HashSet;
 
 /**
  * An ambience is a set of styles

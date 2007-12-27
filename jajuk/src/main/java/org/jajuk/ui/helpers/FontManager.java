@@ -20,13 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-
 import java.awt.Font;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -34,6 +27,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.UIManager;
+
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  * Manages Jajuk fonts, stores or update them
@@ -64,7 +64,7 @@ public class FontManager implements ITechnicalStrings, Observer {
   private void registerFonts() {
     // static fonts
     fontCache.put(JajukFont.BOLD_TITLE, new Font("verdana", Font.PLAIN, 20));
-    fontCache.put(JajukFont.PERSPECTIVES, new Font("verdana", Font.BOLD, 10));
+    fontCache.put(JajukFont.PERSPECTIVES, new Font("verdana", Font.BOLD, 9));
     fontCache.put(JajukFont.SEARCHBOX, new Font("verdana", Font.BOLD, 18));
     fontCache.put(JajukFont.SPLASH, new Font("verdana", Font.PLAIN, 12));
     // Bold

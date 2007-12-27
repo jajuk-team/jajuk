@@ -19,6 +19,9 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
@@ -29,9 +32,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.jajuk.webradio.WebRadioManager;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Action class for jumping to the previous track. Installed keystroke:

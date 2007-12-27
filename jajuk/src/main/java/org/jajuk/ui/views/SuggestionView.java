@@ -20,25 +20,13 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.thumbnails.AbstractThumbnail;
-import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
-import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
-import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXBusyLabel;
+import com.sun.java.help.impl.SwingWorker;
+
+import ext.FlowScrollPanel;
+import ext.services.lastfm.AudioScrobblerAlbum;
+import ext.services.lastfm.AudioScrobblerArtist;
+import ext.services.lastfm.AudioScrobblerService;
+import ext.services.lastfm.AudioScrobblerSimilarArtists;
 
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -58,13 +46,25 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.sun.java.help.impl.SwingWorker;
-
-import ext.FlowScrollPanel;
-import ext.services.lastfm.AudioScrobblerAlbum;
-import ext.services.lastfm.AudioScrobblerArtist;
-import ext.services.lastfm.AudioScrobblerService;
-import ext.services.lastfm.AudioScrobblerSimilarArtists;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.thumbnails.AbstractThumbnail;
+import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
+import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
+import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Show suggested albums based on current collection (bestof, novelties) and

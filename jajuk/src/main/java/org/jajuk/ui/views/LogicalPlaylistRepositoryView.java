@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import java.util.Iterator;
+
 import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
@@ -30,8 +32,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
-
-import java.util.Iterator;
 
 /**
  * Shows logical playlists
