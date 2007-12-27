@@ -56,6 +56,8 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
     } else if (oValue instanceof Boolean) {
       c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
           column);
+    } else if (oValue instanceof Duration) {
+      ((JLabel) c).setText(((Duration)oValue).toString());
     }
     c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
     return c;

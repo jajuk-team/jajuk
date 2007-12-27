@@ -20,6 +20,14 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
+
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
@@ -31,14 +39,6 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for logical table view
@@ -225,7 +225,7 @@ public class TracksTableModel extends JajukTableModel {
       bCellEditable[iRow][5] = false;
       ilRate.setInteger(true);
       // Length
-      oValues[iRow][6] = Util.formatTimeBySec(track.getDuration(), false);
+      oValues[iRow][6] = new Duration(track.getDuration());
       bCellEditable[iRow][6] = false;
       // Comment
       oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);

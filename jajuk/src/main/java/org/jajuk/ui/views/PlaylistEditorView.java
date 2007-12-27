@@ -34,6 +34,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.TrackManager;
+import org.jajuk.ui.helpers.Duration;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
@@ -321,7 +322,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         // Year
         oValues[iRow][6] = bf.getTrack().getYear();
         // Length
-        oValues[iRow][7] = Util.formatTimeBySec(bf.getTrack().getDuration(), false);
+        oValues[iRow][7] = new Duration(bf.getTrack().getDuration());
         // Comment
         oValues[iRow][8] = bf.getTrack().getStringValue(XML_TRACK_COMMENT);
         // Date discovery

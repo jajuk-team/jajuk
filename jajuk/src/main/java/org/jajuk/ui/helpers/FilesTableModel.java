@@ -20,6 +20,13 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.regex.PatternSyntaxException;
+
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
@@ -31,13 +38,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Table model used for physical table view
@@ -248,7 +248,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       oValues[iRow][5] = ilRate;
       bCellEditable[iRow][5] = false;
       // Length
-      oValues[iRow][6] = Util.formatTimeBySec(file.getTrack().getDuration(), false);
+      oValues[iRow][6] = new Duration(file.getTrack().getDuration());
       bCellEditable[iRow][6] = false;
       // Device
       oValues[iRow][7] = file.getDirectory().getDevice().getName();
