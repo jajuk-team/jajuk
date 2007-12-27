@@ -89,7 +89,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   JPanel jpControl;
 
-  JajukToggleButton jtbEditable;
+  protected JajukToggleButton jtbEditable;
 
   JLabel jlFilter;
 

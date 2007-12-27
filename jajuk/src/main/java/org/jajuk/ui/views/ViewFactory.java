@@ -102,6 +102,7 @@ public class ViewFactory {
     out.add(StatView.class);
     out.add(SuggestionView.class);
     out.add(WikipediaView.class);
+    out.add(AlbumsTableView.class);
     Collections.sort(out, new Comparator() {
       public int compare(Object view1, Object view2) {
         String s1;
