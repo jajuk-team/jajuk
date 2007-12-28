@@ -22,8 +22,11 @@ package org.jajuk.base;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.PatternSyntaxException;
@@ -141,7 +144,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
         return "";
       }
     } else if (XML_YEAR.equals(sKey)) {
-      return Long.toString(getYear().getValue());
+      Year year = getYear();
+      if (year != null) {
+        return Long.toString(year.getValue());
+      } else {
+        return "";
+      }
     } else if (XML_TRACK_RATE.equals(sKey)) {
       return Long.toString(getRate());
     } else if (XML_TRACK_LENGTH.equals(sKey)) {
@@ -360,6 +368,20 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * @return albums tracks sorted by track order
+   *         <p>
+   *         Caution: this method requires a full tracks scan, don't use it
+   *         massively
+   *         </p>
+   */
+  public List<Track> getTracks() {
+    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(this));
+    // Sort tracks
+    Collections.sort(tracks, new TrackComparator(TrackComparator.ALBUM));
+    return tracks;
+  }
+
+  /**
    * @return album nb of tracks
    */
   public int getNbOfTracks() {
@@ -386,7 +408,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public boolean containsReadyFiles() {
     for (Track track : tracks) {
-      if (track.getReadyFiles().size() > 0){
+      if (track.getReadyFiles().size() > 0) {
         return true;
       }
     }
