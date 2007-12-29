@@ -18,9 +18,9 @@
 
 package ext.services.lastfm;
 
-import org.jajuk.util.ITechnicalStrings;
-
 import java.awt.Image;
+
+import org.jajuk.util.ITechnicalStrings;
 
 public class AudioScrobblerSimilarArtistsRunnable implements Runnable, ITechnicalStrings {
 

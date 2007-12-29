@@ -18,9 +18,7 @@
 
 package ext.services.lastfm;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import ext.XMLUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +27,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import ext.XMLUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class AudioScrobblerAlbum {
 

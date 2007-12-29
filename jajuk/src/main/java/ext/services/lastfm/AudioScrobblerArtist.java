@@ -18,9 +18,9 @@
 
 package ext.services.lastfm;
 
-import org.w3c.dom.Element;
-
 import ext.services.xml.XMLUtils;
+
+import org.w3c.dom.Element;
 
 public class AudioScrobblerArtist {
 

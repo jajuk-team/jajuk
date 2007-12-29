@@ -18,9 +18,7 @@
 
 package ext.services.lastfm;
 
-import org.jajuk.base.Track;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.log.Log;
+import ext.services.network.NetworkUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -31,7 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import ext.services.network.NetworkUtils;
+import org.jajuk.base.Track;
+import org.jajuk.util.DownloadManager;
+import org.jajuk.util.log.Log;
 
 public class Submitter {
 

@@ -18,19 +18,19 @@
 
 package ext.services.lastfm;
 
+import ext.XMLUtils;
+import ext.services.network.NetworkUtils;
+import ext.services.network.Proxy;
+import ext.services.xml.XMLBuilder;
+
+import java.awt.Image;
+import java.util.ArrayList;
+
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import java.awt.Image;
-import java.util.ArrayList;
-
-import ext.XMLUtils;
-import ext.services.network.NetworkUtils;
-import ext.services.network.Proxy;
-import ext.services.xml.XMLBuilder;
 
 public class AudioScrobblerService {
 

@@ -18,10 +18,6 @@
 
 package ext.services.network;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.log.Log;
-
 import java.awt.Image;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -36,6 +32,10 @@ import java.net.UnknownHostException;
 import java.net.Proxy.Type;
 
 import javax.imageio.ImageIO;
+
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 public class NetworkUtils implements ITechnicalStrings {
 

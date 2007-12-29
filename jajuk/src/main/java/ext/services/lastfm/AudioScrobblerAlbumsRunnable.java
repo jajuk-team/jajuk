@@ -18,12 +18,12 @@
 
 package ext.services.lastfm;
 
-import org.jajuk.base.Track;
-import org.jajuk.util.log.Log;
-
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import org.jajuk.base.Track;
+import org.jajuk.util.log.Log;
 
 public class AudioScrobblerAlbumsRunnable implements Runnable {
 

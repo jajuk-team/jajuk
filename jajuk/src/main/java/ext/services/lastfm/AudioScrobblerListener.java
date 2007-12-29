@@ -18,10 +18,10 @@
 
 package ext.services.lastfm;
 
-import org.jajuk.base.Track;
-
 import java.awt.Image;
 import java.util.ArrayList;
+
+import org.jajuk.base.Track;
 
 public interface AudioScrobblerListener {
 
