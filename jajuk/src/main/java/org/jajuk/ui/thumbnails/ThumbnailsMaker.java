@@ -41,6 +41,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -186,6 +187,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     final long lTime = System.currentTimeMillis();
     Main.bTestMode = bTest;
     Main.workspace = workspace;
+    Main.bThumbMaker = true;
     // log startup depends on : setExecLocation, initialCheckups
     Log.getInstance();
     Log.setVerbosity(Log.FATAL);
@@ -208,6 +210,8 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.network_drive"));
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.player"));
+    //Load conf (required to get forced mplayer path for ie)
+    ConfigurationManager.getInstance();
     // registers supported audio supports and default properties
     Main.registerTypes();
     // load collection

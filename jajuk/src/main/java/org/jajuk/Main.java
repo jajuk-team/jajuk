@@ -145,6 +145,12 @@ public class Main implements ITechnicalStrings {
 
   /** Exiting flag */
   public static boolean bExiting = false;
+  
+  /**
+   * Thumb maker flag, true if this class is executed from the Thumb maker
+   * process *
+   */
+  public static boolean bThumbMaker = false;
 
   /** Systray */
   private static JajukSystray jsystray;
@@ -649,23 +655,6 @@ public class Main implements ITechnicalStrings {
             // Launch thumbs creation in another process
             ThumbnailsMaker.launchAllSizes(true);
           }
-
-          // Start check for update thread if required
-          if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
-            new Thread() {
-              @Override
-              public void run() {
-                // Wait 10 min before checking
-                try {
-                  Thread.sleep(600000);
-                  UpgradeManager.checkForUpdate();
-                } catch (final InterruptedException e) {
-                  Log.error(e);
-                }
-              }
-            }.start();
-          }
-
         } catch (final Exception e) {
           Log.error(e);
         }
