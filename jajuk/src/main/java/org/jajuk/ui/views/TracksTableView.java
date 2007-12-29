@@ -244,7 +244,7 @@ public class TracksTableView extends AbstractTableView {
           ArrayList<Track> alTracks = new ArrayList<Track>(indexes.length);
           if (e.getSource() == jmiTrackPlayAlbum) {
             Album album = track.getAlbum();
-            alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
+            alTracks.addAll(album.getTracks());
             // add all tracks from the same album
           }
           if (e.getSource() == jmiTrackPlayAuthor) {

@@ -1049,7 +1049,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           ArrayList<Item> alTracks = new ArrayList<Item>(10);
           for (Item item : alSelected) {
             Album album = (Album) item;
-            alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
+            alTracks.addAll(album.getTracks());
           }
           new PropertiesWizard(alSelected, alTracks);
         } else if (e.getSource() == jmiYearProperties) {
@@ -1066,7 +1066,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           ArrayList<Item> alTracks = new ArrayList<Item>(20);
           for (Item item : alSelected) {
             Album album = (Album) item;
-            alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
+            alTracks.addAll(album.getTracks());
           }
           Util.waiting();
           new CDDBWizard(alTracks);
