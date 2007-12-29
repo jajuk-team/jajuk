@@ -26,20 +26,20 @@
  */
 package ext;
 
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UrlImageIcon;
-import org.jajuk.util.Util;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 /**
  * A simple, yet nice splash screen implementation for java applications.
@@ -113,7 +113,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     super();
     setTitle(Messages.getString("JajukWindow.17"));
     // Do not use IconLoader class here to avoid loading all icons now
-    setIconImage(new UrlImageIcon(Util.getResource("icons/64x64/jajuk-icon_64x64.png")).getImage());
+    setIconImage(new ImageIcon(Util.getResource("icons/64x64/jajuk-icon_64x64.png")).getImage());
     setUndecorated(true);
 
     m_progressBar = progress;

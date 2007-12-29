@@ -28,13 +28,13 @@
  */
 package ext;
 
-import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;
-import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
-
 import javax.swing.UIManager;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+
+import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;
+import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 
 /**
  * A document that can be plugged into any JTextComponent to enable automatic

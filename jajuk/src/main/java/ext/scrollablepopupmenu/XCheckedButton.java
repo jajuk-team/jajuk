@@ -1,7 +1,5 @@
 package ext.scrollablepopupmenu;
 
-import org.jajuk.util.IconLoader;
-
 import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
@@ -18,6 +16,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicButtonUI;
+
+import org.jajuk.util.IconLoader;
 
 /**
  * @author balajihe from
