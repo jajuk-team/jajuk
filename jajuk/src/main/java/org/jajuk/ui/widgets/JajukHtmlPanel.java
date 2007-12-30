@@ -23,9 +23,10 @@ package org.jajuk.ui.widgets;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.URL;
 import java.util.logging.Level;
@@ -121,7 +122,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
    */
   private void showPage(String sPage, File page) throws Exception {
     // Write the page itself
-    BufferedWriter bw = new BufferedWriter(new FileWriter(page));
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page),"UTF-8"));
     bw.write(sPage);
     bw.flush();
     bw.close();
