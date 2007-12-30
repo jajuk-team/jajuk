@@ -150,7 +150,7 @@ public interface ITechnicalStrings {
 
   public static final String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS/mplayer";
 
-  public static final String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS/mplayer";
+  public static final String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX PPC.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS/mplayer";
 
   /** Wikipedia view default URL */
   public static final String WIKIPEDIA_VIEW_DEFAULT_URL = "http://jajuk.info";
