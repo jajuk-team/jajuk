@@ -101,12 +101,16 @@ On a recently manufactured PC, Jajuk uses less than 5% CPU and typically from 40
 (Windows) How to map statically a letter to a drive ?</h3>
 <ul>
 <li>
-This can be useful to create jajuk devices mapped to a drive letter one time for ever (exemple: first external hard drive = M:, second external hard drive = N:)</li>
+This can be useful to create jajuk devices mapped to a drive letter one time for ever (example: first external hard drive = M:, second external hard drive = N:)</li>
 <li>
 Check this <a href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/dm_drive_letter.mspx?mfr=true">
 Microsoft page</a>
 </li>
 </ul>
+<h3>
+What's the java process I sometime see in addition to the Jajuk one and that take a noticeable amount of CPU ?</h3>
+<p>
+This is the ThumbBuilder process that build thumbs for catalog and suggestion views, just let him finish to build thumbs, it will not appear in future jajuk sessions.</p>
 <h2>
 Troubleshooting</h2>
 <h3>
@@ -175,6 +179,10 @@ Then you can try again Web start version, it uses a separated menu entry (Jajuk-
 </ul>
 <h3>
 Linux Only</h3>
+<h4>
+Some Japanese fonts are not displayed correctly (squares) in some part of the screen</h4>
+<p>
+See: https://trac.jajuk.info/ticket/799 or https://help.ubuntu.com/community/Japanese_in_Java</p>
 <h4>
 After setting a cross-fade, the next track cannot start</h4>
 <p>
