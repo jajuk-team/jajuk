@@ -285,8 +285,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JCheckBox jcbPreLoad;
 
-  JCheckBox jcbLoadEachTrack;
-
   JLabel jlCoverSize;
 
   JComboBox jcbCoverSize;
@@ -383,8 +381,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           } else {
             Messages.showErrorMessage(120);
           }
-        } else if (e.getSource() == jcbShuffleCover) {
-          jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());
         } else if (e.getSource() == jbOK) {
           applyParameters();
           // Notify any client than wait for parameters updates
@@ -713,8 +709,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbShuffleCover.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_PRELOAD, Boolean
         .toString(jcbPreLoad.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_CHANGE_AT_EACH_TRACK, Boolean
-        .toString(jcbLoadEachTrack.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_SIZE, Integer
         .toString(jcbCoverSize.getSelectedIndex()));
     // Force LastFM manager configuration reload
@@ -1311,8 +1305,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShuffleCover.addActionListener(this);
     jcbPreLoad = new JCheckBox(Messages.getString("ParameterView.169"));
     jcbPreLoad.setToolTipText(Messages.getString("ParameterView.170"));
-    jcbLoadEachTrack = new JCheckBox(Messages.getString("ParameterView.175"));
-    jcbLoadEachTrack.setToolTipText(Messages.getString("ParameterView.176"));
     jlCoverSize = new JLabel(Messages.getString("ParameterView.150"));
     jlCoverSize.setToolTipText(Messages.getString("ParameterView.151"));
     jcbCoverSize = new JComboBox();
@@ -1324,7 +1316,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
     // Add items
     jpCovers.add(jcbShuffleCover, "0,0");
-    jpCovers.add(jcbLoadEachTrack, "1,0");
     jpCovers.add(jcbAutoCover, "0,1");
     jpCovers.add(jcbPreLoad, "0,2");
     jpCovers.add(jlCoverSize, "0,3");
@@ -1703,11 +1694,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbPreLoad.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_PRELOAD));
     jcbPreLoad
         .setEnabled(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER));
-    jcbLoadEachTrack.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_COVERS_CHANGE_AT_EACH_TRACK));
-    // this mode requires shuffle mode
-    jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled());
-
     jcbAudioScrobbler.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE));
     jcbEnableLastFMInformation.setSelected(ConfigurationManager

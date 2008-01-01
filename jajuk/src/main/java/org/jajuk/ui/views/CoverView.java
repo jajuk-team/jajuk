@@ -62,7 +62,6 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
-import org.jajuk.ui.perspectives.DisplayPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -1115,11 +1114,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           }
           Collections.sort(alCovers); // sort the list
           Log.debug("Local cover list: {{" + alCovers + "}}");
-          if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE)
-              || (PerspectiveManager.getCurrentPerspective() instanceof DisplayPerspective)) {
-            // in player perspective, always show shuffle covers
-            index = (int) (Math.random() * alCovers.size());
+          if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE)) {
             // choose a random cover
+            index = (int) (Math.random() * alCovers.size());
           } else {
             index = alCovers.size() - 1;
             // current index points to the best available cover

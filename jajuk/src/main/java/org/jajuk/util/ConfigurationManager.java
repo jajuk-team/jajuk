@@ -201,7 +201,6 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_COVERS_SHUFFLE, FALSE);
     properties.put(CONF_COVERS_PRELOAD, FALSE);
     properties.put(CONF_COVERS_SIZE, "3"); // medium and large
-    properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK, FALSE);
     properties.put(CONF_FILES_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK + ',' + XML_ALBUM + ','
         + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH);
     properties.put(CONF_TRACKS_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME + ',' + XML_ALBUM + ','

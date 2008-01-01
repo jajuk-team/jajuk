@@ -471,8 +471,7 @@ public class FIFO implements ITechnicalStrings {
           ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
         }
         // case just for a cover change without reload
-        else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager
-            .getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK))) {
+        else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE))) {
           // request update cover
           ObservationManager.notify(new Event(EventSubject.EVENT_COVER_CHANGE));
         }

@@ -40,7 +40,7 @@ public interface ITechnicalStrings {
   public static final int BORDER = 4;
 
   /** Maximum size for covers in KB */
-  public static final int MAX_COVER_SIZE = 1000;
+  public static final int MAX_COVER_SIZE = 1025;
 
   /** Maximum number of remote covers */
   public static final int MAX_REMOTE_COVERS = 10;
@@ -664,9 +664,6 @@ public interface ITechnicalStrings {
   public static final String CONF_COVERS_SIZE = "jajuk.covers.size";
 
   public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
-
-  /** Load cover at each track */
-  public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track";
 
   public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 
