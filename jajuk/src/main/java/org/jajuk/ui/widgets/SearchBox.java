@@ -92,15 +92,17 @@ public class SearchBox extends JTextField implements KeyListener {
 
   /** Search when typing timer */
   Timer timer = new Timer(100, new ActionListener() {
-
     public void actionPerformed(ActionEvent arg0) {
       if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
-        search();
+        new Thread(){
+          public void run(){
+            search();
+          }
+        }.start();
       }
-
     }
-
   });
+
 
   /**
    * Display results as a jlabel with an icon

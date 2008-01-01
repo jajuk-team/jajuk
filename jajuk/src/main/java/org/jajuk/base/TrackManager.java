@@ -157,7 +157,7 @@ public class TrackManager extends ItemManager implements Observer {
       }
       track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
       hmItems.put(sId, track);
-      //For performances, add the track to the album cache
+      // For performances, add the track to the album cache
       album.tracks.add(track);
       return track;
     }
@@ -193,7 +193,7 @@ public class TrackManager extends ItemManager implements Observer {
         tag.setAlbumName(sNewAlbum);
         tag.commit();
       }
-      //Remove the track from the old album
+      // Remove the track from the old album
       track.getAlbum().tracks.remove(track);
       // if current track album name is changed, notify it
       if (FIFO.getInstance().getCurrentFile() != null
@@ -314,7 +314,8 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wrong format
    */
-  public Track changeTrackYear(Track track, String newItem, HashSet<File> filter) throws JajukException {
+  public Track changeTrackYear(Track track, String newItem, HashSet<File> filter)
+      throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getYear().getName().equals(newItem)) {
@@ -418,7 +419,8 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackOrder(Track track, long lNewOrder, HashSet<File> filter) throws JajukException {
+  public Track changeTrackOrder(Track track, long lNewOrder, HashSet<File> filter)
+      throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getOrder() == lNewOrder) {
@@ -459,7 +461,8 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackName(Track track, String sNewItem, HashSet<File> filter) throws JajukException {
+  public Track changeTrackName(Track track, String sNewItem, HashSet<File> filter)
+      throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getName().equals(sNewItem)) {
@@ -582,8 +585,8 @@ public class TrackManager extends ItemManager implements Observer {
    */
   public Set<Track> getAssociatedTracks(Item item) {
     synchronized (TrackManager.getInstance().getLock()) {
-      if (item instanceof Album){
-        return ((Album)item).tracks;
+      if (item instanceof Album) {
+        return ((Album) item).tracks;
       }
       Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
       for (Object item2 : hmItems.values()) {
@@ -669,20 +672,18 @@ public class TrackManager extends ItemManager implements Observer {
    * @return a tree set of available files
    */
   public TreeSet<SearchResult> search(String criteria) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
-      for (Object item: hmItems.values()){
-        Track track = (Track)item;
-        File playable = track.getPlayeableFile(ConfigurationManager
-            .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-        if (playable != null) {
-          String sResu = track.getAny();
-          if (sResu.toLowerCase().indexOf(criteria.toLowerCase()) != -1) {
-            tsResu.add(new SearchResult(playable, playable.toStringSearch()));
-          }
+    TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
+    for (Object item : hmItems.values()) {
+      Track track = (Track) item;
+      File playable = track.getPlayeableFile(ConfigurationManager
+          .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+      if (playable != null) {
+        String sResu = track.getAny();
+        if (sResu.toLowerCase().indexOf(criteria.toLowerCase()) != -1) {
+          tsResu.add(new SearchResult(playable, playable.toStringSearch()));
         }
       }
-      return tsResu;
     }
+    return tsResu;
   }
 }
