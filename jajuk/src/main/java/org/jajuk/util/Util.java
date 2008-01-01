@@ -1436,6 +1436,13 @@ public class Util implements ITechnicalStrings {
         // Add MPlayer file name
         if ((file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE)).exists()) {
           Util.mplayerPath = file;
+        } else {
+          // For bundling project, Jajuk should check if mplayer was
+          // installed along with aTunes. In this case, mplayer is
+          // found in sPATH\win_tools\ directory. Hence, changed sPATH
+          if ((file = new File(sPATH + "/win_tools" + '/' + ITechnicalStrings.FILE_MPLAYER_EXE))
+              .exists())
+            Util.mplayerPath = file;
         }
       } catch (final Exception e) {
         return Util.mplayerPath;
