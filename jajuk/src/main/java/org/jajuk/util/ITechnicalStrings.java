@@ -165,7 +165,7 @@ public interface ITechnicalStrings {
 
   public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
-  public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2007 The Jajuk Team";
+  public static final String JAJUK_COPYRIGHT = "Copyright 2004-2008 The Jajuk Team";
 
   // Files and paths
   /** Bootstrap file that contains jajuk configuration user directory* */
