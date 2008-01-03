@@ -731,6 +731,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
       jbRemove.setEnabled(false);
       jbRun.setEnabled(true);
       jbUp.setEnabled(false);
+      jbPrepParty.setEnabled(true);
     } else {
       jbClear.setEnabled(true);
       // set it to false just for startup because nothing is selected
@@ -742,6 +743,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
       // set it to false just for startup because nothing is selected
       jbRemove.setEnabled(false);
       jbRun.setEnabled(true);
+      jbPrepParty.setEnabled(true);
     }
   }
 

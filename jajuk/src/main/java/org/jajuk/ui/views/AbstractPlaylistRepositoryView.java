@@ -249,8 +249,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
     // cannot play the queue playlist : nonsense
     if (plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
       jmiPlay.setEnabled(false);
+      jmiPrepParty.setEnabled(false);
     } else {
       jmiPlay.setEnabled(true);
+      jmiPrepParty.setEnabled(true);
     }
     jpmenu.show(e.getComponent(), e.getX(), e.getY());
 
