@@ -2194,11 +2194,20 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
+   * Set current cursor as waiting cursor
+   */
+  public static synchronized void waiting() {
+    if (Main.getWindow() != null) {
+      Main.getWindow().setCursor(Util.WAIT_CURSOR);
+    }
+  }
+
+  /**
    * Set current cursor as default cursor
    */
   public static synchronized void stopWaiting() {
     if (Main.getWindow() != null) {
-      Main.getWindow().getContentPane().setCursor(Util.DEFAULT_CURSOR);
+      Main.getWindow().setCursor(Util.DEFAULT_CURSOR);
     }
   }
 
@@ -2326,15 +2335,6 @@ public class Util implements ITechnicalStrings {
 
     for (final Window element : windows) {
       Util.updateWindowUI(element);
-    }
-  }
-
-  /**
-   * Set current cursor as waiting cursor
-   */
-  public static synchronized void waiting() {
-    if (Main.getWindow() != null) {
-      Main.getWindow().getContentPane().setCursor(Util.WAIT_CURSOR);
     }
   }
 
