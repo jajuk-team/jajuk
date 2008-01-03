@@ -26,61 +26,66 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AlarmThreadManager{
+import org.jajuk.util.log.Log;
+
+/**
+ * Convenient class to manage Alarm Threads
+ */
+
+public class AlarmThreadManager {
   private static AlarmThreadManager singleton;
-  
+
   private List<AlarmThread> allAlarms = new ArrayList<AlarmThread>(20);
-  
+
   public static AlarmThreadManager getInstance() {
     if (singleton == null) {
       singleton = new AlarmThreadManager();
     }
     return singleton;
   }
-  
-  public void run(){
-    new Thread() {
-      public void run(){
-        boolean bstop = false;
-        while(!bstop){
-          try{
-            Thread.sleep(1000);
-          }catch(InterruptedException e){}
-          if(allAlarms.size() == 0)
-            bstop = true;
-          else{
-            Calendar cal = Calendar.getInstance();
-            String currentTime = cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND);
-            for(AlarmThread alarm : allAlarms){
-              long timediff= Time.valueOf(currentTime).getTime() - alarm.getAlarmMilliSeconds();
-              // wake up only if within 5 minutes of alarm Time
-              if(timediff > 0 && timediff < 300000)
-                alarm.wakeUpSleeper();
+
+  public void addAlarm(AlarmThread aAlarm) {
+    if (allAlarms.size() == 0) {
+      allAlarms.add(aAlarm);
+      new Thread() {
+        public void run() {
+          boolean bstop = false;
+          while (!bstop) {
+            try {
+              Thread.sleep(1000);
+            } catch (InterruptedException e) {
+              Log.error(e);
+            }
+            if (allAlarms.size() == 0) {
+              bstop = true;
+            } else {
+              Calendar cal = Calendar.getInstance();
+              String currentTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE)
+                  + ":" + cal.get(Calendar.SECOND);
+              for (AlarmThread alarm : allAlarms) {
+                long timediff = Time.valueOf(currentTime).getTime() - alarm.getAlarmMilliSeconds();
+                // wake up only if within 5 seconds of alarm Time
+                // to avoid alarm going into a recursive loop
+                if (timediff > 0 && timediff < 5000)
+                  alarm.wakeUpSleeper();
+              }
             }
           }
         }
-      }
-    }.start();
-    
-  }
-  public void addAlarm(AlarmThread aAlarm){
-    if (allAlarms.size() == 0){
-      allAlarms.add(aAlarm);
-      run();
-    } 
-    else
+      }.start();
+    } else
       allAlarms.add(aAlarm);
   }
-  
-  public void stopAlarm(AlarmThread aAlarm){
+
+  public void stopAlarm(AlarmThread aAlarm) {
     allAlarms.remove(aAlarm);
   }
-  
-  public List<AlarmThread> getAllAlarms(){
+
+  public List<AlarmThread> getAllAlarms() {
     return allAlarms;
   }
-  
-  public void removeAlarm(AlarmThread aAlarm){
+
+  public void removeAlarm(AlarmThread aAlarm) {
     allAlarms.remove(aAlarm);
   }
 }
