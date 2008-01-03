@@ -73,35 +73,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>akathist-repository</id>
-			<name>Akathist Repository</name>
-			<url>http://www.9stmaryrd.com/maven</url>
-		</repository>
-		<repository>
-			<id>cocoondev-repository</id>
-			<name>Cocoon Repository</name>
-			<url>http://cocoondev.org/repository</url>
-		</repository>
-		<repository>
-			<id>ibiblio-repository</id>
-			<name>IBiblio Repository</name>
-			<url>http://www.ibiblio.org/maven</url>
-		</repository>
-		<repository>
-			<id>astrogrid-repository</id>
-			<name>Astrogrid Repository</name>
-			<url>http://www.astrogrid.org/maven</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>akathist-repository</id>
-			<name>Akathist Repository</name>
-			<url>http://www.9stmaryrd.com/maven</url>
-		</pluginRepository>
-	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>tablelayout</groupId>
@@ -153,11 +124,9 @@
 			<systemPath>${basedir}/lib/substance-4.1dev.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>QDWizard</groupId>
+			<groupId>net.sf.qdwizard</groupId>
 			<artifactId>qdwizard</artifactId>
 			<version>2.0.2</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/qdwizard-2.0.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>Swingx</groupId>
