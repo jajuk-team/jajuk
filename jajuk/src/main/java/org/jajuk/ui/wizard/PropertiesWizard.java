@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -94,10 +95,10 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
   OKCancelPanel okc;
 
   /** Items */
-  ArrayList<Item> alItems;
+  List<Item> alItems;
 
   /** Items2 */
-  ArrayList<Item> alItems2;
+  List<Item> alItems2;
 
   /** Files filter */
   HashSet<File> filter = null;
@@ -118,7 +119,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
    * @param alItems
    *          items to display
    */
-  public PropertiesWizard(ArrayList<Item> alItems) {
+  public PropertiesWizard(java.util.List<Item> alItems) {
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
     setTitle(alItems.size() == 1 ? (alItems.get(0)).getDesc() : Messages
@@ -151,7 +152,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
    * @param alItems2
    *          items to display in the second panel (associated track for ie )
    */
-  public PropertiesWizard(ArrayList<Item> alItems1, ArrayList<Item> alItems2) {
+  public PropertiesWizard(List<Item> alItems1, List<Item> alItems2) {
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
     setTitle(alItems1.size() == 1 ? (alItems1.get(0)).getDesc() : Messages
@@ -286,10 +287,10 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     JComponent[][] widgets;
 
     /** Properties to display */
-    ArrayList<PropertyMetaInformation> alToDisplay;
+    List<PropertyMetaInformation> alToDisplay;
 
     /** Items */
-    ArrayList<Item> alItems;
+    List<Item> alItems;
 
     /** Changed properties */
     HashMap<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
@@ -307,7 +308,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
      * @param bMerged :
      *          whether this panel contains merged values
      */
-    PropertiesPanel(ArrayList<Item> alItems, String sDesc, boolean bMerged) {
+    PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       this.alItems = alItems;
       this.bMerged = bMerged;
       Item pa = alItems.get(0);
@@ -671,152 +672,155 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
      * Save changes in tags
      */
     protected void save() throws Exception {
-      Util.waiting();
-      Object oValue = null;
-      Item newItem = null;
-      // list of really changed tracks (for message)
-      ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
-      // none change, leave
-      if (hmPropertyToChange.keySet().size() == 0) {
-        return;
-      }
-      // Computes all items to change
-      // contains items to be changed
-      // TODO refactor this using LinkedHashset for ie
-      ArrayList<Item> alItemsToCheck = new ArrayList<Item>(alItems.size());
-      for (Item item : alItems) {
-        // avoid duplicates for perfs
-        if (!alItemsToCheck.contains(item)) {
-          // add item
-          alItemsToCheck.add(item);
+      try {
+        Util.waiting();
+        Object oValue = null;
+        Item newItem = null;
+        // list of really changed tracks (for message)
+        ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
+        // none change, leave
+        if (hmPropertyToChange.keySet().size() == 0) {
+          return;
         }
-      }
-      ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
-      // details for errors
-      String sDetails = "";
-      // Now we have all items to consider, write tags for each
-      // property to change
-      for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-        ArrayList<Item> alIntermediate = new ArrayList<Item>(alItemsToCheck.size());
-        for (Item item : alItemsToCheck) {
-          // New value
-          oValue = hmPropertyToChange.get(meta);
-          // Check it is not null for non custom properties. Note that
-          // we also allow void values for comments
-          if (oValue == null || (oValue.toString().trim().length() == 0)
-              && !(meta.isCustom() || meta.getName().equals(XML_TRACK_COMMENT))) {
-            Log.error(137, '{' + meta.getName() + '}', null);
-            Messages.showErrorMessage(137, '{' + meta.getName() + '}');
-            return;
+        // Computes all items to change
+        // contains items to be changed
+        // TODO refactor this using LinkedHashset for ie
+        ArrayList<Item> alItemsToCheck = new ArrayList<Item>(alItems.size());
+        for (Item item : alItems) {
+          // avoid duplicates for perfs
+          if (!alItemsToCheck.contains(item)) {
+            // add item
+            alItemsToCheck.add(item);
           }
-          // Old value
-          String sOldValue = item.getHumanValue(meta.getName());
-          if ((sOldValue != null && !Util.format(oValue, meta, true).equals(sOldValue))) {
-            try {
-              // if we change track properties for only one file
-              newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
-            }
-            // none accessible file for this track, for this error,
-            // we display an error and leave completely
-            catch (NoneAccessibleFileException none) {
-              none.printStackTrace();
-              Messages.showErrorMessage(none.getCode(), item.getHumanValue(XML_NAME));
-              // close window to avoid reseting all properties to
-              // old values
-              dispose();
+        }
+        ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
+        // details for errors
+        String sDetails = "";
+        // Now we have all items to consider, write tags for each
+        // property to change
+        for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
+          ArrayList<Item> alIntermediate = new ArrayList<Item>(alItemsToCheck.size());
+          for (Item item : alItemsToCheck) {
+            // New value
+            oValue = hmPropertyToChange.get(meta);
+            // Check it is not null for non custom properties. Note that
+            // we also allow void values for comments
+            if (oValue == null || (oValue.toString().trim().length() == 0)
+                && !(meta.isCustom() || meta.getName().equals(XML_TRACK_COMMENT))) {
+              Log.error(137, '{' + meta.getName() + '}', null);
+              Messages.showErrorMessage(137, '{' + meta.getName() + '}');
               return;
             }
-            // cannot rename file, for this error, we display an
-            // error and leave completely
-            catch (CannotRenameException cre) {
-              Messages.showErrorMessage(cre.getCode());
-              return;
-            }
-            // probably error writing a tag, store track reference
-            // and continue
-            catch (JajukException je) {
-              Log.error(je);
-              if (!alInError.contains(item)) {
-                alInError.add(item);
-                // create details label with 3 levels deep
-                sDetails += je.getMessage();
-                if (je.getCause() != null) {
-                  sDetails += "\nCaused by:" + je.getCause();
-                  if (je.getCause().getCause() != null) {
-                    sDetails += "\nCaused by:" + je.getCause().getCause();
-                    if (je.getCause().getCause().getCause() != null) {
-                      sDetails += "\nCaused by:" + je.getCause().getCause().getCause();
+            // Old value
+            String sOldValue = item.getHumanValue(meta.getName());
+            if ((sOldValue != null && !Util.format(oValue, meta, true).equals(sOldValue))) {
+              try {
+                // if we change track properties for only one file
+                newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
+              }
+              // none accessible file for this track, for this error,
+              // we display an error and leave completely
+              catch (NoneAccessibleFileException none) {
+                none.printStackTrace();
+                Messages.showErrorMessage(none.getCode(), item.getHumanValue(XML_NAME));
+                // close window to avoid reseting all properties to
+                // old values
+                dispose();
+                return;
+              }
+              // cannot rename file, for this error, we display an
+              // error and leave completely
+              catch (CannotRenameException cre) {
+                Messages.showErrorMessage(cre.getCode());
+                return;
+              }
+              // probably error writing a tag, store track reference
+              // and continue
+              catch (JajukException je) {
+                Log.error(je);
+                if (!alInError.contains(item)) {
+                  alInError.add(item);
+                  // create details label with 3 levels deep
+                  sDetails += je.getMessage();
+                  if (je.getCause() != null) {
+                    sDetails += "\nCaused by:" + je.getCause();
+                    if (je.getCause().getCause() != null) {
+                      sDetails += "\nCaused by:" + je.getCause().getCause();
+                      if (je.getCause().getCause().getCause() != null) {
+                        sDetails += "\nCaused by:" + je.getCause().getCause().getCause();
+                      }
                     }
                   }
+                  sDetails += "\n\n";
                 }
-                sDetails += "\n\n";
+                continue;
               }
-              continue;
-            }
-            // if this item was element of property panel elements,
-            // update it
-            if (alItems.contains(item)) {
-              alItems.remove(item);
-              alItems.add(newItem);
-            }
-            // add the new item in intermediate pool used for next
-            // property change
-            // note that if an error occurs in a property change,
-            // the item will not be taken into account for next
-            // property change
-            alIntermediate.add(newItem);
+              // if this item was element of property panel elements,
+              // update it
+              if (alItems.contains(item)) {
+                alItems.remove(item);
+                alItems.add(newItem);
+              }
+              // add the new item in intermediate pool used for next
+              // property change
+              // note that if an error occurs in a property change,
+              // the item will not be taken into account for next
+              // property change
+              alIntermediate.add(newItem);
 
-            // if individual item, change title in case of
-            // constructor element change
-            if (!bMerged) {
-              jlDesc.setText(Util.formatPropertyDesc(newItem.getDesc()));
-            }
-            // note this property have been changed
-            if (!alChanged.contains(meta)) {
-              alChanged.add(meta);
+              // if individual item, change title in case of
+              // constructor element change
+              if (!bMerged) {
+                jlDesc.setText(Util.formatPropertyDesc(newItem.getDesc()));
+              }
+              // note this property have been changed
+              if (!alChanged.contains(meta)) {
+                alChanged.add(meta);
+              }
             }
           }
-        }
-        alItemsToCheck = alIntermediate;
-        /*
-         * Display a warning message if some files not updated if multifile mode
-         * note that this message will appear only for first item in failure,
-         * after, current track will have changed and will no more contain
-         * unmounted files
-         */
-        if (!isMonoFile() && TrackManager.getInstance().isChangePbm()) {
-          Messages.showWarningMessage(Messages.getString("Error.138"));
-        }
-      }
-      // display a message for file write issues
-      if (alInError.size() > 0) {
-        String sInfo = "";
-        int index = 0;
-        for (Item item : alInError) {
-          // limit number of errors
-          if (index == 15) {
-            sInfo += "\n...";
-            break;
+          alItemsToCheck = alIntermediate;
+          /*
+           * Display a warning message if some files not updated if multifile
+           * mode note that this message will appear only for first item in
+           * failure, after, current track will have changed and will no more
+           * contain unmounted files
+           */
+          if (!isMonoFile() && TrackManager.getInstance().isChangePbm()) {
+            Messages.showWarningMessage(Messages.getString("Error.138"));
           }
-          sInfo += "\n" + item.getHumanValue(XML_NAME);
-          index++;
         }
-        Messages.showDetailedErrorMessage(104, sInfo, sDetails);
-      }
+        // display a message for file write issues
+        if (alInError.size() > 0) {
+          String sInfo = "";
+          int index = 0;
+          for (Item item : alInError) {
+            // limit number of errors
+            if (index == 15) {
+              sInfo += "\n...";
+              break;
+            }
+            sInfo += "\n" + item.getHumanValue(XML_NAME);
+            index++;
+          }
+          Messages.showDetailedErrorMessage(104, sInfo, sDetails);
+        }
 
-      // display a message if user changed at least one property
-      if (alChanged.size() > 0) {
-        StringBuilder sbChanged = new StringBuilder();
-        sbChanged.append("{");
-        for (PropertyMetaInformation meta : alChanged) {
-          sbChanged.append(meta.getHumanName()).append(' ');
+        // display a message if user changed at least one property
+        if (alChanged.size() > 0) {
+          StringBuilder sbChanged = new StringBuilder();
+          sbChanged.append("{");
+          for (PropertyMetaInformation meta : alChanged) {
+            sbChanged.append(meta.getHumanName()).append(' ');
+          }
+          sbChanged.append('}');
+          InformationJPanel.getInstance().setMessage(
+              alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
+                  + sbChanged.toString(), InformationJPanel.INFORMATIVE);
         }
-        sbChanged.append('}');
-        InformationJPanel.getInstance().setMessage(
-            alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
-                + sbChanged.toString(), InformationJPanel.INFORMATIVE);
+      } finally {
+        Util.stopWaiting();
       }
-      Util.stopWaiting();
     }
 
     /**

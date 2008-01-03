@@ -54,7 +54,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1207,51 +1206,58 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
-   * Computes file selection from any item
+   * Convenient method for getPlayableFiles(collection<item>)
    * 
-   * @param oData
-   *          the item (a directory, a file...)
-   * @return the files
+   * @param item
+   * @return files
    */
-  public static ArrayList<org.jajuk.base.File> getFilesFromSelection(final Item oData) {
+  public static ArrayList<org.jajuk.base.File> getPlayableFiles(Item item) {
+    List<Item> list = new ArrayList<Item>(1);
+    list.add(item);
+    return getPlayableFiles(list);
+  }
+
+  /**
+   * Computes file selection from item collection
+   * <p>
+   * We assume that the collection elements all own the same type
+   * </p>
+   * Unmounted files are selected according to the value of
+   * CONF_OPTIONS_HIDE_UNMOUNTED option
+   * 
+   * @param selection
+   *          an item selection (directories, files...)
+   * @return the files (empty list if none matching)
+   */
+  public static ArrayList<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
     // computes selection
-    ArrayList<org.jajuk.base.File> alSelectedFiles = new ArrayList<org.jajuk.base.File>(100);
-    // computes logical selection if any
-    Set<Track> alLogicalTracks = null;
-    if ((oData instanceof Style) || (oData instanceof Author) || (oData instanceof Year)
-        || (oData instanceof Album) || (oData instanceof Track)) {
-      if ((oData instanceof Style) || (oData instanceof Year) || (oData instanceof Author)
-          || (oData instanceof Album)) {
-        alLogicalTracks = TrackManager.getInstance().getAssociatedTracks(oData);
-      } else if (oData instanceof Track) {
-        alLogicalTracks = new LinkedHashSet<Track>(100);
-        alLogicalTracks.add((Track) oData);
-      }
-      // prepare files
-      if ((alLogicalTracks != null) && (alLogicalTracks.size() > 0)) {
-        final Iterator it = alLogicalTracks.iterator();
-        while (it.hasNext()) {
-          final Track track = (Track) it.next();
-          final org.jajuk.base.File file = track.getPlayeableFile(false);
-          if (file == null) { // none mounted file for this track
-            continue;
-          }
-          alSelectedFiles.add(file);
+    ArrayList<org.jajuk.base.File> files = new ArrayList<org.jajuk.base.File>(100);
+    if (selection == null || selection.size() == 0) {
+      return files;
+    }
+    for (Item item : selection) {
+      // computes logical selection if any
+      if (item instanceof Track) {
+        files.add(((Track) item).getPlayeableFile(ConfigurationManager
+            .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
+      } else if (item instanceof Album || item instanceof Style || item instanceof Author
+          || item instanceof Year) {
+        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+        for (Track track : tracks) {
+          files.add(track.getPlayeableFile(ConfigurationManager
+              .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
         }
       }
-    }
-    // computes physical selection if any
-    else if ((oData instanceof org.jajuk.base.File) || (oData instanceof Directory)
-        || (oData instanceof Device)) {
-      if (oData instanceof org.jajuk.base.File) {
-        alSelectedFiles.add((org.jajuk.base.File) oData);
-      } else if (oData instanceof Directory) {
-        alSelectedFiles = ((Directory) oData).getFilesRecursively();
-      } else if (oData instanceof Device) {
-        alSelectedFiles = ((Device) oData).getFilesRecursively();
+      // computes physical selection if any
+      else if (item instanceof org.jajuk.base.File) {
+        files.add((org.jajuk.base.File) item);
+      } else if (item instanceof Directory) {
+        files = ((Directory) item).getFilesRecursively();
+      } else if (item instanceof Device) {
+        files = ((Device) item).getFilesRecursively();
       }
     }
-    return alSelectedFiles;
+    return files;
   }
 
   /**

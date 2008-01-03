@@ -448,6 +448,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jbPrev.setEnabled(false);
     jbNext.setEnabled(false);
     jcbPage.setEnabled(false);
+    Util.waiting();
     SwingWorker sw = new SwingWorker() {
       int i = jsp.getVerticalScrollBar().getValue();
 
@@ -455,11 +456,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       public Object construct() {
         // This synchronize fixes a strange race condition when changing
         // thumb size and finished() method is done but all thumb not
-        // yet displayed (several times the sae album with different
+        // yet displayed (several times the same album with different
         // size is displayed)
         synchronized (lock) {
-          Util.waiting();
-          hsItems.clear();
+         hsItems.clear();
           // remove all devices
           if (jpItems.getComponentCount() > 0) {
             jpItems.removeAll();
@@ -664,7 +664,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             }
           }
         }
-        Util.stopWaiting();
         return null;
       }
 
@@ -682,6 +681,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         jbNext.setEnabled(true);
         jcbPage.setEnabled(true);
         bPopulating = false;
+        Util.stopWaiting();
       }
     };
     sw.start();

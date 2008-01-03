@@ -26,12 +26,19 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import org.jajuk.base.Item;
+import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukCellRender;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -45,12 +52,24 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * Remembers columns visibility
  * <p>
  * Tooltips on each cell
+ * <p>
+ * Maintain a table of selected rows
+ * <p>
+ * Bring a menu displayed on right click
  */
-public class JajukTable extends JXTable implements ITechnicalStrings {
+public class JajukTable extends JXTable implements ITechnicalStrings, ListSelectionListener,
+    java.awt.event.MouseListener {
 
   private static final long serialVersionUID = 1L;
 
   private String sConf;
+
+  /** User Selection* */
+  private ArrayList<Item> selection;
+
+  private JPopupMenu jmenu;
+
+  private ILaunchCommand command;
 
   /**
    * Constructor
@@ -60,10 +79,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
    * @param bSortable :
    *          is this table sortable
    * @sConf: configuration variable used to store columns conf
-   */
+    */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
     super(model);
     this.sConf = sConf;
+    selection = new ArrayList<Item>();
+    jmenu = new JPopupMenu();
     setShowGrid(false);
     init(bSortable);
     // Force to use Jajuk cell render for all columns, except for boolean
@@ -71,6 +92,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
     for (TableColumn col : getColumns()) {
       col.setCellRenderer(new JajukCellRender());
     }
+    // Listen for row selection
+    getSelectionModel().addListSelectionListener(this);
+    //Listen for clicks
+    addMouseListener(this);
   }
 
   /**
@@ -227,4 +252,109 @@ public class JajukTable extends JXTable implements ITechnicalStrings {
       addRowSelectionInterval(indexes[i], indexes[i]);
     }
   }
+
+  public void valueChanged(ListSelectionEvent e) {
+    // Ignore adjusting event
+    if (e.getValueIsAdjusting()) {
+      return;
+    }
+    // Make sure this table uses a Jajuk table model
+    if (!(getModel() instanceof JajukTableModel)) {
+      return;
+    }
+    JajukTableModel model = (JajukTableModel) getModel();
+    selection.clear();
+    int[] rows = getSelectedRows();
+    for (int i = 0; i < rows.length; i++) {
+      Object o = model.getItemAt(convertRowIndexToModel(rows[i]));
+      // Make sure the model contains jajuk items
+      if (!(o instanceof Item)) {
+        return;
+      }
+      selection.add((Item) o);
+    }
+  }
+
+  public ArrayList<Item> getSelection() {
+    return this.selection;
+  }
+
+  public void handlePopup(final MouseEvent e) {
+    int iSelectedRow = rowAtPoint(e.getPoint());
+    // Store real row index
+    TableTransferHandler.iSelectedRow = iSelectedRow;
+    // right click on a selected node set if none or 1 node is
+    // selected, a right click on another node
+    // select it if more than 1, we keep selection and display a
+    // popup for them
+    if (getSelectedRowCount() < 2) {
+      getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
+    }
+    jmenu.show(this, e.getX(), e.getY());
+  }
+
+  public JPopupMenu getMenu() {
+    return this.jmenu;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+   */
+  public void mouseClicked(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+   */
+  public void mouseEntered(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+   */
+  public void mouseExited(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+   */
+  public void mousePressed(MouseEvent e) {
+    if (e.isPopupTrigger()) {
+      handlePopup(e);
+    } else if (command != null && (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+      command.launch(e.getClickCount());
+      int iSelectedRow = rowAtPoint(e.getPoint());
+      // Store real row index for drag and drop
+      TableTransferHandler.iSelectedRow = iSelectedRow;
+    }
+  }
+
+  public void mouseReleased(MouseEvent e) {
+    if (e.isPopupTrigger()) {
+      handlePopup(e);
+    }
+  }
+
+  public ILaunchCommand getCommand() {
+    return this.command;
+  }
+
+  public void setCommand(ILaunchCommand command) {
+    this.command = command;
+  }
+
 }

@@ -51,8 +51,8 @@ public class TrackManager extends ItemManager implements Observer {
 
   /** Max rate */
   private long lMaxRate = 0l;
-
-  /**
+  
+    /**
    * No constructor available, only static access
    */
   private TrackManager() {

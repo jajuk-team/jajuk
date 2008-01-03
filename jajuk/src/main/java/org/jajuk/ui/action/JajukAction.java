@@ -414,5 +414,42 @@ public enum JajukAction {
   /**
    * Used to set alarm clock.
    */
-  ALARM_CLOCK
+  ALARM_CLOCK,
+  /**
+   * Show properties on a single or a selection of items
+   */
+  SHOW_PROPERTIES,
+  /**
+   * Play a selection
+   */
+  PLAY_SELECTION,
+  /**
+   * Play randomly a selection
+   */
+  PLAY_SHUFFLE_SELECTION,
+  /**
+   * Play a selection in a loop
+   */
+  PLAY_REPEAT_SELECTION,
+  /**
+   * Push a selection
+   */
+  PUSH_SELECTION,
+  /**
+   * Bookmark selection
+   */
+  BOOKMARK_SELECTION,
+  /**
+   * Play album for selection
+   */
+  PLAY_ALBUM_SELECTION,
+  /**
+   * Play artist for selection
+   */
+  PLAY_AUTHOR_SELECTION,
+  /**
+   * Play full directory for selection
+   */
+  PLAY_DIRECTORY_SELECTION,
+  
 }

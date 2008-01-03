@@ -32,7 +32,6 @@ import org.jajuk.base.Author;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Style;
-import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
@@ -170,6 +169,8 @@ public class AlbumsTableModel extends JajukTableModel {
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
+    //Allow only custom properties edition
+    bEditable = true;
     Iterator<Album> it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
@@ -192,6 +193,7 @@ public class AlbumsTableModel extends JajukTableModel {
       bCellEditable[iRow][0] = false;
       // Album name
       oValues[iRow][1] = album.getName2();
+      bCellEditable[iRow][1] = false;
       // Author
       Author author = album.getAuthor();
       if (author != null) {
@@ -199,6 +201,7 @@ public class AlbumsTableModel extends JajukTableModel {
       } else {
         oValues[iRow][2] = "";
       }
+      bCellEditable[iRow][2] = false;
       // Style
       Style style = album.getStyle();
       if (style != null) {
@@ -206,6 +209,7 @@ public class AlbumsTableModel extends JajukTableModel {
       } else {
         oValues[iRow][3] = "";
       }
+      bCellEditable[iRow][3] = false;
       // Year
       Year year = album.getYear();
       if (year != null) {
@@ -213,20 +217,25 @@ public class AlbumsTableModel extends JajukTableModel {
       } else {
         oValues[iRow][4] = "";
       }
+      bCellEditable[iRow][4] = false;
       // Rate
       IconLabel ilRate = Util.getStars(album);
       oValues[iRow][5] = ilRate;
       ilRate.setInteger(true);
       // Length
       oValues[iRow][6] = new Duration(album.getDuration());
+      bCellEditable[iRow][6] = false;
       // Number of tracks
       oValues[iRow][7] = album.getNbOfTracks();
+      bCellEditable[iRow][7] = false;
       // Date discovery
       oValues[iRow][8] = album.getDiscoveryDate();
+      bCellEditable[iRow][8] = false;
       // Hits
       oValues[iRow][9] = album.getHits();
+      bCellEditable[iRow][9] = false;
       // Custom properties now
-      Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
+      Iterator it2 = AlbumManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
         Object o = properties.get(meta.getName());

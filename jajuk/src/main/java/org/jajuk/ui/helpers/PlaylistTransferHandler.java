@@ -135,7 +135,7 @@ public class PlaylistTransferHandler implements DropTargetListener, ITechnicalSt
         }
       }
       // computes selection
-      ArrayList<File> alSelectedFiles = Util.getFilesFromSelection((Item) oData);
+      ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
       // display a warning message if none accessible file can found
       // for these tracks
       if (alSelectedFiles.size() == 0) {

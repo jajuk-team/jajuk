@@ -47,9 +47,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   private static final long serialVersionUID = 1L;
 
-  /** For perfs, we store the associated tracks */
-  protected Set<Track> tracks = new TreeSet<Track>();
+  private static TrackComparator basicComparator = new TrackComparator(TrackComparator.ALBUM);
 
+  /** For perfs, we store the associated tracks */
+  protected Set<Track> tracks = new TreeSet<Track>(basicComparator);
+  
+  
   /**
    * Album constructor
    * 
@@ -175,9 +178,18 @@ public class Album extends LogicalItem implements Comparable<Album> {
     StringBuilder sb = new StringBuilder(100);
     sb.append(super.getAny()); // add all album-based properties
     // now add others properties
-    sb.append(getAuthor().getName2());
-    sb.append(getStyle().getName2());
-    sb.append(getHumanValue(XML_YEAR));
+    Author author = getAuthor();
+    if (author != null) {
+      sb.append(author.getName2());
+    }
+    Style style = getStyle();
+    if (style != null) {
+      sb.append(style.getName2());
+    }
+    Year year = getYear();
+    if (year != null) {
+      sb.append(getHumanValue(XML_YEAR));
+    }
     sb.append(getHumanValue(XML_TRACK_RATE));
     sb.append(getHumanValue(XML_TRACK_LENGTH));
     sb.append(getHumanValue(XML_TRACKS));

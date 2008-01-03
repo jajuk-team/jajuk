@@ -20,13 +20,19 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
+import ext.SwingWorker;
 
+import java.util.List;
+
+import org.jajuk.base.Album;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.ui.helpers.AlbumsTableModel;
+import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 
 /**
  * List collection albums as a table
@@ -37,7 +43,8 @@ public class AlbumsTableView extends AbstractTableView {
 
   public AlbumsTableView() {
     super();
-    sConf = CONF_ALBUMS_TABLE_COLUMNS;
+    columnsConf = CONF_ALBUMS_TABLE_COLUMNS;
+    editableConf = CONF_ALBUMS_TABLE_EDITION;
   }
 
   /*
@@ -55,7 +62,49 @@ public class AlbumsTableView extends AbstractTableView {
    * @see org.jajuk.ui.views.IView#initUI()
    */
   public void initUI() {
-    super.initUI();
+    SwingWorker sw = new SwingWorker() {
+      public Object construct() {
+        AlbumsTableView.super.construct();
+        // Add this generic menu item manually to ensure it's the last one in
+        // the list for GUI reasons
+        jtable.getMenu().add(jmiBookmark);
+        jtable.getMenu().add(jmiProperties);
+        // Add specific behavior on left click
+        jtable.setCommand(new ILaunchCommand() {
+          public void launch(int nbClicks) {
+            int iSelectedCol = jtable.getSelectedColumn();
+            // selected column in view Test click on play icon launch track only
+            // if only first column is selected (fixes issue with
+            // Ctrl-A)
+            if (jtable.getSelectedColumnCount() == 1
+            // click on play icon
+                && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
+                // double click on any column and edition state false
+                || nbClicks == 2) {
+              // selected row in view
+              Album album = (Album) jtable.getSelection().get(0);
+              List<File> alFiles = Util.getPlayableFiles(album);
+              if (alFiles.size() > 0) {
+                // launch it
+                FIFO.getInstance().push(
+                    Util.createStackItems(alFiles, ConfigurationManager
+                        .getBoolean(CONF_STATE_REPEAT), true),
+                    ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+
+              } else {
+                Messages.showErrorMessage(10, album.getName2());
+              }
+            }
+          }
+        });
+        return null;
+      }
+
+      public void finished() {
+        AlbumsTableView.super.finished();
+      }
+    };
+    sw.start();
   }
 
   /*
@@ -66,7 +115,7 @@ public class AlbumsTableView extends AbstractTableView {
   @Override
   void initTable() {
     jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
-    //Disable edit button, edition not yet implemented
+    // Disable edit button, edition not yet implemented
     jtbEditable.setEnabled(false);
   }
 
@@ -80,54 +129,6 @@ public class AlbumsTableView extends AbstractTableView {
     // model creation
     AlbumsTableModel model = new AlbumsTableModel();
     return model;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-   */
-  public void actionPerformed(ActionEvent e) {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-   */
-  public void mouseClicked(MouseEvent e) {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-   */
-  public void mouseEntered(MouseEvent e) {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-   */
-  public void mouseExited(MouseEvent e) {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-   */
-  public void mousePressed(MouseEvent e) {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-   */
-  public void mouseReleased(MouseEvent e) {
   }
 
 }

@@ -171,6 +171,17 @@ public final class ActionManager {
     installAction(REFRESH, new RefreshDirectoryAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     
+    //Selection actions
+    installAction(JajukAction.SHOW_PROPERTIES, new ShowPropertiesAction(), false);
+    installAction(JajukAction.PLAY_SELECTION, new PlaySelectionAction(), false);
+    installAction(JajukAction.PLAY_SHUFFLE_SELECTION, new PlayShuffleSelectionAction(), false);
+    installAction(JajukAction.PLAY_REPEAT_SELECTION, new PlayRepeatSelectionAction(), false);
+    installAction(JajukAction.PUSH_SELECTION, new PushSelectionAction(), false);
+    installAction(JajukAction.BOOKMARK_SELECTION, new BookmarkSelectionAction(), false);
+    installAction(JajukAction.PLAY_ALBUM_SELECTION, new PlayAlbumSelectionAction(), false);
+    installAction(JajukAction.PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
+    installAction(JajukAction.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
+       
     // Do not install this action under OSX because it causes a crash as jar is
     // missing
     if (Util.isUnderLinux() || Util.isUnderWindows()) {

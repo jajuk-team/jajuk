@@ -263,8 +263,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       long lQuality = file.getQuality();
       oValues[iRow][10] = lQuality;
       bCellEditable[iRow][10] = false;
-      // Size
-      oValues[iRow][11] = ((double) file.getSize()) / 1048576;
+      // Size, we want to keep 2 decimals to the value in MB
+      oValues[iRow][11] = Math.round(file.getSize()/10485.76) / 100f;
       bCellEditable[iRow][11] = false;
       // Order
       oValues[iRow][12] = file.getTrack().getOrder();
