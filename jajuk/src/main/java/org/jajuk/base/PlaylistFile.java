@@ -429,6 +429,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
     } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
       // queue playlist clean data
       if (!FIFO.isStopped()) {
+        alFiles = new ArrayList<File>(10);
         for (final StackItem item : FIFO.getInstance().getFIFO()) {
           alFiles.add(item.getFile());
         }
