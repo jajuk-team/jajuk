@@ -250,7 +250,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   @Override
   public void launch() {
     // play the album
-    play(false, false, false);
+    jmiPlay.doClick();
   }
 
 }

@@ -296,9 +296,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // to be able to get it
     jmiStyleReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
     jmiStyleReport.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiStyleProperties = new JMenuItem(Messages.getString("TracksTreeView.7"),
-        IconLoader.ICON_PROPERTIES);
-    jmiStyleProperties.addActionListener(this);
+    jmiStyleProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiStyleProperties.putClientProperty(DETAIL_SELECTION, alSelected);
     jmenuStyle.add(jmiStylePlay);
     jmenuStyle.add(jmiStylePush);
     jmenuStyle.add(jmiStylePlayShuffle);
@@ -331,9 +330,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // to be able to get it
     jmiAuthorReport.putClientProperty(DETAIL_ORIGIN, XML_AUTHOR);
     jmiAuthorReport.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiAuthorProperties = new JMenuItem(Messages.getString("TracksTreeView.14"),
-        IconLoader.ICON_PROPERTIES);
-    jmiAuthorProperties.addActionListener(this);
+    jmiAuthorProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiAuthorProperties.putClientProperty(DETAIL_SELECTION, alSelected);
     jmenuAuthor.add(jmiAuthorPlay);
     jmenuAuthor.add(jmiAuthorPush);
     jmenuAuthor.add(jmiAuthorPlayShuffle);
@@ -369,9 +367,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"),
         IconLoader.ICON_CDDB);
     jmiAlbumCDDBWizard.addActionListener(this);
-    jmiAlbumProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
-        IconLoader.ICON_PROPERTIES);
-    jmiAlbumProperties.addActionListener(this);
+    jmiAlbumProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiAlbumProperties.putClientProperty(DETAIL_SELECTION, alSelected);
     jmenuAlbum.add(jmiAlbumPlay);
     jmenuAlbum.add(jmiAlbumPush);
     jmenuAlbum.add(jmiAlbumPlayShuffle);
@@ -396,9 +393,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jmiYearAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
         IconLoader.ICON_BOOKMARK_FOLDERS);
     jmiYearAddFavorite.addActionListener(this);
-    jmiYearProperties = new JMenuItem(Messages.getString("TracksTreeView.26"),
-        IconLoader.ICON_PROPERTIES);
-    jmiYearProperties.addActionListener(this);
+    jmiYearProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiYearProperties.putClientProperty(DETAIL_SELECTION, alSelected);
     jmenuYear.add(jmiYearPlay);
     jmenuYear.add(jmiYearPush);
     jmenuYear.add(jmiYearPlayShuffle);
@@ -418,12 +414,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jmiTrackAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
         IconLoader.ICON_BOOKMARK_FOLDERS);
     jmiTrackAddFavorite.addActionListener(this);
-    jmiTrackProperties = new JMenuItem(Messages.getString("TracksTreeView.26"),
-        IconLoader.ICON_PROPERTIES);
-    jmiTrackProperties.addActionListener(this);
+    jmiTrackProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiTrackProperties.putClientProperty(DETAIL_SELECTION, alSelected);
     jmenuTrack.add(jmiTrackPlay);
     jmenuTrack.add(jmiTrackPush);
-    // @TBI jmenuTrack.add(jmiTrackDelete);
     jmenuTrack.add(jmiTrackAddFavorite);
     jmenuTrack.add(jmiTrackProperties);
 
@@ -1013,10 +1007,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       if (misc.getChildCount() > 0) {
         authorNode.add(misc);
       }
-      /*
-       * if (authorNode.getChildCount() == 1 &&
-       * authorNode.getNextNode().equals(misc)) { amisc.add(authorNode); }
-       */
     }
     if (amisc.getChildCount() > 0) {
       top.add(amisc);
@@ -1031,38 +1021,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void actionPerformed(final ActionEvent e) {
     new Thread() {
       public void run() {
-        if (e.getSource() == jmiStyleProperties) {
-          ArrayList<Item> alTracks = new ArrayList<Item>(1000);
-          for (Item item : alSelected) {
-            Style style = (Style) item;
-            alTracks.addAll(style.getTracksRecursively());
-          }
-          new PropertiesWizard(alSelected, alTracks);
-        } else if (e.getSource() == jmiAuthorProperties) {
-          ArrayList<Item> alTracks = new ArrayList<Item>(100);
-          for (Item item : alSelected) {
-            Author author = (Author) item;
-            alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author));
-          }
-          new PropertiesWizard(alSelected, alTracks);
-        } else if (e.getSource() == jmiAlbumProperties) {
-          ArrayList<Item> alTracks = new ArrayList<Item>(10);
-          for (Item item : alSelected) {
-            Album album = (Album) item;
-            alTracks.addAll(album.getTracks());
-          }
-          new PropertiesWizard(alSelected, alTracks);
-        } else if (e.getSource() == jmiYearProperties) {
-          ArrayList<Item> alTracks = new ArrayList<Item>(10);
-          for (Item item : alSelected) {
-            Year year = (Year) item;
-            alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(year));
-          }
-          new PropertiesWizard(alSelected, alTracks);
-        } else if (e.getSource() == jmiTrackProperties) {
-          new PropertiesWizard(alSelected);
-          // Sorting
-        } else if (e.getSource() == jmiAlbumCDDBWizard) {
+       if (e.getSource() == jmiAlbumCDDBWizard) {
           ArrayList<Item> alTracks = new ArrayList<Item>(20);
           for (Item item : alSelected) {
             Album album = (Album) item;

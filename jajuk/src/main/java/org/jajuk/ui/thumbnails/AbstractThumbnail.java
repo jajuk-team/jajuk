@@ -210,27 +210,26 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
   void postPopulate() {
     // Album menu
     jmenu = new JPopupMenu();
-    jmiPlay = new JMenuItem(Messages.getString("TracksTreeView.15"), IconLoader.ICON_PLAY_16x16);
-    jmiPlay.addActionListener(this);
+    jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
+    jmiPlay.putClientProperty(DETAIL_SELECTION,getItem());
     jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
     jmiPush.addActionListener(this);
     Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
     jmiDelete = new JMenuItem(actionDeleteFile);
     jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDelete.addActionListener(this);
-    jmiPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"), IconLoader.ICON_SHUFFLE);
-    jmiPlayShuffle.addActionListener(this);
-    jmiPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.18"), IconLoader.ICON_REPEAT);
-    jmiPlayRepeat.addActionListener(this);
+    jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SHUFFLE_SELECTION));
+    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION,getItem());
+    jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
+    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION,getItem());
     jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_COVER_16x16);
     jmiGetCovers.addActionListener(this);
     jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP);
     jmiShowPopup.addActionListener(this);
     jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
     jmiCDDBWizard.addActionListener(this);
-    jmiProperties = new JMenuItem(Messages.getString("TracksTreeView.21"),
-        IconLoader.ICON_PROPERTIES);
-    jmiProperties.addActionListener(this);
+    jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiProperties.putClientProperty(DETAIL_SELECTION,getItem());
     ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
     // Change action label
     jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
@@ -353,23 +352,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 
   public abstract void launch();
 
-  public void play(boolean bRepeat, boolean bShuffle, boolean bPush) {
-    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
-    // compute selection
-    ArrayList<org.jajuk.base.File> alFilesToPlay = new ArrayList<org.jajuk.base.File>(tracks.size());
-    for (Track track : tracks) {
-      org.jajuk.base.File file = track.getPlayeableFile(false);
-      if (file != null) {
-        alFilesToPlay.add(file);
-      }
-    }
-    if (bShuffle) {
-      Collections.shuffle(alFilesToPlay, new Random());
-    }
-    FIFO.getInstance().push(Util.createStackItems(alFilesToPlay, bRepeat, true), bPush);
-  }
-
-  /**
+   /**
    * If the thumb represents something (album, author...) known in the
    * collection, the implementation of this method should return the associated
    * item
@@ -385,15 +368,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
    */
   public void actionPerformed(ActionEvent e) {
     // Menu items
-    if (e.getSource() == jmiPlay) {
-      play(false, false, false);
-    } else if (e.getSource() == jmiPlayRepeat) {
-      play(true, false, false);
-    } else if (e.getSource() == jmiPlayShuffle) {
-      play(false, true, false);
-    } else if (e.getSource() == jmiPush) {
-      play(false, false, true);
-    } else if (e.getSource() == jmiDelete) {
+   if (e.getSource() == jmiDelete) {
       Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
       for (Track track : tracks) {
         org.jajuk.base.File file = track.getPlayeableFile(false);
@@ -428,19 +403,6 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
       }.start();
     } else if (e.getSource() == jmiShowPopup) {
       this.displayPopup();
-    } else if (e.getSource() == jmiProperties) {
-      Item item = getItem();
-      ArrayList<Item> al = new ArrayList<Item>();
-      al.add(item);
-      if (item instanceof Album) {
-        // Show tracks infos to allow user to change year, rate...
-        ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
-            .getAssociatedTracks(item));
-        new PropertiesWizard(al, alTracks);
-      } else {
-        new PropertiesWizard(al);
-      }
-
     } else if (e.getSource() == jmiCDDBWizard) {
       // This menu is enabled only for albums
       ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()

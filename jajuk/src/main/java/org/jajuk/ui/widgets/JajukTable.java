@@ -26,11 +26,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -70,6 +71,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   private JPopupMenu jmenu;
 
   private ILaunchCommand command;
+  
+  /** Model refreshing flag */
+  public volatile boolean acceptColumnsEvents = false;
+
 
   /**
    * Constructor
@@ -82,6 +87,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
     super(model);
+    acceptColumnsEvents = true;
     this.sConf = sConf;
     selection = new ArrayList<Item>();
     jmenu = new JPopupMenu();
@@ -174,6 +180,35 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     ConfigurationManager.setProperty(sConf, getColumnsConf(alOut));
   }
 
+  private void columnChange() {
+    if (acceptColumnsEvents) { // ignore this column change when reloading
+      // model
+      createColumnsConf();
+    }
+  }
+
+  public void columnAdded(TableColumnModelEvent arg0) {
+    super.columnAdded(arg0);
+    columnChange();
+  }
+
+  public void columnRemoved(TableColumnModelEvent arg0) {
+    super.columnRemoved(arg0);
+    columnChange();
+  }
+
+  public void columnMoved(TableColumnModelEvent arg0) {
+    super.columnMoved(arg0);
+  }
+
+  public void columnMarginChanged(ChangeEvent arg0) {
+    super.columnMarginChanged(arg0);
+  }
+
+  public void columnSelectionChanged(ListSelectionEvent arg0) {
+    super.columnSelectionChanged(arg0);
+  }
+  
   /**
    * 
    * Create the jtable visible columns conf

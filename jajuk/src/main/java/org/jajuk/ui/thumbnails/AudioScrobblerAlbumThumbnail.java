@@ -208,7 +208,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   public void launch() {
     if (getItem() != null) {
       // play the album
-      play(false, false, false);
+      jmiPlay.doClick();
     } else {
       // Open the last.FM page
       jmiOpenLastFMSite.doClick();

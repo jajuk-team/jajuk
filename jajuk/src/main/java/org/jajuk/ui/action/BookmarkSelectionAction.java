@@ -20,14 +20,10 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComponent;
 
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -42,7 +38,7 @@ import org.jajuk.util.Util;
  * Selection data is provided using the swing properties DETAIL_SELECTION
  * </p>
  */
-public class BookmarkSelectionAction extends ActionBase {
+public class BookmarkSelectionAction extends SelectionAction {
 
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -59,11 +55,7 @@ public class BookmarkSelectionAction extends ActionBase {
   @SuppressWarnings("unchecked")
   @Override
   protected void perform(ActionEvent e) throws Exception {
-    JComponent source = (JComponent) e.getSource();
-    final ArrayList<Item> selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    if (selection.size() == 0) {
-      return;
-    }
+    super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
     Bookmarks.getInstance().addFiles(files);
   }

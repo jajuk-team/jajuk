@@ -20,16 +20,12 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.JComponent;
-
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -45,7 +41,7 @@ import org.jajuk.util.Util;
  * Selection data is provided using the swing properties DETAIL_SELECTION
  * </p>
  */
-public class PlayShuffleSelectionAction extends ActionBase {
+public class PlayShuffleSelectionAction extends SelectionAction {
 
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -62,11 +58,7 @@ public class PlayShuffleSelectionAction extends ActionBase {
   @SuppressWarnings("unchecked")
   @Override
   protected void perform(ActionEvent e) throws Exception {
-    JComponent source = (JComponent) e.getSource();
-    final ArrayList<Item> selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    if (selection.size() == 0) {
-      return;
-    }
+    super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
     Collections.shuffle(files, new Random());
     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager

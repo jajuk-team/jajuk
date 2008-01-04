@@ -43,10 +43,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
@@ -84,7 +80,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * views
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
-    ItemListener, TableColumnModelListener, TableModelListener, ITechnicalStrings, Observer {
+    ItemListener, TableModelListener, ITechnicalStrings, Observer {
 
   JajukTable jtable;
 
@@ -117,9 +113,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /** Date last key pressed */
   private long lDateTyped;
-
-  /** Model refreshing flag */
-  boolean bReloading = false;
 
   /** Editable table configuration name, must be overwritten by child classes */
   String editableConf;
@@ -254,7 +247,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
     setLayout(new TableLayout(size));
     add(jpControl, "0,0");
-    jtable.getColumnModel().addColumnModelListener(AbstractTableView.this);
     setCellEditors();
     add(new JScrollPane(jtable), "0,1");
     jtable.setDragEnabled(true);
@@ -323,7 +315,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       @SuppressWarnings("unchecked")
       public void run() {
         try {
-          bReloading = true; // flag reloading to avoid wrong column
+          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong column
           // events
           EventSubject subject = event.getSubject();
           if (EventSubject.EVENT_TABLE_CLEAR_SELECTION.equals(subject)) {
@@ -389,7 +381,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          bReloading = false; // make sure to remove this flag
+          jtable.acceptColumnsEvents = true; // make sure to remove this flag
         }
       }
     });
@@ -438,31 +430,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       sAppliedCriteria = getApplyCriteria();
       applyFilter(sAppliedCriteria, sAppliedFilter);
     }
-
-  }
-
-  private void columnChange() {
-    if (!bReloading) { // ignore this column change when reloading
-      // model
-      jtable.createColumnsConf();
-    }
-  }
-
-  public void columnAdded(TableColumnModelEvent arg0) {
-    columnChange();
-  }
-
-  public void columnRemoved(TableColumnModelEvent arg0) {
-    columnChange();
-  }
-
-  public void columnMoved(TableColumnModelEvent arg0) {
-  }
-
-  public void columnMarginChanged(ChangeEvent arg0) {
-  }
-
-  public void columnSelectionChanged(ListSelectionEvent arg0) {
   }
 
   /*

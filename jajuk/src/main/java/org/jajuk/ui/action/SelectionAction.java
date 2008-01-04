@@ -20,44 +20,40 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
+import java.util.ArrayList;
 
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+
+import org.jajuk.base.Item;
 
 /**
- * Play repeat a selection
- * <p>
- * Action emitter is responsible to ensure all items provided share the same
- * type
- * </p>
- * <p>
- * Selection data is provided using the swing properties DETAIL_SELECTION
- * </p>
+ * Convenient abstract class to factorize operations on selection
  */
-public class PlayRepeatSelectionAction extends SelectionAction {
+public abstract class SelectionAction extends ActionBase {
+  
+ ArrayList<Item> selection = null;
 
-  private static final long serialVersionUID = -8078402652430413821L;
-
-  PlayRepeatSelectionAction() {
-    super(Messages.getString("TracksTableView.10"), IconLoader.ICON_REPEAT, true);
-    setShortDescription(Messages.getString("TracksTableView.10"));
+ protected SelectionAction(String msg,ImageIcon icon,boolean enabled) {
+    super(msg,icon, enabled);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /* (non-Javadoc)
    * @see org.jajuk.ui.action.ActionBase#perform(java.awt.event.ActionEvent)
    */
   @SuppressWarnings("unchecked")
   @Override
   protected void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    List<File> files = Util.getPlayableFiles(selection);
-    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), true, true), false);
+    JComponent source = (JComponent) e.getSource();
+    Object o = source.getClientProperty(DETAIL_SELECTION);
+    if (o instanceof Item){
+      selection = new ArrayList<Item>(1);
+      selection.add((Item)o);
+    }
+    else if (o instanceof ArrayList){
+      selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    }
   }
 
 }

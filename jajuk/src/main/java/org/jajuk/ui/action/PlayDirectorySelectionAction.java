@@ -20,15 +20,11 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComponent;
 
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -45,7 +41,7 @@ import org.jajuk.util.Util;
  * Selection data is provided using the swing properties DETAIL_SELECTION
  * </p>
  */
-public class PlayDirectorySelectionAction extends ActionBase {
+public class PlayDirectorySelectionAction extends SelectionAction {
 
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -62,8 +58,7 @@ public class PlayDirectorySelectionAction extends ActionBase {
   @SuppressWarnings("unchecked")
   @Override
   protected void perform(ActionEvent e) throws Exception {
-    JComponent source = (JComponent) e.getSource();
-    final ArrayList<Item> selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    super.perform(e);
     if (selection.size() == 0 || !(selection.get(0) instanceof File)) {
       return;
     }

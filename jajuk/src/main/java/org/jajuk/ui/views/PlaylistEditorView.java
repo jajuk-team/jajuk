@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,19 +44,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
 
-import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -71,8 +65,11 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.TrackManager;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.Duration;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistFileItem;
@@ -83,7 +80,6 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -95,8 +91,8 @@ import org.jajuk.util.log.Log;
 /**
  * Adapter for playlists editors *
  */
-public class PlaylistEditorView extends ViewAdapter implements Observer, MouseListener,
-    ActionListener, ListSelectionListener, TableColumnModelListener {
+public class PlaylistEditorView extends ViewAdapter implements Observer, ActionListener,
+    ListSelectionListener {
 
   private static final long serialVersionUID = -2851288035506442507L;
 
@@ -121,8 +117,6 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
   JLabel jlTitle;
 
   JajukTable jtable;
-
-  JPopupMenu jmenuFile;
 
   JMenuItem jmiFilePlay;
 
@@ -152,9 +146,6 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
 
   /** Last selected directory using add button */
   java.io.File fileLast;
-
-  /** Model refreshing flag */
-  boolean bReloading = false;
 
   /* Cashed icons */
   static final ImageIcon iconNormal = IconLoader.ICON_TRACK_FIFO_NORM;
@@ -447,11 +438,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
     jtable.getColumnModel().getColumn(0).setPreferredWidth(20);
     jtable.getColumnModel().getColumn(0).setMaxWidth(20);
     jtable.getTableHeader().setPreferredSize(new Dimension(0, 20));
-    jtable.addMouseListener(this);
     jtable.showColumns(jtable.getColumnsConf());
-    // add this listener after hiding columns
-    // selection listener to hide some buttons when selecting planned tracks
-    jtable.getColumnModel().addColumnModelListener(this);
     ListSelectionModel lsm = jtable.getSelectionModel();
     lsm.addListSelectionListener(this);
     double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
@@ -459,23 +446,18 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
     add(jpControl, "0,0");
     add(new JScrollPane(jtable), "0,1");
     // menu items
-    jmenuFile = new JPopupMenu();
-    jmiFilePlay = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.23"),
-        IconLoader.ICON_PLAY_16x16);
-    jmiFilePlay.addActionListener(this);
-    jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24"),
-        IconLoader.ICON_PUSH);
-    jmiFilePush.addActionListener(this);
-    jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25"),
-        IconLoader.ICON_BOOKMARK_FOLDERS);
-    jmiFileAddFavorites.addActionListener(this);
-    jmiFileProperties = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.26"),
-        IconLoader.ICON_PROPERTIES);
-    jmiFileProperties.addActionListener(this);
-    jmenuFile.add(jmiFilePlay);
-    jmenuFile.add(jmiFilePush);
-    jmenuFile.add(jmiFileAddFavorites);
-    jmenuFile.add(jmiFileProperties);
+    jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
+    jmiFilePlay.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFilePush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
+    jmiFilePush.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
+    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiFileProperties.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jtable.getMenu().add(jmiFilePlay);
+    jtable.getMenu().add(jmiFilePush);
+    jtable.getMenu().add(jmiFileAddFavorites);
+    jtable.getMenu().add(jmiFileProperties);
     // register events
     ObservationManager.register(this);
     // -- force a refresh --
@@ -499,6 +481,43 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
       }
     });
     properties.put(DETAIL_TARGET, PerspectiveManager.getCurrentPerspective().getID());
+    // Add specific behavior on left click
+    jtable.setCommand(new ILaunchCommand() {
+      public void launch(int nbClicks) {
+        if (nbClicks == 2) {
+          // double click, launches selected track and all after
+          StackItem item = getItem(jtable.getSelectedRow());
+          if (item != null) {
+            // For the queue
+            if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+              if (item.isPlanned()) {
+                // we can't launch a planned
+                // track, leave
+                item.setPlanned(false);
+                item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+                item.setUserLaunch(true);
+                FIFO.getInstance().push(item, false);
+              } else { // non planned items
+                FIFO.getInstance().goTo(jtable.getSelectedRow());
+                // remove selection for planned tracks
+                ListSelectionModel lsm = jtable.getSelectionModel();
+                bSettingSelection = true;
+                jtable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+                    lsm.getMaxSelectionIndex());
+                bSettingSelection = false;
+              }
+            }
+            // For others playlists, we launch all tracks from this
+            // position
+            // to the end of playlist
+            else {
+              FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),
+                  ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+            }
+          }
+        }
+      }
+    });
     update(new Event(EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED, properties));
     update(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
   }
@@ -521,30 +540,6 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
    */
   public String getDesc() {
     return Messages.getString("AbstractPlaylistEditorView.15");
-  }
-
-  private void columnChange() {
-    if (!bReloading) { // ignore this column change when reloading
-      // model
-      jtable.createColumnsConf();
-    }
-  }
-
-  public void columnAdded(TableColumnModelEvent arg0) {
-    columnChange();
-  }
-
-  public void columnRemoved(TableColumnModelEvent arg0) {
-    columnChange();
-  }
-
-  public void columnMoved(TableColumnModelEvent arg0) {
-  }
-
-  public void columnMarginChanged(ChangeEvent arg0) {
-  }
-
-  public void columnSelectionChanged(ListSelectionEvent arg0) {
   }
 
   private void setRenderers() {
@@ -570,7 +565,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         // bound exceptions
         try {
           EventSubject subject = event.getSubject();
-          bReloading = true; // flag reloading to avoid wrong column
+          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong column
           // changed of playlist
           if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject)) {
             // test mapping between editor and repository
@@ -695,7 +690,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          bReloading = false; // make sure to remove this flag
+          jtable.acceptColumnsEvents = false; // make sure to remove this flag
         }
       }
     });
@@ -745,93 +740,6 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
       jbRun.setEnabled(true);
       jbPrepParty.setEnabled(true);
     }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-   */
-  public void mouseEntered(MouseEvent e) {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-   */
-  public void mouseExited(MouseEvent e) {
-  }
-
-  public void mousePressed(MouseEvent e) {
-    if (e.isPopupTrigger()) {
-      handlePopup(e);
-      // Left click
-    } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
-      if (e.getClickCount() == 2) {
-        // double click, launches selected track and all after
-        StackItem item = getItem(jtable.getSelectedRow());
-        if (item != null) {
-          // For the queue
-          if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-            if (item.isPlanned()) {
-              // we can't launch a planned
-              // track, leave
-              item.setPlanned(false);
-              item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
-              item.setUserLaunch(true);
-              FIFO.getInstance().push(item, false);
-            } else { // non planned items
-              FIFO.getInstance().goTo(jtable.getSelectedRow());
-              // remove selection for planned tracks
-              ListSelectionModel lsm = jtable.getSelectionModel();
-              bSettingSelection = true;
-              jtable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
-                  lsm.getMaxSelectionIndex());
-              bSettingSelection = false;
-            }
-          }
-          // For others playlists, we launch all tracks from this
-          // position
-          // to the end of playlist
-          else {
-            FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),
-                ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
-          }
-        }
-      } else if (e.getClickCount() == 1) {
-        // if no multiple previous selection, select row before
-        // displaying popup
-        int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-        if (jtable.getSelectedRowCount() < 2) {
-          jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-        }
-      }
-    }
-  }
-
-  public void mouseReleased(MouseEvent e) {
-    if (e.isPopupTrigger()) {
-      handlePopup(e);
-    }
-  }
-
-  public void handlePopup(final MouseEvent e) {
-    // if no multiple previous selection, select row before
-    // displaying popup
-    int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-    if (jtable.getSelectedRowCount() < 2) {
-      jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-    }
-    // Do not show popup if selection contains a planned tracks
-    for (int i = 0; i < jtable.getSelectedRowCount(); i++) {
-      int selection = jtable.getSelectedRows()[i];
-      if (selection > alItems.size() - 1) {
-        return;
-      }
-    }
-    // right click on a selected node set
-    jmenuFile.show(jtable, e.getX(), e.getY());
   }
 
   /**
@@ -970,49 +878,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, MouseLi
         }
       } else if (ae.getSource() == jbPrepParty) {
         plfi.getPlaylistFile().storePlaylist();
-      } else if (ae.getSource() == jmiFilePlay || (ae.getSource() == jmiFilePush)) {
-        // computes selected items
-        ArrayList<StackItem> alItemsToPlay = new ArrayList<StackItem>(jtable.getSelectedRowCount());
-        int[] indexes = jtable.getSelectedRows();
-        for (int i = 0; i < indexes.length; i++) {
-          alItemsToPlay.add(getItem(indexes[i]));
-        }
-        FIFO.getInstance().push(alItemsToPlay, ae.getSource() == jmiFilePush);
-      } else if (ae.getSource() == jmiFileAddFavorites) {
-        // computes selected items
-        ArrayList<StackItem> alItemsToPlay = new ArrayList<StackItem>(jtable.getSelectedRowCount());
-        int[] indexes = jtable.getSelectedRows();
-        for (int i = 0; i < indexes.length; i++) {
-          alItemsToPlay.add(getItem(indexes[i]));
-        }
-        ArrayList<File> alFiles = new ArrayList<File>(alItemsToPlay.size());
-        for (StackItem item : alItemsToPlay) {
-          alFiles.add(item.getFile());
-        }
-        Bookmarks.getInstance().addFiles(alFiles);
-      } else if (ae.getSource() == jmiFileProperties) {
-        ArrayList<Item> alItems1 = new ArrayList<Item>(1); // file
-        // items
-        ArrayList<Item> alItems2 = new ArrayList<Item>(1); // tracks
-        // items
-        if (jtable.getSelectedRowCount() == 1) { // mono
-          // selection
-          File file = (File) model
-              .getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-          // show file and associated track properties
-          alItems1.add(file);
-          alItems2.add(file.getTrack());
-        } else {// multi selection
-          for (int i = 0; i <= jtable.getRowCount(); i++) {
-            if (jtable.getSelectionModel().isSelectedIndex(i)) {
-              File file = (File) model.getItemAt(jtable.convertRowIndexToModel(i));
-              alItems1.add(file);
-              alItems2.add(file.getTrack());
-            }
-          }
-        }
-        new PropertiesWizard(alItems1, alItems2);
-      }
+      } 
     } catch (Exception e2) {
       Log.error(e2);
     } finally {
