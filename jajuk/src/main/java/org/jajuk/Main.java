@@ -1269,7 +1269,9 @@ public class Main implements ITechnicalStrings {
       public void run() {
         try {
           // Init perf monitor
-          ext.EventDispatchThreadHangMonitor.initMonitoring();
+          if (bTestMode){
+            ext.EventDispatchThreadHangMonitor.initMonitoring();
+          }
 
           // Light drag and drop for VLDocking
           UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);

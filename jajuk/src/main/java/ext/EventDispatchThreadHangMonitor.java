@@ -37,9 +37,6 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
   // Maximum time we won't warn about in test mode
   private static final long UNREASONABLE_DISPATCH_DURATION_MS_TEST = 500;
 
-  // Maximum time we won't warn about in production mode
-  private static final long UNREASONABLE_DISPATCH_DURATION_MS_PROD = 10000;
-
   // Used as the value of startedLastEventDispatchAt when we're not in
   // the middle of event dispatch.
   private static final long NO_CURRENT_EVENT = 0;
@@ -84,10 +81,8 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
         // event that gets dispatched.
         return;
       }
-      // check if elasped time is not exceed (different ime under test or
-      // production mode)
-      if (timeSoFar() > (Main.bTestMode ? UNREASONABLE_DISPATCH_DURATION_MS_TEST
-          : UNREASONABLE_DISPATCH_DURATION_MS_PROD)) {
+      // check if elasped time is not exceed (used only in test mode)
+      if (Main.bTestMode && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
         reportHang();
       }
     }
