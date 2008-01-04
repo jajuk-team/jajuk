@@ -23,6 +23,7 @@ package org.jajuk.reporting;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,26 +47,26 @@ public class XMLTransformer {
    * transformation
    * 
    * @param xml
-   *          The XML file to convert.
+   *            The XML file to convert.
    * @param html
-   *          The HTML file to convert.
-   * @param xsltPath
-   *          The path to the XSLT Transform to use.
+   *            The HTML file to convert.
+   * @param xsl
+   *            The url of the XSLT style sheet to use.
    */
-  public static void xmlToHTML(File xml, File html, File xsl) throws Exception {
+  public static void xmlToHTML(File xml, File html, URL xsl) throws Exception {
     // DOM source creation
     DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder domBuilder = domFactory.newDocumentBuilder();
     domBuilder.parse(xml);
-    Source source = new SAXSource(
-        new InputSource(new BufferedInputStream(new FileInputStream(xml))));
+    Source source = new SAXSource(new InputSource(new BufferedInputStream(new FileInputStream(
+        xml))));
 
     // Create output file
     Result result = new StreamResult(html);
 
     // Transformer configuration
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    StreamSource stylesource = new StreamSource(xsl);
+    StreamSource stylesource = new StreamSource(xsl.openStream());
     Transformer transformer = transformerFactory.newTransformer(stylesource);
     transformer.setOutputProperty(OutputKeys.METHOD, "html");
 

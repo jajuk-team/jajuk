@@ -37,7 +37,7 @@ public abstract class Exporter implements ITechnicalStrings {
 
   public static final int LOGICAL_COLLECTION = 1;
 
-  /** Cache file (used to handle concurrency issues) */
+  /** Cache file (used to handle concurrency issues), set by child classes */
   protected File cache;
 
   /**
