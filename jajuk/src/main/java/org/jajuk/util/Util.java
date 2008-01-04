@@ -75,6 +75,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.jajuk.Main;
@@ -2205,10 +2206,14 @@ public class Util implements ITechnicalStrings {
 
   /**
    * Set current cursor as waiting cursor
+   * <p>Make sure the contentpane already exists to avoid strange behaviors</p>
+   * <p>No need to execute in AWT thread</p>
    */
   public static synchronized void waiting() {
-    if (Main.getWindow() != null) {
-      Main.getWindow().setCursor(Util.WAIT_CURSOR);
+    if (Main.getWindow() != null && Main.getWindow().getContentPane() != null
+        && !(Main.getWindow().getContentPane().getCursor().equals(Util.WAIT_CURSOR))) {
+      Main.getWindow().getContentPane().setCursor(Util.WAIT_CURSOR);
+      Log.debug("** Waiting cursor");
     }
   }
 
@@ -2216,8 +2221,10 @@ public class Util implements ITechnicalStrings {
    * Set current cursor as default cursor
    */
   public static synchronized void stopWaiting() {
-    if (Main.getWindow() != null) {
-      Main.getWindow().setCursor(Util.DEFAULT_CURSOR);
+    if (Main.getWindow() != null && Main.getWindow().getContentPane() != null
+        && !(Main.getWindow().getContentPane().getCursor().equals(Util.DEFAULT_CURSOR))) {
+      Main.getWindow().getContentPane().setCursor(Util.DEFAULT_CURSOR);
+      Log.debug("** Default cursor");
     }
   }
 
@@ -2380,7 +2387,7 @@ public class Util implements ITechnicalStrings {
     if (filter == null || filter.getValue() == null) {
       return (List<Item>) list;
     }
-    //Check if property is not the "fake" any property
+    // Check if property is not the "fake" any property
     boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
 
     String comparator = null;
