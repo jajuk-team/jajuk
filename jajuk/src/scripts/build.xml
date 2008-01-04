@@ -6,14 +6,14 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5dev_try3' />
+	<property name='version' value='1.5dev_try4' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
 	<!--Test flag: values: test or notest -->
 	<property name='test' value='test' />
-		
+
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
@@ -129,6 +129,9 @@
 		<copy todir='${distdir}/dist-files/perspectives'>
 			<fileset file='${srcdir}/main/resources/perspectives/**' />
 		</copy>
+		<copy todir='${distdir}/dist-files/xslt'>
+			<fileset file='${srcdir}/main/resources/xslt/**' />
+		</copy>
 		<copy todir='${distdir}'>
 			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
 			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png' />
@@ -166,6 +169,44 @@
 		</replace>
 	</target>
 
+	<target name='compile'>
+		<echo message='Compile the code' />
+		<javac destdir='${distdir}/${classdir}' source='1.5' target='1.5' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
+			<src>
+				<pathelement path='${distdir}/src'>
+				</pathelement>
+			</src>
+			<classpath>
+				<fileset dir='${distdir}/lib'>
+					<include name='*.jar'>
+					</include>
+				</fileset>
+			</classpath>
+		</javac>
+		<mkdir dir='${distdir}/${classdir}/icons' />
+		<mkdir dir='${distdir}/${classdir}/images' />
+		<mkdir dir='${distdir}/${classdir}/perspectives' />
+		<mkdir dir='${distdir}/${classdir}/xslt' />
+		<!-- Copy files to be embeded into the jar -->
+		<copy todir='${distdir}/${classdir}/icons'>
+			<fileset dir='${srcdir}/main/resources/icons' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/images/included'>
+			<fileset file='${srcdir}/main/resources/images/included/*' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/org/jajuk/i18n'>
+			<fileset file='${javadir}/org/jajuk/i18n/*.properties' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/org/jajuk/util/log'>
+			<fileset file='${javadir}/org/jajuk/util/log/jajuk-log4j-conf.xml' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/perspectives'>
+			<fileset file='${srcdir}/main/resources/perspectives/*.xml' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/xslt'>
+			<fileset file='${srcdir}/main/resources/xslt/**' />
+		</copy>
+	</target>
 
 	<target name='mkdist_helpjar' depends='startup,clean'>
 		<echo message='Prepare files to build helpjar files' />
@@ -521,47 +562,6 @@
 
 	</target>
 
-
-	<target name='compile'>
-		<echo message='Compile the code' />
-		<javac destdir='${distdir}/${classdir}' source='1.5' target='1.5' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
-			<src>
-				<pathelement path='${distdir}/src'>
-				</pathelement>
-			</src>
-			<classpath>
-				<fileset dir='${distdir}/lib'>
-					<include name='*.jar'>
-					</include>
-				</fileset>
-			</classpath>
-		</javac>
-		<mkdir dir='${distdir}/${classdir}/icons' />
-		<mkdir dir='${distdir}/${classdir}/images' />
-		<mkdir dir='${distdir}/${classdir}/perspectives' />
-		<mkdir dir='${distdir}/${classdir}/docs' />
-		<!-- Copy files to be embeded into the jar -->
-		<copy todir='${distdir}/${classdir}/icons'>
-			<fileset dir='${srcdir}/main/resources/icons' />
-		</copy>
-		<copy todir='${distdir}/${classdir}/images/included'>
-			<fileset file='${srcdir}/main/resources/images/included/*' />
-		</copy>
-		<copy todir='${distdir}/${classdir}/docs'>
-			<fileset file='${srcdir}/doc/about.html' />
-		</copy>
-		<copy todir='${distdir}/${classdir}/org/jajuk/i18n'>
-			<fileset file='${javadir}/org/jajuk/i18n/*.properties' />
-		</copy>
-		<copy todir='${distdir}/${classdir}/org/jajuk/util/log'>
-			<fileset file='${javadir}/org/jajuk/util/log/jajuk-log4j-conf.xml' />
-		</copy>
-		<copy todir='${distdir}/${classdir}/perspectives'>
-			<fileset file='${srcdir}/main/resources//perspectives/*.xml' />
-		</copy>
-	</target>
-
-
 	<target name='javadoc'>
 		<delete dir='${javadocdir}' />
 		<mkdir dir='${javadocdir}' />
@@ -580,14 +580,10 @@
 
 	<!--jarbundler Mac OS X package creation -->
 	<target name='jarbundler' depends='package_jar,package_helpjar'>
-		<taskdef name='jarbundler' classpath='${conf_jarbundler}/jarbundler-1.9.jar' 
-			classname="net.sourceforge.jarbundler.JarBundler" />
+		<taskdef name='jarbundler' classpath='${conf_jarbundler}/jarbundler-1.9.jar' classname="net.sourceforge.jarbundler.JarBundler" />
 		<echo message='jarbundler' />
 		<mkdir dir='${distdir}/jarbundler/' />
-		<jarbundler dir="${distdir}/jarbundler/" name="Jajuk" mainclass="org.jajuk.Main" 
-			icon="${distdir}/dist-files/images/jajuk-icon_source.icns" jvmversion="1.5+" 
-			version="${version}" infostring="Jajuk" stubfile="${basedir}/src/packaging/jarbundler/JavaApplicationStub" 
-			build="${version}" vmoptions="-client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar TEST_FLAG_REPLACED_BY_ANT">
+		<jarbundler dir="${distdir}/jarbundler/" name="Jajuk" mainclass="org.jajuk.Main" icon="${distdir}/dist-files/images/jajuk-icon_source.icns" jvmversion="1.5+" version="${version}" infostring="Jajuk" stubfile="${basedir}/src/packaging/jarbundler/JavaApplicationStub" build="${version}" vmoptions="-client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar TEST_FLAG_REPLACED_BY_ANT">
 			<jarfileset dir="${distdir}/lib">
 				<include name="**/*.jar" />
 			</jarfileset>
