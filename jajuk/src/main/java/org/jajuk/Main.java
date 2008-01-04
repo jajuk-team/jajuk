@@ -685,14 +685,11 @@ public class Main implements ITechnicalStrings {
       if (Util.isUnderWindows()) {
         final File mplayerPath = Util.getMPlayerWindowsPath();
         // try to find mplayer executable in know locations first
-        if ((mplayerPath == null) || (// if file exists, test size
-            mplayerPath.length() != MPLAYER_EXE_SIZE)) {
-          // probably in JNLP mode or wrong size,
-          // try to download static mplayer distro if needed
+        if (mplayerPath == null ){
           try {
             sc.setProgress(5, Messages.getString("Main.22"));
             Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
-            final File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
+            File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
             DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
             // make sure to delete corrupted mplayer in case of
             // download problem
@@ -700,7 +697,7 @@ public class Main implements ITechnicalStrings {
               fMPlayer.delete();
               throw new Exception("MPlayer corrupted"); //$NON-NLS-1$
             }
-          } catch (final Exception e) {
+          } catch (Exception e) {
             mplayerStatus = MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
           }
         }

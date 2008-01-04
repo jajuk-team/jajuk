@@ -525,7 +525,7 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
-   * Copy recursively files and directories Inspirated from
+   * Copy recursively files and directories
    * 
    * @param str
    * @param dst
@@ -1404,20 +1404,21 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
-   * @return MPLayer exe file
+   * @return MPlayer exe file
    */
   public static File getMPlayerWindowsPath() {
     // Use cache
-    if (Util.mplayerPath != null) {
-      return Util.mplayerPath;
+    if (mplayerPath != null) {
+      return mplayerPath;
     }
     File file = null;
     // Check in ~/.jajuk directory (used by webstart distribution
-    // installers)
-    if ((file = Util.getConfFileByPath(ITechnicalStrings.FILE_MPLAYER_EXE)).exists()
-        && (file.length() > 0)) {
-      Util.mplayerPath = file;
-      return Util.mplayerPath;
+    // installers). Test exe size as well to detect unfinished downloads of
+    // mplayer.exe in JNLP mode
+    if ((file = Util.getConfFileByPath(FILE_MPLAYER_EXE)).exists()
+        && file.length() == MPLAYER_EXE_SIZE) {
+      mplayerPath = file;
+      return mplayerPath;
     } else {
       // Check in the path where jajuk.jar is executed (all others
       // distributions)
@@ -1436,26 +1437,30 @@ public class Util implements ITechnicalStrings {
           // directory
           sPATH = "./src/packaging";
         } else {
-          sPATH = new File(Util.getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-              .getAbsolutePath();
+          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile()
+              .getParentFile().getAbsolutePath();
         }
         // Add MPlayer file name
-        if ((file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE)).exists()) {
+        if ((file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE)).exists()
+            && file.length() == MPLAYER_EXE_SIZE) {
           Util.mplayerPath = file;
         } else {
-          // For bundling project, Jajuk should check if mplayer was
+          // For bundle project, Jajuk should check if mplayer was
           // installed along with aTunes. In this case, mplayer is
           // found in sPATH\win_tools\ directory. Hence, changed sPATH
-          if ((file = new File(sPATH + "/win_tools" + '/' + ITechnicalStrings.FILE_MPLAYER_EXE))
+          // Note that we don't test mplayer.exe size in this case  
+          if ((file = new File(sPATH + "/win_tools/" + ITechnicalStrings.FILE_MPLAYER_EXE))
               .exists())
             Util.mplayerPath = file;
         }
-      } catch (final Exception e) {
-        return Util.mplayerPath;
+
+      } catch (Exception e) {
+        return mplayerPath;
       }
     }
-    return Util.mplayerPath; // can be null if none suitable file found
+    return mplayerPath; // can be null if none suitable file found
   }
+
 
   /**
    * code from
