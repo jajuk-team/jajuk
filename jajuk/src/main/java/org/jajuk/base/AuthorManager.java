@@ -252,7 +252,7 @@ public class AuthorManager extends ItemManager {
   public Author getAuthorByName(String name) {
     Author out = null;
     for (Author author : getAuthors()) {
-      if (author.getName().trim().toLowerCase().matches(name.trim().toLowerCase())) {
+      if (author.getName().trim().toLowerCase().indexOf(name.trim().toLowerCase()) != -1) {
         out = author;
         break;
       }

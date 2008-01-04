@@ -25,11 +25,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
@@ -37,6 +39,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
@@ -108,7 +111,7 @@ public class TracksTableModel extends JajukTableModel {
    * Fill model with data using an optional filter property and pattern
    */
   @SuppressWarnings("unchecked")
-  public synchronized void populateModel(String sPropertyName, String sPattern) {
+  public synchronized void populateModel(String property, String sPattern) {
     // Filter mounted files if needed and apply sync table with tree option
     // if needed
     boolean bShowWithTree = true;
@@ -130,47 +133,8 @@ public class TracksTableModel extends JajukTableModel {
       }
     }
     // Filter values using given pattern
-    if (sPropertyName != null && sPattern != null) {
-      // null means no filtering
-      Iterator it = alToShow.iterator();
-      // Prepare filter pattern
-      String sNewPattern = sPattern;
-      if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
-        // do we use regular expression or not? if not, we allow
-        // user to use '*'
-        sNewPattern = sNewPattern.replaceAll("\\*", ".*");
-        sNewPattern = ".*" + sNewPattern + ".*";
-      } else if ("".equals(sNewPattern)) {
-        // in regexp mode, if none
-        // selection, display all rows
-        sNewPattern = ".*";
-      }
-      while (it.hasNext()) {
-        Track track = (Track) it.next();
-        if (sPropertyName != null && sNewPattern != null) {
-          // if name or value is null, means there is no filter
-          String sValue = track.getHumanValue(sPropertyName);
-          if (sValue == null) {
-            // try to filter on a unknown property, don't take
-            // this file
-            continue;
-          } else {
-            boolean bMatch = false;
-            try { // test using regular expressions
-              bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());
-              // test if the file property contains this
-              // property value (ignore case)
-            } catch (PatternSyntaxException pse) {
-              // wrong pattern syntax
-              bMatch = false;
-            }
-            if (!bMatch) {
-              it.remove(); // no? remove it
-            }
-          }
-        }
-      }
-    }
+    Filter filter = new Filter(property,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
+    Util.filterItems(alToShow, filter);
     // sort by album
     Collections.sort(alToShow, new TrackComparator(2));
     Iterator it = alToShow.iterator();

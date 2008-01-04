@@ -51,8 +51,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /** For perfs, we store the associated tracks */
   protected Set<Track> tracks = new TreeSet<Track>(basicComparator);
-  
-  
+
   /**
    * Album constructor
    * 
@@ -128,7 +127,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   public String getHumanValue(String sKey) {
-    // We compute here al pseudo keys (non album real attributes) that can be
+    // We compute here all pseudo keys (non album real attributes) that can be
     // required on an album
     if (XML_AUTHOR.equals(sKey)) {
       Author author = getAuthor();
@@ -138,6 +137,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
         // More than one author, display void string
         return "";
       }
+    } else if (XML_ALBUM.equals(sKey)) {
+      return getName2();
     } else if (XML_STYLE.equals(sKey)) {
       Style style = getStyle();
       if (style != null) {
@@ -456,8 +457,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return false;
     }
     boolean match = false;
-    try { // test using regular expressions
-      match = sValue.toLowerCase().matches(pattern.toLowerCase());
+    try {
+      // do not use regexp matches(<string>) because the string may contain
+      // characters to be escaped
+      match = (sValue.toLowerCase().indexOf(pattern.toLowerCase()) != -1);
       // test if the item property contains this
       // property value (ignore case)
     } catch (PatternSyntaxException pse) {

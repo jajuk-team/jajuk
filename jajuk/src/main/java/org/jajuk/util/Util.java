@@ -1437,8 +1437,8 @@ public class Util implements ITechnicalStrings {
           // directory
           sPATH = "./src/packaging";
         } else {
-          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile()
-              .getParentFile().getAbsolutePath();
+          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
+              .getAbsolutePath();
         }
         // Add MPlayer file name
         if ((file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE)).exists()
@@ -1448,7 +1448,7 @@ public class Util implements ITechnicalStrings {
           // For bundle project, Jajuk should check if mplayer was
           // installed along with aTunes. In this case, mplayer is
           // found in sPATH\win_tools\ directory. Hence, changed sPATH
-          // Note that we don't test mplayer.exe size in this case  
+          // Note that we don't test mplayer.exe size in this case
           if ((file = new File(sPATH + "/win_tools/" + ITechnicalStrings.FILE_MPLAYER_EXE))
               .exists())
             Util.mplayerPath = file;
@@ -1460,7 +1460,6 @@ public class Util implements ITechnicalStrings {
     }
     return mplayerPath; // can be null if none suitable file found
   }
-
 
   /**
    * code from
@@ -2360,6 +2359,59 @@ public class Util implements ITechnicalStrings {
       classLoader = Thread.currentThread().getContextClassLoader();
     }
     return (classLoader);
+  }
+
+  /**
+   * Filter a list.
+   * <p>
+   * The same collection is returned with non-matching items removed
+   * </p>
+   * <p>
+   * This filter is not thread safe.
+   * </p>
+   * 
+   * @param in
+   *          input list
+   * @param filter
+   * @return filtered list, void list if none match
+   */
+  @SuppressWarnings("unchecked")
+  public static List<Item> filterItems(List<? extends Item> list, Filter filter) {
+    if (filter == null || filter.getValue() == null) {
+      return (List<Item>) list;
+    }
+    //Check if property is not the "fake" any property
+    boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
+
+    String comparator = null;
+    String checked = filter.getValue().toLowerCase();
+    Iterator it = list.iterator();
+    while (it.hasNext()) {
+      Item item = (Item) it.next();
+      // If none property set, the search if global "any"
+      if (bAny) {
+        comparator = item.getAny();
+      } else {
+        if (filter.isHuman()) {
+          comparator = item.getHumanValue(filter.getProperty());
+        } else {
+          comparator = item.getStringValue(filter.getProperty());
+        }
+      }
+      // perform the test
+      boolean bMatch = false;
+      if (filter.isExact()) {
+        bMatch = (comparator.toLowerCase().equals(checked));
+      } else {
+        // Do not use Regexp matches() method, checked could contain string to
+        // be escaped
+        bMatch = (comparator.toLowerCase().indexOf(checked) != -1);
+      }
+      if (!bMatch) {
+        it.remove();
+      }
+    }
+    return (List<Item>) list;
   }
 
 }

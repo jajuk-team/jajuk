@@ -31,6 +31,7 @@ import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -284,35 +285,7 @@ public abstract class ItemManager implements ITechnicalStrings {
   @SuppressWarnings("unchecked")
   public Collection<Item> getItems(Filter filter) {
     synchronized (getLock()) {
-      if (filter == null) {
-        return getItems();
-      }
-      Collection<Item> col = hmItems.values();
-      String comparator = null;
-      String checked = null;
-      if (filter.isExact()) {
-        checked = filter.getValue();
-      } else {
-        checked = ".*" + filter.getValue() + ".*";
-      }
-      ArrayList<Item> out = new ArrayList<Item>(col.size());
-      for (Item item : col) {
-        // If none property set, the search if global "any"
-        if (filter.getProperty() == null) {
-          comparator = item.getAny();
-        } else {
-          if (filter.isHuman()) {
-            comparator = item.getHumanValue(filter.getProperty().getName());
-          } else {
-            comparator = item.getStringValue(filter.getProperty().getName());
-          }
-        }
-        // perform the test
-        if (comparator.toLowerCase().matches(checked.toLowerCase())) {
-          out.add(item);
-        }
-      }
-      return out;
+      return Util.filterItems(new ArrayList<Item>(hmItems.values()), filter);
     }
   }
 

@@ -461,9 +461,8 @@ public class AlbumManager extends ItemManager implements Observer {
    */
   public Album getAlbumByName(String name) {
     Album out = null;
-
     for (Album album : getAlbums()) {
-      if (album.getName().trim().toLowerCase().matches(name.trim().toLowerCase())) {
+      if (album.getName().trim().toLowerCase().indexOf(name.trim().toLowerCase()) != -1) {
         out = album;
         break;
       }

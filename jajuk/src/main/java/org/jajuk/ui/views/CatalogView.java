@@ -459,7 +459,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         // yet displayed (several times the same album with different
         // size is displayed)
         synchronized (lock) {
-         hsItems.clear();
+          hsItems.clear();
           // remove all devices
           if (jpItems.getComponentCount() > 0) {
             jpItems.removeAll();
@@ -467,7 +467,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           Filter filter = null;
           if (jtfValue.getText().length() > 0) {
             PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
-            filter = new Filter(meta, jtfValue.getText(), true, false);
+            filter = new Filter((meta == null) ? null : meta.getName(), jtfValue.getText(), true,
+                false);
           }
           ArrayList<Album> albums = null;
           final HashMap<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();

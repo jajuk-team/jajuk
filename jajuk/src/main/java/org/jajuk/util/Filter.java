@@ -27,8 +27,8 @@ import org.jajuk.base.PropertyMetaInformation;
  */
 public class Filter {
 
-  /** Property */
-  PropertyMetaInformation meta;
+  /** Key */
+  String key;
 
   /** Value* */
   String sValue;
@@ -42,8 +42,8 @@ public class Filter {
   /**
    * Filter constructor
    * 
-   * @param meta
-   *          meta property. null if the filter is on any property
+   * @param key
+   *          key (property name). null if the filter is on any property
    * @param sValue
    *          value
    * @param bHuman
@@ -52,8 +52,8 @@ public class Filter {
    * @param bExact
    *          is the filter should match exactly the value ?
    */
-  public Filter(PropertyMetaInformation meta, String sValue, boolean bHuman, boolean bExact) {
-    this.meta = meta;
+  public Filter(String key, String sValue, boolean bHuman, boolean bExact) {
+    this.key = key;
     this.sValue = sValue;
     this.bHuman = bHuman;
     this.bExact = bExact;
@@ -67,8 +67,8 @@ public class Filter {
     return bHuman;
   }
 
-  public PropertyMetaInformation getProperty() {
-    return meta;
+  public String getProperty() {
+    return key;
   }
 
   public String getValue() {

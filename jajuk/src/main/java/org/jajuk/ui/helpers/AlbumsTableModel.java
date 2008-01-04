@@ -20,11 +20,11 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.regex.PatternSyntaxException;
+import java.util.List;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -35,6 +35,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
@@ -115,48 +116,11 @@ public class AlbumsTableModel extends JajukTableModel {
    */
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String sPropertyName, String sPattern) {
-    Set<Album> alToShow = AlbumManager.getInstance().getAlbums();
+    List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
     // OK, begin by filtering using any provided pattern
-    if (!Util.isVoid(sPattern)) {
-      // Prepare filter pattern
-      String sNewPattern = sPattern;
-      if (!ConfigurationManager.getBoolean(CONF_REGEXP)) {
-        // do we use regular expression or not? if not, we allow
-        // user to use '*'
-        sNewPattern = sNewPattern.replaceAll("\\*", ".*");
-        sNewPattern = ".*" + sNewPattern + ".*";
-      } else if ("".equals(sNewPattern)) {
-        // in regexp mode, if none
-        // selection, display all rows
-        sNewPattern = ".*";
-      }
-      Iterator it = alToShow.iterator();
-      while (it.hasNext()) {
-        Album album = (Album) it.next();
-        if (sPropertyName != null && sNewPattern != null) {
-          // if name or value is null, means there is no filter
-          String sValue = album.getHumanValue(sPropertyName);
-          if (sValue == null) {
-            // try to filter on a unknown property, don't take
-            // this file
-            continue;
-          } else {
-            boolean bMatch = false;
-            try { // test using regular expressions
-              bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());
-              // test if the file property contains this
-              // property value (ignore case)
-            } catch (PatternSyntaxException pse) {
-              // wrong pattern syntax
-              bMatch = false;
-            }
-            if (!bMatch) {
-              it.remove(); // no? remove it
-            }
-          }
-        }
-      }
-    }
+    Filter filter = new Filter(sPropertyName,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
+    Util.filterItems(alToShow, filter);
+    
     // Filter unmounted files if required
     for (Album album : alToShow) {
       if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
