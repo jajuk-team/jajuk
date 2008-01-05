@@ -455,5 +455,9 @@ public enum JajukAction {
    * Search online tags
    */
   CDDB_SELECTION,
+  /**
+   * Show album details
+   */
+  SHOW_ALBUM_DETAILS,
   
 }

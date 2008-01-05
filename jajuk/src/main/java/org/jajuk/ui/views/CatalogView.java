@@ -760,7 +760,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {
-          // Launch thumbs creation in another processus
+          // Launch thumbs creation in another process
           ThumbnailsMaker.launchAllSizes(true);
           return null;
         }

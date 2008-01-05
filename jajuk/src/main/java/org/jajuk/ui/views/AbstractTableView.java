@@ -130,7 +130,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiPlayShuffle;
   JMenuItem jmiBookmark;
   JMenuItem jmiProperties;
-
+ 
   /**
    * Launches a thread used to perform dynamic filtering when user is typing
    */

@@ -157,7 +157,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
    */
   @Override
-  String getDescription() {
+  public String getDescription() {
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
     Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
     String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"

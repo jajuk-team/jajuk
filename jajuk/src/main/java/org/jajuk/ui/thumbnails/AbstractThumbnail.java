@@ -202,7 +202,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
   abstract public void populate() throws Exception;
 
   /** Return HTML text to display in the popup */
-  abstract String getDescription();
+  public abstract String getDescription();
 
   /**
    * Performs common UI operations for any kind of thumb

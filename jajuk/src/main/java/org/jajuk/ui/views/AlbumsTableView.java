@@ -24,9 +24,13 @@ import ext.SwingWorker;
 
 import java.util.List;
 
+import javax.swing.JMenuItem;
+
 import org.jajuk.base.Album;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.AlbumsTableModel;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
@@ -65,10 +69,16 @@ public class AlbumsTableView extends AbstractTableView {
     SwingWorker sw = new SwingWorker() {
       public Object construct() {
         AlbumsTableView.super.construct();
+        JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_ALBUM_DETAILS));
+        jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+        JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukAction.CREATE_REPORT));
+        jmiReport.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         // Add this generic menu item manually to ensure it's the last one in
         // the list for GUI reasons
         jtable.getMenu().add(jmiDelete);
         jtable.getMenu().add(jmiBookmark);
+        jtable.getMenu().add(jmiReport);
+        jtable.getMenu().add(jmiShowAlbumDetails);
         jtable.getMenu().add(jmiProperties);
         // Add specific behavior on left click
         jtable.setCommand(new ILaunchCommand() {

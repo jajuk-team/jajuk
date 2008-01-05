@@ -78,11 +78,14 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
    * @param description
    *          HTML text to display (HTML 3.0)
    * @param jlIcon
-   *          album thumb jlabel
+   *          album thumb jlabel, is null if we show the popup with no anchor on
+   *          the screen
    */
   public ThumbnailPopup(String description, JLabel jlIcon) {
-    setUndecorated(true);
-    getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+    if (jlIcon != null) {
+      setUndecorated(true);
+      getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+    }
     jp = new JXPanel();
     jp.setAlpha(0.7f);
     double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
@@ -139,39 +142,43 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
     jspText.getVerticalScrollBar().setValue(0);
     jp.add(jspText, "0,0");
     setContentPane(jp);
-    // Make sure to close this popup when it lost focus
-    jspText.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseExited(MouseEvent e) {
-        // Test if mouse is really outside the popup, for unknown reason,
-        // this event is catch when entering the popup (Windows)
-        if (!jspText.contains(e.getPoint())) {
-          dispose();
+    if (jlIcon != null) {
+      // Make sure to close this popup when it lost focus
+      jspText.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseExited(MouseEvent e) {
+          // Test if mouse is really outside the popup, for unknown reason,
+          // this event is catch when entering the popup (Windows)
+          if (!jspText.contains(e.getPoint())) {
+            dispose();
+          }
         }
-      }
-    });
+      });
 
-    // compute dialog position ( note that setRelativeTo
-    // is buggy and that we need more advanced positioning)
-    int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
-    // set position at 60 % of the picture
-    int y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.6 * jlIcon.getHeight());
-    int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    // Adjust position if details are located outside
-    // the screen
-    // in x-axis
-    if ((x + 500) > screenWidth) {
-      x = screenWidth - 510;
-    }
-    if ((y + 400) > screenHeight) {
-      x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+      // compute dialog position ( note that setRelativeTo
+      // is buggy and that we need more advanced positioning)
+      int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+      // set position at 60 % of the picture
+      int y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.6 * jlIcon.getHeight());
+      int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+      int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+      // Adjust position if details are located outside
+      // the screen
+      // in x-axis
       if ((x + 500) > screenWidth) {
         x = screenWidth - 510;
       }
-      y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.4 * jlIcon.getHeight()) - 400;
+      if ((y + 400) > screenHeight) {
+        x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+        if ((x + 500) > screenWidth) {
+          x = screenWidth - 510;
+        }
+        y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.4 * jlIcon.getHeight()) - 400;
+      }
+      setLocation(x, y);
+    } else {
+      setLocationByPlatform(true);
     }
-    setLocation(x, y);
     setSize(500, 400);
     setVisible(true);
     // Force scrollbar to stay on top

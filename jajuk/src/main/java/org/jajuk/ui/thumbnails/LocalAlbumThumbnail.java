@@ -169,7 +169,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
    */
   @Override
-  String getDescription() {
+  public String getDescription() {
     String size = "200x200";
     Util.refreshThumbnail(album, size);
     java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()

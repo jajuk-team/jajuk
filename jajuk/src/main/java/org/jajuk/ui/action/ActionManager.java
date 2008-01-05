@@ -170,6 +170,7 @@ public final class ActionManager {
     installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
     installAction(REFRESH, new RefreshDirectoryAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
+    installAction(JajukAction.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     
     //Selection actions
     installAction(JajukAction.SHOW_PROPERTIES, new ShowPropertiesAction(), false);

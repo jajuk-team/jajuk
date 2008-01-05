@@ -162,7 +162,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
    */
   @Override
-  String getDescription() {
+  public String getDescription() {
     // populate album detail
     if (album.getTracks() == null) {
       AudioScrobblerAlbum album = AudioScrobblerService.getInstance().getAlbum(
