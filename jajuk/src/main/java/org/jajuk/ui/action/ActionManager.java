@@ -181,6 +181,7 @@ public final class ActionManager {
     installAction(JajukAction.PLAY_ALBUM_SELECTION, new PlayAlbumSelectionAction(), false);
     installAction(JajukAction.PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
     installAction(JajukAction.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
+    installAction(JajukAction.CDDB_SELECTION, new CDDBSelectionAction(), false);
        
     // Do not install this action under OSX because it causes a crash as jar is
     // missing

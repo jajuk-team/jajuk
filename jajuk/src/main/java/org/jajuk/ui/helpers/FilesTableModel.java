@@ -180,10 +180,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       // Play
       IconLabel il = null;
       if (file.isReady()) {
-        il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("FilesTreeView.1"));
+        il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("TracksTableView.7"));
       } else {
         il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-            .getString("FilesTreeView.1")
+            .getString("TracksTableView.7")
             + Messages.getString("AbstractTableView.10"));
       }
       oValues[iRow][0] = il;

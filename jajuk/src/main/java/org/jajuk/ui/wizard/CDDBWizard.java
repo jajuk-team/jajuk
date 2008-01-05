@@ -54,7 +54,6 @@ import javax.swing.event.TableModelListener;
 
 import org.jajuk.Main;
 import org.jajuk.base.Event;
-import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -207,7 +206,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
    * @param dir
    *          directory to retag
    */
-  public CDDBWizard(final ArrayList<Item> alGivenTracks) {
+  public CDDBWizard(final ArrayList<Track> alGivenTracks) {
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
     SwingWorker sw = new SwingWorker() {
@@ -224,8 +223,8 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
             // Convert given tracks into CDDBTracks
             alTracks = new ArrayList<CDDBTrack>(alGivenTracks.size());
             filter = null;
-            for (Item item : alGivenTracks) {
-              CDDBTrack track = new CDDBTrack((Track) item);
+            for (Track t : alGivenTracks) {
+              CDDBTrack track = new CDDBTrack(t);
               if (!alTracks.contains(track)) {
                 // filter.add(track);
                 alTracks.add(track);

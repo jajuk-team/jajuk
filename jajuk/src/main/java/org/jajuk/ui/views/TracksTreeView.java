@@ -35,9 +35,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -65,7 +63,6 @@ import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -87,7 +84,6 @@ import org.jajuk.ui.helpers.TreeTransferHandler;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -127,88 +123,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   JComboBox jcbSort;
 
-  JPopupMenu jmenuStyle;
-
-  JMenuItem jmiStylePlay;
-
-  JMenuItem jmiStylePush;
-
-  JMenuItem jmiStylePlayShuffle;
-
-  JMenuItem jmiStylePlayRepeat;
-
-  JMenuItem jmiStyleDelete;
-
-  JMenuItem jmiStyleAddFavorite;
-
-  JMenuItem jmiStyleReport;
-
-  JMenuItem jmiStyleProperties;
-
-  JPopupMenu jmenuAuthor;
-
-  JMenuItem jmiAuthorPlay;
-
-  JMenuItem jmiAuthorPush;
-
-  JMenuItem jmiAuthorPlayShuffle;
-
-  JMenuItem jmiAuthorPlayRepeat;
-
-  JMenuItem jmiAuthorDelete;
-
-  JMenuItem jmiAuthorAddFavorite;
-
-  JMenuItem jmiAuthorReport;
-
-  JMenuItem jmiAuthorProperties;
-
-  JPopupMenu jmenuAlbum;
-
-  JMenuItem jmiAlbumPlay;
-
-  JMenuItem jmiAlbumPush;
-
-  JMenuItem jmiAlbumPlayShuffle;
-
-  JMenuItem jmiAlbumPlayRepeat;
-
-  JMenuItem jmiAlbumDelete;
-
-  JMenuItem jmiAlbumAddFavorite;
-
-  JMenuItem jmiAlbumReport;
-
-  JMenuItem jmiAlbumCDDBWizard;
-
-  JMenuItem jmiAlbumProperties;
-
-  JPopupMenu jmenuYear;
-
-  JMenuItem jmiYearPlay;
-
-  JMenuItem jmiYearPush;
-
-  JMenuItem jmiYearPlayShuffle;
-
-  JMenuItem jmiYearPlayRepeat;
-
-  JMenuItem jmiYearAddFavorite;
-
-  JMenuItem jmiYearProperties;
-
-  JPopupMenu jmenuTrack;
-
-  JMenuItem jmiTrackPlay;
-
-  JMenuItem jmiTrackPush;
-
-  JMenuItem jmiTrackDelete;
-
-  JMenuItem jmiTrackAddFavorite;
-
-  JMenuItem jmiTrackProperties;
-
   /*
    * (non-Javadoc)
    * 
@@ -238,8 +152,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    // **Menu items**
-
+    super.initUI();
     // ComboBox sort
     double[][] dSizeSort = { { 5, TableLayout.PREFERRED, 5, TableLayout.FILL },
         { TableLayout.PREFERRED } };
@@ -271,162 +184,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     Action actionDuplicateFiles = ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES);
     jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
     jmenuCollection.add(jmiCollectionDuplicateFiles);
-
-    // Style menu
-    jmenuStyle = new JPopupMenu();
-    jmiStylePlay = new JMenuItem(Messages.getString("TracksTreeView.1"), IconLoader.ICON_PLAY_16x16);
-    jmiStylePlay.addActionListener(this);
-    jmiStylePush = new JMenuItem(Messages.getString("TracksTreeView.2"), IconLoader.ICON_PUSH);
-    jmiStylePush.addActionListener(this);
-    jmiStylePlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.3"),
-        IconLoader.ICON_SHUFFLE);
-    jmiStylePlayShuffle.addActionListener(this);
-    jmiStylePlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.4"),
-        IconLoader.ICON_REPEAT);
-    jmiStylePlayRepeat.addActionListener(this);
-    jmiStyleDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiStyleDelete.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiStyleDelete.addActionListener(this);
-    jmiStyleAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
-        IconLoader.ICON_BOOKMARK_FOLDERS);
-    jmiStyleAddFavorite.addActionListener(this);
-    Action actionReportStyle = ActionManager.getAction(JajukAction.CREATE_REPORT);
-    jmiStyleReport = new JMenuItem(actionReportStyle);
-    // Add custom data to this component in order to allow the ReportAction
-    // to be able to get it
-    jmiStyleReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
-    jmiStyleReport.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiStyleProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiStyleProperties.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmenuStyle.add(jmiStylePlay);
-    jmenuStyle.add(jmiStylePush);
-    jmenuStyle.add(jmiStyleDelete);
-    jmenuStyle.add(jmiStylePlayShuffle);
-    jmenuStyle.add(jmiStylePlayRepeat);
-    jmenuStyle.add(jmiStyleAddFavorite);
-    jmenuStyle.add(jmiStyleReport);
-    jmenuStyle.add(jmiStyleProperties);
-
-    // Author menu
-    jmenuAuthor = new JPopupMenu();
-    jmiAuthorPlay = new JMenuItem(Messages.getString("TracksTreeView.8"),
-        IconLoader.ICON_PLAY_16x16);
-    jmiAuthorPlay.addActionListener(this);
-    jmiAuthorPush = new JMenuItem(Messages.getString("TracksTreeView.9"), IconLoader.ICON_PUSH);
-    jmiAuthorPush.addActionListener(this);
-    jmiAuthorPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.10"),
-        IconLoader.ICON_SHUFFLE);
-    jmiAuthorPlayShuffle.addActionListener(this);
-    jmiAuthorPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.11"),
-        IconLoader.ICON_REPEAT);
-    jmiAuthorPlayRepeat.addActionListener(this);
-    jmiAuthorDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiAuthorDelete.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiAuthorDelete.addActionListener(this);
-    jmiAuthorAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
-        IconLoader.ICON_BOOKMARK_FOLDERS);
-    jmiAuthorAddFavorite.addActionListener(this);
-    Action actionReportAuthor = ActionManager.getAction(JajukAction.CREATE_REPORT);
-    jmiAuthorReport = new JMenuItem(actionReportAuthor);
-    // Add custom data to this component in order to allow the ReportAction
-    // to be able to get it
-    jmiAuthorReport.putClientProperty(DETAIL_ORIGIN, XML_AUTHOR);
-    jmiAuthorReport.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiAuthorProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiAuthorProperties.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmenuAuthor.add(jmiAuthorPlay);
-    jmenuAuthor.add(jmiAuthorPush);
-    jmenuAuthor.add(jmiAuthorDelete);
-    jmenuAuthor.add(jmiAuthorPlayShuffle);
-    jmenuAuthor.add(jmiAuthorPlayRepeat);
-    jmenuAuthor.add(jmiAuthorAddFavorite);
-    jmenuAuthor.add(jmiAuthorReport);
-    jmenuAuthor.add(jmiAuthorProperties);
-
-    // Album menu
-    jmenuAlbum = new JPopupMenu();
-    jmiAlbumPlay = new JMenuItem(Messages.getString("TracksTreeView.15"),
-        IconLoader.ICON_PLAY_16x16);
-    jmiAlbumPlay.addActionListener(this);
-    jmiAlbumPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
-    jmiAlbumPush.addActionListener(this);
-    jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"),
-        IconLoader.ICON_SHUFFLE);
-    jmiAlbumPlayShuffle.addActionListener(this);
-    jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.18"),
-        IconLoader.ICON_REPEAT);
-    jmiAlbumPlayRepeat.addActionListener(this);
-    jmiAlbumDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiAlbumDelete.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiAlbumDelete.addActionListener(this);
-    jmiAlbumAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
-        IconLoader.ICON_BOOKMARK_FOLDERS);
-    jmiAlbumAddFavorite.addActionListener(this);
-    Action actionReportAlbum = ActionManager.getAction(JajukAction.CREATE_REPORT);
-    jmiAlbumReport = new JMenuItem(actionReportAlbum);
-    // Add custom data to this component in order to allow the ReportAction
-    // to be able to get it
-    jmiAlbumReport.putClientProperty(DETAIL_ORIGIN, XML_ALBUM);
-    jmiAlbumReport.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"),
-        IconLoader.ICON_CDDB);
-    jmiAlbumCDDBWizard.addActionListener(this);
-    jmiAlbumProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiAlbumProperties.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmenuAlbum.add(jmiAlbumPlay);
-    jmenuAlbum.add(jmiAlbumPush);
-    jmenuAlbum.add(jmiAlbumDelete);
-    jmenuAlbum.add(jmiAlbumPlayShuffle);
-    jmenuAlbum.add(jmiAlbumPlayRepeat);
-    jmenuAlbum.add(jmiAlbumAddFavorite);
-    jmenuAlbum.add(jmiAlbumCDDBWizard);
-    jmenuAlbum.add(jmiAlbumReport);
-    jmenuAlbum.add(jmiAlbumProperties);
-
-    // Year menu
-    jmenuYear = new JPopupMenu();
-    jmiYearPlay = new JMenuItem(Messages.getString("TracksTreeView.15"), IconLoader.ICON_PLAY_16x16);
-    jmiYearPlay.addActionListener(this);
-    jmiYearPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
-    jmiYearPush.addActionListener(this);
-    jmiYearPlayShuffle = new JMenuItem(Messages.getString("TracksTreeView.17"),
-        IconLoader.ICON_SHUFFLE);
-    jmiYearPlayShuffle.addActionListener(this);
-    jmiYearPlayRepeat = new JMenuItem(Messages.getString("TracksTreeView.18"),
-        IconLoader.ICON_REPEAT);
-    jmiYearPlayRepeat.addActionListener(this);
-    jmiYearAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
-        IconLoader.ICON_BOOKMARK_FOLDERS);
-    jmiYearAddFavorite.addActionListener(this);
-    jmiYearProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiYearProperties.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmenuYear.add(jmiYearPlay);
-    jmenuYear.add(jmiYearPush);
-    jmenuYear.add(jmiYearPlayShuffle);
-    jmenuYear.add(jmiYearPlayRepeat);
-    jmenuYear.add(jmiYearAddFavorite);
-    jmenuYear.add(jmiYearProperties);
-
-    // Track menu
-    jmenuTrack = new JPopupMenu();
-    jmiTrackPlay = new JMenuItem(Messages.getString("TracksTreeView.22"),
-        IconLoader.ICON_PLAY_16x16);
-    jmiTrackPlay.addActionListener(this);
-    jmiTrackPush = new JMenuItem(Messages.getString("TracksTreeView.23"), IconLoader.ICON_PUSH);
-    jmiTrackPush.addActionListener(this);
-    jmiTrackDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiTrackDelete.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiTrackDelete.addActionListener(this);
-    jmiTrackAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
-        IconLoader.ICON_BOOKMARK_FOLDERS);
-    jmiTrackAddFavorite.addActionListener(this);
-    jmiTrackProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiTrackProperties.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmenuTrack.add(jmiTrackPlay);
-    jmenuTrack.add(jmiTrackPush);
-    jmenuTrack.add(jmiTrackDelete);
-    jmenuTrack.add(jmiTrackAddFavorite);
-    jmenuTrack.add(jmiTrackProperties);
 
     top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
 
@@ -628,15 +385,56 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         }
         // display menus according node type
         if (paths[0].getLastPathComponent() instanceof TrackNode) {
-          jmenuTrack.show(jtree, e.getX(), e.getY());
+          jmenu = new JPopupMenu();
+          jmenu.add(jmiPlay);
+          jmenu.add(jmiPush);
+          jmenu.add(jmiDelete);
+          jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiProperties);
+          jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
-          jmenuAlbum.show(jtree, e.getX(), e.getY());
+          jmenu = new JPopupMenu();
+          jmenu.add(jmiPlay);
+          jmenu.add(jmiPush);
+          jmenu.add(jmiDelete);
+          jmenu.add(jmiPlayShuffle);
+          jmenu.add(jmiPlayRepeat);
+          jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiCDDBWizard);
+          jmenu.add(jmiReport);
+          jmenu.add(jmiProperties);
+          jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
-          jmenuAuthor.show(jtree, e.getX(), e.getY());
+          jmenu = new JPopupMenu();
+          jmenu.add(jmiPlay);
+          jmenu.add(jmiPush);
+          jmenu.add(jmiDelete);
+          jmenu.add(jmiPlayShuffle);
+          jmenu.add(jmiPlayRepeat);
+          jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiReport);
+          jmenu.add(jmiProperties);
+          jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
-          jmenuStyle.show(jtree, e.getX(), e.getY());
+          jmenu = new JPopupMenu();
+          jmenu.add(jmiPlay);
+          jmenu.add(jmiPush);
+          jmenu.add(jmiDelete);
+          jmenu.add(jmiPlayShuffle);
+          jmenu.add(jmiPlayRepeat);
+          jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiReport);
+          jmenu.add(jmiProperties);
+          jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof YearNode) {
-          jmenuYear.show(jtree, e.getX(), e.getY());
+          jmenu = new JPopupMenu();
+          jmenu.add(jmiPlay);
+          jmenu.add(jmiPush);
+          jmenu.add(jmiPlayShuffle);
+          jmenu.add(jmiPlayRepeat);
+          jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiProperties);
+          jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
           jmenuCollection.show(jtree, e.getX(), e.getY());
         }
@@ -1026,74 +824,26 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
-    new Thread() {
-      public void run() {
-        if (e.getSource() == jmiAlbumCDDBWizard) {
-          ArrayList<Item> alTracks = new ArrayList<Item>(20);
-          for (Item item : alSelected) {
-            Album album = (Album) item;
-            alTracks.addAll(album.getTracks());
-          }
-          Util.waiting();
-          new CDDBWizard(alTracks);
-        } else if (e.getSource() == jcbSort) {
-          Util.waiting();
+    if (e.getSource() == jcbSort) {
+      Util.waiting();
+      SwingWorker sw = new SwingWorker() {
+        @Override
+        public Object construct() {
           // Set comparator
           ConfigurationManager.setProperty(CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
               .getSelectedIndex()));
           populateTree();
-          SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-              SwingUtilities.updateComponentTreeUI(jtree);
-              Util.stopWaiting();
-            }
-          });
-        } else {
-          // compute selection
-          ArrayList<File> alFilesToPlay = new ArrayList<File>(alTracks.size());
-          Iterator it = alTracks.iterator();
-          while (it.hasNext()) {
-            File file = ((Track) it.next()).getPlayeableFile(false);
-            if (file != null) {
-              alFilesToPlay.add(file);
-            }
-          }
-          if (alFilesToPlay.size() == 0) {
-            Messages.showErrorMessage(18);
-            return;
-          }
-          if ((e.getSource() == jmiTrackPlay || e.getSource() == jmiAlbumPlay
-              || e.getSource() == jmiAuthorPlay || e.getSource() == jmiStylePlay || e.getSource() == jmiYearPlay)) {
-            FIFO.getInstance().push(
-                Util.createStackItems(Util.applyPlayOption(alFilesToPlay), ConfigurationManager
-                    .getBoolean(CONF_STATE_REPEAT), true), false);
-          } else if ((e.getSource() == jmiTrackPush || e.getSource() == jmiAlbumPush
-              || e.getSource() == jmiAuthorPush || e.getSource() == jmiStylePush || e.getSource() == jmiYearPush)) {
-            FIFO.getInstance().push(
-                Util.createStackItems(Util.applyPlayOption(alFilesToPlay), ConfigurationManager
-                    .getBoolean(CONF_STATE_REPEAT), true), true);
-          } else if ((e.getSource() == jmiAlbumPlayShuffle || e.getSource() == jmiAuthorPlayShuffle || e
-              .getSource() == jmiStylePlayShuffle)
-              || e.getSource() == jmiYearPlayShuffle) {
-            Collections.shuffle(alFilesToPlay, new Random());
-            FIFO.getInstance().push(
-                Util.createStackItems(alFilesToPlay, ConfigurationManager
-                    .getBoolean(CONF_STATE_REPEAT), true), false);
-          } else if ((e.getSource() == jmiAlbumPlayRepeat || e.getSource() == jmiAuthorPlayRepeat
-              || e.getSource() == jmiStylePlayRepeat || e.getSource() == jmiYearPlayRepeat)) {
-            FIFO.getInstance().push(
-                Util.createStackItems(Util.applyPlayOption(alFilesToPlay), true, true), false);
-          } else if ((e.getSource() == jmiStyleAddFavorite || e.getSource() == jmiAlbumAddFavorite
-              || e.getSource() == jmiAuthorAddFavorite || e.getSource() == jmiTrackAddFavorite || e
-              .getSource() == jmiYearAddFavorite)) {
-            Bookmarks.getInstance().addFiles(alFilesToPlay);
-          } else if ((e.getSource() == jmiAlbumDelete || e.getSource() == jmiAuthorDelete
-              || e.getSource() == jmiStyleDelete || e.getSource() == jmiTrackDelete)) {
-            // TBI
-          }
+          return null;
         }
-      }
-    }.start();
+
+        @Override
+        public void finished() {
+          SwingUtilities.updateComponentTreeUI(jtree);
+          Util.stopWaiting();
+        }
+      };
+      sw.start();
+    }
   }
 
   /*

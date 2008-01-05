@@ -212,7 +212,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmenu = new JPopupMenu();
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
     jmiPlay.putClientProperty(DETAIL_SELECTION,getItem());
-    jmiPush = new JMenuItem(Messages.getString("TracksTreeView.16"), IconLoader.ICON_PUSH);
+    jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
     jmiPush.addActionListener(this);
     Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
     jmiDelete = new JMenuItem(actionDeleteFile);
@@ -226,8 +226,8 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmiGetCovers.addActionListener(this);
     jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP);
     jmiShowPopup.addActionListener(this);
-    jmiCDDBWizard = new JMenuItem(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB);
-    jmiCDDBWizard.addActionListener(this);
+    jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukAction.CDDB_SELECTION));
+    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION,getItem());
     ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
@@ -403,13 +403,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
       }.start();
     } else if (e.getSource() == jmiShowPopup) {
       this.displayPopup();
-    } else if (e.getSource() == jmiCDDBWizard) {
-      // This menu is enabled only for albums
-      ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance()
-          .getAssociatedTracks(getItem()));
-      Util.waiting();
-      new CDDBWizard(alTracks);
-    }
+    } 
   }
 
   /*

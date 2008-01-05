@@ -589,6 +589,11 @@ public class TrackManager extends ItemManager implements Observer {
         return ((Album) item).tracks;
       }
       Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
+      //If the item is itself a track, simply return it
+      if (item instanceof Track){
+        out.add((Track)item);
+        return out;
+      }
       for (Object item2 : hmItems.values()) {
         Track track = (Track) item2;
         if ((item instanceof Album && track.getAlbum().equals(item))

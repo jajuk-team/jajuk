@@ -451,5 +451,9 @@ public enum JajukAction {
    * Play full directory for selection
    */
   PLAY_DIRECTORY_SELECTION,
+  /**
+   * Search online tags
+   */
+  CDDB_SELECTION,
   
 }
