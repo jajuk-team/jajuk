@@ -107,8 +107,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   /** Track selection */
   ArrayList<Track> alTracks;
 
-  ArrayList<File> alFilesToPlay;
-
   JPopupMenu jmenuCollection;
 
   ButtonGroup btCollection;
@@ -287,7 +285,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         IconLoader.ICON_REPEAT);
     jmiStylePlayRepeat.addActionListener(this);
     jmiStyleDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiStyleDelete.putClientProperty(DETAIL_SELECTION, alFilesToPlay);
+    jmiStyleDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiStyleDelete.addActionListener(this);
     jmiStyleAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
         IconLoader.ICON_BOOKMARK_FOLDERS);
@@ -323,7 +321,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         IconLoader.ICON_REPEAT);
     jmiAuthorPlayRepeat.addActionListener(this);
     jmiAuthorDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiAuthorDelete.putClientProperty(DETAIL_SELECTION, alFilesToPlay);
+    jmiAuthorDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiAuthorDelete.addActionListener(this);
     jmiAuthorAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
         IconLoader.ICON_BOOKMARK_FOLDERS);
@@ -359,7 +357,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         IconLoader.ICON_REPEAT);
     jmiAlbumPlayRepeat.addActionListener(this);
     jmiAlbumDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiAlbumDelete.putClientProperty(DETAIL_SELECTION, alFilesToPlay);
+    jmiAlbumDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiAlbumDelete.addActionListener(this);
     jmiAlbumAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
         IconLoader.ICON_BOOKMARK_FOLDERS);
@@ -417,7 +415,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jmiTrackPush = new JMenuItem(Messages.getString("TracksTreeView.23"), IconLoader.ICON_PUSH);
     jmiTrackPush.addActionListener(this);
     jmiTrackDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-    jmiTrackDelete.putClientProperty(DETAIL_SELECTION, alFilesToPlay);
+    jmiTrackDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiTrackDelete.addActionListener(this);
     jmiTrackAddFavorite = new JMenuItem(Messages.getString("TracksTreeView.32"),
         IconLoader.ICON_BOOKMARK_FOLDERS);
@@ -1052,7 +1050,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           });
         } else {
           // compute selection
-          alFilesToPlay = new ArrayList<File>(alTracks.size());
+          ArrayList<File> alFilesToPlay = new ArrayList<File>(alTracks.size());
           Iterator it = alTracks.iterator();
           while (it.hasNext()) {
             File file = ((Track) it.next()).getPlayeableFile(false);
