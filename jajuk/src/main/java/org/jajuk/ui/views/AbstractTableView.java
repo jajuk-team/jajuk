@@ -125,6 +125,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   JMenuItem jmiPlay;
   JMenuItem jmiPush;
+  JMenuItem jmiDelete;
   JMenuItem jmiPlayRepeat;
   JMenuItem jmiPlayShuffle;
   JMenuItem jmiBookmark;
@@ -183,6 +184,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiPush.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
 
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
+    jmiDelete.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jtable.getMenu().add(jmiDelete);
+    
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);

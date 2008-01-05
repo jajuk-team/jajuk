@@ -27,6 +27,8 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
@@ -34,7 +36,9 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Style;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -69,6 +73,10 @@ public class DeleteAction extends ActionBase {
         alFiles.add((File) item);
       } else if (item instanceof Track) {
         alFiles.addAll(((Track) item).getFiles());
+      } else if (item instanceof Album || item instanceof Author || item instanceof Style) {
+        for (Track atrack: TrackManager.getInstance().getAssociatedTracks(item)){
+          alFiles.addAll(atrack.getFiles());
+        }
       } else if (item instanceof Directory) {
         alDirs.add((Directory) item);
       }
