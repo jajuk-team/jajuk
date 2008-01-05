@@ -45,8 +45,6 @@ public class TracksTableView extends AbstractTableView {
 
   private static final long serialVersionUID = 1L;
 
-  JMenuItem jmiTrackDelete;
-
   JMenuItem jmiTrackPlayAlbum;
 
   JMenuItem jmiTrackPlayAuthor;
@@ -81,9 +79,6 @@ public class TracksTableView extends AbstractTableView {
         jmiTrackPlayAuthor.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         jtable.getMenu().add(jmiTrackPlayAlbum);
         jtable.getMenu().add(jmiTrackPlayAuthor);
-        jmiTrackDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-        jmiTrackDelete.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-        jtable.getMenu().add(jmiTrackDelete);
         // Add this generic menu item manually to ensure it's the last one in
         // the list for GUI reasons
         jtable.getMenu().add(jmiBookmark);

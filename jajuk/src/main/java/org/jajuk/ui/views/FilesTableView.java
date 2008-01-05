@@ -44,8 +44,6 @@ public class FilesTableView extends AbstractTableView {
 
   private static final long serialVersionUID = 1L;
 
-  JMenuItem jmiFileDelete;
-
   JMenuItem jmiFilePlayDirectory;
 
   public FilesTableView() {
@@ -73,9 +71,6 @@ public class FilesTableView extends AbstractTableView {
             .getAction(JajukAction.PLAY_DIRECTORY_SELECTION));
         jmiFilePlayDirectory.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         jtable.getMenu().add(jmiFilePlayDirectory);
-        jmiFileDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
-        jmiFileDelete.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-        jtable.getMenu().add(jmiFileDelete);
         // Add this generic menu item manually to ensure it's the last one in
         // the list for GUI reasons
         jtable.getMenu().add(jmiBookmark);
