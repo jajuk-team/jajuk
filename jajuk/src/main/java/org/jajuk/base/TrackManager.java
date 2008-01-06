@@ -599,6 +599,16 @@ public class TrackManager extends ItemManager implements Observer {
         out.add((Track)item);
         return out;
       }
+      else if (item instanceof File){
+        out.add(((File) item).getTrack());
+        return out;
+      }
+      else if (item instanceof Directory){
+        Directory dir = (Directory)item;
+        for (File file:dir.getFiles()){
+          out.add(file.getTrack());
+        }
+      }
       for (Object item2 : hmItems.values()) {
         Track track = (Track) item2;
         if ((item instanceof Album && track.getAlbum().equals(item))
