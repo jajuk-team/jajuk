@@ -104,57 +104,55 @@ public class StatView extends ViewAdapter implements Observer {
    * @return the chart
    */
   private ChartPanel createStyleRepartition() {
-    synchronized (StyleManager.getInstance().getLock()) {
-      ChartPanel cpanel = null;
-      try {
-        DefaultPieDataset pdata = null;
-        JFreeChart jfchart = null;
-        // data
-        pdata = new DefaultPieDataset();
-        Iterator<Style> it = StyleManager.getInstance().getStyles().iterator();
-        int iTotal = 0;
-        double dOthers = 0;
-        TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
-        while (it.hasNext()) {
-          Style style = it.next();
-          int iCount = style.getCount();
-          iTotal += iCount;
-          tm.put(style.getName2(), new Integer(iCount));
-        }
-        Iterator<String> keys = tm.keySet().iterator();
-        while (keys.hasNext()) {
-          String sName = keys.next();
-          Integer i = tm.get(sName);
-          double d = i.doubleValue();
-          if (iTotal > 0 && d / iTotal < 0.05) {
-            // less than 5% -> go to others
-            dOthers += d;
-          } else {
-            double dValue = Math.round(100 * new Double(d / iTotal));
-            pdata.setValue(sName, dValue);
-          }
-        }
-        if (iTotal > 0 && dOthers > 0) {
-          double dValue = Math.round(100 * (dOthers / iTotal));
-          pdata.setValue(Messages.getString("StatView.0"), dValue);
-        }
-        // chart
-        jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"), pdata, true,
-            true, true);
-        // set the background color for the chart...
-        PiePlot plot = (PiePlot) jfchart.getPlot();
-        plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
-        plot.setNoDataMessage(Messages.getString("StatView.2"));
-        plot.setForegroundAlpha(0.5f);
-        plot.setBackgroundAlpha(0.5f);
-        StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator("{0} = {2}");
-        plot.setLabelGenerator(labels);
-        cpanel = new ChartPanel(jfchart);
-      } catch (Exception e) {
-        Log.error(e);
+    ChartPanel cpanel = null;
+    try {
+      DefaultPieDataset pdata = null;
+      JFreeChart jfchart = null;
+      // data
+      pdata = new DefaultPieDataset();
+      Iterator<Style> it = StyleManager.getInstance().getStyles().iterator();
+      int iTotal = 0;
+      double dOthers = 0;
+      TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
+      while (it.hasNext()) {
+        Style style = it.next();
+        int iCount = style.getCount();
+        iTotal += iCount;
+        tm.put(style.getName2(), new Integer(iCount));
       }
-      return cpanel;
+      Iterator<String> keys = tm.keySet().iterator();
+      while (keys.hasNext()) {
+        String sName = keys.next();
+        Integer i = tm.get(sName);
+        double d = i.doubleValue();
+        if (iTotal > 0 && d / iTotal < 0.05) {
+          // less than 5% -> go to others
+          dOthers += d;
+        } else {
+          double dValue = Math.round(100 * new Double(d / iTotal));
+          pdata.setValue(sName, dValue);
+        }
+      }
+      if (iTotal > 0 && dOthers > 0) {
+        double dValue = Math.round(100 * (dOthers / iTotal));
+        pdata.setValue(Messages.getString("StatView.0"), dValue);
+      }
+      // chart
+      jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"), pdata, true, true,
+          true);
+      // set the background color for the chart...
+      PiePlot plot = (PiePlot) jfchart.getPlot();
+      plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
+      plot.setNoDataMessage(Messages.getString("StatView.2"));
+      plot.setForegroundAlpha(0.5f);
+      plot.setBackgroundAlpha(0.5f);
+      StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator("{0} = {2}");
+      plot.setLabelGenerator(labels);
+      cpanel = new ChartPanel(jfchart);
+    } catch (Exception e) {
+      Log.error(e);
     }
+    return cpanel;
   }
 
   /**
@@ -351,7 +349,7 @@ public class StatView extends ViewAdapter implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public synchronized void update(Event event) {
+  public void update(Event event) {
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
         || EventSubject.EVENT_DEVICE_DELETE.equals(subject)) {
