@@ -331,26 +331,24 @@ public interface ITechnicalStrings {
   public static final String CLI_TEST = "test";
 
   // players impls
-  public static final String PLAYER_IMPL_JAVALAYER = "org.jajuk.players.JavaLayerPlayerImpl";
+  public static final String PLAYER_IMPL_JAVALAYER = "org.jajuk.services.players.JavaLayerPlayerImpl";
 
-  public static final String PLAYER_IMPL_MPLAYER = "org.jajuk.players.MPlayerPlayerImpl";
+  public static final String PLAYER_IMPL_MPLAYER = "org.jajuk.services.players.MPlayerPlayerImpl";
 
-  public static final String PLAYER_IMPL_WEBRADIOS = "org.jajuk.players.WebRadioPlayerImpl";
+  public static final String PLAYER_IMPL_WEBRADIOS = "org.jajuk.services.players.WebRadioPlayerImpl";
 
   // tag impls
-  public static final String TAG_IMPL_JID3LIB = "org.jajuk.tag.JID3LibTagImpl";
+  public static final String TAG_IMPL_JID3LIB = "org.jajuk.services.tags.JID3LibTagImpl";
 
-  public static final String TAG_IMPL_MP3INFO = "org.jajuk.tag.MP3InfoTagImpl";
+  public static final String TAG_IMPL_MP3INFO = "org.jajuk.services.tags.MP3InfoTagImpl";
 
-  public static final String TAG_IMPL_RABBIT_FARM = "org.jajuk.tag.RabbitFarmTagImpl";
+  public static final String TAG_IMPL_JLGUI_MP3 = "org.jajuk.services.tags.JlGuiMP3TagImpl";
 
-  public static final String TAG_IMPL_JLGUI_MP3 = "org.jajuk.tag.JlGuiMP3TagImpl";
+  public static final String TAG_IMPL_JLGUI_OGG = "org.jajuk.services.tags.JlGuiOggTagImpl";
 
-  public static final String TAG_IMPL_JLGUI_OGG = "org.jajuk.tag.JlGuiOggTagImpl";
+  public static final String TAG_IMPL_NO_TAGS = "org.jajuk.services.tags.NoTagsTagImpl";
 
-  public static final String TAG_IMPL_NO_TAGS = "org.jajuk.tag.NoTagsTagImpl";
-
-  public static final String TAG_IMPL_ENTAGGED = "org.jajuk.tag.EntaggedTagImpl";
+  public static final String TAG_IMPL_ENTAGGED = "org.jajuk.services.tags.EntaggedTagImpl";
 
   // device types
   public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
