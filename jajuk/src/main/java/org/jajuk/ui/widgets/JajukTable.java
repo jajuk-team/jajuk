@@ -21,6 +21,7 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -74,6 +75,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   
   /** Model refreshing flag */
   public volatile boolean acceptColumnsEvents = false;
+  
+  private static final DateFormat formatter = Util.getLocaleDateFormatter();
 
 
   /**
@@ -270,7 +273,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     } else if (o instanceof IconLabel) {
       return ((IconLabel) o).getTooltip();
     } else if (o instanceof Date) {
-      return Util.getLocaleDateFormatter().format((Date) o);
+      return formatter.format((Date) o);
     } else {
       return o.toString();
     }

@@ -122,14 +122,6 @@ public class Util implements ITechnicalStrings {
   /** contains clipboard data */
   public static String copyData;
 
-  /** Addition date Date format */
-  private static SimpleDateFormat sdfAdded = new SimpleDateFormat(
-      ITechnicalStrings.ADDITION_DATE_FORMAT);
-
-  /** Default locale format* */
-  private static DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale
-      .getDefault());
-
   /** Directory filter used in refresh */
   public static JajukFileFilter dirFilter = new JajukFileFilter(DirectoryFilter.getInstance());
 
@@ -920,9 +912,9 @@ public class Util implements ITechnicalStrings {
     String sValue = oValue.toString();
     if (cType.equals(Date.class)) {
       if (bHuman) {
-        sValue = Util.getLocaleDateFormatter().format(oValue);
+        sValue = Util.getLocaleDateFormatter().format((Date) oValue);
       } else {
-        sValue = Util.getAdditionDateFormat().format(oValue);
+        sValue = Util.getAdditionDateFormatter().format((Date)oValue);
       }
     } else if (cType.equals(Class.class)) {
       sValue = oValue.getClass().getName();
@@ -1045,13 +1037,6 @@ public class Util implements ITechnicalStrings {
       }
     }
     return sbOut.toString();
-  }
-
-  /**
-   * @return Addition date simple format singleton
-   */
-  public static DateFormat getAdditionDateFormat() {
-    return Util.sdfAdded;
   }
 
   /**
@@ -1349,10 +1334,19 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
-   * @return locale date formatter
+   * @return locale date formatter instance
    */
   public static DateFormat getLocaleDateFormatter() {
-    return Util.dateFormatter;
+    return DateFormat.getDateInstance(DateFormat.DEFAULT, Locale
+      .getDefault());
+  }
+
+  /**
+   * @return Addition date simple format instance
+   */
+  public static DateFormat getAdditionDateFormatter() {
+    return new SimpleDateFormat(
+      ITechnicalStrings.ADDITION_DATE_FORMAT);
   }
 
   /**
@@ -1953,7 +1947,7 @@ public class Util implements ITechnicalStrings {
         oDefaultValue = Boolean.parseBoolean(sValue);
       }
     } else if (cType.equals(Date.class)) {
-      oDefaultValue = Util.getAdditionDateFormat().parseObject(sValue);
+        oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
     } else if (cType.equals(Long.class)) {
       oDefaultValue = Long.parseLong(sValue);
     } else if (cType.equals(Double.class)) {
@@ -2205,8 +2199,12 @@ public class Util implements ITechnicalStrings {
 
   /**
    * Set current cursor as waiting cursor
-   * <p>Make sure the contentpane already exists to avoid strange behaviors</p>
-   * <p>No need to execute in AWT thread</p>
+   * <p>
+   * Make sure the contentpane already exists to avoid strange behaviors
+   * </p>
+   * <p>
+   * No need to execute in AWT thread
+   * </p>
    */
   public static synchronized void waiting() {
     if (Main.getWindow() != null && Main.getWindow().getContentPane() != null
