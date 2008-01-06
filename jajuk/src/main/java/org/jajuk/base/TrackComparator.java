@@ -26,7 +26,7 @@ import org.jajuk.util.Util;
 
 /**
  * 
- * Mutli-method track comparator
+ * Multi-method track comparator
  */
 public class TrackComparator implements Comparator<Track> {
   /**
@@ -63,9 +63,9 @@ public class TrackComparator implements Comparator<Track> {
    */
   private String getCompareString(Track track) {
     String sHashCompare = null;
-    // comparaison based on style, author, album, name and year to
-    // differenciate 2 tracks with all the same attributes
-    // note we need to use year because in sorted set, we must differenciate
+    // comparison based on style, author, album, name and year to
+    // differentiate 2 tracks with all the same attributes
+    // note we need to use year because in sorted set, we must differentiate
     // 2 tracks with different years
     switch (iSortingMethod) {
     // Style/author/album
@@ -95,7 +95,7 @@ public class TrackComparator implements Comparator<Track> {
     // discovery date / album
     case DISCOVERY_ALBUM:
       sHashCompare = new StringBuilder().append(
-          Util.getAdditionDateFormat().format(track.getDiscoveryDate())).append(
+          Util.getAdditionDateFormatter().format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
       break;
     }
@@ -114,7 +114,7 @@ public class TrackComparator implements Comparator<Track> {
       return 0;
     }
     // if track # is given, sort by # in a same album, otherwise, sort
-    // alphabeticaly
+    // alphabetically
     if (track2.getAlbum().equals(track1.getAlbum())
         && track2.getAuthor().equals(track1.getAuthor())
         && track2.getStyle().equals(track1.getStyle()) && (track1.getOrder() != track2.getOrder())) {

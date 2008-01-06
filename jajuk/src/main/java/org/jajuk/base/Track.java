@@ -19,6 +19,7 @@
  */
 package org.jajuk.base;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -435,7 +436,6 @@ public class Track extends LogicalItem implements Comparable {
       Album album = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));
       if (album != null) { // can be null after a fresh change
         return album.getName2();
-
       }
       return null;
     } else if (XML_AUTHOR.equals(sKey)) {
@@ -466,7 +466,7 @@ public class Track extends LogicalItem implements Comparable {
       return sbOut.substring(0, sbOut.length() - 1); // remove last
       // ','
     } else if (XML_TRACK_ADDED.equals(sKey)) {
-      return Util.getLocaleDateFormatter().format(getDiscoveryDate());
+        return Util.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default

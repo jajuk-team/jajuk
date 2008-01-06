@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -139,6 +140,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   private static final short STAGE_DEVICES = 9;
 
   private static final short STAGE_YEARS = 10;
+  
+  private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
 
   /** Auto commit thread */
   private static Thread tAutoCommit = new Thread() {
@@ -685,7 +688,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
           }
           // Date format should be OK
-          Date dAdditionDate = Util.getAdditionDateFormat().parse(
+          Date dAdditionDate = additionFormatter.parse(
               attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);

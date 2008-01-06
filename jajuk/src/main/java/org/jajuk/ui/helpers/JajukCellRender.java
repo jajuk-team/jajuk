@@ -21,6 +21,7 @@
 package org.jajuk.ui.helpers;
 
 import java.awt.Component;
+import java.text.DateFormat;
 import java.util.Date;
 
 import javax.swing.JLabel;
@@ -40,6 +41,8 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
   private static final long serialVersionUID = 154545454L;
 
   private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+  
+  private static final DateFormat formatter = Util.getLocaleDateFormatter();
 
   public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
       boolean focused, int row, int column) {
@@ -52,7 +55,7 @@ public class JajukCellRender extends SubstanceDefaultTableCellRenderer implement
       ((JLabel) c).setFont(((IconLabel) oValue).getFont());
       ((JLabel) c).setText(((IconLabel) oValue).getText());
     } else if (oValue instanceof Date) {
-      ((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
+      ((JLabel) c).setText(formatter.format(((Date) oValue)));
     } else if (oValue instanceof Boolean) {
       c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
           column);

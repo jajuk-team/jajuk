@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +72,8 @@ import org.jfree.ui.TextAnchor;
 public class StatView extends ViewAdapter implements Observer {
 
   private static final long serialVersionUID = 1L;
+  
+  private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
 
   /**
    * Constructor
@@ -220,28 +223,28 @@ public class StatView extends ViewAdapter implements Observer {
     try {
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
-      int iMounthsNumber = 5; // number of mounts we show, mounts
+      int iMonthsNumber = 5; // number of mounts we show, mounts
       // before are set together in 'before'
-      long lSizeByMounth[] = new long[iMounthsNumber + 1];
-      // contains size ( in Go ) for each mounth, first cell is before
+      long lSizeByMonth[] = new long[iMonthsNumber + 1];
+      // contains size ( in Go ) for each month, first cell is before
       // data
-      int[] iMounts = getMounts(iMounthsNumber);
+      int[] iMonths = getMonths(iMonthsNumber);
       Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
       while (it.hasNext()) {
         Track track = it.next();
-        int i = Integer.parseInt(Util.getAdditionDateFormat().format(track.getDiscoveryDate())) / 100;
-        for (int j = 0; j < iMounthsNumber + 1; j++) {
-          if (i <= iMounts[j]) {
-            lSizeByMounth[j] += track.getTotalSize();
+        int i = Integer.parseInt(additionFormatter.format(track.getDiscoveryDate())) / 100;
+        for (int j = 0; j < iMonthsNumber + 1; j++) {
+          if (i <= iMonths[j]) {
+            lSizeByMonth[j] += track.getTotalSize();
           }
         }
       }
-      double[][] data = new double[1][iMounthsNumber + 1];
-      for (int i = 0; i < iMounthsNumber + 1; i++) {
-        data[0][i] = (double) lSizeByMounth[i] / 1073741824;
+      double[][] data = new double[1][iMonthsNumber + 1];
+      for (int i = 0; i < iMonthsNumber + 1; i++) {
+        data[0][i] = (double) lSizeByMonth[i] / 1073741824;
       }
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
-          getMountsLabels(iMounthsNumber), data);
+          getMonthsLabels(iMonthsNumber), data);
       // chart
       jfchart = ChartFactory.createBarChart3D(Messages.getString("StatView.7"), // chart
           // title
@@ -282,29 +285,29 @@ public class StatView extends ViewAdapter implements Observer {
     try {
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
-      // number of mounts we show, mounts
+      // number of months we show, mounts
       // before are set together in 'before'
-      int iMounthsNumber = 5;
-      // contains number of tracks for each mounth, first cell is 'before'
+      int iMonthsNumber = 5;
+      // contains number of tracks for each month, first cell is 'before'
       // data
-      int iTracksByMounth[] = new int[iMounthsNumber + 1];
-      int[] iMounts = getMounts(iMounthsNumber);
+      int iTracksByMonth[] = new int[iMonthsNumber + 1];
+      int[] iMounts = getMonths(iMonthsNumber);
       Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
       while (it.hasNext()) {
         Track track = it.next();
-        int i = Integer.parseInt(Util.getAdditionDateFormat().format(track.getDiscoveryDate())) / 100;
-        for (int j = 0; j < iMounthsNumber + 1; j++) {
+        int i = Integer.parseInt(additionFormatter.format(track.getDiscoveryDate())) / 100;
+        for (int j = 0; j < iMonthsNumber + 1; j++) {
           if (i <= iMounts[j]) {
-            iTracksByMounth[j]++;
+            iTracksByMonth[j]++;
           }
         }
       }
-      double[][] data = new double[1][iMounthsNumber + 1];
-      for (int i = 0; i < iMounthsNumber + 1; i++) {
-        data[0][i] = iTracksByMounth[i];
+      double[][] data = new double[1][iMonthsNumber + 1];
+      for (int i = 0; i < iMonthsNumber + 1; i++) {
+        data[0][i] = iTracksByMonth[i];
       }
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
-          getMountsLabels(iMounthsNumber), data);
+          getMonthsLabels(iMonthsNumber), data);
 
       // chart
       jfchart = ChartFactory.createBarChart3D(Messages.getString("StatView.12"), // chart
@@ -378,43 +381,43 @@ public class StatView extends ViewAdapter implements Observer {
   /**
    * Computes mounts labels
    * 
-   * @param iMounthsNumber :
+   * @param iMonthsNumber :
    *          number of mounts ( without 'before' ) you want
    * @return the mounts labels
    */
-  private String[] getMountsLabels(int iMounthsNumber) {
+  private String[] getMonthsLabels(int iMonthsNumber) {
     int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date())) / 100; // reference
-    // mounth
-    String sMounths[] = new String[iMounthsNumber + 1];
-    // contains number of tracks for each mounth, first cell is 'before'
+    // month
+    String sMonths[] = new String[iMonthsNumber + 1];
+    // contains number of tracks for each month, first cell is 'before'
     int iYear = iNow / 100;
-    int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
-    for (int k = 0; k < iMounthsNumber; k++) {
-      sMounths[iMounthsNumber - k] = new StringBuilder().append((iMounth / 10 == 0) ? "0" : "")
-          .append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();
-      iMounth--;
-      if (iMounth == 0) {
-        iMounth = 12;
+    int iMonth = Integer.parseInt(Integer.toString(iNow).substring(4, 6));
+    for (int k = 0; k < iMonthsNumber; k++) {
+      sMonths[iMonthsNumber - k] = new StringBuilder().append((iMonth / 10 == 0) ? "0" : "")
+          .append(Integer.toString(iMonth)).append('/').append(Integer.toString(iYear)).toString();
+      iMonth--;
+      if (iMonth == 0) {
+        iMonth = 12;
         iYear--;
       }
     }
-    sMounths[0] = Messages.getString("StatView.24");
-    return sMounths;
+    sMonths[0] = Messages.getString("StatView.24");
+    return sMonths;
   }
 
   /**
-   * Get mounths as integers
+   * Get months as integers
    * 
-   * @param iMounthsNumber
+   * @param iMonthsNumber
    * @return
    */
-  private int[] getMounts(int iMounthsNumber) {
-    int[] iMounths = new int[iMounthsNumber + 1];
-    String[] sMounths = getMountsLabels(iMounthsNumber + 1);
-    for (int i = 0; i < iMounthsNumber + 1; i++) {
-      iMounths[i] = Integer.parseInt(sMounths[i + 1].substring(3, 7)
-          + sMounths[i + 1].substring(0, 2));
+  private int[] getMonths(int iMonthsNumber) {
+    int[] iMonths = new int[iMonthsNumber + 1];
+    String[] sMonths = getMonthsLabels(iMonthsNumber + 1);
+    for (int i = 0; i < iMonthsNumber + 1; i++) {
+      iMonths[i] = Integer.parseInt(sMonths[i + 1].substring(3, 7)
+          + sMonths[i + 1].substring(0, 2));
     }
-    return iMounths;
+    return iMonths;
   }
 }
