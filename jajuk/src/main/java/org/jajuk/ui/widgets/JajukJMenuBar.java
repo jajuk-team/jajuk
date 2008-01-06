@@ -217,6 +217,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
 
     mode.add(jmiUnmounted);
+    mode.addSeparator();
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
