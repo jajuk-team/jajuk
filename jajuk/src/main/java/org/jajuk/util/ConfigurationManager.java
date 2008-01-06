@@ -201,15 +201,21 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_COVERS_SHUFFLE, FALSE);
     properties.put(CONF_COVERS_PRELOAD, FALSE);
     properties.put(CONF_COVERS_SIZE, "3"); // medium and large
+    properties.put(CONF_TRACKS_TABLE_EDITION, FALSE);
+    properties.put(CONF_FILES_TABLE_EDITION, FALSE);
+    properties.put(CONF_ALBUMS_TABLE_EDITION, FALSE);
     properties.put(CONF_FILES_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK + ',' + XML_ALBUM + ','
         + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH);
     properties.put(CONF_TRACKS_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME + ',' + XML_ALBUM + ','
         + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ',' + XML_TRACK_RATE);
     properties.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
+    properties.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ','  
+        + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH
+        + ',' + XML_TRACKS + ',' + XML_TRACK_ADDED);
     // Default Window position: X,Y,X_size,Y_size
     int width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-    // Limit initial screen size (reported anoying by some users on dual
+    // Limit initial screen size (reported as problematic by some users on dual
     // heads)
     if (width > 1400) {
       width = 1200;
@@ -224,8 +230,6 @@ public class ConfigurationManager implements ITechnicalStrings {
     }
     properties.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER + ","
         + width + "," + height);
-    properties.put(CONF_TRACKS_TABLE_EDITION, FALSE);
-    properties.put(CONF_FILES_TABLE_EDITION, FALSE);
     properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
     properties.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150x150);
     properties.put(CONF_THUMBS_SORTER, "2"); // sort by album
