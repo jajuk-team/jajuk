@@ -22,6 +22,8 @@ package org.jajuk.ui.thumbnails;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,12 +79,15 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
    * 
    * @param description
    *          HTML text to display (HTML 3.0)
-   * @param jlIcon
-   *          album thumb jlabel, is null if we show the popup with no anchor on
-   *          the screen
+   * @param origin :
+   *          coordonates of the origin item on whish we want to display the
+   *          popup
+   * @param autoclose :
+   *          whether the popup should close when mouse leave the origin item or
+   *          is displayed as a regular Dialog
    */
-  public ThumbnailPopup(String description, JLabel jlIcon) {
-    if (jlIcon != null) {
+  public ThumbnailPopup(String description, Rectangle origin, boolean autoclose) {
+    if (autoclose) {
       setUndecorated(true);
       getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     }
@@ -142,7 +147,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
     jspText.getVerticalScrollBar().setValue(0);
     jp.add(jspText, "0,0");
     setContentPane(jp);
-    if (jlIcon != null) {
+    if (autoclose) {
       // Make sure to close this popup when it lost focus
       jspText.addMouseListener(new MouseAdapter() {
         @Override
@@ -154,12 +159,13 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
           }
         }
       });
-
+    }
+    if (origin != null) {
       // compute dialog position ( note that setRelativeTo
       // is buggy and that we need more advanced positioning)
-      int x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+      int x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
       // set position at 60 % of the picture
-      int y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.6 * jlIcon.getHeight());
+      int y = (int) origin.getY() + (int) (0.6 * origin.getHeight());
       int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
       int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
       // Adjust position if details are located outside
@@ -169,11 +175,11 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
         x = screenWidth - 510;
       }
       if ((y + 400) > screenHeight) {
-        x = (int) jlIcon.getLocationOnScreen().getX() + (int) (0.6 * jlIcon.getWidth());
+        x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
         if ((x + 500) > screenWidth) {
           x = screenWidth - 510;
         }
-        y = (int) jlIcon.getLocationOnScreen().getY() + (int) (0.4 * jlIcon.getHeight()) - 400;
+        y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - 400;
       }
       setLocation(x, y);
     } else {

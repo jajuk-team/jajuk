@@ -69,6 +69,6 @@ public class ShowAlbumDetailsAction extends ActionBase {
       return;
     }
     LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album,200,true);
-    new ThumbnailPopup(thumb.getDescription(),null);
+    new ThumbnailPopup(thumb.getDescription(),null,false);
   }
 }

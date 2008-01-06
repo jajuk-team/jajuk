@@ -22,7 +22,9 @@ package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -186,7 +188,8 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
         }
         String description = getDescription();
         if (description != null) {
-          details = new ThumbnailPopup(description, jlIcon);
+          details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
+              new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), true);
           Util.stopWaiting();
         }
       }
@@ -205,7 +208,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     // Album menu
     jmenu = new JPopupMenu();
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION,getItem());
+    jmiPlay.putClientProperty(DETAIL_SELECTION, getItem());
     jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
     jmiPush.addActionListener(this);
     Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
@@ -213,9 +216,9 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDelete.addActionListener(this);
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SHUFFLE_SELECTION));
-    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION,getItem());
+    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, getItem());
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
-    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION,getItem());
+    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, getItem());
     jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_COVER_16x16);
     jmiGetCovers.addActionListener(this);
     jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP);
@@ -223,7 +226,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukAction.CDDB_SELECTION));
     jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(DETAIL_SELECTION,getItem());
+    jmiProperties.putClientProperty(DETAIL_SELECTION, getItem());
     ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
     // Change action label
     jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
@@ -346,7 +349,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 
   public abstract void launch();
 
-   /**
+  /**
    * If the thumb represents something (album, author...) known in the
    * collection, the implementation of this method should return the associated
    * item
@@ -362,7 +365,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
    */
   public void actionPerformed(ActionEvent e) {
     // Menu items
-   if (e.getSource() == jmiDelete) {
+    if (e.getSource() == jmiDelete) {
       Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
       for (Track track : tracks) {
         org.jajuk.base.File file = track.getPlayeableFile(false);
@@ -397,7 +400,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
       }.start();
     } else if (e.getSource() == jmiShowPopup) {
       this.displayPopup();
-    } 
+    }
   }
 
   /*
