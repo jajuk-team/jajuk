@@ -47,9 +47,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 public class DeleteAction extends ActionBase {
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
 
   DeleteAction() {

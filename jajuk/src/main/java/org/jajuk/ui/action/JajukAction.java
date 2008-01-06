@@ -402,7 +402,7 @@ public enum JajukAction {
   /**
    * Used to move selected files and directories.
    */
-  FILE_MOVE,
+  PASTE,
   /**
    * Used to refresh a directory.
    */
@@ -459,5 +459,12 @@ public enum JajukAction {
    * Show album details
    */
   SHOW_ALBUM_DETAILS,
-  
+  /**
+   * Used to cut and move Selected Items
+   */
+  CUT,
+  /**
+   * Used to copy and move Selected Items
+   */
+  COPY,
 }

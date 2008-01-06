@@ -70,6 +70,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiPlayShuffle;
 
   JMenuItem jmiPlayRepeat;
+  
+  JMenuItem jmiCut;
+  
+  JMenuItem jmiCopy;
+  
+  JMenuItem jmiPaste;
 
   JMenuItem jmiDelete;
 
@@ -97,6 +103,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiPlay.putClientProperty(DETAIL_SELECTION,alSelected);
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiCut = new JMenuItem(ActionManager.getAction(JajukAction.CUT));
+    jmiCut.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiCopy = new JMenuItem(ActionManager.getAction(JajukAction.COPY));
+    jmiCopy.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPaste = new JMenuItem(ActionManager.getAction(JajukAction.PASTE));
+    jmiPaste.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
     jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiAddFavorite = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));

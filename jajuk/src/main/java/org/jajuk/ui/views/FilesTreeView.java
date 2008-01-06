@@ -76,6 +76,7 @@ import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.action.RefactorAction;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -106,24 +107,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /** Directories selection */
   ArrayList<Directory> alDirs = new ArrayList<Directory>(10);
 
-  /** Items selected for cut/copy */
-  ArrayList<Item> moveItems = new ArrayList<Item>(100);
-
-  /** Used to differentiate between cut and copy actions */
-  ArrayList<String> moveAction = new ArrayList<String>(1);
-
   /** Collection export */
   JPopupMenu jmenuCollection;
 
   JMenuItem jmiCollectionReport;
 
   JMenuItem jmiCollectionDuplicateFiles;
-
-  JMenuItem jmiFileCopy;
-
-  JMenuItem jmiFileCut;
-
-  JMenuItem jmiFilePaste;
 
   JMenuItem jmiDirRefresh;
 
@@ -132,12 +121,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   JMenuItem jmiDirResynchro;
 
   JMenuItem jmiDirCreatePlaylist;
-
-  JMenuItem jmiDirCopy;
-
-  JMenuItem jmiDirCut;
-
-  JMenuItem jmiDirPaste;
 
   JMenuItem jmiDirRefactor;
 
@@ -211,16 +194,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     Action actionDuplicateFiles = ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES);
     jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
     jmenuCollection.add(jmiCollectionDuplicateFiles);
-
-    // File menu
-    jmiFileCopy = new JMenuItem(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY);
-    jmiFileCopy.addActionListener(this);
-    jmiFileCut = new JMenuItem(Messages.getString("FilesTreeView.4"), IconLoader.ICON_CUT);
-    jmiFileCut.addActionListener(this);
-    jmiFilePaste = new JMenuItem(Messages.getString("FilesTreeView.5"));
-    jmiFilePaste.setEnabled(false);
-    jmiFilePaste.addActionListener(this);
-
+    
     // Directory menu
     Action actionRefreshDir = ActionManager.getAction(JajukAction.REFRESH);
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
@@ -235,17 +209,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
     jmiDirCreatePlaylist.setEnabled(false);
     jmiDirCreatePlaylist.addActionListener(this);
-    jmiDirCopy = new JMenuItem(Messages.getString("FilesTreeView.17"), IconLoader.ICON_COPY);
-    jmiDirCopy.addActionListener(this);
-    jmiDirCut = new JMenuItem(Messages.getString("FilesTreeView.18"), IconLoader.ICON_CUT);
-    jmiDirCut.addActionListener(this);
-    Action actionFileMove = ActionManager.getAction(JajukAction.FILE_MOVE);
-    jmiDirPaste = new JMenuItem(actionFileMove);
-    jmiDirPaste.setEnabled(false);
-    jmiDirPaste.putClientProperty(DETAIL_OLD, moveItems);
-    jmiDirPaste.putClientProperty(DETAIL_NEW, alSelected);
-    jmiDirPaste.putClientProperty(DETAIL_SELECTION, moveAction);
-    jmiDirPaste.addActionListener(this);
     jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
         IconLoader.ICON_REORGANIZE);
     jmiDirRefactor.addActionListener(this);
@@ -281,8 +244,17 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiPlaylistFilePaste.setEnabled(false);
     jmiPlaylistFilePaste.addActionListener(this);
 
+    // Add Action Listener
+    jmiCopy.addActionListener(this);
+    jmiCut.addActionListener(this);
+    jmiPaste.addActionListener(this);
+    
+    // By default disable paste
+    jmiPaste.setEnabled(false);
+
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     top = new TreeRootElement(Messages.getString("FilesTreeView.47"));
+    
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
 
@@ -640,8 +612,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
-          jmenu.add(jmiFileCut);
-          jmenu.add(jmiFileCopy);
+          jmenu.add(jmiCut);
+          jmenu.add(jmiCopy);
           jmenu.add(jmiDelete);
           jmenu.add(jmiAddFavorite);
           jmenu.add(jmiProperties);
@@ -651,9 +623,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
           jmenu.add(jmiDirRefresh);
-          jmenu.add(jmiDirCut);
-          jmenu.add(jmiDirCopy);
-          jmenu.add(jmiDirPaste);
+          jmenu.add(jmiCut);
+          jmenu.add(jmiCopy);
+          jmenu.add(jmiPaste);
           jmenu.add(jmiDelete);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
@@ -906,27 +878,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
       jtree.revalidate();
       jtree.repaint();
-    } else if (e.getSource() == jmiFileCopy || e.getSource() == jmiDirCopy) {
-      moveAction.clear();
-      moveAction.add("Copy");
-      moveItems.clear();
-      for (Item item : alSelected) {
-        moveItems.add(item);
-      }
-      jmiDirPaste.setEnabled(true);
+    } else if (e.getSource() == jmiCopy || e.getSource() == jmiCut) {
+      jmiPaste.setEnabled(true);
       jmenu.repaint();
-    } else if (e.getSource() == jmiFileCut || e.getSource() == jmiDirCut) {
-      moveAction.clear();
-      moveAction.add("Cut");
-      moveItems.clear();
-      for (Item item : alSelected) {
-        moveItems.add(item);
-      }
-      jmiDirPaste.setEnabled(true);
-      jmenu.repaint();
-    } else if (e.getSource() == jmiDirPaste) {
-      if ("Cut".equals(moveAction.get(0))) {
-        jmiDirPaste.setEnabled(false);
+    } else if (e.getSource() == jmiPaste) {
+      if ("Cut".equals(ItemMoveManager.getInstance().getAction())) {
+        jmiPaste.setEnabled(false);
         jmenu.repaint();
       }
     } else if (e.getSource() == jmiDevConfiguration) {

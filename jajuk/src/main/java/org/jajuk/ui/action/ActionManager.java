@@ -24,14 +24,16 @@ import static org.jajuk.ui.action.JajukAction.BEST_OF;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
 import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.COPY;
 import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_REMOVE;
+import static org.jajuk.ui.action.JajukAction.CUT;
 import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
 import static org.jajuk.ui.action.JajukAction.DELETE;
 import static org.jajuk.ui.action.JajukAction.DJ;
 import static org.jajuk.ui.action.JajukAction.EXIT;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
-import static org.jajuk.ui.action.JajukAction.FILE_MOVE;
+import static org.jajuk.ui.action.JajukAction.PASTE;
 import static org.jajuk.ui.action.JajukAction.FIND_DUPLICATE_FILES;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
 import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
@@ -162,8 +164,10 @@ public final class ActionManager {
     installAction(JajukAction.CREATE_REPORT, new ReportAction(), false);
 
     // File Actions
+    installAction(CUT, new CutAction(), false);
+    installAction(COPY, new CopyAction(), false);
     installAction(DELETE, new DeleteAction(), false);
-    installAction(FILE_MOVE, new FileMoveAction(), false);
+    installAction(PASTE, new PasteAction(), false);
 
     // MISC
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
