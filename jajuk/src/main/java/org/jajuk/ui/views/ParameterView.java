@@ -388,11 +388,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           details.put(ITechnicalStrings.DETAIL_ORIGIN, this);
           ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
         } else if (e.getSource() == jbDefault) {
-          ConfigurationManager.setDefaultProperties();
-          updateSelection();// update UI
-          InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
-              InformationJPanel.INFORMATIVE);
-          applyParameters();
+          int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
+              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+          if (resu == JOptionPane.OK_OPTION) {
+            ConfigurationManager.setDefaultProperties();
+            updateSelection();// update UI
+            InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
+                InformationJPanel.INFORMATIVE);
+            applyParameters();
+          }
         } else if (e.getSource() == jcbBackup) {
           // if backup option is unchecked, reset backup size
           if (jcbBackup.isSelected()) {
@@ -501,12 +505,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbAudioScrobbler.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_LASTFM_INFO, Boolean
         .toString(jcbEnableLastFMInformation.isSelected()));
-    if (jcbAudioScrobbler.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER, jtfASUser
-          .getText());
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD, Util
-          .rot13(new String(jpfASPassword.getPassword())));
-    }
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER, jtfASUser
+        .getText());
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD, Util
+        .rot13(new String(jpfASPassword.getPassword())));
     final int iLogLevel = scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LOG_LEVEL, Integer
@@ -531,7 +533,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           sVisiblePlanned);
     }
     final int oldDuration = ConfigurationManager.getInt(ITechnicalStrings.CONF_FADE_DURATION);
-    // Show an hidable message if user set cross fade under linux for sound
+    // Show an hideable message if user set cross fade under linux for sound
     // server information
     if (Util.isUnderLinux() && (oldDuration == 0) && (oldDuration != crossFadeDuration.getValue())) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
@@ -1348,10 +1350,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsPerspectiveSize.setPaintTicks(true);
     jsPerspectiveSize.setPaintLabels(true);
     jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
-    //Alert user that this change will be effective at next startup
+    // Alert user that this change will be effective at next startup
     jsPerspectiveSize.addChangeListener(new ChangeListener() {
       public void stateChanged(ChangeEvent e) {
-        if (!jsPerspectiveSize.getValueIsAdjusting()){
+        if (!jsPerspectiveSize.getValueIsAdjusting()) {
           Messages.showInfoMessage(Messages.getString("ParameterView.198"));
           applyParameters();
         }
@@ -1698,13 +1700,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE));
     jcbEnableLastFMInformation.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_LASTFM_INFO));
-    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE)) {
-      Log.debug(ConfigurationManager.getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD));
-      jtfASUser.setText(ConfigurationManager
-          .getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER));
-      jpfASPassword.setText(Util.rot13(ConfigurationManager
-          .getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD)));
-    } else {
+    jtfASUser.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER));
+    jpfASPassword.setText(Util.rot13(ConfigurationManager
+        .getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD)));
+    if (!ConfigurationManager.getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE)) {
       jlASUser.setEnabled(false);
       jtfASUser.setEnabled(false);
       jlASPassword.setEnabled(false);

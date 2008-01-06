@@ -210,9 +210,9 @@ public class ConfigurationManager implements ITechnicalStrings {
         + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ',' + XML_TRACK_RATE);
     properties.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
-    properties.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ','  + XML_AUTHOR + ','
-        + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH
-        + ',' + XML_TRACKS + ',' + XML_TRACK_ADDED);
+    properties.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ',' + XML_AUTHOR + ','
+        + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH + ','
+        + XML_TRACKS + ',' + XML_TRACK_ADDED);
     // Default Window position: X,Y,X_size,Y_size
     int width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     // Limit initial screen size (reported as problematic by some users on dual
@@ -252,7 +252,11 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_MPLAYER_ARGS, "");
     properties.put(CONF_ENV_VARIABLES, "");
     properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
-    properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
+    if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
+      // In that case, we keep previous value if it was false to avoid
+      // displaying the tips after user makes a "defaults" in preferences view
+      properties.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
+    }
     properties.put(CONF_CATALOG_PAGE_SIZE, "100");
     properties.put(CONF_SHOW_POPUPS, FALSE);
     properties.put(CONF_FONTS_SIZE, "12");
