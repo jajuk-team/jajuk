@@ -20,7 +20,7 @@
      iconFile='$INSTALL_PATH/jajuk-icon-shortcut_64x64.png'
      initialState='noShow'
      os='unix'>
-     <createForPack name='Jajuk'/>
+     <createForPack name='main pack'/>
    </shortcut>
    
     <shortcut
@@ -40,7 +40,7 @@
      iconFile='$INSTALL_PATH/jajuk-uninstall.png'
      initialState='noShow'
      os='unix'>
-     <createForPack name='Jajuk'/>
+     <createForPack name='main pack'/>
    </shortcut>
    
    <!-- Windows -->
@@ -59,7 +59,7 @@
      iconFile='$INSTALL_PATH/jajuk-icon.ico'
      initialState='noShow'
      os='windows'>
-     <createForPack name='Jajuk'/>
+     <createForPack name='main pack'/>
    </shortcut>
     <shortcut
      name='Uninstall'
@@ -76,6 +76,6 @@
      iconFile='$INSTALL_PATH/jajuk-uninstall.ico'
      initialState='noShow'
      os='windows'>
-     <createForPack name='Jajuk'/>
+     <createForPack name='main pack'/>
    </shortcut>
   </shortcuts>
