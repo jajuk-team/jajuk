@@ -210,7 +210,7 @@ public class ConfigurationManager implements ITechnicalStrings {
         + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ',' + XML_TRACK_RATE);
     properties.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
-    properties.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ','  
+    properties.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ','  + XML_AUTHOR + ','
         + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH
         + ',' + XML_TRACKS + ',' + XML_TRACK_ADDED);
     // Default Window position: X,Y,X_size,Y_size
