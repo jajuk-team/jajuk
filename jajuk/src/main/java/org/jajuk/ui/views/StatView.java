@@ -32,15 +32,15 @@ import java.util.TreeMap;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;

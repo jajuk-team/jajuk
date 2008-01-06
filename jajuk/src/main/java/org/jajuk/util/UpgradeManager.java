@@ -24,7 +24,7 @@ import java.io.File;
 import java.net.URL;
 
 import org.jajuk.Main;
-import org.jajuk.dj.AmbienceManager;
+import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.util.log.Log;
 
 /**

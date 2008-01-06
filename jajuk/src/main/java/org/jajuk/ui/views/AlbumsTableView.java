@@ -27,8 +27,8 @@ import java.util.List;
 import javax.swing.JMenuItem;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.AlbumsTableModel;

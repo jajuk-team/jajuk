@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 
-import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.StackItem;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;

@@ -42,8 +42,8 @@ import javax.swing.JScrollPane;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceManager;
+import org.jajuk.services.dj.Ambience;
+import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.util.Messages;
 
 /**

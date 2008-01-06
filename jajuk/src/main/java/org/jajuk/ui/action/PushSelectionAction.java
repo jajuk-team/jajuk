@@ -25,9 +25,9 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;

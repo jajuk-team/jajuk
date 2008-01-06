@@ -26,10 +26,10 @@ import ext.services.lastfm.SubmitterException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jajuk.base.Event;
 import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;

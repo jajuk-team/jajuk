@@ -41,13 +41,13 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.dj.Ambience;
-import org.jajuk.dj.AmbienceDigitalDJ;
-import org.jajuk.dj.AmbienceManager;
+import org.jajuk.services.dj.Ambience;
+import org.jajuk.services.dj.AmbienceDigitalDJ;
+import org.jajuk.services.dj.AmbienceManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.StylesSelectionDialog;

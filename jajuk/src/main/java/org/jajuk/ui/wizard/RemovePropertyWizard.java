@@ -30,10 +30,10 @@ import java.util.Properties;
 import javax.swing.Box;
 import javax.swing.JComboBox;
 
-import org.jajuk.base.Event;
 import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
 

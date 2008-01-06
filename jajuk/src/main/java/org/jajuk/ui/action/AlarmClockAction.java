@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.jajuk.base.AlarmThread;
-import org.jajuk.base.AlarmThreadManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.services.alarm.AlarmThread;
+import org.jajuk.services.alarm.AlarmThreadManager;
 import org.jajuk.ui.widgets.AlarmClockDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;

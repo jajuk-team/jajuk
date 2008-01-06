@@ -20,7 +20,6 @@
 
 package org.jajuk.util;
 
-import org.jajuk.base.PropertyMetaInformation;
 
 /**
  * Filter on meta information

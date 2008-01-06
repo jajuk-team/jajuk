@@ -38,12 +38,12 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
 import org.jajuk.base.WebRadio;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;

@@ -21,7 +21,7 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.base.FIFO;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 

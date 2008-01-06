@@ -26,8 +26,8 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
 import org.jajuk.base.Item;
-import org.jajuk.reporting.Exporter;
-import org.jajuk.reporting.ExporterFactory;
+import org.jajuk.services.reporting.Exporter;
+import org.jajuk.services.reporting.ExporterFactory;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;

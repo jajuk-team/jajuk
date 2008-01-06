@@ -34,8 +34,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -50,8 +48,6 @@ import javax.swing.Timer;
 import javax.swing.TransferHandler;
 
 import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -59,8 +55,6 @@ import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.wizard.CDDBWizard;
-import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;

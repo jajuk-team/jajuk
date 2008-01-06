@@ -22,13 +22,13 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.base.FIFO;
 import org.jajuk.base.WebRadio;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.webradio.WebRadioManager;
 
 public class WebRadioAction extends ActionBase {
 

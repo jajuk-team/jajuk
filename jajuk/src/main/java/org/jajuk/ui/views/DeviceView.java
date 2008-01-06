@@ -47,9 +47,9 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;

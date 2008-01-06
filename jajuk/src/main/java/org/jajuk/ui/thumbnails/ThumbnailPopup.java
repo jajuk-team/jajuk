@@ -44,13 +44,13 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
 import org.jajuk.base.AuthorManager;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;

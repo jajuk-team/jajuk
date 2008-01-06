@@ -23,7 +23,6 @@ package org.jajuk.ui.views;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -31,7 +30,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;

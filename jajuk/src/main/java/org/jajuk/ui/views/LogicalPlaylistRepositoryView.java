@@ -22,10 +22,10 @@ package org.jajuk.ui.views;
 
 import java.util.Iterator;
 
-import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.ui.helpers.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;

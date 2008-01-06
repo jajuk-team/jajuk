@@ -28,11 +28,11 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
-import org.jajuk.base.Bookmarks;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
+import org.jajuk.services.bookmark.Bookmarks;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.views.PlaylistEditorView;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.ConfigurationManager;

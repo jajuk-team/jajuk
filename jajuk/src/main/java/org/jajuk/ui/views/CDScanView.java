@@ -37,8 +37,8 @@ import javax.swing.JTextField;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;

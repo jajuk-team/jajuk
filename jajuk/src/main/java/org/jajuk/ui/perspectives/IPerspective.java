@@ -20,7 +20,6 @@
 package org.jajuk.ui.perspectives;
 
 import java.awt.Container;
-import java.net.URL;
 import java.util.Set;
 
 import javax.swing.ImageIcon;

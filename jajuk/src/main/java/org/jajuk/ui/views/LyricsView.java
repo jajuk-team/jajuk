@@ -39,14 +39,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.base.WebRadio;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.services.lyrics.LyricsService;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.FontManager;

@@ -26,10 +26,10 @@ import javax.swing.JComponent;
 
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;

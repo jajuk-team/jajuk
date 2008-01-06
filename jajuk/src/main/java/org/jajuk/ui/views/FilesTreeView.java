@@ -61,17 +61,17 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.base.StackItem;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.action.RefactorAction;
@@ -96,7 +96,7 @@ import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
  * Physical tree view
  */
 public class FilesTreeView extends AbstractTreeView implements ActionListener,
-    org.jajuk.base.Observer {
+    org.jajuk.services.events.Observer {
 
   private static final long serialVersionUID = 1L;
 

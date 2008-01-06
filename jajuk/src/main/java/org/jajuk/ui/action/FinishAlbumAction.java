@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 import java.util.Properties;
 
 import org.jajuk.base.Directory;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.StackItem;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;

@@ -21,8 +21,8 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;

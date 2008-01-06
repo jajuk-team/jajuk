@@ -33,8 +33,8 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.ConfigurationManager;

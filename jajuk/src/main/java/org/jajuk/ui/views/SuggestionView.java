@@ -48,11 +48,11 @@ import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;

@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;

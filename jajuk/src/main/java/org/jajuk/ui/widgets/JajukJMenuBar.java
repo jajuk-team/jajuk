@@ -52,8 +52,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import org.jajuk.base.AlarmThread;
-import org.jajuk.base.AlarmThreadManager;
+import org.jajuk.services.alarm.AlarmThread;
+import org.jajuk.services.alarm.AlarmThreadManager;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;

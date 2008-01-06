@@ -22,7 +22,6 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 

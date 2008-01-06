@@ -51,13 +51,13 @@ import javax.swing.event.ListSelectionListener;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.SearchResult.SearchResultType;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jajuk.webradio.WebRadioManager;
 
 /**
  * Search combo box. Editable combo with search features

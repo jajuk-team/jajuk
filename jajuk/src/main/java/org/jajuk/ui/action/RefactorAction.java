@@ -27,10 +27,10 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.Event;
 import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;

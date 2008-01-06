@@ -25,13 +25,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;

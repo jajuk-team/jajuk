@@ -24,10 +24,10 @@ import ext.SwingWorker;
 
 import javax.swing.JMenuItem;
 
-import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.JajukAction;
 import org.jajuk.ui.helpers.ILaunchCommand;
