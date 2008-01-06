@@ -30,6 +30,9 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;

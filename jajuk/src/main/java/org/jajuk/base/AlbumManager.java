@@ -32,6 +32,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;

@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;

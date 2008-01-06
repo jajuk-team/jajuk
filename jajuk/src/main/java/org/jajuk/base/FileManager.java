@@ -35,6 +35,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.collections.iterators.FilterIterator;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
@@ -42,6 +45,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.filters.JajukPredicates;
 import org.jajuk.util.log.Log;
 
 /**

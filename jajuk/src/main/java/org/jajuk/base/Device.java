@@ -32,6 +32,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.services.bookmark.History;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;

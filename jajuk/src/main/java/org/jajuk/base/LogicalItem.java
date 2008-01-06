@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+
 /**
  * A logical Item (style, author, year, album...)
  */

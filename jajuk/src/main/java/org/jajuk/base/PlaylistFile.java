@@ -35,6 +35,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.services.bookmark.Bookmarks;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.helpers.PlaylistFileItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.ConfigurationManager;

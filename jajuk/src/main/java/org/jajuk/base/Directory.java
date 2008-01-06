@@ -27,6 +27,7 @@ import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.services.tags.Tag;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;

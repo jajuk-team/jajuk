@@ -26,6 +26,9 @@ import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
