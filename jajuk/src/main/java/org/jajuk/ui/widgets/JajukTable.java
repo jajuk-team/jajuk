@@ -71,6 +71,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
 
   private JPopupMenu jmenu;
 
+  /**Specific action on double click*/
   private ILaunchCommand command;
   
   /** Model refreshing flag */
