@@ -75,6 +75,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.jajuk.Main;
@@ -94,8 +95,13 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.IconLabel;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukSystray;
+import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
@@ -118,6 +124,8 @@ public class Util implements ITechnicalStrings {
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+  
+  private static Cursor currentCursor;
 
   /** contains clipboard data */
   public static String copyData;
@@ -2197,20 +2205,29 @@ public class Util implements ITechnicalStrings {
     }
   }
 
+  /** Set cursor thread, stored to avoid construction */
+  private static Thread setCursorThread = new Thread() {
+    public void run() {
+      Container container = null;
+      IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+      if (perspective != null) {
+        Log.debug("** Set cursor: "+currentCursor);
+        container = perspective.getContentPane();
+        container.setCursor(DEFAULT_CURSOR);
+        CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+        InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+        PerspectiveBarJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+      }
+    }
+  };
+
   /**
    * Set current cursor as waiting cursor
-   * <p>
-   * Make sure the contentpane already exists to avoid strange behaviors
-   * </p>
-   * <p>
-   * No need to execute in AWT thread
-   * </p>
    */
   public static synchronized void waiting() {
-    if (Main.getWindow() != null && Main.getWindow().getContentPane() != null
-        && !(Main.getWindow().getContentPane().getCursor().equals(Util.WAIT_CURSOR))) {
-      Main.getWindow().getContentPane().setCursor(Util.WAIT_CURSOR);
-      Log.debug("** Waiting cursor");
+    if (currentCursor.equals(WAIT_CURSOR)) {
+      currentCursor = WAIT_CURSOR;
+      SwingUtilities.invokeLater(setCursorThread);
     }
   }
 
@@ -2218,12 +2235,12 @@ public class Util implements ITechnicalStrings {
    * Set current cursor as default cursor
    */
   public static synchronized void stopWaiting() {
-    if (Main.getWindow() != null && Main.getWindow().getContentPane() != null
-        && !(Main.getWindow().getContentPane().getCursor().equals(Util.DEFAULT_CURSOR))) {
-      Main.getWindow().getContentPane().setCursor(Util.DEFAULT_CURSOR);
-      Log.debug("** Default cursor");
+    if (currentCursor.equals(DEFAULT_CURSOR)) {
+      currentCursor = DEFAULT_CURSOR;
+      SwingUtilities.invokeLater(setCursorThread);
     }
   }
+  
 
   public static BufferedImage toBufferedImage(final Image image, final boolean alpha) {
     return Util.toBufferedImage(image, alpha, image.getWidth(null), image.getHeight(null));
