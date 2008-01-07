@@ -614,6 +614,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu.add(jmiPush);
           jmenu.add(jmiCut);
           jmenu.add(jmiCopy);
+          jmenu.add(jmiRename);
           jmenu.add(jmiDelete);
           jmenu.add(jmiAddFavorite);
           jmenu.add(jmiProperties);
@@ -626,7 +627,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu.add(jmiCut);
           jmenu.add(jmiCopy);
           jmenu.add(jmiPaste);
+          jmenu.add(jmiRename);
           jmenu.add(jmiDelete);
+          jmenu.add(jmiNewFolder);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiDirDesynchro);
@@ -653,6 +656,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu.add(jmiPush);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
+          jmenu.add(jmiNewFolder);
           jmenu.add(jmiDevMount);
           jmenu.add(jmiDevUnmount);
           jmenu.add(jmiDevRefresh);

@@ -76,8 +76,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiCopy;
   
   JMenuItem jmiPaste;
+  
+  JMenuItem jmiRename;
 
   JMenuItem jmiDelete;
+  
+  JMenuItem jmiNewFolder;
 
   JMenuItem jmiAddFavorite;
 
@@ -109,8 +113,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiCopy.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiPaste = new JMenuItem(ActionManager.getAction(JajukAction.PASTE));
     jmiPaste.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiRename = new JMenuItem(ActionManager.getAction(JajukAction.RENAME));
+    jmiRename.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
     jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiNewFolder = new JMenuItem(ActionManager.getAction(JajukAction.NEW_FOLDER));
+    jmiNewFolder.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiAddFavorite = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
     jmiAddFavorite.putClientProperty(DETAIL_SELECTION,alSelected);
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukAction.CDDB_SELECTION));

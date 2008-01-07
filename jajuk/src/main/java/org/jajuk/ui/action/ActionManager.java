@@ -33,7 +33,6 @@ import static org.jajuk.ui.action.JajukAction.DELETE;
 import static org.jajuk.ui.action.JajukAction.DJ;
 import static org.jajuk.ui.action.JajukAction.EXIT;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
-import static org.jajuk.ui.action.JajukAction.PASTE;
 import static org.jajuk.ui.action.JajukAction.FIND_DUPLICATE_FILES;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
 import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
@@ -42,13 +41,16 @@ import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.MUTE_STATE;
 import static org.jajuk.ui.action.JajukAction.NEXT_ALBUM;
 import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
+import static org.jajuk.ui.action.JajukAction.NEW_FOLDER;
 import static org.jajuk.ui.action.JajukAction.NOVELTIES;
 import static org.jajuk.ui.action.JajukAction.OPTIONS;
+import static org.jajuk.ui.action.JajukAction.PASTE;
 import static org.jajuk.ui.action.JajukAction.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.action.JajukAction.QUALITY;
 import static org.jajuk.ui.action.JajukAction.REFRESH;
+import static org.jajuk.ui.action.JajukAction.RENAME;
 import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
 import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
@@ -168,7 +170,9 @@ public final class ActionManager {
     installAction(COPY, new CopyAction(), false);
     installAction(DELETE, new DeleteAction(), false);
     installAction(PASTE, new PasteAction(), false);
-
+    installAction(RENAME, new RenameAction(), false);
+    installAction(NEW_FOLDER, new NewFolderAction(), false);
+    
     // MISC
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
     installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);

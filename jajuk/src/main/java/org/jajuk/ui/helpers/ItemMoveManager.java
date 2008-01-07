@@ -35,7 +35,9 @@ public class ItemMoveManager{
   
   private ArrayList<Item> moveItems = new ArrayList<Item>(20);
   
-  String moveAction;
+  public enum MoveActions {CUT, COPY};
+  
+  private MoveActions moveAction;
   
   public static ItemMoveManager getInstance() {
     if (singleton == null) {
@@ -56,11 +58,11 @@ public class ItemMoveManager{
     moveItems.clear();
   }
   
-  public void setAction(String action){
+  public void setAction(MoveActions action){
     moveAction = action;
   }
   
-  public String getAction(){
+  public MoveActions getAction(){
     return moveAction;
   }
 }

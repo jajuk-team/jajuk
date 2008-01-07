@@ -48,6 +48,6 @@ public class CopyAction extends ActionBase {
     
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);
-    ItemMoveManager.getInstance().setAction("Copy");
+    ItemMoveManager.getInstance().setAction(ItemMoveManager.MoveActions.COPY);
   }
 }

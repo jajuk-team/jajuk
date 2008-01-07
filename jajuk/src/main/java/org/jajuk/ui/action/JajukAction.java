@@ -467,4 +467,12 @@ public enum JajukAction {
    * Used to copy and move Selected Items
    */
   COPY,
+  /**
+   * Used to rename files/directories
+   */
+  RENAME,
+  /**
+   * Used to create New Folder
+   */
+  NEW_FOLDER,
 }

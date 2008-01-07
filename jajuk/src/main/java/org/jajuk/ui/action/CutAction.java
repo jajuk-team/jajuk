@@ -48,7 +48,7 @@ public class CutAction extends ActionBase {
     
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);
-    ItemMoveManager.getInstance().setAction("Cut");
+    ItemMoveManager.getInstance().setAction(ItemMoveManager.MoveActions.CUT);
    
   }
 }

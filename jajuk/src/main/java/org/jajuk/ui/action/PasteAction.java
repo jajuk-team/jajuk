@@ -57,7 +57,7 @@ public class PasteAction extends ActionBase {
     JComponent source = (JComponent) e.getSource();
     final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     final ArrayList<Item> moveItems = ItemMoveManager.getInstance().getAll();
-    final String moveAction = ItemMoveManager.getInstance().getAction();
+    final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
 
     final ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
     final ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
@@ -92,7 +92,7 @@ public class PasteAction extends ActionBase {
 
         boolean overwriteAll = false;
 
-        if ("Cut".equals(moveAction)) {
+        if (moveAction == ItemMoveManager.MoveActions.CUT) {
           for (File f : alFiles) {
             if (!overwriteAll) {
               java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + f.getName());
@@ -130,7 +130,7 @@ public class PasteAction extends ActionBase {
               Messages.showErrorMessage(131);
             }
           }
-        } else if ("Copy".equals(moveAction)) {
+        } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
           Log.debug("Inside Copy");
           for (File f : alFiles) {
             if (!overwriteAll) {
