@@ -62,6 +62,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 
   private static final long serialVersionUID = 1L;
 
+  private static final String JAJUK_ICON = "icons/64x64/jajuk-icon_64x64.png";
+
   /**
    * Progress bar to use in the splash screen.
    */
@@ -112,8 +114,14 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
       String copyrightString, String versionString, Font versionStringFont, Color versionStringColor) {
     super();
     setTitle(Messages.getString("JajukWindow.17"));
+	
+    // check if we can load the icon
+    URL icon = Util.getResource(JAJUK_ICON); 
+    if(null == icon)
+      throw new RuntimeException(Messages.getString("JajukWindow.17") + JAJUK_ICON);
+	
     // Do not use IconLoader class here to avoid loading all icons now
-    setIconImage(new ImageIcon(Util.getResource("icons/64x64/jajuk-icon_64x64.png")).getImage());
+    setIconImage(new ImageIcon(icon).getImage());
     setUndecorated(true);
 
     m_progressBar = progress;
