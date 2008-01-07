@@ -124,8 +124,8 @@ public class Util implements ITechnicalStrings {
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-  
-  private static Cursor currentCursor;
+
+  private static Cursor currentCursor = DEFAULT_CURSOR;
 
   /** contains clipboard data */
   public static String copyData;
@@ -922,7 +922,7 @@ public class Util implements ITechnicalStrings {
       if (bHuman) {
         sValue = Util.getLocaleDateFormatter().format((Date) oValue);
       } else {
-        sValue = Util.getAdditionDateFormatter().format((Date)oValue);
+        sValue = Util.getAdditionDateFormatter().format((Date) oValue);
       }
     } else if (cType.equals(Class.class)) {
       sValue = oValue.getClass().getName();
@@ -1345,16 +1345,14 @@ public class Util implements ITechnicalStrings {
    * @return locale date formatter instance
    */
   public static DateFormat getLocaleDateFormatter() {
-    return DateFormat.getDateInstance(DateFormat.DEFAULT, Locale
-      .getDefault());
+    return DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
   }
 
   /**
    * @return Addition date simple format instance
    */
   public static DateFormat getAdditionDateFormatter() {
-    return new SimpleDateFormat(
-      ITechnicalStrings.ADDITION_DATE_FORMAT);
+    return new SimpleDateFormat(ITechnicalStrings.ADDITION_DATE_FORMAT);
   }
 
   /**
@@ -1955,7 +1953,7 @@ public class Util implements ITechnicalStrings {
         oDefaultValue = Boolean.parseBoolean(sValue);
       }
     } else if (cType.equals(Date.class)) {
-        oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
+      oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
     } else if (cType.equals(Long.class)) {
       oDefaultValue = Long.parseLong(sValue);
     } else if (cType.equals(Double.class)) {
@@ -2211,12 +2209,12 @@ public class Util implements ITechnicalStrings {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
       if (perspective != null) {
-        Log.debug("** Set cursor: "+currentCursor);
+        Log.debug("** Set cursor: " + currentCursor);
         container = perspective.getContentPane();
-        container.setCursor(DEFAULT_CURSOR);
-        CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
-        InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);
-        PerspectiveBarJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+        container.setCursor(currentCursor);
+        CommandJPanel.getInstance().setCursor(currentCursor);
+        InformationJPanel.getInstance().setCursor(currentCursor);
+        PerspectiveBarJPanel.getInstance().setCursor(currentCursor);
       }
     }
   };
@@ -2225,7 +2223,7 @@ public class Util implements ITechnicalStrings {
    * Set current cursor as waiting cursor
    */
   public static synchronized void waiting() {
-    if (currentCursor.equals(WAIT_CURSOR)) {
+    if (!currentCursor.equals(WAIT_CURSOR)) {
       currentCursor = WAIT_CURSOR;
       SwingUtilities.invokeLater(setCursorThread);
     }
@@ -2235,12 +2233,11 @@ public class Util implements ITechnicalStrings {
    * Set current cursor as default cursor
    */
   public static synchronized void stopWaiting() {
-    if (currentCursor.equals(DEFAULT_CURSOR)) {
+    if (!currentCursor.equals(DEFAULT_CURSOR)) {
       currentCursor = DEFAULT_CURSOR;
       SwingUtilities.invokeLater(setCursorThread);
     }
   }
-  
 
   public static BufferedImage toBufferedImage(final Image image, final boolean alpha) {
     return Util.toBufferedImage(image, alpha, image.getWidth(null), image.getHeight(null));
