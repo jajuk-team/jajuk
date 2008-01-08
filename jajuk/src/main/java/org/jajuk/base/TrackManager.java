@@ -591,7 +591,11 @@ public class TrackManager extends ItemManager implements Observer {
   public Set<Track> getAssociatedTracks(Item item) {
     synchronized (TrackManager.getInstance().getLock()) {
       if (item instanceof Album) {
-        return ((Album) item).tracks;
+        //check the album cache
+        Set<Track> tracks = ((Album) item).tracks;
+        if (tracks.size() > 0){
+          return tracks;
+        }
       }
       Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
       //If the item is itself a track, simply return it

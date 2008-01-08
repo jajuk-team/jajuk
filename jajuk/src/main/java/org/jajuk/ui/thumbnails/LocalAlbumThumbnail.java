@@ -27,6 +27,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -38,6 +39,7 @@ import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -174,7 +176,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     Util.refreshThumbnail(album, size);
     java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
         + '.' + EXT_THUMB);
-    List<Track> tracks = album.getTracks();
+    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
     Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();

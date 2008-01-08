@@ -22,16 +22,14 @@ package org.jajuk.ui.views;
 
 import ext.SwingWorker;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
@@ -53,6 +51,8 @@ import org.jajuk.util.Util;
 public class AlbumsTableView extends AbstractTableView {
 
   private static final long serialVersionUID = 7576455252866971945L;
+
+  private static ThumbnailPopup popup = null;
 
   public AlbumsTableView() {
     super();
@@ -118,32 +118,25 @@ public class AlbumsTableView extends AbstractTableView {
             }
           }
         });
-        // Add popup feature when mouse rools over cells
-        addMouseMotionListener(new MouseMotionListener() {
+        
+        // Add popup feature when mouse rolls over cells
+        jtable.addMouseMotionListener(new MouseMotionListener() {
           Album current = null;
-          ThumbnailPopup popup = null;
 
           public void mouseMoved(MouseEvent e) {
             if (!ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
               return;
             }
-            java.awt.Point p = e.getPoint();
+            java.awt.Point p = e.getLocationOnScreen();
             int rowIndex = jtable.rowAtPoint(p);
+            System.out.println(rowIndex);
             if (rowIndex < 0) {
               return;
             }
-            System.out.println(jtable.getBounds().x);
-            System.out.println(jtable.getBounds().y);
-            
-            if (p.getX() < jtable.getX() || p.getX() > (jtable.getWidth() + jtable.getX())
-                || p.getY() < jtable.getY() || p.getY() > (jtable.getHeight() + jtable.getY())) {
-              if (popup != null) {
-                popup.dispose();
-              }
-              return;
-            }
-            Album album = (Album) ((JajukTableModel) jtable.getModel()).getItemAt(jtable
-                .convertRowIndexToModel(rowIndex));
+            JajukTableModel model =  (JajukTableModel) jtable.getModel();
+            rowIndex = jtable.convertRowIndexToModel(rowIndex);
+            System.out.println(rowIndex);
+            Album album = (Album) model.getItemAt(rowIndex);
             if (album != null && current != album) {
               current = album;
               String description = new LocalAlbumThumbnail(album, 200, true).getDescription();
@@ -154,7 +147,6 @@ public class AlbumsTableView extends AbstractTableView {
               popup = new ThumbnailPopup(description, new Rectangle(p, new Dimension(400, 100)),
                   true);
             }
-
           }
 
           public void mouseDragged(MouseEvent e) {
@@ -162,6 +154,18 @@ public class AlbumsTableView extends AbstractTableView {
 
         });
 
+        // Add another listener on view borders (outside the table itself) to
+        // close popups when leaving the table
+        jtable.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseExited(MouseEvent arg0) {
+            // TODO Auto-generated method stub
+            super.mouseExited(arg0);
+            if (popup != null){
+              popup.dispose();
+            }
+          }
+        });
         return null;
       }
 
