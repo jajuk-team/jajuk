@@ -617,8 +617,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jsCatalogPages.getValue()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
         .toString(jcbShowPopups.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
-        .toString(jcbShowPopups.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, Integer
         .toString(jsPerspectiveSize.getValue()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
@@ -756,6 +754,29 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final double p = TableLayoutConstants.PREFERRED;
     final int iXSeparator = 15;
     final int iYSeparator = 15;
+    
+    // Use this common action listener for UI options that need to launch
+    // event
+    final ActionListener alUI = new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        // Store configuration
+        ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_AT_STARTUP, Boolean
+            .toString(jcbVisibleAtStartup.isSelected()));
+        ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_BALLOON, Boolean
+            .toString(jcbShowBaloon.isSelected()));
+        ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
+            .toString(jcbDisplayUnmounted.isSelected()));
+        ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
+            .toString(jcbShowPopups.isSelected()));
+        // Launch an event that can be trapped by the tray to
+        // synchronize the state
+        Properties details = new Properties();
+        details.put(ITechnicalStrings.DETAIL_ORIGIN, ParameterView.this);
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE, details));
+      }
+
+    };
 
     // --History
     jpHistory = new JPanel();
@@ -1043,6 +1064,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpOptions = new JPanel();
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
+    jcbDisplayUnmounted.addActionListener(alUI);
 
     jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183"));
     jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
@@ -1341,6 +1363,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsCatalogPages.setPaintLabels(true);
     jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
+    jcbShowPopups.addActionListener(alUI);
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 60, ConfigurationManager
         .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE));
@@ -1381,24 +1404,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Visible at startup
     jcbVisibleAtStartup = new JCheckBox(Messages.getString("JajukWindow.8"));
     jcbVisibleAtStartup.setToolTipText(Messages.getString("JajukWindow.25"));
-    // Use this common action listener for UI options that need to launch
-    // event
-    final ActionListener alUI = new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        // Store configuration
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_AT_STARTUP, Boolean
-            .toString(jcbVisibleAtStartup.isSelected()));
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_BALLOON, Boolean
-            .toString(jcbShowBaloon.isSelected()));
-        // Launch an event that can be trapped by the tray to
-        // synchronize the state
-        Properties details = new Properties();
-        details.put(ITechnicalStrings.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE, details));
-      }
-
-    };
+    
     jcbVisibleAtStartup.addActionListener(alUI);
     // Show Balloon
     jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
@@ -1605,9 +1611,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbBeforeRefactorFiles.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_REFACTOR_FILES));
     // options
-    final boolean bHidden = ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED);
-    jcbDisplayUnmounted.setSelected(bHidden);
+    jcbDisplayUnmounted.setSelected(ConfigurationManager
+        .getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
     jcbDefaultActionClick.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_CLICK));
     jcbDefaultActionDrop.setSelected(ConfigurationManager

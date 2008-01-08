@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
 public class ConfigurationManager implements ITechnicalStrings {
 
   /** Properties in memory */
-  private static Properties properties = new Properties();
+  private static volatile Properties properties = new Properties();
 
   /** Self instance* */
   static private ConfigurationManager cm;

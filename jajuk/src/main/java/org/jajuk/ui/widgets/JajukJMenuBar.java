@@ -43,6 +43,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JCheckBoxMenuItem;
@@ -54,6 +56,9 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.services.alarm.AlarmThread;
 import org.jajuk.services.alarm.AlarmThreadManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.events.Observer;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
@@ -62,6 +67,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -74,10 +80,11 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseMotionListener {
+public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseMotionListener,
+    Observer {
 
   private static final long serialVersionUID = 1L;
-  
+
   static JajukJMenuBar jjmb;
 
   JMenu file;
@@ -102,6 +109,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
   JMenu mode;
 
+  JCheckBoxMenuItem jcbShowPopups;
+
   public JCheckBoxMenuItem jcbmiRepeat;
 
   public JCheckBoxMenuItem jcbmiShuffle;
@@ -113,7 +122,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenu tools;
 
   JMenuItem jmiduplicateFinder;
-  
+
   JMenuItem jmialarmClock;
 
   JMenu configuration;
@@ -143,7 +152,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenuItem jmiCheckforUpdates;
 
   JMenuItem jmiAbout;
-  
+
   JMenu jmReminders;
 
   JLabel jlUpdate;
@@ -215,8 +224,28 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
     jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+    jmiUnmounted.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean.toString(jmiUnmounted
+            .isSelected()));
+        // force parameter view to take this into account
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+      }
+    });
+
+    jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
+    jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
+    jcbShowPopups.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
+            .isSelected()));
+        // force parameter view to take this into account
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+      }
+    });
 
     mode.add(jmiUnmounted);
+    mode.add(jcbShowPopups);
     mode.addSeparator();
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
@@ -234,12 +263,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.add(jma);
       jmReminders.addSeparator();
     }
-    
+
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
     tools.addSeparator();
     tools.add(jmReminders);
-        
+
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -313,7 +342,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
       sw.start();
     }
-
+    ObservationManager.register(this);
   }
 
   static public synchronized JajukJMenuBar getInstance() {
@@ -322,18 +351,23 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     }
     return jjmb;
   }
-  
-  public void mouseMoved(MouseEvent e){
+
+  public Set<EventSubject> getRegistrationKeys() {
+    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+    return eventSubjectSet;
+  }
+
+  public void mouseMoved(MouseEvent e) {
     jmReminders.removeAll();
     if (AlarmThreadManager.getInstance().getAllAlarms().size() == 0)
       jmReminders.add(Messages.getString("AlarmClock.2"));
-    else{
+    else {
       for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
         JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
         jma.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent evt) {
-            int iResu = Messages.getChoice(
-                Messages.getString("Confirmation_alarm_stop"),
+            int iResu = Messages.getChoice(Messages.getString("Confirmation_alarm_stop"),
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if (iResu != JOptionPane.YES_OPTION) {
               return;
@@ -345,8 +379,20 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       }
     }
   }
-  
-  public void mouseDragged(MouseEvent e){
+
+  public void mouseDragged(MouseEvent e) {
     mouseMoved(e);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.Observer#update(java.lang.String)
+   */
+  public void update(Event event) {
+    if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
+      jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
+      jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+    }
   }
 }

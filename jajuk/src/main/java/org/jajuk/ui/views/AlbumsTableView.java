@@ -128,14 +128,12 @@ public class AlbumsTableView extends AbstractTableView {
               return;
             }
             java.awt.Point p = e.getLocationOnScreen();
-            int rowIndex = jtable.rowAtPoint(p);
-            System.out.println(rowIndex);
+            int rowIndex = jtable.rowAtPoint(e.getPoint());
             if (rowIndex < 0) {
               return;
             }
             JajukTableModel model =  (JajukTableModel) jtable.getModel();
             rowIndex = jtable.convertRowIndexToModel(rowIndex);
-            System.out.println(rowIndex);
             Album album = (Album) model.getItemAt(rowIndex);
             if (album != null && current != album) {
               current = album;

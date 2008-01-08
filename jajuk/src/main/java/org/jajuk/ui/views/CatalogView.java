@@ -117,8 +117,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   JCheckBox jcbShowNoCover;
 
-  JCheckBox jcbShowPopups;
-
   JLabel jlSize;
 
   JSlider jsSize;
@@ -308,10 +306,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jcbShowNoCover.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
     jcbShowNoCover.addActionListener(this);
 
-    jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
-    jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
-    jcbShowPopups.addActionListener(this);
-
     JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
     jsSize = new JSlider(0, 5);
     jsSize.setMajorTickSpacing(1);
@@ -372,16 +366,15 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jbRefresh.addActionListener(this);
     double p = TableLayout.PREFERRED;
 
-    double sizeControlBottom[][] = { { p, p, p, p, TableLayout.FILL, 5 }, { p } };
+    double sizeControlBottom[][] = { { p, p, p, TableLayout.FILL, 5 }, { p } };
     TableLayout layoutBottom = new TableLayout(sizeControlBottom);
     layoutBottom.setHGap(20);
     jpControlBottom = new JPanel();
     jpControlBottom.setLayout(layoutBottom);
     jpControlBottom.add(jcbShowNoCover, "0,0");
-    jpControlBottom.add(jcbShowPopups, "1,0");
-    jpControlBottom.add(jlSize, "2,0");
-    jpControlBottom.add(jsSize, "3,0,c,c");
-    jpControlBottom.add(jbRefresh, "4,0,r,c");
+    jpControlBottom.add(jlSize, "1,0");
+    jpControlBottom.add(jsSize, "2,0,c,c");
+    jpControlBottom.add(jbRefresh, "3,0,r,c");
 
     // Covers
     jpItems = new FlowScrollPanel();
@@ -713,8 +706,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           }
         }
       }
-    } else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
-      jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
     }
     // In all cases, update the facts
     showFacts();
@@ -778,11 +769,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           .toString(jcbShowNoCover.isSelected()));
       // display thumbs
       populateCatalog();
-    } else if (e.getSource() == jcbShowPopups) {
-      ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
-          .isSelected()));
-      // force paramter view to take this into account
-      ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
     } else if (e.getSource() == jbPrev) {
       if (page > 0) {
         page--;

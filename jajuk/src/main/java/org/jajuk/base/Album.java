@@ -46,7 +46,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   private static TrackComparator basicComparator = new TrackComparator(TrackComparator.ALBUM);
 
-  /** For perfs, we store the associated tracks */
+  /** For perfs, we cache the associated tracks */
   protected Set<Track> tracks = new TreeSet<Track>(basicComparator);
 
   /**
