@@ -1286,8 +1286,7 @@ public class Main implements ITechnicalStrings {
 
           // starts ui
           jw = JajukWindow.getInstance();
-          jw.setCursor(Util.WAIT_CURSOR);
-
+          
           // Creates the panel
           jpFrame = (JPanel) jw.getContentPane();
           jpFrame.setOpaque(true);
@@ -1339,8 +1338,7 @@ public class Main implements ITechnicalStrings {
           builder.add(tbcontainer, cc.xy(1, 1));
           builder.add(command, cc.xy(1, 3));
           jpFrame.add(builder.getPanel(), BorderLayout.CENTER);
-          jw.setCursor(Util.DEFAULT_CURSOR);
-
+        
           // Upgrade step2
           UpgradeManager.upgradeStep2();
 
@@ -1363,7 +1361,6 @@ public class Main implements ITechnicalStrings {
             sc.splashOff();
           }
           bUILauched = true;
-          Util.stopWaiting();
           // Notify any first time wizard to startup refresh
           synchronized (canLaunchRefresh) {
             canLaunchRefresh.notify();
