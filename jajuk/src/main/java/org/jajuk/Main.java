@@ -545,12 +545,12 @@ public class Main implements ITechnicalStrings {
    * Asynchronous tasks executed at startup at the same time (for perf)
    */
   private static void startupAsyncAfterCollectionLoad() {
-    new Thread() {
+    new Thread("Startup Async After Collection Load Thread") {
       @Override
       public void run() {
         try {
           // start exit hook
-          final Thread tHook = new Thread() {
+          final Thread tHook = new Thread("Exit hook thread") {
             @Override
             public void run() {
               Log.debug("Exit Hook begin");
@@ -666,7 +666,7 @@ public class Main implements ITechnicalStrings {
    * Asynchronous tasks executed at startup at the same time (for perf)
    */
   private static void startupAsyncBeforeCollectionLoad() {
-    new Thread() {
+    new Thread("Startup Async Before Collection Load Thread") {
       @Override
       public void run() {
         // Force loading all icons now
@@ -925,7 +925,7 @@ public class Main implements ITechnicalStrings {
       System.exit(-1);
     }
     // start listening
-    new Thread() {
+    new Thread("Concurrent Session Avoidance Thread") {
       @Override
       public void run() {
         try {
@@ -1121,7 +1121,7 @@ public class Main implements ITechnicalStrings {
             final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
                 ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
             if (radio != null) {
-              new Thread() {
+              new Thread("WebRadio launch thread") {
                 @Override
                 public void run() {
                   FIFO.getInstance().launchRadio(radio);

@@ -178,6 +178,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
       diNew.setToolTipText(Messages.getString("DeviceView.18"));
       jpDevices.add(diNew);
       diNew.addMouseListener(new MouseAdapter() {
+        @Override
         public void mouseClicked(MouseEvent e) {
           DeviceWizard dw = new DeviceWizard();
           dw.updateWidgetsDefault();
@@ -247,6 +248,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
    * 
    * @see org.jajuk.ui.views.IView#setVisible(boolean)
    */
+  @Override
   public void setVisible(boolean pVisible) {
   }
 
@@ -255,6 +257,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
    * 
    * @see org.jajuk.ui.views.IView#getComponent()
    */
+  @Override
   public Component getComponent() {
     return this;
   }
@@ -310,8 +313,9 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_SYNCHRO.toString())) {
       diSelected.getDevice().synchronize(true);
     } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_TEST.toString())) {
-      new Thread() {// test asynchronously in case of delay (samba
+      new Thread("Asynchronouse device test thread") {// test asynchronously in case of delay (samba
         // pbm for ie)
+        @Override
         public void run() {
           if (diSelected.getDevice().test()) {
             Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.ICON_OK);

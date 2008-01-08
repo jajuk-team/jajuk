@@ -134,7 +134,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Launches a thread used to perform dynamic filtering when user is typing
    */
-  Thread filteringThread = new Thread() {
+  Thread filteringThread = new Thread("Dynamic user input filtering thread") {
+    @Override
     public void run() {
       while (true) {
         try {
@@ -232,6 +233,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtfValue = new JTextField();
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.addKeyListener(new KeyAdapter() {
+      @Override
       public void keyReleased(KeyEvent e) {
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
