@@ -39,7 +39,7 @@ public abstract class SelectionAction extends ActionBase {
   }
 
   /* (non-Javadoc)
-   * @see org.jajuk.ui.action.ActionBase#perform(java.awt.event.ActionEvent)
+   * @see org.jajuk.ui.actions.ActionBase#perform(java.awt.event.ActionEvent)
    */
   @SuppressWarnings("unchecked")
   @Override
