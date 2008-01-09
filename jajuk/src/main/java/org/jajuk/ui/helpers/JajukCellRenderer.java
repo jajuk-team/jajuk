@@ -20,8 +20,8 @@
 
 package org.jajuk.ui.helpers;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.text.DateFormat;
 import java.util.Date;
 
 import javax.swing.JLabel;
@@ -35,19 +35,35 @@ import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
 /**
  * Cell renderer to support cells color and icons
+ * <p>Note that by swing design, this renderer applies to an entire column.
+ * It is useless to change a specific cell rendering according row or column number
+ * See http://java.sun.com/docs/books/tutorial/uiswing/components/table.html#editrender</p>
  */
-public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer implements ITechnicalStrings {
+public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer
+    implements ITechnicalStrings {
 
   private static final long serialVersionUID = 154545454L;
 
-  private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+  private Color color;
   
-  private static final DateFormat formatter = Util.getLocaleDateFormatter();
+  /**
+   * @param color background color for cells or null if default
+   */
+  public JajukCellRenderer(Color color) {
+    super();
+    this.color = color;
+  }
+  
+  public JajukCellRenderer() {
+    this(null);
+  }
+  
+  private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
 
-  public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
-      boolean focused, int row, int column) {
-    Component c = super
-        .getTableCellRendererComponent(table, oValue, selected, focused, row, column);
+  public Component getTableCellRendererComponent(JTable table, Object oValue,
+      boolean selected, boolean focused, int row, int column) {
+    Component c = super.getTableCellRendererComponent(table, oValue,
+        selected, focused, row, column);
     if (oValue instanceof IconLabel) {
       ((JLabel) c).setOpaque(false);
       ((JLabel) c).setIcon(((IconLabel) oValue));
@@ -55,15 +71,21 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
       ((JLabel) c).setFont(((IconLabel) oValue).getFont());
       ((JLabel) c).setText(((IconLabel) oValue).getText());
     } else if (oValue instanceof Date) {
-      ((JLabel) c).setText(formatter.format(((Date) oValue)));
+      ((JLabel) c).setText(Util.getLocaleDateFormatter().format(
+          ((Date) oValue)));
     } else if (oValue instanceof Boolean) {
-      c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
-          column);
+      c = booleanRenderer.getTableCellRendererComponent(table, oValue,
+          selected, focused, row, column);
     } else if (oValue instanceof Duration) {
-      ((JLabel) c).setText(((Duration)oValue).toString());
+      ((JLabel) c).setText(((Duration) oValue).toString());
     }
     c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+    if (color != null){
+      c.setBackground(color);
+    }
     return c;
   }
+
+  
 
 }
