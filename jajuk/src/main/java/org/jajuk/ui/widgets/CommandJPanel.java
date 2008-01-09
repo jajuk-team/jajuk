@@ -19,17 +19,17 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
-import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
-import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
-import static org.jajuk.ui.action.JajukAction.MUTE_STATE;
-import static org.jajuk.ui.action.JajukAction.NEXT_ALBUM;
-import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
-import static org.jajuk.ui.action.JajukAction.PLAY_PAUSE_TRACK;
-import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
-import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
-import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+import static org.jajuk.ui.actions.JajukAction.CONFIGURE_DJS;
+import static org.jajuk.ui.actions.JajukAction.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.actions.JajukAction.FINISH_ALBUM;
+import static org.jajuk.ui.actions.JajukAction.MUTE_STATE;
+import static org.jajuk.ui.actions.JajukAction.NEXT_ALBUM;
+import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
+import static org.jajuk.ui.actions.JajukAction.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
+import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
+import static org.jajuk.ui.actions.JajukAction.REWIND_TRACK;
+import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -98,10 +98,10 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.action.ActionBase;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.ActionUtil;
-import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.actions.ActionBase;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.ActionUtil;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;

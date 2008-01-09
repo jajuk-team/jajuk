@@ -38,7 +38,7 @@ import javax.swing.table.TableModel;
 
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.ILaunchCommand;
-import org.jajuk.ui.helpers.JajukCellRender;
+import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -100,7 +100,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     // Force to use Jajuk cell render for all columns, except for boolean
     // that should use default renderer (checkbox)
     for (TableColumn col : getColumns()) {
-      col.setCellRenderer(new JajukCellRender());
+      col.setCellRenderer(new JajukCellRenderer());
     }
     // Listen for row selection
     getSelectionModel().addListSelectionListener(this);

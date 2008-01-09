@@ -31,8 +31,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Item;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jdesktop.swingx.JXTree;
 
 /**

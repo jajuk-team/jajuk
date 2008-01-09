@@ -19,22 +19,22 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
-import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_ADD;
-import static org.jajuk.ui.action.JajukAction.CUSTOM_PROPERTIES_REMOVE;
-import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
-import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.OPTIONS;
-import static org.jajuk.ui.action.JajukAction.QUALITY;
-import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
-import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
-import static org.jajuk.ui.action.JajukAction.SHOW_TRACES;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
-import static org.jajuk.ui.action.JajukAction.VIEW_RESTORE_DEFAULTS;
-import static org.jajuk.ui.action.JajukAction.WIZARD;
+import static org.jajuk.ui.actions.JajukAction.CONFIGURE_AMBIENCES;
+import static org.jajuk.ui.actions.JajukAction.CONFIGURE_DJS;
+import static org.jajuk.ui.actions.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukAction.CUSTOM_PROPERTIES_ADD;
+import static org.jajuk.ui.actions.JajukAction.CUSTOM_PROPERTIES_REMOVE;
+import static org.jajuk.ui.actions.JajukAction.HELP_REQUIRED;
+import static org.jajuk.ui.actions.JajukAction.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukAction.OPTIONS;
+import static org.jajuk.ui.actions.JajukAction.QUALITY;
+import static org.jajuk.ui.actions.JajukAction.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.actions.JajukAction.SHOW_ABOUT;
+import static org.jajuk.ui.actions.JajukAction.SHOW_TRACES;
+import static org.jajuk.ui.actions.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
+import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
+import static org.jajuk.ui.actions.JajukAction.WIZARD;
 
 import com.sun.java.help.impl.SwingWorker;
 
@@ -59,9 +59,9 @@ import org.jajuk.services.alarm.AlarmThreadManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.ActionUtil;
-import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.ActionUtil;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;

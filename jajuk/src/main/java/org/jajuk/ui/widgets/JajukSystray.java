@@ -20,9 +20,9 @@
 
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
-import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
+import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
+import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
+import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import ext.SliderMenuItem;
 
 import java.awt.event.ActionEvent;
@@ -51,8 +51,8 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.SizedJMenuItem;
