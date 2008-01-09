@@ -765,8 +765,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             .toString(jcbVisibleAtStartup.isSelected()));
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_BALLOON, Boolean
             .toString(jcbShowBaloon.isSelected()));
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
-            .toString(jcbDisplayUnmounted.isSelected()));
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
             .toString(jcbShowPopups.isSelected()));
         // Launch an event that can be trapped by the tray to

@@ -137,7 +137,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
   JMenuItem jmiOptions;
 
-  public JCheckBoxMenuItem jmiUnmounted;
+  JCheckBoxMenuItem jmiUnmounted;
 
   JMenu help;
 
@@ -224,15 +224,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
     jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-    jmiUnmounted.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean.toString(jmiUnmounted
-            .isSelected()));
-        // force parameter view to take this into account
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-      }
-    });
-
+    jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
+    
     jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
     jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {

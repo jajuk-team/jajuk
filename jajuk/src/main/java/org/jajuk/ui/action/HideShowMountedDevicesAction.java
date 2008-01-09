@@ -21,9 +21,11 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
-import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
@@ -39,11 +41,14 @@ public class HideShowMountedDevicesAction extends ActionBase {
     super(Messages.getString("JajukJMenuBar.24"), true);
   }
 
-  public void perform(ActionEvent evt) {
+  public void perform(ActionEvent e) {
+    JComponent source = (JComponent) e.getSource();
+    Object o = source.getClientProperty(DETAIL_ORIGIN);
+    JCheckBoxMenuItem jmiUnmounted = (JCheckBoxMenuItem)o;
     boolean bHideUnmountedStatus = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
     ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
         .toString(!bHideUnmountedStatus));
-    JajukJMenuBar.getInstance().jmiUnmounted.setSelected(!bHideUnmountedStatus);
+    jmiUnmounted.setSelected(!bHideUnmountedStatus);
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
     ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
   }
