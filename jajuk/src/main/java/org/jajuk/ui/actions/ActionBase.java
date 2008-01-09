@@ -47,7 +47,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
   static {
     if (Util.isUnderWindows()) {
       try {
-        Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("registerJIntellitype")
+        Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("registerJIntellitype")
             .invoke(null, null);
       } catch (Exception e) {
         Log.error(e);
@@ -92,7 +92,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
     if (stroke != null) {
       if (this.bHotkey) {
         try {
-          Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("registerHotKey",
+          Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("registerHotKey",
               new Class[] { KeyStroke.class, ActionBase.class }).invoke(null,
               new Object[] { stroke, this });
         } catch (Exception e) {
@@ -374,7 +374,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    */
   public static void cleanup() throws Exception {
     if (Util.isUnderWindows()) {
-      Class.forName("org.jajuk.ui.action.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
+      Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
           null);
     }
   }
