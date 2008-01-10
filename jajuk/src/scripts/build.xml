@@ -6,7 +6,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5dev_try6' />
+	<property name='version' value='1.5dev_try7' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -295,14 +295,15 @@
 		<signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/qdwizard-2.0.2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/substance-4.1dev.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/swingx-2007_07_22.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/substance-4.2dev.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/swingx-2007_12_30.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/linux/substance-swingx-4.2dev.jar" alias="jajukteam" storepass="passpass" />
 	</target>
 
 
