@@ -111,6 +111,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
   JCheckBoxMenuItem jcbShowPopups;
 
+  JCheckBoxMenuItem jcbSyncTableTree;
+
   public JCheckBoxMenuItem jcbmiRepeat;
 
   public JCheckBoxMenuItem jcbmiShuffle;
@@ -225,7 +227,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
     jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
     jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
-    
+
     jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
     jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {
@@ -237,8 +239,21 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       }
     });
 
+    jcbSyncTableTree = new JCheckBoxMenuItem(Messages.getString("ParameterView.183"));
+    jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
+    jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+    jcbSyncTableTree.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
+            .toString(jcbSyncTableTree.isSelected()));
+        // force parameter view to take this into account
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+      }
+    });
+
     mode.add(jmiUnmounted);
     mode.add(jcbShowPopups);
+    mode.add(jcbSyncTableTree);
     mode.addSeparator();
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
@@ -386,6 +401,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
       jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
       jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+      jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
     }
   }
 }

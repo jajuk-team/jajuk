@@ -767,6 +767,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             .toString(jcbShowBaloon.isSelected()));
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
             .toString(jcbShowPopups.isSelected()));
+        ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
+            .toString(jcbSyncTableTree.isSelected()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();
@@ -1066,6 +1068,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183"));
     jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
+    jcbSyncTableTree.addActionListener(alUI);
 
     jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179"));
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
