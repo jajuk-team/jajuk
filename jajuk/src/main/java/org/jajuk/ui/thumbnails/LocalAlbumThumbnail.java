@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -39,6 +40,7 @@ import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
@@ -177,6 +179,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
         + '.' + EXT_THUMB);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
+    Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
     Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();

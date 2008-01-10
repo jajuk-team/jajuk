@@ -44,6 +44,8 @@ public class TrackComparator implements Comparator<Track> {
   public static final int YEAR_ALBUM = 3;
 
   public static final int DISCOVERY_ALBUM = 4;
+  
+  public static final int ORDER = 5;
 
   /**
    * Constructor
@@ -97,6 +99,11 @@ public class TrackComparator implements Comparator<Track> {
       sHashCompare = new StringBuilder().append(
           Util.getAdditionDateFormatter().format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
+      break;
+    //Order / track name
+    case ORDER:
+      sHashCompare = new StringBuilder().append(
+          track.getOrder() + track.getName()).toString();
       break;
     }
     return sHashCompare;
