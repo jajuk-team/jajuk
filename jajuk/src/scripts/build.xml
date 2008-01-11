@@ -303,7 +303,7 @@
 		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/linux/substance-swingx-4.2dev.jar" alias="jajukteam" storepass="passpass" />
+		<signjar jar="${distdir}/lib/substance-swingx-4.2dev.jar" alias="jajukteam" storepass="passpass" />
 	</target>
 
 
