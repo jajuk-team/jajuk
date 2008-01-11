@@ -72,6 +72,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.decorator.SortOrder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -260,11 +261,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
+    jtable.setSortOrder(1,SortOrder.ASCENDING);
     jtable.packTable(5);
     // Register on the list for subject we are interested in
     ObservationManager.register(AbstractTableView.this);
     // refresh columns conf in case of some attributes been removed
-    // or added before view instanciation
+    // or added before view instantiation
     Properties properties = ObservationManager
         .getDetailsLastOccurence(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
     Event event = new Event(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD, properties);
@@ -408,6 +410,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
+        col.setSortable(true);
       }
       // create a combo box for authors, note that we can't add new
       // authors dynamically
