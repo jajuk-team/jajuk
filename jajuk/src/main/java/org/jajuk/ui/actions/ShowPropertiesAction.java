@@ -27,6 +27,7 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.LogicalItem;
+import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.IconLoader;
@@ -72,7 +73,11 @@ public class ShowPropertiesAction extends SelectionAction {
         tracks.add(((File) file).getTrack());
       }
       new PropertiesWizard(selection, tracks);
-    } else if (first instanceof LogicalItem || first instanceof Directory) {
+    } 
+    else if (first instanceof Track){
+      new PropertiesWizard(selection);
+    }
+    else if (first instanceof LogicalItem || first instanceof Directory) {
       // Author, Album, Style... : display the dual properties panel: one for
       // the item itself, the other with all tracks
       List<Item> tracks = new ArrayList<Item>(selection.size());
