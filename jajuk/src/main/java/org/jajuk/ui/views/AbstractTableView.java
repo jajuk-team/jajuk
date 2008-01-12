@@ -72,6 +72,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.decorator.SortOrder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
@@ -262,6 +263,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
     jtable.setSortOrder(1,SortOrder.ASCENDING);
+    jtable.setHighlighters(new AlternateRowHighlighter());
     jtable.packTable(5);
     // Register on the list for subject we are interested in
     ObservationManager.register(AbstractTableView.this);
@@ -335,7 +337,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
+          } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)
+              || (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject))) {
             // Consume only events from the same perspective for
             // table/tree synchronization
             if (!(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {

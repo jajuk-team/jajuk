@@ -51,7 +51,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.jajuk.base.File;
@@ -61,7 +60,6 @@ import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
@@ -73,8 +71,8 @@ import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.Duration;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ILaunchCommand;
-import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistFileItem;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -91,6 +89,8 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
+import org.jdesktop.swingx.decorator.ColorHighlighter;
 
 /**
  * Adapter for playlists editors *
@@ -431,27 +431,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
     jpControl.add(jtb, "1,1");
     jpControl.add(jlTitle, "3,1,c,c");
     model = new PlayListEditorTableModel();
-    jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS){
-      private static final long serialVersionUID = 1L;
-      // We have to overwrite this table method to allow single cell
-      // renderer
-      public TableCellRenderer getCellRenderer(int row, int column) {
-        JajukTableModel model = (JajukTableModel) getModel();
-        Item item = model.getItemAt(row);
-        if (item instanceof File) {
-          File file = (File) item;
-          if (file.equals(FIFO.getInstance().getCurrentFile())) {
-            return new JajukCellRenderer(Color.ORANGE);
-          }
-        } else if (item instanceof Track) {
-          ArrayList<File> files = ((Track) item).getFiles();
-          if (files.contains(FIFO.getInstance().getCurrentFile())) {
-            return new JajukCellRenderer(Color.ORANGE);
-          }
-        }
-        return super.getCellRenderer(row, column);
-      }
-    };
+    jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS);
     jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
     jtable.setSortable(false);
@@ -482,6 +462,9 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
     jtable.getMenu().add(jmiFilePush);
     jtable.getMenu().add(jmiFileAddFavorites);
     jtable.getMenu().add(jmiFileProperties);
+    
+    ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,new PlayHighlighterPredicate(model));
+    jtable.setHighlighters(new AlternateRowHighlighter(),colorHighlighter); 
     // register events
     ObservationManager.register(this);
     // -- force a refresh --
