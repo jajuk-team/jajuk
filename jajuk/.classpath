@@ -33,8 +33,8 @@
 	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/substance-4.2dev.jar"/>
-	<classpathentry kind="lib" path="lib/substance-swingx-4.2dev.jar"/>
-	<classpathentry kind="lib" path="lib/swingx-2007_12_30.jar"/>
+	<classpathentry kind="lib" path="lib/substance-4.1.jar"/>
+	<classpathentry kind="lib" path="lib/substance-swingx-4.1.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-2007_10_24.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
