@@ -132,7 +132,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiPlayShuffle;
   JMenuItem jmiBookmark;
   JMenuItem jmiProperties;
- 
+
   /**
    * Launches a thread used to perform dynamic filtering when user is typing
    */
@@ -155,7 +155,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
   };
 
-   /**
+  /**
    * 
    * @return Applied criteria
    */
@@ -190,7 +190,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
     jmiDelete.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiDelete);
-    
+
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
@@ -201,7 +201,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
     jmiBookmark = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
     jmiBookmark.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-    
+
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     return null;
@@ -262,7 +262,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
-    jtable.setSortOrder(1,SortOrder.ASCENDING);
+    jtable.setSortOrder(1, SortOrder.ASCENDING);
     jtable.setHighlighters(new AlternateRowHighlighter());
     jtable.packTable(5);
     // Register on the list for subject we are interested in
@@ -288,6 +288,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
     eventSubjectSet.add(EventSubject.EVENT_TABLE_CLEAR_SELECTION);
+    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -326,7 +327,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       @SuppressWarnings("unchecked")
       public void run() {
         try {
-          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong column
+          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
+                                              // column
           // events
           EventSubject subject = event.getSubject();
           if (EventSubject.EVENT_TABLE_CLEAR_SELECTION.equals(subject)) {
@@ -337,8 +339,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)
-              || (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject))) {
+          } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
             // Consume only events from the same perspective for
             // table/tree synchronization
             if (!(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {
@@ -346,6 +347,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             }
             // Update model tree selection
             model.treeSelection = (HashSet<Item>) event.getDetails().get(DETAIL_SELECTION);
+            // force redisplay to apply the filter
+            jtable.clearSelection();
+            // force filter to refresh
+            applyFilter(sAppliedCriteria, sAppliedFilter);
+          } else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
             // force redisplay to apply the filter
             jtable.clearSelection();
             // force filter to refresh
