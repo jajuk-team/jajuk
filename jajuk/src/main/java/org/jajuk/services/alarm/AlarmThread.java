@@ -64,7 +64,7 @@ public class AlarmThread extends Thread implements ITechnicalStrings {
     } else {
       this.alarmMilliSeconds += 24 * 3600 * 1000;
     }
-    if (Util.isVoid(alarmMessage))
+    if (!Util.isVoid(alarmMessage))
       Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " "
           + alarmMessage);
   }

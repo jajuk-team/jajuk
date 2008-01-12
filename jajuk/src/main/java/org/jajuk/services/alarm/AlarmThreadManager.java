@@ -64,17 +64,16 @@ public class AlarmThreadManager {
                   + ":" + cal.get(Calendar.SECOND);
               for (AlarmThread alarm : allAlarms) {
                 long timediff = Time.valueOf(currentTime).getTime() - alarm.getAlarmMilliSeconds();
-                // wake up only if within 5 seconds of alarm Time
-                // to avoid alarm going into a recursive loop
-                if (timediff > 0 && timediff < 5000)
+                if (timediff > 0)
                   alarm.wakeUpSleeper();
               }
             }
           }
         }
       }.start();
-    } else
+    } else {
       allAlarms.add(aAlarm);
+    }
   }
 
   public void stopAlarm(AlarmThread aAlarm) {
