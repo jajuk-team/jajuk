@@ -55,6 +55,7 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Lyrics view
@@ -75,6 +76,8 @@ public class LyricsView extends ViewAdapter implements Observer {
   private String lyrics = null;
   private JMenuItem jmiCopyToClipboard = null;
   private JMenuItem jmiLaunchInBrowser = null;
+  private JXBusyLabel busy = new JXBusyLabel();
+  private JPanel p;
 
   public LyricsView() {
   }
@@ -92,7 +95,7 @@ public class LyricsView extends ViewAdapter implements Observer {
         "5dlu, p, 3dlu, p, 3dlu,fill:" + (getHeight() - 200) + ":grow,3dlu");
     final PanelBuilder builder = new PanelBuilder(layout);
     final CellConstraints cc = new CellConstraints();
-    final JPanel p = builder.getPanel();
+    p = builder.getPanel();
     final JTextArea textarea = getTextarea();
     final JLabel author = getJlAuthor();
     final JLabel title = getJlTitle();
@@ -132,6 +135,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(p);
     ObservationManager.register(this);
+    reset();
     // check if a track has already been launched
     update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
         .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
@@ -171,40 +175,44 @@ public class LyricsView extends ViewAdapter implements Observer {
 
     Log.debug("updating lyrics view");
     if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
-      new Thread() {
+      final File file = FIFO.getInstance().getCurrentFile();
+      // file is null is view started with no playing track (the event is
+      // simulated in initUI())
+      if (file == null) {
+        return;
+      }
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          removeAll();
+          busy.setBusy(true);
+          add(Util.getCentredPanel(busy, BoxLayout.X_AXIS));
+          revalidate();
+          repaint();
+        }
+      });
 
+      new Thread() {
         @Override
         public void run() {
-          final File file = FIFO.getInstance().getCurrentFile();
 
-          if (file != null) {
-            track = FIFO.getInstance().getCurrentFile().getTrack();
-            // Launch lyrics service asynchronously and out of the
-            // AWT dispatcher thread
-            Log.debug("calling LyricsService");
-            lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());
-            if (lyrics != null) {
-              sURL = LyricsService.getCurrentProvider().getQueryString(
-                  track.getAuthor().getName2(), track.getName());
-            } else {
-              sURL = "<none>";
-            }
-            // Notify to make UI changes
-            ObservationManager.notify(new Event(EventSubject.EVENT_LYRICS_DOWNLOADED));
+          track = FIFO.getInstance().getCurrentFile().getTrack();
+          // Launch lyrics service asynchronously and out of the
+          // AWT dispatcher thread
+          Log.debug("calling LyricsService");
+          lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());
+          if (lyrics != null) {
+            sURL = LyricsService.getCurrentProvider().getQueryString(track.getAuthor().getName2(),
+                track.getName());
+          } else {
+            sURL = "<none>";
           }
+          // Notify to make UI changes
+          ObservationManager.notify(new Event(EventSubject.EVENT_LYRICS_DOWNLOADED));
         }
 
       }.start();
     } else if (subject.equals(EventSubject.EVENT_ZERO)) {
-      SwingUtilities.invokeLater(new Runnable() {
-
-        public void run() {
-          jsp.setVisible(false);
-          jlAuthor.setText("");
-          jlTitle.setText(Messages.getString("JajukWindow.18"));
-        }
-
-      });
+      reset();
     } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
 
@@ -223,7 +231,8 @@ public class LyricsView extends ViewAdapter implements Observer {
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {
-          jsp.setVisible(true);
+          removeAll();
+          add(p);
           textarea.setToolTipText(sURL);
           if ((lyrics != null) && (lyrics.length() > 0)) {
             textarea.setText(lyrics);
@@ -243,11 +252,29 @@ public class LyricsView extends ViewAdapter implements Observer {
           jlAuthor.setText(track.getAuthor().getName2());
           jlTitle.setText(track.getName());
           Util.copyData = sURL;
+          jsp.setVisible(true);
+          revalidate();
+          repaint();
         }
 
       });
 
     }
+  }
+
+  /**
+   * Hide lyrics scrollable text and display a "Ready to play" message
+   */
+  private void reset() {
+    SwingUtilities.invokeLater(new Runnable() {
+
+      public void run() {
+        jsp.setVisible(false);
+        jlAuthor.setText("");
+        jlTitle.setText(Messages.getString("JajukWindow.18"));
+      }
+
+    });
   }
 
   /*
