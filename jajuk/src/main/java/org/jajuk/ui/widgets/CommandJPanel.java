@@ -223,7 +223,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   });
 
   /** Ambience combo listener */
-  class ambienceListener implements ActionListener {
+  class AmbienceListener implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
       // Ambience Configuration
       if (ambiencesCombo.getSelectedIndex() == 0) {
@@ -261,7 +261,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   }
 
   /** An instance of the ambience combo listener */
-  ambienceListener ambienceListener;
+  AmbienceListener ambienceListener;
 
   /**
    * @return singleton
@@ -420,7 +420,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     });
     ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
     populateAmbiences();
-    ambienceListener = new ambienceListener();
+    ambienceListener = new AmbienceListener();
     ambiencesCombo.addActionListener(ambienceListener);
     jtbSpecial = new JToolBar();
     jtbSpecial.setBorder(null);
