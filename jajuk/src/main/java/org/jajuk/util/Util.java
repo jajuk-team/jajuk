@@ -2377,56 +2377,22 @@ public class Util implements ITechnicalStrings {
   }
 
   /**
-   * Filter a list.
-   * <p>
-   * The same collection is returned with non-matching items removed
-   * </p>
-   * <p>
-   * This filter is not thread safe.
-   * </p>
    * 
-   * @param in
-   *          input list
-   * @param filter
-   * @return filtered list, void list if none match
+   * @param tested the string to be tested
+   * @param key the search criteria, can be several words separated by a space
+   * @return whether the given tested string matches the key
    */
-  @SuppressWarnings("unchecked")
-  public static List<Item> filterItems(List<? extends Item> list, Filter filter) {
-    if (filter == null || filter.getValue() == null) {
-      return (List<Item>) list;
-    }
-    // Check if property is not the "fake" any property
-    boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
-
-    String comparator = null;
-    String checked = filter.getValue().toLowerCase();
-    Iterator it = list.iterator();
-    while (it.hasNext()) {
-      Item item = (Item) it.next();
-      // If none property set, the search if global "any"
-      if (bAny) {
-        comparator = item.getAny();
-      } else {
-        if (filter.isHuman()) {
-          comparator = item.getHumanValue(filter.getProperty());
-        } else {
-          comparator = item.getStringValue(filter.getProperty());
-        }
-      }
-      // perform the test
-      boolean bMatch = false;
-      if (filter.isExact()) {
-        bMatch = (comparator.toLowerCase().equals(checked));
-      } else {
-        // Do not use Regexp matches() method, checked could contain string to
-        // be escaped
-        bMatch = (comparator.toLowerCase().indexOf(checked) != -1);
-      }
-      if (!bMatch) {
-        it.remove();
+  public static boolean matchesIgnoreCaseAndOrder(final String tested,final String key){
+    String testedLower = tested.toLowerCase();
+    String keyLower = key.toLowerCase();
+    StringTokenizer st = new StringTokenizer(testedLower," ");
+    while (st.hasMoreTokens()){
+      String token = st.nextToken();
+      if (keyLower.indexOf(token) == -1){
+        return false;
       }
     }
-    return (List<Item>) list;
+    return true;
   }
 
 }

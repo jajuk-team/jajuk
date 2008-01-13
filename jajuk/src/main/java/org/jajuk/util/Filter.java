@@ -20,6 +20,11 @@
 
 package org.jajuk.util;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.jajuk.base.Item;
+
 
 /**
  * Filter on meta information
@@ -73,4 +78,61 @@ public class Filter {
   public String getValue() {
     return sValue;
   }
+  
+  /**
+   * Filter a list.
+   * <p>
+   * The same collection is returned with non-matching items removed
+   * </p>
+   * <p>
+   * This filter is not thread safe.
+   * </p>
+   * 
+   * @param in
+   *          input list
+   * @param filter
+   * @return filtered list, void list if none match
+   */
+  @SuppressWarnings("unchecked")
+  public static List<Item> filterItems(List<? extends Item> list, Filter filter) {
+    if (filter == null || filter.getValue() == null) {
+      return (List<Item>) list;
+    }
+    // Check if property is not the "fake" any property
+    boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
+
+    String comparator = null;
+    String checked = filter.getValue();
+    Iterator it = list.iterator();
+    while (it.hasNext()) {
+      Item item = (Item) it.next();
+      // If none property set, the search if global "any"
+      if (bAny) {
+        comparator = item.getAny();
+      } else {
+        if (filter.isHuman()) {
+          comparator = item.getHumanValue(filter.getProperty());
+        } else {
+          comparator = item.getStringValue(filter.getProperty());
+        }
+      }
+      // perform the test
+      boolean bMatch = false;
+      if (filter.isExact()) {
+        bMatch = (comparator.toLowerCase().equals(checked));
+      } else {
+        // Do not use Regexp matches() method, checked could contain string to
+        // be escaped and ignore order if user enters several words
+        bMatch = Util.matchesIgnoreCaseAndOrder(checked,comparator);
+      }
+      if (!bMatch) {
+        it.remove();
+      }
+    }
+    return (List<Item>) list;
+  }
+  
+  
+  
+  
 }

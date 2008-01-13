@@ -161,7 +161,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
     }
     //Filter files
     Filter filter = new Filter(sPropertyName,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
-    Util.filterItems(alToShow, filter);
+    Filter.filterItems(alToShow, filter);
     
     it = alToShow.iterator();
     int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size()

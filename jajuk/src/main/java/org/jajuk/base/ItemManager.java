@@ -285,7 +285,7 @@ public abstract class ItemManager implements ITechnicalStrings {
   @SuppressWarnings("unchecked")
   public Collection<Item> getItems(Filter filter) {
     synchronized (getLock()) {
-      return Util.filterItems(new ArrayList<Item>(hmItems.values()), filter);
+      return Filter.filterItems(new ArrayList<Item>(hmItems.values()), filter);
     }
   }
 

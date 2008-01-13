@@ -119,7 +119,7 @@ public class AlbumsTableModel extends JajukTableModel {
     List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
-    Util.filterItems(alToShow, filter);
+    Filter.filterItems(alToShow, filter);
     
     // Filter unmounted files if required
     for (Album album : alToShow) {

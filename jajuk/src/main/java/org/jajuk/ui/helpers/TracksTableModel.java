@@ -131,7 +131,7 @@ public class TracksTableModel extends JajukTableModel {
     }
     // Filter values using given pattern
     Filter filter = new Filter(property,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
-    Util.filterItems(alToShow, filter);
+    Filter.filterItems(alToShow, filter);
     // sort by album
     Collections.sort(alToShow, new TrackComparator(2));
     Iterator it = alToShow.iterator();
