@@ -59,13 +59,17 @@ public class AlarmThreadManager {
             if (allAlarms.size() == 0) {
               bstop = true;
             } else {
-              Calendar cal = Calendar.getInstance();
-              String currentTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE)
-                  + ":" + cal.get(Calendar.SECOND);
-              for (AlarmThread alarm : allAlarms) {
-                long timediff = Time.valueOf(currentTime).getTime() - alarm.getAlarmMilliSeconds();
-                if (timediff > 0)
-                  alarm.wakeUpSleeper();
+              try {
+                Calendar cal = Calendar.getInstance();
+                String currentTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE)
+                    + ":" + cal.get(Calendar.SECOND);
+                for (AlarmThread alarm : allAlarms) {
+                  long timediff = Time.valueOf(currentTime).getTime() - alarm.getAlarmMilliSeconds();
+                  if (timediff > 0)
+                    alarm.wakeUpSleeper();
+                } 
+              }catch(Exception e){
+                Log.error(e);
               }
             }
           }
