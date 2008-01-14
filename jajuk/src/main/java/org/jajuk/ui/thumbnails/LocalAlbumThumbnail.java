@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -120,7 +121,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAuthor.setEditable(false);
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAuthor.setForeground(mediumGray);
-      jlAuthor.setBorder(null);
+      //we have to use a empty border to avoid getting default border
+      jlAuthor.setBorder(new EmptyBorder(0,0,0,0));
 
       jlAlbum = new JTextArea(album.getName2(), 1, iRows);
       jlAlbum.setLineWrap(true);
@@ -130,7 +132,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setForeground(mediumGray);
-      jlAlbum.setBorder(null);
+      jlAlbum.setBorder(new EmptyBorder(0,0,0,0));
       add(jlIcon, "1,0,c,c");
       add(jlAuthor, "1,2");
       add(jlAlbum, "1,4");
