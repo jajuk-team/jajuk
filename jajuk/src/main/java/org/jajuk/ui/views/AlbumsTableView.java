@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import ext.SwingWorker;
 
 import java.awt.Dimension;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,6 +31,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
@@ -127,7 +129,8 @@ public class AlbumsTableView extends AbstractTableView {
             if (!ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
               return;
             }
-            java.awt.Point p = e.getLocationOnScreen();
+            //Do not use getLocationOnScreen() method to support JRE 1.5
+            java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
             int rowIndex = jtable.rowAtPoint(e.getPoint());
             if (rowIndex < 0) {
               return;
