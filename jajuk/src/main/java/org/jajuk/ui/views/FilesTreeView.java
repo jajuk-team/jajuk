@@ -397,6 +397,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             Object o = paths[i].getLastPathComponent();
             if (o instanceof TreeRootElement) {// root node
               items = FileManager.getInstance().getElementCount();
+              selectedRecursively.addAll(FileManager.getInstance().getFiles());
               for (Item item : selectedRecursively) {
                 lSize += ((File) item).getSize();
               }
