@@ -464,7 +464,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
     jtable.getMenu().add(jmiFileProperties);
     
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,new PlayHighlighterPredicate(model));
-    jtable.setHighlighters(new AlternateRowHighlighter(),colorHighlighter); 
+    AlternateRowHighlighter alternate = Util.getAlternateHighlighter();
+    jtable.setHighlighters(alternate,colorHighlighter); 
     // register events
     ObservationManager.register(this);
     // -- force a refresh --

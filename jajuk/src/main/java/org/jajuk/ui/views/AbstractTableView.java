@@ -67,19 +67,15 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jdesktop.swingx.decorator.SortOrder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.color.ColorScheme;
-import org.jvnet.substance.theme.SubstanceTheme;
-import org.jvnet.substance.utils.SubstanceColorUtilities;
 
 /**
  * Abstract table view : common implementation for both files and tracks table
@@ -267,17 +263,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
     jtable.setSortOrder(1, SortOrder.ASCENDING);
-    SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
-    ColorScheme scheme = theme.getColorScheme();
-    Color color1 = null;
-    Color color2 = null;
-    if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
-      color1 = scheme.getDarkColor();
-    } else {
-      color1 = scheme.getUltraLightColor();
-      color1 = SubstanceColorUtilities.getLighterColor(color1, 0.6d);
-    }
-    jtable.setHighlighters(new AlternateRowHighlighter(color1, null, null));
+    jtable.setHighlighters(Util.getAlternateHighlighter());
     jtable.packTable(5);
     // Register on the list for subject we are interested in
     ObservationManager.register(AbstractTableView.this);

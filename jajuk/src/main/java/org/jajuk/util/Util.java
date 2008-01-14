@@ -105,7 +105,10 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
 import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.color.ColorScheme;
+import org.jvnet.substance.theme.SubstanceTheme;
 import org.jvnet.substance.theme.ThemeInfo;
 import org.jvnet.substance.utils.SubstanceConstants;
 import org.jvnet.substance.watermark.SubstanceImageWatermark;
@@ -2378,21 +2381,39 @@ public class Util implements ITechnicalStrings {
 
   /**
    * 
-   * @param tested the string to be tested
-   * @param key the search criteria, can be several words separated by a space
+   * @param tested
+   *          the string to be tested
+   * @param key
+   *          the search criteria, can be several words separated by a space
    * @return whether the given tested string matches the key
    */
-  public static boolean matchesIgnoreCaseAndOrder(final String tested,final String key){
+  public static boolean matchesIgnoreCaseAndOrder(final String tested, final String key) {
     String testedLower = tested.toLowerCase();
     String keyLower = key.toLowerCase();
-    StringTokenizer st = new StringTokenizer(testedLower," ");
-    while (st.hasMoreTokens()){
+    StringTokenizer st = new StringTokenizer(testedLower, " ");
+    while (st.hasMoreTokens()) {
       String token = st.nextToken();
-      if (keyLower.indexOf(token) == -1){
+      if (keyLower.indexOf(token) == -1) {
         return false;
       }
     }
     return true;
+  }
+
+  /**
+   * @return a theme-dependent alternate row highlighter used in tables or trees
+   */
+  public static AlternateRowHighlighter getAlternateHighlighter() {
+    SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
+    ColorScheme scheme = theme.getColorScheme();
+    Color color1 = null;
+    Color color2 = null;
+    if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
+      color1 = scheme.getDarkColor();
+    } else {
+      color1 = new Color(230,235,240);
+    }
+    return new AlternateRowHighlighter(color1, null, null);
   }
 
 }
