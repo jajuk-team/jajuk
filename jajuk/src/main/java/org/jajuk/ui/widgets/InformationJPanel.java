@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -407,10 +408,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
           } else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null) {
-              String sMessage = Messages.getString("FIFO.10") + " " + file.getTrack().getName()
-                  + " " + Messages.getString("By") + " " + file.getTrack().getAuthor().getName2()
-                  + " " + Messages.getString("On") + " " + file.getTrack().getAlbum().getName2();
-
+              MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " " + Messages.getString("InformationJPanel.8"));
+              Object[] stArgs = {file.getTrack().getName(),file.getTrack().getAuthor().getName2(),file.getTrack().getAlbum().getName2()};
+              String sMessage = sMessageFormat.format(stArgs);
               setMessage(sMessage, InformationJPanel.INFORMATIVE);
             }
           } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
