@@ -146,6 +146,9 @@ public class Main implements ITechnicalStrings {
   /** Exiting flag */
   public static boolean bExiting = false;
   
+  /** Jukebox power pack flag* */
+  public static boolean bPowerPack = false;
+  
   /**
    * Thumb maker flag, true if this class is executed from the Thumb maker
    * process *
@@ -239,6 +242,9 @@ public class Main implements ITechnicalStrings {
         final String test = System.getProperty("test");
         if (element.equals("-" + CLI_TEST) || ((test != null) && test.equals("test"))) {
           bTestMode = true;
+        }
+        if (element.equals("-" + CLI_POWER_PACK)) {
+          bPowerPack = true;
         }
       }
       // perform initial checkups and create needed files
@@ -382,6 +388,10 @@ public class Main implements ITechnicalStrings {
       if (!bFirstSession) {
         autoMount();
       }
+      
+      // Create automatically a Music device if we are packaging a
+      // JukeboxPowerPack distribution
+      powerPack();
 
       // Launch startup track if any (but don't start it if firsdt session
       // because the first refresh is probably still running)
@@ -1429,6 +1439,40 @@ public class Main implements ITechnicalStrings {
 
   public static boolean isCrashRecover() {
     return bCrashRecover;
+  }
+  
+  /**
+   * Create automatically a free music directory (currently ../Music directory
+   * relatively to jajuk.jar file) that contains free music packaged with
+   * Jukebox Power Pack releases
+   */
+  private static void powerPack() {
+    if (bPowerPack) {
+      try {
+        // Check if this device don't already exit
+        for (Device device : DeviceManager.getInstance().getDevices()) {
+          if (FREE_MUSIC_DEVICE_NAME.equals(device.getName())) {
+            return;
+          }
+        }
+        // Check for ../Music file presence
+        String music = new File(Util.getJarLocation(Main.class).toURI()).getParentFile()
+            .getAbsolutePath();
+        music += '/' + FREE_MUSIC_DIR;
+        File fMusic = new File(music);
+        if (fMusic.exists()) {
+          Device device = DeviceManager.getInstance()
+              .registerDevice(FREE_MUSIC_DEVICE_NAME, Device.TYPE_DIRECTORY,
+                  fMusic.getAbsolutePath());
+          device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
+          device.setProperty(XML_DEVICE_AUTO_REFRESH, 0.5d);
+          device.mount();
+          device.refreshCommand(true, false);
+        }
+      } catch (Exception e) {
+        Log.error(e);
+      }
+    }
   }
 
 }
