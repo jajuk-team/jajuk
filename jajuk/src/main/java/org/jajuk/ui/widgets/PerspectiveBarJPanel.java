@@ -31,6 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -93,6 +94,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
       int iconSize = ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
       JButton jb = new JButton(perspective.getIcon());
       jb.setToolTipText(perspective.getDesc());
+      jb.setBorder(new EmptyBorder(5,5,0,5));
       if (iconSize >= 32) {
         int glyphSize = font.getSize();
         // Limit perspective label to icon width
@@ -102,9 +104,6 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
       }
       jb.setVerticalTextPosition(JButton.BOTTOM);
       jb.setHorizontalTextPosition(JButton.CENTER);
-      // jb.setMinimumSize(new Dimension(85, 65));
-      // jb.setPreferredSize(new Dimension(85, 65));
-      // jb.setMaximumSize(new Dimension(85, 65));
       jb.setFont(font);
       jb.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
