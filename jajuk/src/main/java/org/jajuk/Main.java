@@ -1456,10 +1456,11 @@ public class Main implements ITechnicalStrings {
           }
         }
         // Check for ../Music file presence
-        String music = new File(Util.getJarLocation(Main.class).toURI()).getParentFile()
+        String music = new File(Util.getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
             .getAbsolutePath();
         music += '/' + FREE_MUSIC_DIR;
         File fMusic = new File(music);
+        Log.debug("Powerpack detected, tested path: " + fMusic.getAbsolutePath());
         if (fMusic.exists()) {
           Device device = DeviceManager.getInstance()
               .registerDevice(FREE_MUSIC_DEVICE_NAME, Device.TYPE_DIRECTORY,
