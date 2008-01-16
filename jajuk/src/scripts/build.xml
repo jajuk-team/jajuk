@@ -337,7 +337,7 @@
 
 		<!-- rights-->
 		<chmod file='${rpmdistdir}/usr/bin/jajuk' perm='ugo+rx' />
-		<chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx' />
+		<chmod file='${rpmdistdir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx' />
 
 		<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
 		<copy todir='${conf_homeuser}' overwrite='yes'>
@@ -514,7 +514,7 @@
 		</copy>
 		<!--/DO SOMETHING BETTER HERE -->
 		<copy todir='${rpmdistdir}/usr/share/applications'>
-			<fileset file='${srcdir}/packaging/RPMS/Jajuk.desktop' />
+			<fileset file='${srcdir}/packaging/RPMS/jajuk.desktop' />
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/doc/jajuk'>
 			<fileset file='${basedir}/src/doc/README.html' />
