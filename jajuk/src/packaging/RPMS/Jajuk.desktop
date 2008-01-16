@@ -2,7 +2,7 @@
 Name=Jajuk
 Comment=Jajuk Advanced Jukebox
 Exec=jajuk
-Icon=jajuk-icon_64x64
+Icon=jajuk-icon_16x16
 Terminal=false
 Type=Application
 Encoding=UTF-8

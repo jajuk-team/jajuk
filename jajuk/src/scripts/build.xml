@@ -43,6 +43,7 @@
 
 	<!--CONST-->
 	<property name='rootdir' value='/tmp/jajuk-dist' />
+	<property name='installdir' value='/usr/share/jajuk/' />
 	<property name='distdir' value='${rootdir}/jajuk' />
 	<property name='rpmbuilddir' value='${rootdir}/RPMBUILD' />
 	<property name='rpmdistdir' value='${rpmbuilddir}/jajuk' />
@@ -326,11 +327,11 @@
 	<target name='package_rpm' description='o Create Jajuk RPM package' depends='startup,clean,mkdist_rpm,package_jar,package_helpjar'>
 		<echo message='Create Jajuk RPM package' />
 		<!-- Copy jajuk helpset jars in the RPM distdir -->
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/bin'>
+		<copy todir='${rpmdistdir}${installdir}/bin'>
 			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
 		</copy>
 		<!-- Copy jajuk.jar in the RPM distdir -->
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/bin'>
+		<copy todir='${rpmdistdir}${installdir}/bin'>
 			<fileset file='${distdir}/bin/${jarname}' />
 		</copy>
 
@@ -482,10 +483,10 @@
 		<mkdir dir='${rpmbuilddir}/BUILD' />
 		<mkdir dir='${rpmdistdir}' />
 		<mkdir dir='${rpmdistdir}/usr/bin' />
-		<mkdir dir='${rpmdistdir}/usr/lib/jajuk/bin' />
-		<mkdir dir='${rpmdistdir}/usr/lib/jajuk/lib' />
-		<mkdir dir='${rpmdistdir}/usr/lib/jajuk/lib/linux' />
-		<mkdir dir='${rpmdistdir}/usr/lib/jajuk/native' />
+		<mkdir dir='${rpmdistdir}${installdir}/bin' />
+		<mkdir dir='${rpmdistdir}${installdir}/lib' />
+		<mkdir dir='${rpmdistdir}${installdir}/lib/linux' />
+		<mkdir dir='${rpmdistdir}${installdir}/native' />
 		<mkdir dir='${rpmdistdir}/usr/share/applications' />
 		<mkdir dir='${rpmdistdir}/usr/share/doc/packages/jajuk' />
 		<mkdir dir='${rpmdistdir}/usr/share/pixmaps' />
@@ -499,28 +500,28 @@
 			<fileset file='${srcdir}/scripts/jajuk' />
 		</copy>
 		<!--DO SOMETHING BETTER HERE -->
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib'>
+		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file="${basedir}/lib/*.jar" />
 		</copy>
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib'>
+		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file='${basedir}/src/legals/*.*' />
 		</copy>
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib/linux'>
+		<copy todir='${rpmdistdir}${installdir}/lib/linux'>
 			<fileset file="${basedir}/lib/linux/*" />
 		</copy>
-		<copy todir='${rpmdistdir}/usr/lib/jajuk/lib/linux/x86'>
+		<copy todir='${rpmdistdir}${installdir}/lib/linux/x86'>
 			<fileset file="${basedir}/lib/linux/x86/*" />
 		</copy>
 		<!--/DO SOMETHING BETTER HERE -->
 		<copy todir='${rpmdistdir}/usr/share/applications'>
 			<fileset file='${srcdir}/packaging/RPMS/Jajuk.desktop' />
 		</copy>
-		<copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk'>
+		<copy todir='${rpmdistdir}/usr/share/doc/jajuk'>
 			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/*.*' />
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/pixmaps'>
-			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
+			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-icon_16x16.png' />
 		</copy>
 		<!-- Set release in RPM descriptor file-->
 		<replace dir='${rpmbuilddir}/SPECS' value='${version}'>

@@ -71,8 +71,8 @@ fi
 
 ##Go in the right directory
 #test if jajuk has been installed in default directory /usr/lib/jajuk/ via RPM/Deb package
-if [ -e /usr/lib/jajuk/bin/jajuk.jar ] ; then
-    cd /usr/lib/jajuk/bin
+if [ -e /usr/share/jajuk/bin/jajuk.jar ] ; then
+    cd /usr/share/jajuk/bin
 else
     cd `dirname $0`/bin
 fi
