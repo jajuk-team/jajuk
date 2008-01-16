@@ -22,6 +22,7 @@
     	</tocitem>
 		<tocitem text="Contextual views"  expand="true">
 			<tocitem text="The Albums Catalog view" target="view_albums_catalog"/>
+			<tocitem text="The Albums Table view" target="view_albums_table"/>
 			<tocitem text="The Animation view" target="view_animation"/>
 			<tocitem text="The CD Scanner view" target="view_cd_scanner"/>
 			<tocitem text="The Cover view" target="view_cover"/>			

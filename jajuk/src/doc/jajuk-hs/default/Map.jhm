@@ -26,6 +26,7 @@
         <mapID target="using_web_radios" url="html/using_web_radios.html" />
         <mapID target="view_about" url="html/view_about.html" />
         <mapID target="view_albums_catalog" url="html/view_albums_catalog.html" />
+        <mapID target="view_albums_table" url="html/view_albums_table.html" />
         <mapID target="view_animation" url="html/view_animation.html" />
         <mapID target="view_cd_scanner" url="html/view_cd_scanner.html" />
         <mapID target="view_command" url="html/view_command.html" />
