@@ -145,10 +145,10 @@ public class Main implements ITechnicalStrings {
 
   /** Exiting flag */
   public static boolean bExiting = false;
-  
+
   /** Jukebox power pack flag* */
   public static boolean bPowerPack = false;
-  
+
   /**
    * Thumb maker flag, true if this class is executed from the Thumb maker
    * process *
@@ -305,7 +305,10 @@ public class Main implements ITechnicalStrings {
               + " " + JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH), null);
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
-          sc.splashOn();
+          //Actually show the splashscreen only if required
+          if (ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)) {
+            sc.splashOn();
+          }
         }
       });
 
@@ -388,7 +391,7 @@ public class Main implements ITechnicalStrings {
       if (!bFirstSession) {
         autoMount();
       }
-      
+
       // Create automatically a Music device if we are packaging a
       // JukeboxPowerPack distribution
       powerPack();
@@ -695,7 +698,7 @@ public class Main implements ITechnicalStrings {
       if (Util.isUnderWindows()) {
         final File mplayerPath = Util.getMPlayerWindowsPath();
         // try to find mplayer executable in know locations first
-        if (mplayerPath == null ){
+        if (mplayerPath == null) {
           try {
             sc.setProgress(5, Messages.getString("Main.22"));
             Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
@@ -1279,7 +1282,7 @@ public class Main implements ITechnicalStrings {
       public void run() {
         try {
           // Init perf monitor
-          if (bTestMode){
+          if (bTestMode) {
             ext.EventDispatchThreadHangMonitor.initMonitoring();
           }
 
@@ -1296,7 +1299,7 @@ public class Main implements ITechnicalStrings {
 
           // starts ui
           jw = JajukWindow.getInstance();
-          
+
           // Creates the panel
           jpFrame = (JPanel) jw.getContentPane();
           jpFrame.setOpaque(true);
@@ -1348,7 +1351,7 @@ public class Main implements ITechnicalStrings {
           builder.add(tbcontainer, cc.xy(1, 1));
           builder.add(command, cc.xy(1, 3));
           jpFrame.add(builder.getPanel(), BorderLayout.CENTER);
-        
+
           // Upgrade step2
           UpgradeManager.upgradeStep2();
 
@@ -1440,7 +1443,7 @@ public class Main implements ITechnicalStrings {
   public static boolean isCrashRecover() {
     return bCrashRecover;
   }
-  
+
   /**
    * Create automatically a free music directory (currently ../Music directory
    * relatively to jajuk.jar file) that contains free music packaged with
@@ -1456,15 +1459,14 @@ public class Main implements ITechnicalStrings {
           }
         }
         // Check for ../Music file presence
-        String music = new File(Util.getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-            .getAbsolutePath();
+        String music = new File(Util.getJarLocation(Main.class).toURI()).getParentFile()
+            .getParentFile().getAbsolutePath();
         music += '/' + FREE_MUSIC_DIR;
         File fMusic = new File(music);
         Log.debug("Powerpack detected, tested path: " + fMusic.getAbsolutePath());
         if (fMusic.exists()) {
-          Device device = DeviceManager.getInstance()
-              .registerDevice(FREE_MUSIC_DEVICE_NAME, Device.TYPE_DIRECTORY,
-                  fMusic.getAbsolutePath());
+          Device device = DeviceManager.getInstance().registerDevice(FREE_MUSIC_DEVICE_NAME,
+              Device.TYPE_DIRECTORY, fMusic.getAbsolutePath());
           device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
           device.setProperty(XML_DEVICE_AUTO_REFRESH, 0.5d);
           device.mount();
