@@ -301,7 +301,7 @@ public class Main implements ITechnicalStrings {
           // Set window look and feel and watermarks
           Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 
-          sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
+          sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION +" \""+JAJUK_CODENAME+"\""
               + " " + JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH), null);
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));

@@ -163,6 +163,8 @@ public interface ITechnicalStrings {
 
   String JAJUK_VERSION = JAJUK_VERSION_TEST;
 
+  String JAJUK_CODENAME = "Lothlórien";
+
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
   String JAJUK_COPYRIGHT = "Copyright 2004-2008 The Jajuk Team";
