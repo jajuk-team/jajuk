@@ -23,8 +23,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -128,7 +128,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
    * @param perspective
    */
   public void setActivated(IPerspective perspective) {
-    Set<IPerspective> perspectives = PerspectiveManager.getPerspectives();
+    Collection<IPerspective> perspectives = PerspectiveManager.getPerspectives();
     Iterator<JButton> it = alButtons.iterator();
     Iterator<IPerspective> it2 = perspectives.iterator();
     while (it.hasNext()) {
@@ -146,6 +146,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
   /**
    * ToString() method
    */
+  @Override
   public String toString() {
     return getClass().getName();
   }
