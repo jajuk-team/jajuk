@@ -179,7 +179,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
      * Need to overwrite this method for drag and drop
      */
     public Item getItemAt(int iRow) {
-      return PlaylistEditorView.this.getItem(iRow).getFile();
+      StackItem si = PlaylistEditorView.this.getItem(iRow);
+      return si.getFile();
     }
 
     /**
@@ -451,21 +452,22 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
     add(new JScrollPane(jtable), "0,1");
     // menu items
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
-    jmiFilePlay.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFilePlay.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
-    jmiFilePush.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFilePush.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
-    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiFileProperties.putClientProperty(DETAIL_SELECTION,jtable.getSelection());
+    jmiFileProperties.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFilePlay);
     jtable.getMenu().add(jmiFilePush);
     jtable.getMenu().add(jmiFileAddFavorites);
     jtable.getMenu().add(jmiFileProperties);
-    
-    ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,new PlayHighlighterPredicate(model));
+
+    ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
+        new PlayHighlighterPredicate(model));
     AlternateRowHighlighter alternate = Util.getAlternateHighlighter();
-    jtable.setHighlighters(alternate,colorHighlighter); 
+    jtable.setHighlighters(alternate, colorHighlighter);
     // register events
     ObservationManager.register(this);
     // -- force a refresh --
@@ -573,7 +575,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
         // bound exceptions
         try {
           EventSubject subject = event.getSubject();
-          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong column
+          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
+                                              // column
           // changed of playlist
           if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject)) {
             // test mapping between editor and repository
@@ -886,7 +889,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
         }
       } else if (ae.getSource() == jbPrepParty) {
         plfi.getPlaylistFile().storePlaylist();
-      } 
+      }
     } catch (Exception e2) {
       Log.error(e2);
     } finally {
