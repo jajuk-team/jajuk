@@ -130,7 +130,7 @@ public final class UpgradeManager implements ITechnicalStrings {
    * 
    * @return true if a new release has been found
    */
-  public static boolean checkForUpdate() {
+  public static void checkForUpdate() {
     // Try to download current jajuk PAD file
     String sRelease = null;
     try {
@@ -142,12 +142,12 @@ public final class UpgradeManager implements ITechnicalStrings {
         // Don't use this in test
             && !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))) {
           newVersionName = sRelease;
-          return true;
+          return;
       }
     } catch (Exception e) {
       Log.debug("Cannot check for updates",e);
     }
-    return false;
+    return;
   }
 
    /**
