@@ -180,7 +180,10 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
      */
     public Item getItemAt(int iRow) {
       StackItem si = PlaylistEditorView.this.getItem(iRow);
-      return si.getFile();
+      if (si != null){
+        return si.getFile();
+      }
+      return null;
     }
 
     /**
