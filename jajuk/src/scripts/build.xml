@@ -44,6 +44,7 @@
 	<!--CONST-->
 	<property name='rootdir' value='/tmp/jajuk-dist' />
 	<property name='installdir' value='/usr/share/jajuk/' />
+	<property name='jnidir' value='/usr/lib/jajuk/' />
 	<property name='distdir' value='${rootdir}/jajuk' />
 	<property name='rpmbuilddir' value='${rootdir}/RPMBUILD' />
 	<property name='rpmdistdir' value='${rpmbuilddir}/jajuk' />
@@ -485,7 +486,7 @@
 		<mkdir dir='${rpmdistdir}/usr/bin' />
 		<mkdir dir='${rpmdistdir}${installdir}/bin' />
 		<mkdir dir='${rpmdistdir}${installdir}/lib' />
-		<mkdir dir='${rpmdistdir}${installdir}/lib/linux' />
+		<mkdir dir='${rpmdistdir}${jnidir}' />
 		<mkdir dir='${rpmdistdir}${installdir}/native' />
 		<mkdir dir='${rpmdistdir}/usr/share/applications' />
 		<mkdir dir='${rpmdistdir}/usr/share/doc/packages/jajuk' />
@@ -506,10 +507,7 @@
 		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file='${basedir}/src/legals/*.*' />
 		</copy>
-		<copy todir='${rpmdistdir}${installdir}/lib/linux'>
-			<fileset file="${basedir}/lib/linux/*" />
-		</copy>
-		<copy todir='${rpmdistdir}${installdir}/lib/linux/x86'>
+		<copy todir='${rpmdistdir}${jnidir}'>
 			<fileset file="${basedir}/lib/linux/x86/*" />
 		</copy>
 		<!--/DO SOMETHING BETTER HERE -->
