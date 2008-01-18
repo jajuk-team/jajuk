@@ -936,8 +936,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           SwingConstants.LEFT));
     }
     // Select right item
-    ambiencesCombo.setSelectedIndex(1); // Any by default
-    // or any other existing ambience
     Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
         ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
     if (defaultAmbience != null) {
@@ -947,6 +945,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           break;
         }
       }
+    } else {
+      // or "any" ambience
+      ambiencesCombo.setSelectedIndex(1);
     }
     ambiencesCombo.addActionListener(ambienceListener);
   }
