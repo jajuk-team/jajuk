@@ -925,7 +925,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    */
   void populateAmbiences() {
     ambiencesCombo.removeActionListener(ambienceListener);
-    ambiencesCombo.removeAllItems();
+    if (ambiencesCombo.getComponentCount() > 0) {
+      ambiencesCombo.removeAllItems();
+    }
     ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"),
         IconLoader.ICON_CONFIGURATION, SwingConstants.LEFT));
     ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
