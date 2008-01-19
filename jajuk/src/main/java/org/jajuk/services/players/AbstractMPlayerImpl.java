@@ -134,7 +134,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
     // -af volume: Use volnorm to limit gain to max
     // If mute, use -200db otherwise, use a linear scale
     cmd.add("-af");
-    cmd.add("volnorm,volume=" + ((fVolume == 0) ? -200 : ((int) (20 * fVolume) - 20)));
+    cmd.add("volume=" + ((fVolume == 0) ? -200 : ((int) (20 * fVolume) - 20)));
     // -softvol : use soft mixer, allows to set volume only to this mplayer
     // instance, not others programs
     cmd.add("-softvol");
