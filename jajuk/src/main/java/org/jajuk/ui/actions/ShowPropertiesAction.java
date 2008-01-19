@@ -81,7 +81,9 @@ public class ShowPropertiesAction extends SelectionAction {
       // Author, Album, Style... : display the dual properties panel: one for
       // the item itself, the other with all tracks
       List<Item> tracks = new ArrayList<Item>(selection.size());
-      tracks.addAll(TrackManager.getInstance().getAssociatedTracks(first));
+      for(Item i : selection){
+        tracks.addAll(TrackManager.getInstance().getAssociatedTracks(i));
+      }
       new PropertiesWizard(selection, tracks);
     } else {
       // All others types: just display the properties window
