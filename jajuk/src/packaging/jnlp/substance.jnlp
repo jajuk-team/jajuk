@@ -9,7 +9,6 @@
     </security> 
     <resources>
         <jar href="substance-4.2dev.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="substance-swingx-4.2dev.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <component-desc/>
 </jnlp>

@@ -6,7 +6,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5dev_try8' />
+	<property name='version' value='1.5RC1' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -305,7 +305,6 @@
 		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/substance-swingx-4.2dev.jar" alias="jajukteam" storepass="passpass" />
 	</target>
 
 

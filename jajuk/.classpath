@@ -35,6 +35,5 @@
 	<classpathentry kind="lib" path="lib/jintellitype-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-2007_12_30.jar"/>
 	<classpathentry kind="lib" path="lib/substance-4.2dev.jar"/>
-	<classpathentry kind="lib" path="lib/substance-swingx-4.2dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
