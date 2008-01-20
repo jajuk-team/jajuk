@@ -47,6 +47,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -925,9 +926,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    */
   void populateAmbiences() {
     ambiencesCombo.removeActionListener(ambienceListener);
-    if (ambiencesCombo.getComponentCount() > 0) {
-      ambiencesCombo.removeAllItems();
+    ItemListener[] il = ambiencesCombo.getItemListeners();
+    for (int i = 0; i < il.length; i++) {
+      ambiencesCombo.removeItemListener(il[i]);
     }
+    ambiencesCombo.removeAllItems();
     ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"),
         IconLoader.ICON_CONFIGURATION, SwingConstants.LEFT));
     ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
