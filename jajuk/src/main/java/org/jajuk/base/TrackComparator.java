@@ -103,7 +103,7 @@ public class TrackComparator implements Comparator<Track> {
     //Order / track name
     case ORDER:
       sHashCompare = new StringBuilder().append(
-          track.getOrder() + track.getName()).toString();
+          Util.padNumber(track.getOrder(),5) + track.getName()).toString();
       break;
     }
     return sHashCompare;
