@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
+import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
@@ -85,6 +86,9 @@ public class PasteAction extends ActionBase {
         if (item instanceof Directory) {
           dir = new java.io.File(((Directory) item).getAbsolutePath());
           destDir = (Directory) item;
+        } else if (item instanceof Device){
+          dir = new java.io.File(((Device) item).getRootDirectory().getAbsolutePath());
+          destDir = ((Device) item).getRootDirectory();
         } else {
           dir = ((File) item).getIO().getParentFile();
           destDir = ((File) item).getDirectory();

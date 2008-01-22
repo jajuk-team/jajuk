@@ -655,6 +655,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
+          jmenu.add(jmiPaste);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiNewFolder);
