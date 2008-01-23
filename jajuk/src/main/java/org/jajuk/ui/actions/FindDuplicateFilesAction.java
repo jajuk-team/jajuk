@@ -63,7 +63,7 @@ public class FindDuplicateFilesAction extends ActionBase {
       final JOptionPane optionPane = Util.getNarrowOptionPane(100);
       final JDialog duplicateFiles = optionPane.createDialog(null, "List of Duplicate Files found");
       
-      duplicateFiles.setMaximumSize(new Dimension(800, 600));
+      duplicateFiles.setMaximumSize(new Dimension(600, 800));
 
       JButton jbClose = new JButton(Messages.getString("Close"));
       jbClose.addActionListener(new ActionListener() {

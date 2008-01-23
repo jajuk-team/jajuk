@@ -64,7 +64,7 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
     
     list = new JList(listModel);
     list.addListSelectionListener(this);
-    list.setVisibleRowCount(30);
+    list.setVisibleRowCount(20);
     listScrollPane = new JScrollPane(list);
     
     deleteButton = new JButton(Messages.getString("Delete"));
