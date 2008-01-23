@@ -21,12 +21,12 @@
 package org.jajuk.ui.helpers;
 
 import java.awt.Font;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.UIManager;
+import javax.swing.UIDefaults;
+import javax.swing.plaf.FontUIResource;
 
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
@@ -34,6 +34,10 @@ import org.jajuk.services.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.fonts.FontPolicy;
+import org.jvnet.substance.fonts.FontSet;
 
 /**
  * Manages Jajuk fonts, stores or update them
@@ -77,7 +81,7 @@ public class FontManager implements ITechnicalStrings, Observer {
     fontCache.put(JajukFont.BOLD_XXL, new Font("verdana", Font.BOLD, ConfigurationManager
         .getInt(CONF_FONTS_SIZE) + 6));
     // Plain
-    fontCache.put(JajukFont.DEFAULT, new Font("verdana", Font.BOLD, ConfigurationManager
+    fontCache.put(JajukFont.DEFAULT, new Font("verdana", Font.PLAIN, ConfigurationManager
         .getInt(CONF_FONTS_SIZE)));
     fontCache.put(JajukFont.PLAIN, new Font("verdana", Font.PLAIN, ConfigurationManager
         .getInt(CONF_FONTS_SIZE)));
@@ -97,17 +101,18 @@ public class FontManager implements ITechnicalStrings, Observer {
     return fontCache.get(font);
   }
 
-  /**
-   * Sets the default font for all Swing components Thx
-   * http://www.rgagnon.com/javadetails/java-0335.html
-   */
-  public static void setDefaultFont() {
-    Enumeration<Object> keys = UIManager.getDefaults().keys();
-    while (keys.hasMoreElements()) {
-      Object key = keys.nextElement();
-      Object value = UIManager.get(key);
-      if (value instanceof javax.swing.plaf.FontUIResource)
-        UIManager.put(key, fontCache.get(JajukFont.DEFAULT));
+  public void setDefaultFont() {
+    // Create the wrapper font set
+    FontPolicy newFontPolicy = new FontPolicy() {
+      public FontSet getFontSet(String lafName, UIDefaults table) {
+        return new CustomFontSet(fontCache.get(JajukFont.DEFAULT));
+      }
+    };
+    try {
+      // set the new font policy
+      SubstanceLookAndFeel.setFontPolicy(newFontPolicy);
+    } catch (Exception exc) {
+      Log.error(exc);
     }
   }
 
@@ -136,4 +141,35 @@ public class FontManager implements ITechnicalStrings, Observer {
     }
   }
 
+  private static class CustomFontSet implements FontSet {
+    protected FontUIResource font;
+
+    public CustomFontSet(Font font) {
+      this.font = new FontUIResource(font);
+    }
+
+    public FontUIResource getControlFont() {
+      return this.font;
+    }
+
+    public FontUIResource getMenuFont() {
+      return this.font;
+    }
+
+    public FontUIResource getMessageFont() {
+      return this.font;
+    }
+
+    public FontUIResource getSmallFont() {
+      return this.font;
+    }
+
+    public FontUIResource getTitleFont() {
+      return this.font;
+    }
+
+    public FontUIResource getWindowTitleFont() {
+      return this.font;
+    }
+  }
 }

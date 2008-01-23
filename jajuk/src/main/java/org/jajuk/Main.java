@@ -296,7 +296,7 @@ public class Main implements ITechnicalStrings {
       SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
           // Set default fonts
-          FontManager.setDefaultFont();
+          FontManager.getInstance().setDefaultFont();
 
           // Set window look and feel and watermarks
           Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
