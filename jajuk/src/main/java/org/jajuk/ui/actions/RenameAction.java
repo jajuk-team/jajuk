@@ -41,7 +41,7 @@ public class RenameAction extends ActionBase {
   private static final long serialVersionUID = 1L;
 
   RenameAction() {
-    super(Messages.getString("RenameAction.0"), IconLoader.ICON_REFRESH, true);
+    super(Messages.getString("RenameAction.0"), IconLoader.ICON_EDIT, true);
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 
