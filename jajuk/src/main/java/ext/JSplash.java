@@ -114,12 +114,12 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
       String copyrightString, String versionString, Font versionStringFont, Color versionStringColor) {
     super();
     setTitle(Messages.getString("JajukWindow.17"));
-	
+
     // check if we can load the icon
-    URL icon = Util.getResource(JAJUK_ICON); 
-    if(null == icon)
+    URL icon = Util.getResource(JAJUK_ICON);
+    if (null == icon)
       throw new RuntimeException(Messages.getString("JajukWindow.38") + JAJUK_ICON);
-	
+
     // Do not use IconLoader class here to avoid loading all icons now
     setIconImage(new ImageIcon(icon).getImage());
     setUndecorated(true);
@@ -136,12 +136,10 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     setContentPane(panel);
 
     // build a label and set it's icon
-    //
     JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont,
         versionStringColor);
 
     // build a progress bar
-    //
     if (m_progressBar) {
       m_progress = new JProgressBar();
 

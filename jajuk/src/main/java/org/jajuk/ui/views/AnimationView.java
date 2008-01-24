@@ -94,8 +94,6 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
     setLayout(new BorderLayout());
     addComponentListener(this);
     btl1 = new BasicTextLabel(" ");
-    // setBackground(Color.WHITE);
-    // setForeground(Color.BLACK);
     add(btl1);
 
     ObservationManager.register(this);
