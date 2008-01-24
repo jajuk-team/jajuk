@@ -94,6 +94,8 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.CommandJPanel;
@@ -2147,6 +2149,30 @@ public class Util implements ITechnicalStrings {
     } catch (final Exception e) {
       Log.error(e);
     }
+    // Set view foreground colors
+    SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
+    ColorScheme scheme = theme.getColorScheme();
+    Color foregroundActive = null;
+    Color foregroundInactive = null;
+    Color backgroundActive = null;
+    Color backgroundInactive = null;
+    if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
+      foregroundActive = scheme.getUltraDarkColor();
+      foregroundInactive = scheme.getUltraLightColor();
+      backgroundActive = scheme.getUltraLightColor();
+      backgroundInactive = scheme.getUltraDarkColor();
+    } else {
+      foregroundActive = scheme.getUltraLightColor();
+      foregroundInactive = scheme.getUltraDarkColor();
+      backgroundActive = scheme.getDarkColor();
+      backgroundInactive = scheme.getLightColor();
+    }
+    UIManager.put("InternalFrame.activeTitleForeground", foregroundActive);
+    UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
+    UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
+    UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
+    UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
+        JajukFont.VIEW_FONT));
   }
 
   /**
@@ -2411,7 +2437,7 @@ public class Util implements ITechnicalStrings {
     if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
       color1 = scheme.getDarkColor();
     } else {
-      color1 = new Color(230,235,240);
+      color1 = new Color(230, 235, 240);
     }
     return new AlternateRowHighlighter(color1, null, null);
   }

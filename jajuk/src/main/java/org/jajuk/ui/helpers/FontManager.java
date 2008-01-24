@@ -45,7 +45,7 @@ import org.jvnet.substance.fonts.FontSet;
 public class FontManager implements ITechnicalStrings, Observer {
 
   public enum JajukFont {
-    DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH
+    DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, VIEW_FONT
   }
 
   private static HashMap<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
@@ -94,7 +94,8 @@ public class FontManager implements ITechnicalStrings, Observer {
     // Italic
     fontCache.put(JajukFont.PLANNED, new Font("serif", Font.ITALIC, ConfigurationManager
         .getInt(CONF_FONTS_SIZE)));
-
+    Font font = new Font("verdana", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE));
+    fontCache.put(JajukFont.VIEW_FONT, font);
   }
 
   public Font getFont(JajukFont font) {
