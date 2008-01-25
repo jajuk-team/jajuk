@@ -29,7 +29,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicComboPopup;
 
 /**
- * Type description
+ * Basic combo popup
  * 
  * @author Bertrand Florat
  * @created 28 nov. 2003

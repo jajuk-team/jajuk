@@ -683,7 +683,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
             if (sr.getType() == SearchResultType.FILE) {
               FIFO.getInstance().push(
                   new StackItem(sr.getFile(), ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                      true), false);
+                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
