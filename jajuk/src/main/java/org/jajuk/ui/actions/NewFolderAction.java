@@ -52,36 +52,38 @@ public class NewFolderAction extends ActionBase {
 
     String folderName = JOptionPane.showInputDialog(null, Messages.getString("NewFolderAction.1")
         + "\n\n");
-    if (currentItem instanceof Directory) {
-      try {
-        java.io.File newFolder = new java.io.File(((Directory) currentItem).getAbsolutePath() + "/"
-            + folderName);
-        if (!newFolder.exists()) {
-          newFolder.mkdir();
-        } else {
-          Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
-          return;
+    if ((folderName != null) && (folderName.length() > 0)) {
+      if (currentItem instanceof Directory) {
+        try {
+          java.io.File newFolder = new java.io.File(((Directory) currentItem).getAbsolutePath()
+              + "/" + folderName);
+          if (!newFolder.exists()) {
+            newFolder.mkdir();
+          } else {
+            Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
+            return;
+          }
+          ((Directory) currentItem).getDevice().refreshCommand(false, false);
+        } catch (Exception er) {
+          Log.error(er);
         }
-        DirectoryManager.refreshDirectory((Directory) currentItem);
-      } catch (Exception er) {
-        Log.error(er);
-      }
-    } else if (currentItem instanceof Device) {
-      try {
-        java.io.File newFolder = new java.io.File(((Device) currentItem).getRootDirectory()
-            .getAbsolutePath()
-            + "/" + folderName);
-        if (!newFolder.exists()) {
-          newFolder.mkdir();
-        } else {
-          Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
-          return;
+      } else if (currentItem instanceof Device) {
+        try {
+          java.io.File newFolder = new java.io.File(((Device) currentItem).getRootDirectory()
+              .getAbsolutePath()
+              + "/" + folderName);
+          if (!newFolder.exists()) {
+            newFolder.mkdir();
+          } else {
+            Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
+            return;
+          }
+          ((Device) currentItem).refreshCommand(false, false);
+        } catch (Exception er) {
+          Log.error(er);
         }
-        DirectoryManager.refreshDirectory(((Device) currentItem).getRootDirectory());
-      } catch (Exception er) {
-        Log.error(er);
       }
+      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
     }
-    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
   }
 }

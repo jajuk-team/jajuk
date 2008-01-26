@@ -54,23 +54,28 @@ public class RenameAction extends ActionBase {
     if (currentItem instanceof File) {
       String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
           + "\n\n", ((File) currentItem).getName());
-      try {
-        FileManager.getInstance().changeFileName((File) currentItem, newName);
-      } catch (Exception er) {
-        Log.error(er);
+      if ((newName != null) && (newName.length() > 0)) {
+        try {
+          FileManager.getInstance().changeFileName((File) currentItem, newName);
+          DirectoryManager.refreshDirectory(((File) currentItem).getDirectory());
+        } catch (Exception er) {
+          Log.error(er);
+        }
       }
     } else if (currentItem instanceof Directory) {
       String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
           + "\n\n", ((Directory) currentItem).getName());
-      try {
-        java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
-            .getAbsolutePath()
-            + "/" + newName);
-        ((Directory) currentItem).getFio().renameTo(newFile);
-      } catch (Exception er) {
-        Log.error(er);
+      if ((newName != null) && (newName.length() > 0)) {
+        try {
+          java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
+              .getAbsolutePath()
+              + "/" + newName);
+          ((Directory) currentItem).getFio().renameTo(newFile);
+          DirectoryManager.refreshDirectory(((Directory) currentItem).getParentDirectory());
+        } catch (Exception er) {
+          Log.error(er);
+        }
       }
-      DirectoryManager.refreshDirectory(((Directory) currentItem).getParentDirectory());
     }
   }
 }
