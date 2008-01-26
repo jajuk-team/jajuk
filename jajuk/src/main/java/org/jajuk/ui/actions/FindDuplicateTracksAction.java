@@ -35,16 +35,16 @@ import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.ui.widgets.DuplicateFilesList;
+import org.jajuk.ui.widgets.DuplicateTracksList;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
-public class FindDuplicateFilesAction extends ActionBase {
+public class FindDuplicateTracksAction extends ActionBase {
 
   private static final long serialVersionUID = 1L;
 
-  FindDuplicateFilesAction() {
+  FindDuplicateTracksAction() {
     super(Messages.getString("FindDuplicateFilesAction.2"), IconLoader.ICON_SEARCH, true);
     setShortDescription(Messages.getString("FindDuplicateFilesAction.2"));
   }
@@ -61,8 +61,9 @@ public class FindDuplicateFilesAction extends ActionBase {
       Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
     } else {
       final JOptionPane optionPane = Util.getNarrowOptionPane(100);
-      final JDialog duplicateFiles = optionPane.createDialog(null, "List of Duplicate Files found");
-      
+      final JDialog duplicateFiles = optionPane.createDialog(null, Messages
+          .getString("FindDuplicateFilesAction.3"));
+
       duplicateFiles.setMaximumSize(new Dimension(600, 800));
 
       JButton jbClose = new JButton(Messages.getString("Close"));
@@ -73,7 +74,7 @@ public class FindDuplicateFilesAction extends ActionBase {
       });
 
       // Create and set up the content pane.
-      JComponent newContentPane = new DuplicateFilesList(duplicateFilesList, jbClose);
+      JComponent newContentPane = new DuplicateTracksList(duplicateFilesList, jbClose);
       newContentPane.setOpaque(true);
       duplicateFiles.setContentPane(newContentPane);
 
@@ -83,7 +84,7 @@ public class FindDuplicateFilesAction extends ActionBase {
       duplicateFiles.pack();
       duplicateFiles.setLocationRelativeTo(Main.getWindow());
       duplicateFiles.setVisible(true);
-     }
+    }
   }
 
   private String convertToString(List<File> duplicateFilesList) {

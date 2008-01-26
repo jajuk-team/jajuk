@@ -37,12 +37,13 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
-public class DuplicateFilesList extends JPanel implements ListSelectionListener {
+public class DuplicateTracksList extends JPanel implements ListSelectionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -56,7 +57,7 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
   private JButton selectAllButton;
   private JButton closeButton;
 
-  public DuplicateFilesList(List<List<File>> Files, JButton jbClose) {
+  public DuplicateTracksList(List<List<File>> Files, JButton jbClose) {
     super(new BorderLayout());
     allFiles = Files;
     closeButton = jbClose;
@@ -122,6 +123,7 @@ public class DuplicateFilesList extends JPanel implements ListSelectionListener 
       for (int i : indices) {
         try {
           Util.deleteFile(flatFilesList.get(i).getIO());
+          DirectoryManager.refreshDirectory(flatFilesList.get(i).getDirectory());
         } catch (Exception ioe) {
           Log.error(131, ioe);
         }

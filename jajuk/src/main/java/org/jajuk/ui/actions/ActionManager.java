@@ -174,7 +174,7 @@ public final class ActionManager {
     installAction(NEW_FOLDER, new NewFolderAction(), false);
     
     // MISC
-    installAction(FIND_DUPLICATE_FILES, new FindDuplicateFilesAction(), false);
+    installAction(FIND_DUPLICATE_FILES, new FindDuplicateTracksAction(), false);
     installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
     installAction(REFRESH, new RefreshDirectoryAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
