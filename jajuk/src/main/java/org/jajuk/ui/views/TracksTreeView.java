@@ -391,43 +391,43 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiAddFavorite);
           jmenu.add(jmiCDDBWizard);
           jmenu.add(jmiReport);
           jmenu.add(jmiShowAlbumDetails);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiAddFavorite);
           jmenu.add(jmiReport);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiAddFavorite);
           jmenu.add(jmiReport);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof YearNode) {

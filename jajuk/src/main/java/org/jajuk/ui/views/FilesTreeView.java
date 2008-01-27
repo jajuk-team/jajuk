@@ -194,7 +194,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     Action actionDuplicateFiles = ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES);
     jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
     jmenuCollection.add(jmiCollectionDuplicateFiles);
-    
+
     // Directory menu
     Action actionRefreshDir = ActionManager.getAction(JajukAction.REFRESH);
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
@@ -248,17 +248,17 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiCopy.addActionListener(this);
     jmiCut.addActionListener(this);
     jmiPaste.addActionListener(this);
-    
+
     // By default disable paste
     jmiPaste.setEnabled(false);
 
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     top = new TreeRootElement(Messages.getString("FilesTreeView.47"));
-    
+
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
 
-    // fill the tree
+    // fill the tree model
     populateTree();
 
     // create tree
@@ -616,29 +616,29 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu.add(jmiCut);
           jmenu.add(jmiCopy);
           jmenu.add(jmiRename);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof DirectoryNode) {
           jmenu = new JPopupMenu();
           jmenu.add(jmiPlay);
           jmenu.add(jmiPush);
+          jmenu.add(jmiPlayShuffle);
+          jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiDirRefresh);
           jmenu.add(jmiCut);
           jmenu.add(jmiCopy);
           jmenu.add(jmiPaste);
           jmenu.add(jmiRename);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiNewFolder);
-          jmenu.add(jmiPlayShuffle);
-          jmenu.add(jmiPlayRepeat);
           jmenu.add(jmiDirDesynchro);
           jmenu.add(jmiDirResynchro);
           jmenu.add(jmiAddFavorite);
           jmenu.add(jmiCDDBWizard);
           jmenu.add(jmiReport);
           jmenu.add(jmiDirRefactor);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode) {
@@ -647,8 +647,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmenu.add(jmiPush);
           jmenu.add(jmiPlayShuffle);
           jmenu.add(jmiPlayRepeat);
-          jmenu.add(jmiDelete);
           jmenu.add(jmiAddFavorite);
+          jmenu.add(jmiDelete);
           jmenu.add(jmiProperties);
           jmenu.show(jtree, e.getX(), e.getY());
         } else if (paths[0].getLastPathComponent() instanceof DeviceNode) {
@@ -799,7 +799,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         continue;
       }
       DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
-      if (directoryNode != null) {
+      if (directoryNode == null) {
+        //Add the playlist under the device node
+        DeviceNode deviceNode = DeviceNode.getDeviceNode(playlistFile.getDirectory().getDevice());
+        if (deviceNode != null) {
+          deviceNode.add(new PlaylistFileNode(playlistFile));
+        }
+      } else {
+        //Add the playlist under a common directory node
         directoryNode.add(new PlaylistFileNode(playlistFile));
       }
     }
