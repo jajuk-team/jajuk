@@ -22,7 +22,6 @@ package org.jajuk.ui.thumbnails;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
@@ -59,7 +58,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.desktop.Desktop;
-import org.jdesktop.swingx.JXPanel;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
@@ -73,7 +71,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
 
   private static final long serialVersionUID = -8131528719972829954L;
 
-  JXPanel jp;
+  JPanel jp;
 
   /**
    * 
@@ -91,8 +89,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
       setUndecorated(true);
       getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     }
-    jp = new JXPanel();
-    jp.setAlpha(0.7f);
+    jp = new JPanel();
     double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
     jp.setLayout(new TableLayout(size));
     final JEditorPane text = new JEditorPane("text/html", description);
