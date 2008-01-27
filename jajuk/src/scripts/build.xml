@@ -6,7 +6,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5RC4' />
+	<property name='version' value='1.5RC5' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -501,7 +501,7 @@
 		</copy>
 		<!--DO SOMETHING BETTER HERE -->
 		<copy todir='${rpmdistdir}${installdir}/lib'>
-			<fileset file="${basedir}/lib/*.jar" />
+			<fileset file="${basedir}/lib/**.jar" />
 		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file='${basedir}/src/legals/*.*' />
