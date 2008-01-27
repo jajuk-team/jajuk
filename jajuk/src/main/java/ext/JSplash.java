@@ -118,7 +118,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     // check if we can load the icon
     URL icon = Util.getResource(JAJUK_ICON);
     if (null == icon)
-      throw new RuntimeException(Messages.getString("JajukWindow.38") + JAJUK_ICON);
+      throw new RuntimeException("Resource not found in Classpath. Can not load icon from location: " + JAJUK_ICON);
 
     // Do not use IconLoader class here to avoid loading all icons now
     setIconImage(new ImageIcon(icon).getImage());
