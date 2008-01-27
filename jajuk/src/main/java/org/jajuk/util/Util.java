@@ -2157,13 +2157,13 @@ public class Util implements ITechnicalStrings {
     Color backgroundActive = null;
     Color backgroundInactive = null;
     if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
-      foregroundActive = scheme.getUltraDarkColor();
-      foregroundInactive = scheme.getUltraLightColor();
+      foregroundActive = Color.BLACK;
+      foregroundInactive = Color.WHITE;
       backgroundActive = scheme.getUltraLightColor();
       backgroundInactive = scheme.getUltraDarkColor();
     } else {
-      foregroundActive = scheme.getUltraLightColor();
-      foregroundInactive = scheme.getUltraDarkColor();
+      foregroundActive = Color.WHITE;
+      foregroundInactive = Color.BLACK;
       backgroundActive = scheme.getDarkColor();
       backgroundInactive = scheme.getLightColor();
     }
