@@ -378,7 +378,7 @@ public class AlbumManager extends ItemManager implements Observer {
    */
   private List<Album> getTopAlbums(List<Album> sortedAlbums, int iNb) {
     // Keep only 3 * desired size or less if not enough available albums
-    int size = 3 * iNb;
+    int size = 2 * iNb;
     if (sortedAlbums.size() <= size) {
       size = sortedAlbums.size() - 1;
     }
