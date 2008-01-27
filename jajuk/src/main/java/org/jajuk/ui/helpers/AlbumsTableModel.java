@@ -122,10 +122,12 @@ public class AlbumsTableModel extends JajukTableModel {
     Filter.filterItems(alToShow, filter);
     
     // Filter unmounted files if required
-    for (Album album : alToShow) {
+    Iterator<Album> it = alToShow.iterator();
+    while (it.hasNext()){
+      Album album = it.next();
       if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
           && !album.containsReadyFiles()) {
-        alToShow.remove(album);
+        it.remove();
       }
     }
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
@@ -135,7 +137,7 @@ public class AlbumsTableModel extends JajukTableModel {
     bCellEditable = new boolean[iRowNum][iColNum];
     //Allow only custom properties edition
     bEditable = true;
-    Iterator<Album> it = alToShow.iterator();
+    it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
       setItemAt(iRow, album);
