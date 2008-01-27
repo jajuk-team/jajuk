@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision:3266 $
  */
 package org.jajuk.services.players;
 
@@ -222,7 +222,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bEOF = false;
     this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
     ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
-    Log.debug("Using this Mplayer command: " + pb.command());
+    Log.debug("Using this Mplayer command: {{" + pb.command()+"}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
       Map<String, String> env = pb.environment();
