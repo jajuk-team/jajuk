@@ -104,7 +104,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
     jmiPush.putClientProperty(DETAIL_SELECTION,alSelected);
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SHUFFLE_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION,alSelected);
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION,alSelected);
     jmiCut = new JMenuItem(ActionManager.getAction(JajukAction.CUT));
