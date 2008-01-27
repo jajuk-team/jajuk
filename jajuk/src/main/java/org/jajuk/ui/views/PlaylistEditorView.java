@@ -180,7 +180,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
      */
     public Item getItemAt(int iRow) {
       StackItem si = PlaylistEditorView.this.getItem(iRow);
-      if (si != null){
+      if (si != null) {
         return si.getFile();
       }
       return null;
@@ -509,15 +509,20 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
                 item.setPlanned(false);
                 item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
                 item.setUserLaunch(true);
-                FIFO.getInstance().push(item, false);
+                FIFO.getInstance().push(item,
+                    ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
               } else { // non planned items
-                FIFO.getInstance().goTo(jtable.getSelectedRow());
-                // remove selection for planned tracks
-                ListSelectionModel lsm = jtable.getSelectionModel();
-                bSettingSelection = true;
-                jtable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
-                    lsm.getMaxSelectionIndex());
-                bSettingSelection = false;
+                if (ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK)) {
+                  FIFO.getInstance().push(item, true);
+                } else {
+                  FIFO.getInstance().goTo(jtable.getSelectedRow());
+                  // remove selection for planned tracks
+                  ListSelectionModel lsm = jtable.getSelectionModel();
+                  bSettingSelection = true;
+                  jtable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+                      lsm.getMaxSelectionIndex());
+                  bSettingSelection = false;
+                }
               }
             }
             // For others playlists, we launch all tracks from this
@@ -579,7 +584,7 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
         try {
           EventSubject subject = event.getSubject();
           jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
-                                              // column
+          // column
           // changed of playlist
           if (EventSubject.EVENT_PLAYLIST_SELECTION_CHANGED.equals(subject)) {
             // test mapping between editor and repository

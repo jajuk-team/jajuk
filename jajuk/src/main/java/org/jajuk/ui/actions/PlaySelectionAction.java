@@ -59,7 +59,8 @@ public class PlaySelectionAction extends SelectionAction {
     super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
     FIFO.getInstance().push(
-              Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
-                  .getBoolean(CONF_STATE_REPEAT), true), false);
+        Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+            .getBoolean(CONF_STATE_REPEAT), true),
+        ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
   }
 }

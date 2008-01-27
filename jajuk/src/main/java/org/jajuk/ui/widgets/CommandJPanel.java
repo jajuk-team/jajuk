@@ -639,7 +639,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
             try {
               FIFO.getInstance().push(
                   new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
-                  false);
+                  ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
             }
