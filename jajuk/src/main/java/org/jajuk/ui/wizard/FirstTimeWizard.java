@@ -108,6 +108,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     pack();
     final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     setVisible(true);
   }
 
