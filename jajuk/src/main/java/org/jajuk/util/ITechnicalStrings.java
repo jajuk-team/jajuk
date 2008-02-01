@@ -1033,11 +1033,11 @@ public interface ITechnicalStrings {
 
   String XML_DJ_VALUE = "values";
 
-  String XML_DJ_PROPORTION_CLASS = "org.jajuk.dj.ProportionDigitalDJ";
+  String XML_DJ_PROPORTION_CLASS = "org.jajuk.services.dj.ProportionDigitalDJ";
 
-  String XML_DJ_TRANSITION_CLASS = "org.jajuk.dj.TransitionDigitalDJ";
+  String XML_DJ_TRANSITION_CLASS = "org.jajuk.services.dj.TransitionDigitalDJ";
 
-  String XML_DJ_AMBIENCE_CLASS = "org.jajuk.dj.AmbienceDigitalDJ";
+  String XML_DJ_AMBIENCE_CLASS = "org.jajuk.services.dj.AmbienceDigitalDJ";
 
   String XML_DJ_EXTENSION = "dj";
 
