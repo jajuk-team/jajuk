@@ -31,7 +31,6 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
@@ -120,7 +119,7 @@ public class AlbumsTableView extends AbstractTableView {
             }
           }
         });
-        
+
         // Add popup feature when mouse rolls over cells
         jtable.addMouseMotionListener(new MouseMotionListener() {
           Album current = null;
@@ -129,13 +128,13 @@ public class AlbumsTableView extends AbstractTableView {
             if (!ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
               return;
             }
-            //Do not use getLocationOnScreen() method to support JRE 1.5
+            // Do not use getLocationOnScreen() method to support JRE 1.5
             java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
             int rowIndex = jtable.rowAtPoint(e.getPoint());
             if (rowIndex < 0) {
               return;
             }
-            JajukTableModel model =  (JajukTableModel) jtable.getModel();
+            JajukTableModel model = (JajukTableModel) jtable.getModel();
             rowIndex = jtable.convertRowIndexToModel(rowIndex);
             Album album = (Album) model.getItemAt(rowIndex);
             if (album != null && current != album) {
@@ -145,7 +144,7 @@ public class AlbumsTableView extends AbstractTableView {
               if (popup != null) {
                 popup.dispose();
               }
-              popup = new ThumbnailPopup(description, new Rectangle(p, new Dimension(400, 100)),
+              popup = new ThumbnailPopup(description, new Rectangle(p, new Dimension(20, -50)),
                   true);
             }
           }
@@ -159,10 +158,12 @@ public class AlbumsTableView extends AbstractTableView {
         // close popups when leaving the table
         jtable.addMouseListener(new MouseAdapter() {
           @Override
-          public void mouseExited(MouseEvent arg0) {
+          public void mouseExited(MouseEvent e) {
             // TODO Auto-generated method stub
-            super.mouseExited(arg0);
-            if (popup != null){
+            super.mouseExited(e);
+            // Do not hide popup if still in the table to allow user to mouse
+            // mouse over the popup (in this case, a table exit event is thrown)
+            if (popup != null && !Util.isOver(jtable)) {
               popup.dispose();
             }
           }

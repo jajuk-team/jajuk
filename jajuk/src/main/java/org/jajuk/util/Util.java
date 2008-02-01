@@ -27,6 +27,7 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.MouseInfo;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
@@ -2440,6 +2441,17 @@ public class Util implements ITechnicalStrings {
       color1 = new Color(230, 235, 240);
     }
     return new AlternateRowHighlighter(color1, null, null);
+  }
+
+  /**
+   * 
+   * @param c component to test
+   * @return whether the current mouse cursor if above a given component
+   */
+  public static boolean isOver(JComponent c) {
+    java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
+    return (p.getX() > c.getX() && p.getY() > c.getY() && p.getX() < (c.getWidth() + c.getX()) && p
+        .getY() < (c.getHeight() + c.getY()));
   }
 
 }
