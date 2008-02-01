@@ -45,8 +45,8 @@ public class FindDuplicateTracksAction extends ActionBase {
   private static final long serialVersionUID = 1L;
 
   FindDuplicateTracksAction() {
-    super(Messages.getString("FindDuplicateFilesAction.2"), IconLoader.ICON_SEARCH, true);
-    setShortDescription(Messages.getString("FindDuplicateFilesAction.2"));
+    super(Messages.getString("FindDuplicateTracksAction.2"), IconLoader.ICON_SEARCH, true);
+    setShortDescription(Messages.getString("FindDuplicateTracksAction.2"));
   }
 
   public void perform(ActionEvent evt) throws Exception {
@@ -58,11 +58,11 @@ public class FindDuplicateTracksAction extends ActionBase {
       }
     }
     if (duplicateFilesList.size() < 1) {
-      Messages.showInfoMessage(Messages.getString("FindDuplicateFilesAction.0"));
+      Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
     } else {
       final JOptionPane optionPane = Util.getNarrowOptionPane(100);
       final JDialog duplicateFiles = optionPane.createDialog(null, Messages
-          .getString("FindDuplicateFilesAction.3"));
+          .getString("FindDuplicateTracksAction.3"));
 
       duplicateFiles.setMaximumSize(new Dimension(600, 800));
 

@@ -72,8 +72,8 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     deleteButton.setActionCommand(Messages.getString("Delete"));
     deleteButton.addActionListener(new DeleteListener());
 
-    selectAllButton = new JButton(Messages.getString("FindDuplicateFilesAction.4"));
-    selectAllButton.setActionCommand(Messages.getString("FindDuplicateFilesAction.4"));
+    selectAllButton = new JButton(Messages.getString("FindDuplicateTracksAction.4"));
+    selectAllButton.setActionCommand(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.addActionListener(new SelectAllListener());
     
     JPanel buttonPane = new JPanel();
