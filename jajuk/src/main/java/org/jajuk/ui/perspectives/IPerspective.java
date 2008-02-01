@@ -75,7 +75,7 @@ public interface IPerspective {
   public void load() throws Exception;
 
   /**
-   * Restaure defaults views
+   * Restore defaults views
    */
   public void restoreDefaults();
 

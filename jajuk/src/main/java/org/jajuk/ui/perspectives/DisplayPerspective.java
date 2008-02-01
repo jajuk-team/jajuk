@@ -23,7 +23,7 @@ package org.jajuk.ui.perspectives;
 import org.jajuk.util.Messages;
 
 /**
- * Player perspective, contains view usefull to be displayed duriong playing
+ * Player perspective, contains view useful to be displayed during playing
  */
 public class DisplayPerspective extends PerspectiveAdapter {
 
