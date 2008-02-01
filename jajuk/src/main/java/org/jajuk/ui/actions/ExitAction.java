@@ -52,6 +52,11 @@ public class ExitAction extends ActionBase {
       // Hide window ASAP
       Main.getWindow().setVisible(false);
     }
-    Main.exit(0);
+  //Exit Jajuk
+    new Thread(){
+      public void run(){
+        Main.exit(0);    
+      }
+    }.start();
   }
 }

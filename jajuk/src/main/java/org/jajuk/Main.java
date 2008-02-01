@@ -23,7 +23,6 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import com.vlsolutions.swing.toolbars.ToolBarContainer;
-import com.vlsolutions.swing.toolbars.ToolBarIO;
 
 import ext.JSplash;
 import ext.JVM;
@@ -31,7 +30,6 @@ import ext.JVM;
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -301,11 +299,12 @@ public class Main implements ITechnicalStrings {
           // Set window look and feel and watermarks
           Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 
-          sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION +" \""+JAJUK_CODENAME+"\""
-              + " " + JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH), null);
+          sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
+              + " \"" + JAJUK_CODENAME + "\"" + " " + JAJUK_VERSION_DATE, FontManager.getInstance()
+              .getFont(JajukFont.SPLASH), null);
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
-          //Actually show the splashscreen only if required
+          // Actually show the splashscreen only if required
           if (ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)) {
             sc.splashOn();
           }
@@ -568,6 +567,29 @@ public class Main implements ITechnicalStrings {
             public void run() {
               Log.debug("Exit Hook begin");
               try {
+                SwingUtilities.invokeLater(new Runnable() {
+                  public void run() {
+                    // TODO Auto-generated method stub
+                    // commit perspectives if no full restore
+                    // engaged. Perspective should be commited before the window
+                    // being closed to avoid a dead lock in VLDocking
+                    if (!RestoreAllViewsAction.fullRestore) {
+                      try {
+                        PerspectiveManager.commit();
+                      } catch (Exception e) {
+                        Log.error(e);
+                      }
+                    }
+                    // hide window ASAP
+                    if (getWindow() != null) {
+                      getWindow().setVisible(false);
+                    }
+                    // hide systray
+                    if (jsystray != null) {
+                      jsystray.closeSystray();
+                    }
+                  }
+                });
                 Player.stop(true); // stop sound ASAP
               } catch (Exception e) {
                 e.printStackTrace();
@@ -576,40 +598,26 @@ public class Main implements ITechnicalStrings {
               }
               try {
                 if (iExitCode == 0) {
+                  // Store current FIFO for next session
+                  FIFO.getInstance().commit();
                   // commit only if exit is safe (to avoid
                   // commiting
                   // empty collection) commit ambiences
                   AmbienceManager.getInstance().commit();
                   // Commit webradios
                   WebRadioManager.getInstance().commit();
+                  // Store webradio state
+                  ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
+                      .getInstance().isPlayingRadio()));
                   // commit configuration
                   org.jajuk.util.ConfigurationManager.commit();
                   // commit history
                   History.commit();
-                  // commit perspectives if no full restore
-                  // engaged
-                  if (!RestoreAllViewsAction.fullRestore) {
-                    PerspectiveManager.commit();
-                  }
-                  // Commit collection if not refreshing ( fix
-                  // for
-                  // 939816 )
+                  // Commit collection if not refreshing
                   if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
                     Collection.commit(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
                     // create a proof file
                     Util.createEmptyFile(Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
-                  }
-                  // Commit toolbars (only if it is visible to
-                  // avoid
-                  // commiting void screen)
-                  if (!RestoreAllViewsAction.fullRestore && (getWindow() != null)
-                      && getWindow().isWindowVisible()) {
-                    ToolBarIO tbIO = new ToolBarIO(tbcontainer);
-                    FileOutputStream out = new FileOutputStream(Util
-                        .getConfFileByPath(FILE_TOOLBARS_CONF));
-                    tbIO.writeXML(out);
-                    out.flush();
-                    out.close();
                   }
                   /* release keystrokes resources */
                   ActionBase.cleanup();
@@ -985,35 +993,10 @@ public class Main implements ITechnicalStrings {
    *          1: unexpected error
    */
   public static void exit(final int iExitCode) {
-    // Store current FIFO for next session
-    try {
-      FIFO.getInstance().commit();
-    } catch (final IOException e) {
-      Log.error(e);
-    }
-    // Store webradio state
-    ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO.getInstance()
-        .isPlayingRadio()));
-    // stop sound to avoid strange crash when stopping
-    Player.mute(true);
     // set exiting flag
     bExiting = true;
     // store exit code to be read by the system hook
     Main.iExitCode = iExitCode;
-    // force sound to stop quickly
-    FIFO.getInstance().stopRequest();
-    /*
-     * alert playlists editors ( queue playlist ) something changed for him hide
-     * window
-     */
-    ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-    if (jw != null) {
-      jw.display(false);
-    }
-    // hide systray
-    if (jsystray != null) {
-      jsystray.closeSystray();
-    }
     // display a message
     Log.debug("Exit with code: " + iExitCode);
     System.exit(iExitCode);

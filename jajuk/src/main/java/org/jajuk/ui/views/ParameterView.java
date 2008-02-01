@@ -673,7 +673,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         Util.stopWaiting();
         // Display a warning message and restart Jajuk
         Messages.showInfoMessage(Messages.getString("ParameterView.209"));
-        Main.exit(0);
+        // Exit Jajuk
+        new Thread() {
+          public void run() {
+            Main.exit(0);
+          }
+        }.start();
       } catch (final Exception e) {
         Messages.showErrorMessage(24);
         Log.debug("Cannot write bootstrap file");
@@ -754,7 +759,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final double p = TableLayoutConstants.PREFERRED;
     final int iXSeparator = 15;
     final int iYSeparator = 15;
-    
+
     // Use this common action listener for UI options that need to launch
     // event
     final ActionListener alUI = new ActionListener() {
@@ -1405,7 +1410,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Visible at startup
     jcbVisibleAtStartup = new JCheckBox(Messages.getString("JajukWindow.8"));
     jcbVisibleAtStartup.setToolTipText(Messages.getString("JajukWindow.25"));
-    
+
     jcbVisibleAtStartup.addActionListener(alUI);
     // Show Balloon
     jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
