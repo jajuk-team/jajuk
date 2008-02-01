@@ -105,6 +105,7 @@ public class PasteAction extends ActionBase {
                     + " : \n\n" + f.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
                 if (iResu != JOptionPane.YES_OPTION) {
+                  Util.stopWaiting();
                   return;
                 }
                 if (iResu == Messages.ALL_OPTION) {
@@ -134,6 +135,7 @@ public class PasteAction extends ActionBase {
               Messages.showErrorMessage(131);
             }
           }
+          DirectoryManager.refreshDirectory(destDir);
         } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
           Log.debug("Inside Copy");
           for (File f : alFiles) {
@@ -144,6 +146,7 @@ public class PasteAction extends ActionBase {
                     + " : \n\n" + f.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
                 if (iResu != JOptionPane.YES_OPTION) {
+                  Util.stopWaiting();
                   return;
                 }
                 if (iResu == Messages.ALL_OPTION) {
