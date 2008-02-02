@@ -48,4 +48,6 @@
         <mapID target="view_tracks_tree" url="html/view_tracks_tree.html" />         
         <mapID target="view_wikipedia" url="html/view_wikipedia.html" />
         <mapID target="special_options" url="html/special_options.html" />
-</map>
+        <mapID target="using_alarm_clock" url="html/using_alarm_clock.html" />
+        <mapID target="using_duplicate_finder" url="html/using_duplicate_finder.html" />
+   </map>

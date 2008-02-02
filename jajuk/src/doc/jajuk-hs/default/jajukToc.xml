@@ -53,6 +53,8 @@
 			<tocitem text="Using tables in views" target="using_tables_in_views"/>
 			<tocitem text="Using the tray" target="using_the_tray"/>
 			<tocitem text="Using web radios" target="using_web_radios"/>
+			<tocitem text="Using alarm clock" target="using_alarm_clock"/>
+			<tocitem text="Using publicate finder" target="using_duplicate_finder"/>
 		</tocitem>
 		<tocitem text="Technical" expand="true">
 			<tocitem text="Supported formats" target="supported_formats"/>
