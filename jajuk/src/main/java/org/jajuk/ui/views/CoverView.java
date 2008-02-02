@@ -280,8 +280,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             setFoundText();
           }
           refreshThumbs(cover);
-          // add new cover in others cover views
-          ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
               InformationJPanel.INFORMATIVE);
         } catch (final Exception ex) {
@@ -293,6 +291,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
             InformationJPanel.INFORMATIVE);
       }
+      ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
       // then make it the default cover in this directory
       dirReference.setProperty("default_cover", Util.getOnlyFile(sFilename));
 
@@ -520,17 +519,15 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             + urlNext.toString() + "</html>");
       }
     } catch (final Exception e) { // the url code can throw out of bounds
-      // exception for unkwown reasons so check it
+      // exception for unknown reasons so check it
       Log.debug("jl=" + jl + " url={{" + url + "}}");
       Log.error(e);
     }
-    setCursor(Util.WAIT_CURSOR);
     if (getComponentCount() > 0) {
       removeAll();
     }
     add(jpControl, "0,0");
     add(jl, "0,2,c,c");
-    setCursor(Util.DEFAULT_CURSOR);
     searching(false);
   }
 

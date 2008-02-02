@@ -171,7 +171,6 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
    * display a popup over the catalog item
    */
   public void displayPopup() {
-    Util.waiting();
     // Display popup out of dispatcher thread as it takes too mush time to
     // execute and we don't risk display concurrency in this popup
     new Thread() {
@@ -186,6 +185,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
         if (jmenu.isVisible()) {
           return;
         }
+        Util.waiting();
         String description = getDescription();
         if (description != null) {
           details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
