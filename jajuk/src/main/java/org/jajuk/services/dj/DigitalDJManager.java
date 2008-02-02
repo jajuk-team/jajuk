@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision:3266 $
  */
 
 package org.jajuk.services.dj;
@@ -65,8 +65,11 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
   /** self instance */
   private static DigitalDJManager dj;
 
+  /** Currently selected DJ */
+  private static DigitalDJ current;
+
   /**
-   * no instanciation
+   * no instantiation
    */
   private DigitalDJManager() {
     djs = new HashMap<String, DigitalDJ>();
@@ -217,6 +220,9 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
           DigitalDJFactory factory = DigitalDJFactory.getFactory(files[i]);
           DigitalDJ dj = factory.getDJ(files[i]);
           djs.put(dj.getID(), dj);
+          if (dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))){
+            current = dj;
+          }
         } catch (Exception e) {
           Log.error(144, "{{" + files[i].getAbsolutePath() + "}}", e);
         }
@@ -224,6 +230,14 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
     } catch (Exception e) {
       Log.error(e);
     }
+  }
+
+  static public DigitalDJ getCurrentDJ() {
+    return current;
+  }
+
+  static public void setCurrentDJ(DigitalDJ dj) {
+    current = dj;
   }
 
 }

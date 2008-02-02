@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 
 package org.jajuk.ui.actions;
@@ -40,25 +40,14 @@ public class DJAction extends ActionBase {
 
   DJAction() {
     super(Messages.getString("CommandJPanel.16"), IconLoader.ICON_DIGITAL_DJ, true);
-    String sTooltip = Messages.getString("CommandJPanel.18");
-    DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
-        ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
-    if (dj != null) {
-      String sDJ = dj.getName();
-      sTooltip = "<html>" + Messages.getString("CommandJPanel.18") + "<p><b>" + sDJ
-          + "</b></p></html>";
-    }
-    setShortDescription(sTooltip);
   }
 
   public void perform(ActionEvent evt) throws JajukException {
     if (StyleManager.getInstance().getStyles().size() == 0) {
       Messages.showErrorMessage(156); // void collection error
-      // 
     } else {
       new Thread() {
         public void run() {
-
           DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
               ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
           if (dj != null) {

@@ -893,6 +893,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    */
   private void populateDJs() {
     try {
+      ddbDDJ.setToolTipText("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>"
+        + DigitalDJManager.getCurrentDJ() + "</b></html>");
       popupDDJ.removeAll();
       JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
       popupDDJ.add(jmiNew);
@@ -904,9 +906,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent arg0) {
             ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());
+            DigitalDJManager.setCurrentDJ(dj);
             // force to reselect the item
             populateDJs();
-            // update action tooltip with right DJ
+            // update action tooltip on main button with right item
             ActionBase action = ActionManager.getAction(JajukAction.DJ);
             action.setShortDescription("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>"
                 + dj.getName() + "</b></p></html>");
