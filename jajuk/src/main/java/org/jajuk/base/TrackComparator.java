@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.text.DateFormat;
 import java.util.Comparator;
 
 import org.jajuk.util.Util;
@@ -46,6 +47,8 @@ public class TrackComparator implements Comparator<Track> {
   public static final int DISCOVERY_ALBUM = 4;
   
   public static final int ORDER = 5;
+  
+  private static final DateFormat formatter = Util.getAdditionDateFormatter();
 
   /**
    * Constructor
@@ -97,7 +100,7 @@ public class TrackComparator implements Comparator<Track> {
     // discovery date / album
     case DISCOVERY_ALBUM:
       sHashCompare = new StringBuilder().append(
-          Util.getAdditionDateFormatter().format(track.getDiscoveryDate())).append(
+          formatter.format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
       break;
     //Order / track name
