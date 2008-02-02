@@ -53,10 +53,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Cross fade duration in ms */
   int iFadeDuration = 0;
 
-  /** Progress step in ms */
-  private static final int PROGRESS_STEP = 200;// need a fast refresh,
-
-  // especially for fading
+  /**
+   * Progress step in ms, do not set less than 300 or 400 to avoid using too
+   * much CPU
+   */
+  private static final int PROGRESS_STEP = 400;
 
   /** current file */
   private org.jajuk.base.File fCurrent;
@@ -222,7 +223,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bEOF = false;
     this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
     ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
-    Log.debug("Using this Mplayer command: {{" + pb.command()+"}}");
+    Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
       Map<String, String> env = pb.environment();
