@@ -30,7 +30,7 @@ In your current perspective, don't keep opened or minimized views that you don't
 Memory Usage</h2>
 <ul>
 <li>
-Jajuk usually uses 100 MB of memory or more for large collections when using GUI. It can looks large but keep in kind that Jajuk comes with a lot of features and image manipulation and that even with optimizations, there's still a floor of memory footprint we can't go bellow.</li>
+Jajuk usually uses 100 MB of memory or more for large collections when using GUI. This can sound a lot but keep in mind that Jajuk comes with a lot of features and image manipulation and that even with optimizations, there's still a floor of memory footprint we can't go bellow.</li>
 <li>
 A JVM runs inside a reserved memory heap. The JVM takes all the Xms MB of memory at startup and requires more memory to the OS only if necessary. For a big size collection and all cover options enabled, it takes about 65MB maximum of memory but 40MB should be enough most of the time.</li>
 <li>
@@ -41,9 +41,23 @@ Don't use image wallpapers (Preference view / GUI tab)</li>
 Don't use covers prefetch (Preference view / covers tab)</li>
 <li>
 Don't open perspectives you don't use (perspective memory is used only once opened)</li>
+<li>
+Remove any view that you don't need all the time, they can be opened again quickly if needed. This should include the ones automatically minimized in some perspectives. Good candidates usually are <a href="animation_view.html">
+Animation View</a>
+, <a href="album_catalog_view.html">
+Album Catalog View</a>
+, <a href="wikipedia_view.html">
+Wikipedia View</a>
+, <a href="statistics_view.html">
+Statistics View</a>
+. </li>
 </ul>
 </li>
 </ul>
+<p>
+<b>
+Note:</b>
+ You will need to restart Jajuk to actually see reduction in memory usage for these suggestions as Java usually keeps allocated memory and does not free it any more.</p>
 <h2>
 Bandwidth</h2>
 <ul>

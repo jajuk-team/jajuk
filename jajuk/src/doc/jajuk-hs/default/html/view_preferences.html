@@ -41,8 +41,8 @@ Only show available tracks</b>
  [default=false]: If checked, Jajuk will become unaware of all items located on unmounted devices. It can be useful if you won't see tracks from unavailable devices.</li>
 <li>
 <b>
-Push on double click</b>
- [default=false]: If checked, Jajuk default behaviour when double-clicking on a track will be to push it into the queue, not to play it.</li>
+Push on selection</b>
+ [default=false]: If checked, Jajuk default behaviour when double-clicking on a track or when selecting an item in instant search box will be to push it into the queue, not to play it.</li>
 <li>
 <b>
 Push on drop</b>
@@ -146,7 +146,11 @@ view suggestions</a>
 Catalog view preferences / Catalog view page size</b>
  [default=200]: set here the number of albums by page in the <a href="view_catalog.html">
 view catalog</a>
-. Zero means all in one.</li>
+. Zero means all in one</li>
+<li>
+<b>
+Perspective bar icons size</b>
+ [Default=32 pixels, from 16 to 56 pixels]: set here the size of the perspective chooser buttons on the left. Under 32 pixels, the text under buttons is no more displayed.</li>
 </ul>
 <h2>
 Startup tab</h2>
@@ -392,7 +396,11 @@ repository</i>
 <li>
 <b>
 Check Jajuk updates</b>
- [default=true]: Allow Jajuk at every startup to check on the jajuk website if a new release becomes available (can be forced using the Help menu).</li>
+ [default=true]: Allow Jajuk at every startup to check on the jajuk website if a new release becomes available (can be forced manually using the Help menu-&gt; check for updates)</li>
+<li>
+<b>
+Force files date as discovery date</b>
+ [default=false]: If checked, jajuk use the file date (in the operating system meaning) as discovery date, not the current date. This date is used for novelties features or for statistics.</li>
 </ul>
 <p>
 Go back to <a href="table_of_contents.html">
