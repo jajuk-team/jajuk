@@ -6,13 +6,13 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5RC7' />
+	<property name='version' value='1.5' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
 	<!--Test flag: values: test or notest -->
-	<property name='test' value='test' />
+	<property name='test' value='notest' />
 
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
