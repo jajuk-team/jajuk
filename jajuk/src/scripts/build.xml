@@ -6,7 +6,7 @@
 	<!--VARIABLES-->
 
 	<!--Distribution release, Do not use the following chars in the version value: "-" -->
-	<property name='version' value='1.5' />
+	<property name='version' value='1.5b2' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -134,6 +134,9 @@
 		<copy todir='${distdir}/dist-files/xslt'>
 			<fileset file='${srcdir}/main/resources/xslt/**' />
 		</copy>
+		<copy todir='${distdir}/dist-files/xml'>
+			<fileset file='${srcdir}/main/resources/xml/**' />
+		</copy>
 		<copy todir='${distdir}'>
 			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
 			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png' />
@@ -189,6 +192,7 @@
 		<mkdir dir='${distdir}/${classdir}/images' />
 		<mkdir dir='${distdir}/${classdir}/perspectives' />
 		<mkdir dir='${distdir}/${classdir}/xslt' />
+		<mkdir dir='${distdir}/${classdir}/xml' />
 		<!-- Copy files to be embeded into the jar -->
 		<copy todir='${distdir}/${classdir}/icons'>
 			<fileset dir='${srcdir}/main/resources/icons' />
@@ -207,6 +211,9 @@
 		</copy>
 		<copy todir='${distdir}/${classdir}/xslt'>
 			<fileset file='${srcdir}/main/resources/xslt/**' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/xml'>
+			<fileset file='${srcdir}/main/resources/xml/**' />
 		</copy>
 	</target>
 
