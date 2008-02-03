@@ -95,7 +95,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
   private int comp = 0;
 
-  List<Album> albums;
+  List<Album> albumsNewest;
+  List<Album> albumsPrefered;
+  List<Album> albumsRare;
 
   /** Currently selected thumb */
   AbstractThumbnail selectedThumb;
@@ -309,17 +311,25 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(null);
     out.setScroller(jsp);
+    List<Album> albums = null;
     if (search) {
       if (type == SuggestionType.BEST_OF) {
-        albums = AlbumManager.getInstance().getBestOfAlbums(
+        albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
             ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       } else if (type == SuggestionType.NEWEST) {
-        albums = AlbumManager.getInstance().getNewestAlbums(
+        albumsNewest = AlbumManager.getInstance().getNewestAlbums(
             ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       } else if (type == SuggestionType.RARE) {
-        albums = AlbumManager.getInstance().getRarelyListenAlbums(
+        albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
             ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       }
+    }
+    if (type == SuggestionType.BEST_OF) {
+      albums = albumsPrefered;
+    } else if (type == SuggestionType.NEWEST) {
+      albums = albumsNewest;
+    } else if (type == SuggestionType.RARE) {
+      albums = albumsRare;
     }
     if (albums != null && albums.size() > 0) {
       for (Album album : albums) {
