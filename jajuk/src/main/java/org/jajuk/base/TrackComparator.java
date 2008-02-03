@@ -45,9 +45,9 @@ public class TrackComparator implements Comparator<Track> {
   public static final int YEAR_ALBUM = 3;
 
   public static final int DISCOVERY_ALBUM = 4;
-  
+
   public static final int ORDER = 5;
-  
+
   private static final DateFormat formatter = Util.getAdditionDateFormatter();
 
   /**
@@ -99,14 +99,13 @@ public class TrackComparator implements Comparator<Track> {
       break;
     // discovery date / album
     case DISCOVERY_ALBUM:
-      sHashCompare = new StringBuilder().append(
-          formatter.format(track.getDiscoveryDate())).append(
+      sHashCompare = new StringBuilder().append(formatter.format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
       break;
-    //Order / track name
+    // Order / track name
     case ORDER:
       sHashCompare = new StringBuilder().append(
-          Util.padNumber(track.getOrder(),5) + track.getName()).toString();
+          Util.padNumber(track.getOrder(), 5) + track.getName()).toString();
       break;
     }
     return sHashCompare;

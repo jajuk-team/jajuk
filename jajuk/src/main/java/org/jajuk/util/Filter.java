@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.jajuk.base.Item;
 
-
 /**
  * Filter on meta information
  */
@@ -78,7 +77,7 @@ public class Filter {
   public String getValue() {
     return sValue;
   }
-  
+
   /**
    * Filter a list.
    * <p>
@@ -123,7 +122,7 @@ public class Filter {
       } else {
         // Do not use Regexp matches() method, checked could contain string to
         // be escaped and ignore order if user enters several words
-        bMatch = Util.matchesIgnoreCaseAndOrder(checked,comparator);
+        bMatch = Util.matchesIgnoreCaseAndOrder(checked, comparator);
       }
       if (!bMatch) {
         it.remove();
@@ -131,8 +130,5 @@ public class Filter {
     }
     return (List<Item>) list;
   }
-  
-  
-  
-  
+
 }

@@ -220,7 +220,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
           DigitalDJFactory factory = DigitalDJFactory.getFactory(files[i]);
           DigitalDJ dj = factory.getDJ(files[i]);
           djs.put(dj.getID(), dj);
-          if (dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))){
+          if (dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))) {
             current = dj;
           }
         } catch (Exception e) {

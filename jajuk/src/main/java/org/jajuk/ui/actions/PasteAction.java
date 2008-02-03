@@ -86,7 +86,7 @@ public class PasteAction extends ActionBase {
         if (item instanceof Directory) {
           dir = new java.io.File(((Directory) item).getAbsolutePath());
           destDir = (Directory) item;
-        } else if (item instanceof Device){
+        } else if (item instanceof Device) {
           dir = new java.io.File(((Device) item).getRootDirectory().getAbsolutePath());
           destDir = ((Device) item).getRootDirectory();
         } else {

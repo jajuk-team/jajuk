@@ -31,10 +31,9 @@ import org.jajuk.util.log.Log;
  * Maintain all behavior needed upgrades from releases to releases
  */
 public final class UpgradeManager implements ITechnicalStrings {
-  
+
   private static String newVersionName;
-  
-  
+
   /**
    * Actions to migrate an existing installation Step1 just at startup
    */
@@ -138,22 +137,23 @@ public final class UpgradeManager implements ITechnicalStrings {
       int beginIndex = pad.indexOf("<Program_Version>");
       int endIndex = pad.indexOf("</Program_Version>");
       sRelease = pad.substring(beginIndex + 17, endIndex);
-       if (!JAJUK_VERSION.equals(sRelease)
-        // Don't use this in test
-            && !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))) {
-          newVersionName = sRelease;
-          return;
+      if (!JAJUK_VERSION.equals(sRelease)
+      // Don't use this in test
+          && !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))) {
+        newVersionName = sRelease;
+        return;
       }
     } catch (Exception e) {
-      Log.debug("Cannot check for updates",e);
+      Log.debug("Cannot check for updates", e);
     }
     return;
   }
 
-   /**
+  /**
    * 
    * @return new version name if nay
-   * <p>Example: "1.6", "1.7.8"
+   *         <p>
+   *         Example: "1.6", "1.7.8"
    */
   public static String getNewVersionName() {
     return newVersionName;

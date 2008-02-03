@@ -125,8 +125,9 @@ public class AboutWindow extends JDialog implements ITechnicalStrings {
     jtp = new JTabbedPane();
     JPanel jpAbout = new JPanel();
     jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
-    ap = new AboutPanel("Jajuk", JAJUK_VERSION +" \""+JAJUK_CODENAME+"\"" + " " + JAJUK_VERSION_DATE,
-        "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS, IconLoader.ICON_LOGO.getImage());
+    ap = new AboutPanel("Jajuk", JAJUK_VERSION + " \"" + JAJUK_CODENAME + "\"" + " "
+        + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS,
+        IconLoader.ICON_LOGO.getImage());
     jpAbout.add(ap);
     jpAbout.add(Box.createVerticalGlue());
     spp = new SystemPropertiesPanel();

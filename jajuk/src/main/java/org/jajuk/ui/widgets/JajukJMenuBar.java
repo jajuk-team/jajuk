@@ -292,7 +292,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     configuration.add(jmiWebradios);
     configuration.add(jmiWizard);
     configuration.add(jmiOptions);
-    
+
     // Help menu
     String helpText = Messages.getString("JajukJMenuBar.14");
     help = new JMenu(ActionUtil.strip(helpText));

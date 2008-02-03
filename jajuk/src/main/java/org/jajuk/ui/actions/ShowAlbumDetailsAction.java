@@ -31,7 +31,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
 /**
- * Show a thumb popup on an album. 
+ * Show a thumb popup on an album.
  * <p>
  * This action is expecting a single album as selection
  * </p>
@@ -59,16 +59,14 @@ public class ShowAlbumDetailsAction extends ActionBase {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(DETAIL_SELECTION);
     Album album = null;
-    if (o instanceof Album){
-      album = (Album)o;
-    }
-    else if (o instanceof List){
-      album = (Album)(((List)o).get(0));
-    }
-    else{
+    if (o instanceof Album) {
+      album = (Album) o;
+    } else if (o instanceof List) {
+      album = (Album) (((List) o).get(0));
+    } else {
       return;
     }
-    LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album,200,true);
-    new ThumbnailPopup(thumb.getDescription(),null,false);
+    LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 200, true);
+    new ThumbnailPopup(thumb.getDescription(), null, false);
   }
 }

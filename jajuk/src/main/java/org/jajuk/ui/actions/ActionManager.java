@@ -172,15 +172,15 @@ public final class ActionManager {
     installAction(PASTE, new PasteAction(), false);
     installAction(RENAME, new RenameAction(), false);
     installAction(NEW_FOLDER, new NewFolderAction(), false);
-    
+
     // MISC
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateTracksAction(), false);
     installAction(JajukAction.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
     installAction(REFRESH, new RefreshDirectoryAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(JajukAction.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
-    
-    //Selection actions
+
+    // Selection actions
     installAction(JajukAction.SHOW_PROPERTIES, new ShowPropertiesAction(), false);
     installAction(JajukAction.PLAY_SELECTION, new PlaySelectionAction(), false);
     installAction(JajukAction.PLAY_SHUFFLE_SELECTION, new PlayShuffleSelectionAction(), false);
@@ -191,7 +191,7 @@ public final class ActionManager {
     installAction(JajukAction.PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
     installAction(JajukAction.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
     installAction(JajukAction.CDDB_SELECTION, new CDDBSelectionAction(), false);
-       
+
     // Do not install this action under OSX because it causes a crash as jar is
     // missing
     if (Util.isUnderLinux() || Util.isUnderWindows()) {

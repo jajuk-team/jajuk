@@ -56,8 +56,8 @@ public class TrackManager extends ItemManager implements Observer {
 
   /** Max rate */
   private long lMaxRate = 0l;
-  
-    /**
+
+  /**
    * No constructor available, only static access
    */
   private TrackManager() {
@@ -591,25 +591,23 @@ public class TrackManager extends ItemManager implements Observer {
   public Set<Track> getAssociatedTracks(Item item) {
     synchronized (TrackManager.getInstance().getLock()) {
       if (item instanceof Album) {
-        //check the album cache
+        // check the album cache
         Set<Track> tracks = ((Album) item).tracks;
-        if (tracks.size() > 0){
+        if (tracks.size() > 0) {
           return tracks;
         }
       }
       Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
-      //If the item is itself a track, simply return it
-      if (item instanceof Track){
-        out.add((Track)item);
+      // If the item is itself a track, simply return it
+      if (item instanceof Track) {
+        out.add((Track) item);
         return out;
-      }
-      else if (item instanceof File){
+      } else if (item instanceof File) {
         out.add(((File) item).getTrack());
         return out;
-      }
-      else if (item instanceof Directory){
-        Directory dir = (Directory)item;
-        for (File file:dir.getFiles()){
+      } else if (item instanceof Directory) {
+        Directory dir = (Directory) item;
+        for (File file : dir.getFiles()) {
           out.add(file.getTrack());
         }
       }

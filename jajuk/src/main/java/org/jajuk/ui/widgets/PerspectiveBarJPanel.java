@@ -94,7 +94,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
       int iconSize = ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
       JButton jb = new JButton(perspective.getIcon());
       jb.setToolTipText(perspective.getDesc());
-      jb.setBorder(new EmptyBorder(5,5,0,5));
+      jb.setBorder(new EmptyBorder(5, 5, 0, 5));
       if (iconSize >= 32) {
         int glyphSize = font.getSize();
         // Limit perspective label to icon width

@@ -47,19 +47,19 @@ public class XMLTransformer {
    * transformation
    * 
    * @param xml
-   *            The XML file to convert.
+   *          The XML file to convert.
    * @param html
-   *            The HTML file to convert.
+   *          The HTML file to convert.
    * @param xsl
-   *            The url of the XSLT style sheet to use.
+   *          The url of the XSLT style sheet to use.
    */
   public static void xmlToHTML(File xml, File html, URL xsl) throws Exception {
     // DOM source creation
     DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder domBuilder = domFactory.newDocumentBuilder();
     domBuilder.parse(xml);
-    Source source = new SAXSource(new InputSource(new BufferedInputStream(new FileInputStream(
-        xml))));
+    Source source = new SAXSource(
+        new InputSource(new BufferedInputStream(new FileInputStream(xml))));
 
     // Create output file
     Result result = new StreamResult(html);

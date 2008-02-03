@@ -44,7 +44,7 @@ public class HideShowMountedDevicesAction extends ActionBase {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(DETAIL_ORIGIN);
-    JCheckBoxMenuItem jmiUnmounted = (JCheckBoxMenuItem)o;
+    JCheckBoxMenuItem jmiUnmounted = (JCheckBoxMenuItem) o;
     boolean bHideUnmountedStatus = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
     ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
         .toString(!bHideUnmountedStatus));

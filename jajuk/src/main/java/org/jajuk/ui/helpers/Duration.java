@@ -25,26 +25,27 @@ import org.jajuk.util.Util;
  * A duration encapsulates a track or album length in secs, it is mainly used in
  * tables to ease the cell renderers recognition
  */
-public class Duration implements Comparable<Duration>{
+public class Duration implements Comparable<Duration> {
   private long duration;
 
   /**
    * 
-   * @param duration item duration in secs
+   * @param duration
+   *          item duration in secs
    */
   public Duration(long duration) {
     this.duration = duration;
   }
-  
+
   /**
    * Return a string representation of this duration with zero paddings
    */
-  public String toString(){
+  public String toString() {
     return Util.formatTimeBySec(duration, false);
   }
 
-  public int compareTo(Duration other){
-    return (int)(duration - other.getDuration());
+  public int compareTo(Duration other) {
+    return (int) (duration - other.getDuration());
   }
 
   public long getDuration() {

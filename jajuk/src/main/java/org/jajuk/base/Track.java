@@ -19,7 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -466,7 +465,7 @@ public class Track extends LogicalItem implements Comparable {
       return sbOut.substring(0, sbOut.length() - 1); // remove last
       // ','
     } else if (XML_TRACK_ADDED.equals(sKey)) {
-        return Util.getLocaleDateFormatter().format(getDiscoveryDate());
+      return Util.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default

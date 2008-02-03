@@ -29,40 +29,42 @@ import org.jajuk.base.Item;
  * Convenient class to manage Items to be moved using Cut/Copy/Paste Actions
  */
 
-public class ItemMoveManager{
-  
+public class ItemMoveManager {
+
   private static ItemMoveManager singleton;
-  
+
   private ArrayList<Item> moveItems = new ArrayList<Item>(20);
-  
-  public enum MoveActions {CUT, COPY};
-  
+
+  public enum MoveActions {
+    CUT, COPY
+  };
+
   private MoveActions moveAction;
-  
+
   public static ItemMoveManager getInstance() {
     if (singleton == null) {
       singleton = new ItemMoveManager();
     }
     return singleton;
   }
-  
-  public void addItems(List<Item> items){
+
+  public void addItems(List<Item> items) {
     moveItems.addAll(items);
   }
-  
-  public ArrayList<Item> getAll(){
+
+  public ArrayList<Item> getAll() {
     return moveItems;
   }
-  
+
   public void removeAll() {
     moveItems.clear();
   }
-  
-  public void setAction(MoveActions action){
+
+  public void setAction(MoveActions action) {
     moveAction = action;
   }
-  
-  public MoveActions getAction(){
+
+  public MoveActions getAction() {
     return moveAction;
   }
 }

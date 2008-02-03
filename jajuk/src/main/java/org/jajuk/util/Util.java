@@ -662,10 +662,6 @@ public class Util implements ITechnicalStrings {
     return alOut;
   }
 
-  
-
-  
-
   /**
    * Delete a directory
    * 
@@ -1989,7 +1985,7 @@ public class Util implements ITechnicalStrings {
 
   }
 
-   /**
+  /**
    * Remove an extension from a file name
    * 
    * @param filename
@@ -2346,7 +2342,8 @@ public class Util implements ITechnicalStrings {
 
   /**
    * 
-   * @param c component to test
+   * @param c
+   *          component to test
    * @return whether the current mouse cursor if above a given component
    */
   public static boolean isOver(JComponent c) {

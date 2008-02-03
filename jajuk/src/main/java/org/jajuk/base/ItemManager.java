@@ -31,7 +31,6 @@ import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -261,8 +260,8 @@ public abstract class ItemManager implements ITechnicalStrings {
         if (!hsItems.contains(item)) {
           // For styles, keep it even if none track uses it if it is a
           // default style
-          if (! (this instanceof StyleManager
-              && !StyleManager.getInstance().getStylesList().contains(item.getName()))) {
+          if (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList()
+              .contains(item.getName()))) {
             it.remove();
           }
         }

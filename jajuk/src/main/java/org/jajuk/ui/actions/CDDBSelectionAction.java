@@ -68,7 +68,7 @@ public class CDDBSelectionAction extends SelectionAction {
       tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
     }
     Util.waiting();
-    //Note that the CDDBWizard uses a swing worker
+    // Note that the CDDBWizard uses a swing worker
     new CDDBWizard(tracks);
   }
 

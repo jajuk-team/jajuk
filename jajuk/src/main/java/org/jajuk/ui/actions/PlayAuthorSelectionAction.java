@@ -34,8 +34,13 @@ import org.jajuk.util.Util;
 /**
  * Play authors a selection. We expect the selection to be tracks and we play
  * only the first found author
- * <p>Action emitter is responsible to ensure all items provided share the same type</p>
- * <p>Selection data is provided using the swing properties DETAIL_SELECTION</p>
+ * <p>
+ * Action emitter is responsible to ensure all items provided share the same
+ * type
+ * </p>
+ * <p>
+ * Selection data is provided using the swing properties DETAIL_SELECTION
+ * </p>
  */
 public class PlayAuthorSelectionAction extends SelectionAction {
 
@@ -45,8 +50,8 @@ public class PlayAuthorSelectionAction extends SelectionAction {
     super(Messages.getString("TracksTableView.12"), IconLoader.ICON_AUTHOR, true);
     setShortDescription(Messages.getString("TracksTableView.12"));
   }
-  
- /*
+
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.actions.ActionBase#perform(java.awt.event.ActionEvent)

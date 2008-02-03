@@ -377,7 +377,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     return length;
   }
 
-   /**
+  /**
    * @return album nb of tracks
    */
   public int getNbOfTracks() {

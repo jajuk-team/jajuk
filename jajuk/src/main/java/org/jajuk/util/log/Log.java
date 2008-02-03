@@ -112,7 +112,7 @@ public class Log implements ITechnicalStrings {
     spool("[DEBUG] " + s);
     logger.debug(s);
   }
-  
+
   public static void debug(String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
@@ -133,8 +133,6 @@ public class Log implements ITechnicalStrings {
     }
     logger.debug(sOut, t);
   }
-  
-  
 
   /**
    * Log a info-level message
@@ -387,7 +385,7 @@ public class Log implements ITechnicalStrings {
    */
   private static void spool(String sMessage) {
     // we have to make some room
-    if (alSpool.size() > FEEDBACK_LINES) { 
+    if (alSpool.size() > FEEDBACK_LINES) {
       alSpool.remove(0);
     }
     try {

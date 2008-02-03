@@ -140,7 +140,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   private static final short STAGE_DEVICES = 9;
 
   private static final short STAGE_YEARS = 10;
-  
+
   private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
 
   /** Auto commit thread */
@@ -688,8 +688,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
           }
           // Date format should be OK
-          Date dAdditionDate = additionFormatter.parse(
-              attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
+          Date dAdditionDate = additionFormatter.parse(attributes.getValue(attributes
+              .getIndex(XML_TRACK_ADDED)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
           track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));

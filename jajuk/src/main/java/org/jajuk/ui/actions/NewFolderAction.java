@@ -27,7 +27,6 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
-import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Item;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;

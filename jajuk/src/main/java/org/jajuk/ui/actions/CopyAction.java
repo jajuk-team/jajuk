@@ -34,18 +34,18 @@ import org.jajuk.util.Messages;
  */
 
 public class CopyAction extends ActionBase {
-  
+
   private static final long serialVersionUID = 1L;
 
   CopyAction() {
     super(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY, "ctrl C", true, false);
     setShortDescription(Messages.getString("FilesTreeView.3"));
   }
-  
-  public void perform(ActionEvent e){
+
+  public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    
+
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);
     ItemMoveManager.getInstance().setAction(ItemMoveManager.MoveActions.COPY);

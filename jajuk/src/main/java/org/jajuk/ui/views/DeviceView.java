@@ -313,7 +313,8 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_SYNCHRO.toString())) {
       diSelected.getDevice().synchronize(true);
     } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_TEST.toString())) {
-      new Thread("Asynchronouse device test thread") {// test asynchronously in case of delay (samba
+      new Thread("Asynchronouse device test thread") {// test asynchronously in
+                                                      // case of delay (samba
         // pbm for ie)
         @Override
         public void run() {

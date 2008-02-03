@@ -62,10 +62,10 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
         Util.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
         // Indicates to not commiting current configuration
         fullRestore = true;
-      //Exit Jajuk
-        new Thread(){
-          public void run(){
-            Main.exit(0);    
+        // Exit Jajuk
+        new Thread() {
+          public void run() {
+            Main.exit(0);
           }
         }.start();
       }

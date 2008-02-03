@@ -465,7 +465,8 @@ public class JajukSystray extends CommandJPanel {
       sOut += "<HTML><br>";
       String size = "100x100";
       int maxSize = 30;
-      ThumbnailManager.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), size);
+      ThumbnailManager.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(),
+          size);
       java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
           + FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
       if (cover.canRead()) {

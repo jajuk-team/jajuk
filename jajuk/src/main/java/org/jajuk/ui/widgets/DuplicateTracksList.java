@@ -62,12 +62,12 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     allFiles = Files;
     closeButton = jbClose;
     populateList(Files);
-    
+
     list = new JList(listModel);
     list.addListSelectionListener(this);
     list.setVisibleRowCount(20);
     listScrollPane = new JScrollPane(list);
-    
+
     deleteButton = new JButton(Messages.getString("Delete"));
     deleteButton.setActionCommand(Messages.getString("Delete"));
     deleteButton.addActionListener(new DeleteListener());
@@ -75,14 +75,14 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     selectAllButton = new JButton(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.setActionCommand(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.addActionListener(new SelectAllListener());
-    
+
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-    
+
     buttonPane.add(deleteButton);
-    buttonPane.add(selectAllButton);  
+    buttonPane.add(selectAllButton);
     buttonPane.add(closeButton);
-    
+
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     add(listScrollPane, BorderLayout.CENTER);
@@ -96,14 +96,14 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
         flatFilesList.add(f);
       }
     }
-    
+
     listModel.removeAllElements();
     for (List<File> lFiles : allFiles) {
-      listModel.addElement(lFiles.get(0).getName() + " ( " + lFiles.get(0).getDirectory().getAbsolutePath()
-          + " ) ");
+      listModel.addElement(lFiles.get(0).getName() + " ( "
+          + lFiles.get(0).getDirectory().getAbsolutePath() + " ) ");
       for (int i = 1; i < lFiles.size(); i++) {
         listModel.addElement("  + " + lFiles.get(i).getName() + " ( "
-           + lFiles.get(i).getDirectory().getAbsolutePath() + " ) ");
+            + lFiles.get(i).getDirectory().getAbsolutePath() + " ) ");
       }
     }
   }
@@ -119,7 +119,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
-      
+
       for (int i : indices) {
         try {
           Util.deleteFile(flatFilesList.get(i).getIO());
@@ -128,22 +128,22 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
           Log.error(131, ioe);
         }
       }
-      
+
       for (int i : indices) {
         listModel.remove(i);
         flatFilesList.remove(i);
         deleteFilefromList(i);
       }
-      
+
       populateList(allFiles);
     }
 
     public void deleteFilefromList(int index) {
       int count = 0;
-      for (int r=0; r< allFiles.size(); r++) {
-        for (int c=0; c< allFiles.get(r).size(); c++){
-          if(count == index){
-            if(allFiles.get(r).size() <= 2)
+      for (int r = 0; r < allFiles.size(); r++) {
+        for (int c = 0; c < allFiles.get(r).size(); c++) {
+          if (count == index) {
+            if (allFiles.get(r).size() <= 2)
               allFiles.remove(r);
             else
               allFiles.get(r).remove(c);

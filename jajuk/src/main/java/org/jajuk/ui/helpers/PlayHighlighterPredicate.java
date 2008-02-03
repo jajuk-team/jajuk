@@ -30,13 +30,13 @@ import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 
 /**
- * Jajuk playing highlighter used in some tables to change the cell background if
- * the item at given row is playing
+ * Jajuk playing highlighter used in some tables to change the cell background
+ * if the item at given row is playing
  */
 public class PlayHighlighterPredicate implements HighlightPredicate {
 
   private JajukTableModel model;
-  
+
   public PlayHighlighterPredicate(JajukTableModel model) {
     this.model = model;
   }

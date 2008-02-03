@@ -800,13 +800,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
       DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
       if (directoryNode == null) {
-        //Add the playlist under the device node
+        // Add the playlist under the device node
         DeviceNode deviceNode = DeviceNode.getDeviceNode(playlistFile.getDirectory().getDevice());
         if (deviceNode != null) {
           deviceNode.add(new PlaylistFileNode(playlistFile));
         }
       } else {
-        //Add the playlist under a common directory node
+        // Add the playlist under a common directory node
         directoryNode.add(new PlaylistFileNode(playlistFile));
       }
     }

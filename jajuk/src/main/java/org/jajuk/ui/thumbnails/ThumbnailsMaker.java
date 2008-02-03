@@ -210,7 +210,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.network_drive"));
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.player"));
-    //Load conf (required to get forced mplayer path for ie)
+    // Load conf (required to get forced mplayer path for ie)
     ConfigurationManager.getInstance();
     // registers supported audio supports and default properties
     Main.registerTypes();

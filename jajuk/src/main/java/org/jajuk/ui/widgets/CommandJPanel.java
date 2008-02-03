@@ -894,7 +894,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   private void populateDJs() {
     try {
       ddbDDJ.setToolTipText("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>"
-        + DigitalDJManager.getCurrentDJ() + "</b></html>");
+          + DigitalDJManager.getCurrentDJ() + "</b></html>");
       popupDDJ.removeAll();
       JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
       popupDDJ.add(jmiNew);

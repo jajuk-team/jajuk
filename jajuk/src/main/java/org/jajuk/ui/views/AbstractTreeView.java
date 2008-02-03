@@ -57,12 +57,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Items selection */
   ArrayList<Item> alSelected = new ArrayList<Item>(100);
-  
+
   /** Top tree node */
   DefaultMutableTreeNode top;
-  
+
   javax.swing.JPopupMenu jmenu;
-  
+
   JMenuItem jmiPlay;
 
   JMenuItem jmiPush;
@@ -70,17 +70,17 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiPlayShuffle;
 
   JMenuItem jmiPlayRepeat;
-  
+
   JMenuItem jmiCut;
-  
+
   JMenuItem jmiCopy;
-  
+
   JMenuItem jmiPaste;
-  
+
   JMenuItem jmiRename;
 
   JMenuItem jmiDelete;
-  
+
   JMenuItem jmiNewFolder;
 
   JMenuItem jmiAddFavorite;
@@ -88,7 +88,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiReport;
 
   JMenuItem jmiProperties;
-  
+
   JMenuItem jmiCDDBWizard;
 
   protected JTree createTree() {
@@ -97,16 +97,16 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     return jtree;
   }
-  
-  public void initUI(){
+
+  public void initUI() {
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiPlay.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
-    jmiPush.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiPush.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SHUFFLE_SELECTION));
-    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
-    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiCut = new JMenuItem(ActionManager.getAction(JajukAction.CUT));
     jmiCut.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiCopy = new JMenuItem(ActionManager.getAction(JajukAction.COPY));
@@ -120,9 +120,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiNewFolder = new JMenuItem(ActionManager.getAction(JajukAction.NEW_FOLDER));
     jmiNewFolder.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiAddFavorite = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
-    jmiAddFavorite.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiAddFavorite.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukAction.CDDB_SELECTION));
-    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION,alSelected);
+    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiReport = new JMenuItem(ActionManager.getAction(JajukAction.CREATE_REPORT));
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it

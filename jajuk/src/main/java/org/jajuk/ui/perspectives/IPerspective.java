@@ -47,7 +47,7 @@ public interface IPerspective {
   public abstract ImageIcon getIcon();
 
   /**
-   * Set icon 
+   * Set icon
    * 
    * @param iconURL
    *          icon

@@ -31,14 +31,16 @@ import org.jajuk.base.Item;
  * Convenient abstract class to factorize operations on selection
  */
 public abstract class SelectionAction extends ActionBase {
-  
- ArrayList<Item> selection = null;
 
- protected SelectionAction(String msg,ImageIcon icon,boolean enabled) {
-    super(msg,icon, enabled);
+  ArrayList<Item> selection = null;
+
+  protected SelectionAction(String msg, ImageIcon icon, boolean enabled) {
+    super(msg, icon, enabled);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.ActionBase#perform(java.awt.event.ActionEvent)
    */
   @SuppressWarnings("unchecked")
@@ -46,11 +48,10 @@ public abstract class SelectionAction extends ActionBase {
   protected void perform(ActionEvent e) throws Exception {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(DETAIL_SELECTION);
-    if (o instanceof Item){
+    if (o instanceof Item) {
       selection = new ArrayList<Item>(1);
-      selection.add((Item)o);
-    }
-    else if (o instanceof ArrayList){
+      selection.add((Item) o);
+    } else if (o instanceof ArrayList) {
       selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     }
   }

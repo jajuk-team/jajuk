@@ -35,8 +35,8 @@ public class IconLoader implements ITechnicalStrings {
   /** No covers image cache : size:default icon */
   public static final HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
 
-  public static final ImageIcon ICON_NO_COVER = new ImageIcon(Util
-      .getResource("images/included/" + ITechnicalStrings.FILE_THUMB_NO_COVER));
+  public static final ImageIcon ICON_NO_COVER = new ImageIcon(Util.getResource("images/included/"
+      + ITechnicalStrings.FILE_THUMB_NO_COVER));
 
   public static final ImageIcon ICON_LOGO = new ImageIcon(Util
       .getResource("icons/64x64/jajuk-icon_64x64.png"));
@@ -267,8 +267,8 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL = new ImageIcon(Util
       .getResource("icons/22x22/nfs_mount_22x22.png"));
 
-  public static final ImageIcon ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL = new ImageIcon(
-      Util.getResource("icons/22x22/nfs_unmount_22x22.png"));
+  public static final ImageIcon ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL = new ImageIcon(Util
+      .getResource("icons/22x22/nfs_unmount_22x22.png"));
 
   public static final ImageIcon ICON_DEVICE_DIRECTORY_MOUNTED_SMALL = new ImageIcon(Util
       .getResource("icons/22x22/folder_mount_22x22.png"));
@@ -533,7 +533,7 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_POPUP = new ImageIcon(Util
       .getResource("icons/16x16/popup_16x16.png"));
-  
+
   public static final ImageIcon ICON_ALARM = new ImageIcon(Util
       .getResource("icons/16x16/alarm_16x16.png"));
 

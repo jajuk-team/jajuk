@@ -71,14 +71,13 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
 
   private JPopupMenu jmenu;
 
-  /**Specific action on double click*/
+  /** Specific action on double click */
   private ILaunchCommand command;
-  
+
   /** Model refreshing flag */
   public volatile boolean acceptColumnsEvents = false;
-  
-  private static final DateFormat formatter = Util.getLocaleDateFormatter();
 
+  private static final DateFormat formatter = Util.getLocaleDateFormatter();
 
   /**
    * Constructor
@@ -88,7 +87,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @param bSortable :
    *          is this table sortable
    * @sConf: configuration variable used to store columns conf
-    */
+   */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
     super(model);
     acceptColumnsEvents = true;
@@ -104,7 +103,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
     // Listen for row selection
     getSelectionModel().addListSelectionListener(this);
-    //Listen for clicks
+    // Listen for clicks
     addMouseListener(this);
   }
 
@@ -212,7 +211,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   public void columnSelectionChanged(ListSelectionEvent arg0) {
     super.columnSelectionChanged(arg0);
   }
-  
+
   /**
    * 
    * Create the jtable visible columns conf

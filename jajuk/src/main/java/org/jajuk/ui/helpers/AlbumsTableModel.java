@@ -118,12 +118,13 @@ public class AlbumsTableModel extends JajukTableModel {
   public synchronized void populateModel(String sPropertyName, String sPattern) {
     List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
+    Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
+        .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
-    
+
     // Filter unmounted files if required
     Iterator<Album> it = alToShow.iterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       Album album = it.next();
       if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
           && !album.containsReadyFiles()) {
@@ -135,7 +136,7 @@ public class AlbumsTableModel extends JajukTableModel {
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
-    //Allow only custom properties edition
+    // Allow only custom properties edition
     bEditable = true;
     it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {

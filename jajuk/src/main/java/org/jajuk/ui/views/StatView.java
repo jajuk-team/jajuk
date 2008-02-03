@@ -72,7 +72,7 @@ import org.jfree.ui.TextAnchor;
 public class StatView extends ViewAdapter implements Observer {
 
   private static final long serialVersionUID = 1L;
-  
+
   private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
 
   /**
@@ -415,8 +415,8 @@ public class StatView extends ViewAdapter implements Observer {
     int[] iMonths = new int[iMonthsNumber + 1];
     String[] sMonths = getMonthsLabels(iMonthsNumber + 1);
     for (int i = 0; i < iMonthsNumber + 1; i++) {
-      iMonths[i] = Integer.parseInt(sMonths[i + 1].substring(3, 7)
-          + sMonths[i + 1].substring(0, 2));
+      iMonths[i] = Integer
+          .parseInt(sMonths[i + 1].substring(3, 7) + sMonths[i + 1].substring(0, 2));
     }
     return iMonths;
   }

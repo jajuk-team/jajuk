@@ -212,8 +212,8 @@ public class PerspectiveManager implements ITechnicalStrings {
   }
 
   /**
-   * Saves perspectives and views position in the perspective.xml file
-   * Must be executed in EDT to avoid dead locks on getComponent()
+   * Saves perspectives and views position in the perspective.xml file Must be
+   * executed in EDT to avoid dead locks on getComponent()
    */
   public static void commit() throws Exception {
     for (IPerspective perspective : getPerspectives()) {

@@ -122,7 +122,8 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
    */
   private void showPage(String sPage, File page) throws Exception {
     // Write the page itself
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page),"UTF-8"));
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page),
+        "UTF-8"));
     bw.write(sPage);
     bw.flush();
     bw.close();

@@ -121,8 +121,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAuthor.setEditable(false);
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAuthor.setForeground(mediumGray);
-      //we have to use a empty border to avoid getting default border
-      jlAuthor.setBorder(new EmptyBorder(0,0,0,0));
+      // we have to use a empty border to avoid getting default border
+      jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
 
       jlAlbum = new JTextArea(album.getName2(), 1, iRows);
       jlAlbum.setLineWrap(true);
@@ -132,7 +132,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setForeground(mediumGray);
-      jlAlbum.setBorder(new EmptyBorder(0,0,0,0));
+      jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
       add(jlIcon, "1,0,c,c");
       add(jlAuthor, "1,2");
       add(jlAlbum, "1,4");
@@ -235,7 +235,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getID() + "'>" + track.getName()
           + "</a>" + " (";
       sOut += Util.formatTimeBySec(track.getDuration(), false) + ") </b>";
-      if (album.getYear() == null  && track.getYear().getValue() != 0) {
+      if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
       }
       // Show author if known and if it is not already shown at album

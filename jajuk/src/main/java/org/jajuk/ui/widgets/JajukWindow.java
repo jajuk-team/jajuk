@@ -113,14 +113,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
         }
         // Save windows position
         saveSize();
-       
-        //Exit Jajuk
-        new Thread(){
-          public void run(){
-            Main.exit(0);    
+
+        // Exit Jajuk
+        new Thread() {
+          public void run() {
+            Main.exit(0);
           }
         }.start();
-        
+
       }
     });
 

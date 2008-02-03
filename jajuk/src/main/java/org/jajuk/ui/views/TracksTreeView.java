@@ -185,9 +185,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
     jmenuCollection.add(jmiCollectionDuplicateFiles);
 
-    final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_ALBUM_DETAILS));
+    final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
+        .getAction(JajukAction.SHOW_ALBUM_DETAILS));
     jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, alSelected);
-    
+
     top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
 
     // Register on the list for subject we are interested in

@@ -159,10 +159,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         alToShow.add(file);
       }
     }
-    //Filter files
-    Filter filter = new Filter(sPropertyName,sPattern,true,ConfigurationManager.getBoolean(CONF_REGEXP));
+    // Filter files
+    Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
+        .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
-    
+
     it = alToShow.iterator();
     int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size()
         + TrackManager.getInstance().getCustomProperties().size();
@@ -227,7 +228,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       oValues[iRow][10] = lQuality;
       bCellEditable[iRow][10] = false;
       // Size, we want to keep 2 decimals to the value in MB
-      oValues[iRow][11] = Math.round(file.getSize()/10485.76) / 100f;
+      oValues[iRow][11] = Math.round(file.getSize() / 10485.76) / 100f;
       bCellEditable[iRow][11] = false;
       // Order
       oValues[iRow][12] = file.getTrack().getOrder();

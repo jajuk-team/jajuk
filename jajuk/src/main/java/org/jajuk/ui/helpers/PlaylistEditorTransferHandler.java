@@ -112,7 +112,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getData();
         }
-        ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item)oData);
+        ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
         // queue case
         if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
           FIFO.getInstance().push(

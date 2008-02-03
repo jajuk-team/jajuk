@@ -408,8 +408,10 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
           } else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null) {
-              MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " " + Messages.getString("InformationJPanel.8"));
-              Object[] stArgs = {file.getTrack().getName(),file.getTrack().getAuthor().getName2(),file.getTrack().getAlbum().getName2()};
+              MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
+                  + Messages.getString("InformationJPanel.8"));
+              Object[] stArgs = { file.getTrack().getName(),
+                  file.getTrack().getAuthor().getName2(), file.getTrack().getAlbum().getName2() };
               String sMessage = sMessageFormat.format(stArgs);
               setMessage(sMessage, InformationJPanel.INFORMATIVE);
             }
