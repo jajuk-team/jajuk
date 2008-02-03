@@ -30,14 +30,11 @@ package org.jajuk.services.lyrics;
 import ext.services.xml.XMLBuilder;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import org.jajuk.services.lyrics.providers.IProvider;
@@ -71,8 +68,7 @@ public class LyricsService {
 
     Log.debug("Loading Providers");
     try {
-      final BufferedReader reader = new BufferedReader(new FileReader(new File(new URI(
-          ITechnicalStrings.FILE_LYRICS_CONF_PATH.toString()))));
+      final BufferedReader reader = new BufferedReader(new InputStreamReader(ITechnicalStrings.FILE_LYRICS_CONF_PATH.openStream()));
       final StringBuilder xml = new StringBuilder();
 
       for (String line = null; (line = reader.readLine()) != null;) {
@@ -128,8 +124,6 @@ public class LyricsService {
       Log.warn("File " + ITechnicalStrings.FILE_LYRICS_CONF_PATH + " was not found.");
     } catch (final IOException e) {
       Log.warn("IO Exception while loading " + ITechnicalStrings.FILE_LYRICS_CONF_PATH);
-    } catch (final URISyntaxException e) {
-      Log.warn("Invalid URI " + ITechnicalStrings.FILE_LYRICS_CONF_PATH);
     }
     return (providers);
   }
