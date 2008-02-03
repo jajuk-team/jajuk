@@ -58,6 +58,7 @@ import org.jajuk.ui.thumbnails.AbstractThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -93,6 +94,8 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
   JScrollPane jpSimilarAuthors;
 
   private int comp = 0;
+
+  List<Album> albums;
 
   /** Currently selected thumb */
   AbstractThumbnail selectedThumb;
@@ -161,7 +164,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     tabs.addTab(Messages.getString("SuggestionView.4"), Util.getCentredPanel(new JLabel(Messages
         .getString("SuggestionView.7"))));
     // Add panels
-    refreshLocalCollectionTabs();
+    refreshLocalCollectionTabs(true);
     // Add tabs
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(tabs);
@@ -178,7 +181,13 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     return eventSubjectSet;
   }
 
-  private void refreshLocalCollectionTabs() {
+  /**
+   * Refresh local thumbs
+   * 
+   * @param search
+   *          force searching new thumbs, if false, just UI refresh
+   */
+  private void refreshLocalCollectionTabs(final boolean search) {
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -201,9 +210,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
       @Override
       public Object construct() {
-        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
-        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
-        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
+        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF, search);
+        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST, search);
+        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE, search);
         return null;
       }
 
@@ -293,28 +302,29 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     tabs.setComponentAt(4, new JPanel());
   }
 
-  private JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
+  private JScrollPane getLocalSuggestionsPanel(SuggestionType type, boolean search) {
     FlowScrollPanel out = new FlowScrollPanel();
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(null);
     out.setScroller(jsp);
-    List<Album> albums = null;
-    if (type == SuggestionType.BEST_OF) {
-      albums = AlbumManager.getInstance().getBestOfAlbums(
-          ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-    } else if (type == SuggestionType.NEWEST) {
-      albums = AlbumManager.getInstance().getNewestAlbums(
-          ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-    } else if (type == SuggestionType.RARE) {
-      albums = AlbumManager.getInstance().getRarelyListenAlbums(
-          ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+    if (search) {
+      if (type == SuggestionType.BEST_OF) {
+        albums = AlbumManager.getInstance().getBestOfAlbums(
+            ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+      } else if (type == SuggestionType.NEWEST) {
+        albums = AlbumManager.getInstance().getNewestAlbums(
+            ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+      } else if (type == SuggestionType.RARE) {
+        albums = AlbumManager.getInstance().getRarelyListenAlbums(
+            ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+      }
     }
-    if (albums.size() > 0) {
+    if (albums != null && albums.size() > 0) {
       for (Album album : albums) {
         // Try creating the thumbnail
-        Util.refreshThumbnail(album, "100x100");
+        ThumbnailManager.refreshThumbnail(album, "100x100");
         LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
         thumb.populate();
         thumb.jlIcon.addMouseListener(new ThumbMouseListener());
@@ -378,7 +388,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       comp++;
       // Change local collection suggestions every 10 track plays
       if (comp % 10 == 0) {
-        refreshLocalCollectionTabs();
+        refreshLocalCollectionTabs(true);
       }
       // update last.fm panels
       refreshLastFMCollectionTabs();
@@ -389,9 +399,8 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     } else if (subject.equals(EventSubject.EVENT_PLAYER_STOP)) {
       author = null;
       clearLastFMPanels();
-    }
-    else if (subject.equals(EventSubject.EVENT_COVER_REFRESH)){
-      refreshLocalCollectionTabs();
+    } else if (subject.equals(EventSubject.EVENT_COVER_REFRESH)) {
+      refreshLocalCollectionTabs(false);
     }
   }
 

@@ -93,7 +93,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   public void populate() {
     // create the thumbnail if it doesn't exist
-    Util.refreshThumbnail(album, size + "x" + size);
+    ThumbnailManager.refreshThumbnail(album, size + "x" + size);
     if (!fCover.exists() || fCover.length() == 0) {
       bNoCover = true;
       this.fCover = null;
@@ -177,7 +177,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   @Override
   public String getDescription() {
     String size = "200x200";
-    Util.refreshThumbnail(album, size);
+    ThumbnailManager.refreshThumbnail(album, size);
     java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
         + '.' + EXT_THUMB);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));

@@ -57,6 +57,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.SizedJMenuItem;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -464,7 +465,7 @@ public class JajukSystray extends CommandJPanel {
       sOut += "<HTML><br>";
       String size = "100x100";
       int maxSize = 30;
-      Util.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), size);
+      ThumbnailManager.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(), size);
       java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
           + FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
       if (cover.canRead()) {

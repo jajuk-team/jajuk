@@ -226,7 +226,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
         Log.debug("Parent Jajuk closed, leaving now...");
         return;
       }
-      if (Util.refreshThumbnail(album, size + "x" + size)) {
+      if (ThumbnailManager.refreshThumbnail(album, size + "x" + size)) {
         stat++;
       }
       // Call GC to avoid increasing too much memory

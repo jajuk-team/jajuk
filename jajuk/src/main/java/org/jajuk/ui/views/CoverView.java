@@ -63,6 +63,7 @@ import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
@@ -103,7 +104,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    */
   private static boolean bOnceConnected = false;
 
-  /** Reference Filefor cover */
+  /** Reference File for cover */
   private org.jajuk.base.File fileReference;
 
   /** File directory used as a cache for perfs */
@@ -259,7 +260,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
       }
     } else if (e.getSource() == jbDefault) { // choose a default
-      // first commit this cover on the disk if it is a remote cover
+       // first commit this cover on the disk if it is a remote cover
       final Cover cover = alCovers.get(index);
       final String sFilename = Util.getOnlyFile(cover.getURL().toString());
       if (cover.getType() == Cover.REMOTE_COVER) {
@@ -279,6 +280,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             alCovers.add(cover2);
             setFoundText();
           }
+          //Remove previous thumbs to avoid using outdated images
+          org.jajuk.base.File fCurrent = fileReference;
+          if (fCurrent == null) {
+            fCurrent = FIFO.getInstance().getCurrentFile();
+          }
+          ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
           refreshThumbs(cover);
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
               InformationJPanel.INFORMATIVE);
@@ -877,7 +884,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         final File fThumb = Util.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/'
             + (50 + 50 * i) + "x" + (50 + 50 * i) + '/' + album.getID() + '.'
             + ITechnicalStrings.EXT_THUMB);
-        Util.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
+        ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
       }
       ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));
     } catch (final Exception ex) {
