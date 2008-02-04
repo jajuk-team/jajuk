@@ -496,7 +496,12 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   public Properties getProperties() throws Exception {
     if (properties == null) {
-      properties = parseLangpack(sLocal);
+      // reuse English if possible
+      if (sLocal.equals("en")) {
+        properties = getPropertiesEn();
+      } else {
+        properties = parseLangpack(sLocal);
+      }
     }
     return properties;
   }
