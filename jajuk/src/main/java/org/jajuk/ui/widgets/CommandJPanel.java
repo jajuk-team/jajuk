@@ -710,8 +710,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
   public void stateChanged(ChangeEvent e) {
-    if (e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting()) {
-      // this value should be low to make sure we can reach zero
+    if (e.getSource() == jsVolume ) {
       setVolume((float) jsVolume.getValue() / 100);
     }
   }
