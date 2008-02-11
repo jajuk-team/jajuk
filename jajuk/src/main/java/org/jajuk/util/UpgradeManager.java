@@ -139,7 +139,7 @@ public final class UpgradeManager implements ITechnicalStrings {
       sRelease = pad.substring(beginIndex + 17, endIndex);
       if (!JAJUK_VERSION.equals(sRelease)
       // Don't use this in test
-          && !(JAJUK_VERSION.equals(JAJUK_VERSION_TEST))) {
+          && !("VERSION_REPLACED_BY_ANT".equals(JAJUK_VERSION))) {
         newVersionName = sRelease;
         return;
       }

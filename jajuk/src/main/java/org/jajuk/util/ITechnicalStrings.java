@@ -159,11 +159,9 @@ public interface ITechnicalStrings {
   String CHECK_FOR_UPDATE_URL = "http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml";
 
   // Jajuk version
-  String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
+  String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 
-  String JAJUK_VERSION = JAJUK_VERSION_TEST;
-
-  String JAJUK_CODENAME = "Lothlórien";
+  String JAJUK_CODENAME = "Summertime";
 
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
@@ -202,7 +200,7 @@ public interface ITechnicalStrings {
   String FILE_LANGPACK_PART2 = ".properties";
 
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.5";
+  String TEST_VERSION = "1.6";
 
   // logs
   String FILE_LOGS = "jajuk.log";
