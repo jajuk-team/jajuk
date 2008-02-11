@@ -653,6 +653,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // the new workspace
         // (keep old repository for security and for use
         // by others users in multi-session mode)
+        boolean bPreviousPathExist = true;
+        // bPreviousPathExist is true if destination workspace already exists,
+        // it is then only a workspace switch
         if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
             + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"))
             .exists()) {
@@ -662,6 +665,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           final java.io.File dest = new java.io.File(newWorkspace + '/'
               + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"));
           Util.copyRecursively(from, dest);
+          bPreviousPathExist = false;
         }
         // OK, now write down the bootstrap file if
         // everything's OK
@@ -672,7 +676,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         bw.close();
         Util.stopWaiting();
         // Display a warning message and restart Jajuk
-        Messages.showInfoMessage(Messages.getString("ParameterView.209"));
+        if (bPreviousPathExist){
+          Messages.showInfoMessage(Messages.getString("ParameterView.247"));
+        }
+        else{
+          Messages.showInfoMessage(Messages.getString("ParameterView.209"));
+        }
         // Exit Jajuk
         new Thread() {
           public void run() {
