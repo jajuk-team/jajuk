@@ -9,7 +9,13 @@
         <mapID target="features" url="html/features.html" />
         <mapID target="files_organizer" url="html/files_organizer.html" />
         <mapID target="jajuk_dependencies" url="html/jajuk_dependencies.html" />
+        <mapID target="jajuk_license_derivated" url="html/jajuk_license_derivated.html" />
         <mapID target="keys_shortcuts" url="html/keys_shortcuts.html" />
+        <mapID target="license_apache" url="html/license_apache.html" />
+        <mapID target="license_bsd" url="html/license_bsd.html" />
+        <mapID target="license_creative_commons" url="html/license_creative_commons.html" />
+        <mapID target="license_gpl" url="html/license_gpl.html" />
+        <mapID target="license_lgpl" url="html/license_lgpl.html" />       
         <mapID target="new_features_highlights" url="html/new_features_highlights.html" />
         <mapID target="performance_tips" url="html/performance_tips.html" />
         <mapID target="perspectives_and_views" url="html/perspectives_and_views.html" />
@@ -49,5 +55,5 @@
         <mapID target="view_wikipedia" url="html/view_wikipedia.html" />
         <mapID target="special_options" url="html/special_options.html" />
         <mapID target="using_alarm_clock" url="html/using_alarm_clock.html" />
-        <mapID target="using_duplicate_finder" url="html/using_duplicate_finder.html" />
+        <mapID target="using_duplicate_finder" url="html/using_duplicate_finder.html" />       
    </map>
