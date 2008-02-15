@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -54,10 +55,12 @@ public class PerspectiveManager implements ITechnicalStrings {
   private static IPerspective currentPerspective = null;
 
   /** Perspective name -> perspective */
-  private static HashMap<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(
+  private static Map<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(
       10);
 
-  /** perspective */
+  /** perspective, required despite the Map above
+	in order to keep the order of the perspectives as the 
+	order in the Map is undefined */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
   /**
