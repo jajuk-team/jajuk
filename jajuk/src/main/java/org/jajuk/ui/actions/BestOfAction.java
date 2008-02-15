@@ -42,6 +42,7 @@ public class BestOfAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.24"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
     List<File> alToPlay = Util.filterByAmbience(
@@ -49,7 +50,7 @@ public class BestOfAction extends ActionBase {
     // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
     // number
     if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
-      alToPlay = (List<File>) alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+      alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
     }
     FIFO.getInstance().push(
         Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),

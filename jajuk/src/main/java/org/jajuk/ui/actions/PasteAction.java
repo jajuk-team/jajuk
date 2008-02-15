@@ -90,7 +90,7 @@ public class PasteAction extends ActionBase {
           dir = new java.io.File(((Device) item).getRootDirectory().getAbsolutePath());
           destDir = ((Device) item).getRootDirectory();
         } else {
-          dir = ((File) item).getIO().getParentFile();
+          dir = ((File) item).getDirectory().getFio();
           destDir = ((File) item).getDirectory();
         }
 
