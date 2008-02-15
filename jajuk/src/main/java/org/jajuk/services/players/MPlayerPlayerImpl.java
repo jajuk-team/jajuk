@@ -26,6 +26,8 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.WebRadio;
 import org.jajuk.services.core.RatingManager;
+import org.jajuk.services.players.AbstractMPlayerImpl;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -72,6 +74,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Position and elapsed time getter
    */
   private class PositionThread extends Thread {
+    public PositionThread(String name)
+    {
+      super(name);
+    }
+
+    @Override
     public void run() {
       while (!bStop) { // stop this thread when exiting
         try {
@@ -91,6 +99,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position
    */
   private class ReaderThread extends Thread {
+    public ReaderThread(String name)
+    {
+      super(name);
+    }
+
+    @Override
     public void run() {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
@@ -210,6 +224,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)
    */
+  @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
       throws Exception {
     this.lTime = 0;
@@ -239,9 +254,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // Start mplayer
     proc = pb.start();
     // start mplayer replies reader thread
-    new ReaderThread().start();
+    new ReaderThread("MPlayer reader thread").start();
     // start writer to mplayer thread
-    new PositionThread().start();
+    new PositionThread("MPlayer writer thread").start();
     // if opening, wait
     int i = 0;
     // Try to open the file during 10 secs
@@ -263,7 +278,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     } else {
       // try to kill the mplayer process if still alive
       if (proc != null) {
-        new Thread() {
+        new Thread("MPlayer process kill thread") {
+          @Override
           public void start() {
             Log.debug("OOT Mplayer process, try to kill it");
             proc.destroy();
@@ -279,6 +295,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /**
    * @return current position as a float ex: 0.2f
    */
+  @Override
   public float getCurrentPosition() {
     if (lDuration == 0) {
       return 0;
@@ -289,6 +306,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /**
    * @return Returns the lTime in ms
    */
+  @Override
   public long getElapsedTime() {
     return lTime;
   }
@@ -298,6 +316,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * 
    * @see org.jajuk.players.IPlayerImpl#pause()
    */
+  @Override
   public void pause() throws Exception {
     bPaused = true;
     sendCommand("pause");
@@ -308,6 +327,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * 
    * @see org.jajuk.players.IPlayerImpl#resume()
    */
+  @Override
   public void resume() throws Exception {
     bPaused = false;
     sendCommand("pause");
@@ -319,6 +339,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet
    *      supported
    */
+  @Override
   public void seek(float posValue) {
     // if fading, ignore
     if (bFading) {
@@ -333,6 +354,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /**
    * @return player state, -1 if player is null.
    */
+  @Override
   public int getState() {
     if (bFading) {
       return FADING_STATUS;
@@ -346,6 +368,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * 
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
+  @Override
   public long getCurrentLength() {
     return lDuration;
   }
