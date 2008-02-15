@@ -48,6 +48,9 @@ public class RatingManager extends Thread implements ITechnicalStrings {
   private static boolean bRateHasChanged = true;
 
   private RatingManager() {
+    // set thread name
+    super("Rating Manager Thread");
+
     setPriority(Thread.MIN_PRIORITY);
   }
 
@@ -58,6 +61,7 @@ public class RatingManager extends Thread implements ITechnicalStrings {
     return self;
   }
 
+  @Override
   public void run() {
     while (!Main.bExiting) {
       // Computes every 10 mins, until jajuk ends
