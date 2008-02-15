@@ -40,6 +40,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position
    */
   private class ReaderThread extends Thread {
+    @Override
     public void run() {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
@@ -66,6 +67,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)
    */
+  @Override
   @SuppressWarnings("unchecked")
   public void play(WebRadio radio, float fVolume) throws Exception {
     this.fVolume = fVolume;

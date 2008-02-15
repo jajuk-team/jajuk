@@ -117,7 +117,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     if (fPosition > 0.0f) {
       // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
       // test if this is a audio format supporting seeking
-      if (TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getIO()))
+      // Note: fio.getName() is better here as it will do less and not create java.io.File in File
+      if (TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getName())) 
           .getBooleanValue(XML_TYPE_SEEK_SUPPORTED)) {
         seek(fPosition);
       }
