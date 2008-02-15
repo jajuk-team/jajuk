@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import org.jajuk.services.events.Event;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
@@ -48,7 +49,8 @@ public class ObservationManager implements ITechnicalStrings {
 
   static volatile Vector<Event> vFIFO = new Vector<Event>(10);
 
-  static private Thread t = new Thread() {
+  static private Thread t = new Thread("Observation Manager Thread") {
+    @Override
     public void run() {
       while (true) {
         try {
@@ -59,7 +61,8 @@ public class ObservationManager implements ITechnicalStrings {
         if (vFIFO.size() > 0) {
           final Event event = vFIFO.get(0);
           vFIFO.remove(0);
-          new Thread() { // launch action asynchronously
+          new Thread("Observation Manager Sync Notify Thread") { // launch action asynchronously
+            @Override
             public void run() {
               notifySync(event);
             }
