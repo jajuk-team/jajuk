@@ -114,15 +114,18 @@ public class XCheckedButton extends JButton {
     return new MouseAdapter() {
       // For static menuitems, the background color remains the
       // highlighted color, if this is not overridden
+      @Override
       public void mousePressed(MouseEvent e) {
         setMenuItemDefaultColors();
       }
 
+      @Override
       public void mouseEntered(MouseEvent e) {
         XCheckedButton.this.setBackground(MENU_HIGHLIGHT_BG_COLOR);
         XCheckedButton.this.setForeground(MENU_HIGHLIGHT_FG_COLOR);
       }
 
+      @Override
       public void mouseExited(MouseEvent e) {
         setMenuItemDefaultColors();
       }
@@ -151,6 +154,7 @@ public class XCheckedButton extends JButton {
     /*
      * Need to Override keeping the super code, else the check mark won't come
      */
+    @Override
     public void setSelected(boolean b) {
 
       ButtonGroup group = getGroup();

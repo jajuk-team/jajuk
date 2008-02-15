@@ -67,6 +67,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     // super.add(scroll);
   }
 
+  @Override
   public void show(Component invoker, int x, int y) {
     init(jframe);
     // this.pack();
@@ -115,10 +116,12 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     }
   }
 
+  @Override
   public void addSeparator() {
     panelMenus.add(new XSeperator());
   }
 
+  @Override
   public void removeAll() {
     panelMenus.removeAll();
   }
@@ -127,6 +130,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     this.hidemenu();
   }
 
+  @Override
   public Component[] getComponents() {
     return panelMenus.getComponents();
   }
@@ -145,6 +149,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
         return new XBasicSeparatorUI();
       }
 
+      @Override
       public void paint(Graphics g, JComponent c) {
         Dimension s = c.getSize();
 
