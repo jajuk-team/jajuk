@@ -74,6 +74,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_FILE;
   }
@@ -81,6 +82,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "File[ID=" + getID() + " Name={{" + getName() + "}} Dir=" + directory + " Size="
         + getSize() + " Quality=" + getQuality() + "]";
@@ -142,7 +144,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * @return associated type
    */
   public Type getType() {
-    String extension = Util.getExtension(this.getIO());
+    String extension = Util.getExtension(this.getName()); // getName() is better here as it will do less and not create java.io.File in File
     if (extension != null) {
       return TypeManager.getInstance().getTypeByExtension(extension);
     }
@@ -274,6 +276,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Item_File") + " : " + getName();
   }
@@ -283,6 +286,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   public String getHumanValue(String sKey) {
     if (XML_DIRECTORY.equals(sKey)) {
       Directory dParent = DirectoryManager.getInstance().getDirectoryByID(getStringValue(sKey));
@@ -315,6 +319,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   /**
    * @return a human representation of all concatenated properties
    */
+  @Override
   public String getAny() {
     // rebuild any
     StringBuilder sb = new StringBuilder(100);
@@ -348,7 +353,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   @Override
   public ImageIcon getIconRepresentation() {
     ImageIcon icon = null;
-    String ext = Util.getExtension(getIO());
+    String ext = Util.getExtension(getName());  // getName() is better here as it will do less and not create java.io.File in File
     Type type = TypeManager.getInstance().getTypeByExtension(ext);
     // Find associated icon with this type
     URL iconUrl = null;
