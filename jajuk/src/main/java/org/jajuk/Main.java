@@ -437,6 +437,7 @@ public class Main implements ITechnicalStrings {
       if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP) && (sc != null)) {
         sc.setProgress(100);
         sc.splashOff();
+        sc=null;
       }
     }
   }
@@ -708,7 +709,8 @@ public class Main implements ITechnicalStrings {
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
           try {
-            sc.setProgress(5, Messages.getString("Main.22"));
+            if(sc != null)
+              sc.setProgress(5, Messages.getString("Main.22"));
             Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
             File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
             DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
@@ -939,6 +941,7 @@ public class Main implements ITechnicalStrings {
       // started
       if (sc != null) {
         sc.dispose();
+        sc = null;
       }
       Log.error(124);
       Messages.getChoice(Messages.getErrorMessage(124), JOptionPane.DEFAULT_OPTION,
@@ -1355,6 +1358,9 @@ public class Main implements ITechnicalStrings {
             // Display progress
             sc.setProgress(100);
             sc.splashOff();
+            
+            // free resources
+            sc=null;
           }
           bUILauched = true;
           // Notify any first time wizard to startup refresh
