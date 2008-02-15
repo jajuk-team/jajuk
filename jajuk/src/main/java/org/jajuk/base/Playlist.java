@@ -56,6 +56,7 @@ public class Playlist extends LogicalItem implements Comparable {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_PLAYLIST;
   }
@@ -63,6 +64,7 @@ public class Playlist extends LogicalItem implements Comparable {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     StringBuilder sbOut = new StringBuilder("Playlist[ID=" + getID() + "]");
     for (int i = 0; i < alPlaylistFiles.size(); i++) {
@@ -85,12 +87,13 @@ public class Playlist extends LogicalItem implements Comparable {
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   public String getHumanValue(String sKey) {
     if (XML_PLAYLIST_FILES.equals(sKey)) {
       StringBuilder sbOut = new StringBuilder();
-      Iterator it = alPlaylistFiles.iterator();
+      Iterator<PlaylistFile> it = alPlaylistFiles.iterator();
       while (it.hasNext()) {
-        PlaylistFile plf = (PlaylistFile) it.next();
+        PlaylistFile plf = it.next();
         sbOut.append(plf.getAbsolutePath() + ",");
       }
       return sbOut.substring(0, sbOut.length() - 1); // remove last
@@ -105,9 +108,9 @@ public class Playlist extends LogicalItem implements Comparable {
    */
   public PlaylistFile getPlayeablePlaylistFile() {
     PlaylistFile plfOut = null;
-    Iterator it = alPlaylistFiles.iterator();
+    Iterator<PlaylistFile> it = alPlaylistFiles.iterator();
     while (it.hasNext()) {
-      PlaylistFile plf = (PlaylistFile) it.next();
+      PlaylistFile plf = it.next();
       if (plf.isReady()) {
         plfOut = plf;
       }
@@ -161,6 +164,7 @@ public class Playlist extends LogicalItem implements Comparable {
    * 
    * @return playlist name
    */
+  @Override
   public String getName() {
     String sOut = "";
     if (alPlaylistFiles.size() > 0) {
@@ -201,6 +205,7 @@ public class Playlist extends LogicalItem implements Comparable {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Item_Playlist") + " : " + getName();
   }

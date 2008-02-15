@@ -47,7 +47,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
   private boolean bConstructor = false;
 
   /** Property Type (java.lang.String for ie) */
-  private Class cType;
+  private Class<?> cType;
 
   /** Default value (null: no default) */
   Object oDefaultValue;

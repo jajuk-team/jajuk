@@ -275,9 +275,9 @@ public class DirectoryManager extends ItemManager {
         }
       }
       // remove all sub dirs
-      final Iterator it = dir.getDirectories().iterator();
+      final Iterator<Directory> it = dir.getDirectories().iterator();
       while (it.hasNext()) {
-        final Directory dSub = (Directory) it.next();
+        final Directory dSub = it.next();
         removeDirectory(dSub.getID()); // self call
         // remove it
         it.remove();

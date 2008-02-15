@@ -202,6 +202,7 @@ public class StyleManager extends ItemManager {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_STYLES;
   }

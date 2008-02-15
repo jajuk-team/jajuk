@@ -48,6 +48,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_AUTHOR;
   }
@@ -68,6 +69,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "Author[ID=" + getID() + " Name={{" + getName() + "}}]";
   }
@@ -98,6 +100,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Item_Author") + " : " + getName2();
   }
@@ -107,6 +110,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   public String getHumanValue(String sKey) {
     if (XML_NAME.equals(sKey)) {
       return getName2();

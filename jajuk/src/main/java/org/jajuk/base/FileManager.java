@@ -405,8 +405,8 @@ public class FileManager extends ItemManager implements Observer {
    */
   public synchronized File getNoveltyFile() {
     synchronized (FileManager.getInstance().getLock()) {
-      ArrayList alEligibleFiles = getGlobalNoveltiesPlaylist();
-      return (File) alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
+      ArrayList<File> alEligibleFiles = getGlobalNoveltiesPlaylist();
+      return alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
     }
   }
 
@@ -594,7 +594,7 @@ public class FileManager extends ItemManager implements Observer {
       }
       // look for a correct file from index to collection end
       boolean bStarted = false;
-      Iterator it = files.iterator();
+      Iterator<Item> it = files.iterator();
       while (it.hasNext()) {
         fileNext = (File) it.next();
         if (bStarted) {
@@ -672,7 +672,7 @@ public class FileManager extends ItemManager implements Observer {
       if (file == null || hmItems.size() == 0) {
         return false;
       }
-      Iterator it = files.iterator();
+      Iterator<Item> it = files.iterator();
       File first = (File) it.next();
       return (file.equals(first));
     }
@@ -690,7 +690,7 @@ public class FileManager extends ItemManager implements Observer {
       }
       Set<File> out = new TreeSet<File>();
       Directory dir = file.getDirectory();
-      Iterator it = files.iterator();
+      Iterator<Item> it = files.iterator();
       while (it.hasNext()) {
         File f = (File) it.next();
         Directory d = f.getDirectory();
@@ -715,7 +715,7 @@ public class FileManager extends ItemManager implements Observer {
       Set<Item> files = getItems();
       Set<File> out = new TreeSet<File>();
       Directory dir = file.getDirectory();
-      Iterator it = files.iterator();
+      Iterator<Item> it = files.iterator();
       boolean bSeenTheOne = false;
       while (it.hasNext()) {
         File f = (File) it.next();
@@ -738,6 +738,7 @@ public class FileManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_FILES;
   }

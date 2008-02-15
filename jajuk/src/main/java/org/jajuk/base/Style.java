@@ -50,6 +50,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_STYLE;
   }
@@ -70,6 +71,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "Style[ID=" + getID() + " Name={{" + getName() + "}}]";
   }
@@ -107,6 +109,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Item_Style") + " : " + getName2();
   }
@@ -116,6 +119,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   final public String getHumanValue(String sKey) {
     if (XML_NAME.equals(sKey)) {
       return getName2();

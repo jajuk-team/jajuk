@@ -42,6 +42,7 @@ public class WebRadio implements Comparable<WebRadio> {
     return this.url;
   }
 
+  @Override
   public boolean equals(Object other) {
     if (!(other instanceof WebRadio)) {
       return false;
@@ -57,6 +58,7 @@ public class WebRadio implements Comparable<WebRadio> {
     return name.compareTo((other).getName());
   }
 
+  @Override
   public String toString() {
     return name + " (" + url + ")";
   }

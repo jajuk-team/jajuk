@@ -46,7 +46,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
    * in commited collection)
    */
-  static private LinkedHashMap<Class, ItemManager> hmItemManagers = new LinkedHashMap<Class, ItemManager>(
+  static private LinkedHashMap<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
       10);
 
   /** Maps properties meta information name and object */
@@ -70,7 +70,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    *          Managed item class
    * @param itemManager
    */
-  public static void registerItemManager(Class c, ItemManager itemManager) {
+  public static void registerItemManager(Class<?> c, ItemManager itemManager) {
     hmItemManagers.put(c, itemManager);
   }
 
@@ -141,9 +141,9 @@ public abstract class ItemManager implements ITechnicalStrings {
    */
   public String toXML() {
     StringBuilder sb = new StringBuilder("\t<").append(getLabel() + ">");
-    Iterator it = hmPropertiesMetaInformation.keySet().iterator();
+    Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
     while (it.hasNext()) {
-      String sProperty = (String) it.next();
+      String sProperty = it.next();
       PropertyMetaInformation meta = hmPropertiesMetaInformation.get(sProperty);
       sb.append('\n' + meta.toXML());
     }

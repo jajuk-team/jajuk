@@ -110,6 +110,7 @@ public class Track extends LogicalItem implements Comparable {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     String sOut = "Track[ID=" + getID() + " Name={{" + getName() + "}} " + album + " " + style
         + " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate()
@@ -124,6 +125,7 @@ public class Track extends LogicalItem implements Comparable {
   /**
    * @return a human representation of all concatenated properties
    */
+  @Override
   public String getAny() {
     // rebuild any
     StringBuilder sb = new StringBuilder(100);

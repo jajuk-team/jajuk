@@ -57,7 +57,8 @@ public class DeviceManager extends ItemManager {
   private Set<Device> devicesDeepRefreshed = new HashSet<Device>();
 
   /** Auto-refresh thread */
-  private Thread tAutoRefresh = new Thread() {
+  private Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
+    @Override
     public void run() {
       while (!Main.isExiting()) {
         try {
@@ -227,7 +228,7 @@ public class DeviceManager extends ItemManager {
   /**
    * @return Device types iteration
    */
-  public Iterator getDeviceTypes() {
+  public Iterator<String> getDeviceTypes() {
     return alDevicesTypes.iterator();
   }
 
@@ -302,9 +303,9 @@ public class DeviceManager extends ItemManager {
   public boolean isAnyDeviceRefreshing() {
     synchronized (DeviceManager.getInstance().getLock()) {
       boolean bOut = false;
-      Iterator it = DeviceManager.getInstance().getDevices().iterator();
+      Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
       while (it.hasNext()) {
-        Device device = (Device) it.next();
+        Device device = it.next();
         if (device.isRefreshing()) {
           bOut = true;
           break;
@@ -340,6 +341,7 @@ public class DeviceManager extends ItemManager {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_DEVICES;
   }

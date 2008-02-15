@@ -144,7 +144,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
 
   /** Auto commit thread */
-  private static Thread tAutoCommit = new Thread() {
+  private static Thread tAutoCommit = new Thread("Collection Auto Commit Thread") {
+    @Override
     public void run() {
       while (!Main.isExiting()) {
         try {
@@ -355,6 +356,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
    * @param spe
    * @exception SAXException
    */
+  @Override
   public void warning(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -366,6 +368,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
    * @param spe
    * @exception SAXException
    */
+  @Override
   public void error(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -377,6 +380,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
    * @param spe
    * @exception SAXException
    */
+  @Override
   public void fatalError(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -385,6 +389,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   /**
    * Called at parsing start
    */
+  @Override
   public void startDocument() {
     Log.debug("Starting collection file parsing...");
   }
@@ -392,6 +397,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   /**
    * Called at parsing end
    */
+  @Override
   public void endDocument() {
     long l = (System.currentTimeMillis() - lTime);
     Log.debug("Collection file parsing done : " + l + " ms");
@@ -401,6 +407,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
    * Called when we start an element
    * 
    */
+  @Override
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
       throws SAXException {
     try {
@@ -465,7 +472,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               .getIndex(XML_EDITABLE)));
           boolean bUnique = Boolean.parseBoolean(attributes.getValue(attributes
               .getIndex(XML_UNIQUE)));
-          Class cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
+          Class<?> cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
           String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE))
               .intern();
           Object oDefaultValue = null;
@@ -506,7 +513,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         switch (stage) {
         case STAGE_FILES:
           sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
-          // Check file type is still registrated, it can be
+          // Check file type is still registered, it can be
           // useful for ie if mplayer is no more available
           String ext = Util.getExtension(sItemName);
           type = TypeManager.getInstance().getTypeByExtension(ext);
