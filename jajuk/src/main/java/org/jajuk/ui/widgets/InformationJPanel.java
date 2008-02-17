@@ -405,6 +405,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
+            jsPosition.addMouseWheelListener(InformationJPanel.this);
+            jsPosition.addChangeListener(InformationJPanel.this);
           } else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null) {
