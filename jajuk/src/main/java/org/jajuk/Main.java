@@ -437,7 +437,7 @@ public class Main implements ITechnicalStrings {
       if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP) && (sc != null)) {
         sc.setProgress(100);
         sc.splashOff();
-        sc=null;
+        sc = null;
       }
     }
   }
@@ -709,7 +709,7 @@ public class Main implements ITechnicalStrings {
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
           try {
-            if(sc != null)
+            if (sc != null)
               sc.setProgress(5, Messages.getString("Main.22"));
             Log.debug("Download Mplayer from: " + URL_MPLAYER); //$NON-NLS-1$
             File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
@@ -753,8 +753,8 @@ public class Main implements ITechnicalStrings {
       }
       // Choose player according to mplayer presence or not
       if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
-        Log.debug("Mplayer status=" + mplayerStatus);
         // No mplayer, show mplayer warnings
+        Log.debug("Mplayer status=" + mplayerStatus);
         if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
           // Test if user didn't already select "don't show again"
           if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
@@ -811,6 +811,22 @@ public class Main implements ITechnicalStrings {
         type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
         type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
         type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wav_16x16.png")
+            .toExternalForm());
+        // APE
+        type = TypeManager.getInstance().registerType(Messages.getString("Type.ape"), EXT_APE,
+            Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        type.setProperty(XML_TYPE_IS_MUSIC, true);
+        type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+        type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
+        type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
+            .toExternalForm());
+        // MAC
+        type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), EXT_MAC,
+            Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        type.setProperty(XML_TYPE_IS_MUSIC, true);
+        type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+        type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
+        type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
             .toExternalForm());
       } else { // mplayer enabled
         // mp3
@@ -904,24 +920,31 @@ public class Main implements ITechnicalStrings {
         type.setProperty(XML_TYPE_IS_MUSIC, true);
         type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
         type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RADIO);
+        // APE
+        type = TypeManager.getInstance().registerType(Messages.getString("Type.ape"), EXT_APE,
+            Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        type.setProperty(XML_TYPE_IS_MUSIC, true);
+        type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+        type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
+        type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
+            .toExternalForm());
+        // MAC
+        type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), EXT_MAC,
+            Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        type.setProperty(XML_TYPE_IS_MUSIC, true);
+        type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+        type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
+        type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
+            .toExternalForm());
+        //VIDEO
+        type = TypeManager.getInstance().registerType(Messages.getString("Type.avi"), EXT_AVI,
+            Class.forName(PLAYER_IMPL_MPLAYER), null);
+        type.setProperty(XML_TYPE_IS_MUSIC, true);
+        type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+        type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AVI);
+        type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_avi_16x16.png")
+            .toExternalForm());
       }
-      // Types not only supported by mplayer but supported by basicplayer
-      // APE
-      Type type = TypeManager.getInstance().registerType(Messages.getString("Type.ape"), EXT_APE,
-          Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
-      type.setProperty(XML_TYPE_IS_MUSIC, true);
-      type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-      type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
-      type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
-          .toExternalForm());
-      // MAC
-      type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), EXT_MAC,
-          Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
-      type.setProperty(XML_TYPE_IS_MUSIC, true);
-      type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-      type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
-      type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
-          .toExternalForm());
     } catch (final Exception e1) {
       Log.error(26, e1);
     }
@@ -1358,9 +1381,9 @@ public class Main implements ITechnicalStrings {
             // Display progress
             sc.setProgress(100);
             sc.splashOff();
-            
+
             // free resources
-            sc=null;
+            sc = null;
           }
           bUILauched = true;
           // Notify any first time wizard to startup refresh

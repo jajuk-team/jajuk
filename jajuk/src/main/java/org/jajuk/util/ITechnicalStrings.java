@@ -389,6 +389,8 @@ public interface ITechnicalStrings {
 
   String TYPE_PROPERTY_TECH_DESC_RADIO = "radio";
 
+  String TYPE_PROPERTY_TECH_DESC_AVI = "avi";
+
   // Devices sync mode
   String DEVICE_SYNCHRO_MODE_BI = "bi";
 
@@ -465,6 +467,8 @@ public interface ITechnicalStrings {
   String EXT_REAL = "ram";
 
   String EXT_RADIO = "radio";
+  
+  String EXT_AVI = "avi";
 
   // details keys
   String DETAIL_CURRENT_FILE_ID = "current file id";
