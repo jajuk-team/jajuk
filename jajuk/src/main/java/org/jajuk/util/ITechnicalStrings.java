@@ -389,7 +389,7 @@ public interface ITechnicalStrings {
 
   String TYPE_PROPERTY_TECH_DESC_RADIO = "radio";
 
-  String TYPE_PROPERTY_TECH_DESC_AVI = "avi";
+  String TYPE_PROPERTY_TECH_DESC_VIDEO = "Video steam";
 
   // Devices sync mode
   String DEVICE_SYNCHRO_MODE_BI = "bi";
@@ -433,42 +433,34 @@ public interface ITechnicalStrings {
 
   // extensions
   String EXT_MP3 = "mp3";
-
   String EXT_MP2 = "mp2";
-
   String EXT_PLAYLIST = "m3u";
-
   String EXT_OGG = "ogg";
-
   String EXT_WAV = "wav";
-
   String EXT_AU = "au";
-
   String EXT_AIFF = "aiff";
-
   String EXT_FLAC = "flac";
-
   String EXT_THUMB = "jpg";
-
   String EXT_MPC = "mpc";
-
+  String EXT_MPPLUS = "mp+";
+  String EXT_MPP = "mpp";
   String EXT_WMA = "wma";
-
   String EXT_APE = "ape";
-
   String EXT_APL = "apl";
-
   String EXT_MAC = "mac";
-
   String EXT_AAC = "aac";
-
   String EXT_M4A = "m4a";
-
   String EXT_REAL = "ram";
-
   String EXT_RADIO = "radio";
-  
   String EXT_AVI = "avi";
+  String EXT_MPG = "mpg";
+  String EXT_MPEG = "mpeg";
+  String EXT_MKV = "mkv";
+  String EXT_ASF = "asf";
+  String EXT_WMV = "wmv";
+  String EXT_MOV = "mov";
+  String EXT_OGM = "ogm";
+  String EXT_MP4 = "mp4";
 
   // details keys
   String DETAIL_CURRENT_FILE_ID = "current file id";
