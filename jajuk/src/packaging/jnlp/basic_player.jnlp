@@ -6,7 +6,6 @@
     </information>
     <resources>
         <jar href="basicplayer-3.0.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="jmactritonusspi-1.74.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>
