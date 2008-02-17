@@ -146,7 +146,7 @@ public interface ITechnicalStrings {
       * HOURS_IN_A_DAY;
 
   /** Mplayer windows exe size in bytes */
-  long MPLAYER_EXE_SIZE = 3284992l;
+  long MPLAYER_EXE_SIZE = 12818944l;
 
   String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS/mplayer";
 
@@ -249,7 +249,7 @@ public interface ITechnicalStrings {
 
   String FILE_BACKGROUND_IMAGE = "background.jpg";
 
-  String URL_MPLAYER = "http://jajuk.info/mplayer/1.0pre8/mplayer.exe";
+  String URL_MPLAYER = "http://repository.jajuk.info/mplayer/1.0rc2/mplayer.exe";
 
   String URL_DEFAULT_WEBRADIOS_1 = "http://jajuk.svn.sourceforge.net/viewvc/*checkout*/jajuk/trunk/jajuk/src/main/resources/xml/default_webradios.xml";
 
