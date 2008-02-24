@@ -303,8 +303,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
           // under Metacity, see
           // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
           setVisible(false);
-          toFront();
           setVisible(true);
+          toFront();
           setState(Frame.NORMAL);
         }
         // hide
