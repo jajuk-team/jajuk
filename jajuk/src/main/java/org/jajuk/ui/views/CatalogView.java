@@ -47,6 +47,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -741,6 +742,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       ConfigurationManager.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter
           .getSelectedIndex()));
     } else if (e.getSource() == jbRefresh) {
+      int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (resu != JOptionPane.OK_OPTION){
+        return;
+      }
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100x100);
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150x150);
