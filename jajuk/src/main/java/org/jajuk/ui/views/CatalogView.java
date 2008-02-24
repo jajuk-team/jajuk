@@ -744,7 +744,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     } else if (e.getSource() == jbRefresh) {
       int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-      if (resu != JOptionPane.OK_OPTION){
+      if (resu != JOptionPane.YES_OPTION){
         return;
       }
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
