@@ -231,7 +231,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     } else if (e.getSource().equals(okc.getOKButton())) {
       dispose(); // close window, otherwise you will have some issues if
       // fields are not updated with changes
-      new Thread() {
+      Thread t = new Thread() {
         public void run() {
           try {
             PropertiesWizard.this.panel1.save();
@@ -248,7 +248,10 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
             ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
           }
         }
-      }.start();
+      };
+      //Set min priority to allow EDT to be able to refresh UI between 2 tag changes
+      t.setPriority(Thread.MIN_PRIORITY);
+      t.start();
     }
   }
 

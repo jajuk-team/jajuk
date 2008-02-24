@@ -109,117 +109,122 @@ public class TracksTableModel extends JajukTableModel {
    */
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String property, String sPattern) {
-    // Filter mounted files if needed and apply sync table with tree option
-    // if needed
-    boolean bShowWithTree = true;
-    ArrayList<Track> alToShow = null;
-    // look at selection
-    boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-    Set<Track> alTracks = TrackManager.getInstance().getTracks();
-    alToShow = new ArrayList<Track>(alTracks.size());
-    for (Track track : alTracks) {
-      bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
-          // tree selection = null means none selection have been
-          // done so far
-          || treeSelection == null
-          // check if the tree selection contains the current file
-          || (treeSelection.size() > 0 && treeSelection.contains(track));
-      // show it if no sync option or if item is in the selection
-      if (!track.shouldBeHidden() && bShowWithTree) {
-        alToShow.add(track);
-      }
-    }
-    // Filter values using given pattern
-    Filter filter = new Filter(property, sPattern, true, ConfigurationManager
-        .getBoolean(CONF_REGEXP));
-    Filter.filterItems(alToShow, filter);
-    // sort by album
-    Collections.sort(alToShow, new TrackComparator(2));
-    Iterator it = alToShow.iterator();
-    int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
-    iRowNum = alToShow.size();
-    it = alToShow.iterator();
-    oValues = new Object[iRowNum][iColNum];
-    oItems = new Item[iRowNum];
-    bCellEditable = new boolean[iRowNum][iColNum];
-    for (int iRow = 0; it.hasNext(); iRow++) {
-      Track track = (Track) it.next();
-      setItemAt(iRow, track);
-      LinkedHashMap properties = track.getProperties();
-      // Id
-      oItems[iRow] = track;
-      // Play
-      IconLabel il = null;
-      if (track.getPlayeableFile(true) != null) {
-        il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("TracksTableView.7"));
-      } else {
-        il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-            .getString("TracksTableView.7")
-            + Messages.getString("AbstractTableView.10"));
-      }
-      // Note: if you want to add an image, use an ImageIcon class and
-      // change
-      oValues[iRow][0] = il;
-      bCellEditable[iRow][0] = false;
-      // check track has an associated tag editor (not null)
-      boolean bHasATagEditor = false;
-      File file = track.getFiles().get(0);
-      // all files have the same type
-      Type type = file.getType();
-      if (type != null) {
-        bHasATagEditor = (type.getTaggerClass() != null);
-      }
-      // Track name
-      oValues[iRow][1] = track.getName();
-      bCellEditable[iRow][1] = bHasATagEditor;
-      // Album
-      oValues[iRow][2] = track.getAlbum().getName2();
-      bCellEditable[iRow][2] = bHasATagEditor;
-      // Author
-      oValues[iRow][3] = track.getAuthor().getName2();
-      bCellEditable[iRow][3] = bHasATagEditor;
-      // Style
-      oValues[iRow][4] = track.getStyle().getName2();
-      bCellEditable[iRow][4] = bHasATagEditor;
-      // Rate
-      IconLabel ilRate = Util.getStars(track);
-      oValues[iRow][5] = ilRate;
-      bCellEditable[iRow][5] = false;
-      ilRate.setInteger(true);
-      // Length
-      oValues[iRow][6] = new Duration(track.getDuration());
-      bCellEditable[iRow][6] = false;
-      // Comment
-      oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
-      bCellEditable[iRow][7] = bHasATagEditor;
-      // Date discovery
-      oValues[iRow][8] = track.getDiscoveryDate(); // show date using
-      // default local format
-      // and not technical
-      // representation
-      bCellEditable[iRow][8] = false;
-      // Order
-      oValues[iRow][9] = track.getOrder();
-      bCellEditable[iRow][9] = bHasATagEditor;
-      // Year
-      oValues[iRow][10] = track.getYear().getValue();
-      bCellEditable[iRow][10] = bHasATagEditor;
-      // Hits
-      oValues[iRow][11] = track.getHits();
-      bCellEditable[iRow][11] = false;
-      // Custom properties now
-      Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
-      for (int i = 0; it2.hasNext(); i++) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
-        Object o = properties.get(meta.getName());
-        if (o != null) {
-          oValues[iRow][iNumberStandardCols + i] = o;
-        } else {
-          oValues[iRow][iNumberStandardCols + i] = meta.getDefaultValue();
+    synchronized (TrackManager.getInstance().getLock()) {
+      // This should be monitor filemanager to avoid NPE when changing items
+
+      // Filter mounted files if needed and apply sync table with tree option
+      // if needed
+      boolean bShowWithTree = true;
+      ArrayList<Track> alToShow = null;
+      // look at selection
+      boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+      Set<Track> alTracks = TrackManager.getInstance().getTracks();
+      alToShow = new ArrayList<Track>(alTracks.size());
+      for (Track track : alTracks) {
+        bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
+            // tree selection = null means none selection have been
+            // done so far
+            || treeSelection == null
+            // check if the tree selection contains the current file
+            || (treeSelection.size() > 0 && treeSelection.contains(track));
+        // show it if no sync option or if item is in the selection
+        if (!track.shouldBeHidden() && bShowWithTree) {
+          alToShow.add(track);
         }
-        // Date values not editable, use properties panel instead to
-        // edit
-        bCellEditable[iRow][iNumberStandardCols + i] = !(meta.getType().equals(Date.class));
+      }
+      // Filter values using given pattern
+      Filter filter = new Filter(property, sPattern, true, ConfigurationManager
+          .getBoolean(CONF_REGEXP));
+      Filter.filterItems(alToShow, filter);
+      // sort by album
+      Collections.sort(alToShow, new TrackComparator(2));
+      Iterator it = alToShow.iterator();
+      int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
+      iRowNum = alToShow.size();
+      it = alToShow.iterator();
+      oValues = new Object[iRowNum][iColNum];
+      oItems = new Item[iRowNum];
+      bCellEditable = new boolean[iRowNum][iColNum];
+      for (int iRow = 0; it.hasNext(); iRow++) {
+        Track track = (Track) it.next();
+        setItemAt(iRow, track);
+        LinkedHashMap properties = track.getProperties();
+        // Id
+        oItems[iRow] = track;
+        // Play
+        IconLabel il = null;
+        if (track.getPlayeableFile(true) != null) {
+          il = new IconLabel(PLAY_ICON, "", null, null, null, Messages
+              .getString("TracksTableView.7"));
+        } else {
+          il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
+              .getString("TracksTableView.7")
+              + Messages.getString("AbstractTableView.10"));
+        }
+        // Note: if you want to add an image, use an ImageIcon class and
+        // change
+        oValues[iRow][0] = il;
+        bCellEditable[iRow][0] = false;
+        // check track has an associated tag editor (not null)
+        boolean bHasATagEditor = false;
+        File file = track.getFiles().get(0);
+        // all files have the same type
+        Type type = file.getType();
+        if (type != null) {
+          bHasATagEditor = (type.getTaggerClass() != null);
+        }
+        // Track name
+        oValues[iRow][1] = track.getName();
+        bCellEditable[iRow][1] = bHasATagEditor;
+        // Album
+        oValues[iRow][2] = track.getAlbum().getName2();
+        bCellEditable[iRow][2] = bHasATagEditor;
+        // Author
+        oValues[iRow][3] = track.getAuthor().getName2();
+        bCellEditable[iRow][3] = bHasATagEditor;
+        // Style
+        oValues[iRow][4] = track.getStyle().getName2();
+        bCellEditable[iRow][4] = bHasATagEditor;
+        // Rate
+        IconLabel ilRate = Util.getStars(track);
+        oValues[iRow][5] = ilRate;
+        bCellEditable[iRow][5] = false;
+        ilRate.setInteger(true);
+        // Length
+        oValues[iRow][6] = new Duration(track.getDuration());
+        bCellEditable[iRow][6] = false;
+        // Comment
+        oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
+        bCellEditable[iRow][7] = bHasATagEditor;
+        // Date discovery
+        oValues[iRow][8] = track.getDiscoveryDate(); // show date using
+        // default local format
+        // and not technical
+        // representation
+        bCellEditable[iRow][8] = false;
+        // Order
+        oValues[iRow][9] = track.getOrder();
+        bCellEditable[iRow][9] = bHasATagEditor;
+        // Year
+        oValues[iRow][10] = track.getYear().getValue();
+        bCellEditable[iRow][10] = bHasATagEditor;
+        // Hits
+        oValues[iRow][11] = track.getHits();
+        bCellEditable[iRow][11] = false;
+        // Custom properties now
+        Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
+        for (int i = 0; it2.hasNext(); i++) {
+          PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+          Object o = properties.get(meta.getName());
+          if (o != null) {
+            oValues[iRow][iNumberStandardCols + i] = o;
+          } else {
+            oValues[iRow][iNumberStandardCols + i] = meta.getDefaultValue();
+          }
+          // Date values not editable, use properties panel instead to
+          // edit
+          bCellEditable[iRow][iNumberStandardCols + i] = !(meta.getType().equals(Date.class));
+        }
       }
     }
   }
