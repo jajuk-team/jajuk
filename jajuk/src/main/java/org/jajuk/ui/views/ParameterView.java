@@ -337,6 +337,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JSlider jsPerspectiveSize;
 
+  private boolean someOptionsAppliedAtNextStartup = false;
+
   /**
    * 
    */
@@ -386,7 +388,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           // Notify any client than wait for parameters updates
           final Properties details = new Properties();
           details.put(ITechnicalStrings.DETAIL_ORIGIN, this);
-          ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+          if (someOptionsAppliedAtNextStartup) {
+            // Inform user that some parameters will apply only at next startup
+            Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+            someOptionsAppliedAtNextStartup = false;
+          }
         } else if (e.getSource() == jbDefault) {
           int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
               JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -439,50 +445,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             jlASPassword.setEnabled(false);
             jpfASPassword.setEnabled(false);
           }
-          ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE, Boolean
-              .toString(jcbAudioScrobbler.isSelected()));
-        } else if (e.getSource() == scbLAF) {
-          final String oldTheme = ConfigurationManager
-              .getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
-          ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
-              .getSelectedItem());
-          if (!oldTheme.equals(scbLAF.getSelectedItem())) {
-            Util.setLookAndFeel((String) scbLAF.getSelectedItem());
-            // refresh all components
-            Util.updateAllUIs();
-            Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-                ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
-          }
-        } else if (e.getSource() == scbWatermarks) {
-          final String oldWatermark = ConfigurationManager
-              .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK);
-          ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
-              (String) scbWatermarks.getSelectedItem());
-          final String watermark = (String) scbWatermarks.getSelectedItem();
-          // Enable image selection if image watermark
-          jlWatermarkImage.setEnabled(watermark.equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
-          pathWatermarkFile.setEnabled(watermark.equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
-          if (!oldWatermark.equals(watermark)) {
-            Util.setWatermark(watermark);
-            // refresh all components
-            Util.updateAllUIs();
-            Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-                ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
-          }
         } else if (e.getSource() == scbLanguage) {
           final String sLocal = Messages.getLocalForDesc((String) scbLanguage.getSelectedItem());
           final String sPreviousLocal = Messages.getInstance().getLocale();
           if (!sPreviousLocal.equals(sLocal)) {
             // local has changed
-            ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE, sLocal);
-            Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+            someOptionsAppliedAtNextStartup = true;
           }
         } else if (e.getSource() == jcbHotkeys) {
-          ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_HOTKEYS, Boolean
-              .toString(jcbHotkeys.isSelected()));
-          // Hotkey flag changes is taken into account only at next
-          // startup
-          Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+          someOptionsAppliedAtNextStartup = true;
         }
       }
     }.start();
@@ -521,6 +492,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     if (!sBestofSize.equals("")) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
+    final String sLocal = Messages.getLocalForDesc((String) scbLanguage.getSelectedItem());
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
     RatingManager.setRateHasChanged(true);
     final String sNoveltiesAge = jtfNoveltiesAge.getText();
@@ -582,7 +555,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     if (!sHistoryDuration.equals("")) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_HISTORY, sHistoryDuration);
     }
-    // tags
+    // Tags
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_TAGS_USE_PARENT_DIR, Boolean
         .toString(jcbUseParentDir.isSelected()));
     // Get and check reorg pattern
@@ -628,6 +601,34 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     }
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
         .getValue()));
+    // GUI
+    // LAF change
+    final String oldTheme = ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
+        .getSelectedItem());
+    if (!oldTheme.equals(scbLAF.getSelectedItem())) {
+      Util.setLookAndFeel((String) scbLAF.getSelectedItem());
+      // refresh all components
+      Util.updateAllUIs();
+      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
+          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+    }
+    // Watermarks change
+    final String oldWatermark = ConfigurationManager
+        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK);
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
+        (String) scbWatermarks.getSelectedItem());
+    final String watermark = (String) scbWatermarks.getSelectedItem();
+    // Enable image selection if image watermark
+    jlWatermarkImage.setEnabled(watermark.equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
+    pathWatermarkFile.setEnabled(watermark.equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
+    if (!oldWatermark.equals(watermark)) {
+      Util.setWatermark(watermark);
+      // refresh all components
+      Util.updateAllUIs();
+      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
+          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+    }
 
     // If jajuk home changes, write new path in bootstrap file
     if ((Main.workspace != null) && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
@@ -676,10 +677,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         bw.close();
         Util.stopWaiting();
         // Display a warning message and restart Jajuk
-        if (bPreviousPathExist){
+        if (bPreviousPathExist) {
           Messages.showInfoMessage(Messages.getString("ParameterView.247"));
-        }
-        else{
+        } else {
           Messages.showInfoMessage(Messages.getString("ParameterView.209"));
         }
         // Exit Jajuk
@@ -1105,6 +1105,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final JPanel language = new JPanel(new HorizontalLayout(iXSeparator));
     language.add(jlLanguage);
     language.add(scbLanguage);
+    scbLanguage.addActionListener(this);    
 
     final double sizeOptions[][] = { { p }, { p, p, p, p, p, 20 } };
     final TableLayout layoutOption = new TableLayout(sizeOptions);
@@ -1437,7 +1438,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       scbLAF.addItem(theme);
     }
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
-    scbLAF.addActionListener(this);
     // Watermarks
     jlWatermarks = new JLabel(Messages.getString("ParameterView.230"));
     jlWatermarks.setToolTipText(Messages.getString("ParameterView.231"));
@@ -1445,7 +1445,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jlWatermarkImage.setToolTipText(Messages.getString("ParameterView.232"));
     scbWatermarks = new SteppedComboBox();
     final Map<String, WatermarkInfo> mapWatermarks = SubstanceLookAndFeel.getAllWatermarks();
-    // Use a tree set to sort watermarks alphabeticaly
+    // Use a tree set to sort watermarks alphabetically
     final TreeSet<String> watermarks = new TreeSet<String>(mapWatermarks.keySet());
     // Add image watermark that is not included by default for unknown
     // reason
@@ -1455,7 +1455,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       scbWatermarks.addItem(watermark);
     }
     scbWatermarks.setToolTipText(Messages.getString("ParameterView.231"));
-    scbWatermarks.addActionListener(this);
     // Watermark file selection
     final JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
     filter.setAcceptDirectories(true);

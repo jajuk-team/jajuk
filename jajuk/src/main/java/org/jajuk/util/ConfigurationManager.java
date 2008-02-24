@@ -243,7 +243,6 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_DEFAULT_DJ, "");// default dj
     properties.put(CONF_DEFAULT_AMBIENCE, "");// default ambience
     // wrong player show again boolean
-    properties.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     properties.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
     properties.put(CONF_NOVELTIES_MODE, MODE_TRACK);
     properties.put(CONF_ANIMATION_PATTERN, PATTERN_DEFAULT_ANIMATION);
@@ -251,7 +250,6 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_OPTIONS_HOTKEYS, FALSE);
     properties.put(CONF_MPLAYER_ARGS, "");
     properties.put(CONF_ENV_VARIABLES, "");
-    properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
       // In that case, we keep previous value if it was false to avoid
       // displaying the tips after user makes a "defaults" in preferences view
@@ -268,10 +266,15 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_CHECK_FOR_UPDATE, TRUE);
     properties.put(CONF_IGNORED_RELEASES, "");
     properties.put(CONF_AUDIOSCROBBLER_ENABLE, FALSE);
-    properties.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
     properties.put(CONF_LASTFM_INFO, TRUE);
     properties.put(CONF_WEBRADIO_WAS_PLAYING, FALSE);
     properties.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");
+    // NOT SHOW AGAIN
+    properties.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
+    properties.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
+    properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
+    properties.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
+    properties.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
   }
 
   /**
