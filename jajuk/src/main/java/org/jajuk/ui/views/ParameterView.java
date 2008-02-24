@@ -1394,7 +1394,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       public void stateChanged(ChangeEvent e) {
         if (!jsPerspectiveSize.getValueIsAdjusting()) {
           Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-          applyParameters();
         }
       }
     });
