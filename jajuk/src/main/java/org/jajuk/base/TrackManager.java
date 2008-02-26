@@ -607,7 +607,7 @@ public class TrackManager extends ItemManager implements Observer {
         return out;
       } else if (item instanceof Directory) {
         Directory dir = (Directory) item;
-        for (File file : dir.getFiles()) {
+        for (File file : dir.getFilesRecursively()) {
           out.add(file.getTrack());
         }
       }
