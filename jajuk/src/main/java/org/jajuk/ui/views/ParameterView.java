@@ -174,6 +174,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JLabel jlLanguage;
 
   SteppedComboBox scbLanguage;
+  
+  JComboBox jcbFrameTitle;
+  
+  JLabel jlFrameTitle;
 
   JLabel jlLAF;
 
@@ -602,6 +606,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
         .getValue()));
     // GUI
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE, (String) jcbFrameTitle.getSelectedItem());
     // LAF change
     final String oldTheme = ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
@@ -1363,7 +1368,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // -- User interface --
     jpUI = new JPanel();
-    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
+    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutUI = new TableLayout(sizeUI);
     layoutUI.setHGap(iXSeparator);
     layoutUI.setVGap(iYSeparator);
@@ -1425,6 +1430,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
     jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185"));
     jcbShowBaloon.addActionListener(alUI);
+    // Frame Title Options
+    jcbFrameTitle = new JComboBox();
+    jcbFrameTitle.addItem(Messages.getString("Default"));
+    jcbFrameTitle.addItem(Messages.getString("Item_Track"));
+    jcbFrameTitle.addItem(Messages.getString("Item_Album"));
+    jcbFrameTitle.addItem(Messages.getString("Item_Author"));
+    jcbFrameTitle.setToolTipText(Messages.getString("ParameterView.249"));
+    jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
+    
     // LaF
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
     jlLAF.setToolTipText(Messages.getString("ParameterView.44"));
@@ -1472,17 +1486,19 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpUI.add(jcbShowBaloon, "0,1");
     jpUI.add(jlFonts, "0,2");
     jpUI.add(jsFonts, "1,2");
-    jpUI.add(jlLAF, "0,3");
-    jpUI.add(scbLAF, "1,3");
-    jpUI.add(jlWatermarks, "0,4");
-    jpUI.add(scbWatermarks, "1,4");
-    jpUI.add(jlWatermarkImage, "0,5");
-    jpUI.add(pathWatermarkFile, "1,5");
-    jpUI.add(jcbShowPopups, "0,6");
-    jpUI.add(toggle, "0,7");
-    jpUI.add(catalogView, "0,8,1,8");
-    jpUI.add(jlPerspectiveSize, "0,9");
-    jpUI.add(jsPerspectiveSize, "1,9");
+    jpUI.add(jlFrameTitle, "0,3");
+    jpUI.add(jcbFrameTitle, "1,3");
+    jpUI.add(jlLAF, "0,4");
+    jpUI.add(scbLAF, "1,4");
+    jpUI.add(jlWatermarks, "0,5");
+    jpUI.add(scbWatermarks, "1,5");
+    jpUI.add(jlWatermarkImage, "0,6");
+    jpUI.add(pathWatermarkFile, "1,6");
+    jpUI.add(jcbShowPopups, "0,7");
+    jpUI.add(toggle, "0,8");
+    jpUI.add(catalogView, "0,9,1,9");
+    jpUI.add(jlPerspectiveSize, "0,10");
+    jpUI.add(jsPerspectiveSize, "1,10");
 
     // --OK/cancel panel
     final Dimension dim = new Dimension(200, 20);
@@ -1733,6 +1749,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShowBaloon.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_UI_SHOW_BALLOON));
     jcbShowPopups.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_SHOW_POPUPS));
+    jcbFrameTitle.setSelectedIndex(ConfigurationManager.getInt(ITechnicalStrings.CONF_FRAME_TITLE));
     // Enable image selection if image watermark
     jlWatermarkImage.setEnabled(ConfigurationManager.getProperty(
         ITechnicalStrings.CONF_OPTIONS_WATERMARK).equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));

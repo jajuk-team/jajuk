@@ -251,11 +251,21 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
       if (file != null) {
         // We use trailing pattern to allow scripting like MSN plugins to
         // detect jajuk frames and extract current track
+        final String titleOption = ConfigurationManager
+            .getProperty(ITechnicalStrings.CONF_FRAME_TITLE);
         StringBuilder sb = new StringBuilder("~");
-        sb.append(file.getTrack().getName());
-        if (!file.getTrack().getAuthor().isUnknown()) {
-          sb.append(" (" + file.getTrack().getAuthor().getName2() + ')');
-        }
+        if (titleOption.equals(Messages.getString("Item_Track"))) {
+          sb.append(file.getTrack().getName());
+        } else if (titleOption.equals(Messages.getString("Item_Album"))) {
+          sb.append(file.getTrack().getAlbum().getName2());
+        } else if (titleOption.equals(Messages.getString("Item_Author"))) {
+          sb.append(file.getTrack().getAuthor().getName2());
+        } else {
+          sb.append(file.getTrack().getName());
+          if (!file.getTrack().getAuthor().isUnknown()) {
+            sb.append(" (" + file.getTrack().getAuthor().getName2() + ')');
+          }
+        } 
         sb.append("~");
         setTitle(sb.toString());
       }

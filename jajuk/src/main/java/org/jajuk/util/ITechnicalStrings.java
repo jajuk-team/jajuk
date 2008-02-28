@@ -675,6 +675,9 @@ public interface ITechnicalStrings {
 
   /** Window position and size */
   String CONF_WINDOW_POSITION = "jajuk.window_position";
+  
+  /** Window position and size */
+  String CONF_FRAME_TITLE = "jajuk.frame.title";
 
   /** Files table columns */
   String CONF_FILES_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
