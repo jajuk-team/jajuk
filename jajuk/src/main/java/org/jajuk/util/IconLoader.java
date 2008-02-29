@@ -536,6 +536,40 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_ALARM = new ImageIcon(Util
       .getResource("icons/16x16/alarm_16x16.png"));
+  
+  public static final ImageIcon FLAG_ENGLAND = new ImageIcon(Util
+      .getResource("icons/16x16/england.png"));
+  
+  public static final ImageIcon FLAG_CHINA = new ImageIcon(Util
+      .getResource("icons/16x16/china.png"));
+  
+  public static final ImageIcon FLAG_SPAIN = new ImageIcon(Util
+      .getResource("icons/16x16/spain.png"));
+  
+  public static final ImageIcon FLAG_RUSSIA = new ImageIcon(Util
+      .getResource("icons/16x16/russia.png"));
+  
+  public static final ImageIcon FLAG_FRANCE = new ImageIcon(Util
+      .getResource("icons/16x16/france.png"));
+  
+  public static final ImageIcon FLAG_GERMANY = new ImageIcon(Util
+      .getResource("icons/16x16/germany.png"));
+  
+  public static final ImageIcon FLAG_ITALY = new ImageIcon(Util
+      .getResource("icons/16x16/italy.png"));
+  
+  public static final ImageIcon FLAG_SWEDEN = new ImageIcon(Util
+      .getResource("icons/16x16/sweden.png"));
+  
+  public static final ImageIcon FLAG_NETHERLANDS = new ImageIcon(Util
+      .getResource("icons/16x16/netherlands.png"));
+  
+  public static final ImageIcon FLAG_GREECE = new ImageIcon(Util
+      .getResource("icons/16x16/greece.png"));
+  
+  public static final ImageIcon FLAG_SOUTH_KOREA = new ImageIcon(Util
+      .getResource("icons/16x16/south_korea.png"));
+  
 
   static {
     IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_50x50, Util.getResizedImage(

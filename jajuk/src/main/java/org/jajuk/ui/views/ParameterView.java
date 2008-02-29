@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -46,6 +47,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -54,10 +56,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.Main;
 import org.jajuk.base.DeviceManager;
@@ -174,9 +178,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JLabel jlLanguage;
 
   SteppedComboBox scbLanguage;
-  
+
   JComboBox jcbFrameTitle;
-  
+
   JLabel jlFrameTitle;
 
   JLabel jlLAF;
@@ -606,7 +610,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
         .getValue()));
     // GUI
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE, (String) jcbFrameTitle.getSelectedItem());
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE, (String) jcbFrameTitle
+        .getSelectedItem());
     // LAF change
     final String oldTheme = ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
@@ -1103,6 +1108,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
     scbLanguage = new SteppedComboBox();
+    scbLanguage.setRenderer(new BasicComboBoxRenderer() {
+      private static final long serialVersionUID = -6943363556191659895L;
+
+      public Component getListCellRendererComponent(JList list, Object value, int index,
+          boolean isSelected, boolean cellHasFocus) {
+        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        JLabel jl = (JLabel) value;
+        setIcon(jl.getIcon());
+        setText(jl.getText());
+        return this;
+      }
+    });
     for (final String sDesc : Messages.getDescs()) {
       scbLanguage.addItem(sDesc);
     }
@@ -1110,7 +1127,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final JPanel language = new JPanel(new HorizontalLayout(iXSeparator));
     language.add(jlLanguage);
     language.add(scbLanguage);
-    scbLanguage.addActionListener(this);    
+    scbLanguage.addActionListener(this);
 
     final double sizeOptions[][] = { { p }, { p, p, p, p, p, 20 } };
     final TableLayout layoutOption = new TableLayout(sizeOptions);
@@ -1438,7 +1455,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbFrameTitle.addItem(Messages.getString("Item_Author"));
     jcbFrameTitle.setToolTipText(Messages.getString("ParameterView.249"));
     jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
-    
+
     // LaF
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
     jlLAF.setToolTipText(Messages.getString("ParameterView.44"));
