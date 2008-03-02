@@ -249,25 +249,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
       File file = FIFO.getInstance().getCurrentFile();
       if (file != null) {
-        // We use trailing pattern to allow scripting like MSN plugins to
-        // detect jajuk frames and extract current track
-        final String titleOption = ConfigurationManager
-            .getProperty(ITechnicalStrings.CONF_FRAME_TITLE);
-        StringBuilder sb = new StringBuilder("~");
-        if (titleOption.equals(Messages.getString("Item_Track"))) {
-          sb.append(file.getTrack().getName());
-        } else if (titleOption.equals(Messages.getString("Item_Album"))) {
-          sb.append(file.getTrack().getAlbum().getName2());
-        } else if (titleOption.equals(Messages.getString("Item_Author"))) {
-          sb.append(file.getTrack().getAuthor().getName2());
-        } else {
-          sb.append(file.getTrack().getName());
-          if (!file.getTrack().getAuthor().isUnknown()) {
-            sb.append(" (" + file.getTrack().getAuthor().getName2() + ')');
-          }
-        } 
-        sb.append("~");
-        setTitle(sb.toString());
+        setTitle(buildTitle(file));
       }
     } else if (subject.equals(EventSubject.EVENT_ZERO)) {
       setTitle(Messages.getString("JajukWindow.17"));
@@ -286,6 +268,24 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
    */
   public boolean isWindowVisible() {
     return bVisible;
+  }
+
+  /**
+   * Build the frame title from user option
+   * @param file played file
+   * @return built frame title
+   */
+  private String buildTitle(final File file) {
+    // We use trailing pattern to allow scripting like MSN plugins to
+    // detect jajuk frames and extract current track
+    String title = ConfigurationManager.getProperty(ITechnicalStrings.CONF_FRAME_TITLE);
+    title = title.replaceAll(PATTERN_TRACKNAME, file.getTrack().getName());
+    title = title.replaceAll(PATTERN_ALBUM, file.getTrack().getAlbum().getName2());
+    title = title.replaceAll(PATTERN_AUTHOR, file.getTrack().getAuthor().getName2());
+    title = title.replaceAll(PATTERN_STYLE, file.getTrack().getStyle().getName2());
+    title = title.replaceAll(PATTERN_TRACKORDER, Long.toString(file.getTrack().getOrder()));
+    title = title.replaceAll(PATTERN_YEAR, file.getTrack().getYear().getName2());
+    return title;
   }
 
   /**
