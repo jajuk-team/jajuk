@@ -39,7 +39,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -47,7 +46,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -56,12 +54,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.Main;
 import org.jajuk.base.DeviceManager;
@@ -179,9 +175,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   SteppedComboBox scbLanguage;
 
-  JComboBox jcbFrameTitle;
-
   JLabel jlFrameTitle;
+
+  JTextField jtfFrameTitle;
 
   JLabel jlLAF;
 
@@ -496,6 +492,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(introPosition.getValue()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_INTRO_LENGTH, Integer
         .toString(introLength.getValue()));
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_TAGS_USE_PARENT_DIR, Boolean
+        .toString(jcbUseParentDir.isSelected()));
     final String sBestofSize = jtfBestofSize.getText();
     if (!sBestofSize.equals("")) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
@@ -563,14 +561,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     if (!sHistoryDuration.equals("")) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_HISTORY, sHistoryDuration);
     }
-    // Tags
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_TAGS_USE_PARENT_DIR, Boolean
-        .toString(jcbUseParentDir.isSelected()));
+    // Patterns
     // Get and check reorg pattern
     final String sPattern = jtfRefactorPattern.getText();
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN, sPattern);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_ANIMATION_PATTERN, jtfAnimationPattern
         .getText());
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle.getText());
+
     // Advanced
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_BACKUP_SIZE, Integer
         .toString(backupSize.getValue()));
@@ -609,9 +607,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     }
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
         .getValue()));
-    // GUI
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE, (String) jcbFrameTitle
-        .getSelectedItem());
     // LAF change
     final String oldTheme = ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
@@ -1108,18 +1103,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
     scbLanguage = new SteppedComboBox();
-    scbLanguage.setRenderer(new BasicComboBoxRenderer() {
-      private static final long serialVersionUID = -6943363556191659895L;
-
-      public Component getListCellRendererComponent(JList list, Object value, int index,
-          boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        JLabel jl = (JLabel) value;
-        setIcon(jl.getIcon());
-        setText(jl.getText());
-        return this;
-      }
-    });
+    /*
+     * scbLanguage.setRenderer(new BasicComboBoxRenderer() { private static
+     * final long serialVersionUID = -6943363556191659895L;
+     * 
+     * public Component getListCellRendererComponent(JList list, Object value,
+     * int index, boolean isSelected, boolean cellHasFocus) {
+     * super.getListCellRendererComponent(list, value, index, isSelected,
+     * cellHasFocus); JLabel jl = (JLabel) value; setIcon(jl.getIcon());
+     * setText(jl.getText()); return this; } });
+     */
     for (final String sDesc : Messages.getDescs()) {
       scbLanguage.addItem(sDesc);
     }
@@ -1129,28 +1122,30 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     language.add(scbLanguage);
     scbLanguage.addActionListener(this);
 
-    final double sizeOptions[][] = { { p }, { p, p, p, p, p, 20 } };
+    final double sizeOptions[][] = { { p }, { 20, p, p, p, p, p, p } };
     final TableLayout layoutOption = new TableLayout(sizeOptions);
     layoutOption.setHGap(iXSeparator);
     layoutOption.setVGap(iYSeparator);
     jpOptions.setLayout(layoutOption);
+    
+    jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
+    jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
+    
+    jpOptions.add(language, "0,0");
+    jpOptions.add(jcbDisplayUnmounted, "0,1");
+    jpOptions.add(jcbDefaultActionClick, "0,2");
+    jpOptions.add(jcbDefaultActionDrop, "0,3");
+    jpOptions.add(jcbSyncTableTree, "0,4");
+    jpOptions.add(jcbHotkeys, "0,5");
+    jpOptions.add(jcbUseParentDir, "0,6");
 
-    jpOptions.add(jcbDisplayUnmounted, "0,0");
-    jpOptions.add(jcbDefaultActionClick, "0,1");
-    jpOptions.add(jcbDefaultActionDrop, "0,2");
-    jpOptions.add(jcbSyncTableTree, "0,3");
-    jpOptions.add(jcbHotkeys, "0,4");
-    jpOptions.add(language, "0,5");
-
-    // --Tags
+    // --Patterns
     jpTags = new JPanel();
     final double sizeTags[][] = { { p, p }, { p, p, p } };
     final TableLayout layoutTags = new TableLayout(sizeTags);
     layoutTags.setHGap(iXSeparator);
     layoutTags.setVGap(iYSeparator);
     jpTags.setLayout(layoutTags);
-    jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
-    jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
     jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
     jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern = new JFormattedTextField();
@@ -1160,11 +1155,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jlAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfAnimationPattern = new JTextField();
     jtfAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
-    jpTags.add(jcbUseParentDir, "0,0");
-    jpTags.add(jlRefactorPattern, "0,1");
-    jpTags.add(jtfRefactorPattern, "1,1");
-    jpTags.add(jlAnimationPattern, "0,2");
-    jpTags.add(jtfAnimationPattern, "1,2");
+    // Frame Title Options
+    jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
+    jlFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
+    jtfFrameTitle = new JTextField();
+    jtfFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
+
+    jpTags.add(jlRefactorPattern, "0,0");
+    jpTags.add(jtfRefactorPattern, "1,0");
+    jpTags.add(jlAnimationPattern, "0,1");
+    jpTags.add(jtfAnimationPattern, "1,1");
+    jpTags.add(jlFrameTitle, "0,2");
+    jpTags.add(jtfFrameTitle, "1,2");
 
     // --Advanced
     jpAdvanced = new JPanel();
@@ -1447,14 +1449,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
     jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185"));
     jcbShowBaloon.addActionListener(alUI);
-    // Frame Title Options
-    jcbFrameTitle = new JComboBox();
-    jcbFrameTitle.addItem(Messages.getString("Default"));
-    jcbFrameTitle.addItem(Messages.getString("Item_Track"));
-    jcbFrameTitle.addItem(Messages.getString("Item_Album"));
-    jcbFrameTitle.addItem(Messages.getString("Item_Author"));
-    jcbFrameTitle.setToolTipText(Messages.getString("ParameterView.249"));
-    jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
 
     // LaF
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
@@ -1503,8 +1497,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpUI.add(jcbShowBaloon, "0,1");
     jpUI.add(jlFonts, "0,2");
     jpUI.add(jsFonts, "1,2");
-    jpUI.add(jlFrameTitle, "0,3");
-    jpUI.add(jcbFrameTitle, "1,3");
     jpUI.add(jlLAF, "0,4");
     jpUI.add(scbLAF, "1,4");
     jpUI.add(jlWatermarks, "0,5");
@@ -1699,6 +1691,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN));
     jtfAnimationPattern.setText(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_ANIMATION_PATTERN));
+    jtfFrameTitle.setText(ConfigurationManager
+        .getProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN));
     jtfMPlayerPath.setText(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_MPLAYER_PATH_FORCED));
     jtfMPlayerArgs.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_MPLAYER_ARGS));
@@ -1766,7 +1760,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShowBaloon.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_UI_SHOW_BALLOON));
     jcbShowPopups.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_SHOW_POPUPS));
-    jcbFrameTitle.setSelectedIndex(ConfigurationManager.getInt(ITechnicalStrings.CONF_FRAME_TITLE));
     // Enable image selection if image watermark
     jlWatermarkImage.setEnabled(ConfigurationManager.getProperty(
         ITechnicalStrings.CONF_OPTIONS_WATERMARK).equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));

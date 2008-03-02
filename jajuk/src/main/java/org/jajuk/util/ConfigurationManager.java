@@ -275,7 +275,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     properties.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     properties.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     properties.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
-    properties.put(CONF_FRAME_TITLE, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
+    properties.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
   }
 
   /**
