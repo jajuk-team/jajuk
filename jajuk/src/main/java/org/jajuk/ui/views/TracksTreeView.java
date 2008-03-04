@@ -160,11 +160,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jpsort.setLayout(new TableLayout(dSizeSort));
     jlSort = new JLabel(Messages.getString("Sort"));
     jcbSort = new JComboBox();
-    jcbSort.addItem(Messages.getString("Property_style"));
-    jcbSort.addItem(Messages.getString("Property_author"));
-    jcbSort.addItem(Messages.getString("Property_album"));
-    jcbSort.addItem(Messages.getString("Property_year"));
-    jcbSort.addItem(Messages.getString("TracksTreeView.35"));
+    jcbSort.addItem(Messages.getString("Property_style"));    // sort by Genre/Artist/Album
+    jcbSort.addItem(Messages.getString("Property_author"));   // sort by Artist/Album
+    jcbSort.addItem(Messages.getString("Property_album"));    // sort by Album
+    jcbSort.addItem(Messages.getString("Property_year"));     // sort by Year
+                                                              // sort by Year (reverse) TODO
+    jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by Discovery Date
     jcbSort.setSelectedIndex(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
@@ -731,14 +732,29 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         .getString("TracksTreeView.36"));
     DefaultMutableTreeNode nodeMontly = new DiscoveryDateNode(Messages
         .getString("TracksTreeView.37"));
+    DefaultMutableTreeNode nodeThreeMontly = new DiscoveryDateNode(Messages
+        .getString("TracksTreeView.44"));
     DefaultMutableTreeNode nodeSixMontly = new DiscoveryDateNode(Messages
         .getString("TracksTreeView.38"));
+    DefaultMutableTreeNode nodeYearly = new DiscoveryDateNode(Messages
+        .getString("TracksTreeView.40"));
+    DefaultMutableTreeNode nodeTwoYearly = new DiscoveryDateNode(Messages
+        .getString("TracksTreeView.41"));  
+    DefaultMutableTreeNode nodeFiveYearly = new DiscoveryDateNode(Messages
+        .getString("TracksTreeView.42"));  
+    DefaultMutableTreeNode nodeTenYearly = new DiscoveryDateNode(Messages
+        .getString("TracksTreeView.43"));  
     DefaultMutableTreeNode nodeOlder = new DiscoveryDateNode(Messages
         .getString("TracksTreeView.39"));
     // Add separator nodes
     top.add(nodeWeekly);
     top.add(nodeMontly);
+    top.add(nodeThreeMontly);
     top.add(nodeSixMontly);
+    top.add(nodeYearly);
+    top.add(nodeTwoYearly);
+    top.add(nodeFiveYearly);
+    top.add(nodeTenYearly);
     top.add(nodeOlder);
     Date today = new Date();
     // Sort tracks into these categories
@@ -750,10 +766,20 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       long diff = today.getTime() - track.getDiscoveryDate().getTime();
       if (diff < 604800000l) {
         addTrackAndAlbum(nodeWeekly, track);
-      } else if (diff < 2419200000l) {
+      } else if (diff < 2628000000l) {
         addTrackAndAlbum(nodeMontly, track);
-      } else if (diff < 14515200000l) {
+      } else if (diff < 7884000000l) {
+        addTrackAndAlbum(nodeThreeMontly, track);
+      } else if (diff < 15768000000l) {
         addTrackAndAlbum(nodeSixMontly, track);
+      } else if (diff < 31536000000l) {
+        addTrackAndAlbum(nodeYearly, track);
+      } else if (diff < 63072000000l) {
+        addTrackAndAlbum(nodeTwoYearly, track);
+      } else if (diff < 157680000000l) {
+        addTrackAndAlbum(nodeFiveYearly, track);
+      } else if (diff < 315360000000l) {
+        addTrackAndAlbum(nodeTenYearly, track);        
       } else {
         addTrackAndAlbum(nodeOlder, track);
       }
