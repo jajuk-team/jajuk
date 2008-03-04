@@ -1414,7 +1414,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
     jcbShowPopups.addActionListener(alUI);
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
-    jsPerspectiveSize = new JSlider(16, 60, ConfigurationManager
+    jsPerspectiveSize = new JSlider(16, 45, ConfigurationManager
         .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
     jsPerspectiveSize.setMajorTickSpacing(8);

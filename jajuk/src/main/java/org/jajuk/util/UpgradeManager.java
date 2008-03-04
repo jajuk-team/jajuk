@@ -94,6 +94,12 @@ public final class UpgradeManager implements ITechnicalStrings {
     if (fPerspective.exists()) {
       fPerspective.delete();
     }
+    // For Jajuk < 1.6
+    // Perspective buttons
+    if (ConfigurationManager.getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE) > 45) {
+      ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, "45");
+    }
+
     // TO DO AFTER AN UPGRADE
     if (Main.isUpgradeDetected()) {
       // - for Jajuk < 1.3: force nocover icon replacement
