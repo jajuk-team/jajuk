@@ -46,6 +46,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -59,6 +60,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.Main;
 import org.jajuk.base.DeviceManager;
@@ -568,7 +570,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN, sPattern);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_ANIMATION_PATTERN, jtfAnimationPattern
         .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle.getText());
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle
+        .getText());
 
     // Advanced
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_BACKUP_SIZE, Integer
@@ -1104,19 +1107,23 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
     scbLanguage = new SteppedComboBox();
-    /*
-     * scbLanguage.setRenderer(new BasicComboBoxRenderer() { private static
-     * final long serialVersionUID = -6943363556191659895L;
-     * 
-     * public Component getListCellRendererComponent(JList list, Object value,
-     * int index, boolean isSelected, boolean cellHasFocus) {
-     * super.getListCellRendererComponent(list, value, index, isSelected,
-     * cellHasFocus); JLabel jl = (JLabel) value; setIcon(jl.getIcon());
-     * setText(jl.getText()); return this; } });
-     */
+
+    scbLanguage.setRenderer(new BasicComboBoxRenderer() {
+      private static final long serialVersionUID = -6943363556191659895L;
+
+      public Component getListCellRendererComponent(JList list, Object value, int index,
+          boolean isSelected, boolean cellHasFocus) {
+        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        JLabel jl = (JLabel) value;
+        setIcon(jl.getIcon());
+        setText(jl.getText());
+        return this;
+      }
+    });
+
     scbLanguage.removeAllItems();
     for (String sDesc : Messages.getDescs()) {
-      scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT)); //, Messages.getIcon(sDesc), SwingConstants.LEFT
+      scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT));
     }
     scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
     final JPanel language = new JPanel(new HorizontalLayout(iXSeparator));
@@ -1129,10 +1136,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     layoutOption.setHGap(iXSeparator);
     layoutOption.setVGap(iYSeparator);
     jpOptions.setLayout(layoutOption);
-    
+
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
-    
+
     jpOptions.add(language, "0,0");
     jpOptions.add(jcbDisplayUnmounted, "0,1");
     jpOptions.add(jcbDefaultActionClick, "0,2");
