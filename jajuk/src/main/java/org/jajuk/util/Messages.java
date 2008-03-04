@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -57,7 +58,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /** Supported Locals */
   public ArrayList<String> alLocals = new ArrayList<String>(10);
 
-  /** self instance for singleton */
+   /** self instance for singleton */
   private static Messages mesg;
 
   /** All choice option, completes JDialog options */
@@ -183,6 +184,18 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     alLocals.add(sLocal);
   }
 
+  /**
+   * Return Flag icon for given description
+   * 
+   * @return
+   */
+  public static Icon getIcon(final String sDesc){
+    Log.debug("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png");
+    Icon icon = new ImageIcon(Util
+        .getResource("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png"));
+    return icon;
+  }
+  
   /**
    * Return list of available locals
    * 

@@ -54,6 +54,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -1113,8 +1114,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
      * cellHasFocus); JLabel jl = (JLabel) value; setIcon(jl.getIcon());
      * setText(jl.getText()); return this; } });
      */
-    for (final String sDesc : Messages.getDescs()) {
-      scbLanguage.addItem(sDesc);
+    scbLanguage.removeAllItems();
+    for (String sDesc : Messages.getDescs()) {
+      scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT)); //, Messages.getIcon(sDesc), SwingConstants.LEFT
     }
     scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
     final JPanel language = new JPanel(new HorizontalLayout(iXSeparator));
