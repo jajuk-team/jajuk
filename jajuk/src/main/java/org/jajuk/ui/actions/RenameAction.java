@@ -30,8 +30,12 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 public class RenameAction extends ActionBase {
@@ -46,33 +50,40 @@ public class RenameAction extends ActionBase {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
     final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    Item currentItem = alSelected.get(0);
-
-    if (currentItem instanceof File) {
-      String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
-          + "\n\n", ((File) currentItem).getName());
-      if ((newName != null) && (newName.length() > 0)) {
-        try {
-          FileManager.getInstance().changeFileName((File) currentItem, newName);
-          DirectoryManager.refreshDirectory(((File) currentItem).getDirectory());
-        } catch (Exception er) {
-          Log.error(er);
+    final Item currentItem = alSelected.get(0);
+    new Thread() {
+      public void run() {
+        Util.waiting();
+        if (currentItem instanceof File) {
+          String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
+              + "\n\n", ((File) currentItem).getName());
+          if ((newName != null) && (newName.length() > 0)) {
+            try {
+              FileManager.getInstance().changeFileName((File) currentItem, newName);
+              DirectoryManager.refreshDirectory(((File) currentItem).getDirectory());
+            } catch (Exception er) {
+              Log.error(er);
+            }
+          }
+        } else if (currentItem instanceof Directory) {
+          String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
+              + "\n\n", ((Directory) currentItem).getName());
+          if ((newName != null) && (newName.length() > 0)) {
+            try {
+              java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
+                  .getAbsolutePath()
+                  + "/" + newName);
+              ((Directory) currentItem).getFio().renameTo(newFile);
+              DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
+              DirectoryManager.refreshDirectory(((Directory) currentItem).getParentDirectory());
+            } catch (Exception er) {
+              Log.error(er);
+            }
+          }
         }
+        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        Util.stopWaiting();
       }
-    } else if (currentItem instanceof Directory) {
-      String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
-          + "\n\n", ((Directory) currentItem).getName());
-      if ((newName != null) && (newName.length() > 0)) {
-        try {
-          java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
-              .getAbsolutePath()
-              + "/" + newName);
-          ((Directory) currentItem).getFio().renameTo(newFile);
-          DirectoryManager.refreshDirectory(((Directory) currentItem).getParentDirectory());
-        } catch (Exception er) {
-          Log.error(er);
-        }
-      }
-    }
+    }.start();
   }
 }
