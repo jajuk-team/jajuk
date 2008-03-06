@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Ant script for user (target: package_jar) and packagers (other targets)-->
-<!--void 3 -->
+<!--void 4 -->
 
 <project default='package_jar' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
