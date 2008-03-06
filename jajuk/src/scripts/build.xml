@@ -296,7 +296,6 @@
 		<signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jintellitype-1.3.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jlayer-1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jmactritonusspi-1.74.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jogg-0.0.7.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jorbis-0.0.13.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/js-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
