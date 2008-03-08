@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Ant script for user (target: package_jar) and packagers (other targets)-->
-<!--void 4 -->
+<!--void 20080308 -->
 
 <project default='package_jar' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
@@ -32,7 +32,7 @@
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
-	<property name='conf_jnlp-dist' value='/svn-jajuk/jnlp-dist' />
+	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/jbuild' />
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
 	<property name='conf_jarbundler' value='/svn-jajuk/tools/jarbundler-1.9' />
@@ -62,8 +62,10 @@
 	<property name='distjarname' value='jajuk-java-installer-' />
 	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
 	<property name='helpdir' value='${rootdir}/help' />
-	<!-- This is the intermediate directory used to build war file, we use a persisitent 
- 	directory to use jar files in next war (each war contains current and previous jars for incremental upgrade) -->
+	<!-- This used to be the intermediate directory used to build war file, we used a persisitent 
+ 	directory to use jar files in next war (each war contains current and previous jars for 
+ 	incremental upgrade). We don't use incremental udated anymore as it does require too much 
+ 	disk space -->
 	<property name='jnlpdir' value='${conf_jnlp-dist}/${version}' />
 	<property name='previousjnlpdir' value='${conf_jnlp-dist}/${previous_version}' />
 	<property name='srcdir' value='${basedir}/src' />
