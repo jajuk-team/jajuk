@@ -45,6 +45,7 @@
 			<tocitem text="Reorganize files" target="files_organizer"/>			
 			<tocitem text="Keyboard controls" target="keys_shortcuts"/>
 			<tocitem text="Playing music" target="playing_music"/>
+			<tocitem text="Tip of the day" target="tip_of_the_day"/>
 			<tocitem text="Using custom properties" target="using_custom_properties"/>
 			<tocitem text="Using devices" target="using_devices"/>
 			<tocitem text="Using digital DJs" target="using_digital_djs"/>
