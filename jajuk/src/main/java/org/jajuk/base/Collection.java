@@ -461,7 +461,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           needCheckID = true;
         } else if (XML_PROPERTY.equals(sQName)) {
           // A property description
-          String sPropertyName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          String sPropertyName = attributes.getValue(XML_NAME).intern();
           boolean bCustom = Boolean.parseBoolean(attributes.getValue(attributes
               .getIndex(XML_CUSTOM)));
           boolean bConstructor = Boolean.parseBoolean(attributes.getValue(attributes
@@ -472,8 +472,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               .getIndex(XML_EDITABLE)));
           boolean bUnique = Boolean.parseBoolean(attributes.getValue(attributes
               .getIndex(XML_UNIQUE)));
-          Class<?> cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
-          String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE))
+          Class<?> cType = Class.forName(attributes.getValue(XML_TYPE));
+          String sDefaultValue = attributes.getValue(XML_DEFAULT_VALUE)
               .intern();
           Object oDefaultValue = null;
           if (sDefaultValue != null && sDefaultValue.length() > 0) {
@@ -512,7 +512,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         String sTrackName = null;
         switch (stage) {
         case STAGE_FILES:
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           // Check file type is still registered, it can be
           // useful for ie if mplayer is no more available
           String ext = Util.getExtension(sItemName);
@@ -520,7 +520,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           if (type == null) {
             return;
           }
-          sTrackId = attributes.getValue(attributes.getIndex(XML_TRACK)).intern();
+          sTrackId = attributes.getValue(XML_TRACK).intern();
           // UPGRADE check if track Id is right
           if (hmWrongRightTrackID.size() > 0) {
             // replace wrong by right ID
@@ -529,7 +529,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
           }
           track = TrackManager.getInstance().getTrackByID(sTrackId);
-          sParentID = attributes.getValue(attributes.getIndex(XML_DIRECTORY)).intern();
+          sParentID = attributes.getValue(XML_DIRECTORY).intern();
           // UPGRADE check parent ID is right
           if (hmWrongRightDirectoryID.size() > 0) {
             // replace wrong by right ID
@@ -542,12 +542,16 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             return;
           }
           // Use Integer class instead of Long for perfs
-          long lSize = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_SIZE)));
+          
+          long lSize = 0;
+          if(attributes.getValue(XML_SIZE) != null)
+            Integer.parseInt(attributes.getValue(XML_SIZE));
+            
           // Quality analyze, handle format problems (mainly for
           // upgrades)
           long lQuality = 0;
           try {
-            lQuality = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_QUALITY)));
+            lQuality = Integer.parseInt(attributes.getValue(XML_QUALITY));
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format
@@ -572,7 +576,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           break;
         case STAGE_DIRECTORIES:
           dParent = null;
-          sParentID = attributes.getValue(attributes.getIndex(XML_DIRECTORY_PARENT)).intern();
+          sParentID = attributes.getValue(XML_DIRECTORY_PARENT).intern();
           // UPGRADE
           if (hmWrongRightDirectoryID.size() > 0) {
             if (hmWrongRightDirectoryID.containsKey(sParentID)) {
@@ -590,7 +594,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               return;
             }
           }
-          sDeviceID = attributes.getValue(attributes.getIndex(XML_DEVICE)).intern();
+          sDeviceID = attributes.getValue(XML_DEVICE).intern();
           // take upgraded device ID if needed
           if (hmWrongRightDeviceID.size() > 0) {
             if (hmWrongRightDeviceID.containsKey(sDeviceID)) {
@@ -601,7 +605,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           if (device == null) { // check device exists
             return;
           }
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           sID = attributes.getValue(idIndex).intern();
           // UPGRADE test
           sRightID = sID;
@@ -620,9 +624,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           break;
         case STAGE_TRACKS:
           sID = attributes.getValue(idIndex).intern();
-          sTrackName = attributes.getValue(attributes.getIndex(XML_TRACK_NAME)).intern();
+          sTrackName = attributes.getValue(XML_TRACK_NAME).intern();
           // album
-          String sAlbumID = attributes.getValue(attributes.getIndex(XML_TRACK_ALBUM)).intern();
+          String sAlbumID = attributes.getValue(XML_TRACK_ALBUM).intern();
           if (hmWrongRightAlbumID.size() > 0) {
             if (hmWrongRightAlbumID.containsKey(sAlbumID)) {
               sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
@@ -630,7 +634,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           album = AlbumManager.getInstance().getAlbumByID(sAlbumID);
           // Style
-          String sStyleID = attributes.getValue(attributes.getIndex(XML_TRACK_STYLE)).intern();
+          String sStyleID = attributes.getValue(XML_TRACK_STYLE).intern();
           if (hmWrongRightStyleID.size() > 0) {
             if (hmWrongRightStyleID.containsKey(sStyleID)) {
               sStyleID = hmWrongRightStyleID.get(sStyleID);
@@ -638,23 +642,23 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           style = StyleManager.getInstance().getStyleByID(sStyleID);
           // Year
-          String sYearID = attributes.getValue(attributes.getIndex(XML_TRACK_YEAR)).intern();
+          String sYearID = attributes.getValue(XML_TRACK_YEAR).intern();
           Year year = YearManager.getInstance().getYearByID(sYearID);
           // For jajuk < 1.4
           if (year == null) {
             year = YearManager.getInstance().registerYear(sYearID, sYearID);
           }
           // Author
-          String sAuthorID = attributes.getValue(attributes.getIndex(XML_TRACK_AUTHOR)).intern();
+          String sAuthorID = attributes.getValue(XML_TRACK_AUTHOR).intern();
           if (hmWrongRightAuthorID.size() > 0) {
             if (hmWrongRightAuthorID.containsKey(sAuthorID)) {
               sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
             }
           }
           author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
-          long length = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_LENGTH)));
+          long length = Long.parseLong(attributes.getValue(XML_TRACK_LENGTH));
           // Type
-          String typeID = attributes.getValue(attributes.getIndex(XML_TYPE));
+          String typeID = attributes.getValue(XML_TYPE);
           if (conversion.containsKey(typeID)) {
             typeID = conversion.get(typeID);
           }
@@ -665,7 +669,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           long lYear = 0;
           try {
-            lYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_YEAR)));
+            lYear = Integer.parseInt(attributes.getValue(XML_YEAR));
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format
@@ -675,7 +679,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           // Idem for order
           long lOrder = 0l;
           try {
-            lOrder = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER)));
+            lOrder = Integer.parseInt(attributes.getValue(XML_TRACK_ORDER));
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format
@@ -699,10 +703,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               .getIndex(XML_TRACK_ADDED)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
-          track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
-          track.setHits(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
+          track.setRate(Long.parseLong(attributes.getValue(XML_TRACK_RATE)));
+          track.setHits(Long.parseLong(attributes.getValue(XML_TRACK_HITS)));
           track.setDiscoveryDate(dAdditionDate);
-          String sComment = attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT)).intern();
+          String sComment = attributes.getValue(XML_TRACK_COMMENT).intern();
           if (sComment == null) {
             sComment = "";
           }
@@ -711,7 +715,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           break;
         case STAGE_ALBUMS:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -730,7 +734,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           break;
         case STAGE_AUTHORS:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -749,7 +753,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           break;
         case STAGE_STYLES:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -767,7 +771,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           break;
         case STAGE_PLAYLIST_FILES:
-          sParentID = attributes.getValue(attributes.getIndex(XML_DIRECTORY)).intern();
+          sParentID = attributes.getValue(XML_DIRECTORY).intern();
           // UPGRADE check parent ID is right
           if (hmWrongRightDirectoryID.size() > 0) {
             // replace wrong by right ID
@@ -780,7 +784,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             return;
           }
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -800,7 +804,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           break;
         case STAGE_PLAYLISTS:
-          String sPlaylistFiles = attributes.getValue(attributes.getIndex(XML_PLAYLIST_FILES))
+          String sPlaylistFiles = attributes.getValue(XML_PLAYLIST_FILES)
               .intern();
           // playlist file list with ','
           StringTokenizer st = new StringTokenizer(sPlaylistFiles, ",");
@@ -832,8 +836,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         case STAGE_DEVICES:
           device = null;
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
-          long lType = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TYPE)));
+          sItemName = attributes.getValue(XML_NAME).intern();
+          long lType = Long.parseLong(attributes.getValue(XML_TYPE));
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -845,7 +849,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               hmWrongRightDeviceID.put(sID, sRightID);
             }
           }
-          String sURL = attributes.getValue(attributes.getIndex(XML_URL)).intern();
+          String sURL = attributes.getValue(XML_URL).intern();
           device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, lType, sURL);
           if (device != null) {
             device.populateProperties(attributes);
@@ -853,7 +857,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           break;
         case STAGE_YEARS:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(attributes.getIndex(XML_NAME)).intern();
+          sItemName = attributes.getValue(XML_NAME).intern();
           year = YearManager.getInstance().registerYear(sID, sItemName);
           if (year != null) {
             year.populateProperties(attributes);
