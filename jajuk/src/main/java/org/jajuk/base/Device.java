@@ -494,7 +494,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     try {
       final File file = new File(getUrl());
       if (!file.exists()) {
-        throw new Exception("Path does not exist");
+        throw new Exception("Path does not exist: " + file.toString());
       }
     } catch (final Exception e) {
       throw new JajukException(11, getName(), e);
