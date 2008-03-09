@@ -37,6 +37,13 @@ import org.jajuk.util.log.Log;
  */
 public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
+  /**
+   * The time we wait for mplayer to start up. 
+   * It can take some time on slow or heavily loaded 
+   * machines...
+   */
+  private static final int MPLAYER_START_TIMEOUT = 30;
+
   /** Time elapsed in ms */
   private long lTime = 0;
 
@@ -259,8 +266,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     new PositionThread("MPlayer writer thread").start();
     // if opening, wait
     int i = 0;
-    // Try to open the file during 10 secs
-    while (bOpening && !bEOF && i < 1000) {
+    // Try to open the file during 30 secs
+    while (bOpening && !bEOF && i < MPLAYER_START_TIMEOUT*100) {
       try {
         Thread.sleep(10);
         i++;
@@ -268,6 +275,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         Log.error(e);
       }
     }
+    
     // Check the file has been property opened
     if (!bOpening && !bEOF) {
       if (fPosition > 0.0f) {
@@ -288,7 +296,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         }.start();
       }
       // Notify the problem opening the file
-      throw new JajukException(7);
+      throw new JajukException(7,new Integer(MPLAYER_START_TIMEOUT).toString());
     }
   }
 
