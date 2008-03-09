@@ -86,7 +86,7 @@ public class PerspectiveManager implements ITechnicalStrings {
       for (IPerspective perspective : getPerspectives()) {
         // Remove current conf file to force using default file from the
         // jar
-        File loadFile = Util.getConfFileByPath(perspective.getClass().getName() + ".xml");
+        File loadFile = Util.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
         if (loadFile.exists()) {
           loadFile.delete();
         }
@@ -267,6 +267,15 @@ public class PerspectiveManager implements ITechnicalStrings {
     // Catalog perspective
     perspective = new AlbumsPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_CATALOG;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
+    registerPerspective(perspective);
+
+    // Playlists perspective
+    perspective = new PlaylistsPerspective();
+    icon = IconLoader.ICON_PERSPECTIVE_PLAYLISTS;
     if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = Util.getResizedImage(icon, iconSize, iconSize);
     }
