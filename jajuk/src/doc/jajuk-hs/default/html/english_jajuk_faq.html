@@ -1,6 +1,3 @@
-
-
-<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -99,7 +96,7 @@ Note that the multiple sound cards support will be enhanced in future releases (
 Note: If your are not using your second card, why not deactivate it in your BIOS?</li>
 </ul>
 <h3>
-How much resources uses Jajuk ?</h3>
+How much resources does Jajuk use?</h3>
 <ul>
 <li>
 Please read the <a href="performance_tips.html">
@@ -126,6 +123,10 @@ This is the ThumbBuilder process that builds thumbnail images for catalog and su
 Troubleshooting</h2>
 <h3>
 All Operating systems</h3>
+<h4>
+Jajuk takes large CPU resources</h4>
+<p>
+When discovering new albums, Jajuk creates thumbnails in 6 sizes (from 50x50 pixels to 300x300 pixels) in the .jajuk directory. This is done using a dedicated system process that is costly and can last several minutes for large new collections. It is done only once, please wait until the thumbs are created. Jajuk usually takes near 0% of CPU.</p>
 <h4>
 I experience sound skips</h4>
 <ul>
