@@ -23,7 +23,7 @@ package org.jajuk.ui.helpers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.jajuk.base.File;
@@ -116,16 +116,16 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 
     // -- Custom properties now--
     // for files
-    Iterator it = FileManager.getInstance().getCustomProperties().iterator();
+    Iterator<PropertyMetaInformation> it = FileManager.getInstance().getCustomProperties().iterator();
     while (it.hasNext()) {
-      PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+      PropertyMetaInformation meta = it.next();
       vColNames.add(meta.getName());
       vId.add(meta.getName());
     }
     // for tracks
     it = TrackManager.getInstance().getCustomProperties().iterator();
     while (it.hasNext()) {
-      PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+      PropertyMetaInformation meta = it.next();
       vColNames.add(meta.getName());
       vId.add(meta.getName());
     }
@@ -134,7 +134,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
   /**
    * Fill model with data using an optional filter property and pattern
    */
-  @SuppressWarnings("unchecked")
+  @Override
   public synchronized void populateModel(String sPropertyName, String sPattern) {
     synchronized (FileManager.getInstance().getLock()) {
       // This should be monitor filemanager to avoid NPE when changing items
@@ -147,9 +147,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       Set<File> files = FileManager.getInstance().getFiles();
       alToShow = new ArrayList<File>(files.size() / 2);
       oItems = new Item[iRowNum];
-      Iterator it = files.iterator();
+      Iterator<File> it = files.iterator();
       while (it.hasNext()) {
-        File file = (File) it.next();
+        File file = it.next();
         // show it if no sync option or if item is in the selection
         bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
             // tree selection = null means none election have been
@@ -175,9 +175,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       oItems = new Item[iRowNum];
       bCellEditable = new boolean[iRowNum][iColNum];
       for (int iRow = 0; it.hasNext(); iRow++) {
-        File file = (File) it.next();
+        File file = it.next();
         setItemAt(iRow, file);
-        LinkedHashMap properties = file.getProperties();
+        Map<String, Object> properties = file.getProperties();
         // Id
         oItems[iRow] = file;
         // Play
@@ -254,9 +254,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 
         // -- Custom properties now --
         // files custom tags
-        Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
+        Iterator<PropertyMetaInformation> it2 = FileManager.getInstance().getCustomProperties().iterator();
         for (int i = 0; it2.hasNext(); i++) {
-          PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+          PropertyMetaInformation meta = it2.next();
           Object o = properties.get(meta.getName());
           if (o != null) {
             oValues[iRow][iNumberStandardCols + i] = o;
@@ -274,7 +274,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         // tracks custom properties
         it2 = TrackManager.getInstance().getCustomProperties().iterator();
         for (int i = FileManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
-          PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+          PropertyMetaInformation meta = it2.next();
           properties = file.getTrack().getProperties();
           Object o = properties.get(meta.getName());
           if (o != null) {
