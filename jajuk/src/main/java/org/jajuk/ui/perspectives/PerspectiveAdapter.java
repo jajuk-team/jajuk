@@ -82,6 +82,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
   }
