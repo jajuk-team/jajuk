@@ -23,7 +23,7 @@ package org.jajuk.ui.helpers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.jajuk.base.Album;
@@ -114,6 +114,7 @@ public class AlbumsTableModel extends JajukTableModel {
    * complexity reasons. This may be implemented in the future if required
    * </p>
    */
+  @Override
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String sPropertyName, String sPattern) {
     List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
@@ -142,7 +143,7 @@ public class AlbumsTableModel extends JajukTableModel {
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
       setItemAt(iRow, album);
-      LinkedHashMap properties = album.getProperties();
+      Map<String, Object> properties = album.getProperties();
       // Id
       oItems[iRow] = album;
       // Play
