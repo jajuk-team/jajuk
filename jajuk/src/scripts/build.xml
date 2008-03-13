@@ -531,6 +531,8 @@
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/pixmaps'>
 			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-icon_16x16.png' />
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
 		</copy>
 		<!-- Set release in RPM descriptor file-->
 		<replace dir='${rpmbuilddir}/SPECS' value='${version}'>
