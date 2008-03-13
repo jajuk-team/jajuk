@@ -776,9 +776,6 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
            * If multi-items mode, note that this message will appear only for
            * first changed value in failure, after, current track will have
            * changed and will no more contain unmounted files
-           * 
-           * @TODO potential issue : note that the isFilesRemaining() method can
-           * return false if last change is OK but not previous changes
            */
           if (!isMonoFile() && TrackManager.nbFilesRemaining > 0) {
             Messages.showWarningMessage(Messages.getString("Error.138"));
