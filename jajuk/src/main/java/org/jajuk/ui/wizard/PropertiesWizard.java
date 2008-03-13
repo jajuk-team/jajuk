@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -249,7 +250,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           }
         }
       };
-      //Set min priority to allow EDT to be able to refresh UI between 2 tag changes
+      // Set min priority to allow EDT to be able to refresh UI between 2 tag
+      // changes
       t.setPriority(Thread.MIN_PRIORITY);
       t.start();
     }
@@ -679,31 +681,23 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         Util.waiting();
         Object oValue = null;
         Item newItem = null;
-        // list of really changed tracks (for message)
+        // list of actually changed tracks (used by out message)
         ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
         // none change, leave
-        if (hmPropertyToChange.keySet().size() == 0) {
+        if (hmPropertyToChange.size() == 0) {
           return;
         }
         // Computes all items to change
-        // contains items to be changed
-        // TODO refactor this using LinkedHashset for ie
-        ArrayList<Item> alItemsToCheck = new ArrayList<Item>(alItems.size());
-        for (Item item : alItems) {
-          // avoid duplicates for perfs
-          if (!alItemsToCheck.contains(item)) {
-            // add item
-            alItemsToCheck.add(item);
-          }
-        }
-        ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
+        // contains items to be changed and no dups
+        LinkedHashSet<Item> itemsToChange = new LinkedHashSet<Item>(alItems);
+
+        ArrayList<Item> alInError = new ArrayList<Item>(itemsToChange.size());
         // details for errors
         String sDetails = "";
         // Now we have all items to consider, write tags for each
         // property to change
         for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-          ArrayList<Item> alIntermediate = new ArrayList<Item>(alItemsToCheck.size());
-          for (Item item : alItemsToCheck) {
+          for (Item item : itemsToChange) {
             // New value
             oValue = hmPropertyToChange.get(meta);
             // Check it is not null for non custom properties. Note that
@@ -764,13 +758,6 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
                 alItems.remove(item);
                 alItems.add(newItem);
               }
-              // add the new item in intermediate pool used for next
-              // property change
-              // note that if an error occurs in a property change,
-              // the item will not be taken into account for next
-              // property change
-              alIntermediate.add(newItem);
-
               // if individual item, change title in case of
               // constructor element change
               if (!bMerged) {
@@ -782,14 +769,18 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               }
             }
           }
-          alItemsToCheck = alIntermediate;
           /*
-           * Display a warning message if some files not updated if multifile
-           * mode note that this message will appear only for first item in
-           * failure, after, current track will have changed and will no more
-           * contain unmounted files
+           * Display a warning message if some tracks cannot be removed as it
+           * contains unmounted files.
+           * 
+           * If multi-items mode, note that this message will appear only for
+           * first changed value in failure, after, current track will have
+           * changed and will no more contain unmounted files
+           * 
+           * @TODO potential issue : note that the isFilesRemaining() method can
+           * return false if last change is OK but not previous changes
            */
-          if (!isMonoFile() && TrackManager.getInstance().isChangePbm()) {
+          if (!isMonoFile() && TrackManager.nbFilesRemaining > 0) {
             Messages.showWarningMessage(Messages.getString("Error.138"));
           }
         }
@@ -823,6 +814,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         }
       } finally {
         Util.stopWaiting();
+        //Reset track remaining issues
+        TrackManager.nbFilesRemaining = 0;
       }
     }
 

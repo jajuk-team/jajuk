@@ -51,8 +51,11 @@ public class TrackManager extends ItemManager implements Observer {
   /** Self instance */
   private static TrackManager singleton;
 
-  /** Unmounted tracks flag */
-  boolean bChangePbm = false;
+  /**
+   * Number of tracks that cannot be fully removed as it still contains files on unmounted
+   * devices
+   */
+  public static int nbFilesRemaining = 0;
 
   /** Max rate */
   private long lMaxRate = 0l;
@@ -97,7 +100,7 @@ public class TrackManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(XML_TRACK_HITS, false, false, true, false, false,
         Long.class, 0));
     // Addition date
-    registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED, false, false, true, false, false,
+    registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED, false, false, true, true, false,
         Date.class, null));
     // Comment
     registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT, false, false, true, true, true,
@@ -518,10 +521,9 @@ public class TrackManager extends ItemManager implements Observer {
         // more associated
         // tracks, remove it
         removeItem(track.getID());// remove old track
-        bChangePbm = false;
       } else { // some files have not been changed because located on
         // unmounted devices
-        bChangePbm = true;
+        nbFilesRemaining ++;
       }
     }
   }
@@ -621,12 +623,6 @@ public class TrackManager extends ItemManager implements Observer {
         }
       }
       return out;
-    }
-  }
-
-  public boolean isChangePbm() {
-    synchronized (TrackManager.getInstance().getLock()) {
-      return bChangePbm;
     }
   }
 
