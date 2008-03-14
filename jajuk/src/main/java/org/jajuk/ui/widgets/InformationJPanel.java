@@ -24,8 +24,11 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,7 +62,7 @@ import org.jajuk.util.log.Log;
  * Status / information panel ( static view )
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
-    ChangeListener, MouseWheelListener {
+    ChangeListener, MouseWheelListener{
 
   private static final long serialVersionUID = 1L;
 
@@ -178,6 +181,16 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
     jtbProgress.add(jsPosition);
     jlCurrent = new JLabel();
+    jlCurrent.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, ""
+            + ((ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) + 1)));
+        if (ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) > ConfigurationManager
+            .getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX)) {
+          ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 1);
+        }
+      }
+    });
     jtbProgress.add(jlCurrent);
     jtbProgress.add(Box.createHorizontalStrut(6));
 
@@ -289,7 +302,42 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
    * 
    * @param string
    */
-  public void setCurrentTimeMessage(String string) {
+  public void setCurrentTimeMessage(long lTime, long length) {
+    String string;
+    int timeFormat = 0;
+    // Set the required decimal precision for percentage here
+    DecimalFormat df = new DecimalFormat("0"); // (0.##) for 2 decimal places
+    try{
+        timeFormat= ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED);
+    }catch(Exception e){
+      Log.debug(e.toString());
+      ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 1);
+      ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX, "" + 4);
+    }
+    switch (timeFormat) {
+      case 1: {
+        string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
+        break;
+      }
+      case 2: {
+        string = "-" + Util.formatTimeBySec(length - lTime , false) + " / "
+        + Util.formatTimeBySec(length, false);
+        break;
+      }
+      case 3: {
+        float lTime_percent = (float) ((float) lTime /(float) length * 100.0);
+        string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
+        break;
+      }
+      case 4: {
+        float lTime_percent = (float) ((lTime - length) /(float) length * 100.0);
+        string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
+        break;
+      }
+      default:{
+        string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
+      }
+    }
     sCurrentStatus = string;
     jlCurrent.setText(string);
   }
@@ -319,8 +367,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
         // secs
         synchronized (this) {
           // reset data
-          setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
-              + Util.formatTimeBySec(0, false));
+          setCurrentTimeMessage(0, 0);
           // set error message
           Object o = ObservationManager.getDetail(event, DETAIL_CONTENT);
           // current item is a file
@@ -372,8 +419,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             String sCurrentTotalMessage = Util.formatTimeBySec(timeToPlay, false);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getInstance().getFIFO().size()
                 + "]");
-            setCurrentTimeMessage(Util.formatTimeBySec(lTime, false) + " / "
-                + Util.formatTimeBySec(length, false));
+            setCurrentTimeMessage(lTime, length);
             // Make sure to enable the slider
             if (!jsPosition.isEnabled()) {
               jsPosition.setEnabled(true);
@@ -393,8 +439,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             jsPosition.addChangeListener(InformationJPanel.this);
           } else if (EventSubject.EVENT_ZERO.equals(subject)
               || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
-            setCurrentTimeMessage(Util.formatTimeBySec(0, false) + " / "
-                + Util.formatTimeBySec(0, false));
+            setCurrentTimeMessage(0, 0);
             jsPosition.setEnabled(false);
             jsPosition.removeMouseWheelListener(InformationJPanel.this);
             jsPosition.removeChangeListener(InformationJPanel.this);
@@ -501,4 +546,37 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       jsPosition.setValue(iNew);
     }
   }
+  
+  /*public void mouseClicked(MouseEvent e) {
+    Log.debug("### Debug Inside");
+    ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, ""
+        + ((ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) + 1)));
+    if (ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) == ConfigurationManager
+        .getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX)) {
+      ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 0);
+    }
+  }
+
+  public void mouseExited(MouseEvent e) {
+    Log.debug("### Debug Exited");
+  }
+
+  public void mouseReleased(MouseEvent e) {
+    Log.debug("### Debug Inside");
+    ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, ""
+        + ((ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) + 1)));
+    if (ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) == ConfigurationManager
+        .getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX)) {
+      ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 0);
+    }
+  }
+
+  public void mouseEntered(MouseEvent e) {
+    Log.debug("### Debug Entered");
+  }
+
+  public void mousePressed(MouseEvent e) {
+    Log.debug("### Debug Pressed");
+  }
+*/
 }

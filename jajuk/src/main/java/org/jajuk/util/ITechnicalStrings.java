@@ -1153,4 +1153,10 @@ public interface ITechnicalStrings {
   // Alarms List
 
   String ALARMS_SET = "jajuk.alarms";
+  
+  // Time Elapsed
+  
+  String FORMAT_TIME_ELAPSED = "format";
+  
+  String FORMAT_TIME_ELAPSED_MAX = "maxformats";
 }
