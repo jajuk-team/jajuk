@@ -544,6 +544,10 @@
 			<include name='jajuk' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
+		<replace dir='${rpmdistdir}/usr/bin' value='${version}'>
+			<include name='jajuk' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
 	</target>
 
 
