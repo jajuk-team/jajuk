@@ -166,6 +166,7 @@
 		<!-- Set release in user build.xml file-->
 		<replace dir='${distdir}' value='${version}'>
 			<include name='build.xml' />
+			<include name='jajuk' />
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
 		<!-- Set debug value in scripts-->
@@ -173,7 +174,6 @@
 			<include name='jajuk' />
 			<include name='jajuk.bat' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
-     		<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
 	</target>
 

@@ -1,7 +1,5 @@
 #!/bin/sh
-## This is Jajuk main starting script 
-
-JAJUK_VERSION="VERSION_REPLACED_BY_ANT"
+## Main starting script for Jajuk VERSION_REPLACED_BY_ANT
 
 ###########################
 ### CONFIGURATION START ###
@@ -17,7 +15,7 @@ JAVA_BIN="java"
 JAVA_OPTIONS="-Djava.library.path=/usr/lib/jajuk/ -client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10"
 
 #Jajuk options
-JAJUK_OPTIONS="-test"
+JAJUK_OPTIONS="TEST_FLAG_REPLACED_BY_ANT"
 
 #Do you want this script to try to find and use an alternate java version installed on your system that will be more suitable for Jajuk? Use "true" or "false".
 FIND_OTHER_JAVA="true"
