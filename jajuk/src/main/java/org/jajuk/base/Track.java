@@ -298,7 +298,7 @@ public class Track extends LogicalItem implements Comparable {
    *         collection)
    */
   public Date getDiscoveryDate() {
-    return getDateValue(XML_TRACK_ADDED);
+    return getDateValue(XML_TRACK_DISCOVERY_DATE);
   }
 
   /**
@@ -380,7 +380,7 @@ public class Track extends LogicalItem implements Comparable {
    *          The sAdditionDate to set.
    */
   public void setDiscoveryDate(Date additionDate) {
-    setProperty(XML_TRACK_ADDED, additionDate);
+    setProperty(XML_TRACK_DISCOVERY_DATE, additionDate);
   }
 
   /**
@@ -466,7 +466,7 @@ public class Track extends LogicalItem implements Comparable {
       }
       return sbOut.substring(0, sbOut.length() - 1); // remove last
       // ','
-    } else if (XML_TRACK_ADDED.equals(sKey)) {
+    } else if (XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
       return Util.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_ANY.equals(sKey)) {
       return getAny();

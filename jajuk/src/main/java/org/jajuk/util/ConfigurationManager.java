@@ -212,7 +212,7 @@ public class ConfigurationManager implements ITechnicalStrings {
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
     properties.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ',' + XML_AUTHOR + ','
         + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH + ','
-        + XML_TRACKS + ',' + XML_TRACK_ADDED);
+        + XML_TRACKS + ',' + XML_TRACK_DISCOVERY_DATE);
     // Default Window position: X,Y,X_size,Y_size
     int width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     // Limit initial screen size (reported as problematic by some users on dual

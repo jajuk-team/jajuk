@@ -93,8 +93,8 @@ public class AlbumsTableModel extends JajukTableModel {
     vId.add(XML_TRACKS);
 
     // First found track discovery date
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
-    vId.add(XML_TRACK_ADDED);
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
+    vId.add(XML_TRACK_DISCOVERY_DATE);
 
     // Sum of all tracks hits
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));

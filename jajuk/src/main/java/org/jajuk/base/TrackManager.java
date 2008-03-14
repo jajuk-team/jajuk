@@ -100,7 +100,7 @@ public class TrackManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(XML_TRACK_HITS, false, false, true, false, false,
         Long.class, 0));
     // Addition date
-    registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED, false, false, true, true, false,
+    registerProperty(new PropertyMetaInformation(XML_TRACK_DISCOVERY_DATE, false, false, true, true, true,
         Date.class, null));
     // Comment
     registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT, false, false, true, true, true,

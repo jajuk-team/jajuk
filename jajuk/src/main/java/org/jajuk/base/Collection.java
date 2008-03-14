@@ -700,7 +700,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           // Date format should be OK
           Date dAdditionDate = additionFormatter.parse(attributes.getValue(attributes
-              .getIndex(XML_TRACK_ADDED)));
+              .getIndex(XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
           track.setRate(Long.parseLong(attributes.getValue(XML_TRACK_RATE)));

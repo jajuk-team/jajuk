@@ -206,7 +206,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
     alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
     alSorters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ADDED));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_DISCOVERY_DATE));
 
     hsItems = new HashSet<LocalAlbumThumbnail>();
 

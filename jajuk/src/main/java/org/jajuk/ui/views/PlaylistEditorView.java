@@ -233,8 +233,8 @@ public class PlaylistEditorView extends ViewAdapter implements Observer, ActionL
       vId.add(XML_TRACK_COMMENT);
 
       // Added date
-      vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
-      vId.add(XML_TRACK_ADDED);
+      vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
+      vId.add(XML_TRACK_DISCOVERY_DATE);
 
       // order
       vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));

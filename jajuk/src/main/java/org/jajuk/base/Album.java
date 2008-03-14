@@ -157,7 +157,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return Long.toString(getDuration());
     } else if (XML_TRACKS.equals(sKey)) {
       return Integer.toString(getNbOfTracks());
-    } else if (XML_TRACK_ADDED.equals(sKey)) {
+    } else if (XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
       return Util.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_TRACK_HITS.equals(sKey)) {
       return Long.toString(getHits());
@@ -191,7 +191,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     sb.append(getHumanValue(XML_TRACK_RATE));
     sb.append(getHumanValue(XML_TRACK_LENGTH));
     sb.append(getHumanValue(XML_TRACKS));
-    sb.append(getHumanValue(XML_TRACK_ADDED));
+    sb.append(getHumanValue(XML_TRACK_DISCOVERY_DATE));
     sb.append(getHumanValue(XML_TRACK_HITS));
     return sb.toString();
   }

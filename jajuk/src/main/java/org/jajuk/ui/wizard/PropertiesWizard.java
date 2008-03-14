@@ -397,7 +397,11 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               // If several items, take first value found
               jdp.setDate(new Date(pa.getDateValue(meta.getName()).getTime()));
             } else {
-              jdp.setDate(new Date(System.currentTimeMillis()));
+              // Make sure to set default date to 1970, not today to allow user
+              // to set date to today for multiple selection and to allow jajuk
+              // to
+              // detect a change
+              jdp.setDateInMillis(0l);
             }
             widgets[index][1] = jdp;
           } else if (meta.getType().equals(Boolean.class)) {
@@ -777,7 +781,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
            * first changed value in failure, after, current track will have
            * changed and will no more contain unmounted files
            */
-          if (!isMonoFile() && TrackManager.nbFilesRemaining > 0) {
+          if (TrackManager.nbFilesRemaining > 0) {
             Messages.showWarningMessage(Messages.getString("Error.138"));
           }
         }
@@ -811,7 +815,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         }
       } finally {
         Util.stopWaiting();
-        //Reset track remaining issues
+        // Reset track remaining issues
         TrackManager.nbFilesRemaining = 0;
       }
     }
@@ -836,13 +840,4 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     }
   }
 
-  /**
-   * Tell if this wizard affects only one single file or logical items
-   * 
-   * @return Returns the bMultifile.
-   */
-  private boolean isMonoFile() {
-    // mono file mode for files and directories
-    return alItems.get(0) instanceof File || alItems.get(0) instanceof Directory;
-  }
 }

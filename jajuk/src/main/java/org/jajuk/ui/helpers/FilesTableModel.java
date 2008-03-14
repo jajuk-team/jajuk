@@ -111,8 +111,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
     vId.add(XML_TRACK_HITS);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ADDED));
-    vId.add(XML_TRACK_ADDED);
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
+    vId.add(XML_TRACK_DISCOVERY_DATE);
 
     // -- Custom properties now--
     // for files
