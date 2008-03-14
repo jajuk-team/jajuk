@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Ant script for user (target: package_jar) and packagers (other targets)-->
-<!--void 20080308 -->
+<!--void 20080314 -->
 
 <project default='package_jar' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
@@ -173,6 +173,7 @@
 			<include name='jajuk' />
 			<include name='jajuk.bat' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+     		<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
 	</target>
 
