@@ -210,6 +210,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
     jmiPlay.putClientProperty(DETAIL_SELECTION, getItem());
     jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
+    jmiPush.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiPush.addActionListener(this);
     Action actionDeleteFile = ActionManager.getAction(JajukAction.DELETE);
     jmiDelete = new JMenuItem(actionDeleteFile);
@@ -365,15 +366,14 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
    */
   public void actionPerformed(ActionEvent e) {
     // Menu items
-    if (e.getSource() == jmiDelete) {
-      Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
-      for (Track track : tracks) {
-        org.jajuk.base.File file = track.getPlayeableFile(false);
-        if (file != null) {
-          alSelected.add(file);
-        }
+    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+    for (Track track : tracks) {
+      org.jajuk.base.File file = track.getPlayeableFile(false);
+      if (file != null) {
+        alSelected.add(file);
       }
-    } else if (e.getSource() == jmiGetCovers) {
+    }
+    if (e.getSource() == jmiGetCovers) {
       // This item is enabled only for albums
       new Thread() {
         public void run() {
