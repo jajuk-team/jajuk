@@ -164,8 +164,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jcbSort.addItem(Messages.getString("Property_author"));   // sort by Artist/Album
     jcbSort.addItem(Messages.getString("Property_album"));    // sort by Album
     jcbSort.addItem(Messages.getString("Property_year"));     // sort by Year
-                                                              // sort by Year (reverse) TODO
     jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by Discovery Date
+    jcbSort.addItem(Messages.getString("Property_rate"));     // sort by rate
+    jcbSort.addItem(Messages.getString("Property_hits"));     // sort by hits    
     jcbSort.setSelectedIndex(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
@@ -514,6 +515,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     case TrackComparator.DISCOVERY_ALBUM:
       populateTreeByDiscovery();
       break;
+    case TrackComparator.RATE_ALBUM:
+      populateTreeByRate();
+      break;
+    case TrackComparator.HITS_ALBUM:
+      populateTreeByHits();
+      break;
     }
   }
 
@@ -786,6 +793,32 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     }
   }
 
+  /** Fill the tree by Rate */
+  public void populateTreeByRate() {
+    // delete previous tree
+    top.removeAllChildren();
+    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    for (Track track : tracks) {
+      if (!track.shouldBeHidden()) {
+        addTrackAndAlbum(top, track);
+      }
+    }
+  }
+  
+  /** Fill the tree by Hits */
+  public void populateTreeByHits() {
+    // delete previous tree
+    top.removeAllChildren();
+    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    for (Track track : tracks) {
+      if (!track.shouldBeHidden()) {
+        addTrackAndAlbum(top, track);
+      }
+    }
+  }
+  
   /**
    * Utility method used by populateByDiscovery method
    * 
