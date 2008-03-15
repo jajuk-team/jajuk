@@ -108,7 +108,8 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.decorator.AlternateRowHighlighter;
+import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.color.ColorScheme;
 import org.jvnet.substance.theme.SubstanceTheme;
@@ -2327,7 +2328,7 @@ public class Util implements ITechnicalStrings {
   /**
    * @return a theme-dependent alternate row highlighter used in tables or trees
    */
-  public static AlternateRowHighlighter getAlternateHighlighter() {
+  public static Highlighter getAlternateHighlighter() {
     SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
     ColorScheme scheme = theme.getColorScheme();
     Color color1 = null;
@@ -2337,7 +2338,7 @@ public class Util implements ITechnicalStrings {
     } else {
       color1 = new Color(230, 235, 240);
     }
-    return new AlternateRowHighlighter(color1, null, null);
+    return HighlighterFactory.createAlternateStriping(color1,null);
   }
 
   /**

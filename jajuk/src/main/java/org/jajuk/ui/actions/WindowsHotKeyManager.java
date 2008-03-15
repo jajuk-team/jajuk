@@ -95,7 +95,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
         } catch (Throwable e2) {
           Log.error(e2);
         } finally {
-          ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+          ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
         }
       }
     });
@@ -126,7 +126,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
           } catch (Throwable e2) {
             Log.error(e2);
           } finally {
-            ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+            ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
           }
         }
       }

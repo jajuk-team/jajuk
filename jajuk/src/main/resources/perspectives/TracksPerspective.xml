@@ -11,7 +11,7 @@
 </Dockable>
 <Split orientation="1" location="0.5">
 <Dockable>
-<Key dockName="org.jajuk.ui.views.PlaylistEditorView/1" dockLabel="key2"/>
+<Key dockName="org.jajuk.ui.views.QueueView/1" dockLabel="key2"/>
 </Dockable>
 <Dockable>
 <Key dockName="org.jajuk.ui.views.CoverView/1" dockLabel="key4"/>
@@ -21,10 +21,6 @@
 </Split>
 </DockingPanel>
 <Border zone="1">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.LogicalPlaylistRepositoryView/0" dockLabel="key3"/>
-<RelativePosition x="0.0" y="0.0" w="0.25" h="1.0" />
-</Dockable>
 <Dockable>
 <Key dockName="org.jajuk.ui.views.LyricsView/0"/>
 <RelativePosition x="0.0" y="0.0" w="0.25" h="1.0" />

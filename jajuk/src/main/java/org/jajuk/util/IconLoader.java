@@ -165,6 +165,9 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_PERSPECTIVE_CATALOG = new ImageIcon(Util
       .getResource("icons/40x40/perspective_catalog_40x40.png"));
 
+  public static final ImageIcon ICON_PERSPECTIVE_PLAYLISTS = new ImageIcon(Util
+      .getResource("icons/40x40/perspective_playlists_40x40.png"));
+
   public static final ImageIcon ICON_PERSPECTIVE_INFORMATION = new ImageIcon(Util
       .getResource("icons/40x40/perspective_information_40x40.png"));
 

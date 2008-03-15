@@ -20,14 +20,14 @@
 
 package org.jajuk.ui.views;
 
-import org.jajuk.ui.perspectives.IPerspective;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.jajuk.ui.perspectives.IPerspective;
 
 /**
  * View Factory, creates view item and manages their ID
@@ -92,17 +92,16 @@ public class ViewFactory {
     out.add(DeviceView.class);
     out.add(TracksTableView.class);
     out.add(TracksTreeView.class);
-    out.add(PlaylistEditorView.class);
-    out.add(LogicalPlaylistRepositoryView.class);
+    out.add(PlaylistView.class);
     out.add(LyricsView.class);
     out.add(ParameterView.class);
-    out.add(PhysicalPlaylistRepositoryView.class);
     out.add(FilesTableView.class);
     out.add(FilesTreeView.class);
     out.add(StatView.class);
     out.add(SuggestionView.class);
     out.add(WikipediaView.class);
     out.add(AlbumsTableView.class);
+    out.add(QueueView.class);
     Collections.sort(out, new Comparator() {
       public int compare(Object view1, Object view2) {
         String s1;

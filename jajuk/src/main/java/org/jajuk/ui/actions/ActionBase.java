@@ -25,10 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -355,9 +352,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
       perform(evt);
     } catch (Throwable e2) {
       Log.error(e2);
-    } finally {
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
-    }
+    } 
   }
 
   /**

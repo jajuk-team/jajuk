@@ -262,8 +262,6 @@ public class PlaylistFileManager extends ItemManager implements Observer {
             }
           }
         }
-        // refresh UI
-        ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
       }
     }
   }

@@ -168,7 +168,7 @@ public class JajukSystray extends CommandJPanel {
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
 
     jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8"));
-    jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true));
+    jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
     jcbmiVisible.addActionListener(this);
     jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25"));
 
@@ -303,7 +303,7 @@ public class JajukSystray extends CommandJPanel {
     } catch (Exception e2) {
       Log.error(e2);
     } finally {
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+      ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
     }
   }
 
@@ -435,7 +435,7 @@ public class JajukSystray extends CommandJPanel {
           }
           populateAmbiences();
         } else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
-          jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true));
+          jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
           jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
         }
       }

@@ -83,7 +83,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     System.setProperty("apple.awt.showGrowBox", "false");
 
     jw = this;
-    bVisible = ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP, true);
+    bVisible = ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP);
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.ICON_LOGO.getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

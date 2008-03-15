@@ -664,7 +664,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     } catch (Exception e) {
       Log.error(e);
     } finally {
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
+      ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
     }
   }
 

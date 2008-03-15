@@ -40,7 +40,6 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.helpers.PlaylistFileItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -63,6 +62,18 @@ import org.jajuk.util.log.Log;
 public class PlaylistFile extends PhysicalItem implements Comparable {
 
   private static final long serialVersionUID = 1L;
+
+  public static final int PLAYLIST_TYPE_NORMAL = 0;
+
+  public static final int PLAYLIST_TYPE_NEW = 1;
+
+  public static final int PLAYLIST_TYPE_BOOKMARK = 2;
+
+  public static final int PLAYLIST_TYPE_BESTOF = 3;
+
+  public static final int PLAYLIST_TYPE_QUEUE = 4;
+
+  public static final int PLAYLIST_TYPE_NOVELTIES = 5;
 
   /** Playlist parent directory */
   private Directory dParentDirectory;
@@ -113,7 +124,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * @param sParentDirectory
    */
   public PlaylistFile(final String sId, final String sName, final Directory dParentDirectory) {
-    this(PlaylistFileItem.PLAYLIST_TYPE_NORMAL, sId, sName, dParentDirectory);
+    this(PlaylistFile.PLAYLIST_TYPE_NORMAL, sId, sName, dParentDirectory);
   }
 
   /**
@@ -134,10 +145,10 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * @param bf
    */
   public synchronized void addFile(final int index, final File file) throws JajukException {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+    if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
       Bookmarks.getInstance().addFile(index, file);
     }
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    if (iType == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       final StackItem item = new StackItem(file);
       item.setUserLaunch(false);
       // set repeat mode : if previous item is repeated, repeat as
@@ -152,7 +163,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
         // insert this track in the fifo
         FIFO.getInstance().insert(item, index);
       } else {
-        // start immediatly playing
+        // start immediately playing
         FIFO.getInstance().push(item, false);
       }
     } else {
@@ -176,8 +187,6 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
       }
     } catch (final Exception e) {
       Log.error(e);
-    } finally {
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
     }
   }
 
@@ -186,10 +195,10 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * 
    */
   public synchronized void clear() {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) { // bookmark
+    if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) { // bookmark
       // playlist
       Bookmarks.getInstance().clear();
-    } else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    } else if (getType() == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       FIFO.getInstance().clear();
     } else {
       alFiles.clear();
@@ -250,7 +259,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * 
    * @param other
    *          playlistfile to be compared
-   * @return comparaison result
+   * @return comparison result
    */
   public int compareTo(final Object o) {
     // Perf: leave if items are equals
@@ -298,9 +307,9 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * @param index
    */
   public synchronized void down(final int index) {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+    if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
       Bookmarks.getInstance().down(index);
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       FIFO.getInstance().down(index);
     } else if ((alFiles != null) && (index < alFiles.size() - 1)) {
       // the last track cannot go depper
@@ -376,7 +385,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    */
   public synchronized ArrayList<File> getFiles() throws JajukException {
     // if normal playlist, propose to mount device if unmounted
-    if ((getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL) && !isReady()) {
+    if ((getType() == PlaylistFile.PLAYLIST_TYPE_NORMAL) && !isReady()) {
       final String sMessage = Messages.getString("Error.025") + " ("
           + getDirectory().getDevice().getName() + Messages.getString("FIFO.4");
       final int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
@@ -397,7 +406,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
         throw new JajukException(141, getFio().getAbsolutePath(), null);
       }
     }
-    if ((iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL) && (alFiles == null)) {
+    if ((iType == PlaylistFile.PLAYLIST_TYPE_NORMAL) && (alFiles == null)) {
       // normal playlist, test if list is null for perfs(avoid reading
       // again the m3u file)
       if (getFio().exists() && getFio().canRead()) {
@@ -409,29 +418,29 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
       } else { // error accessing playlist file
         throw new JajukException(9, getFio().getAbsolutePath(), new Exception());
       }
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_BESTOF) {
       // bestof playlist
       alFiles = new ArrayList<File>(10);
       // even unmounted files if required
       for (final File file : FileManager.getInstance().getBestOfFiles()) {
         alFiles.add(file);
       }
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_NOVELTIES) {
       // novelties playlist
       alFiles = new ArrayList<File>(10);
       for (final File file : FileManager.getInstance().getGlobalNoveltiesPlaylist(
           ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED))) {
         alFiles.add(file);
       }
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
       // bookmark playlist
       alFiles = Bookmarks.getInstance().getFiles();
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_NEW) {
       // new playlist
       if (alFiles == null) {
         alFiles = new ArrayList<File>(10);
       }
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       // queue playlist clean data
       if (!FIFO.isStopped()) {
         alFiles = new ArrayList<File>(10);
@@ -608,49 +617,14 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
   }
 
   /**
-   * Remove a fiven file from the playlist (can have several occurences)
-   * 
-   * @param file
-   *          to drop
-   */
-  public synchronized void remove(final File file) {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
-      final Iterator it = Bookmarks.getInstance().getFiles().iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = (File) it.next();
-        if (fileToTest.equals(file)) {
-          Bookmarks.getInstance().remove(i);
-        }
-      }
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
-      final Iterator it = FIFO.getInstance().getFIFO().iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = (File) it.next();
-        if (fileToTest.equals(file)) {
-          FIFO.getInstance().remove(i, i);
-        }
-      }
-    } else {
-      final Iterator it = alFiles.iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = (File) it.next();
-        if (fileToTest.equals(file)) {
-          alFiles.remove(i);
-        }
-      }
-    }
-    setModified(true);
-  }
-
-  /**
    * Remove a track from the playlist
    * 
    * @param index
    */
   public synchronized void remove(final int index) {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+    if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
       Bookmarks.getInstance().remove(index);
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       FIFO.getInstance().remove(index, index);
     } else {
       alFiles.remove(index);
@@ -666,7 +640,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * @throws JajukException
    */
   public void replaceFile(final File fOld, final File fNew) throws JajukException {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+    if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
       final Iterator it = Bookmarks.getInstance().getFiles().iterator();
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = (File) it.next();
@@ -675,12 +649,12 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
           Bookmarks.getInstance().addFile(i, fNew);
         }
       }
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       final Iterator it = FIFO.getInstance().getFIFO().iterator();
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = (File) it.next();
         if (fileToTest.equals(fOld)) {
-          FIFO.getInstance().remove(i, i); // just emove
+          FIFO.getInstance().remove(i, i); // just remove
           final ArrayList<StackItem> al = new ArrayList<StackItem>(1);
           al.add(new StackItem(fNew));
           FIFO.getInstance().insert(al, i);
@@ -723,18 +697,19 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
     alFiles = getFiles();
     if (alFiles.size() > 0) {
       final File file = alFiles.get(0);
-      if (getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF) {
+      if (getType() == PlaylistFile.PLAYLIST_TYPE_BESTOF) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
             + ITechnicalStrings.FILE_DEFAULT_BESTOF_PLAYLIST;
-      } else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+      } else if (getType() == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
             + ITechnicalStrings.FILE_DEFAULT_BOOKMARKS_PLAYLIST;
-      } else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES) {
+      } else if (getType() == PlaylistFile.PLAYLIST_TYPE_NOVELTIES) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + ITechnicalStrings.FILE_DEFAULT_BOOKMARKS_PLAYLIST;
-      } else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+            + ITechnicalStrings.FILE_DEFAULT_NOVELTIES_PLAYLIST;
+      } else if (getType() == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + ITechnicalStrings.FILE_DEFAULT_QUEUE_PLAYLIST;
+            + ITechnicalStrings.FILE_DEFAULT_QUEUE_PLAYLIST
+            + Util.getAdditionDateFormatter().format(new Date());
       } else {
         sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
             + file.getTrack().getHumanValue(ITechnicalStrings.XML_ALBUM);
@@ -746,7 +721,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
     final int returnVal = jfchooser.showSaveDialog(Main.getWindow());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       java.io.File file = jfchooser.getSelectedFile();
-      // add automaticaly the extension if required
+      // add automatically the extension if required
       if (file.getAbsolutePath().endsWith(ITechnicalStrings.EXT_PLAYLIST)) {
         file = new java.io.File(file.getAbsolutePath());
       } else {
@@ -892,9 +867,9 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * @param index
    */
   public synchronized void up(final int index) {
-    if (iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+    if (iType == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
       Bookmarks.getInstance().up(index);
-    } else if (iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+    } else if (iType == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
       FIFO.getInstance().up(index);
     } else if ((alFiles != null) && (index > 0)) { // the first track
       // cannot go further

@@ -70,12 +70,12 @@ public enum EventSubject {
   // the pause button has been pressed
   EVENT_PLAYER_PAUSE,
   // the resume button has been pressed
-  EVENT_PLAYER_RESUME, EVENT_PLAYLIST_REFRESH,
-  // Current playlist has changed
-  EVENT_PLAYLIST_SELECTION_CHANGED,
-  // a file has been lauched by the fifo
+  EVENT_PLAYER_RESUME, 
+  //Queue should be refreshed
+  EVENT_QUEUE_NEED_REFRESH,
+  // a file has been launched by the fifo
   EVENT_FILE_LAUNCHED,
-  // heart beat for geenral use to refresh subscribers
+  // heart beat for general use to refresh subscribers
   // every n secs
   EVENT_HEART_BEAT,
   // a web radio has been launched

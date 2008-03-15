@@ -78,7 +78,7 @@ public interface ITechnicalStrings {
   /** Autorefresh thread delay in ms */
   int AUTO_REFRESH_DELAY = 30000;
 
-  /** Minimum reresh fequency (ms) */
+  /** Minimum refresh fequency (ms) */
   int MIN_AUTO_REFRESH_DELAY = 30000;
 
   /** Garbager delay in ms */
@@ -221,7 +221,7 @@ public interface ITechnicalStrings {
 
   String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
 
-  String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
+  String FILE_DEFAULT_QUEUE_PLAYLIST = "jajuk-playlist_";
 
   String FILE_DJ_DIR = "djs";
 
@@ -416,8 +416,6 @@ public interface ITechnicalStrings {
   String VIEW_NAME_STAT = "org.jajuk.ui.views.StatView";
 
   String VIEW_NAME_COVER = "org.jajuk.ui.views.CoverView";
-
-  String VIEW_NAME_PHYSICAL_PLAYLIST_REPOSITORY = "org.jajuk.ui.views.PhysicalPlaylistRepositoryView";
 
   String VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR = "org.jajuk.ui.views.PhysicalPlaylistEditorView";
 

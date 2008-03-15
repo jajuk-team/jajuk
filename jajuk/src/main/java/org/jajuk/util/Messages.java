@@ -186,7 +186,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
   /**
    * Return Flag icon for given description
-   * 
+   * @param dDesc language description
    * @return
    */
   public static Icon getIcon(final String sDesc){

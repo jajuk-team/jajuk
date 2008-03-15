@@ -26,10 +26,7 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -165,9 +162,6 @@ public class Bookmarks implements ITechnicalStrings {
       }
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      // refresh playlist editor
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
     }
   }
 }

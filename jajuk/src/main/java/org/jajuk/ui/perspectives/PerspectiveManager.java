@@ -273,6 +273,15 @@ public class PerspectiveManager implements ITechnicalStrings {
     perspective.setIcon(icon);
     registerPerspective(perspective);
 
+    // Playlists perspective
+    perspective = new PlaylistsPerspective();
+    icon = IconLoader.ICON_PERSPECTIVE_PLAYLISTS;
+    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+      icon = Util.getResizedImage(icon, iconSize, iconSize);
+    }
+    perspective.setIcon(icon);
+    registerPerspective(perspective);
+
     // Display perspective
     perspective = new DisplayPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_PLAYER;

@@ -31,9 +31,10 @@ import javax.swing.TransferHandler;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
+import org.jajuk.base.PlaylistFile;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.ui.views.PlaylistEditorView;
+import org.jajuk.ui.views.PlaylistView;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -93,7 +94,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
     try {
       if (canImport(c, t.getTransferDataFlavors())) {
         JComponent comp = (JComponent) c.getParent().getParent().getParent();
-        PlaylistFileItem plfi = ((PlaylistEditorView) comp).getCurrentPlaylistFileItem();
+        PlaylistFile plf = ((PlaylistView) comp).getCurrentPlaylistFile();
         Object oData = null;
         DataFlavor flavor = t.getTransferDataFlavors()[0];
         if (flavor.getHumanPresentableName().equals(
@@ -114,20 +115,20 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
         }
         ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
         // queue case
-        if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE) {
+        if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
           FIFO.getInstance().push(
               Util.createStackItems(Util.applyPlayOption(alSelectedFiles), ConfigurationManager
                   .getBoolean(CONF_STATE_REPEAT), true),
               ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // bookmark case
-        else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK) {
+        else if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
           Bookmarks.getInstance().addFiles(Util.applyPlayOption(alSelectedFiles));
         }
         // normal or new playlist case
-        else if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL
-            || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW) {
-          plfi.getPlaylistFile().addFiles(Util.applyPlayOption(alSelectedFiles));
+        else if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_NORMAL
+            || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NEW) {
+          plf.addFiles(Util.applyPlayOption(alSelectedFiles));
         }
         return true;
       }
