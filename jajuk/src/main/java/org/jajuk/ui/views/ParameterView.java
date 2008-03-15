@@ -1668,8 +1668,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     jcbSyncTableTree.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_OPTIONS_SYNC_TABLE_TREE));
-    scbLanguage.setSelectedItem(Messages.getDescForLocal(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE)));
+    String rightLanguageDesc = Messages.getDescForLocal(ConfigurationManager
+        .getProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE));
+    //Select the right language
+    int index = 0;
+    for (String desc : Messages.getDescs()){
+      if (desc.equals(rightLanguageDesc)){
+        scbLanguage.setSelectedIndex(index);
+        break;
+      }
+      index ++;
+    }
     scbLanguage.addActionListener(this);
     scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_OPTIONS_LOG_LEVEL)));
