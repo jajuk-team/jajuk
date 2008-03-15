@@ -178,9 +178,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     jsPosition.addChangeListener(this);
     jsPosition.addMouseWheelListener(InformationJPanel.this);
     jsPosition.setEnabled(false);
-    jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
     jtbProgress.add(jsPosition);
     jlCurrent = new JLabel();
+    jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
     jlCurrent.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, ""
