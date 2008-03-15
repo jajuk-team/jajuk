@@ -207,6 +207,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
     alSorters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
     alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_DISCOVERY_DATE));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_HITS));
 
     hsItems = new HashSet<LocalAlbumThumbnail>();
 
@@ -549,6 +550,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 }
               case 4: // Discovery date
                 return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
+              case 5: // Hits 
+                if (album1.getHits() < album2.getHits()) {
+                  return 1;
+                } else {
+                  return 0;
+                }
               }
               return 0;
             }
