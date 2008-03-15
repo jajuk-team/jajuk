@@ -453,7 +453,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             jpfASPassword.setEnabled(false);
           }
         } else if (e.getSource() == scbLanguage) {
-          final String sLocal = Messages.getLocalForDesc((String) scbLanguage.getSelectedItem());
+          final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
+              .getText());
           final String sPreviousLocal = Messages.getInstance().getLocale();
           if (!sPreviousLocal.equals(sLocal)) {
             // local has changed
@@ -501,7 +502,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     if (!sBestofSize.equals("")) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
-    final String sLocal = Messages.getLocalForDesc((String) scbLanguage.getSelectedItem());
+    final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
+        .getText());
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
     RatingManager.setRateHasChanged(true);
@@ -744,8 +746,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       Log.error(113, e);
       Messages.showErrorMessage(113);
     }
-    // notify playlist editor (useful for novelties)
-    ObservationManager.notify(new Event(EventSubject.EVENT_PLAYLIST_REFRESH));
     // Force a full refresh (useful for catalog view for instance)
     ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
     // display a message
