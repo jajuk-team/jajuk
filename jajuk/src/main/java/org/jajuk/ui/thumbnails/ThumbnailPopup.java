@@ -176,7 +176,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
         if ((x + 500) > screenWidth) {
           x = screenWidth - 510;
         }
-        y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - 400;
+        y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - 350;
       }
       setLocation(x, y);
     } else {
