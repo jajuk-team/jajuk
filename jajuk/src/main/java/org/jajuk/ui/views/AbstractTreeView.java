@@ -129,7 +129,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
     jmiReport.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiProperties.putClientProperty(DETAIL_SELECTION, selectedRecursively);
   }
 
 }

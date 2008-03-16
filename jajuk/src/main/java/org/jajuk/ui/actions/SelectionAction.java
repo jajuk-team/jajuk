@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -53,6 +54,8 @@ public abstract class SelectionAction extends ActionBase {
       selection.add((Item) o);
     } else if (o instanceof ArrayList) {
       selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    } else if (o instanceof HashSet) {
+      selection = new ArrayList<Item>((HashSet)o);
     }
   }
 

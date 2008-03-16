@@ -403,8 +403,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
               }
               break;
             } else {
-              selectedRecursively.add((Item) ((TransferableTreeNode) o).getData());
-              alSelected.add((Item) ((TransferableTreeNode) o).getData());
+              Item item = (Item) ((TransferableTreeNode) o).getData();
+              alSelected.add(item);
             }
             // return all childs nodes recursively
             Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
@@ -416,6 +416,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                 // select directory and then files inside
                 selectedRecursively.add(file);
                 lSize += file.getSize();
+                items++;
+              }
+              else if (node instanceof PlaylistFileNode){
+                PlaylistFile plf = ((PlaylistFileNode) node).getPlaylistFile();
+                selectedRecursively.add(plf);
                 items++;
               }
             }

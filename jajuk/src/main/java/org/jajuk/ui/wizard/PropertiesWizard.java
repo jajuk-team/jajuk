@@ -131,7 +131,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
       bMerged = true;
     }
     panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? Util.getLimitedString((alItems
-        .get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6"), bMerged);
+        .get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6") + " [" + alItems.size()
+        + "]", bMerged);
     CellConstraints cc = new CellConstraints();
     PanelBuilder builder = new PanelBuilder(new FormLayout("5dlu,p:grow,5dlu",
         "1dlu,fill:p,5dlu,p,3dlu"));
@@ -181,7 +182,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
             Util.getLimitedString(alItems1.get(0).getDesc(), 50), false);
       } else {
         panel1 = new PropertiesPanel(alItems1, Util.formatPropertyDesc(Messages
-            .getString("PropertiesWizard.6")), true);
+            .getString("PropertiesWizard.6")
+            + " [" + alItems.size() + "]"), true);
       }
       panel1.setBorder(BorderFactory.createEtchedBorder());
     }
