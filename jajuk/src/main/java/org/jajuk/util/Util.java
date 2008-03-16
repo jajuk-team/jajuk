@@ -463,9 +463,6 @@ public class Util implements ITechnicalStrings {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-    if (!fNew.getParentFile().canWrite()) {
-      throw new JajukException(24, file.getAbsolutePath(), null);
-    }
     final FileChannel fcSrc = new FileInputStream(file).getChannel();
     final FileChannel fcDest = new FileOutputStream(fNew).getChannel();
     fcDest.transferFrom(fcSrc, 0, fcSrc.size());
@@ -492,9 +489,6 @@ public class Util implements ITechnicalStrings {
         '/').append(sNewName).toString());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
-    }
-    if (!fileNew.getParentFile().canWrite()) {
-      throw new JajukException(24, file.getAbsolutePath(), null);
     }
     final FileChannel fcSrc = new FileInputStream(file).getChannel();
     final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
@@ -565,9 +559,6 @@ public class Util implements ITechnicalStrings {
         .append(file.getName()).toString());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
-    }
-    if (!fileNew.getParentFile().canWrite()) {
-      throw new JajukException(24, file.getAbsolutePath(), null);
     }
     final FileChannel fcSrc = new FileInputStream(file).getChannel();
     final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();

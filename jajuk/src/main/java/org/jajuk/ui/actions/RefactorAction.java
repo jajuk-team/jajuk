@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 
 package org.jajuk.ui.actions;
@@ -144,14 +144,15 @@ public class RefactorAction implements ITechnicalStrings {
       if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
         sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.160") + ")\n";
       } else {
-        if (fNew.getParentFile().canWrite()) {
+        try {
           bRenameSuccess = fOld.renameTo(fNew);
           if (!bRenameSuccess) {
             sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.154") + ")\n";
           }
           Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() + "}} Success ? " + bRenameSuccess);
 
-        } else {
+        } catch (Exception e) {
+          Log.error(e);
           sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.161") + ")\n";
         }
       }
