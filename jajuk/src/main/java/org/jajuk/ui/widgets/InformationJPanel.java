@@ -546,37 +546,4 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       jsPosition.setValue(iNew);
     }
   }
-  
-  /*public void mouseClicked(MouseEvent e) {
-    Log.debug("### Debug Inside");
-    ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, ""
-        + ((ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) + 1)));
-    if (ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) == ConfigurationManager
-        .getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX)) {
-      ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 0);
-    }
-  }
-
-  public void mouseExited(MouseEvent e) {
-    Log.debug("### Debug Exited");
-  }
-
-  public void mouseReleased(MouseEvent e) {
-    Log.debug("### Debug Inside");
-    ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, ""
-        + ((ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) + 1)));
-    if (ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED) == ConfigurationManager
-        .getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX)) {
-      ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 0);
-    }
-  }
-
-  public void mouseEntered(MouseEvent e) {
-    Log.debug("### Debug Entered");
-  }
-
-  public void mousePressed(MouseEvent e) {
-    Log.debug("### Debug Pressed");
-  }
-*/
-}
+ }
