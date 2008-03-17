@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -183,14 +184,19 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
    *          Property (column) to filter
    * @param sPattern
    *          pattern
+   * @param columnsToShow
+   *          List of elements to show in the table (liek files,hits...). This
+   *          is useful for models for memory performances as model doesn't fill
+   *          values for hidden columns
    */
-  public abstract void populateModel(String sProperty, String sPattern);
+  public abstract void populateModel(String sProperty, String sPattern,
+      ArrayList<String> columnsToShow);
 
   /**
    * Fill model with data
    */
   public void populateModel() {
-    populateModel(null, null);
+    populateModel(null, null, null);
   }
 
   /**

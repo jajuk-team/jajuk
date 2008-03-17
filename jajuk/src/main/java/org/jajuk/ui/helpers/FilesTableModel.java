@@ -105,7 +105,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
     vId.add(XML_DIRECTORY);
 
-    vColNames.add(Messages.getString("Property_file_date"));
+    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILE_DATE));
     vId.add(XML_FILE_DATE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
@@ -116,7 +116,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 
     // -- Custom properties now--
     // for files
-    Iterator<PropertyMetaInformation> it = FileManager.getInstance().getCustomProperties().iterator();
+    Iterator<PropertyMetaInformation> it = FileManager.getInstance().getCustomProperties()
+        .iterator();
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();
       vColNames.add(meta.getName());
@@ -135,7 +136,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
    * Fill model with data using an optional filter property and pattern
    */
   @Override
-  public synchronized void populateModel(String sPropertyName, String sPattern) {
+  public synchronized void populateModel(String sPropertyName, String sPattern,
+      ArrayList<String> columnsToShow) {
     synchronized (FileManager.getInstance().getLock()) {
       // This should be monitor filemanager to avoid NPE when changing items
       ArrayList<File> alToShow = null;
@@ -174,6 +176,26 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       oValues = new Object[iRowNum][iColNum];
       oItems = new Item[iRowNum];
       bCellEditable = new boolean[iRowNum][iColNum];
+
+      // For perfs, prepare columns visibility
+      boolean bTrackName = (columnsToShow != null && columnsToShow.contains(XML_TRACK));
+      boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
+      boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
+      boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
+      boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
+      boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
+      boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
+      boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE_NAME));
+      boolean bComment = (columnsToShow != null && columnsToShow.contains(XML_TRACK_COMMENT));
+      boolean bQuality = (columnsToShow != null && columnsToShow.contains(XML_QUALITY));
+      boolean bSize = (columnsToShow != null && columnsToShow.contains(XML_SIZE));
+      boolean bDiscovery = (columnsToShow != null && columnsToShow
+          .contains(XML_TRACK_DISCOVERY_DATE));
+      boolean bOrder = (columnsToShow != null && columnsToShow.contains(XML_TRACK_ORDER));
+      boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
+      boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
+      boolean bFileDate = (columnsToShow != null && columnsToShow.contains(XML_FILE_DATE));
+
       for (int iRow = 0; it.hasNext(); iRow++) {
         File file = it.next();
         setItemAt(iRow, file);
@@ -198,63 +220,149 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         if (type != null) {
           bHasATagEditor = (type.getTaggerClass() != null);
         }
+
         // Track name
-        oValues[iRow][1] = file.getTrack().getName();
+        if (bTrackName) {
+          oValues[iRow][1] = file.getTrack().getName();
+        } else {
+          oValues[iRow][1] = "";
+        }
         bCellEditable[iRow][1] = bHasATagEditor;
+
         // Album
-        oValues[iRow][2] = file.getTrack().getAlbum().getName2();
+        if (bAlbum) {
+          oValues[iRow][2] = file.getTrack().getAlbum().getName2();
+        } else {
+          oValues[iRow][2] = "";
+        }
         bCellEditable[iRow][2] = bHasATagEditor;
+
         // Author
-        oValues[iRow][3] = file.getTrack().getAuthor().getName2();
+        if (bAuthor) {
+          oValues[iRow][3] = file.getTrack().getAuthor().getName2();
+        } else {
+          oValues[iRow][3] = "";
+        }
         bCellEditable[iRow][3] = bHasATagEditor;
+
         // Style
-        oValues[iRow][4] = file.getTrack().getStyle().getName2();
+        if (bStyle) {
+          oValues[iRow][4] = file.getTrack().getStyle().getName2();
+        } else {
+          oValues[iRow][4] = "";
+        }
         bCellEditable[iRow][4] = bHasATagEditor;
+
         // Rate
-        IconLabel ilRate = Util.getStars(file.getTrack());
-        oValues[iRow][5] = ilRate;
+        if (bRate) {
+          IconLabel ilRate = Util.getStars(file.getTrack());
+          oValues[iRow][5] = ilRate;
+        } else {
+          oValues[iRow][5] = "";
+        }
         bCellEditable[iRow][5] = false;
+
         // Length
-        oValues[iRow][6] = new Duration(file.getTrack().getDuration());
+        if (bLength) {
+          oValues[iRow][6] = new Duration(file.getTrack().getDuration());
+        } else {
+          oValues[iRow][6] = "";
+        }
         bCellEditable[iRow][6] = false;
+
         // Device
-        oValues[iRow][7] = file.getDirectory().getDevice().getName();
+        if (bDevice) {
+          oValues[iRow][7] = file.getDirectory().getDevice().getName();
+        } else {
+          oValues[iRow][7] = "";
+        }
         bCellEditable[iRow][7] = false;
+
         // File name
-        oValues[iRow][8] = file.getName();
+        if (bFileName) {
+          oValues[iRow][8] = file.getName();
+        } else {
+          oValues[iRow][8] = "";
+        }
         bCellEditable[iRow][8] = true;
+
         // Comment
-        oValues[iRow][9] = file.getTrack().getValue(XML_TRACK_COMMENT);
+        if (bComment) {
+          oValues[iRow][9] = file.getTrack().getValue(XML_TRACK_COMMENT);
+        } else {
+          oValues[iRow][9] = "";
+        }
         bCellEditable[iRow][9] = bHasATagEditor;
+
         // Quality
-        long lQuality = file.getQuality();
-        oValues[iRow][10] = lQuality;
+        if (bQuality) {
+          long lQuality = file.getQuality();
+          oValues[iRow][10] = lQuality;
+        } else {
+          oValues[iRow][10] = "";
+        }
         bCellEditable[iRow][10] = false;
+        
         // Size, we want to keep 2 decimals to the value in MB
-        oValues[iRow][11] = Math.round(file.getSize() / 10485.76) / 100f;
+        if (bSize) {
+          oValues[iRow][11] = Math.round(file.getSize() / 10485.76) / 100f;
+        } else {
+          oValues[iRow][11] = "";
+        }
         bCellEditable[iRow][11] = false;
+        
         // Order
-        oValues[iRow][12] = file.getTrack().getOrder();
+        if (bOrder) {
+          oValues[iRow][12] = file.getTrack().getOrder();
+        } else {
+          oValues[iRow][12] = "";
+        }
         bCellEditable[iRow][12] = bHasATagEditor;
+        
         // year
-        oValues[iRow][13] = file.getTrack().getYear();
+        if (bYear) {
+          oValues[iRow][13] = file.getTrack().getYear();
+        } else {
+          oValues[iRow][13] = "";
+        }
         bCellEditable[iRow][13] = bHasATagEditor;
+        
         // directory full path
-        oValues[iRow][14] = file.getDirectory().getAbsolutePath();
+        if (bDirectory) {
+          oValues[iRow][14] = file.getDirectory().getAbsolutePath();
+        } else {
+          oValues[iRow][14] = "";
+        }
         bCellEditable[iRow][14] = false;
+        
         // file date
-        oValues[iRow][15] = file.getDateValue(XML_FILE_DATE);
+        if (bFileDate) {
+          oValues[iRow][15] = file.getDateValue(XML_FILE_DATE);
+        } else {
+          oValues[iRow][15] = "";
+        }
         bCellEditable[iRow][15] = false;
+        
         // Hits
-        oValues[iRow][16] = file.getTrack().getHits();
+        if (bFileDate) {
+          oValues[iRow][16] = file.getTrack().getHits();
+        } else {
+          oValues[iRow][16] = "";
+        }
         bCellEditable[iRow][16] = false;
+        
         // Discovery date
-        oValues[iRow][17] = file.getTrack().getDiscoveryDate();
+        if (bDiscovery) {
+          oValues[iRow][17] = file.getTrack().getDiscoveryDate();
+        } else {
+          oValues[iRow][17] = "";
+        }
         bCellEditable[iRow][17] = false;
 
         // -- Custom properties now --
         // files custom tags
-        Iterator<PropertyMetaInformation> it2 = FileManager.getInstance().getCustomProperties().iterator();
+        Iterator<PropertyMetaInformation> it2 = FileManager.getInstance().getCustomProperties()
+            .iterator();
         for (int i = 0; it2.hasNext(); i++) {
           PropertyMetaInformation meta = it2.next();
           Object o = properties.get(meta.getName());

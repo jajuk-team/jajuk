@@ -37,11 +37,14 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import org.jajuk.base.Item;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
@@ -128,6 +131,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * Select columns to show colsToShow list of columns id to keep
    */
   public void showColumns(ArrayList<String> colsToShow) {
+    acceptColumnsEvents = false;
     Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
     while (it.hasNext()) {
       TableColumnExt col = (TableColumnExt) it.next();
@@ -135,6 +139,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
         col.setVisible(false);
       }
     }
+    acceptColumnsEvents = true;
   }
 
   /**
@@ -162,7 +167,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList alOut = getColumnsConf();
+    ArrayList<String> alOut = getColumnsConf();
     if (!alOut.contains(property)) {
       String value = ConfigurationManager.getProperty(sConf);
       ConfigurationManager.setProperty(sConf, value + "," + property);
@@ -178,7 +183,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList alOut = getColumnsConf();
+    ArrayList<String> alOut = getColumnsConf();
     alOut.remove(property);
     ConfigurationManager.setProperty(sConf, getColumnsConf(alOut));
   }
@@ -187,6 +192,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (acceptColumnsEvents) { // ignore this column change when reloading
       // model
       createColumnsConf();
+      ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
     }
   }
 
@@ -228,7 +234,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
       }
     }
     String value;
-    // remove last coma
+    // remove last comma
     if (sb.length() > 0) {
       value = sb.substring(0, sb.length() - 1);
     } else {
@@ -248,7 +254,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     while (it.hasNext()) {
       sb.append((String) it.next() + ",");
     }
-    // remove last coma
+    // remove last comma
     if (sb.length() > 0) {
       return sb.substring(0, sb.length() - 1);
     } else {

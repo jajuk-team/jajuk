@@ -178,6 +178,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   public Object construct() {
     model = populateTable();
     jtable = new JajukTable(model, true, columnsConf);
+    
     // Add generic menus
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
     jmiPlay.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
@@ -301,7 +302,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       @Override
       public Object construct() {
         model.removeTableModelListener(AbstractTableView.this);
-        model.populateModel(sPropertyName, sPropertyValue);
+        model.populateModel(sPropertyName, sPropertyValue, jtable.getColumnsConf());
         return null;
       }
 

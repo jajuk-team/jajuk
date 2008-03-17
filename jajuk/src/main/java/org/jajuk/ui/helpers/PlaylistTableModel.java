@@ -88,6 +88,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
   /**
    * Return right stack item in normal or planned stacks
+   * 
    * @param index
    * @return
    */
@@ -191,7 +192,8 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Fill model with data using an optional filter property
    */
-  public synchronized void populateModel(String sPropertyName, String sPattern) {
+  public synchronized void populateModel(String sPropertyName, String sPattern,
+      ArrayList<String> columnsToShow) {
     iRowNum = alItems.size() + alPlanned.size();
     oValues = new Object[iRowNum][iNumberStandardCols
         + TrackManager.getInstance().getCustomProperties().size()
