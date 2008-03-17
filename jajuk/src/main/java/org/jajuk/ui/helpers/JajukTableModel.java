@@ -195,8 +195,8 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
   /**
    * Fill model with data
    */
-  public void populateModel() {
-    populateModel(null, null, null);
+  public void populateModel(ArrayList<String> columnsToShow) {
+    populateModel(null, null, columnsToShow);
   }
 
   /**

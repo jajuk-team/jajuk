@@ -103,21 +103,19 @@ public class TypeManager extends ItemManager {
   @SuppressWarnings("unchecked")
   private Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
       Class cTagImpl) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      if (hmSupportedTypes.containsKey(sExtension)) {
-        // if the type is already in memory, use it
-        return hmSupportedTypes.get(sExtension);
-      }
-      Type type = null;
-      try {
-        type = new Type(sId, sName, sExtension, cPlayerImpl, cTagImpl);
-        hmItems.put(sId, type);
-        hmSupportedTypes.put(type.getExtension(), type);
-      } catch (Exception e) {
-        Log.error(109, "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e);
-      }
-      return type;
+    if (hmSupportedTypes.containsKey(sExtension)) {
+      // if the type is already in memory, use it
+      return hmSupportedTypes.get(sExtension);
     }
+    Type type = null;
+    try {
+      type = new Type(sId, sName, sExtension, cPlayerImpl, cTagImpl);
+      hmItems.put(sId, type);
+      hmSupportedTypes.put(type.getExtension(), type);
+    } catch (Exception e) {
+      Log.error(109, "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e);
+    }
+    return type;
   }
 
   /**
@@ -127,9 +125,7 @@ public class TypeManager extends ItemManager {
    * @return
    */
   public boolean isExtensionSupported(String sExt) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      return hmSupportedTypes.containsKey(sExt);
-    }
+    return hmSupportedTypes.containsKey(sExt);
   }
 
   /**
@@ -139,9 +135,7 @@ public class TypeManager extends ItemManager {
    * @return
    */
   public Type getTypeByExtension(String sExtension) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      return hmSupportedTypes.get(sExtension);
-    }
+    return hmSupportedTypes.get(sExtension);
   }
 
   /**
@@ -151,16 +145,14 @@ public class TypeManager extends ItemManager {
    * @return associated type or null if none found
    */
   public Type getTypeByTechDesc(String sTechDesc) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      Iterator it = hmSupportedTypes.values().iterator();
-      while (it.hasNext()) {
-        Type type = (Type) it.next();
-        if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)) {
-          return type;
-        }
+    Iterator it = hmSupportedTypes.values().iterator();
+    while (it.hasNext()) {
+      Type type = (Type) it.next();
+      if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)) {
+        return type;
       }
-      return null;
     }
+    return null;
   }
 
   /**
@@ -169,17 +161,15 @@ public class TypeManager extends ItemManager {
    * @return
    */
   public ArrayList<Type> getAllMusicTypes() {
-    synchronized (TrackManager.getInstance().getLock()) {
-      ArrayList<Type> alResu = new ArrayList<Type>(5);
-      Iterator it = hmSupportedTypes.values().iterator();
-      while (it.hasNext()) {
-        Type type = (Type) it.next();
-        if (type.getBooleanValue(XML_TYPE_IS_MUSIC)) {
-          alResu.add(type);
-        }
+    ArrayList<Type> alResu = new ArrayList<Type>(5);
+    Iterator it = hmSupportedTypes.values().iterator();
+    while (it.hasNext()) {
+      Type type = (Type) it.next();
+      if (type.getBooleanValue(XML_TYPE_IS_MUSIC)) {
+        alResu.add(type);
       }
-      return alResu;
     }
+    return alResu;
   }
 
   /**
@@ -188,16 +178,14 @@ public class TypeManager extends ItemManager {
    * @return
    */
   public String getTypeListString() {
-    synchronized (TrackManager.getInstance().getLock()) {
-      StringBuilder sb = new StringBuilder();
-      Iterator it = hmSupportedTypes.keySet().iterator();
-      while (it.hasNext()) {
-        sb.append(it.next());
-        sb.append(',');
-      }
-      sb.deleteCharAt(sb.length() - 1); // remove last ','
-      return sb.toString();
+    StringBuilder sb = new StringBuilder();
+    Iterator it = hmSupportedTypes.keySet().iterator();
+    while (it.hasNext()) {
+      sb.append(it.next());
+      sb.append(',');
     }
+    sb.deleteCharAt(sb.length() - 1); // remove last ','
+    return sb.toString();
   }
 
   /*
@@ -236,9 +224,10 @@ public class TypeManager extends ItemManager {
 
   /**
    * Convenient method to register all types when mplayer is not available
-   * <p>Note that
-   * we use explicite strings for icon location. It's to avoid loading all icons
-   * at startup, we do it asynchronously to accelerate startup</p>
+   * <p>
+   * Note that we use explicite strings for icon location. It's to avoid loading
+   * all icons at startup, we do it asynchronously to accelerate startup
+   * </p>
    * 
    * @throws Exception
    */
@@ -286,9 +275,10 @@ public class TypeManager extends ItemManager {
 
   /**
    * Convenient method to register all types when mplayer is available.
-   * <p>Note that
-   * we use explicite strings for icon location. It's to avoid loading all icons
-   * at startup, we do it asynchronously to accelerate startup</p>
+   * <p>
+   * Note that we use explicite strings for icon location. It's to avoid loading
+   * all icons at startup, we do it asynchronously to accelerate startup
+   * </p>
    * 
    * @throws Exception
    */

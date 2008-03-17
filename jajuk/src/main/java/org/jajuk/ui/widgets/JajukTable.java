@@ -192,7 +192,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (acceptColumnsEvents) { // ignore this column change when reloading
       // model
       createColumnsConf();
-      ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
     }
   }
 

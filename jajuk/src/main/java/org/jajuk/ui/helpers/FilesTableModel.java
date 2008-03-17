@@ -185,7 +185,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
       boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
       boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
-      boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE_NAME));
+      boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
       boolean bComment = (columnsToShow != null && columnsToShow.contains(XML_TRACK_COMMENT));
       boolean bQuality = (columnsToShow != null && columnsToShow.contains(XML_QUALITY));
       boolean bSize = (columnsToShow != null && columnsToShow.contains(XML_SIZE));

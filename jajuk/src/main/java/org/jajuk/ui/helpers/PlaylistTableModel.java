@@ -58,7 +58,6 @@ public class PlaylistTableModel extends JajukTableModel {
     this.bQueue = bQueue;
     setEditable(false); // table not editable
     prepareColumns();
-    populateModel();
   }
 
   /**
@@ -155,7 +154,7 @@ public class PlaylistTableModel extends JajukTableModel {
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
     vId.add(XML_TRACK_DISCOVERY_DATE);
 
-    // order
+    // Order
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
     vId.add(XML_TRACK_ORDER);
 
@@ -198,6 +197,23 @@ public class PlaylistTableModel extends JajukTableModel {
     oValues = new Object[iRowNum][iNumberStandardCols
         + TrackManager.getInstance().getCustomProperties().size()
         + FileManager.getInstance().getCustomProperties().size()];
+
+    // For perfs, prepare columns visibility
+    boolean bName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
+    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
+    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
+    boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
+    boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
+    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
+    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
+    boolean bComment = (columnsToShow != null && columnsToShow.contains(XML_TRACK_COMMENT));
+    boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
+    boolean bOrder = (columnsToShow != null && columnsToShow.contains(XML_TRACK_ORDER));
+    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
+    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
+    boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
+    boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE));
+      
     for (int iRow = 0; iRow < iRowNum; iRow++) {
       boolean bPlanned = false;
       Font font = null;
@@ -228,35 +244,105 @@ public class PlaylistTableModel extends JajukTableModel {
         oValues[iRow][0] = new IconLabel(IconLoader.ICON_PLAYLIST_FILE, "", null, null, font,
             Messages.getString("AbstractPlaylistEditorView.21"));
       }
+      
       // Track name
-      oValues[iRow][1] = bf.getTrack().getName();
+      if (bName) {
+        oValues[iRow][1] = bf.getTrack().getName();
+      } else {
+        oValues[iRow][1] = "";
+      }
+
       // Album
-      oValues[iRow][2] = bf.getTrack().getAlbum().getName2();
+      if (bAlbum) {
+        oValues[iRow][2] = bf.getTrack().getAlbum().getName2();
+      } else {
+        oValues[iRow][2] = "";
+      }
+
       // Author
-      oValues[iRow][3] = bf.getTrack().getAuthor().getName2();
+      if (bAuthor) {
+        oValues[iRow][3] = bf.getTrack().getAuthor().getName2();
+      } else {
+        oValues[iRow][3] = "";
+      }
+
       // Style
-      oValues[iRow][4] = bf.getTrack().getStyle().getName2();
+      if (bStyle) {
+        oValues[iRow][4] = bf.getTrack().getStyle().getName2();
+      } else {
+        oValues[iRow][4] = "";
+      }
+
       // Rate
-      oValues[iRow][5] = Util.getStars(bf.getTrack());
+      if (bRate) {
+        oValues[iRow][5] = Util.getStars(bf.getTrack());
+      } else {
+        oValues[iRow][5] = "";
+      }
+
       // Year
-      oValues[iRow][6] = bf.getTrack().getYear();
+      if (bYear) {
+        oValues[iRow][6] = bf.getTrack().getYear();
+      } else {
+        oValues[iRow][6] = "";
+      }
+
       // Length
-      oValues[iRow][7] = new Duration(bf.getTrack().getDuration());
+      if (bLength) {
+        oValues[iRow][7] = new Duration(bf.getTrack().getDuration());
+      } else {
+        oValues[iRow][7] = "";
+      }
+
       // Comment
-      oValues[iRow][8] = bf.getTrack().getStringValue(XML_TRACK_COMMENT);
+      if (bComment) {
+        oValues[iRow][8] = bf.getTrack().getStringValue(XML_TRACK_COMMENT);
+      } else {
+        oValues[iRow][8] = "";
+      }
+
       // Date discovery
-      oValues[iRow][9] = bf.getTrack().getDiscoveryDate();
-      // show date using default local format and not technical
-      // representation Order
-      oValues[iRow][10] = bf.getTrack().getOrder();
+      if (bDiscovery) {
+        oValues[iRow][9] = bf.getTrack().getDiscoveryDate();
+      } else {
+        oValues[iRow][9] = "";
+      }
+
+      // Order
+      if (bOrder) {
+        oValues[iRow][10] = bf.getTrack().getOrder();
+      } else {
+        oValues[iRow][10] = "";
+      }
+
       // Device name
-      oValues[iRow][11] = bf.getDevice().getName();
+      if (bDevice) {
+        oValues[iRow][11] = bf.getDevice().getName();
+      } else {
+        oValues[iRow][11] = "";
+      }
+
       // directory name
-      oValues[iRow][12] = bf.getDirectory().getName();
+      if (bDirectory) {
+        oValues[iRow][12] = bf.getDirectory().getName();
+      } else {
+        oValues[iRow][12] = "";
+      }
+
       // file name
-      oValues[iRow][13] = bf.getName();
+      if (bFileName) {
+        oValues[iRow][13] = bf.getName();
+      } else {
+        oValues[iRow][13] = "";
+      }
+
       // Hits
-      oValues[iRow][14] = bf.getTrack().getHits();
+      if (bHits) {
+        oValues[iRow][14] = bf.getTrack().getHits();
+      } else {
+        oValues[iRow][14] = "";
+      }
+
       // Custom properties now
       // for tracks
       Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()

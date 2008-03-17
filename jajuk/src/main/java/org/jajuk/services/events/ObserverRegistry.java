@@ -33,7 +33,7 @@ class ObserverRegistry {
       10);
 
   @SuppressWarnings("unchecked")
-  void notifySync(Event event) {
+  synchronized void notifySync(Event event) {
     EventSubject subject = event.getSubject();
     ArrayList<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {

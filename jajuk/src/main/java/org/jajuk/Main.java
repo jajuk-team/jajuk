@@ -104,6 +104,8 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 
 /**
  * Jajuk launching class
@@ -297,6 +299,7 @@ public class Main implements ITechnicalStrings {
 
           // Set window look and feel and watermarks
           Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+          SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
 
           sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
               + " \"" + JAJUK_CODENAME + "\"" + " " + JAJUK_VERSION_DATE, FontManager.getInstance()

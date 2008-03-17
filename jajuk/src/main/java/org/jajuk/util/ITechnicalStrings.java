@@ -698,6 +698,9 @@ public interface ITechnicalStrings {
   /** Playlist editor columns to display */
   String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
 
+  /** Queue columns to display */
+  String CONF_QUEUE_COLUMNS = "jajuk.ui.queue_columns";
+
   /** Catalog items size */
   String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";
 

@@ -122,7 +122,8 @@ public class QueueView extends PlaylistView {
     jpControl.add(jtb, "1,1");
     jpControl.add(jlTitle, "3,1,r,c");
     model = new PlaylistTableModel(true);
-    jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS);
+    jtable = new JajukTable(model, CONF_QUEUE_COLUMNS);
+    model.populateModel(jtable.getColumnsConf());
     jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
     jtable.setSortable(false);
@@ -211,6 +212,7 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
     return eventSubjectSet;
@@ -250,6 +252,7 @@ public class QueueView extends PlaylistView {
           EventSubject subject = event.getSubject();
           jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
           if (EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)
+              || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
               || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
             model.alItems.clear();
             model.alPlanned.clear();
@@ -262,6 +265,7 @@ public class QueueView extends PlaylistView {
             }
             // create a new model
             model = new PlaylistTableModel(true);
+            model.populateModel(jtable.getColumnsConf());
             jtable.setModel(model);
             setRenderers();
             jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
@@ -273,6 +277,7 @@ public class QueueView extends PlaylistView {
               return;
             }
             model = new PlaylistTableModel(true);
+            model.populateModel(jtable.getColumnsConf());
             jtable.setModel(model);
             setRenderers();
             // remove item from configuration cols
@@ -282,7 +287,7 @@ public class QueueView extends PlaylistView {
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          jtable.acceptColumnsEvents = false; // make sure to remove this flag
+          jtable.acceptColumnsEvents = true; 
           // Update number of tracks remaining
           jlTitle.setText(" [" + FIFO.getInstance().getFIFO().size() + "]");
         }
@@ -298,7 +303,7 @@ public class QueueView extends PlaylistView {
     }
     model.alItems = FIFO.getInstance().getFIFO();
     model.alPlanned = FIFO.getInstance().getPlanned();
-    ((JajukTableModel) jtable.getModel()).populateModel();
+    ((JajukTableModel) jtable.getModel()).populateModel(jtable.getColumnsConf());
     int[] rows = jtable.getSelectedRows();
     // save selection
     model.fireTableDataChanged();// refresh

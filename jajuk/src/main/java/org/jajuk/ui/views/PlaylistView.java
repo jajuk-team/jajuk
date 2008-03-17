@@ -191,6 +191,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpControl.add(jtb, "1,1");
     jpControl.add(jlTitle, "3,1,c,c");
     model = new PlaylistTableModel(false);
+    model.populateModel(jtable.getColumnsConf());
     jtable = new JajukTable(model, CONF_PLAYLIST_EDITOR_COLUMNS);
     jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
@@ -264,6 +265,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -312,6 +314,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             }
             // create a new model
             model = new PlaylistTableModel(false);
+            model.populateModel(jtable.getColumnsConf());
             jtable.setModel(model);
             setRenderers();
             jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
@@ -323,6 +326,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
               return;
             }
             model = new PlaylistTableModel(false);
+            model.populateModel(jtable.getColumnsConf());
             jtable.setModel(model);
             setRenderers();
             // remove item from configuration cols
@@ -332,7 +336,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          jtable.acceptColumnsEvents = false; // make sure to remove this flag
+          jtable.acceptColumnsEvents = true; 
         }
       }
     });
@@ -349,7 +353,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     try {
       model.alItems = Util.createStackItems(plf.getFiles(), ConfigurationManager
           .getBoolean(CONF_STATE_REPEAT), true); // PERF
-      ((JajukTableModel) jtable.getModel()).populateModel();
+      ((JajukTableModel) jtable.getModel()).populateModel(jtable.getColumnsConf());
     } catch (JajukException je) { // don't trace because
       // it is called in a loop
     }

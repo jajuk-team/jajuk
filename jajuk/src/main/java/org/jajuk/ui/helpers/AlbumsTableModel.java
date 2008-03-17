@@ -116,7 +116,8 @@ public class AlbumsTableModel extends JajukTableModel {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public synchronized void populateModel(String sPropertyName, String sPattern,ArrayList<String> columnsToShow) {
+  public synchronized void populateModel(String sPropertyName, String sPattern,
+      ArrayList<String> columnsToShow) {
     List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
@@ -140,6 +141,21 @@ public class AlbumsTableModel extends JajukTableModel {
     // Allow only custom properties edition
     bEditable = true;
     it = alToShow.iterator();
+
+    // For perfs, prepare columns visibility
+    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
+    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
+    boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
+    boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
+    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
+    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
+    boolean bTrackNb = (columnsToShow != null && columnsToShow.contains(XML_TRACKS));
+    boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
+    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
+    boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
+    boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE_NAME));
+      
+    
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
       setItemAt(iRow, album);
@@ -159,49 +175,96 @@ public class AlbumsTableModel extends JajukTableModel {
       // change
       oValues[iRow][0] = il;
       bCellEditable[iRow][0] = false;
+
       // Album name
-      oValues[iRow][1] = album.getName2();
+      if (bAlbum) {
+        oValues[iRow][1] = album.getName2();
+      } else {
+        oValues[iRow][1] = "";
+      }
       bCellEditable[iRow][1] = false;
+
       // Author
-      Author author = album.getAuthor();
-      if (author != null) {
-        oValues[iRow][2] = author.getName2();
+      if (bAuthor) {
+        Author author = album.getAuthor();
+        if (author != null) {
+          oValues[iRow][2] = author.getName2();
+        } else {
+          oValues[iRow][2] = "";
+        }
       } else {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = false;
+
       // Style
-      Style style = album.getStyle();
-      if (style != null) {
-        oValues[iRow][3] = style.getName2();
+      if (bStyle) {
+        Style style = album.getStyle();
+        if (style != null) {
+          oValues[iRow][3] = style.getName2();
+        } else {
+          oValues[iRow][3] = "";
+        }
       } else {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = false;
+
       // Year
-      Year year = album.getYear();
-      if (year != null) {
-        oValues[iRow][4] = year.getValue();
+      if (bYear) {
+        Year year = album.getYear();
+        if (year != null) {
+          oValues[iRow][4] = year.getValue();
+        } else {
+          oValues[iRow][4] = "";
+        }
       } else {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = false;
+
       // Rate
-      IconLabel ilRate = Util.getStars(album);
-      oValues[iRow][5] = ilRate;
-      ilRate.setInteger(true);
+      if (bRate) {
+        IconLabel ilRate = Util.getStars(album);
+        oValues[iRow][5] = ilRate;
+        ilRate.setInteger(true);
+      } else {
+        oValues[iRow][5] = "";
+      }
+      bCellEditable[iRow][5] = false;
+
       // Length
-      oValues[iRow][6] = new Duration(album.getDuration());
+      if (bLength) {
+        oValues[iRow][6] = new Duration(album.getDuration());
+      } else {
+        oValues[iRow][6] = "";
+      }
       bCellEditable[iRow][6] = false;
+
       // Number of tracks
-      oValues[iRow][7] = album.getNbOfTracks();
+      if (bTrackNb) {
+        oValues[iRow][7] = album.getNbOfTracks();
+      } else {
+        oValues[iRow][7] = "";
+      }
       bCellEditable[iRow][7] = false;
+
       // Date discovery
-      oValues[iRow][8] = album.getDiscoveryDate();
+      if (bDiscovery) {
+        oValues[iRow][8] = album.getDiscoveryDate();
+      } else {
+        oValues[iRow][8] = "";
+      }
       bCellEditable[iRow][8] = false;
+      
       // Hits
-      oValues[iRow][9] = album.getHits();
+      if (bHits) {
+        oValues[iRow][9] = album.getHits();
+      } else {
+        oValues[iRow][9] = "";
+      }
       bCellEditable[iRow][9] = false;
+      
       // Custom properties now
       Iterator it2 = AlbumManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {
