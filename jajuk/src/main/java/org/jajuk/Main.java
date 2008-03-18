@@ -194,7 +194,7 @@ public class Main implements ITechnicalStrings {
 
   /** ConfigurationManager Locales */
   public static final String[] locales = { "en", "fr", "de", "it", "sv", "nl", "zh", "es", "ca",
-      "ko", "el", "ru" };
+      "ko", "el", "ru", "gl" };
 
   /** DeviceTypes Identification strings */
   public static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
@@ -762,16 +762,16 @@ public class Main implements ITechnicalStrings {
           if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
             if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
               // No mplayer
-              Messages.showHideableWarningMessage(Messages.getString("Warning.0"), 
+              Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
                   CONF_NOT_SHOW_AGAIN_PLAYER);
             } else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
               // wrong mplayer release
-              Messages.showHideableWarningMessage(Messages.getString("Warning.1"), 
+              Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
                   CONF_NOT_SHOW_AGAIN_PLAYER);
             }
           } else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
             // wrong mplayer release
-            Messages.showHideableWarningMessage(Messages.getString("Warning.3"), 
+            Messages.showHideableWarningMessage(Messages.getString("Warning.3"),
                 CONF_NOT_SHOW_AGAIN_PLAYER);
           }
         }
