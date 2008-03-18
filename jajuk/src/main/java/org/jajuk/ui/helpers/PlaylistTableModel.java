@@ -22,8 +22,8 @@ package org.jajuk.ui.helpers;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -63,6 +63,7 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Need to overwrite this method for drag and drop
    */
+  @Override
   public Item getItemAt(int iRow) {
     StackItem si = getStackItem(iRow);
     if (si != null) {
@@ -191,6 +192,7 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Fill model with data using an optional filter property
    */
+  @Override
   public synchronized void populateModel(String sPropertyName, String sPattern,
       ArrayList<String> columnsToShow) {
     iRowNum = alItems.size() + alPlanned.size();
@@ -349,7 +351,7 @@ public class PlaylistTableModel extends JajukTableModel {
           .iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
-        LinkedHashMap<String, Object> properties = bf.getTrack().getProperties();
+        Map<String, Object> properties = bf.getTrack().getProperties();
         Object o = properties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;
@@ -362,7 +364,7 @@ public class PlaylistTableModel extends JajukTableModel {
       // note that index lust start at custom track properties size
       for (int i = TrackManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
-        LinkedHashMap<String, Object> properties = bf.getProperties();
+        Map<String, Object> properties = bf.getProperties();
         Object o = properties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;
