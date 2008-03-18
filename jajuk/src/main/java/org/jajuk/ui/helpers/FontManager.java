@@ -20,11 +20,14 @@
 
 package org.jajuk.ui.helpers;
 
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JLabel;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
@@ -51,6 +54,8 @@ public class FontManager implements ITechnicalStrings, Observer {
   private static HashMap<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
 
   private static FontManager self;
+
+  private static final JLabel jl = new JLabel();
 
   // No instantiation
   private FontManager() {
@@ -128,6 +133,30 @@ public class FontManager implements ITechnicalStrings, Observer {
     // Register parameter changes to check new font size
     subjects.add(EventSubject.EVENT_PARAMETERS_CHANGE);
     return subjects;
+  }
+
+  /**
+   * 
+   * This method return the number of characters of a given string that fits in
+   * the given size in pixels
+   * 
+   * @param text
+   * @param font
+   * @param maxSize
+   * @return
+   */
+  public static int getRowsForText(String text, Font font, int maxSize) {
+    int resu = 0;
+    int usedSize = 0;
+    FontMetrics fm = jl.getFontMetrics(font);
+    for (int i = 0; i < text.length() - 1; i++) {
+      usedSize = fm.stringWidth(text.substring(0, i));
+      resu++;
+      if (usedSize >= maxSize) {
+        break;
+      }
+    }
+    return resu;
   }
 
   /*

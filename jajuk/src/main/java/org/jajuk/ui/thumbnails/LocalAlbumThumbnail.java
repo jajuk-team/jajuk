@@ -33,7 +33,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.jajuk.base.Album;
@@ -67,9 +66,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /** No cover flag */
   boolean bNoCover = false;
 
-  JTextArea jlAuthor;
+  JLabel jlAuthor;
 
-  JTextArea jlAlbum;
+  JLabel jlAlbum;
 
   private boolean bShowFullText;
 
@@ -111,24 +110,20 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
           { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
       setLayout(new TableLayout(dMain));
-      int iRows = 7 + 3 * (size / 50 - 1);
+      int iRows = 7 + 6 * (size / 50 - 1);
       Color mediumGray = new Color(172, 172, 172);
 
       Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
-      jlAuthor = new JTextArea(author.getName2(), 1, iRows);
-      jlAuthor.setLineWrap(true);
-      jlAuthor.setWrapStyleWord(true);
-      jlAuthor.setEditable(false);
+      jlAuthor = new JLabel(Util.getLimitedString(author.getName2(), iRows));
+      jlAuthor.setToolTipText(author.getName2());
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAuthor.setForeground(mediumGray);
       // we have to use a empty border to avoid getting default border
       jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-      jlAlbum = new JTextArea(album.getName2(), 1, iRows);
-      jlAlbum.setLineWrap(true);
-      jlAlbum.setWrapStyleWord(true);
-      jlAlbum.setEditable(false);
-
+      jlAlbum = new JLabel(Util.getLimitedString(album.getName2(), iRows));
+      jlAlbum.setToolTipText(album.getName2());
+      
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setForeground(mediumGray);
@@ -139,7 +134,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     } else {
       setLayout(new VerticalLayout(2));
       add(Util.getCentredPanel(jlIcon));
-      JLabel jlTitle = new JLabel(Util.getLimitedString(album.getName2(), 15));
+      int iRows = 7 + 6 * (size / 50 - 1);
+      JLabel jlTitle = new JLabel(Util.getLimitedString(album.getName2(), iRows));
+      jlTitle.setToolTipText(album.getName2());
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlTitle.setToolTipText(album.getName2());
       add(jlTitle);
