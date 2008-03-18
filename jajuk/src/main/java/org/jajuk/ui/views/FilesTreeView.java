@@ -178,6 +178,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     super.initUI();
 
@@ -267,6 +268,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jtree.setCellRenderer(new SubstanceDefaultTreeCellRenderer() {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
           boolean expanded, boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
@@ -274,7 +276,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         if (value instanceof FileNode) {
           setBorder(null);
           File file = ((FileNode) value).getFile();
-          String ext = Util.getExtension(file.getIO());
+          
+          // Note: file.getName() is better here as it will do less and not create java.io.File in File
+          String ext = Util.getExtension(file.getName());
           Type type = TypeManager.getInstance().getTypeByExtension(ext);
           // Find associated icon with this type
           URL icon = null;
@@ -471,6 +475,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // Listen for single / double click
     jtree.addMouseListener(new MouseAdapter() {
 
+      @Override
       public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
@@ -523,6 +528,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
       }
 
+      @Override
       public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
@@ -546,7 +552,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         alFiles.clear();
         alDirs.clear();
         // test mix between types ( not allowed )
-        Class c = paths[0].getLastPathComponent().getClass();
+        Class<?> c = paths[0].getLastPathComponent().getClass();
         for (int i = 0; i < paths.length; i++) {
           if (!paths[i].getLastPathComponent().getClass().equals(c)) {
             return;
@@ -751,9 +757,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // add directories
     ArrayList<Directory> directories = null;
     directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
-    Iterator it2 = directories.iterator();
+    Iterator<Directory> it2 = directories.iterator();
     while (it2.hasNext()) {
-      Directory directory = (Directory) it2.next();
+      Directory directory = it2.next();
       if (directory.shouldBeHidden()) {
         continue;
       }
@@ -776,9 +782,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
     // add files
     ArrayList<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
-    Iterator it3 = files.iterator();
+    Iterator<File> it3 = files.iterator();
     while (it3.hasNext()) {
-      File file = (File) it3.next();
+      File file = it3.next();
       if (file.shouldBeHidden()) { // should be hidden by option
         continue;
       }
@@ -796,9 +802,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // add playlist files
     ArrayList<PlaylistFile> playlists = new ArrayList<PlaylistFile>(PlaylistFileManager
         .getInstance().getPlaylistFiles());
-    Iterator it4 = playlists.iterator();
+    Iterator<PlaylistFile> it4 = playlists.iterator();
     while (it4.hasNext()) {
-      PlaylistFile playlistFile = (PlaylistFile) it4.next();
+      PlaylistFile playlistFile = it4.next();
       // should be hidden by option
       if (playlistFile.shouldBeHidden()) {
         continue;
@@ -875,6 +881,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       new Thread() {
         // test asynchronously in case of delay (samba
         // pbm for ie)
+        @Override
         public void run() {
           Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
           if (device.test()) {
@@ -925,11 +932,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         || subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT)
         || subject.equals(EventSubject.EVENT_DEVICE_REFRESH)) {
       SwingWorker sw = new SwingWorker() {
+        @Override
         public Object construct() {
           populateTree();
           return null;
         }
 
+        @Override
         public void finished() {
           SwingUtilities.updateComponentTreeUI(jtree);
           bAutoCollapse = true;
@@ -1000,6 +1009,7 @@ class FileNode extends TransferableTreeNode {
   /**
    * return a string representation of this file node
    */
+  @Override
   public String toString() {
     return ((File) super.getData()).getName();
   }
@@ -1042,6 +1052,7 @@ class DeviceNode extends TransferableTreeNode {
   /**
    * return a string representation of this device node
    */
+  @Override
   public String toString() {
     return ((Device) super.getData()).getName();
   }
@@ -1087,6 +1098,7 @@ class DirectoryNode extends TransferableTreeNode {
   /**
    * return a string representation of this directory node
    */
+  @Override
   public String toString() {
     return ((Directory) getData()).getName();
   }
@@ -1119,6 +1131,7 @@ class PlaylistFileNode extends TransferableTreeNode {
   /**
    * return a string representation of this playlistFile node
    */
+  @Override
   public String toString() {
     return ((PlaylistFile) super.getData()).getName();
   }
