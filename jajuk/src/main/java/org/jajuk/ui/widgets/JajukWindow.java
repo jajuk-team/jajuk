@@ -245,22 +245,26 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
-      File file = FIFO.getInstance().getCurrentFile();
-      if (file != null) {
-        setTitle(buildTitle(file));
+    final EventSubject subject = event.getSubject();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+          File file = FIFO.getInstance().getCurrentFile();
+          if (file != null) {
+            setTitle(buildTitle(file));
+          }
+        } else if (subject.equals(EventSubject.EVENT_ZERO)) {
+          setTitle(Messages.getString("JajukWindow.17"));
+        } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+          WebRadio radio = FIFO.getInstance().getCurrentRadio();
+          if (radio != null) {
+            // We use vertical bar to allow scripting like MSN plugins to
+            // detect jajuk frames and extract current track
+            setTitle("\\ " + radio.getName() + " /");
+          }
+        }
       }
-    } else if (subject.equals(EventSubject.EVENT_ZERO)) {
-      setTitle(Messages.getString("JajukWindow.17"));
-    } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
-      WebRadio radio = FIFO.getInstance().getCurrentRadio();
-      if (radio != null) {
-        // We use vertical bar to allow scripting like MSN plugins to
-        // detect jajuk frames and extract current track
-        setTitle("\\ " + radio.getName() + " /");
-      }
-    }
+    });
   }
 
   /**
@@ -272,7 +276,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
 
   /**
    * Build the frame title from user option
-   * @param file played file
+   * 
+   * @param file
+   *          played file
    * @return built frame title
    */
   private String buildTitle(final File file) {
