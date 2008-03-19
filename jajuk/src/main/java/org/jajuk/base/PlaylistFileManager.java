@@ -278,9 +278,7 @@ public class PlaylistFileManager extends ItemManager implements Observer {
    * @return item
    */
   public PlaylistFile getPlaylistFileByID(String sID) {
-    synchronized (getLock()) {
-      return (PlaylistFile) hmItems.get(sID);
-    }
+    return (PlaylistFile) hmItems.get(sID);
   }
 
   /**

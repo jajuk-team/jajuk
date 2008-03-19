@@ -52,8 +52,8 @@ public class TrackManager extends ItemManager implements Observer {
   private static TrackManager singleton;
 
   /**
-   * Number of tracks that cannot be fully removed as it still contains files on unmounted
-   * devices
+   * Number of tracks that cannot be fully removed as it still contains files on
+   * unmounted devices
    */
   public static int nbFilesRemaining = 0;
 
@@ -100,8 +100,8 @@ public class TrackManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(XML_TRACK_HITS, false, false, true, false, false,
         Long.class, 0));
     // Addition date
-    registerProperty(new PropertyMetaInformation(XML_TRACK_DISCOVERY_DATE, false, false, true, true, true,
-        Date.class, null));
+    registerProperty(new PropertyMetaInformation(XML_TRACK_DISCOVERY_DATE, false, false, true,
+        true, true, Date.class, null));
     // Comment
     registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT, false, false, true, true, true,
         String.class, null));
@@ -523,7 +523,7 @@ public class TrackManager extends ItemManager implements Observer {
         removeItem(track.getID());// remove old track
       } else { // some files have not been changed because located on
         // unmounted devices
-        nbFilesRemaining ++;
+        nbFilesRemaining++;
       }
     }
   }
@@ -650,9 +650,7 @@ public class TrackManager extends ItemManager implements Observer {
    * @return item
    */
   public Track getTrackByID(String sID) {
-    synchronized (getLock()) {
-      return (Track) hmItems.get(sID);
-    }
+    return (Track) hmItems.get(sID);
   }
 
   /**

@@ -100,9 +100,7 @@ public class YearManager extends ItemManager {
    * @return Element
    */
   public Year getYearByID(String sID) {
-    synchronized (getLock()) {
-      return (Year) hmItems.get(sID);
-    }
+    return (Year) hmItems.get(sID);
   }
 
   /**

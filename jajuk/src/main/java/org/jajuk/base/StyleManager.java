@@ -222,9 +222,7 @@ public class StyleManager extends ItemManager {
    * @return item
    */
   public Style getStyleByID(String sID) {
-    synchronized (getLock()) {
-      return (Style) hmItems.get(sID);
-    }
+    return (Style) hmItems.get(sID);
   }
 
   /**

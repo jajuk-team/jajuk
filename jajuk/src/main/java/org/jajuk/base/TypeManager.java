@@ -203,9 +203,7 @@ public class TypeManager extends ItemManager {
    * @return item
    */
   public Type getTypeByID(String sID) {
-    synchronized (getLock()) {
-      return (Type) hmItems.get(sID);
-    }
+    return (Type) hmItems.get(sID);
   }
 
   /**

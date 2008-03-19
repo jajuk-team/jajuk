@@ -196,9 +196,7 @@ public class AlbumManager extends ItemManager implements Observer {
    * @return Element
    */
   public Album getAlbumByID(String sID) {
-    synchronized (getLock()) {
-      return (Album) hmItems.get(sID);
-    }
+    return (Album) hmItems.get(sID);
   }
 
   /**

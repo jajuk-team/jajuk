@@ -205,9 +205,7 @@ public class AuthorManager extends ItemManager {
    * @return Element
    */
   public Author getAuthorByID(String sID) {
-    synchronized (getLock()) {
-      return (Author) hmItems.get(sID);
-    }
+    return (Author) hmItems.get(sID);
   }
 
   /**

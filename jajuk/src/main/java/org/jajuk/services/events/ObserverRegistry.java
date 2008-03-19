@@ -33,12 +33,14 @@ class ObserverRegistry {
       10);
 
   @SuppressWarnings("unchecked")
-  synchronized void notifySync(Event event) {
+  void notifySync(Event event) {
     EventSubject subject = event.getSubject();
     ArrayList<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {
       return;
     }
+    //Iterate on a cloned list to avoid concurrent exceptions
+    alComponents = (ArrayList<Observer>)alComponents.clone();
     Iterator<Observer> it = alComponents.iterator();
     while (it.hasNext()) {
       Observer obs = null;
@@ -73,7 +75,7 @@ class ObserverRegistry {
   }
 
   synchronized boolean unregister(EventSubject subject, Observer observer) {
-    ArrayList alComponents = hEventComponents.get(subject);
+    ArrayList<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents != null) {
       return alComponents.remove(observer);
     }

@@ -423,9 +423,7 @@ public class DeviceManager extends ItemManager {
    * @return Element
    */
   public Device getDeviceByID(String sID) {
-    synchronized (getLock()) {
-      return (Device) hmItems.get(sID);
-    }
+    return (Device) hmItems.get(sID);
   }
 
   /**

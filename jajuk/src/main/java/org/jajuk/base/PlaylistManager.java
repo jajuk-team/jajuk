@@ -281,9 +281,7 @@ public class PlaylistManager extends ItemManager {
    * @return item
    */
   public Playlist getPlaylistByID(String sID) {
-    synchronized (getLock()) {
-      return (Playlist) hmItems.get(sID);
-    }
+    return (Playlist) hmItems.get(sID);
   }
 
   /**

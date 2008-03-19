@@ -761,9 +761,7 @@ public class FileManager extends ItemManager implements Observer {
    * @return item
    */
   public File getFileByID(String sID) {
-    synchronized (getLock()) {
-      return (File) hmItems.get(sID);
-    }
+    return (File) hmItems.get(sID);
   }
 
   /**

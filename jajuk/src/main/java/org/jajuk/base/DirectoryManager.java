@@ -170,9 +170,7 @@ public class DirectoryManager extends ItemManager {
    * @return Element
    */
   public Directory getDirectoryByID(final String sID) {
-    synchronized (getLock()) {
-      return (Directory) hmItems.get(sID);
-    }
+    return (Directory) hmItems.get(sID);
   }
 
   public Directory getDirectoryForIO(final java.io.File fio) {
