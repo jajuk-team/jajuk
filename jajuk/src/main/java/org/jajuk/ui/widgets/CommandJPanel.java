@@ -61,6 +61,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -112,6 +113,7 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
@@ -393,13 +395,14 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       iVolume = 100;
     }
     jsVolume = new JSlider(0, 100, iVolume);
+    jsVolume.setToolTipText(iVolume +" %");
+    jsVolume.addChangeListener(CommandJPanel.this);
+    jsVolume.addMouseWheelListener(CommandJPanel.this);
+    setVolumeIcon(iVolume);
     jpVolume.add(jsVolume);
     jpVolume.add(Box.createHorizontalStrut(5));
     jpVolume.add(jbMute);
-    jsVolume.setToolTipText(Messages.getString("CommandJPanel.14"));
-    jsVolume.addChangeListener(CommandJPanel.this);
-    jsVolume.addMouseWheelListener(CommandJPanel.this);
-
+    
     // Special functions toolbar
     // Ambience combo
     ambiencesCombo = new SteppedComboBox();
@@ -732,8 +735,32 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     Player.setVolume(fVolume);
     jsVolume.addChangeListener(CommandJPanel.this);
     jsVolume.addMouseWheelListener(CommandJPanel.this);
+    jsVolume.setToolTipText((int)(fVolume*100) + " %");
+    setVolumeIcon(fVolume*100);
   }
 
+   /**
+   * Set Volume Icon
+   */
+  public void setVolumeIcon(final float fVolume) {
+    if(fVolume <= 0){
+      Icon icon = new ImageIcon(Util.getResource("icons/32x32/mute_32x32.png"));
+      jbMute.setIcon(icon);
+    }else if(fVolume <= 25){
+      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume1.png"));
+      jbMute.setIcon(icon);
+    }else if(fVolume <= 50){
+      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume2.png"));
+      jbMute.setIcon(icon);
+    }else if(fVolume <= 75){
+      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume3.png"));
+      jbMute.setIcon(icon);
+    }else{
+      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume4.png"));
+      jbMute.setIcon(icon);
+    }
+  }
+  
   /*
    * (non-Javadoc)
    * 
@@ -851,6 +878,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
           populateWebRadios();
+        } else if (EventSubject.EVENT_MUTE_STATE.equals(event.getSubject())) {
+          // Reset the volume icon to the original state after unmute
+          if(!Player.isMuted())
+            setVolumeIcon(getCurrentVolume());
         }
 
       }
