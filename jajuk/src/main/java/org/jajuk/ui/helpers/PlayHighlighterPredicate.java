@@ -42,17 +42,7 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   }
 
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-    // return false if already highlighted in the table before
-    for(int i=0;i<adapter.row;i++){
-      if(isItemHighlighted(i)){
-        return false;
-      }
-    }
-    return isItemHighlighted(adapter.row);
-  }
-  
-  public boolean isItemHighlighted(int i){
-    Item item = model.getItemAt(i);
+    Item item = model.getItemAt(adapter.row);
     if (item instanceof File) {
       File file = (File) item;
       if (file.equals(FIFO.getInstance().getCurrentFile())) {
