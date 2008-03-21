@@ -136,6 +136,10 @@ public final class UpgradeManager implements ITechnicalStrings {
    * @return true if a new release has been found
    */
   public static void checkForUpdate() {
+    //If test mode, don't try to update
+    if (Main.bTestMode){
+      return;
+    }
     // Try to download current jajuk PAD file
     String sRelease = null;
     try {
