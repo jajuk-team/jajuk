@@ -475,4 +475,8 @@ public enum JajukAction {
    * Used to create New Folder
    */
   NEW_FOLDER,
+  /**
+   * Used to create a slim interface for Jajuk
+   */
+  SLIM_JAJUK,
 }

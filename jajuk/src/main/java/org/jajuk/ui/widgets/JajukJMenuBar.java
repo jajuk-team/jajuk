@@ -126,6 +126,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenuItem jmiduplicateFinder;
 
   JMenuItem jmialarmClock;
+  
+  JMenuItem jmislimJajuk;
 
   JMenu configuration;
 
@@ -271,7 +273,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.add(jma);
       jmReminders.addSeparator();
     }
-
+    jmislimJajuk = new JMenuItem(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    
+    tools.add(jmislimJajuk);
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
     tools.addSeparator();

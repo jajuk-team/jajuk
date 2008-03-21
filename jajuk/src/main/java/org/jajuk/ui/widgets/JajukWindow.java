@@ -281,7 +281,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
    *          played file
    * @return built frame title
    */
-  private String buildTitle(final File file) {
+  public String buildTitle(final File file) {
     // We use trailing pattern to allow scripting like MSN plugins to
     // detect jajuk frames and extract current track
     String title = ConfigurationManager.getProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN);
