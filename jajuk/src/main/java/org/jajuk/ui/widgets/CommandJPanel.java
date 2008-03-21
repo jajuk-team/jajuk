@@ -715,6 +715,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsVolume ) {
       setVolume((float) jsVolume.getValue() / 100);
+      setVolumeIcon(jsVolume.getValue());
     }
   }
 

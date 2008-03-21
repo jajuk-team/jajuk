@@ -39,33 +39,35 @@ import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.jajuk.Main;
 import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
+import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * Jajuk Slim Interface
  */
 public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Observer,
-    MouseWheelListener, ActionListener {
+    MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -87,6 +89,13 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
 
   JPanel slimJajuk;
 
+  /** Swing Timer to refresh the component */
+  private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+      update(new Event(EventSubject.EVENT_HEART_BEAT));
+    }
+  });
+
   public JajukSlimInterface() {
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
@@ -95,14 +104,10 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
-    jbPrevious.addActionListener(this);
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
-    jbNext.addActionListener(this);
     jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
     jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
-    jbPlayPause.addActionListener(this);
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-    jbStop.addActionListener(this);
     jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
 
     // Volume Icon
@@ -133,14 +138,15 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     slimJajuk.add(jtbPlay);
     slimJajuk.add(scrollingText, BorderLayout.PAGE_END);
     slimJajuk.setSize(jtbPlay.getSize());
+    slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
 
     add(slimJajuk);
+    ObservationManager.register(this);
 
-    setFocusableWindowState(true);
-    setAlwaysOnTop(true);
-    setTitle(Messages.getString("JajukSlimInterface.0"));
-    pack();
+    setUndecorated(true);
+    getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     setVisible(true);
+    pack();
   }
 
   /**
@@ -207,21 +213,6 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     }
   }
 
-  public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == jbPrevious || e.getSource() == jbNext) {
-      new Thread() {
-        public void run() {
-          try {
-            Thread.sleep(2000);
-          } catch (InterruptedException e) {
-            Log.error(e);
-          }
-          scrollingText.setText(getPlayerInfo());
-        }
-      }.start();
-    }
-  }
-  
   public Set<EventSubject> getRegistrationKeys() {
     HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
     eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
@@ -233,18 +224,6 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
   }
 
   public void update(final Event event) {
-    Log.debug("Inside Slim Update");
-    final EventSubject subject = event.getSubject();
-    SwingUtilities.invokeLater(new Runnable() {
-      public synchronized void run() { 
-        try {
-          if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
-            scrollingText.setText(getPlayerInfo());
-          }
-        }catch(Exception e) {
-          Log.error(e);
-        }
-      }
-    });
+    scrollingText.setText(getPlayerInfo());
   }
 }
