@@ -503,7 +503,15 @@ public class FIFO implements ITechnicalStrings {
         }
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
-        itemLast = (StackItem) getCurrentItem().clone();
+        if(null != getCurrentItem())
+        {
+          itemLast = (StackItem) getCurrentItem().clone();
+        }
+        else
+        {
+          itemLast = null;
+        }
+          
         FIFO.getInstance().finished();
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
@@ -590,10 +598,10 @@ public class FIFO implements ITechnicalStrings {
    * @return whether the FIFO contains at least one track in repeat mode
    */
   public boolean containsRepeat() {
-    Iterator it = alFIFO.iterator();
+    Iterator<StackItem> it = alFIFO.iterator();
     boolean bRepeat = false;
     while (it.hasNext()) {
-      StackItem item = (StackItem) it.next();
+      StackItem item = it.next();
       if (item.isRepeat()) {
         bRepeat = true;
       }
@@ -606,10 +614,10 @@ public class FIFO implements ITechnicalStrings {
    * @return whether the FIFO contains only repeated files
    */
   public boolean containsOnlyRepeat() {
-    Iterator it = alFIFO.iterator();
+    Iterator<StackItem> it = alFIFO.iterator();
     boolean bOnlyRepeat = true;
     while (it.hasNext()) {
-      StackItem item = (StackItem) it.next();
+      StackItem item = it.next();
       if (!item.isRepeat()) {
         bOnlyRepeat = false;
         break;
@@ -855,9 +863,9 @@ public class FIFO implements ITechnicalStrings {
    */
   private int getLastRepeatedItem() {
     int i = -1;
-    Iterator iterator = alFIFO.iterator();
+    Iterator<StackItem> iterator = alFIFO.iterator();
     while (iterator.hasNext()) {
-      StackItem item = (StackItem) iterator.next();
+      StackItem item = iterator.next();
       if (item.isRepeat()) {
         i++;
       } else {
@@ -887,10 +895,10 @@ public class FIFO implements ITechnicalStrings {
       // device?
       return false;
     }
-    Iterator it = getInstance().alFIFO.iterator(); // are next tracks in
+    Iterator<StackItem> it = getInstance().alFIFO.iterator(); // are next tracks in
     // fifo on this device?
     while (it.hasNext()) {
-      StackItem item = (StackItem) it.next();
+      StackItem item = it.next();
       File file = item.getFile();
       if (file.getDirectory().getDevice().equals(device)) {
         return false;
