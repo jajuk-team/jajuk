@@ -26,7 +26,8 @@
  */
 package ext;
 
-import com.sun.org.apache.xml.internal.serializer.utils.StringToIntTable;
+//line below removed to get ant to compile 
+//import com.sun.org.apache.xml.internal.serializer.utils.StringToIntTable;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
