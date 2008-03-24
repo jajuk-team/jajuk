@@ -381,11 +381,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return album nb of tracks
    */
   public int getNbOfTracks() {
-    int nb = 0;
-    for (Track track : tracks) {
-      nb += 1;
-    }
-    return nb;
+    return tracks.size();
   }
 
   /**

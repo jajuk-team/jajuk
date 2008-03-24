@@ -210,8 +210,6 @@ public abstract class ItemManager implements ITechnicalStrings {
       return FileManager.getInstance();
     } else if (XML_PLAYLIST_FILE.equals(sProperty)) {
       return PlaylistFileManager.getInstance();
-    } else if (XML_PLAYLIST.equals(sProperty)) {
-      return PlaylistManager.getInstance();
     } else if (XML_TYPE.equals(sProperty)) {
       return TypeManager.getInstance();
     } else {
@@ -368,8 +366,6 @@ public abstract class ItemManager implements ITechnicalStrings {
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Device) {
-      itemToChange.setProperty(sKey, oValue);
-    } else if (itemToChange instanceof Playlist) {
       itemToChange.setProperty(sKey, oValue);
     } else if (itemToChange instanceof Track) {
       if (XML_NAME.equals(sKey)) {

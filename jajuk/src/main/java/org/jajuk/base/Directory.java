@@ -370,10 +370,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           String sHashcode = plFile.computesHashcode();
           plFile.forceRefresh(); // force refresh
           plFile.setHashcode(sHashcode);
-          // create associated playlist
-          PlaylistManager.getInstance().registerPlaylist(plFile);
-          // add playlist file to current directory
-          addPlaylistFile(plFile);
           if (plfRef == null) {
             // stats, do it here and not
             // before because we ignore the

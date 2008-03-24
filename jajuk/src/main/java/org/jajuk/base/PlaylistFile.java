@@ -234,11 +234,6 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
             bw.flush();
             bw.close();
             setHashcode(computesHashcode());
-            // Associated logical playlist is null for special
-            // playlists
-            if (PlaylistManager.getInstance().getPlayList(this) != null) {
-              PlaylistManager.getInstance().refreshPlaylist(this);
-            }
             ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
             // refresh repository list(mandatory for logical
             // playlist collapse/merge)
@@ -341,12 +336,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
    * refresh
    * 
    */
-  protected synchronized void forceRefresh() {
-    try {
-      alFiles = load(); // populate playlist
-    } catch (final JajukException je) {
-      Log.error(je);
-    }
+  public synchronized void forceRefresh() throws JajukException {
+    alFiles = load(); // populate playlist
   }
 
   /**
@@ -737,7 +728,6 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
       if (dir != null) { // the new playlist file in inside collection
         final PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(file,
             dir);
-        PlaylistManager.getInstance().registerPlaylist(plFile);
         dir.addPlaylistFile(plFile);
       }
     }
@@ -879,4 +869,47 @@ public class PlaylistFile extends PhysicalItem implements Comparable {
       setModified(true);
     }
   }
+
+  /**
+   * @return playlist average rating
+   */
+  public long getRate() {
+    float rate = 0f;
+    int nb = 0;
+    for (File file : alFiles) {
+      rate += file.getTrack().getRate();
+      nb++;
+    }
+    return Math.round(rate / nb);
+  }
+
+  /**
+   * @return total nb of hits
+   */
+  public long getHits() {
+    int hits = 0;
+    for (File file : alFiles) {
+      hits += file.getTrack().getHits();
+    }
+    return hits;
+  }
+
+  /**
+   * Return full playlist length in secs
+   */
+  public long getDuration() {
+    long length = 0;
+    for (File file : alFiles) {
+      length += file.getTrack().getDuration();
+    }
+    return length;
+  }
+
+  /**
+   * @return playlist nb of tracks
+   */
+  public int getNbOfTracks() {
+    return alFiles.size();
+  }
+
 }

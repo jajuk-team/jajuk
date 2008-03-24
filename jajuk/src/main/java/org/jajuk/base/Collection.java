@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -290,19 +289,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     sb.append(PlaylistFileManager.getInstance().getLabel());
     sb.append(">\n");
     bw.write(sb.toString());
-    // playlist
-    bw.write(PlaylistManager.getInstance().toXML());
-    for (Playlist playlist : PlaylistManager.getInstance().getPlayLists()) {
-      if (playlist.getPlaylistFiles().size() > 0) {
-        // this way we clean up all orphan playlists
-        bw.write(playlist.toXml());
-      }
-    }
-    sb = new StringBuilder(100);
-    sb.append("\t</");
-    sb.append(PlaylistManager.getInstance().getLabel());
-    sb.append(">\n");
-    bw.write(sb.toString());
     // end of collection
     bw.write("</" + XML_COLLECTION + ">\n");
     bw.flush();
@@ -346,8 +332,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     AuthorManager.getInstance().cleanup();
     // albums cleanup
     AlbumManager.getInstance().cleanup();
-    // Playlists cleanup
-    PlaylistManager.getInstance().cleanup();
   }
 
   /**
@@ -434,10 +418,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         } else if (XML_FILES.equals(sQName)) {
           manager = FileManager.getInstance();
           stage = STAGE_FILES;
-          needCheckID = true;
-        } else if (XML_PLAYLISTS.equals(sQName)) {
-          manager = PlaylistManager.getInstance();
-          stage = STAGE_PLAYLISTS;
           needCheckID = true;
         } else if (XML_PLAYLIST_FILES.equals(sQName)) {
           manager = PlaylistFileManager.getInstance();
@@ -801,36 +781,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           if (plf != null) {
             plf.populateProperties(attributes);
             dParent.addPlaylistFile(plf);
-          }
-          break;
-        case STAGE_PLAYLISTS:
-          String sPlaylistFiles = attributes.getValue(XML_PLAYLIST_FILES)
-              .intern();
-          // playlist file list with ','
-          StringTokenizer st = new StringTokenizer(sPlaylistFiles, ",");
-          Playlist playlist = null;
-          if (st.hasMoreTokens()) {
-            // if none mapped file, ignore
-            // it so it will be removed at
-            // next commit
-            do {
-              String sPlaylistFileID = (String) st.nextElement();
-              // UPGRADE check parent ID is right
-              if (hmWrongRightPlaylistFileID.size() > 0) {
-                // replace wrong by right ID
-                if (hmWrongRightPlaylistFileID.containsKey(sPlaylistFileID)) {
-                  sPlaylistFileID = hmWrongRightPlaylistFileID.get(sPlaylistFileID).intern();
-                }
-              }
-              PlaylistFile plFile = PlaylistFileManager.getInstance().getPlaylistFileByID(
-                  sPlaylistFileID);
-              if (plFile != null) {
-                playlist = PlaylistManager.getInstance().registerPlaylist(plFile);
-              }
-            } while (st.hasMoreTokens());
-            if (playlist != null) {
-              playlist.populateProperties(attributes);
-            }
           }
           break;
         case STAGE_DEVICES:

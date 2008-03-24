@@ -27,7 +27,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
@@ -116,8 +115,6 @@ public class PlaylistFileManager extends ItemManager implements Observer {
           return;
         }
       }
-      // remove reference from playlist
-      PlaylistManager.getInstance().removePlaylistFile(plf);
       plf.getDirectory().removePlaylistFile(plf);
       // remove playlist file
       removeItem(plf.getID());

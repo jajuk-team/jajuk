@@ -455,7 +455,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       StyleManager.getInstance().cleanup();
       AlbumManager.getInstance().cleanup();
       AuthorManager.getInstance().cleanup();
-      PlaylistManager.getInstance().cleanup();
       // commit collection at each refresh (can be useful if application
       // is closed brutally with control-C or shutdown and that exit hook
       // have no time to perform commit)

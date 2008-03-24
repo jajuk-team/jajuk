@@ -404,7 +404,6 @@ public class DeviceManager extends ItemManager {
         StyleManager.getInstance().cleanup();
         AlbumManager.getInstance().cleanup();
         AuthorManager.getInstance().cleanup();
-        PlaylistManager.getInstance().cleanup();
         // notify views to refresh
         ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
       }
