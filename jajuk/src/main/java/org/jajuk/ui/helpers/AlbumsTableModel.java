@@ -23,8 +23,8 @@ package org.jajuk.ui.helpers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -152,9 +152,6 @@ public class AlbumsTableModel extends JajukTableModel {
     boolean bTrackNb = (columnsToShow != null && columnsToShow.contains(XML_TRACKS));
     boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
-    boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
-    boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE_NAME));
-      
     
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();

@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.HashMap;
