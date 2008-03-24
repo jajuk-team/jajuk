@@ -26,16 +26,12 @@
  */
 package ext;
 
-//line below removed to get ant to compile 
-//import com.sun.org.apache.xml.internal.serializer.utils.StringToIntTable;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.net.URL;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -151,18 +147,21 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
         versionStringColor);
 
     // build a progress bar and a tips of the day scrolling text
+    int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX); 
     String totd = Messages.getString("TipOfTheDay."
-        + ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX));
+        + index);
+    //Update totd index
+    ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
+          % Messages.getAll("TipOfTheDay").length));
     //Remove pictures urls
     if (totd.matches(".*<a")){
       totd = totd.substring(0,totd.indexOf("<a"));
     }
     totd += "     ";
-    JScrollingText scrollingText = new JScrollingText(totd, -8);
+    JScrollingText scrollingText = new JScrollingText(totd, -3);
     scrollingText.setPreferredSize(new Dimension(200, 15));
-    GridLayout layout = new GridLayout(1, 2, 5, 0);
+    GridLayout layout = new GridLayout(2, 1, 0, 5);
     JPanel jpTotdAndProgress = new JPanel(layout);
-    jpTotdAndProgress.add(scrollingText);
     jpTotdAndProgress.setBorder(new EmptyBorder(5, 5, 5, 5));
     scrollingText.start();
     if (m_progressBar) {
@@ -183,6 +182,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
       m_progress.setValue(0);
       m_progress.setFont(FontManager.getInstance().getFont(JajukFont.SPLASH_PROGRESS));
       jpTotdAndProgress.add(m_progress);
+      jpTotdAndProgress.add(scrollingText);
+    
     }
 
     // add the components to the panel
