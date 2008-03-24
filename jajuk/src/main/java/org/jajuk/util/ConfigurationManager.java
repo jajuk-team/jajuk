@@ -213,6 +213,7 @@ public class ConfigurationManager implements ITechnicalStrings {
         + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ',' + XML_TRACK_RATE);
     defaults.put(CONF_PLAYLIST_EDITOR_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
+    defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, "0" + ',' + XML_NAME);
     defaults.put(CONF_QUEUE_COLUMNS, "0" + ',' + XML_TRACK_NAME + ',' + ','
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
     defaults.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ',' + XML_AUTHOR + ','
@@ -281,6 +282,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
     defaults.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
+    defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

@@ -220,7 +220,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jpControl.setBorder(BorderFactory.createEtchedBorder());
     jtbEditable = new JajukToggleButton(IconLoader.ICON_EDIT);
     jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
-    jtbEditable.addActionListener(AbstractTableView.this);
+    jtbEditable.addActionListener(this);
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
     // properties combo box, fill with columns names expect ID
     jcbProperty = new JComboBox();
@@ -231,7 +231,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       jcbProperty.addItem(model.getColumnName(i));
     }
     jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1"));
-    jcbProperty.addItemListener(AbstractTableView.this);
+    jcbProperty.addItemListener(this);
     jlEquals = new JLabel(Messages.getString("AbstractTableView.7"));
     jtfValue = new JTextField();
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
@@ -267,7 +267,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setHighlighters(Util.getAlternateHighlighter());
     jtable.packTable(5);
     // Register on the list for subject we are interested in
-    ObservationManager.register(AbstractTableView.this);
+    ObservationManager.register(this);
     // refresh columns conf in case of some attributes been removed
     // or added before view instantiation
     Properties properties = ObservationManager

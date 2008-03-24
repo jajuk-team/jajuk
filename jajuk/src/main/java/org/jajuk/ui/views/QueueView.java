@@ -27,7 +27,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -42,7 +41,6 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.TableColumn;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -85,14 +83,14 @@ public class QueueView extends PlaylistView {
   public void initUI() {
     plf = new PlaylistFile(PlaylistFile.PLAYLIST_TYPE_QUEUE, null, null, null);
     // Control panel
-    jpControl = new JPanel();
-    jpControl.setBorder(BorderFactory.createEtchedBorder());
+    jpEditorControl = new JPanel();
+    jpEditorControl.setBorder(BorderFactory.createEtchedBorder());
     // Note : we don't use toolbar because it's buggy in Metal look and feel
     // : icon get bigger
     double sizeControl[][] = { { 5, TableLayout.PREFERRED, 15, TableLayout.FILL, 5 }, { 5, 25, 5 } };
     TableLayout layout = new TableLayout(sizeControl);
     layout.setHGap(2);
-    jpControl.setLayout(layout);
+    jpEditorControl.setLayout(layout);
     jbSave = new JajukButton(IconLoader.ICON_SAVE);
     jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3"));
     jbSave.addActionListener(this);
@@ -119,52 +117,52 @@ public class QueueView extends PlaylistView {
     jtb.add(jbUp);
     jtb.add(jbDown);
 
-    jpControl.add(jtb, "1,1");
-    jpControl.add(jlTitle, "3,1,r,c");
-    model = new PlaylistTableModel(true);
-    jtable = new JajukTable(model, CONF_QUEUE_COLUMNS);
-    model.populateModel(jtable.getColumnsConf());
-    jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
+    jpEditorControl.add(jtb, "1,1");
+    jpEditorControl.add(jlTitle, "3,1,r,c");
+    editorModel = new PlaylistTableModel(true);
+    editorTable = new JajukTable(editorModel, CONF_QUEUE_COLUMNS);
+    editorModel.populateModel(editorTable.getColumnsConf());
+    editorTable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
-    jtable.setSortable(false);
-    jtable.setDragEnabled(true);
-    jtable.setTransferHandler(new PlaylistEditorTransferHandler(jtable));
+    editorTable.setSortable(false);
+    editorTable.setDragEnabled(true);
+    editorTable.setTransferHandler(new PlaylistEditorTransferHandler(editorTable));
     setRenderers();
     // just an icon
-    jtable.getColumnModel().getColumn(0).setPreferredWidth(20);
-    jtable.getColumnModel().getColumn(0).setMaxWidth(20);
-    jtable.getTableHeader().setPreferredSize(new Dimension(0, 20));
-    jtable.showColumns(jtable.getColumnsConf());
-    ListSelectionModel lsm = jtable.getSelectionModel();
+    editorTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+    editorTable.getColumnModel().getColumn(0).setMaxWidth(20);
+    editorTable.getTableHeader().setPreferredSize(new Dimension(0, 20));
+    editorTable.showColumns(editorTable.getColumnsConf());
+    ListSelectionModel lsm = editorTable.getSelectionModel();
     lsm.addListSelectionListener(this);
     double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
     setLayout(new TableLayout(size));
-    add(jpControl, "0,0");
-    add(new JScrollPane(jtable), "0,1");
+    add(jpEditorControl, "0,0");
+    add(new JScrollPane(editorTable), "0,1");
     // menu items
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
-    jmiFilePlay.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiFilePlay.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
-    jmiFilePush.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiFilePush.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
-    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
-    jmiFileProperties.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiFilePlay);
-    jtable.getMenu().add(jmiFilePush);
-    jtable.getMenu().add(jmiFileAddFavorites);
-    jtable.getMenu().add(jmiFileProperties);
+    jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    editorTable.getMenu().add(jmiFilePlay);
+    editorTable.getMenu().add(jmiFilePush);
+    editorTable.getMenu().add(jmiFileAddFavorites);
+    editorTable.getMenu().add(jmiFileProperties);
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
-        new PlayHighlighterPredicate(model));
+        new PlayHighlighterPredicate(editorModel));
     Highlighter alternate = Util.getAlternateHighlighter();
-    jtable.setHighlighters(alternate, colorHighlighter);
+    editorTable.setHighlighters(alternate, colorHighlighter);
     // register events
     ObservationManager.register(this);
     // -- force a refresh --
     refreshQueue();
     // Add key listener to enable row suppression using SUPR key
-    jtable.addKeyListener(new KeyAdapter() {
+    editorTable.addKeyListener(new KeyAdapter() {
       public void keyPressed(KeyEvent e) {
         // The fact that a selection can be removed or not is
         // in the jbRemove state
@@ -176,11 +174,11 @@ public class QueueView extends PlaylistView {
       }
     });
     // Add specific behavior on left click
-    jtable.setCommand(new ILaunchCommand() {
+    editorTable.setCommand(new ILaunchCommand() {
       public void launch(int nbClicks) {
         if (nbClicks == 2) {
           // double click, launches selected track and all after
-          StackItem item = model.getStackItem(jtable.getSelectedRow());
+          StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item.isPlanned()) {
             // we can't launch a planned
             // track, leave
@@ -193,11 +191,11 @@ public class QueueView extends PlaylistView {
             if (ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK)) {
               FIFO.getInstance().push(item, true);
             } else {
-              FIFO.getInstance().goTo(jtable.getSelectedRow());
+              FIFO.getInstance().goTo(editorTable.getSelectedRow());
               // remove selection for planned tracks
-              ListSelectionModel lsm = jtable.getSelectionModel();
+              ListSelectionModel lsm = editorTable.getSelectionModel();
               bSettingSelection = true;
-              jtable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+              editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
                   lsm.getMaxSelectionIndex());
               bSettingSelection = false;
             }
@@ -227,18 +225,6 @@ public class QueueView extends PlaylistView {
     return Messages.getString("QueueView.0");
   }
 
-  private void setRenderers() {
-    // set right cell renderer for play and rate icons
-    // Play icon
-    TableColumn col = jtable.getColumnModel().getColumn(0);
-    col.setMinWidth(PLAY_COLUMN_SIZE);
-    col.setMaxWidth(PLAY_COLUMN_SIZE);
-    // rate
-    col = jtable.getColumnModel().getColumn(5);
-    col.setMinWidth(RATE_COLUMN_SIZE);
-    col.setMaxWidth(RATE_COLUMN_SIZE);
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -250,12 +236,12 @@ public class QueueView extends PlaylistView {
         // bound exceptions
         try {
           EventSubject subject = event.getSubject();
-          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
+          editorTable.acceptColumnsEvents = false; // flag reloading to avoid wrong
           if (EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)
               || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
               || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
-            model.alItems.clear();
-            model.alPlanned.clear();
+            editorModel.alItems.clear();
+            editorModel.alPlanned.clear();
             refreshQueue();
           } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
@@ -264,30 +250,30 @@ public class QueueView extends PlaylistView {
               return;
             }
             // create a new model
-            model = new PlaylistTableModel(true);
-            model.populateModel(jtable.getColumnsConf());
-            jtable.setModel(model);
+            editorModel = new PlaylistTableModel(true);
+            editorModel.populateModel(editorTable.getColumnsConf());
+            editorTable.setModel(editorModel);
             setRenderers();
-            jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
-            jtable.showColumns(jtable.getColumnsConf());
+            editorTable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
+            editorTable.showColumns(editorTable.getColumnsConf());
           } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
               // populate
               return;
             }
-            model = new PlaylistTableModel(true);
-            model.populateModel(jtable.getColumnsConf());
-            jtable.setModel(model);
+            editorModel = new PlaylistTableModel(true);
+            editorModel.populateModel(editorTable.getColumnsConf());
+            editorTable.setModel(editorModel);
             setRenderers();
             // remove item from configuration cols
-            jtable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
-            jtable.showColumns(jtable.getColumnsConf());
+            editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
+            editorTable.showColumns(editorTable.getColumnsConf());
           }
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          jtable.acceptColumnsEvents = true; 
+          editorTable.acceptColumnsEvents = true; 
           // Update number of tracks remaining
           jlTitle.setText(" [" + FIFO.getInstance().getFIFO().size() + "]");
         }
@@ -298,19 +284,19 @@ public class QueueView extends PlaylistView {
 
   private void refreshQueue() {
     // when nothing is selected, set default button state
-    if (jtable.getSelectionModel().getMinSelectionIndex() == -1) {
+    if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
       setDefaultButtonState();
     }
-    model.alItems = FIFO.getInstance().getFIFO();
-    model.alPlanned = FIFO.getInstance().getPlanned();
-    ((JajukTableModel) jtable.getModel()).populateModel(jtable.getColumnsConf());
-    int[] rows = jtable.getSelectedRows();
+    editorModel.alItems = FIFO.getInstance().getFIFO();
+    editorModel.alPlanned = FIFO.getInstance().getPlanned();
+    ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
+    int[] rows = editorTable.getSelectedRows();
     // save selection
-    model.fireTableDataChanged();// refresh
+    editorModel.fireTableDataChanged();// refresh
     bSettingSelection = true;
     for (int i = 0; i < rows.length; i++) {
       // set saved selection after a refresh
-      jtable.getSelectionModel().addSelectionInterval(rows[i], rows[i]);
+      editorTable.getSelectionModel().addSelectionInterval(rows[i], rows[i]);
     }
     bSettingSelection = false;
   }
@@ -342,21 +328,21 @@ public class QueueView extends PlaylistView {
         // notify playlist repository to refresh
         ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
       } else if (ae.getSource() == jbDown || ae.getSource() == jbUp) {
-        int iRow = jtable.getSelectedRow();
+        int iRow = editorTable.getSelectedRow();
         if (iRow != -1) { // -1 means nothing is selected
           if (ae.getSource() == jbDown) {
             plf.down(iRow);
-            if (iRow < jtable.getModel().getRowCount() - 1) {
+            if (iRow < editorTable.getModel().getRowCount() - 1) {
               // force immediate table refresh
               refreshQueue();
-              jtable.getSelectionModel().setSelectionInterval(iRow + 1, iRow + 1);
+              editorTable.getSelectionModel().setSelectionInterval(iRow + 1, iRow + 1);
             }
           } else if (ae.getSource() == jbUp) {
             plf.up(iRow);
             if (iRow > 0) {
               // force immediate table refresh
               refreshQueue();
-              jtable.getSelectionModel().setSelectionInterval(iRow - 1, iRow - 1);
+              editorTable.getSelectionModel().setSelectionInterval(iRow - 1, iRow - 1);
             }
           }
         }
@@ -364,7 +350,7 @@ public class QueueView extends PlaylistView {
         removeSelection();
         refreshQueue();
       } else if (ae.getSource() == jbAddShuffle) {
-        int iRow = jtable.getSelectedRow();
+        int iRow = editorTable.getSelectedRow();
         if (iRow < 0
         // no row is selected, add to the end
             || iRow > FIFO.getInstance().getFIFO().size()) {
@@ -388,19 +374,19 @@ public class QueueView extends PlaylistView {
   }
 
   private void removeSelection() {
-    int[] iRows = jtable.getSelectedRows();
+    int[] iRows = editorTable.getSelectedRows();
     if (iRows.length > 1) {// if multiple selection, remove
       // selection
-      jtable.getSelectionModel().removeIndexInterval(0, jtable.getRowCount() - 1);
+      editorTable.getSelectionModel().removeIndexInterval(0, editorTable.getRowCount() - 1);
     }
     for (int i = 0; i < iRows.length; i++) {
       // don't forget that index changes when removing
       plf.remove(iRows[i] - i);
     }
     // set selection to last line if end reached
-    int iLastRow = jtable.getRowCount() - 1;
-    if (iRows[0] == jtable.getRowCount()) {
-      jtable.getSelectionModel().setSelectionInterval(iLastRow, iLastRow);
+    int iLastRow = editorTable.getRowCount() - 1;
+    if (iRows[0] == editorTable.getRowCount()) {
+      editorTable.getSelectionModel().setSelectionInterval(iLastRow, iLastRow);
     }
   }
 
@@ -417,7 +403,7 @@ public class QueueView extends PlaylistView {
       int selectedRow = selection.getMaxSelectionIndex();
       // true if selected line is a planned track
       boolean bPlanned = false;
-      if (selectedRow > model.alItems.size() - 1) {
+      if (selectedRow > editorModel.alItems.size() - 1) {
         // means it is a planned track
         bPlanned = true;
       }
@@ -483,7 +469,7 @@ public class QueueView extends PlaylistView {
           if (selection.getMaxSelectionIndex() == 0) {
             // current track can't go down
             jbDown.setEnabled(false);
-          } else if (selection.getMaxSelectionIndex() < model.alItems.size() - 1) {
+          } else if (selection.getMaxSelectionIndex() < editorModel.alItems.size() - 1) {
             // a normal item can't go in the planned items
             jbDown.setEnabled(true);
           } else {
@@ -494,11 +480,5 @@ public class QueueView extends PlaylistView {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-   */
-  public void mouseClicked(MouseEvent e) {
-  }
+
 }

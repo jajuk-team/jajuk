@@ -698,6 +698,9 @@ public interface ITechnicalStrings {
   /** Playlist editor columns to display */
   String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
 
+  /** Playlist repository columns to display */
+  String CONF_PLAYLIST_REPOSITORY_COLUMNS = "jajuk.ui.playlist_repository_columns";
+
   /** Queue columns to display */
   String CONF_QUEUE_COLUMNS = "jajuk.ui.queue_columns";
 
@@ -808,6 +811,9 @@ public interface ITechnicalStrings {
 
   /** Perspective chooser icon size: 16x16, 32x32 or 40x40 */
   String CONF_PERSPECTIVE_ICONS_SIZE = "jajuk.ui.perspective_icons_size";
+
+  /** Show duplicate playlists in playlist view */
+  String CONF_SHOW_DUPLICATE_PLAYLISTS = "jajuk.ui.show_duplicate_playlists";
 
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";

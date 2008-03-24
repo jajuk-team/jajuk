@@ -187,7 +187,7 @@ public class AlbumsTableView extends AbstractTableView {
   void initTable() {
     jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
     // Disable edit button, edition not yet implemented
-    jtbEditable.setEnabled(false);
+    jtbEditable.setVisible(false);
   }
 
   /*
