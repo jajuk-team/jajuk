@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.jajuk.ui.perspectives.IPerspective;
@@ -37,6 +38,8 @@ public class ViewFactory {
   /** Maps view class -> view instances set */
   private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
 
+  private static Random random = new Random();
+  
   /**
    * No instantiation *
    */
@@ -67,7 +70,7 @@ public class ViewFactory {
     // deterministic
     // and it may conduct VLDocking to ignore some views if XXX/3 is parsed
     // before XXX/2 for ie
-    view.setID(className.getName() + '/' + (int) (System.currentTimeMillis() * Math.random()));
+    view.setID(className.getName() + '/' + (int) (Integer.MAX_VALUE * random.nextDouble()));
     view.setPerspective(perspective);
     // store the new view
     views.add(view);
