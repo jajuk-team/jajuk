@@ -21,6 +21,7 @@ package org.jajuk.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -58,7 +60,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /** Supported Locals */
   public ArrayList<String> alLocals = new ArrayList<String>(10);
 
-   /** self instance for singleton */
+  /** self instance for singleton */
   private static Messages mesg;
 
   /** All choice option, completes JDialog options */
@@ -94,7 +96,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /**
    * 
    * @param sKey
-   * @return wheter given key exists
+   * @return whether given key exists
    */
   public boolean contains(final String sKey) {
     return getPropertiesEn().containsKey(sKey);
@@ -155,7 +157,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
       for (int i = 0;; i++) {
         String sOut = properties.getProperty(prefix + i);
-
         if (sOut == null) {
           // this property is unknown for this local, try in English
           sOut = defaultProperties.getProperty(prefix + i);
@@ -186,16 +187,18 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
   /**
    * Return Flag icon for given description
-   * @param dDesc language description
+   * 
+   * @param dDesc
+   *          language description
    * @return
    */
-  public static Icon getIcon(final String sDesc){
-    Log.debug("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png");
-    Icon icon = new ImageIcon(Util
-        .getResource("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png"));
+  public static Icon getIcon(final String sDesc) {
+    Log.debug("icons/16x16/flag_" + getLocalForDesc(sDesc) + ".png");
+    Icon icon = new ImageIcon(Util.getResource("icons/16x16/flag_" + getLocalForDesc(sDesc)
+        + ".png"));
     return icon;
   }
-  
+
   /**
    * Return list of available locals
    * 
@@ -352,9 +355,25 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    *          message type like JOptionPane.WARNING
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
-    final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType,
-        iType);
-    return confirm.getResu();
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    class Choice extends Thread {
+      public int confirm;
+
+      public void run() {
+        ConfirmDialog dialog = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
+        confirm = dialog.getResu();
+      }
+    }
+    Choice choice = new Choice();
+    try {
+      SwingUtilities.invokeAndWait(choice);
+    } catch (InterruptedException e) {
+      Log.error(e);
+    } catch (InvocationTargetException e) {
+      Log.error(e);
+    }
+    return choice.confirm;
   }
 
   /**
@@ -380,8 +399,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sMessage
    */
   public static void showWarningMessage(final String sMessage) {
-    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
-        JOptionPane.WARNING_MESSAGE, null, null);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
+            JOptionPane.WARNING_MESSAGE, null, null);
+      }
+    });
   }
 
   /**
@@ -396,9 +421,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     if (ConfigurationManager.getBoolean(sProperty)) {
       return;
     }
-    final HideableMessageDialog message = new HideableMessageDialog(sMessage,
-        getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE, null);
-    message.getResu();
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        final HideableMessageDialog message = new HideableMessageDialog(sMessage,
+            getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
+            null);
+        message.getResu();
+      }
+    });
   }
 
   /**
@@ -407,8 +439,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sMessage
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
-    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-        JOptionPane.INFORMATION_MESSAGE, null, icon);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+            JOptionPane.INFORMATION_MESSAGE, null, icon);
+      }
+    });
   }
 
   /**
@@ -441,7 +479,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sInfoSup
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
-    new ErrorMessageDialog(code, sInfoSup);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new ErrorMessageDialog(code, sInfoSup);
+      }
+    });
   }
 
   /**
@@ -461,8 +505,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
-    new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
-        getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
+            getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
+      }
+    });
   }
 
   /**
@@ -472,9 +522,15 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sInfoSup
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
-    new DetailsMessageDialog(sMessage + " : " + sInfoSup,
-        getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE, null,
-        null);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage + " : " + sInfoSup,
+            getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
+            null, null);
+      }
+    });
   }
 
   /**
@@ -483,8 +539,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sMessage
    */
   public static void showInfoMessage(final String sMessage) {
-    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-        JOptionPane.INFORMATION_MESSAGE, null, null);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+            JOptionPane.INFORMATION_MESSAGE, null, null);
+      }
+    });
   }
 
   /**
