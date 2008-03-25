@@ -21,6 +21,7 @@
 package org.jajuk.ui.widgets;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,6 +33,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
@@ -79,19 +81,19 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
     String sPage = DownloadManager.downloadHtml(url);
     // Remove scripting
     int index = -1;
+    int lastindex = -1;
     StringBuilder sb = new StringBuilder(sPage);
-    do {
-      index = sb.indexOf("<script");
+    // only the part between <!-- start content --> and <!-- end content --> is important to us
+      index = sb.indexOf("<!-- start content -->");
+      lastindex = sb.indexOf("</body></html>");
       if (index > 0) {
-        sb.delete(index, sb.indexOf("</script>") + 9);
+        sb.delete(0, index);
+        sb.delete(sb.indexOf("<!-- end content -->") + 20, lastindex );
       }
-    } while (index > 0);
     sPage = sb.toString();
-    // cleanup useless stuff
-    sPage = sPage.replaceAll("img src=\"/", "img src=\"http://www.mediawiki.org/");
-    sPage = sPage.replaceAll("href=\"/", "href=\"http://www.mediawiki.org/");
-    sPage = sPage.replaceAll("<link.*/>", "");
-    sPage = sPage.replaceAll("@import.*;", "");
+    //fix internal links
+    // TODO: language should be retrieved from the combo box and not from the user settings, but dunno how to get that...
+    sPage = sPage.replaceAll("href=\"/", "href=\"http://" + Messages.getLocalForDesc(Messages.getDescForLocal(ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
     // Display the page
     showPage(sPage, page);
     // Set current url as a tooltip
