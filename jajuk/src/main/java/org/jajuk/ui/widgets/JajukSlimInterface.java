@@ -30,7 +30,6 @@ import static org.jajuk.ui.actions.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import ext.JScrollingText;
 import ext.SwingWorker;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
@@ -49,7 +48,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
@@ -71,7 +69,6 @@ import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
-import org.jajuk.ui.helpers.SizedJMenuItem;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -84,12 +81,13 @@ import org.jajuk.util.log.Log;
 
 /**
  * Jajuk Slim Interface
+ * <p> Singleton</p>
  */
 public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Observer,
-    MouseWheelListener, ListSelectionListener  {
+    MouseWheelListener, ListSelectionListener {
 
   private static final long serialVersionUID = 1L;
-  
+
   JLabel jajuk;
 
   JButton jbPrevious;
@@ -101,27 +99,29 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
   JButton jbPlayPause;
 
   JButton jbStop;
-  
+
   JPressButton jbFwd;
 
   JButton jbBestof;
-  
+
   JButton jbNovelties;
-  
+
   JButton jbRandom;
-  
+
   JButton jbFinishAlbum;
-  
+
   JButton jbClose;
 
   JajukToggleButton jbVolume;
 
   JScrollingText scrollingText;
-  
+
   SearchBox sbSearch;
 
   JToolBar slimJajuk;
-
+  
+  private static JajukSlimInterface self;
+  
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
@@ -129,14 +129,24 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     }
   });
 
-  public JajukSlimInterface() {
+  public static JajukSlimInterface getInstance(){
+    if (self == null){
+      self = new JajukSlimInterface();
+    }
+    return self;
+  }
+  
+  private  JajukSlimInterface() {
+  }
+  
+  public void initUI(){
     jajuk = new JLabel("Jajuk");
     jajuk.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_L));
     jajuk.setIcon(IconLoader.ICON_LOGO_FRAME);
-    
+
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
-    //jtbPlay.setFloatable(false);
+    // jtbPlay.setFloatable(false);
     jtbPlay.setRollover(true);
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
@@ -152,17 +162,17 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     jbStop.setIcon(IconLoader.ICON_STOP_16x16);
     jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
     jbFwd.setIcon(IconLoader.ICON_FWD_16x16);
-    
+
     jtbPlay.add(jbPrevious);
     jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
     jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
-        
+
     JToolBar jtbSmart = new JToolBar();
     jtbSmart.setBorder(null);
-        
+
     jbBestof = new JajukButton(ActionManager.getAction(JajukAction.BEST_OF));
     jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
     jbNovelties = new JajukButton(ActionManager.getAction(JajukAction.NOVELTIES));
@@ -171,15 +181,15 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
     jbFinishAlbum = new JajukButton(ActionManager.getAction(JajukAction.FINISH_ALBUM));
     jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
-    
+
     jtbSmart.add(jbBestof);
     jtbSmart.add(jbNovelties);
     jtbSmart.add(jbRandom);
     jtbSmart.add(jbFinishAlbum);
-        
+
     JToolBar jtbTools = new JToolBar();
     jtbTools.setBorder(null);
-    
+
     int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
@@ -187,23 +197,22 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     jbVolume = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
     jbVolume.addMouseWheelListener(this);
     setVolumeIcon(iVolume);
-    
+
     jbClose = new JajukButton(IconLoader.ICON_CLOSE);
     jbClose.setToolTipText(Messages.getString("Close"));
     jbClose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        ConfigurationManager.setProperty(JAJUK_SLIM, Boolean
-            .toString(false));
-        closeSlimInterface();
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+        dispose();
       }
     });
-    
+
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbClose);
-    
+
     // Search
-    double[][] sizeSearch = new double[][] { { 3, 150, 3, TableLayout.PREFERRED}, {22}};
+    double[][] sizeSearch = new double[][] { { 3, 150, 3, TableLayout.PREFERRED }, { 22 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(this);
     JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
@@ -217,22 +226,22 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     });
     jpSearch.add(sbSearch, "1,0");
     jpSearch.add(jlSearch, "3,0");
-    
+
     JToolBar jtbText = new JToolBar();
     jtbText.setBorder(null);
-    
+
     scrollingText = new JScrollingText(getPlayerInfo(), -3);
     scrollingText.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     scrollingText.setPreferredSize(new Dimension(200, 15));
     scrollingText.start();
 
     jtbText.add(scrollingText);
-    
+
     slimJajuk = new JToolBar();
     slimJajuk.setBorder(null);
     slimJajuk.setFloatable(false);
     slimJajuk.setRollover(true);
-        
+
     slimJajuk.add(jajuk);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
@@ -244,7 +253,7 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     slimJajuk.add(jtbText);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbTools);
-    
+
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
 
     add(slimJajuk);
@@ -255,13 +264,15 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     setTitle(Messages.getString("JajukSlimInterface.0"));
     setVisible(true);
     pack();
+    //Notify that slimbar is now visible (menu bar is interested in) 
+    ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
   }
 
   /**
    * @return Player Info : current and next track
    */
   public String getPlayerInfo() {
-    try{
+    try {
       String currentTrack = Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile());
       String nextTrack = "";
       try {
@@ -271,18 +282,11 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
         nextTrack = Main.getWindow().buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
       }
       return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
-    }catch (Exception e){
+    } catch (Exception e) {
       return Messages.getString("JajukWindow.17");
     }
   }
-  
-  /**
-   * Close Slim Interface
-   */
-  public void closeSlimInterface(){
-    this.dispose();
-  }
-  
+
   /**
    * Set Volume Icon
    */
@@ -347,15 +351,15 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
       scrollingText.setText(getPlayerInfo());
-    }else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+    } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
       scrollingText.setText(Messages.getString("JajukWindow.17"));
-    }else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+    } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
-    }else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+    } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     }
   }
-  
+
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker sw = new SwingWorker() {
       public Object construct() {

@@ -47,7 +47,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -60,6 +59,7 @@ import org.jajuk.services.alarm.AlarmThreadManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
+import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -139,7 +139,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
   JMenuItem jmialarmClock;
   
-  JMenuItem jmislimJajuk;
+  JMenuItem jmiSlimJajuk;
 
   JMenu configuration;
 
@@ -172,7 +172,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenu jmReminders;
 
   JLabel jlUpdate;
-
+  
   /** Hashmap JCheckBoxMenuItem -> associated view */
   public HashMap hmCheckboxView = new HashMap(10);
 
@@ -298,10 +298,11 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.add(jma);
       jmReminders.addSeparator();
     }
-    jmislimJajuk = new JMenuItem(ActionManager.getAction(JajukAction.SLIM_JAJUK));
-    jmislimJajuk.addMouseMotionListener(this);
+    ActionBase slimAction = ActionManager.getAction(JajukAction.SLIM_JAJUK);
+    slimAction.setEnabled(!JajukSlimInterface.getInstance().isVisible());
+    jmiSlimJajuk = new JMenuItem(slimAction);
     
-    tools.add(jmislimJajuk);
+    tools.add(jmiSlimJajuk);
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
     tools.addSeparator();
@@ -419,12 +420,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
         }
       }
     }
-    
-    if(ConfigurationManager.getBoolean(JAJUK_SLIM)){
-      jmislimJajuk.setEnabled(false);
-    }else{
-      jmislimJajuk.setEnabled(true);
-    }
     tools.repaint();
   }
 
@@ -442,6 +437,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
       jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+      jmiSlimJajuk.setEnabled(!JajukSlimInterface.getInstance().isVisible());
     }
   }
 }

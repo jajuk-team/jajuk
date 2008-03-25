@@ -26,7 +26,10 @@ import org.jajuk.ui.widgets.JajukSlimInterface;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class JajukSlimInterfaceAction extends ActionBase{
+/**
+ * Action to hide slim bar.
+ */
+public class JajukSlimInterfaceAction extends ActionBase {
 
   private static final long serialVersionUID = 1L;
 
@@ -36,6 +39,6 @@ public class JajukSlimInterfaceAction extends ActionBase{
   }
 
   public void perform(ActionEvent evt) throws Exception {
-    new JajukSlimInterface();
+    JajukSlimInterface.getInstance().initUI();
   }
 }
