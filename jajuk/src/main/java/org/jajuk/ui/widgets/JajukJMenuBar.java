@@ -299,7 +299,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.addSeparator();
     }
     ActionBase slimAction = ActionManager.getAction(JajukAction.SLIM_JAJUK);
-    slimAction.setEnabled(!JajukSlimInterface.getInstance().isVisible());
+    slimAction.setEnabled(!JajukSlimWindow.getInstance().isVisible());
     jmiSlimJajuk = new JMenuItem(slimAction);
     
     tools.add(jmiSlimJajuk);
@@ -437,7 +437,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
       jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
-      jmiSlimJajuk.setEnabled(!JajukSlimInterface.getInstance().isVisible());
+      jmiSlimJajuk.setEnabled(!JajukSlimWindow.getInstance().isVisible());
     }
   }
 }

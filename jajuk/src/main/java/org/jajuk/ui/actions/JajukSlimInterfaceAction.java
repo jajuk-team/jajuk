@@ -22,7 +22,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.JajukSlimInterface;
+import org.jajuk.ui.widgets.JajukSlimWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -39,6 +39,6 @@ public class JajukSlimInterfaceAction extends ActionBase {
   }
 
   public void perform(ActionEvent evt) throws Exception {
-    JajukSlimInterface.getInstance().initUI();
+    JajukSlimWindow.getInstance().initUI();
   }
 }

@@ -83,7 +83,7 @@ import org.jajuk.util.log.Log;
  * Jajuk Slim Interface
  * <p> Singleton</p>
  */
-public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Observer,
+public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observer,
     MouseWheelListener, ListSelectionListener {
 
   private static final long serialVersionUID = 1L;
@@ -120,7 +120,7 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
 
   JToolBar slimJajuk;
   
-  private static JajukSlimInterface self;
+  private static JajukSlimWindow self;
   
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
@@ -129,14 +129,14 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     }
   });
 
-  public static JajukSlimInterface getInstance(){
+  public static JajukSlimWindow getInstance(){
     if (self == null){
-      self = new JajukSlimInterface();
+      self = new JajukSlimWindow();
     }
     return self;
   }
   
-  private  JajukSlimInterface() {
+  private  JajukSlimWindow() {
   }
   
   public void initUI(){
