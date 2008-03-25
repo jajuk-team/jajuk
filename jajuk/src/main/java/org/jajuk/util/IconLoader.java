@@ -137,7 +137,10 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_VOLUME = new ImageIcon(Util
       .getResource("icons/16x16/volume_16x16.png"));
-
+  
+  public static final ImageIcon ICON_CLOSE = new ImageIcon(Util
+      .getResource("icons/16x16/close_16x16.png"));
+  
   public static final ImageIcon ICON_POSITION = new ImageIcon(Util
       .getResource("icons/16x16/position_16x16.png"));
 

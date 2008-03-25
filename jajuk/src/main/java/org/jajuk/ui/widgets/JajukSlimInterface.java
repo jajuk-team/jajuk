@@ -44,6 +44,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
@@ -75,6 +76,8 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
+  
+  JLabel jajuk;
 
   JButton jbPrevious;
 
@@ -93,6 +96,8 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
   JButton jbNovelties;
   
   JButton jbRandom;
+  
+  JButton jbClose;
 
   JajukToggleButton jbVolume;
 
@@ -108,6 +113,10 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
   });
 
   public JajukSlimInterface() {
+    jajuk = new JLabel("Jajuk");
+    jajuk.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_L));
+    jajuk.setIcon(IconLoader.ICON_LOGO_FRAME);
+    
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
     //jtbPlay.setFloatable(false);
@@ -127,6 +136,8 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
     jbFwd.setIcon(IconLoader.ICON_FWD_16x16);
     
+    jtbPlay.add(jajuk);
+    jtbPlay.addSeparator();
     jtbPlay.add(jbPrevious);
     jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);
@@ -153,12 +164,24 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     jbVolume = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
     jbVolume.addMouseWheelListener(this);
     setVolumeIcon(iVolume);
+    
+    jbClose = new JajukButton(IconLoader.ICON_CLOSE);
+    jbClose.setToolTipText(Messages.getString("Close"));
+    jbClose.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ConfigurationManager.setProperty(JAJUK_SLIM, Boolean
+            .toString(false));
+        closeSlimInterface();
+      }
+    });
 
     jtbTools.add(jbBestof);
     jtbTools.add(jbNovelties);
     jtbTools.add(jbRandom);
     jtbTools.addSeparator();
     jtbTools.add(jbVolume);
+    jtbTools.addSeparator();
+    jtbTools.add(jbClose);
         
     JToolBar jtbText = new JToolBar();
     jtbText.setBorder(null);
@@ -185,6 +208,7 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
 
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+    setTitle(Messages.getString("JajukSlimInterface.0"));
     setVisible(true);
     pack();
   }
@@ -207,7 +231,14 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
       return Messages.getString("JajukWindow.17");
     }
   }
-
+  
+  /**
+   * Close Slim Interface
+   */
+  public void closeSlimInterface(){
+    this.dispose();
+  }
+  
   /**
    * Set Volume Icon
    */

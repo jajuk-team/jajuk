@@ -288,6 +288,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
+    tools.addMouseMotionListener(this);
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukAction.ALARM_CLOCK));
     jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
@@ -298,6 +299,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.addSeparator();
     }
     jmislimJajuk = new JMenuItem(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    jmislimJajuk.addMouseMotionListener(this);
     
     tools.add(jmislimJajuk);
     tools.add(jmiduplicateFinder);
@@ -396,25 +398,34 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   }
 
   public void mouseMoved(MouseEvent e) {
-    jmReminders.removeAll();
-    if (AlarmThreadManager.getInstance().getAllAlarms().size() == 0)
-      jmReminders.add(Messages.getString("AlarmClock.2"));
-    else {
-      for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
-        JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
-        jma.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent evt) {
-            int iResu = Messages.getChoice(Messages.getString("Confirmation_alarm_stop"),
-                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-            if (iResu != JOptionPane.YES_OPTION) {
-              return;
+    if(e.getSource() == jmReminders){
+      jmReminders.removeAll();
+      if (AlarmThreadManager.getInstance().getAllAlarms().size() == 0)
+        jmReminders.add(Messages.getString("AlarmClock.2"));
+      else {
+        for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
+          JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
+          jma.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+              int iResu = Messages.getChoice(Messages.getString("Confirmation_alarm_stop"),
+                  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+              if (iResu != JOptionPane.YES_OPTION) {
+                return;
+              }
+              AlarmThreadManager.getInstance().stopAlarm(alarm);
             }
-            AlarmThreadManager.getInstance().stopAlarm(alarm);
-          }
-        });
-        jmReminders.add(jma);
+          });
+          jmReminders.add(jma);
+        }
       }
     }
+    
+    if(ConfigurationManager.getBoolean(JAJUK_SLIM)){
+      jmislimJajuk.setEnabled(false);
+    }else{
+      jmislimJajuk.setEnabled(true);
+    }
+    tools.repaint();
   }
 
   public void mouseDragged(MouseEvent e) {

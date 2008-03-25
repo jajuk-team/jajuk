@@ -1166,4 +1166,8 @@ public interface ITechnicalStrings {
   String FORMAT_TIME_ELAPSED = "format";
   
   String FORMAT_TIME_ELAPSED_MAX = "maxformats";
+  
+  // Jajuk Slim Interface Display
+  
+  String JAJUK_SLIM = "jajuk.slim.boolean";
 }
