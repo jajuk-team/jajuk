@@ -230,8 +230,15 @@ public class SearchBox extends JTextField implements KeyListener {
           // only on absolute coordonates in opposition to swing
           // widgets)
           SwingUtilities.convertPointToScreen(point, this);
-          popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point
-              .getY() - 250);
+          if(((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)){
+            popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point
+                .getY() - 250);
+          }else if(((int) point.getX() + 500 - (width)) > 0){
+            popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point
+                .getY() + 30);
+          }else{
+            popup = factory.getPopup(this, jsp, 10, (int) point.getY() + 30);
+          }
           popup.show();
         } else {
           if (popup != null) {

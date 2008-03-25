@@ -399,6 +399,9 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_FINISH_ALBUM = new ImageIcon(Util
       .getResource("icons/32x32/finish_album_32x32.png"));
 
+  public static final ImageIcon ICON_FINISH_ALBUM_16x16 = new ImageIcon(Util
+      .getResource("icons/16x16/finish_album_16x16.png"));
+  
   public static final ImageIcon ICON_NET_SEARCH = new ImageIcon(Util
       .getResource("icons/16x16/netsearch_16x16.png"));
 
