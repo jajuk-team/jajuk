@@ -65,6 +65,9 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_SHUFFLE_GLOBAL = new ImageIcon(Util
       .getResource("icons/32x32/shuffle_global_32x32.png"));
+  
+  public static final ImageIcon ICON_SHUFFLE_GLOBAL_16x16 = new ImageIcon(Util
+      .getResource("icons/16x16/shuffle_global_16x16.png"));
 
   public static final ImageIcon ICON_BESTOF = new ImageIcon(Util
       .getResource("icons/32x32/bestof_32x32.png"));

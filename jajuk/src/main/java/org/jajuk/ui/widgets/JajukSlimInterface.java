@@ -57,10 +57,15 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
+import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
 /**
@@ -80,8 +85,14 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
   JButton jbPlayPause;
 
   JButton jbStop;
-
+  
   JPressButton jbFwd;
+
+  JButton jbBestof;
+  
+  JButton jbNovelties;
+  
+  JButton jbRandom;
 
   JajukToggleButton jbVolume;
 
@@ -99,17 +110,41 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
   public JajukSlimInterface() {
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
-    jtbPlay.setFloatable(false);
+    //jtbPlay.setFloatable(false);
     jtbPlay.setRollover(true);
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    jbPrevious.setIcon(IconLoader.ICON_PREVIOUS);
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
+    jbNext.setIcon(IconLoader.ICON_NEXT);
     jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
+    jbRew.setIcon(IconLoader.ICON_REW_16x16);
     jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
+    jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
+    jbStop.setIcon(IconLoader.ICON_STOP_16x16);
     jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
-
+    jbFwd.setIcon(IconLoader.ICON_FWD_16x16);
+    
+    jtbPlay.add(jbPrevious);
+    jtbPlay.add(jbRew);
+    jtbPlay.add(jbPlayPause);
+    jtbPlay.add(jbStop);
+    jtbPlay.add(jbFwd);
+    jtbPlay.add(jbNext);
+        
+    JToolBar jtbTools = new JToolBar();
+    jtbTools.setBorder(null);
+    jtbTools.addSeparator();
+    
+    jbBestof = new JajukButton(ActionManager.getAction(JajukAction.BEST_OF));
+    jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
+    jbNovelties = new JajukButton(ActionManager.getAction(JajukAction.NOVELTIES));
+    jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16x16);
+    jbRandom = new JajukButton(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+    jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
+    
     // Volume Icon
     int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
@@ -119,25 +154,30 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     jbVolume.addMouseWheelListener(this);
     setVolumeIcon(iVolume);
 
-    jtbPlay.add(jbPrevious);
-    jtbPlay.add(jbRew);
-    jtbPlay.add(jbPlayPause);
-    jtbPlay.add(jbStop);
-    jtbPlay.add(jbFwd);
-    jtbPlay.add(jbNext);
-    jtbPlay.addSeparator();
-    jtbPlay.add(jbVolume);
+    jtbTools.add(jbBestof);
+    jtbTools.add(jbNovelties);
+    jtbTools.add(jbRandom);
+    jtbTools.addSeparator();
+    jtbTools.add(jbVolume);
+        
+    JToolBar jtbText = new JToolBar();
+    jtbText.setBorder(null);
+    jtbText.addSeparator();
 
-    scrollingText = new JScrollingText(getPlayerInfo(), -2);
+    scrollingText = new JScrollingText(getPlayerInfo(), -3);
+    scrollingText.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     scrollingText.setPreferredSize(new Dimension(200, 15));
     scrollingText.start();
 
+    jtbText.add(scrollingText);
+    
     slimJajuk = new JPanel();
     slimJajuk.setLayout(new BorderLayout());
 
-    slimJajuk.add(jtbPlay);
-    slimJajuk.add(scrollingText, BorderLayout.PAGE_END);
-    slimJajuk.setSize(jtbPlay.getSize());
+    slimJajuk.add(jtbPlay, BorderLayout.WEST);
+    slimJajuk.add(jtbText, BorderLayout.CENTER);
+    slimJajuk.add(jtbTools, BorderLayout.EAST);
+    
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
 
     add(slimJajuk);
@@ -153,15 +193,19 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
    * @return Player Info : current and next track
    */
   public String getPlayerInfo() {
-    String currentTrack = Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile());
-    String nextTrack = "";
-    try {
-      nextTrack = Main.getWindow().buildTitle(
-          FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1).getFile());
-    } catch (Exception e) {
-      nextTrack = Main.getWindow().buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
+    try{
+      String currentTrack = Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile());
+      String nextTrack = "";
+      try {
+        nextTrack = Main.getWindow().buildTitle(
+            FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1).getFile());
+      } catch (Exception e) {
+        nextTrack = Main.getWindow().buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
+      }
+      return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
+    }catch (Exception e){
+      return Messages.getString("JajukWindow.17");
     }
-    return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
   }
 
   /**
@@ -169,19 +213,19 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
    */
   public void setVolumeIcon(final float fVolume) {
     if (fVolume <= 0) {
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/mute_32x32.png"));
+      Icon icon = new ImageIcon(Util.getResource("icons/16x16/mute_16x16.png"));
       jbVolume.setIcon(icon);
     } else if (fVolume <= 25) {
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume1.png"));
+      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume1.png"));
       jbVolume.setIcon(icon);
     } else if (fVolume <= 50) {
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume2.png"));
+      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume2.png"));
       jbVolume.setIcon(icon);
     } else if (fVolume <= 75) {
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume3.png"));
+      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume3.png"));
       jbVolume.setIcon(icon);
     } else {
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume4.png"));
+      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume4.png"));
       jbVolume.setIcon(icon);
     }
   }
@@ -220,10 +264,20 @@ public class JajukSlimInterface extends JFrame implements ITechnicalStrings, Obs
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
     eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 
   public void update(final Event event) {
-    scrollingText.setText(getPlayerInfo());
+    EventSubject subject = event.getSubject();
+    if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+      scrollingText.setText(getPlayerInfo());
+    }else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+      scrollingText.setText(Messages.getString("JajukWindow.17"));
+    }else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+      jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
+    }else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+      jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
+    }
   }
 }
