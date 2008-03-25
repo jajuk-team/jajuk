@@ -47,6 +47,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -62,6 +63,7 @@ import org.jajuk.services.events.Observer;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.helpers.SizedJMenuItem;
 import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
@@ -120,7 +122,17 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   public JCheckBoxMenuItem jcbmiContinue;
 
   public JCheckBoxMenuItem jcbmiIntro;
+  
+  JMenu smart;
+  
+  JMenuItem jmiShuffle;
 
+  JMenuItem jmiBestof;
+
+  JMenuItem jmiNovelties;
+
+  JMenuItem jmiFinishAlbum;
+  
   JMenu tools;
 
   JMenuItem jmiduplicateFinder;
@@ -261,7 +273,19 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
-
+    
+    // Smart Menu
+    smart = new JMenu(Messages.getString("JajukJMenuBar.29"));
+    jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+    jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
+    jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
+    jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+    
+    smart.add(jmiShuffle);
+    smart.add(jmiBestof);
+    smart.add(jmiNovelties);
+    smart.add(jmiFinishAlbum);
+    
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
@@ -323,6 +347,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     add(views);
     add(properties);
     add(mode);
+    add(smart);
     add(tools);
     add(configuration);
     add(help);
