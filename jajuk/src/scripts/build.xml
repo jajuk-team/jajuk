@@ -154,12 +154,12 @@
 			<format property='build.time' pattern='yyyy/MM/dd HH:mm' />
 		</tstamp>
 		<echo message='Build time: ${build.time}' />
-		<replace dir='${distdir}/src/org/jajuk/util' value='${build.time}'>
+		<replace dir='${distdir}/src/org/jajuk/util' value='${build.time}' encoding='UTF-8'>
 			<include name='ITechnicalStrings.java' />
 			<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
 		</replace>
 		<!-- Set release in code-->
-		<replace dir='${distdir}/src/org/jajuk/util' value='${version}'>
+		<replace dir='${distdir}/src/org/jajuk/util' value='${version}' encoding='UTF-8'>
 			<include name='ITechnicalStrings.java' />
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
