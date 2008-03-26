@@ -28,7 +28,6 @@ package ext;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.net.URL;
@@ -154,15 +153,14 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
           % Messages.getAll("TipOfTheDay").length));
     //Remove pictures urls
-    if (totd.matches(".*<a")){
+    if (totd.matches(".*<a.*")){
       totd = totd.substring(0,totd.indexOf("<a"));
     }
     totd += "     ";
     JScrollingText scrollingText = new JScrollingText(totd, -3);
-    scrollingText.setPreferredSize(new Dimension(200, 15));
-    GridLayout layout = new GridLayout(2, 1, 0, 5);
+    GridLayout layout = new GridLayout(2, 1, 0, 0);
     JPanel jpTotdAndProgress = new JPanel(layout);
-    jpTotdAndProgress.setBorder(new EmptyBorder(5, 5, 5, 5));
+    jpTotdAndProgress.setBorder(new EmptyBorder(4, 5, 0, 5));
     scrollingText.start();
     if (m_progressBar) {
       m_progress = new JProgressBar();
