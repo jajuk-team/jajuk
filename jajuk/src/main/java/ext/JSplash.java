@@ -28,6 +28,7 @@ package ext;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.net.URL;
@@ -158,6 +159,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     }
     totd += "     ";
     JScrollingText scrollingText = new JScrollingText(totd, -3);
+    scrollingText.setPreferredSize(new Dimension(400,20));
+    scrollingText.setMaximumSize(new Dimension(400,20));
     GridLayout layout = new GridLayout(2, 1, 0, 0);
     JPanel jpTotdAndProgress = new JPanel(layout);
     jpTotdAndProgress.setBorder(new EmptyBorder(4, 5, 0, 5));
