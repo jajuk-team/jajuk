@@ -244,7 +244,6 @@ public class JajukSystray extends CommandJPanel {
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
     trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
     trayIcon.setJPopuMenu(jmenu);
-    trayIcon.setImageAutoSize(true);
     trayIcon.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
         // show window if it is not visible and hide it if it is visible
