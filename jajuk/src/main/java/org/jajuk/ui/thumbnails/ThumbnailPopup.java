@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -57,7 +58,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.desktop.Desktop;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
@@ -113,7 +113,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
             new PropertiesWizard(items);
           } else if (XML_URL.equals(url.getHost())) {
             try {
-              Desktop.browse(new URL(url.getQuery()));
+              java.awt.Desktop.getDesktop().browse(new URI(url.getQuery()));
             } catch (Exception e1) {
               Log.error(e1);
             }

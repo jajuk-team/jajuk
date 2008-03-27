@@ -87,3 +87,8 @@ http://www.developpez.net/forums/archive/index.php/t-41622.html
 author: "herve91"
 Used for : Scrolling text (in splash screen for ie)
 -------------------------------------------------------
+JXTrayIcon
+GPL code found at : http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
+Author : Alexander Potochkin
+Used for : Systray fixes (see previous URL for details)
+-------------------------------------------------------

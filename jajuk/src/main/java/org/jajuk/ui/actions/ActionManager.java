@@ -62,6 +62,7 @@ import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukAction.WIZARD;
 
+import java.awt.Desktop;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -153,9 +154,9 @@ public final class ActionManager {
     // JajukJMenuBar: Help Menu
     installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
     installAction(SHOW_ABOUT, new ShowAboutAction(), false);
-    // Do not install this action under OSX because it causes a crash as jar is
-    // missing
-    if (Util.isUnderLinux() || Util.isUnderWindows()) {
+    // Install this action only if Desktop class is supported, it is used to
+    // open default mail client
+    if (Desktop.isDesktopSupported()) {
       installAction(QUALITY, new QualityAction(), false);
     }
     installAction(SHOW_TRACES, new DebugLogAction(), false);
@@ -180,7 +181,7 @@ public final class ActionManager {
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(JajukAction.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(JajukAction.SLIM_JAJUK, new JajukSlimInterfaceAction(), false);
-    
+
     // Selection actions
     installAction(JajukAction.SHOW_PROPERTIES, new ShowPropertiesAction(), false);
     installAction(JajukAction.PLAY_SELECTION, new PlaySelectionAction(), false);
@@ -193,9 +194,9 @@ public final class ActionManager {
     installAction(JajukAction.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
     installAction(JajukAction.CDDB_SELECTION, new CDDBSelectionAction(), false);
 
-    // Do not install this action under OSX because it causes a crash as jar is
-    // missing
-    if (Util.isUnderLinux() || Util.isUnderWindows()) {
+    // Install this action only if Desktop class is supported, it is used to
+    // open default web browser
+    if (Desktop.isDesktopSupported()) {
       installAction(JajukAction.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
     }
   }

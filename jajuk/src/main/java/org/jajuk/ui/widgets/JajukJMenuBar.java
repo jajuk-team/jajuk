@@ -38,6 +38,7 @@ import static org.jajuk.ui.actions.JajukAction.WIZARD;
 
 import com.sun.java.help.impl.SwingWorker;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -74,7 +75,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
-import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -337,8 +337,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
     help.add(jmiHelp);
     help.add(jmiTipOfTheDay);
-    // this works only for Linux and Windows
-    if (Util.isUnderLinux() || Util.isUnderWindows()) {
+    // Install this action only if Desktop class is supported, it is used to
+    // open default mail client
+    if (Desktop.isDesktopSupported()) {
       jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
       help.add(jmiQualityAgent);
     }

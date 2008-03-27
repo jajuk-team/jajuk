@@ -133,9 +133,14 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
    */
   @Override
   protected void dispatchEvent(AWTEvent event) {
+    try{
     preDispatchEvent();
     super.dispatchEvent(event);
     postDispatchEvent();
+    }
+    catch(Throwable t){
+      Log.error(t);
+    }
   }
 
   /**

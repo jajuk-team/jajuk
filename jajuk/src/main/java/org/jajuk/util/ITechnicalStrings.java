@@ -815,6 +815,9 @@ public interface ITechnicalStrings {
   /** Show duplicate playlists in playlist view */
   String CONF_SHOW_DUPLICATE_PLAYLISTS = "jajuk.ui.show_duplicate_playlists";
 
+  /** Force hiding the tray */
+  String CONF_FORCE_TRAY_SHUTDOWN = "jajuk.force_tray_shutdown";
+
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
 

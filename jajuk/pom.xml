@@ -85,13 +85,6 @@
       <systemPath>${basedir}/lib/jlayer-1.0.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>Jdic</groupId>
-      <artifactId>jdic</artifactId>
-      <version>20060613</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/jdic-20060613.jar</systemPath>
-    </dependency>
-    <dependency>
       <groupId>Substance</groupId>
       <artifactId>substance</artifactId>
       <version>4.2dev</version>

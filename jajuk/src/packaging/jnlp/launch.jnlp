@@ -44,19 +44,9 @@
         	<extension name='Forms' href='forms.jnlp'/>
        </resources>
        <resources os='Windows'>
-           <jar href='windows/jdic-win-20060613.jar' version='VERSION_REPLACED_BY_ANT'/> 
-           <!-- This jar contains .exe and .exe 
-		   and have to be named jdic-native.jar to work-->
-           <nativelib href='windows/jdic-native.jar' version='VERSION_REPLACED_BY_ANT'/>
-           <nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>
+      	<nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>
        </resources>
-       <resources os='Linux'>
-           <jar href='linux/jdic-lin-20060613.jar' version='VERSION_REPLACED_BY_ANT'/> 
-		   <!-- This jar contains .so and executables 
-		   and have to be named jdic-native.jar to work-->
-           <nativelib href='linux/jdic-native.jar' version='VERSION_REPLACED_BY_ANT'/>
-       </resources>
-      <application-desc main-class='org.jajuk.Main'>
+       <application-desc main-class='org.jajuk.Main'>
       	<argument>TEST_FLAG_REPLACED_BY_ANT</argument>
       </application-desc>
 </jnlp>

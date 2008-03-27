@@ -15,21 +15,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.net.URL;
+import java.net.URI;
 
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.desktop.Desktop;
 
 /**
  * Action for displaying the tip of the day.
@@ -61,8 +61,7 @@ public class QualityAction extends ActionBase {
     clipboard.setContents(data, data);
     try {
       // Show Trac ticket creation page in an external browser
-      URL url = new URL("http://trac.jajuk.info/newticket");
-      Desktop.browse(url);
+      Desktop.getDesktop().browse(new URI("http://trac.jajuk.info/newticket"));
       // Display a message
       Messages.showInfoMessage(Messages.getString("QualityFeedbackWizard.20"));
     } catch (Exception e) {

@@ -28,6 +28,7 @@ import ext.JSplash;
 import ext.JVM;
 
 import java.awt.BorderLayout;
+import java.awt.SystemTray;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -192,7 +193,7 @@ public class Main implements ITechnicalStrings {
   }
 
   /** ConfigurationManager Locales */
-  public static final String[] locales = { "en", "fr", "de", "it", "sv", "nl", "zh", "es", "ca",
+  public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca",
       "ko", "el", "ru", "gl" };
 
   /** DeviceTypes Identification strings */
@@ -221,8 +222,8 @@ public class Main implements ITechnicalStrings {
     // non ui init
     try {
       // check JVM version
-      if (!JVM.current().isOrLater(JVM.JDK1_5)) {
-        System.out.println("Java Runtime Environment 1.5 minimum required." + " You use a JVM "
+      if (!JVM.current().isOrLater(JVM.JDK1_6)) {
+        System.out.println("Java Runtime Environment 1.6 minimum required." + " You use a JVM "
             + JVM.current());
         System.exit(2); // error code 2 : wrong JVM
       }
@@ -1228,13 +1229,21 @@ public class Main implements ITechnicalStrings {
 
   }
 
-  /** Launch tray, only for linux and windows, not mac for the moment */
+  /** Launch tray*/
   private static void launchTray() throws Exception {
+    //Skip the tray launching if user forced it to hide
+    if (ConfigurationManager.getBoolean(CONF_FORCE_TRAY_SHUTDOWN)){
+      Log.debug("Tray shutdown forced");
+      return;
+    }
+    //Now check if try is supported on this platform
+    if (!SystemTray.isSupported()){
+      Log.debug("Tray unsupported");
+      return;
+    }
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        if (Util.isUnderLinux() || Util.isUnderWindows()) {
           jsystray = JajukSystray.getInstance();
-        }
       }
     });
   }

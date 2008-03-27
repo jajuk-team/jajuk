@@ -294,7 +294,6 @@
 		<signjar jar="${distdir}/lib/entagged-freedb-0.04.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/forms-1.1.0.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jcommon-1.0.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jdic-20060613.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jfreechart-1.0.1.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/jintellitype-1.3.jar" alias="jajukteam" storepass="passpass" />
@@ -312,8 +311,6 @@
 		<signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
 		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/windows/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/linux/jdic_stub.jar" alias="jajukteam" storepass="passpass" />
 	</target>
 
 
@@ -390,12 +387,9 @@
 	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar,package_helpjar'>
 		<echo message='Create Java Web Start war distribution' />
 		<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
-		<!-- Unlike standalone distributions, JNLP have to use JDIC platform distributions jars, browser will
-	not work with cross-platform distributions-->
 		<mkdir dir='${jnlpdir}' />
 		<mkdir dir='${jnlpdir}/app' />
 		<mkdir dir='${jnlpdir}/app/windows' />
-		<mkdir dir='${jnlpdir}/app/linux' />
 		<!--Copy current jars -->
 		<copy todir='${jnlpdir}/app'>
 			<fileset file='${distdir}/lib/*.jar' />
@@ -413,9 +407,6 @@
 			<fileset file='${srcdir}/main/resources/images/included/jajuk-splashscreen.jpg' />
 		</copy>
 		<!--Copy native jars -->
-		<copy todir='${jnlpdir}/app/linux'>
-			<fileset file='${srcdir}/packaging/jnlp/linux/*.jar' />
-		</copy>
 		<copy todir='${jnlpdir}/app/windows'>
 			<fileset file='${srcdir}/packaging/jnlp/windows/*.jar' />
 		</copy>
@@ -494,7 +485,6 @@
 		<mkdir dir='${rpmdistdir}/usr/bin' />
 		<mkdir dir='${rpmdistdir}${installdir}/bin' />
 		<mkdir dir='${rpmdistdir}${installdir}/lib' />
-		<mkdir dir='${rpmdistdir}${installdir}/lib/linux' />
 		<mkdir dir='${rpmdistdir}${jnidir}' />
 		<mkdir dir='${rpmdistdir}${installdir}/native' />
 		<mkdir dir='${rpmdistdir}/usr/share/applications' />
@@ -513,14 +503,8 @@
 		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file="${basedir}/lib/*.jar" />
 		</copy>
-		<copy todir='${rpmdistdir}${installdir}/lib/linux'>
-			<fileset file="${basedir}/lib/linux/*.jar" />
-		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file='${basedir}/src/legals/*.*' />
-		</copy>
-		<copy todir='${rpmdistdir}${jnidir}'>
-			<fileset file="${basedir}/lib/linux/x86/*" />
 		</copy>
 		<!--/DO SOMETHING BETTER HERE -->
 		<copy todir='${rpmdistdir}/usr/share/applications'>

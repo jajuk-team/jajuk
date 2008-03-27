@@ -19,17 +19,16 @@
  */
 package org.jajuk.ui.actions;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.net.URL;
+import java.net.URI;
 
 import javax.swing.JComponent;
 
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.desktop.Desktop;
 
 /**
  * 
@@ -41,8 +40,7 @@ public class LaunchInBrowserAction extends ActionBase {
 
   LaunchInBrowserAction() {
     // this action is available only under linux and windows for now
-    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Util
-        .isUnderLinux() || Util.isUnderWindows()));
+    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Desktop.isDesktopSupported()));
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 
@@ -50,7 +48,7 @@ public class LaunchInBrowserAction extends ActionBase {
     try {
       JComponent source = (JComponent) evt.getSource();
       String url = (String) source.getClientProperty(DETAIL_CONTENT);
-      Desktop.browse(new URL(url));
+      Desktop.getDesktop().browse(new URI(url));
     } catch (Exception e) {
       Log.error(e);
     }

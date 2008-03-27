@@ -23,8 +23,12 @@ package org.jajuk.ui.widgets;
 import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
+import ext.JXTrayIcon;
 import ext.SliderMenuItem;
 
+import java.awt.AWTException;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -64,8 +68,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jdesktop.jdic.tray.SystemTray;
-import org.jdesktop.jdic.tray.TrayIcon;
 
 /**
  * Jajuk systray
@@ -74,9 +76,9 @@ public class JajukSystray extends CommandJPanel {
   private static final long serialVersionUID = 1L;
 
   // Systray variables
-  SystemTray stray = SystemTray.getDefaultSystemTray();
+  SystemTray stray = SystemTray.getSystemTray();
 
-  TrayIcon trayIcon;
+  JXTrayIcon trayIcon;
 
   public JPopupMenu jmenu;
 
@@ -239,15 +241,22 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jmPosition);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
-    trayIcon = new TrayIcon(IconLoader.ICON_TRAY, Messages.getString("JajukWindow.18"), jmenu);
-    trayIcon.setIconAutoSize(true);
+    trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
+    trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
+    trayIcon.setJPopuMenu(jmenu);
+    trayIcon.setImageAutoSize(true);
     trayIcon.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
         // show window if it is not visible and hide it if it is visible
         JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
       }
     });
-    stray.addTrayIcon(trayIcon);
+    try {
+      stray.add(trayIcon);
+    } catch (AWTException e) {
+      Log.error(e);
+      return;
+    }
     // start timer
     timer.start();
     // Register needed events
@@ -336,17 +345,13 @@ public class JajukSystray extends CommandJPanel {
           File file = FileManager.getInstance().getFileByID(
               (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
           String sOut = "";
-          if (Util.isUnderLinux()) {
-            sOut = getHTMLFormatText(file);
-          } else {
-            sOut = getBasicFormatText(file);
-          }
+          sOut = getBasicFormatText(file);
           // Update the tray tooltip
           trayIcon.setToolTip(sOut);
           // check show balloon option
           if (ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON)) {
             trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
-                TrayIcon.INFO_MESSAGE_TYPE);
+                TrayIcon.MessageType.INFO);
           }
 
         } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
@@ -448,7 +453,7 @@ public class JajukSystray extends CommandJPanel {
    */
   public void closeSystray() {
     if (stray != null && trayIcon != null) {
-      stray.removeTrayIcon(trayIcon);
+      stray.remove(trayIcon);
     }
   }
 
@@ -510,18 +515,17 @@ public class JajukSystray extends CommandJPanel {
    */
   public String getBasicFormatText(File file) {
     String sOut = "";
-    int maxSize = 30;
     if (file != null) {
       sOut = "";
-      String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
+      String sAuthor = file.getTrack().getAuthor().getName();
       if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
         sOut += sAuthor + " / ";
       }
-      String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
+      String sAlbum = file.getTrack().getAlbum().getName();
       if (!sAlbum.equals(UNKNOWN_ALBUM)) {
         sOut += sAlbum + " / ";
       }
-      sOut += Util.getLimitedString(file.getTrack().getName(), maxSize);
+      sOut += file.getTrack().getName();
     } else {
       // display a "Ready to play" message
       sOut = Messages.getString("JajukWindow.18");

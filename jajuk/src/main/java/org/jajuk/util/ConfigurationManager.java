@@ -283,6 +283,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
     defaults.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
+    defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

@@ -20,7 +20,6 @@
 	<classpathentry kind="lib" path="lib/entagged-audioformats-0.15.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/jdic-20060613.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
 	<classpathentry kind="lib" path="jajuk-help.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.4.jar"/>
