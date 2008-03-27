@@ -21,7 +21,6 @@ package org.jajuk.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +73,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   private Properties properties;
 
-  /** english messages used as default* */
+  /** English messages used as default* */
   private Properties propertiesEn;
 
   /**
@@ -157,6 +156,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
       for (int i = 0;; i++) {
         String sOut = properties.getProperty(prefix + i);
+
         if (sOut == null) {
           // this property is unknown for this local, try in English
           sOut = defaultProperties.getProperty(prefix + i);
@@ -355,25 +355,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    *          message type like JOptionPane.WARNING
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    class Choice extends Thread {
-      public int confirm;
-
-      public void run() {
-        ConfirmDialog dialog = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
-        confirm = dialog.getResu();
-      }
-    }
-    Choice choice = new Choice();
-    try {
-      SwingUtilities.invokeAndWait(choice);
-    } catch (InterruptedException e) {
-      Log.error(e);
-    } catch (InvocationTargetException e) {
-      Log.error(e);
-    }
-    return choice.confirm;
+    ConfirmDialog dialog = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
+    return dialog.getResu();
   }
 
   /**
@@ -447,6 +430,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
             JOptionPane.INFORMATION_MESSAGE, null, icon);
       }
     });
+
   }
 
   /**
@@ -494,7 +478,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sCode
    */
   public static void showErrorMessage(final int code) {
-    showErrorMessage(code, null);
+    // Message should be displayed in EVT. Otherwise, some exceptions or dead
+    // lock can occur, when changing font for ie
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        showErrorMessage(code, null);
+      }
+    });
   }
 
   /**
@@ -513,6 +503,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
             getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
       }
     });
+
   }
 
   /**
@@ -601,6 +592,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
  */
 class ConfirmDialog extends JajukDialog {
 
+  JOptionPane optionPane;
   /**
    * Confirm dialog constructor
    * 
@@ -615,21 +607,25 @@ class ConfirmDialog extends JajukDialog {
    *          message type like JOptionPane.WARNING
    */
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
-    final JOptionPane optionPane = Util.getNarrowOptionPane(72);
-    if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
-      optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
-          Messages.getString("YestoAll"), Messages.getString("Cancel") });
-    } else {
-      optionPane.setOptionType(optionsType);
-    }
-    optionPane.setMessageType(iType);
-    optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
-    final JDialog dialog = optionPane.createDialog(null, sTitle);
-    dialog.setModal(true);
-    dialog.setAlwaysOnTop(true);
-    dialog.pack();
-    dialog.setLocationRelativeTo(Main.getWindow());
-    dialog.setVisible(true);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        optionPane = Util.getNarrowOptionPane(72);
+        if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
+          optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
+              Messages.getString("YestoAll"), Messages.getString("Cancel") });
+        } else {
+          optionPane.setOptionType(optionsType);
+        }
+        optionPane.setMessageType(iType);
+        optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
+        final JDialog dialog = optionPane.createDialog(null, sTitle);
+        dialog.setModal(true);
+        dialog.setAlwaysOnTop(true);
+        dialog.pack();
+        dialog.setLocationRelativeTo(Main.getWindow());
+        dialog.setVisible(true);
+      }
+    });
     final Object resu = optionPane.getValue();
     // Set Cancel as default
     iResu = JOptionPane.CANCEL_OPTION;

@@ -71,8 +71,6 @@ import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import org.jajuk.util.Util;
-
 /**
  * Helper class used to create, store and lookup actions.
  * <p>

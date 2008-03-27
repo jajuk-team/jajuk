@@ -21,7 +21,6 @@
 package org.jajuk.ui.widgets;
 
 import java.io.BufferedWriter;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
