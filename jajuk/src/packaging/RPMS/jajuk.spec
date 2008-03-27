@@ -28,14 +28,13 @@ Jajuk main principles are :
    (video, pictures) jukebox
 %files
 %defattr(-,root,root)
-  /usr/bin/*
-   /usr/lib/jajuk/*
+   /usr/bin/*
    /usr/share/jajuk/bin/*
    /usr/share/applications/*
    /usr/share/doc/jajuk/*
    /usr/share/pixmaps/*
 %defattr(555,root,root)
-	/usr/share/jajuk/lib/*
+   /usr/share/jajuk/lib/*
    
 %post
 
