@@ -36,9 +36,6 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  * Table model used holding playlist repository data
@@ -56,7 +53,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    *          columns names
    */
   public PlaylistRepositoryTableModel() {
-    super(9);
+    super(5);
     setEditable(false);
     // Columns names
     // First column is play icon, need to set a space character
@@ -75,22 +72,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_PATH));
     vId.add(XML_PATH);
-
-    // Album rate (average of its tracks rate)
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    vId.add(XML_TRACK_RATE);
-
-    // Total playlist length
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    vId.add(XML_TRACK_LENGTH);
-
-    // Number of tracks
-    vColNames.add(Messages.getString("AlbumsTableView.1"));
-    vId.add(XML_TRACKS);
-
-    // Sum of all tracks hits
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    vId.add(XML_TRACK_HITS);
 
     // custom properties now
     for (PropertyMetaInformation meta : PlaylistFileManager.getInstance().getCustomProperties()) {
@@ -117,14 +98,18 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
-    // Filter unmounted files
-    Iterator<PlaylistFile> it = alToShow.iterator();
-    while (it.hasNext()) {
-      PlaylistFile plf = it.next();
-      if (!plf.getDirectory().getDevice().isMounted()) {
-        //Note: don't check .exists() or .canRead() here : it takes 
-        //a long time for unmounted network drive
-        it.remove();
+    Iterator<PlaylistFile> it = null;
+    
+    // Filter unmounted files if required
+    if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+      it = alToShow.iterator();
+      while (it.hasNext()) {
+        PlaylistFile plf = it.next();
+        if (!plf.getDirectory().getDevice().isMounted()) {
+          // Note: don't check .exists() or .canRead() here : it takes
+          // a long time for unmounted network drive
+          it.remove();
+        }
       }
     }
     int iColNum = iNumberStandardCols
@@ -135,27 +120,16 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     bCellEditable = new boolean[iRowNum][iColNum];
     // Allow only custom properties edition
     bEditable = true;
-    
+
     // For perfs, prepare columns visibility
     boolean bName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
     boolean bPath = (columnsToShow != null && columnsToShow.contains(XML_PATH));
-    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
-    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
-    boolean bTrackNb = (columnsToShow != null && columnsToShow.contains(XML_TRACKS));
-    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
 
     it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
       PlaylistFile plf = it.next();
-      //Load playlist reading file
-      try {
-        plf.forceRefresh();
-      } catch (JajukException e) {
-        Log.error(e);
-        continue;
-      }
       setItemAt(iRow, plf);
       Map<String, Object> properties = plf.getProperties();
       // Id
@@ -208,40 +182,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = false;
-
-      // Rate
-      if (bRate) {
-        IconLabel ilRate = Util.getStars(plf);
-        oValues[iRow][5] = ilRate;
-        ilRate.setInteger(true);
-      } else {
-        oValues[iRow][5] = "";
-      }
-      bCellEditable[iRow][5] = false;
-
-      // Length
-      if (bLength) {
-        oValues[iRow][6] = new Duration(plf.getDuration());
-      } else {
-        oValues[iRow][6] = "";
-      }
-      bCellEditable[iRow][6] = false;
-
-      // Number of tracks
-      if (bTrackNb) {
-        oValues[iRow][7] = plf.getNbOfTracks();
-      } else {
-        oValues[iRow][7] = "";
-      }
-      bCellEditable[iRow][7] = false;
-
-      // Hits
-      if (bHits) {
-        oValues[iRow][8] = plf.getHits();
-      } else {
-        oValues[iRow][8] = "";
-      }
-      bCellEditable[iRow][8] = false;
 
       // Custom properties now
       Iterator it2 = PlaylistFileManager.getInstance().getCustomProperties().iterator();

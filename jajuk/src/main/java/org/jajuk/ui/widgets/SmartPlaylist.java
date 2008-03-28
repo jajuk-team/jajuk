@@ -60,7 +60,7 @@ public class SmartPlaylist extends JPanel {
    */
   public SmartPlaylist(Type type) {
     this.type = type;
-    double[][] dSize = { { 200 }, { 40, 5 } };
+    double[][] dSize = { { 100 }, { 40, 5 } };
     TableLayout layout = new TableLayout(dSize);
     layout.setVGap(5);
     setLayout(layout);
@@ -73,7 +73,7 @@ public class SmartPlaylist extends JPanel {
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NOVELTIES);
     }
-    jlIcon.setPreferredSize(new Dimension(100, 100));
+    jlIcon.setPreferredSize(new Dimension(50, 50));
     JLabel jlName = new JLabel(getName());
     jlName.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_S));
     add(jlIcon, "0,0,c,c");

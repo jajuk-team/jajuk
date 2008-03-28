@@ -36,6 +36,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -67,6 +68,7 @@ import org.jajuk.ui.helpers.PlaylistRepositoryTableModel;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.JajukJSplitPane;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.SmartPlaylist;
 import org.jajuk.util.ConfigurationManager;
@@ -76,7 +78,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
 
@@ -93,7 +94,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    * will use them
    */
 
-  JSplitPane split;
+  JajukJSplitPane split;
 
   // --Editor--
   JPanel jpEditor;
@@ -274,12 +275,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpRepository.add(jpSmartPlaylists, "0,0");
     jpRepository.add(repositoryPanel, "0,1");
 
-    split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    split = new JajukJSplitPane(JSplitPane.VERTICAL_SPLIT);
+    split.setDividerLocation(0.6d);
     split.add(jpRepository);
     split.add(jpEditor);
-    setLayout(new VerticalLayout());
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(split);
-  }
+   }
 
   public Set<EventSubject> getRegistrationKeys() {
     HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
@@ -389,7 +391,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     bSettingSelection = false;
   }
 
-  private void selectPlayist(PlaylistFile plf) {
+  private void selectPlaylist(PlaylistFile plf) {
     // remove selection
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
@@ -414,6 +416,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     }
     jlTitle.setToolTipText(plf.getName());
     setDefaultButtonState();
+    refreshCurrentPlaylist();
     Util.stopWaiting(); // stop waiting
   }
 
@@ -631,7 +634,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    * This class is not a view but the playlist upper panel of the PlaylistView
    * It leverages the Abstract Playlist code (filters...s)
    */
-  class PlaylistRepository extends AbstractTableView {
+  class PlaylistRepository extends AbstractTableView implements ListSelectionListener {
 
     private static final long serialVersionUID = 3842568503545896845L;
 
@@ -676,6 +679,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // the list for GUI reasons
           jtable.getMenu().add(jmiDelete);
           jtable.getMenu().add(jmiProperties);
+          jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
+          jtable.getColumnModel().getSelectionModel().addListSelectionListener(
+              PlaylistRepository.this);
           // Add specific behavior on left click
           jtable.setCommand(new ILaunchCommand() {
             public void launch(int nbClicks) {
@@ -710,15 +716,43 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         public void finished() {
           PlaylistRepository.super.finished();
           jtbEditable.setVisible(false);
-          //Set divider location here because both panels
-          //of the slider must be realized for this
-          //method to be effective 
-          PlaylistView.this.split.setDividerLocation(0.7d);
-
         }
       };
       sw.start();
     }
 
+    public void valueChanged(ListSelectionEvent e) {
+      if (e.getValueIsAdjusting()) {
+        return;
+      }
+      Util.waiting();
+      SwingWorker sw = new SwingWorker() {
+        PlaylistFile plf;
+
+        @Override
+        public void finished() {
+          if (plf != null) {
+            selectPlaylist(plf);
+          }
+        }
+
+        @Override
+        public Object construct() {
+          int row = jtable.convertRowIndexToModel(jtable.getSelectedRow());
+          JajukTableModel model = (JajukTableModel) jtable.getModel();
+          plf = (PlaylistFile) model.getItemAt(row);
+          // load the playlist
+          try {
+            plf.forceRefresh();
+          } catch (JajukException e1) {
+            Log.error(e1);
+            Messages.showErrorMessage(17);
+          }
+          return null;
+        }
+
+      };
+      sw.start();
+    }
   }
 }
