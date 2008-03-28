@@ -32,6 +32,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
@@ -129,8 +130,8 @@ public class JajukSystray extends CommandJPanel {
 
   /** Self instance singleton */
   private static JajukSystray jsystray;
-  
-  /**HTML Tooltip*/
+
+  /** HTML Tooltip */
   JDialog dialog;
 
   /** Swing Timer to refresh the component */
@@ -257,7 +258,7 @@ public class JajukSystray extends CommandJPanel {
       @Override
       public void mouseMoved(MouseEvent e) {
         File file = FIFO.getInstance().getCurrentFile();
-        if (file == null){
+        if (file == null) {
           return;
         }
         String sOut = getHTMLFormatText(file);
@@ -269,14 +270,14 @@ public class JajukSystray extends CommandJPanel {
         dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         dialog.getRootPane().setBorder(new LineBorder(Color.BLACK));
         JLabel jl = new JLabel(sOut);
-        jl.setBorder(new EmptyBorder(5,5,5,5));
+        jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
-        dialog.setLocation(e.getX(), e.getY()-100);
+        dialog.setLocation(e.getX(), e.getY() - 100);
         dialog.pack();
         dialog.setVisible(true);
-        //Dispose the dialog after 5 seconds
-        new Thread(){
-          public void run(){
+        // Dispose the dialog after 5 seconds
+        new Thread() {
+          public void run() {
             try {
               Thread.sleep(5000);
               dialog.dispose();
@@ -289,11 +290,18 @@ public class JajukSystray extends CommandJPanel {
       }
     });
     trayIcon.setJPopuMenu(jmenu);
-    trayIcon.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent arg0) {
-        // show window if it is not visible and hide it if it is visible
-        JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
+    trayIcon.addMouseListener(new MouseAdapter() {
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+          super.mouseClicked(e);
+        } else {
+          // show window if it is not visible and hide it if it is visible
+          JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
+        }
       }
+
     });
     try {
       stray.add(trayIcon);
