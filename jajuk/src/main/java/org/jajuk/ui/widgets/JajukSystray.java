@@ -27,6 +27,7 @@ import ext.JXTrayIcon;
 import ext.SliderMenuItem;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,8 @@ import javax.swing.JRootPane;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.jajuk.base.File;
@@ -264,7 +267,10 @@ public class JajukSystray extends CommandJPanel {
         dialog = new JDialog();
         dialog.setUndecorated(true);
         dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        dialog.add(new JLabel(sOut));
+        dialog.getRootPane().setBorder(new LineBorder(Color.BLACK));
+        JLabel jl = new JLabel(sOut);
+        jl.setBorder(new EmptyBorder(5,5,5,5));
+        dialog.add(jl);
         dialog.setLocation(e.getX(), e.getY()-100);
         dialog.pack();
         dialog.setVisible(true);
