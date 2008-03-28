@@ -38,6 +38,7 @@ import static org.jajuk.ui.actions.JajukAction.WIZARD;
 
 import com.sun.java.help.impl.SwingWorker;
 
+import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +49,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -172,6 +174,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenu jmReminders;
 
   JLabel jlUpdate;
+  
+  JButton jbSlim;
   
   /** Hashmap JCheckBoxMenuItem -> associated view */
   public HashMap hmCheckboxView = new HashMap(10);
@@ -346,15 +350,30 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     help.add(jmiTraces);
     help.add(jmiCheckforUpdates);
     help.add(jmiAbout);
-
-    add(file);
-    add(views);
-    add(properties);
-    add(mode);
-    add(smart);
-    add(tools);
-    add(configuration);
-    add(help);
+    
+    JMenuBar mainmenu = new JMenuBar();
+    mainmenu.add(file);
+    mainmenu.add(views);
+    mainmenu.add(properties);
+    mainmenu.add(mode);
+    mainmenu.add(smart);
+    mainmenu.add(tools);
+    mainmenu.add(configuration);
+    mainmenu.add(help);
+    
+    jbSlim = new JajukButton(IconLoader.ICON_FULL_WINDOW);
+    jbSlim.setToolTipText(Messages.getString("JajukSlimWindow.0"));
+    jbSlim.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JajukWindow.getInstance().display(false);
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+        JajukSlimWindow.getInstance().setVisible(true);
+      }
+    });
+    
+    setLayout(new BorderLayout());
+    add(mainmenu, BorderLayout.WEST);
+    add(jbSlim, BorderLayout.EAST);
 
     // Check for new release and display the icon if a new release is available
     SwingWorker sw = new SwingWorker() {

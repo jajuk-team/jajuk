@@ -29,16 +29,16 @@ import org.jajuk.util.Messages;
 /**
  * Action to hide slim bar.
  */
-public class JajukSlimInterfaceAction extends ActionBase {
+public class JajukSlimWindowAction extends ActionBase {
 
   private static final long serialVersionUID = 1L;
 
-  JajukSlimInterfaceAction() {
-    super(Messages.getString("JajukSlimInterface.0"), IconLoader.ICON_SEARCH, true);
-    setShortDescription(Messages.getString("JajukSlimInterface.0"));
+  JajukSlimWindowAction() {
+    super(Messages.getString("JajukSlimWindow.0"), IconLoader.ICON_SEARCH, true);
+    setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }
 
   public void perform(ActionEvent evt) throws Exception {
-    JajukSlimWindow.getInstance().initUI();
+    JajukSlimWindow.getInstance().setVisible(true);
   }
 }

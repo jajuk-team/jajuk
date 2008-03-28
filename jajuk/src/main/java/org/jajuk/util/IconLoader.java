@@ -20,9 +20,15 @@
 
 package org.jajuk.util;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.ui.widgets.JajukButton;
 
 /**
  * Load icons from this class
@@ -140,6 +146,9 @@ public class IconLoader implements ITechnicalStrings {
   
   public static final ImageIcon ICON_CLOSE = new ImageIcon(Util
       .getResource("icons/16x16/close_16x16.png"));
+  
+  public static final ImageIcon ICON_FULL_WINDOW = new ImageIcon(Util
+      .getResource("icons/16x16/full_window_16x16.png"));
   
   public static final ImageIcon ICON_POSITION = new ImageIcon(Util
       .getResource("icons/16x16/position_16x16.png"));

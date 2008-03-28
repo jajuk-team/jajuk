@@ -111,6 +111,8 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   JButton jbFinishAlbum;
 
   JButton jbClose;
+  
+  JButton jbMaximize;
 
   JajukToggleButton jbVolume;
 
@@ -122,16 +124,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   
   private static JajukSlimWindow self;
   
-  /** Swing Timer to refresh the component */
-  private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      update(new Event(EventSubject.EVENT_HEART_BEAT));
-    }
-  });
-
   public static JajukSlimWindow getInstance(){
     if (self == null){
       self = new JajukSlimWindow();
+      self.initUI();
+      self.setVisible(false);
     }
     return self;
   }
@@ -140,13 +137,8 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   }
   
   public void initUI(){
-    jajuk = new JLabel("Jajuk");
-    jajuk.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_L));
-    jajuk.setIcon(IconLoader.ICON_LOGO_FRAME);
-
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
-    // jtbPlay.setFloatable(false);
     jtbPlay.setRollover(true);
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
@@ -203,36 +195,39 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbClose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-        dispose();
+        if(!JajukWindow.getInstance().isVisible())
+          JajukWindow.getInstance().display(true);
+        setVisible(false);
+      }
+    });
+    
+    jbMaximize = new JajukButton(IconLoader.ICON_FULL_WINDOW);
+    jbMaximize.setToolTipText(Messages.getString("Maximize"));
+    jbMaximize.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JajukWindow.getInstance().display(true);
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+        setVisible(false);
       }
     });
 
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
+    jtbTools.add(jbMaximize);
     jtbTools.add(jbClose);
 
     // Search
-    double[][] sizeSearch = new double[][] { { 3, 150, 3, TableLayout.PREFERRED }, { 22 } };
+    double[][] sizeSearch = new double[][] {{75}, {22}};
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(this);
-    JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
-    jlSearch.setToolTipText(Messages.getString("CommandJPanel.23"));
-    // Clear search text when clicking on the search icon
-    jlSearch.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        sbSearch.setText("");
-      }
-    });
-    jpSearch.add(sbSearch, "1,0");
-    jpSearch.add(jlSearch, "3,0");
-
+    jpSearch.add(sbSearch, "0,0");
+    
     JToolBar jtbText = new JToolBar();
     jtbText.setBorder(null);
 
     scrollingText = new JScrollingText(getPlayerInfo(), -3);
     scrollingText.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    scrollingText.setPreferredSize(new Dimension(200, 15));
+    scrollingText.setPreferredSize(new Dimension(150, 15));
     scrollingText.start();
 
     jtbText.add(scrollingText);
@@ -242,7 +237,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     slimJajuk.setFloatable(false);
     slimJajuk.setRollover(true);
 
-    slimJajuk.add(jajuk);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
     slimJajuk.addSeparator();
@@ -261,7 +255,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-    setTitle(Messages.getString("JajukSlimInterface.0"));
+    setTitle(Messages.getString("JajukSlimWindow.0"));
     setVisible(true);
     pack();
     //Notify that slimbar is now visible (menu bar is interested in) 
