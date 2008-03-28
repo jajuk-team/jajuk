@@ -31,16 +31,20 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -122,6 +126,9 @@ public class JajukSystray extends CommandJPanel {
 
   /** Self instance singleton */
   private static JajukSystray jsystray;
+  
+  /**HTML Tooltip*/
+  JDialog dialog;
 
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
@@ -242,7 +249,39 @@ public class JajukSystray extends CommandJPanel {
     jmenu.addSeparator();
     jmenu.add(jmiExit);
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
-    trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
+    trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
+
+      @Override
+      public void mouseMoved(MouseEvent e) {
+        File file = FIFO.getInstance().getCurrentFile();
+        if (file == null){
+          return;
+        }
+        String sOut = getHTMLFormatText(file);
+        if (dialog != null) {
+          return;
+        }
+        dialog = new JDialog();
+        dialog.setUndecorated(true);
+        dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+        dialog.add(new JLabel(sOut));
+        dialog.setLocation(e.getX(), e.getY()-100);
+        dialog.pack();
+        dialog.setVisible(true);
+        //Dispose the dialog after 5 seconds
+        new Thread(){
+          public void run(){
+            try {
+              Thread.sleep(5000);
+              dialog.dispose();
+              dialog = null;
+            } catch (InterruptedException e) {
+              Log.error(e);
+            }
+          }
+        }.start();
+      }
+    });
     trayIcon.setJPopuMenu(jmenu);
     trayIcon.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
@@ -345,8 +384,6 @@ public class JajukSystray extends CommandJPanel {
               (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
           String sOut = "";
           sOut = getBasicFormatText(file);
-          // Update the tray tooltip
-          trayIcon.setToolTip(sOut);
           // check show balloon option
           if (ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON)) {
             trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
