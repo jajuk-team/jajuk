@@ -35,8 +35,6 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
@@ -51,7 +49,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
-import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -68,7 +65,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -257,6 +253,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     setTitle(Messages.getString("JajukSlimWindow.0"));
     setVisible(true);
+    setAlwaysOnTop(true);
     pack();
     //Notify that slimbar is now visible (menu bar is interested in) 
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
