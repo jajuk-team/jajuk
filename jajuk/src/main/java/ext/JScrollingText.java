@@ -42,7 +42,7 @@ public class JScrollingText extends JLabel {
 
   private int offset;
 
-  private int x;
+  private int x = 300;
 
   public JScrollingText(String text) {
     this(text, 1);
