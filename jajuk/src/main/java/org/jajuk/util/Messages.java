@@ -37,7 +37,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -59,7 +58,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /** Supported Locals */
   public ArrayList<String> alLocals = new ArrayList<String>(10);
 
-  /** self instance for singleton */
+   /** self instance for singleton */
   private static Messages mesg;
 
   /** All choice option, completes JDialog options */
@@ -73,7 +72,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   private Properties properties;
 
-  /** English messages used as default* */
+  /** english messages used as default* */
   private Properties propertiesEn;
 
   /**
@@ -187,18 +186,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
   /**
    * Return Flag icon for given description
-   * 
-   * @param dDesc
-   *          language description
+   * @param dDesc language description
    * @return
    */
-  public static Icon getIcon(final String sDesc) {
-    Log.debug("icons/16x16/flag_" + getLocalForDesc(sDesc) + ".png");
-    Icon icon = new ImageIcon(Util.getResource("icons/16x16/flag_" + getLocalForDesc(sDesc)
-        + ".png"));
+  public static Icon getIcon(final String sDesc){
+    Log.debug("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png");
+    Icon icon = new ImageIcon(Util
+        .getResource("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png"));
     return icon;
   }
-
+  
   /**
    * Return list of available locals
    * 
@@ -355,8 +352,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    *          message type like JOptionPane.WARNING
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
-    ConfirmDialog dialog = new ConfirmDialog(sText, getTitleForType(iType), optionsType, iType);
-    return dialog.getResu();
+    final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType,
+        iType);
+    return confirm.getResu();
   }
 
   /**
@@ -382,14 +380,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sMessage
    */
   public static void showWarningMessage(final String sMessage) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
-            JOptionPane.WARNING_MESSAGE, null, null);
-      }
-    });
+    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
+        JOptionPane.WARNING_MESSAGE, null, null);
   }
 
   /**
@@ -404,16 +396,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     if (ConfigurationManager.getBoolean(sProperty)) {
       return;
     }
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        final HideableMessageDialog message = new HideableMessageDialog(sMessage,
-            getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
-            null);
-        message.getResu();
-      }
-    });
+    final HideableMessageDialog message = new HideableMessageDialog(sMessage,
+        getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE, null);
+    message.getResu();
   }
 
   /**
@@ -422,15 +407,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sMessage
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-            JOptionPane.INFORMATION_MESSAGE, null, icon);
-      }
-    });
-
+    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+        JOptionPane.INFORMATION_MESSAGE, null, icon);
   }
 
   /**
@@ -463,13 +441,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sInfoSup
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new ErrorMessageDialog(code, sInfoSup);
-      }
-    });
+    new ErrorMessageDialog(code, sInfoSup);
   }
 
   /**
@@ -478,13 +450,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sCode
    */
   public static void showErrorMessage(final int code) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        showErrorMessage(code, null);
-      }
-    });
+    showErrorMessage(code, null);
   }
 
   /**
@@ -495,15 +461,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
-            getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
-      }
-    });
-
+    new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
+        getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
   }
 
   /**
@@ -513,15 +472,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sInfoSup
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new DetailsMessageDialog(sMessage + " : " + sInfoSup,
-            getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
-            null, null);
-      }
-    });
+    new DetailsMessageDialog(sMessage + " : " + sInfoSup,
+        getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE, null,
+        null);
   }
 
   /**
@@ -530,14 +483,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sMessage
    */
   public static void showInfoMessage(final String sMessage) {
-    // Message should be displayed in EVT. Otherwise, some exceptions or dead
-    // lock can occur, when changing font for ie
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-            JOptionPane.INFORMATION_MESSAGE, null, null);
-      }
-    });
+    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+        JOptionPane.INFORMATION_MESSAGE, null, null);
   }
 
   /**
@@ -592,7 +539,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
  */
 class ConfirmDialog extends JajukDialog {
 
-  JOptionPane optionPane;
   /**
    * Confirm dialog constructor
    * 
@@ -607,25 +553,21 @@ class ConfirmDialog extends JajukDialog {
    *          message type like JOptionPane.WARNING
    */
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        optionPane = Util.getNarrowOptionPane(72);
-        if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
-          optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
-              Messages.getString("YestoAll"), Messages.getString("Cancel") });
-        } else {
-          optionPane.setOptionType(optionsType);
-        }
-        optionPane.setMessageType(iType);
-        optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
-        final JDialog dialog = optionPane.createDialog(null, sTitle);
-        dialog.setModal(true);
-        dialog.setAlwaysOnTop(true);
-        dialog.pack();
-        dialog.setLocationRelativeTo(Main.getWindow());
-        dialog.setVisible(true);
-      }
-    });
+    final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+    if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
+      optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
+          Messages.getString("YestoAll"), Messages.getString("Cancel") });
+    } else {
+      optionPane.setOptionType(optionsType);
+    }
+    optionPane.setMessageType(iType);
+    optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
+    final JDialog dialog = optionPane.createDialog(null, sTitle);
+    dialog.setModal(true);
+    dialog.setAlwaysOnTop(true);
+    dialog.pack();
+    dialog.setLocationRelativeTo(Main.getWindow());
+    dialog.setVisible(true);
     final Object resu = optionPane.getValue();
     // Set Cancel as default
     iResu = JOptionPane.CANCEL_OPTION;
