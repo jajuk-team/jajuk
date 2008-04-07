@@ -89,17 +89,17 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
     }
     // if Pre-load option is enabled, download this cover
     // Make it in a thread to free up the AWT-dispatcher thread
-    new Thread() {
-      public void run() {
-        if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) && iType == Cover.REMOTE_COVER) {
+    if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) && iType == Cover.REMOTE_COVER) {
+      new Thread() {
+        public void run() {
           try {
             DownloadManager.downloadCover(url, id);
           } catch (Exception e) {
             Log.error(e);
           }
         }
-      }
-    }.start();
+      }.start();
+    }
   }
 
   /*
