@@ -41,6 +41,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -61,11 +62,11 @@ public class DeleteAction extends ActionBase {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
     final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
-    ArrayList<File> rejFiles = new ArrayList<File>(alSelected.size());
-    ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
-    ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
-    ArrayList<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
+    final ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
+    final ArrayList<File> rejFiles = new ArrayList<File>(alSelected.size());
+    final ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
+    final ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
+    final ArrayList<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
 
     for (Item item : alSelected) {
       if (item instanceof File) {
@@ -111,26 +112,33 @@ public class DeleteAction extends ActionBase {
         }
       }
 
-      for (File f : alFiles) {
-        try {
-          Directory d = f.getDirectory();
-          Util.deleteFile(f.getIO());
-          FileManager.getInstance().removeFile(f);
-          if (d.getFiles().size() == 0)
-            emptyDirs.add(f.getDirectory());
-        } catch (Exception ioe) {
-          Log.error(131, ioe);
-          rejFiles.add(f);
+      new Thread() {
+        public void run() {
+          Util.waiting();
+          for (File f : alFiles) {
+            try {
+              Directory d = f.getDirectory();
+              Util.deleteFile(f.getIO());
+              FileManager.getInstance().removeFile(f);
+              if (d.getFiles().size() == 0)
+                emptyDirs.add(f.getDirectory());
+            } catch (Exception ioe) {
+              Log.error(131, ioe);
+              rejFiles.add(f);
+            }
+          }
+          Util.stopWaiting();
+          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.0"), 1);
+          if (rejFiles.size() > 0) {
+            String rejString = "";
+            for (File f : rejFiles) {
+              rejString += f.getName() + "\n";
+            }
+            Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
+          }
         }
-      }
-      if (rejFiles.size() > 0) {
-        String rejString = "";
-        for (File f : rejFiles) {
-          rejString += f.getName() + "\n";
-        }
-        Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
-      }
-
+      }.start();
+      
       if (emptyDirs.size() > 0) {
         String emptyDirsString = "";
         for (Directory d : emptyDirs) {
@@ -183,22 +191,30 @@ public class DeleteAction extends ActionBase {
           return;
         }
       }
-      for (Directory d : alDirs) {
-        try {
-          Util.deleteDir(new java.io.File(d.getAbsolutePath()));
-          DirectoryManager.getInstance().removeDirectory(d.getID());
-        } catch (Exception ioe) {
-          Log.error(131, ioe);
-          rejDirs.add(d);
+      new Thread() {
+        public void run() {
+          Util.waiting();
+          for (Directory d : alDirs) {
+            try {
+              Util.deleteDir(new java.io.File(d.getAbsolutePath()));
+              DirectoryManager.getInstance().removeDirectory(d.getID());
+            } catch (Exception ioe) {
+              Log.error(131, ioe);
+              rejDirs.add(d);
+            }
+          }
+          Util.stopWaiting();
+          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"), 1);
+          
+          if (rejDirs.size() > 0) {
+            String rejString = "";
+            for (Directory d : rejDirs) {
+              rejString += d.getName() + "\n";
+            }
+            Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
+          }
         }
-      }
-      if (rejDirs.size() > 0) {
-        String rejString = "";
-        for (Directory d : rejDirs) {
-          rejString += d.getName() + "\n";
-        }
-        Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
-      }
+      }.start();
     }
     ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
   }
