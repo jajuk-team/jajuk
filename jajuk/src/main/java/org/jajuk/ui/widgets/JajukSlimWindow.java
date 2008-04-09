@@ -28,6 +28,7 @@ import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
+import ext.DropDownButton;
 import ext.JScrollingText;
 import ext.SwingWorker;
 import info.clearthought.layout.TableLayout;
@@ -46,7 +47,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
@@ -61,6 +64,7 @@ import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -80,7 +84,7 @@ import org.jajuk.util.log.Log;
  * <p> Singleton</p>
  */
 public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observer,
-    MouseWheelListener, ListSelectionListener {
+    MouseWheelListener, ListSelectionListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -97,14 +101,20 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   JButton jbStop;
 
   JPressButton jbFwd;
+  
+  DropDownButton jbIncRate;
+  
+  DropDownButton jddbSmart;
+  
+  JPopupMenu jpmSmart;
+  
+  JMenuItem jbBestof;
 
-  JButton jbBestof;
+  JMenuItem jbNovelties;
 
-  JButton jbNovelties;
+  JMenuItem jbRandom;
 
-  JButton jbRandom;
-
-  JButton jbFinishAlbum;
+  JMenuItem jbFinishAlbum;
 
   JButton jbClose;
   
@@ -152,29 +162,74 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbFwd.setIcon(IconLoader.ICON_FWD_16x16);
 
     jtbPlay.add(jbPrevious);
-    jtbPlay.add(jbRew);
+    //jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
-    jtbPlay.add(jbFwd);
+    //jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
 
     JToolBar jtbSmart = new JToolBar();
     jtbSmart.setBorder(null);
+        
+    jddbSmart = new DropDownButton(IconLoader.ICON_INC_RATING){
+      private static final long serialVersionUID = 1L;
 
-    jbBestof = new JajukButton(ActionManager.getAction(JajukAction.BEST_OF));
+      @Override
+      protected JPopupMenu getPopupMenu() {
+        return jpmSmart;
+      }
+    };
+     
+    jbBestof = new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
     jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
-    jbNovelties = new JajukButton(ActionManager.getAction(JajukAction.NOVELTIES));
+    jbBestof.addActionListener(this);
+    jbNovelties = new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
     jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16x16);
-    jbRandom = new JajukButton(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+    jbNovelties.addActionListener(this);
+    jbRandom = new JMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
     jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
-    jbFinishAlbum = new JajukButton(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+    jbRandom.addActionListener(this);
+    jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
     jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
+    jbFinishAlbum.addActionListener(this);
+    
+    jpmSmart = new JPopupMenu();
+    jpmSmart.add(jbBestof);
+    jpmSmart.add(jbNovelties);
+    jpmSmart.add(jbRandom);
+    jpmSmart.add(jbFinishAlbum);
+    jddbSmart.addToToolBar(jtbSmart);
+    jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
+    jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
+    
+    ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
+    actionIncRate.setName(null);
+    final JPopupMenu jpmIncRating = new JPopupMenu();
+    for (int i = 1; i <= 10; i++) {
+      final int j = i;
+      JMenuItem jmi = new JMenuItem("+" + i);
+      if (ConfigurationManager.getInt(CONF_INC_RATING) == i) {
+        jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      }
+      // Store selected value
+      jmi.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          ConfigurationManager.setProperty(CONF_INC_RATING, "" + j);
+        }
+      });
+      jpmIncRating.add(jmi);
+    }
+    jbIncRate = new DropDownButton(IconLoader.ICON_INC_RATING) {
+      private static final long serialVersionUID = 1L;
 
-    jtbSmart.add(jbBestof);
-    jtbSmart.add(jbNovelties);
-    jtbSmart.add(jbRandom);
-    jtbSmart.add(jbFinishAlbum);
-
+      @Override
+      protected JPopupMenu getPopupMenu() {
+        return jpmIncRating;
+      }
+    };
+    jbIncRate.setAction(actionIncRate);
+    jbIncRate.addToToolBar(jtbSmart);
+    
     JToolBar jtbTools = new JToolBar();
     jtbTools.setBorder(null);
 
@@ -210,10 +265,10 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-    jtbTools.add(jbClose);
+    //jtbTools.add(jbClose);
 
     // Search
-    double[][] sizeSearch = new double[][] {{75}, {22}};
+    double[][] sizeSearch = new double[][] {{20}, {22}};
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(this);
     jpSearch.add(sbSearch, "0,0");
@@ -239,12 +294,14 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     slimJajuk.add(jpSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbPlay);
-    slimJajuk.addSeparator();
-    slimJajuk.add(jtbText);
+    //slimJajuk.addSeparator();
+    //slimJajuk.add(jtbText);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbTools);
 
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
+    
+    getRootPane().setToolTipText(getPlayerInfo());
 
     add(slimJajuk);
     ObservationManager.register(this);
@@ -382,5 +439,21 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       }
     };
     sw.start();
+  }
+  
+  public void actionPerformed(final ActionEvent ae){
+    if (ae.getSource() == jbBestof){
+      jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
+      jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
+    }else if (ae.getSource() == jbNovelties){
+      jddbSmart.setAction(ActionManager.getAction(JajukAction.NOVELTIES));
+      jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16x16);
+    }else if (ae.getSource() == jbRandom){
+      jddbSmart.setAction(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+      jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
+    }else if (ae.getSource() == jbFinishAlbum){
+      jddbSmart.setAction(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+      jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
+    }
   }
 }
