@@ -143,6 +143,8 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   }
   
   public void initUI(){
+    setIconImage(IconLoader.ICON_LOGO.getImage());
+    
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
     jtbPlay.setRollover(true);
