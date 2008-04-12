@@ -247,7 +247,7 @@ public enum JajukAction {
   /**
    * Used when the first time wizard needs to be launched.
    */
-  WIZARD,
+  SIMPLE_DEVICE_WIZARD,
 
   /**
    * Used to launch the quality feedback agent.

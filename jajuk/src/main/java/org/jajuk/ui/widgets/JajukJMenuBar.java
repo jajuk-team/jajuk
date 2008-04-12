@@ -34,7 +34,7 @@ import static org.jajuk.ui.actions.JajukAction.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
-import static org.jajuk.ui.actions.JajukAction.WIZARD;
+import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
 
 import com.sun.java.help.impl.SwingWorker;
 
@@ -320,7 +320,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
     jmiWebradios = new JMenuItem(ActionManager.getAction(JajukAction.CONFIGURE_WEBRADIOS));
     jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
-    jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
+    jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
     configuration.add(jmiDJ);
     configuration.add(jmiAmbience);

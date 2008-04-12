@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
@@ -27,13 +27,13 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
 /**
- * Action for displaying the tip of the day.
+ * Action for displaying the simple device creation wizard.
  */
-public class WizardAction extends ActionBase {
+public class SimpleDeviceWizardAction extends ActionBase {
 
   private static final long serialVersionUID = 1L;
 
-  WizardAction() {
+  SimpleDeviceWizardAction() {
     super(Messages.getString("JajukJMenuBar.18"), IconLoader.ICON_WIZARD, true);
   }
 

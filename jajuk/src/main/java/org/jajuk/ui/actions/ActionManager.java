@@ -60,7 +60,7 @@ import static org.jajuk.ui.actions.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
-import static org.jajuk.ui.actions.JajukAction.WIZARD;
+import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
 
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public final class ActionManager {
     installAction(CONFIGURE_DJS, new DJConfigurationAction(), false);
     installAction(JajukAction.CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
     installAction(CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(), false);
-    installAction(WIZARD, new WizardAction(), false);
+    installAction(SIMPLE_DEVICE_WIZARD, new SimpleDeviceWizardAction(), false);
     installAction(OPTIONS, new ConfigurationRequiredAction(), false);
     installAction(JajukAction.UNMOUNTED, new HideShowMountedDevicesAction(), false);
 

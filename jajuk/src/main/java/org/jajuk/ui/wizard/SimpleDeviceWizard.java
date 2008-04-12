@@ -23,7 +23,6 @@ package org.jajuk.ui.wizard;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,8 +61,6 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 
   JLabel jlFileSelection;
 
-  JTextField jtfFileSelected;
-
   JButton jbFileSelection;
 
   JLabel jlRefreshTime;
@@ -80,6 +77,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
 
   JPanel jpMain;
 
+  String deviceName;
+
   /** Selected directory */
   private File fDir;
 
@@ -94,9 +93,6 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     jpRightPanel = new JPanel();
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
-    jtfFileSelected = new JTextField("");
-    jtfFileSelected.setForeground(Color.BLUE);
-    jtfFileSelected.setEditable(false);
     jbFileSelection.addActionListener(this);
 
     // Refresh time
@@ -106,7 +102,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     final JPanel jpRefresh = new JPanel();
     final double sizeRefresh[][] = {
         { TableLayoutConstants.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
-            TableLayoutConstants.PREFERRED }, { 20 } };
+            TableLayoutConstants.PREFERRED,20 }, { 20 } };
     jpRefresh.setLayout(new TableLayout(sizeRefresh));
     jpRefresh.add(jlRefreshTime, "0,0");
     jpRefresh.add(jtfRefreshTime, "2,0");
@@ -129,10 +125,9 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     jpFileSelection.add(jlFileSelection);
 
     jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
-    jpRightPanel.add(jpFileSelection, "0,3");
-    jpRightPanel.add(jtfFileSelected, "0,5");
-    jpRightPanel.add(jpRefresh, "0,7");
-    jpRightPanel.add(jpButtons, "0,11");
+    jpRightPanel.add(jpFileSelection);
+    jpRightPanel.add(jpRefresh);
+    jpRightPanel.add(jpButtons);
     final double size[][] = {
         { 20, TableLayoutConstants.PREFERRED, 30, TableLayoutConstants.PREFERRED }, { 0.99 } };
     jpMain = (JPanel) getContentPane();
@@ -155,22 +150,37 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
       final int returnVal = jfc.showOpenDialog(this);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
         fDir = jfc.getSelectedFile();
-        // check device availability
-        final int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
+
+        deviceName = fDir.getName();
+
+        // First, check device *name* availability, otherwise, use a <name>~<nb>
+        // name
+        int code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName, 0,
             fDir.getAbsolutePath(), true);
-        if (code != 0) {
+        int prefix = 1;
+        while (code == 19) { // code 19 means a device already exists with this
+          // name
+          deviceName = fDir.getName() + '~' + prefix;
+          code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName, 0,
+              fDir.getAbsolutePath(), true);
+          prefix++;
+        }
+        // Now, test again to detected others availability issues like wrong URL
+        code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName, 0,
+            fDir.getAbsolutePath(), true);
+        if (code != 0 && code != 19) {
           Messages.showErrorMessage(code);
           jbOk.setEnabled(false);
           return;
         }
-        jtfFileSelected.setText(fDir.getAbsolutePath());
+
         jbOk.setEnabled(true);
         jbOk.grabFocus();
       }
     } else if (e.getSource() == jbOk) {
       try {
         // Create a directory device
-        final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
+        final Device device = DeviceManager.getInstance().registerDevice(deviceName, 0,
             fDir.getAbsolutePath());
         device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, true);
         // Set refresh time

@@ -23,7 +23,6 @@ package org.jajuk.ui.wizard;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -72,8 +71,6 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
   JLabel jlWelcome;
 
   JLabel jlFileSelection;
-
-  JTextField jtfFileSelected;
 
   JButton jbFileSelection;
 
@@ -128,15 +125,14 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
       final int returnVal = jfc.showOpenDialog(this);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
         fDir = jfc.getSelectedFile();
-        // check device availability
-        final int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
+        // First, check device availability
+        int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
             fDir.getAbsolutePath(), true);
         if (code != 0) {
           Messages.showErrorMessage(code);
           jbOk.setEnabled(false);
           return;
         }
-        jtfFileSelected.setText(fDir.getAbsolutePath());
         jbOk.setEnabled(true);
         jbOk.grabFocus();
       }
@@ -224,9 +220,6 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
-    jtfFileSelected = new JTextField("");
-    jtfFileSelected.setForeground(Color.BLUE);
-    jtfFileSelected.setEditable(false);
     jbFileSelection.addActionListener(this);
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
@@ -240,7 +233,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
     final JPanel jpRefresh = new JPanel();
 
-    final double sizeRefresh[][] = { { p, 10, TableLayoutConstants.FILL, 10, p }, { p } };
+    final double sizeRefresh[][] = { { p, 10, TableLayoutConstants.FILL, 10, p, 20 }, { p } };
     jpRefresh.setLayout(new TableLayout(sizeRefresh));
     jpRefresh.add(jlRefreshTime, "0,0");
     jpRefresh.add(jtfRefreshTime, "2,0");
@@ -269,7 +262,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     advanced.add(jcbHelp);
 
     final double[][] size = new double[][] { { p, iX_SEPARATOR, p, iX_SEPARATOR },
-        { iY_SEPARATOR, p, 60, p, p, p, p, p, iY_SEPARATOR } };
+        { iY_SEPARATOR, p, 60, p, p, p, p, iY_SEPARATOR } };
     final TableLayout layout = new TableLayout(size);
     layout.setHGap(iX_SEPARATOR);
     layout.setVGap(iY_SEPARATOR);
@@ -278,12 +271,11 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     jpMain.setLayout(layout);
     jpMain.add(jlWelcome, "2,1");
     jpMain.add(jpFileSelection, "2,2");
-    jpMain.add(jtfFileSelected, "2,3");
-    jpMain.add(jpRefresh, "2,4");
-    jpMain.add(toggle, "2,5");
-    jpMain.add(advanced, "2,6");
-    jpMain.add(jpButtons, "2,7");
-    jpMain.add(jlLeftIcon, "0,0,0,5");
+    jpMain.add(jpRefresh, "2,3");
+    jpMain.add(toggle, "2,4");
+    jpMain.add(advanced, "2,5");
+    jpMain.add(jpButtons, "2,6");
+    jpMain.add(jlLeftIcon, "0,0,0,4");
 
     getRootPane().setDefaultButton(jbOk);
 
