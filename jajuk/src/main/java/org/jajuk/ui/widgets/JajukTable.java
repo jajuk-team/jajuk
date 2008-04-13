@@ -24,7 +24,10 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.JPopupMenu;
@@ -131,6 +134,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * Select columns to show colsToShow list of columns id to keep
    */
   public void showColumns(ArrayList<String> colsToShow) {
+    boolean acceptcolumnEventSave = acceptColumnsEvents;
+    //Ignore columns event during these actions
     acceptColumnsEvents = false;
     Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
     while (it.hasNext()) {
@@ -139,7 +144,32 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
         col.setVisible(false);
       }
     }
-    acceptColumnsEvents = true;
+    reorderColumns();
+    acceptColumnsEvents = acceptcolumnEventSave;
+  }
+
+  /*
+   * Reorder columns order according to given conf
+   */
+  private void reorderColumns() {
+    // Build the index array
+    ArrayList<String> index = new ArrayList<String>(10);
+    StringTokenizer st = new StringTokenizer(ConfigurationManager.getProperty(this.sConf), ",");
+    while (st.hasMoreTokens()) {
+      index.add(st.nextToken());
+    }
+    // Now reorder the columns: remove all columns and re-ad them according the
+    // new order
+    JajukTableModel model = (JajukTableModel) getModel();
+    Map<String, TableColumn> map = new HashMap<String, TableColumn>();
+    for (TableColumn column : getColumns(false)) {
+      map.put(model.getIdentifier(column.getModelIndex()), column);
+      getColumnModel().removeColumn(column);
+    }
+    for (String sID : index) {
+      TableColumn col = map.get(sID);
+      getColumnModel().addColumn(col); 
+    }
   }
 
   /**
@@ -167,7 +197,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList<String> alOut = getColumnsConf();
+    ArrayList alOut = getColumnsConf();
     if (!alOut.contains(property)) {
       String value = ConfigurationManager.getProperty(sConf);
       ConfigurationManager.setProperty(sConf, value + "," + property);
@@ -183,7 +213,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList<String> alOut = getColumnsConf();
+    ArrayList alOut = getColumnsConf();
     alOut.remove(property);
     ConfigurationManager.setProperty(sConf, getColumnsConf(alOut));
   }
@@ -208,6 +238,9 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
 
   public void columnMoved(TableColumnModelEvent arg0) {
     super.columnMoved(arg0);
+    if (acceptColumnsEvents){
+      columnChange();
+    }
   }
 
   public void columnMarginChanged(ChangeEvent arg0) {
@@ -225,13 +258,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    */
   public void createColumnsConf() {
     StringBuilder sb = new StringBuilder();
-    Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(true).iterator();
-    while (it.hasNext()) {
-      TableColumnExt col = (TableColumnExt) it.next();
-      String sIdentifier = ((JajukTableModel) getModel()).getIdentifier(col.getModelIndex());
-      if (col.isVisible()) {
-        sb.append(sIdentifier + ",");
-      }
+    int cols = getColumnCount(false);
+    for (int i = 0; i < cols; i++) {
+      TableColumnExt col = (TableColumnExt) getColumn(i);
+      String sIdentifier = ((JajukTableModel) getModel())
+          .getIdentifier(convertColumnIndexToModel(i));
+      sb.append(sIdentifier + ",");
     }
     String value;
     // remove last comma
@@ -241,6 +273,27 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
       value = sb.toString();
     }
     ConfigurationManager.setProperty(sConf, value);
+    
+  }
+
+  /**
+   * Convert the model columns to view columns
+   * 
+   * @return
+   */
+  private List<TableColumn> getViewColumns() {
+    ArrayList<TableColumn> cols = new ArrayList<TableColumn>(10);
+    ArrayList<Integer> convertionTable = new ArrayList<Integer>(10);
+    int index = 0;
+    // Create the model-view mapping mapping table
+    for (TableColumn col : getColumns(true)) {
+      convertionTable.add(convertColumnIndexToView(index));
+    }
+    // Build the view table
+    for (int i = 0; i < index; i++) {
+      // cols.add(getColumn(convert));
+    }
+    return cols;
   }
 
   /**
