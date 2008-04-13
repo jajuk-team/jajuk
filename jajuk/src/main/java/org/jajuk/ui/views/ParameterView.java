@@ -290,8 +290,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JCheckBox jcbShuffleCover;
 
-  JCheckBox jcbPreLoad;
-
   JLabel jlCoverSize;
 
   JComboBox jcbCoverSize;
@@ -434,11 +432,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           if (jcbAutoCover.isSelected()) {
             jcbCoverSize.setEnabled(true);
             jlCoverSize.setEnabled(true);
-            jcbPreLoad.setEnabled(true);
           } else {
             jlCoverSize.setEnabled(false);
             jcbCoverSize.setEnabled(false);
-            jcbPreLoad.setEnabled(false);
           }
         } else if (e.getSource() == jcbAudioScrobbler) {
           if (jcbAudioScrobbler.isSelected()) {
@@ -732,8 +728,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbAutoCover.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_SHUFFLE, Boolean
         .toString(jcbShuffleCover.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_PRELOAD, Boolean
-        .toString(jcbPreLoad.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_SIZE, Integer
         .toString(jcbCoverSize.getSelectedIndex()));
     // Force LastFM manager configuration reload
@@ -1365,7 +1359,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // - Cover
     jpCovers = new JPanel();
-    final double sizeCover[][] = { { p, p }, { p, p, p, p } };
+    final double sizeCover[][] = { { p, p }, { p, p, p } };
     final TableLayout layoutCover = new TableLayout(sizeCover);
     layoutCover.setVGap(iYSeparator);
     layoutCover.setHGap(iXSeparator);
@@ -1376,8 +1370,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShuffleCover = new JCheckBox(Messages.getString("ParameterView.166"));
     jcbShuffleCover.setToolTipText(Messages.getString("ParameterView.167"));
     jcbShuffleCover.addActionListener(this);
-    jcbPreLoad = new JCheckBox(Messages.getString("ParameterView.169"));
-    jcbPreLoad.setToolTipText(Messages.getString("ParameterView.170"));
     jlCoverSize = new JLabel(Messages.getString("ParameterView.150"));
     jlCoverSize.setToolTipText(Messages.getString("ParameterView.151"));
     jcbCoverSize = new JComboBox();
@@ -1390,7 +1382,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Add items
     jpCovers.add(jcbShuffleCover, "0,0");
     jpCovers.add(jcbAutoCover, "0,1");
-    jpCovers.add(jcbPreLoad, "0,2");
     jpCovers.add(jlCoverSize, "0,3");
     jpCovers.add(jcbCoverSize, "1,3");
 
@@ -1756,9 +1747,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbCoverSize.setSelectedIndex(ConfigurationManager.getInt(ITechnicalStrings.CONF_COVERS_SIZE));
     jcbShuffleCover.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE));
-    jcbPreLoad.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_PRELOAD));
-    jcbPreLoad
-        .setEnabled(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER));
     jcbAudioScrobbler.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE));
     jcbEnableLastFMInformation.setSelected(ConfigurationManager
