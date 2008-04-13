@@ -27,6 +27,7 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -814,7 +815,11 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     try {
       if (iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
-        icon = new ImageIcon(cover.getImage());
+        Image img = cover.getImage();
+        icon = new ImageIcon(img);
+        if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0){
+          throw new Exception("Wrong picture, size is null");
+        }
       } else {
         Log.debug("Download stopped - 2");
         return null;

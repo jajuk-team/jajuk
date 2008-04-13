@@ -654,8 +654,6 @@ public interface ITechnicalStrings {
 
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
 
-  String CONF_COVERS_PRELOAD = "jajuk.covers.preload";
-
   String CONF_COVERS_SIZE = "jajuk.covers.size";
 
   String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";

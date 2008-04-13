@@ -27,7 +27,6 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -86,19 +85,6 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
       this.file = new File(url.getFile());
     } else if (iType == Cover.REMOTE_COVER) {
       this.file = Util.getCachePath(url, id);
-    }
-    // if Pre-load option is enabled, download this cover
-    // Make it in a thread to free up the AWT-dispatcher thread
-    if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) && iType == Cover.REMOTE_COVER) {
-      new Thread() {
-        public void run() {
-          try {
-            DownloadManager.downloadCover(url, id);
-          } catch (Exception e) {
-            Log.error(e);
-          }
-        }
-      }.start();
     }
   }
 

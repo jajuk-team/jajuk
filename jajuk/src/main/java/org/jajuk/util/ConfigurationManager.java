@@ -202,7 +202,6 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
     defaults.put(CONF_COVERS_AUTO_COVER, TRUE);
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
-    defaults.put(CONF_COVERS_PRELOAD, FALSE);
     defaults.put(CONF_COVERS_SIZE, "3"); // medium and large
     defaults.put(CONF_TRACKS_TABLE_EDITION, FALSE);
     defaults.put(CONF_FILES_TABLE_EDITION, FALSE);
