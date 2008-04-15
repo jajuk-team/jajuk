@@ -310,7 +310,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-    setTitle(Messages.getString("JajukSlimWindow.0"));
+    setTitle(Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile()));
     setVisible(true);
     setAlwaysOnTop(true);
     pack();
@@ -394,12 +394,14 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
     eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
     return eventSubjectSet;
   }
 
   public void update(final Event event) {
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+      setTitle(Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile()));
       scrollingText.setText(getPlayerInfo());
     } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
       scrollingText.setText(Messages.getString("JajukWindow.17"));
@@ -407,6 +409,12 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
     } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
+    } else if (EventSubject.EVENT_MUTE_STATE.equals(subject)) {
+      if(Player.isMuted()){
+        setVolumeIcon(0);
+      } else {
+        setVolumeIcon((int) (100 * Player.getCurrentVolume()));
+      }
     }
   }
 
