@@ -81,7 +81,9 @@ import org.jajuk.util.log.Log;
 
 /**
  * Jajuk Slim Interface
- * <p> Singleton</p>
+ * <p>
+ * Singleton
+ * </p>
  */
 public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observer,
     MouseWheelListener, ListSelectionListener, ActionListener {
@@ -101,13 +103,13 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   JButton jbStop;
 
   JPressButton jbFwd;
-  
+
   DropDownButton jbIncRate;
-  
+
   DropDownButton jddbSmart;
-  
+
   JPopupMenu jpmSmart;
-  
+
   JMenuItem jbBestof;
 
   JMenuItem jbNovelties;
@@ -117,7 +119,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   JMenuItem jbFinishAlbum;
 
   JButton jbClose;
-  
+
   JButton jbMaximize;
 
   JajukToggleButton jbVolume;
@@ -127,24 +129,24 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   SearchBox sbSearch;
 
   JToolBar slimJajuk;
-  
+
   private static JajukSlimWindow self;
-  
-  public static JajukSlimWindow getInstance(){
-    if (self == null){
+
+  public static JajukSlimWindow getInstance() {
+    if (self == null) {
       self = new JajukSlimWindow();
       self.initUI();
       self.setVisible(false);
     }
     return self;
   }
-  
-  private  JajukSlimWindow() {
+
+  private JajukSlimWindow() {
   }
-  
-  public void initUI(){
+
+  public void initUI() {
     setIconImage(IconLoader.ICON_LOGO.getImage());
-    
+
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
     jtbPlay.setRollover(true);
@@ -164,16 +166,16 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbFwd.setIcon(IconLoader.ICON_FWD_16x16);
 
     jtbPlay.add(jbPrevious);
-    //jtbPlay.add(jbRew);
+    // jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
-    //jtbPlay.add(jbFwd);
+    // jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
 
     JToolBar jtbSmart = new JToolBar();
     jtbSmart.setBorder(null);
-        
-    jddbSmart = new DropDownButton(IconLoader.ICON_INC_RATING){
+
+    jddbSmart = new DropDownButton(IconLoader.ICON_INC_RATING) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -181,7 +183,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
         return jpmSmart;
       }
     };
-     
+
     jbBestof = new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
     jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
     jbBestof.addActionListener(this);
@@ -194,7 +196,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
     jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
     jbFinishAlbum.addActionListener(this);
-    
+
     jpmSmart = new JPopupMenu();
     jpmSmart.add(jbBestof);
     jpmSmart.add(jbNovelties);
@@ -203,7 +205,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jddbSmart.addToToolBar(jtbSmart);
     jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
     jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
-    
+
     ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
     actionIncRate.setName(null);
     final JPopupMenu jpmIncRating = new JPopupMenu();
@@ -231,7 +233,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     };
     jbIncRate.setAction(actionIncRate);
     jbIncRate.addToToolBar(jtbSmart);
-    
+
     JToolBar jtbTools = new JToolBar();
     jtbTools.setBorder(null);
 
@@ -248,12 +250,12 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbClose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-        if(!JajukWindow.getInstance().isVisible())
+        if (!JajukWindow.getInstance().isVisible())
           JajukWindow.getInstance().display(true);
         setVisible(false);
       }
     });
-    
+
     jbMaximize = new JajukButton(IconLoader.ICON_FULL_WINDOW);
     jbMaximize.setToolTipText(Messages.getString("Maximize"));
     jbMaximize.addActionListener(new ActionListener() {
@@ -267,14 +269,14 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-    //jtbTools.add(jbClose);
+    // jtbTools.add(jbClose);
 
     // Search
-    double[][] sizeSearch = new double[][] {{20}, {22}};
+    double[][] sizeSearch = new double[][] { { 20 }, { 22 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(this);
     jpSearch.add(sbSearch, "0,0");
-    
+
     JToolBar jtbText = new JToolBar();
     jtbText.setBorder(null);
 
@@ -296,13 +298,13 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     slimJajuk.add(jpSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbPlay);
-    //slimJajuk.addSeparator();
-    //slimJajuk.add(jtbText);
+    // slimJajuk.addSeparator();
+    // slimJajuk.add(jtbText);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbTools);
 
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
-    
+
     getRootPane().setToolTipText(getPlayerInfo());
 
     add(slimJajuk);
@@ -310,11 +312,15 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-    setTitle(Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile()));
+    if (FIFO.getInstance().getCurrentFile() != null) {
+      setTitle(Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile()));
+    } else {
+      setTitle(Messages.getString("JajukWindow.17"));
+    }
     setVisible(true);
     setAlwaysOnTop(true);
     pack();
-    //Notify that slimbar is now visible (menu bar is interested in) 
+    // Notify that slimbar is now visible (menu bar is interested in)
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
   }
 
@@ -410,7 +416,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     } else if (EventSubject.EVENT_MUTE_STATE.equals(subject)) {
-      if(Player.isMuted()){
+      if (Player.isMuted()) {
         setVolumeIcon(0);
       } else {
         setVolumeIcon((int) (100 * Player.getCurrentVolume()));
@@ -450,18 +456,18 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     };
     sw.start();
   }
-  
-  public void actionPerformed(final ActionEvent ae){
-    if (ae.getSource() == jbBestof){
+
+  public void actionPerformed(final ActionEvent ae) {
+    if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
       jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
-    }else if (ae.getSource() == jbNovelties){
+    } else if (ae.getSource() == jbNovelties) {
       jddbSmart.setAction(ActionManager.getAction(JajukAction.NOVELTIES));
       jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16x16);
-    }else if (ae.getSource() == jbRandom){
+    } else if (ae.getSource() == jbRandom) {
       jddbSmart.setAction(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
       jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
-    }else if (ae.getSource() == jbFinishAlbum){
+    } else if (ae.getSource() == jbFinishAlbum) {
       jddbSmart.setAction(ActionManager.getAction(JajukAction.FINISH_ALBUM));
       jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
     }
