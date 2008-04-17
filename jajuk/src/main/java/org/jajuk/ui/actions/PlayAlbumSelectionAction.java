@@ -58,7 +58,7 @@ public class PlayAlbumSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  protected void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     if (selection.size() == 0 || !(selection.get(0) instanceof Track)) {
       return;

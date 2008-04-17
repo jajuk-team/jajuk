@@ -59,7 +59,7 @@ public class PushSelectionAction extends ActionBase {
    */
   @SuppressWarnings("unchecked")
   @Override
-  protected void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) throws Exception {
     JComponent source = (JComponent) e.getSource();
     final ArrayList<Item> selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     if (selection.size() == 0) {

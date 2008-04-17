@@ -56,7 +56,7 @@ public class CDDBSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  protected void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     // Check selection is not void
     if (selection.size() == 0) {

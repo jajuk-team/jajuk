@@ -60,7 +60,7 @@ public class ShowPropertiesAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  protected void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     // If selection contains files, we have to show the tracks along with files
     if (selection.size() == 0) {

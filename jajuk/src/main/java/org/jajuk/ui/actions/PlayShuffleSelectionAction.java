@@ -57,7 +57,7 @@ public class PlayShuffleSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  protected void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
     Collections.shuffle(files, new Random());

@@ -46,7 +46,7 @@ public abstract class SelectionAction extends ActionBase {
    */
   @SuppressWarnings("unchecked")
   @Override
-  protected void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) throws Exception {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(DETAIL_SELECTION);
     if (o instanceof Item) {
