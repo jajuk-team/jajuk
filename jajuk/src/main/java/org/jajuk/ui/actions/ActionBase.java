@@ -362,7 +362,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    *           When anything goes wrong when performing the action.
    * @param evt
    */
-  protected abstract void perform(ActionEvent evt) throws Exception;
+  public abstract void perform(ActionEvent evt) throws Exception;
 
   /**
    * Free intellipad ressources

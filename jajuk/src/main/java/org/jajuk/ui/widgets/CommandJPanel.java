@@ -769,10 +769,28 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    */
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
+      public void run()  {
         EventSubject subject = event.getSubject();
-        if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
-            || EventSubject.EVENT_ZERO.equals(subject)) {
+        if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+          ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+          ActionManager.getAction(REWIND_TRACK).setEnabled(false);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
+          ActionManager.getAction(STOP_TRACK).setEnabled(false);
+          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+          ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
+          ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
+          ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
+          jbIncRate.setEnabled(false);
+          // Reset history so user can launch again stopped
+          // track (selection must change to throw an ActionEvent)
+          jcbHistory.setSelectedIndex(-1);
+          // reset startup position
+          ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+        }
+        else if (EventSubject.EVENT_ZERO.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);

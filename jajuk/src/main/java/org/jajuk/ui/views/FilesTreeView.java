@@ -169,7 +169,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_CDDB_WIZARD);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 

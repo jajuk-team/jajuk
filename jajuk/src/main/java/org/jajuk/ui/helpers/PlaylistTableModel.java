@@ -243,8 +243,8 @@ public class PlaylistTableModel extends JajukTableModel {
           }
         }
       } else {
-        oValues[iRow][0] = new IconLabel(IconLoader.ICON_PLAYLIST_FILE, "", null, null, font,
-            Messages.getString("AbstractPlaylistEditorView.21"));
+        oValues[iRow][0] = new IconLabel(IconLoader.ICON_TRACK_FIFO_NORM, "", null, null, font,
+                Messages.getString("AbstractPlaylistEditorView.18"));
       }
       
       // Track name

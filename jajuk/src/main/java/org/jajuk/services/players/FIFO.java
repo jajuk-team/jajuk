@@ -113,9 +113,9 @@ public class FIFO implements ITechnicalStrings {
   }
 
   /**
-   * Initialization
+   * FIFO total reinitialization
    */
-  private void reset() {
+  public void reset() {
     alFIFO = new ArrayList<StackItem>(50);
     alPlanned = new ArrayList<StackItem>(10);
     JajukTimer.getInstance().reset();
@@ -908,7 +908,7 @@ public class FIFO implements ITechnicalStrings {
   }
 
   /**
-   * Stop request. Void the fifo
+   * Stop request.
    */
   public void stopRequest() {
     // fifo is over ( stop request ) , reinit labels in information panel
@@ -918,12 +918,9 @@ public class FIFO implements ITechnicalStrings {
     if (!Main.isExiting()) {
       ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
     }
-    reset(); // reinit all variables
     Player.stop(true); // stop player
     // notify views like commandJPanel to update ui
     ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_STOP));
-    // reset request
-    ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
   }
 
   /**

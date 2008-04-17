@@ -226,6 +226,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
     eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
+    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 

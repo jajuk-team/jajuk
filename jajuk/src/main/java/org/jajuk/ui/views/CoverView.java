@@ -640,7 +640,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   public Set<EventSubject> getRegistrationKeys() {
     final HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
     eventSubjectSet.add(EventSubject.EVENT_COVER_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     eventSubjectSet.add(EventSubject.EVENT_ZERO);
     eventSubjectSet.add(EventSubject.EVENT_COVER_CHANGE);
     return eventSubjectSet;
@@ -1132,8 +1131,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           }
           setFoundText(); // update found text
           displayCurrentCover();
-        } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
-            || EventSubject.EVENT_ZERO.equals(subject)) {
+        } else if (EventSubject.EVENT_ZERO.equals(subject)) {
           // Ignore this event if a reference file has been set
           if (fileReference != null) {
             return;

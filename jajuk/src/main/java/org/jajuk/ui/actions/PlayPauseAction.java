@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -38,17 +39,20 @@ public class PlayPauseAction extends ActionBase {
   }
 
   public void perform(ActionEvent evt) {
-    if (Player.isPaused()) { // player was paused, resume it
+    if (FIFO.isStopped()){
+      FIFO.getInstance().goTo(0);
+      //ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+      setIcon(IconLoader.ICON_PLAY);
+      setName(Messages.getString("JajukWindow.12"));
+    }
+    else if (Player.isPaused()) { // player was paused, resume it
       Player.resume();
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME)); // notify
-      // of
-      // this
-      // event
+      //ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME)); 
       setIcon(IconLoader.ICON_PAUSE);
       setName(Messages.getString("JajukWindow.10"));
     } else { // player is not paused, pause it
       Player.pause();
-      ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE));
+      //ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE));
       // notify of this event
       setIcon(IconLoader.ICON_PLAY);
       setName(Messages.getString("JajukWindow.12"));

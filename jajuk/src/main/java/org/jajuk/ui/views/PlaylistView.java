@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -41,6 +43,7 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -105,7 +108,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   JajukButton jbUp;
   JajukButton jbDown;
   JajukButton jbAddShuffle;
-  private JajukButton jbClear;
+  JajukButton jbClear;
   private JajukButton jbPrepParty;
   JLabel jlTitle;
   JajukTable editorTable;
@@ -128,6 +131,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   SmartPlaylist spNovelties;
   SmartPlaylist spBookmark;
   SmartPlaylist spBestof;
+  
 
   public void initEditorPanel() {
     jpEditor = new JPanel();
@@ -259,6 +263,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     initEditorPanel();
 
     spNew = new SmartPlaylist(SmartPlaylist.Type.NEW);
+   // spNew.addMouseListener(ma);
     spBestof = new SmartPlaylist(SmartPlaylist.Type.BESTOF);
     spNovelties = new SmartPlaylist(SmartPlaylist.Type.NOVELTIES);
     spBookmark = new SmartPlaylist(SmartPlaylist.Type.BOOKMARK);
@@ -276,12 +281,12 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpRepository.add(repositoryPanel, "0,1");
 
     split = new JajukJSplitPane(JSplitPane.VERTICAL_SPLIT);
-    split.setDividerLocation(0.6d);
+    split.setDividerLocation(0.5d);
     split.add(jpRepository);
     split.add(jpEditor);
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(split);
-   }
+  }
 
   public Set<EventSubject> getRegistrationKeys() {
     HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
@@ -638,6 +643,23 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
     private static final long serialVersionUID = 3842568503545896845L;
 
+    /** Selected smart playlist */
+    SmartPlaylist selectedSP;
+
+    JPopupMenu jpmenu;
+
+    JMenuItem jmiPlay;
+
+    JMenuItem jmiSaveAs;
+
+    JMenuItem jmiDelete;
+
+    JMenuItem jmiProperties;
+
+    JMenuItem jmiPrepParty;
+
+    MouseAdapter ma;
+
     public PlaylistRepository() {
       super();
       columnsConf = CONF_PLAYLIST_REPOSITORY_COLUMNS;
@@ -672,6 +694,31 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
      * @see org.jajuk.ui.views.IView#initUI()
      */
     public void initUI() {
+      // Popup menus
+      jpmenu = new JPopupMenu();
+
+      jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0"));
+      jmiPlay.addActionListener(this);
+      jpmenu.add(jmiPlay);
+
+      jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
+      jmiDelete.addActionListener(this);
+      jpmenu.add(jmiDelete);
+
+      jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));
+      jmiSaveAs.addActionListener(this);
+      jpmenu.add(jmiSaveAs);
+
+      jmiPrepParty = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.19"));
+      jmiPrepParty.addActionListener(this);
+      jpmenu.add(jmiPrepParty);
+
+      jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));
+      jmiProperties.addActionListener(this);
+      jpmenu.add(jmiProperties);
+
+      
+
       SwingWorker sw = new SwingWorker() {
         public Object construct() {
           PlaylistRepository.super.construct();
@@ -753,6 +800,38 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
       };
       sw.start();
+    }
+
+    /**
+     * Set current Smart playlist
+     * 
+     * @param sp
+     */
+    void selectPlaylistFileItem(SmartPlaylist sp) {
+      // remove item border
+      if (selectedSP != null) {
+        selectedSP.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+      }
+      sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      // set new item
+      this.selectedSP = sp;
+    }
+
+    /**
+     * Display the playlist menu
+     * 
+     * @param e
+     */
+    private void showMenu(MouseEvent e) {
+      // cannot delete special playlists
+      jmiDelete.setEnabled(false);
+      // Save as is only for special playlists
+      jmiSaveAs.setEnabled(true);
+      jmiProperties.setEnabled(false);
+
+      jmiPlay.setEnabled(true);
+      jmiPrepParty.setEnabled(true);
+      jpmenu.show(e.getComponent(), e.getX(), e.getY());
     }
   }
 }

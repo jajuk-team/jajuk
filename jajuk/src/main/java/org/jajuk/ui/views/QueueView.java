@@ -107,6 +107,11 @@ public class QueueView extends PlaylistView {
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
     jlTitle = new JLabel(" [" + FIFO.getInstance().getFIFO().size() + "]");
+
+    jbClear = new JajukButton(IconLoader.ICON_CLEAR);
+    jbClear.setToolTipText(Messages.getString("QueueView.1"));
+    jbClear.addActionListener(this);
+
     JToolBar jtb = new JToolBar();
     jtb.setRollover(true);
     jtb.setBorder(null);
@@ -116,6 +121,8 @@ public class QueueView extends PlaylistView {
     jtb.add(jbAddShuffle);
     jtb.add(jbUp);
     jtb.add(jbDown);
+    jtb.addSeparator();
+    jtb.add(jbClear);
 
     jpEditorControl.add(jtb, "1,1");
     jpEditorControl.add(jlTitle, "3,1,r,c");
@@ -208,7 +215,6 @@ public class QueueView extends PlaylistView {
   public Set<EventSubject> getRegistrationKeys() {
     HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
     eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
@@ -236,10 +242,10 @@ public class QueueView extends PlaylistView {
         // bound exceptions
         try {
           EventSubject subject = event.getSubject();
-          editorTable.acceptColumnsEvents = false; // flag reloading to avoid wrong
+          editorTable.acceptColumnsEvents = false; // flag reloading to avoid
+                                                    // wrong
           if (EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)
-              || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
-              || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+              || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
             editorModel.alItems.clear();
             editorModel.alPlanned.clear();
             refreshQueue();
@@ -273,7 +279,7 @@ public class QueueView extends PlaylistView {
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          editorTable.acceptColumnsEvents = true; 
+          editorTable.acceptColumnsEvents = true;
           // Update number of tracks remaining
           jlTitle.setText(" [" + FIFO.getInstance().getFIFO().size() + "]");
         }
@@ -367,7 +373,15 @@ public class QueueView extends PlaylistView {
           Log.error(je);
         }
         refreshQueue();
+      } else if (ae.getSource() == jbClear) {
+        //Stop the player
+        FIFO.getInstance().stopRequest();
+        //Reset the FIFO
+        FIFO.getInstance().reset(); // reinit all variables
+        //Request all GUI reset
+        ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
       }
+      
     } catch (Exception e2) {
       Log.error(e2);
     }
@@ -479,6 +493,5 @@ public class QueueView extends PlaylistView {
       }
     }
   }
-
 
 }

@@ -142,7 +142,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 

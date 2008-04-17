@@ -104,7 +104,7 @@ public class JajukSystray extends CommandJPanel {
 
   JMenuItem jmiFinishAlbum;
 
-  JMenuItem jmiPause;
+  JMenuItem jmiPlayPause;
 
   JMenuItem jmiStop;
 
@@ -190,7 +190,7 @@ public class JajukSystray extends CommandJPanel {
     jcbmiShowBalloon.addActionListener(this);
     jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
-    jmiPause = new SizedJMenuItem(ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK));
+    jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK));
     jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukAction.STOP_TRACK));
     jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukAction.PREVIOUS_TRACK));
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukAction.NEXT_TRACK));
@@ -236,7 +236,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jcbmiVisible);
     jmenu.add(jcbmiShowBalloon);
     jmenu.addSeparator();
-    jmenu.add(jmiPause);
+    jmenu.add(jmiPlayPause);
     jmenu.add(jmiStop);
     jmenu.add(jmiPrevious);
     jmenu.add(jmiNext);
@@ -252,6 +252,11 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jmPosition);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
+    // Add a void item that would simply close the tray if clicked, avoid
+    // setting "exit" as last item to prevent unwanted exit
+    jmenu.add(new JMenuItem(" "));
+    jmenu.add(new JMenuItem(" "));
+    
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -294,9 +299,7 @@ public class JajukSystray extends CommandJPanel {
 
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-          super.mouseClicked(e);
-        } else {
+        if (e.getClickCount() == 2) {
           // show window if it is not visible and hide it if it is visible
           JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
         }
@@ -385,7 +388,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.removeChangeListener(JajukSystray.this);
           jsPosition.addChangeListener(JajukSystray.this);
           jsPosition.setEnabled(true);
-          jmiPause.setEnabled(true);
+          jmiPlayPause.setEnabled(true);
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
           jmiPrevious.setEnabled(true);
@@ -413,12 +416,20 @@ public class JajukSystray extends CommandJPanel {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-        }
-
-        else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)
-            || EventSubject.EVENT_ZERO.equals(subject)) {
+        } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
           trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
-          jmiPause.setEnabled(false);
+          jmiPlayPause.setEnabled(true);
+          jmiStop.setEnabled(false);
+          jmiNext.setEnabled(true);
+          jmiPrevious.setEnabled(true);
+          jsPosition.removeMouseWheelListener(JajukSystray.this);
+          jsPosition.removeChangeListener(JajukSystray.this);
+          jsPosition.setEnabled(false);
+          jsPosition.setValue(0);
+          jmiFinishAlbum.setEnabled(false);
+        } else if (EventSubject.EVENT_ZERO.equals(subject)) {
+          trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
+          jmiPlayPause.setEnabled(false);
           jmiStop.setEnabled(false);
           jmiNext.setEnabled(false);
           jmiPrevious.setEnabled(false);
@@ -433,7 +444,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.removeChangeListener(JajukSystray.this);
           jsPosition.addChangeListener(JajukSystray.this);
           jsPosition.setEnabled(true);
-          jmiPause.setEnabled(true);
+          jmiPlayPause.setEnabled(true);
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
           jmiPrevious.setEnabled(true);

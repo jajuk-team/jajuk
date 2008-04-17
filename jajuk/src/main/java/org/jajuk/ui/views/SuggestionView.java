@@ -178,7 +178,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
     eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     eventSubjectSet.add(EventSubject.EVENT_COVER_REFRESH);
     return eventSubjectSet;
   }
@@ -406,9 +405,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       // The show/hide unmounted may have changed, refresh local
       // collection panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(EventSubject.EVENT_PLAYER_STOP)) {
-      author = null;
-      clearLastFMPanels();
     } else if (subject.equals(EventSubject.EVENT_COVER_REFRESH)) {
       refreshLocalCollectionTabs(false);
     }
