@@ -130,7 +130,7 @@ public class Main implements ITechnicalStrings {
   /** Main frame panel */
   public static JPanel jpFrame;
 
-  /** splashscreen */
+  /** splash screen */
   public static JSplash sc;
 
   /** Exit code */
@@ -160,7 +160,7 @@ public class Main implements ITechnicalStrings {
   /** UI lauched flag */
   private static boolean bUILauched = false;
 
-  /** default perspective to shoose, if null, we take the configuration one */
+  /** default perspective to choose, if null, we take the configuration one */
   private static String sPerspective;
 
   /** Server socket used to check other sessions */
@@ -172,7 +172,7 @@ public class Main implements ITechnicalStrings {
   /** Is it the first session ever ? */
   public static boolean bFirstSession = false;
 
-  /** Does this session follows a crash revover ? */
+  /** Does this session follows a crash recover ? */
   private static boolean bCrashRecover = false;
 
   /** Lock used to trigger a first time wizard device creation and refresh * */
