@@ -86,7 +86,9 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
             ActionManager.getAction(JajukAction.INCREASE_VOLUME).perform(null);
             break;
           case JIntellitype.APPCOMMAND_VOLUME_MUTE:
-            ActionManager.getAction(JajukAction.MUTE_STATE).perform(null);
+            Log.debug("System mute");
+            // Ignore this to fix issue #1042, mute concurency between the OS
+            // key trapper and JIntellitype
             break;
           default:
             Log.debug("Undefined INTELLITYPE message caught " + Integer.toString(aCommand));
@@ -94,8 +96,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
           }
         } catch (Throwable e2) {
           Log.error(e2);
-        } finally {
-          ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
         }
       }
     });
