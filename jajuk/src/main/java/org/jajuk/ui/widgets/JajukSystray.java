@@ -54,6 +54,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 
+import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.WebRadio;
@@ -258,6 +259,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(new JMenuItem(" "));
     
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
+    trayIcon.setImageAutoSize(true);
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
 
       @Override
@@ -277,9 +279,11 @@ public class JajukSystray extends CommandJPanel {
         JLabel jl = new JLabel(sOut);
         jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
-        dialog.setLocation(e.getX(), e.getY() - 100);
+        dialog.setLocation(e.getX()-50, e.getY() - 250);
         dialog.pack();
         dialog.setVisible(true);
+        //The toFront() is required under windows when main window is not visible
+        dialog.toFront();
         // Dispose the dialog after 5 seconds
         new Thread() {
           public void run() {
@@ -299,7 +303,7 @@ public class JajukSystray extends CommandJPanel {
 
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 2) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
           // show window if it is not visible and hide it if it is visible
           JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
         }
