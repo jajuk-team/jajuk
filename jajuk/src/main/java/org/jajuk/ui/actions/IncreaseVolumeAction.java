@@ -37,12 +37,12 @@ public class IncreaseVolumeAction extends ActionBase {
   }
 
   public void perform(ActionEvent evt) {
-    int iOld = CommandJPanel.getInstance().getCurrentVolume();
-    int iNew = iOld + 5;
+    float old = Player.getCurrentVolume();
+    float newVolume = old + 0.05f;
     // if user move the volume slider, unmute
     if (Player.isMuted()) {
       Player.mute(false);
     }
-    Player.setVolume(((float) iNew) / 100);
+    Player.setVolume(newVolume);
   }
 }
