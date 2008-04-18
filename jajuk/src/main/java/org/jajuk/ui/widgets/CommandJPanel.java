@@ -898,9 +898,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
           populateWebRadios();
         } else if (EventSubject.EVENT_MUTE_STATE.equals(event.getSubject())) {
-          // Reset the volume icon to the original state after unmute
-          if(!Player.isMuted())
+          // Update mute icon look when changing the volume
+          if(!Player.isMuted()){
             setVolumeIcon(getCurrentVolume());
+          }
         }
 
       }
