@@ -158,7 +158,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
       totd = totd.substring(0,totd.indexOf("<a"));
     }
     totd += "     ";
-    JScrollingText scrollingText = new JScrollingText(totd, -3);
+    JScrollingText scrollingText = new JScrollingText(totd, -5);
     scrollingText.setPreferredSize(new Dimension(400,20));
     scrollingText.setMaximumSize(new Dimension(400,20));
     GridLayout layout = new GridLayout(2, 1, 0, 0);
