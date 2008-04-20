@@ -30,9 +30,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 
 /**
- * Class for Alarm Threads
+ * An Alarm
  */
-public class AlarmThread extends Thread implements ITechnicalStrings {
+public class Alarm implements ITechnicalStrings {
   private String alarmTime;
   private List<File> alToPlay;
   private String alarmAction;
@@ -40,7 +40,7 @@ public class AlarmThread extends Thread implements ITechnicalStrings {
   private boolean alarmDaily;
   private long alarmMilliSeconds;
 
-  public AlarmThread(String aTime, boolean daily, List<File> alFiles, String mode, String message) {
+  public Alarm(String aTime, boolean daily, List<File> alFiles, String mode, String message) {
     super();
     alarmTime = aTime;
     alarmMilliSeconds = Time.valueOf(alarmTime).getTime();
@@ -60,7 +60,7 @@ public class AlarmThread extends Thread implements ITechnicalStrings {
       FIFO.getInstance().stopRequest();
     }
     if (!isDaily()) {
-      AlarmThreadManager.getInstance().removeAlarm(this);
+      AlarmManager.getInstance().removeAlarm(this);
     } else {
       this.alarmMilliSeconds += 24 * 3600 * 1000;
     }

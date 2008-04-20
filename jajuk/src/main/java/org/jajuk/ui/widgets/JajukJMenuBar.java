@@ -57,8 +57,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import org.jajuk.services.alarm.AlarmThread;
-import org.jajuk.services.alarm.AlarmThreadManager;
+import org.jajuk.services.alarm.Alarm;
+import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
@@ -297,7 +297,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukAction.ALARM_CLOCK));
     jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
     jmReminders.addMouseMotionListener(this);
-    for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
+    for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
       JMenuItem jma = new JMenuItem(alarm.getAlarmTime(), IconLoader.ICON_ALARM);
       jmReminders.add(jma);
       jmReminders.addSeparator();
@@ -421,10 +421,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   public void mouseMoved(MouseEvent e) {
     if(e.getSource() == jmReminders){
       jmReminders.removeAll();
-      if (AlarmThreadManager.getInstance().getAllAlarms().size() == 0)
+      if (AlarmManager.getInstance().getAllAlarms().size() == 0)
         jmReminders.add(Messages.getString("AlarmClock.2"));
       else {
-        for (final AlarmThread alarm : AlarmThreadManager.getInstance().getAllAlarms()) {
+        for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
           JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
           jma.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -433,7 +433,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
               if (iResu != JOptionPane.YES_OPTION) {
                 return;
               }
-              AlarmThreadManager.getInstance().stopAlarm(alarm);
+              AlarmManager.getInstance().stopAlarm(alarm);
             }
           });
           jmReminders.add(jma);

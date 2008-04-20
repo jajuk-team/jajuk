@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.services.alarm.AlarmThread;
-import org.jajuk.services.alarm.AlarmThreadManager;
+import org.jajuk.services.alarm.Alarm;
+import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.ui.widgets.AlarmClockDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -94,8 +94,7 @@ public class AlarmClockAction extends ActionBase {
       Messages.showWarningMessage(Messages.getString("AlarmClock.4"));
     }
 
-    AlarmThread aAlarm = new AlarmThread(alarmTime, alarmDaily, alToPlay, alarmAction, alarmMessage);
-    aAlarm.start();
-    AlarmThreadManager.getInstance().addAlarm(aAlarm);
+    Alarm aAlarm = new Alarm(alarmTime, alarmDaily, alToPlay, alarmAction, alarmMessage);
+    AlarmManager.getInstance().addAlarm(aAlarm);
   }
 }

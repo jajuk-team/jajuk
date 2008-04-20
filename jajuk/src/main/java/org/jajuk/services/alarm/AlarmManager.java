@@ -29,22 +29,22 @@ import java.util.List;
 import org.jajuk.util.log.Log;
 
 /**
- * Convenient class to manage Alarm Threads
+ * Manages alarms
  */
 
-public class AlarmThreadManager {
-  private static AlarmThreadManager singleton;
+public class AlarmManager {
+  private static AlarmManager singleton;
 
-  private List<AlarmThread> allAlarms = new ArrayList<AlarmThread>(20);
+  private List<Alarm> allAlarms = new ArrayList<Alarm>(20);
 
-  public static AlarmThreadManager getInstance() {
+  public static AlarmManager getInstance() {
     if (singleton == null) {
-      singleton = new AlarmThreadManager();
+      singleton = new AlarmManager();
     }
     return singleton;
   }
 
-  public void addAlarm(AlarmThread aAlarm) {
+  public void addAlarm(Alarm aAlarm) {
     if (allAlarms.size() == 0) {
       allAlarms.add(aAlarm);
       new Thread() {
@@ -63,7 +63,7 @@ public class AlarmThreadManager {
                 Calendar cal = Calendar.getInstance();
                 String currentTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE)
                     + ":" + cal.get(Calendar.SECOND);
-                for (AlarmThread alarm : allAlarms) {
+                for (Alarm alarm : allAlarms) {
                   long timediff = Time.valueOf(currentTime).getTime()
                       - alarm.getAlarmMilliSeconds();
                   if (timediff > 0) {
@@ -82,15 +82,15 @@ public class AlarmThreadManager {
     }
   }
 
-  public void stopAlarm(AlarmThread aAlarm) {
+  public void stopAlarm(Alarm aAlarm) {
     allAlarms.remove(aAlarm);
   }
 
-  public List<AlarmThread> getAllAlarms() {
+  public List<Alarm> getAllAlarms() {
     return allAlarms;
   }
 
-  public void removeAlarm(AlarmThread aAlarm) {
+  public void removeAlarm(Alarm aAlarm) {
     allAlarms.remove(aAlarm);
   }
 }
