@@ -658,7 +658,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           ArrayList<Item> alItems = new ArrayList<Item>(3);
           while (st.hasMoreTokens()) {
             String sPlf = st.nextToken();
-            Item pa = PlaylistManager.getInstance().getPlaylistFileByID(sPlf);
+            Item pa = PlaylistManager.getInstance().getPlaylistByID(sPlf);
             if (pa != null) {
               alItems.add(pa);
             }

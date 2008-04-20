@@ -359,7 +359,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           track.setComment(sComment);
         } else { // playlist
           String sId = PlaylistManager.createID(files[i].getName(), this);
-          Playlist plfRef = PlaylistManager.getInstance().getPlaylistFileByID(sId);
+          Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
           // if known playlist and no deep scan, just leave
           if (plfRef != null && !bDeepScan) {
             continue;

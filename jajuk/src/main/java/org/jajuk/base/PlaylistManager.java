@@ -274,21 +274,21 @@ public class PlaylistManager extends ItemManager implements Observer {
    *          Item ID
    * @return item
    */
-  public Playlist getPlaylistFileByID(String sID) {
+  public Playlist getPlaylistByID(String sID) {
     return (Playlist) hmItems.get(sID);
   }
 
   /**
    * 
-   * @return playlists list
+   * @return playlists
    */
-  public Set<Playlist> getPlaylistFiles() {
-    Set<Playlist> playListFileSet = new LinkedHashSet<Playlist>();
+  public Set<Playlist> getPlaylists() {
+    Set<Playlist> playListSet = new LinkedHashSet<Playlist>();
     synchronized (getLock()) {
       for (Item item : getItems()) {
-        playListFileSet.add((Playlist) item);
+        playListSet.add((Playlist) item);
       }
     }
-    return playListFileSet;
+    return playListSet;
   }
 }

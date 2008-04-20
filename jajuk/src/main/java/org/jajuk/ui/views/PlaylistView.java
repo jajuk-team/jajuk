@@ -138,7 +138,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   /** Selected smart playlist */
   SmartPlaylist spSelected;
 
-  ArrayList<File> alFiles;
+  ArrayList<File> selectedFiles = new ArrayList<File>(20);
 
   JPopupMenu jpmenu;
 
@@ -192,16 +192,18 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (spSelected != null) {
         spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
       }
-      sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.ORANGE, 5));
       // set new item
       spSelected = sp;
       try {
-        alFiles = sp.getPlaylist().getFiles();
+        selectedFiles.clear();
+        selectedFiles.addAll(sp.getPlaylist().getFiles());
       } catch (JajukException e) {
         Log.error(e);
         return;
       }
-      selectPlaylist(new Playlist(Playlist.Type.QUEUE, null, null, null));
+      //Update playlist editor
+      selectPlaylist(sp.getPlaylist());
     }
 
     void handlePopup(final MouseEvent e) {
@@ -281,7 +283,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpmenu = new JPopupMenu();
 
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION, alFiles);
+    jmiPlay.putClientProperty(DETAIL_SELECTION, selectedFiles);
     jpmenu.add(jmiPlay);
 
     jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
@@ -915,22 +917,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       sw.start();
     }
 
-    /**
-     * Set current Smart playlist
-     * 
-     * @param sp
-     */
-    void selectPlaylistFileItem(SmartPlaylist sp) {
-      // remove item border
-      if (selectedSP != null) {
-        selectedSP.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-      }
-      sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-      // set new item
-      this.selectedSP = sp;
-    }
-
-    /**
+     /**
      * Display the playlist menu
      * 
      * @param e

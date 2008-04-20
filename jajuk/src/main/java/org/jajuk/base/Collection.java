@@ -281,7 +281,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     bw.write(sb.toString());
     // playlists
     bw.write(PlaylistManager.getInstance().toXML());
-    for (Playlist playlistFile : PlaylistManager.getInstance().getPlaylistFiles()) {
+    for (Playlist playlistFile : PlaylistManager.getInstance().getPlaylists()) {
       bw.write(playlistFile.toXml());
     }
     sb = new StringBuilder(200);

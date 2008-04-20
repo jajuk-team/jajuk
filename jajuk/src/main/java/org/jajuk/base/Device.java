@@ -181,7 +181,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       }
     }
     // Playlist cleanup
-    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylistFiles();
+    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
       if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
         if (!plf.getFio().exists()) {
@@ -703,7 +703,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       file.reset();
     }
     /** Reset playlists */
-    for (final Playlist plf : PlaylistManager.getInstance().getPlaylistFiles()) {
+    for (final Playlist plf : PlaylistManager.getInstance().getPlaylists()) {
       plf.reset();
     }
     /** Reset directories */

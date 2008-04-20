@@ -92,7 +92,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
   public synchronized void populateModel(String sPropertyName, String sPattern,
       ArrayList<String> columnsToShow) {
     List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance()
-        .getPlaylistFiles());
+        .getPlaylists());
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
         .getBoolean(CONF_REGEXP));

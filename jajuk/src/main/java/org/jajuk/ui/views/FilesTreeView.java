@@ -800,7 +800,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     // add playlists
     ArrayList<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager
-        .getInstance().getPlaylistFiles());
+        .getInstance().getPlaylists());
     Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {
       Playlist playlistFile = it4.next();

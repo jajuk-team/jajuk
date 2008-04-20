@@ -54,16 +54,16 @@ public class SmartPlaylist extends JPanel {
     this.type = type;
     if (type == Type.NEW) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NEW);
-      plf = new Playlist(Type.NEW, null, null, null);
+      plf = new Playlist(Type.NEW, null, getName(), null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BESTOF);
-      plf = new Playlist(Type.BESTOF, null, null, null);
+      plf = new Playlist(Type.BESTOF, null, getName(), null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BOOKMARK);
-      plf = new Playlist(Type.BOOKMARK, null, null, null);
+      plf = new Playlist(Type.BOOKMARK, null, getName(), null);
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NOVELTIES);
-      plf = new Playlist(Type.NOVELTIES, null, null, null);
+      plf = new Playlist(Type.NOVELTIES, null, getName(), null);
     }
     jlIcon.setPreferredSize(new Dimension(50, 50));
     setToolTipText(getName());
