@@ -115,19 +115,19 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
         }
         ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
         // queue case
-        if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_QUEUE) {
+        if (plf.getType() == PlaylistFile.Type.QUEUE) {
           FIFO.getInstance().push(
               Util.createStackItems(Util.applyPlayOption(alSelectedFiles), ConfigurationManager
                   .getBoolean(CONF_STATE_REPEAT), true),
               ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // bookmark case
-        else if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_BOOKMARK) {
+        else if (plf.getType() == PlaylistFile.Type.BOOKMARK) {
           Bookmarks.getInstance().addFiles(Util.applyPlayOption(alSelectedFiles));
         }
         // normal or new playlist case
-        else if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_NORMAL
-            || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NEW) {
+        else if (plf.getType() == PlaylistFile.Type.NORMAL
+            || plf.getType() == PlaylistFile.Type.NEW) {
           plf.addFiles(Util.applyPlayOption(alSelectedFiles));
         }
         return true;

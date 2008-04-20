@@ -32,6 +32,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -56,6 +57,7 @@ import javax.swing.table.TableColumn;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFile.Type;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
@@ -76,6 +78,7 @@ import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.SmartPlaylist;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -131,7 +134,99 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   SmartPlaylist spNovelties;
   SmartPlaylist spBookmark;
   SmartPlaylist spBestof;
-  
+
+  /** Selected smart playlist */
+  SmartPlaylist spSelected;
+
+  ArrayList<File> alFiles;
+
+  JPopupMenu jpmenu;
+
+  JMenuItem jmiPlay;
+
+  JMenuItem jmiSaveAs;
+
+  JMenuItem jmiDelete;
+
+  JMenuItem jmiProperties;
+
+  JMenuItem jmiPrepParty;
+
+  MouseAdapter ma = new MouseAdapter() {
+
+    public void mousePressed(MouseEvent e) {
+      if (e.isPopupTrigger()) {
+        handlePopup(e);
+        // Left click
+      } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+        SmartPlaylist sp = (SmartPlaylist) e.getComponent();
+        if (sp == spSelected) {
+          ArrayList<File> files;
+          try {
+            files = sp.getPlaylist().getFiles();
+          } catch (JajukException e1) {
+            Log.error(e1);
+            return;
+          }
+          if ((files == null) || (files.size() == 0)) {
+            Messages.showErrorMessage(18);
+          } else {
+            FIFO.getInstance().push(
+                Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+                    .getBoolean(ITechnicalStrings.CONF_STATE_REPEAT), true), false);
+          }
+        } else { // user changed of smart playlist selection
+          selectSmartPlaylist(sp);
+        }
+      }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+      if (e.isPopupTrigger()) {
+        handlePopup(e);
+      }
+    }
+
+    void selectSmartPlaylist(SmartPlaylist sp) {
+      // remove item border
+      if (spSelected != null) {
+        spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+      }
+      sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      // set new item
+      spSelected = sp;
+      try {
+        alFiles = sp.getPlaylist().getFiles();
+      } catch (JajukException e) {
+        Log.error(e);
+        return;
+      }
+      selectPlaylist(new PlaylistFile(PlaylistFile.Type.QUEUE, null, null, null));
+    }
+
+    void handlePopup(final MouseEvent e) {
+      SmartPlaylist sp = (SmartPlaylist) e.getComponent();
+      if (sp == spSelected) {
+        // right click
+        showMenu(e);
+      } else {
+        selectSmartPlaylist(sp);
+        showMenu(e);
+      }
+    }
+
+    /**
+     * Display the playlist menu
+     */
+    private void showMenu(MouseEvent e) {
+      jmiDelete.setEnabled(true);
+      jmiSaveAs.setEnabled(false);
+      jmiProperties.setEnabled(true);
+      jmiPlay.setEnabled(true);
+      jmiPrepParty.setEnabled(true);
+      jpmenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+  };
 
   public void initEditorPanel() {
     jpEditor = new JPanel();
@@ -178,8 +273,32 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jtb.add(jbAddShuffle);
     jtb.add(jbUp);
     jtb.add(jbDown);
-    jtb.add(jbClear);
     jtb.add(jbPrepParty);
+    jtb.addSeparator();
+    jtb.add(jbClear);
+
+    // Popup menus
+    jpmenu = new JPopupMenu();
+
+    jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
+    jmiPlay.putClientProperty(DETAIL_SELECTION, alFiles);
+    jpmenu.add(jmiPlay);
+
+    jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
+    jmiDelete.addActionListener(this);
+    jpmenu.add(jmiDelete);
+
+    jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));
+    jmiSaveAs.addActionListener(this);
+    jpmenu.add(jmiSaveAs);
+
+    jmiPrepParty = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.19"));
+    jmiPrepParty.addActionListener(this);
+    jpmenu.add(jmiPrepParty);
+
+    jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));
+    jmiProperties.addActionListener(this);
+    jpmenu.add(jmiProperties);
 
     jpEditorControl.add(jtb, "1,1");
     jpEditorControl.add(jlTitle, "3,1,c,c");
@@ -262,13 +381,16 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   public void initUI() {
     initEditorPanel();
 
-    spNew = new SmartPlaylist(SmartPlaylist.Type.NEW);
-   // spNew.addMouseListener(ma);
-    spBestof = new SmartPlaylist(SmartPlaylist.Type.BESTOF);
-    spNovelties = new SmartPlaylist(SmartPlaylist.Type.NOVELTIES);
-    spBookmark = new SmartPlaylist(SmartPlaylist.Type.BOOKMARK);
+    spNew = new SmartPlaylist(Type.NEW);
+    spNew.addMouseListener(ma);
+    spBestof = new SmartPlaylist(Type.BESTOF);
+    spBestof.addMouseListener(ma);
+    spNovelties = new SmartPlaylist(Type.NOVELTIES);
+    spNovelties.addMouseListener(ma);
+    spBookmark = new SmartPlaylist(Type.BOOKMARK);
+    spBookmark.addMouseListener(ma);
     JPanel jpSmartPlaylists = new JPanel();
-    jpSmartPlaylists.setLayout(new FlowLayout());
+    jpSmartPlaylists.setLayout(new FlowLayout(FlowLayout.LEFT));
     jpSmartPlaylists.add(spNew);
     jpSmartPlaylists.add(spBestof);
     jpSmartPlaylists.add(spNovelties);
@@ -402,36 +524,29 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     PlaylistView.this.plf = plf;
     // set title label
     jlTitle.setText(plf.getName());
-    switch (plf.getType()) {
-    case PlaylistFile.PLAYLIST_TYPE_BESTOF:
+    if (plf.getType() == PlaylistFile.Type.BESTOF) {
       jlTitle.setIcon(IconLoader.ICON_BESTOF_16x16);
-      break;
-    case PlaylistFile.PLAYLIST_TYPE_BOOKMARK:
+    } else if (plf.getType() == PlaylistFile.Type.BOOKMARK) {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_BOOKMARK_SMALL);
-      break;
-    case PlaylistFile.PLAYLIST_TYPE_NEW:
+    } else if (plf.getType() == PlaylistFile.Type.NEW) {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_NEW_SMALL);
-      break;
-    case PlaylistFile.PLAYLIST_TYPE_NOVELTIES:
+    } else if (plf.getType() == PlaylistFile.Type.NOVELTIES) {
       jlTitle.setIcon(IconLoader.ICON_NOVELTIES_16x16);
-      break;
-    default:
+    } else {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_FILE);
-      break;
     }
     jlTitle.setToolTipText(plf.getName());
     setDefaultButtonState();
     refreshCurrentPlaylist();
     Util.stopWaiting(); // stop waiting
   }
-
+  
   /**
    * Set default button state
    * 
    */
   private void setDefaultButtonState() {
-    if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_BESTOF
-        || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NOVELTIES) {
+    if (plf.getType() == PlaylistFile.Type.BESTOF || plf.getType() == PlaylistFile.Type.NOVELTIES) {
       jbClear.setEnabled(false);
       jbDown.setEnabled(false);
       jbAddShuffle.setEnabled(false);
@@ -460,7 +575,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         plf.play();
       } else if (ae.getSource() == jbSave) {
         // normal playlist
-        if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_NORMAL) {
+        if (plf.getType() == PlaylistFile.Type.NORMAL) {
           try {
             plf.commit();
             InformationJPanel.getInstance().setMessage(
@@ -570,8 +685,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       } else {
         // check for first row remove case : we can't remove currently
         // played track
-        if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_BESTOF
-            || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NOVELTIES) {
+        if (plf.getType() == PlaylistFile.Type.BESTOF
+            || plf.getType() == PlaylistFile.Type.NOVELTIES) {
           // neither for bestof nor novelties playlist
           jbRemove.setEnabled(false);
         } else {
@@ -579,9 +694,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         }
       }
       // Add shuffle button
-      if (plf.getType() == PlaylistFile.PLAYLIST_TYPE_BESTOF
+      if (plf.getType() == PlaylistFile.Type.BESTOF
           // neither for bestof playlist
-          || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NOVELTIES
+          || plf.getType() == PlaylistFile.Type.NOVELTIES
           || selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
       // multiple selection not supported
       ) {
@@ -593,8 +708,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
           // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == PlaylistFile.PLAYLIST_TYPE_BESTOF
-          || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NOVELTIES) {
+          || plf.getType() == PlaylistFile.Type.BESTOF
+          || plf.getType() == PlaylistFile.Type.NOVELTIES) {
         // neither for bestof nor novelties playlist
         jbUp.setEnabled(false);
       } else {
@@ -616,8 +731,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
           // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == PlaylistFile.PLAYLIST_TYPE_BESTOF
-          || plf.getType() == PlaylistFile.PLAYLIST_TYPE_NOVELTIES) {
+          || plf.getType() == PlaylistFile.Type.BESTOF
+          || plf.getType() == PlaylistFile.Type.NOVELTIES) {
         jbDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {
@@ -716,8 +831,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));
       jmiProperties.addActionListener(this);
       jpmenu.add(jmiProperties);
-
-      
 
       SwingWorker sw = new SwingWorker() {
         public Object construct() {

@@ -20,16 +20,13 @@
 
 package org.jajuk.ui.widgets;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jajuk.base.PlaylistFile;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.base.PlaylistFile.Type;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -39,18 +36,13 @@ import org.jajuk.util.Messages;
 public class SmartPlaylist extends JPanel {
   private static final long serialVersionUID = 1L;
 
-  /** Associated playlist file */
-  private PlaylistFile plf;
-
   /** Icon */
   private JLabel jlIcon;
 
-  /** Playlist file type */
-  public enum Type {
-    NEW, BOOKMARK, BESTOF, NOVELTIES
-  }
-
   private Type type;
+  
+  /**Associated playlist*/
+  private PlaylistFile plf;
 
   /**
    * Constructor
@@ -58,41 +50,40 @@ public class SmartPlaylist extends JPanel {
    * @param iType :
    *          Playlist file type (see Type enum)
    */
-  public SmartPlaylist(Type type) {
+  public SmartPlaylist(PlaylistFile.Type type) {
     this.type = type;
-    double[][] dSize = { { 100 }, { 40, 5 } };
-    TableLayout layout = new TableLayout(dSize);
-    layout.setVGap(5);
-    setLayout(layout);
     if (type == Type.NEW) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NEW);
+      plf = new PlaylistFile(Type.NEW, null, null, null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BESTOF);
+      plf = new PlaylistFile(Type.BESTOF, null, null, null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BOOKMARK);
+      plf = new PlaylistFile(Type.BOOKMARK, null, null, null);
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NOVELTIES);
+      plf = new PlaylistFile(Type.NOVELTIES, null, null, null);
     }
     jlIcon.setPreferredSize(new Dimension(50, 50));
-    JLabel jlName = new JLabel(getName());
-    jlName.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN_S));
-    add(jlIcon, "0,0,c,c");
-    add(jlName, "0,1,c,c");
+    setToolTipText(getName());
+    add(jlIcon);
     // new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
-  /**
-   * @return Returns the playlist file.
-   */
-  public PlaylistFile getPlaylistFile() {
-    return plf;
-  }
-
+  
   /**
    * @return Returns the Type.
    */
   public Type getType() {
     return type;
+  }
+  
+  /**
+   * @return Associated playlist
+   */
+  public PlaylistFile getPlaylist() {
+    return plf;
   }
 
   /**

@@ -21,6 +21,7 @@
 package org.jajuk.services.core;
 
 import org.jajuk.Main;
+import org.jajuk.base.FileManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.util.EventSubject;
@@ -67,6 +68,8 @@ public class RatingManager extends Thread implements ITechnicalStrings {
       // Computes every 10 mins, until jajuk ends
       try {
         Thread.sleep(600000);
+        //Computes bestof
+        FileManager.getInstance().refreshBestOfFiles();
       } catch (InterruptedException e) {
         Log.error(e);
       }

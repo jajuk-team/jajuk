@@ -149,9 +149,9 @@ public class PlaylistFileManager extends ItemManager implements Observer {
    */
   public void cleanDevice(String sId) {
     synchronized (PlaylistFileManager.getInstance().getLock()) {
-      Iterator it = hmItems.values().iterator();
+      Iterator<PlaylistFile> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        PlaylistFile plf = (PlaylistFile) it.next();
+        PlaylistFile plf = it.next();
         if (plf.getDirectory() == null || plf.getDirectory().getDevice().getID().equals(sId)) {
           it.remove();
         }

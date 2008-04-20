@@ -20,15 +20,9 @@
 
 package org.jajuk.util;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
-
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.ui.widgets.JajukButton;
 
 /**
  * Load icons from this class
@@ -348,32 +342,23 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_ADVANCED_FILTER = new ImageIcon(Util
       .getResource("icons/16x16/complex_search_16x16.png"));
 
-  public static final ImageIcon ICON_PLAYLIST_QUEUE = new ImageIcon(Util
-      .getResource("icons/40x40/playlist_queue_40x40.png"));
-
-  public static final ImageIcon ICON_PLAYLIST_QUEUE_SMALL = new ImageIcon(Util
-      .getResource("icons/16x16/playlist_queue_16x16.png"));
-
-  public static final ImageIcon ICON_PLAYLIST_NORMAL = new ImageIcon(Util
-      .getResource("icons/40x40/playlist_normal_40x40.png"));
-
   public static final ImageIcon ICON_PLAYLIST_NEW = new ImageIcon(Util
-      .getResource("icons/40x40/playlist_new_40x40.png"));
+      .getResource("icons/32x32/playlist_new_32x32.png"));
 
   public static final ImageIcon ICON_PLAYLIST_NEW_SMALL = new ImageIcon(Util
       .getResource("icons/16x16/new_16x16.png"));
 
   public static final ImageIcon ICON_PLAYLIST_BOOKMARK = new ImageIcon(Util
-      .getResource("icons/40x40/bookmark_40x40.png"));
+      .getResource("icons/32x32/playlist_bookmark_32x32.png"));
 
   public static final ImageIcon ICON_PLAYLIST_BOOKMARK_SMALL = new ImageIcon(Util
       .getResource("icons/16x16/bookmark_16x16.png"));
 
   public static final ImageIcon ICON_PLAYLIST_BESTOF = new ImageIcon(Util
-      .getResource("icons/40x40/playlist_bestof_40x40.png"));
+      .getResource("icons/32x32/bestof_32x32.png"));
 
   public static final ImageIcon ICON_PLAYLIST_NOVELTIES = new ImageIcon(Util
-      .getResource("icons/40x40/playlist_novelties_40x40.png"));
+      .getResource("icons/32x32/novelties_32x32.png"));
 
   public static final ImageIcon ICON_RUN = new ImageIcon(Util
       .getResource("icons/16x16/player_play_16x16.png"));

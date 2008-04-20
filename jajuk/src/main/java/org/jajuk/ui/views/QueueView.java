@@ -81,7 +81,7 @@ public class QueueView extends PlaylistView {
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    plf = new PlaylistFile(PlaylistFile.PLAYLIST_TYPE_QUEUE, null, null, null);
+    plf = new PlaylistFile(PlaylistFile.Type.QUEUE, null, null, null);
     // Control panel
     jpEditorControl = new JPanel();
     jpEditorControl.setBorder(BorderFactory.createEtchedBorder());
