@@ -36,17 +36,13 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
 import org.jajuk.services.bookmark.Bookmarks;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -125,7 +121,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @param bf
    */
-  public synchronized void addFile(final File file) throws JajukException {
+  public void addFile(final File file) throws JajukException {
     final ArrayList<File> al = getFiles();
     final int index = al.size();
     addFile(index, file);
@@ -144,7 +140,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param index
    * @param bf
    */
-  public synchronized void addFile(final int index, final File file) throws JajukException {
+  public void addFile(final int index, final File file) throws JajukException {
     if (type == Playlist.Type.BOOKMARK) {
       Bookmarks.getInstance().addFile(index, file);
     }
@@ -178,7 +174,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param alFilesToAdd :
    *          List of File
    */
-  public synchronized void addFiles(final List<File> alFilesToAdd) {
+  public void addFiles(final List<File> alFilesToAdd) {
     try {
       for (File file : alFilesToAdd) {
         addFile(file);
@@ -199,7 +195,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Clear playlist
    * 
    */
-  public synchronized void clear() {
+  public void clear() {
     if (type == Type.BOOKMARK) { // bookmark
       // playlist
       Bookmarks.getInstance().clear();
@@ -216,9 +212,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void commit() throws JajukException {
     BufferedWriter bw = null;
+    java.io.File temp = null;
     if (isModified()) {
       try {
-        bw = new BufferedWriter(new FileWriter(getFio()));
+        // due to bug #1046, we use a temporary file
+        /*
+         * In some special cases (reproduced under Linux, JRE SUN 1.6.0_04, CIFS
+         * mount, 777 rights file), probably due to a JRE bug, files cannot be
+         * opened (FileNotFound? Exception, permission denied) and the file is
+         * voided (0 bytes) and is closed (checked with lsof).
+         */
+
+        temp = new java.io.File(getAbsolutePath() + '~');
+        bw = new BufferedWriter(new FileWriter(temp));
         bw.write(ITechnicalStrings.PLAYLIST_NOTE);
         bw.newLine();
         final Iterator<File> it = getFiles().iterator();
@@ -238,14 +244,27 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           try {
             bw.flush();
             bw.close();
-            setHashcode(computesHashcode());
-            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-            // refresh repository list(mandatory for logical
-            // playlist collapse/merge)
           } catch (final IOException e1) {
             throw new JajukException(28, getName(), e1);
           }
         }
+      }
+      // Now move the temp file to final one if everything seems ok
+      if (temp != null && temp.exists() && temp.length() > 0) {
+        try {
+          Util.copy(temp, getFio());
+          temp.delete();
+        } catch (final Exception e1) {
+          throw new JajukException(28, getName(), e1);
+        }
+      } else {
+        try {
+          // Try to remove the temp file
+          temp.delete();
+        } catch (final Exception e1) {
+          Log.error(e1);
+        }
+        throw new JajukException(28, getName());
       }
     }
   }
@@ -279,22 +298,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /**
    * 
-   * @return playlist hashcode based on its content
-   * @throws IOException
-   */
-  public String computesHashcode() throws IOException {
-    final BufferedReader br = new BufferedReader(new FileReader(getFio()));
-    final StringBuilder sbContent = new StringBuilder();
-    String sTemp;
-    do {
-      sTemp = br.readLine();
-      sbContent.append(sTemp);
-    } while (sTemp != null);
-    return MD5Processor.hash(sbContent.toString());
-  }
-
-  /**
-   * 
    * @return whether this playlist contains files located out of known devices
    */
   public boolean containsExtFiles() {
@@ -306,7 +309,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @param index
    */
-  public synchronized void down(final int index) {
+  public void down(final int index) {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().down(index);
     } else if (type == Type.QUEUE) {
@@ -341,7 +344,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * refresh
    * 
    */
-  public synchronized void forceRefresh() throws JajukException {
+  public void forceRefresh() throws JajukException {
     alFiles = load(); // populate playlist
   }
 
@@ -379,7 +382,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * @return Returns the list of files this playlist maps to
    */
-  public synchronized ArrayList<File> getFiles() throws JajukException {
+  public ArrayList<File> getFiles() throws JajukException {
     // if normal playlist, propose to mount device if unmounted
     if ((getType() == Type.NORMAL) && !isReady()) {
       final String sMessage = Messages.getString("Error.025") + " ("
@@ -438,13 +441,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       fio = new java.io.File(getAbsolutePath());
     }
     return fio;
-  }
-
-  /**
-   * @return
-   */
-  public String getHashcode() {
-    return getStringValue(ITechnicalStrings.XML_HASHCODE);
   }
 
   /*
@@ -585,7 +581,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @param index
    */
-  public synchronized void remove(final int index) {
+  public void remove(final int index) {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().remove(index);
     } else if (type == Type.QUEUE) {
@@ -699,8 +695,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       final java.io.File fDir = file.getParentFile();
       final Directory dir = DirectoryManager.getInstance().getDirectoryForIO(fDir);
       if (dir != null) { // the new playlist in inside collection
-        final Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file,
-            dir);
+        final Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file, dir);
         dir.addPlaylistFile(plFile);
       }
     }
@@ -721,14 +716,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public void setFio(final java.io.File fio) {
     setModified(true);
     this.fio = fio;
-  }
-
-  /**
-   * @param hashcode
-   *          The sHashcode to set.
-   */
-  protected void setHashcode(final String hashcode) {
-    setProperty(ITechnicalStrings.XML_HASHCODE, hashcode);
   }
 
   /**
@@ -764,7 +751,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
-   * Stores all the files and the playlist in external device
+   * Stores all playlist and mapped files into an external device
    */
   public void storePlaylist() throws Exception {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
@@ -811,8 +798,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public String toString() {
-    return "playlist[ID=" + getID() + " Name={{" + getName() + "}} Hashcode="
-        + getStringValue(ITechnicalStrings.XML_HASHCODE) + " Dir=" + dParentDirectory.getID() + "]";
+    return "playlist[ID=" + getID() + " Name={{" + getName() + "}} " + " Dir="
+        + dParentDirectory.getID() + "]";
   }
 
   /**
@@ -820,7 +807,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @param index
    */
-  public synchronized void up(final int index) {
+  public void up(final int index) {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().up(index);
     } else if (type == Playlist.Type.QUEUE) {

@@ -54,9 +54,8 @@ public class TableTransferHandler extends TransferHandler implements ITechnicalS
     // make sure to remove others selected rows (can occur during the drag)
     jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
     if (jtable instanceof JajukTable) {// sorting only for jajuk table
-      iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow); // selected
-      // row
-      // in model
+      // selected row in model
+      iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow); 
     }
     Object o = ((JajukTableModel) jtable.getModel()).getItemAt(iSelectedRow);
     if (o == null) { // no? try to find a file for this id

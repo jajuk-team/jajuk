@@ -54,9 +54,6 @@ public class PlaylistManager extends ItemManager implements Observer {
     // Name
     registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
         String.class, null));
-    // Hashcode
-    registerProperty(new PropertyMetaInformation(XML_HASHCODE, false, false, false, false, false,
-        String.class, null));
     // Directory
     registerProperty(new PropertyMetaInformation(XML_DIRECTORY, false, true, true, false, false,
         String.class, null));

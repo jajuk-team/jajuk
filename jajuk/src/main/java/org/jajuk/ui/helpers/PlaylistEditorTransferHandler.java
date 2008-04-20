@@ -93,8 +93,10 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   public boolean importData(JComponent c, Transferable t) {
     try {
       if (canImport(c, t.getTransferDataFlavors())) {
-        JComponent comp = (JComponent) c.getParent().getParent().getParent();
-        Playlist plf = ((PlaylistView) comp).getCurrentPlaylistFile();
+        JComponent comp = (JComponent) c.getParent().getParent().getParent().getParent()
+            .getParent();
+        PlaylistView view = ((PlaylistView) comp);
+        Playlist plf = view.getCurrentPlaylist();
         Object oData = null;
         DataFlavor flavor = t.getTransferDataFlavors()[0];
         if (flavor.getHumanPresentableName().equals(
@@ -123,12 +125,13 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
         }
         // bookmark case
         else if (plf.getType() == Playlist.Type.BOOKMARK) {
-          Bookmarks.getInstance().addFiles(Util.applyPlayOption(alSelectedFiles));
+          java.util.List<File> files = Util.applyPlayOption(alSelectedFiles);
+          Bookmarks.getInstance().addFiles(files);
+          view.importFiles(files);
         }
         // normal or new playlist case
-        else if (plf.getType() == Playlist.Type.NORMAL
-            || plf.getType() == Playlist.Type.NEW) {
-          plf.addFiles(Util.applyPlayOption(alSelectedFiles));
+        else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW) {
+          view.importFiles(Util.applyPlayOption(alSelectedFiles));
         }
         return true;
       }
@@ -142,7 +145,11 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     String sFlavor = flavors[0].getHumanPresentableName();
     if (sFlavor.equals("Node") || sFlavor.equals("Row") || sFlavor.equals("Album")) {
-      return true;
+      JComponent comp = (JComponent) c.getParent().getParent().getParent().getParent().getParent();
+      PlaylistView view = ((PlaylistView) comp);
+      Playlist plf = view.getCurrentPlaylist();
+      // Don't accept drop for novelties and bestof
+      return (plf.getType() != Playlist.Type.NOVELTIES && plf.getType() != Playlist.Type.BESTOF);
     }
     return false;
   }

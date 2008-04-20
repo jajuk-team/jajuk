@@ -1177,6 +1177,12 @@ public class Util implements ITechnicalStrings {
         files = ((Directory) item).getFilesRecursively();
       } else if (item instanceof Device) {
         files = ((Device) item).getFilesRecursively();
+      } else if (item instanceof Playlist) {
+        try {
+          files = ((Playlist) item).getFiles();
+        } catch (JajukException e) {
+          Log.error(e);
+        }
       }
     }
     return files;

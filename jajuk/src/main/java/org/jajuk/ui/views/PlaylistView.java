@@ -202,7 +202,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         Log.error(e);
         return;
       }
-      //Update playlist editor
+      // Update playlist editor
       selectPlaylist(sp.getPlaylist());
     }
 
@@ -535,6 +535,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     } else if (plf.getType() == Playlist.Type.NOVELTIES) {
       jlTitle.setIcon(IconLoader.ICON_NOVELTIES_16x16);
     } else {
+      // remove last smart playlist item border
+      if (spSelected != null) {
+        spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        spSelected = null;
+      }
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_FILE);
     }
     jlTitle.setToolTipText(plf.getName());
@@ -542,7 +547,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     refreshCurrentPlaylist();
     Util.stopWaiting(); // stop waiting
   }
-  
+
   /**
    * Set default button state
    * 
@@ -590,9 +595,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // special playlist, same behavior than a save as
           plf.saveAs();
         }
-        // notify playlist repository to refresh
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-
       } else if (ae.getSource() == jbClear) {
         // if it is the queue playlist, stop the selection
         plf.clear();
@@ -602,15 +604,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           if (ae.getSource() == jbDown) {
             plf.down(iRow);
             if (iRow < editorTable.getModel().getRowCount() - 1) {
-              // force immediate table refresh
-              refreshCurrentPlaylist();
               editorTable.getSelectionModel().setSelectionInterval(iRow + 1, iRow + 1);
             }
           } else if (ae.getSource() == jbUp) {
             plf.up(iRow);
             if (iRow > 0) {
-              // force immediate table refresh
-              refreshCurrentPlaylist();
               editorTable.getSelectionModel().setSelectionInterval(iRow - 1, iRow - 1);
             }
           }
@@ -636,7 +634,20 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
     } catch (Exception e2) {
       Log.error(e2);
+    } finally {
+      // force immediate table refresh
+      refreshCurrentPlaylist();
     }
+  }
+
+  /**
+   * Import files, used when drag / dropping for ie
+   * 
+   * @param files
+   */
+  public void importFiles(List<File> files) {
+    plf.addFiles(Util.applyPlayOption(files));
+    refreshCurrentPlaylist();
   }
 
   private void removeSelection() {
@@ -659,7 +670,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   /**
    * @return Returns current playlist
    */
-  public Playlist getCurrentPlaylistFile() {
+  public Playlist getCurrentPlaylist() {
     return plf;
   }
 
@@ -687,8 +698,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       } else {
         // check for first row remove case : we can't remove currently
         // played track
-        if (plf.getType() == Playlist.Type.BESTOF
-            || plf.getType() == Playlist.Type.NOVELTIES) {
+        if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
           // neither for bestof nor novelties playlist
           jbRemove.setEnabled(false);
         } else {
@@ -708,10 +718,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
       // Up button
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
-          // check if several rows have been selected :
+      // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == Playlist.Type.BESTOF
-          || plf.getType() == Playlist.Type.NOVELTIES) {
+          || plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
         // neither for bestof nor novelties playlist
         jbUp.setEnabled(false);
       } else {
@@ -731,10 +740,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
       // Down button
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
-          // check if several rows have been selected :
+      // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == Playlist.Type.BESTOF
-          || plf.getType() == Playlist.Type.NOVELTIES) {
+          || plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
         jbDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {
@@ -887,7 +895,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (e.getValueIsAdjusting()) {
         return;
       }
-      Util.waiting();
       SwingWorker sw = new SwingWorker() {
         Playlist plf;
 
@@ -900,7 +907,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
         @Override
         public Object construct() {
-          int row = jtable.convertRowIndexToModel(jtable.getSelectedRow());
+          int selectedRow = jtable.getSelectedRow();
+          if (selectedRow < 0) {
+            return null;
+          }
+          int row = jtable.convertRowIndexToModel(selectedRow);
           JajukTableModel model = (JajukTableModel) jtable.getModel();
           plf = (Playlist) model.getItemAt(row);
           // load the playlist
@@ -917,7 +928,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       sw.start();
     }
 
-     /**
+    /**
      * Display the playlist menu
      * 
      * @param e
