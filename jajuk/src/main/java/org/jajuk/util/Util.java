@@ -87,7 +87,7 @@ import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
-import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.Playlist;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
@@ -1569,8 +1569,8 @@ public class Util implements ITechnicalStrings {
     } else if (item instanceof Album) {
       rate = ((Album) item).getRate();
       starsNumber = getAlbumStarsNumber(rate);
-    } else if (item instanceof PlaylistFile) {
-      rate = ((PlaylistFile) item).getRate();
+    } else if (item instanceof Playlist) {
+      rate = ((Playlist) item).getRate();
       starsNumber = getAlbumStarsNumber(rate);
     }
     IconLabel ilRate = null;

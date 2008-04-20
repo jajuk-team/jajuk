@@ -56,8 +56,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /** Child files */
   private TreeSet<org.jajuk.base.File> files = new TreeSet<org.jajuk.base.File>();
 
-  /** Playlist files */
-  private TreeSet<PlaylistFile> playlistFiles = new TreeSet<PlaylistFile>();
+  /** playlists */
+  private TreeSet<Playlist> playlistFiles = new TreeSet<Playlist>();
 
   /** IO file for optimizations* */
   private java.io.File fio;
@@ -143,22 +143,22 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * Add a playlist file in local refences
+   * Add a playlist in local refences
    * 
    * @param playlist
    *          file
    */
-  public void addPlaylistFile(PlaylistFile plf) {
+  public void addPlaylistFile(Playlist plf) {
     playlistFiles.add(plf);
   }
 
   /**
-   * Remove a playlist file from local refences
+   * Remove a playlist from local refences
    * 
    * @param playlist
    *          file
    */
-  public void removePlaylistFile(PlaylistFile plf) {
+  public void removePlaylistFile(Playlist plf) {
     if (playlistFiles.contains(plf)) {
       playlistFiles.remove(plf);
     }
@@ -183,11 +183,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * return playlist files
+   * return playlists
    * 
-   * @return playlist files
+   * @return playlists
    */
-  public Set<PlaylistFile> getPlaylistFiles() {
+  public Set<Playlist> getPlaylistFiles() {
     return playlistFiles;
   }
 
@@ -234,7 +234,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * @param directory
    */
-  public void changePlaylistFile(PlaylistFile plfOld, PlaylistFile plfNew) {
+  public void changePlaylistFile(Playlist plfOld, Playlist plfNew) {
     playlistFiles.remove(plfOld);
     playlistFiles.add(plfNew);
   }
@@ -357,16 +357,16 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // found file comment but we changing a comment, we will
           // apply to all files for a track
           track.setComment(sComment);
-        } else { // playlist file
-          String sId = PlaylistFileManager.createID(files[i].getName(), this);
-          PlaylistFile plfRef = PlaylistFileManager.getInstance().getPlaylistFileByID(sId);
-          // if known playlist file and no deep scan, just leave
+        } else { // playlist
+          String sId = PlaylistManager.createID(files[i].getName(), this);
+          Playlist plfRef = PlaylistManager.getInstance().getPlaylistFileByID(sId);
+          // if known playlist and no deep scan, just leave
           if (plfRef != null && !bDeepScan) {
             continue;
           }
-          PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(files[i],
+          Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(files[i],
               this);
-          // set hashcode to this playlist file
+          // set hashcode to this playlist
           String sHashcode = plFile.computesHashcode();
           plFile.forceRefresh(); // force refresh
           plFile.setHashcode(sHashcode);

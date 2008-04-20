@@ -34,8 +34,8 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -79,16 +79,16 @@ public class DeleteAction extends ActionBase {
         }
       } else if (item instanceof Directory) {
         alDirs.add((Directory) item);
-      } else if (item instanceof PlaylistFile) {
+      } else if (item instanceof Playlist) {
         if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
           // file delete confirmation
-          PlaylistFile plf = (PlaylistFile) item;
+          Playlist plf = (Playlist) item;
           String sFileToDelete = plf.getAbsolutePath();
           String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;
           int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
               JOptionPane.WARNING_MESSAGE);
           if (i == JOptionPane.YES_OPTION) {
-            PlaylistFileManager.getInstance().removePlaylistFile(plf);
+            PlaylistManager.getInstance().removePlaylistFile(plf);
             // requires device refresh
             ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
           }

@@ -44,7 +44,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.Playlist;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -81,7 +81,7 @@ public class QueueView extends PlaylistView {
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    plf = new PlaylistFile(PlaylistFile.Type.QUEUE, null, null, null);
+    plf = new Playlist(Playlist.Type.QUEUE, null, null, null);
     // Control panel
     jpEditorControl = new JPanel();
     jpEditorControl.setBorder(BorderFactory.createEtchedBorder());

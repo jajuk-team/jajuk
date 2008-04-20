@@ -29,8 +29,8 @@ import java.util.Map;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
@@ -74,7 +74,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     vId.add(XML_PATH);
 
     // custom properties now
-    for (PropertyMetaInformation meta : PlaylistFileManager.getInstance().getCustomProperties()) {
+    for (PropertyMetaInformation meta : PlaylistManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
       vId.add(meta.getName());
     }
@@ -91,20 +91,20 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String sPropertyName, String sPattern,
       ArrayList<String> columnsToShow) {
-    List<PlaylistFile> alToShow = new ArrayList<PlaylistFile>(PlaylistFileManager.getInstance()
+    List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance()
         .getPlaylistFiles());
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
         .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
-    Iterator<PlaylistFile> it = null;
+    Iterator<Playlist> it = null;
     
     // Filter unmounted files if required
     if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       it = alToShow.iterator();
       while (it.hasNext()) {
-        PlaylistFile plf = it.next();
+        Playlist plf = it.next();
         if (!plf.getDirectory().getDevice().isMounted()) {
           // Note: don't check .exists() or .canRead() here : it takes
           // a long time for unmounted network drive
@@ -113,7 +113,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       }
     }
     int iColNum = iNumberStandardCols
-        + PlaylistFileManager.getInstance().getCustomProperties().size();
+        + PlaylistManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
@@ -129,7 +129,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
 
     it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
-      PlaylistFile plf = it.next();
+      Playlist plf = it.next();
       setItemAt(iRow, plf);
       Map<String, Object> properties = plf.getProperties();
       // Id
@@ -184,7 +184,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       bCellEditable[iRow][4] = false;
 
       // Custom properties now
-      Iterator it2 = PlaylistFileManager.getInstance().getCustomProperties().iterator();
+      Iterator it2 = PlaylistManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
         Object o = properties.get(meta.getName());

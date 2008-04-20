@@ -55,15 +55,15 @@ import org.jajuk.util.filters.PlaylistFilter;
 import org.jajuk.util.log.Log;
 
 /**
- * A playlist file
+ * A playlist
  * <p>
  * Physical item
  */
-public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFile> {
+public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   private static final long serialVersionUID = 1L;
 
-  /** Playlist file type */
+  /** playlist type */
   public enum Type {
     NORMAL, QUEUE, NEW, BOOKMARK, BESTOF, NOVELTIES
   }
@@ -90,16 +90,16 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   private boolean bContainsExtFiles = false;
 
   /**
-   * Playlist file constructor
+   * playlist constructor
    * 
    * @param type
-   *          playlist file type
+   *          playlist type
    * @param sId
    * @param sName
    * @param sHashcode
    * @param sParentDirectory
    */
-  public PlaylistFile(final Type type, final String sId, final String sName,
+  public Playlist(final Type type, final String sId, final String sName,
       final Directory dParentDirectory) {
     super(sId, sName);
     this.dParentDirectory = dParentDirectory;
@@ -109,19 +109,19 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Playlist file constructor
+   * playlist constructor
    * 
    * @param sId
    * @param sName
    * @param sHashcode
    * @param sParentDirectory
    */
-  public PlaylistFile(final String sId, final String sName, final Directory dParentDirectory) {
-    this(PlaylistFile.Type.NORMAL, sId, sName, dParentDirectory);
+  public Playlist(final String sId, final String sName, final Directory dParentDirectory) {
+    this(Playlist.Type.NORMAL, sId, sName, dParentDirectory);
   }
 
   /**
-   * Add a file to this playlist file
+   * Add a file to this playlist
    * 
    * @param bf
    */
@@ -139,13 +139,13 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Add a file to this playlist file
+   * Add a file to this playlist
    * 
    * @param index
    * @param bf
    */
   public synchronized void addFile(final int index, final File file) throws JajukException {
-    if (type == PlaylistFile.Type.BOOKMARK) {
+    if (type == Playlist.Type.BOOKMARK) {
       Bookmarks.getInstance().addFile(index, file);
     }
     if (type == Type.QUEUE) {
@@ -173,7 +173,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Add some files to this playlist file.
+   * Add some files to this playlist.
    * 
    * @param alFilesToAdd :
    *          List of File
@@ -196,7 +196,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Clear playlist file
+   * Clear playlist
    * 
    */
   public synchronized void clear() {
@@ -212,7 +212,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Update playlist file on disk if needed
+   * Update playlist on disk if needed
    */
   public void commit() throws JajukException {
     BufferedWriter bw = null;
@@ -251,7 +251,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists of playlist files
+   * Alphabetical comparator used to display ordered lists of playlists
    * <p>
    * Sort ignoring cases but different items with different cases should be
    * distinct before being added into bidimap
@@ -261,12 +261,12 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
    *          playlistfile to be compared
    * @return comparison result
    */
-  public int compareTo(final PlaylistFile o) {
+  public int compareTo(final Playlist o) {
     // Perf: leave if items are equals
     if (o.equals(this)) {
       return 0;
     }
-    final PlaylistFile otherPlaylistFile = o;
+    final Playlist otherPlaylistFile = o;
     final String sAbs = getName() + getAbsolutePath();
     final String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
     // never return 0 here, because bidimap needs to distinct items
@@ -279,7 +279,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
 
   /**
    * 
-   * @return playlist file hashcode based on its content
+   * @return playlist hashcode based on its content
    * @throws IOException
    */
   public String computesHashcode() throws IOException {
@@ -322,7 +322,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Equal method to check two playlist files are identical
+   * Equal method to check two playlists are identical
    * 
    * @param otherPlaylistFile
    * @return
@@ -332,7 +332,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
     if (otherPlaylistFile == null) {
       return false;
     }
-    final PlaylistFile plfOther = (PlaylistFile) otherPlaylistFile;
+    final Playlist plfOther = (Playlist) otherPlaylistFile;
     return (getID().equals(plfOther.getID()) && (plfOther.getType() == type));
   }
 
@@ -411,7 +411,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
         if (containsExtFiles()) {
           Messages.showWarningMessage(Messages.getErrorMessage(142));
         }
-      } else { // error accessing playlist file
+      } else { // error accessing playlist
         throw new JajukException(9, getFio().getAbsolutePath(), new Exception());
       }
     } else if (type.equals(Type.BESTOF)) {
@@ -496,7 +496,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Parse a playlist file
+   * Parse a playlist
    */
   public ArrayList<File> load() throws JajukException {
     final ArrayList<File> alFiles = new ArrayList<File>(10);
@@ -566,7 +566,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Play a playlist file
+   * Play a playlist
    * 
    */
   public void play() throws JajukException {
@@ -632,7 +632,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
           alFiles.remove(i);
           alFiles.add(i, fNew);
           try {
-            commit();// save changed playlist file
+            commit();// save changed playlist
           } catch (final JajukException e) {
             Log.error(e);
           }
@@ -649,7 +649,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   }
 
   /**
-   * Save as... the playlist file
+   * Save as... the playlist
    */
   public void saveAs() throws Exception {
     final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter
@@ -657,7 +657,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
     jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
     jfchooser.setAcceptDirectories(true);
     String sPlaylist = ITechnicalStrings.DEFAULT_PLAYLIST_FILE;
-    // computes new playlist file
+    // computes new playlist
     alFiles = getFiles();
     if (alFiles.size() > 0) {
       final File file = alFiles.get(0);
@@ -698,8 +698,8 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
       commit(); // write it on the disk
       final java.io.File fDir = file.getParentFile();
       final Directory dir = DirectoryManager.getInstance().getDirectoryForIO(fDir);
-      if (dir != null) { // the new playlist file in inside collection
-        final PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(file,
+      if (dir != null) { // the new playlist in inside collection
+        final Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file,
             dir);
         dir.addPlaylistFile(plFile);
       }
@@ -811,7 +811,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
    */
   @Override
   public String toString() {
-    return "Playlist file[ID=" + getID() + " Name={{" + getName() + "}} Hashcode="
+    return "playlist[ID=" + getID() + " Name={{" + getName() + "}} Hashcode="
         + getStringValue(ITechnicalStrings.XML_HASHCODE) + " Dir=" + dParentDirectory.getID() + "]";
   }
 
@@ -823,7 +823,7 @@ public class PlaylistFile extends PhysicalItem implements Comparable<PlaylistFil
   public synchronized void up(final int index) {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().up(index);
-    } else if (type == PlaylistFile.Type.QUEUE) {
+    } else if (type == Playlist.Type.QUEUE) {
       FIFO.getInstance().up(index);
     } else if ((alFiles != null) && (index > 0)) { // the first track
       // cannot go further

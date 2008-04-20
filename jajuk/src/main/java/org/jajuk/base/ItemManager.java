@@ -209,7 +209,7 @@ public abstract class ItemManager implements ITechnicalStrings {
     } else if (XML_FILE.equals(sProperty)) {
       return FileManager.getInstance();
     } else if (XML_PLAYLIST_FILE.equals(sProperty)) {
-      return PlaylistFileManager.getInstance();
+      return PlaylistManager.getInstance();
     } else if (XML_TYPE.equals(sProperty)) {
       return TypeManager.getInstance();
     } else {
@@ -353,10 +353,10 @@ public abstract class ItemManager implements ITechnicalStrings {
         file.setTrack((Track) newItem);
         newItem = file;
       }
-    } else if (itemToChange instanceof PlaylistFile) {
+    } else if (itemToChange instanceof Playlist) {
       if (XML_NAME.equals(sKey)) { // playlistfile name
-        newItem = PlaylistFileManager.getInstance().changePlaylistFileName(
-            (PlaylistFile) itemToChange, (String) oValue);
+        newItem = PlaylistManager.getInstance().changePlaylistFileName(
+            (Playlist) itemToChange, (String) oValue);
       }
     } else if (itemToChange instanceof Directory) {
       if (XML_NAME.equals(sKey)) { // file name

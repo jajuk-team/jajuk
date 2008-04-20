@@ -84,7 +84,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   /** upgrade for file IDs */
   private HashMap<String, String> hmWrongRightFileID = new HashMap<String, String>();
 
-  /** upgrade for playlist file IDs */
+  /** upgrade for playlist IDs */
   private HashMap<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
 
   /** Conversion of types from < 1.4 */
@@ -279,14 +279,14 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     sb.append(FileManager.getInstance().getLabel());
     sb.append(">\n");
     bw.write(sb.toString());
-    // playlist files
-    bw.write(PlaylistFileManager.getInstance().toXML());
-    for (PlaylistFile playlistFile : PlaylistFileManager.getInstance().getPlaylistFiles()) {
+    // playlists
+    bw.write(PlaylistManager.getInstance().toXML());
+    for (Playlist playlistFile : PlaylistManager.getInstance().getPlaylistFiles()) {
       bw.write(playlistFile.toXml());
     }
     sb = new StringBuilder(200);
     sb.append("\t</");
-    sb.append(PlaylistFileManager.getInstance().getLabel());
+    sb.append(PlaylistManager.getInstance().getLabel());
     sb.append(">\n");
     bw.write(sb.toString());
     // end of collection
@@ -420,7 +420,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           stage = STAGE_FILES;
           needCheckID = true;
         } else if (XML_PLAYLIST_FILES.equals(sQName)) {
-          manager = PlaylistFileManager.getInstance();
+          manager = PlaylistManager.getInstance();
           stage = STAGE_PLAYLIST_FILES;
           needCheckID = true;
         } else if (XML_STYLES.equals(sQName)) {
@@ -768,15 +768,15 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = PlaylistFileManager.createID(sItemName, dParent).intern();
+            sRightID = PlaylistManager.createID(sItemName, dParent).intern();
             if (sRightID.equals(sID)) {
               needCheckID = false;
             } else {
-              Log.debug("** Wrong playlist file Id, upgraded: " + sItemName);
+              Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
               hmWrongRightPlaylistFileID.put(sID, sRightID);
             }
           }
-          PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sRightID,
+          Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID,
               sItemName, dParent);
           if (plf != null) {
             plf.populateProperties(attributes);

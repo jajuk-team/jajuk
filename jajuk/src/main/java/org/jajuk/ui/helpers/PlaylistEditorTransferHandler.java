@@ -31,7 +31,7 @@ import javax.swing.TransferHandler;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.Playlist;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.views.PlaylistView;
@@ -94,7 +94,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
     try {
       if (canImport(c, t.getTransferDataFlavors())) {
         JComponent comp = (JComponent) c.getParent().getParent().getParent();
-        PlaylistFile plf = ((PlaylistView) comp).getCurrentPlaylistFile();
+        Playlist plf = ((PlaylistView) comp).getCurrentPlaylistFile();
         Object oData = null;
         DataFlavor flavor = t.getTransferDataFlavors()[0];
         if (flavor.getHumanPresentableName().equals(
@@ -115,19 +115,19 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
         }
         ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
         // queue case
-        if (plf.getType() == PlaylistFile.Type.QUEUE) {
+        if (plf.getType() == Playlist.Type.QUEUE) {
           FIFO.getInstance().push(
               Util.createStackItems(Util.applyPlayOption(alSelectedFiles), ConfigurationManager
                   .getBoolean(CONF_STATE_REPEAT), true),
               ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // bookmark case
-        else if (plf.getType() == PlaylistFile.Type.BOOKMARK) {
+        else if (plf.getType() == Playlist.Type.BOOKMARK) {
           Bookmarks.getInstance().addFiles(Util.applyPlayOption(alSelectedFiles));
         }
         // normal or new playlist case
-        else if (plf.getType() == PlaylistFile.Type.NORMAL
-            || plf.getType() == PlaylistFile.Type.NEW) {
+        else if (plf.getType() == Playlist.Type.NORMAL
+            || plf.getType() == Playlist.Type.NEW) {
           plf.addFiles(Util.applyPlayOption(alSelectedFiles));
         }
         return true;

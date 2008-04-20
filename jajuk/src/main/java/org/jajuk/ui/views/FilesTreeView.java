@@ -64,8 +64,8 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.services.events.Event;
@@ -232,7 +232,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         IconLoader.ICON_REORGANIZE);
     jmiDevOrganize.addActionListener(this);
 
-    // Playlist file menu
+    // playlist menu
     // File menu
     jmiPlaylistFileCopy = new JMenuItem(Messages.getString("FilesTreeView.40"));
     jmiPlaylistFileCopy.setEnabled(false);
@@ -422,7 +422,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                 items++;
               }
               else if (node instanceof PlaylistFileNode){
-                PlaylistFile plf = ((PlaylistFileNode) node).getPlaylistFile();
+                Playlist plf = ((PlaylistFileNode) node).getPlaylistFile();
                 selectedRecursively.add(plf);
                 items++;
               }
@@ -500,9 +500,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                   Log.error(je);
                 }
               }
-              // double click on a playlist file
+              // double click on a playlist
               else if (o instanceof PlaylistFileNode) {
-                PlaylistFile plf = ((PlaylistFileNode) o).getPlaylistFile();
+                Playlist plf = ((PlaylistFileNode) o).getPlaylistFile();
                 ArrayList<File> alToPlay = null;
                 try {
                   alToPlay = plf.getFiles();
@@ -511,7 +511,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                   Messages.showErrorMessage(je.getCode(), plf.getName());
                   return;
                 }
-                // check playlist file contains accessible
+                // check playlist contains accessible
                 // tracks
                 if (alToPlay == null || alToPlay.size() == 0) {
                   Messages.showErrorMessage(18);
@@ -594,7 +594,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmiDelete.setEnabled(true);
         if (c.equals(PlaylistFileNode.class)) {
           for (int i = 0; i < paths.length; i++) {
-            PlaylistFile plf = ((PlaylistFileNode) (paths[i].getLastPathComponent()))
+            Playlist plf = ((PlaylistFileNode) (paths[i].getLastPathComponent()))
                 .getPlaylistFile();
             if (!plf.isReady()) {
               jmiDelete.setEnabled(false);
@@ -798,12 +798,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
-    // add playlist files
-    ArrayList<PlaylistFile> playlists = new ArrayList<PlaylistFile>(PlaylistFileManager
+    // add playlists
+    ArrayList<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager
         .getInstance().getPlaylistFiles());
-    Iterator<PlaylistFile> it4 = playlists.iterator();
+    Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {
-      PlaylistFile playlistFile = it4.next();
+      Playlist playlistFile = it4.next();
       // should be hidden by option
       if (playlistFile.shouldBeHidden()) {
         continue;
@@ -1112,7 +1112,7 @@ class DirectoryNode extends TransferableTreeNode {
 }
 
 /**
- * PlaylistFile node
+ * Playlist node
  */
 class PlaylistFileNode extends TransferableTreeNode {
 
@@ -1121,9 +1121,9 @@ class PlaylistFileNode extends TransferableTreeNode {
   /**
    * Constructor
    * 
-   * @param PlaylistFile
+   * @param Playlist
    */
-  public PlaylistFileNode(PlaylistFile playlistFile) {
+  public PlaylistFileNode(Playlist playlistFile) {
     super(playlistFile);
   }
 
@@ -1132,14 +1132,14 @@ class PlaylistFileNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((PlaylistFile) super.getData()).getName();
+    return ((Playlist) super.getData()).getName();
   }
 
   /**
-   * @return Returns the playlist file node.
+   * @return Returns the playlist node.
    */
-  public PlaylistFile getPlaylistFile() {
-    return (PlaylistFile) getData();
+  public Playlist getPlaylistFile() {
+    return (Playlist) getData();
   }
 
 }

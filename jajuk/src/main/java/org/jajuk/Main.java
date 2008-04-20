@@ -62,7 +62,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ItemManager;
-import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
@@ -323,7 +323,7 @@ public class Main implements ITechnicalStrings {
       ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager
           .getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.PlaylistFile.class, PlaylistFileManager
+      ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager
           .getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());

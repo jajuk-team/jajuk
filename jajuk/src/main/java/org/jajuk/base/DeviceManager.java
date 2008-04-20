@@ -279,7 +279,7 @@ public class DeviceManager extends ItemManager {
       hmItems.remove(device.getID());
       DirectoryManager.getInstance().cleanDevice(device.getID());
       FileManager.getInstance().cleanDevice(device.getID());
-      PlaylistFileManager.getInstance().cleanDevice(device.getID());
+      PlaylistManager.getInstance().cleanDevice(device.getID());
       // Clean the collection up
       org.jajuk.base.Collection.cleanup();
       // remove synchronization if another device was synchronized
@@ -330,7 +330,7 @@ public class DeviceManager extends ItemManager {
         }
         FileManager.getInstance().cleanDevice(device.getName());
         DirectoryManager.getInstance().cleanDevice(device.getName());
-        PlaylistFileManager.getInstance().cleanDevice(device.getName());
+        PlaylistManager.getInstance().cleanDevice(device.getName());
       }
       hmItems.clear();
     }

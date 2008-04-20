@@ -56,8 +56,8 @@ import javax.swing.table.TableColumn;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFile.Type;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.Playlist.Type;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
@@ -119,8 +119,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   JMenuItem jmiFilePush;
   JMenuItem jmiFileAddFavorites;
   JMenuItem jmiFileProperties;
-  /** Current playlist file */
-  PlaylistFile plf;
+  /** Current playlist */
+  Playlist plf;
   /** Selection set flag */
   boolean bSettingSelection = false;
   /** Last selected directory using add button */
@@ -201,7 +201,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         Log.error(e);
         return;
       }
-      selectPlaylist(new PlaylistFile(PlaylistFile.Type.QUEUE, null, null, null));
+      selectPlaylist(new Playlist(Playlist.Type.QUEUE, null, null, null));
     }
 
     void handlePopup(final MouseEvent e) {
@@ -518,19 +518,19 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     bSettingSelection = false;
   }
 
-  private void selectPlaylist(PlaylistFile plf) {
+  private void selectPlaylist(Playlist plf) {
     // remove selection
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
     // set title label
     jlTitle.setText(plf.getName());
-    if (plf.getType() == PlaylistFile.Type.BESTOF) {
+    if (plf.getType() == Playlist.Type.BESTOF) {
       jlTitle.setIcon(IconLoader.ICON_BESTOF_16x16);
-    } else if (plf.getType() == PlaylistFile.Type.BOOKMARK) {
+    } else if (plf.getType() == Playlist.Type.BOOKMARK) {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_BOOKMARK_SMALL);
-    } else if (plf.getType() == PlaylistFile.Type.NEW) {
+    } else if (plf.getType() == Playlist.Type.NEW) {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_NEW_SMALL);
-    } else if (plf.getType() == PlaylistFile.Type.NOVELTIES) {
+    } else if (plf.getType() == Playlist.Type.NOVELTIES) {
       jlTitle.setIcon(IconLoader.ICON_NOVELTIES_16x16);
     } else {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_FILE);
@@ -546,7 +546,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    * 
    */
   private void setDefaultButtonState() {
-    if (plf.getType() == PlaylistFile.Type.BESTOF || plf.getType() == PlaylistFile.Type.NOVELTIES) {
+    if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
       jbClear.setEnabled(false);
       jbDown.setEnabled(false);
       jbAddShuffle.setEnabled(false);
@@ -575,7 +575,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         plf.play();
       } else if (ae.getSource() == jbSave) {
         // normal playlist
-        if (plf.getType() == PlaylistFile.Type.NORMAL) {
+        if (plf.getType() == Playlist.Type.NORMAL) {
           try {
             plf.commit();
             InformationJPanel.getInstance().setMessage(
@@ -655,9 +655,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   }
 
   /**
-   * @return Returns current playlist file
+   * @return Returns current playlist
    */
-  public PlaylistFile getCurrentPlaylistFile() {
+  public Playlist getCurrentPlaylistFile() {
     return plf;
   }
 
@@ -685,8 +685,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       } else {
         // check for first row remove case : we can't remove currently
         // played track
-        if (plf.getType() == PlaylistFile.Type.BESTOF
-            || plf.getType() == PlaylistFile.Type.NOVELTIES) {
+        if (plf.getType() == Playlist.Type.BESTOF
+            || plf.getType() == Playlist.Type.NOVELTIES) {
           // neither for bestof nor novelties playlist
           jbRemove.setEnabled(false);
         } else {
@@ -694,9 +694,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         }
       }
       // Add shuffle button
-      if (plf.getType() == PlaylistFile.Type.BESTOF
+      if (plf.getType() == Playlist.Type.BESTOF
           // neither for bestof playlist
-          || plf.getType() == PlaylistFile.Type.NOVELTIES
+          || plf.getType() == Playlist.Type.NOVELTIES
           || selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
       // multiple selection not supported
       ) {
@@ -708,8 +708,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
           // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == PlaylistFile.Type.BESTOF
-          || plf.getType() == PlaylistFile.Type.NOVELTIES) {
+          || plf.getType() == Playlist.Type.BESTOF
+          || plf.getType() == Playlist.Type.NOVELTIES) {
         // neither for bestof nor novelties playlist
         jbUp.setEnabled(false);
       } else {
@@ -731,8 +731,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
           // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == PlaylistFile.Type.BESTOF
-          || plf.getType() == PlaylistFile.Type.NOVELTIES) {
+          || plf.getType() == Playlist.Type.BESTOF
+          || plf.getType() == Playlist.Type.NOVELTIES) {
         jbDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {
@@ -856,7 +856,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                   // double click on any column and edition state false
                   || nbClicks == 2) {
                 // selected row in view
-                PlaylistFile plf = (PlaylistFile) jtable.getSelection().get(0);
+                Playlist plf = (Playlist) jtable.getSelection().get(0);
                 List<File> alFiles = Util.getPlayableFiles(plf);
                 if (alFiles.size() > 0) {
                   // launch it
@@ -887,7 +887,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
       Util.waiting();
       SwingWorker sw = new SwingWorker() {
-        PlaylistFile plf;
+        Playlist plf;
 
         @Override
         public void finished() {
@@ -900,7 +900,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         public Object construct() {
           int row = jtable.convertRowIndexToModel(jtable.getSelectedRow());
           JajukTableModel model = (JajukTableModel) jtable.getModel();
-          plf = (PlaylistFile) model.getItemAt(row);
+          plf = (Playlist) model.getItemAt(row);
           // load the playlist
           try {
             plf.forceRefresh();

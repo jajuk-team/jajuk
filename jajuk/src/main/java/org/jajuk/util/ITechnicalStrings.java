@@ -51,7 +51,7 @@ public interface ITechnicalStrings {
   /** Time we wait after an error in ms */
   int WAIT_AFTER_ERROR = 3000;
 
-  /** Default playlist file name */
+  /** Default playlist name */
   String DEFAULT_PLAYLIST_FILE = "playlist";
 
   /** Max number of connection time out before stoping to look for covers */

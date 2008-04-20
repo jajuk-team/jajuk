@@ -144,7 +144,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   }
 
   /**
-   * Scan directories to cleanup removed files and playlist files
+   * Scan directories to cleanup removed files and playlists
    * 
    * @param device
    *          device to cleanup
@@ -181,11 +181,11 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       }
     }
     // Playlist cleanup
-    final Set<PlaylistFile> plfiles = PlaylistFileManager.getInstance().getPlaylistFiles();
-    for (final PlaylistFile plf : plfiles) {
+    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylistFiles();
+    for (final Playlist plf : plfiles) {
       if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
         if (!plf.getFio().exists()) {
-          PlaylistFileManager.getInstance().removePlaylistFile(plf);
+          PlaylistManager.getInstance().removePlaylistFile(plf);
           Log.debug("Removed: " + plf);
           bChanges = true;
         }
@@ -702,8 +702,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     for (final org.jajuk.base.File file : FileManager.getInstance().getFiles()) {
       file.reset();
     }
-    /** Reset playlist files */
-    for (final PlaylistFile plf : PlaylistFileManager.getInstance().getPlaylistFiles()) {
+    /** Reset playlists */
+    for (final Playlist plf : PlaylistManager.getInstance().getPlaylistFiles()) {
       plf.reset();
     }
     /** Reset directories */

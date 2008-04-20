@@ -59,8 +59,8 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
@@ -382,8 +382,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               && !(pa instanceof File
               // check item is not an unmounted file
               && !((File) pa).isReady())
-              // item is not an unmounted playlist file
-              && !(pa instanceof PlaylistFile && !((PlaylistFile) pa).isReady());
+              // item is not an unmounted playlist
+              && !(pa instanceof Playlist && !((Playlist) pa).isReady());
         }
         if (bEditable) {
           iEditable++;
@@ -658,7 +658,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           ArrayList<Item> alItems = new ArrayList<Item>(3);
           while (st.hasMoreTokens()) {
             String sPlf = st.nextToken();
-            Item pa = PlaylistFileManager.getInstance().getPlaylistFileByID(sPlf);
+            Item pa = PlaylistManager.getInstance().getPlaylistFileByID(sPlf);
             if (pa != null) {
               alItems.add(pa);
             }

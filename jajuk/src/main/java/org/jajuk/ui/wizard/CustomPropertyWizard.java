@@ -34,7 +34,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ItemManager;
-import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
@@ -130,7 +130,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
       im = DirectoryManager.getInstance();
       break;
     case 7:
-      im = PlaylistFileManager.getInstance();
+      im = PlaylistManager.getInstance();
       break;
     case 8:
       im = YearManager.getInstance();

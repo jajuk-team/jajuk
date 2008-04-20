@@ -25,8 +25,8 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFile.Type;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.Playlist.Type;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -42,28 +42,28 @@ public class SmartPlaylist extends JPanel {
   private Type type;
   
   /**Associated playlist*/
-  private PlaylistFile plf;
+  private Playlist plf;
 
   /**
    * Constructor
    * 
    * @param iType :
-   *          Playlist file type (see Type enum)
+   *          playlist type (see Type enum)
    */
-  public SmartPlaylist(PlaylistFile.Type type) {
+  public SmartPlaylist(Playlist.Type type) {
     this.type = type;
     if (type == Type.NEW) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NEW);
-      plf = new PlaylistFile(Type.NEW, null, null, null);
+      plf = new Playlist(Type.NEW, null, null, null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BESTOF);
-      plf = new PlaylistFile(Type.BESTOF, null, null, null);
+      plf = new Playlist(Type.BESTOF, null, null, null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BOOKMARK);
-      plf = new PlaylistFile(Type.BOOKMARK, null, null, null);
+      plf = new Playlist(Type.BOOKMARK, null, null, null);
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NOVELTIES);
-      plf = new PlaylistFile(Type.NOVELTIES, null, null, null);
+      plf = new Playlist(Type.NOVELTIES, null, null, null);
     }
     jlIcon.setPreferredSize(new Dimension(50, 50));
     setToolTipText(getName());
@@ -82,14 +82,14 @@ public class SmartPlaylist extends JPanel {
   /**
    * @return Associated playlist
    */
-  public PlaylistFile getPlaylist() {
+  public Playlist getPlaylist() {
     return plf;
   }
 
   /**
-   * Get a name for this playlist file item
+   * Get a name for this playlist item
    * 
-   * @return playlist file item name ( playlist name or label for special ones )
+   * @return playlist item name ( playlist name or label for special ones )
    */
   public String getName() {
     String sOut = "";

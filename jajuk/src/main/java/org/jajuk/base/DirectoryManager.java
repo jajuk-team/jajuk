@@ -266,10 +266,10 @@ public class DirectoryManager extends ItemManager {
           FileManager.getInstance().removeFile(file);
         }
       }
-      synchronized (PlaylistFileManager.getInstance().getLock()) {
+      synchronized (PlaylistManager.getInstance().getLock()) {
         // remove all playlists
-        for (final PlaylistFile plf : dir.getPlaylistFiles()) {
-          PlaylistFileManager.getInstance().removeItem(plf.getID());
+        for (final Playlist plf : dir.getPlaylistFiles()) {
+          PlaylistManager.getInstance().removeItem(plf.getID());
         }
       }
       // remove all sub dirs
