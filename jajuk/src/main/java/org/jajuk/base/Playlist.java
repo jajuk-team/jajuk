@@ -369,7 +369,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public String getDesc() {
-    return Messages.getString("Item_Playlist_File") + " : " + getName();
+    return Messages.getString("Item_Playlist") + " : " + getName();
   }
 
   /**
