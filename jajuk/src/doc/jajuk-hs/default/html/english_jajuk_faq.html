@@ -145,8 +145,18 @@ What can I do if my collection looks *really* corrupted ?</h4>
 Check out <a href="http://jajuk.info/index.php/Using_devices#Collection_backup_and_restore">
 the device page of the jajuk manual</a>
 . Note that this case has never been reported so far as Jajuk provides an efficient built-in recovery system.</p>
+<h4>
+Jajuk cannot read files with non-ASCII characters</h4>
+<p>
+(Characters different from [a to z] like 'é' 'ç', Asian ideograms...)This is a filename encoding problem due to a wrong file system mounting option, a quick fix is to rename your filenames to utf-8 see https://trac.jajuk.info/ticket/955 for details.</p>
 <h3>
 Windows Only</h3>
+<h4>
+Crash at startup</h4>
+<p>
+In some cases (with few graphical cards), Jajuk starts, the splash screen is shown and then, the entire application crashes. Workaround : disable tray by deleting file &lt;jajuk installation path&gt;\lib\windows\x86\tray.dllNote that this problem should be fixed in Jajuk 1.6 (due to 2008/05/11)</p>
+<p>
+See also http://trac.jajuk.info/ticket/1012</p>
 <h4>
 A "pop" (think "standard windows 'pop' sound") is heard between tracks</h4>
 <p>
