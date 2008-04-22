@@ -36,6 +36,8 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
@@ -140,6 +142,17 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     }
     return self;
   }
+  
+  private MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
+  
+    public void mouseMoved(MouseEvent e) {
+      if (e.getClickCount() == 0){
+        return;
+      }
+      setLocation(e.getLocationOnScreen());
+    }
+  
+  };
 
   private JajukSlimWindow() {
   }
@@ -148,6 +161,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     setIconImage(IconLoader.ICON_LOGO.getImage());
 
     JToolBar jtbPlay = new JToolBar();
+    jtbPlay.addMouseMotionListener(motionAdapter);
     jtbPlay.setBorder(null);
     jtbPlay.setRollover(true);
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
