@@ -262,9 +262,13 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
         ConfigurationManager.setProperty(ALARM_MESSAGE, "");
       }
     } else if (e.getSource() == jbOK) {
-      updateParameters();
-      choice = true;
-      dispose();
+      if(jtfHour.getText().isEmpty()){
+        Messages.showWarningMessage(Messages.getString("AlarmDialog.10"));
+      }else{
+        updateParameters();
+        choice = true;
+        dispose();
+      }
     } else if (e.getSource() == jbCancel) {
       choice = false;
       dispose();
@@ -287,6 +291,12 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   }
 
   public void updateParameters() {
+    if(jtfMinutes.getText().isEmpty()){
+      jtfMinutes.setText("00");
+    }
+    if(jtfSeconds.getText().isEmpty()){
+      jtfSeconds.setText("00");
+    }
     ConfigurationManager.setProperty(ALARM_TIME_HOUR, "" + jtfHour.getText());
     ConfigurationManager.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
     ConfigurationManager.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
