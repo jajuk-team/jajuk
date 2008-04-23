@@ -155,4 +155,6 @@ public enum EventSubject {
   EVENT_FILE_FINISHED,
   // Lyrics data has been downloaded
   EVENT_LYRICS_DOWNLOADED,
+  // A file has been copied (used by prepare party)
+  EVENT_FILE_COPIED,
 }

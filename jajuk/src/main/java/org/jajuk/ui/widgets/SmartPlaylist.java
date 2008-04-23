@@ -20,8 +20,7 @@
 
 package org.jajuk.ui.widgets;
 
-import java.awt.Dimension;
-
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -65,9 +64,9 @@ public class SmartPlaylist extends JPanel {
       jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NOVELTIES);
       plf = new Playlist(Type.NOVELTIES, null, getName(), null);
     }
-    jlIcon.setPreferredSize(new Dimension(50, 50));
     setToolTipText(getName());
     add(jlIcon);
+    getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     // new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
   }
 

@@ -187,25 +187,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
     }
 
-    void selectSmartPlaylist(SmartPlaylist sp) {
-      // remove item border
-      if (spSelected != null) {
-        spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-      }
-      sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.ORANGE, 5));
-      // set new item
-      spSelected = sp;
-      try {
-        selectedFiles.clear();
-        selectedFiles.addAll(sp.getPlaylist().getFiles());
-      } catch (JajukException e) {
-        Log.error(e);
-        return;
-      }
-      // Update playlist editor
-      selectPlaylist(sp.getPlaylist());
-    }
-
     void handlePopup(final MouseEvent e) {
       SmartPlaylist sp = (SmartPlaylist) e.getComponent();
       if (sp == spSelected) {
@@ -229,6 +210,25 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       jpmenu.show(e.getComponent(), e.getX(), e.getY());
     }
   };
+
+  void selectSmartPlaylist(SmartPlaylist sp) {
+    // remove item border
+    if (spSelected != null) {
+      spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    }
+    sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.ORANGE, 5));
+    // set new item
+    spSelected = sp;
+    try {
+      selectedFiles.clear();
+      selectedFiles.addAll(sp.getPlaylist().getFiles());
+    } catch (JajukException e) {
+      Log.error(e);
+      return;
+    }
+    // Update playlist editor
+    selectPlaylist(sp.getPlaylist());
+  }
 
   public void initEditorPanel() {
     jpEditor = new JPanel();
@@ -410,6 +410,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     split.add(jpEditor);
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(split);
+    // Select "New" playlist as default
+    selectSmartPlaylist(spNew);
   }
 
   public Set<EventSubject> getRegistrationKeys() {
@@ -417,6 +419,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(EventSubject.EVENT_FILE_COPIED);
     return eventSubjectSet;
   }
 
@@ -458,6 +461,19 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // current playlist has changed
           if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
             refreshCurrentPlaylist();
+          } else if (EventSubject.EVENT_FILE_COPIED.equals(subject)) {
+            Properties properties = event.getDetails();
+            if (properties == null) {
+              // if no property, the party is done
+              InformationJPanel.getInstance().setMessage("", InformationJPanel.INFORMATIVE);
+            } else {
+              String filename = properties.getProperty(DETAIL_CONTENT);
+              if (filename != null) {
+                InformationJPanel.getInstance()
+                    .setMessage(Messages.getString("Device.31") + filename + "]",
+                        InformationJPanel.INFORMATIVE);
+              }
+            }
           } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
@@ -500,7 +516,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     }
     // when nothing is selected, set default button state
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
-      setDefaultButtonState();
+      setButtonState();
     }
     try {
       editorModel.alItems = Util.createStackItems(plf.getFiles(), ConfigurationManager
@@ -543,36 +559,51 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_FILE);
     }
     jlTitle.setToolTipText(plf.getName());
-    setDefaultButtonState();
+    setButtonState();
     refreshCurrentPlaylist();
     Util.stopWaiting(); // stop waiting
   }
 
   /**
-   * Set default button state
+   * Update buttons state
    * 
    */
-  private void setDefaultButtonState() {
-    if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
-      jbClear.setEnabled(false);
-      jbDown.setEnabled(false);
-      jbAddShuffle.setEnabled(false);
-      jbRemove.setEnabled(false);
-      jbRun.setEnabled(true);
-      jbUp.setEnabled(false);
-      jbPrepParty.setEnabled(true);
-    } else {
-      jbClear.setEnabled(true);
-      // set it to false just for startup because nothing is selected
-      jbDown.setEnabled(false);
-      // set it to false just for startup because nothing is selected
-      jbUp.setEnabled(false);
-      // add at the FIFO end by default even with no selection
-      jbAddShuffle.setEnabled(true);
-      // set it to false just for startup because nothing is selected
-      jbRemove.setEnabled(false);
-      jbRun.setEnabled(true);
-      jbPrepParty.setEnabled(true);
+  private void setButtonState() {
+    try {
+      if (plf == null) {
+        jbRun.setEnabled(false);
+        jbClear.setEnabled(false);
+        jbDown.setEnabled(false);
+        jbAddShuffle.setEnabled(false);
+        jbRemove.setEnabled(false);
+        jbUp.setEnabled(false);
+        jbPrepParty.setEnabled(false);
+        jbSave.setEnabled(false);
+      } else {
+        if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
+          jbClear.setEnabled(false);
+          jbDown.setEnabled(false);
+          jbAddShuffle.setEnabled(false);
+          jbRemove.setEnabled(false);
+          jbUp.setEnabled(false);
+          jbPrepParty.setEnabled(true);
+        } else {
+          jbClear.setEnabled(true);
+          // set it to false just for startup because nothing is selected
+          jbDown.setEnabled(false);
+          // set it to false just for startup because nothing is selected
+          jbUp.setEnabled(false);
+          // add at the FIFO end by default even with no selection
+          jbAddShuffle.setEnabled(true);
+          // set it to false just for startup because nothing is selected
+          jbRemove.setEnabled(false);
+          jbPrepParty.setEnabled(true);
+        }
+        // Run button is available only if the playlist is not void
+        jbRun.setEnabled(plf.getFiles().size() > 0);
+      }
+    } catch (Exception e) {
+      Log.error(e);
     }
   }
 

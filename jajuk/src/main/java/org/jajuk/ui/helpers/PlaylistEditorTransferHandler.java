@@ -32,7 +32,6 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
-import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.views.PlaylistView;
 import org.jajuk.ui.widgets.JajukTable;
@@ -123,14 +122,9 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
                   .getBoolean(CONF_STATE_REPEAT), true),
               ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
-        // bookmark case
-        else if (plf.getType() == Playlist.Type.BOOKMARK) {
-          java.util.List<File> files = Util.applyPlayOption(alSelectedFiles);
-          Bookmarks.getInstance().addFiles(files);
-          view.importFiles(files);
-        }
         // normal or new playlist case
-        else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW) {
+        else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW
+            || plf.getType() == Playlist.Type.BOOKMARK) {
           view.importFiles(Util.applyPlayOption(alSelectedFiles));
         }
         return true;
