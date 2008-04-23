@@ -20,6 +20,7 @@
 package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -84,10 +85,12 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
     /** Selected radio index */
     int radioIndex = 0;
 
+    @Override
     public String getDescription() {
       return Messages.getString("RadioWizard.0");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("RadioWizard.1");
     }
@@ -96,12 +99,13 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
      * Create panel UI
      * 
      */
+    @Override
     public void initUI() {
       radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
       setCanFinish(true);
       // set layout
       double[][] dSizeGeneral = { { 10, 0.99, 5 },
-          { 10, TableLayout.FILL, 10, TableLayout.PREFERRED, 10 } };
+          { 10, TableLayoutConstants.FILL, 10, TableLayoutConstants.PREFERRED, 10 } };
       setLayout(new TableLayout(dSizeGeneral));
       // button layout
       double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
@@ -323,6 +327,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Class getPreviousScreen(Class screen) {
     return null;
@@ -333,6 +338,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Class getNextScreen(Class screen) {
     return null;
