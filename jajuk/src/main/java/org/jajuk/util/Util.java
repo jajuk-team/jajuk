@@ -53,7 +53,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -638,9 +637,7 @@ public class Util implements ITechnicalStrings {
   public static List<StackItem> createStackItems(final List<org.jajuk.base.File> alFiles,
       final boolean bRepeat, final boolean bUserLauched) {
     final ArrayList<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
-    final Iterator it = alFiles.iterator();
-    while (it.hasNext()) {
-      final org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+    for(org.jajuk.base.File file : alFiles) {
       if (file != null) {
         try {
           final StackItem item = new StackItem(file);
@@ -804,8 +801,7 @@ public class Util implements ITechnicalStrings {
     try {
       ImageIO.write(bi, Util.getExtension(dest), dest);
     } catch (final IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Log.error(e);
     }
   }
 
@@ -846,7 +842,7 @@ public class Util implements ITechnicalStrings {
    */
   public static String format(final Object oValue, final PropertyMetaInformation meta,
       final boolean bHuman) throws Exception {
-    final Class cType = meta.getType();
+    final Class<?> cType = meta.getType();
     // default (works for strings, long and double)
     String sValue = oValue.toString();
     if (cType.equals(Date.class)) {
@@ -1255,7 +1251,7 @@ public class Util implements ITechnicalStrings {
    * 
    * @return URL of jar we are executing
    */
-  public static URL getJarLocation(final Class cClass) {
+  public static URL getJarLocation(final Class<?> cClass) {
     return cClass.getProtectionDomain().getCodeSource().getLocation();
   }
 
@@ -1415,6 +1411,7 @@ public class Util implements ITechnicalStrings {
         this.maxCharactersPerLineCount = maxCharactersPerLineCount;
       }
 
+      @Override
       public int getMaxCharactersPerLineCount() {
         return maxCharactersPerLineCount;
       }
@@ -1515,7 +1512,7 @@ public class Util implements ITechnicalStrings {
     if (col.size() == 0) {
       return null;
     }
-    List list = null;
+    List<? extends Object> list = null;
     if (col instanceof List) {
       list = (List<? extends Object>) col;
     } else {
@@ -1613,7 +1610,7 @@ public class Util implements ITechnicalStrings {
    * Try to compute time length in milliseconds using BasicPlayer API. (code
    * from jlGui 2.3)
    */
-  public static long getTimeLengthEstimation(final Map properties) {
+  public static long getTimeLengthEstimation(final Map<String,Object> properties) {
     long milliseconds = -1;
     int byteslength = -1;
     if (properties != null) {
@@ -1878,7 +1875,7 @@ public class Util implements ITechnicalStrings {
    * @return parsed item
    * @throws Exception
    */
-  public static Object parse(final String sValue, final Class cType) throws Exception {
+  public static Object parse(final String sValue, final Class<?> cType) throws Exception {
     Object oDefaultValue = sValue; // String by default
     if (cType.equals(Boolean.class)) {
       // "y" and "n" is an old boolean
@@ -2131,6 +2128,7 @@ public class Util implements ITechnicalStrings {
 
   /** Set cursor thread, stored to avoid construction */
   private static Thread setCursorThread = new Thread() {
+    @Override
     public void run() {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
@@ -2333,7 +2331,7 @@ public class Util implements ITechnicalStrings {
     SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
     ColorScheme scheme = theme.getColorScheme();
     Color color1 = null;
-    Color color2 = null;
+    //Color color2 = null;
     if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
       color1 = scheme.getDarkColor();
     } else {
