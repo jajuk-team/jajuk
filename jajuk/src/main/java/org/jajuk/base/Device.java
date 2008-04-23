@@ -59,7 +59,7 @@ import org.xml.sax.Attributes;
  * <p>
  * Physical item
  */
-public class Device extends PhysicalItem implements ITechnicalStrings, Comparable {
+public class Device extends PhysicalItem implements ITechnicalStrings, Comparable<Object> {
 
   private static final long serialVersionUID = 1L;
 
@@ -248,10 +248,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   public ArrayList<org.jajuk.base.File> getFilesRecursively() {
     // looks for the root directory for this device
     Directory dirRoot = null;
-    final Collection dirs = DirectoryManager.getInstance().getDirectories();
-    final Iterator it = dirs.iterator();
+    final Collection<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    final Iterator<Directory> it = dirs.iterator();
     while (it.hasNext()) {
-      final Directory dir = (Directory) it.next();
+      final Directory dir = it.next();
       if (dir.getDevice().equals(this) && dir.getFio().equals(fio)) {
         dirRoot = dir;
       }
@@ -821,15 +821,14 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return nb of created files
    */
   private int synchronizeUnidirectonal(final Device dSrc, final Device dest) {
-    Iterator it = null;
     final HashSet<Directory> hsSourceDirs = new HashSet<Directory>(100);
     // contains paths ( relative to device) of desynchronized dirs
     final HashSet<String> hsDesynchroPaths = new HashSet<String>(10);
     final HashSet<Directory> hsDestDirs = new HashSet<Directory>(100);
     int iNbCreatedFiles = 0;
-    it = DirectoryManager.getInstance().getDirectories().iterator();
+    Iterator<Directory> it = DirectoryManager.getInstance().getDirectories().iterator();
     while (it.hasNext()) {
-      final Directory dir = (Directory) it.next();
+      final Directory dir = it.next();
       if (dir.getDevice().equals(dSrc)) {
         // don't take desynchronized dirs into account
         if (dir.getBooleanValue(ITechnicalStrings.XML_DIRECTORY_SYNCHRONIZED)) {
@@ -841,7 +840,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     }
     it = DirectoryManager.getInstance().getDirectories().iterator();
     while (it.hasNext()) {
-      final Directory dir = (Directory) it.next();
+      final Directory dir = it.next();
       if (dir.getDevice().equals(dest)) {
         if (dir.getBooleanValue(ITechnicalStrings.XML_DIRECTORY_SYNCHRONIZED)) {
           // don't take desynchronized dirs into account
@@ -853,7 +852,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     }
 
     it = hsSourceDirs.iterator();
-    Iterator it2;
+    Iterator<Directory> it2;
     // handle known extensions and image files
     final FileFilter filter = new JajukFileFilter(false, new JajukFileFilter[] {
         KnownTypeFilter.getInstance(), ImageFilter.getInstance() });
@@ -863,7 +862,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         return iNbCreatedFiles;
       }
       boolean bNeedCreate = true;
-      final Directory dir = (Directory) it.next();
+      final Directory dir = it.next();
       final String sPath = dir.getRelativePath();
       // check the directory on source is not desynchronized. If it
       // is, leave without checking files
@@ -872,7 +871,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       }
       it2 = hsDestDirs.iterator();
       while (it2.hasNext()) {
-        final Directory dir2 = (Directory) it2.next();
+        final Directory dir2 = it2.next();
         if (dir2.getRelativePath().equals(sPath)) {
           // directory already exists on this device
           bNeedCreate = false;
@@ -960,9 +959,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         // and is readable
         // check if this device was void
         boolean bVoid = true;
-        final Iterator it = FileManager.getInstance().getFiles().iterator();
+        final Iterator<org.jajuk.base.File> it = FileManager.getInstance().getFiles().iterator();
         while (it.hasNext()) {
-          final org.jajuk.base.File f = (org.jajuk.base.File) it.next();
+          final org.jajuk.base.File f = it.next();
           if (f.getDirectory().getDevice().equals(this)) {
             // at least one field in this device
             bVoid = false;
