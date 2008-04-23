@@ -92,6 +92,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
   /**
    * Item hashcode (used by the equals method)
    */
+  @Override
   public int hashCode() {
     return getID().hashCode();
   }
@@ -109,6 +110,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * @param otherAlbum
    * @return
    */
+  @Override
   public boolean equals(Object otherItem) {
     if (otherItem == null || !(otherItem instanceof Item)) {
       return false;
@@ -225,10 +227,9 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    */
   public String getAny() {
     StringBuilder sb = new StringBuilder(100);
-    LinkedHashMap properties = getProperties();
-    Iterator it = properties.keySet().iterator();
+    Iterator<String> it = properties.keySet().iterator();
     while (it.hasNext()) {
-      String sKey = (String) it.next();
+      String sKey = it.next();
       String sValue = getHumanValue(sKey);
       if (sValue != null) {
         PropertyMetaInformation meta = getMeta(sKey);
@@ -282,7 +283,6 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * @return XML representation for item properties
    */
   private String getPropertiesXml() {
-    LinkedHashMap<String, Object> properties = getProperties();
     StringBuilder sb = new StringBuilder();
     for (String sKey : properties.keySet()) {
       String sValue = null;
@@ -307,7 +307,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
   }
 
   /**
-   * Set all personnal properties of an XML file for an item (doesn't overwrite
+   * Set all personal properties of an XML file for an item (doesn't overwrite
    * existing properties for perfs)
    * 
    * @param attributes :
@@ -344,10 +344,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * @see org.jajuk.base.Item#removeProperty(java.lang.String)
    */
   public void removeProperty(String sKey) {
-    LinkedHashMap properties = getProperties();
-    if (properties.containsKey(sKey)) {
-      properties.remove(sKey);
-    }
+    properties.remove(sKey);
   }
 
   /*
@@ -386,9 +383,9 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * @param propertiesSource
    */
   public void cloneProperties(Item propertiesSource) {
-    Iterator it = propertiesSource.getProperties().keySet().iterator();
+    Iterator<String> it = propertiesSource.getProperties().keySet().iterator();
     while (it.hasNext()) {
-      String sProperty = (String) it.next();
+      String sProperty = it.next();
       if (!getMeta(sProperty).isConstructor()) {
         this.properties.put(sProperty, propertiesSource.getValue(sProperty));
       }
