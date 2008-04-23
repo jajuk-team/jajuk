@@ -1488,17 +1488,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpUI.add(jcbShowBaloon, "0,0");
     jpUI.add(jlFonts, "0,1");
     jpUI.add(jsFonts, "1,1");
-    jpUI.add(jlLAF, "0,3");
-    jpUI.add(scbLAF, "1,3");
-    jpUI.add(jlWatermarks, "0,4");
-    jpUI.add(scbWatermarks, "1,4");
+    jpUI.add(jlLAF, "0,2");
+    jpUI.add(scbLAF, "1,2");
+    jpUI.add(jlWatermarks, "0,3");
+    jpUI.add(scbWatermarks, "1,3");
     jpUI.add(jlWatermarkImage, "0,4");
     jpUI.add(pathWatermarkFile, "1,4");
-    jpUI.add(jcbShowPopups, "0,6");
-    jpUI.add(toggle, "0,7");
-    jpUI.add(catalogView, "0,8,1,8");
-    jpUI.add(jlPerspectiveSize, "0,9");
-    jpUI.add(jsPerspectiveSize, "1,9");
+    jpUI.add(jcbShowPopups, "0,5");
+    jpUI.add(toggle, "0,6");
+    jpUI.add(catalogView, "0,7,1,7");
+    jpUI.add(jlPerspectiveSize, "0,8");
+    jpUI.add(jsPerspectiveSize, "1,8");
 
     // --OK/cancel panel
     final Dimension dim = new Dimension(200, 20);
