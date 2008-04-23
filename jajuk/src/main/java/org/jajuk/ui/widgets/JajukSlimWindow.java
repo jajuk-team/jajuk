@@ -121,13 +121,16 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   JButton jbMaximize;
 
-  JajukToggleButton jbVolume;
+  SizedButton jbVolume;
 
   JScrollingText scrollingText;
 
   SearchBox sbSearch;
 
   JToolBar slimJajuk;
+
+  /** True if user close the slim bar from the taskbar */
+  private boolean closing = false;
 
   private static JajukSlimWindow self;
 
@@ -159,12 +162,13 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   public void initUI() {
     setIconImage(IconLoader.ICON_LOGO.getImage());
-    
+
     addWindowListener(new WindowAdapter() {
-    
+
       @Override
       public void windowClosing(WindowEvent e) {
         try {
+          closing = true;
           ActionManager.getAction(JajukAction.EXIT).perform(null);
         } catch (Exception e1) {
           Log.error(e1);
@@ -272,9 +276,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
-    jbVolume = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
+    jbVolume = new SizedButton(ActionManager.getAction(MUTE_STATE), 16, 16, false);
+
     jbVolume.addMouseMotionListener(motionAdapter);
     jbVolume.addMouseWheelListener(this);
+    jbVolume.setText(null);
     setVolumeIcon(iVolume);
 
     jbMaximize = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
@@ -283,7 +289,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-   
+
     // Search
     double[][] sizeSearch = new double[][] { { 20 }, { 22 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
@@ -376,6 +382,17 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     } catch (Exception e) {
       return Messages.getString("JajukWindow.17");
     }
+  }
+
+  /**
+   * We want to alert the main hook thread to consider the slim bar window has
+   * visible when user closed the slimbar from the taskbar to save this state
+   * and display the slimbar at next startup
+   * 
+   * @return whether the slim bar is visible
+   */
+  public boolean isVisible() {
+    return super.isVisible() || closing;
   }
 
   /**

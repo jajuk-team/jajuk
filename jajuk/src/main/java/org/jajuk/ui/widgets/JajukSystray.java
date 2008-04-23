@@ -67,7 +67,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
-import org.jajuk.ui.helpers.SizedJMenuItem;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;

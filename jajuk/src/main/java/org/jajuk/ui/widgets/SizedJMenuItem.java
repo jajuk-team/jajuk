@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui.helpers;
+package org.jajuk.ui.widgets;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -28,7 +28,7 @@ import javax.swing.JMenuItem;
 import org.jajuk.util.Util;
 
 /**
- * Menu item whish icon has a fixed size
+ * Menu item whose icon has a fixed size
  */
 public class SizedJMenuItem extends JMenuItem {
   private static final long serialVersionUID = -3859493402696496345L;
