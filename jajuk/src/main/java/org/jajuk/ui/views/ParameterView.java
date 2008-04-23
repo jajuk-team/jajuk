@@ -322,8 +322,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JSlider jsFonts;
 
-  JCheckBox jcbVisibleAtStartup;
-
   JPanel jpLastFM;
 
   JCheckBox jcbEnableLastFMInformation;
@@ -778,8 +776,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
       public void actionPerformed(ActionEvent e) {
         // Store configuration
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_AT_STARTUP, Boolean
-            .toString(jcbVisibleAtStartup.isSelected()));
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_BALLOON, Boolean
             .toString(jcbShowBaloon.isSelected()));
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
@@ -1005,7 +1001,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         return verify(input);
       }
 
-      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1029,12 +1024,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfVisiblePlanned = new JTextField(3);
     jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
     jtfVisiblePlanned.setInputVerifier(new InputVerifier() {
-      @Override
       public boolean shouldYieldFocus(final JComponent input) {
         return verify(input);
       }
 
-      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1280,12 +1273,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfProxyPort = new JTextField();
     jtfProxyPort.setToolTipText(Messages.getString("ParameterView.147"));
     jtfProxyPort.setInputVerifier(new InputVerifier() {
-      @Override
       public boolean shouldYieldFocus(final JComponent input) {
         return verify(input);
       }
 
-      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1392,7 +1383,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // -- User interface --
     jpUI = new JPanel();
-    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p, p } };
+    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutUI = new TableLayout(sizeUI);
     layoutUI.setHGap(iXSeparator);
     layoutUI.setVGap(iYSeparator);
@@ -1445,11 +1436,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsFonts.setPaintTicks(true);
     jsFonts.setPaintLabels(true);
     jsFonts.setToolTipText(Messages.getString("ParameterView.224"));
-    // Visible at startup
-    jcbVisibleAtStartup = new JCheckBox(Messages.getString("JajukWindow.8"));
-    jcbVisibleAtStartup.setToolTipText(Messages.getString("JajukWindow.25"));
-
-    jcbVisibleAtStartup.addActionListener(alUI);
+    
     // Show Balloon
     jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
     jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185"));
@@ -1491,7 +1478,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE)) {
       private static final long serialVersionUID = 1L;
 
-      @Override
       public void performOnURLChange() {
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
             pathWatermarkFile.getUrl());
@@ -1499,21 +1485,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       }
     };
     // Add items
-    jpUI.add(jcbVisibleAtStartup, "0,0");
-    jpUI.add(jcbShowBaloon, "0,1");
-    jpUI.add(jlFonts, "0,2");
-    jpUI.add(jsFonts, "1,2");
-    jpUI.add(jlLAF, "0,4");
-    jpUI.add(scbLAF, "1,4");
-    jpUI.add(jlWatermarks, "0,5");
-    jpUI.add(scbWatermarks, "1,5");
-    jpUI.add(jlWatermarkImage, "0,6");
-    jpUI.add(pathWatermarkFile, "1,6");
-    jpUI.add(jcbShowPopups, "0,7");
-    jpUI.add(toggle, "0,8");
-    jpUI.add(catalogView, "0,9,1,9");
-    jpUI.add(jlPerspectiveSize, "0,10");
-    jpUI.add(jsPerspectiveSize, "1,10");
+    jpUI.add(jcbShowBaloon, "0,0");
+    jpUI.add(jlFonts, "0,1");
+    jpUI.add(jsFonts, "1,1");
+    jpUI.add(jlLAF, "0,3");
+    jpUI.add(scbLAF, "1,3");
+    jpUI.add(jlWatermarks, "0,4");
+    jpUI.add(scbWatermarks, "1,4");
+    jpUI.add(jlWatermarkImage, "0,4");
+    jpUI.add(pathWatermarkFile, "1,4");
+    jpUI.add(jcbShowPopups, "0,6");
+    jpUI.add(toggle, "0,7");
+    jpUI.add(catalogView, "0,8,1,8");
+    jpUI.add(jlPerspectiveSize, "0,9");
+    jpUI.add(jsPerspectiveSize, "1,9");
 
     // --OK/cancel panel
     final Dimension dim = new Dimension(200, 20);
@@ -1767,8 +1752,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       jpfASPassword.setEnabled(false);
     }
     // UI
-    jcbVisibleAtStartup.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_UI_SHOW_AT_STARTUP));
     jcbShowBaloon.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_UI_SHOW_BALLOON));
     jcbShowPopups.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_SHOW_POPUPS));

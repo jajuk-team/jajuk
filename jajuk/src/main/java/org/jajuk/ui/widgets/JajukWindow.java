@@ -44,6 +44,7 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -83,7 +84,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     System.setProperty("apple.awt.showGrowBox", "false");
 
     jw = this;
-    bVisible = ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP);
+    bVisible = (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY);
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.ICON_LOGO.getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -251,7 +252,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
         if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
           File file = FIFO.getInstance().getCurrentFile();
           if (file != null) {
-            setTitle(buildTitle(file));
+            setTitle(Util.buildTitle(file));
           }
         } else if (subject.equals(EventSubject.EVENT_ZERO)) {
           setTitle(Messages.getString("JajukWindow.17"));
@@ -274,35 +275,19 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     return bVisible;
   }
 
-  /**
-   * Build the frame title from user option
-   * 
-   * @param file
-   *          played file
-   * @return built frame title
-   */
-  public String buildTitle(final File file) {
-    // We use trailing pattern to allow scripting like MSN plugins to
-    // detect jajuk frames and extract current track
-    String title = ConfigurationManager.getProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN);
-    title = title.replaceAll(PATTERN_TRACKNAME, file.getTrack().getName());
-    title = title.replaceAll(PATTERN_ALBUM, file.getTrack().getAlbum().getName2());
-    title = title.replaceAll(PATTERN_AUTHOR, file.getTrack().getAuthor().getName2());
-    title = title.replaceAll(PATTERN_STYLE, file.getTrack().getStyle().getName2());
-    title = title.replaceAll(PATTERN_TRACKORDER, Long.toString(file.getTrack().getOrder()));
-    title = title.replaceAll(PATTERN_YEAR, file.getTrack().getYear().getName2());
-    return title;
-  }
-
-  /**
+   /**
    * @param visible
    *          The bVisible to set.
    */
   public void display(final boolean visible) {
+    if (!visible && !bVisible){
+      return;
+    }
+    
     // start ui if needed
     if (visible && !Main.isUILaunched()) {
       try {
-        Main.launchUI();
+        Main.launchWindow();
       } catch (Exception e) {
         Log.error(e);
       }

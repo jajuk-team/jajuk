@@ -19,14 +19,12 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukAction.FAST_FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukAction.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukAction.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukAction.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import ext.DropDownButton;
 import ext.JScrollingText;
@@ -34,6 +32,8 @@ import ext.SwingWorker;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -42,11 +42,13 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -57,7 +59,6 @@ import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.events.Event;
@@ -98,13 +99,9 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   JButton jbNext;
 
-  JPressButton jbRew;
-
   JButton jbPlayPause;
 
   JButton jbStop;
-
-  JPressButton jbFwd;
 
   DropDownButton jbIncRate;
 
@@ -137,53 +134,57 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   public static JajukSlimWindow getInstance() {
     if (self == null) {
       self = new JajukSlimWindow();
-      self.initUI();
-      self.setVisible(false);
     }
     return self;
   }
-  
+
+  /**
+   * This mouse motion listener allows the whole slim bar dragging
+   */
   private MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
-  
-    public void mouseMoved(MouseEvent e) {
-      if (e.getClickCount() == 0){
-        return;
-      }
-      setLocation(e.getLocationOnScreen());
+    public void mouseDragged(MouseEvent e) {
+      Point point = e.getLocationOnScreen();
+      setLocation(point);
+      ConfigurationManager.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + ","
+          + (int) point.getY());
     }
-  
   };
 
   private JajukSlimWindow() {
+    setUndecorated(true);
+    // Set windows decoration to look and feel
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
   public void initUI() {
     setIconImage(IconLoader.ICON_LOGO.getImage());
 
     JToolBar jtbPlay = new JToolBar();
-    jtbPlay.addMouseMotionListener(motionAdapter);
     jtbPlay.setBorder(null);
     jtbPlay.setRollover(true);
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    jbPrevious.addMouseMotionListener(motionAdapter);
     jbPrevious.setIcon(IconLoader.ICON_PREVIOUS);
+    jbPrevious.addMouseMotionListener(motionAdapter);
+
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
     jbNext.setIcon(IconLoader.ICON_NEXT);
-    jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
-    jbRew.setIcon(IconLoader.ICON_REW_16x16);
+    jbNext.addMouseMotionListener(motionAdapter);
+
     jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
     jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
+    jbPlayPause.addMouseMotionListener(motionAdapter);
+
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
     jbStop.setIcon(IconLoader.ICON_STOP_16x16);
-    jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
-    jbFwd.setIcon(IconLoader.ICON_FWD_16x16);
+    jbStop.addMouseMotionListener(motionAdapter);
 
     jtbPlay.add(jbPrevious);
-    // jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
-    // jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
 
     JToolBar jtbSmart = new JToolBar();
@@ -201,12 +202,15 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbBestof = new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
     jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
     jbBestof.addActionListener(this);
+
     jbNovelties = new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
     jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16x16);
     jbNovelties.addActionListener(this);
+
     jbRandom = new JMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
     jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
     jbRandom.addActionListener(this);
+
     jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
     jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
     jbFinishAlbum.addActionListener(this);
@@ -217,6 +221,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jpmSmart.add(jbRandom);
     jpmSmart.add(jbFinishAlbum);
     jddbSmart.addToToolBar(jtbSmart);
+    jddbSmart.addMouseMotionListener(motionAdapter);
     jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
     jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
 
@@ -256,39 +261,26 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       iVolume = 100;
     }
     jbVolume = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
+    jbVolume.addMouseMotionListener(motionAdapter);
     jbVolume.addMouseWheelListener(this);
     setVolumeIcon(iVolume);
 
-    jbClose = new JajukButton(IconLoader.ICON_CLOSE);
-    jbClose.setToolTipText(Messages.getString("Close"));
-    jbClose.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-        if (!JajukWindow.getInstance().isVisible())
-          JajukWindow.getInstance().display(true);
-        setVisible(false);
-      }
-    });
+    jbClose = new JajukButton(ActionManager.getAction(JajukAction.EXIT));
+    jbClose.addMouseMotionListener(motionAdapter);
 
-    jbMaximize = new JajukButton(IconLoader.ICON_FULL_WINDOW);
-    jbMaximize.setToolTipText(Messages.getString("Maximize"));
-    jbMaximize.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        JajukWindow.getInstance().display(true);
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-        setVisible(false);
-      }
-    });
+    jbMaximize = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    jbMaximize.addMouseMotionListener(motionAdapter);
 
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-    // jtbTools.add(jbClose);
+    jtbTools.add(jbClose);
 
     // Search
     double[][] sizeSearch = new double[][] { { 20 }, { 22 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(this);
+    sbSearch.addMouseMotionListener(motionAdapter);
     jpSearch.add(sbSearch, "0,0");
 
     JToolBar jtbText = new JToolBar();
@@ -306,14 +298,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     slimJajuk.setFloatable(false);
     slimJajuk.setRollover(true);
 
+    slimJajuk.add(jpSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
     slimJajuk.addSeparator();
-    slimJajuk.add(jpSearch);
-    slimJajuk.addSeparator();
     slimJajuk.add(jtbPlay);
-    // slimJajuk.addSeparator();
-    // slimJajuk.add(jtbText);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbTools);
 
@@ -324,15 +313,39 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     add(slimJajuk);
     ObservationManager.register(this);
 
-    setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     if (FIFO.getInstance().getCurrentFile() != null) {
-      setTitle(Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile()));
+      setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
     } else {
       setTitle(Messages.getString("JajukWindow.17"));
     }
     setVisible(true);
     setAlwaysOnTop(true);
+
+    // Set location
+    String lastPosition = ConfigurationManager.getProperty(CONF_SLIMBAR_POSITION);
+    int x = 0;
+    int y = 0;
+    int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+    int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+
+    try {
+      StringTokenizer st = new StringTokenizer(lastPosition, ",");
+      x = Integer.parseInt(st.nextToken());
+      y = Integer.parseInt(st.nextToken());
+      // Reset if position are out of bounds (after a resolution changing for
+      // eg)
+      if (x < 0 || x > iScreenWidth) {
+        x = 0;
+      }
+      if (y < 0 || y > iScreenHeight) {
+        y = 0;
+      }
+      setLocation(new Point(x, y));
+    } catch (Exception e) {
+      Log.debug("Cannot restore slimbar position");
+      Log.error(e);
+    }
     pack();
     // Notify that slimbar is now visible (menu bar is interested in)
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
@@ -343,13 +356,13 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
    */
   public String getPlayerInfo() {
     try {
-      String currentTrack = Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile());
+      String currentTrack = Util.buildTitle(FIFO.getInstance().getCurrentFile());
       String nextTrack = "";
       try {
-        nextTrack = Main.getWindow().buildTitle(
-            FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1).getFile());
+        nextTrack = Util.buildTitle(FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1)
+            .getFile());
       } catch (Exception e) {
-        nextTrack = Main.getWindow().buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
+        nextTrack = Util.buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
       }
       return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
     } catch (Exception e) {
@@ -421,7 +434,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   public void update(final Event event) {
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
-      setTitle(Main.getWindow().buildTitle(FIFO.getInstance().getCurrentFile()));
+      setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
       scrollingText.setText(getPlayerInfo());
     } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
       scrollingText.setText(Messages.getString("JajukWindow.17"));

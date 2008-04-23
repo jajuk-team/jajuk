@@ -612,11 +612,20 @@ public interface ITechnicalStrings {
   /** Contains files id separated by a colon */
   String CONF_BOOKMARKS = "jajuk.bookmarks";
 
-  /** Show jajuk window at startup */
-  String CONF_UI_SHOW_AT_STARTUP = "jajuk.show_at_startup";
+  /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray */
+  String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
+  
+  int DISPLAY_MODE_WINDOW_TRAY = 0;
+  
+  int DISPLAY_MODE_TRAY = 1;
+  
+  int DISPLAY_MODE_SLIMBAR_TRAY = 2;
 
   /** Best of size */
   String CONF_BESTOF_TRACKS_SIZE = "jajuk.bestof_size";
+
+  /** Slimbar position */
+  String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
 
   /** Gain (float) */
   String CONF_VOLUME = "jajuk.volume";

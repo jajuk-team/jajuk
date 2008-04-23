@@ -23,6 +23,7 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.widgets.JajukSlimWindow;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -34,11 +35,26 @@ public class JajukSlimWindowAction extends ActionBase {
   private static final long serialVersionUID = 1L;
 
   JajukSlimWindowAction() {
-    super(Messages.getString("JajukSlimWindow.0"), IconLoader.ICON_SEARCH, true);
+    super(Messages.getString("JajukSlimWindow.0"), IconLoader.ICON_FULL_WINDOW, true);
     setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }
 
   public void perform(ActionEvent evt) throws Exception {
-    JajukSlimWindow.getInstance().setVisible(true);
+    JajukSlimWindow slimbar = JajukSlimWindow.getInstance();
+    // If slimbar is visible, hide it and show the main window
+    
+    /*
+     * Note that both main window and slimbar can be displayed at the same time:
+     * If the slimebar is visible and user display main window by right clicking
+     * on the tray, the main window is displayed, this is a normal behavior
+     */
+    if (slimbar.isVisible()) {
+      JajukSlimWindow.getInstance().setVisible(false);
+      JajukWindow.getInstance().display(true);
+    } else {
+      slimbar.initUI();
+      slimbar.setVisible(true);
+      JajukWindow.getInstance().display(false);
+    }
   }
 }

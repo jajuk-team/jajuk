@@ -80,6 +80,7 @@ import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.RestoreAllViewsAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -89,6 +90,7 @@ import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
+import org.jajuk.ui.widgets.JajukSlimWindow;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
@@ -193,8 +195,8 @@ public class Main implements ITechnicalStrings {
   }
 
   /** ConfigurationManager Locales */
-  public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca",
-      "ko", "el", "ru", "gl" };
+  public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
+      "gl" };
 
   /** DeviceTypes Identification strings */
   public static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
@@ -307,7 +309,7 @@ public class Main implements ITechnicalStrings {
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
-          if (ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)) {
+          if (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
             sc.splashOn();
           }
         }
@@ -323,8 +325,7 @@ public class Main implements ITechnicalStrings {
       ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager
           .getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager
-          .getInstance());
+      ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
       ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
@@ -407,14 +408,20 @@ public class Main implements ITechnicalStrings {
       ActionManager.getInstance();
 
       // show window if set in the systray conf.
-      if (ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP)) {
+      if (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
         // Display progress
         sc.setProgress(80, Messages.getString("SplashScreen.3"));
-        launchUI();
+        launchWindow();
       }
 
       // start the tray
       launchTray();
+
+      // Start the slimbar if required
+      if (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_SLIMBAR_TRAY) {
+        launchSlimbar();
+      }
+
     } catch (final JajukException je) { // last chance to catch any error for
       // logging purpose
       Log.error(je);
@@ -435,7 +442,7 @@ public class Main implements ITechnicalStrings {
       exit(1);
     } finally { // make sure to close splashscreen in all cases (ie if
       // UI is not started)
-      if (!ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP) && (sc != null)) {
+      if (sc != null) {
         sc.setProgress(100);
         sc.splashOff();
         sc = null;
@@ -569,29 +576,41 @@ public class Main implements ITechnicalStrings {
             public void run() {
               Log.debug("Exit Hook begin");
               try {
-                SwingUtilities.invokeLater(new Runnable() {
-                  public void run() {
-                    // TODO Auto-generated method stub
-                    // commit perspectives if no full restore
-                    // engaged. Perspective should be commited before the window
-                    // being closed to avoid a dead lock in VLDocking
-                    if (!RestoreAllViewsAction.fullRestore) {
-                      try {
-                        PerspectiveManager.commit();
-                      } catch (Exception e) {
-                        Log.error(e);
-                      }
-                    }
-                    // hide window ASAP
-                    if (getWindow() != null) {
-                      getWindow().setVisible(false);
-                    }
-                    // hide systray
-                    if (jsystray != null) {
-                      jsystray.closeSystray();
-                    }
+                // commit perspectives if no full restore
+                // engaged. Perspective should be commited before the window
+                // being closed to avoid a dead lock in VLDocking
+                if (!RestoreAllViewsAction.fullRestore) {
+                  try {
+                    PerspectiveManager.commit();
+                  } catch (Exception e) {
+                    Log.error(e);
                   }
-                });
+                }
+                // Store window/tray/slimbar configuration
+                if (JajukSlimWindow.getInstance().isVisible()) {
+                  ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+                      .toString(DISPLAY_MODE_SLIMBAR_TRAY));
+                }
+                if (JajukWindow.getInstance().isVisible()) {
+                  ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+                      .toString(DISPLAY_MODE_WINDOW_TRAY));
+                }
+
+                if (!JajukSlimWindow.getInstance().isVisible()
+                    && !JajukWindow.getInstance().isVisible()) {
+                  ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+                      .toString(DISPLAY_MODE_TRAY));
+                }
+                // hide window ASAP
+                if (getWindow() != null) {
+                  getWindow().setVisible(false);
+                }
+                // hide systray
+                if (jsystray != null) {
+                  jsystray.closeSystray();
+                }
+                // Hide slimbar
+                JajukSlimWindow.getInstance().setVisible(false);
                 Player.stop(true); // stop sound ASAP
               } catch (Exception e) {
                 e.printStackTrace();
@@ -611,6 +630,7 @@ public class Main implements ITechnicalStrings {
                   // Store webradio state
                   ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
                       .getInstance().isPlayingRadio()));
+
                   // commit configuration
                   org.jajuk.util.ConfigurationManager.commit();
                   // commit history
@@ -1113,9 +1133,9 @@ public class Main implements ITechnicalStrings {
   }
 
   /**
-   * Lauch UI
+   * Launch jajuk window
    */
-  public static void launchUI() throws Exception {
+  public static void launchWindow() throws Exception {
     if (bUILauched) {
       return;
     }
@@ -1229,21 +1249,34 @@ public class Main implements ITechnicalStrings {
 
   }
 
-  /** Launch tray*/
+  /** Launch tray */
   private static void launchTray() throws Exception {
-    //Skip the tray launching if user forced it to hide
-    if (ConfigurationManager.getBoolean(CONF_FORCE_TRAY_SHUTDOWN)){
+    // Skip the tray launching if user forced it to hide
+    if (ConfigurationManager.getBoolean(CONF_FORCE_TRAY_SHUTDOWN)) {
       Log.debug("Tray shutdown forced");
       return;
     }
-    //Now check if try is supported on this platform
-    if (!SystemTray.isSupported()){
+    // Now check if try is supported on this platform
+    if (!SystemTray.isSupported()) {
       Log.debug("Tray unsupported");
       return;
     }
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-          jsystray = JajukSystray.getInstance();
+        jsystray = JajukSystray.getInstance();
+      }
+    });
+  }
+
+  /** Launch slimbar */
+  private static void launchSlimbar() throws Exception {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        try {
+          ActionManager.getAction(JajukAction.SLIM_JAJUK).perform(null);
+        } catch (Exception e) {
+          Log.error(e);
+        }
       }
     });
   }

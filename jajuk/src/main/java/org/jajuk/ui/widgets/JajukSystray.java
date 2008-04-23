@@ -54,7 +54,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 
-import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.WebRadio;
@@ -93,6 +92,8 @@ public class JajukSystray extends CommandJPanel {
 
   JMenuItem jmiExit;
 
+  JMenuItem jmiSlimbar;
+  
   public JMenuItem jmiMute;
 
   JMenuItem jmiShuffle;
@@ -122,9 +123,6 @@ public class JajukSystray extends CommandJPanel {
   long lDateLastAdjust;
 
   JSlider jsPosition;
-
-  /** Visible at startup? */
-  JCheckBoxMenuItem jcbmiVisible;
 
   /** Show balloon? */
   JCheckBoxMenuItem jcbmiShowBalloon;
@@ -172,6 +170,9 @@ public class JajukSystray extends CommandJPanel {
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
 
     jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
+    
+    jmiSlimbar = new JMenuItem(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
@@ -180,11 +181,6 @@ public class JajukSystray extends CommandJPanel {
     jmiDJ = new SizedJMenuItem(ActionManager.getAction(JajukAction.DJ));
     jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
-
-    jcbmiVisible = new JCheckBoxMenuItem(Messages.getString("JajukWindow.8"));
-    jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
-    jcbmiVisible.addActionListener(this);
-    jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25"));
 
     jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
     jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
@@ -234,7 +230,6 @@ public class JajukSystray extends CommandJPanel {
     jmenu.addSeparator();
     jmenu.add(jmAmbience);
     jmenu.addSeparator();
-    jmenu.add(jcbmiVisible);
     jmenu.add(jcbmiShowBalloon);
     jmenu.addSeparator();
     jmenu.add(jmiPlayPause);
@@ -248,6 +243,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jmiNovelties);
     jmenu.add(jmiFinishAlbum);
     jmenu.addSeparator();
+    jmenu.add(jmiSlimbar);
     jmenu.add(jmiMute);
     jmenu.add(jmVolume);
     jmenu.add(jmPosition);
@@ -257,7 +253,7 @@ public class JajukSystray extends CommandJPanel {
     // setting "exit" as last item to prevent unwanted exit
     jmenu.add(new JMenuItem(" "));
     jmenu.add(new JMenuItem(" "));
-    
+
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
     trayIcon.setImageAutoSize(true);
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
@@ -279,10 +275,11 @@ public class JajukSystray extends CommandJPanel {
         JLabel jl = new JLabel(sOut);
         jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
-        dialog.setLocation(e.getX()-50, e.getY() - 250);
+        dialog.setLocation(e.getX() - 50, e.getY() - 250);
         dialog.pack();
         dialog.setVisible(true);
-        //The toFront() is required under windows when main window is not visible
+        // The toFront() is required under windows when main window is not
+        // visible
         dialog.toFront();
         // Dispose the dialog after 5 seconds
         new Thread() {
@@ -304,8 +301,9 @@ public class JajukSystray extends CommandJPanel {
       @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-          // show window if it is not visible and hide it if it is visible
-          JajukWindow.getInstance().display(!JajukWindow.getInstance().isWindowVisible());
+          // show main window if it is not visible and hide it if it is visible
+          boolean bShouldDisplayMainWindow = !JajukWindow.getInstance().isWindowVisible();
+          JajukWindow.getInstance().display(bShouldDisplayMainWindow);
         }
       }
 
@@ -356,9 +354,7 @@ public class JajukSystray extends CommandJPanel {
     // do not run this in a separate thread because Player actions would die
     // with the thread
     try {
-      if (e.getSource() == jcbmiVisible || e.getSource() == jcbmiShowBalloon) {
-        ConfigurationManager.setProperty(CONF_UI_SHOW_AT_STARTUP, Boolean.toString(jcbmiVisible
-            .getState()));
+      if (e.getSource() == jcbmiShowBalloon) {
         ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean.toString(jcbmiShowBalloon
             .getState()));
         // Launch an event that can be trapped by the tray to
@@ -505,7 +501,6 @@ public class JajukSystray extends CommandJPanel {
           }
           populateAmbiences();
         } else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
-          jcbmiVisible.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_AT_STARTUP));
           jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
         }
       }

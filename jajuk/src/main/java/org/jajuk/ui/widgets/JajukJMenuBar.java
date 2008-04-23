@@ -32,9 +32,9 @@ import static org.jajuk.ui.actions.JajukAction.REPEAT_MODE_STATUS_CHANGE;
 import static org.jajuk.ui.actions.JajukAction.SHOW_ABOUT;
 import static org.jajuk.ui.actions.JajukAction.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
-import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
 
 import com.sun.java.help.impl.SwingWorker;
 
@@ -303,7 +303,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.addSeparator();
     }
     ActionBase slimAction = ActionManager.getAction(JajukAction.SLIM_JAJUK);
-    slimAction.setEnabled(!JajukSlimWindow.getInstance().isVisible());
     jmiSlimJajuk = new JMenuItem(slimAction);
     
     tools.add(jmiSlimJajuk);
@@ -361,15 +360,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     mainmenu.add(configuration);
     mainmenu.add(help);
     
-    jbSlim = new JajukButton(IconLoader.ICON_FULL_WINDOW);
-    jbSlim.setToolTipText(Messages.getString("JajukSlimWindow.0"));
-    jbSlim.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        JajukWindow.getInstance().display(false);
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-        JajukSlimWindow.getInstance().setVisible(true);
-      }
-    });
+    jbSlim = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
     
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
