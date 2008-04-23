@@ -675,7 +675,6 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   }
 
   private void scanRecursively(final Directory dir, final boolean bDeepScan) {
-    System.out.println("Scanning :"+dir);
     dir.scan(bDeepScan, reporter);
     if (reporter != null) {
       reporter.updateState(dir);
