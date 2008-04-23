@@ -307,13 +307,14 @@ public class FileManager extends ItemManager implements Observer {
    * @return file or null if given path is not known
    */
 
+  @SuppressWarnings("unchecked")
   public File getFileByPath(String sPath) {
     synchronized (FileManager.getInstance().getLock()) {
       File fOut = null;
       java.io.File fToCompare = new java.io.File(sPath);
-      Iterator it = hmItems.values().iterator();
+      Iterator<File> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        File file = (File) it.next();
+        File file = it.next();
         // we compare io files and not paths
         // to avoid dealing with path name issues
         if (file.getIO().equals(fToCompare)) {
