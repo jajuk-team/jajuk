@@ -47,6 +47,7 @@ public class CatalogViewTransferHandler extends TransferHandler implements ITech
   /**
    * Called when dragging
    */
+  @Override
   protected Transferable createTransferable(JComponent c) {
     Object o = item.getItem();
     if (o != null) {
@@ -58,6 +59,7 @@ public class CatalogViewTransferHandler extends TransferHandler implements ITech
   /**
    * return action type
    */
+  @Override
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }
@@ -65,10 +67,12 @@ public class CatalogViewTransferHandler extends TransferHandler implements ITech
   /**
    * Called when dropping, no drop in catalog view for now
    */
+  @Override
   public boolean importData(JComponent c, Transferable t) {
     return false;
   }
 
+  @Override
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     return false;
   }
