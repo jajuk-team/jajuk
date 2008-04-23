@@ -152,7 +152,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
     jp1.setLayout(new TableLayout(size1));
     jlType = new JLabel(Messages.getString("DeviceWizard.1"));
     jcbType = new JComboBox();
-    final Iterator itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
+    final Iterator<String> itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
     while (itDevicesTypes.hasNext()) {
       jcbType.addItem(itDevicesTypes.next());
     }
@@ -179,11 +179,13 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
     jlAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50"));
     jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
     jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance());
-    // mininum delay is half a minute
+    // Minimum delay is half a minute
     jftfAutoRefresh.addPropertyChangeListener(new PropertyChangeListener() {
       public void propertyChange(final PropertyChangeEvent e) {
         final String prop = e.getPropertyName();
         if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
+          // FIXME: this causes trouble on German machines with more than 999 minutes!
+          // FIXME: what is the original purpose of this replacement? 
           final double value = Double.valueOf(jftfAutoRefresh.getText().replace(',', '.'));
           jftfAutoRefresh.setValue(value);
           if ((value < 0) || ((value < 0.5d) && (value != 0))) {
