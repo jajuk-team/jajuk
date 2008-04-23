@@ -40,6 +40,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -117,8 +119,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   JMenuItem jbFinishAlbum;
 
-  JButton jbClose;
-
   JButton jbMaximize;
 
   JajukToggleButton jbVolume;
@@ -159,6 +159,18 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   public void initUI() {
     setIconImage(IconLoader.ICON_LOGO.getImage());
+    
+    addWindowListener(new WindowAdapter() {
+    
+      @Override
+      public void windowClosing(WindowEvent e) {
+        try {
+          ActionManager.getAction(JajukAction.EXIT).perform(null);
+        } catch (Exception e1) {
+          Log.error(e1);
+        }
+      }
+    });
 
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
@@ -265,17 +277,13 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbVolume.addMouseWheelListener(this);
     setVolumeIcon(iVolume);
 
-    jbClose = new JajukButton(ActionManager.getAction(JajukAction.EXIT));
-    jbClose.addMouseMotionListener(motionAdapter);
-
     jbMaximize = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
     jbMaximize.addMouseMotionListener(motionAdapter);
 
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-    jtbTools.add(jbClose);
-
+   
     // Search
     double[][] sizeSearch = new double[][] { { 20 }, { 22 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));

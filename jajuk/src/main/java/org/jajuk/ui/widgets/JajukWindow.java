@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
@@ -39,6 +38,8 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -104,24 +105,13 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
       }
 
       public void windowClosing(WindowEvent we) {
-        // Ask if a confirmation is required
-        if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
-          int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
-              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-          if (iResu != JOptionPane.YES_OPTION) {
-            return;
-          }
-        }
         // Save windows position
         saveSize();
-
-        // Exit Jajuk
-        new Thread() {
-          public void run() {
-            Main.exit(0);
-          }
-        }.start();
-
+        try {
+          ActionManager.getAction(JajukAction.EXIT).perform(null);
+        } catch (Exception e1) {
+          Log.error(e1);
+        }
       }
     });
 
@@ -275,15 +265,15 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     return bVisible;
   }
 
-   /**
+  /**
    * @param visible
    *          The bVisible to set.
    */
   public void display(final boolean visible) {
-    if (!visible && !bVisible){
+    if (!visible && !bVisible) {
       return;
     }
-    
+
     // start ui if needed
     if (visible && !Main.isUILaunched()) {
       try {

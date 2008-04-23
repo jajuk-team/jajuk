@@ -48,10 +48,6 @@ public class ExitAction extends ActionBase {
         return;
       }
     }
-    if (Main.getWindow() != null) {
-      // Hide window ASAP
-      Main.getWindow().setVisible(false);
-    }
     // Exit Jajuk
     new Thread() {
       public void run() {
