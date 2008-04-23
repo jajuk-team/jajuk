@@ -1005,6 +1005,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         return verify(input);
       }
 
+      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1028,10 +1029,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfVisiblePlanned = new JTextField(3);
     jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
     jtfVisiblePlanned.setInputVerifier(new InputVerifier() {
+      @Override
       public boolean shouldYieldFocus(final JComponent input) {
         return verify(input);
       }
 
+      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1277,10 +1280,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfProxyPort = new JTextField();
     jtfProxyPort.setToolTipText(Messages.getString("ParameterView.147"));
     jtfProxyPort.setInputVerifier(new InputVerifier() {
+      @Override
       public boolean shouldYieldFocus(final JComponent input) {
         return verify(input);
       }
 
+      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1486,6 +1491,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE)) {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public void performOnURLChange() {
         ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
             pathWatermarkFile.getUrl());
@@ -1526,7 +1532,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final double size[][] = { { 0.99 }, { 0.9, 0.10 } };
     setLayout(new TableLayout(size));
     // add main panels
-    jtpMain = new JTabbedPane(JTabbedPane.LEFT);
+    jtpMain = new JTabbedPane(SwingConstants.LEFT);
     // ScrollPane without border
     class JajukJScrollPane extends JScrollPane {
       private static final long serialVersionUID = 4564343623724771988L;
