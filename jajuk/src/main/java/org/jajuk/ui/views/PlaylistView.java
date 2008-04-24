@@ -620,11 +620,16 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                 Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
           } catch (JajukException je) {
             Log.error(je);
-            Messages.showErrorMessage(je.getCode(), je.getMessage());
+            Messages.showErrorMessage(je.getCode());
           }
         } else {
-          // special playlist, same behavior than a save as
-          plf.saveAs();
+          try {
+            // special playlist, same behavior than a save as
+            plf.saveAs();
+          } catch (JajukException je) {
+            Log.error(je);
+            Messages.showErrorMessage(je.getCode());
+          }
         }
       } else if (ae.getSource() == jbClear) {
         // if it is the queue playlist, stop the selection
@@ -661,7 +666,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           Log.error(je);
         }
       } else if (ae.getSource() == jbPrepParty) {
-        plf.storePlaylist();
+        plf.prepareParty();
       }
     } catch (Exception e2) {
       Log.error(e2);

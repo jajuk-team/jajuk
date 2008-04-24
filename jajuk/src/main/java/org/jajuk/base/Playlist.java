@@ -147,8 +147,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public void addFile(final int index, final File file) throws JajukException {
     if (type == Playlist.Type.BOOKMARK) {
       Bookmarks.getInstance().addFile(index, file);
-    }
-    else if (type == Type.QUEUE) {
+    } else if (type == Type.QUEUE) {
       final StackItem item = new StackItem(file);
       item.setUserLaunch(false);
       // set repeat mode : if previous item is repeated, repeat as
@@ -219,25 +218,24 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     java.io.File temp = null;
     if (isModified()) {
       try {
-        // due to bug #1046, we use a temporary file
         /*
-         * In some special cases (reproduced under Linux, JRE SUN 1.6.0_04, CIFS
-         * mount, 777 rights file), probably due to a JRE bug, files cannot be
-         * opened (FileNotFound? Exception, permission denied) and the file is
-         * voided (0 bytes) and is closed (checked with lsof).
+         * Due to bug #1046, we use a temporary file In some special cases
+         * (reproduced under Linux, JRE SUN 1.6.0_04, CIFS mount, 777 rights
+         * file), probably due to a JRE bug, files cannot be opened
+         * (FileNotFound? Exception, permission denied) and the file is voided
+         * (0 bytes) and is closed (checked with lsof).
          */
-
         temp = new java.io.File(getAbsolutePath() + '~');
         bw = new BufferedWriter(new FileWriter(temp));
         bw.write(ITechnicalStrings.PLAYLIST_NOTE);
         bw.newLine();
         final Iterator<File> it = getFiles().iterator();
         while (it.hasNext()) {
-          final File bfile = it.next();
-          if (bfile.getDirectory().equals(getDirectory())) {
-            bw.write(bfile.getName());
+          final File file = it.next();
+          if (file.getIO().getParent().equals(fio.getParent())) {
+            bw.write(file.getName());
           } else {
-            bw.write(bfile.getAbsolutePath());
+            bw.write(file.getAbsolutePath());
           }
           bw.newLine();
         }
@@ -358,13 +356,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return String
    */
   public String getAbsolutePath() {
-    if (sAbs != null) {
-      return sAbs;
+    if (type == Type.NORMAL) {
+      if (sAbs != null) {
+        return sAbs;
+      }
+      final Directory dCurrent = getDirectory();
+      final StringBuilder sbOut = new StringBuilder(dCurrent.getDevice().getUrl()).append(
+          dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(getName());
+      sAbs = sbOut.toString();
+    } else {
+      // smart playlist path depends on the user selected from the save as file
+      // chooser and has been set using the setFio() method just before that
+      sAbs = getFio().getAbsolutePath();
     }
-    final Directory dCurrent = getDirectory();
-    final StringBuilder sbOut = new StringBuilder(getDirectory().getDevice().getUrl()).append(
-        dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(getName());
-    sAbs = sbOut.toString();
     return sAbs;
   }
 
@@ -757,7 +761,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Stores all playlist and mapped files into an external device
    */
-  public void storePlaylist() throws Exception {
+  public void prepareParty() throws Exception {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
         .getInstance()));
     jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -827,9 +831,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       FIFO.getInstance().up(index);
     } else if ((alFiles != null) && (index > 0)) { // the first track
       // cannot go further
-      final File bfile = alFiles.get(index - 1); // save n-1 file
+      final File file = alFiles.get(index - 1); // save n-1 file
       alFiles.set(index - 1, alFiles.get(index));
-      alFiles.set(index, bfile); // n-1 file becomes nth file
+      alFiles.set(index, file); // n-1 file becomes nth file
       setModified(true);
     }
   }
