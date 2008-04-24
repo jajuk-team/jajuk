@@ -101,7 +101,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   JButton jbNext;
 
-  JButton jbPlayPause;
+  SizedButton jbPlayPause;
 
   JButton jbStop;
 
@@ -190,7 +190,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbNext.setIcon(IconLoader.ICON_NEXT);
     jbNext.addMouseMotionListener(motionAdapter);
 
-    jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
+    jbPlayPause = new SizedButton(ActionManager.getAction(PLAY_PAUSE_TRACK), 16, 16, false);
     jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     jbPlayPause.addMouseMotionListener(motionAdapter);
 
