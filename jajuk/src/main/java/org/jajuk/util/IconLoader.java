@@ -92,7 +92,10 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_NEXT = new ImageIcon(Util
       .getResource("icons/16x16/next_16x16.png"));
-
+  
+  public static final ImageIcon ICON_SAVE_AS = new ImageIcon(Util
+      .getResource("icons/16x16/saveas_16x16.png"));
+  
   public static final ImageIcon ICON_PREVIOUS = new ImageIcon(Util
       .getResource("icons/16x16/previous_16x16.png"));
 

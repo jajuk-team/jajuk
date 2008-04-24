@@ -479,4 +479,8 @@ public enum JajukAction {
    * Used to create a slim interface for Jajuk
    */
   SLIM_JAJUK,
+  /**
+   * Save as
+   */
+  SAVE_AS,
 }

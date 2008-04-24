@@ -191,7 +191,7 @@ public final class ActionManager {
     installAction(JajukAction.PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
     installAction(JajukAction.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
     installAction(JajukAction.CDDB_SELECTION, new CDDBSelectionAction(), false);
-
+    installAction(JajukAction.SAVE_AS, new SaveAsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default web browser
     if (Desktop.isDesktopSupported()) {

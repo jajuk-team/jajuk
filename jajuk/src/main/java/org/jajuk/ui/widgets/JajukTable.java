@@ -260,7 +260,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     StringBuilder sb = new StringBuilder();
     int cols = getColumnCount(false);
     for (int i = 0; i < cols; i++) {
-      TableColumnExt col = (TableColumnExt) getColumn(i);
       String sIdentifier = ((JajukTableModel) getModel())
           .getIdentifier(convertColumnIndexToModel(i));
       sb.append(sIdentifier + ",");
