@@ -69,6 +69,7 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.base.WebRadio;
 import org.jajuk.base.YearManager;
 import org.jajuk.services.bookmark.History;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJManager;
@@ -76,12 +77,9 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
-import org.jajuk.ui.actions.RestoreAllViewsAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -90,7 +88,6 @@ import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.ui.widgets.JajukSlimWindow;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
@@ -135,19 +132,13 @@ public class Main implements ITechnicalStrings {
   /** splash screen */
   public static JSplash sc;
 
-  /** Exit code */
-  private static int iExitCode = 0;
-
   /** Debug mode */
   public static boolean bIdeMode = false;
 
   /** Test mode */
   public static boolean bTestMode = false;
 
-  /** Exiting flag */
-  public static boolean bExiting = false;
-
-  /** Jukebox power pack flag* */
+    /** Jukebox power pack flag* */
   public static boolean bPowerPack = false;
 
   /**
@@ -428,18 +419,18 @@ public class Main implements ITechnicalStrings {
       if (je.getCode() == 5) {
         Messages.getChoice(Messages.getErrorMessage(5), JOptionPane.DEFAULT_OPTION,
             JOptionPane.ERROR_MESSAGE);
-        exit(1);
+        ExitService.exit(1);
       }
     } catch (final Exception e) { // last chance to catch any error for logging
       // purpose
       e.printStackTrace();
       Log.error(106, e);
-      exit(1);
+      ExitService.exit(1);
     } catch (final Error error) { // last chance to catch any error for logging
       // purpose
       error.printStackTrace();
       Log.error(106, error);
-      exit(1);
+      ExitService.exit(1);
     } finally { // make sure to close splashscreen in all cases (ie if
       // UI is not started)
       if (sc != null) {
@@ -571,108 +562,9 @@ public class Main implements ITechnicalStrings {
       public void run() {
         try {
           // start exit hook
-          final Thread tHook = new Thread("Exit hook thread") {
-            @Override
-            public void run() {
-              Log.debug("Exit Hook begin");
-              try {
-                // commit perspectives if no full restore
-                // engaged. Perspective should be commited before the window
-                // being closed to avoid a dead lock in VLDocking
-                if (!RestoreAllViewsAction.fullRestore) {
-                  try {
-                    PerspectiveManager.commit();
-                  } catch (Exception e) {
-                    Log.error(e);
-                  }
-                }
-                // Store window/tray/slimbar configuration
-                if (JajukSlimWindow.getInstance().isVisible()) {
-                  ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
-                      .toString(DISPLAY_MODE_SLIMBAR_TRAY));
-                }
-                if (JajukWindow.getInstance().isVisible()) {
-                  ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
-                      .toString(DISPLAY_MODE_WINDOW_TRAY));
-                }
-
-                if (!JajukSlimWindow.getInstance().isVisible()
-                    && !JajukWindow.getInstance().isVisible()) {
-                  ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
-                      .toString(DISPLAY_MODE_TRAY));
-                }
-                // hide window ASAP
-                if (getWindow() != null) {
-                  getWindow().setVisible(false);
-                }
-                // hide systray
-                if (jsystray != null) {
-                  jsystray.closeSystray();
-                }
-                // Hide slimbar
-                JajukSlimWindow.getInstance().setVisible(false);
-                Player.stop(true); // stop sound ASAP
-              } catch (Exception e) {
-                e.printStackTrace();
-                // no log to make sure to reach collection
-                // commit
-              }
-              try {
-                if (iExitCode == 0) {
-                  // Store current FIFO for next session
-                  FIFO.getInstance().commit();
-                  // commit only if exit is safe (to avoid
-                  // commiting
-                  // empty collection) commit ambiences
-                  AmbienceManager.getInstance().commit();
-                  // Commit webradios
-                  WebRadioManager.getInstance().commit();
-                  // Store webradio state
-                  ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
-                      .getInstance().isPlayingRadio()));
-
-                  // commit configuration
-                  org.jajuk.util.ConfigurationManager.commit();
-                  // commit history
-                  History.commit();
-                  // Commit collection if not refreshing
-                  if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-                    Collection.commit(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
-                    // create a proof file
-                    Util.createEmptyFile(Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
-                  }
-                  /* release keystrokes resources */
-                  ActionBase.cleanup();
-
-                  // Remove localhost_<user> session files
-                  // (can occur when network is not available)
-                  File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + "/localhost" + '_'
-                      + System.getProperty("user.name"));
-                  sessionUser.delete();
-                  // Remove session flag. Exception can be
-                  // thrown here if loopback interface is not
-                  // correctly set up, so should be the last
-                  // thing to do
-                  sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
-                      + InetAddress.getLocalHost().getHostName() + '_'
-                      + System.getProperty("user.name"));
-                  sessionUser.delete();
-
-                }
-              } catch (Exception e) {
-                // don't use Log class here, it can cause freeze
-                // if
-                // workspace no more available
-                e.printStackTrace();
-              } finally {
-                // don't use Log class here, it can cause freeze
-                // if workspace is no more available
-                System.out.println("Exit Hook end");
-              }
-            }
-          };
-          tHook.setPriority(Thread.MAX_PRIORITY);
-          Runtime.getRuntime().addShutdownHook(tHook);
+          final ExitService exit = new ExitService();
+          exit.setPriority(Thread.MAX_PRIORITY);
+          Runtime.getRuntime().addShutdownHook(exit);
 
           // Clean the collection up
           Collection.cleanup();
@@ -861,25 +753,7 @@ public class Main implements ITechnicalStrings {
     }
   }
 
-  /**
-   * Exit code, then system will execute the exit hook
-   * 
-   * @param iExitCode
-   *          exit code
-   *          <p>
-   *          0 : normal exit
-   *          <p>
-   *          1: unexpected error
-   */
-  public static void exit(final int iExitCode) {
-    // set exiting flag
-    bExiting = true;
-    // store exit code to be read by the system hook
-    Main.iExitCode = iExitCode;
-    // display a message
-    Log.debug("Exit with code: " + iExitCode);
-    System.exit(iExitCode);
-  }
+  
 
   /**
    * Load persisted collection file
@@ -1123,13 +997,6 @@ public class Main implements ITechnicalStrings {
    */
   public static JajukWindow getWindow() {
     return jw;
-  }
-
-  /**
-   * @return Returns whether jajuk is in exiting state
-   */
-  public static boolean isExiting() {
-    return bExiting;
   }
 
   /**

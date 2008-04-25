@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -51,7 +51,7 @@ public class ExitAction extends ActionBase {
     // Exit Jajuk
     new Thread() {
       public void run() {
-        Main.exit(0);
+        ExitService.exit(0);
       }
     }.start();
   }

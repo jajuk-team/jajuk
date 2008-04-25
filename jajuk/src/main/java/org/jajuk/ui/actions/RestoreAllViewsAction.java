@@ -24,7 +24,7 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -65,7 +65,7 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
         // Exit Jajuk
         new Thread() {
           public void run() {
-            Main.exit(0);
+            ExitService.exit(0);
           }
         }.start();
       }

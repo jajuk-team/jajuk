@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -60,7 +61,7 @@ public class DeviceManager extends ItemManager {
   private Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
     @Override
     public void run() {
-      while (!Main.isExiting()) {
+      while (!ExitService.isExiting()) {
         try {
           Thread.sleep(AUTO_REFRESH_DELAY);
           refreshAllDevices();

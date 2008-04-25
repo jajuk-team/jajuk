@@ -31,8 +31,8 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
 import org.jajuk.services.bookmark.History;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -158,7 +158,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     // directories cleanup
     for (final Item item : dirs) {
       final Directory dir = (Directory) item;
-      if (!Main.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()) {
+      if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()) {
         if (!dir.getFio().exists()) {
           // note that associated files are removed too
           DirectoryManager.getInstance().removeDirectory(dir.getID());
@@ -170,7 +170,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     // files cleanup
     final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : files) {
-      if (!Main.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
+      if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
         // Remove file if it doesn't exist any more or if it is a iTunes
         // file (useful for jajuk < 1.4)
         if (!file.getIO().exists() || file.getName().startsWith("._")) {
@@ -183,7 +183,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     // Playlist cleanup
     final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
-      if (!Main.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
+      if (!ExitService.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
         if (!plf.getFio().exists()) {
           PlaylistManager.getInstance().removePlaylistFile(plf);
           Log.debug("Removed: " + plf);
@@ -618,7 +618,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       lDateLastRefresh = System.currentTimeMillis();
       // check Jajuk is not exiting because a refresh cannot start in
       // this state
-      if (Main.bExiting) {
+      if (ExitService.isExiting()) {
         return false;
       }
       // check if this device is mounted (useful when called by
@@ -857,7 +857,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         KnownTypeFilter.getInstance(), ImageFilter.getInstance() });
     while (it.hasNext()) {
       // give a chance to exit during sync
-      if (Main.isExiting()) {
+      if (ExitService.isExiting()) {
         return iNbCreatedFiles;
       }
       boolean bNeedCreate = true;

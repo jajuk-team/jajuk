@@ -32,12 +32,12 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.WebRadio;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.events.Event;
@@ -915,7 +915,7 @@ public class FIFO implements ITechnicalStrings {
     // before exiting
     bStop = true;
     // set was playing state if it is not a stop called by jajuk exit
-    if (!Main.isExiting()) {
+    if (!ExitService.isExiting()) {
       ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
     }
     Player.stop(true); // stop player

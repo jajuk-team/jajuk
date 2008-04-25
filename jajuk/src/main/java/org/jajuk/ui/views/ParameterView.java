@@ -69,6 +69,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
@@ -690,7 +691,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // Exit Jajuk
         new Thread() {
           public void run() {
-            Main.exit(0);
+            ExitService.exit(0);
           }
         }.start();
       } catch (final Exception e) {

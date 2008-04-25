@@ -32,7 +32,7 @@ import java.util.HashMap;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.Main;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
@@ -146,7 +146,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   private static Thread tAutoCommit = new Thread("Collection Auto Commit Thread") {
     @Override
     public void run() {
-      while (!Main.isExiting()) {
+      while (!ExitService.isExiting()) {
         try {
           Thread.sleep(AUTO_COMMIT_DELAY);
           Log.debug("Auto commit");

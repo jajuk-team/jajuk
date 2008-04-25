@@ -93,6 +93,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.helpers.FontManager;
@@ -578,7 +579,7 @@ public class Util implements ITechnicalStrings {
     int iDeep = 0; // deep
     File dParent = root;
     // Start actual scan
-    while ((iDeep >= 0) && !Main.isExiting()) {
+    while ((iDeep >= 0) && !ExitService.isExiting()) {
       // only directories
       final File[] files = fCurrent.listFiles(Util.dirFilter);
       // files is null if fCurrent is a not a directory

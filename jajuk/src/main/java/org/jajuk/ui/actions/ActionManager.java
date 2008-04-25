@@ -57,10 +57,10 @@ import static org.jajuk.ui.actions.JajukAction.SHOW_ABOUT;
 import static org.jajuk.ui.actions.JajukAction.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukAction.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.actions.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
-import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
 
 import java.awt.Desktop;
 import java.util.ArrayList;

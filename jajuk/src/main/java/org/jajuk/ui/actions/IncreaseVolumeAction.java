@@ -22,7 +22,6 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.services.players.Player;
-import org.jajuk.ui.widgets.CommandJPanel;
 
 /**
  * Action class for increasing the volume. Installed keystroke:

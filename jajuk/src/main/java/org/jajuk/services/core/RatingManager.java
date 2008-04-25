@@ -20,7 +20,6 @@
 
 package org.jajuk.services.core;
 
-import org.jajuk.Main;
 import org.jajuk.base.FileManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
@@ -64,7 +63,7 @@ public class RatingManager extends Thread implements ITechnicalStrings {
 
   @Override
   public void run() {
-    while (!Main.bExiting) {
+    while (!ExitService.isExiting()) {
       // Computes every 10 mins, until jajuk ends
       try {
         Thread.sleep(600000);
