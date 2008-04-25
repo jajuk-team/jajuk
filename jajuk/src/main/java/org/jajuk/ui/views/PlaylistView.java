@@ -118,6 +118,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   JMenuItem jmiFilePlay;
   JMenuItem jmiFilePush;
   JMenuItem jmiFileAddFavorites;
+  JMenuItem jmiFileUp;
+  JMenuItem jmiFileDown;
   JMenuItem jmiFileProperties;
   /** Current playlist */
   Playlist plf;
@@ -310,9 +312,18 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
     jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
+        IconLoader.ICON_UP);
+    jmiFileUp.addActionListener(this);
+    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"),
+        IconLoader.ICON_DOWN);
+    jmiFileDown.addActionListener(this);
+
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFilePush);
     editorTable.getMenu().add(jmiFileAddFavorites);
+    editorTable.getMenu().add(jmiFileUp);
+    editorTable.getMenu().add(jmiFileDown);
     editorTable.getMenu().add(jmiFileProperties);
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
@@ -635,15 +646,16 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       } else if (ae.getSource() == jbClear) {
         // if it is the queue playlist, stop the selection
         plf.clear();
-      } else if (ae.getSource() == jbDown || ae.getSource() == jbUp) {
+      } else if (ae.getSource() == jbDown || ae.getSource() == jbUp
+          || ae.getSource() == jmiFileDown || ae.getSource() == jmiFileUp) {
         int iRow = editorTable.getSelectedRow();
         if (iRow != -1) { // -1 means nothing is selected
-          if (ae.getSource() == jbDown) {
+          if (ae.getSource() == jbDown || ae.getSource() == jmiFileDown) {
             plf.down(iRow);
             if (iRow < editorTable.getModel().getRowCount() - 1) {
               editorTable.getSelectionModel().setSelectionInterval(iRow + 1, iRow + 1);
             }
-          } else if (ae.getSource() == jbUp) {
+          } else if (ae.getSource() == jbUp || ae.getSource() == jmiFileUp) {
             plf.up(iRow);
             if (iRow > 0) {
               editorTable.getSelectionModel().setSelectionInterval(iRow - 1, iRow - 1);
@@ -849,7 +861,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       SwingWorker sw = new SwingWorker() {
         public Object construct() {
           PlaylistRepository.super.construct();
-      
+
           jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukAction.SAVE_AS));
           jmiRepositorySaveAs.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
           jtable.getMenu().add(jmiRepositorySaveAs);
@@ -905,10 +917,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
       SwingWorker sw = new SwingWorker() {
         Playlist plf;
+        boolean bErrorLoading = false;
 
         @Override
         public void finished() {
-          if (plf != null) {
+          if (!bErrorLoading &&  plf != null) {
             selectPlaylist(plf);
           }
         }
@@ -928,6 +941,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           } catch (JajukException e1) {
             Log.error(e1);
             Messages.showErrorMessage(17);
+            bErrorLoading = true;
           }
           return null;
         }

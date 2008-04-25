@@ -155,9 +155,17 @@ public class QueueView extends PlaylistView {
     jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
     jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
+        IconLoader.ICON_UP);
+    jmiFileUp.addActionListener(this);
+    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"),
+        IconLoader.ICON_DOWN);
+    jmiFileDown.addActionListener(this);
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFilePush);
     editorTable.getMenu().add(jmiFileAddFavorites);
+    editorTable.getMenu().add(jmiFileUp);
+    editorTable.getMenu().add(jmiFileDown);
     editorTable.getMenu().add(jmiFileProperties);
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
@@ -243,7 +251,7 @@ public class QueueView extends PlaylistView {
         try {
           EventSubject subject = event.getSubject();
           editorTable.acceptColumnsEvents = false; // flag reloading to avoid
-                                                    // wrong
+          // wrong
           if (EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)
               || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
             editorModel.alItems.clear();
@@ -333,17 +341,18 @@ public class QueueView extends PlaylistView {
         plf.saveAs();
         // notify playlist repository to refresh
         ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-      } else if (ae.getSource() == jbDown || ae.getSource() == jbUp) {
+      } else if (ae.getSource() == jbDown || ae.getSource() == jbUp
+          || ae.getSource() == jmiFileDown || ae.getSource() == jmiFileUp) {
         int iRow = editorTable.getSelectedRow();
         if (iRow != -1) { // -1 means nothing is selected
-          if (ae.getSource() == jbDown) {
+          if (ae.getSource() == jbDown || ae.getSource() == jmiFileDown) {
             plf.down(iRow);
             if (iRow < editorTable.getModel().getRowCount() - 1) {
               // force immediate table refresh
               refreshQueue();
               editorTable.getSelectionModel().setSelectionInterval(iRow + 1, iRow + 1);
             }
-          } else if (ae.getSource() == jbUp) {
+          } else if (ae.getSource() == jbUp || ae.getSource() == jmiFileUp) {
             plf.up(iRow);
             if (iRow > 0) {
               // force immediate table refresh
@@ -374,14 +383,14 @@ public class QueueView extends PlaylistView {
         }
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
-        //Stop the player
+        // Stop the player
         FIFO.getInstance().stopRequest();
-        //Reset the FIFO
+        // Reset the FIFO
         FIFO.getInstance().reset(); // reinit all variables
-        //Request all GUI reset
+        // Request all GUI reset
         ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
       }
-      
+
     } catch (Exception e2) {
       Log.error(e2);
     }
