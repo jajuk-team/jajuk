@@ -92,8 +92,12 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   public boolean importData(JComponent c, Transferable t) {
     try {
       if (canImport(c, t.getTransferDataFlavors())) {
-        JComponent comp = (JComponent) c.getParent().getParent().getParent().getParent()
-            .getParent();
+        // Note that component hierarchy is different between queue and playlist
+        // view
+        JComponent comp = (JComponent) c.getParent();
+        while (!(comp instanceof PlaylistView)) {
+          comp = (JComponent) comp.getParent();
+        }
         PlaylistView view = ((PlaylistView) comp);
         Playlist plf = view.getCurrentPlaylist();
         Object oData = null;
@@ -139,7 +143,10 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     String sFlavor = flavors[0].getHumanPresentableName();
     if (sFlavor.equals("Node") || sFlavor.equals("Row") || sFlavor.equals("Album")) {
-      JComponent comp = (JComponent) c.getParent().getParent().getParent().getParent().getParent();
+      JComponent comp = (JComponent) c.getParent();
+      while (!(comp instanceof PlaylistView)) {
+        comp = (JComponent) comp.getParent();
+      }
       PlaylistView view = ((PlaylistView) comp);
       Playlist plf = view.getCurrentPlaylist();
       // Don't accept drop for novelties and bestof
