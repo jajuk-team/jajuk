@@ -471,7 +471,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // wrong
           // column changed of playlist
           // current playlist has changed
-          if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
+          if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)){
             refreshCurrentPlaylist();
           } else if (EventSubject.EVENT_FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
@@ -870,8 +870,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // the list for GUI reasons
           jtable.getMenu().add(jmiProperties);
           jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
-          jtable.getColumnModel().getSelectionModel().addListSelectionListener(
-              PlaylistRepository.this);
           // Add specific behavior on left click
           jtable.setCommand(new ILaunchCommand() {
             public void launch(int nbClicks) {
@@ -915,13 +913,14 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (e.getValueIsAdjusting()) {
         return;
       }
+      
       SwingWorker sw = new SwingWorker() {
         Playlist plf;
         boolean bErrorLoading = false;
 
         @Override
         public void finished() {
-          if (!bErrorLoading &&  plf != null) {
+          if (!bErrorLoading && plf != null) {
             selectPlaylist(plf);
           }
         }
@@ -937,7 +936,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           plf = (Playlist) model.getItemAt(row);
           // load the playlist
           try {
-            plf.forceRefresh();
+            plf.getFiles();
           } catch (JajukException e1) {
             Log.error(e1);
             Messages.showErrorMessage(17);

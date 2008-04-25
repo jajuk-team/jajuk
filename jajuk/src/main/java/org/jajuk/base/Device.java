@@ -509,12 +509,13 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         return;
       }
     }
-    // Here the device is conciderated as mounted
+    // Here the device is considerated as mounted
     bMounted = true;
     // notify views to refresh if needed
     if (bUIRefresh) {
       ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
     }
+    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
   }
 
   /**

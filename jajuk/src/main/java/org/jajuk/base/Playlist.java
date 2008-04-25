@@ -406,7 +406,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
               ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
         } catch (final Exception e) {
           Log.error(e);
-          Messages.showErrorMessage(11, getDirectory().getDevice().getName());
           throw new JajukException(141, getFio().getAbsolutePath(), null);
         }
       } else {
