@@ -19,9 +19,6 @@
  */
 package org.jajuk.ui.perspectives;
 
-import com.vlsolutions.swing.toolbars.ToolBarContainer;
-import com.vlsolutions.swing.toolbars.ToolBarPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
@@ -31,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
@@ -155,20 +153,18 @@ public class PerspectiveManager implements ITechnicalStrings {
           // Perform specific view operation at perspective display
           view.onPerspectiveSelection();
         }
-        ToolBarContainer tbcontainer = Main.getToolbarContainer();
-        // Remove all non-toolbar items
-        if (tbcontainer.getComponentCount() > 0) {
-          Component[] components = tbcontainer.getComponents();
+        // Clear the perspective panel
+        JPanel perspectivePanel = Main.perspectivePanel;
+        if (perspectivePanel.getComponentCount() > 0) {
+          Component[] components = perspectivePanel.getComponents();
           for (int i = 0; i < components.length; i++) {
-            if (!(components[i] instanceof ToolBarPanel)) {
-              tbcontainer.remove(components[i]);
-            }
+              perspectivePanel.remove(components[i]);
           }
         }
-        tbcontainer.add(perspective.getContentPane(), BorderLayout.CENTER);
+        Main.perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);
         // refresh UI
-        tbcontainer.revalidate();
-        tbcontainer.repaint();
+        Main.perspectivePanel.revalidate();
+        Main.perspectivePanel.repaint();
         // Select right item in perspective selector
         PerspectiveBarJPanel.getInstance().setActivated(perspective);
         // store perspective selection

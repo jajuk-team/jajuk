@@ -37,13 +37,13 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.WebRadio;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -129,7 +129,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
         int i = 40;
         while (!bOk) {
           font = new Font("verdana", Font.BOLD, i);
-          FontMetrics fontMetrics = Main.getWindow().getFontMetrics(font);
+          FontMetrics fontMetrics = JajukWindow.getInstance().getFontMetrics(font);
           int iFontSize = SwingUtilities.computeStringWidth(fontMetrics, sText);
           if (iFontSize <= iSize - 150) {
             bOk = true;

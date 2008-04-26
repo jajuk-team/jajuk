@@ -102,8 +102,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     ImageIcon ii = album.getThumbnail(size + "x" + size);
     if (!bNoCover) {
       jlIcon.setBorder(new ShadowBorder());
-      ii.getImage().flush(); // flush image buffer to avoid JRE to
-      // use old image
     }
     jlIcon.setIcon(ii);
     if (bShowFullText) {

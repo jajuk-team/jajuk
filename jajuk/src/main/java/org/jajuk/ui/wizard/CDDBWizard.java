@@ -52,7 +52,6 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.events.Event;
@@ -60,6 +59,7 @@ import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.EventSubject;
@@ -307,7 +307,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
     getRootPane().setDefaultButton(okc.getOKButton());
     getContentPane().add(jpMain);
     pack();
-    setLocationRelativeTo(Main.getWindow());
+    setLocationRelativeTo(JajukWindow.getInstance());
     setVisible(true);
   }
 

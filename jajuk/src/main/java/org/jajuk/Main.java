@@ -22,7 +22,6 @@ import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
-import com.vlsolutions.swing.toolbars.ToolBarContainer;
 
 import ext.JSplash;
 import ext.JVM;
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -83,7 +83,6 @@ import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -103,6 +102,7 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXPanel;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 
@@ -111,23 +111,14 @@ import org.jvnet.substance.watermark.SubstanceNoneWatermark;
  */
 public class Main implements ITechnicalStrings {
 
-  /** Main window */
-  private static JajukWindow jw;
-
-  /** Top command panel */
-  public static CommandJPanel command;
-
-  /** Toolbar container that can be serialized */
-  private static ToolBarContainer tbcontainer;
-
   /** Left side perspective selection panel */
   public static PerspectiveBarJPanel perspectiveBar;
 
-  /** Lower information panel */
-  public static InformationJPanel information;
-
   /** Main frame panel */
   public static JPanel jpFrame;
+
+  /** specific perspective panel */
+  public static JPanel perspectivePanel;
 
   /** splash screen */
   public static JSplash sc;
@@ -138,7 +129,7 @@ public class Main implements ITechnicalStrings {
   /** Test mode */
   public static boolean bTestMode = false;
 
-    /** Jukebox power pack flag* */
+  /** Jukebox power pack flag* */
   public static boolean bPowerPack = false;
 
   /**
@@ -146,9 +137,6 @@ public class Main implements ITechnicalStrings {
    * process *
    */
   public static boolean bThumbMaker = false;
-
-  /** Systray */
-  private static JajukSystray jsystray;
 
   /** UI lauched flag */
   private static boolean bUILauched = false;
@@ -581,12 +569,6 @@ public class Main implements ITechnicalStrings {
           // Force rebuilding thumbs (after an album id hashcode
           // method change for eg)
           if (Collection.getInstance().hmWrongRightAlbumID.size() > 0) {
-            ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
-            ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100x100);
-            ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150x150);
-            ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200x200);
-            ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250x250);
-            ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300x300);
             // Launch thumbs creation in another process
             ThumbnailsMaker.launchAllSizes(true);
           }
@@ -752,8 +734,6 @@ public class Main implements ITechnicalStrings {
           CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
     }
   }
-
-  
 
   /**
    * Load persisted collection file
@@ -993,13 +973,6 @@ public class Main implements ITechnicalStrings {
   }
 
   /**
-   * @return Returns the main window.
-   */
-  public static JajukWindow getWindow() {
-    return jw;
-  }
-
-  /**
    * Launch jajuk window
    */
   public static void launchWindow() throws Exception {
@@ -1017,48 +990,48 @@ public class Main implements ITechnicalStrings {
 
           // Light drag and drop for VLDocking
           UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
+          DockingUISettings.getInstance().installUI();
 
           // Set windows decoration to look and feel
           JFrame.setDefaultLookAndFeelDecorated(true);
           JDialog.setDefaultLookAndFeelDecorated(true);
 
-          // Prepare toolbars
-          DockingUISettings.getInstance().installUI();
-          tbcontainer = ToolBarContainer.createDefaultContainer(true, false, true, false);
-
           // starts ui
-          jw = JajukWindow.getInstance();
+          JajukWindow.getInstance();
 
           // Creates the panel
-          jpFrame = (JPanel) jw.getContentPane();
+          jpFrame = (JPanel) JajukWindow.getInstance().getContentPane();
           jpFrame.setOpaque(true);
           jpFrame.setLayout(new BorderLayout());
 
           // create the command bar
-          command = CommandJPanel.getInstance();
+          CommandJPanel command = CommandJPanel.getInstance();
           command.initUI();
 
           // Create the information bar panel
-          information = InformationJPanel.getInstance();
+          InformationJPanel information = InformationJPanel.getInstance();
 
           // Add information panel
           jpFrame.add(information, BorderLayout.SOUTH);
 
           // Create the perspective manager
           PerspectiveManager.load();
+          perspectivePanel = new JXPanel();
+          //Make this panel extensible
+          perspectivePanel.setLayout(new BoxLayout(perspectivePanel, BoxLayout.X_AXIS));
 
           // Set menu bar to the frame
-          jw.setJMenuBar(JajukJMenuBar.getInstance());
+          JajukWindow.getInstance().setJMenuBar(JajukJMenuBar.getInstance());
 
           // Create the perspective tool bar panel
           perspectiveBar = PerspectiveBarJPanel.getInstance();
           jpFrame.add(perspectiveBar, BorderLayout.WEST);
 
           // Apply size and location BEFORE setVisible
-          jw.applyStoredSize();
+          JajukWindow.getInstance().applyStoredSize();
 
           // Display the frame
-          jw.setVisible(true);
+          JajukWindow.getInstance().setVisible(true);
 
           // Apply watermark
           Util.setWatermark(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
@@ -1066,7 +1039,7 @@ public class Main implements ITechnicalStrings {
           // Apply size and location again
           // (required by Gnome for ie to fix the 0-sized maximized
           // frame)
-          jw.applyStoredSize();
+          JajukWindow.getInstance().applyStoredSize();
 
           // Initialize and add the desktop
           PerspectiveManager.init();
@@ -1077,8 +1050,8 @@ public class Main implements ITechnicalStrings {
           final PanelBuilder builder = new PanelBuilder(layout);
           final CellConstraints cc = new CellConstraints();
           // Add items
-          builder.add(tbcontainer, cc.xy(1, 1));
           builder.add(command, cc.xy(1, 3));
+          builder.add(perspectivePanel, cc.xy(1, 1));
           jpFrame.add(builder.getPanel(), BorderLayout.CENTER);
 
           // Upgrade step2
@@ -1088,7 +1061,7 @@ public class Main implements ITechnicalStrings {
           // session)
           if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
             final TipOfTheDay tipsView = new TipOfTheDay();
-            tipsView.setLocationRelativeTo(jw);
+            tipsView.setLocationRelativeTo(JajukWindow.getInstance());
             tipsView.setVisible(true);
           }
 
@@ -1130,7 +1103,7 @@ public class Main implements ITechnicalStrings {
     }
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        jsystray = JajukSystray.getInstance();
+        JajukSystray.getInstance();
       }
     });
   }
@@ -1168,21 +1141,6 @@ public class Main implements ITechnicalStrings {
    */
   public static void setDefaultPerspective(final String perspective) {
     sPerspective = perspective;
-  }
-
-  /**
-   * 
-   * @return the systray
-   */
-  public static JajukSystray getSystray() {
-    return jsystray;
-  }
-
-  /**
-   * @return toolbar container
-   */
-  public static ToolBarContainer getToolbarContainer() {
-    return tbcontainer;
   }
 
   /**

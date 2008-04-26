@@ -22,7 +22,6 @@ package org.jajuk.services.core;
 import java.io.File;
 import java.net.InetAddress;
 
-import org.jajuk.Main;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.bookmark.History;
@@ -46,14 +45,11 @@ import org.jajuk.util.log.Log;
  */
 public class ExitService extends Thread implements ITechnicalStrings {
 
-    /** Exit code */
+  /** Exit code */
   private static int iExitCode = 0;
-  
+
   /** Exiting flag */
   private static boolean bExiting = false;
-
-
-
 
   public ExitService() {
     super("Exit hook thread");
@@ -76,28 +72,31 @@ public class ExitService extends Thread implements ITechnicalStrings {
         }
       }
       // Store window/tray/slimbar configuration
-      if (JajukSlimWindow.getInstance().isVisible()) {
+      if (JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible()) {
         ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
             .toString(DISPLAY_MODE_SLIMBAR_TRAY));
       }
-      if (JajukWindow.getInstance().isVisible()) {
+      if (JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible()) {
         ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
             .toString(DISPLAY_MODE_WINDOW_TRAY));
       }
 
-      if (!JajukSlimWindow.getInstance().isVisible() && !JajukWindow.getInstance().isVisible()) {
+      if (!(JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible())
+          && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
         ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
       }
       // hide window ASAP
-      if (Main.getWindow() != null) {
-        Main.getWindow().setVisible(false);
+      if (JajukWindow.isLoaded()) {
+        JajukWindow.getInstance().setVisible(false);
       }
       // hide systray
-      if (JajukSystray.getInstance() != null) {
+      if (JajukSystray.isLoaded()) {
         JajukSystray.getInstance().closeSystray();
       }
       // Hide slimbar
-      JajukSlimWindow.getInstance().setVisible(false);
+      if (JajukSlimWindow.isLoaded()) {
+        JajukSlimWindow.getInstance().setVisible(false);
+      }
     } catch (Exception e) {
       e.printStackTrace();
       // no log to make sure to reach collection
@@ -155,7 +154,7 @@ public class ExitService extends Thread implements ITechnicalStrings {
       System.out.println("Exit Hook end");
     }
   }
-  
+
   /**
    * Exit code, then system will execute the exit hook
    * 
@@ -175,8 +174,8 @@ public class ExitService extends Thread implements ITechnicalStrings {
     Log.debug("Exit with code: " + iExitCode);
     System.exit(iExitCode);
   }
-  
-   /**
+
+  /**
    * @return Returns whether jajuk is in exiting state
    */
   public static boolean isExiting() {

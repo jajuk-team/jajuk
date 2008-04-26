@@ -21,7 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.Main;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.wizard.SimpleDeviceWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -45,7 +45,7 @@ public class SimpleDeviceWizardAction extends ActionBase {
   public void perform(ActionEvent evt) {
     SimpleDeviceWizard wizard = new SimpleDeviceWizard();
     wizard.pack();
-    wizard.setLocationRelativeTo(Main.getWindow());
+    wizard.setLocationRelativeTo(JajukWindow.getInstance());
     wizard.setVisible(true);
   }
 }

@@ -49,7 +49,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
 
-import org.jajuk.Main;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -57,6 +56,7 @@ import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
@@ -377,7 +377,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
       // This item is enabled only for albums
       new Thread() {
         public void run() {
-          JDialog jd = new JDialog(Main.getWindow(), Messages.getString("CatalogView.18"));
+          JDialog jd = new JDialog(JajukWindow.getInstance(), Messages.getString("CatalogView.18"));
           org.jajuk.base.File file = null;
           Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
           if (tracks.size() > 0) {

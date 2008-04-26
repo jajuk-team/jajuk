@@ -42,7 +42,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.SearchResult;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -232,7 +231,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     setModal(true);
     setAlwaysOnTop(true);
     pack();
-    setLocationRelativeTo(Main.getWindow());
+    setLocationRelativeTo(JajukWindow.getInstance());
     setVisible(true);
   }
 

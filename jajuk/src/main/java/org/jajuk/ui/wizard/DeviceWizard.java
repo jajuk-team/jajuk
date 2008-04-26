@@ -58,6 +58,7 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
@@ -141,7 +142,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
       }
     });
     setTitle(Messages.getString("DeviceWizard.0"));
-    setLocation(org.jajuk.Main.getWindow().getX() + 100, org.jajuk.Main.getWindow().getY() + 100);
+    setLocation(JajukWindow.getInstance().getX() + 100, JajukWindow.getInstance().getY() + 100);
     jpMain = new JPanel();
     jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
     jp1 = new JPanel();

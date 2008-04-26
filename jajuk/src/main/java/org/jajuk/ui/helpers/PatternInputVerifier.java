@@ -25,7 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 
@@ -47,7 +47,7 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
     String sText = tf.getText().toLowerCase();
     // Check pattern contains at least one /
     if (sText.indexOf('/') == -1) {
-      JOptionPane.showMessageDialog(Main.getWindow(), Messages.getString("Error.146"), //$NON-NLS-1$
+      JOptionPane.showMessageDialog(JajukWindow.getInstance(), Messages.getString("Error.146"), //$NON-NLS-1$
           Messages.getString("Error"), JOptionPane.ERROR_MESSAGE);
       return false;
     }

@@ -134,7 +134,7 @@ public class ThumbnailManager implements ITechnicalStrings {
     // Wait for full image loading
     final MediaTracker mediaTracker = new MediaTracker(new Container());
     mediaTracker.addImage(image, 0);
-    mediaTracker.waitForID(0);
+    mediaTracker.waitForID(0); //wait for image loading
     // determine thumbnail size from WIDTH and HEIGHT
     int thumbWidth = maxDim;
     int thumbHeight = maxDim;

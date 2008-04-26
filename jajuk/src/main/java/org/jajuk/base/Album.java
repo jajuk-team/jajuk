@@ -294,7 +294,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * 
    * @param size
-   *          size using format 100x100
+   *          size using format width x height
    * @return album thumb for given size
    */
   public ImageIcon getThumbnail(String size) {
@@ -307,9 +307,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // Create the image using Toolkit and not ImageIO API to be able to
     // flush all the image data
     Image img = Toolkit.getDefaultToolkit().getImage(fCover.getAbsolutePath());
-    // Free thumb memory
+    ImageIcon icon = new ImageIcon(img);
+   // Free thumb memory (DO IT AFTER FULL ImageIcon loading, see previosu line)
     img.flush();
-    return new ImageIcon(img);
+    // accelerate GC cleanup
+    img = null;
+    return icon;
   }
 
   /**

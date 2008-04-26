@@ -74,6 +74,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     }
     return jw;
   }
+  
+  /**
+   * 
+   * @return whether the window is loaded
+   */
+  public static boolean isLoaded(){
+    return (jw != null);
+  }
 
   /**
    * Constructor

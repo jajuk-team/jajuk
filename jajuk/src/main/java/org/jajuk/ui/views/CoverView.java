@@ -53,7 +53,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
@@ -68,6 +67,7 @@ import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
@@ -318,7 +318,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           final File finalFile = new File(dirReference.getFio().getPath() + "/"
               + Util.getOnlyFile(cover.getURL().toString()));
           jfchooser.setSelectedFile(finalFile);
-          final int returnVal = jfchooser.showSaveDialog(Main.getWindow());
+          final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
           File fNew = null;
           if (returnVal == JFileChooser.APPROVE_OPTION) {
             fNew = jfchooser.getSelectedFile();

@@ -37,7 +37,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.Main;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -104,7 +104,7 @@ public class AboutWindow extends JDialog implements ITechnicalStrings {
             && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
             && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
           try {
-            JDialog jd = new JDialog(Main.getWindow());
+            JDialog jd = new JDialog(JajukWindow.getInstance());
             ImageIcon ii = new ImageIcon(new URL("http://jajuk.sourceforge.net/01/flbf.jpg"));
             JPanel jp = new JPanel();
             jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
@@ -112,7 +112,7 @@ public class AboutWindow extends JDialog implements ITechnicalStrings {
             jp.add(jl);
             jd.setContentPane(jp);
             jd.pack();
-            jd.setLocationRelativeTo(Main.getWindow());
+            jd.setLocationRelativeTo(JajukWindow.getInstance());
             jd.setVisible(true);
           } catch (Exception e) {
             // No logs

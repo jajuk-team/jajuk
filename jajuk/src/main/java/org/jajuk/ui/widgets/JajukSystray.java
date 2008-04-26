@@ -138,6 +138,14 @@ public class JajukSystray extends CommandJPanel {
       update(new Event(EventSubject.EVENT_HEART_BEAT));
     }
   });
+  
+  /**
+   * 
+   * @return whether the tray is loaded
+   */
+  public static boolean isLoaded(){
+    return (jsystray != null);
+  }
 
   /**
    * 

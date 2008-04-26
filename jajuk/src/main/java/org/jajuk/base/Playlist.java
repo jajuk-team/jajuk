@@ -35,13 +35,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -685,7 +685,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       return;
     }
     jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + ITechnicalStrings.EXT_PLAYLIST));
-    final int returnVal = jfchooser.showSaveDialog(Main.getWindow());
+    final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       java.io.File file = jfchooser.getSelectedFile();
       // add automatically the extension if required
@@ -766,7 +766,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
     jfc.setMultiSelectionEnabled(false);
-    final int returnVal = jfc.showDialog(Main.getWindow(), "Ok");
+    final int returnVal = jfc.showDialog(JajukWindow.getInstance(), "Ok");
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       new Thread() {
         @Override

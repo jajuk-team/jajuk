@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
@@ -33,9 +33,9 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.jajuk.Main;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -57,7 +57,7 @@ public class DebugLogAction extends ActionBase {
     text.setBackground(Color.WHITE);
     text.setForeground(Color.DARK_GRAY);
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    final JDialog dialog = new JDialog(Main.getWindow(), Messages.getString("DebugLogAction.0"),
+    final JDialog dialog = new JDialog(JajukWindow.getInstance(), Messages.getString("DebugLogAction.0"),
         false);
     JPanel jp = new JPanel();
     double[][] size = new double[][] { { 0.5f, 20, 0.5f }, { TableLayout.FILL, 10, 20, 5 } };
@@ -81,7 +81,7 @@ public class DebugLogAction extends ActionBase {
     dialog.add(jp);
     dialog.setPreferredSize(new Dimension(800, 600));
     dialog.pack();
-    dialog.setLocationRelativeTo(Main.getWindow());
+    dialog.setLocationRelativeTo(JajukWindow.getInstance());
     dialog.setVisible(true);
   }
 

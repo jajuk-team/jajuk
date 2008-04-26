@@ -52,7 +52,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.Main;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -69,6 +68,7 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
@@ -222,7 +222,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         getRootPane().setDefaultButton(okc.getOKButton());
         getContentPane().add(new JScrollPane(jpMain));
         pack();
-        setLocationRelativeTo(Main.getWindow());
+        setLocationRelativeTo(JajukWindow.getInstance());
         setVisible(true);
       }
     });

@@ -159,6 +159,14 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
   }
+  
+  /**
+   * 
+   * @return whether the slimbar is loaded
+   */
+  public static boolean isLoaded(){
+    return (self != null);
+  }
 
   public void initUI() {
     setIconImage(IconLoader.ICON_LOGO.getImage());

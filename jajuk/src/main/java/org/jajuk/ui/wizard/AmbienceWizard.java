@@ -40,7 +40,6 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.services.dj.Ambience;
@@ -50,6 +49,7 @@ import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.StylesSelectionDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -364,7 +364,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 
   public AmbienceWizard() {
     super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, Util
-        .getImage(ITechnicalStrings.IMAGE_DJ), Main.getWindow(), new Locale(Messages.getInstance()
+        .getImage(ITechnicalStrings.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getInstance()
         .getLocale()), 700, 600);
   }
 

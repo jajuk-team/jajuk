@@ -34,7 +34,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.jajuk.Main;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -74,7 +73,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
           // if URL is already set, use it as current directory
           jfc.setCurrentDirectory(new File(sUrl));
         }
-        final int returnVal = jfc.showOpenDialog(Main.getWindow());
+        final int returnVal = jfc.showOpenDialog(JajukWindow.getInstance());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
           final String previousURL = jtfUrl.getText();
           final java.io.File file = jfc.getSelectedFile();
@@ -109,7 +108,7 @@ public class PathSelector extends JPanel implements ITechnicalStrings {
           // if URL is already set, use it as current directory
           jfc.setCurrentDirectory(new File(sUrl));
         }
-        final int returnVal = jfc.showOpenDialog(Main.getWindow());
+        final int returnVal = jfc.showOpenDialog(JajukWindow.getInstance());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
           final String previousURL = jtfUrl.getText();
           final java.io.File file = jfc.getSelectedFile();

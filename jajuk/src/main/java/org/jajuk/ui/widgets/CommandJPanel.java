@@ -82,7 +82,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import org.jajuk.Main;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.WebRadio;
@@ -508,7 +507,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     // no text visible
     ddbDDJ.setText("");
 
-    popupWebRadio = new XJPopupMenu(Main.getWindow());
+    popupWebRadio = new XJPopupMenu(JajukWindow.getInstance());
     ddbWebRadio = new DropDownButton(IconLoader.ICON_WEBRADIO) {
       private static final long serialVersionUID = 1L;
 

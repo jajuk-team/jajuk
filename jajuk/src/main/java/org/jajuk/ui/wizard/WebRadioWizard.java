@@ -41,13 +41,13 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.WebRadio;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
@@ -346,7 +346,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
 
   public WebRadioWizard() {
     super(Messages.getString("RadioWizard.7"), RadioPanel.class, Util.getImage(IMAGE_WEBRADIO),
-        Main.getWindow(), new Locale(Messages.getInstance().getLocale()), 700, 600);
+        JajukWindow.getInstance(), new Locale(Messages.getInstance().getLocale()), 700, 600);
   }
 
   /*

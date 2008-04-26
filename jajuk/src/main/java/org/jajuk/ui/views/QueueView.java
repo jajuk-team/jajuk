@@ -457,11 +457,9 @@ public class QueueView extends PlaylistView {
         jbAddShuffle.setEnabled(true);
       }
       // Up button
-      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
+      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()){
       // check if several rows have been selected :
           // doesn't supported yet
-          || (FIFO.getInstance().containsRepeat())) {
-        // neither for bestof nor novelties playlist
         jbUp.setEnabled(false);
       } else {
         // still here ?
@@ -479,10 +477,9 @@ public class QueueView extends PlaylistView {
         }
       }
       // Down button
-      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
+      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()){
       // check if several rows have been selected :
           // doesn't supported yet
-          || (FIFO.getInstance().containsRepeat())) {
         jbDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {

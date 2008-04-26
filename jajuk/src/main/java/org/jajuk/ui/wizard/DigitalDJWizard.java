@@ -48,7 +48,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.services.dj.Ambience;
@@ -65,6 +64,7 @@ import org.jajuk.services.events.ObservationManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.StylesSelectionDialog;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -1348,7 +1348,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 
   public DigitalDJWizard() {
     super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, Util
-        .getImage(IMAGE_DJ), Main.getWindow(), new Locale(Messages.getInstance().getLocale()));
+        .getImage(IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getInstance().getLocale()));
   }
 
   /*

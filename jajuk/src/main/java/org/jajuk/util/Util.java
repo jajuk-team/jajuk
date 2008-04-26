@@ -26,7 +26,6 @@ import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.MediaTracker;
 import java.awt.MouseInfo;
 import java.awt.RenderingHints;
 import java.awt.Window;
@@ -133,6 +132,8 @@ public class Util implements ITechnicalStrings {
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
   private static Cursor currentCursor = DEFAULT_CURSOR;
+
+  private static Highlighter defaultHighlighter;
 
   /** contains clipboard data */
   public static String copyData;
@@ -638,7 +639,7 @@ public class Util implements ITechnicalStrings {
   public static List<StackItem> createStackItems(final List<org.jajuk.base.File> alFiles,
       final boolean bRepeat, final boolean bUserLauched) {
     final ArrayList<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
-    for(org.jajuk.base.File file : alFiles) {
+    for (org.jajuk.base.File file : alFiles) {
       if (file != null) {
         try {
           final StackItem item = new StackItem(file);
@@ -1460,15 +1461,7 @@ public class Util implements ITechnicalStrings {
    */
   public static ImageIcon getResizedImage(final ImageIcon img, final int iNewWidth,
       final int iNewHeight) {
-    // Wait for full image loading
-    final MediaTracker mediaTracker = new MediaTracker(new Container());
-    mediaTracker.addImage(img.getImage(), 0);
-    try {
-      mediaTracker.waitForID(0);
-    } catch (final InterruptedException e) {
-      Log.error(e);
-    }
-    final Image scaleImg = img.getImage().getScaledInstance(iNewWidth, iNewHeight,
+    Image scaleImg = img.getImage().getScaledInstance(iNewWidth, iNewHeight,
         Image.SCALE_AREA_AVERAGING);
     // Leave image cache here as we may want to keep original image
     return new ImageIcon(scaleImg);
@@ -1611,7 +1604,7 @@ public class Util implements ITechnicalStrings {
    * Try to compute time length in milliseconds using BasicPlayer API. (code
    * from jlGui 2.3)
    */
-  public static long getTimeLengthEstimation(final Map<String,Object> properties) {
+  public static long getTimeLengthEstimation(final Map<String, Object> properties) {
     long milliseconds = -1;
     int byteslength = -1;
     if (properties != null) {
@@ -2218,7 +2211,7 @@ public class Util implements ITechnicalStrings {
       Util.updateWindowUI(element);
     }
     // update tray
-    if ((Main.getSystray() != null) && (JajukSystray.getInstance().jmenu != null)) {
+    if (JajukSystray.isLoaded()  && (JajukSystray.getInstance().jmenu != null)) {
       Util.updateComponentTreeUI(JajukSystray.getInstance().jmenu);
     }
   }
@@ -2303,7 +2296,7 @@ public class Util implements ITechnicalStrings {
     }
     return (classLoader);
   }
-  
+
   /**
    * Build the frame title from user option
    * 
@@ -2349,16 +2342,20 @@ public class Util implements ITechnicalStrings {
    * @return a theme-dependent alternate row highlighter used in tables or trees
    */
   public static Highlighter getAlternateHighlighter() {
+    if (defaultHighlighter != null) {
+      return defaultHighlighter;
+    }
     SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
     ColorScheme scheme = theme.getColorScheme();
     Color color1 = null;
-    //Color color2 = null;
+    // Color color2 = null;
     if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
       color1 = scheme.getDarkColor();
     } else {
       color1 = new Color(230, 235, 240);
     }
-    return HighlighterFactory.createAlternateStriping(color1,null);
+    defaultHighlighter = HighlighterFactory.createAlternateStriping(color1, null);
+    return defaultHighlighter;
   }
 
   /**

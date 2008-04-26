@@ -15,13 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.Main;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.wizard.NewPropertyWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -39,7 +39,7 @@ public class NewPropertyAction extends ActionBase {
   public void perform(ActionEvent evt) throws JajukException {
     NewPropertyWizard npw = new NewPropertyWizard();
     npw.pack();
-    npw.setLocationRelativeTo(Main.getWindow());
+    npw.setLocationRelativeTo(JajukWindow.getInstance());
     npw.setVisible(true);
   }
 }

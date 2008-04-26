@@ -40,7 +40,7 @@ import javax.swing.JTextArea;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.Main;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -190,7 +190,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @return
    */
   public static Icon getIcon(final String sDesc){
-    Log.debug("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png");
     Icon icon = new ImageIcon(Util
         .getResource("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png"));
     return icon;
@@ -566,7 +565,7 @@ class ConfirmDialog extends JajukDialog {
     dialog.setModal(true);
     dialog.setAlwaysOnTop(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(Main.getWindow());
+    dialog.setLocationRelativeTo(JajukWindow.getInstance());
     dialog.setVisible(true);
     final Object resu = optionPane.getValue();
     // Set Cancel as default
@@ -648,7 +647,7 @@ class DetailsMessageDialog extends JajukDialog {
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);
       dialogDetail.pack();
-      dialogDetail.setLocationRelativeTo(Main.getWindow());
+      dialogDetail.setLocationRelativeTo(JajukWindow.getInstance());
       dialogDetail.setVisible(true);
     }
   }
@@ -684,7 +683,7 @@ class HideableMessageDialog extends JajukDialog {
     // keep it modal (useful at startup)
     dialog.setModal(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(Main.getWindow());
+    dialog.setLocationRelativeTo(JajukWindow.getInstance());
     dialog.setVisible(true);
     if (optionPane.getValue().equals(Messages.getString("Hide"))) {
       // Not show again
@@ -720,7 +719,7 @@ class ErrorMessageDialog extends JajukDialog {
     // keep it modal (useful at startup)
     dialog.setModal(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(Main.getWindow());
+    dialog.setLocationRelativeTo(JajukWindow.getInstance());
     dialog.setVisible(true);
   }
 }
