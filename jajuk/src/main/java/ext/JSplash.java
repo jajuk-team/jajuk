@@ -147,12 +147,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
         versionStringColor);
 
     // build a progress bar and a tips of the day scrolling text
-    int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX); 
-    String totd = Messages.getString("TipOfTheDay."
-        + index);
-    //Update totd index
-    ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
-          % Messages.getAll("TipOfTheDay").length));
+    String totd = Messages.getNextTipOfTheDay();
     //Remove pictures urls
     if (totd.matches(".*<a.*")){
       totd = totd.substring(0,totd.indexOf("<a"));

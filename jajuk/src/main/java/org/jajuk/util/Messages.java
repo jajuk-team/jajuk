@@ -171,6 +171,23 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     }
     return msgs.toArray(new String[msgs.size()]);
   }
+  
+  /**
+   * 
+   * @return next tip of the day
+   * <br>Note that tips of the day indexes are not always consecutive because some may have been removed 
+   */
+  public static String getNextTipOfTheDay(){
+    String totd = null;
+    //index contains the index of the last provided totd
+    int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
+    //display the next one
+    totd = Messages.getString("TipOfTheDay."+ index);
+    //Increment and save index
+    ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
+          % Messages.getAll("TipOfTheDay").length));
+    return totd;
+  }
 
   /**
    * Register a local
@@ -735,4 +752,6 @@ abstract class JajukDialog implements ITechnicalStrings {
   public int getResu() {
     return iResu;
   }
+  
+  
 }

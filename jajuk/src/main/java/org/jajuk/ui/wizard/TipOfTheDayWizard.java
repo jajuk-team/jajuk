@@ -41,7 +41,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class TipOfTheDay extends JFrame implements ITechnicalStrings {
+public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
 
   private static final long serialVersionUID = 1L;
 
@@ -55,16 +55,12 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 
   private JLabel lCounter;
 
-  public TipOfTheDay() {
+  public TipOfTheDayWizard() {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.ICON_LOGO.getImage());
     this.iLastTip = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
-    //Decrease totd index because it has already been increased in splashscreen
-    if (iLastTip > 0){
-      iLastTip --;
-    }
-
+    
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
     cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
 
@@ -78,7 +74,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
     bNext.setMargin(new Insets(1, 1, 1, 1));
     bNext.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
-        iLastTip = (iLastTip + 1) % TipOfTheDay.tips.length;
+        iLastTip = (iLastTip + 1) % tips.length;
         setTip(iLastTip);
       }
     });
@@ -89,7 +85,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
       public void actionPerformed(ActionEvent actionevent) {
         iLastTip = iLastTip - 1;
         if (iLastTip == -1) {
-          iLastTip = TipOfTheDay.tips.length - 1;
+          iLastTip = tips.length - 1;
         }
         setTip(iLastTip);
       }
@@ -165,7 +161,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
       toFront();
     } else {
       ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1)
-          % TipOfTheDay.tips.length));
+          % tips.length));
       ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, String
           .valueOf(cbShow.isSelected()));
     }

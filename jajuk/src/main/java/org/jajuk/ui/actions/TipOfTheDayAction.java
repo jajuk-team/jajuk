@@ -15,13 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.wizard.TipOfTheDay;
+import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -42,7 +42,7 @@ public class TipOfTheDayAction extends ActionBase {
    * @param evt
    */
   public void perform(ActionEvent evt) {
-    TipOfTheDay tipsView = new TipOfTheDay();
+    TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
     tipsView.setLocationByPlatform(true);
     tipsView.setVisible(true);
   }
