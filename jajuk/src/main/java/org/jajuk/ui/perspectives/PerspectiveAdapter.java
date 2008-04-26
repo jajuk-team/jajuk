@@ -29,11 +29,14 @@ import com.vlsolutions.swing.docking.DockingDesktop;
 import java.awt.Container;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 
@@ -118,6 +121,29 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     writeXML(out);
     out.flush();
     out.close();
+    // Now reopen the file and remove everything between <TabGroups> and
+    // </TabGroups> due to a bug in VLDocking (otherwise, VLDocking force
+    // creating phantom views)
+    StringBuilder sb = new StringBuilder();
+    BufferedReader in = new BufferedReader(new FileReader(saveFile));
+    String line = null;
+    boolean stop = false;
+    for (; (line = in.readLine()) != null;) {
+      if (line.indexOf("<TabGroups>") != -1) {
+        stop = true;
+      }
+      if (line.indexOf("</TabGroups>") != -1) {
+        stop = false;
+      }
+      if (!stop && line.indexOf("</TabGroups>") == -1) {
+        sb.append(line + "\n");
+      }
+    }
+    // write file again
+    out = new BufferedOutputStream(new FileOutputStream(saveFile));
+    out.write(sb.toString().getBytes());
+    out.flush();
+    out.close();
   }
 
   /*
@@ -126,6 +152,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * @see org.jajuk.ui.perspectives.IPerspective#load()
    */
   public void load() throws Exception {
+
     // Try to read XML conf file from home directory
     File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
     // If file doesn't exist (normally only at first install), read
@@ -142,12 +169,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       public Dockable resolveDockable(String keyName) {
         Dockable view = null;
         try {
-          String className = keyName.substring(0, keyName.indexOf('/'));
-          // Compatibility with < 1.4
-          if (className.equals("org.jajuk.ui.views.PhysicalPlaylistEditorView")
-              || className.equals("org.jajuk.ui.views.LogicalPlaylistEditorView")) {
-            className = "org.jajuk.ui.views.PlaylistView";
-          }
+          StringTokenizer st = new StringTokenizer(keyName, "/");
+          String className = st.nextToken();
           view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this);
         } catch (Exception e) {
           Log.error(e);
