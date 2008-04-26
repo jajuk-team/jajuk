@@ -91,7 +91,7 @@ import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.ui.wizard.FirstTimeWizard;
-import org.jajuk.ui.wizard.TipOfTheDay;
+import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.EventSubject;
@@ -1060,7 +1060,7 @@ public class Main implements ITechnicalStrings {
           // Display tip of the day if required (not at the first
           // session)
           if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
-            final TipOfTheDay tipsView = new TipOfTheDay();
+            final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
             tipsView.setLocationRelativeTo(JajukWindow.getInstance());
             tipsView.setVisible(true);
           }
