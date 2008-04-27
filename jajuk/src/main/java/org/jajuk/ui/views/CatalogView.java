@@ -53,6 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -446,10 +447,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jcbPage.setEnabled(false);
     Util.waiting();
     SwingWorker sw = new SwingWorker() {
-      int i = jsp.getVerticalScrollBar().getValue();
+      int i;
 
       @Override
       public Object construct() {
+        i = jsp.getVerticalScrollBar().getValue();
+
         // This synchronize fixes a strange race condition when changing
         // thumb size and finished() method is done but all thumb not
         // yet displayed (several times the same album with different
@@ -557,7 +560,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 } else {
                   return 0;
                 }
-              case 6: // Hits 
+              case 6: // Hits
                 if (album1.getHits() < album2.getHits()) {
                   return 1;
                 } else {
@@ -680,7 +683,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       public void finished() {
         jsp.revalidate();
         jsp.repaint();
-        jsp.getVerticalScrollBar().setValue(i);
+        // The scrollbar must be set after current EDT work to be effective, so
+        // queue it
+        SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+            jsp.getVerticalScrollBar().setValue(i);
+          }
+        });
         jtfValue.requestFocusInWindow();
         jsSize.setEnabled(true);
         jcbFilter.setEnabled(true);
@@ -758,7 +767,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     } else if (e.getSource() == jbRefresh) {
       int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-      if (resu != JOptionPane.YES_OPTION){
+      if (resu != JOptionPane.YES_OPTION) {
         return;
       }
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
