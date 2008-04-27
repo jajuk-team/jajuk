@@ -290,9 +290,8 @@ public class FIFO implements ITechnicalStrings {
         // OK, stop current track if no append
         if (!bAppend) {
           Player.stop(false);
-          clear();
-          JajukTimer.getInstance().reset();
         }
+        int pos = 0; 
         // add required tracks in the FIFO
         it = alItems.iterator();
         while (it.hasNext()) {
@@ -313,7 +312,8 @@ public class FIFO implements ITechnicalStrings {
               }
             }
           }// else, can be repeat (forced repeat) or not
-          alFIFO.add(item);
+          alFIFO.add(pos,item);
+          pos ++;
           JajukTimer.getInstance().addTrackTime(item.getFile());
         }
         // launch track if required
@@ -503,15 +503,12 @@ public class FIFO implements ITechnicalStrings {
         }
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
-        if(null != getCurrentItem())
-        {
+        if (null != getCurrentItem()) {
           itemLast = (StackItem) getCurrentItem().clone();
-        }
-        else
-        {
+        } else {
           itemLast = null;
         }
-          
+
         FIFO.getInstance().finished();
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
@@ -895,7 +892,8 @@ public class FIFO implements ITechnicalStrings {
       // device?
       return false;
     }
-    Iterator<StackItem> it = getInstance().alFIFO.iterator(); // are next tracks in
+    Iterator<StackItem> it = getInstance().alFIFO.iterator(); // are next tracks
+                                                              // in
     // fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
@@ -971,6 +969,9 @@ public class FIFO implements ITechnicalStrings {
     ArrayList<StackItem> alStack = new ArrayList<StackItem>(1);
     alStack.add(item);
     insert(alStack, iPos);
+    // refresh queue
+    ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
+
   }
 
   /**
@@ -980,7 +981,7 @@ public class FIFO implements ITechnicalStrings {
    * @param file
    * @param iPos
    */
-  public void insert(ArrayList<StackItem> alFiles, int iPos) {
+  public void insert(List<StackItem> alFiles, int iPos) {
     if (iPos <= alFIFO.size()) {
       // add in the FIFO, accept a file at
       // size() position to allow increasing
@@ -989,6 +990,8 @@ public class FIFO implements ITechnicalStrings {
       JajukTimer.getInstance().addTrackTime(alFiles);
     }
     computesPlanned(false);
+    // refresh queue
+    ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
   }
 
   /**

@@ -75,7 +75,7 @@ public class JajukTimer {
    * 
    * @param alFiles
    */
-  public void addTrackTime(ArrayList alFiles) {
+  public void addTrackTime(java.util.List alFiles) {
     Iterator it = alFiles.iterator();
     while (it.hasNext()) {
       Object o = it.next();
