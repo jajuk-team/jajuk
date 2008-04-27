@@ -61,9 +61,11 @@ public class PlayShuffleSelectionAction extends SelectionAction {
     super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
     Collections.shuffle(files, new Random());
-    FIFO.getInstance().push(
+    FIFO.getInstance().insert( 
         Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
-            .getBoolean(CONF_STATE_REPEAT), true), false);
+            .getBoolean(CONF_STATE_REPEAT), true), 0);
+    FIFO.getInstance().stopRequest();
+    FIFO.getInstance().goTo(0);
   }
 
 }

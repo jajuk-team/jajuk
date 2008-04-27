@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -57,7 +58,10 @@ public class PlayRepeatSelectionAction extends SelectionAction {
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
-    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), true, true), false);
+    FIFO.getInstance().insert( 
+        Util.createStackItems(Util.applyPlayOption(files), true, true), 0);
+    FIFO.getInstance().stopRequest();
+    FIFO.getInstance().goTo(0);
   }
 
 }
