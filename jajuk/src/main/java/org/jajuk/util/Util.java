@@ -23,10 +23,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
@@ -2360,14 +2363,16 @@ public class Util implements ITechnicalStrings {
 
   /**
    * 
-   * @param c
-   *          component to test
+   * @param component location
+   * @param component dimension
    * @return whether the current mouse cursor if above a given component
    */
-  public static boolean isOver(JComponent c) {
+  public static boolean isOver(Point location, Dimension dimension) {
     java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-    return (p.getX() > c.getX() && p.getY() > c.getY() && p.getX() < (c.getWidth() + c.getX()) && p
-        .getY() < (c.getHeight() + c.getY()));
+    return (p.getX() > location.getX() 
+        && p.getY() > location.getY() 
+        && p.getX() < (dimension.getWidth() + location.getX()) 
+        && p.getY() < (dimension.getHeight() + location.getY()));
   }
 
 }
