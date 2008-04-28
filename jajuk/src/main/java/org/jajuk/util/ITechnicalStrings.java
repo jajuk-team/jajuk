@@ -133,7 +133,7 @@ public interface ITechnicalStrings {
   int HOURS_IN_A_DAY = 24;
 
   /** Number of album bestof items */
-  int NB_BESTOF_ALBUMS = 8;
+  int NB_BESTOF_ALBUMS = 25;
 
   /** Number of album novelties items */
   int NB_NOVELTIES_ALBUMS = 8;
