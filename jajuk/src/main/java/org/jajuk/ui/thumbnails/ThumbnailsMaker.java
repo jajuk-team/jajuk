@@ -108,6 +108,11 @@ public class ThumbnailsMaker implements ITechnicalStrings {
   public static int launchProcessus(final int size) throws Exception {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
         + File.separatorChar + "java";
+    // @TODO Under JNLP mode, following line throw an URI malformed exception
+    // (contains %20 for ie). We
+    // don't figured out so far how to
+    // build proper JAR path. We keep things like it for the moment, pictures
+    // are built in the main JVM instead of separated ones
     final String jarPath = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath()
         + File.separator + "jajuk.jar";
     final ArrayList<String> commands = new ArrayList<String>(10);
@@ -196,8 +201,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager
-        .getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
