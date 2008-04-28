@@ -18,7 +18,7 @@
            <all-permissions/>
        </security> 
        <resources>
-           <j2se version='1.5+' java-vm-args='-client -Xms20M -Xmx256M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
+           <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx256M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
            <jar href='jajuk-help.jar' version='VERSION_REPLACED_BY_ANT'/> 
