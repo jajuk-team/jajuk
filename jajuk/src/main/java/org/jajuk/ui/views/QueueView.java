@@ -37,6 +37,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -227,6 +228,7 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
     return eventSubjectSet;
   }
 
@@ -283,6 +285,15 @@ public class QueueView extends PlaylistView {
             // remove item from configuration cols
             editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
+          } else if (EventSubject.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+            // force filter to refresh if the events has been triggered by the
+            // table itself after a column change
+            JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
+            if (table.equals(editorTable)) {
+              editorModel.alItems.clear();
+              editorModel.alPlanned.clear();
+              refreshQueue();
+            }
           }
         } catch (Exception e) {
           Log.error(e);
@@ -457,9 +468,9 @@ public class QueueView extends PlaylistView {
         jbAddShuffle.setEnabled(true);
       }
       // Up button
-      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()){
-      // check if several rows have been selected :
-          // doesn't supported yet
+      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()) {
+        // check if several rows have been selected :
+        // doesn't supported yet
         jbUp.setEnabled(false);
       } else {
         // still here ?
@@ -477,9 +488,9 @@ public class QueueView extends PlaylistView {
         }
       }
       // Down button
-      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()){
-      // check if several rows have been selected :
-          // doesn't supported yet
+      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()) {
+        // check if several rows have been selected :
+        // doesn't supported yet
         jbDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {

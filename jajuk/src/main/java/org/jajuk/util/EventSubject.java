@@ -49,7 +49,7 @@ public enum EventSubject {
   EVENT_DEVICE_REFRESH,
   // sync. a device
   EVENT_DEVICE_SYNCHRO,
-  // refresh a view is required, used in the device view
+  // refresh a view is required
   EVENT_VIEW_REFRESH_REQUEST,
   // close a view
   EVENT_VIEW_CLOSE_REQUEST,

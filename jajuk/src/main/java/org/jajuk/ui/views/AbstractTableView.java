@@ -41,6 +41,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
@@ -178,7 +179,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   public Object construct() {
     model = populateTable();
     jtable = new JajukTable(model, true, columnsConf);
-    
+
     // Add generic menus
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
     jmiPlay.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
@@ -290,6 +291,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
     eventSubjectSet.add(EventSubject.EVENT_TABLE_CLEAR_SELECTION);
     eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
     return eventSubjectSet;
   }
 
@@ -360,6 +362,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
+          } else if (EventSubject.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+            // force filter to refresh if the events has been triggered by the
+            // table itself after a column change
+            JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
+            if (table.equals(jtable)) {
+              applyFilter(sAppliedCriteria, sAppliedFilter);
+            }
           } else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
             // Keep current selection and nb of rows
             int[] selection = jtable.getSelectedRows();

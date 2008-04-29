@@ -288,7 +288,6 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_DELETE.toString())) {
       DeviceManager.getInstance().removeDevice(diSelected.getDevice());
       jpDevices.remove(diSelected);
-      ObservationManager.notify(new Event(EventSubject.EVENT_VIEW_REFRESH_REQUEST));
       // refresh views
       ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
     } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_MOUNT.toString())) {

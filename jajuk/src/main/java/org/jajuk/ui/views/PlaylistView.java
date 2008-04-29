@@ -47,6 +47,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -432,6 +433,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_FILE_COPIED);
+    eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
     return eventSubjectSet;
   }
 
@@ -512,6 +514,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             // remove item from configuration cols
             editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
+          } else if (EventSubject.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+            // force filter to refresh if the events has been triggered by the
+            // table itself after a column change
+            JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
+            if (table.equals(editorTable)) {
+            refreshCurrentPlaylist();
+            }
           }
         } catch (Exception e) {
           Log.error(e);

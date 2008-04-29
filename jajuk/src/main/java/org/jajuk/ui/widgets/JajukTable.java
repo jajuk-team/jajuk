@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.JPopupMenu;
@@ -135,7 +136,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    */
   public void showColumns(ArrayList<String> colsToShow) {
     boolean acceptcolumnEventSave = acceptColumnsEvents;
-    //Ignore columns event during these actions
+    // Ignore columns event during these actions
     acceptColumnsEvents = false;
     Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
     while (it.hasNext()) {
@@ -168,7 +169,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
     for (String sID : index) {
       TableColumn col = map.get(sID);
-      getColumnModel().addColumn(col); 
+      getColumnModel().addColumn(col);
     }
   }
 
@@ -213,7 +214,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList alOut = getColumnsConf();
+    ArrayList<String> alOut = getColumnsConf();
     alOut.remove(property);
     ConfigurationManager.setProperty(sConf, getColumnsConf(alOut));
   }
@@ -222,7 +223,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (acceptColumnsEvents) { // ignore this column change when reloading
       // model
       createColumnsConf();
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+      //Force table rebuilding
+      Properties details = new Properties();
+      details.put(DETAIL_CONTENT,this);
+      ObservationManager.notify(new Event(EventSubject.EVENT_VIEW_REFRESH_REQUEST,details));
     }
   }
 
@@ -238,7 +242,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
 
   public void columnMoved(TableColumnModelEvent arg0) {
     super.columnMoved(arg0);
-    if (acceptColumnsEvents){
+    if (acceptColumnsEvents) {
       columnChange();
     }
   }
@@ -272,27 +276,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
       value = sb.toString();
     }
     ConfigurationManager.setProperty(sConf, value);
-    
-  }
-
-  /**
-   * Convert the model columns to view columns
-   * 
-   * @return
-   */
-  private List<TableColumn> getViewColumns() {
-    ArrayList<TableColumn> cols = new ArrayList<TableColumn>(10);
-    ArrayList<Integer> convertionTable = new ArrayList<Integer>(10);
-    int index = 0;
-    // Create the model-view mapping mapping table
-    for (TableColumn col : getColumns(true)) {
-      convertionTable.add(convertColumnIndexToView(index));
-    }
-    // Build the view table
-    for (int i = 0; i < index; i++) {
-      // cols.add(getColumn(convert));
-    }
-    return cols;
   }
 
   /**
@@ -300,11 +283,11 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @return columns configuration from given list of columns identifiers
    * 
    */
-  private String getColumnsConf(ArrayList alCol) {
+  private String getColumnsConf(ArrayList<String> alCol) {
     StringBuilder sb = new StringBuilder();
-    Iterator it = alCol.iterator();
+    Iterator<String> it = alCol.iterator();
     while (it.hasNext()) {
-      sb.append((String) it.next() + ",");
+      sb.append(it.next() + ",");
     }
     // remove last comma
     if (sb.length() > 0) {
