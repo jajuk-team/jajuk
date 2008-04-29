@@ -78,11 +78,17 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_MUTED = new ImageIcon(Util
       .getResource("icons/32x32/mute_32x32.png"));
 
+  public static final ImageIcon ICON_VOLUME_LEVEL1 = new ImageIcon(Util
+      .getResource("icons/32x32/volume1.png"));
+
+  public static final ImageIcon ICON_VOLUME_LEVEL2 = new ImageIcon(Util
+      .getResource("icons/32x32/volume2.png"));
+
+  public static final ImageIcon ICON_VOLUME_LEVEL3 = new ImageIcon(Util
+      .getResource("icons/32x32/volume3.png"));
+
   public static final ImageIcon ICON_WEBRADIO = new ImageIcon(Util
       .getResource("icons/32x32/webradio_32x32.png"));
-
-  public static final ImageIcon ICON_UNMUTED = new ImageIcon(Util
-      .getResource("icons/32x32/unmute_32x32.png"));
 
   public static final ImageIcon ICON_NOVELTIES = new ImageIcon(Util
       .getResource("icons/32x32/novelties_32x32.png"));

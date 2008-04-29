@@ -61,7 +61,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -103,6 +102,7 @@ import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -112,7 +112,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
@@ -394,14 +393,14 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       iVolume = 100;
     }
     jsVolume = new JSlider(0, 100, iVolume);
-    jsVolume.setToolTipText(iVolume +" %");
+    jsVolume.setToolTipText(iVolume + " %");
     jsVolume.addChangeListener(CommandJPanel.this);
     jsVolume.addMouseWheelListener(CommandJPanel.this);
-    setVolumeIcon(iVolume);
+    MuteAction.setVolumeIcon(iVolume);
     jpVolume.add(jsVolume);
     jpVolume.add(Box.createHorizontalStrut(5));
     jpVolume.add(jbMute);
-    
+
     // Special functions toolbar
     // Ambience combo
     ambiencesCombo = new SteppedComboBox();
@@ -712,9 +711,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
   public void stateChanged(ChangeEvent e) {
-    if (e.getSource() == jsVolume ) {
+    if (e.getSource() == jsVolume) {
       setVolume((float) jsVolume.getValue() / 100);
-      setVolumeIcon(jsVolume.getValue());
+      MuteAction.setVolumeIcon(jsVolume.getValue());
     }
   }
 
@@ -735,32 +734,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     Player.setVolume(fVolume);
     jsVolume.addChangeListener(CommandJPanel.this);
     jsVolume.addMouseWheelListener(CommandJPanel.this);
-    jsVolume.setToolTipText((int)(fVolume*100) + " %");
-    setVolumeIcon(fVolume*100);
-  }
-
-   /**
-   * Set Volume Icon
-   */
-  public void setVolumeIcon(final float fVolume) {
-    if(fVolume <= 0){
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/mute_32x32.png"));
-      jbMute.setIcon(icon);
-    }else if(fVolume <= 25){
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume1.png"));
-      jbMute.setIcon(icon);
-    }else if(fVolume <= 50){
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume2.png"));
-      jbMute.setIcon(icon);
-    }else if(fVolume <= 75){
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume3.png"));
-      jbMute.setIcon(icon);
-    }else{
-      Icon icon = new ImageIcon(Util.getResource("icons/32x32/volume4.png"));
-      jbMute.setIcon(icon);
-    }
+    jsVolume.setToolTipText((int) (fVolume * 100) + " %");
   }
   
+
   /*
    * (non-Javadoc)
    * 
@@ -768,7 +745,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    */
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
-      public void run()  {
+      public void run() {
         EventSubject subject = event.getSubject();
         if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
@@ -788,8 +765,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
           ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
-        }
-        else if (EventSubject.EVENT_ZERO.equals(subject)) {
+        } else if (EventSubject.EVENT_ZERO.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
@@ -877,7 +853,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
           jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
-          ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_UNMUTED);
+          MuteAction.setVolumeIcon(100*Player.getCurrentVolume());
         } else if (EventSubject.EVENT_DJS_CHANGE.equals(event.getSubject())) {
           populateDJs();
           // If no more DJ, change the tooltip
@@ -898,8 +874,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           populateWebRadios();
         } else if (EventSubject.EVENT_MUTE_STATE.equals(event.getSubject())) {
           // Update mute icon look when changing the volume
-          if(!Player.isMuted()){
-            setVolumeIcon(getCurrentVolume());
+          if (!Player.isMuted()) {
+            MuteAction.setVolumeIcon(getCurrentVolume());
           }
         }
 
