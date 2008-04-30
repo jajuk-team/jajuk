@@ -73,7 +73,7 @@ public class SearchBox extends JTextField implements KeyListener {
   private static final int WAIT_TIME = 500;
 
   /** Minimum number of characters to start a search */
-  private static final int MIN_CRITERIA_LENGTH = 1;
+  private static final int MIN_CRITERIA_LENGTH = 2;
 
   /** Search result */
   public ArrayList<SearchResult> alResults;
