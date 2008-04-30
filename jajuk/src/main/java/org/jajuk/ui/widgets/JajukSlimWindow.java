@@ -47,8 +47,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -73,6 +71,7 @@ import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
@@ -289,7 +288,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jbVolume.addMouseMotionListener(motionAdapter);
     jbVolume.addMouseWheelListener(this);
     jbVolume.setText(null);
-    setVolumeIcon(iVolume);
+    MuteAction.setVolumeIcon(iVolume);
 
     jbMaximize = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
     jbMaximize.addMouseMotionListener(motionAdapter);
@@ -403,29 +402,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     return super.isVisible() || closing;
   }
 
-  /**
-   * Set Volume Icon
-   */
-  public void setVolumeIcon(final float fVolume) {
-    if (fVolume <= 0) {
-      Icon icon = new ImageIcon(Util.getResource("icons/16x16/mute_16x16.png"));
-      jbVolume.setIcon(icon);
-    } else if (fVolume <= 25) {
-      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume1.png"));
-      jbVolume.setIcon(icon);
-    } else if (fVolume <= 50) {
-      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume2.png"));
-      jbVolume.setIcon(icon);
-    } else if (fVolume <= 75) {
-      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume3.png"));
-      jbVolume.setIcon(icon);
-    } else {
-      Icon icon = new ImageIcon(Util.getResource("icons/16x16/volume4.png"));
-      jbVolume.setIcon(icon);
-    }
-  }
-
-  /*
+   /*
    * (non-Javadoc)
    * 
    * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
@@ -448,7 +425,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       Player.setVolume((float) newVolume / 100);
       jbVolume.addMouseWheelListener(this);
       jbVolume.setToolTipText(newVolume + " %");
-      setVolumeIcon(newVolume);
+      MuteAction.setVolumeIcon(newVolume);
     }
   }
 
@@ -476,11 +453,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     } else if (EventSubject.EVENT_MUTE_STATE.equals(subject)) {
-      if (Player.isMuted()) {
-        setVolumeIcon(0);
-      } else {
-        setVolumeIcon((int) (100 * Player.getCurrentVolume()));
-      }
+      MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
     }
   }
 
