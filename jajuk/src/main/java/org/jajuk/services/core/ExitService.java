@@ -22,6 +22,8 @@ package org.jajuk.services.core;
 import java.io.File;
 import java.net.InetAddress;
 
+import javax.swing.SwingUtilities;
+
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.bookmark.History;
@@ -57,51 +59,9 @@ public class ExitService extends Thread implements ITechnicalStrings {
 
   public void run() {
     Log.debug("Exit Hook begin");
-    try {
-      // stop sound ASAP
-      Player.stop(true);
+    // stop sound ASAP
+    Player.stop(true);
 
-      // commit perspectives if no full restore
-      // engaged. Perspective should be commited before the window
-      // being closed to avoid a dead lock in VLDocking
-      if (!RestoreAllViewsAction.fullRestore) {
-        try {
-          PerspectiveManager.commit();
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      }
-      // Store window/tray/slimbar configuration
-      if (JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible()) {
-        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
-            .toString(DISPLAY_MODE_SLIMBAR_TRAY));
-      }
-      if (JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible()) {
-        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
-            .toString(DISPLAY_MODE_WINDOW_TRAY));
-      }
-
-      if (!(JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible())
-          && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
-        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
-      }
-      // hide window ASAP
-      if (JajukWindow.isLoaded()) {
-        JajukWindow.getInstance().setVisible(false);
-      }
-      // hide systray
-      if (JajukSystray.isLoaded()) {
-        JajukSystray.getInstance().closeSystray();
-      }
-      // Hide slimbar
-      if (JajukSlimWindow.isLoaded()) {
-        JajukSlimWindow.getInstance().setVisible(false);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      // no log to make sure to reach collection
-      // commit
-    }
     try {
       if (iExitCode == 0) {
         // Store current FIFO for next session

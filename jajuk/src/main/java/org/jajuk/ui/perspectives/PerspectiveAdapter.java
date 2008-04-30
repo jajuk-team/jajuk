@@ -116,6 +116,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     if (!bAsBeenSelected) {
       return;
     }
+    // The writeXML method must be called in the EDT to avoid freezing, it
+    // requires a lock some UI components
     File saveFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
     BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
     writeXML(out);

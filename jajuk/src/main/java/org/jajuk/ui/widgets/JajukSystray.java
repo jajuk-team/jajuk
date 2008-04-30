@@ -162,7 +162,7 @@ public class JajukSystray extends CommandJPanel {
    * Reset the systray (useful for language reload)
    * 
    */
-  public static void dispose() {
+  public void dispose() {
     if (jsystray != null) {
       jsystray.closeSystray();
       jsystray = null;

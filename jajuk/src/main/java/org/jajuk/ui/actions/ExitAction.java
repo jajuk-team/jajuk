@@ -22,11 +22,17 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.ExitService;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.widgets.JajukSlimWindow;
+import org.jajuk.ui.widgets.JajukSystray;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 public class ExitAction extends ActionBase {
   /**
@@ -48,11 +54,51 @@ public class ExitAction extends ActionBase {
         return;
       }
     }
-    // Exit Jajuk
-    new Thread() {
-      public void run() {
-        ExitService.exit(0);
+    // IMPORTANT: all the following code must be done in EDT to avoid dead locks.
+    // Not not use SwingUtilities.invokeLater method in the ExitHook Thread, this
+    // code may never be run
+
+    if (SwingUtilities.isEventDispatchThread()) {
+      // commit perspectives if no full restore
+      // engaged. Perspective should be commited before the window
+      // being closed to avoid a dead lock in VLDocking
+      if (!RestoreAllViewsAction.fullRestore) {
+        try {
+          PerspectiveManager.commit();
+        } catch (Exception e) {
+          Log.error(e);
+        }
       }
-    }.start();
+
+      // Store window/tray/slimbar configuration
+      if (JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible()) {
+        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+            .toString(DISPLAY_MODE_SLIMBAR_TRAY));
+      }
+      if (JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible()) {
+        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+            .toString(DISPLAY_MODE_WINDOW_TRAY));
+      }
+
+      if (!(JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible())
+          && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
+        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
+      }
+
+      // hide window ASAP
+      if (JajukWindow.isLoaded()) {
+        JajukWindow.getInstance().dispose();
+      }
+      // hide systray
+      if (JajukSystray.isLoaded()) {
+        JajukSystray.getInstance().dispose();
+      }
+      // Hide slimbar
+      if (JajukSlimWindow.isLoaded()) {
+        JajukSlimWindow.getInstance().dispose();
+      }
+    }
+    // Exit Jajuk
+    ExitService.exit(0);
   }
 }
