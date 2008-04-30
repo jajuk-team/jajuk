@@ -27,9 +27,7 @@ import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import ext.DropDownButton;
-import ext.JScrollingText;
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -52,7 +50,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
@@ -121,8 +118,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   JButton jbMaximize;
 
   SizedButton jbVolume;
-
-  JScrollingText scrollingText;
 
   SearchBox sbSearch;
 
@@ -298,28 +293,20 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jtbTools.add(jbMaximize);
 
     // Search
-    double[][] sizeSearch = new double[][] { { 20 }, { 22 } };
-    JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(this);
+    sbSearch.setPreferredSize(new Dimension(22,18));
+    sbSearch.setMaximumSize(new Dimension(22,18));
     sbSearch.addMouseMotionListener(motionAdapter);
-    jpSearch.add(sbSearch, "0,0");
-
+    
     JToolBar jtbText = new JToolBar();
     jtbText.setBorder(null);
-
-    scrollingText = new JScrollingText(getPlayerInfo(), -3);
-    scrollingText.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    scrollingText.setPreferredSize(new Dimension(150, 15));
-    scrollingText.start();
-
-    jtbText.add(scrollingText);
 
     slimJajuk = new JToolBar();
     slimJajuk.setBorder(null);
     slimJajuk.setFloatable(false);
     slimJajuk.setRollover(true);
 
-    slimJajuk.add(jpSearch);
+    slimJajuk.add(sbSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
     slimJajuk.addSeparator();
@@ -335,10 +322,10 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     ObservationManager.register(this);
 
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-    if (FIFO.getInstance().getCurrentFile() != null) {
-      setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
-    } else {
+    if (FIFO.isStopped()) {
       setTitle(Messages.getString("JajukWindow.17"));
+    } else {
+      setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
     }
     setVisible(true);
     setAlwaysOnTop(true);
@@ -368,7 +355,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       Log.error(e);
     }
     pack();
-    // Notify that slimbar is now visible (menu bar is interested in)
+    // Notify that slimbar is now visible (menu bar is interested in it)
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
   }
 
@@ -445,15 +432,16 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
       setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
-      scrollingText.setText(getPlayerInfo());
-    } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
-      scrollingText.setText(Messages.getString("JajukWindow.17"));
     } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
     } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     } else if (EventSubject.EVENT_MUTE_STATE.equals(subject)) {
       MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
+    }
+    else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)){
+      //reset title
+      setTitle(Messages.getString("JajukWindow.17"));
     }
   }
 

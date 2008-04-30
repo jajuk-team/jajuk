@@ -38,8 +38,7 @@ public class FinishAlbumAction extends ActionBase {
   private static final long serialVersionUID = 1L;
 
   FinishAlbumAction() {
-    super(Messages.getString("JajukWindow.16"), IconLoader.ICON_FINISH_ALBUM, FIFO.getInstance()
-        .getCurrentItem() != null);
+    super(Messages.getString("JajukWindow.16"), IconLoader.ICON_FINISH_ALBUM, !FIFO.isStopped());
     setShortDescription(Messages.getString("JajukWindow.32"));
   }
 

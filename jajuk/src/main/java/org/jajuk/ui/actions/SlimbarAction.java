@@ -30,11 +30,11 @@ import org.jajuk.util.Messages;
 /**
  * Action to hide slim bar.
  */
-public class JajukSlimWindowAction extends ActionBase {
+public class SlimbarAction extends ActionBase {
 
   private static final long serialVersionUID = 1L;
 
-  JajukSlimWindowAction() {
+  SlimbarAction() {
     super(Messages.getString("JajukSlimWindow.0"), IconLoader.ICON_FULL_WINDOW, true);
     setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }

@@ -74,12 +74,12 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     }
     return jw;
   }
-  
+
   /**
    * 
    * @return whether the window is loaded
    */
-  public static boolean isLoaded(){
+  public static boolean isLoaded() {
     return (jw != null);
   }
 
@@ -133,6 +133,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_ZERO);
+    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 
@@ -252,7 +253,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
           if (file != null) {
             setTitle(Util.buildTitle(file));
           }
-        } else if (subject.equals(EventSubject.EVENT_ZERO)) {
+        } else if (subject.equals(EventSubject.EVENT_ZERO)
+            || subject.equals(EventSubject.EVENT_PLAYER_STOP)) {
           setTitle(Messages.getString("JajukWindow.17"));
         } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
           WebRadio radio = FIFO.getInstance().getCurrentRadio();

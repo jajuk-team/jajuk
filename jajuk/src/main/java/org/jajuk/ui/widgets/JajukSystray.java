@@ -28,6 +28,7 @@ import ext.SliderMenuItem;
 
 import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
@@ -92,7 +93,7 @@ public class JajukSystray extends CommandJPanel {
   JMenuItem jmiExit;
 
   JMenuItem jmiSlimbar;
-  
+
   public JMenuItem jmiMute;
 
   JMenuItem jmiShuffle;
@@ -138,12 +139,12 @@ public class JajukSystray extends CommandJPanel {
       update(new Event(EventSubject.EVENT_HEART_BEAT));
     }
   });
-  
+
   /**
    * 
    * @return whether the tray is loaded
    */
-  public static boolean isLoaded(){
+  public static boolean isLoaded() {
     return (jsystray != null);
   }
 
@@ -177,9 +178,9 @@ public class JajukSystray extends CommandJPanel {
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
 
     jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
-    
+
     jmiSlimbar = new JMenuItem(ActionManager.getAction(JajukAction.SLIM_JAJUK));
-    
+
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
@@ -268,7 +269,8 @@ public class JajukSystray extends CommandJPanel {
       @Override
       public void mouseMoved(MouseEvent e) {
         File file = FIFO.getInstance().getCurrentFile();
-        if (file == null) {
+        Point location = new Point(e.getX() - 50, e.getY() - 250);
+        if (file == null || FIFO.isStopped()) {
           return;
         }
         String sOut = getHTMLFormatText(file);
@@ -282,7 +284,7 @@ public class JajukSystray extends CommandJPanel {
         JLabel jl = new JLabel(sOut);
         jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
-        dialog.setLocation(e.getX() - 50, e.getY() - 250);
+        dialog.setLocation(location);
         dialog.pack();
         dialog.setVisible(true);
         // The toFront() is required under windows when main window is not
@@ -292,7 +294,7 @@ public class JajukSystray extends CommandJPanel {
         new Thread() {
           public void run() {
             try {
-              Thread.sleep(5000);
+              Thread.sleep(3000);
               dialog.dispose();
               dialog = null;
             } catch (InterruptedException e) {

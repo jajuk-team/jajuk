@@ -73,7 +73,7 @@ public class FontManager implements ITechnicalStrings, Observer {
     // static fonts
     fontCache.put(JajukFont.BOLD_TITLE, new Font("verdana", Font.PLAIN, 20));
     fontCache.put(JajukFont.PERSPECTIVES, new Font("verdana", Font.BOLD, 9));
-    fontCache.put(JajukFont.SEARCHBOX, new Font("verdana", Font.BOLD, 18));
+    fontCache.put(JajukFont.SEARCHBOX, new Font("verdana", Font.BOLD, 16));
     fontCache.put(JajukFont.SPLASH, new Font("verdana", Font.PLAIN, 12));
     fontCache.put(JajukFont.SPLASH_PROGRESS, new Font("verdana", Font.BOLD, 12));
     // Bold

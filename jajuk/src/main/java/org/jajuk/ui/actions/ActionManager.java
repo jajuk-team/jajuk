@@ -178,7 +178,7 @@ public final class ActionManager {
     installAction(REFRESH, new RefreshDirectoryAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(JajukAction.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
-    installAction(JajukAction.SLIM_JAJUK, new JajukSlimWindowAction(), false);
+    installAction(JajukAction.SLIM_JAJUK, new SlimbarAction(), false);
 
     // Selection actions
     installAction(JajukAction.SHOW_PROPERTIES, new ShowPropertiesAction(), false);
