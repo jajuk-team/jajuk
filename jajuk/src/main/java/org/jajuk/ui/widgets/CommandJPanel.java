@@ -586,7 +586,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     ObservationManager.register(CommandJPanel.this);
 
     // if a track is playing, display right state
-    if (FIFO.getInstance().getCurrentFile() != null) {
+    if (!FIFO.isStopped()) {
       // update initial state
       update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
           .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));

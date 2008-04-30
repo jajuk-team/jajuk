@@ -880,7 +880,7 @@ public class FIFO implements ITechnicalStrings {
    * @return
    */
   public static boolean canUnmount(Device device) {
-    if (fifo == null || !Player.isPlaying() || getInstance().getCurrentFile() == null) { // currently
+    if (fifo == null || isStopped()) { // currently
       // stopped
       return true;
     }

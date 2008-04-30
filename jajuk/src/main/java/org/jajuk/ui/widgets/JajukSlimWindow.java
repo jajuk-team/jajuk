@@ -19,12 +19,15 @@
  */
 package org.jajuk.ui.widgets;
 
+import static org.jajuk.ui.actions.JajukAction.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.actions.JajukAction.FINISH_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukAction.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukAction.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
+import static org.jajuk.ui.actions.JajukAction.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -93,13 +96,13 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   JLabel jajuk;
 
-  JButton jbPrevious;
+  SizedButton jbPrevious;
 
-  JButton jbNext;
+  SizedButton jbNext;
 
   SizedButton jbPlayPause;
 
-  JButton jbStop;
+  SizedButton jbStop;
 
   DropDownButton jbIncRate;
 
@@ -183,21 +186,16 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     jtbPlay.setRollover(true);
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
-    jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK),16,16,false);
     jbPrevious.addMouseMotionListener(motionAdapter);
-    jbPrevious.setIcon(IconLoader.ICON_PREVIOUS);
-    jbPrevious.addMouseMotionListener(motionAdapter);
-
-    jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
-    jbNext.setIcon(IconLoader.ICON_NEXT);
+   
+    jbNext = new SizedButton(ActionManager.getAction(NEXT_TRACK),16,16,false);
     jbNext.addMouseMotionListener(motionAdapter);
 
     jbPlayPause = new SizedButton(ActionManager.getAction(PLAY_PAUSE_TRACK), 16, 16, false);
-    jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
     jbPlayPause.addMouseMotionListener(motionAdapter);
 
-    jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-    jbStop.setIcon(IconLoader.ICON_STOP_16x16);
+    jbStop = new SizedButton(ActionManager.getAction(STOP_TRACK),16,16,false);
     jbStop.addMouseMotionListener(motionAdapter);
 
     jtbPlay.add(jbPrevious);
@@ -357,6 +355,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     pack();
     // Notify that slimbar is now visible (menu bar is interested in it)
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+    //Foce initial UI refresh
+    if (!FIFO.isStopped()) {
+      // update initial state
+      update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
+    }
   }
 
   /**
@@ -432,6 +435,15 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
       setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
+      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+      ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+      ActionManager.getAction(REWIND_TRACK).setEnabled(true);
+      ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+      ActionManager.getAction(STOP_TRACK).setEnabled(true);
+      ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+      ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
+      ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
+      ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
     } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
     } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
@@ -442,6 +454,17 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)){
       //reset title
       setTitle(Messages.getString("JajukWindow.17"));
+      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+      ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+      ActionManager.getAction(REWIND_TRACK).setEnabled(false);
+      ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+      ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
+      ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
+      ActionManager.getAction(STOP_TRACK).setEnabled(false);
+      ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+      ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
+      ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
+      ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
     }
   }
 
