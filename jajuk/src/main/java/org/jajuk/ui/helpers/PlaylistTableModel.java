@@ -115,7 +115,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
     // State icon (play/repeat/planned)
     vColNames.add("");
-    vId.add("0");
+    vId.add(XML_PLAY);
 
     // Track name
     // Note we display "title" and not "name" for this property for

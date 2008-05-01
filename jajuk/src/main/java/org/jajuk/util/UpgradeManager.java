@@ -99,6 +99,16 @@ public final class UpgradeManager implements ITechnicalStrings {
     if (ConfigurationManager.getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE) > 45) {
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, "45");
     }
+    // For Jajuk 1.5 and jajuk 1.6 columns conf id changed
+    if (ConfigurationManager.getProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS).matches(".*0.*")) {
+      ConfigurationManager.setDefaultProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS);
+    }
+    if (ConfigurationManager.getProperty(CONF_QUEUE_COLUMNS).matches(".*0.*")) {
+      ConfigurationManager.setDefaultProperty(CONF_QUEUE_COLUMNS);
+    }
+    if (ConfigurationManager.getProperty(CONF_PLAYLIST_EDITOR_COLUMNS).matches(".*0.*")) {
+      ConfigurationManager.setDefaultProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
+    }
 
     // TO DO AFTER AN UPGRADE
     if (Main.isUpgradeDetected()) {
@@ -136,8 +146,8 @@ public final class UpgradeManager implements ITechnicalStrings {
    * @return true if a new release has been found
    */
   public static void checkForUpdate() {
-    //If test mode, don't try to update
-    if (Main.bTestMode){
+    // If test mode, don't try to update
+    if (Main.bTestMode) {
       return;
     }
     // Try to download current jajuk PAD file

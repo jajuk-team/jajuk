@@ -473,7 +473,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // wrong
           // column changed of playlist
           // current playlist has changed
-          if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)){
+          if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
             refreshCurrentPlaylist();
           } else if (EventSubject.EVENT_FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
@@ -519,7 +519,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
             if (table.equals(editorTable)) {
-            refreshCurrentPlaylist();
+              refreshCurrentPlaylist();
             }
           }
         } catch (Exception e) {
@@ -647,6 +647,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           try {
             // special playlist, same behavior than a save as
             plf.saveAs();
+            // Force a table refresh to show the new playlist if it has been
+            // saved in a known device
+            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
           } catch (JajukException je) {
             Log.error(je);
             Messages.showErrorMessage(je.getCode());
@@ -922,7 +925,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       if (e.getValueIsAdjusting()) {
         return;
       }
-      
+
       SwingWorker sw = new SwingWorker() {
         Playlist plf;
         boolean bErrorLoading = false;
