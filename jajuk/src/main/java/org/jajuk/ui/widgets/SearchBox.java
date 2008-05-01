@@ -69,8 +69,8 @@ public class SearchBox extends JTextField implements KeyListener {
   /** Do search panel need a search */
   private boolean bNeedSearch = false;
 
-  /** Default time in ms before launching a search automaticaly */
-  private static final int WAIT_TIME = 500;
+  /** Default time in ms before launching a search automatically */
+  private static final int WAIT_TIME = 1000;
 
   /** Minimum number of characters to start a search */
   private static final int MIN_CRITERIA_LENGTH = 2;
