@@ -263,6 +263,10 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(new JMenuItem(" "));
 
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
+    if (Util.isUnderWindows()) {
+      // auto-resize looks OK under Windows but is ugly under Linux/KDE
+      trayIcon.setImageAutoSize(true);
+    }
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
 
       @Override
@@ -455,7 +459,6 @@ public class JajukSystray extends CommandJPanel {
           jmiPlayPause.setEnabled(true);
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
-          jmiPrevious.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
         } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
           // Apply basic CommandJPanel actions
