@@ -29,7 +29,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
@@ -2214,7 +2213,7 @@ public class Util implements ITechnicalStrings {
       Util.updateWindowUI(element);
     }
     // update tray
-    if (JajukSystray.isLoaded()  && (JajukSystray.getInstance().jmenu != null)) {
+    if (JajukSystray.isLoaded() && (JajukSystray.getInstance().jmenu != null)) {
       Util.updateComponentTreeUI(JajukSystray.getInstance().jmenu);
     }
   }
@@ -2363,16 +2362,32 @@ public class Util implements ITechnicalStrings {
 
   /**
    * 
-   * @param component location
-   * @param component dimension
+   * @param component
+   *          location
+   * @param component
+   *          dimension
    * @return whether the current mouse cursor if above a given component
    */
   public static boolean isOver(Point location, Dimension dimension) {
     java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-    return (p.getX() > location.getX() 
-        && p.getY() > location.getY() 
-        && p.getX() < (dimension.getWidth() + location.getX()) 
-        && p.getY() < (dimension.getHeight() + location.getY()));
+    return (p.getX() > location.getX() && p.getY() > location.getY()
+        && p.getX() < (dimension.getWidth() + location.getX()) && p.getY() < (dimension.getHeight() + location
+        .getY()));
+  }
+
+  /**
+   * 
+   * @param s string to be checked
+   * @return whther provided string is a number or not
+   */
+  public static boolean isNumber(String s) {
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if ((c < '0') || (c > '9')) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

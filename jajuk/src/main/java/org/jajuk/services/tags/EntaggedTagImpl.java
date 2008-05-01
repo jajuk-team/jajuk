@@ -91,7 +91,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
   public String getStyleName() throws Exception {
     String sOut = tag.getFirstGenre();
     if (sOut == null || sOut.equals("genre")) {
-      // the item wil be the default jajuk unknown string
+      // the item will be the default jajuk unknown string
       return "";
     }
     // Sometimes, the style has this form : (nb)
@@ -102,6 +102,16 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
       } catch (Exception e) {
         return ""; // error, return unknown
       }
+    }
+    //If genre is a number mapping a known style, use this style
+    try{
+      int number = Integer.parseInt(sOut);
+      if (number >= 0 && number < Util.genres.length){
+        sOut = Util.genres[number];
+      }
+    }
+    catch(NumberFormatException e){
+      //nothing wrong here
     }
     return sOut;
   }
