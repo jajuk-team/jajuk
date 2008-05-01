@@ -70,7 +70,10 @@ public class ShowPropertiesAction extends SelectionAction {
     if (first instanceof File) {
       List<Item> tracks = new ArrayList<Item>(selection.size());
       for (Item file : selection) {
-        tracks.add(((File) file).getTrack());
+        // Ignore playlists that can be embedded for a device properties request
+        if (file instanceof File) {
+          tracks.add(((File) file).getTrack());
+        }
       }
       new PropertiesWizard(selection, tracks);
     } else if (first instanceof Track) {

@@ -383,6 +383,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // Tree selection listener to detect a selection (single click
     // , manages simple or multiple selections)
     jtree.addTreeSelectionListener(new TreeSelectionListener() {
+      @SuppressWarnings("unchecked")
       public void valueChanged(TreeSelectionEvent e) {
         // Avoid concurrency with the mouse listener
         synchronized (lock) {
@@ -410,9 +411,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
               alSelected.add(item);
             }
             // return all childs nodes recursively
-            Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
+            Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
             while (e2.hasMoreElements()) {
-              DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
+              DefaultMutableTreeNode node = e2.nextElement();
               if (node instanceof FileNode) {
                 File file = ((FileNode) node).getFile();
                 // don't count same file twice if user
