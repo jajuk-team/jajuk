@@ -263,7 +263,6 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(new JMenuItem(" "));
 
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
-    trayIcon.setImageAutoSize(true);
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
 
       @Override
