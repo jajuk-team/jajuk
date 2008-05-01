@@ -53,16 +53,19 @@ public class RenameAction extends ActionBase {
     final Item currentItem = alSelected.get(0);
     new Thread() {
       public void run() {
-        Util.waiting();
         if (currentItem instanceof File) {
           String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
               + "\n\n", ((File) currentItem).getName());
           if ((newName != null) && (newName.length() > 0)) {
             try {
+              Util.waiting();
               FileManager.getInstance().changeFileName((File) currentItem, newName);
               DirectoryManager.refreshDirectory(((File) currentItem).getDirectory());
+              ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
+            } finally {
+              Util.stopWaiting();
             }
           }
         } else if (currentItem instanceof Directory) {
@@ -70,19 +73,22 @@ public class RenameAction extends ActionBase {
               + "\n\n", ((Directory) currentItem).getName());
           if ((newName != null) && (newName.length() > 0)) {
             try {
-              java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
-                  .getAbsolutePath()
+              Util.waiting();
+              java.io.File newFile = new java.io.File(((Directory) currentItem)
+                  .getParentDirectory().getAbsolutePath()
                   + "/" + newName);
               ((Directory) currentItem).getFio().renameTo(newFile);
               DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
               DirectoryManager.refreshDirectory(((Directory) currentItem).getParentDirectory());
+              ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
+            } finally {
+              Util.stopWaiting();
             }
           }
         }
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-        Util.stopWaiting();
+
       }
     }.start();
   }
