@@ -25,6 +25,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
@@ -148,8 +149,15 @@ public class QueueView extends PlaylistView {
     add(jpEditorControl, "0,0");
     add(new JScrollPane(editorTable), "0,1");
     // menu items
-    jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
-    jmiFilePlay.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.ICON_PLAY_16x16);
+    // We don't use regular action for the play because it has very special
+    // behavior here in the queue view : it must go to selection without keeping
+    // previous FIFO
+    jmiFilePlay.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        goToSelection();
+      }
+    });
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
     jmiFilePush.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
@@ -207,18 +215,22 @@ public class QueueView extends PlaylistView {
             if (ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK)) {
               FIFO.getInstance().push(item, true);
             } else {
-              FIFO.getInstance().goTo(editorTable.getSelectedRow());
-              // remove selection for planned tracks
-              ListSelectionModel lsm = editorTable.getSelectionModel();
-              bSettingSelection = true;
-              editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
-                  lsm.getMaxSelectionIndex());
-              bSettingSelection = false;
+              goToSelection();
             }
           }
         }
       }
     });
+  }
+
+  private void goToSelection() {
+    FIFO.getInstance().goTo(editorTable.getSelectedRow());
+    // remove selection for planned tracks
+    ListSelectionModel lsm = editorTable.getSelectionModel();
+    bSettingSelection = true;
+    editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+        lsm.getMaxSelectionIndex());
+    bSettingSelection = false;
   }
 
   public Set<EventSubject> getRegistrationKeys() {
