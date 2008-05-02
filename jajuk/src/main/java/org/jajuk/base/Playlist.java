@@ -774,7 +774,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           Util.waiting();
           final java.io.File fDir = jfc.getSelectedFile();
           final Date curDate = new Date();
-          final SimpleDateFormat Stamp = new SimpleDateFormat("ddMMyyyy-HH:mm");
+          final SimpleDateFormat Stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
           final String dirName = "Party-" + Stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
           destDir.mkdir();
