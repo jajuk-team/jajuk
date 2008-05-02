@@ -1,8 +1,10 @@
 This is the full Jajuk SVN repository 
 
 To compile Jajuk :
-(Maven is required, download it at http://maven.apache.org/ )           
-$ mvn package
+(Ant is required, download it on http://ant.apache.org/ )           
+$ cd src/scripts
+$ ant
+(jajuk.jar is built in /tmp/jajuk-dist/jajuk/bin directory by default)
 
 Notes:
 * FYI, src/script/build.xml is the full Jajuk packager ant script used to generate every Jajuk package
