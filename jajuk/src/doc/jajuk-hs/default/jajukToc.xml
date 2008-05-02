@@ -64,7 +64,7 @@
 			<tocitem text="Jajuk Dependencies" target="jajuk_dependencies"/>
 			<tocitem text="English Jajuk FAQ" target="english_jajuk_faq"/>
 		</tocitem>
-		<tocitem text="Technical" expand="true">
+		<tocitem text="Legals" expand="true">
 			<tocitem text="License Apache" target="license_apache"/>
 			<tocitem text="License BSD" target="license_bsd"/>
 			<tocitem text="License Creative Commons" target="license_creative_commons"/>
