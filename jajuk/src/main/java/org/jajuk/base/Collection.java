@@ -419,6 +419,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           manager = FileManager.getInstance();
           stage = STAGE_FILES;
           needCheckID = true;
+        } else if (XML_PLAYLISTS.equals(sQName)) {
+          //This code is here for JAjuk < 1.6 compatibility
+          manager = PlaylistManager.getInstance();
+          stage = STAGE_PLAYLISTS;
+          needCheckID = true;
         } else if (XML_PLAYLIST_FILES.equals(sQName)) {
           manager = PlaylistManager.getInstance();
           stage = STAGE_PLAYLIST_FILES;
