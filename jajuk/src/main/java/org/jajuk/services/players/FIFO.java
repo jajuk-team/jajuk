@@ -291,7 +291,13 @@ public class FIFO implements ITechnicalStrings {
         if (!bAppend) {
           Player.stop(false);
         }
-        int pos = 0; 
+        // We don't support repeat/non repeat mix in a selection, we clear fifo
+        // selection contains at least one repeated track
+        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) || alItems.get(0).isRepeat()) {
+          clear();
+          JajukTimer.getInstance().reset();
+        }
+        int pos = 0;
         // add required tracks in the FIFO
         it = alItems.iterator();
         while (it.hasNext()) {
@@ -312,8 +318,8 @@ public class FIFO implements ITechnicalStrings {
               }
             }
           }// else, can be repeat (forced repeat) or not
-          alFIFO.add(pos,item);
-          pos ++;
+          alFIFO.add(pos, item);
+          pos++;
           JajukTimer.getInstance().addTrackTime(item.getFile());
         }
         // launch track if required
@@ -893,7 +899,7 @@ public class FIFO implements ITechnicalStrings {
       return false;
     }
     Iterator<StackItem> it = getInstance().alFIFO.iterator(); // are next tracks
-                                                              // in
+    // in
     // fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
