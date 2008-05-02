@@ -66,7 +66,6 @@
             </dir>
             <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/DERIVATED.txt'/>
@@ -97,10 +96,6 @@
            	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
             	<os family='windows'/>
            	</file>
-        </pack>
-        <pack name='sources' required='no' preselected='no'>
-            <description>Sources</description>
-            <fileset override='true' targetdir='$INSTALL_PATH/src' dir='/tmp/jajuk-dist/jajuk/src'/>
         </pack>
     </packs>
 </installation>
