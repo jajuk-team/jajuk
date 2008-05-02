@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision:3308 $$
  */
 package org.jajuk.ui.actions;
 
@@ -24,11 +24,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 
 import org.jajuk.base.FileManager;
+import org.jajuk.services.events.Event;
+import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -62,5 +65,7 @@ public class ContinueModeAction extends ActionBase {
     }
     // computes planned tracks
     FIFO.getInstance().computesPlanned(false);
+    //Refresh Queue View
+    ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
   }
 }
