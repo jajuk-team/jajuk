@@ -240,38 +240,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jcbmiContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
     jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
     jcbmiIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
-
-    jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
-    jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-    jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
-
-    jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
-    jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
-    jcbShowPopups.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
-            .isSelected()));
-        // force parameter view to take this into account
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-      }
-    });
-
-    jcbSyncTableTree = new JCheckBoxMenuItem(Messages.getString("ParameterView.183"));
-    jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
-    jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
-    jcbSyncTableTree.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
-            .toString(jcbSyncTableTree.isSelected()));
-        // force parameter view to take this into account
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-      }
-    });
-
-    mode.add(jmiUnmounted);
-    mode.add(jcbShowPopups);
-    mode.add(jcbSyncTableTree);
-    mode.addSeparator();
+   
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
@@ -320,6 +289,38 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
+    
+    jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
+    jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+    jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
+
+    jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
+    jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
+    jcbShowPopups.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
+            .isSelected()));
+        // force parameter view to take this into account
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+      }
+    });
+
+    jcbSyncTableTree = new JCheckBoxMenuItem(Messages.getString("ParameterView.183"));
+    jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
+    jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+    jcbSyncTableTree.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
+            .toString(jcbSyncTableTree.isSelected()));
+        // force parameter view to take this into account
+        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+      }
+    });
+
+    configuration.add(jmiUnmounted);
+    configuration.add(jcbShowPopups);
+    configuration.add(jcbSyncTableTree);
+    configuration.addSeparator();
     configuration.add(jmiDJ);
     configuration.add(jmiAmbience);
     configuration.add(jmiWebradios);
