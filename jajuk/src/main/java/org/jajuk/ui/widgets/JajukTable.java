@@ -24,9 +24,7 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -158,17 +156,14 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     while (st.hasMoreTokens()) {
       index.add(st.nextToken());
     }
-    // Now reorder the columns: remove all columns and re-ad them according the
-    // new order
+    // Now hide all hidden columns
     JajukTableModel model = (JajukTableModel) getModel();
-    Map<String, TableColumn> map = new HashMap<String, TableColumn>();
+    //Map<String, TableColumn> map = new HashMap<String, TableColumn>();
     for (TableColumn column : getColumns(false)) {
-      map.put(model.getIdentifier(column.getModelIndex()), column);
-      getColumnModel().removeColumn(column);
-    }
-    for (String sID : index) {
-      TableColumn col = map.get(sID);
-      getColumnModel().addColumn(col);
+      // map.put(model.getIdentifier(column.getModelIndex()), column);
+      if (!index.contains(model.getIdentifier(column.getModelIndex()))){
+        getColumnModel().removeColumn(column);
+      }
     }
   }
 
