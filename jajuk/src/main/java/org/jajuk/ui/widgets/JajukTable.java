@@ -24,7 +24,10 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -156,13 +159,24 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     while (st.hasMoreTokens()) {
       index.add(st.nextToken());
     }
-    // Now hide all hidden columns
+    // Now reorder the columns: remove all columns and re-add them according the
+    // new order
     JajukTableModel model = (JajukTableModel) getModel();
-    //Map<String, TableColumn> map = new HashMap<String, TableColumn>();
-    for (TableColumn column : getColumns(false)) {
-      // map.put(model.getIdentifier(column.getModelIndex()), column);
+    Map<String, TableColumn> map = new HashMap<String, TableColumn>();
+    List<TableColumn> initialColumns =  getColumns(true);
+    for (TableColumn column : initialColumns) {
+      map.put(model.getIdentifier(column.getModelIndex()), column);
+      getColumnModel().removeColumn(column);
+    }
+    for (String sID : index) {
+      TableColumn col = map.get(sID);
+      getColumnModel().addColumn(col);
+    }
+    // Now add unvisible columns so they are available in table column selector
+    // at after the visible ones
+    for (TableColumn column : initialColumns) {
       if (!index.contains(model.getIdentifier(column.getModelIndex()))){
-        getColumnModel().removeColumn(column);
+        getColumnModel().addColumn(column);  
       }
     }
   }
@@ -217,10 +231,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (acceptColumnsEvents) { // ignore this column change when reloading
       // model
       createColumnsConf();
-      //Force table rebuilding
+      // Force table rebuilding
       Properties details = new Properties();
-      details.put(DETAIL_CONTENT,this);
-      ObservationManager.notify(new Event(EventSubject.EVENT_VIEW_REFRESH_REQUEST,details));
+      details.put(DETAIL_CONTENT, this);
+      ObservationManager.notify(new Event(EventSubject.EVENT_VIEW_REFRESH_REQUEST, details));
     }
   }
 
