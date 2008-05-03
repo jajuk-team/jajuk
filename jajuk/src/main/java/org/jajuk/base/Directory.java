@@ -357,6 +357,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // found file comment but we changing a comment, we will
           // apply to all files for a track
           track.setComment(sComment);
+          //Make sure to refresh fiel size
+          file.setProperty(XML_SIZE, files[i].length());
         } else { // playlist
           String sId = PlaylistManager.createID(files[i].getName(), this);
           Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);

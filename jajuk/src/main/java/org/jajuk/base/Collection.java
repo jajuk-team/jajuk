@@ -495,6 +495,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         String sParentID = null;
         String sDeviceID = null;
         String sTrackName = null;
+        long lSize = 0;
         switch (stage) {
         case STAGE_FILES:
           sItemName = attributes.getValue(XML_NAME).intern();
@@ -526,12 +527,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           if (dParent == null || track == null) { // more checkups
             return;
           }
-          // Use Integer class instead of Long for perfs
-          
-          long lSize = 0;
-          if(attributes.getValue(XML_SIZE) != null)
-            Integer.parseInt(attributes.getValue(XML_SIZE));
-            
+          if(attributes.getValue(XML_SIZE) != null){
+            lSize = Long.parseLong(attributes.getValue(XML_SIZE));
+          }
+         
           // Quality analyze, handle format problems (mainly for
           // upgrades)
           long lQuality = 0;
