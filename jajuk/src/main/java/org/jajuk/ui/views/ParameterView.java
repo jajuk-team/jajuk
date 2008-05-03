@@ -344,6 +344,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   private boolean someOptionsAppliedAtNextStartup = false;
 
   /**
+   * whether the "theme will be token into account" message has been already
+   * displayed
+   */
+  boolean bLAFMessage = false;
+
+  /**
    * 
    */
   public ParameterView() {
@@ -457,6 +463,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           }
         } else if (e.getSource() == jcbHotkeys) {
           someOptionsAppliedAtNextStartup = true;
+        } else if (e.getSource().equals(scbWatermarks)) {
+          // Enable image selection if image watermark
+          boolean bImage = scbWatermarks.getSelectedItem().equals(
+              ITechnicalStrings.LNF_WATERMARK_IMAGE);
+          jlWatermarkImage.setEnabled(bImage);
+          pathWatermarkFile.setEnabled(bImage);
         }
       }
     }.start();
@@ -599,8 +611,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbShowPopups.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, Integer
         .toString(jsPerspectiveSize.getValue()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
-        pathWatermarkFile.getUrl());
     final int oldFont = ConfigurationManager.getInt(ITechnicalStrings.CONF_FONTS_SIZE);
     // Display a message if font changed
     if (oldFont != jsFonts.getValue()) {
@@ -616,6 +626,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       // theme will be applied at next startup
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+      bLAFMessage = true;
     }
     // Watermarks change
     final String oldWatermark = ConfigurationManager
@@ -623,13 +634,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
         (String) scbWatermarks.getSelectedItem());
     final String watermark = (String) scbWatermarks.getSelectedItem();
-    // Enable image selection if image watermark
-    jlWatermarkImage.setEnabled(watermark.equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
-    pathWatermarkFile.setEnabled(watermark.equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
-    if (!oldWatermark.equals(watermark)) {
-      Util.setWatermark(watermark);
-      // refresh all components
-      Util.updateAllUIs();
+    if (!oldWatermark.equals(watermark) && !bLAFMessage) { 
+      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
+          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+    }
+    // theme Image change
+    final String oldImage = ConfigurationManager
+        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE);
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
+        pathWatermarkFile.getUrl());
+    final String image = pathWatermarkFile.getUrl();
+    if (!oldImage.equals(image)  && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
@@ -1470,19 +1485,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       scbWatermarks.addItem(watermark);
     }
     scbWatermarks.setToolTipText(Messages.getString("ParameterView.231"));
+    // We have to listen to dynamic changes to enable/disable the watermark file
+    // file selector
+    scbWatermarks.addActionListener(this);
     // Watermark file selection
     final JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
     filter.setAcceptDirectories(true);
     pathWatermarkFile = new PathSelector(filter, ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE)) {
-      private static final long serialVersionUID = 1L;
-
-      public void performOnURLChange() {
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
-            pathWatermarkFile.getUrl());
-        Util.setWatermark((String) scbWatermarks.getSelectedItem());
-      }
-    };
+        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE));
     // Add items
     jpUI.add(jcbShowBaloon, "0,0");
     jpUI.add(jlFonts, "0,1");
