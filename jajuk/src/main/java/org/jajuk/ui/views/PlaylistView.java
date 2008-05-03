@@ -434,6 +434,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(EventSubject.EVENT_FILE_COPIED);
     eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
+    eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
     return eventSubjectSet;
   }
 
@@ -473,7 +474,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // wrong
           // column changed of playlist
           // current playlist has changed
-          if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
+          if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
+          //We listen this event to paint the new running track in table
+              || EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)) {
             refreshCurrentPlaylist();
           } else if (EventSubject.EVENT_FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
