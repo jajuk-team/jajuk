@@ -890,17 +890,12 @@ public class FIFO implements ITechnicalStrings {
       // stopped
       return true;
     }
-    if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) { // is
-      // current
-      // track
-      // on
-      // this
-      // device?
+    if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) { 
+      // is current track on this device?
       return false;
     }
-    Iterator<StackItem> it = getInstance().alFIFO.iterator(); // are next tracks
-    // in
-    // fifo on this device?
+    Iterator<StackItem> it = getInstance().alFIFO.iterator(); 
+    // are next tracks in fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
       File file = item.getFile();

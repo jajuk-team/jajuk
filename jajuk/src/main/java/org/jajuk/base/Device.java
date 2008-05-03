@@ -1020,9 +1020,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    *          set wheter the UI should be refreshed
    */
   public void unmount(final boolean bEjection, final boolean bUIRefresh) throws Exception {
-    // look to see if the device is already mounted ( the unix 'mount'
-    // command cannot say that )
-    new File(getMountPoint());
+    // look to see if the device is already mounted 
     if (!bMounted) {
       Messages.showErrorMessage(125); // already unmounted
       return;
