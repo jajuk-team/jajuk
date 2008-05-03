@@ -195,6 +195,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
       boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
       boolean bFileDate = (columnsToShow != null && columnsToShow.contains(XML_FILE_DATE));
+      boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
 
       for (int iRow = 0; it.hasNext(); iRow++) {
         File file = it.next();
@@ -344,7 +345,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         bCellEditable[iRow][15] = false;
         
         // Hits
-        if (bFileDate) {
+        if (bHits) {
           oValues[iRow][16] = file.getTrack().getHits();
         } else {
           oValues[iRow][16] = "";
