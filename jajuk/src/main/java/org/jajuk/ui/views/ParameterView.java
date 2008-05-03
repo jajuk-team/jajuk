@@ -613,9 +613,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
         .getSelectedItem());
     if (!oldTheme.equals(scbLAF.getSelectedItem())) {
-      Util.setLookAndFeel((String) scbLAF.getSelectedItem());
-      // refresh all components
-      Util.updateAllUIs();
+      // theme will be applied at next startup
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
@@ -1437,7 +1435,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsFonts.setPaintTicks(true);
     jsFonts.setPaintLabels(true);
     jsFonts.setToolTipText(Messages.getString("ParameterView.224"));
-    
+
     // Show Balloon
     jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
     jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185"));
@@ -1653,14 +1651,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getBoolean(ITechnicalStrings.CONF_OPTIONS_SYNC_TABLE_TREE));
     String rightLanguageDesc = Messages.getDescForLocal(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE));
-    //Select the right language
+    // Select the right language
     int index = 0;
-    for (String desc : Messages.getDescs()){
-      if (desc.equals(rightLanguageDesc)){
+    for (String desc : Messages.getDescs()) {
+      if (desc.equals(rightLanguageDesc)) {
         scbLanguage.setSelectedIndex(index);
         break;
       }
-      index ++;
+      index++;
     }
     scbLanguage.addActionListener(this);
     scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager
