@@ -254,6 +254,7 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
+    eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -280,7 +281,8 @@ public class QueueView extends PlaylistView {
           editorTable.acceptColumnsEvents = false; // flag reloading to avoid
           // wrong
           if (EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)
-              || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
+              || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
+              || EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
             editorModel.alItems.clear();
             editorModel.alPlanned.clear();
             refreshQueue();
