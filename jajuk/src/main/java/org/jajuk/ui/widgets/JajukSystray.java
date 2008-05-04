@@ -84,7 +84,7 @@ public class JajukSystray extends CommandJPanel {
   private static final long serialVersionUID = 1L;
 
   // Systray variables
-  SystemTray stray = SystemTray.getSystemTray();
+  SystemTray stray;
 
   JXTrayIcon trayIcon;
 
@@ -175,6 +175,8 @@ public class JajukSystray extends CommandJPanel {
    * 
    */
   public JajukSystray() {
+
+    stray = SystemTray.getSystemTray();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
 
     jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
