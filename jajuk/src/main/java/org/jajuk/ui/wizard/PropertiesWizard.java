@@ -694,8 +694,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           return;
         }
         // Computes all items to change
-        // contains items to be changed and no dups
-        LinkedHashSet<Item> itemsToChange = new LinkedHashSet<Item>(alItems);
+        // contains items to be changed
+        ArrayList<Item> itemsToChange = new ArrayList<Item>(alItems);
 
         ArrayList<Item> alInError = new ArrayList<Item>(itemsToChange.size());
         // details for errors
@@ -703,7 +703,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         // Now we have all items to consider, write tags for each
         // property to change
         for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-          for (Item item : itemsToChange) {
+          for (int i = 0; i < itemsToChange.size(); i++) {
+            Item item = itemsToChange.get(i);
             // New value
             oValue = hmPropertyToChange.get(meta);
             // Check it is not null for non custom properties. Note that
@@ -764,6 +765,10 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
                 alItems.remove(item);
                 alItems.add(newItem);
               }
+              // Update itemsToChange to replace the item. Indeed, if we change
+              // several properties to the same item, the item itself must
+              // change
+              itemsToChange.set(i, newItem);
               // if individual item, change title in case of
               // constructor element change
               if (!bMerged) {
