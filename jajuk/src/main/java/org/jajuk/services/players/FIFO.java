@@ -293,11 +293,16 @@ public class FIFO implements ITechnicalStrings {
         }
         // We don't support repeat/non repeat mix in a selection, we clear fifo
         // selection contains at least one repeated track
-        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) || alItems.get(0).isRepeat()) {
+        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) 
+            || alItems.get(0).isRepeat()) {
           clear();
           JajukTimer.getInstance().reset();
         }
         int pos = 0;
+        //If push, not play, add items at the end
+        if (bAppend && alFIFO.size() > 0){
+          pos = alFIFO.size() -1;
+        }
         // add required tracks in the FIFO
         it = alItems.iterator();
         while (it.hasNext()) {
