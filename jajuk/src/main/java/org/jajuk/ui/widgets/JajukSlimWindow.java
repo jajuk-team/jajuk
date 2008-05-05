@@ -152,6 +152,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   private JajukSlimWindow() {
     setUndecorated(true);
+    setAlwaysOnTop(true);
     // Set windows decoration to look and feel
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
@@ -320,7 +321,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     ObservationManager.register(this);
 
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-    if (FIFO.isStopped()) {
+    if (FIFO.getInstance().getCurrentFile() == null) {
       setTitle(Messages.getString("JajukWindow.17"));
     } else {
       setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
@@ -434,7 +435,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   public void update(final Event event) {
     EventSubject subject = event.getSubject();
     if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
-      setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
+      if (FIFO.getInstance().getCurrentFile() == null) {
+        setTitle(Messages.getString("JajukWindow.17"));
+      } else {
+        setTitle(Util.buildTitle(FIFO.getInstance().getCurrentFile()));
+      }
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
       ActionManager.getAction(NEXT_TRACK).setEnabled(true);
       ActionManager.getAction(REWIND_TRACK).setEnabled(true);
