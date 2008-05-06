@@ -1048,6 +1048,7 @@ public class FIFO implements ITechnicalStrings {
    * @param index
    */
   public void goTo(int pIndex) {
+    bStop = false;
     int index = pIndex;
     try {
       if (containsRepeat()) {
