@@ -170,7 +170,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     // files cleanup
     final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : files) {
-      if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this) && file.isReady()) {
+      if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this)
+          && file.isReady()) {
         // Remove file if it doesn't exist any more or if it is a iTunes
         // file (useful for jajuk < 1.4)
         if (!file.getIO().exists() || file.getName().startsWith("._")) {
@@ -654,9 +655,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       final Directory top = DirectoryManager.getInstance().registerDirectory(this);
       // Start actual scan
       scanRecursively(top, bDeepScan);
-      // refresh required if nb of files or dirs changed
-      if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
-          || ((DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0)) {
+      // refresh thumbs required if nb of files or dirs changed, but it is
+      // costly, do it only if many albums was discovered
+      if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) > 200)
+          || ((DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) > 20)) {
         // Refresh thumbs for new albums
         ThumbnailsMaker.launchAllSizes(false);
         return true;
@@ -1020,7 +1022,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    *          set wheter the UI should be refreshed
    */
   public void unmount(final boolean bEjection, final boolean bUIRefresh) throws Exception {
-    // look to see if the device is already mounted 
+    // look to see if the device is already mounted
     if (!bMounted) {
       Messages.showErrorMessage(125); // already unmounted
       return;
