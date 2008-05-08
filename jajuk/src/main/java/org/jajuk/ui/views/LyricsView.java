@@ -137,8 +137,13 @@ public class LyricsView extends ViewAdapter implements Observer {
     ObservationManager.register(this);
     reset();
     // check if a track has already been launched
-    update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+    if (FIFO.getInstance().isPlayingRadio()) { 
+      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+    } else if (!FIFO.isStopped()) {
+      update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+    }
   }
 
   public void handlePopup(final MouseEvent e) {

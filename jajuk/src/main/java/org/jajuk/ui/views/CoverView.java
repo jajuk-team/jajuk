@@ -261,7 +261,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
       }
     } else if (e.getSource() == jbDefault) { // choose a default
-       // first commit this cover on the disk if it is a remote cover
+      // first commit this cover on the disk if it is a remote cover
       final Cover cover = alCovers.get(index);
       final String sFilename = Util.getOnlyFile(cover.getURL().toString());
       if (cover.getType() == Cover.REMOTE_COVER) {
@@ -281,7 +281,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             alCovers.add(cover2);
             setFoundText();
           }
-          //Remove previous thumbs to avoid using outdated images
+          // Remove previous thumbs to avoid using outdated images
           org.jajuk.base.File fCurrent = fileReference;
           if (fCurrent == null) {
             fCurrent = FIFO.getInstance().getCurrentFile();
@@ -767,18 +767,24 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       Log.error(e);
     }
     add(jpControl, "0,0");
-    // request cover refresh after a while to allow ui to paint
+    // request cover refresh after a while to make sure the window owns its
+    // definitive dimension so we avoid the cover to resize at startup
     new Thread() {
       @Override
       public void run() {
         try {
-          Thread.sleep(3000); // more sec in case of...
+          Thread.sleep(3000);
         } catch (final Exception e) {
           Log.error(e);
         }
-        // Request for cover refresh
-        update(new Event(EventSubject.EVENT_COVER_REFRESH, ObservationManager
-            .getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
+        // check if a track has already been launched
+        if (FIFO.getInstance().isPlayingRadio()) {
+          update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+        } else  {
+          update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+        }
 
       }
     }.start();
@@ -816,7 +822,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
         icon = new ImageIcon(img);
-        if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0){
+        if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
           throw new Exception("Wrong picture, size is null");
         }
       } else {
@@ -1131,7 +1137,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           }
           setFoundText(); // update found text
           displayCurrentCover();
-        } else if (EventSubject.EVENT_ZERO.equals(subject)) {
+        } else if (EventSubject.EVENT_ZERO.equals(subject)
+            || EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
           // Ignore this event if a reference file has been set
           if (fileReference != null) {
             return;

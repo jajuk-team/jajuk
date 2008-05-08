@@ -62,7 +62,7 @@ import org.jajuk.util.log.Log;
  * Status / information panel ( static view )
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
-    ChangeListener, MouseWheelListener{
+    ChangeListener, MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -209,9 +209,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       update(new Event(EventSubject.EVENT_PLAY_ERROR, ObservationManager
           .getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
     }
-    // Check if a webradio has been launch before this view is visible
-    update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+    // Check if a track or a webradio has been launch before this view is visible
+    if (FIFO.getInstance().isPlayingRadio()) {
+      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+    } else {
+      update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+    }
     // register for given events
     ObservationManager.register(this);
     // start timer
@@ -308,36 +313,36 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     int timeFormat = 0;
     // Set the required decimal precision for percentage here
     DecimalFormat df = new DecimalFormat("0"); // (0.##) for 2 decimal places
-    try{
-        timeFormat= ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED);
-    }catch(Exception e){
+    try {
+      timeFormat = ConfigurationManager.getInt(ITechnicalStrings.FORMAT_TIME_ELAPSED);
+    } catch (Exception e) {
       Log.debug(e.toString());
       ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED, "" + 1);
       ConfigurationManager.setProperty(ITechnicalStrings.FORMAT_TIME_ELAPSED_MAX, "" + 4);
     }
     switch (timeFormat) {
-      case 1: {
-        string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
-        break;
-      }
-      case 2: {
-        string = "-" + Util.formatTimeBySec(length - lTime , false) + " / "
-        + Util.formatTimeBySec(length, false);
-        break;
-      }
-      case 3: {
-        float lTime_percent = (float) ((float) lTime /(float) length * 100.0);
-        string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
-        break;
-      }
-      case 4: {
-        float lTime_percent = (float) ((lTime - length) /(float) length * 100.0);
-        string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
-        break;
-      }
-      default:{
-        string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
-      }
+    case 1: {
+      string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
+      break;
+    }
+    case 2: {
+      string = "-" + Util.formatTimeBySec(length - lTime, false) + " / "
+          + Util.formatTimeBySec(length, false);
+      break;
+    }
+    case 3: {
+      float lTime_percent = (float) ((float) lTime / (float) length * 100.0);
+      string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
+      break;
+    }
+    case 4: {
+      float lTime_percent = (float) ((lTime - length) / (float) length * 100.0);
+      string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
+      break;
+    }
+    default: {
+      string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
+    }
     }
     sCurrentStatus = string;
     jlCurrent.setText(string);
@@ -547,4 +552,4 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       jsPosition.setValue(iNew);
     }
   }
- }
+}
