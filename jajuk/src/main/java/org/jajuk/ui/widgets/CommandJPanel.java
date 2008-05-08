@@ -384,6 +384,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
     // Volume
     jpVolume = new JPanel();
+    jpVolume.addMouseWheelListener(CommandJPanel.this);
     ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(JajukAction.DECREASE_VOLUME),
         ActionManager.getAction(JajukAction.INCREASE_VOLUME));
 
@@ -1044,6 +1045,21 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       int iOld = jsVolume.getValue();
       int iNew = iOld - (e.getUnitsToScroll() * 3);
       jsVolume.setValue(iNew);
+    }else if (e.getSource() == jpVolume) {
+      int oldVolume = (int) (100 * Player.getCurrentVolume());
+      int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
+      if (Player.isMuted()) {
+        Player.mute(false);
+      }
+
+      if (newVolume > 100)
+        newVolume = 100;
+      else if (newVolume < 0)
+        newVolume = 0;
+
+      Player.setVolume((float) newVolume / 100);
+      jpVolume.setToolTipText(newVolume + " %");
+      MuteAction.setVolumeIcon(newVolume);
     }
   }
 

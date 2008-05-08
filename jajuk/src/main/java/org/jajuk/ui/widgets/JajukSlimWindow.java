@@ -365,8 +365,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       Log.error(e);
     }
     pack();
-    // Notify that slimbar is now visible (menu bar is interested in it)
-    ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
     // Force initial UI refresh
     if (!FIFO.isStopped()) {
       // update initial state
@@ -433,8 +431,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     if (e.getSource() == jbVolume) {
       int oldVolume = (int) (100 * Player.getCurrentVolume());
       int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
-      jbVolume.removeMouseWheelListener(this);
-      // if user move the volume slider, unmute
       if (Player.isMuted()) {
         Player.mute(false);
       }
@@ -445,7 +441,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
         newVolume = 0;
 
       Player.setVolume((float) newVolume / 100);
-      jbVolume.addMouseWheelListener(this);
       jbVolume.setToolTipText(newVolume + " %");
       MuteAction.setVolumeIcon(newVolume);
     }
