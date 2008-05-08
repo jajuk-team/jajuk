@@ -34,7 +34,7 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.RestoreAllViewsAction;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.JajukSlimWindow;
+import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;

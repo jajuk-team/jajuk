@@ -62,7 +62,6 @@ import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.events.Observer;
-import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -140,8 +139,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
   JMenuItem jmialarmClock;
   
-  JMenuItem jmiSlimJajuk;
-
   JMenu configuration;
 
   JMenuItem jmiDJ;
@@ -271,10 +268,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jmReminders.add(jma);
       jmReminders.addSeparator();
     }
-    ActionBase slimAction = ActionManager.getAction(JajukAction.SLIM_JAJUK);
-    jmiSlimJajuk = new JMenuItem(slimAction);
-    
-    tools.add(jmiSlimJajuk);
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
     tools.addSeparator();
@@ -449,7 +442,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
       jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
-      jmiSlimJajuk.setEnabled(!JajukSlimWindow.getInstance().isVisible());
     }
   }
 }

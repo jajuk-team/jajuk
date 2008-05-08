@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.ExitService;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.JajukSlimWindow;
+import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
@@ -71,7 +71,7 @@ public class ExitAction extends ActionBase {
       }
 
       // Store window/tray/slimbar configuration
-      if (JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible()) {
+      if (JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible()) {
         ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
             .toString(DISPLAY_MODE_SLIMBAR_TRAY));
       }
@@ -80,7 +80,7 @@ public class ExitAction extends ActionBase {
             .toString(DISPLAY_MODE_WINDOW_TRAY));
       }
 
-      if (!(JajukSlimWindow.isLoaded() && JajukSlimWindow.getInstance().isVisible())
+      if (!(JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible())
           && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
         ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
       }
@@ -94,8 +94,8 @@ public class ExitAction extends ActionBase {
         JajukSystray.getInstance().dispose();
       }
       // Hide slimbar
-      if (JajukSlimWindow.isLoaded()) {
-        JajukSlimWindow.getInstance().dispose();
+      if (JajukSlimbar.isLoaded()) {
+        JajukSlimbar.getInstance().dispose();
       }
     }
     // Exit Jajuk

@@ -92,7 +92,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observer,
+public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     MouseWheelListener, ListSelectionListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
@@ -138,11 +138,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   /** True if user close the slim bar from the taskbar */
   private boolean closing = false;
 
-  private static JajukSlimWindow self;
+  private static JajukSlimbar self;
 
-  public static JajukSlimWindow getInstance() {
+  public static JajukSlimbar getInstance() {
     if (self == null) {
-      self = new JajukSlimWindow();
+      self = new JajukSlimbar();
     }
     return self;
   }
@@ -158,7 +158,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       // so we can compensate the frame size to avoid it to jump when applying
       // the new location
       Point relativePoint = SwingUtilities.convertPoint(((JComponent) e.getSource()).getParent(),
-          ((JComponent) e.getSource()).getLocation(), JajukSlimWindow.this.getRootPane());
+          ((JComponent) e.getSource()).getLocation(), JajukSlimbar.this.getRootPane());
       point = new Point((int) (point.getX() - relativePoint.getX()),
           (int) (point.getY() - relativePoint.getY()));
       setLocation(point);
@@ -167,7 +167,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     }
   };
 
-  private JajukSlimWindow() {
+  private JajukSlimbar() {
     setUndecorated(true);
     setAlwaysOnTop(true);
     // Set windows decoration to look and feel

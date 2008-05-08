@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
-import org.jajuk.ui.widgets.JajukSlimWindow;
+import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
@@ -43,7 +43,7 @@ public class SlimbarAction extends ActionBase {
   }
 
   public void perform(ActionEvent evt) throws Exception {
-    JajukSlimWindow slimbar = JajukSlimWindow.getInstance();
+    JajukSlimbar slimbar = JajukSlimbar.getInstance();
     // If slimbar is visible, hide it and show the main window
 
     /*
@@ -52,7 +52,7 @@ public class SlimbarAction extends ActionBase {
      * on the tray, the main window is displayed, this is a normal behavior
      */
     if (slimbar.isVisible()) {
-      JajukSlimWindow.getInstance().setVisible(false);
+      JajukSlimbar.getInstance().setVisible(false);
       JajukWindow.getInstance().display(true);
     } else {
       if (!slimbar.isInitialized()){
