@@ -49,6 +49,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -131,8 +132,6 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   String rating = "";
 
-  Point lastPosition;
-
   /** True if user close the slim bar from the taskbar */
   private boolean closing = false;
 
@@ -148,9 +147,17 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   /**
    * This mouse motion listener allows the whole slim bar dragging
    */
+
   private MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
     public void mouseDragged(MouseEvent e) {
       Point point = e.getLocationOnScreen();
+      // compute coordonates of the event relative to the frame, not the screen
+      // so we can compensate the frame size to avoid it to jump when applying
+      // the new location
+      Point relativePoint = SwingUtilities.convertPoint(((JComponent) e.getSource()).getParent(),
+          ((JComponent) e.getSource()).getLocation(), JajukSlimWindow.this.getRootPane());
+      point = new Point((int) (point.getX() - relativePoint.getX()),
+          (int) (point.getY() - relativePoint.getY()));
       setLocation(point);
       ConfigurationManager.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + ","
           + (int) point.getY());
@@ -351,7 +358,8 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       if (y < 0 || y > iScreenHeight) {
         y = 0;
       }
-      setLocation(new Point(x, y));
+      Point point = new Point(x, y);
+      setLocation(point);
     } catch (Exception e) {
       Log.debug("Cannot restore slimbar position");
       Log.error(e);
@@ -359,7 +367,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
     pack();
     // Notify that slimbar is now visible (menu bar is interested in it)
     ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
-    // Foce initial UI refresh
+    // Force initial UI refresh
     if (!FIFO.isStopped()) {
       // update initial state
       update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
