@@ -291,8 +291,6 @@ public interface ITechnicalStrings {
 
   URL IMAGE_DJ = Util.getResource("images/included/dj.jpg");
 
-  URL IMAGE_WEBRADIO = Util.getResource("images/included/webradios.jpg");
-
   URL IMAGE_TRAY_TITLE = Util.getResource("images/included/tray_title.png");
 
   // XSLT Files

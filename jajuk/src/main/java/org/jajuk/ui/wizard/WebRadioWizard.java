@@ -52,7 +52,6 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -345,8 +344,8 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
   }
 
   public WebRadioWizard() {
-    super(Messages.getString("RadioWizard.7"), RadioPanel.class, Util.getImage(IMAGE_WEBRADIO),
-        JajukWindow.getInstance(), new Locale(Messages.getInstance().getLocale()), 700, 600);
+    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null,
+        JajukWindow.getInstance(), new Locale(Messages.getInstance().getLocale()), 600, 500);
   }
 
   /*
