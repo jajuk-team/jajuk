@@ -293,7 +293,7 @@ public class FIFO implements ITechnicalStrings {
         int pos = 0;
         // If push, not play, add items at the end
         if (bAppend && alFIFO.size() > 0) {
-          pos = alFIFO.size() - 1;
+          pos = alFIFO.size();
         }
         // add required tracks in the FIFO
         for (StackItem item : alItems) {
@@ -556,7 +556,8 @@ public class FIFO implements ITechnicalStrings {
   public void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
-    if (!ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) || alFIFO.size() == 0) {
+    if (!ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) 
+        || containsRepeat() || alFIFO.size() == 0) {
       alPlanned.clear();
       return;
     }
