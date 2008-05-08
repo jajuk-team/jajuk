@@ -63,8 +63,9 @@ public class SteppedComboBox extends JComboBox {
 
   public Dimension getPopupSize() {
     Dimension size = getSize();
-    if (popupWidth < 1)
+    if (popupWidth < 1) {
       popupWidth = size.width;
+    }
     return new Dimension(popupWidth, size.height);
   }
 
@@ -87,6 +88,5 @@ public class SteppedComboBox extends JComboBox {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
   }
 }

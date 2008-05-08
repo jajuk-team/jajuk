@@ -180,6 +180,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   public HashMap hmCheckboxView = new HashMap(10);
 
   private JajukJMenuBar() {
+    setOpaque(true);
     setAlignmentX(0.0f);
     // File menu
     file = new JMenu(Messages.getString("JajukJMenuBar.0"));
