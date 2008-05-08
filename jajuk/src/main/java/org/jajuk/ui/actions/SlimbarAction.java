@@ -45,17 +45,19 @@ public class SlimbarAction extends ActionBase {
   public void perform(ActionEvent evt) throws Exception {
     JajukSlimWindow slimbar = JajukSlimWindow.getInstance();
     // If slimbar is visible, hide it and show the main window
-    
+
     /*
      * Note that both main window and slimbar can be displayed at the same time:
-     * If the slimebar is visible and user display main window by right clicking
+     * If the slimbar is visible and user display main window by right clicking
      * on the tray, the main window is displayed, this is a normal behavior
      */
     if (slimbar.isVisible()) {
       JajukSlimWindow.getInstance().setVisible(false);
       JajukWindow.getInstance().display(true);
     } else {
-      slimbar.initUI();
+      if (!slimbar.isInitialized()){
+        slimbar.initUI();
+      }
       slimbar.setVisible(true);
       JajukWindow.getInstance().display(false);
     }

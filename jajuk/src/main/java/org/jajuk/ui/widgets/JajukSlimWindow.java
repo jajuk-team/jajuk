@@ -96,41 +96,43 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
 
   private static final long serialVersionUID = 1L;
 
-  JLabel jajuk;
+  private JLabel jajuk;
 
-  SizedButton jbPrevious;
+  private SizedButton jbPrevious;
 
-  SizedButton jbNext;
+  private SizedButton jbNext;
 
-  SizedButton jbPlayPause;
+  private SizedButton jbPlayPause;
 
-  SizedButton jbStop;
+  private SizedButton jbStop;
 
-  DropDownButton jbIncRate;
+  private DropDownButton jbIncRate;
 
-  DropDownButton jddbSmart;
+  private DropDownButton jddbSmart;
 
-  JPopupMenu jpmSmart;
+  private JPopupMenu jpmSmart;
 
-  JMenuItem jbBestof;
+  private JMenuItem jbBestof;
 
-  JMenuItem jbNovelties;
+  private JMenuItem jbNovelties;
 
-  JMenuItem jbRandom;
+  private JMenuItem jbRandom;
 
-  JMenuItem jbFinishAlbum;
+  private JMenuItem jbFinishAlbum;
 
-  JButton jbMaximize;
+  private JButton jbMaximize;
 
-  SizedButton jbVolume;
+  private SizedButton jbVolume;
 
-  SearchBox sbSearch;
+  private SearchBox sbSearch;
 
-  JToolBar slimJajuk;
+  private JToolBar slimJajuk;
 
-  String title = "";
+  private String title = "";
 
-  String rating = "";
+  private String rating = "";
+
+  private boolean bInitialized = false;
 
   /** True if user close the slim bar from the taskbar */
   private boolean closing = false;
@@ -178,6 +180,14 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
    */
   public static boolean isLoaded() {
     return (self != null);
+  }
+
+  /**
+   * 
+   * @return whether the method initUI() has already been executed
+   */
+  public boolean isInitialized() {
+    return bInitialized;
   }
 
   public void initUI() {
@@ -370,6 +380,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       // update initial state
       update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
     }
+    bInitialized = true;
   }
 
   private void updateCurrentTitle() {
@@ -428,7 +439,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
    * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jbVolume) {
+    if (e.getSource().equals(jbVolume)) {
       int oldVolume = (int) (100 * Player.getCurrentVolume());
       int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
       if (Player.isMuted()) {
