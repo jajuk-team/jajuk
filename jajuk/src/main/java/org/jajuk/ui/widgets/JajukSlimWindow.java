@@ -61,6 +61,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.File;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.events.Event;
@@ -384,13 +385,18 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
   }
 
   private void updateCurrentTitle() {
-    if (FIFO.getInstance().getCurrentFile() == null || FIFO.isStopped()) {
-      title = Messages.getString("JajukWindow.17");
+    File file = FIFO.getInstance().getCurrentFile();
+    if (FIFO.getInstance().isPlayingRadio()) {
+      title = FIFO.getInstance().getCurrentRadio().getName();
       rating = Messages.getString("IncRateAction.0");
-    } else {
+    } else if (file != null && !FIFO.isStopped()) {
       title = Util.buildTitle(FIFO.getInstance().getCurrentFile());
       rating = "" + FIFO.getInstance().getCurrentFile().getTrack().getRate();
+    } else {
+      title = Messages.getString("JajukWindow.18");
+      rating = Messages.getString("IncRateAction.0");
     }
+
     SwingUtilities.invokeLater(new Runnable() {
 
       public void run() {
@@ -502,6 +508,11 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
       ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
       ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
+    } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+      updateCurrentTitle();
+      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+      ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+      ActionManager.getAction(STOP_TRACK).setEnabled(true);
     }
   }
 

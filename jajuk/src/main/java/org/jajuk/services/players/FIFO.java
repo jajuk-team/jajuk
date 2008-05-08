@@ -211,6 +211,7 @@ public class FIFO implements ITechnicalStrings {
         // reset all UI
         ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
         ObservationManager.notify(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, pDetails));
+        bStop = true;
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);

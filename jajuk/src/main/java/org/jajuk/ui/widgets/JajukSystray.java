@@ -273,12 +273,18 @@ public class JajukSystray extends CommandJPanel {
 
       @Override
       public void mouseMoved(MouseEvent e) {
+        Point location = new Point(e.getX() - 50, e.getY() - 200);
+        String title = null;
         File file = FIFO.getInstance().getCurrentFile();
-        Point location = new Point(e.getX() - 50, e.getY() - 250);
-        if (file == null || FIFO.isStopped()) {
-          return;
+        if (FIFO.getInstance().isPlayingRadio()){
+          title = FIFO.getInstance().getCurrentRadio().getName();
         }
-        String sOut = getHTMLFormatText(file);
+        else if (file != null && !FIFO.isStopped()){
+          title = getHTMLFormatText(file);
+        }
+        else {
+          title = Messages.getString("JajukWindow.18");
+        }
         if (dialog != null) {
           return;
         }
@@ -286,7 +292,8 @@ public class JajukSystray extends CommandJPanel {
         dialog.setUndecorated(true);
         dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         dialog.getRootPane().setBorder(new LineBorder(Color.BLACK));
-        JLabel jl = new JLabel(sOut);
+        JLabel jl = new JLabel(title);
+        jl.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XL));
         jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
         dialog.setLocation(location);
@@ -423,15 +430,11 @@ public class JajukSystray extends CommandJPanel {
 
         } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
           WebRadio radio = FIFO.getInstance().getCurrentRadio();
-          if (radio != null) {
-            trayIcon.setToolTip(radio.getName());
-          }
           // Enable webradio navigation actions
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
         } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
-          trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
           jmiPlayPause.setEnabled(true);
           jmiStop.setEnabled(false);
           jmiNext.setEnabled(true);
@@ -442,7 +445,6 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
         } else if (EventSubject.EVENT_ZERO.equals(subject)) {
-          trayIcon.setToolTip(Messages.getString("JajukWindow.18"));
           jmiPlayPause.setEnabled(false);
           jmiStop.setEnabled(false);
           jmiNext.setEnabled(false);
