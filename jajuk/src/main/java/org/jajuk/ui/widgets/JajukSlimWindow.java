@@ -515,7 +515,7 @@ public class JajukSlimWindow extends JFrame implements ITechnicalStrings, Observ
             if (sr.getType() == SearchResultType.FILE) {
               FIFO.getInstance().push(
                   new StackItem(sr.getFile(), ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {

@@ -586,7 +586,7 @@ public interface ITechnicalStrings {
   String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";
 
   /** Default action (play or push) when clicking on an item */
-  String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click";
+  String CONF_OPTIONS_PUSH_ON_CLICK = "jajuk.options.default_action_click";
 
   /** Default action (play or push) when dropping on an item */
   String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop";

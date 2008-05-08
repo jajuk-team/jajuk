@@ -479,7 +479,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Options
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
         .toString(jcbDisplayUnmounted.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_CLICK, Boolean
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_PUSH_ON_CLICK, Boolean
         .toString(jcbDefaultActionClick.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean
         .toString(jcbDefaultActionDrop.isSelected()));
@@ -1652,7 +1652,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbDisplayUnmounted.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
     jcbDefaultActionClick.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+        .getBoolean(ITechnicalStrings.CONF_OPTIONS_PUSH_ON_CLICK));
     jcbDefaultActionDrop.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_DROP));
     jcbHotkeys.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HOTKEYS));

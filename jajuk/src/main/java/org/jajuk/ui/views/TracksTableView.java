@@ -103,7 +103,7 @@ public class TracksTableView extends AbstractTableView {
                   // launch it
                   FIFO.getInstance().push(
                       new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT)),
-                      ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                      ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
 
                 } catch (JajukException je) {
                   Log.error(je);

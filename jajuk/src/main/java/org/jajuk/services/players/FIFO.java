@@ -245,10 +245,9 @@ public class FIFO implements ITechnicalStrings {
       }
       // first try to mount needed devices
       Iterator<StackItem> it = alItems.iterator();
-      StackItem item = null;
       boolean bNoMount = false;
       while (it.hasNext()) {
-        item = it.next();
+        StackItem item = it.next();
         if (item == null) {
           it.remove();
           break;
@@ -291,40 +290,25 @@ public class FIFO implements ITechnicalStrings {
         if (!bAppend) {
           Player.stop(false);
         }
-        // We don't support repeat/non repeat mix in a selection, we clear fifo
-        // selection contains at least one repeated track
-        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) || alItems.get(0).isRepeat()) {
-          clear();
-          JajukTimer.getInstance().reset();
-        }
         int pos = 0;
         // If push, not play, add items at the end
         if (bAppend && alFIFO.size() > 0) {
           pos = alFIFO.size() - 1;
         }
         // add required tracks in the FIFO
-        it = alItems.iterator();
-        while (it.hasNext()) {
-          item = it.next();
-          // Apply contextual repeat mode but only for consecutive
-          // repeat tracks : we can't have a whole between
-          // repeated tracks and first track must be repeated
-          if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
-            // check if last in fifo is repeated
-            if (getLast() == null) { // this item will be the
-              // first
-              item.setRepeat(true);
-            } else { // there are yet some tracks in fifo
-              if (getLast().isRepeat()) {
-                item.setRepeat(true);
-              } else {
-                item.setRepeat(false);
-              }
-            }
-          }// else, can be repeat (forced repeat) or not
+        for (StackItem item : alItems) {
           alFIFO.add(pos, item);
           pos++;
           JajukTimer.getInstance().addTrackTime(item.getFile());
+        }
+        // Apply repeat mode if required. If we are in repeat mode or if the
+        // selection contains at least a single repeated item, all the fifo is
+        // repeated. If selection contains no repeated item, the full fifo is
+        // unrepeated
+        if (containsRepeatedItem(alItems) || ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
+          setRepeatModeToAll(true);
+        } else {
+          setRepeatModeToAll(false);
         }
         // launch track if required
         if (!bAppend || !Player.isPlaying()) {
@@ -338,6 +322,32 @@ public class FIFO implements ITechnicalStrings {
     } catch (Exception e) {
       Log.error(e);
     }
+  }
+
+  /**
+   * @param items
+   * @return whether a stack item list contains a least one repeated item
+   */
+  private boolean containsRepeatedItem(List<StackItem> items) {
+    for (StackItem item : items) {
+      if (item.isRepeat()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param items
+   * @return whether FIFO contains a least one repeated item
+   */
+  public boolean containsRepeat() {
+    for (StackItem item : alFIFO) {
+      if (item.isRepeat()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -602,35 +612,16 @@ public class FIFO implements ITechnicalStrings {
   }
 
   /**
-   * @return whether the FIFO contains at least one track in repeat mode
-   */
-  public boolean containsRepeat() {
-    Iterator<StackItem> it = alFIFO.iterator();
-    boolean bRepeat = false;
-    while (it.hasNext()) {
-      StackItem item = it.next();
-      if (item.isRepeat()) {
-        bRepeat = true;
-      }
-    }
-    return bRepeat;
-  }
-
-  /**
    * 
    * @return whether the FIFO contains only repeated files
    */
   public boolean containsOnlyRepeat() {
-    Iterator<StackItem> it = alFIFO.iterator();
-    boolean bOnlyRepeat = true;
-    while (it.hasNext()) {
-      StackItem item = it.next();
+    for (StackItem item : alFIFO) {
       if (!item.isRepeat()) {
-        bOnlyRepeat = false;
-        break;
+        return false;
       }
     }
-    return bOnlyRepeat;
+    return true;
   }
 
   /**
@@ -1054,7 +1045,7 @@ public class FIFO implements ITechnicalStrings {
     bStop = false;
     int index = pIndex;
     try {
-      if (containsRepeat()) {
+      if (containsRepeatedItem(alFIFO)) {
         // if there are some tracks in repeat, mode
         if (getItem(index).isRepeat()) {
           // the selected line is in repeat mode, ok,

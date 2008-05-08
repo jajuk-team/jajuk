@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -156,13 +155,7 @@ public class QueueView extends PlaylistView {
     // previous FIFO
     jmiFilePlay.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
-          List<File> files = Util.getPlayableFiles(editorTable.getSelection());
-          FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), true, true),
-              false);
-        } else {
-          goToSelection();
-        }
+        goToSelection();
       }
     });
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
@@ -217,19 +210,9 @@ public class QueueView extends PlaylistView {
             item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
             item.setUserLaunch(true);
             FIFO.getInstance().push(item,
-                ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
           } else { // non planned items
-            if (ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK)) {
-              FIFO.getInstance().push(item, true);
-            } else {
-              if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
-                List<File> files = Util.getPlayableFiles(editorTable.getSelection());
-                FIFO.getInstance().push(
-                    Util.createStackItems(Util.applyPlayOption(files), true, true), false);
-              } else {
-                goToSelection();
-              }
-            }
+            goToSelection();
           }
         }
       }

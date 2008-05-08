@@ -407,7 +407,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     ambiencesCombo = new SteppedComboBox();
     iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
     ambiencesCombo.setPopupWidth(iWidth);
-    ambiencesCombo.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_L));
     // size of the combo itself
     ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
@@ -641,7 +640,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
             try {
               FIFO.getInstance().push(
                   new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
-                  ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                  ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
             }
@@ -685,7 +684,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
             if (sr.getType() == SearchResultType.FILE) {
               FIFO.getInstance().push(
                   new StackItem(sr.getFile(), ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
