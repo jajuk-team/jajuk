@@ -273,16 +273,13 @@ public class JajukSystray extends CommandJPanel {
 
       @Override
       public void mouseMoved(MouseEvent e) {
-        Point location = new Point(e.getX() - 50, e.getY() - 200);
         String title = null;
         File file = FIFO.getInstance().getCurrentFile();
-        if (FIFO.getInstance().isPlayingRadio()){
+        if (FIFO.getInstance().isPlayingRadio()) {
           title = FIFO.getInstance().getCurrentRadio().getName();
-        }
-        else if (file != null && !FIFO.isStopped()){
+        } else if (file != null && !FIFO.isStopped()) {
           title = getHTMLFormatText(file);
-        }
-        else {
+        } else {
           title = Messages.getString("JajukWindow.18");
         }
         if (dialog != null) {
@@ -296,8 +293,9 @@ public class JajukSystray extends CommandJPanel {
         jl.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XL));
         jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
-        dialog.setLocation(location);
         dialog.pack();
+        Point location = new Point(e.getX() - 50, e.getY() - (10 + dialog.getHeight()));
+        dialog.setLocation(location);
         dialog.setVisible(true);
         // The toFront() is required under windows when main window is not
         // visible
