@@ -146,7 +146,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
     setContentPane(jp);
     if (autoclose) {
       // Make sure to close this popup when it lost focus
-      jspText.addMouseListener(new MouseAdapter() {
+      text.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseExited(MouseEvent e) {
           // Test if mouse is really outside the popup, for unknown reason,
