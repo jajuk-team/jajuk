@@ -93,13 +93,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
   /** Current search */
   String search = null;
 
-  /**
-   * Constructor
-   * 
-   */
-  public WikipediaView() {
-  }
-
+  
   /*
    * (non-Javadoc)
    * 
@@ -210,11 +204,6 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
     // Make a search after a stop period
     if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)
         || subject.equals(EventSubject.EVENT_PERPECTIVE_CHANGED)) {
-      // Do not perform search if current perspective is not info for
-      // perfs
-      if (!(PerspectiveManager.getCurrentPerspective() instanceof InfoPerspective)) {
-        return;
-      }
       // If current state is stopped, reset page
       if (FIFO.getInstance().getCurrentFile() == null) {
         reset();
