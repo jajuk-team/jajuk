@@ -160,7 +160,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
     defaults.put(CONF_STATE_REPEAT, FALSE);
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
-    defaults.put(CONF_STATE_CONTINUE, TRUE);
+    defaults.put(CONF_STATE_CONTINUE, FALSE);
     defaults.put(CONF_STATE_INTRO, FALSE);
     defaults.put(CONF_STATE_WAS_PLAYING, TRUE);
     // no startup file by default
