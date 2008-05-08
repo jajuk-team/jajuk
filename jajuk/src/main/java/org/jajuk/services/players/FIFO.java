@@ -293,15 +293,14 @@ public class FIFO implements ITechnicalStrings {
         }
         // We don't support repeat/non repeat mix in a selection, we clear fifo
         // selection contains at least one repeated track
-        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) 
-            || alItems.get(0).isRepeat()) {
+        if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) || alItems.get(0).isRepeat()) {
           clear();
           JajukTimer.getInstance().reset();
         }
         int pos = 0;
-        //If push, not play, add items at the end
-        if (bAppend && alFIFO.size() > 0){
-          pos = alFIFO.size() -1;
+        // If push, not play, add items at the end
+        if (bAppend && alFIFO.size() > 0) {
+          pos = alFIFO.size() - 1;
         }
         // add required tracks in the FIFO
         it = alItems.iterator();
@@ -895,11 +894,11 @@ public class FIFO implements ITechnicalStrings {
       // stopped
       return true;
     }
-    if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) { 
+    if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) {
       // is current track on this device?
       return false;
     }
-    Iterator<StackItem> it = getInstance().alFIFO.iterator(); 
+    Iterator<StackItem> it = getInstance().alFIFO.iterator();
     // are next tracks in fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
@@ -956,11 +955,15 @@ public class FIFO implements ITechnicalStrings {
    */
   public void shuffle() {
     if (alFIFO.size() > 1) {
-      // Make sure current track is kept to its position
-      // so remove it and add it again after shuffling
-      alFIFO.remove(0);
-      Collections.shuffle(alFIFO, new Random());
-      alFIFO.add(0, itemLast);
+      if (isStopped()) {
+        Collections.shuffle(alFIFO, new Random());
+      } else {
+        // Make sure current track is kept to its position
+        // so remove it and add it again after shuffling
+        alFIFO.remove(0);
+        Collections.shuffle(alFIFO, new Random());
+        alFIFO.add(0, itemLast);
+      }
     }
     alPlanned.clear(); // force recomputes planned tracks
   }
