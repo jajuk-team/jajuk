@@ -609,15 +609,25 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jsCatalogPages.getValue()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
         .toString(jcbShowPopups.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, Integer
-        .toString(jsPerspectiveSize.getValue()));
     final int oldFont = ConfigurationManager.getInt(ITechnicalStrings.CONF_FONTS_SIZE);
-    // Display a message if font changed
+    boolean bFontMessagedisplayed = false;
+    // Display a message if font size changed
     if (oldFont != jsFonts.getValue()) {
       Messages.showInfoMessage(Messages.getString("ParameterView.227"));
+      bFontMessagedisplayed = true;
     }
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
         .getValue()));
+ 
+    final int oldPerspectiveSize = ConfigurationManager
+        .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE);
+    // If we perspective size changed and no font message have been already
+    // displayed, display a message
+    if (oldPerspectiveSize != jsPerspectiveSize.getValue() && !bFontMessagedisplayed) {
+      Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+    }
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, Integer
+        .toString(jsPerspectiveSize.getValue()));
     // LAF change
     final String oldTheme = ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
@@ -634,7 +644,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
         (String) scbWatermarks.getSelectedItem());
     final String watermark = (String) scbWatermarks.getSelectedItem();
-    if (!oldWatermark.equals(watermark) && !bLAFMessage) { 
+    if (!oldWatermark.equals(watermark) && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
@@ -644,7 +654,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
         pathWatermarkFile.getUrl());
     final String image = pathWatermarkFile.getUrl();
-    if (!oldImage.equals(image)  && !bLAFMessage) {
+    if (!oldImage.equals(image) && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
@@ -1423,14 +1433,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsPerspectiveSize.setPaintTicks(true);
     jsPerspectiveSize.setPaintLabels(true);
     jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
-    // Alert user that this change will be effective at next startup
-    jsPerspectiveSize.addChangeListener(new ChangeListener() {
-      public void stateChanged(ChangeEvent e) {
-        if (!jsPerspectiveSize.getValueIsAdjusting()) {
-          Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-        }
-      }
-    });
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
     catalogView.setLayout(new VerticalLayout(10));
     catalogView.setCollapsed(true);
@@ -1445,7 +1447,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jlFonts = new JLabel(Messages.getString("ParameterView.223"));
     jsFonts = new JSlider(8, 16, ConfigurationManager.getInt(ITechnicalStrings.CONF_FONTS_SIZE));
     jsFonts.setSnapToTicks(true);
-    jsFonts.setMajorTickSpacing(2);
+    jsFonts.setMajorTickSpacing(1);
     jsFonts.setMinorTickSpacing(1);
     jsFonts.setPaintTicks(true);
     jsFonts.setPaintLabels(true);
