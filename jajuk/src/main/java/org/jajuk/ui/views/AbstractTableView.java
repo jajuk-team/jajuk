@@ -345,7 +345,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
             // Consume only events from the same perspective for
             // table/tree synchronization
-            if (!(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {
+            if (event.getDetails()!= null && !(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {
               return;
             }
             // Update model tree selection
