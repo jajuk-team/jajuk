@@ -290,6 +290,7 @@ public class FIFO implements ITechnicalStrings {
         // OK, stop current track if no append
         if (!bAppend) {
           Player.stop(false);
+          alFIFO.clear();
         }
         int pos = 0;
         // If push, not play, add items at the end
