@@ -137,7 +137,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     ObservationManager.register(this);
     reset();
     // check if a track has already been launched
-    if (FIFO.getInstance().isPlayingRadio()) { 
+    if (FIFO.getInstance().isPlayingRadio()) {
       update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
     } else if (!FIFO.isStopped()) {
@@ -165,6 +165,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 
     eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_ZERO);
+    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
     eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
     eventSubjectSet.add(EventSubject.EVENT_LYRICS_DOWNLOADED);
     return eventSubjectSet;
@@ -216,7 +217,8 @@ public class LyricsView extends ViewAdapter implements Observer {
         }
 
       }.start();
-    } else if (subject.equals(EventSubject.EVENT_ZERO)) {
+    } else if (EventSubject.EVENT_ZERO.equals(subject)
+        || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
       reset();
     } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
