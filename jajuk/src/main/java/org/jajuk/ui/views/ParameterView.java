@@ -618,7 +618,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     }
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
         .getValue()));
- 
+
     final int oldPerspectiveSize = ConfigurationManager
         .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
@@ -689,13 +689,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
             + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"))
             .exists()) {
-
           Util.waiting();
           final java.io.File from = Util.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
               + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"));
           Util.copyRecursively(from, dest);
           bPreviousPathExist = false;
+          // Change the workspace so the very last conf (like current track)
+          // will be saved directly to target workspace. We don't do this if the
+          // workspace already exist to avoir overwritting other configuration.
+          Main.workspace = psJajukWorkspace.getUrl();
         }
         // OK, now write down the bootstrap file if
         // everything's OK
