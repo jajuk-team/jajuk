@@ -39,6 +39,8 @@ import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
+import org.jajuk.services.events.ObservationManager;
+import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -136,9 +138,11 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       }
 
       populateList(allFiles);
+      ObservationManager.notify(new org.jajuk.services.events.Event(
+          EventSubject.EVENT_DEVICE_REFRESH));
     }
 
-    public void deleteFilefromList(int index) {
+    private void deleteFilefromList(int index) {
       int count = 0;
       for (int r = 0; r < allFiles.size(); r++) {
         for (int c = 0; c < allFiles.get(r).size(); c++) {
@@ -153,7 +157,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       }
     }
 
-    public String getSelectedFiles(int indices[]) {
+    private String getSelectedFiles(int indices[]) {
       String sFiles = "";
       for (int k : indices) {
         sFiles += flatFilesList.get(k).getName() + "\n";
