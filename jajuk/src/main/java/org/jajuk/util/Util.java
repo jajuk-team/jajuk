@@ -692,10 +692,10 @@ public class Util implements ITechnicalStrings {
       // check that file has been really deleted (sometimes,
       // we get no exception)
       if (file.exists()) {
-        throw new Exception("");
+        throw new Exception("File" + file.getAbsolutePath() + " still exists");
       }
     } else {// not a file, must have a problem
-      throw new Exception("");
+      throw new Exception("File " + file.getAbsolutePath() + " didn't exist");
     }
     return;
   }
@@ -2377,7 +2377,8 @@ public class Util implements ITechnicalStrings {
 
   /**
    * 
-   * @param s string to be checked
+   * @param s
+   *          string to be checked
    * @return whther provided string is a number or not
    */
   public static boolean isNumber(String s) {
