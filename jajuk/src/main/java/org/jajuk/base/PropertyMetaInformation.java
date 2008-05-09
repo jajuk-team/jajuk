@@ -230,7 +230,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
   }
 
   public String getHumanName() {
-    return Messages.getInstance().contains("Property_" + getName()) ? Messages
+    return Messages.contains("Property_" + getName()) ? Messages
         .getString("Property_" + getName()) : getName();
   }
 

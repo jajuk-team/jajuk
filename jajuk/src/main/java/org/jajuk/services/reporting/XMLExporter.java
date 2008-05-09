@@ -400,7 +400,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
       // Add I18N nodes
       writer.write(Tag.openTag("i18n"));
       int i = 1;
-      while (Messages.getInstance().contains("ReportAction." + i)) {
+      while (Messages.contains("ReportAction." + i)) {
         writer.write('\t' + Tag.tagData("ReportAction." + i, Messages
             .getString("ReportAction." + i)));
         i++;

@@ -456,7 +456,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         } else if (e.getSource() == scbLanguage) {
           final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
               .getText());
-          final String sPreviousLocal = Messages.getInstance().getLocale();
+          final String sPreviousLocal = Messages.getLocale();
           if (!sPreviousLocal.equals(sLocal)) {
             // local has changed
             someOptionsAppliedAtNextStartup = true;

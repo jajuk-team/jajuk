@@ -96,7 +96,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    */
   public static String getHumanType(String sKey) {
     String sOut = sKey;
-    if (Messages.getInstance().contains(PROPERTY_SEPARATOR + sKey)) {
+    if (Messages.contains(PROPERTY_SEPARATOR + sKey)) {
       return Messages.getString(PROPERTY_SEPARATOR + sKey);
     }
     return sOut;

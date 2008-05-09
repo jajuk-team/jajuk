@@ -53,12 +53,12 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings {
   /** Local ( language) to be used, default is English */
-  private String sLocal = "en";
+  private static String sLocal = "en";
 
   /** Supported Locals */
-  public ArrayList<String> alLocals = new ArrayList<String>(10);
+  private static ArrayList<String> alLocals = new ArrayList<String>(10);
 
-   /** self instance for singleton */
+  /** self instance for singleton */
   private static Messages mesg;
 
   /** All choice option, completes JDialog options */
@@ -70,33 +70,46 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /**
    * Messages themselves extracted from an XML file to this properties class*
    */
-  private Properties properties;
+  private static Properties properties;
 
-  /** english messages used as default* */
-  private Properties propertiesEn;
-
-  /**
-   * Private Constructor
-   */
-  private Messages() {
-  }
+  /** English messages used as default* */
+  private static Properties propertiesEn;
+  
+  /** ConfigurationManager Locales */
+  public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
+      "gl" };
 
   /**
-   * @return Singleton instance
+   * We set here environment language as default language
+   * (used by first time wizard for ie) but this value can be overwritten later
+   * in startup process
    */
-  public static Messages getInstance() {
-    if (mesg == null) {
-      mesg = new Messages();
+  static{
+    try {
+      // Register locals, needed by ConfigurationManager to choose
+      // default language
+      for (final String locale : locales) {
+        Messages.registerLocal(locale);
+      }
+      // Set default local if available
+      String sLanguage = System.getProperty("user.language");
+      if (sLanguage != null && getLocales().contains(sLanguage)) {
+        sLocal = sLanguage;
+      } else { // user language is unknown, take English as a default,
+        // user will be able to change it later anyway
+        sLocal = "en";
+      }
+    } catch (Exception e) {
+      Log.error(e);
     }
-    return mesg;
   }
 
-  /**
+   /**
    * 
    * @param sKey
    * @return whether given key exists
    */
-  public boolean contains(final String sKey) {
+  public static boolean contains(final String sKey) {
     return getPropertiesEn().containsKey(sKey);
   }
 
@@ -107,10 +120,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   public static String getString(final String key) {
     String sOut = key;
     try {
-      sOut = getInstance().getProperties().getProperty(key);
+      sOut = getProperties().getProperty(key);
       if (sOut == null) { // this property is unknown for this local, try
         // in English
-        sOut = getInstance().getPropertiesEn().getProperty(key);
+        sOut = getPropertiesEn().getProperty(key);
       }
       // at least, returned property is the key name but we trace an
       // error to show it
@@ -150,8 +163,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     final String prefix = base + ".";
 
     try {
-      final Properties properties = getInstance().getProperties();
-      final Properties defaultProperties = getInstance().getPropertiesEn();
+      final Properties properties = getProperties();
+      final Properties defaultProperties = getPropertiesEn();
 
       for (int i = 0;; i++) {
         String sOut = properties.getProperty(prefix + i);
@@ -171,21 +184,22 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     }
     return msgs.toArray(new String[msgs.size()]);
   }
-  
+
   /**
    * 
-   * @return next tip of the day
-   * <br>Note that tips of the day indexes are not always consecutive because some may have been removed 
+   * @return next tip of the day <br>
+   *         Note that tips of the day indexes are not always consecutive
+   *         because some may have been removed
    */
-  public static String getNextTipOfTheDay(){
+  public static String getNextTipOfTheDay() {
     String totd = null;
-    //index contains the index of the last provided totd
+    // index contains the index of the last provided totd
     int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
-    //display the next one
-    totd = Messages.getString("TipOfTheDay."+ index);
-    //Increment and save index
+    // display the next one
+    totd = Messages.getString("TipOfTheDay." + index);
+    // Increment and save index
     ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
-          % Messages.getAll("TipOfTheDay").length));
+        % Messages.getAll("TipOfTheDay").length));
     return totd;
   }
 
@@ -197,28 +211,30 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sDesc :
    *          a language-independent descriptions like "Language_desc_en"
    */
-  public void registerLocal(final String sLocal) {
+  public static void registerLocal(final String sLocal) {
     alLocals.add(sLocal);
   }
 
   /**
    * Return Flag icon for given description
-   * @param dDesc language description
+   * 
+   * @param dDesc
+   *          language description
    * @return
    */
-  public static Icon getIcon(final String sDesc){
-    Icon icon = new ImageIcon(Util
-        .getResource("icons/16x16/flag_"+getLocalForDesc(sDesc)+".png"));
+  public static Icon getIcon(final String sDesc) {
+    Icon icon = new ImageIcon(Util.getResource("icons/16x16/flag_" + getLocalForDesc(sDesc)
+        + ".png"));
     return icon;
   }
-  
+
   /**
    * Return list of available locals
    * 
    * @return
    */
   public static ArrayList<String> getLocales() {
-    return mesg.alLocals;
+    return alLocals;
   }
 
   /**
@@ -228,7 +244,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   public static ArrayList<String> getDescs() {
     final ArrayList<String> alDescs = new ArrayList<String>(10);
-    for (final String local : mesg.alLocals) {
+    for (final String local : alLocals) {
       alDescs.add(getString("Language_desc_" + local));
     }
     Collections.sort(alDescs);
@@ -263,10 +279,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * 
    * @param sLocal
    */
-  public void setLocal(final String sLocal) throws Exception {
+  public static void setLocal(final String sLocal) throws Exception {
     ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
     properties = null; // make sure to reinitialize cached strings
-    this.sLocal = sLocal;
+    Messages.sLocal = sLocal;
   }
 
   /*****************************************************************************
@@ -276,7 +292,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @return a properties with all entries
    * @throws Exception
    */
-  private Properties parseLangpack(final String sLocal) throws Exception {
+  private static Properties parseLangpack(final String sLocal) throws Exception {
     final Properties properties = new Properties();
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(FILE_LANGPACK_PART1);
@@ -506,12 +522,12 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /**
    * @return Returns the sLocal.
    */
-  public String getLocale() {
+  public static String getLocale() {
     return sLocal;
   }
 
   /**
-   * Return true if the messaging system is started, can be usefull mainly at
+   * Return true if the messaging system is started, can be useful mainly at
    * startup by services ( like logs) using them to avoid dead locks
    * 
    * @return
@@ -523,7 +539,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /**
    * @return Returns the properties.
    */
-  public Properties getProperties() throws Exception {
+  public static Properties getProperties() throws Exception {
     if (properties == null) {
       // reuse English if possible
       if (sLocal.equals("en")) {
@@ -538,7 +554,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /**
    * @return Returns the propertiesEn.
    */
-  public Properties getPropertiesEn() {
+  public static Properties getPropertiesEn() {
     if (propertiesEn == null) {
       try {
         propertiesEn = parseLangpack("en");
@@ -752,6 +768,5 @@ abstract class JajukDialog implements ITechnicalStrings {
   public int getResu() {
     return iResu;
   }
-  
-  
+
 }

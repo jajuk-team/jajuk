@@ -173,10 +173,6 @@ public class Main implements ITechnicalStrings {
     MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
-  /** ConfigurationManager Locales */
-  public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
-      "gl" };
-
   /** DeviceTypes Identification strings */
   public static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
@@ -234,12 +230,6 @@ public class Main implements ITechnicalStrings {
       Log.getInstance();
       Log.setVerbosity(Log.DEBUG);
 
-      // Register locals, needed by ConfigurationManager to choose
-      // default language
-      for (final String locale : locales) {
-        Messages.getInstance().registerLocal(locale);
-      }
-
       // Configuration manager startup. Depends on: initialCheckups,
       // registerLocal
       ConfigurationManager.getInstance();
@@ -269,7 +259,7 @@ public class Main implements ITechnicalStrings {
                 .parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
       }
       // Set locale. setSystemLocal
-      Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+      Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 
       // Launch splashscreen. Depends on: log.setVerbosity,
       // configurationManager.load (for local)

@@ -147,15 +147,7 @@ public class ConfigurationManager implements ITechnicalStrings {
    * 
    */
   public static void setDefaultProperties() {
-    // Set default language
-    String sLanguage = System.getProperty("user.language");
-    if (Messages.getLocales().contains(sLanguage)) {
-      // user language exists in jajuk, take it as default
-      defaults.put(CONF_OPTIONS_LANGUAGE, sLanguage);
-    } else { // user language is unknown, take English as a default,
-      // user will be able to change it later anyway
-      defaults.put(CONF_OPTIONS_LANGUAGE, "en");
-    }
+    defaults.put(CONF_OPTIONS_LANGUAGE, Messages.getLocale());
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
     defaults.put(CONF_STATE_REPEAT, FALSE);
