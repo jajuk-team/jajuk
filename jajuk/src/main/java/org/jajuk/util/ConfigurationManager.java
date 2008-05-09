@@ -87,6 +87,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     } catch (Exception e) {
       out = Boolean.parseBoolean(defaults.getProperty(pName));
       Log.debug("Cannot parse property: " + pName);
+      Log.debug(e);
     }
     return out;
   }
@@ -105,6 +106,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     } catch (Exception e) {
       out = Float.parseFloat(defaults.getProperty(pName));
       Log.debug("Cannot parse property: " + pName);
+      Log.debug(e);
     }
     return out;
   }
@@ -124,6 +126,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     } catch (Exception e) {
       out = Integer.parseInt(defaults.getProperty(pName));
       Log.debug("Cannot parse property: " + pName);
+      Log.debug(e);
     }
     return out;
   }
@@ -147,7 +150,7 @@ public class ConfigurationManager implements ITechnicalStrings {
    * 
    */
   public static void setDefaultProperties() {
-    defaults.put(CONF_OPTIONS_LANGUAGE, Messages.getLocale());
+    defaults.put(CONF_OPTIONS_LANGUAGE, Messages.getNativeLocale());
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
     defaults.put(CONF_STATE_REPEAT, FALSE);
@@ -289,6 +292,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
+    defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

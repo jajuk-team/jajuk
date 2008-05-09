@@ -145,6 +145,9 @@ public interface ITechnicalStrings {
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR
       * HOURS_IN_A_DAY;
 
+  /** Last alapsed time display mode format + 1 **/ 
+  int FORMAT_TIME_ELAPSED_MAX = 4;
+  
   /** Mplayer windows exe size in bytes */
   long MPLAYER_EXE_SIZE = 12818944l;
 
@@ -1162,15 +1165,13 @@ public interface ITechnicalStrings {
   String CONF_ALARM_MODE = "jajuk.alarm.mode";
 
   String CONF_ALARM_DAILY = "jajuk.alarm.daily";
+  
+  String CONF_FORMAT_TIME_ELAPSED = "format";
 
   // Alarms List
 
   String ALARMS_SET = "jajuk.alarms";
   
-  // Time Elapsed
-  
-  String FORMAT_TIME_ELAPSED = "format";
-  
-  String FORMAT_TIME_ELAPSED_MAX = "maxformats";
+      
   
 }

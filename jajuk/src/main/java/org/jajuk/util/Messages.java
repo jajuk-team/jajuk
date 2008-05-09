@@ -74,37 +74,41 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
 
   /** English messages used as default* */
   private static Properties propertiesEn;
-  
+
   /** ConfigurationManager Locales */
   public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
       "gl" };
 
   /**
-   * We set here environment language as default language
-   * (used by first time wizard for ie) but this value can be overwritten later
-   * in startup process
+   * We set here environment language as default language (used by first time
+   * wizard for ie) but this value can be overwritten later in startup process
    */
-  static{
-    try {
-      // Register locals, needed by ConfigurationManager to choose
-      // default language
-      for (final String locale : locales) {
-        Messages.registerLocal(locale);
-      }
-      // Set default local if available
-      String sLanguage = System.getProperty("user.language");
-      if (sLanguage != null && getLocales().contains(sLanguage)) {
-        sLocal = sLanguage;
-      } else { // user language is unknown, take English as a default,
-        // user will be able to change it later anyway
-        sLocal = "en";
-      }
-    } catch (Exception e) {
-      Log.error(e);
+  static {
+    // Register locals, needed by ConfigurationManager to choose
+    // default language
+    for (final String locale : locales) {
+      Messages.registerLocal(locale);
+    }
+    // Set default local if available
+    sLocal = getNativeLocale();
+  }
+
+  /**
+   * 
+   * @return current default native locale or English if the native is not
+   *         supported by Jajuk
+   */
+  public static String getNativeLocale() {
+    String sLanguage = System.getProperty("user.language");
+    if (sLanguage != null && getLocales().contains(sLanguage)) {
+      return sLanguage;
+    } else { // user language is unknown, take English as a default,
+      // user will be able to change it later anyway
+      return "en";
     }
   }
 
-   /**
+  /**
    * 
    * @param sKey
    * @return whether given key exists

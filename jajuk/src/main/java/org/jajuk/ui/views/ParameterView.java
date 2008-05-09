@@ -412,6 +412,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
                 InformationJPanel.INFORMATIVE);
             applyParameters();
+            Messages.showInfoMessage(Messages.getString("ParameterView.198"));
           }
         } else if (e.getSource() == jcbBackup) {
           // if backup option is unchecked, reset backup size
@@ -654,7 +655,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
         pathWatermarkFile.getUrl());
     final String image = pathWatermarkFile.getUrl();
-    if (!oldImage.equals(image) && !bLAFMessage) {
+    if (oldImage!= null && !oldImage.equals(image) && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
