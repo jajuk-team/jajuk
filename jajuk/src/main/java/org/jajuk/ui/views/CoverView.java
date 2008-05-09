@@ -782,8 +782,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
               .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
         } else  {
-          update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+          update(new Event(EventSubject.EVENT_COVER_REFRESH));
         }
 
       }
