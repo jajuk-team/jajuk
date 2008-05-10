@@ -550,9 +550,7 @@ public class FileManager extends ItemManager implements Observer {
    * @return top files
    */
   public ArrayList<File> getBestOfFiles() {
-    if (alBestofFiles == null || alBestofFiles.size() == 0) {
-      refreshBestOfFiles();
-    }
+    refreshBestOfFiles();
     return alBestofFiles;
   }
 
