@@ -307,13 +307,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       public Object construct() {
         model.removeTableModelListener(AbstractTableView.this);
         model.populateModel(sPropertyName, sPropertyValue, jtable.getColumnsConf());
+        model.addTableModelListener(AbstractTableView.this);
+        model.fireTableDataChanged();
         return null;
       }
 
       @Override
       public void finished() {
-        model.addTableModelListener(AbstractTableView.this);
-        model.fireTableDataChanged();
         // Force table repaint (for instance for rating stars update)
         jtable.revalidate();
         jtable.repaint();
