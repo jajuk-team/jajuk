@@ -128,6 +128,7 @@ public class DownloadManager implements ITechnicalStrings {
     while ((i = bis.read()) != -1) {
       bos.write(i);
     }
+    bos.flush();
     bos.close();
     bis.close();
     connection.disconnect();
@@ -161,6 +162,7 @@ public class DownloadManager implements ITechnicalStrings {
     while ((i = bis.read()) != -1) {
       bos.write(i);
     }
+    bos.flush();
     bos.close();
     bis.close();
     connection.disconnect();
