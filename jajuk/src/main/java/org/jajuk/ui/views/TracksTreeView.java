@@ -39,6 +39,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -488,6 +489,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // DND support
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     jspTree = new JScrollPane(jtree);
+    jspTree.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
     double[][] dSize = { { TableLayout.FILL }, { 5, TableLayout.PREFERRED, 5, TableLayout.FILL } };
     setLayout(new TableLayout(dSize));
     add(jpsort, "0,1");

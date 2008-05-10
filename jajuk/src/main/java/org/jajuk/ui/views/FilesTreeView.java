@@ -739,6 +739,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     // tree itself
     jspTree = new JScrollPane(jtree);
+    jspTree.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
     add(jspTree);
     // expand all
     expand();

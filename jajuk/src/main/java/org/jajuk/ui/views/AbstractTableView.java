@@ -259,7 +259,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     setLayout(new TableLayout(size));
     add(jpControl, "0,0");
     setCellEditors();
-    add(new JScrollPane(jtable), "0,1");
+    JScrollPane jsp = new JScrollPane(jtable);
+    jsp.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    add(jsp, "0,1");
     jtable.setDragEnabled(true);
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());

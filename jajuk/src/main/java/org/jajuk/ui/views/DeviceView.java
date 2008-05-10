@@ -103,6 +103,8 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     jpDevices = new FlowScrollPanel();
     JScrollPane jsp = new JScrollPane(jpDevices, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jsp.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    
     jpDevices.setScroller(jsp);
 
     jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
