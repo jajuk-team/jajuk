@@ -49,7 +49,7 @@
         <res id='TargetPanel.dir.unix' src='/tmp/jajuk-dist/java/installDirectory.unix.txt' />
     </resources>
     <panels>
-	    <panel classname='LicencePanel'/>
+        <panel classname='LicencePanel'/>
         <panel classname='ImgPacksPanel'/>
         <panel classname='TargetPanel'/>
         <panel classname='InstallPanel'/>
@@ -71,7 +71,7 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/DERIVATED.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
             <!-- Windows specific -->
-            <file override='true' targetdir='$INSTALL_PATH' src='packaging/mplayer.exe'>
+            <file override='true' targetdir='$INSTALL_PATH' src='packaging/mplayer/mplayer.exe'>
             	<os family='windows'/>
            	</file>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
