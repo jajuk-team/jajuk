@@ -7,7 +7,7 @@
 
 	<!--Distribution release 
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.6_test1' />
+	<property name='version' value='1.6_RC12' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -19,17 +19,17 @@
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
 
-	<!-- Conf for bflorat server
+	<!-- Conf for local build
 	<property name='conf_izpackdir' value='/prog/IzPack' />
 	<property name='conf_jsmoothgendir' value='/prog/jsmooth-0.9.7' />
 	<property name='conf_javahelpdir' value='/prog/api/jh/javahelp' />
 	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
-	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />
-	-->
+	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />-->
+	
 
-	<!-- Conf for Jajuk server -->
+	<!-- Conf for Jajuk CI server -->
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
