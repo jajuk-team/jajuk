@@ -334,7 +334,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
                     Log.error(je);
                   }
                 } else {
-                  Messages.showErrorMessage(10, track.getName()); //$NON-NLS-1$
+                  Messages.showErrorMessage(10, track.getName()); 
                 }
               }
             }

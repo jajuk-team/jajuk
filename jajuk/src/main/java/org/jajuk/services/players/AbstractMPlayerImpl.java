@@ -111,7 +111,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
    * @return command line as a String array
    */
   ArrayList<String> buildCommand(String url) {
-    String sCommand = "mplayer"; //$NON-NLS-1$
+    String sCommand = "mplayer"; 
     // Use any forced mplayer path
     String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
     if (!Util.isVoid(forced)) {

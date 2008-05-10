@@ -47,7 +47,7 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
     String sText = tf.getText().toLowerCase();
     // Check pattern contains at least one /
     if (sText.indexOf('/') == -1) {
-      JOptionPane.showMessageDialog(JajukWindow.getInstance(), Messages.getString("Error.146"), //$NON-NLS-1$
+      JOptionPane.showMessageDialog(JajukWindow.getInstance(), Messages.getString("Error.146"), 
           Messages.getString("Error"), JOptionPane.ERROR_MESSAGE);
       return false;
     }
