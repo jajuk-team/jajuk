@@ -86,7 +86,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
   private boolean m_progressBarMessages = false;
 
   /**
-   * Check for whether to use precentage values or not.
+   * Check for whether to use percentage values or not.
    */
   private boolean m_progressBarPercent = false;
 
