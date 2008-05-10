@@ -1425,7 +1425,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsCatalogPages.setMajorTickSpacing(200);
     jsCatalogPages.setPaintTicks(true);
     jsCatalogPages.setPaintLabels(true);
-    jsCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
+    jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
+    jsCatalogPages.addChangeListener(new ChangeListener() {
+      public void stateChanged(ChangeEvent e) {
+       jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
+      }
+    });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
     jcbShowPopups.addActionListener(alUI);
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));

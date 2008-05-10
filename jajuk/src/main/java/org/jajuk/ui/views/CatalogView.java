@@ -637,6 +637,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             // start at page 1, not 0
           }
           if (iNbPages > 0) {
+            // After user changed the number of thumbs on a page, we can be out
+            // of bounds exception so make sure to reinit the page index in this
+            // case
+            if (page >= jcbPage.getItemCount()) {
+              page = 0;
+            }
             jcbPage.setSelectedIndex(page);
             jcbPage.addActionListener(CatalogView.this);
             // Add all items

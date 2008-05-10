@@ -225,7 +225,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP);
     jmiShowPopup.addActionListener(this);
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukAction.CDDB_SELECTION));
-    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, getItem());
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION, getItem());
     ActionBase actionOpenLastFM = ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER);
