@@ -37,7 +37,7 @@
         <res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
         <res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
-    	<res id='Installer.image.0' src='main/resources/images/border2.png' />
+        <res id='Installer.image.0' src='main/resources/images/border2.png' />
         <res id='Installer.image.1' src='main/resources/images/border3.png' />
         <res id='Installer.image.2' src='main/resources/images/border4.png' />
         <res id='Installer.image.3' src='main/resources/images/border5.png' />
@@ -89,13 +89,13 @@
             <!--Unix specific -->
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
             	<os family='unix'/>
-           	</file>
-           	<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
-           	  	<os family='unix'/>
-           	</executable>
-           	<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
-            	<os family='windows'/>
-           	</file>
+           </file>
+           <executable targetfile="$INSTALL_PATH/jajuk" stage="never">
+             	<os family='unix'/>
+           </executable>
+           <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
+           	<os family='windows'/>
+           </file>
         </pack>
     </packs>
 </installation>
