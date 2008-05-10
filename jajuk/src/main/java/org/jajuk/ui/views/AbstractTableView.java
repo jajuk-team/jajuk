@@ -345,7 +345,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
             // Consume only events from the same perspective for
             // table/tree synchronization
-            if (event.getDetails()!= null && !(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {
+            if (event.getDetails() != null
+                && !(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {
               return;
             }
             // Update model tree selection
@@ -370,6 +371,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
               applyFilter(sAppliedCriteria, sAppliedFilter);
             }
           } else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
+            //Ignore the refresh if the event comes from the table itself
+            Properties properties = event.getDetails();
+            if (AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))){
+              return;
+            }
             // Keep current selection and nb of rows
             int[] selection = jtable.getSelectedRows();
             // force filter to refresh
@@ -494,7 +500,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       InformationJPanel.getInstance().setMessage(
           Messages.getString("PropertiesWizard.8") + ": " + ItemManager.getHumanType(sKey),
           InformationJPanel.INFORMATIVE);
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+      // Require refresh of all tables
+      Properties properties = new Properties();
+      properties.put(DETAIL_ORIGIN, AbstractTableView.this);
+      ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED, properties));
 
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());

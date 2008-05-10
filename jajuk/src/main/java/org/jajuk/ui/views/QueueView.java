@@ -275,7 +275,6 @@ public class QueueView extends PlaylistView {
               // can be null at view populate
               return;
             }
-
             // create a new model
             editorModel = new PlaylistTableModel(true);
             editorModel.populateModel(editorTable.getColumnsConf());
