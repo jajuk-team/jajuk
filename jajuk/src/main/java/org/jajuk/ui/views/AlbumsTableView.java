@@ -95,6 +95,9 @@ public class AlbumsTableView extends AbstractTableView {
         jtable.setCommand(new ILaunchCommand() {
           public void launch(int nbClicks) {
             int iSelectedCol = jtable.getSelectedColumn();
+            boolean editableCol = jtable.getModel().isCellEditable(
+                jtable.convertRowIndexToModel(iSelectedCol),
+                jtable.convertColumnIndexToModel(iSelectedCol));
             // selected column in view Test click on play icon launch track only
             // if only first column is selected (fixes issue with
             // Ctrl-A)
@@ -102,7 +105,7 @@ public class AlbumsTableView extends AbstractTableView {
             // click on play icon
                 && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
                 // double click on any column and edition state false
-                || nbClicks == 2) {
+                || (nbClicks == 2 && !editableCol)) {
               // selected row in view
               Album album = (Album) jtable.getSelection().get(0);
               List<File> alFiles = Util.getPlayableFiles(album);
