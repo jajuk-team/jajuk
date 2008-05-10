@@ -147,7 +147,9 @@ public class QueueView extends PlaylistView {
     double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
     setLayout(new TableLayout(size));
     add(jpEditorControl, "0,0");
-    add(new JScrollPane(editorTable), "0,1");
+    JScrollPane jsp = new JScrollPane(editorTable);
+    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+    add(jsp, "0,1");
     // menu items
     jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.ICON_PLAY_16x16);
     // We don't use regular action for the play because it has very special
