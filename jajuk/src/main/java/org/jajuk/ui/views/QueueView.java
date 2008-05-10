@@ -275,6 +275,7 @@ public class QueueView extends PlaylistView {
               // can be null at view populate
               return;
             }
+
             // create a new model
             editorModel = new PlaylistTableModel(true);
             editorModel.populateModel(editorTable.getColumnsConf());
@@ -282,6 +283,10 @@ public class QueueView extends PlaylistView {
             setRenderers();
             editorTable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
+
+            editorModel.alItems.clear();
+            editorModel.alPlanned.clear();
+            refreshQueue();
           } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
@@ -295,6 +300,10 @@ public class QueueView extends PlaylistView {
             // remove item from configuration cols
             editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
+
+            editorModel.alItems.clear();
+            editorModel.alPlanned.clear();
+            refreshQueue();
           } else if (EventSubject.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change

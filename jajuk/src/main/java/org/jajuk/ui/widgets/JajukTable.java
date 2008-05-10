@@ -163,20 +163,23 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     // new order
     JajukTableModel model = (JajukTableModel) getModel();
     Map<String, TableColumn> map = new HashMap<String, TableColumn>();
-    List<TableColumn> initialColumns =  getColumns(true);
+    List<TableColumn> initialColumns = getColumns(true);
     for (TableColumn column : initialColumns) {
       map.put(model.getIdentifier(column.getModelIndex()), column);
       getColumnModel().removeColumn(column);
     }
     for (String sID : index) {
       TableColumn col = map.get(sID);
-      getColumnModel().addColumn(col);
+      if (col != null) {
+        // Col can be null after user created a new custom property
+        getColumnModel().addColumn(col);
+      }
     }
     // Now add unvisible columns so they are available in table column selector
     // at after the visible ones
     for (TableColumn column : initialColumns) {
-      if (!index.contains(model.getIdentifier(column.getModelIndex()))){
-        getColumnModel().addColumn(column);  
+      if (!index.contains(model.getIdentifier(column.getModelIndex()))) {
+        getColumnModel().addColumn(column);
       }
     }
   }
