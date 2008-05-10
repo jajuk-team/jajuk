@@ -57,5 +57,5 @@
         <mapID target="tip_of_the_day" url="html/tip_of_the_day.html" />
         <mapID target="using_alarm_clock" url="html/using_alarm_clock.html" />
         <mapID target="using_duplicate_finder" url="html/using_duplicate_finder.html" />       
-        <mapID target="using_slimbar" url="html/jajuk_slimbar.html" />
+        <mapID target="jajuk_slimbar" url="html/jajuk_slimbar.html" />
    </map>
