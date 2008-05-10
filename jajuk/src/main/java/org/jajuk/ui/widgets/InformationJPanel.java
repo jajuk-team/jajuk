@@ -316,6 +316,10 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     } catch (Exception e) {
       Log.debug(e);
     }
+    float lTime_percent = 0f;
+    if (lTime > 0) {
+      lTime_percent = (float) ((float) lTime / (float) length * 100.0);
+    }
     switch (timeFormat) {
     case 0: {
       string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
@@ -327,13 +331,12 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       break;
     }
     case 2: {
-      float lTime_percent = (float) ((float) lTime / (float) length * 100.0);
       string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
       break;
     }
     case 3: {
-      float lTime_percent = (float) ((lTime - length) / (float) length * 100.0);
-      string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
+      string = df.format(lTime_percent-100f) + " % / "
+          + Util.formatTimeBySec(length, false);
       break;
     }
     default: {
