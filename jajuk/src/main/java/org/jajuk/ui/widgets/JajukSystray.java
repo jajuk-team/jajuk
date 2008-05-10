@@ -290,11 +290,12 @@ public class JajukSystray extends CommandJPanel {
         dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         dialog.getRootPane().setBorder(new LineBorder(Color.BLACK));
         JLabel jl = new JLabel(title);
-        jl.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XL));
+        jl.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
         jl.setBorder(new EmptyBorder(5, 5, 5, 5));
         dialog.add(jl);
         dialog.pack();
-        Point location = new Point(e.getX() - 50, e.getY() - (10 + dialog.getHeight()));
+        Point location = new Point(e.getX() - dialog.getWidth(), e.getY()
+            - (10 + dialog.getHeight()));
         dialog.setLocation(location);
         dialog.setVisible(true);
         // The toFront() is required under windows when main window is not
