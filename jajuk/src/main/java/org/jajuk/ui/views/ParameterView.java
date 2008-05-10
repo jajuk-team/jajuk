@@ -1406,8 +1406,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Add items
     jpCovers.add(jcbShuffleCover, "0,0");
     jpCovers.add(jcbAutoCover, "0,1");
-    jpCovers.add(jlCoverSize, "0,3");
-    jpCovers.add(jcbCoverSize, "1,3");
+    jpCovers.add(jlCoverSize, "0,2");
+    jpCovers.add(jcbCoverSize, "1,2");
 
     // -- User interface --
     jpUI = new JPanel();
