@@ -50,7 +50,6 @@
     </resources>
     <panels>
         <panel classname='LicencePanel'/>
-        <panel classname='ImgPacksPanel'/>
         <panel classname='TargetPanel'/>
         <panel classname='InstallPanel'/>
         <panel classname='ShortcutPanel'/> 
