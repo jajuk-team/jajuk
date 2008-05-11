@@ -181,6 +181,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
             break;
           }
         }
+        else{
+          //Remove HTML tags
+          sOut = sOut.replaceAll("<.*>", "");
+        }
         msgs.add(sOut);
       }
     } catch (final Exception e) { // System error
@@ -202,6 +206,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
       int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
       // display the next one
       totd = Messages.getString("TipOfTheDay." + index);
+      //Remove <img> tags
+      totd = totd.replaceAll("<.*>", "");
       // Increment and save index
       ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
           % Messages.getAll("TipOfTheDay").length));

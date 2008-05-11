@@ -59,7 +59,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.ICON_LOGO.getImage());
-    this.iLastTip = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
+    this.iLastTip = (ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % tips.length;
 
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
     cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
@@ -150,7 +150,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
       i = 0;
     }
     tipArea.setText(tips[i]);
-    lCounter.setText((new StringBuilder()).append("").append(i + 1).append("/").append(tips.length)
+    lCounter.setText((new StringBuilder()).append("").append(i).append("/").append(tips.length -1)
         .toString());
     tipArea.setCaretPosition(0);
   }
