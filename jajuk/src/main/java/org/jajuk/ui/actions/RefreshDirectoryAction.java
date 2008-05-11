@@ -62,7 +62,8 @@ public class RefreshDirectoryAction extends ActionBase {
     new Thread() {
       public void run() {
         Util.waiting();
-        InformationJPanel.getInstance().setMessage(Messages.getString("ActionRefresh.1") + ": "+ dir.getName(), 1);
+        InformationJPanel.getInstance().setMessage(
+            Messages.getString("ActionRefresh.1") + ": " + dir.getName(), 1);
         DirectoryManager.refreshDirectory(dir);
         ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
         InformationJPanel.getInstance().setMessage(Messages.getString("ActionRefresh.2"), 1);

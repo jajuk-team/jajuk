@@ -67,7 +67,7 @@ public class RatingManager extends Thread implements ITechnicalStrings {
       // Computes every 10 mins, until jajuk ends
       try {
         Thread.sleep(600000);
-        //Computes bestof
+        // Computes bestof
         FileManager.getInstance().refreshBestOfFiles();
       } catch (InterruptedException e) {
         Log.error(e);

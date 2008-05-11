@@ -114,9 +114,9 @@ public class Log implements ITechnicalStrings {
   }
 
   public static void debug(Throwable t) {
-    debug("",t);
+    debug("", t);
   }
-  
+
   public static void debug(String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)

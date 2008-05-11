@@ -121,7 +121,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
       jlAlbum = new JLabel(Util.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
-      
+
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAlbum.setForeground(mediumGray);

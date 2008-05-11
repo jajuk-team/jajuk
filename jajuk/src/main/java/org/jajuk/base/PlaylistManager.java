@@ -172,8 +172,7 @@ public class PlaylistManager extends ItemManager implements Observer {
    * @param sNewName
    * @return new playlist
    */
-  public Playlist changePlaylistFileName(Playlist plfOld, String sNewName)
-      throws JajukException {
+  public Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
     synchronized (PlaylistManager.getInstance().getLock()) {
       // check given name is different
       if (plfOld.getName().equals(sNewName)) {

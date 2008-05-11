@@ -386,7 +386,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpItems.setPreferredSize(dim);
     jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    jsp.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     jpItems.setScroller(jsp);
     jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
     // global layout

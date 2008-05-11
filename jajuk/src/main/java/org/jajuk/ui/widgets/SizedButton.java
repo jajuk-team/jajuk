@@ -36,7 +36,7 @@ public class SizedButton extends JButton {
   private int width = 16;
 
   private int height = 16;
-  
+
   private boolean showText = false;
 
   /**
@@ -70,12 +70,11 @@ public class SizedButton extends JButton {
   public void setIcon(Icon icon) {
     super.setIcon(Util.getResizedImage((ImageIcon) icon, 16, 16));
   }
-  
+
   public void setText(String text) {
-    if (showText){
+    if (showText) {
       super.setText(text);
-    }
-    else{
+    } else {
       super.setText(null);
     }
   }

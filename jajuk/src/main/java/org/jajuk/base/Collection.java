@@ -420,7 +420,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           stage = STAGE_FILES;
           needCheckID = true;
         } else if (XML_PLAYLISTS.equals(sQName)) {
-          //This code is here for JAjuk < 1.6 compatibility
+          // This code is here for JAjuk < 1.6 compatibility
           manager = PlaylistManager.getInstance();
           stage = STAGE_PLAYLISTS;
           needCheckID = true;
@@ -458,8 +458,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           boolean bUnique = Boolean.parseBoolean(attributes.getValue(attributes
               .getIndex(XML_UNIQUE)));
           Class<?> cType = Class.forName(attributes.getValue(XML_TYPE));
-          String sDefaultValue = attributes.getValue(XML_DEFAULT_VALUE)
-              .intern();
+          String sDefaultValue = attributes.getValue(XML_DEFAULT_VALUE).intern();
           Object oDefaultValue = null;
           if (sDefaultValue != null && sDefaultValue.length() > 0) {
             try {
@@ -527,10 +526,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           if (dParent == null || track == null) { // more checkups
             return;
           }
-          if(attributes.getValue(XML_SIZE) != null){
+          if (attributes.getValue(XML_SIZE) != null) {
             lSize = Long.parseLong(attributes.getValue(XML_SIZE));
           }
-         
+
           // Quality analyze, handle format problems (mainly for
           // upgrades)
           long lQuality = 0;
@@ -780,8 +779,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               hmWrongRightPlaylistFileID.put(sID, sRightID);
             }
           }
-          Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID,
-              sItemName, dParent);
+          Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID, sItemName,
+              dParent);
           if (plf != null) {
             plf.populateProperties(attributes);
             dParent.addPlaylistFile(plf);

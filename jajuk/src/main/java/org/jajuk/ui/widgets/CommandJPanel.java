@@ -736,7 +736,6 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     jsVolume.addMouseWheelListener(CommandJPanel.this);
     jsVolume.setToolTipText((int) (fVolume * 100) + " %");
   }
-  
 
   /*
    * (non-Javadoc)
@@ -853,7 +852,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
           jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
-          MuteAction.setVolumeIcon(100*Player.getCurrentVolume());
+          MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
         } else if (EventSubject.EVENT_DJS_CHANGE.equals(event.getSubject())) {
           populateDJs();
           // If no more DJ, change the tooltip
@@ -1044,7 +1043,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       int iOld = jsVolume.getValue();
       int iNew = iOld - (e.getUnitsToScroll() * 3);
       jsVolume.setValue(iNew);
-    }else if (e.getSource() == jpVolume) {
+    } else if (e.getSource() == jpVolume) {
       int oldVolume = (int) (100 * Player.getCurrentVolume());
       int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
       if (Player.isMuted()) {

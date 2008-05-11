@@ -74,7 +74,8 @@ public class ConfigurationManager implements ITechnicalStrings {
   }
 
   /**
-   * Return the value of a property as a boolean or default value or default value if value cannot be parsed
+   * Return the value of a property as a boolean or default value or default
+   * value if value cannot be parsed
    * 
    * @param pName
    *          Name of the property.
@@ -93,7 +94,8 @@ public class ConfigurationManager implements ITechnicalStrings {
   }
 
   /**
-   * Return the value of a property as a float or default value or default value if value cannot be parsed
+   * Return the value of a property as a float or default value or default value
+   * if value cannot be parsed
    * 
    * @param pName
    *          Name of the property.
@@ -111,9 +113,9 @@ public class ConfigurationManager implements ITechnicalStrings {
     return out;
   }
 
-
   /**
-   * Return the value of a property as an integer or default value if value cannot be parsed
+   * Return the value of a property as an integer or default value if value
+   * cannot be parsed
    * 
    * @param pName
    *          Name of the property.
@@ -133,18 +135,18 @@ public class ConfigurationManager implements ITechnicalStrings {
 
   /**
    * Reset a given property to its defaults
+   * 
    * @param property
    */
   public static void setDefaultProperty(String property) {
-    String defaultValue = (String)defaults.get(property);
-    if (defaultValue != null){
+    String defaultValue = (String) defaults.get(property);
+    if (defaultValue != null) {
       properties.put(property, defaultValue);
-    }
-    else{
-      Log.debug("Cannot reset thsi property: "+property);
+    } else {
+      Log.debug("Cannot reset thsi property: " + property);
     }
   }
-  
+
   /**
    * Set default values
    * 
@@ -222,8 +224,8 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_PLAYLIST_EDITOR_COLUMNS, XML_PLAY + ',' + XML_TRACK_NAME + ',' + ','
         + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
     defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, XML_PLAY + ',' + XML_NAME);
-    defaults.put(CONF_QUEUE_COLUMNS, XML_PLAY + ',' + XML_TRACK_NAME + ',' + ','
-        + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
+    defaults.put(CONF_QUEUE_COLUMNS, XML_PLAY + ',' + XML_TRACK_NAME + ',' + ',' + XML_TRACK_AUTHOR
+        + ',' + XML_TRACK_RATE);
     defaults.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ',' + XML_AUTHOR + ','
         + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH + ','
         + XML_TRACKS + ',' + XML_TRACK_DISCOVERY_DATE);

@@ -36,9 +36,8 @@ import org.jajuk.util.log.Log;
 public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
-   * The time we wait for mplayer to start up. 
-   * It can take some time on slow or heavily loaded 
-   * machines...
+   * The time we wait for mplayer to start up. It can take some time on slow or
+   * heavily loaded machines...
    */
   private static final int MPLAYER_START_TIMEOUT = 30;
 
@@ -79,8 +78,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Position and elapsed time getter
    */
   private class PositionThread extends Thread {
-    public PositionThread(String name)
-    {
+    public PositionThread(String name) {
       super(name);
     }
 
@@ -104,8 +102,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position
    */
   private class ReaderThread extends Thread {
-    public ReaderThread(String name)
-    {
+    public ReaderThread(String name) {
       super(name);
     }
 
@@ -265,7 +262,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // if opening, wait
     int i = 0;
     // Try to open the file during 30 secs
-    while (bOpening && !bEOF && i < MPLAYER_START_TIMEOUT*100) {
+    while (bOpening && !bEOF && i < MPLAYER_START_TIMEOUT * 100) {
       try {
         Thread.sleep(10);
         i++;
@@ -273,7 +270,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         Log.error(e);
       }
     }
-    
+
     // Check the file has been property opened
     if (!bOpening && !bEOF) {
       if (fPosition > 0.0f) {
@@ -294,7 +291,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         }.start();
       }
       // Notify the problem opening the file
-      throw new JajukException(7,new Integer(MPLAYER_START_TIMEOUT).toString());
+      throw new JajukException(7, new Integer(MPLAYER_START_TIMEOUT).toString());
     }
   }
 

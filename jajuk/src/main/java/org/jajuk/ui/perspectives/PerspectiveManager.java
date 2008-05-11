@@ -53,12 +53,12 @@ public class PerspectiveManager implements ITechnicalStrings {
   private static IPerspective currentPerspective = null;
 
   /** Perspective name -> perspective */
-  private static Map<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(
-      10);
+  private static Map<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(10);
 
-  /** perspective, required despite the Map above
-	in order to keep the order of the perspectives as the 
-	order in the Map is undefined */
+  /**
+   * perspective, required despite the Map above in order to keep the order of
+   * the perspectives as the order in the Map is undefined
+   */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
   /**
@@ -158,7 +158,7 @@ public class PerspectiveManager implements ITechnicalStrings {
         if (perspectivePanel.getComponentCount() > 0) {
           Component[] components = perspectivePanel.getComponents();
           for (int i = 0; i < components.length; i++) {
-              perspectivePanel.remove(components[i]);
+            perspectivePanel.remove(components[i]);
           }
         }
         Main.perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);

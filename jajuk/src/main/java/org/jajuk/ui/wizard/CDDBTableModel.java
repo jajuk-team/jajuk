@@ -107,6 +107,6 @@ public class CDDBTableModel extends JajukTableModel {
   }
 
   @Override
-  public void populateModel(String sProperty, String sPattern,ArrayList<String> columnsToShow) {
+  public void populateModel(String sProperty, String sPattern, ArrayList<String> columnsToShow) {
   }
 }

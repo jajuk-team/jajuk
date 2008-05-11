@@ -145,9 +145,9 @@ public interface ITechnicalStrings {
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR
       * HOURS_IN_A_DAY;
 
-  /** Last alapsed time display mode format + 1 **/ 
+  /** Last alapsed time display mode format + 1 * */
   int FORMAT_TIME_ELAPSED_MAX = 4;
-  
+
   /** Mplayer windows exe size in bytes */
   long MPLAYER_EXE_SIZE = 12818944l;
 
@@ -613,13 +613,16 @@ public interface ITechnicalStrings {
   /** Contains files id separated by a colon */
   String CONF_BOOKMARKS = "jajuk.bookmarks";
 
-  /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray */
+  /**
+   * Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar +
+   * tray
+   */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
-  
+
   int DISPLAY_MODE_WINDOW_TRAY = 0;
-  
+
   int DISPLAY_MODE_TRAY = 1;
-  
+
   int DISPLAY_MODE_SLIMBAR_TRAY = 2;
 
   /** Best of size */
@@ -681,7 +684,7 @@ public interface ITechnicalStrings {
 
   /** Window position and size */
   String CONF_WINDOW_POSITION = "jajuk.window_position";
-  
+
   /** Window position and size */
   String CONF_FRAME_TITLE_PATTERN = "jajuk.frame.title";
 
@@ -1080,8 +1083,8 @@ public interface ITechnicalStrings {
       XML_TYPE_ICON, XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL, XML_DEVICE_AUTO_MOUNT,
       XML_DEVICE_AUTO_REFRESH, XML_EXPANDED, XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR,
       XML_STYLE, XML_TRACK_LENGTH, XML_YEAR, XML_TRACK_RATE, XML_FILES, XML_TRACK_HITS,
-      XML_TRACK_DISCOVERY_DATE, XML_DIRECTORY_PARENT, XML_DEVICE, XML_DIRECTORY, XML_TRACK, XML_SIZE,
-      XML_QUALITY, XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER,
+      XML_TRACK_DISCOVERY_DATE, XML_DIRECTORY_PARENT, XML_DEVICE, XML_DIRECTORY, XML_TRACK,
+      XML_SIZE, XML_QUALITY, XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER,
       XML_DEVICE_SYNCHRO_MODE, XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE }; // contains
 
   // variables
@@ -1165,13 +1168,11 @@ public interface ITechnicalStrings {
   String CONF_ALARM_MODE = "jajuk.alarm.mode";
 
   String CONF_ALARM_DAILY = "jajuk.alarm.daily";
-  
+
   String CONF_FORMAT_TIME_ELAPSED = "format";
 
   // Alarms List
 
   String ALARMS_SET = "jajuk.alarms";
-  
-      
-  
+
 }

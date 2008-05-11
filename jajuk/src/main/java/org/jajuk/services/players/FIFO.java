@@ -558,8 +558,8 @@ public class FIFO implements ITechnicalStrings {
   public void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
-    if (!ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) 
-        || containsRepeat() || alFIFO.size() == 0) {
+    if (!ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) || containsRepeat()
+        || alFIFO.size() == 0) {
       alPlanned.clear();
       return;
     }

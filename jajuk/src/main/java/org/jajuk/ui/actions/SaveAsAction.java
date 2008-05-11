@@ -53,14 +53,14 @@ public class SaveAsAction extends ActionBase {
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
-    //@TODO Do better here, accept a single playlist for ie
+    // @TODO Do better here, accept a single playlist for ie
     Object o = source.getClientProperty(DETAIL_SELECTION);
     if (o instanceof ArrayList) {
       try {
-        ArrayList<Playlist> playlists = (ArrayList<Playlist>)o;
-    	  Playlist playlist = playlists.get(0);
-    	  playlist.saveAs();
-    	  InformationJPanel.getInstance().setMessage(
+        ArrayList<Playlist> playlists = (ArrayList<Playlist>) o;
+        Playlist playlist = playlists.get(0);
+        playlist.saveAs();
+        InformationJPanel.getInstance().setMessage(
             Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
         ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
       } catch (JajukException je) {

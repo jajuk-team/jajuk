@@ -40,7 +40,8 @@ public class LaunchInBrowserAction extends ActionBase {
 
   LaunchInBrowserAction() {
     // this action is available only under linux and windows for now
-    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Desktop.isDesktopSupported()));
+    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Desktop
+        .isDesktopSupported()));
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 

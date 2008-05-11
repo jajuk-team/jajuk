@@ -91,15 +91,14 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String sPropertyName, String sPattern,
       ArrayList<String> columnsToShow) {
-    List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance()
-        .getPlaylists());
+    List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance().getPlaylists());
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
         .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
     Iterator<Playlist> it = null;
-    
+
     // Filter unmounted files if required
     if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       it = alToShow.iterator();
@@ -112,8 +111,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         }
       }
     }
-    int iColNum = iNumberStandardCols
-        + PlaylistManager.getInstance().getCustomProperties().size();
+    int iColNum = iNumberStandardCols + PlaylistManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];

@@ -781,7 +781,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         if (FIFO.getInstance().isPlayingRadio()) {
           update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
               .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
-        } else  {
+        } else {
           update(new Event(EventSubject.EVENT_COVER_REFRESH));
         }
 

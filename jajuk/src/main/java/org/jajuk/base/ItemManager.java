@@ -355,8 +355,8 @@ public abstract class ItemManager implements ITechnicalStrings {
       }
     } else if (itemToChange instanceof Playlist) {
       if (XML_NAME.equals(sKey)) { // playlistfile name
-        newItem = PlaylistManager.getInstance().changePlaylistFileName(
-            (Playlist) itemToChange, (String) oValue);
+        newItem = PlaylistManager.getInstance().changePlaylistFileName((Playlist) itemToChange,
+            (String) oValue);
       }
     } else if (itemToChange instanceof Directory) {
       if (XML_NAME.equals(sKey)) { // file name

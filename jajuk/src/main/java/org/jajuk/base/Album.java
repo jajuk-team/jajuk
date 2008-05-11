@@ -308,7 +308,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // flush all the image data
     Image img = Toolkit.getDefaultToolkit().getImage(fCover.getAbsolutePath());
     ImageIcon icon = new ImageIcon(img);
-   // Free thumb memory (DO IT AFTER FULL ImageIcon loading, see previosu line)
+    // Free thumb memory (DO IT AFTER FULL ImageIcon loading, see previosu line)
     img.flush();
     // accelerate GC cleanup
     img = null;

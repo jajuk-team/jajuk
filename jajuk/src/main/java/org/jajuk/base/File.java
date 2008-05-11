@@ -144,7 +144,11 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * @return associated type
    */
   public Type getType() {
-    String extension = Util.getExtension(this.getName()); // getName() is better here as it will do less and not create java.io.File in File
+    String extension = Util.getExtension(this.getName()); // getName() is better
+                                                          // here as it will do
+                                                          // less and not create
+                                                          // java.io.File in
+                                                          // File
     if (extension != null) {
       return TypeManager.getInstance().getTypeByExtension(extension);
     }
@@ -353,7 +357,9 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   @Override
   public ImageIcon getIconRepresentation() {
     ImageIcon icon = null;
-    String ext = Util.getExtension(getName());  // getName() is better here as it will do less and not create java.io.File in File
+    String ext = Util.getExtension(getName()); // getName() is better here as
+                                                // it will do less and not
+                                                // create java.io.File in File
     Type type = TypeManager.getInstance().getTypeByExtension(ext);
     // Find associated icon with this type
     URL iconUrl = null;

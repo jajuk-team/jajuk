@@ -160,13 +160,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jpsort.setLayout(new TableLayout(dSizeSort));
     jlSort = new JLabel(Messages.getString("Sort"));
     jcbSort = new JComboBox();
-    jcbSort.addItem(Messages.getString("Property_style"));    // sort by Genre/Artist/Album
-    jcbSort.addItem(Messages.getString("Property_author"));   // sort by Artist/Album
-    jcbSort.addItem(Messages.getString("Property_album"));    // sort by Album
-    jcbSort.addItem(Messages.getString("Property_year"));     // sort by Year
-    jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by Discovery Date
-    jcbSort.addItem(Messages.getString("Property_rate"));     // sort by rate
-    jcbSort.addItem(Messages.getString("Property_hits"));     // sort by hits    
+    jcbSort.addItem(Messages.getString("Property_style")); // sort by
+                                                            // Genre/Artist/Album
+    jcbSort.addItem(Messages.getString("Property_author")); // sort by
+                                                            // Artist/Album
+    jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
+    jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
+    jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by
+                                                              // Discovery Date
+    jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
+    jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
     jcbSort.setSelectedIndex(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(EventSubject.EVENT_LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
@@ -329,13 +332,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
                   try {
                     FIFO.getInstance().push(
                         new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                            true),
-                        ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                            true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
                   } catch (JajukException je) {
                     Log.error(je);
                   }
                 } else {
-                  Messages.showErrorMessage(10, track.getName()); 
+                  Messages.showErrorMessage(10, track.getName());
                 }
               }
             }
@@ -489,7 +491,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // DND support
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     jspTree = new JScrollPane(jtree);
-    jspTree.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     double[][] dSize = { { TableLayout.FILL }, { 5, TableLayout.PREFERRED, 5, TableLayout.FILL } };
     setLayout(new TableLayout(dSize));
     add(jpsort, "0,1");
@@ -747,11 +749,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     DefaultMutableTreeNode nodeYearly = new DiscoveryDateNode(Messages
         .getString("TracksTreeView.40"));
     DefaultMutableTreeNode nodeTwoYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.41"));  
+        .getString("TracksTreeView.41"));
     DefaultMutableTreeNode nodeFiveYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.42"));  
+        .getString("TracksTreeView.42"));
     DefaultMutableTreeNode nodeTenYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.43"));  
+        .getString("TracksTreeView.43"));
     DefaultMutableTreeNode nodeOlder = new DiscoveryDateNode(Messages
         .getString("TracksTreeView.39"));
     // Add separator nodes
@@ -787,7 +789,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       } else if (diff < 157680000000l) {
         addTrackAndAlbum(nodeFiveYearly, track);
       } else if (diff < 315360000000l) {
-        addTrackAndAlbum(nodeTenYearly, track);        
+        addTrackAndAlbum(nodeTenYearly, track);
       } else {
         addTrackAndAlbum(nodeOlder, track);
       }
@@ -806,7 +808,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       }
     }
   }
-  
+
   /** Fill the tree by Hits */
   public void populateTreeByHits() {
     // delete previous tree
@@ -819,7 +821,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       }
     }
   }
-  
+
   /**
    * Utility method used by populateByDiscovery method
    * 

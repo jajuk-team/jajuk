@@ -344,8 +344,8 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
   }
 
   public WebRadioWizard() {
-    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null,
-        JajukWindow.getInstance(), new Locale(Messages.getLocale()), 600, 500);
+    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukWindow.getInstance(),
+        new Locale(Messages.getLocale()), 600, 500);
   }
 
   /*

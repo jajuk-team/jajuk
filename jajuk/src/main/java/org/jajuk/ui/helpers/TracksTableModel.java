@@ -190,7 +190,7 @@ public class TracksTableModel extends JajukTableModel {
         if (type != null) {
           bHasATagEditor = (type.getTaggerClass() != null);
         }
-        
+
         // Track name
         if (bName) {
           oValues[iRow][1] = track.getName();
@@ -198,7 +198,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][1] = "";
         }
         bCellEditable[iRow][1] = bHasATagEditor;
-        
+
         // Album
         if (bAlbum) {
           oValues[iRow][2] = track.getAlbum().getName2();
@@ -206,7 +206,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][2] = "";
         }
         bCellEditable[iRow][2] = bHasATagEditor;
-        
+
         // Author
         if (bAuthor) {
           oValues[iRow][3] = track.getAuthor().getName2();
@@ -214,7 +214,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][3] = "";
         }
         bCellEditable[iRow][3] = bHasATagEditor;
-        
+
         // Style
         if (bStyle) {
           oValues[iRow][4] = track.getStyle().getName2();
@@ -222,7 +222,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][4] = "";
         }
         bCellEditable[iRow][4] = bHasATagEditor;
-        
+
         // Rate
         if (bRate) {
           IconLabel ilRate = Util.getStars(track);
@@ -232,7 +232,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][5] = "";
         }
         bCellEditable[iRow][5] = false;
-        
+
         // Length
         if (bLength) {
           oValues[iRow][6] = new Duration(track.getDuration());
@@ -240,7 +240,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][6] = "";
         }
         bCellEditable[iRow][6] = false;
-        
+
         // Comment
         if (bComment) {
           oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
@@ -248,7 +248,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][7] = "";
         }
         bCellEditable[iRow][7] = bHasATagEditor;
-        
+
         // Date discovery
         if (bDiscovery) {
           oValues[iRow][8] = track.getDiscoveryDate(); // show date using
@@ -304,7 +304,7 @@ public class TracksTableModel extends JajukTableModel {
           oValues[iRow][12] = "";
         }
         bCellEditable[iRow][12] = false;
-        
+
         // Custom properties now
         Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
         for (int i = 0; it2.hasNext(); i++) {

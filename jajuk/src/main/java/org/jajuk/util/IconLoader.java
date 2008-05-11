@@ -65,7 +65,7 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_SHUFFLE_GLOBAL = new ImageIcon(Util
       .getResource("icons/32x32/shuffle_global_32x32.png"));
-  
+
   public static final ImageIcon ICON_SHUFFLE_GLOBAL_16x16 = new ImageIcon(Util
       .getResource("icons/16x16/shuffle_global_16x16.png"));
 
@@ -98,10 +98,10 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_NEXT = new ImageIcon(Util
       .getResource("icons/16x16/next_16x16.png"));
-  
+
   public static final ImageIcon ICON_SAVE_AS = new ImageIcon(Util
       .getResource("icons/16x16/saveas_16x16.png"));
-  
+
   public static final ImageIcon ICON_PREVIOUS = new ImageIcon(Util
       .getResource("icons/16x16/previous_16x16.png"));
 
@@ -146,13 +146,13 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_VOLUME = new ImageIcon(Util
       .getResource("icons/16x16/volume_16x16.png"));
-  
+
   public static final ImageIcon ICON_CLOSE = new ImageIcon(Util
       .getResource("icons/16x16/close_16x16.png"));
-  
+
   public static final ImageIcon ICON_FULL_WINDOW = new ImageIcon(Util
       .getResource("icons/16x16/full_window_16x16.png"));
-  
+
   public static final ImageIcon ICON_POSITION = new ImageIcon(Util
       .getResource("icons/16x16/position_16x16.png"));
 
@@ -404,7 +404,7 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_FINISH_ALBUM_16x16 = new ImageIcon(Util
       .getResource("icons/16x16/finish_album_16x16.png"));
-  
+
   public static final ImageIcon ICON_NET_SEARCH = new ImageIcon(Util
       .getResource("icons/16x16/netsearch_16x16.png"));
 
@@ -551,7 +551,7 @@ public class IconLoader implements ITechnicalStrings {
 
   public static final ImageIcon ICON_ALARM = new ImageIcon(Util
       .getResource("icons/16x16/alarm_16x16.png"));
-  
+
   static {
     IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_50x50, Util.getResizedImage(
         IconLoader.ICON_NO_COVER, 50, 50));

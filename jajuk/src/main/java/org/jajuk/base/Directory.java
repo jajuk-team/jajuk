@@ -357,7 +357,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // found file comment but we changing a comment, we will
           // apply to all files for a track
           track.setComment(sComment);
-          //Make sure to refresh fiel size
+          // Make sure to refresh fiel size
           file.setProperty(XML_SIZE, files[i].length());
         } else { // playlist
           String sId = PlaylistManager.createID(files[i].getName(), this);
@@ -366,8 +366,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           if (plfRef != null && !bDeepScan) {
             continue;
           }
-          Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(files[i],
-              this);
+          Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(files[i], this);
           plFile.forceRefresh(); // force refresh
           if (plfRef == null) {
             // stats, do it here and not

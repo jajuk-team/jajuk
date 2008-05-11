@@ -70,8 +70,8 @@ public enum EventSubject {
   // the pause button has been pressed
   EVENT_PLAYER_PAUSE,
   // the resume button has been pressed
-  EVENT_PLAYER_RESUME, 
-  //Queue should be refreshed
+  EVENT_PLAYER_RESUME,
+  // Queue should be refreshed
   EVENT_QUEUE_NEED_REFRESH,
   // a file has been launched by the fifo
   EVENT_FILE_LAUNCHED,

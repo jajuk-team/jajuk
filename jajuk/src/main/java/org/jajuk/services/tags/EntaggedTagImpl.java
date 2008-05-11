@@ -103,15 +103,14 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
         return ""; // error, return unknown
       }
     }
-    //If genre is a number mapping a known style, use this style
-    try{
+    // If genre is a number mapping a known style, use this style
+    try {
       int number = Integer.parseInt(sOut);
-      if (number >= 0 && number < Util.genres.length){
+      if (number >= 0 && number < Util.genres.length) {
         sOut = Util.genres[number];
       }
-    }
-    catch(NumberFormatException e){
-      //nothing wrong here
+    } catch (NumberFormatException e) {
+      // nothing wrong here
     }
     return sOut;
   }

@@ -60,7 +60,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     setAlwaysOnTop(true);
     setIconImage(IconLoader.ICON_LOGO.getImage());
     this.iLastTip = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
-    
+
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
     cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
 

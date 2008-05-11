@@ -47,11 +47,11 @@ public class TrackComparator implements Comparator<Track> {
   public static final int DISCOVERY_ALBUM = 4;
 
   public static final int RATE_ALBUM = 5;
-  
+
   public static final int HITS_ALBUM = 6;
 
   public static final int ORDER = 7;
-  
+
   private static final DateFormat formatter = Util.getAdditionDateFormatter();
 
   /**
@@ -98,23 +98,24 @@ public class TrackComparator implements Comparator<Track> {
       break;
     // Year / album
     case YEAR_ALBUM:
-      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getYear().getValue(), 10))
-          .append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(
+          Util.padNumber(999999999 - track.getYear().getValue(), 10)).append(track.getName())
+          .toString();
       break;
     // discovery date / album
     case DISCOVERY_ALBUM:
       sHashCompare = new StringBuilder().append(formatter.format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
       break;
-    // Rate / album  
+    // Rate / album
     case RATE_ALBUM:
-      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getRate(),10))
-          .append(track.getName()).toString();      
+      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getRate(), 10))
+          .append(track.getName()).toString();
       break;
     // Hits / album
     case HITS_ALBUM:
-      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getHits(),10))
-          .append(track.getName()).toString();      
+      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getHits(), 10))
+          .append(track.getName()).toString();
       break;
     // Order / track name
     case ORDER:

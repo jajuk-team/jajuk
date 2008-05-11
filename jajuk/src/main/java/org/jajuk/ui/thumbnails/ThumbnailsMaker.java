@@ -76,13 +76,14 @@ public class ThumbnailsMaker implements ITechnicalStrings {
    *          do you have to wait all process done ?
    */
   public static void launchAllSizes(final boolean bSynchronous) {
-    //We need this mutex to make sure auto-refresh cannto launch several times the full thumbs rebuild:
-    //autorefresh at time t launch this method asynchronously, then autorefresh at t+n relaunch it..
-    if (bAlreadyRunning){
+    // We need this mutex to make sure auto-refresh cannto launch several times
+    // the full thumbs rebuild:
+    // autorefresh at time t launch this method asynchronously, then autorefresh
+    // at t+n relaunch it..
+    if (bAlreadyRunning) {
       Log.debug("Thumb maker already running, leaving");
       return;
-    }
-    else{
+    } else {
       bAlreadyRunning = true;
     }
     final Thread t = new Thread() {

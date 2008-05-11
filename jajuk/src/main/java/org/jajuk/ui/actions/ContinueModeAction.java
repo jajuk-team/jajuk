@@ -65,7 +65,7 @@ public class ContinueModeAction extends ActionBase {
     }
     // computes planned tracks
     FIFO.getInstance().computesPlanned(false);
-    //Refresh Queue View
+    // Refresh Queue View
     ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
   }
 }

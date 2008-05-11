@@ -57,8 +57,8 @@ public class DebugLogAction extends ActionBase {
     text.setBackground(Color.WHITE);
     text.setForeground(Color.DARK_GRAY);
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    final JDialog dialog = new JDialog(JajukWindow.getInstance(), Messages.getString("DebugLogAction.0"),
-        false);
+    final JDialog dialog = new JDialog(JajukWindow.getInstance(), Messages
+        .getString("DebugLogAction.0"), false);
     JPanel jp = new JPanel();
     double[][] size = new double[][] { { 0.5f, 20, 0.5f }, { TableLayout.FILL, 10, 20, 5 } };
     jp.setLayout(new TableLayout(size));

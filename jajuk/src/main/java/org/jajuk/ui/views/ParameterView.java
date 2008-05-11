@@ -655,7 +655,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
         pathWatermarkFile.getUrl());
     final String image = pathWatermarkFile.getUrl();
-    if (oldImage!= null && !oldImage.equals(image) && !bLAFMessage) {
+    if (oldImage != null && !oldImage.equals(image) && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
@@ -1428,7 +1428,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
     jsCatalogPages.addChangeListener(new ChangeListener() {
       public void stateChanged(ChangeEvent e) {
-       jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
+        jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
       }
     });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));

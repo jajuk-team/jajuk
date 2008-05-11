@@ -102,7 +102,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     final JPanel jpRefresh = new JPanel();
     final double sizeRefresh[][] = {
         { TableLayoutConstants.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
-            TableLayoutConstants.PREFERRED,20 }, { 20 } };
+            TableLayoutConstants.PREFERRED, 20 }, { 20 } };
     jpRefresh.setLayout(new TableLayout(sizeRefresh));
     jpRefresh.add(jlRefreshTime, "0,0");
     jpRefresh.add(jtfRefreshTime, "2,0");

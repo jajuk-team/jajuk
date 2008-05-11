@@ -43,7 +43,7 @@ public class IncreaseVolumeAction extends ActionBase {
       Player.mute(false);
     }
     Player.setVolume(newVolume);
-    //Refresh volume icons
-    MuteAction.setVolumeIcon(100*newVolume);
+    // Refresh volume icons
+    MuteAction.setVolumeIcon(100 * newVolume);
   }
 }

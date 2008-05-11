@@ -83,7 +83,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
     jcbItemChoice.addItem(Messages.getString("Item_Album"));
     jcbItemChoice.addItem(Messages.getString("Item_Device"));
     jcbItemChoice.addItem(Messages.getString("Item_Directory"));
-    jcbItemChoice.addItem(Messages.getString("Item_Playlist_File")); 
+    jcbItemChoice.addItem(Messages.getString("Item_Playlist_File"));
     jcbItemChoice.addItem(Messages.getString("Item_Year"));
     okp = new OKCancelPanel(this);
     okp.getOKButton().setEnabled(false);

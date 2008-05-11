@@ -55,7 +55,7 @@ public abstract class SelectionAction extends ActionBase {
     } else if (o instanceof ArrayList) {
       selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     } else if (o instanceof HashSet) {
-      selection = new ArrayList<Item>((HashSet)o);
+      selection = new ArrayList<Item>((HashSet) o);
     }
   }
 

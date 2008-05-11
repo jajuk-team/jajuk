@@ -335,8 +335,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       break;
     }
     case 3: {
-      string = df.format(lTime_percent-100f) + " % / "
-          + Util.formatTimeBySec(length, false);
+      string = df.format(lTime_percent - 100f) + " % / " + Util.formatTimeBySec(length, false);
       break;
     }
     default: {

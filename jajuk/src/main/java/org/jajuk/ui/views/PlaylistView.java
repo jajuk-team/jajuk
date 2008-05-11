@@ -304,7 +304,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpEditor.setLayout(new TableLayout(size));
     jpEditor.add(jpEditorControl, "0,0");
     JScrollPane jsp = new JScrollPane(editorTable);
-    jsp.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     jpEditor.add(jsp, "0,1");
     // menu items
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
@@ -477,7 +477,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // column changed of playlist
           // current playlist has changed
           if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
-          //We listen this event to paint the new running track in table
+          // We listen this event to paint the new running track in table
               || EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)) {
             refreshCurrentPlaylist();
           } else if (EventSubject.EVENT_FILE_COPIED.equals(subject)) {

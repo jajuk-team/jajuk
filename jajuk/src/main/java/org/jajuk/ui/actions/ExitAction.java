@@ -54,8 +54,10 @@ public class ExitAction extends ActionBase {
         return;
       }
     }
-    // IMPORTANT: all the following code must be done in EDT to avoid dead locks.
-    // Not not use SwingUtilities.invokeLater method in the ExitHook Thread, this
+    // IMPORTANT: all the following code must be done in EDT to avoid dead
+    // locks.
+    // Not not use SwingUtilities.invokeLater method in the ExitHook Thread,
+    // this
     // code may never be run
 
     if (SwingUtilities.isEventDispatchThread()) {

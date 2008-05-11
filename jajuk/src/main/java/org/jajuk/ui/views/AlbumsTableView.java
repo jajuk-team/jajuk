@@ -166,8 +166,6 @@ public class AlbumsTableView extends AbstractTableView {
             super.mouseExited(e);
             // Do not hide popup if still in the table to allow user to mouse
             // mouse over the popup (in this case, a table exit event is thrown)
-            // System.out.println(popup);
-            // System.out.println(Util.isOver(jtable.getRootPane()));
             if (popup != null
                 && !Util.isOver(jtable.getLocationOnScreen(), jtable
                     .getPreferredScrollableViewportSize())) {

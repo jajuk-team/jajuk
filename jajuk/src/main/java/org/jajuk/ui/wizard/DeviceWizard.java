@@ -185,8 +185,9 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
       public void propertyChange(final PropertyChangeEvent e) {
         final String prop = e.getPropertyName();
         if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-          // FIXME: this causes trouble on German machines with more than 999 minutes!
-          // FIXME: what is the original purpose of this replacement? 
+          // FIXME: this causes trouble on German machines with more than 999
+          // minutes!
+          // FIXME: what is the original purpose of this replacement?
           final double value = Double.valueOf(jftfAutoRefresh.getText().replace(',', '.'));
           jftfAutoRefresh.setValue(value);
           if ((value < 0) || ((value < 0.5d) && (value != 0))) {

@@ -45,8 +45,6 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
-import org.jajuk.ui.perspectives.InfoPerspective;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.JajukHtmlPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.EventSubject;
@@ -93,7 +91,6 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
   /** Current search */
   String search = null;
 
-  
   /*
    * (non-Javadoc)
    * 

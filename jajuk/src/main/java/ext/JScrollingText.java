@@ -20,9 +20,9 @@
 package ext;
 
 /**
- * Scrolling text component
- * Code found at http://www.developpez.net/forums/archive/index.php/t-41622.html
- * Thanks "herve91" 
+ * Scrolling text component Code found at
+ * http://www.developpez.net/forums/archive/index.php/t-41622.html Thanks
+ * "herve91"
  */
 import java.awt.FontMetrics;
 import java.awt.Graphics;

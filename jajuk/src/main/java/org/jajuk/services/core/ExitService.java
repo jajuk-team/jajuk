@@ -22,8 +22,6 @@ package org.jajuk.services.core;
 import java.io.File;
 import java.net.InetAddress;
 
-import javax.swing.SwingUtilities;
-
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.bookmark.History;
@@ -32,11 +30,6 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionBase;
-import org.jajuk.ui.actions.RestoreAllViewsAction;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.JajukSlimbar;
-import org.jajuk.ui.widgets.JajukSystray;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;

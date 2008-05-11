@@ -152,7 +152,7 @@ public class AlbumsTableModel extends JajukTableModel {
     boolean bTrackNb = (columnsToShow != null && columnsToShow.contains(XML_TRACKS));
     boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
-    
+
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
       setItemAt(iRow, album);
@@ -253,7 +253,7 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][8] = "";
       }
       bCellEditable[iRow][8] = false;
-      
+
       // Hits
       if (bHits) {
         oValues[iRow][9] = album.getHits();
@@ -261,7 +261,7 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][9] = "";
       }
       bCellEditable[iRow][9] = false;
-      
+
       // Custom properties now
       Iterator it2 = AlbumManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {

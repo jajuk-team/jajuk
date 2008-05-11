@@ -215,7 +215,7 @@ public class PlaylistTableModel extends JajukTableModel {
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
     boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE));
-      
+
     for (int iRow = 0; iRow < iRowNum; iRow++) {
       boolean bPlanned = false;
       Font font = null;
@@ -244,9 +244,9 @@ public class PlaylistTableModel extends JajukTableModel {
         }
       } else {
         oValues[iRow][0] = new IconLabel(IconLoader.ICON_TRACK_FIFO_NORM, "", null, null, font,
-                Messages.getString("AbstractPlaylistEditorView.18"));
+            Messages.getString("AbstractPlaylistEditorView.18"));
       }
-      
+
       // Track name
       if (bName) {
         oValues[iRow][1] = bf.getTrack().getName();

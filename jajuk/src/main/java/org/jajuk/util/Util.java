@@ -1322,12 +1322,12 @@ public class Util implements ITechnicalStrings {
       }
       Log.debug("Testing path: " + fullPath);
       // check MPlayer release : 1.0pre8 min
-      proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" });  //$NON-NLS-2$ //$NON-NLS-3$
+      proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$ //$NON-NLS-3$
       final BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
       String line = null;
       mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
       for (; (line = in.readLine()) != null;) {
-        if (line.matches("get_time_pos.*")) { 
+        if (line.matches("get_time_pos.*")) {
           mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
           break;
         }

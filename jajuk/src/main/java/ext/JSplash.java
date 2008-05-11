@@ -42,7 +42,6 @@ import javax.swing.border.EmptyBorder;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -148,14 +147,14 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 
     // build a progress bar and a tips of the day scrolling text
     String totd = Messages.getNextTipOfTheDay();
-    //Remove pictures urls
-    if (totd.matches(".*<a.*")){
-      totd = totd.substring(0,totd.indexOf("<a"));
+    // Remove pictures urls
+    if (totd.matches(".*<a.*")) {
+      totd = totd.substring(0, totd.indexOf("<a"));
     }
     totd += "     ";
     JScrollingText scrollingText = new JScrollingText(totd, -5);
-    scrollingText.setPreferredSize(new Dimension(400,20));
-    scrollingText.setMaximumSize(new Dimension(400,20));
+    scrollingText.setPreferredSize(new Dimension(400, 20));
+    scrollingText.setMaximumSize(new Dimension(400, 20));
     GridLayout layout = new GridLayout(2, 1, 0, 0);
     JPanel jpTotdAndProgress = new JPanel(layout);
     jpTotdAndProgress.setBorder(new EmptyBorder(4, 5, 0, 5));
@@ -179,7 +178,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
       m_progress.setFont(FontManager.getInstance().getFont(JajukFont.SPLASH_PROGRESS));
       jpTotdAndProgress.add(m_progress);
       jpTotdAndProgress.add(scrollingText);
-    
+
     }
 
     // add the components to the panel

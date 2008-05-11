@@ -275,8 +275,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         if (value instanceof FileNode) {
           setBorder(null);
           File file = ((FileNode) value).getFile();
-          
-          // Note: file.getName() is better here as it will do less and not create java.io.File in File
+
+          // Note: file.getName() is better here as it will do less and not
+          // create java.io.File in File
           String ext = Util.getExtension(file.getName());
           Type type = TypeManager.getInstance().getTypeByExtension(ext);
           // Find associated icon with this type
@@ -411,7 +412,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
               alSelected.add(item);
             }
             // return all childs nodes recursively
-            Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
+            Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
+                .depthFirstEnumeration();
             while (e2.hasMoreElements()) {
               DefaultMutableTreeNode node = e2.nextElement();
               if (node instanceof FileNode) {
@@ -421,8 +423,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                 selectedRecursively.add(file);
                 lSize += file.getSize();
                 items++;
-              }
-              else if (node instanceof PlaylistFileNode){
+              } else if (node instanceof PlaylistFileNode) {
                 Playlist plf = ((PlaylistFileNode) node).getPlaylistFile();
                 selectedRecursively.add(plf);
                 items++;
@@ -495,8 +496,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                   FIFO.getInstance()
                       .push(
                           new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                              true),
-                          ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                              true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
                 } catch (JajukException je) {
                   Log.error(je);
                 }
@@ -595,8 +595,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmiDelete.setEnabled(true);
         if (c.equals(PlaylistFileNode.class)) {
           for (int i = 0; i < paths.length; i++) {
-            Playlist plf = ((PlaylistFileNode) (paths[i].getLastPathComponent()))
-                .getPlaylistFile();
+            Playlist plf = ((PlaylistFileNode) (paths[i].getLastPathComponent())).getPlaylistFile();
             if (!plf.isReady()) {
               jmiDelete.setEnabled(false);
               continue;
@@ -739,7 +738,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     // tree itself
     jspTree = new JScrollPane(jtree);
-    jspTree.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jspTree);
     // expand all
     expand();
@@ -801,8 +800,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
 
     // add playlists
-    ArrayList<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager
-        .getInstance().getPlaylists());
+    ArrayList<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager.getInstance()
+        .getPlaylists());
     Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {
       Playlist playlistFile = it4.next();

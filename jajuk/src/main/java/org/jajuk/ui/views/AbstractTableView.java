@@ -260,7 +260,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     add(jpControl, "0,0");
     setCellEditors();
     JScrollPane jsp = new JScrollPane(jtable);
-    jsp.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
+    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jsp, "0,1");
     jtable.setDragEnabled(true);
     jtable.setTransferHandler(new TableTransferHandler(jtable));
@@ -373,9 +373,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
               applyFilter(sAppliedCriteria, sAppliedFilter);
             }
           } else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
-            //Ignore the refresh if the event comes from the table itself
+            // Ignore the refresh if the event comes from the table itself
             Properties properties = event.getDetails();
-            if (AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))){
+            if (AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))) {
               return;
             }
             // Keep current selection and nb of rows

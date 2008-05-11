@@ -39,8 +39,8 @@ public class SmartPlaylist extends JPanel {
   private JLabel jlIcon;
 
   private Type type;
-  
-  /**Associated playlist*/
+
+  /** Associated playlist */
   private Playlist plf;
 
   /**
@@ -70,14 +70,13 @@ public class SmartPlaylist extends JPanel {
     // new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
-  
   /**
    * @return Returns the Type.
    */
   public Type getType() {
     return type;
   }
-  
+
   /**
    * @return Associated playlist
    */

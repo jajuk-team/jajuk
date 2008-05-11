@@ -68,7 +68,8 @@ public class LyricsService {
 
     Log.debug("Loading Providers");
     try {
-      final BufferedReader reader = new BufferedReader(new InputStreamReader(ITechnicalStrings.FILE_LYRICS_CONF_PATH.openStream()));
+      final BufferedReader reader = new BufferedReader(new InputStreamReader(
+          ITechnicalStrings.FILE_LYRICS_CONF_PATH.openStream()));
       final StringBuilder xml = new StringBuilder();
 
       for (String line = null; (line = reader.readLine()) != null;) {

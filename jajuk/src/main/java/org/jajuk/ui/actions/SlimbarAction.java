@@ -55,7 +55,7 @@ public class SlimbarAction extends ActionBase {
       JajukSlimbar.getInstance().setVisible(false);
       JajukWindow.getInstance().display(true);
     } else {
-      if (!slimbar.isInitialized()){
+      if (!slimbar.isInitialized()) {
         slimbar.initUI();
       }
       slimbar.setVisible(true);

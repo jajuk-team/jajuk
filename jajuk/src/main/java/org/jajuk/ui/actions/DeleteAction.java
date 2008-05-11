@@ -138,7 +138,7 @@ public class DeleteAction extends ActionBase {
           }
         }
       }.start();
-      
+
       if (emptyDirs.size() > 0) {
         String emptyDirsString = "";
         for (Directory d : emptyDirs) {
@@ -205,7 +205,7 @@ public class DeleteAction extends ActionBase {
           }
           Util.stopWaiting();
           InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"), 1);
-          
+
           if (rejDirs.size() > 0) {
             String rejString = "";
             for (Directory d : rejDirs) {

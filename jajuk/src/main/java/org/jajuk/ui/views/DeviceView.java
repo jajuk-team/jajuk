@@ -103,8 +103,8 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     jpDevices = new FlowScrollPanel();
     JScrollPane jsp = new JScrollPane(jpDevices, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    jsp.setBorder(BorderFactory.createEmptyBorder(0,1,0,0));
-    
+    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+
     jpDevices.setScroller(jsp);
 
     jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -315,7 +315,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
       diSelected.getDevice().synchronize(true);
     } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_TEST.toString())) {
       new Thread("Asynchronouse device test thread") {// test asynchronously in
-                                                      // case of delay (samba
+        // case of delay (samba
         // pbm for ie)
         @Override
         public void run() {

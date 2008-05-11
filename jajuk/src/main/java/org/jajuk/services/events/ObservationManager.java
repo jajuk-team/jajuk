@@ -60,7 +60,9 @@ public class ObservationManager implements ITechnicalStrings {
         if (vFIFO.size() > 0) {
           final Event event = vFIFO.get(0);
           vFIFO.remove(0);
-          new Thread("Observation Manager Sync Notify Thread") { // launch action asynchronously
+          new Thread("Observation Manager Sync Notify Thread") { // launch
+                                                                  // action
+                                                                  // asynchronously
             @Override
             public void run() {
               notifySync(event);

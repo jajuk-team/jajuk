@@ -122,9 +122,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   public JCheckBoxMenuItem jcbmiContinue;
 
   public JCheckBoxMenuItem jcbmiIntro;
-  
+
   JMenu smart;
-  
+
   JMenuItem jmiShuffle;
 
   JMenuItem jmiBestof;
@@ -132,13 +132,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenuItem jmiNovelties;
 
   JMenuItem jmiFinishAlbum;
-  
+
   JMenu tools;
 
   JMenuItem jmiduplicateFinder;
 
   JMenuItem jmialarmClock;
-  
+
   JMenu configuration;
 
   JMenuItem jmiDJ;
@@ -170,9 +170,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JMenu jmReminders;
 
   JLabel jlUpdate;
-  
+
   JButton jbSlim;
-  
+
   /** Hashmap JCheckBoxMenuItem -> associated view */
   public HashMap hmCheckboxView = new HashMap(10);
 
@@ -238,24 +238,24 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jcbmiContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
     jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
     jcbmiIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
-   
+
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
-    
+
     // Smart Menu
     smart = new JMenu(Messages.getString("JajukJMenuBar.29"));
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
     jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
     jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
-    
+
     smart.add(jmiShuffle);
     smart.add(jmiBestof);
     smart.add(jmiNovelties);
     smart.add(jmiFinishAlbum);
-    
+
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     tools.addMouseMotionListener(this);
@@ -283,7 +283,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
-    
+
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
     jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
     jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
@@ -343,7 +343,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     help.add(jmiTraces);
     help.add(jmiCheckforUpdates);
     help.add(jmiAbout);
-    
+
     JMenuBar mainmenu = new JMenuBar();
     mainmenu.add(file);
     mainmenu.add(views);
@@ -353,9 +353,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     mainmenu.add(tools);
     mainmenu.add(configuration);
     mainmenu.add(help);
-    
+
     jbSlim = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
-    
+
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
     add(jbSlim, BorderLayout.EAST);
@@ -404,7 +404,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   }
 
   public void mouseMoved(MouseEvent e) {
-    if(e.getSource() == jmReminders){
+    if (e.getSource() == jmReminders) {
       jmReminders.removeAll();
       if (AlarmManager.getInstance().getAllAlarms().size() == 0)
         jmReminders.add(Messages.getString("AlarmClock.2"));

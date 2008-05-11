@@ -367,7 +367,7 @@ public class Player implements ITechnicalStrings {
   public static void setPaused(boolean bPaused) {
     Player.bPaused = bPaused;
   }
-  
+
   /** Seek to a given position in %. ex : 0.2 for 20% */
   public static void seek(float pfPosition) {
     float fPosition = pfPosition;

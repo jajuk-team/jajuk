@@ -39,7 +39,7 @@ public class ViewFactory {
   private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
 
   private static Random random = new Random();
-  
+
   /**
    * No instantiation *
    */

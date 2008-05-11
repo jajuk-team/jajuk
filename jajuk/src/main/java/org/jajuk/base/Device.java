@@ -540,19 +540,19 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
                 .equalsIgnoreCase(ITechnicalStrings.FALSE))) {
           switch ((int) getType()) {
           case TYPE_DIRECTORY: // directory
-            sValue = "0.5d"; 
+            sValue = "0.5d";
             break;
           case TYPE_CD: // file cd
-            sValue = "0d"; 
+            sValue = "0d";
             break;
           case TYPE_NETWORK_DRIVE: // network drive
-            sValue = "0d"; 
+            sValue = "0d";
             break;
           case TYPE_EXT_DD: // ext dd
-            sValue = "3d"; 
+            sValue = "3d";
             break;
           case TYPE_PLAYER: // player
-            sValue = "3d"; 
+            sValue = "3d";
             break;
           }
         }

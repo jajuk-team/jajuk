@@ -39,8 +39,8 @@ class ObserverRegistry {
     if (alComponents == null) {
       return;
     }
-    //Iterate on a cloned list to avoid concurrent exceptions
-    alComponents = (ArrayList<Observer>)alComponents.clone();
+    // Iterate on a cloned list to avoid concurrent exceptions
+    alComponents = (ArrayList<Observer>) alComponents.clone();
     Iterator<Observer> it = alComponents.iterator();
     while (it.hasNext()) {
       Observer obs = null;

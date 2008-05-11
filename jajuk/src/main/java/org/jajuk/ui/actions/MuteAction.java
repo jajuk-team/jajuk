@@ -49,7 +49,7 @@ public class MuteAction extends ActionBase {
         } else {
           setName(Messages.getString("JajukWindow.2"));
         }
-        setVolumeIcon(100*Player.getCurrentVolume());
+        setVolumeIcon(100 * Player.getCurrentVolume());
       }
     });
   }

@@ -82,17 +82,21 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
     int index = -1;
     int lastindex = -1;
     StringBuilder sb = new StringBuilder(sPage);
-    // only the part between <!-- start content --> and <!-- end content --> is important to us
-      index = sb.indexOf("<!-- start content -->");
-      lastindex = sb.indexOf("</body></html>");
-      if (index > 0) {
-        sb.delete(0, index);
-        sb.delete(sb.indexOf("<!-- end content -->") + 20, lastindex );
-      }
+    // only the part between <!-- start content --> and <!-- end content --> is
+    // important to us
+    index = sb.indexOf("<!-- start content -->");
+    lastindex = sb.indexOf("</body></html>");
+    if (index > 0) {
+      sb.delete(0, index);
+      sb.delete(sb.indexOf("<!-- end content -->") + 20, lastindex);
+    }
     sPage = sb.toString();
-    //fix internal links
-    // TODO: language should be retrieved from the combo box and not from the user settings, but dunno how to get that...
-    sPage = sPage.replaceAll("href=\"/", "href=\"http://" + Messages.getLocalForDesc(Messages.getDescForLocal(ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
+    // fix internal links
+    // TODO: language should be retrieved from the combo box and not from the
+    // user settings, but dunno how to get that...
+    sPage = sPage.replaceAll("href=\"/", "href=\"http://"
+        + Messages.getLocalForDesc(Messages.getDescForLocal(ConfigurationManager
+            .getProperty(CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
     // Display the page
     showPage(sPage, page);
     // Set current url as a tooltip

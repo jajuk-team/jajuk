@@ -1007,7 +1007,7 @@ public class Main implements ITechnicalStrings {
           // Create the perspective manager
           PerspectiveManager.load();
           perspectivePanel = new JXPanel();
-          //Make this panel extensible
+          // Make this panel extensible
           perspectivePanel.setLayout(new BoxLayout(perspectivePanel, BoxLayout.X_AXIS));
 
           // Set menu bar to the frame

@@ -119,7 +119,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
   }
 
   public Object getValueAt(int rowIndex, int columnIndex) {
-   // We need to test this as UI may request it before table is populated
+    // We need to test this as UI may request it before table is populated
     if (oValues == null || oValues.length == 0 || rowIndex >= oValues.length) {
       return null;
     }

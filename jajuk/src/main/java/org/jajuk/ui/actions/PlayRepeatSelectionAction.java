@@ -57,7 +57,7 @@ public class PlayRepeatSelectionAction extends SelectionAction {
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     List<File> files = Util.getPlayableFiles(selection);
-    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), true, true), false); 
+    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), true, true), false);
   }
 
 }

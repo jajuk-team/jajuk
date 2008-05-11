@@ -352,7 +352,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
       perform(evt);
     } catch (Throwable e2) {
       Log.error(e2);
-    } 
+    }
   }
 
   /**

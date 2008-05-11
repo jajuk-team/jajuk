@@ -303,7 +303,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][10] = "";
         }
         bCellEditable[iRow][10] = false;
-        
+
         // Size, we want to keep 2 decimals to the value in MB
         if (bSize) {
           oValues[iRow][11] = Math.round(file.getSize() / 10485.76) / 100f;
@@ -311,7 +311,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][11] = "";
         }
         bCellEditable[iRow][11] = false;
-        
+
         // Order
         if (bOrder) {
           oValues[iRow][12] = file.getTrack().getOrder();
@@ -319,7 +319,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][12] = "";
         }
         bCellEditable[iRow][12] = bHasATagEditor;
-        
+
         // year
         if (bYear) {
           oValues[iRow][13] = file.getTrack().getYear();
@@ -327,7 +327,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][13] = "";
         }
         bCellEditable[iRow][13] = bHasATagEditor;
-        
+
         // directory full path
         if (bDirectory) {
           oValues[iRow][14] = file.getDirectory().getAbsolutePath();
@@ -335,7 +335,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][14] = "";
         }
         bCellEditable[iRow][14] = false;
-        
+
         // file date
         if (bFileDate) {
           oValues[iRow][15] = file.getDateValue(XML_FILE_DATE);
@@ -343,7 +343,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][15] = "";
         }
         bCellEditable[iRow][15] = false;
-        
+
         // Hits
         if (bHits) {
           oValues[iRow][16] = file.getTrack().getHits();
@@ -351,7 +351,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
           oValues[iRow][16] = "";
         }
         bCellEditable[iRow][16] = false;
-        
+
         // Discovery date
         if (bDiscovery) {
           oValues[iRow][17] = file.getTrack().getDiscoveryDate();
