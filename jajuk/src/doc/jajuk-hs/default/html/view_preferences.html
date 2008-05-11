@@ -37,6 +37,10 @@ This tab contains some general options:</p>
 <ul>
 <li>
 <b>
+Language</b>
+ [default=your system locale if supported or English otherwise]: Interface language. Needs a restart to be taken into account.</li>
+<li>
+<b>
 Only show available tracks</b>
  [default=false]: If checked, Jajuk will become unaware of all items located on unmounted devices. It can be useful if you won't see tracks from unavailable devices.</li>
 <li>
@@ -53,18 +57,14 @@ Synchronize tree and table view</b>
  [default=false]: If checked, table view will only display files (physical view) or tracks (logical view) from tree view selection.</li>
 <li>
 <b>
-Show a popup when launching a track</b>
- [default=true]: If checked, a tray popup will be shown at the bottom of the screen when launching a track.</li>
-<li>
-<b>
 Enable Hotkeys</b>
  [default=false][Windows only]: Use hotkeys so keystrokes (see list in <a href="keys_shortcuts.html">
 keys shortcuts</a>
 ) like F8 work even out of Jajuk.</li>
 <li>
 <b>
-Language</b>
- [default=your system locale if supported or English otherwise]: Interface language. Needs a restart to be taken into account.</li>
+Use parent directory as album name</b>
+ [default=true]: If the album tag is not available, take parent directory name as album name.</li>
 </ul>
 <h2>
 Modes tab</h2>
@@ -79,6 +79,10 @@ Intro begin position (%)</b>
 <b>
 Intro length (sec)</b>
  [default=20]: For intro mode, track length in seconds.</li>
+<li>
+<b>
+Cross-fade duration</b>
+ [default=0]: Cross-fade duration in secs between two tracks. Zero means no cross-fade.</li>
 <li>
 <b>
 Cross fade duration (seconds)</b>
@@ -101,18 +105,10 @@ Number of visible planned tracks</b>
  [default=10]: In Playlist editor view, number of visible planned tracks (see <a href="view_playlist_editor.html">
 view playlist editor</a>
 ).</li>
-<li>
-<b>
-Cross-fade duration</b>
- [default=0]: Cross-fade duration in secs between two tracks. Zero means no cross-fade.</li>
 </ul>
 <h2>
 GUI tab</h2>
 <ul>
-<li>
-<b>
-Show balloons</b>
- [default=false]: Should jajuk show a popup detailing new launched tracks ?</li>
 <li>
 <b>
 Font size</b>
@@ -137,6 +133,10 @@ view catalog</a>
  and <a href="view_suggestions.html">
 view suggestions</a>
 )</li>
+<li>
+<b>
+Show balloons</b>
+ [default=false]: Should jajuk show a popup detailing new launched tracks ?</li>
 <li>
 <b>
 Catalog view preferences / Catalog view page size</b>
@@ -183,26 +183,26 @@ Track</b>
 : choose a track by making a search in the text field and clicking of wanted track.</li>
 </ul>
 <h2>
-Tags tab</h2>
+Patterns tab</h2>
 <p>
-This tab is used to tune Jajuk tag features</p>
+This tab is used to fine tune several patterns</p>
 <ul>
 <li>
 <b>
-Use parent directory as album name</b>
- [default=true]: If the album tag is not available, take parent directory name as album name.</li>
-<li>
-<b>
-File Organizer Pattern</b>
+File Organizer</b>
 : set pattern used when using the <a href="files_organizer.html">
 files organizer</a>
 .</li>
 <li>
 <b>
-Animation Pattern</b>
+Animation view</b>
 : set text pattern of <a href="view_animation.html">
 view animation</a>
  (variables are the same that Organizer's pattern)</li>
+<li>
+<b>
+Frame title</b>
+: set text pattern of Jajuk main window</li>
 </ul>
 <h2>
 History tab</h2>
@@ -297,6 +297,12 @@ Before clearing history</b>
 <b>
 Before reseting ratings</b>
  [default=true]: Ask before reseting all tracks ratings to zero.</li>
+<li>
+<b>
+Before organizing files</b>
+ [default=true]: Ask before organizing files (see <a href="files_organizer.html">
+Files organizer</a>
+)</li>
 </ul>
 <h2>
 Network tab</h2>
@@ -401,7 +407,7 @@ Check Jajuk updates</b>
  [default=true]: Allow Jajuk at every startup to check on the jajuk website if a new release becomes available (can be forced manually using the Help menu-&gt; check for updates)</li>
 <li>
 <b>
-Force files date as discovery date</b>
+Discovery date = file date</b>
  [default=false]: If checked, jajuk use the file date (in the operating system meaning) as discovery date, not the current date. This date is used for novelties features or for statistics.</li>
 </ul>
 <p>
