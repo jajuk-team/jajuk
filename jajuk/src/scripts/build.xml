@@ -7,13 +7,13 @@
 
 	<!--Distribution release 
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.6_RC12' />
+	<property name='version' value='1.6' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
 	<!--Test flag: values: test or notest -->
-	<property name='test' value='test' />
+	<property name='test' value='notest' />
 
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
@@ -29,7 +29,7 @@
 	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />-->
 	
 
-	<!-- Conf for Jajuk CI server -->
+	<!-- Conf for Jajuk Continuous Integration  server -->
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
