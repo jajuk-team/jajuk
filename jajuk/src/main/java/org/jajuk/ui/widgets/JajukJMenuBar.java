@@ -372,7 +372,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
       public void finished() {
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
-          jlUpdate = new JLabel(" ", IconLoader.ICON_UPDATE_MANAGER, JLabel.HORIZONTAL);
+          jlUpdate = new JLabel(" ", IconLoader.ICON_UPDATE_MANAGER, JLabel.RIGHT);
           String newRelease = UpgradeManager.getNewVersionName();
           if (newRelease != null) {
             jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
