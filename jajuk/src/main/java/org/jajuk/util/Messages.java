@@ -196,15 +196,22 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    *         because some may have been removed
    */
   public static String getNextTipOfTheDay() {
-    String totd = null;
-    // index contains the index of the last provided totd
-    int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
-    // display the next one
-    totd = Messages.getString("TipOfTheDay." + index);
-    // Increment and save index
-    ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
-        % Messages.getAll("TipOfTheDay").length));
-    return totd;
+    try {
+      String totd = null;
+      // index contains the index of the last provided totd
+      int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
+      // display the next one
+      totd = Messages.getString("TipOfTheDay." + index);
+      // Increment and save index
+      ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
+          % Messages.getAll("TipOfTheDay").length));
+      return totd;
+    } catch (Exception e) {
+      Log.error(e);
+      // Make sure to handle every problem: this code is used in slash screen
+      // and we won't propagate exception that could prevent jajuk from starting
+      return "";
+    }
   }
 
   /**
