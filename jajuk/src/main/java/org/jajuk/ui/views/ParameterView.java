@@ -1505,16 +1505,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     pathWatermarkFile = new PathSelector(filter, ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE));
     // Add items
-    jpUI.add(jcbShowBaloon, "0,0");
-    jpUI.add(jlFonts, "0,1");
-    jpUI.add(jsFonts, "1,1");
-    jpUI.add(jlLAF, "0,2");
-    jpUI.add(scbLAF, "1,2");
-    jpUI.add(jlWatermarks, "0,3");
-    jpUI.add(scbWatermarks, "1,3");
-    jpUI.add(jlWatermarkImage, "0,4");
-    jpUI.add(pathWatermarkFile, "1,4");
-    jpUI.add(jcbShowPopups, "0,5");
+    jpUI.add(jlFonts, "0,0");
+    jpUI.add(jsFonts, "1,0");
+    jpUI.add(jlLAF, "0,1");
+    jpUI.add(scbLAF, "1,1");
+    jpUI.add(jlWatermarks, "0,2");
+    jpUI.add(scbWatermarks, "1,2");
+    jpUI.add(jlWatermarkImage, "0,3");
+    jpUI.add(pathWatermarkFile, "1,3");
+    jpUI.add(jcbShowPopups, "0,4");
+    jpUI.add(jcbShowBaloon, "0,5");
     jpUI.add(toggle, "0,6");
     jpUI.add(catalogView, "0,7,1,7");
     jpUI.add(jlPerspectiveSize, "0,8");
