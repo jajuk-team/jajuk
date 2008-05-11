@@ -42,11 +42,10 @@
         <mapID target="view_files_tree" url="html/view_files_tree.html" />
         <mapID target="view_help" url="html/view_help.html" />
         <mapID target="view_information" url="html/view_information.html" />
-        <mapID target="view_logical_playlists" url="html/view_logical_playlists.html" />        
         <mapID target="view_lyrics" url="html/view_lyrics.html" />        
         <mapID target="view_perspective_selector" url="html/view_perspective_selector.html" />
-        <mapID target="view_physical_playlists" url="html/view_physical_playlists.html" />        
-        <mapID target="view_playlist_editor" url="html/view_playlist_editor.html" />
+        <mapID target="view_playlists" url="html/view_playlists.html" />        
+        <mapID target="view_queue" url="html/view_queue.html" />
         <mapID target="view_preferences" url="html/view_preferences.html" />
         <mapID target="view_statistics" url="html/view_statistics.html" />
         <mapID target="view_suggestions" url="html/view_suggestions.html" /> 
@@ -57,5 +56,5 @@
         <mapID target="tip_of_the_day" url="html/tip_of_the_day.html" />
         <mapID target="using_alarm_clock" url="html/using_alarm_clock.html" />
         <mapID target="using_duplicate_finder" url="html/using_duplicate_finder.html" />       
-        <mapID target="jajuk_slimbar" url="html/jajuk_slimbar.html" />
+        <mapID target="using_the_slimbar" url="html/using_the_slimbar.html" />
    </map>

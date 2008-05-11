@@ -29,10 +29,9 @@
 			<tocitem text="The Device View" target="view_devices"/>			
 			<tocitem text="The Files Table view" target="view_files_table"/>
 			<tocitem text="The Files Tree view" target="view_files_tree"/>						
-			<tocitem text="The Logical Playlist view" target="view_logical_playlists"/>
 			<tocitem text="The Lyrics view" target="view_lyrics"/>
-			<tocitem text="The Physical Playlist view" target="view_physical_playlists"/>
-			<tocitem text="The Playlist Editor view" target="view_playlist_editor"/>
+			<tocitem text="The Playlists view" target="view_playlists"/>
+			<tocitem text="The Queue view" target="view_queue"/>
 			<tocitem text="The Preferences view" target="view_preferences"/>			
 			<tocitem text="The Statistics view" target="view_statistics"/>
 			<tocitem text="The Suggestions view" target="view_suggestions"/>
@@ -56,7 +55,7 @@
 			<tocitem text="Using web radios" target="using_web_radios"/>
 			<tocitem text="Using alarm clock" target="using_alarm_clock"/>
 			<tocitem text="Using duplicate finder" target="using_duplicate_finder"/>
-			<tocitem text="Jajuk slimbar" target="jajuk_slimbar"/>
+			<tocitem text="Using the slimbar" target="using_the_slimbar"/>
 		</tocitem>
 		<tocitem text="Technical" expand="true">
 			<tocitem text="Supported formats" target="supported_formats"/>
