@@ -34,7 +34,7 @@ Option for show_filereleases, show_forums, show_projectnews, show_docmanager, sh
 this way you can only export items changed since the last time found in your export details.
 
 --><export_details>
-<time>1202074077</time>
+<time>1210593017</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -302,6 +302,7 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 </projectresources>
 <project_admin_detail>
 <trove_details>
+<trove_category>Translations :: Galician</trove_category>
 <trove_category>Translations :: Russian</trove_category>
 <trove_category>Translations :: Greek</trove_category>
 <trove_category>Database Environment :: Network-based DBMS :: MySQL</trove_category>
@@ -317,11 +318,9 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <trove_category>Translations :: Catalan</trove_category>
 <trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
 <trove_category>User Interface :: Graphical :: Java Swing</trove_category>
-<trove_category>Translations :: Swedish</trove_category>
 <trove_category>Translations :: German</trove_category>
 <trove_category>Translations :: French</trove_category>
 <trove_category>Translations :: English</trove_category>
-<trove_category>Translations :: Italian</trove_category>
 <trove_category>Development Status :: 5 - Production/Stable</trove_category>
 <trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
 <trove_category>Programming Language :: Java</trove_category>
@@ -2174,6 +2173,306 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <release_time>1200260912</release_time>
 <post_date>1200257164</post_date>
 </filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=573678</url>
+<filename>jajuk_1.5b3-2_i386.deb</filename>
+<release_id>573678</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>11653228</file_size>
+<release_time>1202081097</release_time>
+<post_date>1202077356</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=573678</url>
+<filename>jajuk-1.5b3.noarch.rpm</filename>
+<release_id>573678</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>11731687</file_size>
+<release_time>1202081116</release_time>
+<post_date>1202077340</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=573678</url>
+<filename>jajuk-1.5b3-win32.exe</filename>
+<release_id>573678</release_id>
+<package_id>96449</package_id>
+<processor>i386</processor>
+<file_size>18612736</file_size>
+<release_time>1202081134</release_time>
+<post_date>1202077333</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=573678</url>
+<filename>jajuk-java-installer-1.5b3.jar</filename>
+<release_id>573678</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>18170925</file_size>
+<release_time>1202081152</release_time>
+<post_date>1202077345</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=573678</url>
+<filename>jajuk-macos-1.5b3.zip</filename>
+<release_id>573678</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>11830386</file_size>
+<release_time>1202081175</release_time>
+<post_date>1202077349</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=573678</url>
+<filename>jajuk-sources-1.5b3.zip</filename>
+<release_id>573678</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>22859167</file_size>
+<release_time>1202081200</release_time>
+<post_date>1202077354</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=587425</url>
+<filename>jajuk_1.5.1b2-2_i386.deb</filename>
+<release_id>587425</release_id>
+<package_id>96449</package_id>
+<processor>i386</processor>
+<file_size>11677502</file_size>
+<release_time>1206646398</release_time>
+<post_date>1206642776</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=587425</url>
+<filename>jajuk-1.5.1b2.noarch.rpm</filename>
+<release_id>587425</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>11755846</file_size>
+<release_time>1206646410</release_time>
+<post_date>1206642761</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=587425</url>
+<filename>jajuk-1.5.1b2-win32.exe</filename>
+<release_id>587425</release_id>
+<package_id>96449</package_id>
+<processor>i386</processor>
+<file_size>18837504</file_size>
+<release_time>1206646423</release_time>
+<post_date>1206642759</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=587425</url>
+<filename>jajuk-java-installer-1.5.1b2.jar</filename>
+<release_id>587425</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>18395676</file_size>
+<release_time>1206646446</release_time>
+<post_date>1206642766</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=587425</url>
+<filename>jajuk-macos-1.5.1b2.zip</filename>
+<release_id>587425</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>11853920</file_size>
+<release_time>1206646462</release_time>
+<post_date>1206642769</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=587425</url>
+<filename>jajuk-sources-1.5.1b2.zip</filename>
+<release_id>587425</release_id>
+<package_id>96449</package_id>
+<processor>Platform-Independent</processor>
+<file_size>22880691</file_size>
+<release_time>1206646483</release_time>
+<post_date>1206642774</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=588191</url>
+<filename>jajuk_1.5.2-2_i386.deb</filename>
+<release_id>588191</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11678564</file_size>
+<release_time>1206887401</release_time>
+<post_date>1206887401</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=588191</url>
+<filename>jajuk-1.5.2.noarch.rpm</filename>
+<release_id>588191</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11756221</file_size>
+<release_time>1206887387</release_time>
+<post_date>1206887387</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=588191</url>
+<filename>jajuk-1.5.2-win32.exe</filename>
+<release_id>588191</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>18835968</file_size>
+<release_time>1206887384</release_time>
+<post_date>1206887384</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=588191</url>
+<filename>jajuk-java-installer-1.5.2.jar</filename>
+<release_id>588191</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>18394504</file_size>
+<release_time>1206887391</release_time>
+<post_date>1206887391</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=588191</url>
+<filename>jajuk-macos-1.5.2.zip</filename>
+<release_id>588191</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11854543</file_size>
+<release_time>1206887393</release_time>
+<post_date>1206887393</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=588191</url>
+<filename>jajuk-sources-1.5.2.zip</filename>
+<release_id>588191</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>22876434</file_size>
+<release_time>1206887398</release_time>
+<post_date>1206887398</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=590261</url>
+<filename>jajuk_1.5.3-2_i386.deb</filename>
+<release_id>590261</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11673286</file_size>
+<release_time>1207515995</release_time>
+<post_date>1207515995</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=590261</url>
+<filename>jajuk-1.5.3.noarch.rpm</filename>
+<release_id>590261</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11751544</file_size>
+<release_time>1207515981</release_time>
+<post_date>1207515981</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=590261</url>
+<filename>jajuk-1.5.3-win32.exe</filename>
+<release_id>590261</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>18834432</file_size>
+<release_time>1207515977</release_time>
+<post_date>1207515977</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=590261</url>
+<filename>jajuk-java-installer-1.5.3.jar</filename>
+<release_id>590261</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>18392928</file_size>
+<release_time>1207515985</release_time>
+<post_date>1207515985</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=590261</url>
+<filename>jajuk-macos-1.5.3.zip</filename>
+<release_id>590261</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11848944</file_size>
+<release_time>1207515988</release_time>
+<post_date>1207515988</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=590261</url>
+<filename>jajuk-sources-1.5.3.zip</filename>
+<release_id>590261</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>22876364</file_size>
+<release_time>1207515993</release_time>
+<post_date>1207515993</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=598572</url>
+<filename>jajuk_1.6-2_i386.deb</filename>
+<release_id>598572</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11813720</file_size>
+<release_time>1210544241</release_time>
+<post_date>1210544241</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=598572</url>
+<filename>jajuk-1.6.noarch.rpm</filename>
+<release_id>598572</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11893771</file_size>
+<release_time>1210544217</release_time>
+<post_date>1210544217</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=598572</url>
+<filename>jajuk-1.6-win32.exe</filename>
+<release_id>598572</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>20141056</file_size>
+<release_time>1210544215</release_time>
+<post_date>1210544215</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=598572</url>
+<filename>jajuk-java-installer-1.6.jar</filename>
+<release_id>598572</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>19699658</file_size>
+<release_time>1210544222</release_time>
+<post_date>1210544222</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=598572</url>
+<filename>jajuk-macos-1.6.zip</filename>
+<release_id>598572</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>11957757</file_size>
+<release_time>1210544227</release_time>
+<post_date>1210544227</post_date>
+</filerelease>
+<filerelease>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=598572</url>
+<filename>jajuk-sources-1.6.zip</filename>
+<release_id>598572</release_id>
+<package_id>96449</package_id>
+<processor>None</processor>
+<file_size>23059632</file_size>
+<release_time>1210544237</release_time>
+<post_date>1210544237</post_date>
+</filerelease>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -3047,6 +3346,712 @@ ed805c623406018b276899b16d29100d </data>
 <anonymous_posting>No</anonymous_posting>
 <forum_posts>
 <forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4944194</url>
+<msg_id>4944194</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: tags online</subject>
+<thread_id>2028051</thread_id>
+<is_followup_to>4943797</is_followup_to>
+<has_followups>0</has_followups>
+<date>1209912973</date>
+<is_deleted>No</is_deleted>
+<body>Even if only few tags are shown in the CDDB window, all tags will be actually written (I just tested it successfully). 
+Covers are saved are regular files in the audio files directory to make them available from every applications, not as ID3 tag (BTW, all audio formats doesn't support cover tags). </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4943797</url>
+<msg_id>4943797</msg_id>
+<poster_user>kvdv999</poster_user>
+<poster_name>Kris</poster_name>
+<subject>tags online</subject>
+<thread_id>2028051</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1209889611</date>
+<is_deleted>No</is_deleted>
+<body>i have an album which contains the wrong tags:  only the track names are correct, all other information is wrong (album title, artist, genre, year, et).
+So i click on this album and select 'get tags online'.   Jajuk shows me a few matches but when i select them, he only proposes to change the track titles, which are already correct.  He doesn't propose to change any of the other tags.   What am i doing wrong?
+
+Also,  the album cover art which is downloaded, is it embedded in the file or only visible in Jajuk?
+
+
+thanks,
+Kris</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4943144</url>
+<msg_id>4943144</msg_id>
+<poster_user>kvdv999</poster_user>
+<poster_name>Kris</poster_name>
+<subject>RE: music location is AFP volume on network</subject>
+<thread_id>2026013</thread_id>
+<is_followup_to>4940364</is_followup_to>
+<has_followups>0</has_followups>
+<date>1209843866</date>
+<is_deleted>No</is_deleted>
+<body>Yes, you're right, i could browse to the network by clicking on the Volumes mount.
+Thanks.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4942711</url>
+<msg_id>4942711</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Exporting &#38; importing collections</subject>
+<thread_id>2025460</thread_id>
+<is_followup_to>4939440</is_followup_to>
+<has_followups>0</has_followups>
+<date>1209821602</date>
+<is_deleted>No</is_deleted>
+<body>The normal way to do it is to use the &#34;Workspace path&#34; location in Preference view / Advanced tab : select a new location and all configuration files will be moved to the new location. If the target directory already contains a jajuk workspace (your case if you already moved configuration manually), jajuk just switches to this new location at next startup.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4942706</url>
+<msg_id>4942706</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: music location is AFP volume on network</subject>
+<thread_id>2026013</thread_id>
+<is_followup_to>4940364</is_followup_to>
+<has_followups>0</has_followups>
+<date>1209821258</date>
+<is_deleted>No</is_deleted>
+<body>Well, I don't know mush about AFP network drive but I suppose it must be like Windows (CIFS) network drive or NFS ones, isn't it ? in this case, if the drive is mounted, you should be able to browse it from the java file browser when creating a device. If you don't see your drive, it probably mean that the Apple Java virtual machine  doesn't support this technology. Check http://developer.apple.com/java/ for more information.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4940364</url>
+<msg_id>4940364</msg_id>
+<poster_user>kvdv999</poster_user>
+<poster_name>Kris</poster_name>
+<subject>music location is AFP volume on network</subject>
+<thread_id>2026013</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1209719552</date>
+<is_deleted>No</is_deleted>
+<body>How can i point Jajuk to my music collection on an AFP network volume/share ?
+It's strange that i can't browse the network in the OS X version and that i couldn't find this in the FAQ.
+
+thanks,
+Kris</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4939440</url>
+<msg_id>4939440</msg_id>
+<poster_user>thesunno</poster_user>
+<poster_name>The Sunno</poster_name>
+<subject>Exporting &#38; importing collections</subject>
+<thread_id>2025460</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1209670171</date>
+<is_deleted>No</is_deleted>
+<body>Hi, i'm bought a new computer, so i want to move the database to the new equip, so, i tried copying the .jajuk folder and it doesn't work, i've been looking in google and found nothing, anyone can help? thx in advance, greentings =)</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4914730</url>
+<msg_id>4914730</msg_id>
+<poster_user>pandaen</poster_user>
+<poster_name>pandaen</poster_name>
+<subject>RE: How do I add music to jajuk??? </subject>
+<thread_id>2012092</thread_id>
+<is_followup_to>4914725</is_followup_to>
+<has_followups>0</has_followups>
+<date>1208596073</date>
+<is_deleted>No</is_deleted>
+<body>ahaaaaaaaaaaaaa!
+THANK you! ;)
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4914725</url>
+<msg_id>4914725</msg_id>
+<poster_user>fsck222</poster_user>
+<poster_name>fsck222</poster_name>
+<subject>RE: How do I add music to jajuk??? </subject>
+<thread_id>2012092</thread_id>
+<is_followup_to>4914714</is_followup_to>
+<has_followups>1</has_followups>
+<date>1208595885</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+Go in the Configuration panel, then in the Device view, and finally click on &#34;new&#34;.
+Cheers,
+
+--
+fsck222</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4914714</url>
+<msg_id>4914714</msg_id>
+<poster_user>pandaen</poster_user>
+<poster_name>pandaen</poster_name>
+<subject>How do I add music to jajuk??? </subject>
+<thread_id>2012092</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1208595434</date>
+<is_deleted>No</is_deleted>
+<body>Hello!
+I have been searching in the howto and manuals to find the first step - how to add musik to the jajuk player? I can't figure it out and if its in the manuals it's hard to find.. Can someone PLEASE help me? =)
+</body>
+</forum_post>
+</forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4890429</url>
+<msg_id>4890429</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>yep 1.5</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4890140</is_followup_to>
+<has_followups>0</has_followups>
+<date>1207607552</date>
+<is_deleted>No</is_deleted>
+<body>Yeah, the version that worked with gnome-schedule was 1.5.
+
+I wonder which of the two programs is making it work because gnome-schedule is just a gui(as far as I know), in the inside it uses cron which can be set up without the gui with commands through a terminal. I haven't tried it yet because I have to learn cron first.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4890150</url>
+<msg_id>4890150</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4866324</is_followup_to>
+<has_followups>0</has_followups>
+<date>1207599907</date>
+<is_deleted>No</is_deleted>
+<body>Please follow ticket : http://trac.jajuk.info/ticket/1032</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4890140</url>
+<msg_id>4890140</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4866324</is_followup_to>
+<has_followups>1</has_followups>
+<date>1207599762</date>
+<is_deleted>No</is_deleted>
+<body>Thanks for testing. Should I suppose that when launching successfully jajuk from gnome-schedule, you used jajuk 1.5 ?
+
+We should test jajuk 1.6 under gnome (most devs use KDE over here). It's strange because Jajuk 1.6 simply uses Sun JRE 1.6 features...</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4887835</url>
+<msg_id>4887835</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: multiple instances of jajuk</subject>
+<thread_id>1986831</thread_id>
+<is_followup_to>4865659</is_followup_to>
+<has_followups>0</has_followups>
+<date>1207511281</date>
+<is_deleted>No</is_deleted>
+<body>This is not possible right now, could be done in the future (low priority) but please note that jajuk doesn't intent to bring professional sound mixing features.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4871378</url>
+<msg_id>4871378</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>RE: gnome-schedule or cron</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4870906</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206795773</date>
+<is_deleted>No</is_deleted>
+<body>jajuk_1.6dev_20080327-2_i386.deb didn't work properly, not even through gnome-schedule. I have the gui and the tray Icon, but the icon doesn't work at all.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4870906</url>
+<msg_id>4870906</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>gnome-schedule or cron</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4866324</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206766807</date>
+<is_deleted>No</is_deleted>
+<body>Jajuk worked again when my alarm script launched it, I use gnome-schedule in order to do use my script.
+
+I tried to run jajuk with this commands without success:
+jajuk
+jajuk &#38;
+sh alarma.sh
+DISPLAY=:0 /home/gaston/misDocumentos/bin/alarma.sh
+
+The weird thing is that everything works perfectly every time that gnome-schedule executes my script with this command:
+DISPLAY=:0 /home/gaston/misDocumentos/bin/alarma.sh
+
+
+
+I wrote a very simple script, this is it:
+
+#!/bin/bash
+
+declare -i volumen=0
+declare -i volumenImprimir=0
+
+setVolumen() {
+	amixer -q set Master $volumen
+	volumenImprimir=3*$volumen	
+	echo &#34;	volumen: $volumenImprimir %&#34;
+	sleep 2
+}
+
+setVolumen
+
+#Start player
+jajuk &#38;
+
+for j in 1 2 3 4 5 6 7
+do
+	echo &#34;			&#62;&#62;&#62; Ciclo $j &#60;&#60;&#60;&#34;
+	echo &#34;		### Comienza a aumentar el volumen###&#34;		
+	#Aumenta volumen
+	for i in 7 8 8
+	do		
+		volumen=$volumen+i		
+		setVolumen
+	done
+	
+	echo &#34;		### Comienza a disminuir el volumen###&#34;
+	#Disminuye volumen
+	for i in 8 8
+	do
+		volumen=$volumen-i		
+		setVolumen
+	done
+	#para empezar de cero y que no haya errores en el siguiente ciclo
+	volumen=0
+done
+
+echo &#34;Volumen final&#34;
+#Volumen final
+volumen=12
+setVolumen</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4870592</url>
+<msg_id>4870592</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4870585</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206746208</date>
+<is_deleted>No</is_deleted>
+<body>Just to be sure, the link to the image is:
+http://img339.imageshack.us/my.php?image=screenshot1ba0.png</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4870585</url>
+<msg_id>4870585</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4868996</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206746023</date>
+<is_deleted>No</is_deleted>
+<body>I tried it live and it didn't work very good, I had a gui this time. 
+
+I uninstalled and installed with this version: jajuk_1.6dev_20080327-2_i386.deb, it kind of worked, but still has problems.
+See this pic: [URL=http://img339.imageshack.us/my.php?image=screenshot1ba0.png][IMG]http://img339.imageshack.us/img339/6599/screenshot1ba0.th.png[/IMG][/URL]</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4868996</url>
+<msg_id>4868996</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4866324</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206696062</date>
+<is_deleted>No</is_deleted>
+<body>I suspect another issue with JDIC API (manages the tray), could you please try this 1.6 preview ?:
+
+and BTW, sorry but we published another build of 1.5.1 (1.5.1b2 because 1.5.1 first build contained a critical issue), check the download page.
+
+Try it live now in a console or web browser: 
+ $ javaws http://jajuk.info:8001/jajuk-trunk-test/app
+(Check out: http://jajuk.info/index.php/Try_Jajuk_Live for details)
+
+Multi-platform installer: jajuk-java-installer-1.6dev_20080327.jar
+ URL: http://repository.jajuk.info/jajuk/testing/trunk/jajuk-java-installer-1.6dev_20080327.jar
+ ASC: 875121a8af7b72757e142d673de40f3e0dd597a7
+ MD5: 01b32a9e9bd4601411cef1d3e0719a25
+
+Windows installer: jajuk-1.6dev_20080327-win32.exe
+ URL: http://repository.jajuk.info/jajuk/testing/trunk/jajuk-1.6dev_20080327-win32.exe
+ ASC: f5ebf0603034343aa5ee33b89bd944f406194d01
+ MD5: 930b722824f19ddacc3a676c92c284f5
+
+RPM package: jajuk-1.6dev_20080327.noarch.rpm        
+ URL: http://repository.jajuk.info/jajuk/testing/trunk/jajuk-1.6dev_20080327.noarch.rpm
+ ASC: 694d534ce3e88609af3ef878ac83b9fa98c1a877  
+ MD5: 82af20beedaaeb1cfba9fa8613e6fd71
+
+Debian package: jajuk_1.6dev_20080327-2_i386.deb (alien built from jajuk-1.6dev_20080327.noarch.rpm)
+ URL: http://repository.jajuk.info/jajuk/testing/trunk/jajuk_1.6dev_20080327-2_i386.deb
+ ASC: 16c49c422a6b6537a574b8f8538ab0ab10f7a568  
+ MD5: 4e5a7493de023f065ccfb4b31b21519a
+
+MAC pakage: jajuk-macos-1.6dev_20080327.zip 
+ URL: http://repository.jajuk.info/jajuk/testing/trunk/jajuk-macos-1.6dev_20080327.zip
+ ASC: bf05c0c567918a43872129fdee9905fae42cfd5a
+ MD5: 19fd9d78f27e474c85679ad2dcbe9d38
+
+Source: jajuk-sources-1.6dev_20080327.zip
+ URL: http://repository.jajuk.info/jajuk/testing/trunk/jajuk-sources-1.6dev_20080327.zip
+ ASC: 6eeb287cf9ba71079bd3652775369de05c121441
+ MD5: 4b71ffc8d57cd61f3847681fd1bc26dc
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4868397</url>
+<msg_id>4868397</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4867133</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206666283</date>
+<is_deleted>No</is_deleted>
+<body>I restarted xserver by pressing ctrl+ alt + backspace and the error is back. I uninstalled jajuk and installed the latest release, jajuk_1.5.1-2_i386.deb, but no luck.</body>
+</forum_post>
+</forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4867133</url>
+<msg_id>4867133</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4867070</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206624671</date>
+<is_deleted>No</is_deleted>
+<body>Well... not sure to understand. Note that we released jajuk 1.5.1 this morning but your install cannot be automatically updated as you use debian packages (it can be using webstart version)...
+
+Note that jajuk already integrates a powerful alarm clock (Tools-&#62; alarm)</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4867070</url>
+<msg_id>4867070</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4866739</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206623050</date>
+<is_deleted>No</is_deleted>
+<body>Yeah, I know that java has trouble drawing windows in compiz. Thats why I only use metacity. I made a script that launches jajuk in the mornings, just like an alarm. I though that it wouldn't work because I had this problem, surprisingly it did. I checked my pc to see if I had gui, and I saw a message that said &#34;Jajuk detected a major update release and has been upgraded&#34; or something  like that. Now, the problem is gone.
+
+Is weird because as I said, last night I tried to uninstall and install it again by downloading again the .deb, which is supposed to be updated already, from the site.
+
+cheers ;-D</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4866739</url>
+<msg_id>4866739</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>4866324</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206611177</date>
+<is_deleted>No</is_deleted>
+<body>Well, the best finds I found is http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6315847
+
+I have an idea : do you use Beryl or others 3D desktop ? it is known to cause most java programs to fail.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4866324</url>
+<msg_id>4866324</msg_id>
+<poster_user>gastons</poster_user>
+<poster_name>Gaston Ivan Silva</poster_name>
+<subject>Jajuk crashes while launching graphics</subject>
+<thread_id>1987160</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206587920</date>
+<is_deleted>No</is_deleted>
+<body>The splash screen shows up and mplayer starts playing the last track I was listening too, but after trying to launch the graphical interface it crashes. I ran it from the terminal and this was the output:
+
+Java 1.6 detected (in default path)
+ 
+java -Djava.library.path=/usr/lib/jajuk/ -client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar -notest
+2008/03/26 21:14:00 [INFO] ******************JAJUK******************  [main] (Log.java:142) 
+2008/03/26 21:14:00 [INFO] Version: 1.5b3  [main] (Log.java:142) 
+Warning: Cannot convert string &#34;-b&#38;h-luxi sans-medium-r-normal--*-140-*-*-p-*-iso8859-1&#34; to type FontStruct
+Warning: Cannot convert string &#34;-misc-ar pl shanheisun uni-medium-r-normal--*-*-*-*-p-*-iso10646-1&#34; to type FontStruct
+2008/03/26 21:14:01 [ERROR] 45) Collection file parsing error: /home/gaston/.jajuk/collection_exit.xml  [main] (Log.java:230) 
+org.jajuk.util.error.JajukException: Collection file parsing error
+        at org.jajuk.Main.loadCollection(Main.java:1036)
+        at org.jajuk.Main.main(Main.java:366)
+Error: Couldn't find per display information
+
+
+I tried to google the errors, but the related results were in french and since I don't speak it, I couldn't go to far. I also tried to uninstall and install again jajuk, but the errors keep appearing. I found this [URL=&#34;http://www.faqs.org/faqs/motif-faq/part9/section-42.html&#34;]link[/URL], but I'm not sure how could I use that info.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4865659</url>
+<msg_id>4865659</msg_id>
+<poster_user>desderry</poster_user>
+<poster_name>desderry</poster_name>
+<subject>multiple instances of jajuk</subject>
+<thread_id>1986831</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206559127</date>
+<is_deleted>No</is_deleted>
+<body>how come this is not possible?
+
+i am wanting jajuk to use two sound cards and play different music on both. Is this hard to acheive?</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4862111</url>
+<msg_id>4862111</msg_id>
+<poster_user>skyreacher</poster_user>
+<poster_name>Gerhard Dietrichsteiner</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4861392</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206434883</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+
+as Bertrand already stated: allow outgoing TCP connections to port 80 for java.exe and/or javaw.exe. I don't know NOD32, but doesn't it show you which executable have been blocked?
+
+Typically you can find your java.exe in C:/Program Files/Java/jre****/bin, but as Java can be installed in any folder, it might also be located somewhere else on your machine.
+
+Let us know if you encounter further problems...
+bye,
+sky</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4861434</url>
+<msg_id>4861434</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4860532</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206394709</date>
+<is_deleted>No</is_deleted>
+<body>I forget : you may need to allow 'javaws' too if you use the web start version (from http://jajuk.info/index.php/Try_Jajuk_Live ).</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4861433</url>
+<msg_id>4861433</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4860532</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206394637</date>
+<is_deleted>No</is_deleted>
+<body>The only exe that Jajuk uses is 'java.exe' or 'javaw.exe' in the JRE install path. Perhaps should you allow port 80 to them but in this case, of course, you can't select which java program has access or not to port 80.
+HIH</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4861392</url>
+<msg_id>4861392</msg_id>
+<poster_user>samrang</poster_user>
+<poster_name>B B</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4860532</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206392994</date>
+<is_deleted>No</is_deleted>
+<body>Let's start again.  
+
+Of course JaJuk can't do anything about firewalls.  Off course NOD32 is a software firewall. And of course I have to configure my firewall to give JaJuk access to port 80. I said this in my original post.
+
+So back to my original question.
+
+Generally one gives port access to the controlling exec file, but presumably because of the way that JaJuk is built, there isn't a Jajuk.exe file in the Jajuk folder.
+
+So what do I have to give access to, because I can't give access to a folder.
+
+There are an awfull lot of NOD32 users out there so I'm just hoping one of them will spot this post, and save me some time by telling me how they fixed this.
+
+
+BB</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4861315</url>
+<msg_id>4861315</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4861039</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206390173</date>
+<is_deleted>No</is_deleted>
+<body>Jajuk cannot do anything about firewalls. If the firewall is hardware, ask your administrator to allow port 80. 
+If your firewall is software (seems to be), parameter it to let jajuk use port 80 using its graphical interface (I can't help you on this, I don't know this program).
+
+If you use a proxy server, parameter it in jajuk in Preference view / Network tab.
+
+Hope It Helps...</body>
+</forum_post>
+</forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4861039</url>
+<msg_id>4861039</msg_id>
+<poster_user>samrang</poster_user>
+<poster_name>B B</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4860532</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206379216</date>
+<is_deleted>No</is_deleted>
+<body>Exactly, I'm trying to see things like - similar artists, lyrics, covers etc, which need internet access, but the firewall is blocking it and there doesn't seem to be anything like an exec file in the JaJuk program folder that I can tell the firewall to open ports for.
+
+BB</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4860758</url>
+<msg_id>4860758</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>4860532</is_followup_to>
+<has_followups>0</has_followups>
+<date>1206369910</date>
+<is_deleted>No</is_deleted>
+<body>Sorry, I don't see what you mean. What do you want to do exactly ? Jajuk doesn't require Web access except for few features like covers download.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4860532</url>
+<msg_id>4860532</msg_id>
+<poster_user>samrang</poster_user>
+<poster_name>B B</poster_name>
+<subject>Firewall NOD32</subject>
+<thread_id>1984383</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1206362632</date>
+<is_deleted>No</is_deleted>
+<body>Sorry to be a noob, but I can't seem to give JaJuk access through the firewall (NOD 32).  I assume it uses port 80, but there doesn't seem to be any exec file to point NOD at.  &#194;&#191;Any clues?  BB</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4800140</url>
+<msg_id>4800140</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: how to add song length to playlist editor</subject>
+<thread_id>1950220</thread_id>
+<is_followup_to>4798441</is_followup_to>
+<has_followups>0</has_followups>
+<date>1203970369</date>
+<is_deleted>No</is_deleted>
+<body>See also http://wiki.jajuk.info/index.php/Using_tables_in_views</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4800136</url>
+<msg_id>4800136</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: how to add song length to playlist editor</subject>
+<thread_id>1950220</thread_id>
+<is_followup_to>4798441</is_followup_to>
+<has_followups>0</has_followups>
+<date>1203970303</date>
+<is_deleted>No</is_deleted>
+<body>Simple: just select the &#34;Duration&#34; column by clicking in the right/upper side of the table icon.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4800125</url>
+<msg_id>4800125</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Access is denied in Vista: ...</subject>
+<thread_id>1950823</thread_id>
+<is_followup_to>4799782</is_followup_to>
+<has_followups>0</has_followups>
+<date>1203970014</date>
+<is_deleted>No</is_deleted>
+<body>Thanks for the feedback, please make sure to update the FAQ wiki page is needed.
+
+PS: If vista sucks, be free, try Ubuntu !</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4799782</url>
+<msg_id>4799782</msg_id>
+<poster_user>azizlight</poster_user>
+<poster_name>AzizLight</poster_name>
+<subject>RE: Access is denied in Vista: ...</subject>
+<thread_id>1950823</thread_id>
+<is_followup_to>4799666</is_followup_to>
+<has_followups>1</has_followups>
+<date>1203959099</date>
+<is_deleted>No</is_deleted>
+<body>Ok I don't know how to edit my previouse post so I created a reply. For the stupid noobs like me: if you want to run the launcher as administrator: right click the file and click Run as Administrator. I am sorry to be an idiot. The thing is, it worked perfectely, thank you.
+
+PS: Vista Sucks!!</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4799666</url>
+<msg_id>4799666</msg_id>
+<poster_user>azizlight</poster_user>
+<poster_name>AzizLight</poster_name>
+<subject>Access is denied in Vista: ...</subject>
+<thread_id>1950823</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1203956168</date>
+<is_deleted>No</is_deleted>
+<body>Hi everybody, 
+I read the FAQ and I searched the forum and I may already have found the answer to my problem. However, I got a slightly different error than the one mentionned on the site, so I thought I should post it, here it is:
+java.io.FileNotFoundException: C:\Program Files\Jajuk\jajuk.bat (Access is denied).
+I tried both jajuk-java-installer-1.5b3.jar and jajuk-1.5b3-win32.exe and everytime I got the same error.
+I am on a Vista Home Premium 32bit. The weird thing is that my profile should have full control, so that should not happen. I found a message on this forum (and in the FAQ) that said that I should try to run the launcher as administrator; the problem is I have no clue how to do that. I know how to run the executable of an installed program as administrator, but with this I don't know how to do it...
+Oh and I tried the Try Jajuk Live version and it worked fine, and the weird thing is that it looks like it's intalled on my pc even though I didn't install anything (everytime I got the error I quit the installation).
+Anyway, for now can somebody tell me how to run the launcher as administrator so that I see if it works please?
+Thx in advance.
+
+
+PS: the Try Jajuk Live Version worked as I said, and Jajuk is AWESOME, good job! and thx for this program.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=4798441</url>
+<msg_id>4798441</msg_id>
+<poster_user>metaperl</poster_user>
+<poster_name>Terrence M. Brannon</poster_name>
+<subject>how to add song length to playlist editor?</subject>
+<thread_id>1950220</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1203904019</date>
+<is_deleted>No</is_deleted>
+<body>1 - thank you for writing an excellent player. it basically works just as nicely as amarok, but does not crash nearly as much. not to mention it runs on many more platforms.
+
+2 - I would like to be able to see the song length for each track in the playlist editor.
+</body>
+</forum_post>
+<forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4726347</url>
 <msg_id>4726347</msg_id>
 <poster_user>fsck222</poster_user>
@@ -3061,6 +4066,7 @@ ed805c623406018b276899b16d29100d </data>
 Thanks in advance.
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4725839</url>
 <msg_id>4725839</msg_id>
@@ -3199,7 +4205,6 @@ Regards</body>
 <is_deleted>No</is_deleted>
 <body>Is there a way to easily delete duplicates while browsing a 100,000+ library of songs?  I tried the Delete key on the keyboard, but nothing happened, and I can't see any other way to do it :(</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4664574</url>
 <msg_id>4664574</msg_id>
@@ -3215,6 +4220,7 @@ Regards</body>
 
 To close the thread, I set a [FIXED] in the subject.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4664289</url>
 <msg_id>4664289</msg_id>
@@ -3377,7 +4383,6 @@ The problem disappeared since I upgraded my station to Ubuntu &#34;Gutsy Gibbon&
 
 Bye !</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4589760</url>
 <msg_id>4589760</msg_id>
@@ -3391,6 +4396,7 @@ Bye !</body>
 <is_deleted>No</is_deleted>
 <body>Thanks for the reply, it has been added into the FAQ</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4588618</url>
 <msg_id>4588618</msg_id>
@@ -3516,7 +4522,6 @@ Thanks</body>
 <is_deleted>No</is_deleted>
 <body>Well got the solution or say workaround, but a question I have. We set JAVA_HOME and PATH environment variables which I believe are being used by Jajuk. If we do have both 32 and 64 bit version what should be values in these variables ?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4546608</url>
 <msg_id>4546608</msg_id>
@@ -3536,6 +4541,7 @@ http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4802695
 
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4546505</url>
 <msg_id>4546505</msg_id>
@@ -3758,7 +4764,6 @@ cheers
 - if continue mode is enabled (in modes menu or in command bar), new tracks will be launched when the seelction is played
 - if continue mode is disable, jajuk stops after at the end of the selection</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4526000</url>
 <msg_id>4526000</msg_id>
@@ -3777,6 +4782,7 @@ Cheers,
 --
 fsck222</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4521190</url>
 <msg_id>4521190</msg_id>
@@ -3923,7 +4929,6 @@ http://www.tradebit.com/filedetail.php/2094583</body>
 <is_deleted>No</is_deleted>
 <body>There are no way, Jajuk stores covers in directory that contain the music, among others reasons to make them exploitable by others programs. Is this problematic for you ?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4516524</url>
 <msg_id>4516524</msg_id>
@@ -3941,6 +4946,7 @@ Does anyone know if it is possible to change the default location where Jajuk st
 
 Thanks!</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4515535</url>
 <msg_id>4515535</msg_id>
@@ -4137,7 +5143,6 @@ Thanks</body>
 
 Cheers!</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4498943</url>
 <msg_id>4498943</msg_id>
@@ -4153,6 +5158,7 @@ Cheers!</body>
 
 The whole reason behind this project for me is that I'm planning to leave my entire music library (140GB) on this computer so that people at my house parties can choose their own music and play it over my multi-room speakers (connected to this PC's sound card).</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4498748</url>
 <msg_id>4498748</msg_id>
@@ -4358,7 +5364,6 @@ What I like(want ;-) is :
 It seems that my jajuk(1.3.11) is only using the internet...
 (and the ones he saved from the internet....)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4485594</url>
 <msg_id>4485594</msg_id>
@@ -4383,6 +5388,7 @@ My second request is not as important, but would still be nice.  I would like an
 Thank you for your consideration!
 :-)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4469036</url>
 <msg_id>4469036</msg_id>
@@ -4530,7 +5536,6 @@ Sebastian</body>
 
 - About the Player perspective: in 1.4, you can add / rmeove any view in any perspective so it will be much more flexible. By default, this perspective displays 1 cover view, 1 another as a tab (we use 2 cover views to diplay at the same time artist picture and album cover), lyrics, animation and as you suggerate a playlist editor view to show the queue.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4396771</url>
 <msg_id>4396771</msg_id>
@@ -4563,6 +5568,7 @@ Maybe there is place for a playlist editor, so that you can administrate and mix
 Thx for your good work !
 Sebastian</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4395860</url>
 <msg_id>4395860</msg_id>
@@ -4716,7 +5722,6 @@ Morfeus</body>
 <is_deleted>No</is_deleted>
 <body>Right but 1.3.9 nor needs Mozilla/Iceape</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4381113</url>
 <msg_id>4381113</msg_id>
@@ -4734,6 +5739,7 @@ Under Jajuk 1.4 should not need mozilla/iceape.
 
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4380864</url>
 <msg_id>4380864</msg_id>
@@ -4976,7 +5982,6 @@ Cheers,
 fsck222
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4379753</url>
 <msg_id>4379753</msg_id>
@@ -5004,6 +6009,7 @@ I took a look into WikipediaView (current version from trunk), but didn't see wh
 In the resource files, there is no key &#34;Wikipedia&#34;, too. There are keys like &#34;WikipediaView.0&#34; etc - not all of them have been translated to german so far, but this shouldn't cause problems.
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4379370</url>
 <msg_id>4379370</msg_id>
@@ -5295,7 +6301,6 @@ anyone, please do provide a link to that package, so that i participate in jajuk
 <is_deleted>No</is_deleted>
 <body>Please wait for upcoming 1.3.8 (probably this we or next week), it contains several fixes for mplayer under OS X. Please provide feedback then if possible.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4333837</url>
 <msg_id>4333837</msg_id>
@@ -5314,6 +6319,7 @@ Actually we may skip DCOP and implement directly D-Bus depending of the complexi
 See also http://trac.jajuk.info/ticket/439
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4333811</url>
 <msg_id>4333811</msg_id>
@@ -5509,7 +6515,6 @@ Java Result: 1
 <is_deleted>No</is_deleted>
 <body>No, it can't work as jajuk expect the database to be in ~/.jajuk . If under Unix-like system, a symlink should work as well...</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4311108</url>
 <msg_id>4311108</msg_id>
@@ -5530,6 +6535,7 @@ then I'll wait for the next release ;-)
 Have a nice day,
 Necromancer</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4297211</url>
 <msg_id>4297211</msg_id>
@@ -5663,7 +6669,6 @@ john</body>
 <body>We plan to implement this in 1.4
 Follow this ticket: https://trac.jajuk.info/ticket/252</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4255483</url>
 <msg_id>4255483</msg_id>
@@ -5682,6 +6687,7 @@ Ideally, I want most applications to use the first soundcard, and have all music
 
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4255047</url>
 <msg_id>4255047</msg_id>
@@ -5851,7 +6857,6 @@ skiwi
 
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4229174</url>
 <msg_id>4229174</msg_id>
@@ -5865,6 +6870,7 @@ skiwi
 <is_deleted>No</is_deleted>
 <body>Hello, i'd like to know where do i introduce the path. You show a code but i don't understand where, or, in witch file must i introduce it. Thank you for a reply</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4223763</url>
 <msg_id>4223763</msg_id>
@@ -6020,7 +7026,6 @@ only the album &#34;MTV - Unplugged&#34; is not shown in the catalog view</body>
 I'm using this checkbox,
 but I'm still missing some albums in this view.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4214546</url>
 <msg_id>4214546</msg_id>
@@ -6036,6 +7041,7 @@ but I'm still missing some albums in this view.</body>
 o Go to Physical, logical or Player perspective
 o Browse the covers from the Cover view and select it as a default by clicking on the &#34;Default&#34; button. If it is a remote cover, it will be downloaded and saved on the disk prior being selected as a default.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4214541</url>
 <msg_id>4214541</msg_id>
@@ -6187,7 +7193,6 @@ thx Manuel</body>
 
 Thanks</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4186655</url>
 <msg_id>4186655</msg_id>
@@ -6203,6 +7208,7 @@ Thanks</body>
 
 Follow this feature on the new tracking system at http://jajuk.info/projects/jajuk/ticket/425#preview</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4183447</url>
 <msg_id>4183447</msg_id>
@@ -6488,7 +7494,6 @@ run -notaskbar -notest
 so I send a empty $myNativeLibs with beryl and it works :)
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4154525</url>
 <msg_id>4154525</msg_id>
@@ -6502,6 +7507,7 @@ so I send a empty $myNativeLibs with beryl and it works :)
 <is_deleted>No</is_deleted>
 <body>OK we'll try to support this mplayer release for 1.4. Would you be ready to perform some little tests when required as we haven't any OSX to check our developements ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4150148</url>
 <msg_id>4150148</msg_id>
@@ -6643,7 +7649,6 @@ ps. sorry for translation but my os in italian
 
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4123414</url>
 <msg_id>4123414</msg_id>
@@ -6674,6 +7679,7 @@ ps. sorry for translation but my os in italian
 2007/01/26 12:08:00 [INFO] Version: 1.3.6  [main] (Log.java:120) 
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4123385</url>
 <msg_id>4123385</msg_id>
@@ -6879,7 +7885,6 @@ Ed
 <is_deleted>No</is_deleted>
 <body>Another obverstaion which I think should be very useful: the pause function works! But pause followed by a stop stops it in the player (that is player shows it as if its stopped) but in reality, the spawned mplayer process is still running (paused i suppose) in the background and shows up in ps listings.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4113093</url>
 <msg_id>4113093</msg_id>
@@ -6895,6 +7900,7 @@ Ed
 when i try to open jajuk i see the loading bar and the process &#34;javaw&#34; is started in the task manager but then the windows disappears and &#34;javaw&#34; is also closed
 im using WIN xp sp2</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4112390</url>
 <msg_id>4112390</msg_id>
@@ -7015,7 +8021,6 @@ If its already installed, check that the mplayer command exists in one of the di
 <is_deleted>No</is_deleted>
 <body>I'm having a weird problem.  I have multiple artist in which the album title is greatest hits. When I go into the &#34;catalog perspective&#34; the program is lumping all the artist into one album. Therefore I can't see the correct album art for the correct album.  Is there a way to disable this feature and have it show the albums based on Artist+album title.  </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4110751</url>
 <msg_id>4110751</msg_id>
@@ -7036,6 +8041,7 @@ any advice or comments would be crucial
 and rewarded valuably :)
 -greenisagoodcolor ,  wa</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4109501</url>
 <msg_id>4109501</msg_id>
@@ -7169,7 +8175,6 @@ Could you please give me the output of 'mplayer --version' ?</body>
 <is_deleted>No</is_deleted>
 <body>On a related note, pressing the stop button in jajuk doesnt stop the song either. The player buttons get greyed out though suggesting that as per the player, the playing has stopped. (I am guessing its some problem with jajuk not being able to control mplayer?)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4107968</url>
 <msg_id>4107968</msg_id>
@@ -7237,6 +8242,7 @@ kbg@njiggs ~/softies/jaluk/bin/ _
 
 So I am sure that it is not the case of cross fade that you have mentioned. btw, my friend who also tried out jajuk on my recommendation on his 32 bit Ubuntu 6.06 did not face the above problem. So I am _guessing_ it might have something to do with mine being a 64 bit machine..?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4107504</url>
 <msg_id>4107504</msg_id>
@@ -7417,7 +8423,6 @@ Klees</body>
 <body>Add the new jre in your path and save it in your .bashrc for ie.
 export PATH=&#60;new jre dir&#62;/bin:$PATH</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4094946</url>
 <msg_id>4094946</msg_id>
@@ -7432,6 +8437,7 @@ export PATH=&#60;new jre dir&#62;/bin:$PATH</body>
 <body>java version &#34;1.4.2&#34;
 Strange I just installed the last version (1.5.0). How could I switch to this version ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=4094705</url>
 <msg_id>4094705</msg_id>
@@ -7676,7 +8682,6 @@ Basicaly one window to pick songs and one window to see the playlist.
 Hope it's not to confusing :)
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3921365</url>
 <msg_id>3921365</msg_id>
@@ -7691,6 +8696,7 @@ Hope it's not to confusing :)
 <body>Hi,
 Flac should be supported either in upcoming 1.3 (we are trying to integrate mplayer that plays flac into jajuk) or if it fails by the end of the year with the new JavaZoom API.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3919538</url>
 <msg_id>3919538</msg_id>
@@ -7843,7 +8849,6 @@ Anyway, jajuk would be a lot more usefull if you 'd add a button next to the pla
 
 I checked the log in my .jajuk folder, but nothing noted there. I expected a stack-trace, but it seems it gets eaten somewhere.  When pushing the next button, the button's backgroundcolor stays darkblue, which seem to indicate that indeed an exception is thrown so the button can't reset the color after pushing it down.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3904713</url>
 <msg_id>3904713</msg_id>
@@ -7859,6 +8864,7 @@ I checked the log in my .jajuk folder, but nothing noted there. I expected a sta
 
 Thanks for feedback.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3904625</url>
 <msg_id>3904625</msg_id>
@@ -7993,7 +8999,6 @@ Forcing a refresh doesn't help (by adding a new column or undocking etc)
 
 I didn not have this in 1.0.x</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3731039</url>
 <msg_id>3731039</msg_id>
@@ -8007,6 +9012,7 @@ I didn not have this in 1.0.x</body>
 <is_deleted>No</is_deleted>
 <body>Note that this issue was fixed with 1.1.6</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3569389</url>
 <msg_id>3569389</msg_id>
@@ -8224,7 +9230,6 @@ Log file dump:
 
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3455593</url>
 <msg_id>3455593</msg_id>
@@ -8245,6 +9250,7 @@ Please:
 
 Thanks.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3455574</url>
 <msg_id>3455574</msg_id>
@@ -8390,7 +9396,6 @@ http://forum.ubuntu-fr.org/viewtopic.php?id=12019 (french)</body>
 <body>Even after some searches on the web, I can't figure out how to achieve it. It may also depends on the distribution. This link may help: http://www.google.fr/url?sa=t&#38;ct=res&#38;cd=1&#38;url=http%3A//alsa.opensrc.org/index.php%3Fpage%3DDmix%2BKde%2B-%2Barts%252C%2BESD%2Band%2BSDL%2Bquick%2Band%2Bdirty%2BHOWTO&#38;ei=JmUkQ-GnCcSCRZCZqdsH
 Perhaps starting artsd with right parameters should work or you will get 2 processes ? I don't know. Another way can be to change the /usr/bin/jajuk shell as &#34;artsd &#60;options&#62; java ... jajuk. If you or another user find how to configure artsd at startup, please let us know so we will update the FAQ.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3333253</url>
 <msg_id>3333253</msg_id>
@@ -8410,6 +9415,7 @@ Please excuse my english because I'm a french guy ;o)
 
 Ragerds and thanx for your help.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282474</url>
 <msg_id>3282474</msg_id>
@@ -8562,7 +9568,6 @@ thanks for the help
 <is_deleted>No</is_deleted>
 <body>No, it's not related with arts (it works for me with or without artsd) but it's related to the &#34;SunAwtRobot&#34;  java process that uses audio line. Actually, I never understood where this process comes from but it's created by the jajuk main java process and appears only under Linux. For me, it occurs seldomly and it could be releated with tray or look and feel. Can you try to set Metal look and feel and restart jajuk ? Do you systematicly get the SunAwtRobot process? (I get it only very few times). Note you can kill the SunAwtRobot process, it should free audio line. please give me feed back about it.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280223</url>
 <msg_id>3280223</msg_id>
@@ -8591,6 +9596,7 @@ cworley   7688  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.libr
 
 ...repeats a number of times</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280025</url>
 <msg_id>3280025</msg_id>
@@ -8759,7 +9765,6 @@ chris </body>
 <is_deleted>No</is_deleted>
 <body>I always have Java, I installed JRE 1.5, so I don't understand, why it doesn't work</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3240623</url>
 <msg_id>3240623</msg_id>
@@ -8776,6 +9781,7 @@ Please check http://jajuk.sourceforge.net/installation.html
 and check that your jre is OK by typing java --version'
 If you don't manage to make it work, please open a support request at https://sourceforge.net/tracker/?group_id=91412&#38;atid=597087</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3240412</url>
 <msg_id>3240412</msg_id>
@@ -8797,7 +9803,7 @@ Thx</body>
 <url>https://sourceforge.net/forum/message.php?msg_id=3020452</url>
 <msg_id>3020452</msg_id>
 <poster_user>pjlehtim</poster_user>
-<poster_name>Pasi Lehtim&#228;ki</poster_name>
+<poster_name>Pasi Lehtim&#195;&#164;ki</poster_name>
 <subject>RE: Errors running under linux Suse 9.2</subject>
 <thread_id>1221369</thread_id>
 <is_followup_to>2970119</is_followup_to>
@@ -8828,7 +9834,7 @@ sh jajuk.sh , not ./jajuk.sh. Moreover, 0.3.3 Jajuk release should create menu s
 <url>https://sourceforge.net/forum/message.php?msg_id=3011756</url>
 <msg_id>3011756</msg_id>
 <poster_user>pjlehtim</poster_user>
-<poster_name>Pasi Lehtim&#228;ki</poster_name>
+<poster_name>Pasi Lehtim&#195;&#164;ki</poster_name>
 <subject>RE: Errors running under linux Suse 9.2</subject>
 <thread_id>1221369</thread_id>
 <is_followup_to>2970119</is_followup_to>
@@ -8925,7 +9931,6 @@ If yes, then do you have some ideas on plugging in MP3 player administration fea
 If No, then do you have some ideas on plugging in MP3 player administration features...
 I ask as I have a Nomad II and would like to interface with the linux nomad drivers from within your application as an option... </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2973545</url>
 <msg_id>2973545</msg_id>
@@ -8953,6 +9958,7 @@ Please tell me if you solved it or not, I will add a doc in the installation gui
 
 Bertrand.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2973386</url>
 <msg_id>2973386</msg_id>
@@ -9140,7 +10146,6 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>Thanks for the info. Please read the support [ 1089983 ] Jajuk-0.3.1.exe infected by Trojan Virus.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2918723</url>
 <msg_id>2918723</msg_id>
@@ -9154,6 +10159,7 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>I downloaded the latest windows exe (0.3.1) from two different servers, and AVG found the same virus in both. PSW.Banker.3.H</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902769</url>
 <msg_id>2902769</msg_id>
@@ -9323,7 +10329,6 @@ cu</body>
 <is_deleted>No</is_deleted>
 <body>also... parsing of the mp3 stream (decomprimising it to normal audio) should also happen in the buffer stream</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840196</url>
 <msg_id>2840196</msg_id>
@@ -9342,6 +10347,7 @@ There is a RPM plugin for Maven at maven-plugins.sf.net
 But you might need to really mavenize Jajuk.
 Or just drop everything in the binary distribution directory (see dist plugin). I 'll bet the plugin just gets his dist from there.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840185</url>
 <msg_id>2840185</msg_id>
@@ -9496,7 +10502,6 @@ Currently I am looking at IzPack too.
 I 'd love to collaborate with you guys in order to exchange trips and tricks for maven/IzPack etc.
 For example: is anyone working on a IzPack plugin for maven?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2814642</url>
 <msg_id>2814642</msg_id>
@@ -9510,6 +10515,7 @@ For example: is anyone working on a IzPack plugin for maven?</body>
 <is_deleted>No</is_deleted>
 <body>Right, the tag editions are planned for 0.4 (probably for the end of november). We also planned to provide advanced auto-retagging features using CDDB and custom properties. </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2814348</url>
 <msg_id>2814348</msg_id>
@@ -11701,6 +12707,54 @@ User builds a playlist using drag and drop jajuk features, then you save the pla
 <email>selectus@users.sourceforge.net</email>
 </user>
 <user>
+<username>kvdv999</username>
+<publicname>Kris</publicname>
+<userid>2077423</userid>
+<email>kvdv999@users.sourceforge.net</email>
+</user>
+<user>
+<username>thesunno</username>
+<publicname>The Sunno</publicname>
+<userid>1825694</userid>
+<email>thesunno@users.sourceforge.net</email>
+</user>
+<user>
+<username>pandaen</username>
+<publicname>pandaen</publicname>
+<userid>2067145</userid>
+<email>pandaen@users.sourceforge.net</email>
+</user>
+<user>
+<username>gastons</username>
+<publicname>Gaston Ivan Silva</publicname>
+<userid>2047000</userid>
+<email>gastons@users.sourceforge.net</email>
+</user>
+<user>
+<username>desderry</username>
+<publicname>desderry</publicname>
+<userid>1713213</userid>
+<email>desderry@users.sourceforge.net</email>
+</user>
+<user>
+<username>samrang</username>
+<publicname>B B</publicname>
+<userid>2042013</userid>
+<email>samrang@users.sourceforge.net</email>
+</user>
+<user>
+<username>azizlight</username>
+<publicname>AzizLight</publicname>
+<userid>2019133</userid>
+<email>azizlight@users.sourceforge.net</email>
+</user>
+<user>
+<username>metaperl</username>
+<publicname>Terrence M. Brannon</publicname>
+<userid>107578</userid>
+<email>metaperl@users.sourceforge.net</email>
+</user>
+<user>
 <username>maxodyne</username>
 <publicname>Max Rosan</publicname>
 <userid>1982650</userid>
@@ -11893,12 +12947,6 @@ User builds a playlist using drag and drop jajuk features, then you save the pla
 <email>mistevens@users.sourceforge.net</email>
 </user>
 <user>
-<username>metaperl</username>
-<publicname>Terrence M. Brannon</publicname>
-<userid>107578</userid>
-<email>metaperl@users.sourceforge.net</email>
-</user>
-<user>
 <username>oc2pus</username>
 <publicname>oc2pus</publicname>
 <userid>1095826</userid>
@@ -11966,7 +13014,7 @@ User builds a playlist using drag and drop jajuk features, then you save the pla
 </user>
 <user>
 <username>pjlehtim</username>
-<publicname>Pasi Lehtim&#228;ki</publicname>
+<publicname>Pasi Lehtim&#195;&#164;ki</publicname>
 <userid>351706</userid>
 <email>pjlehtim@users.sourceforge.net</email>
 </user>
