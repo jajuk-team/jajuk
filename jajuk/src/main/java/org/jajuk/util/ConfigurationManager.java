@@ -295,6 +295,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
+    defaults.put(CONF_SLIMBAR_POSITION, "0,0"); 
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }
