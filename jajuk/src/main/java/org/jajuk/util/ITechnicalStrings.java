@@ -54,7 +54,7 @@ public interface ITechnicalStrings {
   /** Default playlist name */
   String DEFAULT_PLAYLIST_FILE = "playlist";
 
-  /** Max number of connection time out before stoping to look for covers */
+  /** Max number of connection time out before stopping to look for covers */
   int STOP_TO_SEARCH = 5;
 
   /** Listening port to check others jajuk sessions */
@@ -164,7 +164,7 @@ public interface ITechnicalStrings {
   // Jajuk version
   String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 
-  String JAJUK_CODENAME = "Summertime";
+  String JAJUK_CODENAME = "Firestarter";
 
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
@@ -203,7 +203,7 @@ public interface ITechnicalStrings {
   String FILE_LANGPACK_PART2 = ".properties";
 
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.6";
+  String TEST_VERSION = "1.7";
 
   // logs
   String FILE_LOGS = "jajuk.log";
