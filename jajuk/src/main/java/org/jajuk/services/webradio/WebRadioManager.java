@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.xml.parsers.SAXParser;
@@ -152,8 +153,8 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     bw.write("<" + XML_STREAMS + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
     // Manage each stream
     for (WebRadio radio : webradios) {
-      bw.write("\t<" + XML_STREAM + " " + XML_NAME + "='" + radio.getName() + "' " + XML_URL + "='"
-          + radio.getUrl() + "'/>\n");
+      bw.write("\t<" + XML_STREAM + " " + XML_NAME + "='" + Util.formatXML(radio.getName()) + "' "
+          + XML_URL + "='" + Util.formatXML(radio.getUrl()) + "'/>\n");
     }
     // close
     bw.write("</" + XML_STREAMS + ">\n");
@@ -200,7 +201,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    * @param sCriteria
    * @return
    */
-  public TreeSet<SearchResult> search(String sCriteria) {
+  public Set<SearchResult> search(String sCriteria) {
     synchronized (FileManager.getInstance().getLock()) {
       TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
       for (WebRadio radio : webradios) {
@@ -217,7 +218,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    * @return All webradios filled (copy)
    */
   @SuppressWarnings("unchecked")
-  public TreeSet<WebRadio> getWebRadios() {
+  public Set<WebRadio> getWebRadios() {
     return (TreeSet<WebRadio>) webradios.clone();
   }
 
