@@ -55,7 +55,7 @@ public class WebRadio implements Comparable<WebRadio> {
     if (getUrl() == null) {
       return -1;
     }
-    return name.compareTo((other).getName());
+    return name.compareToIgnoreCase((other).getName());
   }
 
   @Override
@@ -70,12 +70,5 @@ public class WebRadio implements Comparable<WebRadio> {
   public void setUrl(String url) {
     this.url = url;
   }
-
-  /**
-   * @return associated type, we always use mplayer for web radios
-   * 
-   * public Type getType() { return
-   * TypeManager.getInstance().getTypeByExtension(EXT_RADIO); }
-   */
 
 }
