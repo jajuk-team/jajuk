@@ -26,6 +26,8 @@
  */
 package ext;
 
+import com.sun.org.apache.xerces.internal.impl.RevalidationHandler;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -193,10 +195,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
 
     // center on screen
     setLocationRelativeTo(this);
-
-    // hide the panel for now...
-    setVisible(false);
-
+ 
   }
 
   /**
@@ -240,6 +239,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
    */
   public void setProgress(int value, String msg) {
     setProgress(value);
+    repaint();
 
     if (m_progressBarMessages && !m_progressBarPercent && msg != null) {
       m_progress.setString(msg);
