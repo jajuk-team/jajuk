@@ -1169,7 +1169,7 @@ public interface ITechnicalStrings {
 
   String CONF_ALARM_DAILY = "jajuk.alarm.daily";
 
-  String CONF_FORMAT_TIME_ELAPSED = "format";
+  String CONF_FORMAT_TIME_ELAPSED = "jajuk.format_elapsed_time";
 
   // Alarms List
 

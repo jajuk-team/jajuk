@@ -110,6 +110,12 @@ public final class UpgradeManager implements ITechnicalStrings {
       ConfigurationManager.setDefaultProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
     }
 
+    // For Jajuk < 1.7, elaspsed time format variable name changed
+    if (ConfigurationManager.containsProperty("format")) {
+      ConfigurationManager.setProperty(CONF_FORMAT_TIME_ELAPSED, ConfigurationManager
+          .getProperty("format"));
+    }
+
     // TO DO AFTER AN UPGRADE
     if (Main.isUpgradeDetected()) {
       // - for Jajuk < 1.3: force nocover icon replacement
