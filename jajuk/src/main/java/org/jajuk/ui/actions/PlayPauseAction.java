@@ -43,12 +43,10 @@ public class PlayPauseAction extends ActionBase {
       setName(Messages.getString("JajukWindow.12"));
     } else if (Player.isPaused()) { // player was paused, resume it
       Player.resume();
-      // ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
       setIcon(IconLoader.ICON_PAUSE);
       setName(Messages.getString("JajukWindow.10"));
     } else { // player is not paused, pause it
       Player.pause();
-      // ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PAUSE));
       // notify of this event
       setIcon(IconLoader.ICON_PLAY);
       setName(Messages.getString("JajukWindow.12"));

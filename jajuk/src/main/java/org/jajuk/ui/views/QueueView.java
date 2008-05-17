@@ -249,7 +249,7 @@ public class QueueView extends PlaylistView {
    * @see org.jajuk.ui.IView#getDesc()
    */
   public String getDesc() {
-    return Messages.getString("QueueView.0");
+    return Messages.getString("PlaylistFileItem.5");
   }
 
   /*

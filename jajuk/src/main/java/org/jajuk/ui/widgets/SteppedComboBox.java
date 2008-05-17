@@ -28,6 +28,8 @@ import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 
+import org.jajuk.util.log.Log;
+
 /**
  * Stepped combo box allowing to display a long text in the history bar
  */
@@ -86,7 +88,7 @@ public class SteppedComboBox extends JComboBox {
         popupWidth = 0;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      Log.error(e);
     }
   }
 }
