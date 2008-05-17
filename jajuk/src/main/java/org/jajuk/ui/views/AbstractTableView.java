@@ -375,7 +375,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
             // Ignore the refresh if the event comes from the table itself
             Properties properties = event.getDetails();
-            if (AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))) {
+            if (properties != null && AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))) {
               return;
             }
             // Keep current selection and nb of rows
