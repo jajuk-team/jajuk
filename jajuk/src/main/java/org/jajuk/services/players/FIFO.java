@@ -74,7 +74,7 @@ public class FIFO implements ITechnicalStrings {
   private volatile ArrayList<StackItem> alPlanned;
 
   /** Stop flag* */
-  private static volatile boolean bStop = false;
+  private static volatile boolean bStop = true;
 
   /** Self instance */
   static private FIFO fifo = null;
@@ -457,7 +457,7 @@ public class FIFO implements ITechnicalStrings {
       // intro workaround : intro mode is only read at track launch
       // and can't be set during the play
       ConfigurationManager.getBoolean(CONF_STATE_INTRO);
-      // notify to devices like commandJPanel to update ui when the play
+      // notify to devices like commandJPanel to update UI when the play
       // button has been pressed
       ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_PLAY));
       // set was_playing state
@@ -660,6 +660,7 @@ public class FIFO implements ITechnicalStrings {
    */
   public void playPrevious() {
     try {
+      bStop = false;
       // if playing, stop all playing players
       if (Player.isPlaying()) {
         Player.stop(true);
@@ -679,6 +680,7 @@ public class FIFO implements ITechnicalStrings {
    */
   public void playPreviousAlbum() {
     try {
+      bStop = false;
       // if playing, stop all playing players
       if (Player.isPlaying()) {
         Player.stop(true);
@@ -733,6 +735,7 @@ public class FIFO implements ITechnicalStrings {
    */
   public void playNext() {
     try {
+      bStop = false;
       // if playing, stop current
       if (Player.isPlaying()) {
         Player.stop(false);
@@ -759,6 +762,7 @@ public class FIFO implements ITechnicalStrings {
    */
   public void playNextAlbum() {
     try {
+      bStop = false;
       // if playing, stop all playing players
       if (Player.isPlaying()) {
         Player.stop(true);
