@@ -52,6 +52,7 @@ import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -291,6 +292,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
         }
         // OK ? Restore the list
         try {
+          Util.waiting();
           WebRadioManager.getInstance().restore();
           // Refresh current list
           radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
@@ -298,6 +300,9 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
           // show an "operation failed' message to users
           Messages.showErrorMessage(169);
           Log.error(e);
+        }
+        finally{
+          Util.stopWaiting();
         }
         // refresh screen
         refreshScreen();

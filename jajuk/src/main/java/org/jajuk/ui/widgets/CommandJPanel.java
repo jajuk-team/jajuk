@@ -586,15 +586,17 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     ObservationManager.register(CommandJPanel.this);
 
     // if a track is playing, display right state
-    if (!FIFO.isStopped()) {
+    if (FIFO.getInstance().isPlayingRadio()) {
+      // update initial state
+      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED));
+    } else if (!FIFO.isStopped()) {
       // update initial state
       update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
           .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
       // update the history bar
       update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
-      // check if some track has been launched before the view has been
-      // displayed
-      update(new Event(EventSubject.EVENT_HEART_BEAT));
+    } else {
+      update(new Event(EventSubject.EVENT_PLAYER_STOP));
     }
     // start timer
     timer.start();
@@ -747,16 +749,20 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       public void run() {
         EventSubject subject = event.getSubject();
         if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
-          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-          ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+          // Enable the play button to allow restarting the queue but disable if
+          // the queue is void
+          boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
+          ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
+          ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
+          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
+          ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
+          
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
           ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-          ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
-          ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           jbIncRate.setEnabled(false);
           // Reset history so user can launch again stopped

@@ -159,7 +159,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
     defaults.put(CONF_STATE_CONTINUE, FALSE);
     defaults.put(CONF_STATE_INTRO, FALSE);
-    defaults.put(CONF_STATE_WAS_PLAYING, TRUE);
+    defaults.put(CONF_STATE_WAS_PLAYING, FALSE);
     // no startup file by default
     defaults.put(CONF_STARTUP_FILE, "");
     defaults.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);
@@ -314,6 +314,15 @@ public class ConfigurationManager implements ITechnicalStrings {
   public static void commit() throws Exception {
     properties.store(new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION)),
         "User configuration");
+  }
+  
+  /**
+   * 
+   * @param property
+   * @return whether the given property is known
+   */
+  public static boolean containsProperty(String property){
+    return properties.containsKey(property);
   }
 
   /** Load properties from in file */

@@ -377,9 +377,16 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     }
     pack();
     // Force initial UI refresh
-    if (!FIFO.isStopped()) {
+    // check if a file has been already started
+    if (FIFO.getInstance().isPlayingRadio()) {
       // update initial state
-      update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
+      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED));
+    } else if (!FIFO.isStopped()) {
+      // update initial state
+      update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
+    } else {
+      update(new Event(EventSubject.EVENT_PLAYER_STOP));
     }
     bInitialized = true;
   }
@@ -497,16 +504,19 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
       // reset title
       updateCurrentTitle();
-      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-      ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+      // Enable the play button to allow restarting the queue but disable if
+      // the queue is void
+      boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
+      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
+      ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
+      ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
+      ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
+      ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
       ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-      ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
       ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
       ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
       ActionManager.getAction(STOP_TRACK).setEnabled(false);
       ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-      ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
-      ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
     } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
       updateCurrentTitle();

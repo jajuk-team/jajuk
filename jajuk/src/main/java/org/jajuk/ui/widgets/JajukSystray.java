@@ -20,7 +20,10 @@
 
 package org.jajuk.ui.widgets;
 
+import static org.jajuk.ui.actions.JajukAction.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
+import static org.jajuk.ui.actions.JajukAction.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
 import ext.JXTrayIcon;
@@ -340,13 +343,17 @@ public class JajukSystray extends CommandJPanel {
     ObservationManager.register(this);
 
     // check if a file has been already started
-    if (FIFO.getInstance().getCurrentFile() == null) {
-      update(new Event(EventSubject.EVENT_PLAYER_STOP, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_STOP)));
+    if (FIFO.getInstance().isPlayingRadio()) {
+      // update initial state
+      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED));
+    } else if (!FIFO.isStopped()) {
+      // update initial state
+      update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
     } else {
-      update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+      update(new Event(EventSubject.EVENT_PLAYER_STOP));
     }
+
   }
 
   public Set<EventSubject> getRegistrationKeys() {
@@ -434,10 +441,13 @@ public class JajukSystray extends CommandJPanel {
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
         } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
-          jmiPlayPause.setEnabled(true);
+          // Enable the play button to allow restarting the queue but disable if
+          // the queue is void
+          boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
+          jmiPlayPause.setEnabled(bQueueNotVoid);
+          jmiNext.setEnabled(bQueueNotVoid);
+          jmiPrevious.setEnabled(bQueueNotVoid);
           jmiStop.setEnabled(false);
-          jmiNext.setEnabled(true);
-          jmiPrevious.setEnabled(true);
           jsPosition.removeMouseWheelListener(JajukSystray.this);
           jsPosition.removeChangeListener(JajukSystray.this);
           jsPosition.setEnabled(false);
