@@ -29,8 +29,8 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.base.WebRadio;
 import org.jajuk.services.core.RatingManager;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;

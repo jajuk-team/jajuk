@@ -83,7 +83,6 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
-import org.jajuk.base.WebRadio;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.bookmark.HistoryItem;
@@ -97,6 +96,7 @@ import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;

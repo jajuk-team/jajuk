@@ -22,11 +22,11 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import org.jajuk.base.WebRadio;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;

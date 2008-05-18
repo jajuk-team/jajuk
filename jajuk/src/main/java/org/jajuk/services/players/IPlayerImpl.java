@@ -20,7 +20,7 @@
 package org.jajuk.services.players;
 
 import org.jajuk.base.File;
-import org.jajuk.base.WebRadio;
+import org.jajuk.services.webradio.WebRadio;
 
 /**
  * Minimum methods required for all Player implementations

@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.base;
+package org.jajuk.services.webradio;
 
 /**
  * A web Radio

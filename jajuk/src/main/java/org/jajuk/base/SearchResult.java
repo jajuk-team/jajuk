@@ -20,6 +20,8 @@
 
 package org.jajuk.base;
 
+import org.jajuk.services.webradio.WebRadio;
+
 /**
  * A search result, contains a file and a search description
  */

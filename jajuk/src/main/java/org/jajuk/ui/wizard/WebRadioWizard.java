@@ -41,9 +41,9 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.jajuk.base.WebRadio;
 import org.jajuk.services.events.Event;
 import org.jajuk.services.events.ObservationManager;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;

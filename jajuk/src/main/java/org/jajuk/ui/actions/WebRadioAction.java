@@ -22,8 +22,8 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.base.WebRadio;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
