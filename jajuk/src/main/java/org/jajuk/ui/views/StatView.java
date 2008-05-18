@@ -39,10 +39,10 @@ import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -90,14 +90,14 @@ public class StatView extends ViewAdapter implements Observer {
     double[][] size = new double[][] { { 0.5f, 10, 0.5f }, { 0.5f, 10, 0.5f } };
     setLayout(new TableLayout(size));
     ObservationManager.register(this);
-    update(new Event(EventSubject.EVENT_DEVICE_REFRESH, ObservationManager
-        .getDetailsLastOccurence(EventSubject.EVENT_DEVICE_REFRESH)));
+    update(new Event(JajukEvents.EVENT_DEVICE_REFRESH, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.EVENT_DEVICE_REFRESH)));
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_DELETE);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_DELETE);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -353,9 +353,9 @@ public class StatView extends ViewAdapter implements Observer {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
-        || EventSubject.EVENT_DEVICE_DELETE.equals(subject)) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
+        || JajukEvents.EVENT_DEVICE_DELETE.equals(subject)) {
       Util.waiting();
       if (getComponentCount() > 0) {
         removeAll();

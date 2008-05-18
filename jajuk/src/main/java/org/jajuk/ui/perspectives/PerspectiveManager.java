@@ -32,12 +32,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -171,8 +171,8 @@ public class PerspectiveManager implements ITechnicalStrings {
         ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         Util.stopWaiting();
         // Emit a event
-        ObservationManager.notify(new Event(EventSubject.EVENT_PERPECTIVE_CHANGED,
-            ObservationManager.getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_PERPECTIVE_CHANGED,
+            ObservationManager.getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
       }
     });
   }

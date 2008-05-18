@@ -30,12 +30,12 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -406,7 +406,7 @@ public class DeviceManager extends ItemManager {
         AlbumManager.getInstance().cleanup();
         AuthorManager.getInstance().cleanup();
         // notify views to refresh
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       }
       // Display end of refresh message with stats
       l = System.currentTimeMillis() - l;

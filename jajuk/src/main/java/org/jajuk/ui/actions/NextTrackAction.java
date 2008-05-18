@@ -22,13 +22,13 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -51,7 +51,7 @@ public class NextTrackAction extends ActionBase {
     if (evt != null
     // evt == null when using hotkeys
         && (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-      ActionManager.getAction(JajukAction.NEXT_ALBUM).actionPerformed(evt);
+      ActionManager.getAction(JajukActions.NEXT_ALBUM).actionPerformed(evt);
     } else {
       // if playing a radio, launch next radio station
       if (FIFO.getInstance().isPlayingRadio()) {
@@ -84,7 +84,7 @@ public class NextTrackAction extends ActionBase {
               // changing of track
               if (Player.isPaused()) {
                 Player.setPaused(false);
-                ObservationManager.notify(new Event(EventSubject.EVENT_PLAYER_RESUME));
+                ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_RESUME));
               }
             }
           }

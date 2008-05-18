@@ -41,17 +41,17 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.lyrics.LyricsService;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -138,11 +138,11 @@ public class LyricsView extends ViewAdapter implements Observer {
     reset();
     // check if a track has already been launched
     if (FIFO.getInstance().isPlayingRadio()) {
-      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
     } else if (!FIFO.isStopped()) {
-      update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
     }
   }
 
@@ -160,14 +160,14 @@ public class LyricsView extends ViewAdapter implements Observer {
    * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
-  public Set<EventSubject> getRegistrationKeys() {
-    final HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
+  public Set<JajukEvents> getRegistrationKeys() {
+    final HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
 
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_ZERO);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_LYRICS_DOWNLOADED);
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_LYRICS_DOWNLOADED);
     return eventSubjectSet;
   }
 
@@ -177,10 +177,10 @@ public class LyricsView extends ViewAdapter implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final Event event) {
-    final EventSubject subject = event.getSubject();
+    final JajukEvents subject = event.getSubject();
 
     Log.debug("updating lyrics view");
-    if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
       final File file = FIFO.getInstance().getCurrentFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
@@ -213,14 +213,14 @@ public class LyricsView extends ViewAdapter implements Observer {
             sURL = "<none>";
           }
           // Notify to make UI changes
-          ObservationManager.notify(new Event(EventSubject.EVENT_LYRICS_DOWNLOADED));
+          ObservationManager.notify(new Event(JajukEvents.EVENT_LYRICS_DOWNLOADED));
         }
 
       }.start();
-    } else if (EventSubject.EVENT_ZERO.equals(subject)
-        || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+    } else if (JajukEvents.EVENT_ZERO.equals(subject)
+        || JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
       reset();
-    } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+    } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {
@@ -234,7 +234,7 @@ public class LyricsView extends ViewAdapter implements Observer {
         }
 
       });
-    } else if (subject.equals(EventSubject.EVENT_LYRICS_DOWNLOADED)) {
+    } else if (subject.equals(JajukEvents.EVENT_LYRICS_DOWNLOADED)) {
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {
@@ -323,14 +323,14 @@ public class LyricsView extends ViewAdapter implements Observer {
 
   private JMenuItem getJmiCopyToClipboard() {
     if (jmiCopyToClipboard == null) {
-      jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD));
+      jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     }
     return (jmiCopyToClipboard);
   }
 
   private JMenuItem getJmiLaunchInBrowser() {
     if (jmiLaunchInBrowser == null) {
-      jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+      jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
     }
     return (jmiLaunchInBrowser);
   }

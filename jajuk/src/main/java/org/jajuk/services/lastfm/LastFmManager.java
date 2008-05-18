@@ -27,12 +27,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jajuk.base.File;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -77,9 +77,9 @@ public class LastFmManager implements Observer, ITechnicalStrings {
    * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_FINISHED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_FINISHED);
     return eventSubjectSet;
   }
 
@@ -96,7 +96,7 @@ public class LastFmManager implements Observer, ITechnicalStrings {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final Event event) {
-    if (EventSubject.EVENT_FILE_FINISHED == event.getSubject()) {
+    if (JajukEvents.EVENT_FILE_FINISHED == event.getSubject()) {
       new Thread() {
         public void run() {
           if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {

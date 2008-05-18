@@ -32,7 +32,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Item;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jdesktop.swingx.JXTree;
 
 /**
@@ -99,36 +99,36 @@ public abstract class AbstractTreeView extends ViewAdapter {
   }
 
   public void initUI() {
-    jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
+    jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
+    jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SHUFFLE_SELECTION));
+    jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
     jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
+    jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiCut = new JMenuItem(ActionManager.getAction(JajukAction.CUT));
+    jmiCut = new JMenuItem(ActionManager.getAction(JajukActions.CUT));
     jmiCut.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiCopy = new JMenuItem(ActionManager.getAction(JajukAction.COPY));
+    jmiCopy = new JMenuItem(ActionManager.getAction(JajukActions.COPY));
     jmiCopy.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiPaste = new JMenuItem(ActionManager.getAction(JajukAction.PASTE));
+    jmiPaste = new JMenuItem(ActionManager.getAction(JajukActions.PASTE));
     jmiPaste.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiRename = new JMenuItem(ActionManager.getAction(JajukAction.RENAME));
+    jmiRename = new JMenuItem(ActionManager.getAction(JajukActions.RENAME));
     jmiRename.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiNewFolder = new JMenuItem(ActionManager.getAction(JajukAction.NEW_FOLDER));
+    jmiNewFolder = new JMenuItem(ActionManager.getAction(JajukActions.NEW_FOLDER));
     jmiNewFolder.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiAddFavorite = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
+    jmiAddFavorite = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiAddFavorite.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukAction.CDDB_SELECTION));
+    jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukActions.CDDB_SELECTION));
     jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiReport = new JMenuItem(ActionManager.getAction(JajukAction.CREATE_REPORT));
+    jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it
     jmiReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
     jmiReport.putClientProperty(DETAIL_SELECTION, alSelected);
-    jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION, alSelected);
   }
 

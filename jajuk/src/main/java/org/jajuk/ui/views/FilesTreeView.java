@@ -68,12 +68,13 @@ import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.RefactorAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
@@ -85,7 +86,6 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -97,7 +97,7 @@ import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
  * Physical tree view
  */
 public class FilesTreeView extends AbstractTreeView implements ActionListener,
-    org.jajuk.services.events.Observer {
+    org.jajuk.events.Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -162,13 +162,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   public FilesTreeView() {
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_CDDB_WIZARD);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_CDDB_WIZARD);
     return eventSubjectSet;
   }
 
@@ -184,19 +184,19 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // Collection menu
     jmenuCollection = new JPopupMenu();
     // Export
-    Action actionReportCollection = ActionManager.getAction(JajukAction.CREATE_REPORT);
+    Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
     jmiCollectionReport = new JMenuItem(actionReportCollection);
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it
     jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_PHYSICAL);
     jmenuCollection.add(jmiCollectionReport);
 
-    Action actionDuplicateFiles = ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES);
+    Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
     jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
     jmenuCollection.add(jmiCollectionDuplicateFiles);
 
     // Directory menu
-    Action actionRefreshDir = ActionManager.getAction(JajukAction.REFRESH);
+    Action actionRefreshDir = ActionManager.getAction(JajukActions.REFRESH);
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
     jmiDirRefresh.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDirRefresh.addActionListener(this);
@@ -446,7 +446,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             Properties properties = new Properties();
             properties.put(DETAIL_SELECTION, selectedRecursively);
             properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-            ObservationManager.notify(new Event(EventSubject.EVENT_SYNC_TREE_TABLE, properties));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_SYNC_TREE_TABLE, properties));
           }
           // Check CDDB requests
           if (alSelected.size() > 0 // alSelected = 0 for collection
@@ -927,10 +927,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
 
   public void update(Event event) {
-    final EventSubject subject = event.getSubject();
-    if (subject.equals(EventSubject.EVENT_DEVICE_MOUNT)
-        || subject.equals(EventSubject.EVENT_DEVICE_UNMOUNT)
-        || subject.equals(EventSubject.EVENT_DEVICE_REFRESH)) {
+    final JajukEvents subject = event.getSubject();
+    if (subject.equals(JajukEvents.EVENT_DEVICE_MOUNT)
+        || subject.equals(JajukEvents.EVENT_DEVICE_UNMOUNT)
+        || subject.equals(JajukEvents.EVENT_DEVICE_REFRESH)) {
       SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {

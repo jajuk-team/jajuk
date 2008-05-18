@@ -63,13 +63,13 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -246,8 +246,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           } finally {
             // -UI refresh-
             // clear tables selection
-            ObservationManager.notify(new Event(EventSubject.EVENT_TABLE_CLEAR_SELECTION));
-            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_TABLE_CLEAR_SELECTION));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
           }
         }
       };

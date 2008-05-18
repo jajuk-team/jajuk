@@ -19,16 +19,16 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukAction.FAST_FORWARD_TRACK;
-import static org.jajuk.ui.actions.JajukAction.FINISH_ALBUM;
-import static org.jajuk.ui.actions.JajukAction.MUTE_STATE;
-import static org.jajuk.ui.actions.JajukAction.NEXT_ALBUM;
-import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukAction.PLAY_PAUSE_TRACK;
-import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
-import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukAction.REWIND_TRACK;
-import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
+import static org.jajuk.ui.actions.JajukActions.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
+import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
+import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
+import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
 import ext.SwingWorker;
 
@@ -64,21 +64,21 @@ import javax.swing.event.ListSelectionListener;
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -200,7 +200,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       public void windowClosing(WindowEvent e) {
         try {
           closing = true;
-          ActionManager.getAction(JajukAction.EXIT).perform(null);
+          ActionManager.getAction(JajukActions.EXIT).perform(null);
         } catch (Exception e1) {
           Log.error(e1);
         }
@@ -241,19 +241,19 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       }
     };
 
-    jbBestof = new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
+    jbBestof = new JMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
     jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
     jbBestof.addActionListener(this);
 
-    jbNovelties = new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
+    jbNovelties = new JMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
     jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16x16);
     jbNovelties.addActionListener(this);
 
-    jbRandom = new JMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+    jbRandom = new JMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
     jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
     jbRandom.addActionListener(this);
 
-    jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+    jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
     jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
     jbFinishAlbum.addActionListener(this);
 
@@ -264,10 +264,10 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     jpmSmart.add(jbFinishAlbum);
     jddbSmart.addToToolBar(jtbSmart);
     jddbSmart.addMouseMotionListener(motionAdapter);
-    jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
+    jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
     jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
 
-    ActionBase actionIncRate = ActionManager.getAction(JajukAction.INC_RATE);
+    ActionBase actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
     actionIncRate.setName(null);
     final JPopupMenu jpmIncRating = new JPopupMenu();
     for (int i = 1; i <= 10; i++) {
@@ -309,7 +309,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     jbVolume.setText(null);
     MuteAction.setVolumeIcon(iVolume);
 
-    jbMaximize = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    jbMaximize = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
     jbMaximize.addMouseMotionListener(motionAdapter);
 
     jtbTools.add(jbVolume);
@@ -380,13 +380,13 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     // check if a file has been already started
     if (FIFO.getInstance().isPlayingRadio()) {
       // update initial state
-      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED));
+      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
       // update initial state
-      update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
+      update(new Event(JajukEvents.EVENT_PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_PLAYER_PLAY)));
     } else {
-      update(new Event(EventSubject.EVENT_PLAYER_STOP));
+      update(new Event(JajukEvents.EVENT_PLAYER_STOP));
     }
     bInitialized = true;
   }
@@ -470,21 +470,21 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     }
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
     return eventSubjectSet;
   }
 
   public void update(final Event event) {
-    EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
       updateCurrentTitle();
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
       ActionManager.getAction(NEXT_TRACK).setEnabled(true);
@@ -495,13 +495,13 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
       ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-    } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+    } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
-    } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+    } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
-    } else if (EventSubject.EVENT_MUTE_STATE.equals(subject)) {
+    } else if (JajukEvents.EVENT_MUTE_STATE.equals(subject)) {
       MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
-    } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+    } else if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
       // reset title
       updateCurrentTitle();
       // Enable the play button to allow restarting the queue but disable if
@@ -518,7 +518,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       ActionManager.getAction(STOP_TRACK).setEnabled(false);
       ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-    } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+    } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
       updateCurrentTitle();
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
       ActionManager.getAction(NEXT_TRACK).setEnabled(true);
@@ -561,16 +561,16 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
 
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {
-      jddbSmart.setAction(ActionManager.getAction(JajukAction.BEST_OF));
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
       jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
     } else if (ae.getSource() == jbNovelties) {
-      jddbSmart.setAction(ActionManager.getAction(JajukAction.NOVELTIES));
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
       jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16x16);
     } else if (ae.getSource() == jbRandom) {
-      jddbSmart.setAction(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
       jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
     } else if (ae.getSource() == jbFinishAlbum) {
-      jddbSmart.setAction(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.FINISH_ALBUM));
       jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
     }
   }

@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 import org.jajuk.base.Playlist;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -62,7 +62,7 @@ public class SaveAsAction extends ActionBase {
         playlist.saveAs();
         InformationJPanel.getInstance().setMessage(
             Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       } catch (JajukException je) {
         Log.error(je);
         Messages.showErrorMessage(je.getCode());

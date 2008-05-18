@@ -15,12 +15,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $$Revision: 3902 $$
  */
 
-package org.jajuk.util;
+package org.jajuk.events;
 
-public enum EventSubject {
+public enum JajukEvents {
   // exit has be required
   EVENT_EXIT,
   // repeat mode changed

@@ -27,10 +27,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 
@@ -148,7 +148,7 @@ public class AuthorManager extends ItemManager {
       // if current track author name is changed, notify it
       if (FIFO.getInstance().getCurrentFile() != null
           && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(old)) {
-        ObservationManager.notify(new Event(EventSubject.EVENT_AUTHOR_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_AUTHOR_CHANGED));
       }
       return newItem;
     }

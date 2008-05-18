@@ -29,7 +29,7 @@ import org.jajuk.base.Track;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
@@ -72,10 +72,10 @@ public class TracksTableView extends AbstractTableView {
       public Object construct() {
         TracksTableView.super.construct();
         // Track menu
-        jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_ALBUM_SELECTION));
+        jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
         jmiTrackPlayAlbum.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         jmiTrackPlayAuthor = new JMenuItem(ActionManager
-            .getAction(JajukAction.PLAY_AUTHOR_SELECTION));
+            .getAction(JajukActions.PLAY_AUTHOR_SELECTION));
         jmiTrackPlayAuthor.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         jtable.getMenu().add(jmiTrackPlayAlbum);
         jtable.getMenu().add(jmiTrackPlayAuthor);

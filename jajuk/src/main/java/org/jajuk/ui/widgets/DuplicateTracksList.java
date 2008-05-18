@@ -39,8 +39,8 @@ import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -138,8 +138,8 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       }
 
       populateList(allFiles);
-      ObservationManager.notify(new org.jajuk.services.events.Event(
-          EventSubject.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new org.jajuk.events.Event(
+          JajukEvents.EVENT_DEVICE_REFRESH));
     }
 
     private void deleteFilefromList(int index) {

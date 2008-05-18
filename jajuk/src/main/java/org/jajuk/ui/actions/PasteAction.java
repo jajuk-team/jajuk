@@ -36,10 +36,10 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -173,7 +173,7 @@ public class PasteAction extends ActionBase {
           }
           DirectoryManager.refreshDirectory(destDir);
         }
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         Util.stopWaiting();
       }
     }.start();

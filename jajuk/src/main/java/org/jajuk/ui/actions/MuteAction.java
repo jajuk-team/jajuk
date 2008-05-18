@@ -19,7 +19,7 @@
  */
 package org.jajuk.ui.actions;
 
-import static org.jajuk.ui.actions.JajukAction.MUTE_STATE;
+import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 
 import java.awt.event.ActionEvent;
 

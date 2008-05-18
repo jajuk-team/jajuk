@@ -47,12 +47,13 @@ import javax.swing.event.ListSelectionEvent;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlayHighlighterPredicate;
@@ -61,7 +62,6 @@ import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -160,11 +160,11 @@ public class QueueView extends PlaylistView {
         goToSelection();
       }
     });
-    jmiFilePush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
+    jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiFilePush.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
+    jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
         IconLoader.ICON_UP);
@@ -231,15 +231,15 @@ public class QueueView extends PlaylistView {
     bSettingSelection = false;
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
-    eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
-    eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
-    eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD);
+    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(JajukEvents.EVENT_VIEW_REFRESH_REQUEST);
+    eventSubjectSet.add(JajukEvents.EVENT_RATE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -262,16 +262,16 @@ public class QueueView extends PlaylistView {
       public synchronized void run() { // NEED TO SYNC to avoid out out
         // bound exceptions
         try {
-          EventSubject subject = event.getSubject();
+          JajukEvents subject = event.getSubject();
           editorTable.acceptColumnsEvents = false; // flag reloading to avoid
           // wrong
-          if (EventSubject.EVENT_QUEUE_NEED_REFRESH.equals(subject)
-              || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)
-              || EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
+          if (JajukEvents.EVENT_QUEUE_NEED_REFRESH.equals(subject)
+              || JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
+              || JajukEvents.EVENT_RATE_CHANGED.equals(subject)) {
             editorModel.alItems.clear();
             editorModel.alPlanned.clear();
             refreshQueue();
-          } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
+          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // can be null at view populate
@@ -288,7 +288,7 @@ public class QueueView extends PlaylistView {
             editorModel.alItems.clear();
             editorModel.alPlanned.clear();
             refreshQueue();
-          } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
+          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
               // populate
@@ -305,7 +305,7 @@ public class QueueView extends PlaylistView {
             editorModel.alItems.clear();
             editorModel.alPlanned.clear();
             refreshQueue();
-          } else if (EventSubject.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+          } else if (JajukEvents.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
@@ -371,7 +371,7 @@ public class QueueView extends PlaylistView {
         // special playlist, same behavior than a save as
         plf.saveAs();
         // notify playlist repository to refresh
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       } else if (ae.getSource() == jbDown || ae.getSource() == jbUp
           || ae.getSource() == jmiFileDown || ae.getSource() == jmiFileUp) {
         int iRow = editorTable.getSelectedRow();
@@ -419,7 +419,7 @@ public class QueueView extends PlaylistView {
         // Reset the FIFO
         FIFO.getInstance().reset(); // reinit all variables
         // Request all GUI reset
-        ObservationManager.notify(new Event(EventSubject.EVENT_ZERO));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_ZERO));
       }
 
     } catch (Exception e2) {

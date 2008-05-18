@@ -30,13 +30,13 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -112,8 +112,8 @@ public class TrackManager extends ItemManager implements Observer {
     ObservationManager.register(this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    return Collections.singleton(EventSubject.EVENT_FILE_NAME_CHANGED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    return Collections.singleton(JajukEvents.EVENT_FILE_NAME_CHANGED);
   }
 
   /**
@@ -206,7 +206,7 @@ public class TrackManager extends ItemManager implements Observer {
       // if current track album name is changed, notify it
       if (FIFO.getInstance().getCurrentFile() != null
           && FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
-        ObservationManager.notify(new Event(EventSubject.EVENT_ALBUM_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_ALBUM_CHANGED));
       }
       // register the new album
       Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
@@ -254,7 +254,7 @@ public class TrackManager extends ItemManager implements Observer {
       // if current track author name is changed, notify it
       if (FIFO.getInstance().getCurrentFile() != null
           && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
-        ObservationManager.notify(new Event(EventSubject.EVENT_AUTHOR_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_AUTHOR_CHANGED));
       }
       // register the new item
       Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
@@ -494,7 +494,7 @@ public class TrackManager extends ItemManager implements Observer {
       // if current track name is changed, notify it
       if (FIFO.getInstance().getCurrentFile() != null
           && FIFO.getInstance().getCurrentFile().getTrack().equals(track)) {
-        ObservationManager.notify(new Event(EventSubject.EVENT_TRACK_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_TRACK_CHANGED));
       }
       return newTrack;
     }
@@ -573,8 +573,8 @@ public class TrackManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_FILE_NAME_CHANGED.equals(subject)) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_FILE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
       File fNew = (File) properties.get(DETAIL_NEW);
       File fileOld = (File) properties.get(DETAIL_OLD);

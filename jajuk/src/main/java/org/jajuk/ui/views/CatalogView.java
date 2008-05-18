@@ -65,9 +65,10 @@ import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -78,7 +79,6 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.Filter;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -426,11 +426,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     InformationJPanel.getInstance().setSelection(sMessage);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_COVER_DEFAULT_CHANGED);
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_COVER_DEFAULT_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -718,8 +718,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    if (EventSubject.EVENT_DEVICE_REFRESH.equals(event.getSubject())
-        || EventSubject.EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())) {
+    if (JajukEvents.EVENT_DEVICE_REFRESH.equals(event.getSubject())
+        || JajukEvents.EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())) {
       // save selected item
       LocalAlbumThumbnail oldItem = CatalogView.this.item;
       // reset paging

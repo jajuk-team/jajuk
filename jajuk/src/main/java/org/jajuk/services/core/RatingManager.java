@@ -21,9 +21,9 @@
 package org.jajuk.services.core;
 
 import org.jajuk.base.FileManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -74,7 +74,7 @@ public class RatingManager extends Thread implements ITechnicalStrings {
       }
       if (bRateHasChanged) {
         // refresh to update rates
-        ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED));
         bRateHasChanged = false;
       }
 

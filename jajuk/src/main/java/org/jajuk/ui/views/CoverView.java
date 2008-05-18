@@ -57,10 +57,11 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Track;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.covers.Cover;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -70,7 +71,6 @@ import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -196,8 +196,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (getPerspective() == null) {
             dirReference = null;
           }
-          update(new Event(EventSubject.EVENT_COVER_REFRESH, ObservationManager
-              .getDetailsLastOccurence(EventSubject.EVENT_COVER_REFRESH)));
+          update(new Event(JajukEvents.EVENT_COVER_REFRESH, ObservationManager
+              .getDetailsLastOccurence(JajukEvents.EVENT_COVER_REFRESH)));
         }
       }.start();
     } else if (e.getSource() == jbPrevious) { // previous : show a
@@ -258,7 +258,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         if (index < 0) {
           index = alCovers.size() - 1;
         }
-        ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_REFRESH));
       }
     } else if (e.getSource() == jbDefault) { // choose a default
       // first commit this cover on the disk if it is a remote cover
@@ -299,7 +299,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
             InformationJPanel.INFORMATIVE);
       }
-      ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_REFRESH));
       // then make it the default cover in this directory
       dirReference.setProperty("default_cover", Util.getOnlyFile(sFilename));
 
@@ -330,7 +330,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               Util.copy(cover.getFile(), fNew);
               InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                   InformationJPanel.INFORMATIVE);
-              ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+              ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_REFRESH));
             } catch (final Exception ex) {
               Log.error(24, ex);
               Messages.showErrorMessage(24);
@@ -370,7 +370,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               alCovers.add(cover2);
               setFoundText();
             }
-            ObservationManager.notify(new Event(EventSubject.EVENT_COVER_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_REFRESH));
             // add new cover in others cover views
           } catch (final Exception ex) {
             Log.error(24, ex);
@@ -637,11 +637,11 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     return Messages.getString("CoverView.3");
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    final HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_COVER_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_ZERO);
-    eventSubjectSet.add(EventSubject.EVENT_COVER_CHANGE);
+  public Set<JajukEvents> getRegistrationKeys() {
+    final HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_COVER_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
+    eventSubjectSet.add(JajukEvents.EVENT_COVER_CHANGE);
     return eventSubjectSet;
   }
 
@@ -779,10 +779,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         }
         // check if a track has already been launched
         if (FIFO.getInstance().isPlayingRadio()) {
-          update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+          update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
         } else {
-          update(new Event(EventSubject.EVENT_COVER_REFRESH));
+          update(new Event(JajukEvents.EVENT_COVER_REFRESH));
         }
 
       }
@@ -895,7 +895,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             + ITechnicalStrings.EXT_THUMB);
         ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
       }
-      ObservationManager.notify(new Event(EventSubject.EVENT_COVER_DEFAULT_CHANGED));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_DEFAULT_CHANGED));
     } catch (final Exception ex) {
       Log.error(24, ex);
     }
@@ -974,13 +974,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   public void update(final Event event) {
     removeComponentListener(CoverView.this);
     addComponentListener(CoverView.this); // listen for resize
-    final EventSubject subject = event.getSubject();
+    final JajukEvents subject = event.getSubject();
     iEventID = (int) (Integer.MAX_VALUE * Math.random());
     final int iLocalEventID = iEventID;
     synchronized (bLock) {// block any concurrent cover update
       try {
         searching(true);
-        if (EventSubject.EVENT_COVER_REFRESH.equals(subject)) {
+        if (JajukEvents.EVENT_COVER_REFRESH.equals(subject)) {
           // Ignore this event if a reference file has been set and if
           // this event has already been handled
           if ((fileReference != null) && (dirReference != null)) {
@@ -1136,8 +1136,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           }
           setFoundText(); // update found text
           displayCurrentCover();
-        } else if (EventSubject.EVENT_ZERO.equals(subject)
-            || EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+        } else if (JajukEvents.EVENT_ZERO.equals(subject)
+            || JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
           // Ignore this event if a reference file has been set
           if (fileReference != null) {
             return;
@@ -1149,7 +1149,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           index = 0;
           displayCurrentCover();
           dirReference = null;
-        } else if (EventSubject.EVENT_COVER_CHANGE.equals(subject) && isInCurrentPerspective()) {
+        } else if (JajukEvents.EVENT_COVER_CHANGE.equals(subject) && isInCurrentPerspective()) {
           // Ignore this event if a reference file has been set
           if (fileReference != null) {
             return;

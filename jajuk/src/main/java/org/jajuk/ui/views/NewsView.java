@@ -25,10 +25,10 @@ import java.util.Set;
 
 import javax.swing.JFormattedTextField;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -72,9 +72,9 @@ public class NewsView extends ViewAdapter implements ITechnicalStrings, Observer
     ObservationManager.register(NewsView.this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -84,9 +84,9 @@ public class NewsView extends ViewAdapter implements ITechnicalStrings, Observer
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
+    JajukEvents subject = event.getSubject();
     // Make a search after a stop period
-    if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE)) {
+    if (subject.equals(JajukEvents.EVENT_PARAMETERS_CHANGE)) {
     }
   }
 

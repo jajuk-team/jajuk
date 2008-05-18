@@ -22,11 +22,11 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -62,6 +62,6 @@ public class SlimbarAction extends ActionBase {
       JajukWindow.getInstance().display(false);
     }
     // Notify that slimbar visibility change (menu bar is interested in it)
-    ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
   }
 }

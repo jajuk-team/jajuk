@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -52,6 +52,6 @@ public class IncRateAction extends ActionBase {
       track.setRate(track.getRate() + ConfigurationManager.getInt(CONF_INC_RATING));
     }
     // Force immediate rating refresh (without using the rating manager)
-    ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED));
   }
 }

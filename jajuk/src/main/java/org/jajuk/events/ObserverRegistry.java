@@ -18,23 +18,22 @@
  *  $1.0$
  */
 
-package org.jajuk.services.events;
+package org.jajuk.events;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
-  private Hashtable<EventSubject, ArrayList<Observer>> hEventComponents = new Hashtable<EventSubject, ArrayList<Observer>>(
+  private Hashtable<JajukEvents, ArrayList<Observer>> hEventComponents = new Hashtable<JajukEvents, ArrayList<Observer>>(
       10);
 
   @SuppressWarnings("unchecked")
   void notifySync(Event event) {
-    EventSubject subject = event.getSubject();
+    JajukEvents subject = event.getSubject();
     ArrayList<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {
       return;
@@ -62,7 +61,7 @@ class ObserverRegistry {
     }
   }
 
-  synchronized boolean register(EventSubject subject, Observer observer) {
+  synchronized boolean register(JajukEvents subject, Observer observer) {
     ArrayList<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {
       alComponents = new ArrayList<Observer>(1);
@@ -74,7 +73,7 @@ class ObserverRegistry {
     return false;
   }
 
-  synchronized boolean unregister(EventSubject subject, Observer observer) {
+  synchronized boolean unregister(JajukEvents subject, Observer observer) {
     ArrayList<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents != null) {
       return alComponents.remove(observer);

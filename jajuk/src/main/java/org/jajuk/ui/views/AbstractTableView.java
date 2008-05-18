@@ -53,18 +53,18 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.StyleManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukToggleButton;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -181,30 +181,30 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable = new JajukTable(model, true, columnsConf);
 
     // Add generic menus
-    jmiPlay = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SELECTION));
+    jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlay);
 
-    jmiPush = new JMenuItem(ActionManager.getAction(JajukAction.PUSH_SELECTION));
+    jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
 
-    jmiDelete = new JMenuItem(ActionManager.getAction(JajukAction.DELETE));
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiDelete);
 
-    jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_REPEAT_SELECTION));
+    jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
 
-    jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukAction.PLAY_SHUFFLE_SELECTION));
+    jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
     jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayShuffle);
 
-    jmiBookmark = new JMenuItem(ActionManager.getAction(JajukAction.BOOKMARK_SELECTION));
+    jmiBookmark = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiBookmark.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
 
-    jmiProperties = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_PROPERTIES));
+    jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
     return null;
   }
@@ -274,26 +274,26 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // refresh columns conf in case of some attributes been removed
     // or added before view instantiation
     Properties properties = ObservationManager
-        .getDetailsLastOccurence(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
-    Event event = new Event(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD, properties);
+        .getDetailsLastOccurence(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD);
+    Event event = new Event(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD, properties);
     update(event);
     initTable(); // perform type-specific init
     // Start filtering thread
     filteringThread.start();
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(EventSubject.EVENT_SYNC_TREE_TABLE);
-    eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD);
-    eventSubjectSet.add(EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE);
-    eventSubjectSet.add(EventSubject.EVENT_RATE_CHANGED);
-    eventSubjectSet.add(EventSubject.EVENT_TABLE_CLEAR_SELECTION);
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(EventSubject.EVENT_VIEW_REFRESH_REQUEST);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.EVENT_SYNC_TREE_TABLE);
+    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD);
+    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(JajukEvents.EVENT_RATE_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_TABLE_CLEAR_SELECTION);
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.EVENT_VIEW_REFRESH_REQUEST);
     return eventSubjectSet;
   }
 
@@ -335,16 +335,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
           // column
           // events
-          EventSubject subject = event.getSubject();
-          if (EventSubject.EVENT_TABLE_CLEAR_SELECTION.equals(subject)) {
+          JajukEvents subject = event.getSubject();
+          if (JajukEvents.EVENT_TABLE_CLEAR_SELECTION.equals(subject)) {
             jtable.clearSelection();
           }
-          if (EventSubject.EVENT_DEVICE_MOUNT.equals(subject)
-              || EventSubject.EVENT_DEVICE_UNMOUNT.equals(subject)) {
+          if (JajukEvents.EVENT_DEVICE_MOUNT.equals(subject)
+              || JajukEvents.EVENT_DEVICE_UNMOUNT.equals(subject)) {
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (EventSubject.EVENT_SYNC_TREE_TABLE.equals(subject)) {
+          } else if (JajukEvents.EVENT_SYNC_TREE_TABLE.equals(subject)) {
             // Consume only events from the same perspective for
             // table/tree synchronization
             if (event.getDetails() != null
@@ -357,22 +357,22 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+          } else if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
             // force redisplay to apply the filter
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
+          } else if (JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)) {
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (EventSubject.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+          } else if (JajukEvents.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
             if (table.equals(jtable)) {
               applyFilter(sAppliedCriteria, sAppliedFilter);
             }
-          } else if (EventSubject.EVENT_RATE_CHANGED.equals(subject)) {
+          } else if (JajukEvents.EVENT_RATE_CHANGED.equals(subject)) {
             // Ignore the refresh if the event comes from the table itself
             Properties properties = event.getDetails();
             if (properties != null && AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))) {
@@ -383,7 +383,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
             jtable.setSelectedRows(selection);
-          } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
+          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // can be null at view populate
@@ -398,7 +398,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.showColumns(jtable.getColumnsConf());
             applyFilter(sAppliedCriteria, sAppliedFilter);
             jcbProperty.addItem(properties.get(DETAIL_CONTENT));
-          } else if (EventSubject.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
+          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
               // populate
@@ -505,7 +505,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // Require refresh of all tables
       Properties properties = new Properties();
       properties.put(DETAIL_ORIGIN, AbstractTableView.this);
-      ObservationManager.notify(new Event(EventSubject.EVENT_RATE_CHANGED, properties));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED, properties));
 
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());

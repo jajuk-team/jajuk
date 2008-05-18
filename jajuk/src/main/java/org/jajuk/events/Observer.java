@@ -18,11 +18,10 @@
  *  $Revision$
  */
 
-package org.jajuk.services.events;
+package org.jajuk.events;
 
 import java.util.Set;
 
-import org.jajuk.util.EventSubject;
 
 /**
  * GoF Observer pattern Observer
@@ -37,5 +36,5 @@ public interface Observer {
    */
   public void update(Event event);
 
-  public Set<EventSubject> getRegistrationKeys();
+  public Set<JajukEvents> getRegistrationKeys();
 }

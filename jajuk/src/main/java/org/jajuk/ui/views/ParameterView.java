@@ -69,11 +69,12 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
@@ -84,7 +85,6 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -374,7 +374,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
               return;
             }
           }
-          ObservationManager.notify(new Event(EventSubject.EVENT_CLEAR_HISTORY));
+          ObservationManager.notify(new Event(JajukEvents.EVENT_CLEAR_HISTORY));
         } else if (e.getSource() == jbResetRatings) {
           // show confirmation message if required
           if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_RESET_RATINGS)) {
@@ -389,7 +389,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             for (final Track track : TrackManager.getInstance().getTracks()) {
               track.setRate(0);
             }
-            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
           } else {
             Messages.showErrorMessage(120);
           }
@@ -767,7 +767,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       Messages.showErrorMessage(113);
     }
     // Force a full refresh (useful for catalog view for instance)
-    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
     // display a message
     InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
         InformationJPanel.INFORMATIVE);
@@ -782,9 +782,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     return Messages.getString("ParameterView.87");
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    final HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+  public Set<JajukEvents> getRegistrationKeys() {
+    final HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -814,7 +814,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // synchronize the state
         Properties details = new Properties();
         details.put(ITechnicalStrings.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE, details));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE, details));
       }
 
     };
@@ -1603,8 +1603,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final Event event) {
-    final EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+    final JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
       // Ignore this event is thrown by this view itself (to avoid loosing
       // already set options)
       if ((event.getDetails() != null)

@@ -38,16 +38,16 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukHtmlPanel;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -116,9 +116,9 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
         .getProperty(CONF_WIKIPEDIA_LANGUAGE)));
     jcbLanguage.addActionListener(this);
     // Buttons
-    ActionBase aCopy = ActionManager.getAction(JajukAction.COPY_TO_CLIPBOARD);
+    ActionBase aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
-    jbLaunchInExternalBrowser = new JButton(ActionManager.getAction(JajukAction.LAUNCH_IN_BROWSER));
+    jbLaunchInExternalBrowser = new JButton(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
     // Remove text inside the buttons
     jbLaunchInExternalBrowser.setText(null);
     jbCopy.setText(null);
@@ -176,18 +176,18 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
     ObservationManager.register(WikipediaView.this);
 
     // force event
-    update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+    update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_ZERO);
-    eventSubjectSet.add(EventSubject.EVENT_AUTHOR_CHANGED);
-    eventSubjectSet.add(EventSubject.EVENT_ALBUM_CHANGED);
-    eventSubjectSet.add(EventSubject.EVENT_TRACK_CHANGED);
-    eventSubjectSet.add(EventSubject.EVENT_PERPECTIVE_CHANGED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
+    eventSubjectSet.add(JajukEvents.EVENT_AUTHOR_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_ALBUM_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_TRACK_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_PERPECTIVE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -197,10 +197,10 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
+    JajukEvents subject = event.getSubject();
     // Make a search after a stop period
-    if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)
-        || subject.equals(EventSubject.EVENT_PERPECTIVE_CHANGED)) {
+    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)
+        || subject.equals(JajukEvents.EVENT_PERPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
       if (FIFO.getInstance().getCurrentFile() == null) {
         reset();
@@ -210,15 +210,15 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
       launchSearch(false);
     }
     // Reset the page when stopping
-    else if (subject.equals(EventSubject.EVENT_ZERO)) {
+    else if (subject.equals(JajukEvents.EVENT_ZERO)) {
       reset();
     }
     // User changed current track tags, so we have to reload
     // new author wikipedia page
-    else if (subject.equals(EventSubject.EVENT_AUTHOR_CHANGED)
-        || subject.equals(EventSubject.EVENT_ALBUM_CHANGED)
-        || subject.equals(EventSubject.EVENT_TRACK_CHANGED)) {
-      update(new Event(EventSubject.EVENT_FILE_LAUNCHED));
+    else if (subject.equals(JajukEvents.EVENT_AUTHOR_CHANGED)
+        || subject.equals(JajukEvents.EVENT_ALBUM_CHANGED)
+        || subject.equals(JajukEvents.EVENT_TRACK_CHANGED)) {
+      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
     }
   }
 

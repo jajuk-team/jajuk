@@ -47,11 +47,11 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -114,38 +114,38 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
 
     jmiMount = new JMenuItem(Messages.getString("DeviceView.8"), IconLoader.ICON_MOUNT);
     jmiMount.addActionListener(this);
-    jmiMount.setActionCommand(EventSubject.EVENT_DEVICE_MOUNT.toString());
+    jmiMount.setActionCommand(JajukEvents.EVENT_DEVICE_MOUNT.toString());
     jpmenu.add(jmiMount);
 
     jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"), IconLoader.ICON_UNMOUNT);
     jmiUnmount.addActionListener(this);
-    jmiUnmount.setActionCommand(EventSubject.EVENT_DEVICE_UNMOUNT.toString());
+    jmiUnmount.setActionCommand(JajukEvents.EVENT_DEVICE_UNMOUNT.toString());
     jpmenu.add(jmiUnmount);
 
     jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader.ICON_REFRESH);
     jmiRefresh.addActionListener(this);
-    jmiRefresh.setActionCommand(EventSubject.EVENT_DEVICE_REFRESH.toString());
+    jmiRefresh.setActionCommand(JajukEvents.EVENT_DEVICE_REFRESH.toString());
     jpmenu.add(jmiRefresh);
 
     jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader.ICON_TEST);
     jmiTest.addActionListener(this);
-    jmiTest.setActionCommand(EventSubject.EVENT_DEVICE_TEST.toString());
+    jmiTest.setActionCommand(JajukEvents.EVENT_DEVICE_TEST.toString());
     jpmenu.add(jmiTest);
 
     jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader.ICON_SYNCHRO);
     jmiSynchronize.addActionListener(this);
-    jmiSynchronize.setActionCommand(EventSubject.EVENT_DEVICE_SYNCHRO.toString());
+    jmiSynchronize.setActionCommand(JajukEvents.EVENT_DEVICE_SYNCHRO.toString());
     jpmenu.add(jmiSynchronize);
 
     jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader.ICON_DELETE);
     jmiDelete.addActionListener(this);
-    jmiDelete.setActionCommand(EventSubject.EVENT_DEVICE_DELETE.toString());
+    jmiDelete.setActionCommand(JajukEvents.EVENT_DEVICE_DELETE.toString());
     jpmenu.add(jmiDelete);
 
     jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),
         IconLoader.ICON_CONFIGURATION);
     jmiProperties.addActionListener(this);
-    jmiProperties.setActionCommand(EventSubject.EVENT_DEVICE_PROPERTIES.toString());
+    jmiProperties.setActionCommand(JajukEvents.EVENT_DEVICE_PROPERTIES.toString());
     jpmenu.add(jmiProperties);
 
     // add devices
@@ -159,12 +159,12 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     ObservationManager.register(this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_MOUNT);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_UNMOUNT);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_NEW);
-    eventSubjectSet.add(EventSubject.EVENT_DEVICE_REFRESH);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_NEW);
+    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -277,7 +277,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
   }
 
   public void actionPerformed(final ActionEvent ae) {
-    if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_NEW.toString())) {
+    if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_NEW.toString())) {
       DeviceWizard dw = new DeviceWizard();
       dw.updateWidgetsDefault();
       dw.pack();
@@ -287,33 +287,33 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     if (diSelected == null) { // test a device is selected
       return;
     }
-    if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_DELETE.toString())) {
+    if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_DELETE.toString())) {
       DeviceManager.getInstance().removeDevice(diSelected.getDevice());
       jpDevices.remove(diSelected);
       // refresh views
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_MOUNT.toString())) {
+      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_MOUNT.toString())) {
       try {
         diSelected.getDevice().mount();
       } catch (Exception e) {
         Messages.showErrorMessage(11);
       }
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_UNMOUNT.toString())) {
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_UNMOUNT.toString())) {
       try {
         diSelected.getDevice().unmount();
       } catch (Exception e) {
         Messages.showErrorMessage(12);
       }
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_PROPERTIES.toString())) {
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_PROPERTIES.toString())) {
       DeviceWizard dw = new DeviceWizard();
       dw.updateWidgets(diSelected.getDevice());
       dw.pack();
       dw.setVisible(true);
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_REFRESH.toString())) {
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_REFRESH.toString())) {
       diSelected.getDevice().refresh(true, true); // ask deep or fast scan
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_SYNCHRO.toString())) {
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_SYNCHRO.toString())) {
       diSelected.getDevice().synchronize(true);
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_DEVICE_TEST.toString())) {
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_TEST.toString())) {
       new Thread("Asynchronouse device test thread") {// test asynchronously in
         // case of delay (samba
         // pbm for ie)
@@ -326,7 +326,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
           }
         }
       }.start();
-    } else if (ae.getActionCommand().equals(EventSubject.EVENT_WIZARD.toString())) {
+    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_WIZARD.toString())) {
 
     }
   }
@@ -346,10 +346,10 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_DEVICE_MOUNT.equals(subject)
-        || EventSubject.EVENT_DEVICE_UNMOUNT.equals(subject)
-        || EventSubject.EVENT_DEVICE_REFRESH.equals(subject)) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_DEVICE_MOUNT.equals(subject)
+        || JajukEvents.EVENT_DEVICE_UNMOUNT.equals(subject)
+        || JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           Util.waiting();

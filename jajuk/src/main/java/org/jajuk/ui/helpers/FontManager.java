@@ -30,11 +30,11 @@ import javax.swing.JLabel;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -127,10 +127,10 @@ public class FontManager implements ITechnicalStrings, Observer {
    * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> subjects = new HashSet<EventSubject>(2);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> subjects = new HashSet<JajukEvents>(2);
     // Register parameter changes to check new font size
-    subjects.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+    subjects.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return subjects;
   }
 
@@ -164,8 +164,8 @@ public class FontManager implements ITechnicalStrings, Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
       // force to register again all fonts to get new sizes
       registerFonts();
     }

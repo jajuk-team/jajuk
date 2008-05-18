@@ -28,7 +28,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FilesTableModel;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
@@ -68,7 +68,7 @@ public class FilesTableView extends AbstractTableView {
         FilesTableView.super.construct();
         // File menu
         jmiFilePlayDirectory = new JMenuItem(ActionManager
-            .getAction(JajukAction.PLAY_DIRECTORY_SELECTION));
+            .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
         jmiFilePlayDirectory.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         jtable.getMenu().add(jmiFilePlayDirectory);
         // Add this generic menu item manually to ensure it's the last one in

@@ -39,11 +39,11 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -90,7 +90,7 @@ public class DeleteAction extends ActionBase {
           if (i == JOptionPane.YES_OPTION) {
             PlaylistManager.getInstance().removePlaylistFile(plf);
             // requires device refresh
-            ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
           }
         }
       }
@@ -216,6 +216,6 @@ public class DeleteAction extends ActionBase {
         }
       }.start();
     }
-    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
   }
 }

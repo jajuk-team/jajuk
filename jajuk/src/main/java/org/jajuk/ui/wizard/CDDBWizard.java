@@ -54,15 +54,15 @@ import javax.swing.event.TableModelListener;
 
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -386,7 +386,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
       if (b) {
         InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
             InformationJPanel.INFORMATIVE);
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       } else {
         InformationJPanel.getInstance().setMessage(Messages.getString("Error.155"),
             InformationJPanel.ERROR);

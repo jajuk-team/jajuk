@@ -31,9 +31,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -169,7 +169,7 @@ public class StyleManager extends ItemManager {
       properties.put(DETAIL_OLD, old);
       properties.put(DETAIL_NEW, newItem);
       // Notify interested items (like ambience manager)
-      ObservationManager.notifySync(new Event(EventSubject.EVENT_STYLE_NAME_CHANGED, properties));
+      ObservationManager.notifySync(new Event(JajukEvents.EVENT_STYLE_NAME_CHANGED, properties));
       return newItem;
     }
   }

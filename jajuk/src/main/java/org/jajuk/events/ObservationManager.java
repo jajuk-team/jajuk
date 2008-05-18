@@ -18,14 +18,13 @@
  *  $Revision$
  */
 
-package org.jajuk.services.events;
+package org.jajuk.events;
 
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -43,7 +42,7 @@ public class ObservationManager implements ITechnicalStrings {
    * Last event for a given subject (used for new objects that just registrated
    * to this subject)
    */
-  static HashMap<EventSubject, Properties> hLastEventBySubject = new HashMap<EventSubject, Properties>(
+  static HashMap<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(
       10);
 
   static volatile Vector<Event> vFIFO = new Vector<Event>(10);
@@ -82,8 +81,8 @@ public class ObservationManager implements ITechnicalStrings {
    *          component to register
    */
   public static synchronized void register(Observer observer) {
-    Set<EventSubject> eventSubjectSet = observer.getRegistrationKeys();
-    for (EventSubject subject : eventSubjectSet) {
+    Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
+    for (JajukEvents subject : eventSubjectSet) {
       Log.debug("Register: \"" + subject + "\" by: " + observer);
       observerRegistry.register(subject, observer);
     }
@@ -97,7 +96,7 @@ public class ObservationManager implements ITechnicalStrings {
    * @param jc
    *          component to deregister
    */
-  public static boolean unregister(EventSubject subject, Observer observer) {
+  public static boolean unregister(JajukEvents subject, Observer observer) {
     return observerRegistry.unregister(subject, observer);
   }
 
@@ -118,7 +117,7 @@ public class ObservationManager implements ITechnicalStrings {
    * @param subject
    */
   public static void notifySync(Event event) {
-    EventSubject subject = event.getSubject();
+    JajukEvents subject = event.getSubject();
     Log.debug("Notify: " + subject);
     // save last event
     hLastEventBySubject.put(subject, event.getDetails());
@@ -131,7 +130,7 @@ public class ObservationManager implements ITechnicalStrings {
    * @param subject
    * @return
    */
-  public static boolean containsEvent(EventSubject subject) {
+  public static boolean containsEvent(JajukEvents subject) {
     return hLastEventBySubject.containsKey(subject);
   }
 
@@ -166,7 +165,7 @@ public class ObservationManager implements ITechnicalStrings {
    * @return the detail as an object or null if the event or the detail doesn't
    *         exist
    */
-  public static Object getDetailLastOccurence(EventSubject subject, String sDetailName) {
+  public static Object getDetailLastOccurence(JajukEvents subject, String sDetailName) {
     Properties pDetails = hLastEventBySubject.get(subject);
     if (pDetails != null) {
       return pDetails.get(sDetailName);
@@ -199,7 +198,7 @@ public class ObservationManager implements ITechnicalStrings {
    *          event name
    * @return the detaisl or null there are not details
    */
-  public static Properties getDetailsLastOccurence(EventSubject subject) {
+  public static Properties getDetailsLastOccurence(JajukEvents subject) {
     return hLastEventBySubject.get(subject);
   }
 }

@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 import java.util.Properties;
 
 import org.jajuk.base.Directory;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -54,6 +54,6 @@ public class FinishAlbumAction extends ActionBase {
     FIFO.getInstance().computesPlanned(true); // update planned list
     Properties properties = new Properties();
     properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
-    ObservationManager.notify(new Event(EventSubject.EVENT_SPECIAL_MODE, properties));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_SPECIAL_MODE, properties));
   }
 }

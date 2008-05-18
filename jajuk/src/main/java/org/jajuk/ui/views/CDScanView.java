@@ -37,10 +37,10 @@ import javax.swing.JTextField;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -95,7 +95,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
               DeviceManager.getInstance().removeDevice(device);
               Messages.showErrorMessage(16);
               // refresh views
-              ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+              ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
             }
           }
           return null;

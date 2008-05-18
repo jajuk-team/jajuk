@@ -27,12 +27,12 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 
 import org.jajuk.base.File;
 import org.jajuk.base.TypeManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -136,7 +136,7 @@ public class Player implements ITechnicalStrings {
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(DETAIL_CONTENT, file);
-      ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
+      ObservationManager.notifySync(new Event(JajukEvents.EVENT_PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getAbsolutePath() + "}}", t);
       return false;
     }
@@ -193,7 +193,7 @@ public class Player implements ITechnicalStrings {
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(DETAIL_CONTENT, radio);
-      ObservationManager.notifySync(new Event(EventSubject.EVENT_PLAY_ERROR, pDetails));
+      ObservationManager.notifySync(new Event(JajukEvents.EVENT_PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + radio.getUrl() + "}}", t);
       return false;
     }
@@ -304,7 +304,7 @@ public class Player implements ITechnicalStrings {
           fVolume = 1.0f;
         }
         playerImpl.setVolume(fVolume);
-        ObservationManager.notify(new Event(EventSubject.EVENT_VOLUME_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_VOLUME_CHANGED));
       }
     } catch (Exception e) {
       Log.error(e);

@@ -41,14 +41,14 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import org.jajuk.base.Item;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
@@ -237,7 +237,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
       // Force table rebuilding
       Properties details = new Properties();
       details.put(DETAIL_CONTENT, this);
-      ObservationManager.notify(new Event(EventSubject.EVENT_VIEW_REFRESH_REQUEST, details));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_VIEW_REFRESH_REQUEST, details));
     }
   }
 

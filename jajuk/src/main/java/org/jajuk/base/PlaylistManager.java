@@ -26,9 +26,9 @@ import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.Observer;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.Observer;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -234,8 +234,8 @@ public class PlaylistManager extends ItemManager implements Observer {
    */
   public void update(Event event) {
     synchronized (getLock()) {
-      EventSubject subject = event.getSubject();
-      if (EventSubject.EVENT_FILE_NAME_CHANGED.equals(subject)) {
+      JajukEvents subject = event.getSubject();
+      if (JajukEvents.EVENT_FILE_NAME_CHANGED.equals(subject)) {
         Properties properties = event.getDetails();
         File fNew = (File) properties.get(DETAIL_NEW);
         File fileOld = (File) properties.get(DETAIL_OLD);
@@ -259,9 +259,9 @@ public class PlaylistManager extends ItemManager implements Observer {
     }
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_NAME_CHANGED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_NAME_CHANGED);
     return eventSubjectSet;
   }
 

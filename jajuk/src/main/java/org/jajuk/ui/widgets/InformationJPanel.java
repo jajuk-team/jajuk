@@ -44,15 +44,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.File;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -87,7 +87,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
-      update(new Event(EventSubject.EVENT_HEART_BEAT));
+      update(new Event(JajukEvents.EVENT_HEART_BEAT));
     }
   });
 
@@ -199,21 +199,21 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
 
     // check if some track has been launched before the view has been
     // displayed
-    update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+    update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
     // check if some errors occured before the view has been displayed
-    if (ObservationManager.containsEvent(EventSubject.EVENT_PLAY_ERROR)) {
-      update(new Event(EventSubject.EVENT_PLAY_ERROR, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_PLAY_ERROR)));
+    if (ObservationManager.containsEvent(JajukEvents.EVENT_PLAY_ERROR)) {
+      update(new Event(JajukEvents.EVENT_PLAY_ERROR, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_PLAY_ERROR)));
     }
     // Check if a track or a webradio has been launch before this view is
     // visible
     if (FIFO.getInstance().isPlayingRadio()) {
-      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
     } else {
-      update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
     }
     // register for given events
     ObservationManager.register(this);
@@ -221,15 +221,15 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     timer.start();
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_ZERO);
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_PLAY_ERROR);
-    eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAY_ERROR);
+    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 
@@ -360,11 +360,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(final Event event) {
-    final EventSubject subject = event.getSubject();
+    final JajukEvents subject = event.getSubject();
     // do not insert this subject inside the invokeLater because we have to
     // leave the awt dispatcher called inside the setMessage and THEN, sleep
     // for 2 secs.
-    if (EventSubject.EVENT_PLAY_ERROR.equals(subject)) {
+    if (JajukEvents.EVENT_PLAY_ERROR.equals(subject)) {
       try {
         // we synchronize this code to make sure error message is
         // visible all 2
@@ -415,7 +415,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
+          if (JajukEvents.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
               && !Player.isPaused()) {
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
@@ -441,8 +441,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             jsPosition.removeChangeListener(InformationJPanel.this);
             jsPosition.setValue(iPos);
             jsPosition.addChangeListener(InformationJPanel.this);
-          } else if (EventSubject.EVENT_ZERO.equals(subject)
-              || EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+          } else if (JajukEvents.EVENT_ZERO.equals(subject)
+              || JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
             setCurrentTimeMessage(0, 0);
             jsPosition.setEnabled(false);
             jsPosition.removeMouseWheelListener(InformationJPanel.this);
@@ -456,7 +456,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
             jsPosition.addMouseWheelListener(InformationJPanel.this);
             jsPosition.addChangeListener(InformationJPanel.this);
-          } else if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+          } else if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null) {
               MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
@@ -466,7 +466,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
               String sMessage = sMessageFormat.format(stArgs);
               setMessage(sMessage, InformationJPanel.INFORMATIVE);
             }
-          } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+          } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
             if (event.getDetails() == null) {
               return;
             }
@@ -475,11 +475,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
               String sMessage = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(sMessage, InformationJPanel.INFORMATIVE);
             }
-          } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+          } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
             jsPosition.setEnabled(false);
             jsPosition.removeMouseWheelListener(InformationJPanel.this);
             jsPosition.removeChangeListener(InformationJPanel.this);
-          } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+          } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
             // Avoid adding listeners twice
             if (jsPosition.getMouseWheelListeners().length == 0) {
               jsPosition.addMouseWheelListener(InformationJPanel.this);

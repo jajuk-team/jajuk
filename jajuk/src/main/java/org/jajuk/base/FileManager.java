@@ -35,11 +35,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.collections.iterators.FilterIterator;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -225,7 +225,7 @@ public class FileManager extends ItemManager implements Observer {
       // change directory reference
       dir.changeFile(fileOld, fNew);
       // Notify interested items (like history manager)
-      ObservationManager.notifySync(new Event(EventSubject.EVENT_FILE_NAME_CHANGED, properties));
+      ObservationManager.notifySync(new Event(JajukEvents.EVENT_FILE_NAME_CHANGED, properties));
       return fNew;
     }
   }
@@ -750,8 +750,8 @@ public class FileManager extends ItemManager implements Observer {
   public void update(Event event) {
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    return new HashSet<EventSubject>();
+  public Set<JajukEvents> getRegistrationKeys() {
+    return new HashSet<JajukEvents>();
   }
 
   /**

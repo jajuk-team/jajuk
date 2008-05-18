@@ -28,10 +28,10 @@ import java.util.HashMap;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -68,22 +68,22 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
           // Perform right action according to intellitype command
           switch (aCommand) {
           case JIntellitype.APPCOMMAND_MEDIA_NEXTTRACK:
-            ActionManager.getAction(JajukAction.NEXT_TRACK).perform(null);
+            ActionManager.getAction(JajukActions.NEXT_TRACK).perform(null);
             break;
           case JIntellitype.APPCOMMAND_MEDIA_PLAY_PAUSE:
-            ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK).perform(null);
+            ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK).perform(null);
             break;
           case JIntellitype.APPCOMMAND_MEDIA_PREVIOUSTRACK:
-            ActionManager.getAction(JajukAction.PREVIOUS_TRACK).perform(null);
+            ActionManager.getAction(JajukActions.PREVIOUS_TRACK).perform(null);
             break;
           case JIntellitype.APPCOMMAND_MEDIA_STOP:
-            ActionManager.getAction(JajukAction.STOP_TRACK).perform(null);
+            ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
             break;
           case JIntellitype.APPCOMMAND_VOLUME_DOWN:
-            ActionManager.getAction(JajukAction.DECREASE_VOLUME).perform(null);
+            ActionManager.getAction(JajukActions.DECREASE_VOLUME).perform(null);
             break;
           case JIntellitype.APPCOMMAND_VOLUME_UP:
-            ActionManager.getAction(JajukAction.INCREASE_VOLUME).perform(null);
+            ActionManager.getAction(JajukActions.INCREASE_VOLUME).perform(null);
             break;
           case JIntellitype.APPCOMMAND_VOLUME_MUTE:
             Log.debug("System mute");
@@ -126,7 +126,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
           } catch (Throwable e2) {
             Log.error(e2);
           } finally {
-            ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
           }
         }
       }

@@ -28,9 +28,9 @@ import javax.swing.JOptionPane;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -82,7 +82,7 @@ public class NewFolderAction extends ActionBase {
           Log.error(er);
         }
       }
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
     }
   }
 }

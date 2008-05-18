@@ -38,14 +38,14 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.File;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -99,19 +99,19 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
     ObservationManager.register(this);
     // check if a track or a webradio has already been launched
     if (FIFO.getInstance().isPlayingRadio()) {
-      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
     } else {
-      update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
     }
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_ZERO);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
     return eventSubjectSet;
   }
 
@@ -170,8 +170,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+    JajukEvents subject = event.getSubject();
+    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
       File file = FIFO.getInstance().getCurrentFile();
       if (file != null) {
         String s = "";
@@ -183,9 +183,9 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
         }
         setText(s);
       }
-    } else if (subject.equals(EventSubject.EVENT_ZERO)) {
+    } else if (subject.equals(JajukEvents.EVENT_ZERO)) {
       setText(Messages.getString("JajukWindow.18"));
-    } else if (subject.equals(EventSubject.EVENT_WEBRADIO_LAUNCHED)) {
+    } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
       WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
       if (radio != null) {
         setText(radio.getName());
@@ -204,11 +204,11 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
         iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); // current
         // width
         if (FIFO.getInstance().isPlayingRadio()) {
-          update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(EventSubject.EVENT_WEBRADIO_LAUNCHED)));
+          update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
         } else {
-          update(new Event(EventSubject.EVENT_FILE_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(EventSubject.EVENT_FILE_LAUNCHED)));
+          update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
         }
         // force redisplay
       }

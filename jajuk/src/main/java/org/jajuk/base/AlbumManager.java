@@ -32,12 +32,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 
@@ -73,9 +73,9 @@ public class AlbumManager extends ItemManager implements Observer {
     ObservationManager.register(this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -151,7 +151,7 @@ public class AlbumManager extends ItemManager implements Observer {
     // if current track album name is changed, notify it
     if (FIFO.getInstance().getCurrentFile() != null
         && FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(old)) {
-      ObservationManager.notify(new Event(EventSubject.EVENT_ALBUM_CHANGED));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_ALBUM_CHANGED));
     }
     return newItem;
   }
@@ -448,7 +448,7 @@ public class AlbumManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(Event event) {
-    if (event.getSubject() == EventSubject.EVENT_FILE_LAUNCHED) {
+    if (event.getSubject() == JajukEvents.EVENT_FILE_LAUNCHED) {
       // Compute album max rating every 10 tracks launches
       if (comp % 10 == 0) {
         refreshMaxRating();

@@ -31,15 +31,15 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -450,7 +450,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       // Actual refresh
       refreshCommand((i == Device.OPTION_REFRESH_DEEP), true);
       // notify views to refresh
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       // cleanup logical items
       TrackManager.getInstance().cleanup();
       StyleManager.getInstance().cleanup();
@@ -514,9 +514,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     bMounted = true;
     // notify views to refresh if needed
     if (bUIRefresh) {
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_MOUNT));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_MOUNT));
     }
-    ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
   }
 
   /**
@@ -1034,7 +1034,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     }
     bMounted = false;
     if (bUIRefresh) {
-      ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_UNMOUNT));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_UNMOUNT));
     }
   }
 }

@@ -36,7 +36,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.AlbumsTableModel;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
@@ -80,9 +80,9 @@ public class AlbumsTableView extends AbstractTableView {
       public Object construct() {
         AlbumsTableView.super.construct();
         JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
-            .getAction(JajukAction.SHOW_ALBUM_DETAILS));
+            .getAction(JajukActions.SHOW_ALBUM_DETAILS));
         jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-        JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukAction.CREATE_REPORT));
+        JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
         jmiReport.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
         // Add this generic menu item manually to ensure it's the last one in
         // the list for GUI reasons

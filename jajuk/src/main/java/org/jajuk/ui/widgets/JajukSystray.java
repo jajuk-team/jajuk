@@ -20,12 +20,12 @@
 
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukAction.NEXT_ALBUM;
-import static org.jajuk.ui.actions.JajukAction.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukAction.PLAY_PAUSE_TRACK;
-import static org.jajuk.ui.actions.JajukAction.PREVIOUS_ALBUM;
-import static org.jajuk.ui.actions.JajukAction.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukAction.STOP_TRACK;
+import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
+import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.JXTrayIcon;
 import ext.SliderMenuItem;
 
@@ -60,21 +60,21 @@ import javax.swing.event.ChangeEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -139,7 +139,7 @@ public class JajukSystray extends CommandJPanel {
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
-      update(new Event(EventSubject.EVENT_HEART_BEAT));
+      update(new Event(JajukEvents.EVENT_HEART_BEAT));
     }
   });
 
@@ -182,28 +182,28 @@ public class JajukSystray extends CommandJPanel {
     stray = SystemTray.getSystemTray();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
 
-    jmiExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
+    jmiExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
 
-    jmiSlimbar = new JMenuItem(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    jmiSlimbar = new JMenuItem(ActionManager.getAction(JajukActions.SLIM_JAJUK));
 
     // force icon to be display in 16x16
-    jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukAction.MUTE_STATE));
-    jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
+    jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukActions.MUTE_STATE));
+    jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
 
-    jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
-    jmiDJ = new SizedJMenuItem(ActionManager.getAction(JajukAction.DJ));
-    jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
-    jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
+    jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
+    jmiDJ = new SizedJMenuItem(ActionManager.getAction(JajukActions.DJ));
+    jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
+    jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
 
     jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
     jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
     jcbmiShowBalloon.addActionListener(this);
     jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
-    jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukAction.PLAY_PAUSE_TRACK));
-    jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukAction.STOP_TRACK));
-    jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukAction.PREVIOUS_TRACK));
-    jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukAction.NEXT_TRACK));
+    jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK));
+    jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukActions.STOP_TRACK));
+    jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukActions.PREVIOUS_TRACK));
+    jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));
 
     jsPosition = new SliderMenuItem(0, 100, 0);
     jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
@@ -345,32 +345,32 @@ public class JajukSystray extends CommandJPanel {
     // check if a file has been already started
     if (FIFO.getInstance().isPlayingRadio()) {
       // update initial state
-      update(new Event(EventSubject.EVENT_WEBRADIO_LAUNCHED));
+      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
       // update initial state
-      update(new Event(EventSubject.EVENT_PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(EventSubject.EVENT_PLAYER_PLAY)));
+      update(new Event(JajukEvents.EVENT_PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.EVENT_PLAYER_PLAY)));
     } else {
-      update(new Event(EventSubject.EVENT_PLAYER_STOP));
+      update(new Event(JajukEvents.EVENT_PLAYER_STOP));
     }
 
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_ZERO);
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_PLAY);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(EventSubject.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(EventSubject.EVENT_MUTE_STATE);
-    eventSubjectSet.add(EventSubject.EVENT_HEART_BEAT);
-    eventSubjectSet.add(EventSubject.EVENT_VOLUME_CHANGED);
-    eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_CHANGE);
-    eventSubjectSet.add(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE);
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(EventSubject.EVENT_WEBRADIO_LAUNCHED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PLAY);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
+    eventSubjectSet.add(JajukEvents.EVENT_HEART_BEAT);
+    eventSubjectSet.add(JajukEvents.EVENT_VOLUME_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCES_CHANGE);
+    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE);
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -388,13 +388,13 @@ public class JajukSystray extends CommandJPanel {
         // synchronize the state
         Properties details = new Properties();
         details.put(DETAIL_ORIGIN, this);
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE, details));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE, details));
       }
 
     } catch (Exception e2) {
       Log.error(e2);
     } finally {
-      ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
     }
   }
 
@@ -406,8 +406,8 @@ public class JajukSystray extends CommandJPanel {
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        EventSubject subject = event.getSubject();
-        if (EventSubject.EVENT_FILE_LAUNCHED.equals(subject)) {
+        JajukEvents subject = event.getSubject();
+        if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
           // remove and re-add listener to make sure not to add it
           // twice
           jsPosition.removeMouseWheelListener(JajukSystray.this);
@@ -434,13 +434,13 @@ public class JajukSystray extends CommandJPanel {
                 TrayIcon.MessageType.INFO);
           }
 
-        } else if (EventSubject.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+        } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
           WebRadio radio = FIFO.getInstance().getCurrentRadio();
           // Enable webradio navigation actions
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-        } else if (EventSubject.EVENT_PLAYER_STOP.equals(subject)) {
+        } else if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
           boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
@@ -453,7 +453,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.setEnabled(false);
           jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
-        } else if (EventSubject.EVENT_ZERO.equals(subject)) {
+        } else if (JajukEvents.EVENT_ZERO.equals(subject)) {
           jmiPlayPause.setEnabled(false);
           jmiStop.setEnabled(false);
           jmiNext.setEnabled(false);
@@ -463,7 +463,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.setEnabled(false);
           jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
-        } else if (EventSubject.EVENT_PLAYER_PLAY.equals(subject)) {
+        } else if (JajukEvents.EVENT_PLAYER_PLAY.equals(subject)) {
           jsPosition.removeMouseWheelListener(JajukSystray.this);
           jsPosition.addMouseWheelListener(JajukSystray.this);
           jsPosition.removeChangeListener(JajukSystray.this);
@@ -473,14 +473,14 @@ public class JajukSystray extends CommandJPanel {
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
-        } else if (EventSubject.EVENT_PLAYER_PAUSE.equals(subject)) {
+        } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
           // Apply basic CommandJPanel actions
           JajukSystray.super.update(event);
           // disable position
           jsPosition.setEnabled(false);
           jsPosition.removeMouseWheelListener(JajukSystray.this);
           jsPosition.removeChangeListener(JajukSystray.this);
-        } else if (EventSubject.EVENT_PLAYER_RESUME.equals(subject)) {
+        } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
           // Apply basic CommandJPanel actions
           JajukSystray.super.update(event);
           // disable position
@@ -492,9 +492,9 @@ public class JajukSystray extends CommandJPanel {
             jsPosition.addChangeListener(JajukSystray.this);
           }
           jsPosition.setEnabled(true);
-        } else if (EventSubject.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
+        } else if (JajukEvents.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
           JajukSystray.super.update(event);
-        } else if (EventSubject.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
+        } else if (JajukEvents.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
             && !Player.isPaused()) {
           int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
           // Make sure to enable the slider
@@ -514,8 +514,8 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.removeChangeListener(JajukSystray.this);
           jsPosition.setValue(iPos);
           jsPosition.addChangeListener(JajukSystray.this);
-        } else if (EventSubject.EVENT_AMBIENCES_CHANGE.equals(subject)
-            || EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
+        } else if (JajukEvents.EVENT_AMBIENCES_CHANGE.equals(subject)
+            || JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
           Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
           if (ambience != null) {
             jmAmbience.setText(Messages.getString("JajukWindow.36") + " "
@@ -524,7 +524,7 @@ public class JajukSystray extends CommandJPanel {
             jmAmbience.setText(Messages.getString("JajukWindow.37"));
           }
           populateAmbiences();
-        } else if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+        } else if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
           jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
         }
       }
@@ -637,7 +637,7 @@ public class JajukSystray extends CommandJPanel {
           ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
         }
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-        ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
       }
     };
     // Remove all item

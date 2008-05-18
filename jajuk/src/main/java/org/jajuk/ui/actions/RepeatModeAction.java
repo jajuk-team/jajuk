@@ -21,14 +21,14 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -71,6 +71,6 @@ public class RepeatModeAction extends ActionBase {
     // computes planned tracks
     FIFO.getInstance().computesPlanned(false);
     // Refresh Queue View
-    ObservationManager.notify(new Event(EventSubject.EVENT_QUEUE_NEED_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
   }
 }

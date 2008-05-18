@@ -22,7 +22,7 @@ package org.jajuk.ui.actions;
 /**
  * This enum contains a constant for all actions present in Jajuk. <p/>
  */
-public enum JajukAction {
+public enum JajukActions {
 
   /**
    * Used for application exit.

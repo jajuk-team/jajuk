@@ -67,19 +67,20 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -94,7 +95,6 @@ import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -879,7 +879,7 @@ public class Main implements ITechnicalStrings {
               final Properties pDetail = new Properties();
               pDetail.put(DETAIL_CONTENT, fileToPlay);
               pDetail.put(DETAIL_REASON, "010");
-              ObservationManager.notify(new Event(EventSubject.EVENT_PLAY_ERROR, pDetail));
+              ObservationManager.notify(new Event(JajukEvents.EVENT_PLAY_ERROR, pDetail));
               FIFO.setFirstFile(false); // no more first file
             }
           }
@@ -1103,7 +1103,7 @@ public class Main implements ITechnicalStrings {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {
-          ActionManager.getAction(JajukAction.SLIM_JAJUK).perform(null);
+          ActionManager.getAction(JajukActions.SLIM_JAJUK).perform(null);
         } catch (Exception e) {
           Log.error(e);
         }

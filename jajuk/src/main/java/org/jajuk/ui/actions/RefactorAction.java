@@ -29,11 +29,11 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -86,7 +86,7 @@ public class RefactorAction implements ITechnicalStrings {
       public void run() {
         Util.waiting();
         refactor();
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       }
     }.start();
     Util.stopWaiting();

@@ -38,11 +38,11 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -76,9 +76,9 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
     ObservationManager.register(this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_AMBIENCE_REMOVED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCE_REMOVED);
     return eventSubjectSet;
   }
 
@@ -163,7 +163,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
       ConfigurationManager.setProperty(CONF_DEFAULT_DJ, "");
     }
     // alert command panel
-    ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_DJS_CHANGE));
   }
 
   /**
@@ -174,7 +174,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
   public void register(DigitalDJ dj) {
     djs.put(dj.getID(), dj);
     // alert command panel
-    ObservationManager.notify(new Event(EventSubject.EVENT_DJS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_DJS_CHANGE));
   }
 
   /*
@@ -183,7 +183,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(Event event) {
-    if (EventSubject.EVENT_AMBIENCE_REMOVED.equals(event.getSubject())) {
+    if (JajukEvents.EVENT_AMBIENCE_REMOVED.equals(event.getSubject())) {
       Properties properties = event.getDetails();
       String sID = (String) properties.get(DETAIL_CONTENT);
       for (DigitalDJ dj : djs.values()) {

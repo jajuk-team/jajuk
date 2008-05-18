@@ -28,10 +28,10 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -65,7 +65,7 @@ public class RefreshDirectoryAction extends ActionBase {
         InformationJPanel.getInstance().setMessage(
             Messages.getString("ActionRefresh.1") + ": " + dir.getName(), 1);
         DirectoryManager.refreshDirectory(dir);
-        ObservationManager.notify(new Event(EventSubject.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         InformationJPanel.getInstance().setMessage(Messages.getString("ActionRefresh.2"), 1);
         Util.stopWaiting();
       }

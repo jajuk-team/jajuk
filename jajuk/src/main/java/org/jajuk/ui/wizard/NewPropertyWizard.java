@@ -40,9 +40,9 @@ import javax.swing.JTextField;
 
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.util.EventSubject;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXDatePicker;
@@ -217,7 +217,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
       im.applyNewProperty(meta);
       Properties properties = new Properties();
       properties.put(DETAIL_CONTENT, sProperty);
-      Event event = new Event(EventSubject.EVENT_CUSTOM_PROPERTIES_ADD, properties);
+      Event event = new Event(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD, properties);
       ObservationManager.notify(event);
       dispose();
     } else if (ae.getSource().equals(this.okp.getCancelButton())) {

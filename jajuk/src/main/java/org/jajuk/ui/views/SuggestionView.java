@@ -49,9 +49,10 @@ import javax.swing.event.ChangeListener;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.File;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
@@ -60,7 +61,6 @@ import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 import org.jajuk.util.Util;
@@ -174,11 +174,11 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     ObservationManager.register(this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(EventSubject.EVENT_COVER_REFRESH);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.EVENT_COVER_REFRESH);
     return eventSubjectSet;
   }
 
@@ -392,8 +392,8 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (subject.equals(EventSubject.EVENT_FILE_LAUNCHED)) {
+    JajukEvents subject = event.getSubject();
+    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
       comp++;
       // Change local collection suggestions every 10 track plays
       if (comp % 10 == 0) {
@@ -401,11 +401,11 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       }
       // update last.fm panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(EventSubject.EVENT_PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
+    } else if (subject.equals(JajukEvents.EVENT_PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
       // The show/hide unmounted may have changed, refresh local
       // collection panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(EventSubject.EVENT_COVER_REFRESH)) {
+    } else if (subject.equals(JajukEvents.EVENT_COVER_REFRESH)) {
       refreshLocalCollectionTabs(false);
     }
   }

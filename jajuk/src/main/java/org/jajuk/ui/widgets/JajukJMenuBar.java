@@ -19,22 +19,22 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukAction.CONFIGURE_AMBIENCES;
-import static org.jajuk.ui.actions.JajukAction.CONFIGURE_DJS;
-import static org.jajuk.ui.actions.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.actions.JajukAction.CUSTOM_PROPERTIES_ADD;
-import static org.jajuk.ui.actions.JajukAction.CUSTOM_PROPERTIES_REMOVE;
-import static org.jajuk.ui.actions.JajukAction.HELP_REQUIRED;
-import static org.jajuk.ui.actions.JajukAction.INTRO_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.actions.JajukAction.OPTIONS;
-import static org.jajuk.ui.actions.JajukAction.QUALITY;
-import static org.jajuk.ui.actions.JajukAction.REPEAT_MODE_STATUS_CHANGE;
-import static org.jajuk.ui.actions.JajukAction.SHOW_ABOUT;
-import static org.jajuk.ui.actions.JajukAction.SHOW_TRACES;
-import static org.jajuk.ui.actions.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.actions.JajukAction.SIMPLE_DEVICE_WIZARD;
-import static org.jajuk.ui.actions.JajukAction.TIP_OF_THE_DAY;
-import static org.jajuk.ui.actions.JajukAction.VIEW_RESTORE_DEFAULTS;
+import static org.jajuk.ui.actions.JajukActions.CONFIGURE_AMBIENCES;
+import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
+import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_ADD;
+import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_REMOVE;
+import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
+import static org.jajuk.ui.actions.JajukActions.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.OPTIONS;
+import static org.jajuk.ui.actions.JajukActions.QUALITY;
+import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
+import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
+import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
+import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
+import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
 
 import com.sun.java.help.impl.SwingWorker;
 
@@ -57,20 +57,20 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.alarm.Alarm;
 import org.jajuk.services.alarm.AlarmManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
-import org.jajuk.ui.actions.JajukAction;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -182,7 +182,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     // File menu
     file = new JMenu(Messages.getString("JajukJMenuBar.0"));
 
-    jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
+    jmiFileExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
     file.add(jmiFileExit);
 
     // Properties menu
@@ -196,7 +196,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     views = new JMenu(Messages.getString("JajukJMenuBar.8"));
     jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
     jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(ActionManager
-        .getAction(JajukAction.ALL_VIEW_RESTORE_DEFAULTS));
+        .getAction(JajukActions.ALL_VIEW_RESTORE_DEFAULTS));
 
     views.add(jmiRestoreDefaultViews);
     views.add(jmiRestoreDefaultViewsAllPerpsectives);
@@ -246,10 +246,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
     // Smart Menu
     smart = new JMenu(Messages.getString("JajukJMenuBar.29"));
-    jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
-    jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
-    jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
-    jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
+    jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
+    jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
+    jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
+    jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
 
     smart.add(jmiShuffle);
     smart.add(jmiBestof);
@@ -259,8 +259,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     tools.addMouseMotionListener(this);
-    jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukAction.FIND_DUPLICATE_FILES));
-    jmialarmClock = new JMenuItem(ActionManager.getAction(JajukAction.ALARM_CLOCK));
+    jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES));
+    jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
     jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
     jmReminders.addMouseMotionListener(this);
     for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
@@ -279,12 +279,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     // Overwrite default icon
     jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16x16);
     jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
-    jmiWebradios = new JMenuItem(ActionManager.getAction(JajukAction.CONFIGURE_WEBRADIOS));
+    jmiWebradios = new JMenuItem(ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS));
     jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 
-    jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukAction.UNMOUNTED));
+    jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukActions.UNMOUNTED));
     jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
     jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
 
@@ -295,7 +295,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
         ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
             .isSelected()));
         // force parameter view to take this into account
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
       }
     });
 
@@ -307,7 +307,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
         ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
             .toString(jcbSyncTableTree.isSelected()));
         // force parameter view to take this into account
-        ObservationManager.notify(new Event(EventSubject.EVENT_PARAMETERS_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
       }
     });
 
@@ -329,7 +329,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
     jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
     jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
-    jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukAction.CHECK_FOR_UPDATES));
+    jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukActions.CHECK_FOR_UPDATES));
     jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
 
     help.add(jmiHelp);
@@ -354,7 +354,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     mainmenu.add(configuration);
     mainmenu.add(help);
 
-    jbSlim = new JajukButton(ActionManager.getAction(JajukAction.SLIM_JAJUK));
+    jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
 
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
@@ -397,9 +397,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     return jjmb;
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_PARAMETERS_CHANGE);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -438,7 +438,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    if (EventSubject.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
+    if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
       jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
       jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));

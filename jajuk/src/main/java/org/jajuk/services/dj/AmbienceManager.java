@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision:3266 $
  */
 
 package org.jajuk.services.dj;
@@ -34,11 +34,11 @@ import java.util.StringTokenizer;
 import org.jajuk.Main;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.services.events.Event;
-import org.jajuk.services.events.ObservationManager;
-import org.jajuk.services.events.Observer;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.EventSubject;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
 
@@ -60,9 +60,9 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
     ObservationManager.register(this);
   }
 
-  public Set<EventSubject> getRegistrationKeys() {
-    HashSet<EventSubject> eventSubjectSet = new HashSet<EventSubject>();
-    eventSubjectSet.add(EventSubject.EVENT_STYLE_NAME_CHANGED);
+  public Set<JajukEvents> getRegistrationKeys() {
+    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EVENT_STYLE_NAME_CHANGED);
     return eventSubjectSet;
   }
 
@@ -177,8 +177,8 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    EventSubject subject = event.getSubject();
-    if (EventSubject.EVENT_STYLE_NAME_CHANGED.equals(subject)) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EVENT_STYLE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
       Style old = (Style) properties.get(DETAIL_OLD);
       Style newStyle = (Style) properties.get(DETAIL_NEW);
@@ -231,7 +231,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
     // Propagate the event
     Properties properties = new Properties();
     properties.put(DETAIL_CONTENT, sAmbienceID);
-    ObservationManager.notify(new Event(EventSubject.EVENT_AMBIENCE_REMOVED, properties));
+    ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCE_REMOVED, properties));
   }
 
   /**
