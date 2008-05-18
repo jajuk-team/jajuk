@@ -391,6 +391,8 @@ public interface ITechnicalStrings {
   String TYPE_PROPERTY_TECH_DESC_RADIO = "radio";
 
   String TYPE_PROPERTY_TECH_DESC_VIDEO = "Video steam";
+  
+  String TYPE_PROPERTY_TECH_WAVPACK = "wv";
 
   // Devices sync mode
   String DEVICE_SYNCHRO_MODE_BI = "bi";
@@ -460,6 +462,7 @@ public interface ITechnicalStrings {
   String EXT_MOV = "mov";
   String EXT_OGM = "ogm";
   String EXT_MP4 = "mp4";
+  String EXT_WV = "wv";
 
   // details keys
   String DETAIL_CURRENT_FILE_ID = "current file id";

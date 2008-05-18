@@ -302,7 +302,7 @@ public class TypeManager extends ItemManager {
     type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
     type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ogg_16x16.png")
         .toExternalForm());
-    // Wave
+    // Wav
     type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV,
         Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
@@ -389,14 +389,6 @@ public class TypeManager extends ItemManager {
     type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_ape_16x16.png")
         .toExternalForm());
     // MPC
-    type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), EXT_MPC,
-        Class.forName(PLAYER_IMPL_MPLAYER), null);
-    type.setProperty(XML_TYPE_IS_MUSIC, true);
-    type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MPC);
-    // Change the MPC icon here if you find one
-    type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_mp3_16x16.png")
-        .toExternalForm());
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), EXT_MPPLUS,
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
@@ -485,6 +477,15 @@ public class TypeManager extends ItemManager {
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
     type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_video_16x16.png")
+        .toExternalForm());
+    // WavPack
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.wavpack"), EXT_WV,
+        Class.forName(PLAYER_IMPL_MPLAYER), null);
+    type.setProperty(XML_TYPE_IS_MUSIC, true);
+    type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
+    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_WAVPACK);
+    // Official logo contains text and doesn't display well in 16x16, take wav logo 
+    type.setProperty(XML_TYPE_ICON, Util.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
   }
 
