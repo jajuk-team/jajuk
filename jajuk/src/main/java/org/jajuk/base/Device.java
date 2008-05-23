@@ -59,7 +59,7 @@ import org.xml.sax.Attributes;
  * <p>
  * Physical item
  */
-public class Device extends PhysicalItem implements ITechnicalStrings, Comparable<Object> {
+public class Device extends PhysicalItem implements ITechnicalStrings, Comparable<Device> {
 
   private static final long serialVersionUID = 1L;
 
@@ -210,8 +210,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    *          device to be compared
    * @return comparaison result
    */
-  public int compareTo(final Object o) {
-    final Device otherDevice = (Device) o;
+  public int compareTo(final Device otherDevice) {
     return getName().compareToIgnoreCase(otherDevice.getName());
   }
 
