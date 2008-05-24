@@ -136,7 +136,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Cross-Fade test
             if (!bFading && iFadeDuration > 0 && lDuration > 0
             // can be null before getting length
-                && lTime > (lDuration - iFadeDuration)) {
+                && lTime > (lDuration - iFadeDuration)
+                // do not fade if the track is very short
+                && (lTime > 3 * iFadeDuration)) {
               bFading = true;
               fadingVolume = fVolume;
               // force a finished (that doesn't stop but only
