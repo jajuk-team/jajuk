@@ -25,9 +25,14 @@ import ext.SwingWorker;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -108,6 +113,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jtree = new JXTree(top);
     jtree.putClientProperty("JTree.lineStyle", "Angled");
     jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+    setKeystrokes();
     return jtree;
   }
 
@@ -148,6 +154,28 @@ public abstract class AbstractTreeView extends ViewAdapter {
   abstract void populateTree();
 
   abstract void expand();
+  
+  /**
+   * Add keystroke support on the tree
+   */
+  private void setKeystrokes() {
+    jtree.putClientProperty(DETAIL_SELECTION, alSelected);
+    InputMap inputMap = jtree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    ActionMap actionMap = jtree.getActionMap();
+
+    // Delete
+    Action action = ActionManager.getAction(JajukActions.DELETE);
+    inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+    actionMap.put("delete", action);
+    // Ctrl C
+    action = ActionManager.getAction(JajukActions.COPY);
+    inputMap.put(KeyStroke.getKeyStroke("ctrl C"), "copy");
+    actionMap.put("copy", action);
+    // Ctrl V
+    action = ActionManager.getAction(JajukActions.PASTE);
+    inputMap.put(KeyStroke.getKeyStroke("ctrl V"), "paste");
+    actionMap.put("paste", action);
+  }
 
   public void update(Event event) {
     final JajukEvents subject = event.getSubject();

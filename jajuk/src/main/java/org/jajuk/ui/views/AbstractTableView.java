@@ -35,14 +35,19 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -280,6 +285,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     initTable(); // perform type-specific init
     // Start filtering thread
     filteringThread.start();
+    //Register keystrokes
+    setKeystrokes();
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -425,6 +432,20 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         }
       }
     });
+  }
+  
+   /**
+   * Add keystroke support on the tree
+   */
+  private void setKeystrokes() {
+    jtable.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    InputMap inputMap = jtable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    ActionMap actionMap = jtable.getActionMap();
+
+    // Delete
+    Action action = ActionManager.getAction(JajukActions.DELETE);
+    inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+    actionMap.put("delete", action);
   }
 
   /** Fill the table */
