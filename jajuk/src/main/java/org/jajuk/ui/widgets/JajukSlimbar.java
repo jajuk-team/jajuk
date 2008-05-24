@@ -154,7 +154,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
   private MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
     public void mouseDragged(MouseEvent e) {
       Point point = e.getLocationOnScreen();
-      // compute coordonates of the event relative to the frame, not the screen
+      // compute coordonnates of the event relative to the frame, not the screen
       // so we can compensate the frame size to avoid it to jump when applying
       // the new location
       Point relativePoint = SwingUtilities.convertPoint(((JComponent) e.getSource()).getParent(),
@@ -398,7 +398,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       rating = Messages.getString("IncRateAction.0");
     } else if (file != null && !FIFO.isStopped()) {
       title = Util.buildTitle(FIFO.getInstance().getCurrentFile());
-      rating = "" + FIFO.getInstance().getCurrentFile().getTrack().getRate();
+      rating = Long.toString(FIFO.getInstance().getCurrentFile().getTrack().getRate());
     } else {
       title = Messages.getString("JajukWindow.18");
       rating = Messages.getString("IncRateAction.0");
@@ -479,6 +479,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
+    eventSubjectSet.add(JajukEvents.EVENT_RATE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -523,6 +524,9 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
       ActionManager.getAction(NEXT_TRACK).setEnabled(true);
       ActionManager.getAction(STOP_TRACK).setEnabled(true);
+    } else if (JajukEvents.EVENT_RATE_CHANGED.equals(event.getSubject())) {
+      // Update rate button tooltip
+      updateCurrentTitle();
     }
   }
 
