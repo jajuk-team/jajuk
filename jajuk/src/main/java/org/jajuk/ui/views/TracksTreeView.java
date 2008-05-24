@@ -913,54 +913,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.Observer#update(java.lang.String)
-   */
-  public void update(Event event) {
-    JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_DEVICE_MOUNT)
-        || subject.equals(JajukEvents.EVENT_DEVICE_UNMOUNT)) {
-      SwingWorker sw = new SwingWorker() {
-        public Object construct() {
-          populateTree();
-          return null;
-        }
-
-        public void finished() {
-          SwingUtilities.updateComponentTreeUI(jtree);
-          expand();
-          int i = jspTree.getVerticalScrollBar().getValue();
-          jspTree.getVerticalScrollBar().setValue(i);
-        }
-      };
-      sw.start();
-    } else if (subject.equals(JajukEvents.EVENT_DEVICE_REFRESH)) {
-      SwingWorker sw = new SwingWorker() {
-        public Object construct() {
-          populateTree();
-          return null;
-        }
-
-        public void finished() {
-          SwingUtilities.updateComponentTreeUI(jtree);
-          expand();
-          int i = jspTree.getVerticalScrollBar().getValue();
-          jspTree.getVerticalScrollBar().setValue(i);
-        }
-      };
-      sw.start();
-    }
-    // Make sure to refresh cells (usefull to remove highliters for ie)
-    repaint();
-  }
-
-  /**
+   /**
    * Manages auto-expand
    * 
    */
-  public void expand() {
+  void expand() {
     // expand all
     for (int i = 0; i < jtree.getRowCount(); i++) {
       Object o = jtree.getPathForRow(i).getLastPathComponent();

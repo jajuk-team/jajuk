@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import java.awt.Component;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
@@ -46,7 +44,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
@@ -144,10 +141,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiPlaylistFilePaste;
 
-  /**
-   * Used to differentiate user action tree collapse from code tree colapse*
-   */
-  private boolean bAutoCollapse = false;
+
 
   /*
    * (non-Javadoc)
@@ -920,39 +914,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.Observer#update(java.lang.String)
-   */
-
-  public void update(Event event) {
-    final JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_DEVICE_MOUNT)
-        || subject.equals(JajukEvents.EVENT_DEVICE_UNMOUNT)
-        || subject.equals(JajukEvents.EVENT_DEVICE_REFRESH)) {
-      SwingWorker sw = new SwingWorker() {
-        @Override
-        public Object construct() {
-          populateTree();
-          return null;
-        }
-
-        @Override
-        public void finished() {
-          SwingUtilities.updateComponentTreeUI(jtree);
-          bAutoCollapse = true;
-          expand();
-          bAutoCollapse = false;
-          int i = jspTree.getVerticalScrollBar().getValue();
-          jspTree.getVerticalScrollBar().setValue(i);
-        }
-      };
-      sw.start();
-    }
-  }
-
-  /**
+   /**
    * Manages auto-expand Expand behavior is:
    * <p>
    * At startup, tree expand state is the same that the one kept at last session
@@ -965,7 +927,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * When unmounting a device from the tree, the device node is collapsed
    * </p>
    */
-  private void expand() {
+  void expand() {
     // begin by expanding all needed devices and directory, only after,
     // collapse unmounted devices if required
     for (int i = 0; i < jtree.getRowCount(); i++) {

@@ -20,17 +20,22 @@
 
 package org.jajuk.ui.views;
 
+import ext.SwingWorker;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Item;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jdesktop.swingx.JXTree;
@@ -91,6 +96,14 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   JMenuItem jmiCDDBWizard;
 
+  /** Jtree scroller position* */
+  int pos;
+  
+  /**
+   * Used to differentiate user action tree collapse from code tree colapse*
+   */
+  boolean bAutoCollapse = false;
+
   protected JTree createTree() {
     jtree = new JXTree(top);
     jtree.putClientProperty("JTree.lineStyle", "Angled");
@@ -130,6 +143,46 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiReport.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION, alSelected);
+  }
+
+  abstract void populateTree();
+
+  abstract void expand();
+
+  public void update(Event event) {
+    final JajukEvents subject = event.getSubject();
+    if (subject.equals(JajukEvents.EVENT_DEVICE_MOUNT)
+        || subject.equals(JajukEvents.EVENT_DEVICE_UNMOUNT)
+        || subject.equals(JajukEvents.EVENT_DEVICE_REFRESH)) {
+      SwingWorker sw = new SwingWorker() {
+        @Override
+        public Object construct() {
+          pos = jspTree.getVerticalScrollBar().getValue();
+          populateTree();
+          return null;
+        }
+
+        @Override
+        public void finished() {
+          SwingUtilities.updateComponentTreeUI(jtree);
+          bAutoCollapse = true;
+          expand();
+          bAutoCollapse = false;
+          // Reset last position in tree
+          // The scrollbar must be set after current EDT work to be effective,
+          // so queue it
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              jspTree.getVerticalScrollBar().setValue(pos);
+            }
+          });
+
+        }
+      };
+      sw.start();
+      // Make sure to refresh cells (useful to remove highlighters for ie)
+      repaint();
+    }
   }
 
 }
