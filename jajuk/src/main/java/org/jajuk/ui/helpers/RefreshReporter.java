@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.util;
+package org.jajuk.ui.helpers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +28,9 @@ import javax.swing.Timer;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.ui.wizard.RefreshDialog;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.Messages;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -40,6 +43,8 @@ public class RefreshReporter {
 
   // Refresh dialog
   private RefreshDialog rdialog;
+  
+  private int progress = 0; 
 
   private int dirTotal = 0;
 
@@ -109,7 +114,10 @@ public class RefreshReporter {
     if (rdialog != null) {
       rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ').append(
           dir.getRelativePath()).toString());
-      int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
+      progress = 30 + (int) (70 * (float) dirCount / dirTotal);
+      if (progress > 100){
+        progress = 100;
+      }
       rdialog.setProgress(progress);
     }
     dirCount++;
@@ -144,7 +152,6 @@ public class RefreshReporter {
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
-      int progress = 30 + (int) (70 * (float) dirCount / dirTotal);
       String sTitle = Messages.getString("RefreshDialog.2") + " " + device.getName() + " ("
           + progress + " %)";
       if (!sTitle.equals(rdialog.getTitle())) {
