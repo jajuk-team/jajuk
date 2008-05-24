@@ -20,7 +20,6 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -54,7 +53,7 @@ public class DeleteAction extends ActionBase {
 
   DeleteAction() {
     super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, KeyStroke.getKeyStroke(
-        KeyEvent.VK_DELETE, 1, true), true, false);
+        "DELETE"), true, false);
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }
 
