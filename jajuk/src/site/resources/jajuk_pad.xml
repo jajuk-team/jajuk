@@ -34,9 +34,9 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
-		<Program_Version>1.6</Program_Version>
+		<Program_Version>1.6.1</Program_Version>
 		<Program_Release_Month>05</Program_Release_Month>
-		<Program_Release_Day>12</Program_Release_Day>
+		<Program_Release_Day>25</Program_Release_Day>
 		<Program_Release_Year>2008</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
@@ -76,11 +76,11 @@
 	<Program_Descriptions>
 		<English>
 			<Keywords>java,jukebox,mp3,ogg,music,collection,player</Keywords>
-			<Char_Desc_45>Jajuk is a Java music organizer</Char_Desc_45>
-			<Char_Desc_80>Jajuk is a Java music organizer for all platforms</Char_Desc_80>
-			<Char_Desc_250>Jajuk is a Java music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections.</Char_Desc_250>
-			<Char_Desc_450>Jajuk is a Java music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk main principles are maximum features, maximum portability and integration: 100% pure Java and maximum usability</Char_Desc_450>
-			<Char_Desc_2000>Jajuk is a Java music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk is a Free Software published under GPL license. Jajuk main principles are :     * Maximum features: Jajuk is made firstly for advanced users looking for powerful functionalities     * Maximum portability and desktop integration     * Maximum usability: Jajuk is designed to be intuitive, fast and provide multiple ways to perform the same operation</Char_Desc_2000>
+			<Char_Desc_45>Jajuk is a powerful music organizer</Char_Desc_45>
+			<Char_Desc_80>Jajuk is a powerful music organizer for all platforms</Char_Desc_80>
+			<Char_Desc_250>Jajuk is a powerful music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections.</Char_Desc_250>
+			<Char_Desc_450>Jajuk is a powerful music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk main principles are maximum features, maximum portability and integration: 100% pure Java and maximum usability</Char_Desc_450>
+			<Char_Desc_2000>Jajuk is a powerful music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk is a Free Software published under GPL license. Jajuk main principles are :     * Maximum features: Jajuk is made firstly for advanced users looking for powerful functionalities     * Maximum portability and desktop integration     * Maximum usability: Jajuk is designed to be intuitive, fast and provide multiple ways to perform the same operation</Char_Desc_2000>
 		</English>
 	</Program_Descriptions>
 	<Web_Info>
@@ -92,7 +92,7 @@
 			<Application_XML_File_URL>http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.6-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.6.1-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
