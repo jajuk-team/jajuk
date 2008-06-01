@@ -2129,7 +2129,7 @@ public class Util implements ITechnicalStrings {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
       if (perspective != null) {
-        Log.debug("** Set cursor: " + currentCursor);
+        //Log.debug("** Set cursor: " + currentCursor);
         container = perspective.getContentPane();
         container.setCursor(currentCursor);
         CommandJPanel.getInstance().setCursor(currentCursor);
@@ -2389,6 +2389,85 @@ public class Util implements ITechnicalStrings {
       }
     }
     return true;
+  }
+
+  /*
+   * Escape (in the regexp sense) a string Source
+   * Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
+   * http://mindprod.com/jgloss/regex.html
+   */
+  public static String escapeString(String s) {
+    int length = s.length();
+    StringBuffer buffer = new StringBuffer(2 * length);
+    for (int i = 0; i != length; i++) {
+      char c = s.charAt(i);
+      switch (c) {
+      case '\\':
+        buffer.append('\\');
+        buffer.append('\\');
+        break;
+      case '[':
+        buffer.append('\\');
+        buffer.append('[');
+        break;
+      case ']':
+        buffer.append('\\');
+        buffer.append(']');
+        break;
+      case '(':
+        buffer.append('\\');
+        buffer.append('(');
+        break;
+      case ')':
+        buffer.append('\\');
+        buffer.append(')');
+        break;
+      case '{':
+        buffer.append('\\');
+        buffer.append('{');
+        break;
+      case '}':
+        buffer.append('\\');
+        buffer.append('}');
+        break;
+      case '.':
+        buffer.append('\\');
+        buffer.append('.');
+        break;
+      case '*':
+        buffer.append('\\');
+        buffer.append('*');
+        break;
+      case '+':
+        buffer.append('\\');
+        buffer.append('+');
+        break;
+      case '?':
+        buffer.append('\\');
+        buffer.append('?');
+        break;
+      case '$':
+        buffer.append('\\');
+        buffer.append('$');
+        break;
+      case '^':
+        buffer.append('\\');
+        buffer.append('^');
+        break;
+      case '|':
+        buffer.append('\\');
+        buffer.append('|');
+        break;
+      case '-':
+        buffer.append('\\');
+        buffer.append('-');
+        break;
+      default:
+        buffer.append(c);
+        break;
+      }
+    }
+    return buffer.toString();
   }
 
 }

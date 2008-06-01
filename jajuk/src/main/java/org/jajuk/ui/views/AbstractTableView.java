@@ -147,7 +147,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     public void run() {
       while (true) {
         try {
-          Thread.sleep(100);
+          Thread.sleep(200);
         } catch (InterruptedException ie) {
           Log.error(ie);
         }
@@ -324,8 +324,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         // Force table repaint (for instance for rating stars update)
         jtable.revalidate();
         jtable.repaint();
+        Util.stopWaiting();
       }
     };
+    Util.waiting();
     sw.start();
   }
 

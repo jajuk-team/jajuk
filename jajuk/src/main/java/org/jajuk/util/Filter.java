@@ -22,8 +22,12 @@ package org.jajuk.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.util.log.Log;
 
 /**
  * Filter on meta information
@@ -81,7 +85,8 @@ public class Filter {
   /**
    * Filter a list.
    * <p>
-   * The same collection is returned with non-matching items removed
+   * The same collection is returned with non-matching items removed (for
+   * performance reasons and to save memory we don't create a new list)
    * </p>
    * <p>
    * This filter is not thread safe.
@@ -102,6 +107,19 @@ public class Filter {
 
     String comparator = null;
     String checked = filter.getValue();
+    // If checked is void, return the list as it
+    if (Util.isVoid(checked)) {
+      return (List<Item>) list;
+    }
+    // If pattern is wrong, return a void list
+    try {
+      Pattern.compile(checked);
+    } catch (PatternSyntaxException e) {
+      Log.debug("Wrong regexp pattern: " + checked);
+      list.clear();
+      return (List<Item>) list;
+    }
+
     Iterator it = list.iterator();
     while (it.hasNext()) {
       Item item = (Item) it.next();
@@ -118,10 +136,24 @@ public class Filter {
       // perform the test
       boolean bMatch = false;
       if (filter.isExact()) {
-        bMatch = (comparator.toLowerCase().equals(checked));
+        // Check every item property (no not use getAny() string will not match
+        // as it is a concatenation of all properties)
+        for (String propertyName : item.getProperties().keySet()) {
+          // Ignore technical/invisible property (id for instance)
+          PropertyMetaInformation meta = item.getMeta(propertyName);
+          if (!meta.isVisible()) {
+            continue;
+          }
+          String value = item.getHumanValue(propertyName);
+          // Escape the string so regexp ignore special characters
+          value = Util.escapeString(value);
+          if (value.matches(checked)) {
+            bMatch = true;
+            break;
+          }
+        }
       } else {
-        // Do not use Regexp matches() method, checked could contain string to
-        // be escaped and ignore order if user enters several words
+        // Do not use Regexp matches() method, too costly
         bMatch = Util.matchesIgnoreCaseAndOrder(checked, comparator);
       }
       if (!bMatch) {
