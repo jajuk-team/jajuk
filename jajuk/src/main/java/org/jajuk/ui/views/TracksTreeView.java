@@ -272,7 +272,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
             if (o instanceof TreeRootElement) {
               // collection node
               items = TrackManager.getInstance().getElementCount();
-              alSelected.addAll(TrackManager.getInstance().getTracks());
+              selectedRecursively.addAll(TrackManager.getInstance().getTracks());
               break;
             } else if (o instanceof TransferableTreeNode) {
               // this is a standard node except "by date"
