@@ -490,21 +490,6 @@ public class FIFO implements ITechnicalStrings {
         pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
         pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
         ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_LAUNCHED, pDetails));
-        // all cases for a cover full refresh
-        if (itemLast == null // first track, display cover
-            // if we are always in the same directory, just leave to
-            // save cpu
-            || (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) {
-          // clear image cache
-          Util.clearCache();
-          // request update cover
-          ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_REFRESH));
-        }
-        // case just for a cover change without reload
-        else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE))) {
-          // request update cover
-          ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_CHANGE));
-        }
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
         // We have to set this line here as we make directory change analyse
@@ -533,7 +518,7 @@ public class FIFO implements ITechnicalStrings {
 
         FIFO.getInstance().finished();
       }
-    } catch (Throwable t) {// catch even Errors (OutOfMemory for exemple)
+    } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);
     } finally {
       Util.stopWaiting(); // stop the waiting cursor

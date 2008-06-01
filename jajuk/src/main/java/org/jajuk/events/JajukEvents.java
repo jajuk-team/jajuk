@@ -59,10 +59,6 @@ public enum JajukEvents {
   EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST,
   // The help should be displayed
   EVENT_VIEW_RESTORE_DEFAULTS, EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM, EVENT_HELP_REQUIRED,
-  // the cover should be refreshed
-  EVENT_COVER_REFRESH,
-  // Request for a cover change
-  EVENT_COVER_CHANGE,
   // the stop button has been pressed
   EVENT_PLAYER_STOP,
   // the play button has been pressed

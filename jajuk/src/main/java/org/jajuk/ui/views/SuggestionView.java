@@ -178,7 +178,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_COVER_REFRESH);
     return eventSubjectSet;
   }
 
@@ -405,8 +404,6 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       // The show/hide unmounted may have changed, refresh local
       // collection panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(JajukEvents.EVENT_COVER_REFRESH)) {
-      refreshLocalCollectionTabs(false);
     }
   }
 
