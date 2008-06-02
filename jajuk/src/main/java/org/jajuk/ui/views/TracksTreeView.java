@@ -828,12 +828,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
    * @param node
    * @param track
    */
+  @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
     boolean bAlbumExists = false;
     AlbumNode currentAlbum = null;
-    Enumeration e = node.children();
+    Enumeration<AlbumNode> e = node.children();
     while (e.hasMoreElements()) {
-      AlbumNode an = (AlbumNode) e.nextElement();
+      AlbumNode an = e.nextElement();
       if (an.getAlbum().equals(track.getAlbum())) {
         bAlbumExists = true;
         currentAlbum = an;
@@ -952,7 +953,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   /**
    * @return Returns the alTracks.
    */
-  public ArrayList getTrackSelection() {
+  public ArrayList<Track> getTrackSelection() {
     return alTracks;
   }
 }
