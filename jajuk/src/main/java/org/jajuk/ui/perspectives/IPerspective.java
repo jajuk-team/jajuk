@@ -35,16 +35,16 @@ public interface IPerspective {
   /**
    * @return the perspective's id
    */
-  public String getID();
+  String getID();
 
-  public abstract String getDesc();
+  abstract String getDesc();
 
   /**
    * Return the icon
    * 
    * @return perspective icon
    */
-  public abstract ImageIcon getIcon();
+  abstract ImageIcon getIcon();
 
   /**
    * Set icon
@@ -52,36 +52,36 @@ public interface IPerspective {
    * @param iconURL
    *          icon
    */
-  public void setIcon(ImageIcon icon);
+  void setIcon(ImageIcon icon);
 
   /**
    * @return Arraylist views registered in the perspective.
    */
-  public Set<IView> getViews();
+  Set<IView> getViews();
 
   /**
    * @return Returns the desktop.
    */
-  public Container getContentPane();
+  Container getContentPane();
 
   /**
    * Serialize the perspective
    */
-  public void commit() throws Exception;
+  void commit() throws Exception;
 
   /**
    * Deserialize the perspective
    */
-  public void load() throws Exception;
+  void load() throws Exception;
 
   /**
    * Restore defaults views
    */
-  public void restoreDefaults();
+  void restoreDefaults();
 
   /**
    * As been selected flag
    */
-  public void setAsBeenSelected(boolean b);
+  void setAsBeenSelected(boolean b);
 
 }

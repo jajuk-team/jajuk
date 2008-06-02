@@ -30,6 +30,6 @@ public interface ILaunchCommand {
    * @param nbClicks :
    *          number of mouse clicks
    */
-  public void launch(int nbClicks);
+  void launch(int nbClicks);
 
 }

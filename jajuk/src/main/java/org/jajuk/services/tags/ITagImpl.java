@@ -27,90 +27,90 @@ public interface ITagImpl {
   /**
    * @return track name as defined in tags are file name otherwise
    */
-  public String getTrackName() throws Exception;
+  String getTrackName() throws Exception;
 
   /**
    * @return album name
    */
-  public String getAlbumName() throws Exception;
+  String getAlbumName() throws Exception;
 
   /**
    * @return author name
    */
-  public String getAuthorName() throws Exception;
+  String getAuthorName() throws Exception;
 
   /**
    * @return style name
    */
-  public String getStyleName() throws Exception;
+  String getStyleName() throws Exception;
 
   /**
    * @return length in sec
    */
-  public long getLength() throws Exception;
+  long getLength() throws Exception;
 
   /**
    * @return creation year
    */
-  public String getYear() throws Exception;
+  String getYear() throws Exception;
 
   /**
    * @return quality
    */
-  public long getQuality() throws Exception;
+  long getQuality() throws Exception;
 
   /**
    * @return comment
    */
-  public String getComment() throws Exception;
+  String getComment() throws Exception;
 
   /**
    * @return track order
    * @throws Exception
    */
-  public long getOrder() throws Exception;
+  long getOrder() throws Exception;
 
   /**
    * @return specific property or null if property not tagged
    */
-  public String getTagItem(String sTagItem) throws Exception;
+  String getTagItem(String sTagItem) throws Exception;
 
   /**
    * @param sTrackName
    */
-  public void setTrackName(String sTrackName) throws Exception;
+  void setTrackName(String sTrackName) throws Exception;
 
   /**
    * @param sAlbumName
    */
-  public void setAlbumName(String sAlbumName) throws Exception;
+  void setAlbumName(String sAlbumName) throws Exception;
 
   /**
    * @param sAuthorName
    */
-  public void setAuthorName(String sAuthorName) throws Exception;
+  void setAuthorName(String sAuthorName) throws Exception;
 
   /**
    * @param style
    */
-  public void setStyleName(String style) throws Exception;
+  void setStyleName(String style) throws Exception;
 
   /**
    * @param sYear
    */
-  public void setYear(String sYear) throws Exception;
+  void setYear(String sYear) throws Exception;
 
   /**
    * @param sComment
    */
-  public void setComment(String sComment) throws Exception;
+  void setComment(String sComment) throws Exception;
 
   /**
    * Set current file to work with.
    * 
    * @param fio
    */
-  public void setFile(java.io.File fio) throws Exception;
+  void setFile(java.io.File fio) throws Exception;
 
   /**
    * Set track order
@@ -118,16 +118,16 @@ public interface ITagImpl {
    * @param sOrder
    * @throws Exception
    */
-  public void setOrder(long lOrder) throws Exception;
+  void setOrder(long lOrder) throws Exception;
 
   /**
    * @return Set a specific property
    */
-  public void setTagItem(String sTagItem, String sValue) throws Exception;
+  void setTagItem(String sTagItem, String sValue) throws Exception;
 
   /**
    * Commit all changes in the tag
    */
-  public void commit() throws Exception;
+  void commit() throws Exception;
 
 }

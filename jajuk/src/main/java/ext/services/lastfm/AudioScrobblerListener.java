@@ -25,25 +25,25 @@ import org.jajuk.base.Track;
 
 public interface AudioScrobblerListener {
 
-  public void notifyAlbumRetrieved(Track track);
+  void notifyAlbumRetrieved(Track track);
 
-  public void notifyCoverRetrieved(AudioScrobblerAlbum album, Image cover);
+  void notifyCoverRetrieved(AudioScrobblerAlbum album, Image cover);
 
-  public void notifyArtistImage(Image img);
+  void notifyArtistImage(Image img);
 
-  public void notifyFinishGetSimilarArtist(AudioScrobblerArtist a, Image img);
+  void notifyFinishGetSimilarArtist(AudioScrobblerArtist a, Image img);
 
-  public ArrayList<AudioScrobblerAlbum> getAlbums();
+  ArrayList<AudioScrobblerAlbum> getAlbums();
 
-  public void setAlbum(AudioScrobblerAlbum album);
+  void setAlbum(AudioScrobblerAlbum album);
 
-  public void setAlbums(ArrayList<AudioScrobblerAlbum> album);
+  void setAlbums(ArrayList<AudioScrobblerAlbum> album);
 
-  public void setImage(Image img);
+  void setImage(Image img);
 
-  public void savePicture(Image img, Track track);
+  void savePicture(Image img, Track track);
 
-  public void setLastAlbumRetrieved(String album);
+  void setLastAlbumRetrieved(String album);
 
-  public void setLastArtistRetrieved(String artist);
+  void setLastArtistRetrieved(String artist);
 }

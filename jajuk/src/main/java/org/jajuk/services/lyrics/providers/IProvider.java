@@ -25,12 +25,11 @@ package org.jajuk.services.lyrics.providers;
  */
 public interface IProvider {
 
-  public String getQuerySource();
+  String getQuerySource();
 
-  public String getQueryString(final String artist, final String title);
+  String getQueryString(final String artist, final String title);
 
-  public String getSource();
+  String getSource();
 
-  public String getLyrics(final String artist, final String title);
-
+  String getLyrics(final String artist, final String title);
 }

@@ -43,7 +43,7 @@ public interface IPlayerImpl {
    *          volume
    * @throws Exception
    */
-  public void play(File file, float fPosition, long length, float fVolume) throws Exception;
+  void play(File file, float fPosition, long length, float fVolume) throws Exception;
 
   /**
    * Play a web radio stream
@@ -52,14 +52,14 @@ public interface IPlayerImpl {
    * @param fVolume
    * @throws Exception
    */
-  public void play(WebRadio radio, float fVolume) throws Exception;
+  void play(WebRadio radio, float fVolume) throws Exception;
 
   /**
    * Stop current player
    * 
    * @throws Exception
    */
-  public void stop() throws Exception;
+  void stop() throws Exception;
 
   /**
    * Set the gain
@@ -68,32 +68,32 @@ public interface IPlayerImpl {
    *          gain from 0 to 1
    * @throws Exception
    */
-  public void setVolume(float fVolume) throws Exception;
+  void setVolume(float fVolume) throws Exception;
 
   /**
    * @return elapsed time (ms) for this player
    */
-  public long getElapsedTime();
+  long getElapsedTime();
 
   /** Pause the player */
-  public void pause() throws Exception;
+  void pause() throws Exception;
 
   /** Resume the player */
-  public void resume() throws Exception;
+  void resume() throws Exception;
 
   /** Seek to a given position in %. ex : 0.2 for 20% */
-  public void seek(float fPosition);
+  void seek(float fPosition);
 
   /** Return track LENGTH in */
-  public float getCurrentPosition();
+  float getCurrentPosition();
 
   /** Return track position in ms */
-  public long getCurrentLength();
+  long getCurrentLength();
 
   /** Return volume in % */
-  public float getCurrentVolume();
+  float getCurrentVolume();
 
   /** Return player state */
-  public int getState();
+  int getState();
 
 }

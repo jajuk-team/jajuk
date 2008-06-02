@@ -35,55 +35,55 @@ public interface IView extends ComponentListener, Dockable {
    * 
    * @return View identifier.
    */
-  public String getID();
+  String getID();
 
   /**
    * Set view ID
    * 
    * @param sID
    */
-  public void setID(String sID);
+  void setID(String sID);
 
   /**
    * Returns the view description as i18n key
    * 
    * @return View description.
    */
-  public String getDesc();
+  String getDesc();
 
   /**
    * Display view UI
    */
-  public void initUI();
+  void initUI();
 
   /**
    * Get displayed state
    * 
    * @return populated state
    */
-  public boolean isPopulated();
+  boolean isPopulated();
 
   /**
    * @param The
    *          bIsPopulated to set.
    */
-  public void setIsPopulated(boolean isDisplayed);
+  void setIsPopulated(boolean isDisplayed);
 
   /**
    * 
    * @return current perspective for this view
    */
-  public IPerspective getPerspective();
+  IPerspective getPerspective();
 
   /**
    * 
    * @param perspective
    */
-  public void setPerspective(IPerspective perspective);
+  void setPerspective(IPerspective perspective);
 
   /**
    * Called when the view perspective is selected
    */
-  public void onPerspectiveSelection();
+  void onPerspectiveSelection();
 
 }
