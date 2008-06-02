@@ -266,11 +266,12 @@ public class FileManager extends ItemManager implements Observer {
    * @param sId :
    *          Device id
    */
+  @SuppressWarnings("unchecked")
   public void cleanDevice(String sId) {
     synchronized (FileManager.getInstance().getLock()) {
-      Iterator it = hmItems.values().iterator();
+      Iterator<File> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        File file = (File) it.next();
+        File file = it.next();
         if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
           it.remove(); // this is the right way to remove entry
           // in the hashmap
@@ -329,13 +330,14 @@ public class FileManager extends ItemManager implements Observer {
   /**
    * @return All accessible files of the collection
    */
+  @SuppressWarnings("unchecked")
   public List<File> getReadyFiles() {
     Set<File> files = null;
     files = FileManager.getInstance().getFiles();
-    Iterator it = new FilterIterator(files.iterator(), new JajukPredicates.ReadyFilePredicate());
+    Iterator<File> it = new FilterIterator(files.iterator(), new JajukPredicates.ReadyFilePredicate());
     List<File> out = new ArrayList<File>(files.size() / 2);
     while (it.hasNext()) {
-      out.add((File) it.next());
+      out.add(it.next());
     }
     return out;
   }
@@ -429,14 +431,15 @@ public class FileManager extends ItemManager implements Observer {
    * @param bHideUnmounted
    * @return The entire accessible novelties collection
    */
+  @SuppressWarnings("unchecked")
   public ArrayList<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
     ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
     // take tracks matching required age
     Set<Track> tracks = TrackManager.getInstance().getTracks();
-    Iterator it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
+    Iterator<Track> it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
         ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
     while (it.hasNext()) {
-      Track track = (Track) it.next();
+      Track track = it.next();
       File file = track.getPlayeableFile(bHideUnmounted);
       // try to get a mounted file
       // (can return null)
