@@ -112,16 +112,16 @@ import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 public class Main implements ITechnicalStrings {
 
   /** Left side perspective selection panel */
-  public static PerspectiveBarJPanel perspectiveBar;
+  private static PerspectiveBarJPanel perspectiveBar;
 
   /** Main frame panel */
-  public static JPanel jpFrame;
+  private static JPanel jpFrame;
 
   /** specific perspective panel */
   public static JPanel perspectivePanel;
 
   /** splash screen */
-  public static JSplash sc;
+  private static JSplash sc;
 
   /** Debug mode */
   public static boolean bIdeMode = false;
@@ -130,7 +130,7 @@ public class Main implements ITechnicalStrings {
   public static boolean bTestMode = false;
 
   /** Jukebox power pack flag* */
-  public static boolean bPowerPack = false;
+  private static boolean bPowerPack = false;
 
   /**
    * Thumb maker flag, true if this class is executed from the Thumb maker
@@ -174,12 +174,12 @@ public class Main implements ITechnicalStrings {
   }
 
   /** DeviceTypes Identification strings */
-  public static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
+  private static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
-  public static final String[] configChecks = { FILE_CONFIGURATION, FILE_HISTORY };
+  private static final String[] configChecks = { FILE_CONFIGURATION, FILE_HISTORY };
 
-  public static final String[] dirChecks = {
+  private static final String[] dirChecks = {
       // internal pictures cache directory
       FILE_CACHE + '/' + FILE_INTERNAL_CACHE,
       // thumbnails directories and sub-directories

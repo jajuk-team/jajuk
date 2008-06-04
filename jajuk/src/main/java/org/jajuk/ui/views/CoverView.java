@@ -235,11 +235,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       try {
         final File file = new File(cover.getURL().getFile());
         if (file.isFile() && file.exists()) {
-          file.delete();
           // check that file has been really deleted (sometimes,
           // we get no exception)
-          if (file.exists()) {
-            throw new Exception("");
+          if (!file.delete()) {
+            throw new Exception("Deleting file " + file.toString() + " failed");
           }
         } else { // not a file, must have a problem
           throw new Exception("");
@@ -279,7 +278,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
           final File file = new File(sFilePath);
           Util.copy(fSource, file);
-          final Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+          final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
           if (!alCovers.contains(cover2)) {
             alCovers.add(cover2);
             setFoundText();
@@ -368,7 +367,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             Util.copy(fSource, file);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.INFORMATIVE);
-            final Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+            final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
             if (!alCovers.contains(cover2)) {
               alCovers.add(cover2);
               setFoundText();
@@ -1053,13 +1052,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
                   if (!bAbsoluteCover
                       && Util.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i].getName())) {
                     // test the cover is not already used
-                    final Cover cover = new Cover(files[i].toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+                    final Cover cover = new Cover(files[i].toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
                     if (!alCovers.contains(cover)) {
                       alCovers.add(cover);
                     }
                     bAbsoluteCover = true;
                   } else { // normal local cover
-                    final Cover cover = new Cover(files[i].toURL(), Cover.LOCAL_COVER);
+                    final Cover cover = new Cover(files[i].toURI().toURL(), Cover.LOCAL_COVER);
                     if (!alCovers.contains(cover)) {
                       alCovers.add(cover);
                     }

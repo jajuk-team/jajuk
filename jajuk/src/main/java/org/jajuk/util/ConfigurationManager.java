@@ -23,6 +23,8 @@ import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import org.jajuk.Main;
@@ -295,7 +297,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
-    defaults.put(CONF_SLIMBAR_POSITION, "0,0"); 
+    defaults.put(CONF_SLIMBAR_POSITION, "0,0");
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }
@@ -312,23 +314,32 @@ public class ConfigurationManager implements ITechnicalStrings {
 
   /** Commit properties in a file */
   public static void commit() throws Exception {
-    properties.store(new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION)),
-        "User configuration");
+    OutputStream str = new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION));
+    try {
+      properties.store(str, "User configuration");
+    } finally {
+      str.close();
+    }
   }
-  
+
   /**
    * 
    * @param property
    * @return whether the given property is known
    */
-  public static boolean containsProperty(String property){
+  public static boolean containsProperty(String property) {
     return properties.containsKey(property);
   }
 
   /** Load properties from in file */
   public static void load() {
     try {
-      properties.load(new FileInputStream(Util.getConfFileByPath(FILE_CONFIGURATION)));
+      InputStream str = new FileInputStream(Util.getConfFileByPath(FILE_CONFIGURATION));
+      try {
+        properties.load(str);
+      } finally {
+        str.close();
+      }
     } catch (IOException e) {
       e.printStackTrace(); // do not use log system here
       Messages.showErrorMessage(114);

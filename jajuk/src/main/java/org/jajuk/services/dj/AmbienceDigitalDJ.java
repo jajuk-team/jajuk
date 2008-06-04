@@ -54,8 +54,7 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
       Messages.showErrorMessage(159);
       return new ArrayList<File>();
     }
-    List<File> out = new ArrayList<File>(100);
-    out = getSequence();
+    List<File> out = getSequence();
     if (!bUnicity && out.size() > 0) {
       while (out.size() < MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
         out.addAll(getSequence());

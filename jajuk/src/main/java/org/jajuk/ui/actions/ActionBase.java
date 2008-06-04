@@ -45,7 +45,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
     if (Util.isUnderWindows()) {
       try {
         Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
-            .getMethod("registerJIntellitype").invoke(null, null);
+            .getMethod("registerJIntellitype").invoke(null, (Object[])null);
       } catch (Exception e) {
         Log.error(e);
       }
@@ -257,7 +257,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    * @param name
    *          The name for the action. This name is used for a menu or a button.
    */
-  public void setName(String name) {
+  public final void setName(String name) {
     putValue(NAME, name);
   }
 
@@ -283,7 +283,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    * @param icon
    *          The small icon for the action. Use for toolbar buttons.
    */
-  public void setIcon(Icon icon) {
+  public final void setIcon(Icon icon) {
     putValue(SMALL_ICON, icon);
   }
 
@@ -301,7 +301,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    * @param stroke
    *          The keystroke for the action. This is used as a shortcut key.
    */
-  public void setAcceleratorKey(KeyStroke stroke) {
+  public final void setAcceleratorKey(KeyStroke stroke) {
     putValue(ACCELERATOR_KEY, stroke);
   }
 
@@ -313,7 +313,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    *          <code>null</code> is used instead. This is used as a shortcut
    *          key.
    */
-  public void setAcceleratorKey(String stroke) {
+  public final void setAcceleratorKey(String stroke) {
     putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(stroke));
   }
 
@@ -335,7 +335,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    *          is contained somewhere within this action's ancestor window.
    * @see java.awt.event.KeyEvent
    */
-  public void setMnemonic(int mnemonic) {
+  public final void setMnemonic(int mnemonic) {
     putValue(MNEMONIC_KEY, mnemonic);
   }
 
@@ -370,7 +370,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
   public static void cleanup() throws Exception {
     if (Util.isUnderWindows()) {
       Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
-          null);
+          (Object[])null);
     }
   }
 

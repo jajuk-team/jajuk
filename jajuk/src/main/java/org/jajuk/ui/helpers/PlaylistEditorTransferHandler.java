@@ -23,6 +23,7 @@ package org.jajuk.ui.helpers;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -118,7 +119,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getData();
         }
-        ArrayList<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
+        List<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           FIFO.getInstance().push(

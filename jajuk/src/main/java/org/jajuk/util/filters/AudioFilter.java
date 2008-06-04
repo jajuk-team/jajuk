@@ -94,6 +94,6 @@ public class AudioFilter extends JajukFileFilter {
       s.append(',');
     }
     // Remove last coma
-    return ((s.length() > 0) ? s.substring(0, s.length() - 1).toString() : "");
+    return ((s.length() > 0) ? s.substring(0, s.length() - 1) : "");
   }
 }

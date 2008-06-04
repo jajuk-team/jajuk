@@ -147,31 +147,28 @@ public class Util implements ITechnicalStrings {
   public static JajukFileFilter fileFilter = new JajukFileFilter(KnownTypeFilter.getInstance());
 
   /** Icons cache */
-  private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
+  private static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
 
   /** Mplayer exe path */
   private static File mplayerPath = null;
 
   /** Are we under Windows ? * */
-  private static final boolean bUnderWindows;
+  private static final boolean UNDER_WINDOWS;
 
   /** Are we under Windows 32 bits ? * */
-  private static final boolean bUnderWindows32bits;
-
-  /** Are we under Linux ? * */
-  private static final boolean bUnderLinux;
-
-  /** Are we under MAC OS intel ? * */
-  private static final boolean bUnderOSXintel;
-
-  /** Are we under MAC OS power ? * */
-  private static final boolean bUnderOSXpower;
+  private static final boolean UNDER_WINDOWS_32BIT;
 
   /** Are we under Windows 64 bits ? * */
-  private static final boolean bUnderWindows64bits;
+  private static final boolean UNDER_WINDOWS_64BIT;
 
-  /** Today */
-  static public final Date today = new Date();
+  /** Are we under Linux ? * */
+  private static final boolean UNDER_LINUX;
+
+  /** Are we under MAC OS Intel ? * */
+  private static final boolean UNDER_OSX_INTEL;
+
+  /** Are we under MAC OS power ? * */
+  private static final boolean UNDER_OSX_POWER;
 
   /** current class loader */
   private static ClassLoader classLoader = null;
@@ -206,39 +203,40 @@ public class Util implements ITechnicalStrings {
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    bUnderWindows = ((sOS != null) && (sOS.trim().toLowerCase().lastIndexOf("windows") != -1));
+    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase().lastIndexOf("windows") != -1));
   }
 
   static {
-    bUnderWindows32bits = Util.isUnderWindows()
+    UNDER_WINDOWS_32BIT = Util.isUnderWindows()
         && System.getProperties().get("sun.arch.data.model").equals("32");
   }
 
   static {
-    bUnderWindows64bits = Util.isUnderWindows()
+    UNDER_WINDOWS_64BIT = Util.isUnderWindows()
         && !System.getProperties().get("sun.arch.data.model").equals("32");
   }
 
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    bUnderLinux = ((sOS != null) && (sOS.trim().toLowerCase().lastIndexOf("linux") != -1));
+    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase().lastIndexOf("linux") != -1));
   }
 
   static {
     final String sArch = System.getProperty("os.arch");
-    bUnderOSXintel = org.jdesktop.swingx.util.OS.isMacOSX()
+    UNDER_OSX_INTEL = org.jdesktop.swingx.util.OS.isMacOSX()
         && ((sArch != null) && sArch.matches(".*86"));
   }
 
   static {
     final String sArch = System.getProperty("os.arch");
-    bUnderOSXpower = org.jdesktop.swingx.util.OS.isMacOSX()
+    UNDER_OSX_POWER = org.jdesktop.swingx.util.OS.isMacOSX()
         && ((sArch != null) && !sArch.matches(".*86"));
   }
 
   /**
-   * Apply a pattern
+   * Apply a pattern. This replaces certain patterns in the provided Pattern
+   * with information from the file and returns the result.
    * 
    * @param file
    *          file to apply pattern to
@@ -255,59 +253,95 @@ public class Util implements ITechnicalStrings {
       final boolean bMandatory, final boolean normalize) throws JajukException {
     String out = sPattern;
     final Track track = file.getTrack();
-    String sValue = null;
+
     // Check Author name
-    if (sPattern.contains(ITechnicalStrings.PATTERN_AUTHOR)) {
-      sValue = track.getAuthor().getName();
-      if (normalize) {
-        sValue = Util.getNormalizedFilename(sValue);
-      }
-      if (!sValue.equals(ITechnicalStrings.UNKNOWN_AUTHOR)) {
-        out = out.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, AuthorManager.format(sValue));
-      } else {
-        if (bMandatory) {
-          throw new JajukException(150, file.getAbsolutePath());
-        } else {
-          out = out.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, Messages
-              .getString(ITechnicalStrings.UNKNOWN_AUTHOR));
-        }
-      }
-    }
+    out = applyAuthorPattern(file, sPattern, bMandatory, normalize, out, track);
+
     // Check Style name
-    if (sPattern.contains(ITechnicalStrings.PATTERN_STYLE)) {
-      sValue = track.getStyle().getName();
-      if (normalize) {
-        sValue = Util.getNormalizedFilename(sValue);
-      }
-      if (!sValue.equals(ITechnicalStrings.UNKNOWN_STYLE)) {
-        out = out.replace(ITechnicalStrings.PATTERN_STYLE, StyleManager.format(sValue));
-      } else {
-        if (bMandatory) {
-          throw new JajukException(153, file.getAbsolutePath());
-        } else {
-          out = out.replace(ITechnicalStrings.PATTERN_STYLE, Messages
-              .getString(ITechnicalStrings.UNKNOWN_STYLE));
-        }
-      }
-    }
+    out = applyStylePattern(file, sPattern, bMandatory, normalize, out, track);
+
     // Check Album Name
-    if (sPattern.contains(ITechnicalStrings.PATTERN_ALBUM)) {
-      sValue = track.getAlbum().getName();
-      if (normalize) {
-        sValue = Util.getNormalizedFilename(sValue);
-      }
-      if (!sValue.equals(ITechnicalStrings.UNKNOWN_ALBUM)) {
-        out = out.replace(ITechnicalStrings.PATTERN_ALBUM, AlbumManager.format(sValue));
+    out = applyAlbumPattern(file, sPattern, bMandatory, normalize, out, track);
+
+    // Check Track Order
+    out = applyTrackOrderPattern(file, sPattern, bMandatory, out, track);
+
+    // Check Track name
+    out = applyTrackPattern(sPattern, normalize, out, track);
+
+    // Check Year Value
+    out = applyYearPattern(file, sPattern, bMandatory, out, track);
+
+    return out;
+  }
+
+  /**
+   * Apply the Year pattern.
+   * 
+   * @param file
+   *          file to apply pattern to
+   * @param sPattern
+   * @param bMandatory
+   *          are all needed tags mandatory ?
+   * @param out
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private static String applyYearPattern(final org.jajuk.base.File file, final String sPattern,
+      final boolean bMandatory, String out, final Track track) throws JajukException {
+    if (sPattern.contains(ITechnicalStrings.PATTERN_YEAR)) {
+      if (track.getYear().getValue() != 0) {
+        out = out.replace(ITechnicalStrings.PATTERN_YEAR, track.getYear().getValue() + "");
       } else {
         if (bMandatory) {
-          throw new JajukException(149, file.getAbsolutePath());
+          throw new JajukException(148, file.getAbsolutePath());
         } else {
-          out = out.replace(ITechnicalStrings.PATTERN_ALBUM, Messages
-              .getString(ITechnicalStrings.UNKNOWN_ALBUM));
+          out = out.replace(ITechnicalStrings.PATTERN_YEAR, "?");
         }
       }
     }
-    // Check Track Order
+    return out;
+  }
+
+  /**
+   * Apply the Track pattern.
+   * 
+   * @param sPattern
+   * @param normalize
+   * @param out
+   * @param track
+   * @return
+   */
+  private static String applyTrackPattern(final String sPattern, final boolean normalize,
+      String out, final Track track) {
+    String sValue;
+    if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKNAME)) {
+      sValue = track.getName();
+      if (normalize) {
+        sValue = Util.getNormalizedFilename(sValue);
+      }
+      out = out.replace(ITechnicalStrings.PATTERN_TRACKNAME, sValue);
+    }
+    return out;
+  }
+
+  /**
+   * Apply the Track Order pattern.
+   * 
+   * @param file
+   *          file to apply pattern to
+   * @param sPattern
+   * @param bMandatory
+   *          are all needed tags mandatory ?
+   * @param out
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private static String applyTrackOrderPattern(final org.jajuk.base.File file,
+      final String sPattern, final boolean bMandatory, String out, final Track track)
+      throws JajukException {
     if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKORDER)) {
       long lOrder = track.getOrder();
       if (lOrder == 0) {
@@ -334,23 +368,114 @@ public class Util implements ITechnicalStrings {
         out = out.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
       }
     }
-    // Check Track name
-    if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKNAME)) {
-      sValue = track.getName();
+    return out;
+  }
+
+  /**
+   * Apply the Album pattern.
+   * 
+   * @param file
+   *          file to apply pattern to
+   * @param sPattern
+   * @param bMandatory
+   *          are all needed tags mandatory ?
+   * @param normalize
+   * @param out
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private static String applyAlbumPattern(final org.jajuk.base.File file, final String sPattern,
+      final boolean bMandatory, final boolean normalize, String out, final Track track)
+      throws JajukException {
+    String sValue;
+    if (sPattern.contains(ITechnicalStrings.PATTERN_ALBUM)) {
+      sValue = track.getAlbum().getName();
       if (normalize) {
         sValue = Util.getNormalizedFilename(sValue);
       }
-      out = out.replace(ITechnicalStrings.PATTERN_TRACKNAME, sValue);
-    }
-    // Check Year Value
-    if (sPattern.contains(ITechnicalStrings.PATTERN_YEAR)) {
-      if (track.getYear().getValue() != 0) {
-        out = out.replace(ITechnicalStrings.PATTERN_YEAR, track.getYear().getValue() + "");
+      if (!sValue.equals(ITechnicalStrings.UNKNOWN_ALBUM)) {
+        out = out.replace(ITechnicalStrings.PATTERN_ALBUM, AlbumManager.format(sValue));
       } else {
         if (bMandatory) {
-          throw new JajukException(148, file.getAbsolutePath());
+          throw new JajukException(149, file.getAbsolutePath());
         } else {
-          out = out.replace(ITechnicalStrings.PATTERN_YEAR, "?");
+          out = out.replace(ITechnicalStrings.PATTERN_ALBUM, Messages
+              .getString(ITechnicalStrings.UNKNOWN_ALBUM));
+        }
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Apply the Style pattern.
+   * 
+   * @param file
+   *          file to apply pattern to
+   * @param sPattern
+   * @param bMandatory
+   *          are all needed tags mandatory ?
+   * @param normalize
+   * @param out
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private static String applyStylePattern(final org.jajuk.base.File file, final String sPattern,
+      final boolean bMandatory, final boolean normalize, String out, final Track track)
+      throws JajukException {
+    String sValue;
+    if (sPattern.contains(ITechnicalStrings.PATTERN_STYLE)) {
+      sValue = track.getStyle().getName();
+      if (normalize) {
+        sValue = Util.getNormalizedFilename(sValue);
+      }
+      if (!sValue.equals(ITechnicalStrings.UNKNOWN_STYLE)) {
+        out = out.replace(ITechnicalStrings.PATTERN_STYLE, StyleManager.format(sValue));
+      } else {
+        if (bMandatory) {
+          throw new JajukException(153, file.getAbsolutePath());
+        } else {
+          out = out.replace(ITechnicalStrings.PATTERN_STYLE, Messages
+              .getString(ITechnicalStrings.UNKNOWN_STYLE));
+        }
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Apply the Author pattern.
+   * 
+   * @param file
+   *          file to apply pattern to
+   * @param sPattern
+   * @param bMandatory
+   *          are all needed tags mandatory ?
+   * @param normalize
+   * @param out
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private static String applyAuthorPattern(final org.jajuk.base.File file, final String sPattern,
+      final boolean bMandatory, final boolean normalize, String out, final Track track)
+      throws JajukException {
+    String sValue;
+    if (sPattern.contains(ITechnicalStrings.PATTERN_AUTHOR)) {
+      sValue = track.getAuthor().getName();
+      if (normalize) {
+        sValue = Util.getNormalizedFilename(sValue);
+      }
+      if (!sValue.equals(ITechnicalStrings.UNKNOWN_AUTHOR)) {
+        out = out.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, AuthorManager.format(sValue));
+      } else {
+        if (bMandatory) {
+          throw new JajukException(150, file.getAbsolutePath());
+        } else {
+          out = out.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, Messages
+              .getString(ITechnicalStrings.UNKNOWN_AUTHOR));
         }
       }
     }
@@ -402,13 +527,11 @@ public class Util implements ITechnicalStrings {
         // sort found files
         alFiles.remove(file);
         Collections.sort(alFiles);
-        if ((lUsedMB - file.length()) / 1048576 > iMB) {
-          // too much backup files, delete older
-          if (alFiles.size() > 0) {
-            final File fileToDelete = alFiles.get(0);
-            if (fileToDelete != null) {
-              fileToDelete.delete();
-            }
+        // too much backup files, delete older
+        if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
+          final File fileToDelete = alFiles.get(0);
+          if (fileToDelete != null) {
+            fileToDelete.delete();
           }
         }
       }
@@ -441,7 +564,7 @@ public class Util implements ITechnicalStrings {
   /**
    * @param s
    *          String to analyse
-   * @return whether the given string contains non digit or letters chararcters
+   * @return whether the given string contains non digit or letter characters
    */
   public static boolean containsNonDigitOrLetters(final String s) {
     boolean bOK = false;
@@ -905,8 +1028,7 @@ public class Util implements ITechnicalStrings {
         sb.append(c);
       }
     }
-    final String sOut = sb.toString().trim();
-    return sOut;
+    return sb.toString().trim();
   }
 
   /** Format a time from secs to a human readable format */
@@ -1133,7 +1255,7 @@ public class Util implements ITechnicalStrings {
    * @param item
    * @return files
    */
-  public static ArrayList<org.jajuk.base.File> getPlayableFiles(Item item) {
+  public static List<org.jajuk.base.File> getPlayableFiles(Item item) {
     List<Item> list = new ArrayList<Item>(1);
     list.add(item);
     return getPlayableFiles(list);
@@ -1151,7 +1273,7 @@ public class Util implements ITechnicalStrings {
    *          an item selection (directories, files...)
    * @return the files (empty list if none matching)
    */
-  public static ArrayList<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
+  public static List<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
     // computes selection
     ArrayList<org.jajuk.base.File> files = new ArrayList<org.jajuk.base.File>(100);
     if (selection == null || selection.size() == 0) {
@@ -1725,42 +1847,42 @@ public class Util implements ITechnicalStrings {
    * @return whether we are under Linux
    */
   public static boolean isUnderLinux() {
-    return Util.bUnderLinux;
+    return Util.UNDER_LINUX;
   }
 
   /**
    * @return whether we are under OS X Intel
    */
   public static boolean isUnderOSXintel() {
-    return Util.bUnderOSXintel;
+    return Util.UNDER_OSX_INTEL;
   }
 
   /**
    * @return whether we are under OS X Power
    */
   public static boolean isUnderOSXpower() {
-    return Util.bUnderOSXpower;
+    return Util.UNDER_OSX_POWER;
   }
 
   /**
    * @return whether we are under Windows
    */
   public static boolean isUnderWindows() {
-    return Util.bUnderWindows;
+    return Util.UNDER_WINDOWS;
   }
 
   /**
    * @return whether we are under Windows 32 bits
    */
   public static boolean isUnderWindows32bits() {
-    return Util.bUnderWindows32bits;
+    return Util.UNDER_WINDOWS_32BIT;
   }
 
   /**
    * @return whether we are under Windows 64 bits
    */
   public static boolean isUnderWindows64bits() {
-    return Util.bUnderWindows64bits;
+    return Util.UNDER_WINDOWS_64BIT;
   }
 
   /**
@@ -2023,7 +2145,7 @@ public class Util implements ITechnicalStrings {
    * 
    * @param theme
    */
-  public static void setLookAndFeel(String pTheme) {
+  public static void setLookAndFeel(final String pTheme) {
     try {
       // Set substance laf
       UIManager.setLookAndFeel(ITechnicalStrings.LNF_SUBSTANCE_CLASS);
@@ -2034,11 +2156,12 @@ public class Util implements ITechnicalStrings {
       UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES, Boolean.TRUE);
       // Check the theme is known, if not take the default theme
       final Map<String, ThemeInfo> themes = SubstanceLookAndFeel.getAllThemes();
-      if (themes.get(pTheme) == null) {
-        pTheme = ITechnicalStrings.LNF_DEFAULT_THEME;
+      String t = pTheme;
+      if (themes.get(t) == null) {
+        t = ITechnicalStrings.LNF_DEFAULT_THEME;
       }
       // Set substance theme
-      SubstanceLookAndFeel.setCurrentTheme(themes.get(pTheme).getClassName());
+      SubstanceLookAndFeel.setCurrentTheme(themes.get(t).getClassName());
     } catch (final Exception e) {
       Log.error(e);
     }
@@ -2092,12 +2215,11 @@ public class Util implements ITechnicalStrings {
       String watermark = pWatermark;
       // Check the watermark is known, if not take the default one
       final Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
-      if (watermarks.get(watermark) == null) {
-        // the image watermark is not included in the list for unknown
-        // reasons
-        if (!"Image".equals(watermark)) {
-          watermark = ITechnicalStrings.LNF_DEFAULT_WATERMARK;
-        }
+      if ((watermarks.get(watermark) == null) &&
+      // the image watermark is not included in the list for unknown
+      // reasons
+          (!"Image".equals(watermark))) {
+        watermark = ITechnicalStrings.LNF_DEFAULT_WATERMARK;
       }
       // Set the watermark
       final String image = ConfigurationManager
@@ -2129,7 +2251,7 @@ public class Util implements ITechnicalStrings {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
       if (perspective != null) {
-        //Log.debug("** Set cursor: " + currentCursor);
+        // Log.debug("** Set cursor: " + currentCursor);
         container = perspective.getContentPane();
         container.setCursor(currentCursor);
         CommandJPanel.getInstance().setCursor(currentCursor);
@@ -2392,8 +2514,7 @@ public class Util implements ITechnicalStrings {
   }
 
   /*
-   * Escape (in the regexp sense) a string Source
-   * Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
+   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
    * http://mindprod.com/jgloss/regex.html
    */
   public static String escapeString(String s) {

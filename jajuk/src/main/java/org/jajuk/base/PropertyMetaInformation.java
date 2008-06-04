@@ -64,6 +64,9 @@ public class PropertyMetaInformation implements ITechnicalStrings {
   /** Human Type */
   private String sHumanType;
 
+  /** Today */
+  static public final Date TODAY = new Date();
+
   /**
    * constructor
    * 
@@ -85,7 +88,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
    *          Default value
    */
   public PropertyMetaInformation(String sName, boolean bCustom, boolean bConstructor,
-      boolean bShouldBeDisplayed, boolean bEditable, boolean bMergeable, Class cType,
+      boolean bShouldBeDisplayed, boolean bEditable, boolean bMergeable, Class<?> cType,
       Object oDefaultValue) {
     this.sName = sName;
     this.bCustom = bCustom;
@@ -120,7 +123,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
     } else if (cType.equals(Date.class)) {
       // date default
       if (oDefaultValue == null) {
-        this.oDefaultValue = Util.today;
+        this.oDefaultValue = TODAY;
       } else {
         this.oDefaultValue = oDefaultValue;
       }
@@ -129,7 +132,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
       // URL default
       if (oDefaultValue == null) {
         try {
-          this.oDefaultValue = Util.getConfFileByPath("").toURL();
+          this.oDefaultValue = Util.getConfFileByPath("").toURI().toURL();
         } catch (MalformedURLException e) {
           Log.error(e);
         }
@@ -161,7 +164,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
   /**
    * @return
    */
-  public Class getType() {
+  public Class<?> getType() {
     return cType;
   }
 

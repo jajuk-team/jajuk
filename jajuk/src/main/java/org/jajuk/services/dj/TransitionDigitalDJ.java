@@ -51,7 +51,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * @return DJ transitions
    */
-  public ArrayList getTransitions() {
+  public ArrayList<Transition> getTransitions() {
     return this.transitions;
   }
 

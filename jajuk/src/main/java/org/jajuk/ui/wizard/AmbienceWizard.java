@@ -396,6 +396,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Class getNextScreen(final Class screen) {
     return null;
@@ -406,6 +407,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Class getPreviousScreen(final Class screen) {
     return null;

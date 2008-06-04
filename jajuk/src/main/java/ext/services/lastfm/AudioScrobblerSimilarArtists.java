@@ -30,7 +30,7 @@ public class AudioScrobblerSimilarArtists {
   private String picture;
   private ArrayList<AudioScrobblerArtist> artists;
 
-  public static int MAX_SIMILAR_ARTISTS = 15;
+  public final static int MAX_SIMILAR_ARTISTS = 15;
 
   public String getArtistName() {
     return artistName;

@@ -57,9 +57,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public class DigitalDJManager implements ITechnicalStrings, Observer {
+public final class DigitalDJManager implements ITechnicalStrings, Observer {
 
-  /** List of registated DJs ID->DJ */
+  /** List of registered DJs ID->DJ */
   private HashMap<String, DigitalDJ> djs;
 
   /** self instance */

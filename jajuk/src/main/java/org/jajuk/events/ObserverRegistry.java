@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
-  private Hashtable<JajukEvents, ArrayList<Observer>> hEventComponents = new Hashtable<JajukEvents, ArrayList<Observer>>(
+  private Map<JajukEvents, ArrayList<Observer>> hEventComponents = new Hashtable<JajukEvents, ArrayList<Observer>>(
       10);
 
   @SuppressWarnings("unchecked")

@@ -54,12 +54,14 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
         listener.setAlbum(album);
         Image image = service.getImage(album);
         listener.setImage(image);
-        if (image != null)
+        if (image != null) {
           listener.savePicture(image, track);
+        }
       }
     }
-    if (album != null && !interrupted)
+    if (album != null && !interrupted) {
       listener.notifyAlbumRetrieved(track);
+    }
 
     try {
       Thread.sleep(1000); // Wait a second to prevent IP banning
@@ -74,12 +76,14 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
         if (!track.getAuthor().isUnknown()) {
           albums = service.getAlbumList(track.getAuthor().getName2());
         }
-        if (albums == null)
+        if (albums == null) {
           interrupted = true;
+        }
         listener.setAlbums(albums);
       }
-    } else
+    } else {
       albums = listener.getAlbums();
+    }
 
     if (album == null && albums != null && !interrupted) {
       // Try to find an album which fits
@@ -106,8 +110,9 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
             matches = false;
           tokensAnalyzed++;
         }
-        if (matches)
+        if (matches) {
           auxAlbum = a;
+        }
         i++;
       }
       if (!interrupted && auxAlbum != null) {
@@ -116,14 +121,15 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
           listener.setAlbum(auxAlbum);
           Image image = service.getImage(auxAlbum);
           listener.setImage(image);
-          if (image != null)
+          if (image != null) {
             listener.savePicture(image, track);
+          }
         }
       }
-      if (!interrupted && auxAlbum != null)
+      if (!interrupted && auxAlbum != null) {
         listener.notifyAlbumRetrieved(track);
+      }
     }
-
   }
 
   private boolean forbiddenToken(String t) {
@@ -142,5 +148,4 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
   public void setRetrieveArtistInfo(boolean retrieveArtistInfo) {
     this.retrieveArtistInfo = retrieveArtistInfo;
   }
-
 }

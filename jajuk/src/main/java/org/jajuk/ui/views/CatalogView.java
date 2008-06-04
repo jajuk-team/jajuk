@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -119,8 +120,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   JCheckBox jcbShowNoCover;
 
-  JLabel jlSize;
-
   JSlider jsSize;
 
   JButton jbRefresh;
@@ -130,13 +129,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   JScrollPane jsp;
 
   /** Filter properties */
-  ArrayList<PropertyMetaInformation> alFilters;
+  List<PropertyMetaInformation> alFilters;
 
   /** Sorter properties */
-  ArrayList<PropertyMetaInformation> alSorters;
+  List<PropertyMetaInformation> alSorters;
 
   /** Items* */
-  HashSet<LocalAlbumThumbnail> hsItems;
+  Set<LocalAlbumThumbnail> hsItems;
 
   /** Do search panel need a search */
   private boolean bNeedSearch = false;
@@ -151,7 +150,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private long lDateTyped;
 
   /** Last selected item */
-  public LocalAlbumThumbnail item;
+  private LocalAlbumThumbnail item;
 
   /** Page index */
   private int page = 0;
@@ -162,7 +161,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   int iNbPages = 0;
 
   /** Number of created thumbs, used for garbage collection */
-  public int iNbCreatedThumbs = 0;
+  private int iNbCreatedThumbs = 0;
 
   /** Utility list used by size selector */
   private ArrayList<String> sizes = new ArrayList<String>(10);
@@ -476,8 +475,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
           albums = new ArrayList<Album>(alAllTracks.size() / 10);
           // keep matching albums
-          for (Item item : alAllTracks) {
-            Track track = (Track) item;
+          for (Item it : alAllTracks) {
+            Track track = (Track) it;
             Album album = track.getAlbum();
             if (!albums.contains(album)) {
               albums.add(album);
@@ -576,8 +575,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           HashSet<Directory> directories = new HashSet<Directory>(albums.size());
           ArrayList<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(
               albums.size());
-          for (Object item : albums) {
-            Album album = (Album) item;
+          for (Object it : albums) {
+            Album album = (Album) it;
             // if hide unmounted tracks is set, continue
             if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
               // test if album contains at least one mounted file
@@ -654,9 +653,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               max = (page + 1) * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE);
             }
             for (int i = page * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-              LocalAlbumThumbnail item = alItemsToDisplay.get(i);
+              LocalAlbumThumbnail it = alItemsToDisplay.get(i);
               // populate item (construct UI) only when needed
-              item.populate();
+              it.populate();
               iNbCreatedThumbs++;
               // //invoke garbage collecting to avoid using too
               // much
@@ -664,7 +663,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               if (iNbCreatedThumbs % 20 == 0) {
                 System.gc();
               }
-              item.jlIcon.addMouseListener(new MouseAdapter() {
+              it.jlIcon.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                   LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())
                       .getParent();
@@ -677,8 +676,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                   CatalogView.this.item = thumb;
                 }
               });
-              if (!item.isNoCover() || (item.isNoCover() && jcbShowNoCover.isSelected())) {
-                jpItems.add(item);
+              if (!it.isNoCover() || (it.isNoCover() && jcbShowNoCover.isSelected())) {
+                jpItems.add(it);
               }
             }
           }
@@ -728,9 +727,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       // try to restore previous item
       if (oldItem != null) {
         synchronized (lock) {
-          for (LocalAlbumThumbnail item : hsItems) {
-            if (((Album) item.getItem()).equals(oldItem.getItem())) {
-              CatalogView.this.item = item;
+          for (LocalAlbumThumbnail it : hsItems) {
+            if (((Album) it.getItem()).equals(oldItem.getItem())) {
+              CatalogView.this.item = it;
               CatalogView.this.item.setSelected(true);
               break;
             }

@@ -23,7 +23,6 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Properties;
@@ -182,7 +181,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackAlbum(Track track, String sNewAlbum, HashSet<File> filter)
+  public Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -231,7 +230,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackAuthor(Track track, String sNewAuthor, HashSet<File> filter)
+  public Track changeTrackAuthor(Track track, String sNewAuthor, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -278,7 +277,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackStyle(Track track, String sNewStyle, HashSet<File> filter)
+  public Track changeTrackStyle(Track track, String sNewStyle, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -322,7 +321,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wrong format
    */
-  public Track changeTrackYear(Track track, String newItem, HashSet<File> filter)
+  public Track changeTrackYear(Track track, String newItem, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -367,7 +366,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackComment(Track track, String sNewItem, HashSet<File> filter)
+  public Track changeTrackComment(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -427,7 +426,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackOrder(Track track, long lNewOrder, HashSet<File> filter)
+  public Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -469,7 +468,7 @@ public class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackName(Track track, String sNewItem, HashSet<File> filter)
+  public Track changeTrackName(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
@@ -500,7 +499,7 @@ public class TrackManager extends ItemManager implements Observer {
     }
   }
 
-  private void updateFilesReferences(Track oldTrack, Track newTrack, HashSet<File> filter) {
+  private void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
     synchronized (TrackManager.getInstance().getLock()) {
       // Reset files property before adding new files
       for (File file : oldTrack.getReadyFiles(filter)) {
@@ -511,7 +510,7 @@ public class TrackManager extends ItemManager implements Observer {
     }
   }
 
-  private void postChange(Track track, Track newTrack, HashSet<File> filter) {
+  private void postChange(Track track, Track newTrack, Set<File> filter) {
     synchronized (TrackManager.getInstance().getLock()) {
       // re apply old properties from old item
       newTrack.cloneProperties(track);

@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * <p>
  */
-public class RatingManager extends Thread implements ITechnicalStrings {
+public final class RatingManager extends Thread implements ITechnicalStrings {
 
   private static RatingManager self;
 

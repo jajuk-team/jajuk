@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -37,7 +37,7 @@ import org.jajuk.util.Util;
  * <p>
  * Logical item
  */
-public class Track extends LogicalItem implements Comparable {
+public class Track extends LogicalItem implements Comparable<Track> {
 
   private static final long serialVersionUID = 1L;
 
@@ -145,8 +145,7 @@ public class Track extends LogicalItem implements Comparable {
    *          track to be compared
    * @return comparaison result
    */
-  public int compareTo(Object o) {
-    Track otherTrack = (Track) o;
+  public int compareTo(Track otherTrack) {
     return getID().compareTo(otherTrack.getID());
   }
 
@@ -182,7 +181,7 @@ public class Track extends LogicalItem implements Comparable {
    * @param filter
    *          files we want to deal with, null means no filter
    */
-  public ArrayList<File> getReadyFiles(HashSet<File> filter) {
+  public ArrayList<File> getReadyFiles(Set<File> filter) {
     ArrayList<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady() && (filter == null || filter.contains(file))) {

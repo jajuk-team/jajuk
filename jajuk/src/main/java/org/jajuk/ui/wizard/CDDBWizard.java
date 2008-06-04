@@ -35,7 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -52,6 +52,7 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.Event;
@@ -89,7 +90,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
   OKCancelPanel okc;
 
   /** File filter */
-  HashSet filter;
+  Set<File> filter;
 
   /** Layout dimensions */
   double[][] dSize = { { 0, TableLayout.FILL }, { 0, 22, TableLayout.PREFERRED, 22 } };
@@ -112,7 +113,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 
   int idx;
 
-  class CDDBTrack implements FreedbTrack {
+  static class CDDBTrack implements FreedbTrack {
 
     Track track;
 

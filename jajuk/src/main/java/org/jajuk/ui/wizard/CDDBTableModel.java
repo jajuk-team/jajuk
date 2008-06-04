@@ -23,6 +23,7 @@ import entagged.freedb.FreedbReadResult;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
@@ -72,15 +73,15 @@ public class CDDBTableModel extends JajukTableModel {
   public void populateModel(FreedbReadResult fdbReader) {
     iRowNum = alItems.size();
     int iColNum = iNumberStandardCols;
-    Iterator it = alItems.iterator();
+    Iterator<CDDBTrack> it = alItems.iterator();
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
     for (int iRow = 0; it.hasNext(); iRow++) {
       Track track = ((CDDBTrack) it.next()).track;
       setItemAt(iRow, track);
-      ArrayList file = track.getFiles();
-      Iterator ifi = file.iterator();
+      List<File> file = track.getFiles();
+      Iterator<File> ifi = file.iterator();
       String filename = "";
       while (ifi.hasNext()) {
         File f = (File) ifi.next();

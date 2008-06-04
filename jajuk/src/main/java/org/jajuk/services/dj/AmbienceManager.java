@@ -87,7 +87,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
       return;
     }
     Properties properties = ConfigurationManager.getProperties();
-    Enumeration e = properties.keys();
+    Enumeration<Object> e = properties.keys();
     while (e.hasMoreElements()) {
       String sKey = (String) e.nextElement();
       if (sKey.matches(AMBIENCE_PREFIX + ".*")) {
@@ -199,7 +199,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
   public void commit() {
     // first, remove all ambiences from configuration
     Properties properties = ConfigurationManager.getProperties();
-    Iterator it = properties.keySet().iterator();
+    Iterator<Object> it = properties.keySet().iterator();
     while (it.hasNext()) {
       String sKey = (String) it.next();
       if (sKey.startsWith(AMBIENCE_PREFIX)) {
