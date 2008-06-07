@@ -229,7 +229,7 @@ public interface ITechnicalStrings {
   String FILE_DJ_DIR = "djs";
 
   String FILE_WEB_RADIOS_REPOS = "webradios.xml";
-
+  
   String FILE_FIFO = "fifo.lst";
 
   String FILE_MPLAYER_EXE = "mplayer.exe";
@@ -254,9 +254,7 @@ public interface ITechnicalStrings {
 
   String URL_MPLAYER = "http://repository.jajuk.info/mplayer/1.0rc2/mplayer.exe";
 
-  String URL_DEFAULT_WEBRADIOS_1 = "http://jajuk.svn.sourceforge.net/viewvc/*checkout*/jajuk/trunk/jajuk/src/main/resources/xml/default_webradios.xml";
-
-  String URL_DEFAULT_WEBRADIOS_2 = "http://repository.jajuk.info/default_webradios.xml";
+  String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/resources/preset_radios.xml";
 
   // About
   String ABOUT = "<html>Jajuk version " + JAJUK_VERSION + "</html>";

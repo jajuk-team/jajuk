@@ -57,13 +57,24 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
   // Self instance
   private static WebRadioManager self;
 
+  private StringBuilder buffer;
+
+  private boolean inRadio;
+  private String radioName;
+  private String radioUrl;
+
+  // Webradio file XML tags static strings
+  private static String XML_RADIO = "Radio";
+  private static String XML_URL = "url";
+  private static String XML_NAME = "name";
+
   File fwebradios;
 
   private WebRadioManager() {
     // check for webradio repository file
     fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
     if (!fwebradios.exists()) {
-      // download the stream list and load it asynchonously to avoid
+      // download the stream list and load it asynchronously to avoid
       // freezing unconnected people
       new Thread() {
         public void run() {
@@ -96,22 +107,16 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
   /**
    * Download asynchronously the default streams list
    * 
-   * @return the downnlod thread
+   * @return the download thread
    */
   private void downloadRepository() {
     // try to download the default directory (from jajuk SVN trunk
     // directly)
     try {
-      DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_1), fwebradios);
+      DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS), Util
+          .getConfFileByPath(FILE_WEB_RADIOS_REPOS));
     } catch (Exception e) {
       Log.error(e);
-      // Fail ? try the file from jajuk.info (older)
-      Log.debug("Try download default radio stations from jajuk.info");
-      try {
-        DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS_2), fwebradios);
-      } catch (Exception e2) {
-        Log.error(e2);
-      }
     }
     // Load repository if any
     if (fwebradios.exists()) {
@@ -173,7 +178,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     File out = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
     if (!out.exists() || out.length() == 0) {
       // show an "operation failed' message to users
-      throw new Exception("Cannot download webradio repository");
+      throw new Exception("Cannot download or parse webradio repository");
     }
   }
 
@@ -182,15 +187,47 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    */
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
       throws SAXException {
+
     try {
-      if (XML_STREAM.equals(sQName)) {
+      if (XML_RADIO.equals(sQName)) {
+        inRadio = true;
+      } else if (XML_STREAM.equals(sQName)) {
         String name = attributes.getValue(attributes.getIndex(XML_NAME));
         String url = attributes.getValue(attributes.getIndex(XML_URL));
         WebRadio radio = new WebRadio(name, url);
         webradios.add(radio);
+        Log.info(radio.toString());
+      } else if (XML_NAME.equals(sQName) && inRadio) {
+        buffer = new StringBuilder();
+      } else if (XML_URL.equals(sQName) && inRadio) {
+        buffer = new StringBuilder();
       }
+
     } catch (Exception e) {
       Log.error(e);
+    }
+  }
+
+  public void characters(char[] ch, int start, int length) throws SAXException {
+    String s  = new String(ch, start, length);
+    if (buffer != null)
+      buffer.append(s);
+  }
+
+  /**
+   * End element in order to read from aTunes radio list
+   * 
+   */
+  public void endElement(String uri, String localName, String qName) throws SAXException {
+    if (XML_RADIO.equals(qName)) {
+      // End of radio element, add to list
+      WebRadio radio = new WebRadio(radioName, radioUrl);
+      webradios.add(radio);
+      inRadio = false;
+    } else if (XML_NAME.equals(qName)) {
+      radioName = buffer.toString();
+    } else if (XML_URL.equals(qName)) {
+      radioUrl = buffer.toString();
     }
   }
 
@@ -200,7 +237,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    * @param sCriteria
    * @return
    */
-  public Set<SearchResult> search(String sCriteria) {
+  public TreeSet<SearchResult> search(String sCriteria) {
     synchronized (FileManager.getInstance().getLock()) {
       TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
       for (WebRadio radio : webradios) {
