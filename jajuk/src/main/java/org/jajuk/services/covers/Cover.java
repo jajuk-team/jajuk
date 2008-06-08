@@ -191,6 +191,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "Type=" + iType + " URL=" + url;
   }
@@ -198,6 +199,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
   /**
    * Equals needed for consistency for sorting
    */
+  @Override
   public boolean equals(Object o) {
     boolean bOut = false;
     Cover cOther = (Cover) o;
@@ -223,6 +225,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
    * 
    * @return object hashcode
    */
+  @Override
   public int hashCode() {
     return this.url.hashCode() + iType;
   }

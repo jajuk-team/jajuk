@@ -50,6 +50,7 @@ public class ExitService extends Thread implements ITechnicalStrings {
     super("Exit hook thread");
   }
 
+  @Override
   public void run() {
     Log.debug("Exit Hook begin");
     // stop sound ASAP

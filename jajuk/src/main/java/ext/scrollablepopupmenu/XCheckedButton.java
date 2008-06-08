@@ -155,20 +155,20 @@ public class XCheckedButton extends JButton {
      * Need to Override keeping the super code, else the check mark won't come
      */
     @Override
-    public void setSelected(boolean b) {
-
+    public void setSelected(final boolean b) {
+      boolean set = b;
       ButtonGroup group = getGroup();
       if (group != null) {
         // use the group model instead
-        group.setSelected(this, b);
-        b = group.isSelected(this);
+        group.setSelected(this, set);
+        set = group.isSelected(this);
       }
 
-      if (isSelected() == b) {
+      if (isSelected() == set) {
         return;
       }
 
-      if (b) {
+      if (set) {
         stateMask |= SELECTED;
       } else {
         stateMask &= ~SELECTED;
@@ -181,7 +181,7 @@ public class XCheckedButton extends JButton {
       fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this, this
           .isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
 
-      XCheckedButton.this.displayIcon(b | iconAlwaysVisible);
+      XCheckedButton.this.displayIcon(set | iconAlwaysVisible);
 
     }
 

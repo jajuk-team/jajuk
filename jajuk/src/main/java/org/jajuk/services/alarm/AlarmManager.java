@@ -48,6 +48,7 @@ public class AlarmManager {
     if (allAlarms.size() == 0) {
       allAlarms.add(aAlarm);
       new Thread() {
+        @Override
         public void run() {
           boolean bstop = false;
           while (!bstop) {

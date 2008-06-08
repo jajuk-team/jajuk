@@ -75,6 +75,7 @@ public class Event {
   /**
    * ToString method
    */
+  @Override
   public String toString() {
     return subject + " " + ((pDetails == null) ? "no details" : pDetails.toString());
   }
@@ -82,6 +83,7 @@ public class Event {
   /**
    * event equals method
    */
+  @Override
   public boolean equals(Object obj) {
     Event event = (Event) obj;
     boolean bOut = false;

@@ -525,6 +525,8 @@ public class Main implements ITechnicalStrings {
         case 4:
           ii = IconLoader.ICON_STAR_4;
           break;
+        default:
+          throw new IllegalArgumentException("Unexpected code position reached, the switch values should match the for-loop!");
         }
         Util.extractImage(ii.getImage(), star);
       }
