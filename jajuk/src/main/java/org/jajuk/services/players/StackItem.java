@@ -137,6 +137,7 @@ public class StackItem {
    * 
    * @return a clonned stack item
    */
+  @Override
   public Object clone() {
     StackItem item = null;
     try {
@@ -145,8 +146,9 @@ public class StackItem {
     } catch (JajukException je) { // can be thrown if FileManager return a
       // null file
       Log.error(je);
-      item = null;
+      return null;
     }
+
     return item;
   }
 
@@ -156,10 +158,13 @@ public class StackItem {
    * @return whether both items are equals. Condition : file is the same and
    *         planned flag is the same
    */
+  @Override
   public boolean equals(Object o) {
-    if (!(o instanceof StackItem) || o == null) {
+    // also includes check on null...
+    if (!(o instanceof StackItem)) {
       return false;
     }
+
     StackItem itemOther = (StackItem) o;
     File fOther = itemOther.getFile();
     if (fOther == null || file == null) {
@@ -171,6 +176,7 @@ public class StackItem {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return file.toString();
   }
