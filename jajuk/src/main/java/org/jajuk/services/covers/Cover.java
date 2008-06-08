@@ -29,7 +29,9 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -55,7 +57,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
   private File file;
 
   /** Default cover image */
-  private static final ImageIcon iiDefaultCover = Util.getImage(IMAGES_SPLASHSCREEN);
+  private static final ImageIcon iiDefaultCover = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
   /** Default URL */
   private static URL urlDefault = null;
@@ -84,7 +86,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
         || iType == Cover.ABSOLUTE_DEFAULT_COVER) {
       this.file = new File(url.getFile());
     } else if (iType == Cover.REMOTE_COVER) {
-      this.file = Util.getCachePath(url, id);
+      this.file = UtilSystem.getCachePath(url, id);
     }
   }
 
@@ -118,11 +120,11 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
         // local cover
         return 1; // i'm a local cover and the other not
       } else { // both are local covers, analyse name
-        String sFile = Util.getOnlyFile(getURL().getFile());
-        String sOtherFile = Util.getOnlyFile(cOther.getURL().getFile());
+        String sFile = UtilSystem.getOnlyFile(getURL().getFile());
+        String sOtherFile = UtilSystem.getOnlyFile(cOther.getURL().getFile());
         // files named "cover" or "front" are prioritary upon others :
-        if (Util.isStandardCover(sFile)) {
-          if (Util.isStandardCover(sOtherFile)) {
+        if (UtilFeatures.isStandardCover(sFile)) {
+          if (UtilFeatures.isStandardCover(sOtherFile)) {
             return 0; // both are local-standard covers
           } else {
             return 1; // i'm a local standard cover and the
@@ -130,7 +132,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
             // cover
           }
         } else {
-          if (Util.isStandardCover(sOtherFile)) {
+          if (UtilFeatures.isStandardCover(sOtherFile)) {
             return -1;// i'm a local cover and the other is
             // local standard cover
           } else {
@@ -214,7 +216,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
     // for local covers, we concidere that 2 covers with the same file name
     // are identical even if they are in different directories
     if (getType() != Cover.REMOTE_COVER) {
-      return Util.getOnlyFile(url.getFile()).equals(Util.getOnlyFile(cOther.getURL().getFile()));
+      return UtilSystem.getOnlyFile(url.getFile()).equals(UtilSystem.getOnlyFile(cOther.getURL().getFile()));
     }
     // Remote cover
     bOut = url.getFile().equals(cOther.getURL().getFile());

@@ -42,7 +42,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem; 
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.JajukPredicates;
@@ -155,7 +155,7 @@ public class FileManager extends ItemManager implements Observer {
     String id = null;
     // Under windows, all files/directories with different cases should get
     // the same ID
-    if (Util.isUnderWindows()) {
+    if (UtilSystem.isUnderWindows()) {
       id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
           dir.getRelativePath().toLowerCase()).append(sName.toLowerCase()).toString());
     } else {
@@ -197,7 +197,7 @@ public class FileManager extends ItemManager implements Observer {
       fNew.setProperty(XML_ID, sNewId); // reset new id and name
       fNew.setProperty(XML_NAME, sNewName); // reset new id and name
       // check file name and extension
-      if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))) {
+      if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getIO())))) {
         // no extension change
         throw new CannotRenameException(134);
       }
@@ -266,12 +266,11 @@ public class FileManager extends ItemManager implements Observer {
    * @param sId :
    *          Device id
    */
-  @SuppressWarnings("unchecked")
   public void cleanDevice(String sId) {
     synchronized (FileManager.getInstance().getLock()) {
-      Iterator<File> it = hmItems.values().iterator();
+      Iterator it = hmItems.values().iterator();
       while (it.hasNext()) {
-        File file = it.next();
+        File file = (File) it.next();
         if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
           it.remove(); // this is the right way to remove entry
           // in the hashmap
@@ -280,7 +279,7 @@ public class FileManager extends ItemManager implements Observer {
       // cleanup sorted array
       it = hmItems.values().iterator();
       while (it.hasNext()) {
-        File file = it.next();
+        File file = (File) it.next();
         if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
           it.remove(); // this is the right way to remove entry
         }
@@ -330,14 +329,13 @@ public class FileManager extends ItemManager implements Observer {
   /**
    * @return All accessible files of the collection
    */
-  @SuppressWarnings("unchecked")
   public List<File> getReadyFiles() {
     Set<File> files = null;
     files = FileManager.getInstance().getFiles();
-    Iterator<File> it = new FilterIterator(files.iterator(), new JajukPredicates.ReadyFilePredicate());
+    Iterator it = new FilterIterator(files.iterator(), new JajukPredicates.ReadyFilePredicate());
     List<File> out = new ArrayList<File>(files.size() / 2);
     while (it.hasNext()) {
-      out.add(it.next());
+      out.add((File) it.next());
     }
     return out;
   }
@@ -431,15 +429,14 @@ public class FileManager extends ItemManager implements Observer {
    * @param bHideUnmounted
    * @return The entire accessible novelties collection
    */
-  @SuppressWarnings("unchecked")
   public ArrayList<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
     ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
     // take tracks matching required age
     Set<Track> tracks = TrackManager.getInstance().getTracks();
-    Iterator<Track> it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
+    Iterator it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
         ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
     while (it.hasNext()) {
-      Track track = it.next();
+      Track track = (Track) it.next();
       File file = track.getPlayeableFile(bHideUnmounted);
       // try to get a mounted file
       // (can return null)

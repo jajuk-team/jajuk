@@ -32,9 +32,11 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
-
+ 
 /**
  * An Album *
  * <p>
@@ -162,7 +164,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } else if (XML_TRACKS.equals(sKey)) {
       return Integer.toString(getNbOfTracks());
     } else if (XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
-      return Util.getLocaleDateFormatter().format(getDiscoveryDate());
+      return UtilString.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_TRACK_HITS.equals(sKey)) {
       return Long.toString(getHits());
     } else if (XML_ANY.equals(sKey)) {
@@ -243,10 +245,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
         if (files[i].canRead() // test file is readable
             && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
-          String sExt = Util.getExtension(files[i]);
+          String sExt = UtilSystem.getExtension(files[i]);
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
               || sExt.equalsIgnoreCase("gif")) {
-            if (Util.isStandardCover(files[i].getAbsolutePath())) {
+            if (UtilFeatures.isStandardCover(files[i].getAbsolutePath())) {
               return files[i];
             }
           }
@@ -262,7 +264,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
         if (files[i].canRead() // test file is readable
             && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
-          String sExt = Util.getExtension(files[i]);
+          String sExt = UtilSystem.getExtension(files[i]);
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
               || sExt.equalsIgnoreCase("gif")) {
             return files[i];
@@ -303,7 +305,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return album thumb for given size
    */
   public ImageIcon getThumbnail(String size) {
-    File fCover = Util
+    File fCover = UtilSystem
         .getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getID() + '.' + EXT_THUMB);
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
@@ -427,7 +429,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   public boolean matches(String property, String pattern) {
-    if (Util.isVoid(property) || Util.isVoid(pattern)) {
+    if (UtilString.isVoid(property) || UtilString.isVoid(pattern)) {
       return true;
     }
     String sValue = null;
@@ -463,5 +465,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
   protected void resetTracks() {
     tracks.clear();
   }
-
+  
+  
 }

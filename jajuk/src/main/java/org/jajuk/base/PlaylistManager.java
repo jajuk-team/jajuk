@@ -31,7 +31,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.Observer;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem; 
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -201,7 +201,7 @@ public class PlaylistManager extends ItemManager implements Observer {
       if (plfNew.getName().lastIndexOf('.') != plfNew.getName().indexOf('.')// just
           // one
           // '.'
-          || !(Util.getExtension(ioNew).equals(EXT_PLAYLIST))) { // check
+          || !(UtilSystem.getExtension(ioNew).equals(EXT_PLAYLIST))) { // check
         // extension
         Messages.showErrorMessage(134);
         throw new JajukException(134);

@@ -29,8 +29,8 @@ import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.Messages; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 
 public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrings {
@@ -57,11 +57,11 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
         }
         // Drop all perspectives conf
         for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
-          File loadFile = Util.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
+          File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
           loadFile.delete();
         }
         // Delete toolbars configuration too
-        Util.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
+        UtilSystem.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
         // Indicates to not commiting current configuration
         fullRestore = true;
         // Exit Jajuk

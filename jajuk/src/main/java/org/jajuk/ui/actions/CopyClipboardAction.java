@@ -25,13 +25,13 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.Messages; 
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
  * 
- * Copy to clipboard the string stored in Util.copyData
+ * Copy to clipboard the string stored in UtilFeatures.copyData
  */
 public class CopyClipboardAction extends ActionBase {
 
@@ -44,7 +44,7 @@ public class CopyClipboardAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    StringSelection data = new StringSelection(Util.copyData);
+    StringSelection data = new StringSelection(UtilFeatures.copyData);
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(data, data);
   }

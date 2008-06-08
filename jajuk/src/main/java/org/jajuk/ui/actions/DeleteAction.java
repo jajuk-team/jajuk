@@ -45,7 +45,8 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 public class DeleteAction extends ActionBase {
@@ -116,11 +117,11 @@ public class DeleteAction extends ActionBase {
       new Thread() {
         @Override
         public void run() {
-          Util.waiting();
+          UtilGUI.waiting();
           for (File f : alFiles) {
             try {
               Directory d = f.getDirectory();
-              Util.deleteFile(f.getIO());
+              UtilSystem.deleteFile(f.getIO());
               FileManager.getInstance().removeFile(f);
               if (d.getFiles().size() == 0)
                 emptyDirs.add(f.getDirectory());
@@ -129,7 +130,7 @@ public class DeleteAction extends ActionBase {
               rejFiles.add(f);
             }
           }
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
           InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.0"), 1);
           if (rejFiles.size() > 0) {
             String rejString = "";
@@ -155,7 +156,7 @@ public class DeleteAction extends ActionBase {
         } else {
           for (Directory d : emptyDirs) {
             try {
-              Util.deleteDir(new java.io.File(d.getAbsolutePath()));
+              UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
               DirectoryManager.getInstance().removeDirectory(d.getID());
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -196,17 +197,17 @@ public class DeleteAction extends ActionBase {
       new Thread() {
         @Override
         public void run() {
-          Util.waiting();
+          UtilGUI.waiting();
           for (Directory d : alDirs) {
             try {
-              Util.deleteDir(new java.io.File(d.getAbsolutePath()));
+              UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
               DirectoryManager.getInstance().removeDirectory(d.getID());
             } catch (Exception ioe) {
               Log.error(131, ioe);
               rejDirs.add(d);
             }
           }
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
           InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"), 1);
 
           if (rejDirs.size() > 0) {

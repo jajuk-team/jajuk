@@ -38,7 +38,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString; 
 import org.jajuk.util.log.Log;
 
 public class DebugLogAction extends ActionBase {
@@ -93,8 +93,8 @@ public class DebugLogAction extends ActionBase {
   private String getTraces() {
     // Store system properties
     String traces = "<HTML><font color='green'><b>"
-        + Util.getAnonymizedSystemProperties().toString() + "<br>"
-        + Util.getAnonymizedJajukProperties().toString() + "</b></font><br>";
+        + UtilString.getAnonymizedSystemProperties().toString() + "<br>"
+        + UtilString.getAnonymizedJajukProperties().toString() + "</b></font><br>";
     // Store last traces
     for (String line : Log.getSpool()) {
       traces += line + "<br>";

@@ -27,8 +27,8 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.Messages; 
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -51,8 +51,8 @@ public class QualityAction extends ActionBase {
   public void perform(ActionEvent evt) {
     String sBody = "";
     sBody += "Version: " + JAJUK_VERSION + '\n';
-    sBody += Util.getAnonymizedSystemProperties().toString() + '\n';
-    sBody += Util.getAnonymizedJajukProperties().toString() + '\n';
+    sBody += UtilString.getAnonymizedSystemProperties().toString() + '\n';
+    sBody += UtilString.getAnonymizedJajukProperties().toString() + '\n';
     for (String line : Log.getSpool()) {
       sBody += line + '\n';
     }

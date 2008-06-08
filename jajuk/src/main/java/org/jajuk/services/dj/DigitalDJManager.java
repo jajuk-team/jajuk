@@ -45,7 +45,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem; 
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -57,9 +57,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public final class DigitalDJManager implements ITechnicalStrings, Observer {
+public class DigitalDJManager implements ITechnicalStrings, Observer {
 
-  /** List of registered DJs ID->DJ */
+  /** List of registrated DJs ID->DJ */
   private HashMap<String, DigitalDJ> djs;
 
   /** self instance */
@@ -140,7 +140,7 @@ public final class DigitalDJManager implements ITechnicalStrings, Observer {
    */
   public static void commit(DigitalDJ dj) {
     try {
-      BufferedWriter bw = new BufferedWriter(new FileWriter(Util.getConfFileByPath(FILE_DJ_DIR
+      BufferedWriter bw = new BufferedWriter(new FileWriter(UtilSystem.getConfFileByPath(FILE_DJ_DIR
           + "/" + dj.getID() + "." + XML_DJ_EXTENSION)));
       bw.write(dj.toXML());
       bw.flush();
@@ -157,7 +157,7 @@ public final class DigitalDJManager implements ITechnicalStrings, Observer {
    */
   public void remove(DigitalDJ dj) {
     djs.remove(dj.getID());
-    Util.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete();
+    UtilSystem.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete();
     // reset default DJ if this DJ was default
     if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID())) {
       ConfigurationManager.setProperty(CONF_DEFAULT_DJ, "");
@@ -207,7 +207,7 @@ public final class DigitalDJManager implements ITechnicalStrings, Observer {
    */
   public void loadAllDJs() {
     try {
-      File[] files = Util.getConfFileByPath(FILE_DJ_DIR).listFiles(new FileFilter() {
+      File[] files = UtilSystem.getConfFileByPath(FILE_DJ_DIR).listFiles(new FileFilter() {
         public boolean accept(File file) {
           if (file.isFile() && file.getPath().endsWith('.' + XML_DJ_EXTENSION)) {
             return true;

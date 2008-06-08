@@ -47,7 +47,8 @@ import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -147,14 +148,14 @@ public class FIFO implements ITechnicalStrings {
       @Override
       public void run() {
         try {
-          Util.waiting();
+          UtilGUI.waiting();
           pushCommand(alItems, bAppend);
         } catch (Exception e) {
           Log.error(e);
         } finally {
           // refresh playlist editor
           ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
       }
     };
@@ -175,14 +176,14 @@ public class FIFO implements ITechnicalStrings {
       @Override
       public void run() {
         try {
-          Util.waiting();
+          UtilGUI.waiting();
           pushCommand(item, bAppend);
         } catch (Exception e) {
           Log.error(e);
         } finally {
           // refresh queue
           ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
       }
     };
@@ -198,7 +199,7 @@ public class FIFO implements ITechnicalStrings {
    */
   public void launchRadio(WebRadio radio) {
     try {
-      Util.waiting();
+      UtilGUI.waiting();
       currentRadio = radio;
       // Play the stream
       boolean bPlayOK = Player.play(radio);
@@ -219,7 +220,7 @@ public class FIFO implements ITechnicalStrings {
       Log.error(122, t);
       playingRadio = false;
     } finally {
-      Util.stopWaiting(); // stop the waiting cursor
+      UtilGUI.stopWaiting(); // stop the waiting cursor
     }
   }
 
@@ -455,7 +456,7 @@ public class FIFO implements ITechnicalStrings {
    */
   private void launch(int index) {
     try {
-      Util.waiting();
+      UtilGUI.waiting();
       // intro workaround : intro mode is only read at track launch
       // and can't be set during the play
       ConfigurationManager.getBoolean(CONF_STATE_INTRO);
@@ -523,7 +524,7 @@ public class FIFO implements ITechnicalStrings {
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);
     } finally {
-      Util.stopWaiting(); // stop the waiting cursor
+      UtilGUI.stopWaiting(); // stop the waiting cursor
     }
   }
 
@@ -1176,7 +1177,7 @@ public class FIFO implements ITechnicalStrings {
    * Store current FIFO as a list
    */
   public void commit() throws IOException {
-    java.io.File file = Util.getConfFileByPath(FILE_FIFO);
+    java.io.File file = UtilSystem.getConfFileByPath(FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
     int index = 0;

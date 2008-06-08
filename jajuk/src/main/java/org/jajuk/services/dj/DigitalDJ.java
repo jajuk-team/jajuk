@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision:3266 $ 
  */
 
 package org.jajuk.services.dj;
@@ -27,7 +27,6 @@ import java.util.List;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  * Digital DJ
@@ -116,7 +115,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
       Iterator<File> it = files.iterator();
       while (it.hasNext()) {
         File file = it.next();
-        if (Util.getTrackStarsNumber(file.getTrack().getRate()) < iRatingLevel
+        if (file.getTrack().getStarsNumber() < iRatingLevel
             || selectedTracks.contains(file.getTrack())) {
           it.remove();
         } else {

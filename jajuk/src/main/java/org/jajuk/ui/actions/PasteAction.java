@@ -42,7 +42,8 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 public class PasteAction extends ActionBase {
@@ -68,7 +69,7 @@ public class PasteAction extends ActionBase {
     new Thread() {
       @Override
       public void run() {
-        Util.waiting();
+        UtilGUI.waiting();
         for (Item item : moveItems) {
           if (item instanceof File) {
             alFiles.add((File) item);
@@ -108,7 +109,7 @@ public class PasteAction extends ActionBase {
                     + " : \n\n" + f.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
                 if (iResu != JOptionPane.YES_OPTION) {
-                  Util.stopWaiting();
+                  UtilGUI.stopWaiting();
                   return;
                 }
                 if (iResu == Messages.ALL_OPTION) {
@@ -117,8 +118,8 @@ public class PasteAction extends ActionBase {
               }
             }
             try {
-              Util.copyToDir(f.getIO(), dir);
-              Util.deleteFile(f.getIO());
+              UtilSystem.copyToDir(f.getIO(), dir);
+              UtilSystem.deleteFile(f.getIO());
               FileManager.getInstance().changeFileDirectory(f, destDir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -129,8 +130,8 @@ public class PasteAction extends ActionBase {
             try {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
-              Util.copyRecursively(src, dst);
-              Util.deleteDir(src);
+              UtilSystem.copyRecursively(src, dst);
+              UtilSystem.deleteDir(src);
               DirectoryManager.getInstance().removeDirectory(d.getID());
               DirectoryManager.refreshDirectory(destDir);
             } catch (Exception ioe) {
@@ -149,7 +150,7 @@ public class PasteAction extends ActionBase {
                     + " : \n\n" + f.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
                 if (iResu != JOptionPane.YES_OPTION) {
-                  Util.stopWaiting();
+                  UtilGUI.stopWaiting();
                   return;
                 }
                 if (iResu == Messages.ALL_OPTION) {
@@ -158,7 +159,7 @@ public class PasteAction extends ActionBase {
               }
             }
             try {
-              Util.copyToDir(f.getIO(), dir);
+              UtilSystem.copyToDir(f.getIO(), dir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
@@ -168,7 +169,7 @@ public class PasteAction extends ActionBase {
             try {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
-              Util.copyRecursively(src, dst);
+              UtilSystem.copyRecursively(src, dst);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
@@ -177,7 +178,7 @@ public class PasteAction extends ActionBase {
           DirectoryManager.refreshDirectory(destDir);
         }
         ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
       }
     }.start();
   }

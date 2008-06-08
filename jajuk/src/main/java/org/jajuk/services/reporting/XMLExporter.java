@@ -42,7 +42,8 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString; 
+import org.jajuk.util.UtilSystem;
 
 /**
  * This class exports music contents to XML.
@@ -62,7 +63,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
   /** PUBLIC METHODS */
 
   public XMLExporter() throws Exception {
-    cache = Util
+    cache = UtilSystem
         .getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_XML_" + System.currentTimeMillis());
     writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cache, false), "UTF-8"));
   }
@@ -202,9 +203,9 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     // Get the children
     ArrayList<Directory> children = new ArrayList<Directory>(directory.getDirectories());
     writer.write(addTabs(level) + Tag.openTag(XML_DIRECTORY) + NEWLINE);
-    String sName = Util.formatXML(directory.getName());
-    String sID = Util.formatXML(directory.getID());
-    String sPath = Util.formatXML(directory.getAbsolutePath());
+    String sName = UtilString.formatXML(directory.getName());
+    String sID = UtilString.formatXML(directory.getID());
+    String sPath = UtilString.formatXML(directory.getAbsolutePath());
     // Tag directory data.
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sName) + NEWLINE);
@@ -222,8 +223,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   private void tagFile(org.jajuk.base.File file, int level) throws Exception {
     String sFileID = file.getID();
-    String sName = Util.formatXML(file.getName());
-    String sPath = Util.formatXML(file.getAbsolutePath());
+    String sName = UtilString.formatXML(file.getName());
+    String sPath = UtilString.formatXML(file.getAbsolutePath());
     long lSize = file.getSize();
     writer.write(addTabs(level) + Tag.openTag(XML_FILE) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sFileID) + NEWLINE);
@@ -238,8 +239,8 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     // Make sure we have a directory.
     if (directory != null) {
       writer.write(Tag.openTag(XML_DIRECTORY) + NEWLINE);
-      String sName = Util.formatXML(directory.getName());
-      String sPath = Util.formatXML(directory.getAbsolutePath());
+      String sName = UtilString.formatXML(directory.getName());
+      String sPath = UtilString.formatXML(directory.getAbsolutePath());
       String sID = directory.getID();
 
       // Tag directory data.
@@ -263,10 +264,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     String sID = device.getID();
     writer.write(Tag.openTag(XML_DEVICE) + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_NAME, Util.formatXML(device.getName())) + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_TYPE, Util.formatXML(device.getDeviceTypeS()))
+    writer.write(addTabs(1) + Tag.tagData(XML_NAME, UtilString.formatXML(device.getName())) + NEWLINE);
+    writer.write(addTabs(1) + Tag.tagData(XML_TYPE, UtilString.formatXML(device.getDeviceTypeS()))
         + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_URL, Util.formatXML(device.getUrl())) + NEWLINE);
+    writer.write(addTabs(1) + Tag.tagData(XML_URL, UtilString.formatXML(device.getUrl())) + NEWLINE);
     Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
     // check void devices
     if (dir != null) {
@@ -285,13 +286,13 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   private void tagTrack(Track track, int level) throws Exception {
     String sTrackID = track.getID();
-    String sTrackName = Util.formatXML(track.getName());
-    String sTrackStyle = Util.formatXML(track.getStyle().getName2());
-    String sTrackAuthor = Util.formatXML(track.getAuthor().getName2());
-    String sTrackAlbum = Util.formatXML(track.getAlbum().getName2());
+    String sTrackName = UtilString.formatXML(track.getName());
+    String sTrackStyle = UtilString.formatXML(track.getStyle().getName2());
+    String sTrackAuthor = UtilString.formatXML(track.getAuthor().getName2());
+    String sTrackAlbum = UtilString.formatXML(track.getAlbum().getName2());
     long lTrackLength = track.getDuration();
     long lTrackRate = track.getRate();
-    String sTrackComment = Util.formatXML(track.getComment());
+    String sTrackComment = UtilString.formatXML(track.getComment());
     long lTrackOrder = track.getOrder();
     writer.write(addTabs(level) + Tag.openTag(XML_TRACK) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sTrackID) + NEWLINE);
@@ -299,10 +300,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_STYLE, sTrackStyle) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_AUTHOR, sTrackAuthor) + NEWLINE);
     writer.write(addTabs(level + 1)
-        + Tag.tagData(XML_TRACK_LENGTH, Util.formatTimeBySec(lTrackLength, true)) + NEWLINE);
+        + Tag.tagData(XML_TRACK_LENGTH, UtilString.formatTimeBySec(lTrackLength)) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_RATE, lTrackRate) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_COMMENT, sTrackComment) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_ORDER, Util.padNumber(lTrackOrder, 2))
+    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2))
         + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
     writer.write(addTabs(level) + Tag.closeTag(XML_TRACK) + NEWLINE);
@@ -310,14 +311,14 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   private void tagAlbum(Album album, int level) throws Exception {
     String sAlbumID = album.getID();
-    String sAlbumName = Util.formatXML(album.getName2());
+    String sAlbumName = UtilString.formatXML(album.getName2());
     String sStyleName = "";
     String sAuthorName = "";
     String sYear = "";
     Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
     if (tracks.size() > 0) {
-      sStyleName = Util.formatXML(tracks.iterator().next().getStyle().getName2());
-      sAuthorName = Util.formatXML(tracks.iterator().next().getAuthor().getName2());
+      sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
+      sAuthorName = UtilString.formatXML(tracks.iterator().next().getAuthor().getName2());
       sYear = tracks.iterator().next().getYear().getName2();
     }
     writer.write(addTabs(level) + Tag.openTag(XML_ALBUM) + NEWLINE);
@@ -338,7 +339,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   private void tagAuthor(Author author, int level) throws Exception {
     String sAuthorID = author.getID();
-    String sAuthorName = Util.formatXML(author.getName2());
+    String sAuthorName = UtilString.formatXML(author.getName2());
     writer.write(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sAuthorID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName) + NEWLINE);
@@ -363,7 +364,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   private void tagStyle(Style style, int level) throws Exception {
     String sStyleID = style.getID();
-    String sStyleName = Util.formatXML(style.getName2());
+    String sStyleName = UtilString.formatXML(style.getName2());
     writer.write(addTabs(level) + Tag.openTag(XML_STYLE) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sStyleID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName) + NEWLINE);

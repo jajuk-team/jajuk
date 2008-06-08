@@ -31,7 +31,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem; 
 
 /**
  * This class exports music contents to HTML.
@@ -41,7 +41,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
   /** PUBLIC METHODS */
 
   public HTMLExporter() {
-    cache = Util.getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_html_"
+    cache = UtilSystem.getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_html_"
         + System.currentTimeMillis());
   }
 
@@ -99,7 +99,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
     // Copy CSS files
     String sCSSAll = new File(sPath).getParent() + '/' + FILE_REPORTING_CSS_ALL_FILENAME;
     String sCSSPrint = new File(sPath).getParent() + '/' + FILE_REPORTING_CSS_PRINT_FILENAME;
-    Util.copy(FILE_REPORTING_CSS_ALL_PATH, sCSSAll);
-    Util.copy(FILE_REPORTING_CSS_PRINT_PATH, sCSSPrint);
+    UtilSystem.copy(FILE_REPORTING_CSS_ALL_PATH, sCSSAll);
+    UtilSystem.copy(FILE_REPORTING_CSS_PRINT_PATH, sCSSPrint);
   }
 }

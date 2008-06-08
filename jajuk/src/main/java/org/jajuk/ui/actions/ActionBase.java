@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem; 
 import org.jajuk.util.log.Log;
 
 /**
@@ -42,7 +42,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
 
   // Instantiate a static jintellitype object
   static {
-    if (Util.isUnderWindows()) {
+    if (UtilSystem.isUnderWindows()) {
       try {
         Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
             .getMethod("registerJIntellitype").invoke(null, (Object[])null);
@@ -72,7 +72,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    */
   protected ActionBase(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
-    this.bHotkey = Util.isUnderWindows() && bHotkey
+    this.bHotkey = UtilSystem.isUnderWindows() && bHotkey
         && ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
     String name = pName;
     if (name != null) {
@@ -368,7 +368,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
    * Free intellipad ressources
    */
   public static void cleanup() throws Exception {
-    if (Util.isUnderWindows()) {
+    if (UtilSystem.isUnderWindows()) {
       Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
           (Object[])null);
     }

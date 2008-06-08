@@ -48,7 +48,10 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.PlaylistFilter;
@@ -255,7 +258,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // Now move the temp file to final one if everything seems ok
       if (temp.exists() && temp.length() > 0) {
         try {
-          Util.copy(temp, getFio());
+          UtilSystem.copy(temp, getFio());
           temp.delete();
         } catch (final Exception e1) {
           throw new JajukException(28, getName(), e1);
@@ -579,7 +582,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       Messages.showErrorMessage(18);
     } else {
       FIFO.getInstance().push(
-          Util.createStackItems(Util.applyPlayOption(alFiles), ConfigurationManager
+          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), ConfigurationManager
               .getBoolean(ITechnicalStrings.CONF_STATE_REPEAT), true), false);
     }
   }
@@ -677,7 +680,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       } else if (getType() == Type.QUEUE) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
             + ITechnicalStrings.FILE_DEFAULT_QUEUE_PLAYLIST
-            + Util.getAdditionDateFormatter().format(new Date());
+            + UtilString.getAdditionDateFormatter().format(new Date());
       } else {
         sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
             + file.getTrack().getHumanValue(ITechnicalStrings.XML_ALBUM);
@@ -772,7 +775,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       new Thread() {
         @Override
         public void run() {
-          Util.waiting();
+          UtilGUI.waiting();
           final java.io.File fDir = jfc.getSelectedFile();
           final Date curDate = new Date();
           final SimpleDateFormat Stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
@@ -784,7 +787,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.write(ITechnicalStrings.PLAYLIST_NOTE);
             for (final File entry : alFiles) {
-              Util.copyToDir(entry.getIO(), destDir);
+              UtilSystem.copyToDir(entry.getIO(), destDir);
               bw.newLine();
               bw.write(entry.getAbsolutePath());
               // Notify that a file has been copied
@@ -802,7 +805,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           } catch (final Exception e) {
             Log.error(e);
           }
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
           Messages.showInfoMessage(dirName + " "
               + Messages.getString("AbstractPlaylistEditorView.28") + " " + fDir.getAbsolutePath());
         }
@@ -879,5 +882,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public int getNbOfTracks() {
     return alFiles.size();
   }
-
+  
+ 
 }

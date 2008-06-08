@@ -38,7 +38,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -72,7 +73,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
 
   private WebRadioManager() {
     // check for webradio repository file
-    fwebradios = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+    fwebradios = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
     if (!fwebradios.exists()) {
       // download the stream list and load it asynchronously to avoid
       // freezing unconnected people
@@ -114,7 +115,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     // try to download the default directory (from jajuk SVN trunk
     // directly)
     try {
-      DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS), Util
+      DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS), UtilSystem
           .getConfFileByPath(FILE_WEB_RADIOS_REPOS));
     } catch (Exception e) {
       Log.error(e);
@@ -150,7 +151,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     if (webradios.size() == 0) {
       return;
     }
-    File out = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+    File out = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
     String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
         sCharset), 1000000);
@@ -158,8 +159,8 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     bw.write("<" + XML_STREAMS + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
     // Manage each stream
     for (WebRadio radio : webradios) {
-      bw.write("\t<" + XML_STREAM + " " + XML_NAME + "='" + Util.formatXML(radio.getName()) + "' "
-          + XML_URL + "='" + Util.formatXML(radio.getUrl()) + "'/>\n");
+      bw.write("\t<" + XML_STREAM + " " + XML_NAME + "='" + UtilString.formatXML(radio.getName()) + "' "
+          + XML_URL + "='" + UtilString.formatXML(radio.getUrl()) + "'/>\n");
     }
     // close
     bw.write("</" + XML_STREAMS + ">\n");
@@ -176,7 +177,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     // Download repository
     downloadRepository();
     // Check file now exists and not void
-    File out = Util.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+    File out = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
     if (!out.exists() || out.length() == 0) {
       // show an "operation failed' message to users
       throw new Exception("Cannot download or parse webradio repository");

@@ -31,7 +31,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 public class DJAction extends ActionBase {
@@ -55,16 +56,16 @@ public class DJAction extends ActionBase {
           if (dj != null) {
             ConfigurationManager.setProperty(CONF_FADE_DURATION, Integer.toString(dj
                 .getFadingDuration()));
-            Util.waiting();
+            UtilGUI.waiting();
             List<File> al = dj.generatePlaylist();
-            Util.stopWaiting();
+            UtilGUI.stopWaiting();
             if (al.size() == 0) { // DJ constraints cannot be
               // respected
               Messages.showErrorMessage(158);
               return;
             }
             FIFO.getInstance().push(
-                Util.createStackItems(Util.applyPlayOption(al), ConfigurationManager
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), ConfigurationManager
                     .getBoolean(CONF_STATE_REPEAT), false), false);
           } else {
             Messages.showErrorMessage(157);

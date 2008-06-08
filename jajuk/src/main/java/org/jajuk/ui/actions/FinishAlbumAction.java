@@ -29,8 +29,8 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.Messages; 
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 public class FinishAlbumAction extends ActionBase {
@@ -50,7 +50,7 @@ public class FinishAlbumAction extends ActionBase {
     Directory dir = item.getFile().getDirectory();
     // then re-add current item
     FIFO.getInstance().push(
-        Util.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(), item
+        UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(), item
             .isUserLaunch()), true);
     FIFO.getInstance().computesPlanned(true); // update planned list
     Properties properties = new Properties();

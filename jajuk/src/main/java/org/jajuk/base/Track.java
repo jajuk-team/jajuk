@@ -30,7 +30,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString; 
 
 /**
  * A track
@@ -454,7 +454,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       }
       return null;
     } else if (XML_TRACK_LENGTH.equals(sKey)) {
-      return Util.formatTimeBySec(length, false);
+      return UtilString.formatTimeBySec(length);
     } else if (XML_TYPE.equals(sKey)) {
       return (TypeManager.getInstance().getTypeByID(getStringValue(sKey))).getName();
     } else if (XML_YEAR.equals(sKey)) {
@@ -469,7 +469,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       return sbOut.substring(0, sbOut.length() - 1); // remove last
       // ','
     } else if (XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
-      return Util.getLocaleDateFormatter().format(getDiscoveryDate());
+      return UtilString.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default
@@ -486,5 +486,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public ImageIcon getIconRepresentation() {
     return IconLoader.ICON_TRACK;
   }
+  
+   
+
 
 }

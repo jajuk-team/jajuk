@@ -35,7 +35,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI; 
 import org.jajuk.util.log.Log;
 
 public class RenameAction extends ActionBase {
@@ -61,14 +61,14 @@ public class RenameAction extends ActionBase {
               + "\n\n", ((File) currentItem).getName());
           if ((newName != null) && (newName.length() > 0)) {
             try {
-              Util.waiting();
+              UtilGUI.waiting();
               FileManager.getInstance().changeFileName((File) currentItem, newName);
               DirectoryManager.refreshDirectory(((File) currentItem).getDirectory());
               ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
             } finally {
-              Util.stopWaiting();
+              UtilGUI.stopWaiting();
             }
           }
         } else if (currentItem instanceof Directory) {
@@ -76,7 +76,7 @@ public class RenameAction extends ActionBase {
               + "\n\n", ((Directory) currentItem).getName());
           if ((newName != null) && (newName.length() > 0)) {
             try {
-              Util.waiting();
+              UtilGUI.waiting();
               java.io.File newFile = new java.io.File(((Directory) currentItem)
                   .getParentDirectory().getAbsolutePath()
                   + "/" + newName);
@@ -87,7 +87,7 @@ public class RenameAction extends ActionBase {
             } catch (Exception er) {
               Log.error(er);
             } finally {
-              Util.stopWaiting();
+              UtilGUI.stopWaiting();
             }
           }
         }

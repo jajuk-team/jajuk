@@ -31,8 +31,8 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * 
- * Launch the URL from Util.url in the default browser
+ *  
+ * Launch the URL from UtilFeatures.url in the default browser
  */
 public class LaunchInBrowserAction extends ActionBase {
 
