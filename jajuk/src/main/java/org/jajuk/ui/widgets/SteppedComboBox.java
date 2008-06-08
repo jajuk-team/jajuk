@@ -71,9 +71,10 @@ public class SteppedComboBox extends JComboBox {
     return new Dimension(popupWidth, size.height);
   }
 
-  protected void init() {
+  protected final void init() {
     try {
       ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
+        @Override
         protected ComboPopup createPopup() {
           BasicComboPopup popup = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
           popup.getAccessibleContext().setAccessibleParent(comboBox);
@@ -83,10 +84,9 @@ public class SteppedComboBox extends JComboBox {
           return popup;
         }
       };
-      if (cbui != null) {
-        setUI(cbui);
-        popupWidth = 0;
-      }
+
+      setUI(cbui);
+      popupWidth = 0;
     } catch (Exception e) {
       Log.error(e);
     }

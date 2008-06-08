@@ -42,6 +42,7 @@ public class JajukBasicComboPopup extends BasicComboPopup {
     super(jcb);
   }
 
+  @Override
   public void show() {
     Dimension popupSize = ((SteppedComboBox) comboBox).getPopupSize();
     popupSize.setSize(popupSize.width, getPopupHeightForRowCount(comboBox.getMaximumRowCount()));
@@ -62,6 +63,7 @@ public class JajukBasicComboPopup extends BasicComboPopup {
     show(comboBox, popupBounds.x, popupBounds.y);
   }
 
+  @Override
   protected JScrollPane createScroller() {
     return new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);

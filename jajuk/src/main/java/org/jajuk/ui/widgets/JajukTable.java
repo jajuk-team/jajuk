@@ -242,16 +242,19 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
   }
 
+  @Override
   public void columnAdded(TableColumnModelEvent arg0) {
     super.columnAdded(arg0);
     columnChange();
   }
 
+  @Override
   public void columnRemoved(TableColumnModelEvent arg0) {
     super.columnRemoved(arg0);
     columnChange();
   }
 
+  @Override
   public void columnMoved(TableColumnModelEvent arg0) {
     super.columnMoved(arg0);
     if (acceptColumnsEvents) {
@@ -259,10 +262,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
   }
 
+  @Override
   public void columnMarginChanged(ChangeEvent arg0) {
     super.columnMarginChanged(arg0);
   }
 
+  @Override
   public void columnSelectionChanged(ListSelectionEvent arg0) {
     super.columnSelectionChanged(arg0);
   }
@@ -312,6 +317,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   /**
    * add tooltips to each cell
    */
+  @Override
   public String getToolTipText(MouseEvent e) {
     java.awt.Point p = e.getPoint();
     int rowIndex = rowAtPoint(p);
@@ -344,6 +350,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
   }
 
+  @Override
   public void valueChanged(ListSelectionEvent e) {
     // Ignore adjusting event
     if (e.getValueIsAdjusting()) {

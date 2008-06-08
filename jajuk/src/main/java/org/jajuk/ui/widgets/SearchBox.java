@@ -95,6 +95,7 @@ public class SearchBox extends JTextField implements KeyListener {
     public void actionPerformed(ActionEvent arg0) {
       if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
         new Thread() {
+          @Override
           public void run() {
             search();
           }

@@ -74,6 +74,7 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
 
     // Ensure the text field always gets the first focus.
     addComponentListener(new ComponentAdapter() {
+      @Override
       public void componentShown(ComponentEvent ce) {
         pf.requestFocusInWindow();
       }

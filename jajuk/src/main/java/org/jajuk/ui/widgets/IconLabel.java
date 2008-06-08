@@ -105,6 +105,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return sText;
   }

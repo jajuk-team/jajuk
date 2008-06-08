@@ -89,7 +89,8 @@ public class SmartPlaylist extends JPanel {
    * 
    * @return playlist item name ( playlist name or label for special ones )
    */
-  public String getName() {
+  @Override
+  public final String getName() {
     String sOut = "";
     if (type == Type.NEW) {
       sOut = Messages.getString("PlaylistFileItem.2");

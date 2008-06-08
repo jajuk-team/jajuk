@@ -62,6 +62,7 @@ public class SizedJMenuItem extends JMenuItem {
     //this.height = height;
   }
 
+  @Override
   public void setIcon(Icon icon) {
     super.setIcon(Util.getResizedImage((ImageIcon) icon, 16, 16));
   }

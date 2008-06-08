@@ -67,10 +67,12 @@ public class SizedButton extends JButton {
     this.showText = bText;
   }
 
+  @Override
   public void setIcon(Icon icon) {
     super.setIcon(Util.getResizedImage((ImageIcon) icon, 16, 16));
   }
 
+  @Override
   public void setText(String text) {
     if (showText) {
       super.setText(text);

@@ -73,6 +73,7 @@ public class JajukFileChooser extends JFileChooser implements ITechnicalStrings 
   }
 
   /** Make sure to keep the dialog always on top */
+  @Override
   protected JDialog createDialog(Component parent) throws HeadlessException {
     JDialog dialog = super.createDialog(parent);
     dialog.setAlwaysOnTop(true);

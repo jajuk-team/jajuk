@@ -189,6 +189,7 @@ public class JPressButton extends JajukButton {
    * 
    * @see javax.swing.JComponent#updateUI
    */
+  @Override
   public void updateUI() {
     setUI((ButtonUI) UIManager.getUI(this));
   }
@@ -201,6 +202,7 @@ public class JPressButton extends JajukButton {
    * @see javax.swing.JComponent#getUIClassID
    * @see javax.swing.UIDefaults#getUI
    */
+  @Override
   public String getUIClassID() {
     return uiClassID;
   }

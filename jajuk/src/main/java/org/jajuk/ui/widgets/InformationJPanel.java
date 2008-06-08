@@ -182,6 +182,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     jlCurrent = new JLabel();
     jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
     jlCurrent.addMouseListener(new MouseAdapter() {
+      @Override
       public void mouseClicked(MouseEvent e) {
         int currentFormat = ConfigurationManager.getInt(CONF_FORMAT_TIME_ELAPSED);
         ConfigurationManager.setProperty(CONF_FORMAT_TIME_ELAPSED, Integer
@@ -377,33 +378,27 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
           // current item is a file
           if (o instanceof File) {
             File fCurrent = (File) o;
-            if (fCurrent != null) {
-              // display associated error code is given
-              String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
-              if (sReason != null) {
-                setMessage(Messages.getString("Error." + sReason) + ": "
-                    + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
-              } else {// default message
-                setMessage(Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(),
-                    InformationJPanel.ERROR);
-              }
-            } else { // none specified file
-              setMessage(Messages.getString("Error.007"), InformationJPanel.ERROR);
+
+            // display associated error code is given
+            String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
+            if (sReason != null) {
+              setMessage(Messages.getString("Error." + sReason) + ": "
+                  + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+            } else {// default message
+              setMessage(Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(),
+                  InformationJPanel.ERROR);
             }
           } else if (o instanceof WebRadio) {
             WebRadio radio = (WebRadio) o;
-            if (radio != null) {
-              // display associated error code is given
-              String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
-              if (sReason != null) {
-                setMessage(Messages.getString("Error." + sReason) + ": " + radio.toString(),
-                    InformationJPanel.ERROR);
-              } else {// default message
-                setMessage(Messages.getString("Error.007") + ": " + radio.toString(),
-                    InformationJPanel.ERROR);
-              }
-            } else { // none specified file
-              setMessage(Messages.getString("Error.170"), InformationJPanel.ERROR);
+
+            // display associated error code is given
+            String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
+            if (sReason != null) {
+              setMessage(Messages.getString("Error." + sReason) + ": " + radio.toString(),
+                  InformationJPanel.ERROR);
+            } else {// default message
+              setMessage(Messages.getString("Error.007") + ": " + radio.toString(),
+                  InformationJPanel.ERROR);
             }
           }
         }
@@ -497,6 +492,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
   /**
    * toString() method
    */
+  @Override
   public String toString() {
     return getClass().getName();
   }
@@ -513,6 +509,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
   private void setPosition(final float fPosition) {
     new Thread() {
 
+      @Override
       public void run() {
         Player.seek(fPosition);
       }

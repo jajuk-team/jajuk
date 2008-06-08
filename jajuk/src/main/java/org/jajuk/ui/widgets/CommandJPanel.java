@@ -411,6 +411,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
 
+      @Override
       public Component getListCellRendererComponent(JList list, Object value, int index,
           boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -678,6 +679,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
    */
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker sw = new SwingWorker() {
+      @Override
       public Object construct() {
         if (!e.getValueIsAdjusting()) {
           SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
@@ -699,6 +701,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         return null;
       }
 
+      @Override
       public void finished() {
         if (!e.getValueIsAdjusting()) {
           sbSearch.popup.hide();
@@ -1035,6 +1038,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   /**
    * ToString() method
    */
+  @Override
   public String toString() {
     return getClass().getName();
   }

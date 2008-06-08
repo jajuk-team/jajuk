@@ -151,6 +151,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
    */
 
   private MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
+    @Override
     public void mouseDragged(MouseEvent e) {
       Point point = e.getLocationOnScreen();
       // compute coordonnates of the event relative to the frame, not the screen
@@ -441,6 +442,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
    * 
    * @return whether the slim bar is visible
    */
+  @Override
   public boolean isVisible() {
     return super.isVisible() || closing;
   }
@@ -531,6 +533,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
 
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker sw = new SwingWorker() {
+      @Override
       public Object construct() {
         if (!e.getValueIsAdjusting()) {
           SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
@@ -552,6 +555,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
         return null;
       }
 
+      @Override
       public void finished() {
         if (!e.getValueIsAdjusting()) {
           sbSearch.popup.hide();

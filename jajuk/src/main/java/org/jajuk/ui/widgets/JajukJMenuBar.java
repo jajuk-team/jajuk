@@ -208,6 +208,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
         jmi = new JMenuItem(((IView) view.newInstance()).getDesc(), IconLoader.ICON_LOGO_FRAME);
       } catch (Exception e1) {
         Log.error(e1);
+        continue;
       }
       jmi.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -368,6 +369,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
         return null;
       }
 
+      @Override
       public void finished() {
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
