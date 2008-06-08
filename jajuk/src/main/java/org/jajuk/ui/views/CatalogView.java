@@ -266,6 +266,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
     jtfValue.addKeyListener(new KeyAdapter() {
+      @Override
       public void keyReleased(KeyEvent e) {
         // Ignore escape press, they can come from popup closing
         if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
@@ -664,6 +665,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 System.gc();
               }
               it.jlIcon.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mousePressed(MouseEvent e) {
                   LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())
                       .getParent();

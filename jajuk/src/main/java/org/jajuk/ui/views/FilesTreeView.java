@@ -740,6 +740,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   }
 
   /** Fill the tree */
+  @Override
   public synchronized void populateTree() {
     top.removeAllChildren();
     // add devices
@@ -928,6 +929,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * When unmounting a device from the tree, the device node is collapsed
    * </p>
    */
+  @Override
   void expand() {
     // begin by expanding all needed devices and directory, only after,
     // collapse unmounted devices if required

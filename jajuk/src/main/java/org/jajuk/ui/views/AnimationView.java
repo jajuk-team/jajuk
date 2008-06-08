@@ -198,6 +198,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
    * 
    * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
    */
+  @Override
   public void componentResized(ComponentEvent e) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {

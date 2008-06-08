@@ -77,6 +77,7 @@ public class AlbumsTableView extends AbstractTableView {
    */
   public void initUI() {
     SwingWorker sw = new SwingWorker() {
+      @Override
       public Object construct() {
         AlbumsTableView.super.construct();
         JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
@@ -176,6 +177,7 @@ public class AlbumsTableView extends AbstractTableView {
         return null;
       }
 
+      @Override
       public void finished() {
         AlbumsTableView.super.finished();
       }

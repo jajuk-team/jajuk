@@ -82,6 +82,7 @@ public class QueueView extends PlaylistView {
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     plf = new Playlist(Playlist.Type.QUEUE, null, null, null);
     // Control panel
@@ -189,6 +190,7 @@ public class QueueView extends PlaylistView {
     refreshQueue();
     // Add key listener to enable row suppression using SUPR key
     editorTable.addKeyListener(new KeyAdapter() {
+      @Override
       public void keyPressed(KeyEvent e) {
         // The fact that a selection can be removed or not is
         // in the jbRemove state
@@ -231,6 +233,7 @@ public class QueueView extends PlaylistView {
     bSettingSelection = false;
   }
 
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
@@ -248,6 +251,7 @@ public class QueueView extends PlaylistView {
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("PlaylistFileItem.5");
   }
@@ -257,6 +261,7 @@ public class QueueView extends PlaylistView {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
       public synchronized void run() { // NEED TO SYNC to avoid out out
@@ -365,6 +370,7 @@ public class QueueView extends PlaylistView {
     // disable prepare party for queue playlist
   }
 
+  @Override
   public void actionPerformed(ActionEvent ae) {
     try {
       if (ae.getSource() == jbSave) {
@@ -447,6 +453,7 @@ public class QueueView extends PlaylistView {
   /**
    * Called when table selection changed
    */
+  @Override
   public void valueChanged(ListSelectionEvent e) {
     if (e.getValueIsAdjusting() || bSettingSelection) {
       // leave during normal refresh

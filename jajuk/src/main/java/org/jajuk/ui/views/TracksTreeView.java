@@ -151,6 +151,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     super.initUI();
     // ComboBox sort
@@ -205,6 +206,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jtree.setCellRenderer(new SubstanceDefaultTreeCellRenderer() {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
           boolean expanded, boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
@@ -312,6 +314,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // Listen for double click
     MouseListener ml = new MouseAdapter() {
 
+      @Override
       public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
@@ -346,6 +349,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         }
       }
 
+      @Override
       public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
@@ -501,6 +505,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   /** Fill the tree */
 
+  @Override
   public void populateTree() {
     switch (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER)) {
     case TrackComparator.STYLE_AUTHOR_ALBUM:
@@ -921,6 +926,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
    * Manages auto-expand
    * 
    */
+  @Override
   void expand() {
     // expand all
     for (int i = 0; i < jtree.getRowCount(); i++) {
@@ -980,6 +986,7 @@ class StyleNode extends TransferableTreeNode {
   /**
    * return a string representation of this track node
    */
+  @Override
   public String toString() {
     return ((Style) super.getData()).getName2();
   }
@@ -1014,6 +1021,7 @@ class AuthorNode extends TransferableTreeNode {
   /**
    * return a string representation of this author node
    */
+  @Override
   public String toString() {
     return ((Author) super.getData()).getName2();
   }
@@ -1049,6 +1057,7 @@ class YearNode extends TransferableTreeNode {
   /**
    * return a string representation of this node
    */
+  @Override
   public String toString() {
     if (((Year) super.getData()).getValue() > 0) {
       return ((Year) super.getData()).getName();
@@ -1085,6 +1094,7 @@ class AlbumNode extends TransferableTreeNode {
   /**
    * return a string representation of this album node
    */
+  @Override
   public String toString() {
     return ((Album) super.getData()).getName2();
   }
@@ -1116,6 +1126,7 @@ class TrackNode extends TransferableTreeNode {
   /**
    * return a string representation of this track node
    */
+  @Override
   public String toString() {
     return ((Track) super.getData()).getName();
   }

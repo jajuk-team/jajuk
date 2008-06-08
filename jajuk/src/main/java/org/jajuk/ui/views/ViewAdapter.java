@@ -64,6 +64,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, ITechnicalSt
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "View[name=" + getID() + " description='" + getDesc() + "']";
   }

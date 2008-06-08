@@ -157,6 +157,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
   MouseAdapter ma = new MouseAdapter() {
 
+    @Override
     public void mousePressed(MouseEvent e) {
       if (e.isPopupTrigger()) {
         handlePopup(e);
@@ -184,6 +185,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
       if (e.isPopupTrigger()) {
         handlePopup(e);
@@ -338,6 +340,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     // -- force a refresh --
     // Add key listener to enable row suppression using SUPR key
     editorTable.addKeyListener(new KeyAdapter() {
+      @Override
       public void keyPressed(KeyEvent e) {
         // The fact that a selection can be removed or not is
         // in the jbRemove state
@@ -876,6 +879,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
      */
     public void initUI() {
       SwingWorker sw = new SwingWorker() {
+        @Override
         public Object construct() {
           PlaylistRepository.super.construct();
 
@@ -918,6 +922,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           return null;
         }
 
+        @Override
         public void finished() {
           PlaylistRepository.super.finished();
           jtbEditable.setVisible(false);

@@ -230,6 +230,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
    */
   private void launchSearch(final boolean bForceReload) {
     Thread t = new Thread() {
+      @Override
       public void run() {
         try {
           String search = null;
@@ -287,6 +288,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
     this.search = null;
     // Display jajuk page (in a thread to avoid freezing UI)
     new Thread() {
+      @Override
       public void run() {
         if (browser != null) {
           try {

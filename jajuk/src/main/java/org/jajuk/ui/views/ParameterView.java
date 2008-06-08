@@ -717,6 +717,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         }
         // Exit Jajuk
         new Thread() {
+          @Override
           public void run() {
             ExitService.exit(0);
           }
@@ -1029,6 +1030,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         return verify(input);
       }
 
+      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1052,10 +1054,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfVisiblePlanned = new JTextField(3);
     jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
     jtfVisiblePlanned.setInputVerifier(new InputVerifier() {
+      @Override
       public boolean shouldYieldFocus(final JComponent input) {
         return verify(input);
       }
 
+      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();
@@ -1129,6 +1133,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     scbLanguage.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
 
+      @Override
       public Component getListCellRendererComponent(JList list, Object value, int index,
           boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -1301,10 +1306,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfProxyPort = new JTextField();
     jtfProxyPort.setToolTipText(Messages.getString("ParameterView.147"));
     jtfProxyPort.setInputVerifier(new InputVerifier() {
+      @Override
       public boolean shouldYieldFocus(final JComponent input) {
         return verify(input);
       }
 
+      @Override
       public boolean verify(final JComponent input) {
         final JTextField tf = (JTextField) input;
         final String sText = tf.getText();

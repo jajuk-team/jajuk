@@ -103,6 +103,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
   AbstractThumbnail selectedThumb;
 
   class ThumbMouseListener extends MouseAdapter {
+    @Override
     public void mousePressed(MouseEvent e) {
       AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent()
           .getParent();
@@ -139,10 +140,12 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     // Remove tab border, see
     // http://forum.java.sun.com/thread.jspa?threadID=260746&messageID=980405
     class MyTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
+      @Override
       protected Insets getContentBorderInsets(int tabPlacement) {
         return new Insets(0, 0, 0, 0);
       }
 
+      @Override
       protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
       }
     }
@@ -422,6 +425,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
   /**
    * Refresh lastFM tabs on perspective selection if tabs visible
    */
+  @Override
   public void onPerspectiveSelection() {
     refreshLastFMCollectionTabs();
   }

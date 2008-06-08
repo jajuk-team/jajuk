@@ -64,6 +64,7 @@ public class FilesTableView extends AbstractTableView {
   public void initUI() {
     // Perform common table view initializations
     SwingWorker sw = new SwingWorker() {
+      @Override
       public Object construct() {
         FilesTableView.super.construct();
         // File menu
@@ -106,6 +107,7 @@ public class FilesTableView extends AbstractTableView {
         return null;
       }
 
+      @Override
       public void finished() {
         FilesTableView.super.finished();
       }
@@ -115,6 +117,7 @@ public class FilesTableView extends AbstractTableView {
   }
 
   /** populate the table */
+  @Override
   public JajukTableModel populateTable() {
     // model creation
     FilesTableModel model = new FilesTableModel();

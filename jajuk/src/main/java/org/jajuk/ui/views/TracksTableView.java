@@ -69,6 +69,7 @@ public class TracksTableView extends AbstractTableView {
   public void initUI() {
     // Perform common table view initializations
     SwingWorker sw = new SwingWorker() {
+      @Override
       public Object construct() {
         TracksTableView.super.construct();
         // Track menu
@@ -117,6 +118,7 @@ public class TracksTableView extends AbstractTableView {
         return null;
       }
 
+      @Override
       public void finished() {
         TracksTableView.super.finished();
       }
@@ -125,6 +127,7 @@ public class TracksTableView extends AbstractTableView {
   }
 
   /** Fill the table */
+  @Override
   public JajukTableModel populateTable() {
     // model creation
     TracksTableModel model = new TracksTableModel();
