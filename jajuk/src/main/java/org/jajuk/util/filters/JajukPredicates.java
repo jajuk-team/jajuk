@@ -79,11 +79,12 @@ public class JajukPredicates {
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
     public boolean evaluate(Object o) {
+      // this also returns false for null
       if (!(o instanceof File)) {
         return false;
       }
-      File file = (File) o;
-      return (file != null && file.isReady());
+      
+      return ((File)o).isReady();
     }
 
   }

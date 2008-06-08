@@ -99,6 +99,7 @@ public class AboutWindow extends JDialog implements ITechnicalStrings {
     jta.setCaretPosition(0);
     jta.setEditable(false);
     jta.addMouseListener(new MouseAdapter() {
+      @Override
       public void mouseClicked(MouseEvent me) {
         if (me.getClickCount() == 1
             && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)

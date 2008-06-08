@@ -78,13 +78,13 @@ public class CDDBTableModel extends JajukTableModel {
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
     for (int iRow = 0; it.hasNext(); iRow++) {
-      Track track = ((CDDBTrack) it.next()).track;
+      Track track = (it.next()).track;
       setItemAt(iRow, track);
       List<File> file = track.getFiles();
       Iterator<File> ifi = file.iterator();
       String filename = "";
       while (ifi.hasNext()) {
-        File f = (File) ifi.next();
+        File f = ifi.next();
         filename = f.getName();
         if (filename != null)
           break;

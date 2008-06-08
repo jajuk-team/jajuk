@@ -155,6 +155,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     tipArea.setCaretPosition(0);
   }
 
+  @Override
   public void setVisible(boolean flag) {
     super.setVisible(flag);
     if (flag) {

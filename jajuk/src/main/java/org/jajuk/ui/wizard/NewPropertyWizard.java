@@ -130,6 +130,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     getContentPane().add(okp);
     getContentPane().add(Box.createVerticalStrut(10));
     addWindowListener(new WindowAdapter() {
+      @Override
       public void windowActivated(WindowEvent e) {
         jtfName.requestFocusInWindow();
       }

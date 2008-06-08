@@ -234,6 +234,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
       dispose(); // close window, otherwise you will have some issues if
       // fields are not updated with changes
       Thread t = new Thread() {
+        @Override
         public void run() {
           try {
             PropertiesWizard.this.panel1.save();
@@ -432,6 +433,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
             final JTextField jtfValue;
             jtfValue = new JTextField();
             jtfValue.addKeyListener(new KeyAdapter() {
+              @Override
               public void keyReleased(KeyEvent arg0) {
                 if (jtfValue.getText().length() == 0) {
                   hmPropertyToChange.remove(meta);
@@ -548,6 +550,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           } else { // for all others formats (string, class)
             final JTextField jtfValue = new JTextField();
             jtfValue.addKeyListener(new KeyAdapter() {
+              @Override
               public void keyReleased(KeyEvent arg0) {
                 String value = jtfValue.getText();
                 hmPropertyToChange.put(meta, value);

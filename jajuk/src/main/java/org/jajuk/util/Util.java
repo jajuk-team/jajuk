@@ -289,19 +289,20 @@ public class Util implements ITechnicalStrings {
    * @throws JajukException
    */
   private static String applyYearPattern(final org.jajuk.base.File file, final String sPattern,
-      final boolean bMandatory, String out, final Track track) throws JajukException {
+      final boolean bMandatory, final String out, final Track track) throws JajukException {
+    String ret = out;
     if (sPattern.contains(ITechnicalStrings.PATTERN_YEAR)) {
       if (track.getYear().getValue() != 0) {
-        out = out.replace(ITechnicalStrings.PATTERN_YEAR, track.getYear().getValue() + "");
+        ret = ret.replace(ITechnicalStrings.PATTERN_YEAR, track.getYear().getValue() + "");
       } else {
         if (bMandatory) {
           throw new JajukException(148, file.getAbsolutePath());
         } else {
-          out = out.replace(ITechnicalStrings.PATTERN_YEAR, "?");
+          ret = ret.replace(ITechnicalStrings.PATTERN_YEAR, "?");
         }
       }
     }
-    return out;
+    return ret;
   }
 
   /**
@@ -314,16 +315,17 @@ public class Util implements ITechnicalStrings {
    * @return
    */
   private static String applyTrackPattern(final String sPattern, final boolean normalize,
-      String out, final Track track) {
+      final String out, final Track track) {
+    String ret = out;
     String sValue;
     if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKNAME)) {
       sValue = track.getName();
       if (normalize) {
         sValue = Util.getNormalizedFilename(sValue);
       }
-      out = out.replace(ITechnicalStrings.PATTERN_TRACKNAME, sValue);
+      ret = ret.replace(ITechnicalStrings.PATTERN_TRACKNAME, sValue);
     }
-    return out;
+    return ret;
   }
 
   /**
@@ -340,8 +342,9 @@ public class Util implements ITechnicalStrings {
    * @throws JajukException
    */
   private static String applyTrackOrderPattern(final org.jajuk.base.File file,
-      final String sPattern, final boolean bMandatory, String out, final Track track)
+      final String sPattern, final boolean bMandatory, final String out, final Track track)
       throws JajukException {
+    String ret = out;
     if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKORDER)) {
       long lOrder = track.getOrder();
       if (lOrder == 0) {
@@ -363,12 +366,12 @@ public class Util implements ITechnicalStrings {
         }
       }
       if (lOrder < 10) {
-        out = out.replace(ITechnicalStrings.PATTERN_TRACKORDER, "0" + lOrder);
+        ret = ret.replace(ITechnicalStrings.PATTERN_TRACKORDER, "0" + lOrder);
       } else {
-        out = out.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
+        ret = ret.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
       }
     }
-    return out;
+    return ret;
   }
 
   /**
@@ -386,8 +389,9 @@ public class Util implements ITechnicalStrings {
    * @throws JajukException
    */
   private static String applyAlbumPattern(final org.jajuk.base.File file, final String sPattern,
-      final boolean bMandatory, final boolean normalize, String out, final Track track)
+      final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
+    String ret = out;
     String sValue;
     if (sPattern.contains(ITechnicalStrings.PATTERN_ALBUM)) {
       sValue = track.getAlbum().getName();
@@ -395,12 +399,12 @@ public class Util implements ITechnicalStrings {
         sValue = Util.getNormalizedFilename(sValue);
       }
       if (!sValue.equals(ITechnicalStrings.UNKNOWN_ALBUM)) {
-        out = out.replace(ITechnicalStrings.PATTERN_ALBUM, AlbumManager.format(sValue));
+        ret = ret.replace(ITechnicalStrings.PATTERN_ALBUM, AlbumManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(149, file.getAbsolutePath());
         } else {
-          out = out.replace(ITechnicalStrings.PATTERN_ALBUM, Messages
+          ret = ret.replace(ITechnicalStrings.PATTERN_ALBUM, Messages
               .getString(ITechnicalStrings.UNKNOWN_ALBUM));
         }
       }
@@ -423,8 +427,9 @@ public class Util implements ITechnicalStrings {
    * @throws JajukException
    */
   private static String applyStylePattern(final org.jajuk.base.File file, final String sPattern,
-      final boolean bMandatory, final boolean normalize, String out, final Track track)
+      final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
+    String ret = out;
     String sValue;
     if (sPattern.contains(ITechnicalStrings.PATTERN_STYLE)) {
       sValue = track.getStyle().getName();
@@ -432,17 +437,17 @@ public class Util implements ITechnicalStrings {
         sValue = Util.getNormalizedFilename(sValue);
       }
       if (!sValue.equals(ITechnicalStrings.UNKNOWN_STYLE)) {
-        out = out.replace(ITechnicalStrings.PATTERN_STYLE, StyleManager.format(sValue));
+        ret = ret.replace(ITechnicalStrings.PATTERN_STYLE, StyleManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(153, file.getAbsolutePath());
         } else {
-          out = out.replace(ITechnicalStrings.PATTERN_STYLE, Messages
+          ret = ret.replace(ITechnicalStrings.PATTERN_STYLE, Messages
               .getString(ITechnicalStrings.UNKNOWN_STYLE));
         }
       }
     }
-    return out;
+    return ret;
   }
 
   /**
@@ -460,8 +465,9 @@ public class Util implements ITechnicalStrings {
    * @throws JajukException
    */
   private static String applyAuthorPattern(final org.jajuk.base.File file, final String sPattern,
-      final boolean bMandatory, final boolean normalize, String out, final Track track)
+      final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
+    String ret = out;
     String sValue;
     if (sPattern.contains(ITechnicalStrings.PATTERN_AUTHOR)) {
       sValue = track.getAuthor().getName();
@@ -469,17 +475,17 @@ public class Util implements ITechnicalStrings {
         sValue = Util.getNormalizedFilename(sValue);
       }
       if (!sValue.equals(ITechnicalStrings.UNKNOWN_AUTHOR)) {
-        out = out.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, AuthorManager.format(sValue));
+        ret = ret.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, AuthorManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(150, file.getAbsolutePath());
         } else {
-          out = out.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, Messages
+          ret = ret.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, Messages
               .getString(ITechnicalStrings.UNKNOWN_AUTHOR));
         }
       }
     }
-    return out;
+    return ret;
   }
 
   /**

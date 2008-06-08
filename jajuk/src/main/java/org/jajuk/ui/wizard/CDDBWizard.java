@@ -403,6 +403,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
     if (e.getSource() == okc.getOKButton()) {
       dispose();
       new Thread() {
+        @Override
         public void run() {
           retagFiles();
         }

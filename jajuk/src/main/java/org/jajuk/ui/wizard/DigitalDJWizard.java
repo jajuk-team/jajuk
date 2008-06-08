@@ -145,6 +145,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * Create panel UI
      * 
      */
+    @Override
     public void initUI() {
       double[][] size = new double[][] { { 20, TableLayout.PREFERRED, 20 },
           { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20 } };
@@ -183,10 +184,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       }
     }
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.0");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.46");
     }
@@ -210,6 +213,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * 
      */
 
+    @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
@@ -258,10 +262,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       setProblem(null);
     }
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.40");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.51");
     }
@@ -285,6 +291,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * 
      */
 
+    @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
@@ -346,10 +353,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       setProblem(null);
     }
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.44");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.43");
     }
@@ -383,6 +392,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * Create panel UI
      * 
      */
+    @Override
     public void initUI() {
       double[][] size = new double[][] { { 20, TableLayout.FILL, 10 },
           { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20 } };
@@ -424,10 +434,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       }
     }
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.16");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.45");
     }
@@ -456,10 +468,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
 
     JCheckBox jcbUnicity;
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.49");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.48");
     }
@@ -468,6 +482,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * Create panel UI
      */
 
+    @Override
     public void initUI() {
       if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))) {
         // default values
@@ -622,10 +637,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
     /** Transitions* */
     ArrayList<Transition> alTransitions;
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.52");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.20");
     }
@@ -651,6 +668,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * 
      */
 
+    @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
       final Vector<String> styles = StyleManager.getInstance().getStylesList();
@@ -920,10 +938,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
     /** Proportions* */
     ArrayList<Proportion> proportions;
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.50");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.29");
     }
@@ -932,6 +952,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * Create panel UI
      */
 
+    @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
@@ -1182,10 +1203,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
     /** Selected ambience index */
     int ambienceIndex = 0;
 
+    @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.47");
     }
 
+    @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.31");
     }
@@ -1194,6 +1217,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      * Create panel UI
      * 
      */
+    @Override
     public void initUI() {
       ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
       Collections.sort(ambiences);
@@ -1385,6 +1409,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
         Style startup = (Style) data.get(KEY_STARTUP_STYLE);
         ((TransitionDigitalDJ) dj).setStartupStyle(startup);
+      }
+      else {
+        throw new IllegalArgumentException("Unknown type of DJ: " + sType); 
       }
       int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
       int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
