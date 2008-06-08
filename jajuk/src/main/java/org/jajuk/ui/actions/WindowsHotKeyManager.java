@@ -87,7 +87,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
             break;
           case JIntellitype.APPCOMMAND_VOLUME_MUTE:
             Log.debug("System mute");
-            // Ignore this to fix issue #1042, mute concurency between the OS
+            // Ignore this to fix issue #1042, mute concurrency between the OS
             // key trapper and JIntellitype
             break;
           default:
@@ -135,9 +135,10 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
   }
 
   /**
-   * Free Jintellipad ressources
+   * Free Jintellipad resources
    */
   public static void cleanup() {
-    jintellitype.cleanUp();
+    if(jintellitype != null)
+      jintellitype.cleanUp();
   }
 }
