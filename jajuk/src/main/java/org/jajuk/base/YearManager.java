@@ -90,6 +90,7 @@ public class YearManager extends ItemManager {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_YEARS;
   }

@@ -162,6 +162,7 @@ public class PlaylistManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_PLAYLIST_FILES;
   }

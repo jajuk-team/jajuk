@@ -58,6 +58,7 @@ public class SearchResult implements Comparable<SearchResult> {
   /**
    * Return hashcode, used during sorting
    */
+  @Override
   public int hashCode() {
     return sResu.hashCode();
   }

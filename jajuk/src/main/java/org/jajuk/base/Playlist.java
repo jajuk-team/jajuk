@@ -251,8 +251,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           }
         }
       }
+
       // Now move the temp file to final one if everything seems ok
-      if (temp != null && temp.exists() && temp.length() > 0) {
+      if (temp.exists() && temp.length() > 0) {
         try {
           Util.copy(temp, getFio());
           temp.delete();

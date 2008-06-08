@@ -75,6 +75,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "Album[ID=" + getID() + " Name={{" + getName() + "}}]";
   }
@@ -107,6 +108,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_ALBUM;
   }
@@ -114,6 +116,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Item_Album") + " : " + getName2();
   }
@@ -123,6 +126,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   public String getHumanValue(String sKey) {
     // We compute here all pseudo keys (non album real attributes) that can be
     // required on an album
@@ -171,6 +175,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * @return a human representation of all concatenated properties
    */
+  @Override
   public String getAny() {
     // rebuild any
     StringBuilder sb = new StringBuilder(100);

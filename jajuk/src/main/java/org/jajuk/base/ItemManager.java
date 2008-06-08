@@ -254,7 +254,7 @@ public abstract class ItemManager implements ITechnicalStrings {
       }
       Iterator<Item> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        Item item = (Item) it.next();
+        Item item = it.next();
         // check if this item still maps some tracks
         if (!hsItems.contains(item)) {
           // For styles, keep it even if none track uses it if it is a

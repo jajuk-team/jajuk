@@ -50,6 +50,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_YEAR;
   }
@@ -57,6 +58,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return Long.toString(getValue());
   }
@@ -83,6 +85,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Property_year") + " : " + getName();
   }

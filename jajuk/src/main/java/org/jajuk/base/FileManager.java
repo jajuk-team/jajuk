@@ -280,7 +280,7 @@ public class FileManager extends ItemManager implements Observer {
       // cleanup sorted array
       it = hmItems.values().iterator();
       while (it.hasNext()) {
-        File file = (File) it.next();
+        File file = it.next();
         if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
           it.remove(); // this is the right way to remove entry
         }

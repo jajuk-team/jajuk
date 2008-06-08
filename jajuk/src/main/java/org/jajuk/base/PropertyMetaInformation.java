@@ -206,6 +206,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
    * defaultValue; }
    */
 
+  @Override
   public String toString() {
     return "Name=" + sName + " Custom=" + bCustom + " Constructor=" + bConstructor + " Type="
         + cType + " Default=" + oDefaultValue + " Editable=" + isEditable() + " Visible="

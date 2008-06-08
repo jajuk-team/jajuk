@@ -84,6 +84,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_DIRECTORY;
   }
@@ -91,6 +92,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * toString method
    */
+  @Override
   public String toString() {
     return "Directory[ID=" + getID() + " Name={{" + getRelativePath() + "}} ParentID="
         + (dParent == null ? "null" : dParent.getID()) + " Device={{" + device.getName() + "}}]";
@@ -469,6 +471,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     String sName = null;
     if (getParentDirectory() == null) {
@@ -484,6 +487,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   public String getHumanValue(String sKey) {
     if (XML_DIRECTORY_PARENT.equals(sKey)) {
       Directory dParent = DirectoryManager.getInstance().getDirectoryByID((String) getValue(sKey));

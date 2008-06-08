@@ -186,6 +186,7 @@ public class AlbumManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_ALBUMS;
   }
@@ -225,9 +226,7 @@ public class AlbumManager extends ItemManager implements Observer {
       // If item is a track, return albums containing this track
       if (item instanceof Track) {
         // we can return as a track has only one album
-        if (item != null) {
-          out.add(((Track) item).getAlbum());
-        }
+        out.add(((Track) item).getAlbum());
       } else {
         Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
         for (Track track : tracks) {

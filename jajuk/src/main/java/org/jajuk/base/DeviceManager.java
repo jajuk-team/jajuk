@@ -289,7 +289,7 @@ public class DeviceManager extends ItemManager {
       // with this device
       Iterator<Device> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        Device deviceToCheck = (Device) it.next();
+        Device deviceToCheck = it.next();
         if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
           String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
           if (sSyncSource.equals(device.getID())) {

@@ -415,6 +415,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @see org.jajuk.base.Item#getIdentifier()
    */
+  @Override
   final public String getLabel() {
     return XML_TRACK;
   }
@@ -422,6 +423,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Get item description
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Item_Track") + " : " + getName();
   }
@@ -431,6 +433,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
+  @Override
   public String getHumanValue(String sKey) {
     if (XML_ALBUM.equals(sKey)) {
       Album album = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));

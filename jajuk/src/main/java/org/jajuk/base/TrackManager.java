@@ -530,6 +530,7 @@ public class TrackManager extends ItemManager implements Observer {
   /**
    * Perform a track cleanup : delete useless items
    */
+  @Override
   @SuppressWarnings("unchecked")
   public void cleanup() {
     synchronized (TrackManager.getInstance().getLock()) {
@@ -562,6 +563,7 @@ public class TrackManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
+  @Override
   public String getLabel() {
     return XML_TRACKS;
   }

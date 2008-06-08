@@ -234,9 +234,7 @@ public class AuthorManager extends ItemManager {
       // If item is a track, return Authors containing this track
       if (item instanceof Track) {
         // we can return as a track has only one Author
-        if (item != null) {
-          out.add(((Track) item).getAuthor());
-        }
+        out.add(((Track) item).getAuthor());
       } else {
         Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
         for (Track track : tracks) {
