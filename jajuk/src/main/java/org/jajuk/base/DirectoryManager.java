@@ -29,7 +29,7 @@ import java.util.Set;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.filters.DirectoryFilter;
 
 /**
@@ -54,7 +54,7 @@ public class DirectoryManager extends ItemManager {
     final StringBuilder sbAbs = new StringBuilder(device.getName());
     // Under windows, all files/directories with different cases should get
     // the same ID
-    if (Util.isUnderWindows()) {
+    if (UtilSystem.isUnderWindows()) {
       if (dParent != null) {
         sbAbs.append(dParent.getRelativePath().toLowerCase());
       }

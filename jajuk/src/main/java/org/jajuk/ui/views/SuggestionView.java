@@ -63,7 +63,7 @@ import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
@@ -158,15 +158,15 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       }
     });
     // Fill tabs with empty tabs
-    tabs.addTab(Messages.getString("SuggestionView.1"), Util.getCentredPanel(new JLabel(Messages
+    tabs.addTab(Messages.getString("SuggestionView.1"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.2"), Util.getCentredPanel(new JLabel(Messages
+    tabs.addTab(Messages.getString("SuggestionView.2"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.5"), Util.getCentredPanel(new JLabel(Messages
+    tabs.addTab(Messages.getString("SuggestionView.5"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.3"), Util.getCentredPanel(new JLabel(Messages
+    tabs.addTab(Messages.getString("SuggestionView.3"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("SuggestionView.7"))));
-    tabs.addTab(Messages.getString("SuggestionView.4"), Util.getCentredPanel(new JLabel(Messages
+    tabs.addTab(Messages.getString("SuggestionView.4"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("SuggestionView.7"))));
     // Add panels
     refreshLocalCollectionTabs(true);
@@ -200,9 +200,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         busy2.setBusy(true);
         JXBusyLabel busy3 = new JXBusyLabel();
         busy3.setBusy(true);
-        tabs.setComponentAt(0, Util.getCentredPanel(busy1));
-        tabs.setComponentAt(1, Util.getCentredPanel(busy2));
-        tabs.setComponentAt(3, Util.getCentredPanel(busy3));
+        tabs.setComponentAt(0, UtilGUI.getCentredPanel(busy1));
+        tabs.setComponentAt(1, UtilGUI.getCentredPanel(busy2));
+        tabs.setComponentAt(3, UtilGUI.getCentredPanel(busy3));
       }
     });
 
@@ -247,9 +247,9 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       // Set empty panels
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          tabs.setComponentAt(3, Util.getCentredPanel(new JLabel(Messages
+          tabs.setComponentAt(3, UtilGUI.getCentredPanel(new JLabel(Messages
               .getString("SuggestionView.7"))));
-          tabs.setComponentAt(4, Util.getCentredPanel(new JLabel(Messages
+          tabs.setComponentAt(4, UtilGUI.getCentredPanel(new JLabel(Messages
               .getString("SuggestionView.7"))));
         }
       });
@@ -268,8 +268,8 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         busy1.setBusy(true);
         JXBusyLabel busy2 = new JXBusyLabel();
         busy2.setBusy(true);
-        tabs.setComponentAt(3, Util.getCentredPanel(busy1));
-        tabs.setComponentAt(4, Util.getCentredPanel(busy2));
+        tabs.setComponentAt(3, UtilGUI.getCentredPanel(busy1));
+        tabs.setComponentAt(4, UtilGUI.getCentredPanel(busy2));
       }
     });
     // Use a swing worker as construct takes a lot of time
@@ -342,7 +342,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         out.add(thumb);
       }
     } else {
-      out.add(Util.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
+      out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
     }
     return jsp;
   }
@@ -366,7 +366,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       }
       // No result found
       else {
-        out.add(Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+        out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
       }
     } else if (type == SuggestionType.SIMILAR_AUTHORS) {
       AudioScrobblerSimilarArtists similar = AudioScrobblerService.getInstance().getSimilarArtists(
@@ -382,7 +382,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
       }
       // No result found
       else {
-        out.add(Util.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+        out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
       }
     }
     return jsp;

@@ -44,7 +44,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -219,7 +220,7 @@ public class StatView extends ViewAdapter implements Observer {
   private ChartPanel createCollectionSize() {
     ChartPanel cpanel = null;
     try {
-      final DateFormat additionFormatter = Util.getAdditionDateFormatter();
+      final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
@@ -283,7 +284,7 @@ public class StatView extends ViewAdapter implements Observer {
   private ChartPanel createTrackNumber() {
     ChartPanel cpanel = null;
     try {
-      final DateFormat additionFormatter = Util.getAdditionDateFormatter();
+      final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
@@ -361,7 +362,7 @@ public class StatView extends ViewAdapter implements Observer {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
         || JajukEvents.EVENT_DEVICE_DELETE.equals(subject)) {
-      Util.waiting();
+      UtilGUI.waiting();
       if (getComponentCount() > 0) {
         removeAll();
       }
@@ -383,7 +384,7 @@ public class StatView extends ViewAdapter implements Observer {
       }
       revalidate();
       repaint();
-      Util.stopWaiting();
+      UtilGUI.stopWaiting();
     }
   }
 

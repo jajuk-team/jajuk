@@ -37,7 +37,7 @@ import org.jajuk.ui.views.PlaylistView;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
@@ -121,18 +121,18 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getData();
         }
-        List<File> alSelectedFiles = Util.getPlayableFiles((Item) oData);
+        List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           FIFO.getInstance().push(
-              Util.createStackItems(Util.applyPlayOption(alSelectedFiles), ConfigurationManager
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles), ConfigurationManager
                   .getBoolean(CONF_STATE_REPEAT), true),
               ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // normal or new playlist case
         else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW
             || plf.getType() == Playlist.Type.BOOKMARK) {
-          view.importFiles(Util.applyPlayOption(alSelectedFiles));
+          view.importFiles(UtilFeatures.applyPlayOption(alSelectedFiles));
         }
         return true;
       }

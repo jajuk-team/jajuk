@@ -43,7 +43,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
@@ -72,7 +72,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
    */
   void populate() {
     getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-    Util.setShuffleLocation(this, 400, 400);
+    UtilGUI.setShuffleLocation(this, 400, 400);
     jlItemChoice = new JLabel(Messages.getString("CustomPropertyWizard.0"));
     jlName = new JLabel(Messages.getString("CustomPropertyWizard.1"));
     jcbItemChoice = new JComboBox();

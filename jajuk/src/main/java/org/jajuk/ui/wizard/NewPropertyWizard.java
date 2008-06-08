@@ -44,7 +44,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXDatePicker;
 
 /**
@@ -167,7 +167,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         }
       }
       // check format
-      if (!Util.isXMLValid(jtfName.getText())) {
+      if (!UtilString.isXMLValid(jtfName.getText())) {
         Messages.showErrorMessage(140);
         return;
       }

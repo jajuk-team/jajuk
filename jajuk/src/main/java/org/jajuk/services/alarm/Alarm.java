@@ -27,7 +27,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
 
 /**
  * An Alarm
@@ -54,7 +55,7 @@ public class Alarm implements ITechnicalStrings {
     if (alarmAction.equals(ITechnicalStrings.ALARM_START_MODE)) {
       FIFO.getInstance()
           .push(
-              Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+              UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
                   false), false);
     } else {
       FIFO.getInstance().stopRequest();
@@ -64,7 +65,7 @@ public class Alarm implements ITechnicalStrings {
     } else {
       this.alarmMilliSeconds += 24 * 3600 * 1000;
     }
-    if (!Util.isVoid(alarmMessage))
+    if (!UtilString.isVoid(alarmMessage))
       Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " "
           + alarmMessage);
   }

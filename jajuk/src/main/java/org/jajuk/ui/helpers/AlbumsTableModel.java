@@ -37,7 +37,6 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 
 /**
  * Table model used for albums table view
@@ -222,9 +221,8 @@ public class AlbumsTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        IconLabel ilRate = Util.getStars(album);
+        IconLabel ilRate = album.getStars();
         oValues[iRow][5] = ilRate;
-        ilRate.setInteger(true);
       } else {
         oValues[iRow][5] = "";
       }

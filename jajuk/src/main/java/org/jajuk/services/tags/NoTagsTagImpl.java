@@ -28,7 +28,7 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Tager implementationfor formats without tags and read by BasicPlayer API
@@ -107,7 +107,7 @@ public class NoTagsTagImpl implements ITagImpl {
     });
     if (fio != null) {
       player.open(fio);
-      return Util.getTimeLengthEstimation(mapInfo) / 1000;
+      return UtilFeatures.getTimeLengthEstimation(mapInfo) / 1000;
     }
     return 0;
   }

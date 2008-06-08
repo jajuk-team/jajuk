@@ -36,7 +36,8 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -140,7 +141,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
   private static final short STAGE_YEARS = 10;
 
-  private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
+  private static final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
   /** Auto commit thread */
   private static Thread tAutoCommit = new Thread("Collection Auto Commit Thread") {
@@ -155,7 +156,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           // application is closed brutally with control-C or
           // shutdown and that exit hook have no time to perform
           // commit)
-          org.jajuk.base.Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
+          org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
         } catch (Exception e) {
           Log.error(e);
         }
@@ -467,7 +468,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
               // so an exception will be thrown when upgrading
               // from 1.2
               // we reset default value to "today"
-              oDefaultValue = Util.parse(sDefaultValue, cType);
+              oDefaultValue = UtilString.parse(sDefaultValue, cType);
             } catch (Exception e) {
               oDefaultValue = new Date();
             }
@@ -500,7 +501,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           sItemName = attributes.getValue(XML_NAME).intern();
           // Check file type is still registered, it can be
           // useful for ie if mplayer is no more available
-          String ext = Util.getExtension(sItemName);
+          String ext = UtilSystem.getExtension(sItemName);
           type = TypeManager.getInstance().getTypeByExtension(ext);
           if (type == null) {
             return;

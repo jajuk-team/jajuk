@@ -24,7 +24,7 @@ import java.io.File;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class AudioFilter extends JajukFileFilter {
         return false;
       }
       final TypeManager mgr = TypeManager.getInstance();
-      final String extension = Util.getExtension(f);
+      final String extension = UtilSystem.getExtension(f);
 
       // check extension is known
       if (TypeManager.getInstance().isExtensionSupported(extension)) {

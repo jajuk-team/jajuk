@@ -77,7 +77,9 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.TimeOutException;
 import org.jajuk.util.filters.GIFFilter;
@@ -157,8 +159,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
   /** Final image to display */
   private ImageIcon ii;
-  
-  /** Force next track cover reload flag**/
+
+  /** Force next track cover reload flag* */
   private boolean bForceCoverReload = false;
 
   /**
@@ -201,7 +203,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (getPerspective() == null) {
             dirReference = null;
           }
-          update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+          ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
         }
       }.start();
     } else if (e.getSource() == jbPrevious) { // previous : show a
@@ -236,10 +238,11 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       try {
         final File file = new File(cover.getURL().getFile());
         if (file.isFile() && file.exists()) {
+          file.delete();
           // check that file has been really deleted (sometimes,
           // we get no exception)
-          if (!file.delete()) {
-            throw new Exception("Deleting file " + file.toString() + " failed");
+          if (file.exists()) {
+            throw new Exception("");
           }
         } else { // not a file, must have a problem
           throw new Exception("");
@@ -261,12 +264,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         if (index < 0) {
           index = alCovers.size() - 1;
         }
-        update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+        ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
       }
     } else if (e.getSource() == jbDefault) { // choose a default
       // first commit this cover on the disk if it is a remote cover
       final Cover cover = alCovers.get(index);
-      final String sFilename = Util.getOnlyFile(cover.getURL().toString());
+      final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
       if (cover.getType() == Cover.REMOTE_COVER) {
         String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
         // Add a jajuk suffix to know this cover has been downloaded by
@@ -278,8 +281,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           // copy file from cache
           final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
           final File file = new File(sFilePath);
-          Util.copy(fSource, file);
-          final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+          UtilSystem.copy(fSource, file);
+          final Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
           if (!alCovers.contains(cover2)) {
             alCovers.add(cover2);
             setFoundText();
@@ -302,9 +305,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
             InformationJPanel.INFORMATIVE);
       }
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
       // then make it the default cover in this directory
-      dirReference.setProperty("default_cover", Util.getOnlyFile(sFilename));
+      dirReference.setProperty("default_cover", UtilSystem.getOnlyFile(sFilename));
 
     } else if ((e.getSource() == jbSave)
         && ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
@@ -319,7 +322,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           jfchooser.setCurrentDirectory(dirReference.getFio());
           jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
           final File finalFile = new File(dirReference.getFio().getPath() + "/"
-              + Util.getOnlyFile(cover.getURL().toString()));
+              + UtilSystem.getOnlyFile(cover.getURL().toString()));
           jfchooser.setSelectedFile(finalFile);
           final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
           File fNew = null;
@@ -330,10 +333,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               return;
             }
             try {
-              Util.copy(cover.getFile(), fNew);
+              UtilSystem.copy(cover.getFile(), fNew);
               InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                   InformationJPanel.INFORMATIVE);
-              update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+              ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
             } catch (final Exception ex) {
               Log.error(24, ex);
               Messages.showErrorMessage(24);
@@ -354,7 +357,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           }
           String sFilePath = null;
           sFilePath = dirReference.getFio().getPath() + "/"
-              + Util.getOnlyFile(cover.getURL().toString());
+              + UtilSystem.getOnlyFile(cover.getURL().toString());
           // Add a jajuk suffix to know this cover has been downloaded
           // by jajuk
           final int pos = sFilePath.lastIndexOf('.');
@@ -365,15 +368,15 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             final File fSource = DownloadManager.downloadCover(cover.getURL(), cover
                 .getDownloadID());
             final File file = new File(sFilePath);
-            Util.copy(fSource, file);
+            UtilSystem.copy(fSource, file);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.INFORMATIVE);
-            final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+            final Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
             if (!alCovers.contains(cover2)) {
               alCovers.add(cover2);
               setFoundText();
             }
-            update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
             // add new cover in others cover views
           } catch (final Exception ex) {
             Log.error(24, ex);
@@ -626,9 +629,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * @return number of real covers (not default) covers found
    */
   private int getCoverNumber() {
-    synchronized (bLock) {
-      return alCovers.size();
-    }
+    return alCovers.size();
   }
 
   /*
@@ -645,6 +646,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.EVENT_COVER_NEED_REFRESH);
     return eventSubjectSet;
   }
 
@@ -832,7 +834,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         return null;
       }
     } catch (final Exception e) { // this cover cannot be loaded
-      setCursor(Util.DEFAULT_CURSOR);
+      setCursor(UtilGUI.DEFAULT_CURSOR);
       searching(false);
       Log.error(e);
       throw new JajukException(0);
@@ -873,7 +875,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       }
     }
     if (iEventID == iLocalEventID) {
-      ii = Util.getResizedImage(icon, iNewWidth, iNewHeight);
+      ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
       // Free source and destination image buffer
       icon.getImage().flush();
       ii.getImage().flush();
@@ -893,7 +895,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     try {
       for (int i = 0; i < 4; i++) {
         final Album album = dirReference.getFiles().iterator().next().getTrack().getAlbum();
-        final File fThumb = Util.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/'
+        final File fThumb = UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/'
             + (50 + 50 * i) + "x" + (50 + 50 * i) + '/' + album.getID() + '.'
             + ITechnicalStrings.EXT_THUMB);
         ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
@@ -993,174 +995,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               // if we are always in the same directory, just leave to
               // save cpu
               || (!itemLast.getFile().getDirectory().equals(
-                  FIFO.getInstance().getCurrentFile().getDirectory()))
-                  || bForceCoverReload) {
-            
-            bForceCoverReload = false;
-            
-            //clear image cache
-            Util.clearCache();
-
+                  FIFO.getInstance().getCurrentFile().getDirectory())) || bForceCoverReload) {
             // Ignore this event if a reference file has been set and if
             // this event has already been handled
             if ((fileReference != null) && (dirReference != null)) {
               return;
             }
-            org.jajuk.base.File fCurrent = fileReference;
-            // check if a file has been given for this cover view
-            // if not, take current cover
-            if (fCurrent == null) {
-              fCurrent = FIFO.getInstance().getCurrentFile();
-            }
-            // no current cover
-            if (fCurrent == null) {
-              dirReference = null;
-            } else {
-              // store this dir
-              dirReference = fCurrent.getDirectory();
-            }
-            // remove all existing covers
-            alCovers.clear();
-            if (dirReference == null) {
-              alCovers.add(CoverView.coverDefault);
-              index = 0;
-              displayCurrentCover();
-              return;
-            }
-            
-            if(fCurrent == null)
-              throw new IllegalArgumentException("Internal Error: Unexpected value, " +
-              		"variable should not be empty. fCurrent: " + fCurrent +
-              		" dirReference: " + dirReference);
-            
-            // search for local covers in all directories mapping
-            // the current track to reach other devices covers and
-            // display them together
-            final Track trackCurrent = fCurrent.getTrack();
-            final ArrayList<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
-            // list of files mapping the track
-            for (final org.jajuk.base.File file : alFiles) {
-              final Directory dirScanned = file.getDirectory();
-              if (!dirScanned.getDevice().isMounted()) {
-                // if the device is not ready, just ignore it
-                continue;
-              }
-              final java.io.File[] files = dirScanned.getFio().listFiles();
-              // null if none file found
-              boolean bAbsoluteCover = false;
-              // whether an absolute cover (unique) has been found
-              for (int i = 0; (files != null) && (i < files.length); i++) {
-                // check size to avoid out of memory errors
-                if (files[i].length() > ITechnicalStrings.MAX_COVER_SIZE * 1024) {
-                  continue;
-                }
-                final JajukFileFilter filter = ImageFilter.getInstance();
-                if (filter.accept(files[i])) {
-                  if (!bAbsoluteCover
-                      && Util.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i].getName())) {
-                    // test the cover is not already used
-                    final Cover cover = new Cover(files[i].toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
-                    if (!alCovers.contains(cover)) {
-                      alCovers.add(cover);
-                    }
-                    bAbsoluteCover = true;
-                  } else { // normal local cover
-                    final Cover cover = new Cover(files[i].toURI().toURL(), Cover.LOCAL_COVER);
-                    if (!alCovers.contains(cover)) {
-                      alCovers.add(cover);
-                    }
-                  }
-                }
-              }
-            }
-            // then we search for web covers online if max
-            // connection errors number is not reached or if user
-            // already managed to connect
-            if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER)
-                && (CoverView.bOnceConnected || (CoverView.iErrorCounter < ITechnicalStrings.STOP_TO_SEARCH))) {
-              try {
-                final String sQuery = createQuery(fCurrent);
-                Log.debug("Query={{" + sQuery + "}}");
-                if (!sQuery.equals("")) {
-                  // there is not enough information in tags
-                  // for a web search
-                  List<URL> alUrls = DownloadManager.getRemoteCoversList(sQuery);
-                  CoverView.bOnceConnected = true;
-                  // user managed once to connect to the web
-                  if (alUrls.size() > ITechnicalStrings.MAX_REMOTE_COVERS) {
-                    // limit number of remote covers
-                    alUrls = new ArrayList<URL>(alUrls.subList(0,
-                        ITechnicalStrings.MAX_REMOTE_COVERS));
-                  }
-                  Collections.reverse(alUrls);
-                  // set best results to be displayed first
-                  final Iterator<URL> it2 = alUrls.iterator();
-                  // add found covers
-                  while (it2.hasNext() && (iEventID == iLocalEventID)) {
-                    // load each cover (pre-load or post-load)
-                    // and stop if a signal has been emitted
-                    final URL url = it2.next();
-                    try {
-                      final Cover cover = new Cover(url, Cover.REMOTE_COVER);
-                      // Create a cover with given url ( image
-                      // will be really downloaded when
-                      // required if no preload)
-                      if (!alCovers.contains(cover)) {
-                        Log.debug("Found Cover: {{" + url.toString() + "}}");
-                        alCovers.add(cover);
-                      }
-                    } catch (final Exception e) {
-                      Log.error(e); // can occur in case of
-                      // timeout or error
-                      // during cover download
-                      if (e instanceof TimeOutException) {
-                        CoverView.iErrorCounter++;
-                        if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
-                          Log.warn("Too many connection fails, stop to search for covers online");
-                          InformationJPanel.getInstance().setMessage(
-                              Messages.getString("Error.030"), InformationJPanel.WARNING);
-                        }
-                      }
-                    }
-                  }
-                  if (iEventID != iLocalEventID) {
-                    // a stop signal has been emitted
-                    // from a concurrent thread
-                    Log.debug("Download stopped - 1");
-                    return;
-                  }
-                }
-              } catch (final Exception e) {
-                if (e instanceof TimeOutException) {
-                  Log.warn(e.getMessage());
-                  // can occur in case of timeout or error during
-                  // covers list download
-                  CoverView.iErrorCounter++;
-                  if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
-                    Log.warn("Too many connection fails," + " stop to search for covers online");
-                    InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
-                        InformationJPanel.WARNING);
-                  }
-                } else {
-                  Log.error(e);
-                }
-              }
-            }
-            if (alCovers.size() == 0) {// add the default cover if none
-              // other cover has been found
-              alCovers.add(CoverView.coverDefault);
-            }
-            Collections.sort(alCovers); // sort the list
-            Log.debug("Local cover list: {{" + alCovers + "}}");
-            if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE)) {
-              // choose a random cover
-              index = (int) (Math.random() * alCovers.size());
-            } else {
-              index = alCovers.size() - 1;
-              // current index points to the best available cover
-            }
-            setFoundText(); // update found text
-            displayCurrentCover();
+            refreshCovers(iLocalEventID);
           }
           // case just for a cover change without reload
           else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE))) {
@@ -1172,7 +1013,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             index = (int) (Math.random() * alCovers.size() - 1);
             displayCurrentCover();
           }
-
         } else if (JajukEvents.EVENT_ZERO.equals(subject)
             || JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)
             || JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
@@ -1187,8 +1027,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           index = 0;
           displayCurrentCover();
           dirReference = null;
-          //Force cover to reload at next track 
+          // Force cover to reload at next track
           bForceCoverReload = true;
+        } else if (JajukEvents.EVENT_COVER_NEED_REFRESH.equals(subject)) {
+          refreshCovers(iLocalEventID);
         }
       } catch (final Exception e) {
         Log.error(e);
@@ -1197,4 +1039,168 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       }
     }
   }
+
+  /**
+   * Covers refreshing effective code
+   * 
+   * @param iLocalEventID
+   */
+  private void refreshCovers(int iLocalEventID) throws Exception {
+    // Reset this flag
+    bForceCoverReload = false;
+
+    // clear image cache
+    UtilSystem.clearCache();
+
+    org.jajuk.base.File fCurrent = fileReference;
+    // check if a file has been given for this cover view
+    // if not, take current cover
+    if (fCurrent == null) {
+      fCurrent = FIFO.getInstance().getCurrentFile();
+    }
+    // no current cover
+    if (fCurrent == null) {
+      dirReference = null;
+    } else {
+      // store this dir
+      dirReference = fCurrent.getDirectory();
+    }
+    // remove all existing covers
+    alCovers.clear();
+    if (dirReference == null) {
+      alCovers.add(CoverView.coverDefault);
+      index = 0;
+      displayCurrentCover();
+      return;
+    }
+    // search for local covers in all directories mapping
+    // the current track to reach other devices covers and
+    // display them together
+    final Track trackCurrent = fCurrent.getTrack();
+    final ArrayList<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
+    // list of files mapping the track
+    for (final org.jajuk.base.File file : alFiles) {
+      final Directory dirScanned = file.getDirectory();
+      if (!dirScanned.getDevice().isMounted()) {
+        // if the device is not ready, just ignore it
+        continue;
+      }
+      final java.io.File[] files = dirScanned.getFio().listFiles();
+      // null if none file found
+      boolean bAbsoluteCover = false;
+      // whether an absolute cover (unique) has been found
+      for (int i = 0; (files != null) && (i < files.length); i++) {
+        // check size to avoid out of memory errors
+        if (files[i].length() > ITechnicalStrings.MAX_COVER_SIZE * 1024) {
+          continue;
+        }
+        final JajukFileFilter filter = ImageFilter.getInstance();
+        if (filter.accept(files[i])) {
+          if (!bAbsoluteCover
+              && UtilFeatures.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i].getName())) {
+            // test the cover is not already used
+            final Cover cover = new Cover(files[i].toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+            if (!alCovers.contains(cover)) {
+              alCovers.add(cover);
+            }
+            bAbsoluteCover = true;
+          } else { // normal local cover
+            final Cover cover = new Cover(files[i].toURL(), Cover.LOCAL_COVER);
+            if (!alCovers.contains(cover)) {
+              alCovers.add(cover);
+            }
+          }
+        }
+      }
+    }
+    // then we search for web covers online if max
+    // connection errors number is not reached or if user
+    // already managed to connect
+    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER)
+        && (CoverView.bOnceConnected || (CoverView.iErrorCounter < ITechnicalStrings.STOP_TO_SEARCH))) {
+      try {
+        final String sQuery = createQuery(fCurrent);
+        Log.debug("Query={{" + sQuery + "}}");
+        if (!sQuery.equals("")) {
+          // there is not enough information in tags
+          // for a web search
+          List<URL> alUrls;
+          alUrls = DownloadManager.getRemoteCoversList(sQuery);
+          CoverView.bOnceConnected = true;
+          // user managed once to connect to the web
+          if (alUrls.size() > ITechnicalStrings.MAX_REMOTE_COVERS) {
+            // limit number of remote covers
+            alUrls = new ArrayList<URL>(alUrls.subList(0, ITechnicalStrings.MAX_REMOTE_COVERS));
+          }
+          Collections.reverse(alUrls);
+          // set best results to be displayed first
+          final Iterator<URL> it2 = alUrls.iterator();
+          // add found covers
+          while (it2.hasNext() && (iEventID == iLocalEventID)) {
+            // load each cover (pre-load or post-load)
+            // and stop if a signal has been emitted
+            final URL url = it2.next();
+            try {
+              final Cover cover = new Cover(url, Cover.REMOTE_COVER);
+              // Create a cover with given url ( image
+              // will be really downloaded when
+              // required if no preload)
+              if (!alCovers.contains(cover)) {
+                Log.debug("Found Cover: {{" + url.toString() + "}}");
+                alCovers.add(cover);
+              }
+            } catch (final Exception e) {
+              Log.error(e); // can occur in case of
+              // timeout or error
+              // during cover download
+              if (e instanceof TimeOutException) {
+                CoverView.iErrorCounter++;
+                if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
+                  Log.warn("Too many connection fails, stop to search for covers online");
+                  InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
+                      InformationJPanel.WARNING);
+                }
+              }
+            }
+          }
+          if (iEventID != iLocalEventID) {
+            // a stop signal has been emitted
+            // from a concurrent thread
+            Log.debug("Download stopped - 1");
+            return;
+          }
+        }
+      } catch (final Exception e) {
+        if (e instanceof TimeOutException) {
+          Log.warn(e.getMessage());
+          // can occur in case of timeout or error during
+          // covers list download
+          CoverView.iErrorCounter++;
+          if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
+            Log.warn("Too many connection fails," + " stop to search for covers online");
+            InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
+                InformationJPanel.WARNING);
+          }
+        } else {
+          Log.error(e);
+        }
+      }
+    }
+    if (alCovers.size() == 0) {// add the default cover if none
+      // other cover has been found
+      alCovers.add(CoverView.coverDefault);
+    }
+    Collections.sort(alCovers); // sort the list
+    Log.debug("Local cover list: {{" + alCovers + "}}");
+    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE)) {
+      // choose a random cover
+      index = (int) (Math.random() * alCovers.size());
+    } else {
+      index = alCovers.size() - 1;
+      // current index points to the best available cover
+    }
+    setFoundText(); // update found text
+    displayCurrentCover();
+  }
+
 }

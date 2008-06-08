@@ -43,7 +43,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
@@ -89,7 +89,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     setTitle(Messages.getString("SimpleDeviceWizard.0"));
     final int iX_SEPARATOR = 10;
     final int iY_SEPARATOR = 10;
-    jlLeftIcon = new JLabel(Util.getImage(ITechnicalStrings.IMAGE_SEARCH));
+    jlLeftIcon = new JLabel(UtilGUI.getImage(ITechnicalStrings.IMAGE_SEARCH));
     jpRightPanel = new JPanel();
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);

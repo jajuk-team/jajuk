@@ -33,7 +33,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.HTMLFilter;
 import org.jajuk.util.filters.XMLFilter;
@@ -94,7 +94,7 @@ public class ReportAction extends ActionBase {
         @Override
         public void run() {
           try {
-            Util.waiting();
+            UtilGUI.waiting();
             final String filepath = chooser.getSelectedFile().getAbsolutePath();
             final String filetypename = chooser.getFileFilter().getDescription();
             // Create an exporter according to file extension
@@ -127,7 +127,7 @@ public class ReportAction extends ActionBase {
             Log.error(e);
             Messages.showErrorMessage(167, e.getMessage());
           } finally {
-            Util.stopWaiting();
+            UtilGUI.stopWaiting();
           }
         }
       }.start();

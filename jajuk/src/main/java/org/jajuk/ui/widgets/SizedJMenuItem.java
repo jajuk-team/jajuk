@@ -25,7 +25,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Menu item whose icon has a fixed size
@@ -64,7 +64,7 @@ public class SizedJMenuItem extends JMenuItem {
 
   @Override
   public void setIcon(Icon icon) {
-    super.setIcon(Util.getResizedImage((ImageIcon) icon, 16, 16));
+    super.setIcon(UtilGUI.getResizedImage((ImageIcon) icon, 16, 16));
   }
 
 }

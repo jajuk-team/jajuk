@@ -28,7 +28,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Play directories for a selection of files. For now, jajuk only play the first
@@ -64,9 +64,9 @@ public class PlayDirectorySelectionAction extends SelectionAction {
     }
     // Select all files from the first found directory
     Directory dir = ((File) selection.get(0)).getDirectory();
-    List<File> files = Util.getPlayableFiles(dir);
+    List<File> files = UtilFeatures.getPlayableFiles(dir);
     FIFO.getInstance().push(
-        Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
             .getBoolean(CONF_STATE_REPEAT), true), false);
   }
 

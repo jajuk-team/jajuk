@@ -43,7 +43,7 @@ import org.jajuk.base.YearManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.filters.JarFilter;
 import org.jajuk.util.log.Log;
 
@@ -62,7 +62,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
    * @return separator between a '-cp' argument
    */
   private static char getJarSeparator() {
-    if (Util.isUnderWindows()) {
+    if (UtilSystem.isUnderWindows()) {
       return ';';
     } else {
       return ':';
@@ -127,7 +127,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     // don't figured out so far how to
     // build proper JAR path. We keep things like it for the moment, pictures
     // are built in the main JVM instead of separated ones
-    final String jarPath = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath()
+    final String jarPath = new File(UtilSystem.getJarLocation(Main.class).toURI()).getAbsolutePath()
         + File.separator + "jajuk.jar";
     final ArrayList<String> commands = new ArrayList<String>(10);
     commands.add(jvmPath);
@@ -135,9 +135,9 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     commands.add("-Xmx600M");
     commands.add("-cp");
     // Add the bin directory that contains classes
-    String cp = new File(Util.getJarLocation(Main.class).toURI()).getAbsolutePath();
+    String cp = new File(UtilSystem.getJarLocation(Main.class).toURI()).getAbsolutePath();
     cp += ThumbnailsMaker.getJarSeparator();
-    final File libDir = new File(Util.getJarLocation(Appender.class).toURI()).getParentFile();
+    final File libDir = new File(UtilSystem.getJarLocation(Appender.class).toURI()).getParentFile();
     final File[] files = libDir.listFiles(JarFilter.getInstance());
     for (final File element : files) {
       cp += element.getAbsolutePath() + ThumbnailsMaker.getJarSeparator();
@@ -231,14 +231,14 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     // registers supported audio supports and default properties
     Main.registerTypes();
     // load collection
-    Collection.load(Util.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
+    Collection.load(UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
     // Mount devices
     Main.autoMount();
     final java.util.Set<Album> albums = AlbumManager.getInstance().getAlbums();
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved
-      if (Util.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION_EXIT_PROOF).exists()) {
+      if (UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION_EXIT_PROOF).exists()) {
         Log.debug("Parent Jajuk closed, leaving now...");
         return;
       }

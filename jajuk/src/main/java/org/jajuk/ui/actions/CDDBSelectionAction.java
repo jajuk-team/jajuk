@@ -28,7 +28,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Find tags from CDDB on selection
@@ -67,7 +67,7 @@ public class CDDBSelectionAction extends SelectionAction {
     for (Item item : selection) {
       tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
     }
-    Util.waiting();
+    UtilGUI.waiting();
     // Note that the CDDBWizard uses a swing worker
     new CDDBWizard(tracks);
   }

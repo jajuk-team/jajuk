@@ -25,7 +25,7 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 
 /**
  * 
@@ -65,7 +65,7 @@ public class PlaylistFilter extends JajukFileFilter {
     if (f.isDirectory()) {
       return (bShowDirectories);
     } else {
-      final String extension = Util.getExtension(f);
+      final String extension = UtilSystem.getExtension(f);
       final TypeManager mgr = TypeManager.getInstance();
 
       // check extension is known

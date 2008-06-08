@@ -26,7 +26,8 @@ import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -114,13 +115,13 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
     String sCommand = "mplayer";
     // Use any forced mplayer path
     String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
-    if (!Util.isVoid(forced)) {
+    if (!UtilString.isVoid(forced)) {
       sCommand = forced;
     } else {
-      if (Util.isUnderWindows()) {
-        sCommand = Util.getMPlayerWindowsPath().getAbsolutePath();
-      } else if (Util.isUnderOSXintel() || Util.isUnderOSXpower()) {
-        sCommand = Util.getMPlayerOSXPath();
+      if (UtilSystem.isUnderWindows()) {
+        sCommand = UtilSystem.getMPlayerWindowsPath().getAbsolutePath();
+      } else if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
+        sCommand = UtilSystem.getMPlayerOSXPath();
       }
     }
     String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
@@ -148,7 +149,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
       cmd.add("-cache");
       cmd.add(cacheSize);
     }
-    if (!Util.isVoid(sAdditionalArgs)) {
+    if (!UtilString.isVoid(sAdditionalArgs)) {
       // Add any additional arguments provided by user
       String[] sArgs = sAdditionalArgs.split(" ");
       for (int i = 0; i < sArgs.length; i++) {

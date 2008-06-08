@@ -53,7 +53,8 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
@@ -191,7 +192,7 @@ public class LyricsView extends ViewAdapter implements Observer {
         public void run() {
           removeAll();
           busy.setBusy(true);
-          add(Util.getCentredPanel(busy, BoxLayout.X_AXIS));
+          add(UtilGUI.getCentredPanel(busy, BoxLayout.X_AXIS));
           revalidate();
           repaint();
         }
@@ -258,7 +259,7 @@ public class LyricsView extends ViewAdapter implements Observer {
           });
           jlAuthor.setText(track.getAuthor().getName2());
           jlTitle.setText(track.getName());
-          Util.copyData = sURL;
+          UtilFeatures.copyData = sURL;
           jsp.setVisible(true);
           revalidate();
           repaint();

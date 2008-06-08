@@ -36,7 +36,8 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -55,7 +56,7 @@ public class ThumbnailManager implements ITechnicalStrings {
    *          size, eg: ITechnicalStrings.THUMBNAIL_SIZE_150x150
    */
   public static void cleanThumbs(String size) {
-    File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + size);
+    File fThumb = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size);
     if (fThumb.exists()) {
       File[] files = fThumb.listFiles();
       for (File file : files) {
@@ -64,7 +65,7 @@ public class ThumbnailManager implements ITechnicalStrings {
         }
       }
       // Refresh default cover
-      File fDefault = Util.getConfFileByPath(FILE_THUMBS + "/" + size + "/" + FILE_THUMB_NO_COVER);
+      File fDefault = UtilSystem.getConfFileByPath(FILE_THUMBS + "/" + size + "/" + FILE_THUMB_NO_COVER);
       fDefault.delete();
       try {
         int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
@@ -82,7 +83,7 @@ public class ThumbnailManager implements ITechnicalStrings {
    */
   public static void cleanThumbs(Album album) {
     for (int size = 0; size < 6; size++) {
-      File fThumb = Util.getConfFileByPath(FILE_THUMBS + '/' + 50 * size + '/' + album.getID()
+      File fThumb = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + 50 * size + '/' + album.getID()
           + ".jpg");
       if (fThumb.exists()) {
         boolean out = fThumb.delete();
@@ -149,11 +150,11 @@ public class ThumbnailManager implements ITechnicalStrings {
     }
     // draw original image to thumbnail image object and
     // scale it to the new size on-the-fly
-    final BufferedImage thumbImage = Util.toBufferedImage(image, !(Util.getExtension(thumb)
+    final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, !(UtilSystem.getExtension(thumb)
         .equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
     // Need alpha only for png and gif files
     // save thumbnail image to OUTFILE
-    ImageIO.write(thumbImage, Util.getExtension(thumb), thumb);
+    ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
     // Free thumb memory
     thumbImage.flush();
   }
@@ -166,7 +167,7 @@ public class ThumbnailManager implements ITechnicalStrings {
    * @return whether a new cover has been created
    */
   public static boolean refreshThumbnail(final Album album, final String size) {
-    final File fThumb = Util.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/' + size + '/'
+    final File fThumb = UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/' + size + '/'
         + album.getID() + '.' + ITechnicalStrings.EXT_THUMB);
     File fCover = null;
     if (!fThumb.exists()) {

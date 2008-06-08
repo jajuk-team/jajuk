@@ -153,12 +153,12 @@ public class DownloadManager implements ITechnicalStrings {
       id = idCache;
     }
     // check if file is not already downloaded or being downloaded
-    File file = Util.getCachePath(url, id);
+    File file = UtilSystem.getCachePath(url, id);
     if (file.exists()) {
       return file;
     }
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-    File out = Util.getCachePath(url, id);
+    File out = UtilSystem.getCachePath(url, id);
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
     BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
     int i;
@@ -230,7 +230,7 @@ public class DownloadManager implements ITechnicalStrings {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
           String user = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-          char[] pwd = Util.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD))
+          char[] pwd = UtilString.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD))
               .toCharArray();
           return new PasswordAuthentication(user, pwd);
         }

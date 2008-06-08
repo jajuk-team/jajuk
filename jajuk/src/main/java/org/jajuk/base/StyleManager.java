@@ -35,7 +35,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -64,7 +64,7 @@ public class StyleManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
         Boolean.class, false));
     // create default style list
-    stylesList = new Vector<String>(Arrays.asList(Util.genres));
+    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.genres));
     Collections.sort(stylesList);
   }
 

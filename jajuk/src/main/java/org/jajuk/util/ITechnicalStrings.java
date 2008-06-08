@@ -208,7 +208,7 @@ public interface ITechnicalStrings {
   // logs
   String FILE_LOGS = "jajuk.log";
 
-  URL FILE_LOG4j_CONF = Util.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
+  URL FILE_LOG4j_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
   String FILE_CACHE = "cache";
 
@@ -236,7 +236,7 @@ public interface ITechnicalStrings {
 
   String FILE_TOOLBARS_CONF = "toolbars.xml";
 
-  URL FILE_LYRICS_CONF_PATH = Util.getResource("xml/lyrics.xml");
+  URL FILE_LYRICS_CONF_PATH = UtilSystem.getResource("xml/lyrics.xml");
 
   String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
@@ -244,11 +244,11 @@ public interface ITechnicalStrings {
 
   String FILE_REPORTING_CSS_ALL_FILENAME = "report-all.css";
 
-  URL FILE_REPORTING_CSS_ALL_PATH = Util.getResource("xslt/" + FILE_REPORTING_CSS_ALL_FILENAME);
+  URL FILE_REPORTING_CSS_ALL_PATH = UtilSystem.getResource("xslt/" + FILE_REPORTING_CSS_ALL_FILENAME);
 
   String FILE_REPORTING_CSS_PRINT_FILENAME = "report-print.css";
 
-  URL FILE_REPORTING_CSS_PRINT_PATH = Util.getResource("xslt/" + FILE_REPORTING_CSS_PRINT_FILENAME);
+  URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/" + FILE_REPORTING_CSS_PRINT_FILENAME);
 
   String FILE_BACKGROUND_IMAGE = "background.jpg";
 
@@ -286,28 +286,28 @@ public interface ITechnicalStrings {
   String UNKNOWN = "unknown";
 
   // images
-  URL IMAGES_SPLASHSCREEN = Util.getResource("images/included/jajuk-splashscreen.jpg");
+  URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
 
-  URL IMAGE_SEARCH = Util.getResource("images/included/search.png");
+  URL IMAGE_SEARCH = UtilSystem.getResource("images/included/search.png");
 
-  URL IMAGE_DJ = Util.getResource("images/included/dj.jpg");
+  URL IMAGE_DJ = UtilSystem.getResource("images/included/dj.jpg");
 
-  URL IMAGE_TRAY_TITLE = Util.getResource("images/included/tray_title.png");
+  URL IMAGE_TRAY_TITLE = UtilSystem.getResource("images/included/tray_title.png");
 
   // XSLT Files
-  URL XSLT_AUTHOR = Util.getResource("xslt/author.xsl");
+  URL XSLT_AUTHOR = UtilSystem.getResource("xslt/author.xsl");
 
-  URL XSLT_ALBUM = Util.getResource("xslt/album.xsl");
+  URL XSLT_ALBUM = UtilSystem.getResource("xslt/album.xsl");
 
-  URL XSLT_STYLE = Util.getResource("xslt/style.xsl");
+  URL XSLT_STYLE = UtilSystem.getResource("xslt/style.xsl");
 
-  URL XSLT_YEAR = Util.getResource("xslt/style.xsl");
+  URL XSLT_YEAR = UtilSystem.getResource("xslt/style.xsl");
 
-  URL XSLT_DIRECTORY = Util.getResource("xslt/directory.xsl");
+  URL XSLT_DIRECTORY = UtilSystem.getResource("xslt/directory.xsl");
 
-  URL XSLT_DEVICE = Util.getResource("xslt/device.xsl");
+  URL XSLT_DEVICE = UtilSystem.getResource("xslt/device.xsl");
 
-  URL XSLT_COLLECTION_LOGICAL = Util.getResource("xslt/logical_collection.xsl");
+  URL XSLT_COLLECTION_LOGICAL = UtilSystem.getResource("xslt/logical_collection.xsl");
 
   String COLLECTION_LOGICAL = "logical";
 

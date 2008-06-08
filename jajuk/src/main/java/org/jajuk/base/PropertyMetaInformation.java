@@ -26,7 +26,8 @@ import java.util.Date;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -123,7 +124,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
     } else if (cType.equals(Date.class)) {
       // date default
       if (oDefaultValue == null) {
-        this.oDefaultValue = TODAY;
+        this.oDefaultValue = UtilSystem.TODAY;
       } else {
         this.oDefaultValue = oDefaultValue;
       }
@@ -132,7 +133,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
       // URL default
       if (oDefaultValue == null) {
         try {
-          this.oDefaultValue = Util.getConfFileByPath("").toURI().toURL();
+          this.oDefaultValue = UtilSystem.getConfFileByPath("").toURL();
         } catch (MalformedURLException e) {
           Log.error(e);
         }
@@ -185,16 +186,16 @@ public class PropertyMetaInformation implements ITechnicalStrings {
     String sDefault = "";
     try {
       if (oDefaultValue != null) {
-        sDefault = Util.format(oDefaultValue, this, false);
+        sDefault = UtilString.format(oDefaultValue, this, false);
       }
     } catch (Exception e) { // should to occur at this point
       Log.error(e);
     }
-    return "\t\t<" + XML_PROPERTY + " " + XML_NAME + "='" + Util.formatXML(sName) + "' "
+    return "\t\t<" + XML_PROPERTY + " " + XML_NAME + "='" + UtilString.formatXML(sName) + "' "
         + XML_CUSTOM + "='" + bCustom + "' " + XML_CONSTRUCTOR + "='" + bConstructor + "' "
         + XML_VISIBLE + "='" + bShouldBeDisplayed + "' " + XML_EDITABLE + "='" + bEditable + "' "
         + XML_UNIQUE + "='" + bMergeable + "' " + XML_TYPE + "='" + cType.getName() + "' "
-        + XML_DEFAULT_VALUE + "='" + Util.formatXML(sDefault) + "'/>";
+        + XML_DEFAULT_VALUE + "='" + UtilString.formatXML(sDefault) + "'/>";
   }
 
   public Object getDefaultValue() {

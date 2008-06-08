@@ -71,7 +71,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -1373,7 +1373,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
   }
 
   public DigitalDJWizard() {
-    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, Util
+    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, UtilGUI
         .getImage(IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getLocale()));
   }
 

@@ -29,7 +29,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Play shuffle a selection
@@ -59,10 +59,10 @@ public class PlayShuffleSelectionAction extends SelectionAction {
   @Override
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
-    List<File> files = Util.getPlayableFiles(selection);
+    List<File> files = UtilFeatures.getPlayableFiles(selection);
     Collections.shuffle(files, new Random());
     FIFO.getInstance().push(
-        Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
             .getBoolean(CONF_STATE_REPEAT), true), false);
   }
 

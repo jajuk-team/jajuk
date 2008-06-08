@@ -44,7 +44,8 @@ import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * List collection albums as a table
@@ -109,11 +110,11 @@ public class AlbumsTableView extends AbstractTableView {
                 || (nbClicks == 2 && !editableCol)) {
               // selected row in view
               Album album = (Album) jtable.getSelection().get(0);
-              List<File> alFiles = Util.getPlayableFiles(album);
+              List<File> alFiles = UtilFeatures.getPlayableFiles(album);
               if (alFiles.size() > 0) {
                 // launch it
                 FIFO.getInstance().push(
-                    Util.createStackItems(alFiles, ConfigurationManager
+                    UtilFeatures.createStackItems(alFiles, ConfigurationManager
                         .getBoolean(CONF_STATE_REPEAT), true),
                     ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
 
@@ -168,7 +169,7 @@ public class AlbumsTableView extends AbstractTableView {
             // Do not hide popup if still in the table to allow user to mouse
             // mouse over the popup (in this case, a table exit event is thrown)
             if (popup != null
-                && !Util.isOver(jtable.getLocationOnScreen(), jtable
+                && !UtilGUI.isOver(jtable.getLocationOnScreen(), jtable
                     .getPreferredScrollableViewportSize())) {
               popup.dispose();
             }

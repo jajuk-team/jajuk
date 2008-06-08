@@ -32,7 +32,8 @@ import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -258,7 +259,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    *          Refresh handler
    */
   public void scan(boolean bDeepScan, RefreshReporter reporter) {
-    java.io.File[] files = getFio().listFiles(Util.fileFilter);
+    java.io.File[] files = getFio().listFiles(UtilSystem.fileFilter);
     if (files == null || files.length == 0) { // none file, leave
       return;
     }
@@ -272,7 +273,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           continue;
         }
         boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
-            Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
+            UtilSystem.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
         // Ignore iTunes files
         if (files[i].getName().startsWith("._")) {
           continue;
@@ -284,7 +285,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
           // Set name again to make sure Windows users will see actual
           // name with right case
-          if (Util.isUnderWindows() && fileRef != null) {
+          if (UtilSystem.isUnderWindows() && fileRef != null) {
             fileRef.setName(name);
           }
           // if known file and no deep scan, just leave
@@ -322,7 +323,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           Style style = StyleManager.getInstance().registerStyle(sStyle);
           Year year = YearManager.getInstance().registerYear(sYear);
           Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
-          Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
+          Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(files[i]));
           // Store number of tracks in collection (note that the
           // collection is locked)
           long trackNumber = TrackManager.getInstance().getElementCount();

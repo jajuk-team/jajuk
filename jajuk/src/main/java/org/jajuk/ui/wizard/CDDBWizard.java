@@ -26,7 +26,6 @@ import entagged.freedb.FreedbAlbum;
 import entagged.freedb.FreedbException;
 import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
-import entagged.freedb.FreedbTrack;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Toolkit;
@@ -35,7 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashSet;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -52,12 +51,13 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.cddb.CDDBTrack;
+import org.jajuk.ui.helpers.CDDBTableModel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.JajukTable;
@@ -66,7 +66,7 @@ import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -90,7 +90,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
   OKCancelPanel okc;
 
   /** File filter */
-  Set<File> filter;
+  HashSet filter;
 
   /** Layout dimensions */
   double[][] dSize = { { 0, TableLayout.FILL }, { 0, 22, TableLayout.PREFERRED, 22 } };
@@ -113,25 +113,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
 
   int idx;
 
-  static class CDDBTrack implements FreedbTrack {
-
-    Track track;
-
-    public CDDBTrack(Track track) {
-      this.track = track;
-    }
-
-    public int getLength() {
-      return (int) track.getDuration();
-
-    }
-
-    public float getPreciseLength() {
-      return track.getDuration();
-    }
-
-  }
-
+  
   class NavigationPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -267,7 +249,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
           // Display main panel
           display();
         }
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
       }
     };
     sw.start();
@@ -342,7 +324,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
     } else {
       for (int i = 0; i < aIdxToTag.length; i++) {
         int iRow = aIdxToTag[i];
-        Track track = alTracks.get(iRow).track;
+        Track track = alTracks.get(iRow).getTrack();
         try {
           String sValue = fdbReader.getAlbum();
 
@@ -403,7 +385,6 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
     if (e.getSource() == okc.getOKButton()) {
       dispose();
       new Thread() {
-        @Override
         public void run() {
           retagFiles();
         }

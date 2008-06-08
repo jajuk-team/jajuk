@@ -24,7 +24,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Button whose icon has a fixed size
@@ -69,7 +69,7 @@ public class SizedButton extends JButton {
 
   @Override
   public void setIcon(Icon icon) {
-    super.setIcon(Util.getResizedImage((ImageIcon) icon, 16, 16));
+    super.setIcon(UtilGUI.getResizedImage((ImageIcon) icon, 16, 16));
   }
 
   @Override

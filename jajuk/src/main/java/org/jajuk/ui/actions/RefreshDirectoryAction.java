@@ -34,7 +34,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 public class RefreshDirectoryAction extends ActionBase {
   /**
@@ -63,13 +63,13 @@ public class RefreshDirectoryAction extends ActionBase {
     new Thread() {
       @Override
       public void run() {
-        Util.waiting();
+        UtilGUI.waiting();
         InformationJPanel.getInstance().setMessage(
             Messages.getString("ActionRefresh.1") + ": " + dir.getName(), 1);
         DirectoryManager.refreshDirectory(dir);
         ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         InformationJPanel.getInstance().setMessage(Messages.getString("ActionRefresh.2"), 1);
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
       }
     }.start();
 

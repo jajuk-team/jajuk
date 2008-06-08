@@ -42,7 +42,7 @@ import org.jajuk.base.File;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 public class DuplicateTracksList extends JPanel implements ListSelectionListener {
@@ -124,7 +124,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
 
       for (int i : indices) {
         try {
-          Util.deleteFile(flatFilesList.get(i).getIO());
+          UtilSystem.deleteFile(flatFilesList.get(i).getIO());
           DirectoryManager.refreshDirectory(flatFilesList.get(i).getDirectory());
         } catch (Exception ioe) {
           Log.error(131, ioe);

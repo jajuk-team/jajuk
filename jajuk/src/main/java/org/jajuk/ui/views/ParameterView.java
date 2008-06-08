@@ -89,7 +89,9 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
@@ -494,7 +496,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbEnableLastFMInformation.isSelected()));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER, jtfASUser
         .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD, Util
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD, UtilString
         .rot13(new String(jpfASPassword.getPassword())));
     final int iLogLevel = scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
@@ -527,7 +529,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final int oldDuration = ConfigurationManager.getInt(ITechnicalStrings.CONF_FADE_DURATION);
     // Show an hideable message if user set cross fade under linux for sound
     // server information
-    if (Util.isUnderLinux() && (oldDuration == 0) && (oldDuration != crossFadeDuration.getValue())) {
+    if (UtilSystem.isUnderLinux() && (oldDuration == 0) && (oldDuration != crossFadeDuration.getValue())) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
           ITechnicalStrings.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
     }
@@ -690,11 +692,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
             + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"))
             .exists()) {
-          Util.waiting();
-          final java.io.File from = Util.getConfFileByPath("");
+          UtilGUI.waiting();
+          final java.io.File from = UtilSystem.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
               + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"));
-          Util.copyRecursively(from, dest);
+          UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
           // Change the workspace so the very last conf (like current track)
           // will be saved directly to target workspace. We don't do this if the
@@ -708,7 +710,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         bw.write(newWorkspace);
         bw.flush();
         bw.close();
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
           Messages.showInfoMessage(Messages.getString("ParameterView.247"));
@@ -744,7 +746,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getText());
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin
         .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PWD, Util
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PWD, UtilString
         .rot13(new String(jtfProxyPwd.getPassword())));
     ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_CONNECTION_TO, Integer
         .toString(connectionTO.getValue()));
@@ -1125,7 +1127,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbHotkeys.addActionListener(this);
     jcbHotkeys.setToolTipText(Messages.getString("ParameterView.197"));
     // Disable this option if not under windows
-    jcbHotkeys.setEnabled(Util.isUnderWindows());
+    jcbHotkeys.setEnabled(UtilSystem.isUnderWindows());
 
     jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
     scbLanguage = new SteppedComboBox();
@@ -1740,7 +1742,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_LOGIN));
     jtfProxyLogin.setEnabled(bUseProxy);
     jlProxyLogin.setEnabled(bUseProxy);
-    jtfProxyPwd.setText(Util.rot13(ConfigurationManager
+    jtfProxyPwd.setText(UtilString.rot13(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PWD)));
     jtfProxyPwd.setEnabled(bUseProxy);
     jlProxyPwd.setEnabled(bUseProxy);
@@ -1770,7 +1772,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbEnableLastFMInformation.setSelected(ConfigurationManager
         .getBoolean(ITechnicalStrings.CONF_LASTFM_INFO));
     jtfASUser.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER));
-    jpfASPassword.setText(Util.rot13(ConfigurationManager
+    jpfASPassword.setText(UtilString.rot13(ConfigurationManager
         .getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD)));
     if (!ConfigurationManager.getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE)) {
       jlASUser.setEnabled(false);

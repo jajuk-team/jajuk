@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -74,7 +74,7 @@ public class Log implements ITechnicalStrings {
   private Log() {
     try {
       // set env variable used in the log4j conf file
-      System.setProperty("jajuk.log", Util.getConfFileByPath(FILE_LOGS).getAbsolutePath());
+      System.setProperty("jajuk.log", UtilSystem.getConfFileByPath(FILE_LOGS).getAbsolutePath());
       DOMConfigurator.configure(FILE_LOG4j_CONF);
       loggerRoot = Logger.getRootLogger();
       logger = Logger.getLogger(Log.class.getName());

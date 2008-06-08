@@ -56,7 +56,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
@@ -125,7 +126,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
             File file = track.getPlayeableFile(true);
             toPlay.add(file);
             FIFO.getInstance().push(
-                Util.createStackItems(Util.applyPlayOption(toPlay), ConfigurationManager
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), ConfigurationManager
                     .getBoolean(CONF_STATE_REPEAT), true), false);
           }
         }
@@ -134,9 +135,9 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
         // This doesn't work under JRE 1.5 (at least
         // under Linux), Sun issue ?
         else if (e.getEventType() == EventType.ENTERED) {
-          text.setCursor(Util.LINK_CURSOR);
+          text.setCursor(UtilGUI.LINK_CURSOR);
         } else if (e.getEventType() == EventType.EXITED) {
-          text.setCursor(Util.DEFAULT_CURSOR);
+          text.setCursor(UtilGUI.DEFAULT_CURSOR);
         }
       }
     });

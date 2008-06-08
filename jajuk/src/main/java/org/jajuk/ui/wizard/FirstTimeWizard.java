@@ -51,7 +51,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
@@ -214,7 +214,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     final int iX_SEPARATOR = 10;
     final int iY_SEPARATOR = 10;
     final double p = TableLayoutConstants.PREFERRED;
-    jlLeftIcon = new JLabel(Util.getImage(ITechnicalStrings.IMAGE_SEARCH));
+    jlLeftIcon = new JLabel(UtilGUI.getImage(ITechnicalStrings.IMAGE_SEARCH));
     jlLeftIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
     jpRightPanel = new JPanel();
     jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));

@@ -51,7 +51,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
@@ -267,7 +267,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
               + Messages.getLocalForDesc((String) jcbLanguage.getSelectedItem())
               + ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: " + url);
-          Util.copyData = url.toString();
+          UtilFeatures.copyData = url.toString();
           jbLaunchInExternalBrowser.putClientProperty(DETAIL_CONTENT, url.toExternalForm());
           browser.setURL(url);
         } catch (Exception e) {

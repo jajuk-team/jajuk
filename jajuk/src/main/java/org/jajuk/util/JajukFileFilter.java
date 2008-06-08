@@ -105,7 +105,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
       extensionsString += this.extensions[i] + ',';
     }
     // Drop last coma
-    if (!Util.isVoid(extensionsString)) {
+    if (!UtilString.isVoid(extensionsString)) {
       extensionsString = extensionsString.substring(0, extensionsString.length() - 1);
     }
   }
@@ -174,7 +174,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, I
    */
   protected boolean isKnownExtension(final File file) {
     if (file != null) {
-      final String extension = Util.getExtension(file).toLowerCase();
+      final String extension = UtilSystem.getExtension(file).toLowerCase();
 
       for (final String ext : extensions) {
         if (extension.equals(ext)) {

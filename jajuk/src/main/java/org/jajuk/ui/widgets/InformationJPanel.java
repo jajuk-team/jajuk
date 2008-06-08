@@ -55,7 +55,7 @@ import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -323,24 +323,24 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     }
     switch (timeFormat) {
     case 0: {
-      string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
+      string = UtilString.formatTimeBySec(lTime) + " / " + UtilString.formatTimeBySec(length);
       break;
     }
     case 1: {
-      string = "-" + Util.formatTimeBySec(length - lTime, false) + " / "
-          + Util.formatTimeBySec(length, false);
+      string = "-" + UtilString.formatTimeBySec(length - lTime) + " / "
+          + UtilString.formatTimeBySec(length);
       break;
     }
     case 2: {
-      string = df.format(lTime_percent) + " % / " + Util.formatTimeBySec(length, false);
+      string = df.format(lTime_percent) + " % / " + UtilString.formatTimeBySec(length);
       break;
     }
     case 3: {
-      string = df.format(lTime_percent - 100f) + " % / " + Util.formatTimeBySec(length, false);
+      string = df.format(lTime_percent - 100f) + " % / " + UtilString.formatTimeBySec(length);
       break;
     }
     default: {
-      string = Util.formatTimeBySec(lTime, false) + " / " + Util.formatTimeBySec(length, false);
+      string = UtilString.formatTimeBySec(lTime) + " / " + UtilString.formatTimeBySec(length);
     }
     }
     sCurrentStatus = string;
@@ -415,7 +415,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
             int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
-            String sCurrentTotalMessage = Util.formatTimeBySec(timeToPlay, false);
+            String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getInstance().getFIFO().size()
                 + "]");
             setCurrentTimeMessage(lTime, length);

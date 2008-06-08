@@ -89,7 +89,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
@@ -901,7 +901,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbSort) {
-      Util.waiting();
+      UtilGUI.waiting();
       SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {
@@ -915,7 +915,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         @Override
         public void finished() {
           SwingUtilities.updateComponentTreeUI(jtree);
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
       };
       sw.start();

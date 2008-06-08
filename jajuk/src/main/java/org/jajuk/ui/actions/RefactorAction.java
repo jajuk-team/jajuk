@@ -37,7 +37,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
@@ -77,19 +78,19 @@ public class RefactorAction implements ITechnicalStrings {
         if (iResu == JOptionPane.CANCEL_OPTION) {
           RefactorAction.bStopAll = true;
         }
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
         return;
       }
     }
     new Thread() {
       @Override
       public void run() {
-        Util.waiting();
+        UtilGUI.waiting();
         refactor();
         ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       }
     }.start();
-    Util.stopWaiting();
+    UtilGUI.stopWaiting();
   }
 
   /**
@@ -102,7 +103,7 @@ public class RefactorAction implements ITechnicalStrings {
     for (final File fCurrent : alFiles) {
       final Track tCurrent = fCurrent.getTrack();
       try {
-        filename = Util.applyPattern(fCurrent, ConfigurationManager
+        filename = UtilString.applyPattern(fCurrent, ConfigurationManager
             .getProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN), true, true);
       } catch (final JajukException je) {
         sErrors += je.getMessage() + '\n';

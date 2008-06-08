@@ -52,7 +52,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -292,7 +292,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
         }
         // OK ? Restore the list
         try {
-          Util.waiting();
+          UtilGUI.waiting();
           WebRadioManager.getInstance().restore();
           // Refresh current list
           radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
@@ -302,7 +302,7 @@ public class WebRadioWizard extends Wizard implements ITechnicalStrings {
           Log.error(e);
         }
         finally{
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
         // refresh screen
         refreshScreen();

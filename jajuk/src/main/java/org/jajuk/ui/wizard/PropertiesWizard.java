@@ -73,7 +73,8 @@ import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
@@ -129,7 +130,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     if (alItems.size() > 1) {
       bMerged = true;
     }
-    panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? Util.getLimitedString((alItems
+    panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString((alItems
         .get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6") + " [" + alItems.size()
         + "]", bMerged);
     CellConstraints cc = new CellConstraints();
@@ -178,9 +179,9 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     if (alItems1.size() > 0) {
       if (alItems1.size() == 1) {
         panel1 = new PropertiesPanel(alItems1,
-            Util.getLimitedString(alItems1.get(0).getDesc(), 50), false);
+            UtilString.getLimitedString(alItems1.get(0).getDesc(), 50), false);
       } else {
-        panel1 = new PropertiesPanel(alItems1, Util.formatPropertyDesc(Messages
+        panel1 = new PropertiesPanel(alItems1, UtilString.formatPropertyDesc(Messages
             .getString("PropertiesWizard.6")
             + " [" + alItems.size() + "]"), true);
       }
@@ -189,9 +190,9 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     if (alItems2.size() > 0) {
       if (alItems2.size() == 1) {
         panel2 = new PropertiesPanel(alItems2,
-            Util.getLimitedString(alItems2.get(0).getDesc(), 50), false);
+            UtilString.getLimitedString(alItems2.get(0).getDesc(), 50), false);
       } else {
-        panel2 = new PropertiesPanel(alItems2, Util.formatPropertyDesc(alItems2.size() + " "
+        panel2 = new PropertiesPanel(alItems2, UtilString.formatPropertyDesc(alItems2.size() + " "
             + Messages.getString("Property_tracks")), true);
       }
       panel2.setBorder(BorderFactory.createEtchedBorder());
@@ -633,7 +634,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
 
       setLayout(new VerticalLayout(10));
       // desc
-      jlDesc = new JLabel(Util.formatPropertyDesc(sDesc));
+      jlDesc = new JLabel(UtilString.formatPropertyDesc(sDesc));
       add(jlDesc);
       add(jpProperties);
     }
@@ -687,7 +688,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
      */
     protected void save() throws Exception {
       try {
-        Util.waiting();
+        UtilGUI.waiting();
         Object oValue = null;
         Item newItem = null;
         // list of actually changed tracks (used by out message)
@@ -720,7 +721,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
             }
             // Old value
             String sOldValue = item.getHumanValue(meta.getName());
-            if ((sOldValue != null && !Util.format(oValue, meta, true).equals(sOldValue))) {
+            if ((sOldValue != null && !UtilString.format(oValue, meta, true).equals(sOldValue))) {
               try {
                 // if we change track properties for only one file
                 newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
@@ -775,7 +776,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               // if individual item, change title in case of
               // constructor element change
               if (!bMerged) {
-                jlDesc.setText(Util.formatPropertyDesc(newItem.getDesc()));
+                jlDesc.setText(UtilString.formatPropertyDesc(newItem.getDesc()));
               }
               // note this property have been changed
               if (!alChanged.contains(meta)) {
@@ -824,7 +825,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
                   + sbChanged.toString(), InformationJPanel.INFORMATIVE);
         }
       } finally {
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
         // Reset track remaining issues
         TrackManager.nbFilesRemaining = 0;
       }

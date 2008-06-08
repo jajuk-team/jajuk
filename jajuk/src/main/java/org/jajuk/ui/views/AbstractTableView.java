@@ -73,7 +73,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
@@ -272,7 +272,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
     jtable.setSortOrder(1, SortOrder.ASCENDING);
-    jtable.setHighlighters(Util.getAlternateHighlighter());
+    jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
     jtable.packTable(5);
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
@@ -324,10 +324,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         // Force table repaint (for instance for rating stars update)
         jtable.revalidate();
         jtable.repaint();
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
       }
     };
-    Util.waiting();
+    UtilGUI.waiting();
     sw.start();
   }
 

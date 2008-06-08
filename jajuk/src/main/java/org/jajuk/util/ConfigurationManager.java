@@ -314,7 +314,7 @@ public class ConfigurationManager implements ITechnicalStrings {
 
   /** Commit properties in a file */
   public static void commit() throws Exception {
-    OutputStream str = new FileOutputStream(Util.getConfFileByPath(FILE_CONFIGURATION));
+    OutputStream str = new FileOutputStream(UtilSystem.getConfFileByPath(FILE_CONFIGURATION));
     try {
       properties.store(str, "User configuration");
     } finally {
@@ -334,7 +334,7 @@ public class ConfigurationManager implements ITechnicalStrings {
   /** Load properties from in file */
   public static void load() {
     try {
-      InputStream str = new FileInputStream(Util.getConfFileByPath(FILE_CONFIGURATION));
+      InputStream str = new FileInputStream(UtilSystem.getConfFileByPath(FILE_CONFIGURATION));
       try {
         properties.load(str);
       } finally {

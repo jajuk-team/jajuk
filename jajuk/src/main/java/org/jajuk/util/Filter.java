@@ -108,7 +108,7 @@ public class Filter {
     String comparator = null;
     String checked = filter.getValue();
     // If checked is void, return the list as it
-    if (Util.isVoid(checked)) {
+    if (UtilString.isVoid(checked)) {
       return (List<Item>) list;
     }
     // If pattern is wrong, return a void list
@@ -146,7 +146,7 @@ public class Filter {
           }
           String value = item.getHumanValue(propertyName);
           // Escape the string so regexp ignore special characters
-          value = Util.escapeString(value);
+          value = UtilString.escapeString(value);
           if (value.matches(checked)) {
             bMatch = true;
             break;
@@ -154,7 +154,7 @@ public class Filter {
         }
       } else {
         // Do not use Regexp matches() method, too costly
-        bMatch = Util.matchesIgnoreCaseAndOrder(checked, comparator);
+        bMatch = UtilString.matchesIgnoreCaseAndOrder(checked, comparator);
       }
       if (!bMatch) {
         it.remove();

@@ -45,7 +45,10 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
@@ -459,7 +462,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       // is closed brutally with control-C or shutdown and that exit hook
       // have no time to perform commit)
       try {
-        org.jajuk.base.Collection.commit(Util.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
+        org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
       } catch (final IOException e) {
         Log.error(e);
       }
@@ -556,7 +559,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
           }
         }
         try {
-          setProperty(sProperty, Util.parse(sValue, meta.getType()));
+          setProperty(sProperty, UtilString.parse(sValue, meta.getType()));
         } catch (final Exception e) {
           Log.error(137, sProperty, e);
         }
@@ -681,7 +684,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     if (reporter != null) {
       reporter.updateState(dir);
     }
-    final File[] files = dir.getFio().listFiles(Util.dirFilter);
+    final File[] files = dir.getFio().listFiles(UtilSystem.dirFilter);
     if (files != null) {
       for (final File element : files) {
         final Directory subDir = DirectoryManager.getInstance().registerDirectory(
@@ -722,7 +725,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    */
   public void synchronize(final boolean bAsynchronous) {
     // Check a source device is defined
-    if (Util.isVoid((String) getValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE))) {
+    if (UtilString.isVoid((String) getValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE))) {
       Messages.showErrorMessage(171);
       return;
     }
@@ -903,7 +906,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
           }
           if (bNeedCopy) {
             try {
-              Util.copyToDir(element, fileNewDir);
+              UtilSystem.copyToDir(element, fileNewDir);
               iNbCreatedFiles++;
               lVolume += element.length();
               InformationJPanel.getInstance().setMessage(
@@ -935,7 +938,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return true if the device is available
    */
   public boolean test() {
-    Util.waiting(); // waiting cursor
+    UtilGUI.waiting(); // waiting cursor
     boolean bOK = false;
     try {
       // just wait a moment so user feels something real happens
@@ -951,7 +954,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         mount(false); // try to mount
       }
     } catch (final Exception e) {
-      Util.stopWaiting();
+      UtilGUI.stopWaiting();
       return false;
     }
     if (getLongValue(ITechnicalStrings.XML_TYPE) != 5) { // not a remote device
@@ -990,7 +993,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         Log.error(e1);
       }
     }
-    Util.stopWaiting();
+    UtilGUI.stopWaiting();
     return bOK;
   }
 

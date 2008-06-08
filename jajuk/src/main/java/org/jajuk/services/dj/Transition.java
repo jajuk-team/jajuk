@@ -15,13 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision:3266 $
  */
 
 package org.jajuk.services.dj;
 
 import org.jajuk.base.Style;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Represents a transition from one style to another (used by digital DJs)
@@ -159,7 +159,7 @@ public class Transition {
       return to.getStyles().iterator().next();
     } else {
       // several destination styles, return a shuffle one
-      return (Style) Util.getShuffleItem(to.getStyles());
+      return (Style) UtilFeatures.getShuffleItem(to.getStyles());
     }
   }
 

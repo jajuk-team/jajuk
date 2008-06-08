@@ -23,7 +23,7 @@ package org.jajuk.base;
 import java.text.DateFormat;
 import java.util.Comparator;
 
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 
 /**
  * 
@@ -52,7 +52,7 @@ public class TrackComparator implements Comparator<Track> {
 
   public static final int ORDER = 7;
 
-  private static final DateFormat formatter = Util.getAdditionDateFormatter();
+  private static final DateFormat formatter = UtilString.getAdditionDateFormatter();
 
   /**
    * Constructor
@@ -99,7 +99,7 @@ public class TrackComparator implements Comparator<Track> {
     // Year / album
     case YEAR_ALBUM:
       sHashCompare = new StringBuilder().append(
-          Util.padNumber(999999999 - track.getYear().getValue(), 10)).append(track.getName())
+          UtilString.padNumber(999999999 - track.getYear().getValue(), 10)).append(track.getName())
           .toString();
       break;
     // discovery date / album
@@ -109,18 +109,18 @@ public class TrackComparator implements Comparator<Track> {
       break;
     // Rate / album
     case RATE_ALBUM:
-      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getRate(), 10))
+      sHashCompare = new StringBuilder().append(UtilString.padNumber(999999999 - track.getRate(), 10))
           .append(track.getName()).toString();
       break;
     // Hits / album
     case HITS_ALBUM:
-      sHashCompare = new StringBuilder().append(Util.padNumber(999999999 - track.getHits(), 10))
+      sHashCompare = new StringBuilder().append(UtilString.padNumber(999999999 - track.getHits(), 10))
           .append(track.getName()).toString();
       break;
     // Order / track name
     case ORDER:
       sHashCompare = new StringBuilder().append(
-          Util.padNumber(track.getOrder(), 5) + track.getName()).toString();
+          UtilString.padNumber(track.getOrder(), 5) + track.getName()).toString();
       break;
     }
     return sHashCompare;

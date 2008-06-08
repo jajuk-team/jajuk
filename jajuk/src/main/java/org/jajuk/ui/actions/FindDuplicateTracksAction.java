@@ -38,7 +38,7 @@ import org.jajuk.ui.widgets.DuplicateTracksList;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 public class FindDuplicateTracksAction extends ActionBase {
 
@@ -61,7 +61,7 @@ public class FindDuplicateTracksAction extends ActionBase {
     if (duplicateFilesList.size() < 1) {
       Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
     } else {
-      final JOptionPane optionPane = Util.getNarrowOptionPane(100);
+      final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(100);
       final JDialog duplicateFiles = optionPane.createDialog(null, Messages
           .getString("FindDuplicateTracksAction.3"));
 

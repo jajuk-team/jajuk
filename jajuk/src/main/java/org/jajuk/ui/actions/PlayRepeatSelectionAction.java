@@ -26,7 +26,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Play repeat a selection
@@ -56,8 +56,8 @@ public class PlayRepeatSelectionAction extends SelectionAction {
   @Override
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
-    List<File> files = Util.getPlayableFiles(selection);
-    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(files), true, true), false);
+    List<File> files = UtilFeatures.getPlayableFiles(selection);
+    FIFO.getInstance().push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true, true), false);
   }
 
 }

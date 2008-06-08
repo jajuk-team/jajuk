@@ -46,7 +46,9 @@ import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -86,7 +88,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     super(size);
     this.album = album;
     this.bShowFullText = bShowText;
-    this.fCover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
+    this.fCover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
         + album.getID() + '.' + EXT_THUMB);
   }
 
@@ -113,14 +115,14 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       Color mediumGray = new Color(172, 172, 172);
 
       Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
-      jlAuthor = new JLabel(Util.getLimitedString(author.getName2(), iRows));
+      jlAuthor = new JLabel(UtilString.getLimitedString(author.getName2(), iRows));
       jlAuthor.setToolTipText(author.getName2());
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlAuthor.setForeground(mediumGray);
       // we have to use a empty border to avoid getting default border
       jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-      jlAlbum = new JLabel(Util.getLimitedString(album.getName2(), iRows));
+      jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
 
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
@@ -132,9 +134,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       add(jlAlbum, "1,4");
     } else {
       setLayout(new VerticalLayout(2));
-      add(Util.getCentredPanel(jlIcon));
+      add(UtilGUI.getCentredPanel(jlIcon));
       int iRows = 7 + 6 * (size / 50 - 1);
-      JLabel jlTitle = new JLabel(Util.getLimitedString(album.getName2(), iRows));
+      JLabel jlTitle = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlTitle.setToolTipText(album.getName2());
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlTitle.setToolTipText(album.getName2());
@@ -174,15 +176,15 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   public String getDescription() {
     String size = "200x200";
     ThumbnailManager.refreshThumbnail(album, size);
-    java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
+    java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
         + '.' + EXT_THUMB);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
     Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
     Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
-    String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + album.getName2()
+    String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + album.getName2()
         + "</b><br><br>";
     // display cover if available
     if (cover.canRead()) {
@@ -207,12 +209,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     }
     // display rating (average of each track rating)
     try {
-      long lRate = album.getRate();
       sOut += "<br>"
           + Messages.getString("Property_rate")
           + ": <img src='"
-          + Util.getConfFileByPath(
-              "cache/internal/star" + Util.getAlbumStarsNumber(lRate) + "_16x16.png").toURI().toURL()
+          + UtilSystem.getConfFileByPath(
+              "cache/internal/star" + album.getStarsNumber() + "_16x16.png").toURI().toURL()
               .toExternalForm() + "'>";
     } catch (MalformedURLException e) {
       Log.error(e);
@@ -220,17 +221,17 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     // Compute total length in secs
     long length = album.getDuration();
     sOut += "<br>" + Messages.getString("Property_length") + ": "
-        + Util.formatTimeBySec(length, false) + "</TD><TD VALIGN='TOP'><br>";
+        + UtilString.formatTimeBySec(length) + "</TD><TD VALIGN='TOP'><br>";
 
     // Show each track detail
     for (Track track : tracks) {
       sOut += "<br>";
       if (track.getOrder() > 0) {
-        sOut += Util.padNumber(track.getOrder(), 2) + ": ";
+        sOut += UtilString.padNumber(track.getOrder(), 2) + ": ";
       }
       sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getID() + "'>" + track.getName()
           + "</a>" + " (";
-      sOut += Util.formatTimeBySec(track.getDuration(), false) + ") </b>";
+      sOut += UtilString.formatTimeBySec(track.getDuration()) + ") </b>";
       if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
       }

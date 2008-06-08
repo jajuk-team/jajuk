@@ -43,7 +43,6 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -81,8 +80,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseMotionListener,
-    Observer {
+public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -172,9 +170,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
   JButton jbSlim;
 
-  /** Hashmap JCheckBoxMenuItem -> associated view */
-  //public HashMap hmCheckboxView = new HashMap(10);
-
   private JajukJMenuBar() {
     setOpaque(true);
     setAlignmentX(0.0f);
@@ -202,10 +197,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     views.addSeparator();
     // Add the list of available views parsed in XML files at startup
     JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
-    for (final Class<?> view : ViewFactory.getKnownViews()) {
+    for (final Class<? extends IView> view : ViewFactory.getKnownViews()) {
       JMenuItem jmi = null;
       try {
-        jmi = new JMenuItem(((IView) view.newInstance()).getDesc(), IconLoader.ICON_LOGO_FRAME);
+        jmi = new JMenuItem(view.newInstance().getDesc(), IconLoader.ICON_LOGO_FRAME);
       } catch (Exception e1) {
         Log.error(e1);
         continue;
@@ -258,11 +253,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
 
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
-    tools.addMouseMotionListener(this);
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES));
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
     jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
-    jmReminders.addMouseMotionListener(this);
     for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
       JMenuItem jma = new JMenuItem(alarm.getAlarmTime(), IconLoader.ICON_ALARM);
       jmReminders.add(jma);

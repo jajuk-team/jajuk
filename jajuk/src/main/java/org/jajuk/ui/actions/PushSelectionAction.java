@@ -31,7 +31,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Push a selection
@@ -65,9 +65,9 @@ public class PushSelectionAction extends ActionBase {
     if (selection.size() == 0) {
       return;
     }
-    List<File> files = Util.getPlayableFiles(selection);
+    List<File> files = UtilFeatures.getPlayableFiles(selection);
     FIFO.getInstance().push(
-        Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
             .getBoolean(CONF_STATE_REPEAT), true), true);
   }
 

@@ -30,7 +30,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 public class BestOfAction extends ActionBase {
@@ -45,7 +45,7 @@ public class BestOfAction extends ActionBase {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-    List<File> alToPlay = Util.filterByAmbience(
+    List<File> alToPlay = UtilFeatures.filterByAmbience(
         FileManager.getInstance().getGlobalBestofPlaylist(), ambience);
     // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
     // number
@@ -53,7 +53,7 @@ public class BestOfAction extends ActionBase {
       alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
     }
     FIFO.getInstance().push(
-        Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),
+        UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),
         false);
   }
 }

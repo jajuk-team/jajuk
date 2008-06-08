@@ -30,7 +30,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 public class GlobalRandomAction extends ActionBase {
@@ -56,7 +56,7 @@ public class GlobalRandomAction extends ActionBase {
       @Override
       public void run() {
         Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-        List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
+        List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
             .getGlobalShufflePlaylist(), ambience);
         // For perfs (mainly playlist editor view refresh), we set a ceil for
         // tracks number
@@ -65,7 +65,7 @@ public class GlobalRandomAction extends ActionBase {
         }
         // Push them
         FIFO.getInstance().push(
-            Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+            UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
                 false), false);
       }
     }.start();

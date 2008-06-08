@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 
 /**
  * The base abstract class for exporting music contents to different formats.
@@ -50,7 +50,7 @@ public abstract class Exporter implements ITechnicalStrings {
   public void saveToFile(String sPath) throws Exception {
     // Create the final file from the cache file
     File out = new File(sPath);
-    Util.copy(cache, out);
+    UtilSystem.copy(cache, out);
   }
 
   /**

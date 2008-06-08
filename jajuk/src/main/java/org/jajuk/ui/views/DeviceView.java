@@ -55,7 +55,7 @@ import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Device view used to create and modify Jajuk devices
@@ -352,11 +352,11 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
         || JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          Util.waiting();
+          UtilGUI.waiting();
           refreshDevices();
           jpDevices.revalidate();
           jpDevices.repaint();
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
       });
     }

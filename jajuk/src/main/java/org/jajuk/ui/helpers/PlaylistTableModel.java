@@ -35,7 +35,6 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 
 /**
  * Playlist model used in queue view or playlist view
@@ -277,7 +276,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        oValues[iRow][5] = Util.getStars(bf.getTrack());
+        oValues[iRow][5] = bf.getTrack().getStars();
       } else {
         oValues[iRow][5] = "";
       }

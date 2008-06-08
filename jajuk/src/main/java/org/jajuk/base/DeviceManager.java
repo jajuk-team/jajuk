@@ -38,7 +38,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -193,8 +193,8 @@ public class DeviceManager extends ItemManager {
         // check it is not a sub-directory of an existing device
         File fNew = new File(sUrl);
         File fChecked = new File(sUrlChecked);
-        if (fNew.equals(fChecked) || Util.isDescendant(fNew, fChecked)
-            || Util.isAncestor(fNew, fChecked)) {
+        if (fNew.equals(fChecked) || UtilSystem.isDescendant(fNew, fChecked)
+            || UtilSystem.isAncestor(fNew, fChecked)) {
           return 29;
         }
       }

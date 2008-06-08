@@ -30,7 +30,7 @@ import org.jajuk.base.Directory;
 import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -75,7 +75,7 @@ public class RefreshReporter {
     // Count directories, takes a while, do not execute in AWT thread
     // We add 1 directory because we have to keep into account the root
     // directory
-    dirTotal = Util.countDirectories(device.getFio()) + 1;
+    dirTotal = UtilSystem.countDirectories(device.getFio()) + 1;
     rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.ICON_INFO);
     rdialog.setProgress(10);
   }

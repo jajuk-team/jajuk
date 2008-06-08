@@ -48,7 +48,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -176,7 +176,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
       if (file != null) {
         String s = "";
         try {
-          s = Util.applyPattern(file, ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN),
+          s = UtilString.applyPattern(file, ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN),
               false, false);
         } catch (JajukException e) {
           Log.error(e);

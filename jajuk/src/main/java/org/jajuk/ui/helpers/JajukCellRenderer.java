@@ -30,7 +30,7 @@ import javax.swing.JTable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
 /**
@@ -76,7 +76,7 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
       ((JLabel) c).setFont(((IconLabel) oValue).getFont());
       ((JLabel) c).setText(((IconLabel) oValue).getText());
     } else if (oValue instanceof Date) {
-      ((JLabel) c).setText(Util.getLocaleDateFormatter().format(((Date) oValue)));
+      ((JLabel) c).setText(UtilString.getLocaleDateFormatter().format(((Date) oValue)));
     } else if (oValue instanceof Boolean) {
       c = booleanRenderer.getTableCellRendererComponent(table, oValue, selected, focused, row,
           column);

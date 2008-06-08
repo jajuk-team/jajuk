@@ -37,7 +37,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 
 /**
  * Table model used for physical table view
@@ -256,7 +255,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 
         // Rate
         if (bRate) {
-          IconLabel ilRate = Util.getStars(file.getTrack());
+          IconLabel ilRate = file.getTrack().getStars();
           oValues[iRow][5] = ilRate;
         } else {
           oValues[iRow][5] = "";

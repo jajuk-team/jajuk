@@ -56,7 +56,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -219,7 +219,7 @@ public class SearchBox extends JTextField implements KeyListener {
           jlist.addListSelectionListener(lsl);
           // For some reasons, we get the waiting cursor on the popup
           // sometimes, force it to default
-          jlist.setCursor(Util.DEFAULT_CURSOR);
+          jlist.setCursor(UtilGUI.DEFAULT_CURSOR);
           jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
           if (popup != null) {
             popup.hide();

@@ -29,7 +29,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Play albums for a selection. We expect the selection to be tracks and we play
@@ -65,9 +65,9 @@ public class PlayAlbumSelectionAction extends SelectionAction {
     }
     // Select all files from the first found album
     Album album = ((Track) selection.get(0)).getAlbum();
-    List<File> files = Util.getPlayableFiles(album);
+    List<File> files = UtilFeatures.getPlayableFiles(album);
     FIFO.getInstance().push(
-        Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
             .getBoolean(CONF_STATE_REPEAT), true), false);
   }
 

@@ -61,7 +61,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -186,12 +186,12 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
         if (jmenu.isVisible()) {
           return;
         }
-        Util.waiting();
+        UtilGUI.waiting();
         String description = getDescription();
         if (description != null) {
           details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
               new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), true);
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
       }
     }.start();

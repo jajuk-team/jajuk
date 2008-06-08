@@ -240,7 +240,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @return
    */
   public static Icon getIcon(final String sDesc) {
-    Icon icon = new ImageIcon(Util.getResource("icons/16x16/flag_" + getLocalForDesc(sDesc)
+    Icon icon = new ImageIcon(UtilSystem.getResource("icons/16x16/flag_" + getLocalForDesc(sDesc)
         + ".png"));
     return icon;
   }
@@ -322,7 +322,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     // property file URL, either in the jajuk.jar jar
     // (normal execution) or found as regular file if in
     // development debug mode
-    url = Util.getResource("org/jajuk/i18n/" + sbFilename.toString());
+    url = UtilSystem.getResource("org/jajuk/i18n/" + sbFilename.toString());
     // parse it, actually it is a big properties file as CDATA in an XML
     // file
     try {
@@ -379,7 +379,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   public static String getErrorMessage(final int code) {
     String sOut = Integer.toString(code);
     try {
-      sOut = getString("Error." + Util.padNumber(code, 3));
+      sOut = getString("Error." + UtilString.padNumber(code, 3));
     } catch (final Exception e) {
       System.out.println("### Error getting error message for code: " + code);
     }
@@ -602,7 +602,7 @@ class ConfirmDialog extends JajukDialog {
    *          message type like JOptionPane.WARNING
    */
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
-    final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+    final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
       optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
           Messages.getString("YestoAll"), Messages.getString("Cancel") });
@@ -664,7 +664,7 @@ class DetailsMessageDialog extends JajukDialog {
    */
   DetailsMessageDialog(final String sText, final String sTitle, final int iType,
       final String sDetails, final Icon icon) {
-    final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+    final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(sText);
     if (sDetails != null) {
       final Object[] options = { Messages.getString("Ok"), Messages.getString("Details") };
@@ -692,7 +692,7 @@ class DetailsMessageDialog extends JajukDialog {
           dialogDetail.dispose();
         }
       });
-      jp.add(Util.getCentredPanel(jbOK));
+      jp.add(UtilGUI.getCentredPanel(jbOK));
       dialogDetail.setModal(true);
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);
@@ -720,7 +720,7 @@ class HideableMessageDialog extends JajukDialog {
    */
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
-    final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+    final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
     final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
     optionPane.setOptions(options);
@@ -758,7 +758,7 @@ class ErrorMessageDialog extends JajukDialog {
    * @param icon
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
-    final JOptionPane optionPane = Util.getNarrowOptionPane(72);
+    final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(Messages.getLimitedMessage(Messages.getErrorMessage(code)
         + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
     final Object[] options = { Messages.getString("Ok") };

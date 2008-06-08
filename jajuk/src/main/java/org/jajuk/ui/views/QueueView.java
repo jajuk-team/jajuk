@@ -64,7 +64,7 @@ import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
@@ -182,7 +182,7 @@ public class QueueView extends PlaylistView {
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
         new PlayHighlighterPredicate(editorModel));
-    Highlighter alternate = Util.getAlternateHighlighter();
+    Highlighter alternate = UtilGUI.getAlternateHighlighter();
     editorTable.setHighlighters(alternate, colorHighlighter);
     // register events
     ObservationManager.register(this);

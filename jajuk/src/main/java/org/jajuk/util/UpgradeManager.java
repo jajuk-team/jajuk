@@ -39,7 +39,7 @@ public final class UpgradeManager implements ITechnicalStrings {
    */
   public static void upgradeStep1() throws Exception {
     // --For jajuk < 0.2 : remove backup file : collection~.xml
-    File file = Util.getConfFileByPath(FILE_COLLECTION + "~");
+    File file = UtilSystem.getConfFileByPath(FILE_COLLECTION + "~");
     file.delete();
     // upgrade code; if upgrade from <1.2, set default ambiences
     String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
@@ -54,11 +54,11 @@ public final class UpgradeManager implements ITechnicalStrings {
           .setProperty(CONF_REFACTOR_PATTERN, sPattern.replaceAll("track", "title"));
     }
     // - for Jajuk < 1.3: no more use of .ser files
-    file = Util.getConfFileByPath("");
+    file = UtilSystem.getConfFileByPath("");
     File[] files = file.listFiles();
     for (int i = 0; i < files.length; i++) {
       // delete all .ser files
-      if (Util.getExtension(files[i]).equals("ser")) {
+      if (UtilSystem.getExtension(files[i]).equals("ser")) {
         files[i].delete();
       }
     }
@@ -74,23 +74,23 @@ public final class UpgradeManager implements ITechnicalStrings {
       }
     }
     // for jajuk <1.4 (or early 1.4), some perspectives have been renamed
-    File fPerspective = Util.getConfFileByPath("LogicalPerspective.xml");
+    File fPerspective = UtilSystem.getConfFileByPath("LogicalPerspective.xml");
     if (fPerspective.exists()) {
       fPerspective.delete();
     }
-    fPerspective = Util.getConfFileByPath("PhysicalPerspective.xml");
+    fPerspective = UtilSystem.getConfFileByPath("PhysicalPerspective.xml");
     if (fPerspective.exists()) {
       fPerspective.delete();
     }
-    fPerspective = Util.getConfFileByPath("CatalogPerspective.xml");
+    fPerspective = UtilSystem.getConfFileByPath("CatalogPerspective.xml");
     if (fPerspective.exists()) {
       fPerspective.delete();
     }
-    fPerspective = Util.getConfFileByPath("PlayerPerspective.xml");
+    fPerspective = UtilSystem.getConfFileByPath("PlayerPerspective.xml");
     if (fPerspective.exists()) {
       fPerspective.delete();
     }
-    fPerspective = Util.getConfFileByPath("HelpPerspective.xml");
+    fPerspective = UtilSystem.getConfFileByPath("HelpPerspective.xml");
     if (fPerspective.exists()) {
       fPerspective.delete();
     }
@@ -119,19 +119,19 @@ public final class UpgradeManager implements ITechnicalStrings {
     // TO DO AFTER AN UPGRADE
     if (Main.isUpgradeDetected()) {
       // - for Jajuk < 1.3: force nocover icon replacement
-      File fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/50x50/" + FILE_THUMB_NO_COVER);
+      File fThumbs = UtilSystem.getConfFileByPath(FILE_THUMBS + "/50x50/" + FILE_THUMB_NO_COVER);
       if (fThumbs.exists()) {
         fThumbs.delete();
       }
-      fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER);
+      fThumbs = UtilSystem.getConfFileByPath(FILE_THUMBS + "/100x100/" + FILE_THUMB_NO_COVER);
       if (fThumbs.exists()) {
         fThumbs.delete();
       }
-      fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER);
+      fThumbs = UtilSystem.getConfFileByPath(FILE_THUMBS + "/150x150/" + FILE_THUMB_NO_COVER);
       if (fThumbs.exists()) {
         fThumbs.delete();
       }
-      fThumbs = Util.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER);
+      fThumbs = UtilSystem.getConfFileByPath(FILE_THUMBS + "/200x200/" + FILE_THUMB_NO_COVER);
       if (fThumbs.exists()) {
         fThumbs.delete();
       }

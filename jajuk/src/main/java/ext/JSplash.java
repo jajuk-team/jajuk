@@ -44,7 +44,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 
 /**
  * A simple, yet nice splash screen implementation for java applications.
@@ -121,7 +121,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     setTitle(Messages.getString("JajukWindow.17"));
 
     // check if we can load the icon
-    URL icon = Util.getResource(JAJUK_ICON);
+    URL icon = UtilSystem.getResource(JAJUK_ICON);
     if (null == icon)
       throw new RuntimeException(
           "Resource not found in Classpath. Can not load icon from location: " + JAJUK_ICON);

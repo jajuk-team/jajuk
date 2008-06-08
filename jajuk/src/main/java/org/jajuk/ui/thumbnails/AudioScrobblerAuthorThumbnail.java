@@ -42,7 +42,9 @@ import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -86,13 +88,13 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
           fCover = DownloadManager.downloadCover(remote, Long.toString(System.currentTimeMillis()));
-          fThumb = Util.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis()
-              + "_100x100." + Util.getExtension(fCover));
+          fThumb = UtilSystem.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis()
+              + "_100x100." + UtilSystem.getExtension(fCover));
           // Create the image using Toolkit and not ImageIO API to be able to
           // flush all the image data
           ImageIcon downloadedImage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(
               fCover.getAbsolutePath()));
-          ii = Util.getScaledImage(downloadedImage, 100);
+          ii = UtilGUI.getScaledImage(downloadedImage, 100);
           // Free images memory
           downloadedImage.getImage().flush();
           ii.getImage().flush();
@@ -109,8 +111,8 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
         jlIcon.setIcon(ii);
         setLayout(new VerticalLayout(2));
         // Use a panel to allow text to be bigger than image under it
-        add(Util.getCentredPanel(jlIcon));
-        JLabel jlTitle = new JLabel(Util.getLimitedString(author.getName(), 15));
+        add(UtilGUI.getCentredPanel(jlIcon));
+        JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), 15));
         jlTitle.setToolTipText(author.getName());
         if (AlbumManager.getInstance().getAlbumByName(author.getName()) != null) {
           // Album known in collection, display its name in bold
@@ -161,8 +163,8 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
   public String getDescription() {
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
     Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
-    String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
+    String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
         + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
     // display picture
     sOut += "<img src='" + author.getImageUrl() + "'></TD>";
@@ -173,7 +175,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
       sOut += "<TD>";
       for (AudioScrobblerAlbum album : albums) {
         sOut += "<b>";
-        if (!Util.isVoid(album.getYear())) {
+        if (!UtilString.isVoid(album.getYear())) {
           sOut += album.getYear() + " ";
         }
         sOut += "<a href='file://" + XML_URL + '?' + album.getUrl() + "'>" + album.getTitle()

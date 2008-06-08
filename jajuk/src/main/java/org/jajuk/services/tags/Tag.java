@@ -27,7 +27,8 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -63,7 +64,7 @@ public class Tag implements ITechnicalStrings {
   public Tag(java.io.File fio, boolean bIgnoreErrors) throws JajukException {
     try {
       this.fio = fio;
-      Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
+      Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(fio));
       tagImpl = type.getTagImpl();
       tagImpl.setFile(fio);
       bCorrupted = false;
@@ -79,7 +80,7 @@ public class Tag implements ITechnicalStrings {
    */
   public String getTrackName() {
     // by default, track name is the file name without extension
-    String sTrackName = Util.removeExtension(fio.getName()).intern();
+    String sTrackName = UtilSystem.removeExtension(fio.getName()).intern();
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
       return sTrackName;
     }
@@ -87,7 +88,7 @@ public class Tag implements ITechnicalStrings {
     try {
       sTemp = tagImpl.getTrackName().trim().intern();
       if (!"".equals(sTemp)) {
-        sTrackName = Util.formatTag(sTemp).intern(); // remove the
+        sTrackName = UtilString.formatTag(sTemp).intern(); // remove the
         // extension
       }
     } catch (Exception e) {
@@ -128,7 +129,7 @@ public class Tag implements ITechnicalStrings {
         // unknwon album
       }
     }
-    sAlbumlName = Util.formatTag(sAlbumlName).intern();
+    sAlbumlName = UtilString.formatTag(sAlbumlName).intern();
     return sAlbumlName;
   }
 
@@ -150,7 +151,7 @@ public class Tag implements ITechnicalStrings {
         // current language
         sAuthorName = UNKNOWN_AUTHOR;
       } else if (!"".equals(sTemp)) {
-        sAuthorName = Util.formatTag(sTemp).intern();
+        sAuthorName = UtilString.formatTag(sTemp).intern();
       }
     } catch (Exception e) {
       Log.info("Wrong author name:{{" + fio.getName() + "}}");
@@ -180,7 +181,7 @@ public class Tag implements ITechnicalStrings {
         if (sTemp.equals("unknown")) {
           sTemp = style;
         }
-        style = Util.formatTag(sTemp).intern();
+        style = UtilString.formatTag(sTemp).intern();
       }
     } catch (Exception e) {
       Log.info("Wrong style name:" + fio.getName());
@@ -254,7 +255,7 @@ public class Tag implements ITechnicalStrings {
     try {
       sTemp = tagImpl.getComment().intern();
       if (sTemp != null && !sTemp.equals("")) {
-        sComment = Util.formatTag(sTemp).intern();
+        sComment = UtilString.formatTag(sTemp).intern();
       }
     } catch (Exception e) {
       Log.info("Wrong comment:{{" + fio.getName() + "}}");

@@ -384,11 +384,11 @@ public enum JajukActions {
    */
   CREATE_REPORT,
   /**
-   * Copy to clipboard data from Util.copyData
+   * Copy to clipboard data from UtilFeatures.copyData
    */
   COPY_TO_CLIPBOARD,
   /**
-   * Launch in an external browser the url given in Util.url
+   * Launch in an external browser the url given in UtilFeatures.url
    */
   LAUNCH_IN_BROWSER,
   /**

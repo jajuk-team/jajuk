@@ -27,8 +27,10 @@ import java.util.LinkedHashMap;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 
@@ -164,7 +166,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
 
   /**
    * Return String value for String type values. We assume that given property
-   * is a String. If you are not sure, use Util.parse method
+   * is a String. If you are not sure, use UtilFeatures.parse method
    */
   public String getStringValue(String sKey) {
     String out = (String) getProperties().get(sKey);
@@ -290,15 +292,15 @@ abstract public class Item implements Serializable, ITechnicalStrings {
       if (oValue != null) {
         PropertyMetaInformation meta = getMeta(sKey);
         try {
-          sValue = Util.format(oValue, meta, false);
+          sValue = UtilString.format(oValue, meta, false);
         } catch (Exception e) { // should not occur
           Log.error(e);
         }
-        sValue = Util.formatXML(sValue); // make sure to remove
+        sValue = UtilString.formatXML(sValue); // make sure to remove
         // non-XML characters
       }
       sb.append(' ');
-      sb.append(Util.formatXML(sKey));
+      sb.append(UtilString.formatXML(sKey));
       sb.append("='");
       sb.append(sValue);
       sb.append("'");
@@ -321,7 +323,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
         PropertyMetaInformation meta = getMeta(sProperty);
         try {
           if (meta != null) {
-            setProperty(sProperty, Util.parse(sValue, meta.getType()));
+            setProperty(sProperty, UtilString.parse(sValue, meta.getType()));
           }
         } catch (Exception e) {
           Log.error(137, sProperty, e);
@@ -360,7 +362,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    */
   public String getHumanValue(String sKey) {
     try {
-      return Util.format(getValue(sKey), getMeta(sKey), true);
+      return UtilString.format(getValue(sKey), getMeta(sKey), true);
     } catch (Exception e) {
       Log.error(e);
       return "";
@@ -396,4 +398,72 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * @return an icon representation for this item or null if none available
    */
   abstract public ImageIcon getIconRepresentation();
+
+  /**
+   * @return the stars icon
+   */
+  public IconLabel getStars() {
+    int starsNumber = getStarsNumber();
+    long rate = getRate();
+    IconLabel ilRate = null;
+    switch (starsNumber) {
+    case 0:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_0, "", null, null, null, Long.toString(rate));
+      break;
+    case 1:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null, null, Long.toString(rate));
+      break;
+    case 2:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null, null, Long.toString(rate));
+      break;
+    case 3:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null, null, Long.toString(rate));
+      break;
+    case 4:
+      ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null, null, Long.toString(rate));
+      break;
+    default:
+      return null;
+    }
+    ilRate.setInteger(true);
+    return ilRate;
+  }
+
+   /**
+     * @param the
+     *          rate
+     * @return Number of stars for a given item rate
+     */
+  public int getStarsNumber() {
+    long lInterval = 1;
+    if (this instanceof Track) {
+      lInterval = TrackManager.getInstance().getMaxRate();
+    } else if (this instanceof Album) {
+      lInterval = AlbumManager.getInstance().getMaxRate();
+    } else if (this instanceof Playlist) {
+      lInterval = AlbumManager.getInstance().getMaxRate();
+    }
+    lInterval = lInterval / 4;
+    long lRate = getRate();
+    if (lRate == 0) {
+      return 0;
+    } else if (lRate <= lInterval) {
+      return 1;
+    } else if (lRate <= 2 * lInterval) {
+      return 2;
+    } else if (lRate <= 3 * lInterval) {
+      return 3;
+    } else {
+      return 4;
+    }
+  }
+  
+  /**
+   * Item rate. Should be overwritten by sub classes
+   * @return item rate if item supports rating or -1 otherwise
+   */
+  public long getRate(){
+    return -1;
+  }
+
 }

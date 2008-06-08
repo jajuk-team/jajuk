@@ -45,7 +45,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -254,7 +254,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
         if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
           File file = FIFO.getInstance().getCurrentFile();
           if (file != null) {
-            setTitle(Util.buildTitle(file));
+            setTitle(UtilString.buildTitle(file));
           }
         } else if (subject.equals(JajukEvents.EVENT_ZERO)
             || subject.equals(JajukEvents.EVENT_PLAYER_STOP)) {

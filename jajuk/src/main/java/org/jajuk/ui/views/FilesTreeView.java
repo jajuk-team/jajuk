@@ -85,7 +85,9 @@ import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceDefaultTreeCellRenderer;
@@ -272,7 +274,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
           // Note: file.getName() is better here as it will do less and not
           // create java.io.File in File
-          String ext = Util.getExtension(file.getName());
+          String ext = UtilSystem.getExtension(file.getName());
           Type type = TypeManager.getInstance().getTypeByExtension(ext);
           // Find associated icon with this type
           URL icon = null;
@@ -513,7 +515,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                   return;
                 } else {
                   FIFO.getInstance().push(
-                      Util.createStackItems(Util.applyPlayOption(alToPlay), ConfigurationManager
+                      UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), ConfigurationManager
                           .getBoolean(CONF_STATE_REPEAT), true), false);
                 }
               }
@@ -829,7 +831,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // multiple selection on properties(note we handle files and dirs
     // properties later)
     if ((alFiles != null && (e.getSource() == jmiDirRefactor || e.getSource() == jmiDevOrganize))) {
-      Util.waiting();
+      UtilGUI.waiting();
       for (Item item : alSelected) {
         // Check if user made a global cancel
         if (RefactorAction.bStopAll) {
@@ -841,7 +843,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           item = ((Device) item).getRootDirectory();
         }
         final Directory dir = (Directory) item;
-        Util.waiting();
+        UtilGUI.waiting();
         new RefactorAction(dir.getFilesRecursively());
       }
     } else if (e.getSource() == jmiDevMount) {

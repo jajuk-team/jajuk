@@ -28,7 +28,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -144,7 +145,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * @return associated type
    */
   public Type getType() {
-    String extension = Util.getExtension(this.getName()); // getName() is better
+    String extension = UtilSystem.getExtension(this.getName()); // getName() is better
                                                           // here as it will do
                                                           // less and not create
                                                           // java.io.File in
@@ -308,7 +309,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
     } else if (XML_AUTHOR.equals(sKey)) {
       return getTrack().getAuthor().getName2();
     } else if (XML_TRACK_LENGTH.equals(sKey)) {
-      return Util.formatTimeBySec(getTrack().getDuration(), false);
+      return UtilString.formatTimeBySec(getTrack().getDuration());
     } else if (XML_TRACK_RATE.equals(sKey)) {
       return Long.toString(getTrack().getRate());
     } else if (XML_DEVICE.equals(sKey)) {
@@ -357,7 +358,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   @Override
   public ImageIcon getIconRepresentation() {
     ImageIcon icon = null;
-    String ext = Util.getExtension(getName()); // getName() is better here as
+    String ext = UtilSystem.getExtension(getName()); // getName() is better here as
                                                 // it will do less and not
                                                 // create java.io.File in File
     Type type = TypeManager.getInstance().getTypeByExtension(ext);

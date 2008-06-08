@@ -24,7 +24,7 @@ import java.io.File;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 
 /**
  * 
@@ -65,7 +65,7 @@ public class KnownTypeFilter extends JajukFileFilter {
     if (f.isDirectory()) {
       return (bShowDirectories);
     }
-    return TypeManager.getInstance().isExtensionSupported(Util.getExtension(f));
+    return TypeManager.getInstance().isExtensionSupported(UtilSystem.getExtension(f));
   }
 
 }

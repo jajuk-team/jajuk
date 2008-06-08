@@ -50,7 +50,7 @@ import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
@@ -84,7 +84,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   /** Model refreshing flag */
   public volatile boolean acceptColumnsEvents = false;
 
-  private static final DateFormat formatter = Util.getLocaleDateFormatter();
+  private static final DateFormat formatter = UtilString.getLocaleDateFormatter();
 
   /**
    * Constructor

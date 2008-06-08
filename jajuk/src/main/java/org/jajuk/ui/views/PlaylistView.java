@@ -82,7 +82,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
@@ -176,7 +177,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             Messages.showErrorMessage(18);
           } else {
             FIFO.getInstance().push(
-                Util.createStackItems(Util.applyPlayOption(files), ConfigurationManager
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
                     .getBoolean(ITechnicalStrings.CONF_STATE_REPEAT), true), false);
           }
         } else { // user changed of smart playlist selection
@@ -333,7 +334,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
         new PlayHighlighterPredicate(editorModel));
-    Highlighter alternate = Util.getAlternateHighlighter();
+    Highlighter alternate = UtilGUI.getAlternateHighlighter();
     editorTable.setHighlighters(alternate, colorHighlighter);
     // register events
     ObservationManager.register(this);
@@ -548,7 +549,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       setButtonState();
     }
     try {
-      editorModel.alItems = Util.createStackItems(plf.getFiles(), ConfigurationManager
+      editorModel.alItems = UtilFeatures.createStackItems(plf.getFiles(), ConfigurationManager
           .getBoolean(CONF_STATE_REPEAT), true); // PERF
       ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     } catch (JajukException je) { // don't trace because
@@ -590,7 +591,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jlTitle.setToolTipText(plf.getName());
     setButtonState();
     refreshCurrentPlaylist();
-    Util.stopWaiting(); // stop waiting
+    UtilGUI.stopWaiting(); // stop waiting
   }
 
   /**
@@ -715,7 +716,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    * @param files
    */
   public void importFiles(List<File> files) {
-    plf.addFiles(Util.applyPlayOption(files));
+    plf.addFiles(UtilFeatures.applyPlayOption(files));
     refreshCurrentPlaylist();
   }
 
@@ -905,11 +906,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                   || nbClicks == 2) {
                 // selected row in view
                 Playlist plf = (Playlist) jtable.getSelection().get(0);
-                List<File> alFiles = Util.getPlayableFiles(plf);
+                List<File> alFiles = UtilFeatures.getPlayableFiles(plf);
                 if (alFiles.size() > 0) {
                   // launch it
                   FIFO.getInstance().push(
-                      Util.createStackItems(alFiles, ConfigurationManager
+                      UtilFeatures.createStackItems(alFiles, ConfigurationManager
                           .getBoolean(CONF_STATE_REPEAT), true),
                       ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
                 } else {

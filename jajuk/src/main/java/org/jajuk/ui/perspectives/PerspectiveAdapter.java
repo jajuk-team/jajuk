@@ -44,7 +44,7 @@ import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -118,7 +118,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
     // The writeXML method must be called in the EDT to avoid freezing, it
     // requires a lock some UI components
-    File saveFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
+    File saveFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
     BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
     writeXML(out);
     out.flush();
@@ -156,12 +156,12 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   public void load() throws Exception {
 
     // Try to read XML conf file from home directory
-    File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
+    File loadFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
     // If file doesn't exist (normally only at first install), read
     // perspective conf from the jar
     URL url = loadFile.toURI().toURL();
     if (!loadFile.exists()) {
-      url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
+      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
           + ".xml");
     }
     BufferedInputStream in = new BufferedInputStream(url.openStream());
@@ -190,7 +190,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // default conf
       Log.error(e);
       Log.debug("Error parsing conf file, use defaults - " + getID());
-      url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
+      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
           + ".xml");
       in = new BufferedInputStream(url.openStream());
       ctx.readXML(in);
@@ -219,7 +219,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     try {
       // Remove current conf file to force using default file from the
       // jar
-      File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
+      File loadFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
       loadFile.delete();
       // Remove all registered dockables
       DockableState[] ds = getDockables();

@@ -26,7 +26,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Bookmark a selection
@@ -56,7 +56,7 @@ public class BookmarkSelectionAction extends SelectionAction {
   @Override
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
-    List<File> files = Util.getPlayableFiles(selection);
+    List<File> files = UtilFeatures.getPlayableFiles(selection);
     Bookmarks.getInstance().addFiles(files);
   }
 

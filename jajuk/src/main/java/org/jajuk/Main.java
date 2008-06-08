@@ -99,7 +99,10 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
@@ -269,7 +272,7 @@ public class Main implements ITechnicalStrings {
           FontManager.getInstance().setDefaultFont();
 
           // Set window look and feel and watermarks
-          Util.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+          UtilGUI.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
           SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
 
           sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
@@ -305,16 +308,16 @@ public class Main implements ITechnicalStrings {
 
       // Display user system configuration
       Log.debug("Workspace used: " + workspace);
-      Log.debug(Util.getAnonymizedSystemProperties().toString());
+      Log.debug(UtilString.getAnonymizedSystemProperties().toString());
 
       // Display user Jajuk configuration
-      Log.debug(Util.getAnonymizedJajukProperties().toString());
+      Log.debug(UtilString.getAnonymizedJajukProperties().toString());
 
       // check for another session (needs setLocal)
       checkOtherSession();
 
       // Set a session file
-      final File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/' + Util.getHostName()
+      final File sessionUser = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/' + UtilSystem.getHostName()
           + '_' + System.getProperty("user.name"));
       sessionUser.mkdir();
 
@@ -428,7 +431,7 @@ public class Main implements ITechnicalStrings {
     // Check for bootstrap file presence
     final File bootstrap = new File(FILE_BOOTSTRAP);
     // Default workspace: ~/.jajuk
-    final File fDefaultWorkspace = Util.getConfFileByPath("");
+    final File fDefaultWorkspace = UtilSystem.getConfFileByPath("");
     if (bootstrap.canRead()) {
       try {
         final BufferedReader br = new BufferedReader(new FileReader(bootstrap));
@@ -476,7 +479,7 @@ public class Main implements ITechnicalStrings {
     }
     // check for image cache presence and create the workspace/.jajuk
     // directory
-    final File fCache = Util.getConfFileByPath(FILE_CACHE);
+    final File fCache = UtilSystem.getConfFileByPath(FILE_CACHE);
     if (!fCache.exists()) {
       fCache.mkdirs();
     } else {
@@ -489,7 +492,7 @@ public class Main implements ITechnicalStrings {
 
     // checking required internal configuration files
     for (final String check : configChecks) {
-      final File file = Util.getConfFileByPath(check);
+      final File file = UtilSystem.getConfFileByPath(check);
 
       if (file.exists() == false) {
         // if config file doesn't exit, create
@@ -500,7 +503,7 @@ public class Main implements ITechnicalStrings {
 
     // checking required internal directories
     for (final String check : dirChecks) {
-      final File file = Util.getConfFileByPath(check);
+      final File file = UtilSystem.getConfFileByPath(check);
 
       if ((file.exists() == false) && (file.mkdir() == false)) {
         Log.warn("Could not create missing required directory [" + check + "]");
@@ -509,7 +512,7 @@ public class Main implements ITechnicalStrings {
 
     // Extract star icons (used by some HTML panels)
     for (int i = 1; i <= 4; i++) {
-      final File star = Util.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
+      final File star = UtilSystem.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
       if (!star.exists()) {
         ImageIcon ii = null;
         switch (i) {
@@ -528,7 +531,7 @@ public class Main implements ITechnicalStrings {
         default:
           throw new IllegalArgumentException("Unexpected code position reached, the switch values should match the for-loop!");
         }
-        Util.extractImage(ii.getImage(), star);
+        UtilGUI.extractImage(ii.getImage(), star);
       }
     }
   }
@@ -591,15 +594,15 @@ public class Main implements ITechnicalStrings {
     try {
       // test mplayer presence in PATH
       mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
-      if (Util.isUnderWindows()) {
-        final File mplayerPath = Util.getMPlayerWindowsPath();
+      if (UtilSystem.isUnderWindows()) {
+        final File mplayerPath = UtilSystem.getMPlayerWindowsPath();
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
           try {
             if (sc != null)
               sc.setProgress(5, Messages.getString("Main.22"));
             Log.debug("Download Mplayer from: " + URL_MPLAYER);
-            File fMPlayer = Util.getConfFileByPath(FILE_MPLAYER_EXE);
+            File fMPlayer = UtilSystem.getConfFileByPath(FILE_MPLAYER_EXE);
             DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
             // make sure to delete corrupted mplayer in case of
             // download problem
@@ -617,9 +620,9 @@ public class Main implements ITechnicalStrings {
       else {
         // If a forced mplayer path is defined, test it
         final String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
-        if (!Util.isVoid(forced)) {
+        if (!UtilString.isVoid(forced)) {
           // Test forced path
-          mplayerStatus = Util.getMplayerStatus(forced);
+          mplayerStatus = UtilSystem.getMplayerStatus(forced);
         } else {
           mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
         }
@@ -627,13 +630,13 @@ public class Main implements ITechnicalStrings {
           // try to find a correct mplayer from the path
           // Under OSX, it will work only if jajuk is launched from
           // command line
-          mplayerStatus = Util.getMplayerStatus("");
+          mplayerStatus = UtilSystem.getMplayerStatus("");
           if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
             // OK, try to find MPlayer in standards OSX directories
-            if (Util.isUnderOSXpower()) {
-              mplayerStatus = Util.getMplayerStatus(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
+            if (UtilSystem.isUnderOSXpower()) {
+              mplayerStatus = UtilSystem.getMplayerStatus(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
             } else {
-              mplayerStatus = Util.getMplayerStatus(FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
+              mplayerStatus = UtilSystem.getMplayerStatus(FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
             }
           }
         }
@@ -704,7 +707,7 @@ public class Main implements ITechnicalStrings {
     // Now check for remote concurrent users using the same configuration
     // files
     // Create concurrent session directory if needed
-    final File sessions = Util.getConfFileByPath(FILE_SESSIONS);
+    final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
     if (!sessions.exists()) {
       sessions.mkdir();
     }
@@ -735,16 +738,16 @@ public class Main implements ITechnicalStrings {
       Log.info("First session, collection will be created");
       return;
     }
-    final File fCollection = Util.getConfFileByPath(FILE_COLLECTION);
-    final File fCollectionExit = Util.getConfFileByPath(FILE_COLLECTION_EXIT);
-    final File fCollectionExitProof = Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
+    final File fCollection = UtilSystem.getConfFileByPath(FILE_COLLECTION);
+    final File fCollectionExit = UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT);
+    final File fCollectionExitProof = UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
     // check if previous exit was OK
     boolean bParsingOK = true;
     try {
       if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
         fCollectionExitProof.delete(); // delete this file created just
         // after collection exit commit
-        Collection.load(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
+        Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT));
         // Remove the collection (required by renameTo next line under
         // Windows)
         fCollection.delete();
@@ -754,7 +757,7 @@ public class Main implements ITechnicalStrings {
           Log.warn("Cannot rename collection file");
         }
         // backup the collection
-        Util.backupFile(Util.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
+        UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
             .getInt(CONF_BACKUP_SIZE));
       } else {
         bCrashRecover = true;
@@ -770,7 +773,7 @@ public class Main implements ITechnicalStrings {
       try {
         // try to load "official" collection file, should be OK but not
         // always up-to-date
-        Collection.load(Util.getConfFileByPath(FILE_COLLECTION));
+        Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
       } catch (final Exception e2) {
         // not better? strange...
         Log.error(5, fCollection.getAbsolutePath(), e2);
@@ -779,7 +782,7 @@ public class Main implements ITechnicalStrings {
     }
     if (!bParsingOK) { // even final collection file parsing failed
       // (very unlikely), try to restore a backup file
-      final File[] fBackups = Util.getConfFileByPath("").listFiles(new FilenameFilter() {
+      final File[] fBackups = UtilSystem.getConfFileByPath("").listFiles(new FilenameFilter() {
         public boolean accept(File dir, String name) {
           if (name.indexOf("backup") != -1) {
             return true;
@@ -814,7 +817,7 @@ public class Main implements ITechnicalStrings {
         DeviceManager.getInstance().cleanAllDevices();
         System.gc();
         try {
-          Collection.commit(Util.getConfFileByPath(FILE_COLLECTION));
+          Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
         } catch (final Exception e2) {
           Log.error(e2);
         }
@@ -898,12 +901,12 @@ public class Main implements ITechnicalStrings {
         if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
             || ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
                 STARTUP_MODE_LAST_KEEP_POS)) {
-          final File fifo = Util.getConfFileByPath(FILE_FIFO);
+          final File fifo = UtilSystem.getConfFileByPath(FILE_FIFO);
           if (!fifo.exists()) {
             Log.debug("No fifo file");
           } else {
             try {
-              final BufferedReader br = new BufferedReader(new FileReader(Util
+              final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
                   .getConfFileByPath(FILE_FIFO)));
               String s = null;
               for (; (s = br.readLine()) != null;) {
@@ -936,7 +939,7 @@ public class Main implements ITechnicalStrings {
       // launch selected file
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
         FIFO.getInstance().push(
-            Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+            UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
                 false), false);
       }
     }
@@ -1026,7 +1029,7 @@ public class Main implements ITechnicalStrings {
           JajukWindow.getInstance().setVisible(true);
 
           // Apply watermark
-          Util.setWatermark(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
+          UtilGUI.setWatermark(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
 
           // Apply size and location again
           // (required by Gnome for ie to fix the 0-sized maximized
@@ -1162,7 +1165,7 @@ public class Main implements ITechnicalStrings {
           }
         }
         // Check for ../Music file presence
-        String music = new File(Util.getJarLocation(Main.class).toURI()).getParentFile()
+        String music = new File(UtilSystem.getJarLocation(Main.class).toURI()).getParentFile()
             .getParentFile().getAbsolutePath();
         music += '/' + FREE_MUSIC_DIR;
         File fMusic = new File(music);

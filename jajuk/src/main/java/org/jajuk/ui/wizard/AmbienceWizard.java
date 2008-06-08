@@ -56,7 +56,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -363,7 +363,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
   }
 
   public AmbienceWizard() {
-    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, Util
+    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, UtilGUI
         .getImage(ITechnicalStrings.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages
         .getLocale()), 700, 600);
   }

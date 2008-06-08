@@ -38,7 +38,6 @@ import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
 
 /**
  * Table model used for logical table view
@@ -226,8 +225,7 @@ public class TracksTableModel extends JajukTableModel {
 
         // Rate
         if (bRate) {
-          IconLabel ilRate = Util.getStars(track);
-          ilRate.setInteger(true);
+          IconLabel ilRate = track.getStars();
           oValues[iRow][5] = ilRate;
         } else {
           oValues[iRow][5] = "";

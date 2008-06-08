@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -92,8 +92,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         String sHost = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME).trim();
         int port = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
         // Non anonymous proxy
-        if (!Util.isVoid(sLogin)) {
-          String sPwd = Util.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD));
+        if (!UtilString.isVoid(sLogin)) {
+          String sPwd = UtilString.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD));
           String sProxyConf = "http://" + sLogin + ':' + sPwd + '@' + sHost + ':' + port;
           env.put("http_proxy", sProxyConf);
           Log.debug("Using these proxy settings: " + sProxyConf);

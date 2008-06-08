@@ -17,39 +17,34 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.ui.helpers;
+package org.jajuk.services.cddb;
 
-import org.jajuk.util.UtilString;
+import entagged.freedb.FreedbTrack;
+
+import org.jajuk.base.Track;
 
 /**
- * A duration encapsulates a track or album length in secs, it is mainly used in
- * tables to ease the cell renderers recognition
+ * A CDDB track
  */
-public class Duration implements Comparable<Duration> {
-  private long duration;
+public class CDDBTrack implements FreedbTrack {
 
-  /**
-   * 
-   * @param duration
-   *          item duration in secs
-   */
-  public Duration(long duration) {
-    this.duration = duration;
-  }
+    Track track;
 
-  /**
-   * Return a string representation of this duration with zero paddings
-   */
-  @Override
-  public String toString() {
-    return UtilString.formatTimeBySec(duration);
-  }
+    public CDDBTrack(Track track) {
+      this.track = track;
+    }
 
-  public int compareTo(Duration other) {
-    return (int) (duration - other.getDuration());
-  }
+    public int getLength() {
+      return (int) track.getDuration();
 
-  public long getDuration() {
-    return this.duration;
+    }
+
+    public float getPreciseLength() {
+      return track.getDuration();
+    }
+    
+    public Track getTrack(){
+      return track;
+    }
+
   }
-}

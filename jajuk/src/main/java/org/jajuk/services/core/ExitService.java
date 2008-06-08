@@ -32,7 +32,7 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -76,16 +76,16 @@ public class ExitService extends Thread implements ITechnicalStrings {
         History.commit();
         // Commit collection if not refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Collection.commit(Util.getConfFileByPath(FILE_COLLECTION_EXIT));
+          Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT));
           // create a proof file
-          Util.createEmptyFile(Util.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
+          UtilSystem.createEmptyFile(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
         }
         /* release keystrokes resources */
         ActionBase.cleanup();
 
         // Remove localhost_<user> session files
         // (can occur when network is not available)
-        File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + "/localhost" + '_'
+        File sessionUser = UtilSystem.getConfFileByPath(FILE_SESSIONS + "/localhost" + '_'
             + System.getProperty("user.name"));
         if(!sessionUser.delete())
           Log.warn("Could not delete file: " + sessionUser.toString());
@@ -94,7 +94,7 @@ public class ExitService extends Thread implements ITechnicalStrings {
         // thrown here if loopback interface is not
         // correctly set up, so should be the last
         // thing to do
-        sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
+        sessionUser = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/'
             + InetAddress.getLocalHost().getHostName() + '_' + System.getProperty("user.name"));
         if(!sessionUser.delete())
           Log.warn("Could not delete file: " + sessionUser.toString());

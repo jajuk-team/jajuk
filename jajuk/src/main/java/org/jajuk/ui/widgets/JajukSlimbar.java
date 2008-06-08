@@ -48,6 +48,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -81,7 +82,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -322,14 +323,12 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     sbSearch.setMaximumSize(new Dimension(22, 18));
     sbSearch.addMouseMotionListener(motionAdapter);
 
-    JToolBar jtbText = new JToolBar();
-    jtbText.setBorder(null);
-
     slimJajuk = new JToolBar();
     slimJajuk.setBorder(null);
     slimJajuk.setFloatable(false);
     slimJajuk.setRollover(true);
 
+    slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(sbSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
@@ -337,9 +336,10 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     slimJajuk.add(jtbPlay);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbTools);
+    slimJajuk.add(Box.createHorizontalStrut(2));
 
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
-
+    
     getRootPane().setToolTipText(getPlayerInfo());
 
     add(slimJajuk);
@@ -397,7 +397,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       title = FIFO.getInstance().getCurrentRadio().getName();
       rating = Messages.getString("IncRateAction.0");
     } else if (file != null && !FIFO.isStopped()) {
-      title = Util.buildTitle(FIFO.getInstance().getCurrentFile());
+      title = UtilString.buildTitle(FIFO.getInstance().getCurrentFile());
       rating = Long.toString(FIFO.getInstance().getCurrentFile().getTrack().getRate());
     } else {
       title = Messages.getString("JajukWindow.18");
@@ -421,13 +421,13 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
    */
   public String getPlayerInfo() {
     try {
-      String currentTrack = Util.buildTitle(FIFO.getInstance().getCurrentFile());
+      String currentTrack = UtilString.buildTitle(FIFO.getInstance().getCurrentFile());
       String nextTrack = "";
       try {
-        nextTrack = Util.buildTitle(FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1)
+        nextTrack = UtilString.buildTitle(FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1)
             .getFile());
       } catch (Exception e) {
-        nextTrack = Util.buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
+        nextTrack = UtilString.buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
       }
       return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
     } catch (Exception e) {

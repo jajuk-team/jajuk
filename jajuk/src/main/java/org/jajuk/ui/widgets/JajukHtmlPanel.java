@@ -36,7 +36,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.w3c.dom.Document;
 import org.xamjwg.html.HtmlParserContext;
 import org.xamjwg.html.gui.HtmlPanel;
@@ -74,9 +75,9 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
    * Display a wikipedia url
    */
   public void setURL(URL url) throws Exception {
-    setCursor(Util.WAIT_CURSOR);
-    File page = new File(Util.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
-        + Util.getOnlyFile(url.toString() + ".html"));
+    setCursor(UtilGUI.WAIT_CURSOR);
+    File page = new File(UtilSystem.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
+        + UtilSystem.getOnlyFile(url.toString() + ".html"));
     String sPage = DownloadManager.downloadHtml(url);
     // Remove scripting
     int index = -1;
@@ -102,7 +103,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
     // Set current url as a tooltip
     setToolTipText(url.toString());
     // Disable waiting cursor
-    setCursor(Util.DEFAULT_CURSOR);
+    setCursor(UtilGUI.DEFAULT_CURSOR);
   }
 
   /**
@@ -111,7 +112,7 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
    * @throws Exception
    */
   public void setUnknow() throws Exception {
-    File page = new File(Util.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
+    File page = new File(UtilSystem.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
         + "noresult.html");
     String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
         + "</h1></body></html>";

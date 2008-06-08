@@ -153,4 +153,6 @@ public enum JajukEvents {
   EVENT_LYRICS_DOWNLOADED,
   // A file has been copied (used by prepare party)
   EVENT_FILE_COPIED,
+  // Covers should be refreshed
+  EVENT_COVER_NEED_REFRESH,
 }

@@ -83,7 +83,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Filter;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Catalog view. Displays all default covers by album
@@ -446,7 +446,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jbPrev.setEnabled(false);
     jbNext.setEnabled(false);
     jcbPage.setEnabled(false);
-    Util.waiting();
+    UtilGUI.waiting();
     SwingWorker sw = new SwingWorker() {
       int i;
 
@@ -707,7 +707,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         jbNext.setEnabled(true);
         jcbPage.setEnabled(true);
         bPopulating = false;
-        Util.stopWaiting();
+        UtilGUI.stopWaiting();
       }
     };
     sw.start();
@@ -784,7 +784,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200x200);
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250x250);
       ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300x300);
-      Util.waiting();
+      UtilGUI.waiting();
       SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {
@@ -797,7 +797,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         public void finished() {
           // display thumbs
           populateCatalog();
-          Util.stopWaiting();
+          UtilGUI.stopWaiting();
         }
       };
       sw.start();

@@ -43,7 +43,9 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -87,13 +89,13 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           // Download image and store file reference (to generate the
           // popup thumb for ie)
           fCover = DownloadManager.downloadCover(remote, Long.toString(System.currentTimeMillis()));
-          fThumb = Util.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis() + '.'
-              + Util.getExtension(fCover));
+          fThumb = UtilSystem.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis() + '.'
+              + UtilSystem.getExtension(fCover));
           // Create the image using Toolkit and not ImageIO API to be able to
           // flush all the image data
           ImageIcon downloadedImage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(
               fCover.getAbsolutePath()));
-          ii = Util.getScaledImage(downloadedImage, 100);
+          ii = UtilGUI.getScaledImage(downloadedImage, 100);
           // Free images memory
           downloadedImage.getImage().flush();
           ii.getImage().flush();
@@ -110,15 +112,15 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         jlIcon.setIcon(ii);
         setLayout(new VerticalLayout(2));
         // Use a panel to allow text to be bigger than image under it
-        add(Util.getCentredPanel(jlIcon));
+        add(UtilGUI.getCentredPanel(jlIcon));
         JLabel jlTitle;
         if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
           // Album known in collection, display its name in bold
-          jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15), IconLoader.ICON_ALBUM,
+          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader.ICON_ALBUM,
               JLabel.CENTER);
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         } else {
-          jlTitle = new JLabel(Util.getLimitedString(album.getTitle(), 15));
+          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15));
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
         }
         jlTitle.setToolTipText(album.getTitle());
@@ -174,8 +176,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
     }
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
     Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
-    String sOut = "<html bgcolor='#" + Util.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + Util.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
+    String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
         + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
     // display cover
     sOut += "<img src='" + album.getCoverURL() + "'><br>";
@@ -185,7 +187,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
     // Display year if available
     String year = album.getYear();
-    if (!Util.isVoid(year)) {
+    if (!UtilString.isVoid(year)) {
       sOut += "<br>" + Messages.getString("Property_year") + " : " + year;
     }
     sOut += "</TD><TD>";

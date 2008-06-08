@@ -34,7 +34,8 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -119,7 +120,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       // test if this is a audio format supporting seeking
       // Note: fio.getName() is better here as it will do less and not create
       // java.io.File in File
-      if (TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getName()))
+      if (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
           .getBooleanValue(XML_TYPE_SEEK_SUPPORTED)) {
         seek(fPosition);
       }
@@ -248,7 +249,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
   @SuppressWarnings("unchecked")
   public void opened(Object arg0, Map arg1) {
     this.mPlayingData = arg1;
-    this.lDuration = Util.getTimeLengthEstimation(mPlayingData);
+    this.lDuration = UtilFeatures.getTimeLengthEstimation(mPlayingData);
   }
 
   /**
@@ -298,7 +299,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       if (iFadeDuration > 0 && lTime > (lDuration - iFadeDuration)) {
         // if memory is low, we force full gc to avoid blanck during
         // fade
-        if (Util.needFullFC()) {
+        if (UtilSystem.needFullFC()) {
           Log.debug("Need full gc, no cross fade");
         }
         // Ugly hack to disable cross fade for APE files due to an

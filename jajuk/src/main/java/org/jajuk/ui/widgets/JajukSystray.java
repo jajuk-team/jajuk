@@ -73,7 +73,8 @@ import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -264,7 +265,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(new JMenuItem(" "));
 
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
-    if (Util.isUnderWindows()) {
+    if (UtilSystem.isUnderWindows()) {
       // auto-resize looks OK under Windows but is ugly under Linux/KDE
       trayIcon.setImageAutoSize(true);
     }
@@ -556,7 +557,7 @@ public class JajukSystray extends CommandJPanel {
       int maxSize = 30;
       ThumbnailManager.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(),
           size);
-      java.io.File cover = Util.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+      java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
           + FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
       if (cover.canRead()) {
         sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
@@ -573,12 +574,12 @@ public class JajukSystray extends CommandJPanel {
       // only one to be correctly displayed
       // in a dark and a light background at the same time
       sOut += "<p><font color='#484848'><b>"
-          + Util.getLimitedString(file.getTrack().getName(), maxSize) + "</b></font></p>";
-      String sAuthor = Util.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
+          + UtilString.getLimitedString(file.getTrack().getName(), maxSize) + "</b></font></p>";
+      String sAuthor = UtilString.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
       if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
         sOut += "<p><font color='#484848'>" + sAuthor + "</font></p>";
       }
-      String sAlbum = Util.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
+      String sAlbum = UtilString.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
       if (!sAlbum.equals(UNKNOWN_ALBUM)) {
         sOut += "<p><font color='#484848'>" + sAlbum + "</font></p>";
       }
