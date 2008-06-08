@@ -35,6 +35,7 @@ public class IntroModeAction extends ActionBase {
     setShortDescription(Messages.getString("CommandJPanel.4"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO));
     ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));

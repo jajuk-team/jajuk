@@ -37,6 +37,7 @@ public class ConfigurationRequiredAction extends ActionBase {
     super(Messages.getString("JajukJMenuBar.22"), IconLoader.ICON_CONFIGURATION, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     PerspectiveManager.setCurrentPerspective(ConfigurationPerspective.class.getName());
   }

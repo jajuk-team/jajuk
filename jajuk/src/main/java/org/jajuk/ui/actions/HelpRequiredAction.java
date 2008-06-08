@@ -36,6 +36,7 @@ public class HelpRequiredAction extends ActionBase {
     super(Messages.getString("JajukJMenuBar.15"), IconLoader.ICON_INFO, "F1", true, false);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     new HelpWindow();
   }

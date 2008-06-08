@@ -55,6 +55,7 @@ public class AlarmClockAction extends ActionBase {
     setShortDescription(Messages.getString("AlarmClock.0"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     AlarmClockDialog acDialog = new AlarmClockDialog();
     if (!acDialog.getChoice())

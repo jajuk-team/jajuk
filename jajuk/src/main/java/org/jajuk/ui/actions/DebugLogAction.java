@@ -49,6 +49,7 @@ public class DebugLogAction extends ActionBase {
     setShortDescription(Messages.getString("JajukJMenuBar.23"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     final JEditorPane text = new JEditorPane("text/html", getTraces());
     text.setEditable(false);

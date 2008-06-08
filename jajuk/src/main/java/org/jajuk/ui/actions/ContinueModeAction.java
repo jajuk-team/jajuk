@@ -45,6 +45,7 @@ public class ContinueModeAction extends ActionBase {
     setShortDescription(Messages.getString("CommandJPanel.3"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
     ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));

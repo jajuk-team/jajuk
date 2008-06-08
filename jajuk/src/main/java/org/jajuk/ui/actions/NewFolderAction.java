@@ -43,6 +43,7 @@ public class NewFolderAction extends ActionBase {
     setShortDescription(Messages.getString("NewFolderAction.0"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();

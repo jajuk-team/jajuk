@@ -35,6 +35,7 @@ public class CheckForUpdateAction extends ActionBase {
     setShortDescription(Messages.getString("JajukJMenuBar.27"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     String newRelease = UpgradeManager.getNewVersionName();
     if (newRelease != null) {

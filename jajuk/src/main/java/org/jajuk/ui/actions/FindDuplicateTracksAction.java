@@ -49,6 +49,7 @@ public class FindDuplicateTracksAction extends ActionBase {
     setShortDescription(Messages.getString("FindDuplicateTracksAction.2"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws Exception {
     List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
     for (Track track : TrackManager.getInstance().getTracks()) {

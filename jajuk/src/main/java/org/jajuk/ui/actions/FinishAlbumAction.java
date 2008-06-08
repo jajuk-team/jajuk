@@ -42,6 +42,7 @@ public class FinishAlbumAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.32"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     StackItem item = FIFO.getInstance().getCurrentItem();// stores
     // current item

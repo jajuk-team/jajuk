@@ -42,11 +42,13 @@ public class DJAction extends ActionBase {
     super(Messages.getString("CommandJPanel.16"), IconLoader.ICON_DIGITAL_DJ, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     if (StyleManager.getInstance().getStyles().size() == 0) {
       Messages.showErrorMessage(156); // void collection error
     } else {
       new Thread() {
+        @Override
         public void run() {
           DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
               ConfigurationManager.getProperty(CONF_DEFAULT_DJ));

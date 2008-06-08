@@ -50,8 +50,10 @@ public class GlobalRandomAction extends ActionBase {
     setShortDescription(sTooltip);
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread() {
+      @Override
       public void run() {
         Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
         List<File> alToPlay = Util.filterByAmbience(FileManager.getInstance()
@@ -59,7 +61,7 @@ public class GlobalRandomAction extends ActionBase {
         // For perfs (mainly playlist editor view refresh), we set a ceil for
         // tracks number
         if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
-          alToPlay = (List<File>) alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+          alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
         }
         // Push them
         FIFO.getInstance().push(

@@ -42,6 +42,7 @@ public class SlimbarAction extends ActionBase {
     setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws Exception {
     JajukSlimbar slimbar = JajukSlimbar.getInstance();
     // If slimbar is visible, hide it and show the main window

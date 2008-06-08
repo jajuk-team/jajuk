@@ -36,6 +36,7 @@ public class AmbienceConfigurationAction extends ActionBase {
     super(Messages.getString("CommandJPanel.19"), IconLoader.ICON_STYLE, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     AmbienceWizard ambience = new AmbienceWizard(); // display the ambience
     // wizard

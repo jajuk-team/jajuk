@@ -45,6 +45,7 @@ public class IncRateAction extends ActionBase {
     setShortDescription(Messages.getString("IncRateAction.0"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     File file = FIFO.getInstance().getCurrentFile();
     if (file != null) {

@@ -45,6 +45,7 @@ public class ExitAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.21"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     // Ask if a confirmation is required
     if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT)) {

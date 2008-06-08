@@ -39,6 +39,7 @@ public class DJConfigurationAction extends ActionBase {
     super(Messages.getString("CommandJPanel.17"), IconLoader.ICON_CONFIGURATION, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     DigitalDJWizard wizard = new DigitalDJWizard(); // display the DJ wizard
     wizard.show();

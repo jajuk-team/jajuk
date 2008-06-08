@@ -45,6 +45,7 @@ public class LaunchInBrowserAction extends ActionBase {
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     try {
       JComponent source = (JComponent) evt.getSource();

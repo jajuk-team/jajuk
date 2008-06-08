@@ -42,6 +42,7 @@ public class SimpleDeviceWizardAction extends ActionBase {
    * 
    * @param evt
    */
+  @Override
   public void perform(ActionEvent evt) {
     SimpleDeviceWizard wizard = new SimpleDeviceWizard();
     wizard.pack();

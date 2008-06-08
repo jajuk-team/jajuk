@@ -44,6 +44,7 @@ public class ShuffleModeAction extends ActionBase {
    * 
    * @param evt
    */
+  @Override
   public void perform(ActionEvent evt) {
     boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
     ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));

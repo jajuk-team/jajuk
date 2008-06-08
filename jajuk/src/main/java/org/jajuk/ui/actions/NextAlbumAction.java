@@ -39,8 +39,10 @@ public class NextAlbumAction extends ActionBase {
     super("next album", "shift F10", false, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     new Thread() {
+      @Override
       public void run() {
         // Take FIFO lock
         synchronized (FIFO.MUTEX) {

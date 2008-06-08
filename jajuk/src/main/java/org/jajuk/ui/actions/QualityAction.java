@@ -47,6 +47,7 @@ public class QualityAction extends ActionBase {
    * 
    * @param evt
    */
+  @Override
   public void perform(ActionEvent evt) {
     String sBody = "";
     sBody += "Version: " + JAJUK_VERSION + '\n';

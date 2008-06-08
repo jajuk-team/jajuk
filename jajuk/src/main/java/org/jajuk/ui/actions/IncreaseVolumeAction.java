@@ -35,6 +35,7 @@ public class IncreaseVolumeAction extends ActionBase {
     super("increase volume", "ctrl UP", true, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     float old = Player.getCurrentVolume();
     float newVolume = old + 0.05f;

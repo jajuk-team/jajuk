@@ -54,6 +54,7 @@ public class PasteAction extends ActionBase {
     setShortDescription(Messages.getString("ActionMove.0"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
@@ -65,6 +66,7 @@ public class PasteAction extends ActionBase {
     final ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
 
     new Thread() {
+      @Override
       public void run() {
         Util.waiting();
         for (Item item : moveItems) {

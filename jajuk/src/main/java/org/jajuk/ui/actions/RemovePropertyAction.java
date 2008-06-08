@@ -35,6 +35,7 @@ public class RemovePropertyAction extends ActionBase {
     setShortDescription(Messages.getString("JajukJMenuBar.7"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     RemovePropertyWizard rpw = new RemovePropertyWizard();
     rpw.pack();

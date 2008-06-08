@@ -35,6 +35,7 @@ public class PlayPauseAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.26"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     if (FIFO.isStopped()) {
       FIFO.getInstance().goTo(0);

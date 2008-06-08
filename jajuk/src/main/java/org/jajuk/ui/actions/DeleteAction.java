@@ -57,6 +57,7 @@ public class DeleteAction extends ActionBase {
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
@@ -113,6 +114,7 @@ public class DeleteAction extends ActionBase {
       }
 
       new Thread() {
+        @Override
         public void run() {
           Util.waiting();
           for (File f : alFiles) {
@@ -192,6 +194,7 @@ public class DeleteAction extends ActionBase {
         }
       }
       new Thread() {
+        @Override
         public void run() {
           Util.waiting();
           for (Directory d : alDirs) {

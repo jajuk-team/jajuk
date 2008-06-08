@@ -42,6 +42,7 @@ public class CutAction extends ActionBase {
     setShortDescription(Messages.getString("FilesTreeView.4"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();

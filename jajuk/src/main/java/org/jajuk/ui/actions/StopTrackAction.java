@@ -33,6 +33,7 @@ public class StopTrackAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.27"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     FIFO.getInstance().stopRequest();
   }

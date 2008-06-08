@@ -34,6 +34,7 @@ public class DecreaseVolumeAction extends ActionBase {
     super("decrease volume", "ctrl DOWN", true, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     float old = Player.getCurrentVolume();
     float newVolume = old - 0.05f;

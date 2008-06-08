@@ -36,6 +36,7 @@ public class NewPropertyAction extends ActionBase {
     setShortDescription(Messages.getString("JajukJMenuBar.6"));
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     NewPropertyWizard npw = new NewPropertyWizard();
     npw.pack();

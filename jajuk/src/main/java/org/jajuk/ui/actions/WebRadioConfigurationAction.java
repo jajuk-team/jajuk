@@ -39,6 +39,7 @@ public class WebRadioConfigurationAction extends ActionBase {
     super(Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     // display the wizard
     WebRadioWizard wizard = new WebRadioWizard();

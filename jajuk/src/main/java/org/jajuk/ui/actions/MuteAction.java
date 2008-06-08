@@ -40,6 +40,7 @@ public class MuteAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.19"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     Player.mute();
     SwingUtilities.invokeLater(new Runnable() {

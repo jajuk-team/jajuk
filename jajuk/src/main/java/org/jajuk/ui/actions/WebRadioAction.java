@@ -39,8 +39,10 @@ public class WebRadioAction extends ActionBase {
     setShortDescription(WebRadioManager.getCurrentWebRadioTooltip());
   }
 
+  @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread() {
+      @Override
       public void run() {
         WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
             ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));

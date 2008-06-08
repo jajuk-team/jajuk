@@ -41,6 +41,7 @@ public class TipOfTheDayAction extends ActionBase {
    * 
    * @param evt
    */
+  @Override
   public void perform(ActionEvent evt) {
     TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
     tipsView.setLocationByPlatform(true);

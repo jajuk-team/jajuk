@@ -44,8 +44,10 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
     setShortDescription(Messages.getString("JajukJMenuBar.26"));
   }
 
+  @Override
   public void perform(final ActionEvent e) throws JajukException {
     new Thread() {
+      @Override
       public void run() {
         // display a confirmation message
         int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
@@ -64,6 +66,7 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
         fullRestore = true;
         // Exit Jajuk
         new Thread() {
+          @Override
           public void run() {
             ExitService.exit(0);
           }

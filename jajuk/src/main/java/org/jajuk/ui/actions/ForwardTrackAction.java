@@ -40,6 +40,7 @@ public class ForwardTrackAction extends ActionBase {
     setShortDescription(Messages.getString("CommandJPanel.13"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     float fCurrentPosition = Player.getCurrentPosition();
     Player.seek(fCurrentPosition + JUMP_SIZE);

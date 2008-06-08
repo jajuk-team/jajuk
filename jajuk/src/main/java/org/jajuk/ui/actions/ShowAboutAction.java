@@ -40,6 +40,7 @@ public class ShowAboutAction extends ActionBase {
   /**
    * Invoked when an action occurs.
    */
+  @Override
   public void perform(ActionEvent evt) {
     new AboutWindow();
   }

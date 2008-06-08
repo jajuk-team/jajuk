@@ -42,6 +42,7 @@ public class CopyAction extends ActionBase {
     setShortDescription(Messages.getString("FilesTreeView.3"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();

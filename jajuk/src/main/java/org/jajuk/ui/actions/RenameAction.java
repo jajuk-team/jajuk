@@ -46,6 +46,7 @@ public class RenameAction extends ActionBase {
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
@@ -53,6 +54,7 @@ public class RenameAction extends ActionBase {
     final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
     new Thread() {
+      @Override
       public void run() {
         if (currentItem instanceof File) {
           String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")

@@ -37,8 +37,10 @@ public class RestoreViewsAction extends ActionBase implements ITechnicalStrings 
     setShortDescription(Messages.getString("JajukJMenuBar.17"));
   }
 
+  @Override
   public void perform(final ActionEvent e) throws JajukException {
     new Thread() {
+      @Override
       public void run() {
         IPerspective perspective = PerspectiveManager.getCurrentPerspective();
         // Restore local or global views

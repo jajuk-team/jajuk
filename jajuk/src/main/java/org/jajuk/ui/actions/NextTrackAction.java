@@ -45,6 +45,7 @@ public class NextTrackAction extends ActionBase {
     setShortDescription(Messages.getString("JajukWindow.30"));
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     // check modifiers to see if it is a movement inside track, between
     // tracks or between albums
@@ -65,6 +66,7 @@ public class NextTrackAction extends ActionBase {
         }
         final int i = index;
         new Thread() {
+          @Override
           public void run() {
             FIFO.getInstance().launchRadio(radios.get(i));
           }
@@ -73,6 +75,7 @@ public class NextTrackAction extends ActionBase {
       } else {
         // Playing a track
         new Thread() {
+          @Override
           public void run() {
             synchronized (FIFO.MUTEX) {
               try {

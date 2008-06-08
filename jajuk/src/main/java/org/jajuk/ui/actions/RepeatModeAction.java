@@ -45,6 +45,7 @@ public class RepeatModeAction extends ActionBase {
    * 
    * @param evt
    */
+  @Override
   public void perform(ActionEvent evt) {
 
     boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);

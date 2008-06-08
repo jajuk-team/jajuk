@@ -47,6 +47,7 @@ public class RefreshDirectoryAction extends ActionBase {
     setShortDescription(Messages.getString("ActionRefresh.0"));
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
@@ -60,6 +61,7 @@ public class RefreshDirectoryAction extends ActionBase {
       dir = ((File) item).getDirectory();
     }
     new Thread() {
+      @Override
       public void run() {
         Util.waiting();
         InformationJPanel.getInstance().setMessage(

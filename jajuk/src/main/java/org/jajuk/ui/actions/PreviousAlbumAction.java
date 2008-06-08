@@ -40,8 +40,10 @@ public class PreviousAlbumAction extends ActionBase {
     super("previous album", "shift F9", false, true);
   }
 
+  @Override
   public void perform(ActionEvent evt) {
     new Thread() {
+      @Override
       public void run() {
         synchronized (FIFO.MUTEX) {
           try {
