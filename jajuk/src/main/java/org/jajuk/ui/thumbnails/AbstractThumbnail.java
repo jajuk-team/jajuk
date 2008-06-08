@@ -174,6 +174,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     // Display popup out of dispatcher thread as it takes too mush time to
     // execute and we don't risk display concurrency in this popup
     new Thread() {
+      @Override
       public void run() {
         // close popup if any visible
         if (details != null) {
@@ -248,6 +249,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmenu.add(jmiProperties);
 
     jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
+      @Override
       public void mouseDragged(MouseEvent e) {
         // Notify the mouse listener that we are dragging
         bDragging = true;
@@ -266,6 +268,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     });
 
     jlIcon.addMouseListener(new MouseAdapter() {
+      @Override
       public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
@@ -288,10 +291,12 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
         }
       }
 
+      @Override
       public void mouseEntered(MouseEvent e) {
         mouseOverItem = AbstractThumbnail.this;
       }
 
+      @Override
       public void mouseExited(MouseEvent e) {
         // Consider an exit only if mouse really moved to avoid
         // closing popup when popup appears over the mouse cursor
@@ -303,6 +308,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
         }
       }
 
+      @Override
       public void mouseReleased(MouseEvent e) {
         // Leave if already dragging
         if (bDragging) {
@@ -376,6 +382,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     if (e.getSource() == jmiGetCovers) {
       // This item is enabled only for albums
       new Thread() {
+        @Override
         public void run() {
           JDialog jd = new JDialog(JajukWindow.getInstance(), Messages.getString("CatalogView.18"));
           org.jajuk.base.File file = null;

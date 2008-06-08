@@ -196,6 +196,7 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
    * Allow closing the window when pressing escape key Thanks
    * http://www.javaworld.com/javaworld/javatips/javatip72/EscapeDialog.java
    */
+  @Override
   protected JRootPane createRootPane() {
     ActionListener actionListener = new ActionListener() {
       public void actionPerformed(ActionEvent actionEvent) {

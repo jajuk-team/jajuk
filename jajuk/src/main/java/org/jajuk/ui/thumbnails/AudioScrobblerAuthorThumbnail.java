@@ -70,6 +70,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
     this.author = author;
   }
 
+  @Override
   public void populate() throws Exception {
     jlIcon = new JLabel();
 

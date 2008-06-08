@@ -184,6 +184,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
   /**
    * @see Exporter.processColllection
    */
+  @Override
   public void processCollection(int type) throws Exception {
     // If we are tagging the physical collection...
     if (type == XMLExporter.PHYSICAL_COLLECTION) {

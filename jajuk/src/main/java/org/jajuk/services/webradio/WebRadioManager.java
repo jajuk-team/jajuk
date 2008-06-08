@@ -77,6 +77,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
       // download the stream list and load it asynchronously to avoid
       // freezing unconnected people
       new Thread() {
+        @Override
         public void run() {
           downloadRepository();
         }
@@ -185,6 +186,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
   /**
    * Called when we start an element
    */
+  @Override
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
       throws SAXException {
 
@@ -208,6 +210,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     }
   }
 
+  @Override
   public void characters(char[] ch, int start, int length) throws SAXException {
     String s  = new String(ch, start, length);
     if (buffer != null)
@@ -218,6 +221,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    * End element in order to read from aTunes radio list
    * 
    */
+  @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
     if (XML_RADIO.equals(qName)) {
       // End of radio element, add to list

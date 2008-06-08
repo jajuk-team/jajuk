@@ -48,6 +48,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
   /**
    * @see Exporter.processColllection
    */
+  @Override
   public void processCollection(int type) throws Exception {
     // Get an instance of the XMLExporter.
     XMLExporter xmlExporter = (XMLExporter) ExporterFactory.createExporter("xml");
@@ -92,6 +93,7 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
     }
   }
 
+  @Override
   public void saveToFile(String sPath) throws Exception {
     super.saveToFile(sPath);
     // Copy CSS files

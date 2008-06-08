@@ -90,6 +90,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
         + album.getID() + '.' + EXT_THUMB);
   }
 
+  @Override
   public void populate() {
     // create the thumbnail if it doesn't exist
     ThumbnailManager.refreshThumbnail(album, size + "x" + size);

@@ -71,6 +71,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
     this.album = album;
   }
 
+  @Override
   public void populate() throws Exception {
     jlIcon = new JLabel();
 
