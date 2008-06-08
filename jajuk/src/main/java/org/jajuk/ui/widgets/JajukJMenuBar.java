@@ -44,7 +44,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -174,7 +173,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
   JButton jbSlim;
 
   /** Hashmap JCheckBoxMenuItem -> associated view */
-  public HashMap hmCheckboxView = new HashMap(10);
+  //public HashMap hmCheckboxView = new HashMap(10);
 
   private JajukJMenuBar() {
     setOpaque(true);
@@ -203,7 +202,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, MouseM
     views.addSeparator();
     // Add the list of available views parsed in XML files at startup
     JMenu jmViews = new JMenu(Messages.getString("JajukJMenuBar.25"));
-    for (final Class view : ViewFactory.getKnownViews()) {
+    for (final Class<?> view : ViewFactory.getKnownViews()) {
       JMenuItem jmi = null;
       try {
         jmi = new JMenuItem(((IView) view.newInstance()).getDesc(), IconLoader.ICON_LOGO_FRAME);

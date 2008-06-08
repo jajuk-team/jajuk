@@ -38,7 +38,7 @@ public class NoTagsTagImpl implements ITagImpl {
   File fio;
 
   /** Current file data */
-  Map mapInfo;
+  Map<String,Object> mapInfo;
 
   /*
    * (non-Javadoc)
@@ -89,12 +89,14 @@ public class NoTagsTagImpl implements ITagImpl {
     // we have to open the file to get length
     BasicPlayer player = new BasicPlayer();
     player.addBasicPlayerListener(new BasicPlayerListener() {
+      @SuppressWarnings("unchecked")
       public void opened(Object arg0, Map mProperties) {
         NoTagsTagImpl.this.mapInfo = mProperties;
       }
 
+      @SuppressWarnings("unchecked")
       public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
-          java.util.Map mProperties) {
+          Map mProperties) {
       }
 
       public void stateUpdated(BasicPlayerEvent bpe) {

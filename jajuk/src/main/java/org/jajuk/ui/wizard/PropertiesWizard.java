@@ -616,7 +616,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
       // Add widgets
       int i = 0;
       int j = 4;
-      for (PropertyMetaInformation meta : alToDisplay) {
+      //for (PropertyMetaInformation meta : alToDisplay) {
+      for(int k = 0;k < alToDisplay.size();k++) {
         builder.add(widgets[i][0], cc.xy(2, j));
         builder.add(widgets[i][1], cc.xy(4, j));
         if (widgets[i][2] != null) { // link widget can be null

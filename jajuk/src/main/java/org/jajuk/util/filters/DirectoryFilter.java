@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
 public class DirectoryFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static DirectoryFilter self = null;
+  private static DirectoryFilter self = null;
 
   /**
    * 

@@ -31,7 +31,6 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
 
 /**
  * News view
@@ -93,18 +92,18 @@ public class NewsView extends ViewAdapter implements ITechnicalStrings, Observer
   /**
    * Perform RSS load
    */
-  private void loadRSS() {
-    Thread t = new Thread() {
-      public void run() {
-        try {
-        } catch (Exception e) {
-          Log.error(e);
-        }
-
-      }
-    };
-    t.setPriority(Thread.MIN_PRIORITY);
-    t.start();
-  }
+//  private void loadRSS() {
+//    Thread t = new Thread() {
+//      public void run() {
+//        try {
+//        } catch (Exception e) {
+//          Log.error(e);
+//        }
+//
+//      }
+//    };
+//    t.setPriority(Thread.MIN_PRIORITY);
+//    t.start();
+//  }
 
 }

@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -1077,8 +1078,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
                 if (!sQuery.equals("")) {
                   // there is not enough information in tags
                   // for a web search
-                  ArrayList<URL> alUrls;
-                  alUrls = DownloadManager.getRemoteCoversList(sQuery);
+                  List<URL> alUrls = DownloadManager.getRemoteCoversList(sQuery);
                   CoverView.bOnceConnected = true;
                   // user managed once to connect to the web
                   if (alUrls.size() > ITechnicalStrings.MAX_REMOTE_COVERS) {

@@ -52,7 +52,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
@@ -97,7 +96,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
 
   private static final long serialVersionUID = 1L;
 
-  private JLabel jajuk;
+  //private JLabel jajuk;
 
   private SizedButton jbPrevious;
 

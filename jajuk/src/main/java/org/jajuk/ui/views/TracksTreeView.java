@@ -528,6 +528,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   }
 
   /** Fill the tree by style */
+  @SuppressWarnings("unchecked")
   public void populateTreeByStyle() {
     // delete previous tree
     top.removeAllChildren();
@@ -605,6 +606,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   }
 
   /** Fill the tree by author */
+  @SuppressWarnings("unchecked")
   public void populateTreeByAuthor() {
     // delete previous tree
     top.removeAllChildren();
@@ -663,6 +665,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   }
 
   /** Fill the tree by year */
+  @SuppressWarnings("unchecked")
   public void populateTreeByYear() {
     // delete previous tree
     top.removeAllChildren();

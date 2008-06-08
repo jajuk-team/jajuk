@@ -32,7 +32,7 @@ import org.jajuk.util.Util;
 /**
  * Digital DJ
  */
-public abstract class DigitalDJ implements ITechnicalStrings, Comparable {
+public abstract class DigitalDJ implements ITechnicalStrings, Comparable<DigitalDJ> {
 
   /** DJ unique ID */
   private String sID;
@@ -76,8 +76,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable {
    * @param o
    * @return
    */
-  public int compareTo(Object o) {
-    DigitalDJ other = (DigitalDJ) o;
+  public int compareTo(DigitalDJ other) {
     return this.sName.compareTo(other.getName());
   }
 
@@ -113,9 +112,9 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable {
     HashSet<Track> selectedTracks = new HashSet<Track>(files.size());
     // Select by rate if needed
     if (iRatingLevel > 0) {
-      Iterator it = files.iterator();
+      Iterator<File> it = files.iterator();
       while (it.hasNext()) {
-        File file = (File) it.next();
+        File file = it.next();
         if (Util.getTrackStarsNumber(file.getTrack().getRate()) < iRatingLevel
             || selectedTracks.contains(file.getTrack())) {
           it.remove();

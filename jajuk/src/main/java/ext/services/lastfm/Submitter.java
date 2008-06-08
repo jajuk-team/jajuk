@@ -56,6 +56,13 @@ public class Submitter {
 
   private static ext.services.network.Proxy proxy;
 
+  /**
+   * Empty constructor as this is a utility class with only static methods.
+   */
+  private Submitter() {
+
+  }
+
   private static void handshake() throws SubmitterException {
     String url = "http://post.audioscrobbler.com/?hs=true&p=" + protocolVersion + "&c=" + clientId
         + "&v=" + clientVer + "&u=" + user;
@@ -66,10 +73,11 @@ public class Submitter {
       if (lines[0].equals("UPTODATE")) {
         md5Challenge = lines[1];
         submissionURL = lines[2];
-      } else
+      } else {
         throw new SubmitterException(lines[0]);
+      }
     } catch (Exception e) {
-      throw new SubmitterException(e.getMessage());
+      throw new SubmitterException(e.getMessage(), e);
     }
   }
 
@@ -120,7 +128,8 @@ public class Submitter {
       connection = NetworkUtils.getConnection(submissionURL, proxy);
       connection.setRequestMethod("POST");
       connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-      connection.setRequestProperty("Content-Length", new Integer(queryString.length()).toString());
+      connection.setRequestProperty("Content-Length", Integer.valueOf(queryString.length())
+          .toString());
       connection.setRequestProperty("Connection", "close");
       connection.setDoInput(true);
       connection.setDoOutput(true);
@@ -128,21 +137,23 @@ public class Submitter {
       String result = NetworkUtils.readPostURL(connection, queryString);
 
       String[] lines = result.split("\n");
-      if (!lines[0].equals("OK")) {
-        if (lines[0].equals("BADAUTH")) { // Retry up to MAX_RETRIES
-          if (retries == MAX_RETRIES)
-            throw new SubmitterException(lines[0]);
-          submissionURL = null;
-          // Wait one second before retry
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException e) {
-          }
-          submitTrackToLastFm(track, startedToPlay, retries + 1);
+      if (lines[0].equals("BADAUTH")) {
+        // Retry up to MAX_RETRIES
+        if (retries == MAX_RETRIES)
+          throw new SubmitterException(lines[0]);
+
+        submissionURL = null;
+
+        // Wait one second before retry
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
         }
+
+        submitTrackToLastFm(track, startedToPlay, retries + 1);
       }
     } catch (IOException e) {
-      throw new SubmitterException(e.getMessage());
+      throw new SubmitterException(e.getMessage(), e);
     }
   }
 
@@ -199,7 +210,7 @@ public class Submitter {
 
       return hexEncode(md.digest(password.getBytes()));
     } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException("No MD5 algorithm present on the system");
+      throw new RuntimeException("No MD5 algorithm present on the system", e);
     }
   }
 

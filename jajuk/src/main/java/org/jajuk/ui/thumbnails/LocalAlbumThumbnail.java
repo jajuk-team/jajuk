@@ -211,7 +211,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
           + Messages.getString("Property_rate")
           + ": <img src='"
           + Util.getConfFileByPath(
-              "cache/internal/star" + Util.getAlbumStarsNumber(lRate) + "_16x16.png").toURL()
+              "cache/internal/star" + Util.getAlbumStarsNumber(lRate) + "_16x16.png").toURI().toURL()
               .toExternalForm() + "'>";
     } catch (MalformedURLException e) {
       Log.error(e);

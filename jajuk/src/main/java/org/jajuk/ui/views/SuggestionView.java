@@ -297,10 +297,10 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     sw.start();
   }
 
-  private void clearLastFMPanels() {
-    tabs.setComponentAt(3, new JPanel());
-    tabs.setComponentAt(4, new JPanel());
-  }
+//  private void clearLastFMPanels() {
+//    tabs.setComponentAt(3, new JPanel());
+//    tabs.setComponentAt(4, new JPanel());
+//  }
 
   private JScrollPane getLocalSuggestionsPanel(SuggestionType type, boolean search) {
     FlowScrollPanel out = new FlowScrollPanel();

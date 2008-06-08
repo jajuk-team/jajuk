@@ -144,6 +144,7 @@ public class PlaylistManager extends ItemManager implements Observer {
    * @param sId :
    *          Device id
    */
+  @SuppressWarnings("unchecked")
   public void cleanDevice(String sId) {
     synchronized (PlaylistManager.getInstance().getLock()) {
       Iterator<Playlist> it = hmItems.values().iterator();
@@ -232,6 +233,7 @@ public class PlaylistManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @SuppressWarnings("unchecked")
   public void update(Event event) {
     synchronized (getLock()) {
       JajukEvents subject = event.getSubject();
@@ -240,9 +242,9 @@ public class PlaylistManager extends ItemManager implements Observer {
         File fNew = (File) properties.get(DETAIL_NEW);
         File fileOld = (File) properties.get(DETAIL_OLD);
         // search references in playlists
-        Iterator it = hmItems.values().iterator();
+        Iterator<Playlist> it = hmItems.values().iterator();
         for (int i = 0; it.hasNext(); i++) {
-          Playlist plf = (Playlist) it.next();
+          Playlist plf = it.next();
           if (plf.isReady()) { // check only in mounted
             // playlists, note that we can't
             // change unmounted playlists

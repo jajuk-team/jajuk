@@ -52,7 +52,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
   private long lDateLastUpdate = System.currentTimeMillis();
 
   /** current track info */
-  private Map mPlayingData;
+  private Map<String,Object> mPlayingData;
 
   /** Current position in % */
   private float fPos;
@@ -102,7 +102,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     this.bFading = false;
     this.fCurrent = file;
     this.bHasBeenRated = false;
-    // instanciate player is needed
+    // Instantiate player is needed
     if (player == null) {
       BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager.getInt(CONF_BUFFER_SIZE);
       player = new BasicPlayer();
@@ -245,6 +245,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
   /**
    * Opened listener implementation
    */
+  @SuppressWarnings("unchecked")
   public void opened(Object arg0, Map arg1) {
     this.mPlayingData = arg1;
     this.lDuration = Util.getTimeLengthEstimation(mPlayingData);
@@ -253,8 +254,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
   /**
    * Progress listener implementation. Called several times by sec
    */
+  @SuppressWarnings("unchecked")
   public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
-      java.util.Map mProperties) {
+      Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
       this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);

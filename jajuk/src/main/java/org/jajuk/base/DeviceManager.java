@@ -171,6 +171,7 @@ public class DeviceManager extends ItemManager {
    *          is it a new device ?
    * @return 0:ok or error code
    */
+  @SuppressWarnings("unchecked")
   public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
     synchronized (DeviceManager.getInstance().getLock()) {
       // don't check if it is a CD as all CDs may use the same mount point
@@ -178,9 +179,9 @@ public class DeviceManager extends ItemManager {
         return 0;
       }
       // check name and path
-      Iterator it = hmItems.values().iterator();
+      Iterator<Device> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        Device deviceToCheck = (Device) it.next();
+        Device deviceToCheck = it.next();
         // If we check an existing device unchanged, just leave
         if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
           continue;
@@ -248,6 +249,7 @@ public class DeviceManager extends ItemManager {
    * 
    * @param device
    */
+  @SuppressWarnings("unchecked")
   public void removeDevice(Device device) {
     synchronized (DeviceManager.getInstance().getLock()) {
       // show confirmation message if required
@@ -285,7 +287,7 @@ public class DeviceManager extends ItemManager {
       org.jajuk.base.Collection.cleanup();
       // remove synchronization if another device was synchronized
       // with this device
-      Iterator it = hmItems.values().iterator();
+      Iterator<Device> it = hmItems.values().iterator();
       while (it.hasNext()) {
         Device deviceToCheck = (Device) it.next();
         if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
@@ -319,11 +321,12 @@ public class DeviceManager extends ItemManager {
   /**
    * Clean all devices
    */
+  @SuppressWarnings("unchecked")
   public synchronized void cleanAllDevices() {
     synchronized (DeviceManager.getInstance().getLock()) {
-      Iterator it = hmItems.values().iterator();
+      Iterator<Device> it = hmItems.values().iterator();
       while (it.hasNext()) {
-        Device device = (Device) it.next();
+        Device device = it.next();
         // Do not auto-refresh CD as several CD may share the same mount
         // point
         if (device.getType() == Device.TYPE_CD) {

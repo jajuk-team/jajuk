@@ -20,6 +20,7 @@
 package org.jajuk.services.players;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -111,7 +112,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
-        for (; (line = in.readLine()) != null;) {
+        for (; true;) {
+          line = in.readLine(); 
+          if(line == null)
+            break;
+
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream no more opening
             bOpening = false;
@@ -216,7 +221,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         }
         // can reach this point at the end of file
         in.close();
-      } catch (Exception e) {
+      } catch (IOException e) {
         Log.error(e);
       }
     }
@@ -293,7 +298,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         }.start();
       }
       // Notify the problem opening the file
-      throw new JajukException(7, new Integer(MPLAYER_START_TIMEOUT).toString());
+      throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString());
     }
   }
 

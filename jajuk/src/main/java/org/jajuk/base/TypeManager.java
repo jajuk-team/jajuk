@@ -91,7 +91,7 @@ public class TypeManager extends ItemManager {
    * 
    * @param type
    */
-  public Type registerType(String sName, String sExtension, Class cPlayerImpl, Class cTagImpl) {
+  public Type registerType(String sName, String sExtension, Class<?> cPlayerImpl, Class<?> cTagImpl) {
     return registerType(sExtension, sName, sExtension, cPlayerImpl, cTagImpl);
   }
 
@@ -145,9 +145,9 @@ public class TypeManager extends ItemManager {
    * @return associated type or null if none found
    */
   public Type getTypeByTechDesc(String sTechDesc) {
-    Iterator it = hmSupportedTypes.values().iterator();
+    Iterator<Type> it = hmSupportedTypes.values().iterator();
     while (it.hasNext()) {
-      Type type = (Type) it.next();
+      Type type = it.next();
       if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)) {
         return type;
       }
@@ -162,9 +162,9 @@ public class TypeManager extends ItemManager {
    */
   public ArrayList<Type> getAllMusicTypes() {
     ArrayList<Type> alResu = new ArrayList<Type>(5);
-    Iterator it = hmSupportedTypes.values().iterator();
+    Iterator<Type> it = hmSupportedTypes.values().iterator();
     while (it.hasNext()) {
-      Type type = (Type) it.next();
+      Type type = it.next();
       if (type.getBooleanValue(XML_TYPE_IS_MUSIC)) {
         alResu.add(type);
       }
@@ -179,7 +179,7 @@ public class TypeManager extends ItemManager {
    */
   public String getTypeListString() {
     StringBuilder sb = new StringBuilder();
-    Iterator it = hmSupportedTypes.keySet().iterator();
+    Iterator<String> it = hmSupportedTypes.keySet().iterator();
     while (it.hasNext()) {
       sb.append(it.next());
       sb.append(',');

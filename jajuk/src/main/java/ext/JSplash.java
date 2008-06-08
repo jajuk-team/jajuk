@@ -26,8 +26,6 @@
  */
 package ext;
 
-import com.sun.org.apache.xerces.internal.impl.RevalidationHandler;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

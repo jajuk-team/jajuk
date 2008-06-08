@@ -32,7 +32,7 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Default implementation for views
  */
-public abstract class ViewAdapter extends JXPanel implements IView, ITechnicalStrings, Comparable {
+public abstract class ViewAdapter extends JXPanel implements IView, ITechnicalStrings, Comparable<IView> {
 
   /** Populated state */
   private boolean bIsPopulated = false;
@@ -172,8 +172,8 @@ public abstract class ViewAdapter extends JXPanel implements IView, ITechnicalSt
    * 
    * @return Natural order
    */
-  public int compareTo(Object other) {
-    return getDesc().compareTo(((IView) other).getDesc());
+  public int compareTo(IView other) {
+    return getDesc().compareTo((other).getDesc());
   }
 
   /**

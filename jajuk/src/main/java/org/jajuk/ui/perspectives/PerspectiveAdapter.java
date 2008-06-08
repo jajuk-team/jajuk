@@ -159,7 +159,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     File loadFile = Util.getConfFileByPath(getClass().getSimpleName() + ".xml");
     // If file doesn't exist (normally only at first install), read
     // perspective conf from the jar
-    URL url = loadFile.toURL();
+    URL url = loadFile.toURI().toURL();
     if (!loadFile.exists()) {
       url = Util.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
           + ".xml");

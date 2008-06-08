@@ -54,7 +54,7 @@ public class SteppedComboBox extends JComboBox {
     init();
   }
 
-  public SteppedComboBox(Vector items) {
+  public SteppedComboBox(Vector<?> items) {
     super(items);
     init();
   }

@@ -86,14 +86,17 @@ public class ExitService extends Thread implements ITechnicalStrings {
         // (can occur when network is not available)
         File sessionUser = Util.getConfFileByPath(FILE_SESSIONS + "/localhost" + '_'
             + System.getProperty("user.name"));
-        sessionUser.delete();
+        if(!sessionUser.delete())
+          Log.warn("Could not delete file: " + sessionUser.toString());
+
         // Remove session flag. Exception can be
         // thrown here if loopback interface is not
         // correctly set up, so should be the last
         // thing to do
         sessionUser = Util.getConfFileByPath(FILE_SESSIONS + '/'
             + InetAddress.getLocalHost().getHostName() + '_' + System.getProperty("user.name"));
-        sessionUser.delete();
+        if(!sessionUser.delete())
+          Log.warn("Could not delete file: " + sessionUser.toString());
 
       }
     } catch (Exception e) {

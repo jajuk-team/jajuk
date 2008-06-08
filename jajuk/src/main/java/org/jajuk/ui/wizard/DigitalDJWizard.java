@@ -1287,6 +1287,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Class getPreviousScreen(Class screen) {
     if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
@@ -1316,6 +1317,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Class getNextScreen(Class screen) {
     if (ActionSelectionPanel.class.equals(getCurrentScreen())) {

@@ -529,6 +529,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
       }
 
+      @SuppressWarnings("unchecked")
       public void handlePopup(final MouseEvent e) {
         TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
         if (path == null) {
@@ -601,9 +602,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         for (int i = 0; i < paths.length; i++) {
           Object o = paths[i].getLastPathComponent();
           // return all childs nodes recursively
-          Enumeration e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
+          Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
           while (e2.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
+            DefaultMutableTreeNode node = e2.nextElement();
             if (node instanceof FileNode) {
               alFiles.add(((FileNode) node).getFile());
             } else if (node instanceof DirectoryNode) {

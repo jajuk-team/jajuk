@@ -20,10 +20,7 @@
 
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.JXTrayIcon;
@@ -67,7 +64,6 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
-import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
@@ -435,7 +431,7 @@ public class JajukSystray extends CommandJPanel {
           }
 
         } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
-          WebRadio radio = FIFO.getInstance().getCurrentRadio();
+          //WebRadio radio = FIFO.getInstance().getCurrentRadio();
           // Enable webradio navigation actions
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);

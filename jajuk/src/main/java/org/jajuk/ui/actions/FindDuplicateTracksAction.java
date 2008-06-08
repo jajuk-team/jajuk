@@ -87,13 +87,13 @@ public class FindDuplicateTracksAction extends ActionBase {
     }
   }
 
-  private String convertToString(List<File> duplicateFilesList) {
-    StringBuilder buffer = new StringBuilder();
-    for (File file : duplicateFilesList) {
-      buffer.append('\t');
-      buffer.append(file.getName());
-      buffer.append('\n');
-    }
-    return buffer.toString();
-  }
+//  private String convertToString(List<File> duplicateFilesList) {
+//    StringBuilder buffer = new StringBuilder();
+//    for (File file : duplicateFilesList) {
+//      buffer.append('\t');
+//      buffer.append(file.getName());
+//      buffer.append('\n');
+//    }
+//    return buffer.toString();
+//  }
 }

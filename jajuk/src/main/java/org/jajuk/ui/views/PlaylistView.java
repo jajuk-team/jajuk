@@ -971,14 +971,14 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
      * 
      * @param e
      */
-    private void showMenu(MouseEvent e) {
-      // cannot delete special playlists
-      jmiDelete.setEnabled(false);
-      // Save as is only for special playlists
-      jmiProperties.setEnabled(false);
-
-      jmiPlay.setEnabled(true);
-      jtable.getMenu().show(e.getComponent(), e.getX(), e.getY());
-    }
+//    private void showMenu(MouseEvent e) {
+//      // cannot delete special playlists
+//      jmiDelete.setEnabled(false);
+//      // Save as is only for special playlists
+//      jmiProperties.setEnabled(false);
+//
+//      jmiPlay.setEnabled(true);
+//      jtable.getMenu().show(e.getComponent(), e.getX(), e.getY());
+//    }
   }
 }

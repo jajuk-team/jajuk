@@ -98,7 +98,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
     float fTotal = 0;
     for (Proportion prop : list.keySet()) {
       fTotal += prop.getProportion();
-      List files = list.get(prop);
+      List<File> files = list.get(prop);
       // keep proportion with smallest number of files
       if (minProp == null || files.size() < iMinSize) {
         minProp = prop;

@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 /**
  * Encapsulates a label with a text and an icon, used for tables
  */
-public class IconLabel extends ImageIcon implements Comparable {
+public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
 
   private static final long serialVersionUID = 3794262035337113611L;
 
@@ -121,8 +121,7 @@ public class IconLabel extends ImageIcon implements Comparable {
    * 
    * @see java.lang.Comparable#compareTo(T)
    */
-  public int compareTo(Object o) {
-    IconLabel ilOther = (IconLabel) o;
+  public int compareTo(IconLabel ilOther) {
     if (ilOther.getTooltip() != null && this.getTooltip() != null) {
       if (bInteger) { // is this item represents an integer ?
         long l = Long.parseLong(getTooltip());

@@ -36,7 +36,7 @@ import org.jajuk.ui.perspectives.IPerspective;
 public class ViewFactory {
 
   /** Maps view class -> view instances set */
-  private static HashMap<Class, Set<IView>> hmClassesInstances = new HashMap<Class, Set<IView>>();
+  private static HashMap<Class<?>, Set<IView>> hmClassesInstances = new HashMap<Class<?>, Set<IView>>();
 
   private static Random random = new Random();
 
@@ -52,7 +52,7 @@ public class ViewFactory {
    * @param className
    * @return
    */
-  public static IView createView(Class className, IPerspective perspective) {
+  public static IView createView(Class<?> className, IPerspective perspective) {
     Set<IView> views = hmClassesInstances.get(className);
     if (views == null) {
       views = new LinkedHashSet<IView>();

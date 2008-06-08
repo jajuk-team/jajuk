@@ -57,6 +57,7 @@ public class DeleteAction extends ActionBase {
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }
 
+  @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)

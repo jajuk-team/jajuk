@@ -96,7 +96,7 @@ public class AutoCompleteDecorator {
    *          <tt>true</tt>, if only given items should be allowed to be
    *          entered
    */
-  public static void decorate(JTextComponent textComponent, List items, boolean strictMatching) {
+  public static void decorate(JTextComponent textComponent, List<Object> items, boolean strictMatching) {
     decorate(textComponent, items, strictMatching, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
   }
 
@@ -114,7 +114,7 @@ public class AutoCompleteDecorator {
    * @param stringConverter
    *          the converter used to transform items to strings
    */
-  public static void decorate(JTextComponent textComponent, List items, boolean strictMatching,
+  public static void decorate(JTextComponent textComponent, List<Object> items, boolean strictMatching,
       ObjectToStringConverter stringConverter) {
     AbstractAutoCompleteAdaptor adaptor = new TextComponentAdaptor(textComponent, items);
     AutoCompleteDocument document = new AutoCompleteDocument(adaptor, strictMatching,

@@ -28,7 +28,7 @@ import org.jajuk.util.Messages;
  * 
  * Year object
  */
-public class Year extends LogicalItem implements Comparable {
+public class Year extends LogicalItem implements Comparable<Year> {
 
   private static final long serialVersionUID = 1L;
 
@@ -76,8 +76,7 @@ public class Year extends LogicalItem implements Comparable {
    *          item to be compared
    * @return comparaison result
    */
-  public int compareTo(Object o) {
-    Year other = (Year) o;
+  public int compareTo(Year other) {
     return (int) (getValue() - other.getValue());
   }
 

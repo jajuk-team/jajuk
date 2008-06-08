@@ -30,11 +30,14 @@ import java.io.FileOutputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,14 +51,14 @@ public class DownloadManager implements ITechnicalStrings {
   private static Proxy proxy;
 
   /** Maps urls and associated files in cache */
-  private static HashMap<URL, String> urlCache = new HashMap<URL, String>(100);
+  private static Map<URI, String> urlCache = new HashMap<URI, String>(100);
 
   /**
    * @param search
    * @return a list of urls
    */
-  public static ArrayList<URL> getRemoteCoversList(String search) throws Exception {
-    ArrayList<URL> alOut = new ArrayList<URL>(20); // URL list
+  public static List<URL> getRemoteCoversList(String search) throws Exception {
+    List<URL> alOut = new ArrayList<URL>(20); // URL list
     // check void searches
     if (search == null || search.trim().equals("")) {
       return alOut;
@@ -145,7 +148,7 @@ public class DownloadManager implements ITechnicalStrings {
   public static File downloadCover(URL url, String pID) throws Exception {
     String id = pID;
     // Check if url is known in cache
-    String idCache = urlCache.get(url);
+    String idCache = urlCache.get(url.toURI());
     if (idCache != null) {
       id = idCache;
     }
@@ -166,7 +169,7 @@ public class DownloadManager implements ITechnicalStrings {
     bos.close();
     bis.close();
     connection.disconnect();
-    urlCache.put(url, id);
+    urlCache.put(url.toURI(), id);
     return out;
   }
 

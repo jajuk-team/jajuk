@@ -75,8 +75,8 @@ public class JajukTimer {
    * 
    * @param alFiles
    */
-  public void addTrackTime(java.util.List alFiles) {
-    Iterator it = alFiles.iterator();
+  public void addTrackTime(java.util.List<StackItem> alFiles) {
+    Iterator<StackItem> it = alFiles.iterator();
     while (it.hasNext()) {
       Object o = it.next();
       if (o != null && o instanceof File) {
@@ -104,12 +104,12 @@ public class JajukTimer {
    * 
    * @param alFiles
    */
-  public void removeTrackTime(ArrayList alFiles) {
-    Iterator it = alFiles.iterator();
+  public void removeTrackTime(ArrayList<File> alFiles) {
+    Iterator<File> it = alFiles.iterator();
     while (it.hasNext()) {
-      File file = (File) it.next();
+      File file = it.next();
       if (file != null) {
-        removeTrackTime((File) it.next());
+        removeTrackTime(it.next());
       }
     }
   }

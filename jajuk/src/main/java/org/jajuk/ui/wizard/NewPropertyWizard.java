@@ -172,7 +172,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
       }
       // OK, store it
       // get selected format
-      Class cType = null;
+      Class<?> cType = null;
       switch (jcbClass.getSelectedIndex()) {
       case STRING:
         cType = String.class;

@@ -162,9 +162,9 @@ public abstract class ItemManager implements ITechnicalStrings {
    */
   public Collection<PropertyMetaInformation> getCustomProperties() {
     ArrayList<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
-    Iterator it = hmPropertiesMetaInformation.values().iterator();
+    Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
     while (it.hasNext()) {
-      PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+      PropertyMetaInformation meta = it.next();
       if (meta.isCustom()) {
         col.add(meta);
       }
@@ -175,11 +175,11 @@ public abstract class ItemManager implements ITechnicalStrings {
   /**
    * @return visible properties Meta informations
    */
-  public Collection getVisibleProperties() {
+  public Collection<PropertyMetaInformation> getVisibleProperties() {
     ArrayList<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
-    Iterator it = hmPropertiesMetaInformation.values().iterator();
+    Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
     while (it.hasNext()) {
-      PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+      PropertyMetaInformation meta = it.next();
       if (meta.isVisible()) {
         col.add(meta);
       }
@@ -223,20 +223,21 @@ public abstract class ItemManager implements ITechnicalStrings {
    * @param class
    * @return associated item manager or null if none was found
    */
-  public static ItemManager getItemManager(Class c) {
+  public static ItemManager getItemManager(Class<?> c) {
     return hmItemManagers.get(c);
   }
 
   /**
    * Return an iteration over item managers
    */
-  public static Iterator getItemManagers() {
+  public static Iterator<ItemManager> getItemManagers() {
     return hmItemManagers.values().iterator();
   }
 
   /**
    * Perform an cleanup : delete useless items
    */
+  @SuppressWarnings("unchecked")
   public void cleanup() {
     synchronized (getLock()) {
       // build used items set
@@ -251,7 +252,7 @@ public abstract class ItemManager implements ITechnicalStrings {
           hsItems.add(track.getStyle());
         }
       }
-      Iterator it = hmItems.values().iterator();
+      Iterator<Item> it = hmItems.values().iterator();
       while (it.hasNext()) {
         Item item = (Item) it.next();
         // check if this item still maps some tracks
@@ -312,7 +313,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    *          files we want to deal with
    * @return the changed item
    */
-  public static Item changeItem(Item itemToChange, String sKey, Object oValue, HashSet filter)
+  public static Item changeItem(Item itemToChange, String sKey, Object oValue, Set<File> filter)
       throws JajukException {
     if (Log.isDebugEnabled()) {
       Log.debug("Set " + sKey + "=" + oValue.toString() + " to " + itemToChange);

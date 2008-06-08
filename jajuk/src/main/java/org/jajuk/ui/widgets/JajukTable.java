@@ -134,6 +134,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   /**
    * Select columns to show colsToShow list of columns id to keep
    */
+  @SuppressWarnings("unchecked")
   public void showColumns(ArrayList<String> colsToShow) {
     boolean acceptcolumnEventSave = acceptColumnsEvents;
     // Ignore columns event during these actions
@@ -209,7 +210,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList alOut = getColumnsConf();
+    ArrayList<String> alOut = getColumnsConf();
     if (!alOut.contains(property)) {
       String value = ConfigurationManager.getProperty(sConf);
       ConfigurationManager.setProperty(sConf, value + "," + property);

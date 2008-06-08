@@ -46,6 +46,7 @@ public class RenameAction extends ActionBase {
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 
+  @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)

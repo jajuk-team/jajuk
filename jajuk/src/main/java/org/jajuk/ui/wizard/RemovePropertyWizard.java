@@ -115,9 +115,9 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
     // refresh properties list for this item
     ItemManager im = getItemManager();
     if (im != null) {
-      Iterator it = im.getCustomProperties().iterator();
+      Iterator<PropertyMetaInformation> it = im.getCustomProperties().iterator();
       while (it.hasNext()) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+        PropertyMetaInformation meta = it.next();
         jcbName.addItem(meta.getName());
       }
     }

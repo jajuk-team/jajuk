@@ -152,9 +152,9 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
    * 
    */
   public synchronized void cleanup() {
-    Iterator it = vHistory.iterator();
+    Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
-      HistoryItem hi = (HistoryItem) it.next();
+      HistoryItem hi = it.next();
       if (hi.toString() == null) {
         it.remove();
       }
@@ -180,9 +180,9 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
   /** Clear history for all history items before iDays days */
   public synchronized void clear(int iDays) {
     // Begins by clearing deleted files
-    Iterator it = vHistory.iterator();
+    Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
-      HistoryItem hi = (HistoryItem) it.next();
+      HistoryItem hi = it.next();
       if (hi.toString() == null) {
         it.remove();
       }
@@ -215,9 +215,9 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
     bw.write("<history jajuk_version='" + JAJUK_VERSION + "' begin_date='"
         + Long.toString(lDateStart) + "'>\n");
-    Iterator it = vHistory.iterator();
+    Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
-      HistoryItem hi = (HistoryItem) it.next();
+      HistoryItem hi = it.next();
       bw.write("\t<play file='" + hi.getFileId() + "' date='" + hi.getDate() + "'/>\n");
     }
     bw.write("</history>");
@@ -236,7 +236,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
       File frt = Util.getConfFileByPath(FILE_HISTORY);
-      saxParser.parse(frt.toURL().toString(), getInstance());
+      saxParser.parse(frt.toURI().toURL().toString(), getInstance());
       getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); // delete
       // old
       // history items

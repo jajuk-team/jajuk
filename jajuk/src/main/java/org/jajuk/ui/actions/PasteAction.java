@@ -54,6 +54,7 @@ public class PasteAction extends ActionBase {
     setShortDescription(Messages.getString("ActionMove.0"));
   }
 
+  @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);

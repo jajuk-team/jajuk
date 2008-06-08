@@ -25,7 +25,6 @@ import entagged.audioformats.AudioFileIO;
 import entagged.audioformats.Tag;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jajuk.util.ITechnicalStrings;
@@ -154,13 +153,13 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
    * 
    * @see org.jajuk.base.ITagImpl#getComment()
    */
+  @SuppressWarnings("unchecked")
   public String getComment() throws Exception {
-    List list = tag.getComment();
+    List<Object> list = tag.getComment();
     String sOut = "";
     if (list != null) {
-      Iterator it = list.iterator();
-      while (it.hasNext()) {
-        sOut += ' ' + it.next().toString();
+      for (Object obj : list) {
+        sOut += ' ' + obj.toString();
       }
     }
     return sOut;

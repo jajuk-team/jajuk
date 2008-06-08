@@ -514,10 +514,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     try {
       // file filter used by physical table view to change only the
       // file, not all files associated with the track
-      HashSet<Item> filter = null;
+      HashSet<File> filter = null;
       if (item instanceof File) {
-        filter = new HashSet<Item>();
-        filter.add(item);
+        filter = new HashSet<File>();
+        filter.add((File)item);
       }
       Item itemNew = ItemManager.changeItem(item, sKey, oValue, filter);
       model.setItemAt(e.getFirstRow(), itemNew); // update model

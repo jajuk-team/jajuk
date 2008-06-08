@@ -26,4 +26,7 @@ public class SubmitterException extends Exception {
     super("Error submitting to Last.fm. Cause: " + cause);
   }
 
+  public SubmitterException(String cause, Throwable throwable) {
+    super("Error submitting to Last.fm. Cause: " + cause, throwable);
+  }
 }

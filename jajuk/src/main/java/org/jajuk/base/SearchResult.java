@@ -25,7 +25,7 @@ import org.jajuk.services.webradio.WebRadio;
 /**
  * A search result, contains a file and a search description
  */
-public class SearchResult implements Comparable {
+public class SearchResult implements Comparable<SearchResult> {
 
   /** Result type * */
   public enum SearchResultType {
@@ -67,8 +67,7 @@ public class SearchResult implements Comparable {
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
-  public int compareTo(Object o) {
-    SearchResult sr = (SearchResult) o;
+  public int compareTo(SearchResult sr) {
     return sResu.compareToIgnoreCase(sr.getResu());
   }
 

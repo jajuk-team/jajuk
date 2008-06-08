@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -138,11 +139,12 @@ public class DirectoryManager extends ItemManager {
    * @param sId :
    *          Device id
    */
+  @SuppressWarnings("unchecked")
   public void cleanDevice(final String sId) {
     synchronized (DirectoryManager.getInstance().getLock()) {
-      final Iterator it = hmItems.keySet().iterator();
+      final Iterator<String> it = hmItems.keySet().iterator();
       while (it.hasNext()) {
-        final Directory directory = getDirectoryByID((String) it.next());
+        final Directory directory = getDirectoryByID(it.next());
         if (directory.getDevice().getID().equals(sId)) {
           it.remove();
         }
@@ -173,11 +175,11 @@ public class DirectoryManager extends ItemManager {
     return (Directory) hmItems.get(sID);
   }
 
+  @SuppressWarnings("unchecked")
   public Directory getDirectoryForIO(final java.io.File fio) {
     synchronized (DirectoryManager.getInstance().getLock()) {
-      final Iterator it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        final Directory dir = (Directory) it.next();
+      final Collection<Directory> dirs = hmItems.values();
+      for (Directory dir : dirs) {
         if (dir.getFio().equals(fio)) {
           return dir;
         }
