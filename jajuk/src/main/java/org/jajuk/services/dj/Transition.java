@@ -69,6 +69,7 @@ public class Transition {
    * 
    * @return whether two object are equals
    */
+  @Override
   public boolean equals(Object other) {
     if (!(other instanceof Transition)) {
       return false;

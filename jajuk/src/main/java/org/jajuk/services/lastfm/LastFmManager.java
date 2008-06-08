@@ -98,6 +98,7 @@ public class LastFmManager implements Observer, ITechnicalStrings {
   public void update(final Event event) {
     if (JajukEvents.EVENT_FILE_FINISHED == event.getSubject()) {
       new Thread() {
+        @Override
         public void run() {
           if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
             File file = (File) event.getDetails().get(DETAIL_CURRENT_FILE);

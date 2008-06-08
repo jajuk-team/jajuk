@@ -148,6 +148,7 @@ public class Ambience implements Comparable<Ambience> {
    * 
    * @return String representation of this item
    */
+  @Override
   public String toString() {
     return sName + " " + styles;
   }
@@ -157,6 +158,7 @@ public class Ambience implements Comparable<Ambience> {
    * 
    * @return true if ambience have the same same and contains the same styles
    */
+  @Override
   public boolean equals(Object o) {
     Ambience ambienceOther = (Ambience) o;
     if (o == null) {

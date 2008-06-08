@@ -66,6 +66,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
    * 
    * @return String representation of this object
    */
+  @Override
   public String toString() {
     return "DJ " + sName;
   }
@@ -138,6 +139,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
    * 
    * @return whether two object are equals
    */
+  @Override
   public boolean equals(Object other) {
     if (!(other instanceof DigitalDJ)) {
       return false;

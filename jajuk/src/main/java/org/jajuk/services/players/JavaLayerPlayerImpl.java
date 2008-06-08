@@ -313,6 +313,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
           // avoid stopping current track (perceptible during
           // player.open() for remote files)
           new Thread() {
+            @Override
             public void run() {
               FIFO.getInstance().finished();
             }
@@ -324,6 +325,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       else if (length != TO_THE_END && lTime > length) {
         // length=-1 means there is no max length
         new Thread() {
+          @Override
           public void run() {
             FIFO.getInstance().finished();
           }

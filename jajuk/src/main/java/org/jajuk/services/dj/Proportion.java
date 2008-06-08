@@ -60,6 +60,7 @@ public class Proportion {
    * 
    * @return whether two object are equals
    */
+  @Override
   public boolean equals(Object other) {
     if (other == null || !(other instanceof Proportion)) {
       return false;
@@ -85,6 +86,7 @@ public class Proportion {
   /**
    * @return String representation of this proportion
    */
+  @Override
   public String toString() {
     return "" + proportion;
   }

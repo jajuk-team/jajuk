@@ -148,23 +148,24 @@ public class LyrcProvider extends GenericProvider {
    * 
    * @return the lyrics
    */
-  private String cleanLyrics(String html) {
+  private String cleanLyrics(final String html) {
+    String ret = html;
     int pPos = Integer.MAX_VALUE;
     int brPos = Integer.MAX_VALUE;
 
-    html = html.substring(html.indexOf("</table>") + 8);
-    pPos = getTagPosition(html, "<p>");
-    brPos = getTagPosition(html, "<br>");
-    html = html.substring(0, (pPos < brPos) ? pPos : brPos);
-    html = html.replaceAll("<br />", "");
-    if (html.contains("<head>")) {
+    ret = ret.substring(ret.indexOf("</table>") + 8);
+    pPos = getTagPosition(ret, "<p>");
+    brPos = getTagPosition(ret, "<br>");
+    ret = ret.substring(0, (pPos < brPos) ? pPos : brPos);
+    ret = ret.replaceAll("<br />", "");
+    if (ret.contains("<head>")) {
       return (null);
     }
-    html = html.replaceAll("&#8217;", "'");
-    html = html.replaceAll("&#8211;", "-");
-    html = html.replaceAll("\u0092", "'");
-    html = html.replaceAll("\u009c", "oe");
-    return (html);
+    ret = ret.replaceAll("&#8217;", "'");
+    ret = ret.replaceAll("&#8211;", "-");
+    ret = ret.replaceAll("\u0092", "'");
+    ret = ret.replaceAll("\u009c", "oe");
+    return (ret);
   }
 
   /**

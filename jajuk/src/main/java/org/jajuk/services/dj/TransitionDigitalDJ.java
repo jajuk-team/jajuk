@@ -116,7 +116,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
       }
       ArrayList<File> files = new ArrayList<File>(100);
       for (File file : global) {
-        if (from.getStyles().contains(file.getTrack().getStyle())) {
+        if (from != null && from.getStyles().contains(file.getTrack().getStyle())) {
           files.add(file);
           alFilesToSort.remove(file);
         }
@@ -128,7 +128,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
       }
       files = new ArrayList(100);
       for (File file : global) {
-        if (to.getStyles().contains(file.getTrack().getStyle())) {
+        if (to != null && to.getStyles().contains(file.getTrack().getStyle())) {
           files.add(file);
           alFilesToSort.remove(file);
         }
@@ -215,6 +215,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
    * 
    * @see dj.DigitalDJ#toXML()
    */
+  @Override
   public String toXML() {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());

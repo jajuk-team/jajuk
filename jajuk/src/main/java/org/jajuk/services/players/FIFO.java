@@ -144,6 +144,7 @@ public class FIFO implements ITechnicalStrings {
   public void push(final List<StackItem> alItems, final boolean bAppend) {
     Thread t = new Thread() { // do it in a thread to make UI more
       // reactive
+      @Override
       public void run() {
         try {
           Util.waiting();
@@ -171,6 +172,7 @@ public class FIFO implements ITechnicalStrings {
   public void push(final StackItem item, final boolean bAppend) {
     Thread t = new Thread() {
       // do it in a thread to make UI more reactive
+      @Override
       public void run() {
         try {
           Util.waiting();

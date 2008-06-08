@@ -278,6 +278,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
      * Called when we start an element
      * 
      */
+    @Override
     public void startElement(String sUri, String s, String sQName, Attributes attributes)
         throws SAXException {
       if (XML_DJ_DJ.equals(sQName)) {
@@ -315,6 +316,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
         /**
          * Called when we start an element
          */
+        @Override
         public void startElement(String sUri, String s, String sQName, Attributes attributes)
             throws SAXException {
           if (XML_DJ_DJ.equals(sQName)) {
