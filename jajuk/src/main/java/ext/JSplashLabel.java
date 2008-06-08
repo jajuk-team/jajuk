@@ -101,6 +101,7 @@ public final class JSplashLabel extends JLabel {
    * @param g
    *          The graphics context to use.
    */
+  @Override
   public void paint(Graphics g) {
     super.paint(g);
 

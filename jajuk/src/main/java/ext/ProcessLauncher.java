@@ -290,6 +290,7 @@ public class ProcessLauncher {
 
   private Thread createProcessThread(final Process process) {
     return new Thread() {
+      @Override
       public void run() {
         try {
           process.waitFor();

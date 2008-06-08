@@ -115,6 +115,7 @@ public class AutoCompleteDocument extends PlainDocument {
     return strictMatching;
   }
 
+  @Override
   public void remove(int offs, int len) throws BadLocationException {
     // return immediately when selecting an item
     if (selecting)
@@ -126,6 +127,7 @@ public class AutoCompleteDocument extends PlainDocument {
     }
   }
 
+  @Override
   public void insertString(int pOffs, String str, AttributeSet a) throws BadLocationException {
     int offs = pOffs;
     // return immediately when selecting an item

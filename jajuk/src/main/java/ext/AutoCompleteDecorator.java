@@ -191,6 +191,7 @@ public class AutoCompleteDecorator {
 
     // show the popup list when the user presses a key
     final KeyListener keyListener = new KeyAdapter() {
+      @Override
       public void keyPressed(KeyEvent keyEvent) {
         // don't popup on action keys (cursor movements, etc...)
         if (keyEvent.isActionKey())
@@ -260,6 +261,7 @@ public class AutoCompleteDecorator {
     // otherwise the last mark would have been retained which is quiet
     // confusing
     textComponent.addFocusListener(new FocusAdapter() {
+      @Override
       public void focusGained(FocusEvent e) {
         adaptor.markEntireText();
       }

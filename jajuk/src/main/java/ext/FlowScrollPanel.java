@@ -47,6 +47,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
         scroller.getViewport().setView(this);
       }
       scroller.addComponentListener(new ComponentAdapter() {
+        @Override
         public void componentResized(ComponentEvent e) {
           scroller.getViewport().setViewSize(getSize());
           scroller.invalidate();
@@ -57,6 +58,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
     }
   }
 
+  @Override
   public Dimension getPreferredSize() {
     if (scroller == null) {
       Dimension result = super.getPreferredSize();
@@ -105,6 +107,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
     return new Dimension(maxRowWidth, y);
   }
 
+  @Override
   public void setLayout(LayoutManager l) {
     if (l instanceof FlowLayout) {
       layout = (FlowLayout) l;
@@ -117,6 +120,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
   // Scrollable methods
   //
 
+  @Override
   public Dimension getPreferredScrollableViewportSize() {
     return getPreferredSize();
   }
@@ -124,6 +128,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
   /**
    * Returns height of a row
    */
+  @Override
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
     Dimension prefSize = layout.preferredLayoutSize(this);
     return prefSize.height / 20;
@@ -132,14 +137,17 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
   /**
    * returns the height of the visible rect (so it scrolls by one screenfull).
    */
+  @Override
   public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
     return visibleRect.height;
   }
 
+  @Override
   public boolean getScrollableTracksViewportWidth() {
     return true;
   }
 
+  @Override
   public boolean getScrollableTracksViewportHeight() {
     return false;
   }

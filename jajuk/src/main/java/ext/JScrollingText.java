@@ -63,6 +63,7 @@ public class JScrollingText extends JLabel {
     this.offset = offset;
   }
 
+  @Override
   public void paintComponent(Graphics g) {
     if (isOpaque()) {
       g.setColor(getBackground());
@@ -92,6 +93,7 @@ public class JScrollingText extends JLabel {
   public void start() {
     Timer timer = new Timer();
     TimerTask task = new TimerTask() {
+      @Override
       public void run() {
         x += speed;
         repaint();
