@@ -193,7 +193,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     }
     it = vHistory.iterator();
     while (it.hasNext()) {
-      HistoryItem hi = (HistoryItem) it.next();
+      HistoryItem hi = it.next();
       if (hi.getDate() < (System.currentTimeMillis() - (iDays * ITechnicalStrings.MILLISECONDS_IN_A_DAY))) {
         it.remove();
       }
@@ -282,6 +282,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
    * @param spe
    * @exception SAXException
    */
+  @Override
   public void warning(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(119) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -293,6 +294,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
    * @param spe
    * @exception SAXException
    */
+  @Override
   public void error(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(119) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -304,6 +306,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
    * @param spe
    * @exception SAXException
    */
+  @Override
   public void fatalError(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(119) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -312,6 +315,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
   /**
    * Called at parsing start
    */
+  @Override
   public void startDocument() {
     Log.debug("Starting history file parsing...");
   }
@@ -319,6 +323,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
   /**
    * Called at parsing end
    */
+  @Override
   public void endDocument() {
     Log.debug("History file parsing done");
   }
@@ -327,6 +332,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
    * Called when we start an element
    * 
    */
+  @Override
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
       throws SAXException {
     if (sQName.equals("history")) {
@@ -351,6 +357,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
   /**
    * Called when we reach the end of an element
    */
+  @Override
   public void endElement(String sUri, String sName, String sQName) throws SAXException {
 
   }

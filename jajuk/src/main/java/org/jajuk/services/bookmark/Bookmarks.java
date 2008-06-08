@@ -68,6 +68,7 @@ public class Bookmarks implements ITechnicalStrings {
   /**
    * Return bookmarks as a colon separated list of file ids
    */
+  @Override
   public String toString() {
     StringBuilder sbOut = new StringBuilder();
     for (File file : alFiles) {

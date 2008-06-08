@@ -76,6 +76,7 @@ public class HistoryItem {
    * 
    * @return String
    */
+  @Override
   public String toString() {
     File file = FileManager.getInstance().getFileByID(getFileId());
     if (file == null) {
