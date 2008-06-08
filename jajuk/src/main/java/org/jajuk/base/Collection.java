@@ -534,11 +534,14 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           // upgrades)
           long lQuality = 0;
           try {
-            lQuality = Integer.parseInt(attributes.getValue(XML_QUALITY));
+            if(attributes.getValue(XML_QUALITY) != null &&  
+                attributes.getValue(XML_QUALITY).length() >= 0)
+              lQuality = Integer.parseInt(attributes.getValue(XML_QUALITY));
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format
-              Log.debug(Messages.getString("Error.137") + ":" + sItemName); // wrong
+              Log.debug(Messages.getString("Error.137") + ":" + sItemName + 
+                  " Value: " + attributes.getValue(XML_QUALITY) + " Error:" + e.getMessage()); // wrong
             }
           }
           sID = attributes.getValue(idIndex).intern();
@@ -558,7 +561,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           file.populateProperties(attributes);
           break;
         case STAGE_DIRECTORIES:
-          dParent = null;
+          //dParent = null;
           sParentID = attributes.getValue(XML_DIRECTORY_PARENT).intern();
           // UPGRADE
           if (hmWrongRightDirectoryID.size() > 0) {
@@ -650,15 +653,15 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           if (album == null || author == null || style == null || type == null) {
             return;
           }
-          long lYear = 0;
-          try {
-            lYear = Integer.parseInt(attributes.getValue(XML_YEAR));
-          } catch (Exception e) {
-            if (Log.isDebugEnabled()) {
-              // wrong format
-              Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
-            }
-          }
+//          long lYear = 0;
+//          try {
+//            lYear = Integer.parseInt(attributes.getValue(XML_YEAR));
+//          } catch (Exception e) {
+//            if (Log.isDebugEnabled()) {
+//              // wrong format
+//              Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
+//            }
+//          }
           // Idem for order
           long lOrder = 0l;
           try {
