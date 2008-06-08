@@ -2341,8 +2341,8 @@ public class Util implements ITechnicalStrings {
       Util.updateWindowUI(element);
     }
     // update tray
-    if (JajukSystray.isLoaded() && (JajukSystray.getInstance().jmenu != null)) {
-      Util.updateComponentTreeUI(JajukSystray.getInstance().jmenu);
+    if (JajukSystray.isLoaded() && (JajukSystray.getInstance().getMenu() != null)) {
+      Util.updateComponentTreeUI(JajukSystray.getInstance().getMenu());
     }
   }
 

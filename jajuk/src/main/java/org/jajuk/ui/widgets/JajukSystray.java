@@ -87,13 +87,13 @@ public class JajukSystray extends CommandJPanel {
 
   JXTrayIcon trayIcon;
 
-  public JPopupMenu jmenu;
+  JPopupMenu jmenu;
 
   JMenuItem jmiExit;
 
   JMenuItem jmiSlimbar;
 
-  public JMenuItem jmiMute;
+  JMenuItem jmiMute;
 
   JMenuItem jmiShuffle;
 
@@ -403,7 +403,7 @@ public class JajukSystray extends CommandJPanel {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
-  public void update(final Event event) {
+  public final void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JajukEvents subject = event.getSubject();
@@ -622,7 +622,7 @@ public class JajukSystray extends CommandJPanel {
    * 
    */
   @Override
-  void populateAmbiences() {
+  final void populateAmbiences() {
     // Ambience selection listener
     ActionListener al = new ActionListener() {
       public void actionPerformed(ActionEvent ae) {
@@ -705,5 +705,9 @@ public class JajukSystray extends CommandJPanel {
         Player.seek(fPosition);
       }
     }.start();
+  }
+
+  public JPopupMenu getMenu() {
+    return this.jmenu;
   }
 }
