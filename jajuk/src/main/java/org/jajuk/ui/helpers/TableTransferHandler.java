@@ -50,6 +50,7 @@ public class TableTransferHandler extends TransferHandler implements ITechnicalS
   /**
    * Called when dragging
    */
+  @Override
   protected Transferable createTransferable(JComponent c) {
     // make sure to remove others selected rows (can occur during the drag)
     jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
@@ -72,6 +73,7 @@ public class TableTransferHandler extends TransferHandler implements ITechnicalS
   /**
    * return action type
    */
+  @Override
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }

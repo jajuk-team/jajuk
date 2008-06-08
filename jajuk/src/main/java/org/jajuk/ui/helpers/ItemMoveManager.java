@@ -37,7 +37,7 @@ public class ItemMoveManager {
 
   public enum MoveActions {
     CUT, COPY
-  };
+  }
 
   private MoveActions moveAction;
 

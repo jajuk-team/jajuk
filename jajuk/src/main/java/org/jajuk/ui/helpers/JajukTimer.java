@@ -81,7 +81,7 @@ public class JajukTimer {
       Object o = it.next();
       if (o != null && o instanceof File) {
         addTrackTime((File) o);
-      } else {
+      } else if (o != null) {
         File file = ((StackItem) o).getFile();
         addTrackTime(file);
       }

@@ -40,6 +40,7 @@ public class Duration implements Comparable<Duration> {
   /**
    * Return a string representation of this duration with zero paddings
    */
+  @Override
   public String toString() {
     return Util.formatTimeBySec(duration, false);
   }

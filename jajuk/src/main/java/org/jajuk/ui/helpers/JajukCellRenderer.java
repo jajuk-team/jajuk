@@ -64,6 +64,7 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
 
   private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
 
+  @Override
   public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
       boolean focused, int row, int column) {
     Component c = super

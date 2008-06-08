@@ -60,6 +60,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   /**
    * Called when dragging
    */
+  @Override
   protected Transferable createTransferable(JComponent c) {
     // make sure to remove others selected rows (can occur during the drag)
     jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
@@ -82,6 +83,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   /**
    * return action type
    */
+  @Override
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }
@@ -89,6 +91,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
   /**
    * Called when dropping
    */
+  @Override
   public boolean importData(JComponent c, Transferable t) {
     try {
       if (canImport(c, t.getTransferDataFlavors())) {
@@ -140,6 +143,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 
   }
 
+  @Override
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     String sFlavor = flavors[0].getHumanPresentableName();
     if (sFlavor.equals("Node") || sFlavor.equals("Row") || sFlavor.equals("Album")) {

@@ -59,6 +59,7 @@ public class PatternInputVerifier extends InputVerifier implements ITechnicalStr
    * 
    * @see javax.swing.InputVerifier#shouldYieldFocus(javax.swing.JComponent)
    */
+  @Override
   public boolean shouldYieldFocus(JComponent input) {
     return verify(input);
   }

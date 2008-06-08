@@ -107,6 +107,7 @@ public class TracksTableModel extends JajukTableModel {
     }
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String property, String sPattern,
       ArrayList<String> columnsToShow) {

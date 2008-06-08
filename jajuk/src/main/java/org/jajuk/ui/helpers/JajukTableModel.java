@@ -118,6 +118,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
     oItems[iRow] = item;
   }
 
+  @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
     // We need to test this as UI may request it before table is populated
     if (oValues == null || oValues.length == 0 || rowIndex >= oValues.length) {
@@ -126,6 +127,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
     return oValues[rowIndex][columnIndex];
   }
 
+  @Override
   public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
     oLast = oValues[rowIndex][columnIndex];
     oValues[rowIndex][columnIndex] = oValue;
@@ -137,6 +139,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
    * 
    * @see javax.swing.table.TableModel#getColumnCount()
    */
+  @Override
   public int getColumnCount() {
     return vColNames.size();
   }
@@ -151,6 +154,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
     }
   }
 
+  @Override
   public String getColumnName(int column) {
     return vColNames.get(column);
   }
@@ -159,15 +163,18 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
     return vId.get(column);
   }
 
+  @Override
   public int getRowCount() {
     // iRowNum is set in concrete classes
     return iRowNum;
   }
 
+  @Override
   public boolean isCellEditable(int rowIndex, int columnIndex) {
     return bEditable && bCellEditable[rowIndex][columnIndex];
   }
 
+  @Override
   public Class<? extends Object> getColumnClass(int columnIndex) {
     Object o = getValueAt(0, columnIndex);
     if (o != null) {
