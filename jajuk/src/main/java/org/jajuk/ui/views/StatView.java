@@ -73,8 +73,6 @@ public class StatView extends ViewAdapter implements Observer {
 
   private static final long serialVersionUID = 1L;
 
-  private static final DateFormat additionFormatter = Util.getAdditionDateFormatter();
-
   /**
    * Constructor
    */
@@ -121,7 +119,7 @@ public class StatView extends ViewAdapter implements Observer {
         Style style = it.next();
         int iCount = style.getCount();
         iTotal += iCount;
-        tm.put(style.getName2(), new Integer(iCount));
+        tm.put(style.getName2(), Integer.valueOf(iCount));
       }
       Iterator<String> keys = tm.keySet().iterator();
       while (keys.hasNext()) {
@@ -132,7 +130,7 @@ public class StatView extends ViewAdapter implements Observer {
           // less than 5% -> go to others
           dOthers += d;
         } else {
-          double dValue = Math.round(100 * new Double(d / iTotal));
+          double dValue = Math.round(100 * (d / iTotal));
           pdata.setValue(sName, dValue);
         }
       }
@@ -221,6 +219,8 @@ public class StatView extends ViewAdapter implements Observer {
   private ChartPanel createCollectionSize() {
     ChartPanel cpanel = null;
     try {
+      final DateFormat additionFormatter = Util.getAdditionDateFormatter();
+
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
       int iMonthsNumber = 5; // number of mounts we show, mounts
@@ -283,6 +283,8 @@ public class StatView extends ViewAdapter implements Observer {
   private ChartPanel createTrackNumber() {
     ChartPanel cpanel = null;
     try {
+      final DateFormat additionFormatter = Util.getAdditionDateFormatter();
+
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
       // number of months we show, mounts
@@ -302,7 +304,10 @@ public class StatView extends ViewAdapter implements Observer {
           }
         }
       }
+      
       double[][] data = new double[1][iMonthsNumber + 1];
+      // cannot use System.arraycopy() here because we have different types in the arrays...
+      //      System.arraycopy(iTracksByMonth, 0, data[0], 0, iMonthsNumber);
       for (int i = 0; i < iMonthsNumber + 1; i++) {
         data[0][i] = iTracksByMonth[i];
       }
@@ -361,17 +366,21 @@ public class StatView extends ViewAdapter implements Observer {
         removeAll();
       }
       ChartPanel cp1 = createStyleRepartition();
-      if (cp1 != null)
+      if (cp1 != null) {
         add(cp1, "0,0");
+      }
       ChartPanel cp2 = createCollectionSize();
-      if (cp2 != null)
+      if (cp2 != null) {
         add(cp2, "0,2");
+      }
       ChartPanel cp3 = createTrackNumber();
-      if (cp3 != null)
+      if (cp3 != null) {
         add(cp3, "2,2");
+      }
       ChartPanel cp4 = createDeviceRepartition();
-      if (cp4 != null)
+      if (cp4 != null) {
         add(cp4, "2,0");
+      }
       revalidate();
       repaint();
       Util.stopWaiting();
