@@ -45,7 +45,7 @@ public class PlaylistTableModel extends JajukTableModel {
   public List<StackItem> alItems = new ArrayList<StackItem>(10);
 
   /** Values planned */
-  public ArrayList<StackItem> alPlanned = new ArrayList<StackItem>(10);
+  public List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
   private static final long serialVersionUID = 1L;
 
@@ -77,7 +77,7 @@ public class PlaylistTableModel extends JajukTableModel {
    * @param index
    * @return an arraylist of stack items or null if index is out of bounds
    */
-  public ArrayList<StackItem> getItemsFrom(int index) {
+  public List<StackItem> getItemsFrom(int index) {
     if (index < alItems.size()) {
       return new ArrayList<StackItem>(alItems.subList(index, alItems.size()));
     } else {
@@ -193,7 +193,7 @@ public class PlaylistTableModel extends JajukTableModel {
    */
   @Override
   public synchronized void populateModel(String sPropertyName, String sPattern,
-      ArrayList<String> columnsToShow) {
+      List<String> columnsToShow) {
     iRowNum = alItems.size() + alPlanned.size();
     oValues = new Object[iRowNum][iNumberStandardCols
         + TrackManager.getInstance().getCustomProperties().size()

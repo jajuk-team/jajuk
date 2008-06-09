@@ -31,7 +31,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -169,7 +169,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
     // display picture
     sOut += "<img src='" + author.getImageUrl() + "'></TD>";
     // Show each album for this Author
-    ArrayList<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
+    List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
         author.getName());
     if (albums != null && albums.size() > 0) {
       sOut += "<TD>";

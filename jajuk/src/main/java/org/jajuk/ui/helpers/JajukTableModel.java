@@ -20,7 +20,7 @@
 
 package org.jajuk.ui.helpers;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -197,12 +197,12 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
    *          values for hidden columns
    */
   public abstract void populateModel(String sProperty, String sPattern,
-      ArrayList<String> columnsToShow);
+      List<String> columnsToShow);
 
   /**
    * Fill model with data
    */
-  public void populateModel(ArrayList<String> columnsToShow) {
+  public void populateModel(List<String> columnsToShow) {
     populateModel(null, null, columnsToShow);
   }
 

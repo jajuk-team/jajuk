@@ -21,7 +21,7 @@ package org.jajuk.ui.helpers;
 
 import entagged.freedb.FreedbReadResult;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 import org.jajuk.base.Item;
@@ -33,7 +33,7 @@ public class CDDBTableModel extends JajukTableModel {
 
   private static final long serialVersionUID = 1L;
 
-  ArrayList<CDDBTrack> cddbTracks;
+  List<CDDBTrack> cddbTracks;
 
   /**
    * Model constructor
@@ -43,7 +43,7 @@ public class CDDBTableModel extends JajukTableModel {
    * @param sColName
    *          columns names
    */
-  public CDDBTableModel(ArrayList<CDDBTrack> alItems) {
+  public CDDBTableModel(List<CDDBTrack> alItems) {
     super(5);
     this.cddbTracks = alItems;
 
@@ -88,10 +88,10 @@ public class CDDBTableModel extends JajukTableModel {
   }
 
   /* (non-Javadoc)
-   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String, java.util.ArrayList)
+   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String, java.util.List)
    */
   @Override
-  public void populateModel(String property, String pattern, ArrayList<String> columnsToShow) {
+  public void populateModel(String property, String pattern, List<String> columnsToShow) {
     // TODO Auto-generated method stub
     
   }

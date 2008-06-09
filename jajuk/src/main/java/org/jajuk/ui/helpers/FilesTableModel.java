@@ -23,6 +23,7 @@ package org.jajuk.ui.helpers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -136,10 +137,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
    */
   @Override
   public synchronized void populateModel(String sPropertyName, String sPattern,
-      ArrayList<String> columnsToShow) {
+      List<String> columnsToShow) {
     synchronized (FileManager.getInstance().getLock()) {
       // This should be monitor filemanager to avoid NPE when changing items
-      ArrayList<File> alToShow = null;
+      List<File> alToShow = null;
       // Filter mounted files if needed and apply sync table with tree
       // option if needed
       boolean bShowWithTree = true;

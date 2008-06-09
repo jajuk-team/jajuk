@@ -36,6 +36,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -75,7 +76,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
   /** Size */
   int size;
 
-  ArrayList<Item> alSelected = new ArrayList<Item>(100);
+  List<Item> alSelected = new ArrayList<Item>(100);
 
   public JLabel jlIcon;
 

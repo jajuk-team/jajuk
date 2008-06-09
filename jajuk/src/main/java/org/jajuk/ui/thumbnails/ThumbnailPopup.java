@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -101,15 +102,15 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
         if (e.getEventType() == EventType.ACTIVATED) {
           URL url = e.getURL();
           if (XML_AUTHOR.equals(url.getHost())) {
-            ArrayList<Item> items = new ArrayList<Item>(1);
+            List<Item> items = new ArrayList<Item>(1);
             items.add(AuthorManager.getInstance().getItemByID(url.getQuery()));
             new PropertiesWizard(items);
           } else if (XML_STYLE.equals(url.getHost())) {
-            ArrayList<Item> items = new ArrayList<Item>(1);
+            List<Item> items = new ArrayList<Item>(1);
             items.add(StyleManager.getInstance().getItemByID(url.getQuery()));
             new PropertiesWizard(items);
           } else if (XML_YEAR.equals(url.getHost())) {
-            ArrayList<Item> items = new ArrayList<Item>(1);
+            List<Item> items = new ArrayList<Item>(1);
             items.add(YearManager.getInstance().getItemByID(url.getQuery()));
             new PropertiesWizard(items);
           } else if (XML_URL.equals(url.getHost())) {
@@ -119,10 +120,10 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
               Log.error(e1);
             }
           } else if (XML_TRACK.equals(url.getHost())) {
-            ArrayList<Item> items = new ArrayList<Item>(1);
+            List<Item> items = new ArrayList<Item>(1);
             Track track = (Track) TrackManager.getInstance().getItemByID(url.getQuery());
             items.add(track);
-            ArrayList<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
+            List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
             File file = track.getPlayeableFile(true);
             toPlay.add(file);
             FIFO.getInstance().push(

@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jajuk.base.File;
@@ -107,16 +108,15 @@ public class TracksTableModel extends JajukTableModel {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public synchronized void populateModel(String property, String sPattern,
-      ArrayList<String> columnsToShow) {
+      List<String> columnsToShow) {
     synchronized (TrackManager.getInstance().getLock()) {
       // This should be monitor filemanager to avoid NPE when changing items
 
       // Filter mounted files if needed and apply sync table with tree option
       // if needed
       boolean bShowWithTree = true;
-      ArrayList<Track> alToShow = null;
+      List<Track> alToShow = null;
       // look at selection
       boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
       Set<Track> alTracks = TrackManager.getInstance().getTracks();
@@ -139,7 +139,7 @@ public class TracksTableModel extends JajukTableModel {
       Filter.filterItems(alToShow, filter);
       // sort by album
       Collections.sort(alToShow, new TrackComparator(2));
-      Iterator it = alToShow.iterator();
+      Iterator<Track> it = alToShow.iterator();
       int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
       iRowNum = alToShow.size();
       it = alToShow.iterator();
@@ -163,9 +163,9 @@ public class TracksTableModel extends JajukTableModel {
       boolean bFiles = (columnsToShow != null && columnsToShow.contains(XML_FILES));
 
       for (int iRow = 0; it.hasNext(); iRow++) {
-        Track track = (Track) it.next();
+        Track track = it.next();
         setItemAt(iRow, track);
-        LinkedHashMap properties = track.getProperties();
+        Map<String,Object> properties = track.getProperties();
         // Id
         oItems[iRow] = track;
         // Play
@@ -285,7 +285,7 @@ public class TracksTableModel extends JajukTableModel {
 
         // Files
         if (bFiles) {
-          ArrayList<File> alFiles = track.getFiles();
+          List<File> alFiles = track.getFiles();
           StringBuilder files = new StringBuilder(50);
           // for perfs, we manage differently single file tracks and multi-files
           // tracks
@@ -305,9 +305,9 @@ public class TracksTableModel extends JajukTableModel {
         bCellEditable[iRow][12] = false;
 
         // Custom properties now
-        Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
+        Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties().iterator();
         for (int i = 0; it2.hasNext(); i++) {
-          PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+          PropertyMetaInformation meta = it2.next();
           Object o = properties.get(meta.getName());
           if (o != null) {
             oValues[iRow][iNumberStandardCols + i] = o;

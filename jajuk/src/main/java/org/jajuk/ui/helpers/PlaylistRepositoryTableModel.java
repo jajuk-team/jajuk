@@ -90,7 +90,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
   @Override
   @SuppressWarnings("unchecked")
   public synchronized void populateModel(String sPropertyName, String sPattern,
-      ArrayList<String> columnsToShow) {
+      List<String> columnsToShow) {
     List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance().getPlaylists());
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager

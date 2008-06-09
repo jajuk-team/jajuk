@@ -20,7 +20,7 @@
 package org.jajuk.ui.helpers;
 
 import java.awt.Component;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
@@ -52,7 +52,7 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
         return true;
       }
     } else if (item instanceof Track) {
-      ArrayList<File> files = ((Track) item).getFiles();
+      List<File> files = ((Track) item).getFiles();
       if (files.contains(FIFO.getInstance().getCurrentFile())) {
         return true;
       }

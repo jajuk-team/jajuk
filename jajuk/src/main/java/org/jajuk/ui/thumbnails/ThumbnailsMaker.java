@@ -24,6 +24,7 @@ import ext.ProcessLauncher;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Appender;
 import org.jajuk.Main;
@@ -129,7 +130,7 @@ public class ThumbnailsMaker implements ITechnicalStrings {
     // are built in the main JVM instead of separated ones
     final String jarPath = new File(UtilSystem.getJarLocation(Main.class).toURI()).getAbsolutePath()
         + File.separator + "jajuk.jar";
-    final ArrayList<String> commands = new ArrayList<String>(10);
+    final List<String> commands = new ArrayList<String>(10);
     commands.add(jvmPath);
     commands.add("-Xms50M");
     commands.add("-Xmx600M");
