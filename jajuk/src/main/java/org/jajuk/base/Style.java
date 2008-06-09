@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -132,8 +133,8 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * 
    * @return all tracks associated with this style
    */
-  public ArrayList<Track> getTracksRecursively() {
-    ArrayList<Track> alTracks = new ArrayList<Track>(1000);
+  public List<Track> getTracksRecursively() {
+    List<Track> alTracks = new ArrayList<Track>(1000);
     for (Item item : TrackManager.getInstance().getTracks()) {
       Track track = (Track) item;
       if (track.getStyle().equals(this)) {

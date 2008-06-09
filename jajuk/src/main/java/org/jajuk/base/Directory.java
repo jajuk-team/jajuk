@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -32,7 +33,6 @@ import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -199,8 +199,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @return child files
    */
-  public ArrayList<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
-    ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
+  public List<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
+    List<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
     boolean bOK = false;
     for (org.jajuk.base.File file : files) {
       if (bOK || file.equals(fileStart)) {
@@ -216,8 +216,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @return child files recursively
    */
-  public ArrayList<org.jajuk.base.File> getFilesRecursively() {
-    ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
+  public List<org.jajuk.base.File> getFilesRecursively() {
+    List<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
     for (Item item : FileManager.getInstance().getFiles()) {
       org.jajuk.base.File file = (org.jajuk.base.File) item;
       if (file.hasAncestor(this)) {

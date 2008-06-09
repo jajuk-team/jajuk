@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.bidimap.TreeBidiMap;
@@ -161,7 +162,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getCustomProperties() {
-    ArrayList<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
+    List<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
     Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();
@@ -176,7 +177,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    * @return visible properties Meta informations
    */
   public Collection<PropertyMetaInformation> getVisibleProperties() {
-    ArrayList<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
+    List<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
     Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();

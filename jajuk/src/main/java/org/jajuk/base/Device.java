@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -46,7 +47,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -94,7 +94,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   private boolean bMounted = false;
 
   /** directories */
-  private final ArrayList<Directory> alDirectories = new ArrayList<Directory>(20);
+  private final List<Directory> alDirectories = new ArrayList<Directory>(20);
 
   /** Already refreshing flag */
   private volatile boolean bAlreadyRefreshing = false;
@@ -239,7 +239,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   /**
    * @return
    */
-  public ArrayList<Directory> getDirectories() {
+  public List<Directory> getDirectories() {
     return alDirectories;
   }
 
@@ -248,7 +248,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * 
    * @return child files recursively
    */
-  public ArrayList<org.jajuk.base.File> getFilesRecursively() {
+  public List<org.jajuk.base.File> getFilesRecursively() {
     // looks for the root directory for this device
     Directory dirRoot = null;
     final Collection<Directory> dirs = DirectoryManager.getInstance().getDirectories();
@@ -259,7 +259,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         dirRoot = dir;
       }
     }
-    ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
+    List<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
     if (dirRoot != null) {
       alFiles = dirRoot.getFilesRecursively();
     }

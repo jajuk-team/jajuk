@@ -40,7 +40,7 @@ public class Bookmarks implements ITechnicalStrings {
   private static Bookmarks bookmarks;
 
   /** Bookmarks files */
-  ArrayList<File> alFiles = new ArrayList<File>(100);
+  List<File> alFiles = new ArrayList<File>(100);
 
   public static synchronized Bookmarks getInstance() {
     if (bookmarks == null) {
@@ -79,7 +79,7 @@ public class Bookmarks implements ITechnicalStrings {
   }
 
   /** Return bookmarked files */
-  public ArrayList<File> getFiles() {
+  public List<File> getFiles() {
     return alFiles;
   }
 

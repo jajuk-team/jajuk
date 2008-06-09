@@ -48,8 +48,8 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI; 
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -75,7 +75,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   private Directory dParentDirectory;
 
   /** Files list, singleton */
-  private ArrayList<File> alFiles;
+  private List<File> alFiles;
 
   /** Modification flag */
   private boolean bModified = false;
@@ -129,7 +129,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param bf
    */
   public void addFile(final File file) throws JajukException {
-    final ArrayList<File> al = getFiles();
+    final List<File> al = getFiles();
     final int index = al.size();
     addFile(index, file);
   }
@@ -256,22 +256,30 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       }
 
       // Now move the temp file to final one if everything seems ok
-      if (temp.exists() && temp.length() > 0) {
-        try {
-          UtilSystem.copy(temp, getFio());
-          temp.delete();
-        } catch (final Exception e1) {
-          throw new JajukException(28, getName(), e1);
-        }
-      } else {
-        try {
-          // Try to remove the temp file
-          temp.delete();
-        } catch (final Exception e1) {
-          Log.error(e1);
-        }
-        throw new JajukException(28, getName());
+      moveTempPlaylistFile(temp);
+    }
+  }
+
+  /**
+   * @param temp
+   * @throws JajukException
+   */
+  private void moveTempPlaylistFile(java.io.File temp) throws JajukException {
+    if (temp.exists() && temp.length() > 0) {
+      try {
+        UtilSystem.copy(temp, getFio());
+        temp.delete();
+      } catch (final Exception e1) {
+        throw new JajukException(28, getName(), e1);
       }
+    } else {
+      try {
+        // Try to remove the temp file
+        temp.delete();
+      } catch (final Exception e1) {
+        Log.error(e1);
+      }
+      throw new JajukException(28, getName());
     }
   }
 
@@ -292,12 +300,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       return 0;
     }
     final Playlist otherPlaylistFile = o;
-    final String sAbs = getName() + getAbsolutePath();
+    final String sFile = getName() + getAbsolutePath();
     final String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
     // never return 0 here, because bidimap needs to distinct items
-    final int comp = sAbs.compareToIgnoreCase(sOtherAbs);
+    final int comp = sFile.compareToIgnoreCase(sOtherAbs);
     if (comp == 0) {
-      return sAbs.compareTo(sOtherAbs);
+      return sFile.compareTo(sOtherAbs);
     }
     return comp;
   }
@@ -394,7 +402,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * @return Returns the list of files this playlist maps to
    */
-  public ArrayList<File> getFiles() throws JajukException {
+  public List<File> getFiles() throws JajukException {
     // if normal playlist, propose to mount device if unmounted
     if ((getType() == Type.NORMAL) && !isReady()) {
       final String sMessage = Messages.getString("Error.025") + " ("
@@ -505,8 +513,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Parse a playlist
    */
-  public ArrayList<File> load() throws JajukException {
-    final ArrayList<File> alFiles = new ArrayList<File>(10);
+  public List<File> load() throws JajukException {
+    final List<File> alFiles = new ArrayList<File>(10);
     BufferedReader br = null;
     try {
       br = new BufferedReader(new FileReader(getFio()));
@@ -626,7 +634,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         final File fileToTest = it.next().getFile();
         if (fileToTest.equals(fOld)) {
           FIFO.getInstance().remove(i, i); // just remove
-          final ArrayList<StackItem> al = new ArrayList<StackItem>(1);
+          final List<StackItem> al = new ArrayList<StackItem>(1);
           al.add(new StackItem(fNew));
           FIFO.getInstance().insert(al, i);
         }
@@ -716,7 +724,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param alFiles
    *          The alFiles to set.
    */
-  public void setFiles(final ArrayList<File> alFiles) {
+  public void setFiles(final List<File> alFiles) {
     this.alFiles = alFiles;
   }
 
@@ -844,6 +852,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * @return playlist average rating
    */
+  @Override
   public long getRate() {
     float rate = 0f;
     int nb = 0;

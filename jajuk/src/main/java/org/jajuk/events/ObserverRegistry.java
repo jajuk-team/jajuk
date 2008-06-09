@@ -24,23 +24,24 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
-  private Map<JajukEvents, ArrayList<Observer>> hEventComponents = new Hashtable<JajukEvents, ArrayList<Observer>>(
-      10);
+  private Map<JajukEvents, List<Observer>> hEventComponents = 
+    new Hashtable<JajukEvents, List<Observer>>(10);
 
   @SuppressWarnings("unchecked")
   void notifySync(Event event) {
     JajukEvents subject = event.getSubject();
-    ArrayList<Observer> alComponents = hEventComponents.get(subject);
+    List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {
       return;
     }
     // Iterate on a cloned list to avoid concurrent exceptions
-    alComponents = (ArrayList<Observer>) alComponents.clone();
+    alComponents = (List<Observer>)((ArrayList<Observer>) alComponents).clone();
     Iterator<Observer> it = alComponents.iterator();
     while (it.hasNext()) {
       Observer obs = null;
@@ -63,7 +64,7 @@ class ObserverRegistry {
   }
 
   synchronized boolean register(JajukEvents subject, Observer observer) {
-    ArrayList<Observer> alComponents = hEventComponents.get(subject);
+    List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {
       alComponents = new ArrayList<Observer>(1);
       hEventComponents.put(subject, alComponents);
@@ -75,7 +76,7 @@ class ObserverRegistry {
   }
 
   synchronized boolean unregister(JajukEvents subject, Observer observer) {
-    ArrayList<Observer> alComponents = hEventComponents.get(subject);
+    List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents != null) {
       return alComponents.remove(observer);
     }

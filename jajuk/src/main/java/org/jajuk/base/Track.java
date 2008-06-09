@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -60,7 +61,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   private final Type type;
 
   /** Track associated files */
-  private ArrayList<File> alFiles = new ArrayList<File>(1);
+  private List<File> alFiles = new ArrayList<File>(1);
 
   /** Number of hits for current jajuk session */
   private int iSessionHits = 0;
@@ -159,15 +160,15 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * @return all associated files
    */
-  public ArrayList<org.jajuk.base.File> getFiles() {
+  public List<org.jajuk.base.File> getFiles() {
     return alFiles;
   }
 
   /**
    * @return ready files
    */
-  public ArrayList<File> getReadyFiles() {
-    ArrayList<File> alReadyFiles = new ArrayList<File>(alFiles.size());
+  public List<File> getReadyFiles() {
+    List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady()) {
         alReadyFiles.add(file);
@@ -181,8 +182,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param filter
    *          files we want to deal with, null means no filter
    */
-  public ArrayList<File> getReadyFiles(Set<File> filter) {
-    ArrayList<File> alReadyFiles = new ArrayList<File>(alFiles.size());
+  public List<File> getReadyFiles(Set<File> filter) {
+    List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady() && (filter == null || filter.contains(file))) {
         alReadyFiles.add(file);
@@ -212,7 +213,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public File getPlayeableFile(boolean bHideUnmounted) {
     File fileOut = null;
-    final ArrayList<File> alMountedFiles = new ArrayList<File>(2);
+    final List<File> alMountedFiles = new ArrayList<File>(2);
 
     // firstly, filter mounted files if needed
     for (final File file : alFiles) {
@@ -288,6 +289,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * @return
    */
+  @Override
   public long getRate() {
     return getLongValue(XML_TRACK_RATE);
   }

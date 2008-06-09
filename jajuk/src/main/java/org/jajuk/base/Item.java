@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -42,7 +43,7 @@ import org.xml.sax.Attributes;
  * file size
  * </p>
  */
-abstract public class Item implements Serializable, ITechnicalStrings {
+public abstract class Item implements Serializable, ITechnicalStrings {
 
   /**
    * We cache the ID to avoid getting it from properties for CPU performance
@@ -60,7 +61,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * Item properties, singleton use very high load factor as this size will not
    * change often
    */
-  private LinkedHashMap<String, Object> properties = new LinkedHashMap<String, Object>(2, 1f);
+  private Map<String, Object> properties = new LinkedHashMap<String, Object>(2, 1f);
 
   /**
    * Constructor
@@ -104,7 +105,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * 
    * @return item description
    */
-  abstract public String getDesc();
+  public abstract String getDesc();
 
   /**
    * Equal method to check two albums are identical
@@ -125,7 +126,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * 
    * @see org.jajuk.base.Item#getProperties()
    */
-  public LinkedHashMap<String, Object> getProperties() {
+  public Map<String, Object> getProperties() {
     return properties;
   }
 
@@ -218,7 +219,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * 
    * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
    */
-  public void setProperty(String sKey, Object oValue) {
+  public final void setProperty(String sKey, Object oValue) {
     getProperties().put(sKey, oValue);
   }
 
@@ -336,7 +337,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
    * @param properties
    *          The properties to set.
    */
-  public void setProperties(LinkedHashMap<String, Object> properties) {
+  public void setProperties(Map<String, Object> properties) {
     this.properties = properties;
   }
 
@@ -397,7 +398,7 @@ abstract public class Item implements Serializable, ITechnicalStrings {
   /**
    * @return an icon representation for this item or null if none available
    */
-  abstract public ImageIcon getIconRepresentation();
+  public abstract ImageIcon getIconRepresentation();
 
   /**
    * @return the stars icon

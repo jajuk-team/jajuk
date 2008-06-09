@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.jajuk.util.Messages;
@@ -160,8 +161,8 @@ public class TypeManager extends ItemManager {
    * 
    * @return
    */
-  public ArrayList<Type> getAllMusicTypes() {
-    ArrayList<Type> alResu = new ArrayList<Type>(5);
+  public List<Type> getAllMusicTypes() {
+    List<Type> alResu = new ArrayList<Type>(5);
     Iterator<Type> it = hmSupportedTypes.values().iterator();
     while (it.hasNext()) {
       Type type = it.next();

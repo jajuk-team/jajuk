@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.jajuk.util.ITechnicalStrings;
@@ -263,7 +264,7 @@ public class DirectoryManager extends ItemManager {
       synchronized (FileManager.getInstance().getLock()) {
         // remove all files
         // need to use a shallow copy to avoid concurent exceptions
-        final ArrayList<File> alFiles = new ArrayList<File>(dir.getFiles());
+        final List<File> alFiles = new ArrayList<File>(dir.getFiles());
         for (final File file : alFiles) {
           FileManager.getInstance().removeFile(file);
         }

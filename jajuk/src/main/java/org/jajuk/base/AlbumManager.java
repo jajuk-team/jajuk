@@ -275,7 +275,7 @@ public class AlbumManager extends ItemManager implements Observer {
       }
     }
     // Now sort albums by rating
-    ArrayList<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
+    List<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
     Collections.sort(sortedAlbums, new Comparator<Album>() {
       public int compare(Album o1, Album o2) {
         // lowest first
@@ -306,7 +306,7 @@ public class AlbumManager extends ItemManager implements Observer {
       }
     }
     // Now sort albums by discovery date
-    ArrayList<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
+    List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
     Collections.sort(sortedAlbums, new Comparator<Album>() {
       public int compare(Album o1, Album o2) {
         return cache.get(o1).compareTo(cache.get(o2));
@@ -353,7 +353,7 @@ public class AlbumManager extends ItemManager implements Observer {
       }
     }
     // Now sort albums by rating
-    ArrayList<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
+    List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
     Collections.sort(sortedAlbums, new Comparator<Album>() {
       public int compare(Album o1, Album o2) {
         // We inverte comparaison as we want lowest scores

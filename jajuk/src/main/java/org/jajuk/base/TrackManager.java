@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -188,7 +189,7 @@ public class TrackManager extends ItemManager implements Observer {
       if (track.getAlbum().getName2().equals(sNewAlbum)) {
         return track;
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -237,7 +238,7 @@ public class TrackManager extends ItemManager implements Observer {
       if (track.getAuthor().getName2().equals(sNewAuthor)) {
         return track;
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -285,7 +286,7 @@ public class TrackManager extends ItemManager implements Observer {
       if (track.getStyle().getName2().equals(sNewStyle)) {
         return track;
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -333,7 +334,7 @@ public class TrackManager extends ItemManager implements Observer {
         Messages.showErrorMessage(137);
         throw new JajukException(137);
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -373,7 +374,7 @@ public class TrackManager extends ItemManager implements Observer {
       if (track.getComment().equals(sNewItem)) {
         return track;
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -438,7 +439,7 @@ public class TrackManager extends ItemManager implements Observer {
         Messages.showErrorMessage(137);
         return null;
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -475,7 +476,7 @@ public class TrackManager extends ItemManager implements Observer {
       if (track.getName().equals(sNewItem)) {
         return track;
       }
-      ArrayList<File> alReady = null;
+      List<File> alReady = null;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -672,8 +673,8 @@ public class TrackManager extends ItemManager implements Observer {
    * 
    * @return unsorted tracks list
    */
-  public ArrayList<Track> getTracksAsList() {
-    ArrayList<Track> tracks = new ArrayList<Track>(getItems().size());
+  public List<Track> getTracksAsList() {
+    List<Track> tracks = new ArrayList<Track>(getItems().size());
     synchronized (getLock()) {
       for (Item item : getItems()) {
         tracks.add((Track) item);

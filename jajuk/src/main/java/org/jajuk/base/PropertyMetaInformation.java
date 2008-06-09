@@ -133,7 +133,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
       // URL default
       if (oDefaultValue == null) {
         try {
-          this.oDefaultValue = UtilSystem.getConfFileByPath("").toURL();
+          this.oDefaultValue = UtilSystem.getConfFileByPath("").toURI().toURL();
         } catch (MalformedURLException e) {
           Log.error(e);
         }

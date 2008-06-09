@@ -288,6 +288,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * @return album average rating
    */
+  @Override
   public long getRate() {
     float rate = 0f;
     int nb = 0;

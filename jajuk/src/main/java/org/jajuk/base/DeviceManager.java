@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -46,7 +47,7 @@ import org.jajuk.util.log.Log;
  */
 public class DeviceManager extends ItemManager {
   /** Supported device types names */
-  private ArrayList<String> alDevicesTypes = new ArrayList<String>(10);
+  private List<String> alDevicesTypes = new ArrayList<String>(10);
 
   /** Self instance */
   private static DeviceManager singleton;

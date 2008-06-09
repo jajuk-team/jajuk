@@ -236,7 +236,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
       File frt = UtilSystem.getConfFileByPath(FILE_HISTORY);
-      saxParser.parse(frt.toURL().toString(), getInstance());
+      saxParser.parse(frt.toURI().toURL().toString(), getInstance());
       getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); // delete
       // old
       // history items

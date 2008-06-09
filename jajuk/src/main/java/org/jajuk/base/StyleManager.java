@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -155,7 +156,7 @@ public class StyleManager extends ItemManager {
       // re apply old properties from old item
       newItem.cloneProperties(old);
       // update tracks
-      ArrayList<Track> alTracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
+      List<Track> alTracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
       // we need to create a new list to avoid concurrent exceptions
       Iterator<Track> it = alTracks.iterator();
       while (it.hasNext()) {
