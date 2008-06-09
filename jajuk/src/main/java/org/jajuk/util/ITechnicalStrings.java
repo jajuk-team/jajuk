@@ -176,9 +176,6 @@ public interface ITechnicalStrings {
 
   String FILE_COLLECTION = "collection.xml";
 
-  // File written by the exit hook
-  String FILE_COLLECTION_EXIT = "collection_exit.xml";
-
   // Void file created after exit collection file
   String FILE_COLLECTION_EXIT_PROOF = "exit_proof";
 

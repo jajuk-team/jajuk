@@ -20,8 +20,8 @@
 package org.jajuk.services.core;
 
 import java.io.File;
-import java.net.InetAddress;
 
+import org.jajuk.Main;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.bookmark.History;
@@ -76,7 +76,7 @@ public class ExitService extends Thread implements ITechnicalStrings {
         History.commit();
         // Commit collection if not refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT));
+          Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
           // create a proof file
           UtilSystem.createEmptyFile(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
         }
@@ -85,30 +85,30 @@ public class ExitService extends Thread implements ITechnicalStrings {
 
         // Remove localhost_<user> session files
         // (can occur when network is not available)
-        File sessionUser = UtilSystem.getConfFileByPath(FILE_SESSIONS + "/localhost" + '_'
-            + System.getProperty("user.name"));
-        if(!sessionUser.delete())
-          Log.warn("Could not delete file: " + sessionUser.toString());
+        File[] files = UtilSystem.getConfFileByPath(FILE_SESSIONS).listFiles();
+        if (files != null) {
+          for (int i = 0; i < files.length; i++) {
+            if (files[i].getName().indexOf("localhost") != -1) {
+              if (files[i].delete()) {
+                Log.warn("Deleted session file: " + files[i].getAbsolutePath());
+              } else {
+                Log.warn("Could not delete file: " + files[i].getAbsolutePath());
+              }
+            }
+          }
+        }
 
-        // Remove session flag. Exception can be
-        // thrown here if loopback interface is not
-        // correctly set up, so should be the last
-        // thing to do
-        sessionUser = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/'
-            + InetAddress.getLocalHost().getHostName() + '_' + System.getProperty("user.name"));
-        if(!sessionUser.delete())
-          Log.warn("Could not delete file: " + sessionUser.toString());
+        // Remove session flag. 
+        File file = Main.getSessionIdFile();
+        if (!file.delete()) {
+          Log.warn("Could not delete file: " + file.toString());
+        }
 
       }
     } catch (Exception e) {
-      // don't use Log class here, it can cause freeze
-      // if
-      // workspace no more available
-      e.printStackTrace();
+      Log.error(e);
     } finally {
-      // don't use Log class here, it can cause freeze
-      // if workspace is no more available
-      System.out.println("Exit Hook end");
+      Log.debug("Exit Hook end");
     }
   }
 

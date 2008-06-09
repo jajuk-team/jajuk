@@ -34,9 +34,9 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -99,8 +99,8 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -141,14 +141,11 @@ public class Main implements ITechnicalStrings {
    */
   public static boolean bThumbMaker = false;
 
-  /** UI lauched flag */
+  /** UI launched flag */
   private static boolean bUILauched = false;
 
   /** default perspective to choose, if null, we take the configuration one */
   private static String sPerspective;
-
-  /** Server socket used to check other sessions */
-  private static ServerSocket ss;
 
   /** Is it a minor or major X.Y upgrade */
   private static boolean bUpgraded = false;
@@ -166,15 +163,10 @@ public class Main implements ITechnicalStrings {
   public static short[] isFirstTimeWizardClosed = new short[0];
 
   /** Mplayer state */
-  private static MPlayerStatus mplayerStatus;
+  private static UtilSystem.MPlayerStatus mplayerStatus;
 
   /** Workspace PATH* */
   public static String workspace;
-
-  /** MPlayer status possible values * */
-  public static enum MPlayerStatus {
-    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
-  }
 
   /** DeviceTypes Identification strings */
   private static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
@@ -192,6 +184,9 @@ public class Main implements ITechnicalStrings {
       FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300,
       // DJs directories
       FILE_DJ_DIR };
+
+  /** Directory used to flag the current jajuk session */
+  private static File sessionIdFile;
 
   /**
    * Main entry
@@ -317,9 +312,16 @@ public class Main implements ITechnicalStrings {
       checkOtherSession();
 
       // Set a session file
-      final File sessionUser = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/' + UtilSystem.getHostName()
-          + '_' + System.getProperty("user.name"));
-      sessionUser.mkdir();
+      String sHostname;
+      try {
+        sHostname = InetAddress.getLocalHost().getHostName();
+      } catch (final UnknownHostException e) {
+        sHostname = "localhost";
+      }
+      sessionIdFile = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/' + sHostname + '_'
+          + System.getProperty("user.name") + '_'
+          + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
+      sessionIdFile.mkdir();
 
       // Register device types
       for (final String deviceTypeId : deviceTypes) {
@@ -529,7 +531,8 @@ public class Main implements ITechnicalStrings {
           ii = IconLoader.ICON_STAR_4;
           break;
         default:
-          throw new IllegalArgumentException("Unexpected code position reached, the switch values should match the for-loop!");
+          throw new IllegalArgumentException(
+              "Unexpected code position reached, the switch values should match the for-loop!");
         }
         UtilGUI.extractImage(ii.getImage(), star);
       }
@@ -548,7 +551,11 @@ public class Main implements ITechnicalStrings {
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
-
+          
+          // backup the collection
+          UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
+            .getInt(CONF_BACKUP_SIZE));
+          
           // Clean the collection up
           Collection.cleanup();
 
@@ -593,7 +600,7 @@ public class Main implements ITechnicalStrings {
   public static void registerTypes() {
     try {
       // test mplayer presence in PATH
-      mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
+      mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
       if (UtilSystem.isUnderWindows()) {
         final File mplayerPath = UtilSystem.getMPlayerWindowsPath();
         // try to find mplayer executable in know locations first
@@ -611,7 +618,7 @@ public class Main implements ITechnicalStrings {
               throw new Exception("MPlayer corrupted");
             }
           } catch (Exception e) {
-            mplayerStatus = MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
+            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
           }
         }
       }
@@ -624,14 +631,14 @@ public class Main implements ITechnicalStrings {
           // Test forced path
           mplayerStatus = UtilSystem.getMplayerStatus(forced);
         } else {
-          mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+          mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
         }
-        if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+        if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
           // try to find a correct mplayer from the path
           // Under OSX, it will work only if jajuk is launched from
           // command line
           mplayerStatus = UtilSystem.getMplayerStatus("");
-          if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+          if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
             // OK, try to find MPlayer in standards OSX directories
             if (UtilSystem.isUnderOSXpower()) {
               mplayerStatus = UtilSystem.getMplayerStatus(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
@@ -642,22 +649,22 @@ public class Main implements ITechnicalStrings {
         }
       }
       // Choose player according to mplayer presence or not
-      if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+      if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
         // No mplayer, show mplayer warnings
         Log.debug("Mplayer status=" + mplayerStatus);
-        if (mplayerStatus != MPlayerStatus.MPLAYER_STATUS_OK) {
+        if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
           // Test if user didn't already select "don't show again"
           if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
-            if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
+            if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
               // No mplayer
               Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
                   CONF_NOT_SHOW_AGAIN_PLAYER);
-            } else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
+            } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
               // wrong mplayer release
               Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
                   CONF_NOT_SHOW_AGAIN_PLAYER);
             }
-          } else if (mplayerStatus == MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
+          } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
             // wrong mplayer release
             Messages.showHideableWarningMessage(Messages.getString("Warning.3"),
                 CONF_NOT_SHOW_AGAIN_PLAYER);
@@ -677,34 +684,7 @@ public class Main implements ITechnicalStrings {
    * 
    */
   private static void checkOtherSession() {
-    // check for a concurrent jajuk session on local box, try to create a
-    // new server socket
-    try {
-      ss = new ServerSocket(Main.bTestMode ? PORT_TEST : PORT);
-      // No error? jajuk was not started, leave
-    } catch (final IOException e) { // error? looks like Jajuk is already
-      // started
-      if (sc != null) {
-        sc.dispose();
-        sc = null;
-      }
-      Log.error(124);
-      Messages.getChoice(Messages.getErrorMessage(124), JOptionPane.DEFAULT_OPTION,
-          JOptionPane.ERROR_MESSAGE);
-      System.exit(-1);
-    }
-    // start listening
-    new Thread("Concurrent Session Avoidance Thread") {
-      @Override
-      public void run() {
-        try {
-          ss.accept();
-        } catch (final IOException e) {
-          Log.error(e);
-        }
-      }
-    }.start();
-    // Now check for remote concurrent users using the same configuration
+    // Check for remote concurrent users using the same configuration
     // files
     // Create concurrent session directory if needed
     final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
@@ -713,20 +693,17 @@ public class Main implements ITechnicalStrings {
     }
     // Check for concurrent session
     final File[] files = sessions.listFiles();
-    String sHostname;
-    try {
-      sHostname = InetAddress.getLocalHost().getHostName();
-    } catch (final UnknownHostException e) {
-      sHostname = "";
-    }
     // display a warning if sessions directory contains some others users
     // We ignore presence of ourself session id that can be caused by a
     // crash
-    if ((files.length > 0)
-        && !((files.length == 1) && files[0].getName().equals(
-            sHostname + '_' + System.getProperty("user.name")))) {
-      Messages.showHideableWarningMessage(Messages.getString("Warning.2"),
-          CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
+    if (files.length > 0) {
+      StringBuilder details = new StringBuilder();
+      for (int i = 0; i < files.length; i++) {
+        details.append(files[i].getName());
+        details.append('\n');
+      }
+      Messages.showHideableWarningMessage(Messages.getString("Warning.2") + 
+          details.toString(),CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
     }
   }
 
@@ -739,40 +716,24 @@ public class Main implements ITechnicalStrings {
       return;
     }
     final File fCollection = UtilSystem.getConfFileByPath(FILE_COLLECTION);
-    final File fCollectionExit = UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT);
     final File fCollectionExitProof = UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
     // check if previous exit was OK
     boolean bParsingOK = true;
     try {
-      if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
+      if (fCollectionExitProof.exists()) {
         fCollectionExitProof.delete(); // delete this file created just
         // after collection exit commit
-        Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT));
-        // Remove the collection (required by renameTo next line under
-        // Windows)
-        fCollection.delete();
-        // parsing of collection exit ok, use this collection file as
-        // final collection
-        if (!fCollectionExit.renameTo(fCollection)) {
-          Log.warn("Cannot rename collection file");
-        }
-        // backup the collection
-        UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
-            .getInt(CONF_BACKUP_SIZE));
+        Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
       } else {
         bCrashRecover = true;
         throw new JajukException(5);
       }
     } catch (final Exception e) {
-      Log.error(5, fCollectionExit.getAbsolutePath(), e);
+      Log.error(5, fCollection.getAbsolutePath(), e);
       Log
-          .debug("Jajuk was not closed properly during previous session, try to load previous collection file");
-      if (fCollectionExit.exists()) {
-        fCollectionExit.delete();
-      }
+          .debug("Jajuk was not closed properly during previous session or multi-instance, try to load previous collection file");
       try {
-        // try to load "official" collection file, should be OK but not
-        // always up-to-date
+        // try to load collection file as we may arrive here when several concurrent sessions of jajuk are running on the same box
         Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
       } catch (final Exception e2) {
         // not better? strange...
@@ -939,8 +900,8 @@ public class Main implements ITechnicalStrings {
       // launch selected file
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
         FIFO.getInstance().push(
-            UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                false), false);
+            UtilFeatures.createStackItems(alToPlay, ConfigurationManager
+                .getBoolean(CONF_STATE_REPEAT), false), false);
       }
     }
   }
@@ -1182,6 +1143,10 @@ public class Main implements ITechnicalStrings {
         Log.error(e);
       }
     }
+  }
+
+  public static File getSessionIdFile() {
+    return sessionIdFile;
   }
 
 }
