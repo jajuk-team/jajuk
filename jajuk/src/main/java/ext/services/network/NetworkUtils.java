@@ -39,6 +39,10 @@ import org.jajuk.util.log.Log;
 
 public class NetworkUtils implements ITechnicalStrings {
 
+  private NetworkUtils() {
+    // default hidden constructor for utility classes
+  }
+
   public static HttpURLConnection getConnection(String urlString, Proxy proxy) throws IOException {
     URL url = new URL(urlString);
     HttpURLConnection connection = getConnection(url, proxy);
@@ -49,9 +53,9 @@ public class NetworkUtils implements ITechnicalStrings {
   public static HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
     Log.debug("Opening Connection With: {{" + url + "}}");
     HttpURLConnection connection;
-    if (proxy == null)
+    if (proxy == null) {
       connection = (HttpURLConnection) url.openConnection();
-    else {
+    } else {
       connection = (HttpURLConnection) proxy.getConnection(url);
     }
     setConfiguration(connection);
@@ -78,8 +82,7 @@ public class NetworkUtils implements ITechnicalStrings {
       builder.append(new String(array, 0, read, charset));
     }
     input.close();
-    String out = builder.toString();
-    return out;
+    return builder.toString();
   }
 
   public static String readURL(URLConnection connection) throws IOException {
@@ -96,7 +99,7 @@ public class NetworkUtils implements ITechnicalStrings {
     writer.close();
 
     if (connection.getResponseCode() != 200) {
-      throw new RuntimeException("Invalid HTTP return code");
+      throw new IllegalArgumentException("Invalid HTTP return code");
     }
 
     StringBuilder builder = new StringBuilder();
@@ -130,11 +133,11 @@ public class NetworkUtils implements ITechnicalStrings {
   }
 
   public static Proxy getProxy(ProxyBean proxy) throws UnknownHostException, IOException {
-    if (proxy == null)
+    if (proxy == null) {
       return null;
+    }
 
     return new Proxy(proxy.getType().equals(ProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy
         .getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
   }
-
 }
