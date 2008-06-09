@@ -388,6 +388,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
           org.jajuk.base.File file = null;
           Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
           if (tracks.size() > 0) {
+            // Take first track found
             Track track = tracks.iterator().next();
             file = track.getPlayeableFile(false);
           }
