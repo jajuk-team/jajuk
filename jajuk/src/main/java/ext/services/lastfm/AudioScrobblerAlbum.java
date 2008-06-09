@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.w3c.dom.Document;
@@ -39,7 +40,7 @@ public class AudioScrobblerAlbum {
   private Date releaseDate;
   private String coverURL;
   private String smallCoverURL;
-  private ArrayList<AudioScrobblerTrack> tracks;
+  private List<AudioScrobblerTrack> tracks;
 
   private static final SimpleDateFormat df = new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.US);
 
@@ -71,8 +72,8 @@ public class AudioScrobblerAlbum {
     return album;
   }
 
-  protected static ArrayList<AudioScrobblerAlbum> getAlbumList(Document xml) {
-    ArrayList<AudioScrobblerAlbum> albums = new ArrayList<AudioScrobblerAlbum>();
+  protected static List<AudioScrobblerAlbum> getAlbumList(Document xml) {
+    List<AudioScrobblerAlbum> albums = new ArrayList<AudioScrobblerAlbum>();
 
     Element element = (Element) xml.getElementsByTagName("topalbums").item(0);
     String artist = element.getAttribute("artist");
@@ -120,7 +121,7 @@ public class AudioScrobblerAlbum {
     return title;
   }
 
-  public ArrayList<AudioScrobblerTrack> getTracks() {
+  public List<AudioScrobblerTrack> getTracks() {
     return tracks;
   }
 

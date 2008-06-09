@@ -19,18 +19,18 @@
 package ext.services.lastfm;
 
 import java.awt.Image;
-import java.util.ArrayList;
+import java.util.List;
 
 public class AudioScrobblerCoversRunnable implements Runnable {
 
   private AudioScrobblerListener listener;
   private AudioScrobblerService service;
-  private ArrayList<AudioScrobblerAlbum> albums;
+  private List<AudioScrobblerAlbum> albums;
 
   private boolean interrupted;
 
   public AudioScrobblerCoversRunnable(AudioScrobblerListener listener,
-      AudioScrobblerService service, ArrayList<AudioScrobblerAlbum> albums) {
+      AudioScrobblerService service, List<AudioScrobblerAlbum> albums) {
     this.listener = listener;
     this.service = service;
     this.albums = albums;

@@ -19,7 +19,7 @@
 package ext.services.lastfm;
 
 import java.awt.Image;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.jajuk.base.Track;
@@ -47,7 +47,7 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
     listener.setLastArtistRetrieved(null);
 
     AudioScrobblerAlbum album = null;
-    ArrayList<AudioScrobblerAlbum> albums = null;
+    List<AudioScrobblerAlbum> albums = null;
     if (!interrupted) {
       album = service.getAlbum(track.getAuthor().getName2(), track.getAlbum().getName2());
       if (album != null) {

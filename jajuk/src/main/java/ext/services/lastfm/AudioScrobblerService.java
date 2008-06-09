@@ -25,6 +25,7 @@ import ext.services.xml.XMLBuilder;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
@@ -96,17 +97,17 @@ public class AudioScrobblerService {
     return null;
   }
 
-  public ArrayList<AudioScrobblerAlbum> getAlbumList(String artist) {
+  public List<AudioScrobblerAlbum> getAlbumList(String artist) {
     try {
       // build url
       String urlString = albumListURL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist));
       // read xml
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
           urlString, proxy)));
-      ArrayList<AudioScrobblerAlbum> albums = AudioScrobblerAlbum.getAlbumList(xml);
+      List<AudioScrobblerAlbum> albums = AudioScrobblerAlbum.getAlbumList(xml);
       if (showAlbumsWithoutCover)
         return albums;
-      ArrayList<AudioScrobblerAlbum> result = new ArrayList<AudioScrobblerAlbum>();
+      List<AudioScrobblerAlbum> result = new ArrayList<AudioScrobblerAlbum>();
       for (AudioScrobblerAlbum a : albums) {
         if (!a.getSmallCoverURL().endsWith(noCoverURL))
           result.add(a);

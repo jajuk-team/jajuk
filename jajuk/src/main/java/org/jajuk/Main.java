@@ -751,7 +751,7 @@ public class Main implements ITechnicalStrings {
           return false;
         }
       });
-      final ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
+      final List<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
       Collections.sort(alBackupFiles); // sort alphabetically (newest
       // last)
       Collections.reverse(alBackupFiles); // newest first now

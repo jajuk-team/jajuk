@@ -19,6 +19,7 @@
 package ext.services.lastfm;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,7 +29,7 @@ public class AudioScrobblerSimilarArtists {
 
   private String artistName;
   private String picture;
-  private ArrayList<AudioScrobblerArtist> artists;
+  private List<AudioScrobblerArtist> artists;
 
   public final static int MAX_SIMILAR_ARTISTS = 15;
 
@@ -40,7 +41,7 @@ public class AudioScrobblerSimilarArtists {
     return picture;
   }
 
-  public ArrayList<AudioScrobblerArtist> getArtists() {
+  public List<AudioScrobblerArtist> getArtists() {
     return artists;
   }
 

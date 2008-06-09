@@ -19,7 +19,7 @@
 package ext.services.lastfm;
 
 import java.awt.Image;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.Track;
 
@@ -33,11 +33,11 @@ public interface AudioScrobblerListener {
 
   void notifyFinishGetSimilarArtist(AudioScrobblerArtist a, Image img);
 
-  ArrayList<AudioScrobblerAlbum> getAlbums();
+  List<AudioScrobblerAlbum> getAlbums();
 
   void setAlbum(AudioScrobblerAlbum album);
 
-  void setAlbums(ArrayList<AudioScrobblerAlbum> album);
+  void setAlbums(List<AudioScrobblerAlbum> album);
 
   void setImage(Image img);
 
