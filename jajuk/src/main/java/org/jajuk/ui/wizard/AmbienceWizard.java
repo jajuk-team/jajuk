@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.ButtonGroup;
@@ -344,7 +345,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
   }
 
   /** Ambiences* */
-  static ArrayList<Ambience> ambiences;
+  static List<Ambience> ambiences;
 
   /**
    * 

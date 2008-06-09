@@ -82,6 +82,7 @@ public class UtilFeatures implements ITechnicalStrings {
   @SuppressWarnings("unchecked")
   public static List<org.jajuk.base.File> applyPlayOption(final List<org.jajuk.base.File> alFiles) {
     if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_STATE_SHUFFLE)) {
+      // we need all these casts for clone() to be callable here
       final List<org.jajuk.base.File> alFilesToPlay = (List<org.jajuk.base.File>) ((ArrayList<org.jajuk.base.File>) alFiles)
           .clone();
       Collections.shuffle(alFilesToPlay, new Random());
@@ -103,7 +104,7 @@ public class UtilFeatures implements ITechnicalStrings {
    */
   public static List<StackItem> createStackItems(final List<org.jajuk.base.File> alFiles,
       final boolean bRepeat, final boolean bUserLauched) {
-    final ArrayList<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
+    final List<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
     for (org.jajuk.base.File file : alFiles) {
       if (file != null) {
         try {
@@ -135,7 +136,7 @@ public class UtilFeatures implements ITechnicalStrings {
       return al;
     }
     // Filter by ambience
-    final ArrayList<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(al.size() / 2);
+    final List<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(al.size() / 2);
     for (final org.jajuk.base.File file : al) {
       if (ambience.getStyles().contains(file.getTrack().getStyle())) {
         out.add(file);
@@ -170,7 +171,7 @@ public class UtilFeatures implements ITechnicalStrings {
    */
   public static List<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
     // computes selection
-    ArrayList<org.jajuk.base.File> files = new ArrayList<org.jajuk.base.File>(100);
+    List<org.jajuk.base.File> files = new ArrayList<org.jajuk.base.File>(100);
     if (selection == null || selection.size() == 0) {
       return files;
     }

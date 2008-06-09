@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
@@ -152,7 +153,7 @@ public class UtilSystem implements ITechnicalStrings{
       // backup
       // files
       long lUsedMB = 0;
-      final ArrayList<File> alFiles = new ArrayList<File>(10);
+      final List<File> alFiles = new ArrayList<File>(10);
       final File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
       if (files != null) {
         for (final File element : files) {

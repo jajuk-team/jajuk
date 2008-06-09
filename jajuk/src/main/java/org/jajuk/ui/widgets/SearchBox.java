@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
@@ -76,7 +77,7 @@ public class SearchBox extends JTextField implements KeyListener {
   private static final int MIN_CRITERIA_LENGTH = 2;
 
   /** Search result */
-  public ArrayList<SearchResult> alResults;
+  public List<SearchResult> alResults;
 
   /** Typed string */
   private String sTyped;

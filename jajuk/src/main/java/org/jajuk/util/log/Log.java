@@ -20,6 +20,7 @@
 package org.jajuk.util.log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -66,7 +67,7 @@ public class Log implements ITechnicalStrings {
   private static Logger loggerHttp;
 
   /** Debug traces spool */
-  private static ArrayList<String> alSpool;
+  private static List<String> alSpool;
 
   /**
    * Constructor for the Log object
@@ -422,8 +423,8 @@ public class Log implements ITechnicalStrings {
    * @return Spool traces
    */
   @SuppressWarnings("unchecked")
-  public static ArrayList<String> getSpool() {
-    return (ArrayList<String>) alSpool.clone();
+  public static List<String> getSpool() {
+    return (List<String>) ((ArrayList<String>)alSpool).clone();
   }
 
 }

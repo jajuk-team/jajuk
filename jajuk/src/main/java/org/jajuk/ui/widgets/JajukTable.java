@@ -74,7 +74,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   private String sConf;
 
   /** User Selection* */
-  private ArrayList<Item> selection;
+  private List<Item> selection;
 
   private JPopupMenu jmenu;
 
@@ -135,7 +135,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * Select columns to show colsToShow list of columns id to keep
    */
   @SuppressWarnings("unchecked")
-  public void showColumns(ArrayList<String> colsToShow) {
+  public void showColumns(List<String> colsToShow) {
     boolean acceptcolumnEventSave = acceptColumnsEvents;
     // Ignore columns event during these actions
     acceptColumnsEvents = false;
@@ -155,7 +155,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    */
   private void reorderColumns() {
     // Build the index array
-    ArrayList<String> index = new ArrayList<String>(10);
+    List<String> index = new ArrayList<String>(10);
     StringTokenizer st = new StringTokenizer(ConfigurationManager.getProperty(this.sConf), ",");
     while (st.hasMoreTokens()) {
       index.add(st.nextToken());
@@ -191,8 +191,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @param Name
    *          of the configuration key giving configuration
    */
-  public ArrayList<String> getColumnsConf() {
-    ArrayList<String> alOut = new ArrayList<String>(10);
+  public List<String> getColumnsConf() {
+    List<String> alOut = new ArrayList<String>(10);
     String value = ConfigurationManager.getProperty(sConf);
     StringTokenizer st = new StringTokenizer(value, ",");
     while (st.hasMoreTokens()) {
@@ -210,7 +210,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList<String> alOut = getColumnsConf();
+    List<String> alOut = getColumnsConf();
     if (!alOut.contains(property)) {
       String value = ConfigurationManager.getProperty(sConf);
       ConfigurationManager.setProperty(sConf, value + "," + property);
@@ -226,7 +226,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     if (sConf == null) {
       return;
     }
-    ArrayList<String> alOut = getColumnsConf();
+    List<String> alOut = getColumnsConf();
     alOut.remove(property);
     ConfigurationManager.setProperty(sConf, getColumnsConf(alOut));
   }
@@ -300,7 +300,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @return columns configuration from given list of columns identifiers
    * 
    */
-  private String getColumnsConf(ArrayList<String> alCol) {
+  private String getColumnsConf(List<String> alCol) {
     StringBuilder sb = new StringBuilder();
     Iterator<String> it = alCol.iterator();
     while (it.hasNext()) {
@@ -373,7 +373,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
   }
 
-  public ArrayList<Item> getSelection() {
+  public List<Item> getSelection() {
     return this.selection;
   }
 

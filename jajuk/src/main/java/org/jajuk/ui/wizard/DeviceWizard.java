@@ -34,6 +34,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -126,7 +127,7 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
   Device device;
 
   /** All devices expect itself */
-  ArrayList<Device> alDevices = new ArrayList<Device>(10);
+  List<Device> alDevices = new ArrayList<Device>(10);
 
   /** Initial URL* */
   private String sInitialURL;

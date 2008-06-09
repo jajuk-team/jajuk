@@ -651,7 +651,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         String sProperty = meta.getName();
         if (XML_FILES.equals(sProperty)) {
           Track track = (Track) alItems.get(0);
-          ArrayList<Item> alFiles = new ArrayList<Item>(track.getFiles().size());
+          List<Item> alFiles = new ArrayList<Item>(track.getFiles().size());
           alFiles.addAll(track.getFiles());
           // show properties window for this item
           new PropertiesWizard(alFiles);
@@ -659,7 +659,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           // can only be a set a files
           String sValue = alItems.get(0).getStringValue(sProperty);
           StringTokenizer st = new StringTokenizer(sValue, ",");
-          ArrayList<Item> alItems = new ArrayList<Item>(3);
+          List<Item> alItems = new ArrayList<Item>(3);
           while (st.hasMoreTokens()) {
             String sPlf = st.nextToken();
             Item pa = PlaylistManager.getInstance().getPlaylistByID(sPlf);
@@ -674,7 +674,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           // can be only an ID
           Item pa = ItemManager.getItemManager(sProperty).getItemByID(sValue);
           if (pa != null) {
-            ArrayList<Item> alItems = new ArrayList<Item>(1);
+            List<Item> alItems = new ArrayList<Item>(1);
             alItems.add(pa);
             // show properties window for this item
             new PropertiesWizard(alItems);
@@ -692,16 +692,16 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         Object oValue = null;
         Item newItem = null;
         // list of actually changed tracks (used by out message)
-        ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
+        List<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
         // none change, leave
         if (hmPropertyToChange.size() == 0) {
           return;
         }
         // Computes all items to change
         // contains items to be changed
-        ArrayList<Item> itemsToChange = new ArrayList<Item>(alItems);
+        List<Item> itemsToChange = new ArrayList<Item>(alItems);
 
-        ArrayList<Item> alInError = new ArrayList<Item>(itemsToChange.size());
+        List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
         // details for errors
         String sDetails = "";
         // Now we have all items to consider, write tags for each

@@ -34,7 +34,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -51,6 +52,7 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.Event;
@@ -90,13 +92,13 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
   OKCancelPanel okc;
 
   /** File filter */
-  HashSet filter;
+  Set<File> filter;
 
   /** Layout dimensions */
   double[][] dSize = { { 0, TableLayout.FILL }, { 0, 22, TableLayout.PREFERRED, 22 } };
 
   /** Items */
-  ArrayList<CDDBTrack> alTracks;
+  List<CDDBTrack> alTracks;
 
   /** Freedb Items */
   Freedb fdb;
@@ -189,7 +191,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
    * @param dir
    *          directory to retag
    */
-  public CDDBWizard(final ArrayList<Track> alGivenTracks) {
+  public CDDBWizard(final List<Track> alGivenTracks) {
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
     SwingWorker sw = new SwingWorker() {
@@ -385,6 +387,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
     if (e.getSource() == okc.getOKButton()) {
       dispose();
       new Thread() {
+        @Override
         public void run() {
           retagFiles();
         }

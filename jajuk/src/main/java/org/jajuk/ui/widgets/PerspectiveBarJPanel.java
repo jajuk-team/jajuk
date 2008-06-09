@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -58,7 +59,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
   /**
    * Perspective button
    */
-  private ArrayList<JButton> alButtons = new ArrayList<JButton>(10);
+  private List<JButton> alButtons = new ArrayList<JButton>(10);
 
   /**
    * Singleton access

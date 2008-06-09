@@ -598,7 +598,7 @@ public class JajukSystray extends CommandJPanel {
    * @return Text to be displayed in the tootip and baloon under windows.
    * 
    */
-  public String getBasicFormatText(File file) {
+  public final String getBasicFormatText(File file) {
     String sOut = "";
     if (file != null) {
       sOut = "";

@@ -29,6 +29,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -87,7 +89,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
    * @param selection
    *          or null to void it
    */
-  public void setSelection(HashSet<Style> selection) {
+  public void setSelection(Set<Style> selection) {
     if (selection != null) {
       int[] indices = new int[selection.size()];
       // reset all indices to -1 to avoid selecting zero th item
@@ -184,12 +186,11 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
    */
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(jcbAmbiences)) {
-      ArrayList<Ambience> alAmbiences = new ArrayList<Ambience>(AmbienceManager.getInstance()
+      List<Ambience> alAmbiences = new ArrayList<Ambience>(AmbienceManager.getInstance()
           .getAmbiences());
       Ambience ambience = alAmbiences.get(jcbAmbiences.getSelectedIndex());
       // select all styles for this ambience
       setSelection(ambience.getStyles());
     }
   }
-
 }

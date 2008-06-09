@@ -76,7 +76,7 @@ public class JajukToggleButton extends JajukButton {
   }
 
   @Override
-  public void setSelected(boolean b) {
+  public final void setSelected(boolean b) {
     super.setSelected(b);
     setBorder(b ? PRESSED_BORDER : UNPRESSED_BORDER);
   }

@@ -56,7 +56,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   private static String sLocal = "en";
 
   /** Supported Locals */
-  private static ArrayList<String> alLocals = new ArrayList<String>(10);
+  private static List<String> alLocals = new ArrayList<String>(10);
 
   /** self instance for singleton */
   private static Messages mesg;
@@ -250,7 +250,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * 
    * @return
    */
-  public static ArrayList<String> getLocales() {
+  public static List<String> getLocales() {
     return alLocals;
   }
 
@@ -259,8 +259,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * 
    * @return
    */
-  public static ArrayList<String> getDescs() {
-    final ArrayList<String> alDescs = new ArrayList<String>(10);
+  public static List<String> getDescs() {
+    final List<String> alDescs = new ArrayList<String>(10);
     for (final String local : alLocals) {
       alDescs.add(getString("Language_desc_" + local));
     }
