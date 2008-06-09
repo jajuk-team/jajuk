@@ -22,6 +22,7 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -33,7 +34,7 @@ import org.jajuk.base.Item;
  */
 public abstract class SelectionAction extends ActionBase {
 
-  ArrayList<Item> selection = null;
+  List<Item> selection = null;
 
   protected SelectionAction(String msg, ImageIcon icon, boolean enabled) {
     super(msg, icon, enabled);
@@ -52,11 +53,10 @@ public abstract class SelectionAction extends ActionBase {
     if (o instanceof Item) {
       selection = new ArrayList<Item>(1);
       selection.add((Item) o);
-    } else if (o instanceof ArrayList) {
-      selection = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    } else if (o instanceof List) {
+      selection = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
     } else if (o instanceof HashSet) {
       selection = new ArrayList<Item>((HashSet) o);
     }
   }
-
 }

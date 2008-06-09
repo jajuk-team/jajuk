@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -48,7 +49,7 @@ public class NewFolderAction extends ActionBase {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
-    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     Item currentItem = alSelected.get(0);
 
     String folderName = JOptionPane.showInputDialog(null, Messages.getString("NewFolderAction.1")

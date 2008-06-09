@@ -20,7 +20,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -58,7 +58,7 @@ public class ReportAction extends ActionBase {
     // First item
     final String type = (String) source.getClientProperty(ITechnicalStrings.DETAIL_ORIGIN);
     // Get required data from the tree (selected node and node type)
-    final ArrayList<Item> alSelected = (ArrayList<Item>) source
+    final List<Item> alSelected = (List<Item>) source
         .getClientProperty(ITechnicalStrings.DETAIL_SELECTION);
     // Display a save as dialog
     final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter

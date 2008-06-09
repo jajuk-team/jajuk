@@ -20,7 +20,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -46,7 +46,7 @@ public class CopyAction extends ActionBase {
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
-    ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
 
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);

@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.jajuk.base.Album;
@@ -201,7 +202,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   private void exportDirectoryHelper(int level, Directory directory) throws Exception {
     // Get the children
-    ArrayList<Directory> children = new ArrayList<Directory>(directory.getDirectories());
+    List<Directory> children = new ArrayList<Directory>(directory.getDirectories());
     writer.write(addTabs(level) + Tag.openTag(XML_DIRECTORY) + NEWLINE);
     String sName = UtilString.formatXML(directory.getName());
     String sID = UtilString.formatXML(directory.getID());
@@ -390,10 +391,10 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.reporting.Exporter#process(java.util.ArrayList)
+   * @see org.jajuk.reporting.Exporter#process(java.util.List)
    */
   @Override
-  public void process(ArrayList<Item> collection) throws Exception {
+  public void process(List<Item> collection) throws Exception {
     try {
       writer.write(XML_HEADER + NEWLINE + Tag.openTag(XML_COLLECTION) + NEWLINE);
       for (Item item : collection) {

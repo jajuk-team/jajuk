@@ -20,7 +20,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -56,9 +56,9 @@ public class SaveAsAction extends ActionBase {
     JComponent source = (JComponent) e.getSource();
     // @TODO Do better here, accept a single playlist for ie
     Object o = source.getClientProperty(DETAIL_SELECTION);
-    if (o instanceof ArrayList) {
+    if (o instanceof List) {
       try {
-        ArrayList<Playlist> playlists = (ArrayList<Playlist>) o;
+        List<Playlist> playlists = (List<Playlist>) o;
         Playlist playlist = playlists.get(0);
         playlist.saveAs();
         InformationJPanel.getInstance().setMessage(

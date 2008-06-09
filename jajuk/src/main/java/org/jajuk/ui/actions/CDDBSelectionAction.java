@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
@@ -63,7 +64,7 @@ public class CDDBSelectionAction extends SelectionAction {
       return;
     }
     // Build a list of tracks from various items
-    ArrayList<Track> tracks = new ArrayList<Track>(selection.size());
+    List<Track> tracks = new ArrayList<Track>(selection.size());
     for (Item item : selection) {
       tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
     }

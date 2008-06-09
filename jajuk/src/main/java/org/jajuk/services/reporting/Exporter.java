@@ -21,7 +21,7 @@
 package org.jajuk.services.reporting;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
@@ -67,9 +67,9 @@ public abstract class Exporter implements ITechnicalStrings {
    * This methods will create an HTML String of items
    * 
    * @param collection
-   *          An ArrayList of the items to export
+   *          An List of the items to export
    */
-  abstract public void process(ArrayList<Item> collection) throws Exception;
+  abstract public void process(List<Item> collection) throws Exception;
 
   /**
    * 

@@ -49,7 +49,7 @@ public class RefactorAction implements ITechnicalStrings {
 
   private static String sFS = java.io.File.separator;
 
-  private ArrayList<File> alFiles = null;
+  private List<File> alFiles = null;
 
   /** [PERF] Stores directory to be refreshed to avoid rescanning them twice */
   private final List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
@@ -59,7 +59,7 @@ public class RefactorAction implements ITechnicalStrings {
    * @param pFiles
    *          files to be reorganized (can be from different directories)
    */
-  public RefactorAction(final ArrayList<File> pFiles) {
+  public RefactorAction(final List<File> pFiles) {
     // check the directory user selected contains some files
     if (pFiles.size() == 0) {
       Messages.showErrorMessage(18);

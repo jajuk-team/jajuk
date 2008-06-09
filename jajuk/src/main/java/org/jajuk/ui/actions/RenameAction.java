@@ -20,7 +20,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -35,7 +35,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 public class RenameAction extends ActionBase {
@@ -51,7 +51,7 @@ public class RenameAction extends ActionBase {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
-    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
     new Thread() {
       @Override

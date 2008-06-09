@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -63,12 +64,12 @@ public class DeleteAction extends ActionBase {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
-    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    final ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
-    final ArrayList<File> rejFiles = new ArrayList<File>(alSelected.size());
-    final ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
-    final ArrayList<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
-    final ArrayList<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<File> alFiles = new ArrayList<File>(alSelected.size());
+    final List<File> rejFiles = new ArrayList<File>(alSelected.size());
+    final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
+    final List<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
+    final List<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
 
     for (Item item : alSelected) {
       if (item instanceof File) {

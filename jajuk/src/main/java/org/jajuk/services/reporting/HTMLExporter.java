@@ -21,7 +21,7 @@
 package org.jajuk.services.reporting;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -69,10 +69,10 @@ public class HTMLExporter extends Exporter implements ITechnicalStrings {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.reporting.Exporter#process(java.util.ArrayList)
+   * @see org.jajuk.reporting.Exporter#process(java.util.List)
    */
   @Override
-  public void process(ArrayList<Item> collection) throws Exception {
+  public void process(List<Item> collection) throws Exception {
     // Get an instance of the XMLExporter.
     XMLExporter xmlExporter = (XMLExporter) ExporterFactory.createExporter("xml");
     // Create an xml tagging of this collection

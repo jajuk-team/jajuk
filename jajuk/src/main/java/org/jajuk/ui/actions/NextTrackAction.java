@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
@@ -56,7 +57,7 @@ public class NextTrackAction extends ActionBase {
     } else {
       // if playing a radio, launch next radio station
       if (FIFO.getInstance().isPlayingRadio()) {
-        final ArrayList<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
+        final List<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
             .getWebRadios());
         int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
         if (index == radios.size() - 1) {

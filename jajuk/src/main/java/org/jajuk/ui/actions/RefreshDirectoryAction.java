@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -52,7 +53,7 @@ public class RefreshDirectoryAction extends ActionBase {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
-    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     Item item = alSelected.get(0);
     final Directory dir;
     if (item instanceof Directory) {

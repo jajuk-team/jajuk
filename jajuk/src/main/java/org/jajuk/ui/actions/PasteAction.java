@@ -21,6 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -59,12 +60,12 @@ public class PasteAction extends ActionBase {
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
-    final ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
-    final ArrayList<Item> moveItems = ItemMoveManager.getInstance().getAll();
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> moveItems = ItemMoveManager.getInstance().getAll();
     final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
 
-    final ArrayList<File> alFiles = new ArrayList<File>(alSelected.size());
-    final ArrayList<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
+    final List<File> alFiles = new ArrayList<File>(alSelected.size());
+    final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
 
     new Thread() {
       @Override
