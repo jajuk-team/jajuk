@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -84,8 +85,8 @@ public class ViewFactory {
    *       default perspectives XML file ?)
    */
   @SuppressWarnings("unchecked")
-  public static ArrayList<Class> getKnownViews() {
-    ArrayList<Class> out = new ArrayList<Class>();
+  public static List<Class> getKnownViews() {
+    List<Class> out = new ArrayList<Class>();
     // Take one instance of each set of view instances mapped to each view
     // classname
     out.add(AnimationView.class);

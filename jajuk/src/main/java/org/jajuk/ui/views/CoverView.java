@@ -117,7 +117,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private Directory dirReference;
 
   /** List of available covers for the current file */
-  private final ArrayList<Cover> alCovers = new ArrayList<Cover>(20);
+  private final List<Cover> alCovers = new ArrayList<Cover>(20);
 
   // control panel
   JPanel jpControl;
@@ -239,11 +239,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       try {
         final File file = new File(cover.getURL().getFile());
         if (file.isFile() && file.exists()) {
-          file.delete();
-          // check that file has been really deleted (sometimes,
-          // we get no exception)
-          if (file.exists()) {
-            throw new Exception("");
+          if (!file.delete()) {
+            throw new Exception("Deleting file " + file.toString() + " failed");
           }
         } else { // not a file, must have a problem
           throw new Exception("");
@@ -286,7 +283,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
-          final Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+          final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
           if (!alCovers.contains(cover2)) {
             alCovers.add(cover2);
             setFoundText();
@@ -374,7 +371,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             UtilSystem.copy(fSource, file);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.INFORMATIVE);
-            final Cover cover2 = new Cover(file.toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+            final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
             if (!alCovers.contains(cover2)) {
               alCovers.add(cover2);
               setFoundText();
@@ -1081,11 +1078,17 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       displayCurrentCover();
       return;
     }
+    
+    if(fCurrent == null)
+      throw new IllegalArgumentException("Internal Error: Unexpected value, " +
+          "variable should not be empty. fCurrent: " + fCurrent +
+          " dirReference: " + dirReference);
+    
     // search for local covers in all directories mapping
     // the current track to reach other devices covers and
     // display them together
     final Track trackCurrent = fCurrent.getTrack();
-    final ArrayList<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
+    final List<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
     // list of files mapping the track
     for (final org.jajuk.base.File file : alFiles) {
       final Directory dirScanned = file.getDirectory();
@@ -1107,13 +1110,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (!bAbsoluteCover
               && UtilFeatures.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i].getName())) {
             // test the cover is not already used
-            final Cover cover = new Cover(files[i].toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+            final Cover cover = new Cover(files[i].toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
             if (!alCovers.contains(cover)) {
               alCovers.add(cover);
             }
             bAbsoluteCover = true;
           } else { // normal local cover
-            final Cover cover = new Cover(files[i].toURL(), Cover.LOCAL_COVER);
+            final Cover cover = new Cover(files[i].toURI().toURL(), Cover.LOCAL_COVER);
             if (!alCovers.contains(cover)) {
               alCovers.add(cover);
             }

@@ -24,6 +24,7 @@ import ext.SwingWorker;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -66,7 +67,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   HashSet<Item> selectedRecursively = new HashSet<Item>(100);
 
   /** Items selection */
-  ArrayList<Item> alSelected = new ArrayList<Item>(100);
+  List<Item> alSelected = new ArrayList<Item>(100);
 
   /** Top tree node */
   DefaultMutableTreeNode top;

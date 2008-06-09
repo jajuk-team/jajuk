@@ -142,7 +142,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   /** Selected smart playlist */
   SmartPlaylist spSelected;
 
-  ArrayList<File> selectedFiles = new ArrayList<File>(20);
+  List<File> selectedFiles = new ArrayList<File>(20);
 
   JPopupMenu jpmenu;
 
@@ -166,7 +166,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
         SmartPlaylist sp = (SmartPlaylist) e.getComponent();
         if (sp == spSelected) {
-          ArrayList<File> files;
+          List<File> files;
           try {
             files = sp.getPlaylist().getFiles();
           } catch (JajukException e1) {

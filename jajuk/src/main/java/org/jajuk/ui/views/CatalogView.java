@@ -164,7 +164,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private int iNbCreatedThumbs = 0;
 
   /** Utility list used by size selector */
-  private ArrayList<String> sizes = new ArrayList<String>(10);
+  private List<String> sizes = new ArrayList<String>(10);
 
   /** Swing Timer to refresh the component */
   private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
@@ -470,7 +470,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             filter = new Filter((meta == null) ? null : meta.getName(), jtfValue.getText(), true,
                 false);
           }
-          ArrayList<Album> albums = null;
+          List<Album> albums = null;
           final HashMap<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();
           // filter albums matching tracks
           Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
@@ -574,7 +574,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
           // Now process each album
           HashSet<Directory> directories = new HashSet<Directory>(albums.size());
-          ArrayList<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(
+          List<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(
               albums.size());
           for (Object it : albums) {
             Album album = (Album) it;
@@ -602,7 +602,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             Track anyTrack = hmAlbumTrack.get(album);
             if (anyTrack != null) {
               // Take the directory of any file of the track
-              ArrayList<org.jajuk.base.File> fileList = anyTrack.getFiles();
+              List<org.jajuk.base.File> fileList = anyTrack.getFiles();
               if (fileList.size() > 0) {
                 Directory dir = fileList.get(0).getDirectory();
                 // We want to limit duplicate covers, so we

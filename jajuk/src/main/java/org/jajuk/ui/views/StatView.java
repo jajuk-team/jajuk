@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -172,8 +173,7 @@ public class StatView extends ViewAdapter implements Observer {
       // prepare devices
       long lTotalSize = 0;
       double dOthers = 0;
-      ArrayList<Device> alDevices = null;
-      alDevices = new ArrayList<Device>(DeviceManager.getInstance().getDevices());
+      List<Device> alDevices = new ArrayList<Device>(DeviceManager.getInstance().getDevices());
       long[] lSizes = new long[DeviceManager.getInstance().getElementCount()];
       for (File file : FileManager.getInstance().getFiles()) {
         lTotalSize += file.getSize();

@@ -33,6 +33,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -101,10 +102,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   private static final long serialVersionUID = 1L;
 
   /** Files selection */
-  ArrayList<File> alFiles = new ArrayList<File>(100);
+  List<File> alFiles = new ArrayList<File>(100);
 
   /** Directories selection */
-  ArrayList<Directory> alDirs = new ArrayList<Directory>(10);
+  List<Directory> alDirs = new ArrayList<Directory>(10);
 
   /** Collection export */
   JPopupMenu jmenuCollection;
@@ -500,7 +501,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
               // double click on a playlist
               else if (o instanceof PlaylistFileNode) {
                 Playlist plf = ((PlaylistFileNode) o).getPlaylistFile();
-                ArrayList<File> alToPlay = null;
+                List<File> alToPlay = null;
                 try {
                   alToPlay = plf.getFiles();
                 } catch (JajukException je) {
@@ -753,7 +754,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       top.add(nodeDevice);
     }
     // add directories
-    ArrayList<Directory> directories = null;
+    List<Directory> directories = null;
     directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
     Iterator<Directory> it2 = directories.iterator();
     while (it2.hasNext()) {
@@ -779,7 +780,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
     // add files
-    ArrayList<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
+    List<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
     Iterator<File> it3 = files.iterator();
     while (it3.hasNext()) {
       File file = it3.next();
@@ -798,7 +799,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
 
     // add playlists
-    ArrayList<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager.getInstance()
+    List<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager.getInstance()
         .getPlaylists());
     Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {

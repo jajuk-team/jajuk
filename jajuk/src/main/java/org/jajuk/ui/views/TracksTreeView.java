@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -102,7 +103,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   private static final long serialVersionUID = 1L;
 
   /** Track selection */
-  ArrayList<Track> alTracks;
+  List<Track> alTracks;
 
   JPopupMenu jmenuCollection;
 
@@ -537,7 +538,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByStyle() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -615,7 +616,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByAuthor() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -674,7 +675,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByYear() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -730,7 +731,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByAlbum() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -743,7 +744,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByDiscovery() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     // Create separator nodes
     DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(Messages
@@ -808,7 +809,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByRate() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -821,7 +822,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByHits() {
     // delete previous tree
     top.removeAllChildren();
-    ArrayList<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -962,7 +963,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   /**
    * @return Returns the alTracks.
    */
-  public ArrayList<Track> getTrackSelection() {
+  public List<Track> getTrackSelection() {
     return alTracks;
   }
 }
