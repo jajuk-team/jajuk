@@ -328,22 +328,4 @@ public class PerspectiveManager implements ITechnicalStrings {
     return perspective;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.mozilla.xpcom.IAppFileLocProvider#getFile(java.lang.String,
-   *      boolean[])
-   */
-  public File getFile(String prop, boolean[] persistent) {
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.mozilla.xpcom.IAppFileLocProvider#getFiles(java.lang.String)
-   */
-  public File[] getFiles(String prop) {
-    return null;
-  }
 }
