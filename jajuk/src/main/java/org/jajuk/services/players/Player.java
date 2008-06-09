@@ -75,6 +75,9 @@ public class Player implements ITechnicalStrings {
    * @return true if play is OK
    */
   public static boolean play(final File file, final float fPosition, final long length) {
+    if(file == null)
+      throw new IllegalArgumentException("Cannot play empty file."); 
+      
     fCurrent = file;
     try {
       // Choose the player

@@ -27,7 +27,7 @@ import org.jajuk.util.log.Log;
 /**
  * A FIFO item
  */
-public class StackItem {
+public class StackItem implements Cloneable {
 
   /** Associated file */
   private File file;
@@ -138,18 +138,17 @@ public class StackItem {
    * @return a clonned stack item
    */
   @Override
-  public Object clone() {
-    StackItem item = null;
+  public Object clone() throws CloneNotSupportedException {
     try {
-      item = new StackItem(file, bRepeat, bUserLaunch);
+      StackItem item = new StackItem(file, bRepeat, bUserLaunch);
       item.setPlanned(bPlanned);
+
+      return item;
     } catch (JajukException je) { // can be thrown if FileManager return a
       // null file
       Log.error(je);
       return null;
     }
-
-    return item;
   }
 
   /**
@@ -170,7 +169,18 @@ public class StackItem {
     if (fOther == null || file == null) {
       return false;
     }
+
     return (fOther.equals(file) && itemOther.isPlanned() == isPlanned());
+  }
+
+  /**
+   * Hash code method to go along with equals
+   * 
+   */
+  @Override
+  public int hashCode() {
+    // ignore three boolean parameters for now and just use the file as hashcode...
+    return file.hashCode();
   }
 
   /**

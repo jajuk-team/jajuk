@@ -37,7 +37,7 @@ import org.jajuk.util.ITechnicalStrings;
 public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings {
 
   /** Set of proportions */
-  private ArrayList<Proportion> proportions;
+  private List<Proportion> proportions;
 
   /**
    * @param sID
@@ -125,7 +125,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
   /**
    * @return Proportions
    */
-  public ArrayList<Proportion> getProportions() {
+  public List<Proportion> getProportions() {
     return this.proportions;
   }
 
@@ -154,8 +154,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
     return sb.toString();
   }
 
-  public void setProportions(ArrayList<Proportion> proportions) {
+  public void setProportions(List<Proportion> proportions) {
     this.proportions = proportions;
   }
-
 }

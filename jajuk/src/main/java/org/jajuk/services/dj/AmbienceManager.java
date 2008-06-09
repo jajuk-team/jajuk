@@ -27,6 +27,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -122,7 +123,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
    * @return list of registated ambiences
    */
   public Collection<Ambience> getAmbiences() {
-    ArrayList<Ambience> al = new ArrayList<Ambience>(ambiences.values());
+    List<Ambience> al = new ArrayList<Ambience>(ambiences.values());
     Collections.sort(al);
     return al;
   }

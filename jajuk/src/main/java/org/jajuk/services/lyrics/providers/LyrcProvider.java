@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.jajuk.util.DownloadManager;
@@ -60,7 +61,7 @@ public class LyrcProvider extends GenericProvider {
       return null;
     } else if (html.contains("Suggestions : <br>")) {
       final HashMap<String, String> suggestions = new HashMap<String, String>();
-      final ArrayList<String> tokensToFind = new ArrayList<String>();
+      final List<String> tokensToFind = new ArrayList<String>();
       final StringTokenizer artistTokens = getTokenizer(artist);
       final StringTokenizer titleTokens = getTokenizer(title);
 

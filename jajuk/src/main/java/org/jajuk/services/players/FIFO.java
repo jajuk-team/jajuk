@@ -69,10 +69,10 @@ public class FIFO implements ITechnicalStrings {
   private StackItem itemLast;
 
   /** Fifo itself, contains jajuk File objects */
-  private volatile ArrayList<StackItem> alFIFO;
+  private volatile List<StackItem> alFIFO;
 
   /** Planned tracks */
-  private volatile ArrayList<StackItem> alPlanned;
+  private volatile List<StackItem> alPlanned;
 
   /** Stop flag* */
   private static volatile boolean bStop = true;
@@ -364,7 +364,7 @@ public class FIFO implements ITechnicalStrings {
    *          keep previous files or stop them to start a new one ?
    */
   private void pushCommand(StackItem item, boolean bAppend) {
-    ArrayList<StackItem> alFiles = new ArrayList<StackItem>(1);
+    List<StackItem> alFiles = new ArrayList<StackItem>(1);
     alFiles.add(item);
     pushCommand(alFiles, bAppend);
   }
@@ -783,7 +783,7 @@ public class FIFO implements ITechnicalStrings {
           // add a fake album at the top the fifo because the
           // finish will drop first element and we won't
           // drop first track of the next album
-          ArrayList<StackItem> alFake = new ArrayList<StackItem>(1);
+          List<StackItem> alFake = new ArrayList<StackItem>(1);
           alFake.add(getItem(0));
           insert(alFake, 0);
           finished(); // stop current track and start the new one
@@ -923,8 +923,8 @@ public class FIFO implements ITechnicalStrings {
    * @return Returns a shallow copy of the fifo
    */
   @SuppressWarnings("unchecked")
-  public ArrayList<StackItem> getFIFO() {
-    return (ArrayList<StackItem>) alFIFO.clone();
+  public List<StackItem> getFIFO() {
+    return (List<StackItem>) ((ArrayList<StackItem>)alFIFO).clone();
   }
 
   /**
@@ -961,7 +961,7 @@ public class FIFO implements ITechnicalStrings {
    * @param iPos
    */
   public void insert(StackItem item, int iPos) {
-    ArrayList<StackItem> alStack = new ArrayList<StackItem>(1);
+    List<StackItem> alStack = new ArrayList<StackItem>(1);
     alStack.add(item);
     insert(alStack, iPos);
     // refresh queue
@@ -1135,8 +1135,8 @@ public class FIFO implements ITechnicalStrings {
    * @return Returns a shallow copy of planned files
    */
   @SuppressWarnings("unchecked")
-  public ArrayList<StackItem> getPlanned() {
-    return (ArrayList<StackItem>) alPlanned.clone();
+  public List<StackItem> getPlanned() {
+    return (List<StackItem>) ((ArrayList<StackItem>)alPlanned).clone();
   }
 
   /**
@@ -1157,7 +1157,7 @@ public class FIFO implements ITechnicalStrings {
   @SuppressWarnings("unchecked")
   public void cleanDevice(Device device) {
     if (alFIFO.size() > 0) {
-      ArrayList<StackItem> alFIFOCopy = (ArrayList<StackItem>) alFIFO.clone();
+      List<StackItem> alFIFOCopy = (List<StackItem>) ((ArrayList<StackItem>)alFIFO).clone();
       if (alFIFO.size() > 1) { // keep first item (being played)
         for (int i = 1; i < alFIFO.size(); i++) {
           StackItem item = alFIFO.get(i);

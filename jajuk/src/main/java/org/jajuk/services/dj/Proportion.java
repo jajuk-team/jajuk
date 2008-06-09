@@ -20,7 +20,7 @@
 
 package org.jajuk.services.dj;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.base.Style;
 
@@ -62,17 +62,25 @@ public class Proportion {
    */
   @Override
   public boolean equals(Object other) {
-    if (other == null || !(other instanceof Proportion)) {
+    // also catches null
+    if (!(other instanceof Proportion)) {
       return false;
     }
     return getProportion() == ((Proportion) other).getProportion()
         && getStyles().equals(((Proportion) other).getStyles());
   }
 
+  @Override
+  public int hashCode() {
+    // for now just use ambience for the hashCode, not sure if we should include the 
+    // proportion value as well...
+    return ambience.hashCode();
+  }
+
   /**
    * @return Returns the styles
    */
-  public HashSet<Style> getStyles() {
+  public Set<Style> getStyles() {
     return this.ambience.getStyles();
   }
 

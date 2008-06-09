@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -363,7 +364,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
   /** Intermediate proportion variable used during parsing */
   private float proportion;
 
-  private ArrayList<Proportion> proportions = new ArrayList<Proportion>(5);
+  private List<Proportion> proportions = new ArrayList<Proportion>(5);
 
   @Override
   DigitalDJ getDJ(File file) throws Exception {
@@ -447,7 +448,7 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
 class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
 
   /** Intermediate transition list */
-  private ArrayList<Transition> transitions = new ArrayList<Transition>(10);
+  private List<Transition> transitions = new ArrayList<Transition>(10);
 
   @Override
   DigitalDJ getDJ(File file) throws Exception {

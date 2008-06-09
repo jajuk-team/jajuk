@@ -21,6 +21,7 @@ package org.jajuk.services.players;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
@@ -111,7 +112,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
    *          to play
    * @return command line as a String array
    */
-  ArrayList<String> buildCommand(String url) {
+  List<String> buildCommand(String url) {
     String sCommand = "mplayer";
     // Use any forced mplayer path
     String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
@@ -126,7 +127,7 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
     }
     String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
     // Build command
-    ArrayList<String> cmd = new ArrayList<String>(10);
+    List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
     // quiet: less traces
     cmd.add("-quiet");

@@ -35,7 +35,7 @@ import org.jajuk.util.UtilFeatures;
 public class TransitionDigitalDJ extends DigitalDJ {
 
   /** List of transitions, need to be a list, not a set for offset */
-  private ArrayList<Transition> transitions;
+  private List<Transition> transitions;
 
   /** Startup style* */
   private Style startupStyle;
@@ -51,7 +51,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * @return DJ transitions
    */
-  public ArrayList<Transition> getTransitions() {
+  public List<Transition> getTransitions() {
     return this.transitions;
   }
 
@@ -114,7 +114,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
       if (tr != null) {
         from = tr.getFrom();
       }
-      ArrayList<File> files = new ArrayList<File>(100);
+      List<File> files = new ArrayList<File>(100);
       for (File file : global) {
         if (from != null && from.getStyles().contains(file.getTrack().getStyle())) {
           files.add(file);
@@ -239,7 +239,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
     this.startupStyle = startupStyle;
   }
 
-  public void setTransitions(ArrayList<Transition> transitions) {
+  public void setTransitions(List<Transition> transitions) {
     this.transitions = transitions;
   }
 
