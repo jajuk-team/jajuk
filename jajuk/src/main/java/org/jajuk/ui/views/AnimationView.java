@@ -97,13 +97,16 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
     add(btl1);
 
     ObservationManager.register(this);
-    // check if a track or a webradio has already been launched
-    if (FIFO.getInstance().isPlayingRadio()) {
-      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
-    } else {
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+    if (FIFO.isStopped()) {
+      update(new Event(JajukEvents.EVENT_ZERO));
+    } else {// check if a track or a webradio has already been launched
+      if (FIFO.getInstance().isPlayingRadio()) {
+        update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+      } else {
+        update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+      }
     }
   }
 
@@ -176,8 +179,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
       if (file != null) {
         String s = "";
         try {
-          s = UtilString.applyPattern(file, ConfigurationManager.getProperty(CONF_ANIMATION_PATTERN),
-              false, false);
+          s = UtilString.applyPattern(file, ConfigurationManager
+              .getProperty(CONF_ANIMATION_PATTERN), false, false);
         } catch (JajukException e) {
           Log.error(e);
         }
@@ -204,16 +207,18 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
       public void run() {
         iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); // current
         // width
-        if (FIFO.getInstance().isPlayingRadio()) {
-          update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+        if (FIFO.isStopped()) {
+          update(new Event(JajukEvents.EVENT_ZERO));
         } else {
-          update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+          if (FIFO.getInstance().isPlayingRadio()) {
+            update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+                .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+          } else {
+            update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
+                .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+          }
         }
-        // force redisplay
       }
     });
-    Log.debug("View resized, new width=" + iSize);
   }
 }

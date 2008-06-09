@@ -47,7 +47,7 @@ import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -490,6 +490,9 @@ public class FIFO implements ITechnicalStrings {
         Log.debug("Now playing :" + fCurrent);
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
+        if (itemLast != null){
+          pDetails.put(DETAIL_OLD, itemLast);
+        }
         pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
         pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
         ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_LAUNCHED, pDetails));

@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -52,6 +53,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.base.Album;
@@ -65,7 +67,6 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -203,7 +204,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (getPerspective() == null) {
             dirReference = null;
           }
-          ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+          update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
         }
       }.start();
     } else if (e.getSource() == jbPrevious) { // previous : show a
@@ -265,6 +266,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           index = alCovers.size() - 1;
         }
         ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+        if (fileReference != null) {
+          update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+        }
       }
     } else if (e.getSource() == jbDefault) { // choose a default
       // first commit this cover on the disk if it is a remote cover
@@ -305,10 +309,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
             InformationJPanel.INFORMATIVE);
       }
-      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_DEFAULT_CHANGED));
       // then make it the default cover in this directory
       dirReference.setProperty("default_cover", UtilSystem.getOnlyFile(sFilename));
-
     } else if ((e.getSource() == jbSave)
         && ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
       // save a file as... (can be local now)
@@ -713,6 +716,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           setToolTipText(Messages.getString("ParameterView.218"));
           break;
         }
+        setBorder(new EmptyBorder(0, 3, 0, 3));
         return this;
       }
     });
@@ -761,7 +765,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jpControl.add(jlFound, "5,1");
     jpControl.add(jcbAccuracy, "7,1");
     jpControl.add(jlSearching, "9,1,c,c");
-    ObservationManager.register(this);
+    // Cover view used in catalog view should not listen events
+    if (fileReference == null) {
+      ObservationManager.register(this);
+    }
     try {
       // instantiate default cover
       if (CoverView.coverDefault == null) {
@@ -773,43 +780,33 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
     add(jpControl, "0,0");
     if (fileReference == null) {
-      // request cover refresh after a while to make sure the window owns its
-      // definitive dimension so we avoid the cover to resize at startup
-      new Thread() {
-        @Override
-        public void run() {
-          try {
-            Thread.sleep(3000);
-          } catch (final Exception e) {
-            Log.error(e);
-          }
-          // check if a track has already been launched
-          if (FIFO.getInstance().isPlayingRadio()) {
-            update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-                .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
-          } else {
-            update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
-          }
+      if (FIFO.isStopped()) {
+        update(new Event(JajukEvents.EVENT_ZERO));
+      } else {
+        // request cover refresh after a while to make sure the window owns its
+        // definitive dimension so we avoid the cover to resize at startup
+        new Thread() {
+          @Override
+          public void run() {
+            try {
+              Thread.sleep(3000);
+            } catch (final Exception e) {
+              Log.error(e);
+            }
+            // check if a track has already been launched
+            if (FIFO.getInstance().isPlayingRadio()) {
+              update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+                  .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+            } else {
+              update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+            }
 
-        }
-      }.start();
-    }
-    else{
+          }
+        }.start();
+      }
+    } else {
       update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
     }
-  }
-
-  /**
-   * Return whether this view is in current perspective
-   * 
-   * @return whether this view is in current perspective
-   */
-  public boolean isInCurrentPerspective() {
-    if ((getPerspective() == null)
-        || getPerspective().equals(PerspectiveManager.getCurrentPerspective())) {
-      return true;
-    }
-    return false;
   }
 
   /**
@@ -905,7 +902,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             + ITechnicalStrings.EXT_THUMB);
         ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
       }
-      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_DEFAULT_CHANGED));
     } catch (final Exception ex) {
       Log.error(24, ex);
     }
@@ -994,13 +990,20 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         // (we don't change cover if playing another track of the same album
         // except if option shuffle cover is set)
         if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
-          StackItem itemLast = FIFO.getInstance().getLast();
+          org.jajuk.base.File last = null;
+          Properties details = event.getDetails();
+          if (details != null) {
+            StackItem item = (StackItem) details.get(DETAIL_OLD);
+            if (item != null) {
+              last = item.getFile();
+            }
+          }
           // all cases for a cover full refresh
-          if (itemLast == null // first track, display cover
+          if (last == null // first track, display cover
               // if we are always in the same directory, just leave to
               // save cpu
-              || (!itemLast.getFile().getDirectory().equals(
-                  FIFO.getInstance().getCurrentFile().getDirectory())) || bForceCoverReload) {
+              || (!last.getDirectory().equals(FIFO.getInstance().getCurrentFile().getDirectory()))
+              || bForceCoverReload) {
             // Ignore this event if a reference file has been set and if
             // this event has already been handled
             if ((fileReference != null) && (dirReference != null)) {
