@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -65,31 +66,31 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   private ItemManager manager;
 
   /** upgrade for track IDs */
-  private HashMap<String, String> hmWrongRightTrackID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightTrackID = new HashMap<String, String>();
 
   /** upgrade for album IDs */
-  public HashMap<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
+  public Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
 
   /** upgrade for author IDs */
-  private HashMap<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
 
   /** upgrade for style IDs */
-  private HashMap<String, String> hmWrongRightStyleID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightStyleID = new HashMap<String, String>();
 
   /** upgrade for device IDs */
-  private HashMap<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
 
   /** upgrade for directory IDs */
-  private HashMap<String, String> hmWrongRightDirectoryID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightDirectoryID = new HashMap<String, String>();
 
   /** upgrade for file IDs */
-  private HashMap<String, String> hmWrongRightFileID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightFileID = new HashMap<String, String>();
 
   /** upgrade for playlist IDs */
-  private HashMap<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
 
   /** Conversion of types from < 1.4 */
-  private static HashMap<String, String> conversion;
+  private static Map<String, String> conversion;
   static {
     conversion = new HashMap<String, String>(12);
     conversion.put("0", "mp3");
@@ -834,7 +835,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   /**
    * @return list of wrong file id (used by history)
    */
-  public HashMap<String, String> getHmWrongRightFileID() {
+  public Map<String, String> getHmWrongRightFileID() {
     return hmWrongRightFileID;
   }
 }

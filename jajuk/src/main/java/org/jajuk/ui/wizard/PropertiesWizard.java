@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -301,7 +302,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     List<Item> alItems;
 
     /** Changed properties */
-    HashMap<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
+    Map<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
 
     /** Merge flag */
     boolean bMerged = false;

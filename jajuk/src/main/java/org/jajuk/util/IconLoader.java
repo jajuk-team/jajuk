@@ -21,6 +21,7 @@
 package org.jajuk.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -33,7 +34,7 @@ import javax.swing.ImageIcon;
 public class IconLoader implements ITechnicalStrings {
 
   /** No covers image cache : size:default icon */
-  public static final HashMap<String, ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
+  public static final Map<String, ImageIcon> NOCOVERSCACHE = new HashMap<String, ImageIcon>(10);
 
   public static final ImageIcon ICON_NO_COVER = new ImageIcon(UtilSystem.getResource("images/included/"
       + ITechnicalStrings.FILE_THUMB_NO_COVER));
@@ -44,7 +45,7 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_TRAY = new ImageIcon(UtilSystem
       .getResource("icons/22x22/jajuk-icon_22x22.png"));
 
-  public static final ImageIcon ICON_COVER_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_COVER_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/thumbnail_16x16.png"));
 
   // Correctly displayed under JRE 1.6, ugly under Linux/JRE 1.5
@@ -66,13 +67,13 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_SHUFFLE_GLOBAL = new ImageIcon(UtilSystem
       .getResource("icons/32x32/shuffle_global_32x32.png"));
 
-  public static final ImageIcon ICON_SHUFFLE_GLOBAL_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_SHUFFLE_GLOBAL_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/shuffle_global_16x16.png"));
 
   public static final ImageIcon ICON_BESTOF = new ImageIcon(UtilSystem
       .getResource("icons/32x32/bestof_32x32.png"));
 
-  public static final ImageIcon ICON_BESTOF_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_BESTOF_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/bestof_16x16.png"));
 
   public static final ImageIcon ICON_MUTED = new ImageIcon(UtilSystem
@@ -93,7 +94,7 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_NOVELTIES = new ImageIcon(UtilSystem
       .getResource("icons/32x32/novelties_32x32.png"));
 
-  public static final ImageIcon ICON_NOVELTIES_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_NOVELTIES_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/novelties_16x16.png"));
 
   public static final ImageIcon ICON_NEXT = new ImageIcon(UtilSystem
@@ -117,31 +118,31 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_REW = new ImageIcon(UtilSystem
       .getResource("icons/32x32/player_rew_32x32.png"));
 
-  public static final ImageIcon ICON_REW_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_REW_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/player_rew_16x16.png"));
 
   public static final ImageIcon ICON_PLAY = new ImageIcon(UtilSystem
       .getResource("icons/32x32/player_play_32x32.png"));
 
-  public static final ImageIcon ICON_PLAY_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_PLAY_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/player_play_16x16.png"));
 
   public static final ImageIcon ICON_PAUSE = new ImageIcon(UtilSystem
       .getResource("icons/32x32/player_pause_32x32.png"));
 
-  public static final ImageIcon ICON_PAUSE_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_PAUSE_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/player_pause_16x16.png"));
 
   public static final ImageIcon ICON_STOP = new ImageIcon(UtilSystem
       .getResource("icons/32x32/player_stop_32x32.png"));
 
-  public static final ImageIcon ICON_STOP_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_STOP_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/player_stop_16x16.png"));
 
   public static final ImageIcon ICON_FWD = new ImageIcon(UtilSystem
       .getResource("icons/32x32/player_fwd_32x32.png"));
 
-  public static final ImageIcon ICON_FWD_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_FWD_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/player_fwd_16x16.png"));
 
   public static final ImageIcon ICON_VOLUME = new ImageIcon(UtilSystem
@@ -402,7 +403,7 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_FINISH_ALBUM = new ImageIcon(UtilSystem
       .getResource("icons/32x32/finish_album_32x32.png"));
 
-  public static final ImageIcon ICON_FINISH_ALBUM_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_FINISH_ALBUM_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/finish_album_16x16.png"));
 
   public static final ImageIcon ICON_NET_SEARCH = new ImageIcon(UtilSystem
@@ -492,16 +493,16 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_DROP_DOWN_32x32 = new ImageIcon(UtilSystem
       .getResource("icons/32x32/dropdown_32x32.png"));
 
-  public static final ImageIcon ICON_DROP_DOWN_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_DROP_DOWN_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/dropdown_16x16.png"));
 
   public static final ImageIcon ICON_DIGITAL_DJ = new ImageIcon(UtilSystem
       .getResource("icons/32x32/ddj_32x32.png"));
 
-  public static final ImageIcon ICON_DIGITAL_DJ_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_DIGITAL_DJ_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/ddj_16x16.png"));
 
-  public static final ImageIcon ICON_WEBRADIO_16x16 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_WEBRADIO_16X16 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/webradio_16x16.png"));
 
   public static final ImageIcon ICON_LIST = new ImageIcon(UtilSystem
@@ -556,17 +557,17 @@ public class IconLoader implements ITechnicalStrings {
       .getResource("icons/16x16/alarm_16x16.png"));
 
   static {
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_50x50, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_50X50, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 50, 50));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_100x100, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_100X100, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 100, 100));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_150x150, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_150X150, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 150, 150));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_200x200, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_200X200, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 200, 200));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_250x250, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_250X250, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 250, 250));
-    IconLoader.noCoversCache.put(ITechnicalStrings.THUMBNAIL_SIZE_300x300, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_300X300, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 300, 300));
   }
 }

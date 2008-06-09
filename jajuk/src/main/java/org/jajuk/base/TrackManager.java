@@ -689,8 +689,8 @@ public class TrackManager extends ItemManager implements Observer {
    * @param sCriteria
    * @return a tree set of available files
    */
-  public TreeSet<SearchResult> search(String criteria) {
-    TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
+  public Set<SearchResult> search(String criteria) {
+    Set<SearchResult> tsResu = new TreeSet<SearchResult>();
     for (Object item : hmItems.values()) {
       Track track = (Track) item;
       File playable = track.getPlayeableFile(ConfigurationManager

@@ -24,6 +24,7 @@ import com.melloware.jintellitype.IntellitypeListener;
 import com.melloware.jintellitype.JIntellitype;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
@@ -45,7 +46,7 @@ import org.jajuk.util.log.Log;
 public abstract class WindowsHotKeyManager extends AbstractAction implements ITechnicalStrings {
 
   /** Maps hotkeylisteners with the event ID */
-  private static HashMap<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(20);
+  private static Map<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(20);
 
   /**
    * Jintellitype object used for hotkeys and intellitype events management

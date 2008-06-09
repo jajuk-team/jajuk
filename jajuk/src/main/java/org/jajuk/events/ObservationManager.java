@@ -21,6 +21,7 @@
 package org.jajuk.events;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -42,7 +43,7 @@ public class ObservationManager implements ITechnicalStrings {
    * Last event for a given subject (used for new objects that just registrated
    * to this subject)
    */
-  static HashMap<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(
+  static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(
       10);
 
   static volatile Vector<Event> vFIFO = new Vector<Event>(10);

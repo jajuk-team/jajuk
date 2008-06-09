@@ -270,10 +270,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observ
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
     // Overwrite default icon
-    jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16x16);
+    jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16X16);
     jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
     jmiWebradios = new JMenuItem(ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS));
-    jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16x16);
+    jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16X16);
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 

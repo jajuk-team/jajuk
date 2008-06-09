@@ -26,9 +26,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -340,7 +340,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     } else if (sQName.equals("play")) {
       String sID = attributes.getValue(attributes.getIndex("file"));
       // check id has not been changed
-      HashMap<String, String> hm = Collection.getInstance().getHmWrongRightFileID();
+      Map<String, String> hm = Collection.getInstance().getHmWrongRightFileID();
       if (hm.size() > 0 && hm.containsKey(sID)) {
         sID = hm.get(sID);
         Log.debug("upload:" + sID);

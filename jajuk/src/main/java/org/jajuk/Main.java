@@ -178,10 +178,10 @@ public class Main implements ITechnicalStrings {
       // internal pictures cache directory
       FILE_CACHE + '/' + FILE_INTERNAL_CACHE,
       // thumbnails directories and sub-directories
-      FILE_THUMBS, FILE_THUMBS + "/" + THUMBNAIL_SIZE_50x50,
-      FILE_THUMBS + "/" + THUMBNAIL_SIZE_100x100, FILE_THUMBS + "/" + THUMBNAIL_SIZE_150x150,
-      FILE_THUMBS + "/" + THUMBNAIL_SIZE_200x200, FILE_THUMBS + "/" + THUMBNAIL_SIZE_250x250,
-      FILE_THUMBS + "/" + THUMBNAIL_SIZE_300x300,
+      FILE_THUMBS, FILE_THUMBS + "/" + THUMBNAIL_SIZE_50X50,
+      FILE_THUMBS + "/" + THUMBNAIL_SIZE_100X100, FILE_THUMBS + "/" + THUMBNAIL_SIZE_150X150,
+      FILE_THUMBS + "/" + THUMBNAIL_SIZE_200X200, FILE_THUMBS + "/" + THUMBNAIL_SIZE_250X250,
+      FILE_THUMBS + "/" + THUMBNAIL_SIZE_300X300,
       // DJs directories
       FILE_DJ_DIR };
 

@@ -222,7 +222,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, getItem());
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, getItem());
-    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_COVER_16x16);
+    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.ICON_COVER_16X16);
     jmiGetCovers.addActionListener(this);
     jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP);
     jmiShowPopup.addActionListener(this);

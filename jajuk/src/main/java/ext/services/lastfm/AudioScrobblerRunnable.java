@@ -68,10 +68,12 @@ public class AudioScrobblerRunnable implements Runnable {
       artistsThread.start();
 
       try {
-        if (!interrupted)
+        if (!interrupted) {
           coversThread.join();
-        if (!interrupted)
+        }
+        if (!interrupted) {
           artistsThread.join();
+        }
       } catch (InterruptedException e) {
         Log.error(e);
       }
@@ -80,12 +82,15 @@ public class AudioScrobblerRunnable implements Runnable {
 
   public void interrupt() {
     interrupted = true;
-    if (albumsRunnable != null)
+    if (albumsRunnable != null) {
       albumsRunnable.interrupt();
-    if (coversRunnable != null)
+    }
+    if (coversRunnable != null) {
       coversRunnable.interrupt();
-    if (artistsRunnable != null)
+    }
+    if (artistsRunnable != null) {
       artistsRunnable.interrupt();
+    }
   }
 
   public void setRetrieveArtistInfo(boolean retrieveArtistInfo) {

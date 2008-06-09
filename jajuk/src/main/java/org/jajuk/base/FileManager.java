@@ -375,7 +375,7 @@ public class FileManager extends ItemManager implements Observer {
       final List<Album> albums = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
       Collections.shuffle(albums, new Random());
       // We need an index (bennch: 45* faster)
-      final HashMap<Album, Integer> index = new HashMap<Album, Integer>();
+      final Map<Album, Integer> index = new HashMap<Album, Integer>();
       for (Album album : albums) {
         index.put(album, albums.indexOf(album));
       }

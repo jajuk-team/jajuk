@@ -23,6 +23,7 @@ package org.jajuk.services.dj;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -106,7 +107,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
       return out;
     }
     // Sort tracks by FROM ambience (set of styles)
-    HashMap<Ambience, List<File>> hmAmbienceFiles = new HashMap<Ambience, List<File>>(100);
+    Map<Ambience, List<File>> hmAmbienceFiles = new HashMap<Ambience, List<File>>(100);
     // This list contains all files not yet sorted (used for null key)
     List<File> alFilesToSort = (List<File>) ((ArrayList<File>) global).clone();
     for (Transition tr : transitions) {

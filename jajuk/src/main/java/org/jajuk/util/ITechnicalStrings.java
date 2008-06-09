@@ -205,7 +205,7 @@ public interface ITechnicalStrings {
   // logs
   String FILE_LOGS = "jajuk.log";
 
-  URL FILE_LOG4j_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
+  URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
   String FILE_CACHE = "cache";
 
@@ -323,11 +323,11 @@ public interface ITechnicalStrings {
   String CLI_TEST = "test";
 
   // Tells jajuk to use Power Pack behavior
-  static final String CLI_POWER_PACK = "powerpack";
+  final String CLI_POWER_PACK = "powerpack";
 
-  static final String FREE_MUSIC_DIR = "Music";
+  final String FREE_MUSIC_DIR = "Music";
 
-  static final String FREE_MUSIC_DEVICE_NAME = "Music-jukeboxPowerPack";
+  final String FREE_MUSIC_DEVICE_NAME = "Music-jukeboxPowerPack";
 
   // players impls
   String PLAYER_IMPL_JAVALAYER = "org.jajuk.services.players.JavaLayerPlayerImpl";
@@ -1102,17 +1102,17 @@ public interface ITechnicalStrings {
   String FORMAT_DATE = "Property_Format_Date";
 
   // Thumbs
-  String THUMBNAIL_SIZE_50x50 = "50x50";
+  String THUMBNAIL_SIZE_50X50 = "50x50";
 
-  String THUMBNAIL_SIZE_100x100 = "100x100";
+  String THUMBNAIL_SIZE_100X100 = "100x100";
 
-  String THUMBNAIL_SIZE_150x150 = "150x150";
+  String THUMBNAIL_SIZE_150X150 = "150x150";
 
-  String THUMBNAIL_SIZE_200x200 = "200x200";
+  String THUMBNAIL_SIZE_200X200 = "200x200";
 
-  String THUMBNAIL_SIZE_250x250 = "250x250";
+  String THUMBNAIL_SIZE_250X250 = "250x250";
 
-  String THUMBNAIL_SIZE_300x300 = "300x300";
+  String THUMBNAIL_SIZE_300X300 = "300x300";
 
   // Patterns
   String PATTERN_AUTHOR = "%artist";
@@ -1140,7 +1140,7 @@ public interface ITechnicalStrings {
 
   String ACTION_FINISH = "finish";
 
-  String ACTION_Cancel = "cancel";
+  String ACTION_CANCEL = "cancel";
 
   // Strings
   String FRAME_MAXIMIZED = "max";

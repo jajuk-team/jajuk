@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.jajuk.base.File;
@@ -70,7 +71,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings 
    */
   private List<File> getSequence() {
     List<File> out = new ArrayList<File>(100);
-    HashMap<Proportion, List<File>> list = new HashMap<Proportion, List<File>>(10);
+    Map<Proportion, List<File>> list = new HashMap<Proportion, List<File>>(10);
     // get a global shuffle selection, we will keep only tracks with wanted
     // styles
     List<File> global = FileManager.getInstance().getGlobalShufflePlaylist();

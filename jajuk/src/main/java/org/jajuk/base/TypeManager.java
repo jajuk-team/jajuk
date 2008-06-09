@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jajuk.util.Messages;
@@ -37,7 +38,7 @@ import org.jajuk.util.log.Log;
  */
 public class TypeManager extends ItemManager {
   /** extensions->types */
-  private HashMap<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
+  private Map<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
 
   /** Self instance */
   private static TypeManager singleton;

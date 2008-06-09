@@ -573,13 +573,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     // set title label
     jlTitle.setText(plf.getName());
     if (plf.getType() == Playlist.Type.BESTOF) {
-      jlTitle.setIcon(IconLoader.ICON_BESTOF_16x16);
+      jlTitle.setIcon(IconLoader.ICON_BESTOF_16X16);
     } else if (plf.getType() == Playlist.Type.BOOKMARK) {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_BOOKMARK_SMALL);
     } else if (plf.getType() == Playlist.Type.NEW) {
       jlTitle.setIcon(IconLoader.ICON_PLAYLIST_NEW_SMALL);
     } else if (plf.getType() == Playlist.Type.NOVELTIES) {
-      jlTitle.setIcon(IconLoader.ICON_NOVELTIES_16x16);
+      jlTitle.setIcon(IconLoader.ICON_NOVELTIES_16X16);
     } else {
       // remove last smart playlist item border
       if (spSelected != null) {

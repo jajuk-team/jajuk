@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -999,7 +1000,7 @@ class DeviceNode extends TransferableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /** device -> deviceNode hashmap */
-  public static HashMap<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(
+  public static Map<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(
       100);
 
   /**
@@ -1045,7 +1046,7 @@ class DirectoryNode extends TransferableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /** directory -> directoryNode hashmap */
-  public static HashMap<Directory, DirectoryNode> hmDirectoryDirectoryNode = new HashMap<Directory, DirectoryNode>(
+  public static Map<Directory, DirectoryNode> hmDirectoryDirectoryNode = new HashMap<Directory, DirectoryNode>(
       100);
 
   /**

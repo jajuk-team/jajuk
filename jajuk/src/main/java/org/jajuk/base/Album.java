@@ -310,7 +310,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
         .getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getID() + '.' + EXT_THUMB);
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
-      return IconLoader.noCoversCache.get(size);
+      return IconLoader.NOCOVERSCACHE.get(size);
     }
     // Create the image using Toolkit and not ImageIO API to be able to
     // flush all the image data

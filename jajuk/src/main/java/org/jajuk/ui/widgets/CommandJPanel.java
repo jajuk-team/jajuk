@@ -935,7 +935,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       while (it.hasNext()) {
         final DigitalDJ dj = it.next();
         JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
-            IconLoader.ICON_DIGITAL_DJ_16x16);
+            IconLoader.ICON_DIGITAL_DJ_16X16);
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent arg0) {
             ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());

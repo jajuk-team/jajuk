@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -61,7 +62,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class DigitalDJManager implements ITechnicalStrings, Observer {
 
   /** List of registrated DJs ID->DJ */
-  private HashMap<String, DigitalDJ> djs;
+  private Map<String, DigitalDJ> djs;
 
   /** self instance */
   private static DigitalDJManager dj;

@@ -52,13 +52,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   private Device device;
 
   /** Child directories */
-  private TreeSet<Directory> directories = new TreeSet<Directory>();
+  private Set<Directory> directories = new TreeSet<Directory>();
 
   /** Child files */
-  private TreeSet<org.jajuk.base.File> files = new TreeSet<org.jajuk.base.File>();
+  private Set<org.jajuk.base.File> files = new TreeSet<org.jajuk.base.File>();
 
   /** playlists */
-  private TreeSet<Playlist> playlistFiles = new TreeSet<Playlist>();
+  private Set<Playlist> playlistFiles = new TreeSet<Playlist>();
 
   /** IO file for optimizations* */
   private java.io.File fio;

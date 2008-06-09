@@ -32,7 +32,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -120,7 +120,7 @@ public class SearchBox extends JTextField implements KeyListener {
         jl = new JLabel(sr.getResu(), sr.getFile().getIconRepresentation(),
             SwingConstants.HORIZONTAL);
       } else if (sr.getType() == SearchResultType.WEBRADIO) {
-        jl = new JLabel(sr.getResu(), IconLoader.ICON_WEBRADIO_16x16, SwingConstants.HORIZONTAL);
+        jl = new JLabel(sr.getResu(), IconLoader.ICON_WEBRADIO_16X16, SwingConstants.HORIZONTAL);
       }
       jp.add(jl, BorderLayout.WEST);
       return jp;
@@ -197,7 +197,7 @@ public class SearchBox extends JTextField implements KeyListener {
       if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
         // second test to get sure user didn't
         // typed before entering this method
-        TreeSet<SearchResult> tsResu = TrackManager.getInstance().search(sTyped.toString());
+        Set<SearchResult> tsResu = TrackManager.getInstance().search(sTyped.toString());
         // Add web radio names
         tsResu.addAll(WebRadioManager.getInstance().search(sTyped.toString()));
         if (tsResu.size() > 0) {

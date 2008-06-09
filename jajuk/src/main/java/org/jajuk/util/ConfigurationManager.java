@@ -249,7 +249,7 @@ public class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER + ","
         + width + "," + height);
     defaults.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
-    defaults.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150x150);
+    defaults.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_150X150);
     defaults.put(CONF_THUMBS_SORTER, "2"); // sort by album
     // filter on albums
     defaults.put(CONF_THUMBS_FILTER, "0");

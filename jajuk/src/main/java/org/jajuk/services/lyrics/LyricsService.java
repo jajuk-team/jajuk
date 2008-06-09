@@ -36,6 +36,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jajuk.services.lyrics.providers.IProvider;
 import org.jajuk.util.ITechnicalStrings;
@@ -54,7 +55,7 @@ import org.w3c.dom.NodeList;
  */
 public class LyricsService {
 
-  private static HashMap<String, IProvider> providers = null;
+  private static Map<String, IProvider> providers = null;
   private static IProvider current = null;
 
   /**
@@ -63,8 +64,8 @@ public class LyricsService {
    * @return a map of providers loaded from the XML configuration file
    */
   @SuppressWarnings("unchecked")
-  public static HashMap<String, IProvider> loadProviders() {
-    final HashMap<String, IProvider> providers = new HashMap<String, IProvider>();
+  public static Map<String, IProvider> loadProviders() {
+    final Map<String, IProvider> providers = new HashMap<String, IProvider>();
 
     Log.debug("Loading Providers");
     try {
@@ -160,7 +161,7 @@ public class LyricsService {
    * 
    * @return the map of loaded providers
    */
-  public static synchronized HashMap<String, IProvider> getProviders() {
+  public static synchronized Map<String, IProvider> getProviders() {
     if (providers == null) {
       providers = loadProviders();
     }

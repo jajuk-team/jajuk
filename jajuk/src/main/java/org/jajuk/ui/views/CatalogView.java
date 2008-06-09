@@ -42,6 +42,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -212,12 +213,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     hsItems = new HashSet<LocalAlbumThumbnail>();
 
-    sizes.add(THUMBNAIL_SIZE_50x50);
-    sizes.add(THUMBNAIL_SIZE_100x100);
-    sizes.add(THUMBNAIL_SIZE_150x150);
-    sizes.add(THUMBNAIL_SIZE_200x200);
-    sizes.add(THUMBNAIL_SIZE_250x250);
-    sizes.add(THUMBNAIL_SIZE_300x300);
+    sizes.add(THUMBNAIL_SIZE_50X50);
+    sizes.add(THUMBNAIL_SIZE_100X100);
+    sizes.add(THUMBNAIL_SIZE_150X150);
+    sizes.add(THUMBNAIL_SIZE_200X200);
+    sizes.add(THUMBNAIL_SIZE_250X250);
+    sizes.add(THUMBNAIL_SIZE_300X300);
 
     // --Top (most used) control items
     jpControlTop = new JPanel();
@@ -471,7 +472,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 false);
           }
           List<Album> albums = null;
-          final HashMap<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();
+          final Map<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();
           // filter albums matching tracks
           Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
           albums = new ArrayList<Album>(alAllTracks.size() / 10);
@@ -778,12 +779,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       if (resu != JOptionPane.YES_OPTION) {
         return;
       }
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50x50);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100x100);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150x150);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200x200);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250x250);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300x300);
+      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
+      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
+      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150X150);
+      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
+      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
+      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
       UtilGUI.waiting();
       SwingWorker sw = new SwingWorker() {
         @Override

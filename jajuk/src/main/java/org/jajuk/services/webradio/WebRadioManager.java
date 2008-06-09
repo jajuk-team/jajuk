@@ -51,9 +51,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public class WebRadioManager extends DefaultHandler implements ITechnicalStrings {
+public final class WebRadioManager extends DefaultHandler implements ITechnicalStrings {
 
-  private static TreeSet<WebRadio> webradios = new TreeSet<WebRadio>();
+  private static Set<WebRadio> webradios = new TreeSet<WebRadio>();
 
   // Self instance
   private static WebRadioManager self;
@@ -65,9 +65,9 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
   private String radioUrl;
 
   // Webradio file XML tags static strings
-  private static String XML_RADIO = "Radio";
-  private static String XML_URL = "url";
-  private static String XML_NAME = "name";
+  private final static String XML_RADIO = "Radio";
+  private final static String XML_URL = "url";
+  private final static String XML_NAME = "name";
 
   File fwebradios;
 
@@ -171,7 +171,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
   /**
    * Copy the default radio file to the current repository file
    */
-  public void restore() throws Exception {
+  public void restore() throws IOException {
     // Clear existing radios
     webradios.clear();
     // Download repository
@@ -180,7 +180,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
     File out = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
     if (!out.exists() || out.length() == 0) {
       // show an "operation failed' message to users
-      throw new Exception("Cannot download or parse webradio repository");
+      throw new IOException("Cannot download or parse webradio repository");
     }
   }
 
@@ -199,10 +199,12 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
         String url = attributes.getValue(attributes.getIndex(XML_URL));
         WebRadio radio = new WebRadio(name, url);
         webradios.add(radio);
-      } else if (XML_NAME.equals(sQName) && inRadio) {
-        buffer = new StringBuilder();
-      } else if (XML_URL.equals(sQName) && inRadio) {
-        buffer = new StringBuilder();
+      } else if (inRadio) {        
+        if (XML_NAME.equals(sQName)) {
+          buffer = new StringBuilder();
+        } else if (XML_URL.equals(sQName)) {
+          buffer = new StringBuilder();
+        }
       }
 
     } catch (Exception e) {
@@ -213,8 +215,9 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
   @Override
   public void characters(char[] ch, int start, int length) throws SAXException {
     String s  = new String(ch, start, length);
-    if (buffer != null)
+    if (buffer != null) { 
       buffer.append(s);
+    }
   }
 
   /**
@@ -241,9 +244,9 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    * @param sCriteria
    * @return
    */
-  public TreeSet<SearchResult> search(String sCriteria) {
+  public Set<SearchResult> search(String sCriteria) {
     synchronized (FileManager.getInstance().getLock()) {
-      TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>();
+      Set<SearchResult> tsResu = new TreeSet<SearchResult>();
       for (WebRadio radio : webradios) {
         if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1) {
           tsResu.add(new SearchResult(radio, radio.toString()));
@@ -259,7 +262,7 @@ public class WebRadioManager extends DefaultHandler implements ITechnicalStrings
    */
   @SuppressWarnings("unchecked")
   public Set<WebRadio> getWebRadios() {
-    return (TreeSet<WebRadio>) webradios.clone();
+    return (Set<WebRadio>) ((TreeSet<WebRadio>)webradios).clone();
   }
 
   /**

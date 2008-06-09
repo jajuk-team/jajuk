@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -49,7 +50,7 @@ import org.jajuk.util.Messages;
 public class AmbienceManager implements ITechnicalStrings, Observer {
 
   /** Ambience id-> ambience */
-  private HashMap<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
+  private Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
 
   /** Self instance */
   private static AmbienceManager self;

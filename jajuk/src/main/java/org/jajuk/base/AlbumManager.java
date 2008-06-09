@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -251,11 +252,11 @@ public class AlbumManager extends ItemManager implements Observer {
     // create a temporary table to remove unmounted albums
     // We consider an album as mounted if a least one track is mounted
     // This hashmap contains album-> album rates
-    final HashMap<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
+    final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
         .getElementCount());
     // This hashmap contains album-> nb of tracks already taken into account
     // for average
-    HashMap<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
+    Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getPlayeableFile(bHideUnmounted) != null) {
@@ -298,7 +299,7 @@ public class AlbumManager extends ItemManager implements Observer {
     // create a temporary table to remove unmounted albums
     // We consider an album as mounted if a least one track is mounted
     // This hashmap contains album-> discovery date
-    final HashMap<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
+    final Map<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
         .getElementCount());
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getPlayeableFile(bHideUnmounted) != null) {
@@ -329,11 +330,11 @@ public class AlbumManager extends ItemManager implements Observer {
     // create a temporary table to remove unmounted albums
     // We consider an album as mounted if a least one track is mounted
     // This hashmap contains album-> album hits (each track hit average)
-    final HashMap<Album, Float> cache = new HashMap<Album, Float>(AlbumManager.getInstance()
+    final Map<Album, Float> cache = new HashMap<Album, Float>(AlbumManager.getInstance()
         .getElementCount());
     // This hashmap contains album-> nb of tracks already taken into account
     // for average
-    HashMap<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
+    Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getPlayeableFile(bHideUnmounted) != null) {
@@ -409,11 +410,11 @@ public class AlbumManager extends ItemManager implements Observer {
     // create a temporary table to remove unmounted albums
     // We consider an album as mounted if a least one track is mounted
     // This hashmap contains album-> album rates
-    final HashMap<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
+    final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
         .getElementCount());
     // This hashmap contains album-> nb of tracks already taken into account
     // for average
-    HashMap<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
+    Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getPlayeableFile(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {

@@ -152,7 +152,7 @@ public class QueueView extends PlaylistView {
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jsp, "0,1");
     // menu items
-    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.ICON_PLAY_16x16);
+    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.ICON_PLAY_16X16);
     // We don't use regular action for the play because it has very special
     // behavior here in the queue view : it must go to selection without keeping
     // previous FIFO

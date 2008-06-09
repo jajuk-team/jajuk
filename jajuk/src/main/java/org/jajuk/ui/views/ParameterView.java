@@ -1482,7 +1482,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     scbLAF = new SteppedComboBox();
     final Map<String, ThemeInfo> map = SubstanceLookAndFeel.getAllThemes();
     // Use a tree set to sort themes alphabeticaly
-    final TreeSet<String> themes = new TreeSet<String>(map.keySet());
+    final Set<String> themes = new TreeSet<String>(map.keySet());
     // Add each theme to the combo box
     for (final String theme : themes) {
       scbLAF.addItem(theme);
@@ -1496,7 +1496,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     scbWatermarks = new SteppedComboBox();
     final Map<String, WatermarkInfo> mapWatermarks = SubstanceLookAndFeel.getAllWatermarks();
     // Use a tree set to sort watermarks alphabetically
-    final TreeSet<String> watermarks = new TreeSet<String>(mapWatermarks.keySet());
+    final Set<String> watermarks = new TreeSet<String>(mapWatermarks.keySet());
     // Add image watermark that is not included by default for unknown
     // reason
     watermarks.add(ITechnicalStrings.LNF_WATERMARK_IMAGE);

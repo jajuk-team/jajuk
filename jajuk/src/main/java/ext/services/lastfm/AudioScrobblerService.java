@@ -33,27 +33,27 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class AudioScrobblerService {
+public final class AudioScrobblerService {
 
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
 
   private static final String ALBUM_WILDCARD = "(%ALBUM%)";
 
-  private static final String albumInfoURL = "http://ws.audioscrobbler.com/1.0/album/"
+  private static final String ALBUM_INFO_URL = "http://ws.audioscrobbler.com/1.0/album/"
       + ARTIST_WILDCARD + '/' + ALBUM_WILDCARD + "/info.xml";
 
-  private static final String albumListURL = "http://ws.audioscrobbler.com/1.0/artist/"
+  private static final String ALBUM_LIST_URL = "http://ws.audioscrobbler.com/1.0/artist/"
       + ARTIST_WILDCARD + "/topalbums.xml";
 
-  private static final String similarArtistsURL = "http://ws.audioscrobbler.com/1.0/artist/"
+  private static final String SIMILAR_ARTIST_URL = "http://ws.audioscrobbler.com/1.0/artist/"
       + ARTIST_WILDCARD + "/similar.xml";
 
-  private static final String artistTagURL = "http://ws.audioscrobbler.com/1.0/artist/"
+  private static final String ARTIST_TAG_URL = "http://ws.audioscrobbler.com/1.0/artist/"
       + ARTIST_WILDCARD + "/toptags.xml";
 
-  private static final String noCoverURL = "/depth/catalogue/noimage/cover_large.gif";
+  private static final String NO_COVER_URL = "/depth/catalogue/noimage/cover_large.gif";
 
-  private static final boolean showAlbumsWithoutCover = false;
+  private static final boolean SHOW_ALBUMS_WITHOUT_COVER = false;
 
   private Proxy proxy;
 
@@ -85,7 +85,7 @@ public class AudioScrobblerService {
   public AudioScrobblerAlbum getAlbum(String artist, String album) {
     try {
       // build url
-      String urlString = albumInfoURL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist))
+      String urlString = ALBUM_INFO_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist))
           .replace(ALBUM_WILDCARD, NetworkUtils.encodeString(album));
       // read xml
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
@@ -100,17 +100,20 @@ public class AudioScrobblerService {
   public List<AudioScrobblerAlbum> getAlbumList(String artist) {
     try {
       // build url
-      String urlString = albumListURL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist));
+      String urlString = ALBUM_LIST_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist));
       // read xml
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
           urlString, proxy)));
       List<AudioScrobblerAlbum> albums = AudioScrobblerAlbum.getAlbumList(xml);
-      if (showAlbumsWithoutCover)
+      if (SHOW_ALBUMS_WITHOUT_COVER) {
         return albums;
+      }
+      
       List<AudioScrobblerAlbum> result = new ArrayList<AudioScrobblerAlbum>();
       for (AudioScrobblerAlbum a : albums) {
-        if (!a.getSmallCoverURL().endsWith(noCoverURL))
+        if (!a.getSmallCoverURL().endsWith(NO_COVER_URL)) {
           result.add(a);
+        }
       }
       return result;
     } catch (Exception e) {
@@ -122,7 +125,7 @@ public class AudioScrobblerService {
   public AudioScrobblerSimilarArtists getSimilarArtists(String artist) {
     try {
       // build url
-      String urlString = similarArtistsURL.replace(ARTIST_WILDCARD, NetworkUtils
+      String urlString = SIMILAR_ARTIST_URL.replace(ARTIST_WILDCARD, NetworkUtils
           .encodeString(artist));
       // read xml
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
@@ -137,7 +140,7 @@ public class AudioScrobblerService {
   public String getArtistTopTag(String artist) {
     try {
       // build url
-      String urlString = artistTagURL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist));
+      String urlString = ARTIST_TAG_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist));
       // read xml
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
           urlString, proxy)));

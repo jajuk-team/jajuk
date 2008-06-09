@@ -243,19 +243,19 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     };
 
     jbBestof = new JMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
-    jbBestof.setIcon(IconLoader.ICON_BESTOF_16x16);
+    jbBestof.setIcon(IconLoader.ICON_BESTOF_16X16);
     jbBestof.addActionListener(this);
 
     jbNovelties = new JMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
-    jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16x16);
+    jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16X16);
     jbNovelties.addActionListener(this);
 
     jbRandom = new JMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
-    jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
+    jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
     jbRandom.addActionListener(this);
 
     jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
-    jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
+    jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16X16);
     jbFinishAlbum.addActionListener(this);
 
     jpmSmart = new JPopupMenu();
@@ -266,7 +266,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     jddbSmart.addToToolBar(jtbSmart);
     jddbSmart.addMouseMotionListener(motionAdapter);
     jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
-    jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
+    jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
 
     ActionBase actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
     actionIncRate.setName(null);
@@ -498,9 +498,9 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
       ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
     } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
-      jbPlayPause.setIcon(IconLoader.ICON_PLAY_16x16);
+      jbPlayPause.setIcon(IconLoader.ICON_PLAY_16X16);
     } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
-      jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16x16);
+      jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16X16);
     } else if (JajukEvents.EVENT_MUTE_STATE.equals(subject)) {
       MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
     } else if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
@@ -569,16 +569,16 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
-      jddbSmart.setIcon(IconLoader.ICON_BESTOF_16x16);
+      jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
     } else if (ae.getSource() == jbNovelties) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
-      jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16x16);
+      jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16X16);
     } else if (ae.getSource() == jbRandom) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
-      jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16x16);
+      jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
     } else if (ae.getSource() == jbFinishAlbum) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.FINISH_ALBUM));
-      jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16x16);
+      jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16X16);
     }
   }
 }

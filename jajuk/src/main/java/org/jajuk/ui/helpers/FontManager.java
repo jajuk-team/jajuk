@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -50,7 +51,7 @@ public class FontManager implements ITechnicalStrings, Observer {
     DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, SPLASH_PROGRESS, VIEW_FONT
   }
 
-  private static HashMap<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
+  private static Map<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
 
   private static FontManager self;
 
