@@ -161,7 +161,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private ImageIcon ii;
 
   /** Force next track cover reload flag* */
-  private boolean bForceCoverReload = false;
+  private boolean bForceCoverReload = true;
 
   /**
    * Constructor
@@ -772,30 +772,35 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       Log.error(e);
     }
     add(jpControl, "0,0");
-    // request cover refresh after a while to make sure the window owns its
-    // definitive dimension so we avoid the cover to resize at startup
-    new Thread() {
-      @Override
-      public void run() {
-        try {
-          Thread.sleep(3000);
-        } catch (final Exception e) {
-          Log.error(e);
-        }
-        // check if a track has already been launched
-        if (FIFO.getInstance().isPlayingRadio()) {
-          update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
-        } else {
-          update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
-        }
+    if (fileReference == null) {
+      // request cover refresh after a while to make sure the window owns its
+      // definitive dimension so we avoid the cover to resize at startup
+      new Thread() {
+        @Override
+        public void run() {
+          try {
+            Thread.sleep(3000);
+          } catch (final Exception e) {
+            Log.error(e);
+          }
+          // check if a track has already been launched
+          if (FIFO.getInstance().isPlayingRadio()) {
+            update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
+                .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+          } else {
+            update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+          }
 
-      }
-    }.start();
+        }
+      }.start();
+    }
+    else{
+      update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+    }
   }
 
   /**
-   * To be refactored
+   * Return whether this view is in current perspective
    * 
    * @return whether this view is in current perspective
    */
