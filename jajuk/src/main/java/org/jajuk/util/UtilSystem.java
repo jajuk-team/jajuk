@@ -47,7 +47,6 @@ import java.util.jar.JarFile;
 import javax.swing.ImageIcon;
 
 import org.jajuk.Main;
-import org.jajuk.Main.MPlayerStatus;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
@@ -59,6 +58,10 @@ import org.jajuk.util.log.Log;
  */
 public class UtilSystem implements ITechnicalStrings{
 
+  /** MPlayer status possible values * */
+  public static enum MPlayerStatus {
+    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
+  }
   /** Current date cached (for performances) **/
   public static final Date TODAY = new Date();
   
@@ -612,9 +615,9 @@ public class UtilSystem implements ITechnicalStrings{
     }
   }
 
-  public static MPlayerStatus getMplayerStatus(final String mplayerPATH) {
+  public static UtilSystem.MPlayerStatus getMplayerStatus(final String mplayerPATH) {
     Process proc = null;
-    MPlayerStatus mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+    UtilSystem.MPlayerStatus mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
     try {
       String fullPath = null;
       if ("".equals(mplayerPATH)) {
@@ -627,15 +630,15 @@ public class UtilSystem implements ITechnicalStrings{
       proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$ //$NON-NLS-3$
       final BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
       String line = null;
-      mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
+      mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
       for (; (line = in.readLine()) != null;) {
         if (line.matches("get_time_pos.*")) {
-          mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
+          mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
           break;
         }
       }
     } catch (final Exception e) {
-      mplayerStatus = MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+      mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
     }
     return mplayerStatus;
   }
