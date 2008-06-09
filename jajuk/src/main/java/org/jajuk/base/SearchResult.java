@@ -31,6 +31,10 @@ public class SearchResult implements Comparable<SearchResult> {
   public enum SearchResultType {
     FILE, WEBRADIO
   }
+  
+    /** We use a track comparator (style/author/album) to sort results **/
+  TrackComparator comparator = new TrackComparator(TrackComparator.STYLE_AUTHOR_ALBUM);
+
 
   /** The associated file */
   File file;

@@ -228,8 +228,8 @@ public class SearchBox extends JTextField implements KeyListener {
           // take upper-left point relative to the
           // textfield
           Point point = new Point(0, 0);
-          // take absolute coordonates in the screen (popups works
-          // only on absolute coordonates in opposition to swing
+          // take absolute coordinates in the screen (popups works
+          // only on absolute coordinates in opposition to swing
           // widgets)
           SwingUtilities.convertPointToScreen(point, this);
           if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
