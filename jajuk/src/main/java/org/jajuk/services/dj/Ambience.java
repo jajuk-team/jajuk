@@ -21,6 +21,7 @@
 package org.jajuk.services.dj;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
@@ -32,7 +33,7 @@ import org.jajuk.util.log.Log;
 public class Ambience implements Comparable<Ambience> {
 
   /** List of styles */
-  private HashSet<Style> styles;
+  private Set<Style> styles;
 
   /** Ambience name */
   private String sName;
@@ -44,13 +45,13 @@ public class Ambience implements Comparable<Ambience> {
    * Constructor
    * 
    * @param sID
-   *          Ambience uniq id
+   *          Ambience uniqe id
    * @param sName
    *          Ambience name
    * @param styles
    *          list of styles
    */
-  public Ambience(String sID, String sName, HashSet<Style> styles) {
+  public Ambience(String sID, String sName, Set<Style> styles) {
     this.sID = sID;
     this.sName = sName;
     this.styles = styles;
@@ -67,7 +68,7 @@ public class Ambience implements Comparable<Ambience> {
    *          list by name
    */
   public Ambience(String sID, String sName, String[] styles) {
-    HashSet<Style> hstyles = new HashSet<Style>(styles.length);
+    Set<Style> hstyles = new HashSet<Style>(styles.length);
     for (int i = 0; i < styles.length; i++) {
       Style style = StyleManager.getInstance().getStyleByName(styles[i]);
       if (style != null) {
@@ -121,7 +122,7 @@ public class Ambience implements Comparable<Ambience> {
     this.sName = name;
   }
 
-  public HashSet<Style> getStyles() {
+  public Set<Style> getStyles() {
     return this.styles;
   }
 
@@ -168,6 +169,16 @@ public class Ambience implements Comparable<Ambience> {
         && this.styles.equals(ambienceOther.getStyles());
   }
 
+  @Override
+  public int hashCode() {
+    // for now just combine name and id to a hashcode
+    // idea taken from http://www.geocities.com/technofundo/tech/java/equalhash.html
+    int hash = 7;
+    hash = 31 * hash + sName.hashCode();
+    hash = 31 * hash + sID.hashCode();
+    return hash;
+  }
+
   /**
    * Compare to method : alphabetical
    */
@@ -187,5 +198,4 @@ public class Ambience implements Comparable<Ambience> {
     }
     return s.substring(0, s.length() - 1); // remove last coma
   }
-
 }
