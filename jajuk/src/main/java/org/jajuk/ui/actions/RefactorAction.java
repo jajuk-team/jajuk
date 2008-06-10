@@ -134,9 +134,15 @@ public class RefactorAction implements ITechnicalStrings {
 
       // Move file and related cover but save old Directory pathname
       // for future deletion
-      final java.io.File fCover = tCurrent.getAlbum().getCoverFile();
-      if (fCover != null) {
-        fCover.renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + fCover.getName()));
+      try {
+        final java.io.File fCover = tCurrent.getAlbum().getCoverFile();
+        if (fCover != null) {
+          fCover
+              .renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + fCover.getName()));
+        }
+      } catch (Exception e) {
+        // This exception can be thrown by instance if default cover is not readable
+        Log.error(e);
       }
       // Rename audio files
       boolean bRenameSuccess = false;

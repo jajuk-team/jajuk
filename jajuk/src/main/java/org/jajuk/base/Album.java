@@ -36,7 +36,7 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
- 
+
 /**
  * An Album *
  * <p>
@@ -204,8 +204,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * 
-   * @return associated best cover file available or null if none
+   * @return associated best cover file available or null if none. The returned
+   *         file can not be readable, so use a try/catch around a future access
    */
   public File getCoverFile() {
     File fCover = null;
@@ -229,21 +229,23 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // look for absolute cover in collection
     for (Directory dir : dirs) {
       String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
-      if (sAbsolut != null && !sAbsolut.trim().equals("")) {
+      if (sAbsolut != null && !"".equals(sAbsolut.trim())) {
         File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
-        if (fAbsoluteDefault.canRead()) {
+        if (fAbsoluteDefault.exists()) {
           return fAbsoluteDefault;
         }
       }
     }
+
     // look for standard cover in collection
     for (Directory dir : dirs) {
       fDir = dir.getFio(); // store this dir
       java.io.File[] files = fDir.listFiles();// null if none file
       // found
       for (int i = 0; files != null && i < files.length; i++) {
-        if (files[i].canRead() // test file is readable
-            && files[i].length() < MAX_COVER_SIZE * 1024) {
+        // test file exists, do not use the File.canRead() method: it can be
+        // very costly when using a NAS under Windows
+        if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
           String sExt = UtilSystem.getExtension(files[i]);
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
@@ -261,8 +263,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
       java.io.File[] files = fDir.listFiles();// null if none file
       // found
       for (int i = 0; files != null && i < files.length; i++) {
-        if (files[i].canRead() // test file is readable
-            && files[i].length() < MAX_COVER_SIZE * 1024) {
+        // test file exists, do not use the File.canRead() method: it can be
+        // very costly when using a NAS under Windows
+        if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
           String sExt = UtilSystem.getExtension(files[i]);
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
@@ -306,8 +309,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return album thumb for given size
    */
   public ImageIcon getThumbnail(String size) {
-    File fCover = UtilSystem
-        .getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getID() + '.' + EXT_THUMB);
+    File fCover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getID() + '.'
+        + EXT_THUMB);
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
       return IconLoader.NOCOVERSCACHE.get(size);
@@ -466,6 +469,5 @@ public class Album extends LogicalItem implements Comparable<Album> {
   protected void resetTracks() {
     tracks.clear();
   }
-  
-  
+
 }

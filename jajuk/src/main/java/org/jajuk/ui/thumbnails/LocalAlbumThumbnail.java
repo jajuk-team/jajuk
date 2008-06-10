@@ -176,8 +176,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   public String getDescription() {
     String size = "200x200";
     ThumbnailManager.refreshThumbnail(album, size);
-    java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + album.getID()
-        + '.' + EXT_THUMB);
+    java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+        + album.getID() + '.' + EXT_THUMB);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
     Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
     Track firstTrack = tracks.iterator().next();
@@ -186,8 +186,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
         + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + album.getName2()
         + "</b><br><br>";
-    // display cover if available
-    if (cover.canRead()) {
+    // display cover
+    if (cover.exists()) {
       sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
     }
     // Display author as global value only if it is a single author album
